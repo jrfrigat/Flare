@@ -134,7 +134,17 @@ var isDark = ThemeService.IsDark;
 
 ## Docker
 
-Соберите и запустите Gallery PWA локально:
+Запустите готовый образ Gallery из GitHub Container Registry (проще всего):
+
+```sh
+docker run -p 8080:80 ghcr.io/jrfrigat/flare-gallery:latest
+# -> http://localhost:8080
+```
+
+Образ версионируется независимо от NuGet-пакетов (теги `gallery-v*`, напр.
+`ghcr.io/jrfrigat/flare-gallery:0.0.1`).
+
+Или соберите из исходников:
 
 ```sh
 docker build -f samples/Flare.Gallery/Dockerfile -t flare-gallery .

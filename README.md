@@ -134,7 +134,17 @@ subset they need, so MD3 and Fluent stay in sync automatically.
 
 ## Docker
 
-Build and run the Gallery PWA locally:
+Run the published Gallery image from GitHub Container Registry (easiest):
+
+```sh
+docker run -p 8080:80 ghcr.io/jrfrigat/flare-gallery:latest
+# -> http://localhost:8080
+```
+
+The image is versioned independently from the NuGet packages (tags `gallery-v*`, e.g.
+`ghcr.io/jrfrigat/flare-gallery:0.0.1`).
+
+Or build it from source:
 
 ```sh
 docker build -f samples/Flare.Gallery/Dockerfile -t flare-gallery .
