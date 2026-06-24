@@ -44,10 +44,10 @@ officially representing the community in public spaces.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community
-leaders responsible for enforcement at **[INSERT CONTACT METHOD]**.
-<!-- Maintainers: replace [INSERT CONTACT METHOD] with a private channel, e.g. an email address or a
-     GitHub private vulnerability/contact link. -->
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported privately to the
+maintainer ([@jrfrigat](https://github.com/jrfrigat)) via GitHub's private reporting on the
+repository's [Security](https://github.com/jrfrigat/Flare/security) tab ("Report a vulnerability"),
+which delivers the report confidentially.
 All complaints will be reviewed and investigated promptly and fairly. All community leaders are
 obligated to respect the privacy and security of the reporter of any incident.
 
