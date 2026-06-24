@@ -7,8 +7,11 @@
 [![Downloads](https://img.shields.io/nuget/dt/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
 [![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://flare.frigat.duckdns.org/)
 
 Производственная библиотека компонентов Blazor для **.NET 10** с **переключением тем во время выполнения** между пятью дизайн-системами - Material Design 3 Expressive, Fluent UI 2, Aero, Liquid Glass и Visual Studio 2026 - без перезагрузки страницы и без мигания неоформленного контента.
+
+**[Живое демо / галерея компонентов ->](https://flare.frigat.duckdns.org/)**
 
 **100+ компонентов - 5 дизайн-систем x 28 палитр x светлая/тёмная/авто - единый API цвета - нет зависимостей от сторонних CSS - Docker-готовая галерея**
 
