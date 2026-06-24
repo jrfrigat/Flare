@@ -25,8 +25,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.*" PrivateAssets="all" />
+    <PackageReference Include="MinVer" Version="7.*" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="all" />
     <!-- Pack the project's own README when it has one; otherwise fall back to the repo README. -->
     <None Include="README.md" Pack="true" PackagePath="/" Condition="Exists('$(MSBuildProjectDirectory)/README.md')" />
     <None Include="$(RepoRoot)README.md" Pack="true" PackagePath="/" Condition="!Exists('$(MSBuildProjectDirectory)/README.md') And Exists('$(RepoRoot)README.md')" />
