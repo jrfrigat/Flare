@@ -10,4 +10,4 @@ dotnet add package Flare.Components.RichTextEditor
 Requires `Flare.Components` and a `Flare.Theme.*` package. Use `<FlareRichTextEditor>` once Flare is
 set up (see the `Flare.Components` readme).
 
-Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

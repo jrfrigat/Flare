@@ -1,6 +1,6 @@
 # Flare - Руководство по началу работы
 
-> [Главная README](../../README.ru.md) · [Архитектура](architecture.md)
+> [Главная README](../../README.ru.md) - [Архитектура](architecture.md)
 
 ---
 

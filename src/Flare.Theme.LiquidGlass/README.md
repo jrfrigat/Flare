@@ -15,4 +15,4 @@ builder.Services.AddFlareTheme(new LiquidGlassTheme());
 // await ThemeService.SetThemeAsync("liquid-glass");
 ```
 
-Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

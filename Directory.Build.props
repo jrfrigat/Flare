@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Authors>FrigaT</Authors>
     <Company>FrigaT</Company>
-    <Copyright>Copyright © 2026 FrigaT</Copyright>
+    <Copyright>Copyright (c) 2026 FrigaT</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/jrfrigat/Flare</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jrfrigat/Flare</RepositoryUrl>

@@ -1,6 +1,6 @@
 # Flare - Архитектура
 
-> [English version ->](../en/architecture.md) · [README](../../README.ru.md)
+> [English version ->](../en/architecture.md) - [README](../../README.ru.md)
 
 Как устроен Flare, как работает система тем и на какие контракты опираются компоненты.
 
@@ -12,8 +12,8 @@
 
 ```
 Flare (umbrella)
-└── Flare.Components
-    └── Flare.Core
++-- Flare.Components
+    +-- Flare.Core
 
 Пакеты тем (каждый ссылается только на Flare.Core, umbrella не ссылается ни на один):
   Flare.Theme.MaterialDesign3Expressive  -> Flare.Core
@@ -51,7 +51,7 @@ tests/Flare.Components.Tests -> Flare.Components
 - `Components/` - `FlareComponentBase` (абстрактный базовый класс) и `FlareThemeProvider`.
 - Своих статических веб-ассетов нет - JS ES-модули и CSS-бандл поставляются из `Flare.Components`.
 
-**NuGet:** `Flare.Core` · зависит только от `Microsoft.AspNetCore.Components.Web`.
+**NuGet:** `Flare.Core` - зависит только от `Microsoft.AspNetCore.Components.Web`.
 
 ### Flare.Components
 **Назначение.** Основные UI-компоненты. Каждый компонент в своей подпапке/пространстве имён.
@@ -66,7 +66,7 @@ tests/Flare.Components.Tests -> Flare.Components
 - Каждый `[Parameter]` имеет `/// <summary>` XML doc-комментарий (`GenerateDocumentationFile` включён
   для всего решения).
 
-**NuGet:** `Flare.Components` · зависит от `Flare.Core`.
+**NuGet:** `Flare.Components` - зависит от `Flare.Core`.
 
 ### Flare.Theme.* (пять дизайн-систем)
 Каждый пакет темы предоставляет одну реализацию `ITheme` плюс палитры и статические ассеты:
@@ -96,11 +96,11 @@ tests/Flare.Components.Tests -> Flare.Components
 - `LocalStorageThemeStorage` (internal) - реализует `IThemeStorageService` через `localStorage`.
 - Не содержит UI-кода, токенов или собственной темы.
 
-**NuGet:** `Flare.Blazor` · зависит от `Flare.Components`.
+**NuGet:** `Flare.Blazor` - зависит от `Flare.Components`.
 
 ### samples/Flare.Gallery
 Blazor WebAssembly PWA. Интерактивная галерея с переключением EN/RU, сворачиваемыми примерами кода с
-подсветкой и живым переключателем тем (дизайн-система × палитра × режим, плюс генерация палитры из
+подсветкой и живым переключателем тем (дизайн-система x палитра x режим, плюс генерация палитры из
 цвета). Регистрирует все пять тем через `AddFlareTheme`. Docker-готова.
 
 > `samples/Flare.Legacy` - сохранённый legacy-пример, не часть публикуемой библиотеки.
@@ -179,23 +179,23 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
 
 ```
 ITheme
-  ├── Id, DisplayName, DefaultPaletteId
-  ├── StyleAssets (IReadOnlyList<string>)        — статический CSS/шрифты (анти-FOUC)
-  ├── Palettes (IReadOnlyList<Palette>)          — цвета, путешествующие с темой
-  ├── PaletteGenerator (IPaletteGenerator?)      — правила цвета дизайн-системы (тональный MD3 / рампа)
-  ├── ExtendedDarkOverride (dict?)               — редкие нецветовые dark-расширения
-  └── Design (DesignTokens)                       — нецветовая половина (независима от режима)
-        ├── FocusRing (string)
-        ├── Typography → набор TypeStyle (FontFamily, FontWeight, FontSize, LineHeight, LetterSpacing)
-        ├── Shape, Elevation (геометрия), Motion, State, Spacing
-        ├── пер-компонентные записи токенов (Button, Input, Select, Dialog, DataGrid, Card, ...)
-        └── Extended (dict) — специфичные для темы расширения (например var фокус-кольца Fluent)
+  +-- Id, DisplayName, DefaultPaletteId
+  +-- StyleAssets (IReadOnlyList<string>)        - статический CSS/шрифты (анти-FOUC)
+  +-- Palettes (IReadOnlyList<Palette>)          - цвета, путешествующие с темой
+  +-- PaletteGenerator (IPaletteGenerator?)      - правила цвета дизайн-системы (тональный MD3 / рампа)
+  +-- ExtendedDarkOverride (dict?)               - редкие нецветовые dark-расширения
+  +-- Design (DesignTokens)                       - нецветовая половина (независима от режима)
+        +-- FocusRing (string)
+        +-- Typography -> набор TypeStyle (FontFamily, FontWeight, FontSize, LineHeight, LetterSpacing)
+        +-- Shape, Elevation (геометрия), Motion, State, Spacing
+        +-- пер-компонентные записи токенов (Button, Input, Select, Dialog, DataGrid, Card, ...)
+        +-- Extended (dict) - специфичные для темы расширения (например var фокус-кольца Fluent)
 
 Palette
-  ├── Id, Name, Source
-  ├── Light (ColorScheme), Dark (ColorScheme)    — ~47 цветовых ролей каждая
-  ├── HighContrast (ColorScheme?)
-  └── StyleAsset (string?)
+  +-- Id, Name, Source
+  +-- Light (ColorScheme), Dark (ColorScheme)    - ~47 цветовых ролей каждая
+  +-- HighContrast (ColorScheme?)
+  +-- StyleAsset (string?)
 ```
 
 `DesignTokens`, `ColorScheme` и `Palette` это `record`-типы со свойствами `required init` -

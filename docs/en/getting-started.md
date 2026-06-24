@@ -1,6 +1,6 @@
 # Flare - Getting Started
 
-> [Русская версия ->](../ru/getting-started.md) · [README](../../README.md) · [Architecture](architecture.md)
+> [Русская версия ->](../ru/getting-started.md) - [README](../../README.md) - [Architecture](architecture.md)
 
 ---
 

@@ -15,4 +15,4 @@ dotnet add package Flare.Icons
 <FlareIcon Icon="@Icons.Material.Rounded.Home" />
 ```
 
-Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

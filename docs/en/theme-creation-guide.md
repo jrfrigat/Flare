@@ -1,6 +1,6 @@
 # Flare - Theme Creation Guide
 
-> [Русская версия ->](../ru/theme-creation-guide.md) · [README](../../README.md)
+> [Русская версия ->](../ru/theme-creation-guide.md) - [README](../../README.md)
 
 ## Overview
 
@@ -212,13 +212,13 @@ Palette importedPalette = ThemeJsonSerializer.ImportPalette(paletteJson);
 
 ```
 MyTheme/
-├── css/
-│   ├── my-theme-base.css      # Base reset, typography imports
-│   └── components/
-│       ├── button.css          # Button overrides
-│       ├── input.css           # Input overrides
-│       ├── dialog.css          # Dialog overrides
-│       └── ...                 # Other component overrides
++-- css/
+|   +-- my-theme-base.css      # Base reset, typography imports
+|   +-- components/
+|       +-- button.css          # Button overrides
+|       +-- input.css           # Input overrides
+|       +-- dialog.css          # Dialog overrides
+|       +-- ...                 # Other component overrides
 ```
 
 ### Base CSS
@@ -257,17 +257,17 @@ var palette = new Palette
         // High contrast colors (WCAG AAA)
         Primary = "#000000",
         OnPrimary = "#FFFFFF",
-        // ... all roles with ≥7:1 contrast ratio
+        // ... all roles with >=7:1 contrast ratio
     }
 };
 ```
 
 ## Best Practices
 
-1. **Use tokens, not hardcoded values** — All colors, sizes, and spacing should reference CSS variables
-2. **Follow BEM naming** — `flare-{component}__{element}--{modifier}`
-3. **Test both modes** — Light and dark should both look good
-4. **Test RTL** — Layout should work in right-to-left languages
-5. **Validate your theme** — Use `ThemeValidator` before registration
-6. **Keep themes minimal** — Only override what you need; inherit the rest from defaults
-7. **Document your tokens** — Add XML docs to custom token records
+1. **Use tokens, not hardcoded values** - All colors, sizes, and spacing should reference CSS variables
+2. **Follow BEM naming** - `flare-{component}__{element}--{modifier}`
+3. **Test both modes** - Light and dark should both look good
+4. **Test RTL** - Layout should work in right-to-left languages
+5. **Validate your theme** - Use `ThemeValidator` before registration
+6. **Keep themes minimal** - Only override what you need; inherit the rest from defaults
+7. **Document your tokens** - Add XML docs to custom token records

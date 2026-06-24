@@ -29,4 +29,4 @@ builder.Services.AddFlare(opts => opts.DefaultTheme = new Md3Theme());
 Add-on packages extend this with more components: `Flare.Components.Carousel`, `.IDE`, `.Kanban`,
 `.Media`, `.QrCode`, `.RichTextEditor`, `.Transfer`.
 
-Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

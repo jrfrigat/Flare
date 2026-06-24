@@ -1,6 +1,6 @@
 # Flare Documentation
 
-> [English](#english) · [Русский](#русский)
+> [English](#english) - [Русский](#русский)
 
 ## English
 

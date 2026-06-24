@@ -11,4 +11,4 @@ dotnet add package Flare.Components.Kanban
 Requires `Flare.Components` and a `Flare.Theme.*` package. Use `<FlareKanban>` once Flare is set up
 (see the `Flare.Components` readme).
 
-Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

@@ -20,4 +20,4 @@ builder.Services.AddFlareTheme(new Md3Theme());
 // await ThemeService.SetThemeAsync("md3-expressive");
 ```
 
-Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

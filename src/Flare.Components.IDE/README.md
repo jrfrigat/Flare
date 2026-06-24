@@ -11,4 +11,4 @@ dotnet add package Flare.Components.IDE
 Requires `Flare.Components` and a `Flare.Theme.*` package. Register with
 `builder.Services.AddFlareIde()` (see the `Flare.Components` readme for base setup).
 
-Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

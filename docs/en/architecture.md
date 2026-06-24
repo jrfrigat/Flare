@@ -1,6 +1,6 @@
 # Flare - Architecture
 
-> [Русская версия ->](../ru/architecture.md) · [README](../../README.md)
+> [Русская версия ->](../ru/architecture.md) - [README](../../README.md)
 
 How Flare is structured, how theming works, and the contracts components rely on.
 
@@ -12,24 +12,24 @@ How Flare is structured, how theming works, and the contracts components rely on
 
 ```
 Flare (umbrella)
-└── Flare.Components
-    └── Flare.Core
++-- Flare.Components
+    +-- Flare.Core
 
 Theme packages (each references only Flare.Core, none referenced by the umbrella):
-  Flare.Theme.MaterialDesign3Expressive  → Flare.Core
-  Flare.Theme.FluentUI2                   → Flare.Core
-  Flare.Theme.Aero                        → Flare.Core
-  Flare.Theme.LiquidGlass                 → Flare.Core
-  Flare.Theme.VisualStudio                → Flare.Core
+  Flare.Theme.MaterialDesign3Expressive  -> Flare.Core
+  Flare.Theme.FluentUI2                   -> Flare.Core
+  Flare.Theme.Aero                        -> Flare.Core
+  Flare.Theme.LiquidGlass                 -> Flare.Core
+  Flare.Theme.VisualStudio                -> Flare.Core
 
-Optional component packages (each → Flare.Core, some → Flare.Components):
+Optional component packages (each -> Flare.Core, some -> Flare.Components):
   Flare.Components.Carousel, .Kanban, .Transfer, .QrCode,
   .RichTextEditor, .Media, .IDE
   Flare.Icons
 
-samples/Flare.Gallery        → Flare (umbrella) + all theme packages
-tests/Flare.Core.Tests       → Flare.Core
-tests/Flare.Components.Tests → Flare.Components
+samples/Flare.Gallery        -> Flare (umbrella) + all theme packages
+tests/Flare.Core.Tests       -> Flare.Core
+tests/Flare.Components.Tests -> Flare.Components
 ```
 
 > **Flare ships no themes of its own.** The umbrella `Flare.Blazor` package depends only on
@@ -52,7 +52,7 @@ tests/Flare.Components.Tests → Flare.Components
 - `Components/` - `FlareComponentBase` (abstract Blazor base class) and `FlareThemeProvider`.
 - No static web assets of its own - the JS ES modules and CSS bundle ship from `Flare.Components`.
 
-**NuGet:** `Flare.Core` · depends only on `Microsoft.AspNetCore.Components.Web`.
+**NuGet:** `Flare.Core` - depends only on `Microsoft.AspNetCore.Components.Web`.
 
 ### Flare.Components
 **Purpose.** The core UI components. Each component lives in its own sub-namespace folder.
@@ -67,7 +67,7 @@ tests/Flare.Components.Tests → Flare.Components
 - Every `[Parameter]` carries a `/// <summary>` XML doc comment for IntelliSense on NuGet consumers
   (`GenerateDocumentationFile` is enabled solution-wide).
 
-**NuGet:** `Flare.Components` · depends on `Flare.Core`.
+**NuGet:** `Flare.Components` - depends on `Flare.Core`.
 
 ### Flare.Theme.* (five design systems)
 Each theme package provides one concrete `ITheme` plus its palettes and static style assets:
@@ -97,11 +97,11 @@ Each theme package provides one concrete `ITheme` plus its palettes and static s
 - `LocalStorageThemeStorage` (internal) - implements `IThemeStorageService` via `localStorage`.
 - No UI code, tokens, or theme of its own.
 
-**NuGet:** `Flare.Blazor` · depends on `Flare.Components`.
+**NuGet:** `Flare.Blazor` - depends on `Flare.Components`.
 
 ### samples/Flare.Gallery
 Blazor WebAssembly PWA. Interactive component gallery with EN/RU language toggle, collapsible
-syntax-highlighted code examples, and a live theme switcher (design system × palette × mode, plus
+syntax-highlighted code examples, and a live theme switcher (design system x palette x mode, plus
 "generate a palette from a color"). Registers all five themes via `AddFlareTheme`. Docker-ready.
 
 > `samples/Flare.Legacy` is a retained legacy sample and is not part of the published library.
@@ -186,23 +186,23 @@ A rendered theme is the composition of three independently switchable axes:
 
 ```
 ITheme
-  ├── Id, DisplayName, DefaultPaletteId
-  ├── StyleAssets (IReadOnlyList<string>)        — static CSS/fonts (anti-FOUC)
-  ├── Palettes (IReadOnlyList<Palette>)          — colors that travel with the theme
-  ├── PaletteGenerator (IPaletteGenerator?)      — design-system color rules (MD3 tonal / ramp)
-  ├── ExtendedDarkOverride (dict?)               — rare dark-mode non-color extras
-  └── Design (DesignTokens)                       — the non-color half (mode-independent)
-        ├── FocusRing (string)
-        ├── Typography → TypeStyle set (FontFamily, FontWeight, FontSize, LineHeight, LetterSpacing)
-        ├── Shape, Elevation (geometry), Motion, State, Spacing
-        ├── per-component token records (Button, Input, Select, Dialog, DataGrid, Card, ...)
-        └── Extended (dict) — theme-specific extras (e.g. Fluent focus-ring vars)
+  +-- Id, DisplayName, DefaultPaletteId
+  +-- StyleAssets (IReadOnlyList<string>)        - static CSS/fonts (anti-FOUC)
+  +-- Palettes (IReadOnlyList<Palette>)          - colors that travel with the theme
+  +-- PaletteGenerator (IPaletteGenerator?)      - design-system color rules (MD3 tonal / ramp)
+  +-- ExtendedDarkOverride (dict?)               - rare dark-mode non-color extras
+  +-- Design (DesignTokens)                       - the non-color half (mode-independent)
+        +-- FocusRing (string)
+        +-- Typography -> TypeStyle set (FontFamily, FontWeight, FontSize, LineHeight, LetterSpacing)
+        +-- Shape, Elevation (geometry), Motion, State, Spacing
+        +-- per-component token records (Button, Input, Select, Dialog, DataGrid, Card, ...)
+        +-- Extended (dict) - theme-specific extras (e.g. Fluent focus-ring vars)
 
 Palette
-  ├── Id, Name, Source
-  ├── Light (ColorScheme), Dark (ColorScheme)    — ~47 color roles each
-  ├── HighContrast (ColorScheme?)
-  └── StyleAsset (string?)
+  +-- Id, Name, Source
+  +-- Light (ColorScheme), Dark (ColorScheme)    - ~47 color roles each
+  +-- HighContrast (ColorScheme?)
+  +-- StyleAsset (string?)
 ```
 
 `DesignTokens`, `ColorScheme`, and `Palette` are C# `record` types with `required init` properties -

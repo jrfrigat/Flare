@@ -10,7 +10,7 @@
 
 A production-ready Blazor component library for **.NET 10** with **runtime theme switching** across five design systems - Material Design 3 Expressive, Fluent UI 2, Aero, Liquid Glass, and Visual Studio 2026 - with no page reload and no flash of unstyled content.
 
-**100+ components · 5 design systems × 28 palettes × light/dark/auto · unified color API · zero third-party CSS dependencies · Docker-ready Gallery**
+**100+ components - 5 design systems x 28 palettes x light/dark/auto - unified color API - zero third-party CSS dependencies - Docker-ready Gallery**
 
 ---
 
@@ -29,7 +29,7 @@ A production-ready Blazor component library for **.NET 10** with **runtime theme
 - **XML IntelliSense** - every `[Parameter]` on every component has a `/// <summary>` doc comment
 - **Full EditContext integration** - form validation with `DataAnnotationsValidator` out of the box
 - **Advanced DataGrid** - multi-sort, column resize, row selection, inline editing, CSV export, grouping, virtualization
-- **Blazor Server · WASM · SSR** compatible - JS interop calls are guarded against prerender
+- **Blazor Server - WASM - SSR** compatible - JS interop calls are guarded against prerender
 - **No Bootstrap / no third-party CSS** - all styles use `var(--flare-*)` tokens exclusively
 - **Docker-ready** - single `docker compose up --build` serves the Gallery PWA via nginx
 
@@ -166,22 +166,22 @@ The multi-stage `Dockerfile` produces an `nginx:alpine` image serving the static
 ## Architecture
 
 ```
-Flare.Core              ← ITheme, IThemeService, FlareComponentBase, design tokens, abstractions
-Flare.Components        ← core UI components + wwwroot/css (global token-driven bundle)
-Flare.Components.Carousel        ← Carousel
-Flare.Components.Kanban          ← Kanban board
-Flare.Components.Transfer        ← Transfer (dual list)
-Flare.Components.QrCode          ← QR code
-Flare.Components.RichTextEditor  ← Rich text editor
-Flare.Components.Media           ← SignaturePad, VideoPlayer, FileUpload
-Flare.Components.IDE             ← IDE layout: Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar
-Flare.Icons             ← Material Symbols + custom icon path data
-Flare.Theme.MaterialDesign3Expressive ← MD3 design tokens + Material palettes + tonal generator
-Flare.Theme.FluentUI2   ← Fluent UI 2 design tokens + Office palettes + ramp generator
-Flare.Theme.Aero        ← Aero design tokens + palettes + ramp generator
-Flare.Theme.LiquidGlass ← Liquid Glass design tokens + palettes + ramp generator
-Flare.Theme.VisualStudio ← Visual Studio 2026 design tokens + palettes + ramp generator
-Flare (umbrella)        ← AddFlare()/AddFlareTheme() DI extensions, LocalStorageThemeStorage (depends only on Flare.Components)
+Flare.Core              <- ITheme, IThemeService, FlareComponentBase, design tokens, abstractions
+Flare.Components        <- core UI components + wwwroot/css (global token-driven bundle)
+Flare.Components.Carousel        <- Carousel
+Flare.Components.Kanban          <- Kanban board
+Flare.Components.Transfer        <- Transfer (dual list)
+Flare.Components.QrCode          <- QR code
+Flare.Components.RichTextEditor  <- Rich text editor
+Flare.Components.Media           <- SignaturePad, VideoPlayer, FileUpload
+Flare.Components.IDE             <- IDE layout: Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar
+Flare.Icons             <- Material Symbols + custom icon path data
+Flare.Theme.MaterialDesign3Expressive <- MD3 design tokens + Material palettes + tonal generator
+Flare.Theme.FluentUI2   <- Fluent UI 2 design tokens + Office palettes + ramp generator
+Flare.Theme.Aero        <- Aero design tokens + palettes + ramp generator
+Flare.Theme.LiquidGlass <- Liquid Glass design tokens + palettes + ramp generator
+Flare.Theme.VisualStudio <- Visual Studio 2026 design tokens + palettes + ramp generator
+Flare (umbrella)        <- AddFlare()/AddFlareTheme() DI extensions, LocalStorageThemeStorage (depends only on Flare.Components)
 ```
 
 > Themes ship as independent packages - the umbrella `Flare.Blazor` package references **no** theme,
@@ -226,7 +226,7 @@ Full architecture details: [docs/en/architecture.md](docs/en/architecture.md)
 The interactive component gallery ships as a **Blazor WASM PWA** with:
 - EN/RU language switching (header toggle)
 - Collapsible syntax-highlighted code examples for every demo section
-- Theme switcher (design system × palette × mode) with "generate a palette from a color"
+- Theme switcher (design system x palette x mode) with "generate a palette from a color"
 
 ```sh
 cd samples/Flare.Gallery
@@ -291,14 +291,14 @@ Full docs live in **[docs/](docs/README.md)** (English + Russian).
 
 | Document | Languages | Description |
 |----------|-----------|-------------|
-| [README.md](README.md) · [ru](README.ru.md) | EN · RU | Project README |
-| [getting-started](docs/en/getting-started.md) · [ru](docs/ru/getting-started.md) | EN · RU | Install, DI, styles, first component |
-| [architecture](docs/en/architecture.md) · [ru](docs/ru/architecture.md) | EN · RU | Module map, component patterns, theming deep-dive |
-| [theme-creation-guide](docs/en/theme-creation-guide.md) · [ru](docs/ru/theme-creation-guide.md) | EN · RU | Theme creation: design tokens, palettes, custom themes |
-| [component-conventions](docs/en/component-conventions.md) · [ru](docs/ru/component-conventions.md) | EN · RU | Component code conventions (CSS tokens, unified color, XML docs) |
+| [README.md](README.md) - [ru](README.ru.md) | EN - RU | Project README |
+| [getting-started](docs/en/getting-started.md) - [ru](docs/ru/getting-started.md) | EN - RU | Install, DI, styles, first component |
+| [architecture](docs/en/architecture.md) - [ru](docs/ru/architecture.md) | EN - RU | Module map, component patterns, theming deep-dive |
+| [theme-creation-guide](docs/en/theme-creation-guide.md) - [ru](docs/ru/theme-creation-guide.md) | EN - RU | Theme creation: design tokens, palettes, custom themes |
+| [component-conventions](docs/en/component-conventions.md) - [ru](docs/ru/component-conventions.md) | EN - RU | Component code conventions (CSS tokens, unified color, XML docs) |
 
 ---
 
 ## License
 
-MIT © 2026 FrigaT
+MIT (c) 2026 FrigaT

@@ -10,4 +10,4 @@ You normally don't reference this directly - it comes in transitively via `Flare
 dotnet add package Flare.Core
 ```
 
-Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

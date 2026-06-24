@@ -15,4 +15,4 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 // await ThemeService.SetThemeAsync("fluent2");
 ```
 
-Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

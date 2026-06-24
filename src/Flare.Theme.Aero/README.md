@@ -15,4 +15,4 @@ builder.Services.AddFlareTheme(new AeroTheme());
 // await ThemeService.SetThemeAsync("aero");
 ```
 
-Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  ·  MIT licensed.
+Requires `Flare.Components`. Repository & docs: https://github.com/jrfrigat/Flare  -  MIT licensed.

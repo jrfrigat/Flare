@@ -1,6 +1,6 @@
 # Flare - Руководство по созданию тем
 
-> [English version ->](../en/theme-creation-guide.md) · [README](../../README.ru.md) · [Архитектура](architecture.md)
+> [English version ->](../en/theme-creation-guide.md) - [README](../../README.ru.md) - [Архитектура](architecture.md)
 
 ## Обзор
 
@@ -212,13 +212,13 @@ Palette importedPalette = ThemeJsonSerializer.ImportPalette(paletteJson);
 
 ```
 MyTheme/
-├── css/
-│   ├── my-theme-base.css      # Базовый reset, импорты типографики
-│   └── components/
-│       ├── button.css          # Доводки кнопки
-│       ├── input.css           # Доводки полей ввода
-│       ├── dialog.css          # Доводки диалога
-│       └── ...                 # Доводки прочих компонентов
++-- css/
+|   +-- my-theme-base.css      # Базовый reset, импорты типографики
+|   +-- components/
+|       +-- button.css          # Доводки кнопки
+|       +-- input.css           # Доводки полей ввода
+|       +-- dialog.css          # Доводки диалога
+|       +-- ...                 # Доводки прочих компонентов
 ```
 
 ### Базовый CSS
