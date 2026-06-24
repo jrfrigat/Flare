@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://flare.frigat.duckdns.org/">
+    <img src="assets/banner.png" alt="Flare - Blazor component library for .NET 10 with Material Design 3 and Fluent UI 2" width="860">
+  </a>
+</p>
+
 # Flare - Blazor Component Library
 
 > **[Русская версия ->](README.ru.md)**
