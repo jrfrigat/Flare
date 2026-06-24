@@ -11,7 +11,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void RendersRootLiElement()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Root Node"));
 
         Assert.NotEmpty(cut.FindAll("li.flare-tree-item"));
@@ -20,7 +20,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Documents"));
 
         Assert.Contains("Documents", cut.Find(".flare-tree-item__label").TextContent);
@@ -29,7 +29,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void HasRoleTreeitem()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Node"));
 
         Assert.Equal("treeitem", cut.Find("li").GetAttribute("role"));
@@ -38,7 +38,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void NoChildren_NoToggleButton()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Leaf"));
 
         Assert.Empty(cut.FindAll(".flare-tree-item__toggle"));
@@ -47,7 +47,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void WithChildren_HasToggleButton()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Parent")
             .AddChildContent("<li>Child</li>"));
 
@@ -57,7 +57,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void WithChildren_CollapsedByDefault_ChildrenHidden()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Parent")
             .AddChildContent("<li id=\"nested\">Child</li>"));
 
@@ -68,7 +68,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void Expanded_True_ChildrenVisible()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Parent")
             .Add(x => x.Expanded, true)
             .AddChildContent("<li id=\"nested-visible\">Child</li>"));
@@ -79,7 +79,7 @@ public class FlareTreeItemTests : FlareTestContext
     [Fact]
     public void Icon_RendersIconSpan()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "With Icon")
             .Add(x => x.Icon, "folder"));
 

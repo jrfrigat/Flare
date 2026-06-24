@@ -13,7 +13,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void RendersRootListboxWithRole()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items));
 
         var root = cut.Find(".flare-listbox");
@@ -23,7 +23,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void RendersOneOptionPerItem()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items));
 
         Assert.Equal(3, cut.FindAll(".flare-listbox__option").Count);
@@ -32,7 +32,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void GroupBy_RendersGroupHeaders()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, new[] { "Apple", "Avocado", "Banana" })
             .Add(x => x.GroupBy, (Func<string, string>)(s => s.StartsWith("A") ? "A" : "B")));
 
@@ -45,7 +45,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void Selected_AppliesSelectedClassAndCheck()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.Selected, (Func<string, bool>)(s => s == "Beta"))
             .Add(x => x.ShowCheck, true));
@@ -60,7 +60,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void ActiveIndex_AppliesActiveClass()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.ActiveIndex, 2));
 
@@ -72,7 +72,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void Multiple_RendersLeadingCheckboxRows()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.Multiple, true));
 
@@ -83,7 +83,7 @@ public class C_FlareListboxTests : FlareTestContext
     public void OnSelect_FiresWithClickedItem()
     {
         string? clicked = null;
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.OnSelect, (string s) => clicked = s));
 
@@ -95,7 +95,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void EmptyContent_ShownWhenNoItems()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, Array.Empty<string>())
             .Add(x => x.EmptyContent, (RenderFragment)(b => b.AddMarkupContent(0, "<div class=\"empty-slot\">none</div>"))));
 
@@ -106,7 +106,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void ItemTemplate_RendersCustomMarkup()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.ItemTemplate, (RenderFragment<string>)(v => b => b.AddMarkupContent(0, $"<em class=\"tpl\">{v}</em>"))));
 
@@ -116,7 +116,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void OptionClass_AppliedToEveryRow()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.OptionClass, "host-opt"));
 
@@ -126,7 +126,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void DropdownClass_AppliedToRoot()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.DropdownClass, "host-dropdown"));
 
@@ -136,7 +136,7 @@ public class C_FlareListboxTests : FlareTestContext
     [Fact]
     public void Multiselectable_SetsAriaAttribute()
     {
-        var cut = RenderComponent<FlareListbox<string>>(p => p
+        var cut = Render<FlareListbox<string>>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.Multiselectable, true));
 

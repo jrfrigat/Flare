@@ -7,7 +7,7 @@ public class FlareAlertExtraTests : FlareTestContext
     [Fact]
     public void Dismissible_ShowsCloseButton()
     {
-        var cut = RenderComponent<FlareAlert>(p => p
+        var cut = Render<FlareAlert>(p => p
             .Add(x => x.Dismissible, true));
 
         Assert.NotEmpty(cut.FindAll(".flare-alert__close"));
@@ -16,7 +16,7 @@ public class FlareAlertExtraTests : FlareTestContext
     [Fact]
     public void ShowCloseButton_ShowsCloseButton()
     {
-        var cut = RenderComponent<FlareAlert>(p => p
+        var cut = Render<FlareAlert>(p => p
             .Add(x => x.ShowCloseButton, true));
 
         Assert.NotEmpty(cut.FindAll(".flare-alert__close"));

@@ -4,12 +4,12 @@ namespace Flare.Components.Tests;
 /// RTL (Right-to-Left) layout tests for key Flare components.
 /// Verifies components render correctly in RTL mode.
 /// </summary>
-public class RtlTests : TestContext
+public class RtlTests : BunitContext
 {
     [Fact]
     public void FlareButton_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareButton>(parameters => parameters
+        var cut = Render<FlareButton>(parameters => parameters
             .Add(p => p.ChildContent, "زر")
             .Add(p => p.AriaLabel, "زر"));
 
@@ -21,7 +21,7 @@ public class RtlTests : TestContext
     [Fact]
     public void FlareField_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareField<string>>(parameters => parameters
+        var cut = Render<FlareField<string>>(parameters => parameters
             .Add(p => p.Label, "الاسم")
             .Add(p => p.Value, ""));
 
@@ -32,7 +32,7 @@ public class RtlTests : TestContext
     [Fact]
     public void FlareCheckbox_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareCheckbox>(parameters => parameters
+        var cut = Render<FlareCheckbox>(parameters => parameters
             .Add(p => p.Label, "أوافق")
             .Add(p => p.Value, false));
 
@@ -43,7 +43,7 @@ public class RtlTests : TestContext
     [Fact]
     public void FlareSwitch_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareSwitch>(parameters => parameters
+        var cut = Render<FlareSwitch>(parameters => parameters
             .Add(p => p.Label, "تفعيل")
             .Add(p => p.Value, false));
 
@@ -54,7 +54,7 @@ public class RtlTests : TestContext
     [Fact]
     public void FlareAlert_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareAlert>(parameters => parameters
+        var cut = Render<FlareAlert>(parameters => parameters
             .Add(p => p.ChildContent, "تنبيه")
             .Add(p => p.Severity, AlertSeverity.Warning));
 
@@ -65,7 +65,7 @@ public class RtlTests : TestContext
     [Fact]
     public void FlareLink_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareLink>(parameters => parameters
+        var cut = Render<FlareLink>(parameters => parameters
             .Add(p => p.ChildContent, "رابط")
             .Add(p => p.Href, "/about"));
 
@@ -76,7 +76,7 @@ public class RtlTests : TestContext
     [Fact]
     public void FlareBadge_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareBadge>(parameters => parameters
+        var cut = Render<FlareBadge>(parameters => parameters
             .Add(p => p.ChildContent, "5"));
 
         var badge = cut.Find(".flare-badge");
@@ -86,7 +86,7 @@ public class RtlTests : TestContext
     [Fact]
     public void FlareAvatar_Should_Render_In_Rtl()
     {
-        var cut = RenderComponent<FlareAvatar>(parameters => parameters
+        var cut = Render<FlareAvatar>(parameters => parameters
             .Add(p => p.Alt, "أحمد"));
 
         var avatar = cut.Find(".flare-avatar");

@@ -11,7 +11,7 @@ public class FlareAutocompleteGroupByTests : FlareTestContext
     [Fact]
     public void RendersRootElement_WithoutGroupBy()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>();
+        var cut = Render<FlareAutocomplete<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-autocomplete"));
     }
@@ -20,7 +20,7 @@ public class FlareAutocompleteGroupByTests : FlareTestContext
     public void GroupBy_Param_ExistsAndRendersWithoutError()
     {
         var items = new[] { "Apple", "Avocado", "Banana" };
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.GroupBy, (Func<string, string>)(item => item.StartsWith("A") ? "A" : "B")));
 
@@ -30,7 +30,7 @@ public class FlareAutocompleteGroupByTests : FlareTestContext
     [Fact]
     public void RendersInputElement()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>();
+        var cut = Render<FlareAutocomplete<string>>();
 
         Assert.NotEmpty(cut.FindAll("input.flare-autocomplete__control"));
     }
@@ -38,7 +38,7 @@ public class FlareAutocompleteGroupByTests : FlareTestContext
     [Fact]
     public void Disabled_RendersDisabledInput()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.True(cut.Find("input").HasAttribute("disabled"));
@@ -47,7 +47,7 @@ public class FlareAutocompleteGroupByTests : FlareTestContext
     [Fact]
     public void Label_RendersLabel()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Label, "Search items"));
 
         Assert.Contains("Search items", cut.Find(".flare-autocomplete__label").TextContent);

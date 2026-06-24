@@ -11,7 +11,7 @@ public class FlareChartTests : FlareTestContext
     [Fact]
     public void Line_RendersPolyline_WithStrokeStyle()
     {
-        var cut = RenderComponent<FlareChart>(p => p
+        var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, _data));
 
@@ -22,7 +22,7 @@ public class FlareChartTests : FlareTestContext
     [Fact]
     public void Bar_RendersRects_WithFillStyle()
     {
-        var cut = RenderComponent<FlareChart>(p => p
+        var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Bar)
             .Add(x => x.Data, _data));
 
@@ -34,7 +34,7 @@ public class FlareChartTests : FlareTestContext
     [Fact]
     public void Pie_RendersPaths_WithFillStyle()
     {
-        var cut = RenderComponent<FlareChart>(p => p
+        var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Pie)
             .Add(x => x.Data, new ChartData([
                 new ChartSeries("A", [3]),
@@ -49,7 +49,7 @@ public class FlareChartTests : FlareTestContext
     [Fact]
     public void LineAndBar_RenderCategoryHitZones()
     {
-        var cut = RenderComponent<FlareChart>(p => p
+        var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Bar)
             .Add(x => x.Data, _data));
 
@@ -61,7 +61,7 @@ public class FlareChartTests : FlareTestContext
     [Fact]
     public void NoColorAsPresentationAttribute_OnlyViaStyle()
     {
-        var cut = RenderComponent<FlareChart>(p => p
+        var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, _data));
 
@@ -78,7 +78,7 @@ public class FlareChartTests : FlareTestContext
         {
             // ru-RU formats 192.0 as "192,0" — invalid in SVG. The component must stay invariant.
             System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("ru-RU");
-            var cut = RenderComponent<FlareChart>(p => p
+            var cut = Render<FlareChart>(p => p
                 .Add(x => x.Type, ChartType.Line)
                 .Add(x => x.Data, _data));
 
@@ -97,7 +97,7 @@ public class FlareChartTests : FlareTestContext
     [Fact]
     public void RendersLegendItems_PerSeries()
     {
-        var cut = RenderComponent<FlareChart>(p => p
+        var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, new ChartData([
                 new ChartSeries("One", [1, 2]),

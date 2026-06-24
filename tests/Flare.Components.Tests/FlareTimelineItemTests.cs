@@ -11,7 +11,7 @@ public class FlareTimelineItemTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareTimelineItem>();
+        var cut = Render<FlareTimelineItem>();
 
         Assert.NotEmpty(cut.FindAll(".flare-timeline-item"));
     }
@@ -19,7 +19,7 @@ public class FlareTimelineItemTests : FlareTestContext
     [Fact]
     public void RendersTitle()
     {
-        var cut = RenderComponent<FlareTimelineItem>(p => p
+        var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Title, "Release 1.0"));
 
         Assert.Contains("Release 1.0", cut.Find(".flare-timeline-item__title").TextContent);
@@ -28,7 +28,7 @@ public class FlareTimelineItemTests : FlareTestContext
     [Fact]
     public void RendersTime()
     {
-        var cut = RenderComponent<FlareTimelineItem>(p => p
+        var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Time, "2026-05-24"));
 
         Assert.Contains("2026-05-24", cut.Find(".flare-timeline-item__time").TextContent);
@@ -37,7 +37,7 @@ public class FlareTimelineItemTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareTimelineItem>(p => p
+        var cut = Render<FlareTimelineItem>(p => p
             .AddChildContent("<p class=\"tl-body\">Details here</p>"));
 
         Assert.NotEmpty(cut.FindAll(".tl-body"));
@@ -46,7 +46,7 @@ public class FlareTimelineItemTests : FlareTestContext
     [Fact]
     public void ColorSuccess_HasSuccessClass()
     {
-        var cut = RenderComponent<FlareTimelineItem>(p => p
+        var cut = Render<FlareTimelineItem>(p => p
             .Add(x => x.Color, FlareColor.Success));
 
         Assert.Contains("flare-color-success", cut.Find(".flare-timeline-item").ClassName);

@@ -7,7 +7,7 @@ public class FlareToggleButtonExtraTests : FlareTestContext
     [Fact]
     public void SizeSmall_HasSmallClass()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Size, ButtonSize.Sm));
 
         Assert.Contains("flare-toggle-btn--sm", cut.Find("button").ClassName);
@@ -16,7 +16,7 @@ public class FlareToggleButtonExtraTests : FlareTestContext
     [Fact]
     public void SizeLarge_HasLargeClass()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Size, ButtonSize.Lg));
 
         Assert.Contains("flare-toggle-btn--lg", cut.Find("button").ClassName);

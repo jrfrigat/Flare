@@ -13,7 +13,7 @@ public class FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersRootFieldset()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>();
+        var cut = Render<FlareRadioGroup<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-radio-group"));
     }
@@ -21,7 +21,7 @@ public class FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Label, "Pick one"));
 
         Assert.Contains("Pick one", cut.Find(".flare-radio-group__legend").TextContent);
@@ -30,7 +30,7 @@ public class FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.ChildContent, (RenderFragment)(b =>
             {
                 b.OpenElement(0, "span");
@@ -46,7 +46,7 @@ public class FlareRadioGroupTests : FlareTestContext
     {
         // Disabled state adds no special class on fieldset itself for RadioGroup,
         // but the context propagates disabled. We verify the fieldset renders.
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.NotEmpty(cut.FindAll("fieldset"));
@@ -55,7 +55,7 @@ public class FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.ErrorText, "Selection required"));
 
         Assert.Contains("Selection required", cut.Find(".flare-radio-group__error").TextContent);
@@ -64,7 +64,7 @@ public class FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersInlineClass()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Inline, true));
 
         Assert.Contains("flare-radio-group--inline", cut.Find("fieldset").ClassName);

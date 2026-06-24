@@ -13,7 +13,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
     [Fact]
     public void Closable_True_RendersCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closable, true));
 
@@ -23,7 +23,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
     [Fact]
     public void Closeable_True_AlsoRendersCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true));
 
@@ -33,7 +33,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
     [Fact]
     public void CloseButton_HasAriaLabel()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closable, true));
 
@@ -45,7 +45,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
     public void OnClose_FiredWhenCloseButtonClicked()
     {
         var invoked = false;
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closable, true)
             .Add(x => x.OnClose, EventCallback.Factory.Create(this, () => { invoked = true; })));
@@ -58,7 +58,7 @@ public class FlareChipClosableInteractionTests : FlareTestContext
     [Fact]
     public void WithoutClosable_NoCloseButtonRendered()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closable, false)
             .Add(x => x.Closeable, false));

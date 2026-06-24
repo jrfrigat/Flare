@@ -11,7 +11,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = RenderComponent<FlareDateTimePicker>();
+        var cut = Render<FlareDateTimePicker>();
 
         Assert.NotEmpty(cut.FindAll(".flare-datetimepicker"));
     }
@@ -19,7 +19,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void RendersLabel_WhenProvided()
     {
-        var cut = RenderComponent<FlareDateTimePicker>(p => p
+        var cut = Render<FlareDateTimePicker>(p => p
             .Add(x => x.Label, "Pick a date"));
 
         Assert.Contains("Pick a date", cut.Find(".flare-datetimepicker__label").TextContent);
@@ -28,7 +28,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void NoLabel_NoLabelElement()
     {
-        var cut = RenderComponent<FlareDateTimePicker>();
+        var cut = Render<FlareDateTimePicker>();
 
         Assert.Empty(cut.FindAll(".flare-datetimepicker__label"));
     }
@@ -36,7 +36,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void RendersPlaceholder()
     {
-        var cut = RenderComponent<FlareDateTimePicker>(p => p
+        var cut = Render<FlareDateTimePicker>(p => p
             .Add(x => x.Placeholder, "yyyy-MM-dd HH:mm"));
 
         Assert.Equal("yyyy-MM-dd HH:mm", cut.Find(".flare-datetimepicker__control").GetAttribute("placeholder"));
@@ -45,7 +45,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void RendersDisabledInput()
     {
-        var cut = RenderComponent<FlareDateTimePicker>(p => p
+        var cut = Render<FlareDateTimePicker>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.True(cut.Find(".flare-datetimepicker__control").HasAttribute("disabled"));
@@ -54,7 +54,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void PanelNotOpenInitially()
     {
-        var cut = RenderComponent<FlareDateTimePicker>();
+        var cut = Render<FlareDateTimePicker>();
 
         Assert.Empty(cut.FindAll(".flare-datetimepicker__panel"));
     }
@@ -62,7 +62,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void RendersHelperText()
     {
-        var cut = RenderComponent<FlareDateTimePicker>(p => p
+        var cut = Render<FlareDateTimePicker>(p => p
             .Add(x => x.HelperText, "Select date and time"));
 
         Assert.Contains("Select date and time", cut.Find(".flare-datetimepicker__helper").TextContent);
@@ -71,7 +71,7 @@ public class FlareDateTimePickerTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareDateTimePicker>(p => p
+        var cut = Render<FlareDateTimePicker>(p => p
             .Add(x => x.ErrorText, "Date is required"));
 
         Assert.Contains("Date is required", cut.Find(".flare-datetimepicker__helper--error").TextContent);

@@ -4,12 +4,12 @@ namespace Flare.Components.Tests;
 /// Basic accessibility tests for key Flare components.
 /// Verifies ARIA attributes, roles, and keyboard support.
 /// </summary>
-public class AccessibilityTests : TestContext
+public class AccessibilityTests : BunitContext
 {
     [Fact]
     public void FlareButton_Should_RenderButtonElement()
     {
-        var cut = RenderComponent<FlareButton>(parameters => parameters
+        var cut = Render<FlareButton>(parameters => parameters
             .Add(p => p.ChildContent, "Click me"));
 
         var button = cut.Find("button");
@@ -20,7 +20,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareButton_WithAriaLabel_Should_HaveAriaLabel()
     {
-        var cut = RenderComponent<FlareButton>(parameters => parameters
+        var cut = Render<FlareButton>(parameters => parameters
             .Add(p => p.ChildContent, "Click me")
             .Add(p => p.AriaLabel, "Primary action"));
 
@@ -31,7 +31,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareButton_WhenDisabled_Should_HaveDisabledAttribute()
     {
-        var cut = RenderComponent<FlareButton>(parameters => parameters
+        var cut = Render<FlareButton>(parameters => parameters
             .Add(p => p.ChildContent, "Click me")
             .Add(p => p.Disabled, true));
 
@@ -42,7 +42,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareButton_WhenLoading_Should_HaveAriaBusy()
     {
-        var cut = RenderComponent<FlareButton>(parameters => parameters
+        var cut = Render<FlareButton>(parameters => parameters
             .Add(p => p.ChildContent, "Click me")
             .Add(p => p.Loading, true));
 
@@ -53,7 +53,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareButton_WithHref_Should_RenderAsAnchor()
     {
-        var cut = RenderComponent<FlareButton>(parameters => parameters
+        var cut = Render<FlareButton>(parameters => parameters
             .Add(p => p.ChildContent, "Link")
             .Add(p => p.Href, "/page"));
 
@@ -64,7 +64,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareCheckbox_Should_HaveAriaChecked()
     {
-        var cut = RenderComponent<FlareCheckbox>(parameters => parameters
+        var cut = Render<FlareCheckbox>(parameters => parameters
             .Add(p => p.Label, "Accept terms")
             .Add(p => p.Value, true));
 
@@ -75,7 +75,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareAlert_Should_Render()
     {
-        var cut = RenderComponent<FlareAlert>(parameters => parameters
+        var cut = Render<FlareAlert>(parameters => parameters
             .Add(p => p.ChildContent, "Warning message")
             .Add(p => p.Severity, AlertSeverity.Warning));
 
@@ -86,7 +86,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareSwitch_Should_Render()
     {
-        var cut = RenderComponent<FlareSwitch>(parameters => parameters
+        var cut = Render<FlareSwitch>(parameters => parameters
             .Add(p => p.Label, "Enable feature")
             .Add(p => p.Value, false));
 
@@ -97,7 +97,7 @@ public class AccessibilityTests : TestContext
     [Fact]
     public void FlareLink_Should_Render()
     {
-        var cut = RenderComponent<FlareLink>(parameters => parameters
+        var cut = Render<FlareLink>(parameters => parameters
             .Add(p => p.ChildContent, "Click here")
             .Add(p => p.Href, "/about"));
 

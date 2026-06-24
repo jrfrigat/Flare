@@ -5,7 +5,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void Renders_BaseCardCssClass()
     {
-        var cut = RenderComponent<FlareCard>();
+        var cut = Render<FlareCard>();
 
         Assert.Single(cut.FindAll(".flare-card"));
     }
@@ -13,7 +13,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void DefaultVariant_IsElevated()
     {
-        var cut = RenderComponent<FlareCard>();
+        var cut = Render<FlareCard>();
 
         var div = cut.Find(".flare-card");
         Assert.Contains("flare-card--elevated", div.ClassName);
@@ -22,7 +22,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void FilledVariant_AddsFilledCssClass()
     {
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .Add(c => c.Variant, CardVariant.Filled));
 
         var div = cut.Find(".flare-card");
@@ -33,7 +33,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void OutlinedVariant_AddsOutlinedCssClass()
     {
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .Add(c => c.Variant, CardVariant.Outlined));
 
         var div = cut.Find(".flare-card");
@@ -43,7 +43,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void ChildContent_RenderedInsideCard()
     {
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .AddChildContent("<p class=\"inner\">Hello Card</p>"));
 
         var inner = cut.Find(".inner");
@@ -53,7 +53,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void Class_Parameter_AppendedToCssClasses()
     {
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .Add(c => c.Class, "custom-card"));
 
         var div = cut.Find(".flare-card");
@@ -64,7 +64,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void Style_ForwardedToCardDiv()
     {
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .Add(c => c.Style, "margin: 8px;"));
 
         var div = cut.Find(".flare-card");
@@ -74,7 +74,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void MultipleClasses_AllPresentInOutput()
     {
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .Add(c => c.Variant, CardVariant.Outlined)
             .Add(c => c.Class, "my-class"));
 
@@ -87,7 +87,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void NoChildContent_CardStillRenders()
     {
-        var cut = RenderComponent<FlareCard>();
+        var cut = Render<FlareCard>();
 
         // Should render the div without throwing
         Assert.Single(cut.FindAll(".flare-card"));
@@ -96,7 +96,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void TonalVariant_AddsTonalCssClass()
     {
-        var cut = RenderComponent<FlareCard>(p => p.Add(c => c.Variant, CardVariant.Tonal));
+        var cut = Render<FlareCard>(p => p.Add(c => c.Variant, CardVariant.Tonal));
 
         Assert.Contains("flare-card--tonal", cut.Find(".flare-card").ClassName);
     }
@@ -104,7 +104,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void TextVariant_AddsTextCssClass()
     {
-        var cut = RenderComponent<FlareCard>(p => p.Add(c => c.Variant, CardVariant.Text));
+        var cut = Render<FlareCard>(p => p.Add(c => c.Variant, CardVariant.Text));
 
         Assert.Contains("flare-card--text", cut.Find(".flare-card").ClassName);
     }
@@ -112,7 +112,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void DefaultSize_IsMd()
     {
-        var cut = RenderComponent<FlareCard>();
+        var cut = Render<FlareCard>();
 
         Assert.Contains("flare-card--md", cut.Find(".flare-card").ClassName);
     }
@@ -122,7 +122,7 @@ public class FlareCardTests : FlareTestContext
     [InlineData(CardSize.Lg, "flare-card--lg")]
     public void Size_AddsSizeCssClass(CardSize size, string expected)
     {
-        var cut = RenderComponent<FlareCard>(p => p.Add(c => c.Size, size));
+        var cut = Render<FlareCard>(p => p.Add(c => c.Size, size));
 
         Assert.Contains(expected, cut.Find(".flare-card").ClassName);
     }
@@ -130,7 +130,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void Compact_AddsCompactCssClass()
     {
-        var cut = RenderComponent<FlareCard>(p => p.Add(c => c.Compact, true));
+        var cut = Render<FlareCard>(p => p.Add(c => c.Compact, true));
 
         Assert.Contains("flare-card--compact", cut.Find(".flare-card").ClassName);
     }
@@ -138,7 +138,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void Selectable_RendersCheckboxRoleAndAriaChecked()
     {
-        var cut = RenderComponent<FlareCard>(p => p.Add(c => c.Selectable, true));
+        var cut = Render<FlareCard>(p => p.Add(c => c.Selectable, true));
 
         var div = cut.Find(".flare-card");
         Assert.Equal("checkbox", div.GetAttribute("role"));
@@ -149,7 +149,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void SelectableSelected_AddsSelectedClassAndAriaChecked()
     {
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .Add(c => c.Selectable, true)
             .Add(c => c.Selected, true));
 
@@ -163,7 +163,7 @@ public class FlareCardTests : FlareTestContext
     {
         bool? bound = null;
         bool? changed = null;
-        var cut = RenderComponent<FlareCard>(p => p
+        var cut = Render<FlareCard>(p => p
             .Add(c => c.Selectable, true)
             .Add(c => c.SelectedChanged, Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool>(this, v => bound = v))
             .Add(c => c.OnSelectionChange, Microsoft.AspNetCore.Components.EventCallback.Factory.Create<bool>(this, v => changed = v)));
@@ -177,7 +177,7 @@ public class FlareCardTests : FlareTestContext
     [Fact]
     public void NonSelectableCard_HasNoCheckboxRole()
     {
-        var cut = RenderComponent<FlareCard>();
+        var cut = Render<FlareCard>();
 
         Assert.Null(cut.Find(".flare-card").GetAttribute("role"));
     }

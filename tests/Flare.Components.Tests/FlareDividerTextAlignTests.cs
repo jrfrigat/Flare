@@ -11,7 +11,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
     [Fact]
     public void Default_RendersFlareDividerElement()
     {
-        var cut = RenderComponent<FlareDivider>();
+        var cut = Render<FlareDivider>();
 
         Assert.Contains("flare-divider", cut.Find("hr").ClassName ?? "");
     }
@@ -19,7 +19,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
     [Fact]
     public void Text_OR_RendersTextSpanWithContent()
     {
-        var cut = RenderComponent<FlareDivider>(p => p
+        var cut = Render<FlareDivider>(p => p
             .Add(x => x.Text, "OR"));
 
         Assert.Contains("OR", cut.Find("span.flare-divider__text").TextContent);
@@ -28,7 +28,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
     [Fact]
     public void Text_OR_AddsDividerTextClass()
     {
-        var cut = RenderComponent<FlareDivider>(p => p
+        var cut = Render<FlareDivider>(p => p
             .Add(x => x.Text, "OR"));
 
         Assert.Contains("flare-divider--text", cut.Find("div.flare-divider--text").ClassName ?? "");
@@ -37,7 +37,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
     [Fact]
     public void TextAlign_Left_AddsTextLeftClass()
     {
-        var cut = RenderComponent<FlareDivider>(p => p
+        var cut = Render<FlareDivider>(p => p
             .Add(x => x.Text, "OR")
             .Add(x => x.TextAlign, DividerTextAlign.Left));
 
@@ -47,7 +47,7 @@ public class FlareDividerTextAlignTests : FlareTestContext
     [Fact]
     public void Vertical_True_RendersVerticalVariant()
     {
-        var cut = RenderComponent<FlareDivider>(p => p
+        var cut = Render<FlareDivider>(p => p
             .Add(x => x.Vertical, true));
 
         Assert.Contains("flare-divider--vertical", cut.Find("div").ClassName ?? "");

@@ -13,21 +13,21 @@ public class FlareOnThisPageTests : FlareTestContext
     [Fact]
     public void Empty_RendersNothing_ByDefault()
     {
-        var cut = RenderComponent<FlareOnThisPage>();
+        var cut = Render<FlareOnThisPage>();
         Assert.Empty(cut.FindAll(".flare-toc"));
     }
 
     [Fact]
     public void ShowWhenEmpty_RendersContainer()
     {
-        var cut = RenderComponent<FlareOnThisPage>(p => p.Add(x => x.ShowWhenEmpty, true));
+        var cut = Render<FlareOnThisPage>(p => p.Add(x => x.ShowWhenEmpty, true));
         Assert.Single(cut.FindAll(".flare-toc"));
     }
 
     [Fact]
     public void SetHeadings_RendersLinksWithHrefs()
     {
-        var cut = RenderComponent<FlareOnThisPage>();
+        var cut = Render<FlareOnThisPage>();
         cut.InvokeAsync(() => cut.Instance.SetHeadings(TwoHeadings()));
 
         var links = cut.FindAll(".flare-toc__link");
@@ -41,7 +41,7 @@ public class FlareOnThisPageTests : FlareTestContext
     [Fact]
     public void SetActive_MarksAllVisibleLinksActive()
     {
-        var cut = RenderComponent<FlareOnThisPage>();
+        var cut = Render<FlareOnThisPage>();
         cut.InvokeAsync(() => cut.Instance.SetHeadings(TwoHeadings()));
         cut.InvokeAsync(() => cut.Instance.SetActive(["intro", "details"]));
 
@@ -54,7 +54,7 @@ public class FlareOnThisPageTests : FlareTestContext
     [Fact]
     public void SetActive_OnlyMarksVisibleSubset()
     {
-        var cut = RenderComponent<FlareOnThisPage>();
+        var cut = Render<FlareOnThisPage>();
         cut.InvokeAsync(() => cut.Instance.SetHeadings(TwoHeadings()));
         cut.InvokeAsync(() => cut.Instance.SetActive(["details"]));
 
@@ -66,14 +66,14 @@ public class FlareOnThisPageTests : FlareTestContext
     [Fact]
     public void DefaultTitle_IsLocalized()
     {
-        var cut = RenderComponent<FlareOnThisPage>(p => p.Add(x => x.ShowWhenEmpty, true));
+        var cut = Render<FlareOnThisPage>(p => p.Add(x => x.ShowWhenEmpty, true));
         Assert.Equal("On this page", cut.Find(".flare-toc__title").TextContent);
     }
 
     [Fact]
     public void CustomTitle_Overrides()
     {
-        var cut = RenderComponent<FlareOnThisPage>(p => p
+        var cut = Render<FlareOnThisPage>(p => p
             .Add(x => x.ShowWhenEmpty, true)
             .Add(x => x.Title, "Contents"));
         Assert.Equal("Contents", cut.Find(".flare-toc__title").TextContent);
@@ -83,7 +83,7 @@ public class FlareOnThisPageTests : FlareTestContext
     public void ActiveIdsChanged_FiresOnSetActive()
     {
         IReadOnlyList<string>? fired = null;
-        var cut = RenderComponent<FlareOnThisPage>(p => p
+        var cut = Render<FlareOnThisPage>(p => p
             .Add(x => x.ActiveIdsChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, ids => fired = ids)));
         cut.InvokeAsync(() => cut.Instance.SetActive(["intro", "details"]));
         Assert.Equal(["intro", "details"], fired);
@@ -95,7 +95,7 @@ public class FlareTableOfContentsTests : FlareTestContext
     [Fact]
     public void RendersTitleAndChildLinks()
     {
-        var cut = RenderComponent<FlareTableOfContents>(p => p
+        var cut = Render<FlareTableOfContents>(p => p
             .Add(x => x.Title, "Contents")
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#a").Add(x => x.ChildContent, "Alpha").Add(x => x.Active, true))
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#b").Add(x => x.ChildContent, "Bravo")));
@@ -112,7 +112,7 @@ public class FlareTableOfContentsTests : FlareTestContext
     [Fact]
     public void NoTitle_RendersListOnly()
     {
-        var cut = RenderComponent<FlareTableOfContents>(p => p
+        var cut = Render<FlareTableOfContents>(p => p
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#a").Add(x => x.ChildContent, "Alpha")));
         Assert.Empty(cut.FindAll(".flare-toc__title"));
         Assert.Single(cut.FindAll(".flare-toc__link"));
@@ -121,7 +121,7 @@ public class FlareTableOfContentsTests : FlareTestContext
     [Fact]
     public void TocLink_Level_SetsDepthVariable()
     {
-        var cut = RenderComponent<FlareTableOfContents>(p => p
+        var cut = Render<FlareTableOfContents>(p => p
             .AddChildContent<FlareTocLink>(l => l.Add(x => x.Href, "#a").Add(x => x.Level, 2).Add(x => x.ChildContent, "Deep")));
         var li = cut.Find(".flare-toc__item");
         Assert.Contains("--flare-toc-depth:2", li.GetAttribute("style"));
@@ -133,7 +133,7 @@ public class FlareTextAnchorTests : FlareTestContext
     [Fact]
     public void AnchorId_SetsIdAndAnchorLink()
     {
-        var cut = RenderComponent<FlareText>(p => p
+        var cut = Render<FlareText>(p => p
             .Add(x => x.Typo, TypographyScale.HeadlineSmall)
             .Add(x => x.AnchorId, "getting-started")
             .AddChildContent("Getting started"));
@@ -149,7 +149,7 @@ public class FlareTextAnchorTests : FlareTestContext
     [Fact]
     public void NoAnchorId_RendersNoIdOrAnchor()
     {
-        var cut = RenderComponent<FlareText>(p => p
+        var cut = Render<FlareText>(p => p
             .Add(x => x.Typo, TypographyScale.HeadlineSmall)
             .AddChildContent("Plain"));
 

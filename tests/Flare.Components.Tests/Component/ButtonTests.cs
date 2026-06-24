@@ -14,7 +14,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void IconWithoutText_AddsIconOnlyClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "default"));
 
@@ -24,7 +24,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void IconWithText_DoesNotAddIconOnlyClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.LeadingIcon, Icon)
             .AddChildContent("Label"));
 
@@ -34,7 +34,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void RendersWithFilledVariant()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Variant, ButtonVariant.Filled)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "filled"));
@@ -45,7 +45,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void RendersWithTonalVariant()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Variant, ButtonVariant.Tonal)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "tonal"));
@@ -56,7 +56,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void RendersWithOutlinedVariant()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Variant, ButtonVariant.Outlined)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "outlined"));
@@ -67,7 +67,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void RendersSmallSize()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Size, ButtonSize.Sm)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "small"));
@@ -78,7 +78,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void RendersLargeSize()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Size, ButtonSize.Lg)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "large"));
@@ -89,7 +89,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void RendersDisabled()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Disabled, true)
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "disabled"));
@@ -100,7 +100,7 @@ public class C_FlareButtonIconOnlyTests : FlareTestContext
     [Fact]
     public void RendersAriaLabel()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.LeadingIcon, Icon)
             .Add(x => x.AriaLabel, "close dialog"));
 
@@ -117,7 +117,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void RendersHorizontally()
     {
-        var cut = RenderComponent<FlareButtonGroup>(p => p
+        var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.Vertical, false));
 
         var div = cut.Find(".flare-btn-group");
@@ -128,7 +128,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void RendersVertically()
     {
-        var cut = RenderComponent<FlareButtonGroup>(p => p
+        var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.Vertical, true));
 
         Assert.Contains("flare-btn-group--vertical", cut.Find(".flare-btn-group").ClassName);
@@ -137,7 +137,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void RendersFullWidth()
     {
-        var cut = RenderComponent<FlareButtonGroup>(p => p
+        var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.FullWidth, true));
 
         Assert.Contains("flare-btn-group--full", cut.Find(".flare-btn-group").ClassName);
@@ -146,7 +146,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareButtonGroup>(p => p
+        var cut = Render<FlareButtonGroup>(p => p
             .AddChildContent("<button class=\"child-btn\">A</button><button class=\"child-btn\">B</button>"));
 
         Assert.Equal(2, cut.FindAll(".child-btn").Count);
@@ -155,7 +155,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void RendersDefaultVariant_NoVerticalModifier()
     {
-        var cut = RenderComponent<FlareButtonGroup>();
+        var cut = Render<FlareButtonGroup>();
 
         var div = cut.Find(".flare-btn-group");
         Assert.DoesNotContain("flare-btn-group--vertical", div.ClassName);
@@ -165,7 +165,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void RendersFlareButtonsInside()
     {
-        var cut = RenderComponent<FlareButtonGroup>(p => p
+        var cut = Render<FlareButtonGroup>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareButton>(0);
@@ -179,7 +179,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void CascadesSizeAndVariantToChildButtons()
     {
-        var cut = RenderComponent<FlareButtonGroup>(p => p
+        var cut = Render<FlareButtonGroup>(p => p
             .Add(x => x.Size, ButtonSize.Lg)
             .Add(x => x.Variant, ButtonVariant.Tonal)
             .AddChildContent(b =>
@@ -197,7 +197,7 @@ public class C_FlareButtonGroupTests : FlareTestContext
     [Fact]
     public void ButtonKeepsOwnVariantWhenGroupDoesNotOverride()
     {
-        var cut = RenderComponent<FlareButtonGroup>(p => p
+        var cut = Render<FlareButtonGroup>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareButton>(0);
@@ -219,7 +219,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void RendersDefault()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>();
+        var cut = Render<FlareFloatingActionButton>();
 
         Assert.NotEmpty(cut.FindAll(".flare-fab"));
     }
@@ -227,7 +227,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void RendersSmall()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>(p => p
+        var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Size, FabSize.Sm));
 
         Assert.Contains("flare-fab--sm", cut.Find(".flare-fab").ClassName);
@@ -236,7 +236,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void RendersLarge()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>(p => p
+        var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Size, FabSize.Lg));
 
         Assert.Contains("flare-fab--lg", cut.Find(".flare-fab").ClassName);
@@ -245,7 +245,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void RendersSecondaryColorClass()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>(p => p
+        var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Color, FlareColor.Secondary));
 
         Assert.Contains("flare-color-secondary", cut.Find(".flare-fab").ClassName);
@@ -254,7 +254,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void RendersCustomFabColorInline()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>(p => p
+        var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Color, FlareColor.Custom("#123456")));
 
         Assert.Contains("--fc-container", cut.Find(".flare-fab").GetAttribute("style"));
@@ -263,7 +263,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void DefaultFabColorHasNoColorClass()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>();
+        var cut = Render<FlareFloatingActionButton>();
 
         Assert.DoesNotContain("flare-color-", cut.Find(".flare-fab").ClassName);
     }
@@ -271,7 +271,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void RendersAnchorBottomRight()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>(p => p
+        var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Position, FabPosition.BottomRight));
 
         Assert.NotEmpty(cut.FindAll(".flare-fab-anchor--bottom-right"));
@@ -280,7 +280,7 @@ public class C_FlareFloatingActionButtonTests : FlareTestContext
     [Fact]
     public void RendersLabelSlot()
     {
-        var cut = RenderComponent<FlareFloatingActionButton>(p => p
+        var cut = Render<FlareFloatingActionButton>(p => p
             .Add(x => x.Label, "Create")
             .Add(x => x.Position, FabPosition.Static));
 
@@ -298,7 +298,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareToggleButton>();
+        var cut = Render<FlareToggleButton>();
 
         Assert.NotEmpty(cut.FindAll(".flare-toggle-btn"));
     }
@@ -306,7 +306,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     [Fact]
     public void UnpressedState_AriaPressedFalse()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Toggled, false));
 
         Assert.Equal("false", cut.Find("button").GetAttribute("aria-pressed"));
@@ -315,7 +315,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     [Fact]
     public void PressedState_AriaPressedTrue()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Toggled, true));
 
         Assert.Equal("true", cut.Find("button").GetAttribute("aria-pressed"));
@@ -324,7 +324,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     [Fact]
     public void DisabledState_ButtonHasDisabledAttribute()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.True(cut.Find("button").HasAttribute("disabled"));
@@ -333,7 +333,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .AddChildContent("Bookmark"));
 
         Assert.Contains("Bookmark", cut.Find(".flare-toggle-btn__label").TextContent);
@@ -349,7 +349,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void Loading_False_RendersChildContent()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, false)
             .AddChildContent("Click Me"));
 
@@ -359,7 +359,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void Loading_True_RendersSpinner()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, true));
 
         Assert.NotEmpty(cut.FindAll("span.flare-btn__spinner"));
@@ -368,7 +368,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void Loading_True_AddsLoadingClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, true));
 
         Assert.Contains("flare-btn--loading", cut.Find("button").ClassName ?? "");
@@ -377,7 +377,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void Loading_True_DisablesButton()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, true));
 
         Assert.True(cut.Find("button").HasAttribute("disabled"));
@@ -386,7 +386,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void Loading_True_SetsAriaBusy()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, true));
 
         Assert.Equal("true", cut.Find("button").GetAttribute("aria-busy"));
@@ -395,7 +395,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void Loading_True_WithLoadingText_ShowsLoadingTextInLabel()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, true)
             .Add(x => x.LoadingText, "Saving..."));
 
@@ -405,7 +405,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void Loading_False_DoesNotShowSpinner()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(x => x.Loading, false));
 
         Assert.Empty(cut.FindAll("span.flare-btn__spinner"));
@@ -414,7 +414,7 @@ public class C_FlareButtonLoadingTests : FlareTestContext
     [Fact]
     public void DefaultState_RendersNormally()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .AddChildContent("Submit"));
 
         Assert.NotEmpty(cut.FindAll("button.flare-btn"));
@@ -431,7 +431,7 @@ public class C_FlareSplitButtonTests : FlareTestContext
     [Fact]
     public void RendersMainLabelAndTrigger()
     {
-        var cut = RenderComponent<FlareSplitButton>(p => p
+        var cut = Render<FlareSplitButton>(p => p
             .Add(x => x.ChildContent, b => b.AddMarkupContent(0, "Save")));
 
         Assert.NotEmpty(cut.FindAll(".flare-split-btn__main"));
@@ -442,7 +442,7 @@ public class C_FlareSplitButtonTests : FlareTestContext
     [Fact]
     public void Menu_IsClosedInitially()
     {
-        var cut = RenderComponent<FlareSplitButton>(p => p
+        var cut = Render<FlareSplitButton>(p => p
             .Add(x => x.ChildContent, b => b.AddMarkupContent(0, "Save"))
             .Add(x => x.MenuItems, b =>
             {
@@ -457,7 +457,7 @@ public class C_FlareSplitButtonTests : FlareTestContext
     [Fact]
     public void Menu_OpensOnTriggerClick_AndShowsItems()
     {
-        var cut = RenderComponent<FlareSplitButton>(p => p
+        var cut = Render<FlareSplitButton>(p => p
             .Add(x => x.ChildContent, b => b.AddMarkupContent(0, "Save"))
             .Add(x => x.MenuItems, b =>
             {
@@ -475,7 +475,7 @@ public class C_FlareSplitButtonTests : FlareTestContext
     [Fact]
     public void Disabled_DisablesBothButtons()
     {
-        var cut = RenderComponent<FlareSplitButton>(p => p
+        var cut = Render<FlareSplitButton>(p => p
             .Add(x => x.Disabled, true)
             .Add(x => x.ChildContent, b => b.AddMarkupContent(0, "Save")));
 

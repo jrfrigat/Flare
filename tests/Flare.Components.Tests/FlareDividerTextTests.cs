@@ -13,7 +13,7 @@ public class FlareDividerTextTests : FlareTestContext
     [Fact]
     public void Default_RendersFlareDividerElement()
     {
-        var cut = RenderComponent<FlareDivider>();
+        var cut = Render<FlareDivider>();
 
         // Horizontal renders as <hr>
         Assert.Contains("flare-divider", cut.Find("hr").ClassName ?? "");
@@ -22,7 +22,7 @@ public class FlareDividerTextTests : FlareTestContext
     [Fact]
     public void Default_RendersHrElement()
     {
-        var cut = RenderComponent<FlareDivider>();
+        var cut = Render<FlareDivider>();
 
         Assert.NotEmpty(cut.FindAll("hr"));
     }
@@ -30,7 +30,7 @@ public class FlareDividerTextTests : FlareTestContext
     [Fact]
     public void Vertical_True_RendersDiv_NotHr()
     {
-        var cut = RenderComponent<FlareDivider>(p => p
+        var cut = Render<FlareDivider>(p => p
             .Add(x => x.Vertical, true));
 
         Assert.Empty(cut.FindAll("hr"));
@@ -40,7 +40,7 @@ public class FlareDividerTextTests : FlareTestContext
     [Fact]
     public void Vertical_True_AddsVerticalClass()
     {
-        var cut = RenderComponent<FlareDivider>(p => p
+        var cut = Render<FlareDivider>(p => p
             .Add(x => x.Vertical, true));
 
         Assert.Contains("flare-divider--vertical", cut.Find("div").ClassName ?? "");
@@ -49,7 +49,7 @@ public class FlareDividerTextTests : FlareTestContext
     [Fact]
     public void Vertical_False_Default_NoVerticalClass()
     {
-        var cut = RenderComponent<FlareDivider>(p => p
+        var cut = Render<FlareDivider>(p => p
             .Add(x => x.Vertical, false));
 
         Assert.DoesNotContain("flare-divider--vertical", cut.Find("hr").ClassName ?? "");
@@ -58,7 +58,7 @@ public class FlareDividerTextTests : FlareTestContext
     [Fact]
     public void AriaHidden_IsSet_OnHorizontalDivider()
     {
-        var cut = RenderComponent<FlareDivider>();
+        var cut = Render<FlareDivider>();
 
         Assert.Equal("true", cut.Find("hr").GetAttribute("aria-hidden"));
     }

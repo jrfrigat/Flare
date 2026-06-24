@@ -10,7 +10,7 @@ namespace Flare.Components.Tests.Component;
 public class C_TreeDragDropTests : FlareTestContext
 {
     private IRenderedComponent<FlareTreeView> RenderDragTree(Action<TreeDropEventArgs> onDrop) =>
-        RenderComponent<FlareTreeView>(p => p
+        Render<FlareTreeView>(p => p
             .Add(x => x.Draggable, true)
             .Add(x => x.OnItemDrop, EventCallback.Factory.Create(this, onDrop))
             .AddChildContent<FlareTreeItem>(ip => ip

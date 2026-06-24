@@ -11,7 +11,7 @@ public class FlareToggleButtonW7Tests : FlareTestContext
     [Fact]
     public void Standalone_RendersButton()
     {
-        var cut = RenderComponent<FlareToggleButton>();
+        var cut = Render<FlareToggleButton>();
 
         Assert.NotEmpty(cut.FindAll("button.flare-toggle-btn"));
     }
@@ -19,7 +19,7 @@ public class FlareToggleButtonW7Tests : FlareTestContext
     [Fact]
     public void Toggled_True_AddsPressedClass()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Toggled, true));
 
         Assert.Contains("flare-toggle-btn--pressed", cut.Find("button").ClassName ?? "");
@@ -28,7 +28,7 @@ public class FlareToggleButtonW7Tests : FlareTestContext
     [Fact]
     public void Value_Param_Exists()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Value, "btn-value"));
 
         Assert.Equal("btn-value", cut.Instance.Value);
@@ -37,7 +37,7 @@ public class FlareToggleButtonW7Tests : FlareTestContext
     [Fact]
     public void RendersAriaPressedAttribute()
     {
-        var cut = RenderComponent<FlareToggleButton>();
+        var cut = Render<FlareToggleButton>();
 
         Assert.NotNull(cut.Find("button").GetAttribute("aria-pressed"));
     }
@@ -45,7 +45,7 @@ public class FlareToggleButtonW7Tests : FlareTestContext
     [Fact]
     public void Disabled_RendersDisabledAttribute()
     {
-        var cut = RenderComponent<FlareToggleButton>(p => p
+        var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.True(cut.Find("button").HasAttribute("disabled"));

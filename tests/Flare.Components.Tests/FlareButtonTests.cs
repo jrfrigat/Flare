@@ -7,7 +7,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Renders_WithDefaultVariant_FilledCssClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .AddChildContent("Click me"));
 
         var btn = cut.Find("button");
@@ -17,7 +17,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Renders_OutlinedVariant_OutlinedCssClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Variant, ButtonVariant.Outlined)
             .AddChildContent("Click me"));
 
@@ -29,7 +29,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Renders_TextVariant_TextCssClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Variant, ButtonVariant.Text)
             .AddChildContent("Click me"));
 
@@ -40,7 +40,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Renders_ElevatedVariant_ElevatedCssClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Variant, ButtonVariant.Elevated)
             .AddChildContent("Elevated"));
 
@@ -50,7 +50,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Renders_TonalVariant_TonalCssClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Variant, ButtonVariant.Tonal)
             .AddChildContent("Tonal"));
 
@@ -60,7 +60,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Disabled_SetsDisabledAttribute()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Disabled, true)
             .AddChildContent("Disabled"));
 
@@ -71,7 +71,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void NotDisabled_DoesNotSetDisabledAttribute()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Disabled, false)
             .AddChildContent("Enabled"));
 
@@ -83,7 +83,7 @@ public class FlareButtonTests : FlareTestContext
     public void OnClick_FiresWhenClicked()
     {
         var clicked = false;
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.OnClick, (MouseEventArgs _) => { clicked = true; })
             .AddChildContent("Click me"));
 
@@ -95,7 +95,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void LeadingIcon_RendersLeadingIconSpan()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.LeadingIcon, b => b.AddMarkupContent(0, "<span>icon</span>"))
             .AddChildContent("With Icon"));
 
@@ -107,7 +107,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void NoLeadingIcon_DoesNotRenderLeadingIconSpan()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .AddChildContent("No Icon"));
 
         Assert.Empty(cut.FindAll(".flare-btn__icon--leading"));
@@ -116,7 +116,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void TrailingIcon_RendersTrailingIconSpan()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.TrailingIcon, b => b.AddMarkupContent(0, "<span>trailing</span>"))
             .AddChildContent("With Trailing"));
 
@@ -127,7 +127,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void SmallSize_AddsSizeCssClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Size, ButtonSize.Sm)
             .AddChildContent("Small"));
 
@@ -137,7 +137,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void LargeSize_AddsSizeCssClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Size, ButtonSize.Lg)
             .AddChildContent("Large"));
 
@@ -147,7 +147,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void ChildContent_RendersInsideLabelSpan()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .AddChildContent("My Label"));
 
         var label = cut.Find(".flare-btn__label");
@@ -157,7 +157,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Type_ForwardedToButtonElement()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Type, ButtonType.Submit)
             .AddChildContent("Submit"));
 
@@ -167,7 +167,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Class_Parameter_AppendedToCssClasses()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Class, "my-custom-class")
             .AddChildContent("Custom"));
 
@@ -178,7 +178,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Typo_AppliesTypeScaleClassToLabel()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .Add(c => c.Typo, TypographyScale.LabelSmall)
             .AddChildContent("Small"));
 
@@ -189,7 +189,7 @@ public class FlareButtonTests : FlareTestContext
     [Fact]
     public void Typo_NotSet_LabelHasNoTypeScaleClass()
     {
-        var cut = RenderComponent<FlareButton>(p => p
+        var cut = Render<FlareButton>(p => p
             .AddChildContent("Default"));
 
         var label = cut.Find(".flare-btn__label");

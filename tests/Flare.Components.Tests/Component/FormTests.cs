@@ -19,7 +19,7 @@ public class C_FlareFormTests : FlareTestContext
     public void RendersRootDiv()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model));
 
         Assert.NotEmpty(cut.FindAll(".flare-form"));
@@ -29,7 +29,7 @@ public class C_FlareFormTests : FlareTestContext
     public void ContainsFormElement()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model));
 
         Assert.NotEmpty(cut.FindAll("form"));
@@ -39,7 +39,7 @@ public class C_FlareFormTests : FlareTestContext
     public void RendersChildContent()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddChildContent("<span class=\"child-item\">Inside form</span>"));
 
@@ -50,7 +50,7 @@ public class C_FlareFormTests : FlareTestContext
     public void RendersFlareFieldInside()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddChildContent(b =>
             {
@@ -66,7 +66,7 @@ public class C_FlareFormTests : FlareTestContext
     public void RendersValidationSummaryInside()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddChildContent(b =>
             {
@@ -81,7 +81,7 @@ public class C_FlareFormTests : FlareTestContext
     public void AcceptsAdditionalAttributes()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddUnmatched("data-testid", "my-form"));
 
@@ -98,7 +98,7 @@ public class C_FlareSwitchTests : FlareTestContext
     [Fact]
     public void RendersRootLabel()
     {
-        var cut = RenderComponent<FlareSwitch>();
+        var cut = Render<FlareSwitch>();
 
         Assert.NotEmpty(cut.FindAll(".flare-switch"));
     }
@@ -106,7 +106,7 @@ public class C_FlareSwitchTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareSwitch>(p => p
+        var cut = Render<FlareSwitch>(p => p
             .Add(x => x.Label, "Enable feature"));
 
         Assert.Contains("Enable feature", cut.Find(".flare-switch__label").TextContent);
@@ -115,7 +115,7 @@ public class C_FlareSwitchTests : FlareTestContext
     [Fact]
     public void HasCorrectInputType()
     {
-        var cut = RenderComponent<FlareSwitch>();
+        var cut = Render<FlareSwitch>();
 
         var input = cut.Find("input");
         Assert.Equal("checkbox", input.GetAttribute("type"));
@@ -124,7 +124,7 @@ public class C_FlareSwitchTests : FlareTestContext
     [Fact]
     public void RendersCheckedWhenValueTrue()
     {
-        var cut = RenderComponent<FlareSwitch>(p => p
+        var cut = Render<FlareSwitch>(p => p
             .Add(x => x.Value, true));
 
         Assert.True(cut.Find("input").HasAttribute("checked"));
@@ -133,7 +133,7 @@ public class C_FlareSwitchTests : FlareTestContext
     [Fact]
     public void RendersUncheckedWhenValueFalse()
     {
-        var cut = RenderComponent<FlareSwitch>(p => p
+        var cut = Render<FlareSwitch>(p => p
             .Add(x => x.Value, false));
 
         Assert.False(cut.Find("input").HasAttribute("checked"));
@@ -142,7 +142,7 @@ public class C_FlareSwitchTests : FlareTestContext
     [Fact]
     public void RendersDisabled()
     {
-        var cut = RenderComponent<FlareSwitch>(p => p
+        var cut = Render<FlareSwitch>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.True(cut.Find("input").HasAttribute("disabled"));
@@ -151,7 +151,7 @@ public class C_FlareSwitchTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareSwitch>(p => p
+        var cut = Render<FlareSwitch>(p => p
             .Add(x => x.ErrorText, "Must be enabled"));
 
         Assert.Contains("Must be enabled", cut.Find(".flare-switch__error").TextContent);
@@ -167,7 +167,7 @@ public class C_FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersRootFieldset()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>();
+        var cut = Render<FlareRadioGroup<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-radio-group"));
     }
@@ -175,7 +175,7 @@ public class C_FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Label, "Pick one"));
 
         Assert.Contains("Pick one", cut.Find(".flare-radio-group__legend").TextContent);
@@ -184,7 +184,7 @@ public class C_FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.ChildContent, (RenderFragment)(b =>
             {
                 b.OpenElement(0, "span");
@@ -198,7 +198,7 @@ public class C_FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersDisabledClass()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.NotEmpty(cut.FindAll("fieldset"));
@@ -207,7 +207,7 @@ public class C_FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.ErrorText, "Selection required"));
 
         Assert.Contains("Selection required", cut.Find(".flare-radio-group__error").TextContent);
@@ -216,7 +216,7 @@ public class C_FlareRadioGroupTests : FlareTestContext
     [Fact]
     public void RendersInlineClass()
     {
-        var cut = RenderComponent<FlareRadioGroup<string>>(p => p
+        var cut = Render<FlareRadioGroup<string>>(p => p
             .Add(x => x.Inline, true));
 
         Assert.Contains("flare-radio-group--inline", cut.Find("fieldset").ClassName);
@@ -232,7 +232,7 @@ public class C_FlareRadioTests : FlareTestContext
     [Fact]
     public void RendersRootLabel()
     {
-        var cut = RenderComponent<FlareRadio<string>>();
+        var cut = Render<FlareRadio<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-radio"));
     }
@@ -240,7 +240,7 @@ public class C_FlareRadioTests : FlareTestContext
     [Fact]
     public void RendersInputTypeRadio()
     {
-        var cut = RenderComponent<FlareRadio<string>>();
+        var cut = Render<FlareRadio<string>>();
 
         var input = cut.Find("input");
         Assert.Equal("radio", input.GetAttribute("type"));
@@ -249,7 +249,7 @@ public class C_FlareRadioTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareRadio<string>>(p => p
+        var cut = Render<FlareRadio<string>>(p => p
             .Add(x => x.Label, "Option A"));
 
         Assert.Contains("Option A", cut.Find(".flare-radio__label").TextContent);
@@ -258,7 +258,7 @@ public class C_FlareRadioTests : FlareTestContext
     [Fact]
     public void RendersDisabledWhenParameterSet()
     {
-        var cut = RenderComponent<FlareRadio<string>>(p => p
+        var cut = Render<FlareRadio<string>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.True(cut.Find("input").HasAttribute("disabled"));
@@ -267,7 +267,7 @@ public class C_FlareRadioTests : FlareTestContext
     [Fact]
     public void NotCheckedByDefault()
     {
-        var cut = RenderComponent<FlareRadio<string>>(p => p
+        var cut = Render<FlareRadio<string>>(p => p
             .Add(x => x.Value, "a"));
 
         Assert.False(cut.Find("input").HasAttribute("checked"));
@@ -276,7 +276,7 @@ public class C_FlareRadioTests : FlareTestContext
     [Fact]
     public void DisabledClassAppliedWhenDisabled()
     {
-        var cut = RenderComponent<FlareRadio<string>>(p => p
+        var cut = Render<FlareRadio<string>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.Contains("flare-radio--disabled", cut.Find("label").ClassName);
@@ -292,14 +292,14 @@ public class C_FlareFormFieldTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareFormField>();
+        var cut = Render<FlareFormField>();
         Assert.NotEmpty(cut.FindAll(".flare-field"));
     }
 
     [Fact]
     public void LabelRenderedWhenSet()
     {
-        var cut = RenderComponent<FlareFormField>(p => p.Add(x => x.Label, "Email"));
+        var cut = Render<FlareFormField>(p => p.Add(x => x.Label, "Email"));
         Assert.NotEmpty(cut.FindAll("label.flare-field__label"));
         Assert.Contains("Email", cut.Markup);
     }
@@ -307,14 +307,14 @@ public class C_FlareFormFieldTests : FlareTestContext
     [Fact]
     public void LabelNotRenderedWhenNull()
     {
-        var cut = RenderComponent<FlareFormField>();
+        var cut = Render<FlareFormField>();
         Assert.Empty(cut.FindAll("label"));
     }
 
     [Fact]
     public void HelperTextRendered()
     {
-        var cut = RenderComponent<FlareFormField>(p => p.Add(x => x.HelperText, "Enter your email"));
+        var cut = Render<FlareFormField>(p => p.Add(x => x.HelperText, "Enter your email"));
         Assert.NotEmpty(cut.FindAll(".flare-field__helper"));
         Assert.Contains("Enter your email", cut.Markup);
     }
@@ -322,7 +322,7 @@ public class C_FlareFormFieldTests : FlareTestContext
     [Fact]
     public void RequiredAddsRequiredClass()
     {
-        var cut = RenderComponent<FlareFormField>(p =>
+        var cut = Render<FlareFormField>(p =>
         {
             p.Add(x => x.Label, "Name");
             p.Add(x => x.Required, true);
@@ -333,14 +333,14 @@ public class C_FlareFormFieldTests : FlareTestContext
     [Fact]
     public void NotRequiredByDefault()
     {
-        var cut = RenderComponent<FlareFormField>(p => p.Add(x => x.Label, "Name"));
+        var cut = Render<FlareFormField>(p => p.Add(x => x.Label, "Name"));
         Assert.DoesNotContain("flare-field--required", cut.Find(".flare-field").ClassName);
     }
 
     [Fact]
     public void ForAttributeSetOnLabel()
     {
-        var cut = RenderComponent<FlareFormField>(p =>
+        var cut = Render<FlareFormField>(p =>
         {
             p.Add(x => x.Label, "Name");
             p.Add(x => x.For, "name-input");
@@ -351,7 +351,7 @@ public class C_FlareFormFieldTests : FlareTestContext
     [Fact]
     public void ChildContentRenderedInControl()
     {
-        var cut = RenderComponent<FlareFormField>(p =>
+        var cut = Render<FlareFormField>(p =>
             p.Add(x => x.ChildContent, (RenderFragment)(b =>
             {
                 b.OpenElement(0, "input");
@@ -364,7 +364,7 @@ public class C_FlareFormFieldTests : FlareTestContext
     [Fact]
     public void ControlDivAlwaysPresent()
     {
-        var cut = RenderComponent<FlareFormField>();
+        var cut = Render<FlareFormField>();
         Assert.NotEmpty(cut.FindAll(".flare-field__control"));
     }
 }
@@ -380,14 +380,14 @@ public class C_FlareFormLayoutTests : FlareTestContext
     [Fact]
     public void RendersRootFlareForm()
     {
-        var cut = RenderComponent<FlareForm>(p => p.Add(x => x.Model, _model));
+        var cut = Render<FlareForm>(p => p.Add(x => x.Model, _model));
         Assert.NotEmpty(cut.FindAll(".flare-form"));
     }
 
     [Fact]
     public void DefaultLayoutHasNoVariantClass()
     {
-        var cut = RenderComponent<FlareForm>(p => p.Add(x => x.Model, _model));
+        var cut = Render<FlareForm>(p => p.Add(x => x.Model, _model));
         var cls = cut.Find(".flare-form").ClassName;
         Assert.DoesNotContain("flare-form--horizontal", cls);
         Assert.DoesNotContain("flare-form--inline", cls);
@@ -396,7 +396,7 @@ public class C_FlareFormLayoutTests : FlareTestContext
     [Fact]
     public void HorizontalLayoutAppliesClass()
     {
-        var cut = RenderComponent<FlareForm>(p =>
+        var cut = Render<FlareForm>(p =>
         {
             p.Add(x => x.Model, _model);
             p.Add(x => x.Layout, FormLayout.Horizontal);
@@ -407,7 +407,7 @@ public class C_FlareFormLayoutTests : FlareTestContext
     [Fact]
     public void InlineLayoutAppliesClass()
     {
-        var cut = RenderComponent<FlareForm>(p =>
+        var cut = Render<FlareForm>(p =>
         {
             p.Add(x => x.Model, _model);
             p.Add(x => x.Layout, FormLayout.Inline);
@@ -418,7 +418,7 @@ public class C_FlareFormLayoutTests : FlareTestContext
     [Fact]
     public void DenseAppliesClass()
     {
-        var cut = RenderComponent<FlareForm>(p =>
+        var cut = Render<FlareForm>(p =>
         {
             p.Add(x => x.Model, _model);
             p.Add(x => x.Dense, true);
@@ -429,14 +429,14 @@ public class C_FlareFormLayoutTests : FlareTestContext
     [Fact]
     public void NotDenseByDefault()
     {
-        var cut = RenderComponent<FlareForm>(p => p.Add(x => x.Model, _model));
+        var cut = Render<FlareForm>(p => p.Add(x => x.Model, _model));
         Assert.DoesNotContain("flare-form--dense", cut.Find(".flare-form").ClassName);
     }
 
     [Fact]
     public void DenseAndHorizontalCombine()
     {
-        var cut = RenderComponent<FlareForm>(p =>
+        var cut = Render<FlareForm>(p =>
         {
             p.Add(x => x.Model, _model);
             p.Add(x => x.Layout, FormLayout.Horizontal);
@@ -450,7 +450,7 @@ public class C_FlareFormLayoutTests : FlareTestContext
     [Fact]
     public void ChildContentRenderedInsideEditForm()
     {
-        var cut = RenderComponent<FlareForm>(p =>
+        var cut = Render<FlareForm>(p =>
         {
             p.Add(x => x.Model, _model);
             p.Add(x => x.ChildContent, (RenderFragment)(b =>

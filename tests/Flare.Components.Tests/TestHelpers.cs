@@ -169,10 +169,10 @@ public sealed class StubThemeJsService : IThemeJsService
 }
 
 /// <summary>
-/// bUnit TestContext with Flare services pre-registered.
-/// Wraps Bunit.TestContext and adds a StubThemeService.
+/// bUnit context with Flare services pre-registered.
+/// Wraps Bunit.BunitContext (bUnit 2) and adds a StubThemeService.
 /// </summary>
-public class FlareTestContext : TestContext
+public class FlareTestContext : BunitContext
 {
     public FlareTestContext()
     {

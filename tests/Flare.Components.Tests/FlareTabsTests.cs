@@ -25,7 +25,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void Renders_TabsContainer_WithCorrectCssClass()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -102,7 +102,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void UserSelection_SurvivesParentReRender()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -118,7 +118,7 @@ public class FlareTabsTests : FlareTestContext
 
         // A parent re-render (params re-supplied with ActiveIndex unchanged) must NOT snap the
         // selection back to ActiveIndex (the default 0).
-        cut.SetParametersAndRender(p => p.Add(x => x.ActiveIndex, 0));
+        cut.Render(p => p.Add(x => x.ActiveIndex, 0));
 
         Assert.Contains("flare-tabs__tab--active", cut.FindAll(".flare-tabs__tab")[1].ClassName);
         Assert.DoesNotContain("flare-tabs__tab--active", cut.FindAll(".flare-tabs__tab")[0].ClassName);
@@ -140,7 +140,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void DisabledTab_CannotBeActivated()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -167,7 +167,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void DisabledTab_HasDisabledAttribute()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -187,7 +187,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void TabBar_HasRoleTablist()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -201,7 +201,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void TabButton_HasRoleTab()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -236,7 +236,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void ActiveIndex_SelectsBoundTab()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .Add(x => x.ActiveIndex, 1)
             .AddChildContent(b =>
             {
@@ -257,7 +257,7 @@ public class FlareTabsTests : FlareTestContext
     public void ClickingTab_RaisesActiveIndexChanged()
     {
         var changed = -1;
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .Add(x => x.ActiveIndexChanged, EventCallback.Factory.Create<int>(this, i => changed = i))
             .AddChildContent(b =>
             {
@@ -276,7 +276,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void OnPreviewInteraction_Cancel_BlocksActivation()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .Add(x => x.OnPreviewInteraction, EventCallback.Factory.Create<TabInteractionEventArgs>(this, a => a.Cancel = true))
             .AddChildContent(b =>
             {
@@ -298,7 +298,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void BadgeDot_RendersDotModifier()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -313,7 +313,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void Tooltip_RendersTitleAttribute()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -328,7 +328,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void HeaderStartAndEnd_RenderCustomContent()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .Add(x => x.HeaderStart, (RenderFragment)(b => b.AddMarkupContent(0, "<button id=\"start-btn\">S</button>")))
             .Add(x => x.HeaderEnd, (RenderFragment)(b => b.AddMarkupContent(0, "<button id=\"end-btn\">E</button>")))
             .AddChildContent(b =>
@@ -345,7 +345,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void HeaderZones_NotRendered_WhenUnset()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -360,7 +360,7 @@ public class FlareTabsTests : FlareTestContext
     [Fact]
     public void Typo_AppliesLabelFontTokens()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .Add(x => x.Typo, TypographyScale.TitleSmall)
             .AddChildContent(b =>
             {

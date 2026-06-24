@@ -12,7 +12,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = RenderComponent<FlareSelect<string>>();
+        var cut = Render<FlareSelect<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-select"));
     }
@@ -20,7 +20,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareSelect<string>>(p => p
+        var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Label, "My Label"));
 
         Assert.Contains("My Label", cut.Find(".flare-select__label").TextContent);
@@ -29,7 +29,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void RendersControl()
     {
-        var cut = RenderComponent<FlareSelect<string>>();
+        var cut = Render<FlareSelect<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-select__control"));
     }
@@ -37,7 +37,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void RendersDisabled()
     {
-        var cut = RenderComponent<FlareSelect<string>>(p => p
+        var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.Contains("flare-select--disabled", cut.Find(".flare-select").ClassName);
@@ -46,7 +46,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void RendersHelperText()
     {
-        var cut = RenderComponent<FlareSelect<string>>(p => p
+        var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.HelperText, "Hint text"));
 
         Assert.Contains("Hint text", cut.Find(".flare-select__helper").TextContent);
@@ -55,7 +55,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareSelect<string>>(p => p
+        var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.ErrorText, "Required"));
 
         Assert.Contains("Required", cut.Find(".flare-select__helper--error").TextContent);
@@ -65,7 +65,7 @@ public class C_FlareSelectTests : FlareTestContext
     public void RendersOptionItems()
     {
         var items = new[] { "Alpha", "Beta", "Gamma" };
-        var cut = RenderComponent<FlareSelect<string>>(p => p
+        var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Items, items));
 
         cut.Find(".flare-select__control").Click();
@@ -77,7 +77,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void AcceptsAdditionalAttributes()
     {
-        var cut = RenderComponent<FlareSelect<string>>(p => p
+        var cut = Render<FlareSelect<string>>(p => p
             .AddUnmatched("data-testid", "my-select"));
 
         Assert.Equal("my-select", cut.Find(".flare-select").GetAttribute("data-testid"));
@@ -86,7 +86,7 @@ public class C_FlareSelectTests : FlareTestContext
     [Fact]
     public void ItemTemplate_RendersCustomMarkup()
     {
-        var cut = RenderComponent<FlareSelect<string>>(p => p
+        var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Items, new[] { "a", "b" })
             .Add(x => x.ItemTemplate, (RenderFragment<string>)(v => b => b.AddMarkupContent(0, $"<em class=\"tpl\">{v}</em>"))));
 
@@ -107,7 +107,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities));
 
         Assert.NotEmpty(cut.FindAll(".flare-autocomplete"));
@@ -116,7 +116,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Label, "City")
             .Add(x => x.Items, _cities));
 
@@ -126,7 +126,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersPlaceholder()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Placeholder, "Search city...")
             .Add(x => x.Items, _cities));
 
@@ -136,7 +136,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersDisabled()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities)
             .Add(x => x.Disabled, true));
 
@@ -146,7 +146,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersHelperText()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities)
             .Add(x => x.HelperText, "Start typing to search"));
 
@@ -156,7 +156,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities)
             .Add(x => x.ErrorText, "City required"));
 
@@ -166,7 +166,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void DropdownNotShownInitially()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities));
 
         Assert.Empty(cut.FindAll(".flare-autocomplete__dropdown"));
@@ -175,7 +175,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersInputField()
     {
-        var cut = RenderComponent<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities));
 
         Assert.NotNull(cut.Find("input.flare-autocomplete__control"));
@@ -193,7 +193,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Label, "Fruits")
             .Add(x => x.Items, _fruits));
 
@@ -204,7 +204,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void RendersPlaceholder()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
             .Add(x => x.Placeholder, "Pick fruit"));
 
@@ -214,7 +214,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void DropdownOpensOnClick()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits));
 
         cut.Find(".flare-multiselect__control").Click();
@@ -225,7 +225,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void DropdownClosesOnEscape()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits));
 
         cut.Find(".flare-multiselect__control").Click();
@@ -240,7 +240,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     public void SelectItem_AddsToSelectedValues()
     {
         IReadOnlyCollection<string>? captured = null;
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
             .Add(x => x.SelectedValuesChanged, v => captured = v));
 
@@ -255,7 +255,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     public void DeselectItem_RemovesFromSelectedValues()
     {
         IReadOnlyCollection<string>? captured = null;
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
             .Add(x => x.SelectedValues, new[] { "Apple" })
             .Add(x => x.SelectedValuesChanged, v => captured = v));
@@ -270,7 +270,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void RendersHelperText()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
             .Add(x => x.HelperText, "Choose one or more"));
 
@@ -280,7 +280,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
             .Add(x => x.ErrorText, "Selection required"));
 
@@ -290,7 +290,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void RendersDisabled_DropdownDoesNotOpen()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
             .Add(x => x.Disabled, true));
 
@@ -302,7 +302,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void RendersAllItemsInDropdown()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits));
 
         cut.Find(".flare-multiselect__control").Click();
@@ -317,7 +317,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void ItemTemplate_RendersCustomMarkup()
     {
-        var cut = RenderComponent<FlareMultiSelect<string>>(p => p
+        var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
             .Add(x => x.ItemTemplate, (RenderFragment<string>)(v => b => b.AddMarkupContent(0, $"<em class=\"tpl\">{v}</em>"))));
 

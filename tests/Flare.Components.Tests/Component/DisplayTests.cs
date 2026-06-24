@@ -9,7 +9,7 @@ public class C_FlareAvatarTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareAvatar>();
+        var cut = Render<FlareAvatar>();
 
         Assert.NotEmpty(cut.FindAll(".flare-avatar"));
     }
@@ -17,7 +17,7 @@ public class C_FlareAvatarTests : FlareTestContext
     [Fact]
     public void RendersInitialsWhenTextProvided()
     {
-        var cut = RenderComponent<FlareAvatar>(p => p
+        var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Text, "John Doe"));
 
         Assert.NotEmpty(cut.FindAll(".flare-avatar__initials"));
@@ -26,7 +26,7 @@ public class C_FlareAvatarTests : FlareTestContext
     [Fact]
     public void RendersImgWhenSrcProvided()
     {
-        var cut = RenderComponent<FlareAvatar>(p => p
+        var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Src, "https://example.com/avatar.png"));
 
         Assert.NotEmpty(cut.FindAll("img.flare-avatar__img"));
@@ -35,7 +35,7 @@ public class C_FlareAvatarTests : FlareTestContext
     [Fact]
     public void SizeSmall_HasSmallClass()
     {
-        var cut = RenderComponent<FlareAvatar>(p => p
+        var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Size, AvatarSize.Sm));
 
         Assert.Contains("flare-avatar--sm", cut.Find(".flare-avatar").ClassName);
@@ -44,7 +44,7 @@ public class C_FlareAvatarTests : FlareTestContext
     [Fact]
     public void SizeLarge_HasLargeClass()
     {
-        var cut = RenderComponent<FlareAvatar>(p => p
+        var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Size, AvatarSize.Lg));
 
         Assert.Contains("flare-avatar--lg", cut.Find(".flare-avatar").ClassName);
@@ -53,7 +53,7 @@ public class C_FlareAvatarTests : FlareTestContext
     [Fact]
     public void ShapeSquare_HasSquareClass()
     {
-        var cut = RenderComponent<FlareAvatar>(p => p
+        var cut = Render<FlareAvatar>(p => p
             .Add(x => x.Shape, AvatarShape.Square));
 
         Assert.Contains("flare-avatar--square", cut.Find(".flare-avatar").ClassName);
@@ -69,7 +69,7 @@ public class C_FlareAvatarGroupTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareAvatarGroup>();
+        var cut = Render<FlareAvatarGroup>();
 
         Assert.NotEmpty(cut.FindAll(".flare-avatar-group"));
     }
@@ -77,7 +77,7 @@ public class C_FlareAvatarGroupTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareAvatarGroup>(p => p
+        var cut = Render<FlareAvatarGroup>(p => p
             .AddChildContent("<div class=\"child-avatar\">A</div>"));
 
         Assert.NotEmpty(cut.FindAll(".child-avatar"));
@@ -86,7 +86,7 @@ public class C_FlareAvatarGroupTests : FlareTestContext
     [Fact]
     public void SpacingAppliedAsStyle()
     {
-        var cut = RenderComponent<FlareAvatarGroup>(p => p
+        var cut = Render<FlareAvatarGroup>(p => p
             .Add(x => x.Spacing, "-1rem"));
 
         var style = cut.Find(".flare-avatar-group").GetAttribute("style") ?? string.Empty;
@@ -96,7 +96,7 @@ public class C_FlareAvatarGroupTests : FlareTestContext
     [Fact]
     public void DefaultMaxIsFive()
     {
-        var cut = RenderComponent<FlareAvatarGroup>(p => p
+        var cut = Render<FlareAvatarGroup>(p => p
             .Add(x => x.Max, 5));
 
         Assert.Empty(cut.FindAll(".flare-avatar-group__overflow"));
@@ -112,7 +112,7 @@ public class C_FlareChipTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tech"));
 
         Assert.NotEmpty(cut.FindAll(".flare-chip"));
@@ -121,7 +121,7 @@ public class C_FlareChipTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Science"));
 
         Assert.Contains("Science", cut.Find(".flare-chip__label").TextContent);
@@ -130,7 +130,7 @@ public class C_FlareChipTests : FlareTestContext
     [Fact]
     public void SelectedState_HasSelectedClass()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Art")
             .Add(x => x.Selected, true));
 
@@ -140,7 +140,7 @@ public class C_FlareChipTests : FlareTestContext
     [Fact]
     public void Closeable_ShowsCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Music")
             .Add(x => x.Closeable, true));
 
@@ -150,7 +150,7 @@ public class C_FlareChipTests : FlareTestContext
     [Fact]
     public void NotCloseable_HidesCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Sports")
             .Add(x => x.Closeable, false));
 
@@ -167,7 +167,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareBadge>();
+        var cut = Render<FlareBadge>();
 
         Assert.NotEmpty(cut.FindAll(".flare-badge"));
     }
@@ -175,7 +175,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void RendersCount()
     {
-        var cut = RenderComponent<FlareBadge>(p => p
+        var cut = Render<FlareBadge>(p => p
             .Add(x => x.Count, 7));
 
         Assert.Contains("7", cut.Find(".flare-badge__indicator").TextContent);
@@ -184,7 +184,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void MaxCount_ShowsPlusNotation()
     {
-        var cut = RenderComponent<FlareBadge>(p => p
+        var cut = Render<FlareBadge>(p => p
             .Add(x => x.Count, 150)
             .Add(x => x.Max, 99));
 
@@ -194,7 +194,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void DotVariant_RendersIndicatorWithDotClass()
     {
-        var cut = RenderComponent<FlareBadge>(p => p
+        var cut = Render<FlareBadge>(p => p
             .Add(x => x.Dot, true));
 
         Assert.NotEmpty(cut.FindAll(".flare-badge__indicator--dot"));
@@ -203,7 +203,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void WrapsChildContent()
     {
-        var cut = RenderComponent<FlareBadge>(p => p
+        var cut = Render<FlareBadge>(p => p
             .AddChildContent("<span class=\"wrapped-item\">Icon</span>"));
 
         Assert.NotEmpty(cut.FindAll(".wrapped-item"));
@@ -212,7 +212,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void Text_OverridesCountLabel()
     {
-        var cut = RenderComponent<FlareBadge>(p => p
+        var cut = Render<FlareBadge>(p => p
             .Add(x => x.Text, "NEW")
             .Add(x => x.Count, 5));
 
@@ -222,7 +222,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void Standalone_AddsModifierClass()
     {
-        var cut = RenderComponent<FlareBadge>(p => p
+        var cut = Render<FlareBadge>(p => p
             .Add(x => x.Text, "Beta")
             .Add(x => x.Standalone, true));
 
@@ -232,7 +232,7 @@ public class C_FlareBadgeTests : FlareTestContext
     [Fact]
     public void WithoutAnchor_IsStandaloneByDefault()
     {
-        var cut = RenderComponent<FlareBadge>(p => p
+        var cut = Render<FlareBadge>(p => p
             .Add(x => x.Text, "Tag"));
 
         Assert.NotEmpty(cut.FindAll(".flare-badge--standalone"));
@@ -248,7 +248,7 @@ public class C_FlarePaperTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlarePaper>();
+        var cut = Render<FlarePaper>();
 
         Assert.NotEmpty(cut.FindAll(".flare-paper"));
     }
@@ -256,7 +256,7 @@ public class C_FlarePaperTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlarePaper>(p => p
+        var cut = Render<FlarePaper>(p => p
             .AddChildContent("<p class=\"paper-content\">Hello</p>"));
 
         Assert.NotEmpty(cut.FindAll(".paper-content"));
@@ -265,7 +265,7 @@ public class C_FlarePaperTests : FlareTestContext
     [Fact]
     public void ElevationClass_AppliedCorrectly()
     {
-        var cut = RenderComponent<FlarePaper>(p => p
+        var cut = Render<FlarePaper>(p => p
             .Add(x => x.Elevation, 3));
 
         Assert.Contains("flare-paper--elevation-3", cut.Find(".flare-paper").ClassName);
@@ -274,7 +274,7 @@ public class C_FlarePaperTests : FlareTestContext
     [Fact]
     public void SquarePaper_HasSquareClass()
     {
-        var cut = RenderComponent<FlarePaper>(p => p
+        var cut = Render<FlarePaper>(p => p
             .Add(x => x.Square, true));
 
         Assert.Contains("flare-paper--square", cut.Find(".flare-paper").ClassName);
@@ -290,7 +290,7 @@ public class C_FlareTimelineTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareTimeline>();
+        var cut = Render<FlareTimeline>();
 
         Assert.NotEmpty(cut.FindAll(".flare-timeline"));
     }
@@ -298,7 +298,7 @@ public class C_FlareTimelineTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareTimeline>(p => p
+        var cut = Render<FlareTimeline>(p => p
             .AddChildContent("<div class=\"custom-item\">Item</div>"));
 
         Assert.NotEmpty(cut.FindAll(".custom-item"));
@@ -307,7 +307,7 @@ public class C_FlareTimelineTests : FlareTestContext
     [Fact]
     public void AlignRight_HasRightClass()
     {
-        var cut = RenderComponent<FlareTimeline>(p => p
+        var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Right));
 
         Assert.Contains("flare-timeline--right", cut.Find(".flare-timeline").ClassName);
@@ -316,7 +316,7 @@ public class C_FlareTimelineTests : FlareTestContext
     [Fact]
     public void AlignAlternate_HasAlternateClass()
     {
-        var cut = RenderComponent<FlareTimeline>(p => p
+        var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Alternate));
 
         Assert.Contains("flare-timeline--alternate", cut.Find(".flare-timeline").ClassName);
@@ -325,7 +325,7 @@ public class C_FlareTimelineTests : FlareTestContext
     [Fact]
     public void AlignLeft_HasNoAlignClass()
     {
-        var cut = RenderComponent<FlareTimeline>(p => p
+        var cut = Render<FlareTimeline>(p => p
             .Add(x => x.Align, TimelineAlign.Left));
 
         var className = cut.Find(".flare-timeline").ClassName ?? string.Empty;
@@ -343,7 +343,7 @@ public class C_FlareRatingTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareRating>();
+        var cut = Render<FlareRating>();
 
         Assert.NotEmpty(cut.FindAll(".flare-rating"));
     }
@@ -351,7 +351,7 @@ public class C_FlareRatingTests : FlareTestContext
     [Fact]
     public void RendersDefaultFiveStars()
     {
-        var cut = RenderComponent<FlareRating>();
+        var cut = Render<FlareRating>();
 
         Assert.Equal(5, cut.FindAll(".flare-rating__star").Count);
     }
@@ -359,7 +359,7 @@ public class C_FlareRatingTests : FlareTestContext
     [Fact]
     public void CustomMaxRendersCorrectStarCount()
     {
-        var cut = RenderComponent<FlareRating>(p => p
+        var cut = Render<FlareRating>(p => p
             .Add(x => x.Max, 3));
 
         Assert.Equal(3, cut.FindAll(".flare-rating__star").Count);
@@ -368,7 +368,7 @@ public class C_FlareRatingTests : FlareTestContext
     [Fact]
     public void DisabledState_StarsHaveDisabledAttribute()
     {
-        var cut = RenderComponent<FlareRating>(p => p
+        var cut = Render<FlareRating>(p => p
             .Add(x => x.Disabled, true));
 
         var stars = cut.FindAll(".flare-rating__star");
@@ -378,7 +378,7 @@ public class C_FlareRatingTests : FlareTestContext
     [Fact]
     public void DisabledClass_AppliedWhenDisabled()
     {
-        var cut = RenderComponent<FlareRating>(p => p
+        var cut = Render<FlareRating>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.Contains("flare-rating--disabled", cut.Find(".flare-rating").ClassName);
@@ -387,7 +387,7 @@ public class C_FlareRatingTests : FlareTestContext
     [Fact]
     public void ValueParam_FilledStarsReflectValue()
     {
-        var cut = RenderComponent<FlareRating>(p => p
+        var cut = Render<FlareRating>(p => p
             .Add(x => x.Value, 3)
             .Add(x => x.Max, 5));
 

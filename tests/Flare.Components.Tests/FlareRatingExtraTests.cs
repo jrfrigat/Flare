@@ -5,7 +5,7 @@ public class FlareRatingExtraTests : FlareTestContext
     [Fact]
     public void ReadOnly_HasReadonlyClass()
     {
-        var cut = RenderComponent<FlareRating>(p => p
+        var cut = Render<FlareRating>(p => p
             .Add(x => x.ReadOnly, true));
 
         Assert.Contains("flare-rating--readonly", cut.Find(".flare-rating").ClassName);
@@ -14,7 +14,7 @@ public class FlareRatingExtraTests : FlareTestContext
     [Fact]
     public void ReadOnly_StarsHaveDisabledAttribute()
     {
-        var cut = RenderComponent<FlareRating>(p => p
+        var cut = Render<FlareRating>(p => p
             .Add(x => x.ReadOnly, true));
 
         var stars = cut.FindAll(".flare-rating__star");

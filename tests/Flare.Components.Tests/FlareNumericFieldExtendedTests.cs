@@ -11,7 +11,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void RendersRootFlareFieldElement()
     {
-        var cut = RenderComponent<FlareNumericField<double>>();
+        var cut = Render<FlareNumericField<double>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-input"));
     }
@@ -19,7 +19,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void Label_RendersLabelText()
     {
-        var cut = RenderComponent<FlareNumericField<double>>(p => p
+        var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.Label, "Quantity"));
 
         Assert.Contains("Quantity", cut.Find("label.flare-input__label").TextContent);
@@ -28,7 +28,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void Min_And_Max_SetAttributesOnInput()
     {
-        var cut = RenderComponent<FlareNumericField<double>>(p => p
+        var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.Min, 0.0)
             .Add(x => x.Max, 100.0));
 
@@ -40,7 +40,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void Step_SetsStepAttributeOnInput()
     {
-        var cut = RenderComponent<FlareNumericField<double>>(p => p
+        var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.Step, 0.5));
 
         var input = cut.Find("input[type=number]");
@@ -50,7 +50,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void Disabled_True_DisablesInput()
     {
-        var cut = RenderComponent<FlareNumericField<double>>(p => p
+        var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.Disabled, true));
 
         var input = cut.Find("input[type=number]");
@@ -60,7 +60,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void Disabled_True_AddsDisabledClass()
     {
-        var cut = RenderComponent<FlareNumericField<double>>(p => p
+        var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.Contains("flare-input--disabled", cut.Find(".flare-input").ClassName ?? "");
@@ -69,7 +69,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void Value_SetsInputValue()
     {
-        var cut = RenderComponent<FlareNumericField<int>>(p => p
+        var cut = Render<FlareNumericField<int>>(p => p
             .Add(x => x.Value, 42));
 
         var input = cut.Find("input[type=number]");
@@ -79,7 +79,7 @@ public class FlareNumericFieldExtendedTests : FlareTestContext
     [Fact]
     public void HelperText_RendersHelperSpan()
     {
-        var cut = RenderComponent<FlareNumericField<double>>(p => p
+        var cut = Render<FlareNumericField<double>>(p => p
             .Add(x => x.HelperText, "Enter a number between 0 and 100"));
 
         Assert.Contains("Enter a number between 0 and 100",

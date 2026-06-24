@@ -11,7 +11,7 @@ public class FlareChipSingleTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tech"));
 
         Assert.NotEmpty(cut.FindAll(".flare-chip"));
@@ -20,7 +20,7 @@ public class FlareChipSingleTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Science"));
 
         Assert.Contains("Science", cut.Find(".flare-chip__label").TextContent);
@@ -29,7 +29,7 @@ public class FlareChipSingleTests : FlareTestContext
     [Fact]
     public void SelectedState_HasSelectedClass()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Art")
             .Add(x => x.Selected, true));
 
@@ -39,7 +39,7 @@ public class FlareChipSingleTests : FlareTestContext
     [Fact]
     public void Closeable_ShowsCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Music")
             .Add(x => x.Closeable, true));
 
@@ -49,7 +49,7 @@ public class FlareChipSingleTests : FlareTestContext
     [Fact]
     public void NotCloseable_HidesCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Sports")
             .Add(x => x.Closeable, false));
 

@@ -14,7 +14,7 @@ public class FlareChipClosableTests : FlareTestContext
     [Fact]
     public void Closeable_False_Default_NoCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, false));
 
@@ -24,7 +24,7 @@ public class FlareChipClosableTests : FlareTestContext
     [Fact]
     public void Closeable_True_RendersCloseButton()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true));
 
@@ -34,7 +34,7 @@ public class FlareChipClosableTests : FlareTestContext
     [Fact]
     public void Closeable_True_CloseButtonHasAriaLabel()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true));
 
@@ -46,7 +46,7 @@ public class FlareChipClosableTests : FlareTestContext
     public void Closeable_True_ClickClose_InvokesOnClose()
     {
         var invoked = false;
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true)
             .Add(x => x.OnClose, EventCallback.Factory.Create(this, () => { invoked = true; })));
@@ -59,7 +59,7 @@ public class FlareChipClosableTests : FlareTestContext
     [Fact]
     public void Label_RendersLabelText()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "MyChip"));
 
         Assert.Contains("MyChip", cut.Find(".flare-chip__label").TextContent);
@@ -68,7 +68,7 @@ public class FlareChipClosableTests : FlareTestContext
     [Fact]
     public void Closeable_True_AndSelected_BothRenderCorrectly()
     {
-        var cut = RenderComponent<FlareChip>(p => p
+        var cut = Render<FlareChip>(p => p
             .Add(x => x.Label, "Tag")
             .Add(x => x.Closeable, true)
             .Add(x => x.Selected, true));

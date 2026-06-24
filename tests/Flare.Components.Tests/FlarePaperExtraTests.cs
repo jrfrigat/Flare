@@ -7,7 +7,7 @@ public class FlarePaperExtraTests : FlareTestContext
     [Fact]
     public void PaddingApplied_AsModifierClass()
     {
-        var cut = RenderComponent<FlarePaper>(p => p
+        var cut = Render<FlarePaper>(p => p
             .Add(x => x.Padding, FlareSpacing.Medium));
 
         Assert.Contains("flare-paper--padding-medium", cut.Find(".flare-paper").ClassName);
@@ -16,7 +16,7 @@ public class FlarePaperExtraTests : FlareTestContext
     [Fact]
     public void PaddingCustom_AppliedToStyle()
     {
-        var cut = RenderComponent<FlarePaper>(p => p
+        var cut = Render<FlarePaper>(p => p
             .Add(x => x.Padding, FlareSpacing.Custom)
             .Add(x => x.PaddingValue, "1rem"));
 
@@ -27,7 +27,7 @@ public class FlarePaperExtraTests : FlareTestContext
     [Fact]
     public void DefaultElevation_IsOne()
     {
-        var cut = RenderComponent<FlarePaper>();
+        var cut = Render<FlarePaper>();
 
         Assert.Contains("flare-paper--elevation-1", cut.Find(".flare-paper").ClassName);
     }

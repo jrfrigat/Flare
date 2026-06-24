@@ -11,7 +11,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Linear_RendersLinearClass()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Linear));
 
         Assert.NotEmpty(cut.FindAll(".flare-progress--linear"));
@@ -20,7 +20,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Buffer_RendersBufferClass()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Buffer));
 
         Assert.NotEmpty(cut.FindAll(".flare-progress--buffer"));
@@ -29,7 +29,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Query_RendersQueryClass()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Query));
 
         Assert.NotEmpty(cut.FindAll(".flare-progress--query"));
@@ -38,7 +38,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Buffer_WithBufferValue_RendersBufferFill()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Buffer)
             .Add(x => x.BufferValue, 60.0));
 
@@ -50,7 +50,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Circular_RendersSvgElement()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Circular));
 
         Assert.NotEmpty(cut.FindAll("svg"));
@@ -59,7 +59,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Linear_WithValue50_AppliesWidthStyle()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Linear)
             .Add(x => x.Value, 50.0));
 
@@ -71,7 +71,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Buffer_RendersRootElement()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Buffer));
 
         Assert.NotEmpty(cut.FindAll("[role='progressbar']"));
@@ -80,7 +80,7 @@ public class FlareProgressVariantTests : FlareTestContext
     [Fact]
     public void Query_RendersRootElement()
     {
-        var cut = RenderComponent<FlareProgress>(p => p
+        var cut = Render<FlareProgress>(p => p
             .Add(x => x.Variant, ProgressVariant.Query));
 
         Assert.NotEmpty(cut.FindAll("[role='progressbar']"));

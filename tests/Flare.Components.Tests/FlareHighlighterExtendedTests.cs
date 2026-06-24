@@ -14,7 +14,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void RendersRootFlareHighlighterElement()
     {
-        var cut = RenderComponent<FlareHighlighter>();
+        var cut = Render<FlareHighlighter>();
 
         Assert.NotEmpty(cut.FindAll(".flare-highlighter"));
     }
@@ -22,7 +22,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void Text_WithoutHighlight_RendersFullText()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "hello world"));
 
         Assert.Contains("hello world", cut.Find(".flare-highlighter").TextContent);
@@ -31,7 +31,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void Text_MatchingHighlight_RendersMarkElement()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "hello world")
             .Add(x => x.Highlight, "world"));
 
@@ -41,7 +41,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void Highlight_MatchedText_HasFlareHighlighterMarkClass()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Find the keyword here")
             .Add(x => x.Highlight, "keyword"));
 
@@ -51,7 +51,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void CaseSensitive_False_Default_MatchesRegardlessOfCase()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello World")
             .Add(x => x.Highlight, "hello")
             .Add(x => x.CaseSensitive, false));
@@ -62,7 +62,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void CaseSensitive_True_DoesNotMatchWhenCaseDiffers()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello World")
             .Add(x => x.Highlight, "hello")
             .Add(x => x.CaseSensitive, true));
@@ -73,7 +73,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void TextNull_RendersWithoutCrash()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, (string?)null));
 
         Assert.NotEmpty(cut.FindAll(".flare-highlighter"));
@@ -82,7 +82,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void HighlightNull_RendersFullTextWithoutMarkElements()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "some text")
             .Add(x => x.Highlight, (string?)null));
 
@@ -93,7 +93,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void MultipleOccurrences_AllMatches_RenderedAsMarks()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "cat and cat")
             .Add(x => x.Highlight, "cat"));
 
@@ -103,7 +103,7 @@ public class FlareHighlighterExtendedTests : FlareTestContext
     [Fact]
     public void AdditionalAttributes_PassThroughToRootSpan()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .AddUnmatched("data-testid", "highlighter-root"));
 
         Assert.Equal("highlighter-root", cut.Find(".flare-highlighter").GetAttribute("data-testid"));

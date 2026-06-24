@@ -5,7 +5,7 @@ public class FlareTextFieldTests : FlareTestContext
     [Fact]
     public void Renders_AsInput_WithLabel()
     {
-        var cut = RenderComponent<FlareTextField>(p => p
+        var cut = Render<FlareTextField>(p => p
             .Add(c => c.Label, "Name"));
 
         Assert.Equal("Name", cut.Find("label.flare-input__label").TextContent);
@@ -15,7 +15,7 @@ public class FlareTextFieldTests : FlareTestContext
     [Fact]
     public void Value_RenderedAsInputValue()
     {
-        var cut = RenderComponent<FlareTextField>(p => p
+        var cut = Render<FlareTextField>(p => p
             .Add(c => c.Value, "hello"));
 
         Assert.Equal("hello", cut.Find("input").GetAttribute("value"));
@@ -25,7 +25,7 @@ public class FlareTextFieldTests : FlareTestContext
     public void ValueChanged_FiredWithString_NoTValueNeeded()
     {
         string? captured = null;
-        var cut = RenderComponent<FlareTextField>(p => p
+        var cut = Render<FlareTextField>(p => p
             .Add(c => c.Value, "")
             .Add(c => c.ValueChanged, v => { captured = v; }));
 

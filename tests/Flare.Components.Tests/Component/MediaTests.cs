@@ -9,7 +9,7 @@ public class C_FlareHighlighterTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello world"));
 
         Assert.NotEmpty(cut.FindAll(".flare-highlighter"));
@@ -18,7 +18,7 @@ public class C_FlareHighlighterTests : FlareTestContext
     [Fact]
     public void FullTextRendered()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello world"));
 
         Assert.Contains("Hello world", cut.Find(".flare-highlighter").TextContent);
@@ -27,7 +27,7 @@ public class C_FlareHighlighterTests : FlareTestContext
     [Fact]
     public void HighlightsMatch_MarkElementPresent()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello world")
             .Add(x => x.Highlight, "world"));
 
@@ -37,7 +37,7 @@ public class C_FlareHighlighterTests : FlareTestContext
     [Fact]
     public void HighlightedText_InsideMark()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "The quick brown fox")
             .Add(x => x.Highlight, "quick"));
 
@@ -47,7 +47,7 @@ public class C_FlareHighlighterTests : FlareTestContext
     [Fact]
     public void CaseSensitive_DoesNotHighlightMismatch()
     {
-        var cut = RenderComponent<FlareHighlighter>(p => p
+        var cut = Render<FlareHighlighter>(p => p
             .Add(x => x.Text, "Hello World")
             .Add(x => x.Highlight, "hello")
             .Add(x => x.CaseSensitive, true));
@@ -65,7 +65,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void RendersRootFlareMarkdownElement()
     {
-        var cut = RenderComponent<FlareMarkdown>();
+        var cut = Render<FlareMarkdown>();
 
         Assert.NotEmpty(cut.FindAll(".flare-markdown"));
     }
@@ -73,7 +73,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueNull_RendersEmptyWithoutCrash()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, (string?)null));
 
         Assert.NotEmpty(cut.FindAll(".flare-markdown"));
@@ -83,7 +83,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueH1_RendersH1InOutput()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, "# Hello"));
 
         Assert.NotEmpty(cut.FindAll("h1"));
@@ -92,7 +92,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueBold_RendersStrongInOutput()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, "**bold**"));
 
         Assert.NotEmpty(cut.FindAll("strong"));
@@ -101,7 +101,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueItalic_RendersEmInOutput()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, "*italic*"));
 
         Assert.NotEmpty(cut.FindAll("em"));
@@ -110,7 +110,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueInlineCode_RendersCodeInOutput()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, "`code`"));
 
         Assert.NotEmpty(cut.FindAll("code"));
@@ -119,7 +119,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueUnorderedList_RendersUlAndLi()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, "- item"));
 
         Assert.NotEmpty(cut.FindAll("ul"));
@@ -129,7 +129,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueLink_RendersAnchorWithHref()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, "[text](https://example.com)"));
 
         var anchor = cut.Find("a");
@@ -139,7 +139,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void ValueMultipleParagraphs_RendersPTags()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.Value, "First paragraph.\n\nSecond paragraph."));
 
         Assert.True(cut.FindAll("p").Count >= 2);
@@ -148,7 +148,7 @@ public class C_FlareMarkdownTests : FlareTestContext
     [Fact]
     public void SanitizeHtmlTrue_ScriptTagNotRendered()
     {
-        var cut = RenderComponent<FlareMarkdown>(p => p
+        var cut = Render<FlareMarkdown>(p => p
             .Add(x => x.SanitizeHtml, true)
             .Add(x => x.Value, "<script>alert(1)</script>"));
 
@@ -165,7 +165,7 @@ public class C_FlareTreeViewTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareTreeView>();
+        var cut = Render<FlareTreeView>();
 
         Assert.NotEmpty(cut.FindAll(".flare-tree-view"));
     }
@@ -173,7 +173,7 @@ public class C_FlareTreeViewTests : FlareTestContext
     [Fact]
     public void HasRoleTree()
     {
-        var cut = RenderComponent<FlareTreeView>();
+        var cut = Render<FlareTreeView>();
 
         Assert.Equal("tree", cut.Find(".flare-tree-view").GetAttribute("role"));
     }
@@ -181,7 +181,7 @@ public class C_FlareTreeViewTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareTreeView>(p => p
+        var cut = Render<FlareTreeView>(p => p
             .AddChildContent("<li id=\"tree-child\">Node</li>"));
 
         Assert.NotEmpty(cut.FindAll("#tree-child"));
@@ -190,7 +190,7 @@ public class C_FlareTreeViewTests : FlareTestContext
     [Fact]
     public void AriaLabel_AppliedToElement()
     {
-        var cut = RenderComponent<FlareTreeView>(p => p
+        var cut = Render<FlareTreeView>(p => p
             .Add(x => x.AriaLabel, "File tree"));
 
         Assert.Equal("File tree", cut.Find(".flare-tree-view").GetAttribute("aria-label"));
@@ -207,7 +207,7 @@ public class C_FlareDataTreeTests : FlareTestContext
     public void RendersRootFlareVtreeElement()
     {
         var items = Array.Empty<string>();
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s)));
 
@@ -218,7 +218,7 @@ public class C_FlareDataTreeTests : FlareTestContext
     public void HasChildren_Param_Exists_RendersWithoutError()
     {
         var items = new[] { "Root" };
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
@@ -230,7 +230,7 @@ public class C_FlareDataTreeTests : FlareTestContext
     public void ChildrenProvider_Param_Exists_RendersWithoutError()
     {
         var items = new[] { "Root" };
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.ChildrenProvider,
@@ -243,7 +243,7 @@ public class C_FlareDataTreeTests : FlareTestContext
     [Fact]
     public void EmptyItems_RendersWithoutError()
     {
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, Array.Empty<string>())
             .Add(x => x.KeySelector, (Func<string, object>)(s => s)));
 
@@ -254,7 +254,7 @@ public class C_FlareDataTreeTests : FlareTestContext
     public void HasChildren_False_NodeRendersLeafSpacer()
     {
         var items = new[] { "Leaf" };
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
@@ -266,7 +266,7 @@ public class C_FlareDataTreeTests : FlareTestContext
     public void Items_WithContent_RendersNodes()
     {
         var items = new[] { "Folder A", "Folder B" };
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
@@ -278,7 +278,7 @@ public class C_FlareDataTreeTests : FlareTestContext
     public void ComponentIsGeneric_AcceptsIntType()
     {
         var items = new[] { 1, 2, 3 };
-        var cut = RenderComponent<FlareDataTree<int>>(p => p
+        var cut = Render<FlareDataTree<int>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<int, object>)(i => i)));
 

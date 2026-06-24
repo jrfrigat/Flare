@@ -12,7 +12,7 @@ public class FlareSkeletonExtraTests : FlareTestContext
     [Fact]
     public void AnimationPulse_HasPulseClass()
     {
-        var cut = RenderComponent<FlareSkeleton>(p => p
+        var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Animation, SkeletonAnimation.Pulse));
 
         Assert.Contains("flare-skeleton--pulse", cut.Find(".flare-skeleton").ClassName);
@@ -21,7 +21,7 @@ public class FlareSkeletonExtraTests : FlareTestContext
     [Fact]
     public void AnimationNone_NoAnimClass()
     {
-        var cut = RenderComponent<FlareSkeleton>(p => p
+        var cut = Render<FlareSkeleton>(p => p
             .Add(x => x.Animation, SkeletonAnimation.None));
 
         var cls = cut.Find(".flare-skeleton").ClassName ?? string.Empty;
@@ -32,7 +32,7 @@ public class FlareSkeletonExtraTests : FlareTestContext
     [Fact]
     public void AriaAttributes_Present()
     {
-        var cut = RenderComponent<FlareSkeleton>();
+        var cut = Render<FlareSkeleton>();
 
         var el = cut.Find(".flare-skeleton");
         Assert.Equal("true", el.GetAttribute("aria-busy"));

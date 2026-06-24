@@ -124,7 +124,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     [Fact]
     public void Default_RendersDatagridElement()
     {
-        var cut = RenderComponent<FlareDataGrid<string>>();
+        var cut = Render<FlareDataGrid<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-datagrid"));
     }
@@ -133,7 +133,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     public void Items_RendersDataRows()
     {
         var items = new[] { "Alpha", "Beta", "Gamma" };
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, items));
 
         Assert.Equal(3, cut.FindAll("tr.flare-datagrid__row").Count);
@@ -143,7 +143,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     public void PageSize_5_LimitsDisplayedRows()
     {
         var items = Enumerable.Range(1, 20).Select(i => $"Item {i}").ToArray();
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.PageSize, 5));
 
@@ -167,7 +167,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     public void Groups_SingleLevel_RendersGroupHeaderRows()
     {
         var items = new[] { "Apple", "Avocado", "Banana" };
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.Grouping, GroupingFor<string>(("Letter", s => s.StartsWith("A") ? "A" : "B"))));
 
@@ -187,7 +187,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     [Fact]
     public void Groups_NestedLevels_RenderHeadersForEachLevel()
     {
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, _grouped.AsEnumerable())
             .Add(x => x.Grouping, GroupingFor<GroupedPerson>(
                 ("Role", g => g.Role),
@@ -202,7 +202,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     [Fact]
     public void Groups_WithAggregates_RenderAggregateChips()
     {
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, _grouped.AsEnumerable())
             .Add(x => x.Grouping, GroupingFor<GroupedPerson>(("Role", g => g.Role)))
             .Add(x => x.Aggregates, new[]
@@ -216,7 +216,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     [Fact]
     public void Groups_ClickHeader_CollapsesChildRows()
     {
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, _grouped.AsEnumerable())
             .Add(x => x.Grouping, GroupingFor<GroupedPerson>(("Role", g => g.Role))));
 
@@ -265,7 +265,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
 
     // FlareSelect is a custom popover (not a native <select>): open the control, then click the
     // option by its visible text. Operator labels use the same FlareStrings the component renders.
-    private static void PickSelect(Bunit.IRenderedFragment cut, string scope, string optionText, bool last = false)
+    private static void PickSelect(IRenderedComponent<IComponent> cut, string scope, string optionText, bool last = false)
     {
         var controls = cut.FindAll($"{scope} .flare-select__control");
         (last ? controls[controls.Count - 1] : controls[0]).Click();
@@ -409,7 +409,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     {
         // Provider task left pending so the grid stays in its loading state.
         var tcs = new TaskCompletionSource<DataGridResult<GroupedPerson>>();
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.ItemsProvider, _ => tcs.Task)
             .Add(x => x.LoadingIndicator, DataGridLoadingIndicator.Skeleton)
             .Add(x => x.Columns, GroupedCols));
@@ -423,7 +423,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     public void Loading_SpinnerMode_ShowsRingOverlay()
     {
         var tcs = new TaskCompletionSource<DataGridResult<GroupedPerson>>();
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.ItemsProvider, _ => tcs.Task)
             .Add(x => x.LoadingIndicator, DataGridLoadingIndicator.Spinner)
             .Add(x => x.Columns, GroupedCols));
@@ -448,7 +448,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     [Fact]
     public void Appearance_StripedHoverableDense_ApplyModifierClasses()
     {
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, _grouped.AsEnumerable())
             .Add(x => x.Striped, true)
             .Add(x => x.Hoverable, true)
@@ -464,7 +464,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     [Fact]
     public void ResizableColumn_RendersResizeHandle()
     {
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, _grouped.AsEnumerable())
             .Add(x => x.Columns, inner =>
             {
@@ -482,7 +482,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     public void EditableColumn_AutoEnablesEditing_AndBuffersTypedValue()
     {
         var people = new[] { new GroupedPerson("Eng", "Berlin", 90) };
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, people.AsEnumerable())
             .Add(x => x.Columns, EditableCols));
 
@@ -505,7 +505,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
             Task.FromResult(new DataGridResult<GroupedPerson>(
                 data.Skip(r.Page * r.PageSize).Take(r.PageSize), data.Count));
 
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.ItemsProvider, Provider)
             .Add(x => x.InfiniteScroll, true)
             .Add(x => x.PageSize, 10)
@@ -523,7 +523,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     public void Loading_ProgressLineMode_ShowsThinLineWithoutOverlay()
     {
         var tcs = new TaskCompletionSource<DataGridResult<GroupedPerson>>();
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.ItemsProvider, _ => tcs.Task)
             .Add(x => x.LoadingIndicator, DataGridLoadingIndicator.ProgressLine)
             .Add(x => x.Columns, GroupedCols));
@@ -539,7 +539,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
     public void RowKey_UsedAsStableRowIdentity()
     {
         // Two distinct items that compare equal by reference would collide; RowKey disambiguates.
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, _grouped.AsEnumerable())
             .Add(x => x.RowKey, g => g.Score)
             .Add(x => x.Columns, GroupedCols));
@@ -553,7 +553,7 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
         // Virtualize throws on a non-positive ItemSize; the grid must supply a default row height
         // when VirtualItemSize is left unset.
         var data = Enumerable.Range(1, 100).Select(i => new GroupedPerson($"R{i}", "C", i)).ToList();
-        var cut = RenderComponent<FlareDataGrid<GroupedPerson>>(p => p
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
             .Add(x => x.Items, data.AsEnumerable())
             .Add(x => x.Virtual, true)
             .Add(x => x.Height, "300px")
@@ -636,7 +636,7 @@ public class C_FlareDataGridHeaderTests : FlareTestContext
     {
         // Regression: the default (non-virtualized, non-grouped) path must apply both the row-level
         // RowClassFunc/RowStyleFunc and the column-level ClassFunc/StyleFunc.
-        var cut = RenderComponent<FlareDataGrid<Person>>(p => p
+        var cut = Render<FlareDataGrid<Person>>(p => p
             .Add(x => x.Items, _people.AsEnumerable())
             .Add(x => x.RowClassFunc, item => item.Name == "Alice" ? "row-hi" : "")
             .Add(x => x.RowStyleFunc, item => item.Name == "Alice" ? "background:red" : "")
@@ -1157,7 +1157,7 @@ public class C_FlareDataGridColumnIdentityTests : FlareTestContext
     public void ColumnState_IsKeyedByKey_NotTitle()
     {
         // A column with a SortKey has Key != Title; the grid's column state must use the Key.
-        var cut = RenderComponent<FlareDataGrid<Person>>(p => p
+        var cut = Render<FlareDataGrid<Person>>(p => p
             .Add(g => g.Items, _people.AsEnumerable())
             .Add(g => g.Columns, (RenderFragment)(cols =>
             {
@@ -1181,7 +1181,7 @@ public class C_FlareDataGridColumnIdentityTests : FlareTestContext
     public void DuplicateTitles_DisambiguatedById_SortIndependently()
     {
         // Two columns share a title; Id keeps their sort state distinct.
-        var cut = RenderComponent<FlareDataGrid<Person>>(p => p
+        var cut = Render<FlareDataGrid<Person>>(p => p
             .Add(g => g.Items, _people.AsEnumerable())
             .Add(g => g.Columns, (RenderFragment)(cols =>
             {
@@ -1232,7 +1232,7 @@ public class C_FlareDataGridColumnVisibilityTests : FlareTestContext
     [Fact]
     public void ShowColumnPicker_RendersToolbarButton()
     {
-        var cut = RenderComponent<FlareDataGrid<Person>>(p => p
+        var cut = Render<FlareDataGrid<Person>>(p => p
             .Add(g => g.Items, _people.AsEnumerable())
             .Add(g => g.ShowColumnPicker, true)
             .Add(g => g.Columns, Cols()));
@@ -1244,7 +1244,7 @@ public class C_FlareDataGridColumnVisibilityTests : FlareTestContext
     public void ColumnPicker_TogglesColumnVisibilityByKey()
     {
         HashSet<string>? reported = null;
-        var cut = RenderComponent<FlareDataGrid<Person>>(p => p
+        var cut = Render<FlareDataGrid<Person>>(p => p
             .Add(g => g.Items, _people.AsEnumerable())
             .Add(g => g.ShowColumnPicker, true)
             .Add(g => g.HiddenColumnsChanged, (IReadOnlyCollection<string> h) => reported = [.. h])
@@ -1437,7 +1437,7 @@ public class C_FlareDataGridTypedCellTests : FlareTestContext
     public void DateColumn_WithType_DropsTimeComponent()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.Columns, (RenderFragment)(inner =>
             {
@@ -1457,7 +1457,7 @@ public class C_FlareDataGridTypedCellTests : FlareTestContext
     public void NumberColumn_WithFormat_AppliesFormatString()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.Columns, (RenderFragment)(inner =>
             {
@@ -1759,7 +1759,7 @@ public class C_FlareDataGridExportTests : FlareTestContext
     private IRenderedComponent<FlareDataGrid<Row>> RenderGrid()
     {
         System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
-        return RenderComponent<FlareDataGrid<Row>>(p => p
+        return Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.Columns, Cols()));
     }
@@ -1806,7 +1806,7 @@ public class C_FlareDataGridExportTests : FlareTestContext
                 (IReadOnlyList<IDataGridExporter<Row>>)[DataGridExporters.Csv<Row>()]);
             tb.CloseComponent();
         };
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.ToolbarContent, toolbar)
             .Add(x => x.Columns, Cols()));
@@ -1834,7 +1834,7 @@ public class C_FlareDataGridExportTests : FlareTestContext
                 (IReadOnlyList<IDataGridExporter<Row>>)[DataGridExporters.Csv<Row>(), DataGridExporters.Json<Row>()]);
             tb.CloseComponent();
         };
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.ToolbarContent, toolbar)
             .Add(x => x.Columns, Cols()));
@@ -1880,7 +1880,7 @@ public class C_FlareDataGridCellSelectionTests : FlareTestContext
     private IRenderedComponent<FlareDataGrid<Row>> RenderGrid(CapturingClipboard? clip = null)
     {
         if (clip is not null) Services.AddScoped<IFlareClipboard>(_ => clip);
-        return RenderComponent<FlareDataGrid<Row>>(p => p
+        return Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.CellSelection, true)
             .Add(x => x.Columns, Cols()));
@@ -1944,7 +1944,7 @@ public class C_FlareDataGridCellSelectionTests : FlareTestContext
         var clip = new CapturingClipboard { ReadText = "x\ty\nz\tw" };
         Services.AddScoped<IFlareClipboard>(_ => clip);
         DataGridPaste<Row>? received = null;
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.CellSelection, true)
             .Add(x => x.OnPaste, EventCallback.Factory.Create<DataGridPaste<Row>>(this, dp => received = dp))
@@ -1992,7 +1992,7 @@ public class C_FlareDataGridTypedEditorTests : FlareTestContext
 
     private IRenderedComponent<FlareDataGrid<Row>> RenderEditing()
     {
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _rows.AsEnumerable())
             .Add(x => x.EditMode, DataGridEditMode.Inline)
             .Add(x => x.Columns, Cols()));
@@ -2043,7 +2043,7 @@ public class C_FlareDataGridExcelFilterTests : FlareTestContext
         [new(1, "Apple"), new(2, "Banana"), new(3, "Cherry"), new(4, "Banana")];
 
     private IRenderedComponent<FlareDataGrid<Fruit>> RenderGrid() =>
-        RenderComponent<FlareDataGrid<Fruit>>(p => p
+        Render<FlareDataGrid<Fruit>>(p => p
             .Add(x => x.Items, _items.AsEnumerable())
             .Add(x => x.FilterMode, DataGridFilterMode.Menu)
             .Add(x => x.Columns, (RenderFragment)(inner =>
@@ -2119,7 +2119,7 @@ public class C_FlareDataGridPinnedRowsTests : FlareTestContext
     };
 
     private IRenderedComponent<FlareDataGrid<Row>> RenderGrid() =>
-        RenderComponent<FlareDataGrid<Row>>(p => p
+        Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _data.AsEnumerable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.PinnedTopRows, _top)
@@ -2162,7 +2162,7 @@ public class C_FlareDataGridFrozenRightTests : FlareTestContext
     [Fact]
     public void FrozenRightColumn_GetsFrozenRightClass_OnHeaderAndCells()
     {
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _data.AsEnumerable())
             .Add(x => x.Columns, (RenderFragment)(inner =>
             {
@@ -2311,7 +2311,7 @@ public class C_FlareDataGridQueryableWiringTests : FlareTestContext
     };
 
     private IRenderedComponent<FlareDataGrid<Row>> RenderGrid() =>
-        RenderComponent<FlareDataGrid<Row>>(p => p
+        Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Queryable, _data.AsQueryable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.Columns, Cols()));
@@ -2349,7 +2349,7 @@ public class C_FlareDataGridA11yTests : FlareTestContext
     };
 
     private IRenderedComponent<FlareDataGrid<Row>> RenderGrid() =>
-        RenderComponent<FlareDataGrid<Row>>(p => p
+        Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _data.AsEnumerable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.Columns, Cols()));
@@ -2400,7 +2400,7 @@ public class C_FlareDataGridQuickFilterTests : FlareTestContext
     [Fact]
     public async Task ApplyQuickFilter_MatchesAnyColumn_AndClears()
     {
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _data.AsEnumerable())
             .Add(x => x.Columns, Cols()));
 
@@ -2414,7 +2414,7 @@ public class C_FlareDataGridQuickFilterTests : FlareTestContext
     [Fact]
     public void QuickFilterComponent_RendersSearchInput()
     {
-        var cut = RenderComponent<FlareDataGridQuickFilter<Row>>(p => p.Add(x => x.DebounceMs, 0));
+        var cut = Render<FlareDataGridQuickFilter<Row>>(p => p.Add(x => x.DebounceMs, 0));
         Assert.NotEmpty(cut.FindAll("input"));
     }
 }
@@ -2441,7 +2441,7 @@ public class C_FlareDataGridFilterPresetsTests : FlareTestContext
     [Fact]
     public void PresetsComponent_ListsNoFilterPlusPresets()
     {
-        var cut = RenderComponent<FlareDataGridFilterPresets<Row>>(p => p.Add(x => x.Presets, _presets));
+        var cut = Render<FlareDataGridFilterPresets<Row>>(p => p.Add(x => x.Presets, _presets));
         cut.Find(".flare-select__control").Click();
         var options = cut.FindAll(".flare-select__option").Select(o => o.TextContent.Trim()).ToList();
         Assert.Contains(options, o => o.Contains("(No filter)"));
@@ -2453,7 +2453,7 @@ public class C_FlareDataGridFilterPresetsTests : FlareTestContext
     public async Task ApplyingPresetFilter_FiltersTheGrid()
     {
         // The preset component applies its DataGridFilterGroup via Grid.ApplyAdvancedFilter.
-        var cut = RenderComponent<FlareDataGrid<Row>>(p => p
+        var cut = Render<FlareDataGrid<Row>>(p => p
             .Add(x => x.Items, _data.AsEnumerable())
             .Add(x => x.Columns, Cols()));
 
@@ -2479,7 +2479,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
     [Fact]
     public void BuiltInPager_RendersByDefault()
     {
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, _items.AsEnumerable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.Columns, Cols()));
@@ -2492,7 +2492,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
     public async Task GoToPage_ShowsThatPagesRows()
     {
         // Regression: client-side paging must slice the full row set, not the current page slice.
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, _items.AsEnumerable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.Columns, Cols()));
@@ -2511,7 +2511,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
     [Fact]
     public void ShowPagerFalse_SuppressesBuiltInPager()
     {
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, _items.AsEnumerable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.ShowPager, false)
@@ -2529,7 +2529,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
             fb.OpenComponent<FlareDataGridPager<string>>(0);
             fb.CloseComponent();
         };
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, _items.AsEnumerable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.ShowPager, false)
@@ -2557,7 +2557,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
     [Fact]
     public void StandalonePager_WithoutGrid_RendersNothing()
     {
-        var cut = RenderComponent<FlareDataGridPager<string>>();
+        var cut = Render<FlareDataGridPager<string>>();
         Assert.Empty(cut.FindAll(".flare-pagination"));
     }
 
@@ -2571,7 +2571,7 @@ public class C_FlareDataGridPagerTests : FlareTestContext
             fb.AddAttribute(1, "RowsPerPageOptions", (IReadOnlyList<int>)[5, 10, 25]);
             fb.CloseComponent();
         };
-        var cut = RenderComponent<FlareDataGrid<string>>(p => p
+        var cut = Render<FlareDataGrid<string>>(p => p
             .Add(x => x.Items, _items.AsEnumerable())
             .Add(x => x.PageSize, 5)
             .Add(x => x.ShowPager, false)

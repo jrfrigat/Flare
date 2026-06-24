@@ -11,7 +11,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = RenderComponent<FlareDatePicker>();
+        var cut = Render<FlareDatePicker>();
 
         Assert.NotEmpty(cut.FindAll(".flare-datepicker"));
     }
@@ -19,7 +19,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareDatePicker>(p => p
+        var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.Label, "Select date"));
 
         var label = cut.Find("label.flare-datepicker__label");
@@ -29,7 +29,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void RendersPlaceholder()
     {
-        var cut = RenderComponent<FlareDatePicker>(p => p
+        var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.Placeholder, "YYYY-MM-DD"));
 
         Assert.Equal("YYYY-MM-DD", cut.Find("input").GetAttribute("placeholder"));
@@ -38,7 +38,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void RendersCalendarIcon()
     {
-        var cut = RenderComponent<FlareDatePicker>();
+        var cut = Render<FlareDatePicker>();
 
         var icon = cut.Find(".flare-input__icon--trailing");
         Assert.NotNull(icon);
@@ -47,7 +47,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void DoesNotShowCalendar_Initially()
     {
-        var cut = RenderComponent<FlareDatePicker>();
+        var cut = Render<FlareDatePicker>();
 
         Assert.Empty(cut.FindAll(".flare-datepicker__panel"));
     }
@@ -55,7 +55,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void RendersDisabledInput()
     {
-        var cut = RenderComponent<FlareDatePicker>(p => p
+        var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.True(cut.Find("input").HasAttribute("disabled"));
@@ -64,7 +64,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = RenderComponent<FlareDatePicker>(p => p
+        var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.ErrorText, "Date is required"));
 
         Assert.Contains("Date is required", cut.Find(".flare-datepicker__helper--error").TextContent);
@@ -73,7 +73,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void RendersHelperText()
     {
-        var cut = RenderComponent<FlareDatePicker>(p => p
+        var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.HelperText, "Pick any date"));
 
         Assert.Contains("Pick any date", cut.Find(".flare-datepicker__helper").TextContent);
@@ -83,7 +83,7 @@ public class FlareDatePickerTests : FlareTestContext
     public void RendersFormattedValue()
     {
         var date = new DateOnly(2026, 5, 23);
-        var cut = RenderComponent<FlareDatePicker>(p => p
+        var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.Value, date)
             .Add(x => x.DateFormat, "yyyy-MM-dd"));
 
@@ -93,7 +93,7 @@ public class FlareDatePickerTests : FlareTestContext
     [Fact]
     public void OpensCalendarOnToggleClick()
     {
-        var cut = RenderComponent<FlareDatePicker>();
+        var cut = Render<FlareDatePicker>();
 
         cut.Find(".flare-datepicker__toggle").Click();
 
@@ -104,7 +104,7 @@ public class FlareDatePickerTests : FlareTestContext
     public void TypingDateUpdatesValue()
     {
         DateOnly? value = null;
-        var cut = RenderComponent<FlareDatePicker>(p => p
+        var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.DateFormat, "yyyy-MM-dd")
             .Add(x => x.ValueChanged, (DateOnly? v) => value = v));
 

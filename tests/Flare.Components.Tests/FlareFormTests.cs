@@ -20,7 +20,7 @@ public class FlareFormTests : FlareTestContext
     public void RendersRootDiv()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model));
 
         Assert.NotEmpty(cut.FindAll(".flare-form"));
@@ -30,7 +30,7 @@ public class FlareFormTests : FlareTestContext
     public void ContainsFormElement()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model));
 
         Assert.NotEmpty(cut.FindAll("form"));
@@ -40,7 +40,7 @@ public class FlareFormTests : FlareTestContext
     public void RendersChildContent()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddChildContent("<span class=\"child-item\">Inside form</span>"));
 
@@ -51,7 +51,7 @@ public class FlareFormTests : FlareTestContext
     public void RendersFlareFieldInside()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddChildContent(b =>
             {
@@ -67,7 +67,7 @@ public class FlareFormTests : FlareTestContext
     public void RendersValidationSummaryInside()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddChildContent(b =>
             {
@@ -83,7 +83,7 @@ public class FlareFormTests : FlareTestContext
     public void AcceptsAdditionalAttributes()
     {
         var model = new PersonModel();
-        var cut = RenderComponent<FlareForm>(p => p
+        var cut = Render<FlareForm>(p => p
             .Add(x => x.Model, model)
             .AddUnmatched("data-testid", "my-form"));
 

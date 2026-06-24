@@ -11,7 +11,7 @@ public class FlareMenuItemTests : FlareTestContext
     [Fact]
     public void RendersButton()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi =>
@@ -25,7 +25,7 @@ public class FlareMenuItemTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi =>
@@ -39,7 +39,7 @@ public class FlareMenuItemTests : FlareTestContext
     [Fact]
     public void DisabledMenuItem_HasDisabledAttribute()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi => mi
@@ -55,7 +55,7 @@ public class FlareMenuItemTests : FlareTestContext
     [Fact]
     public void DisabledMenuItem_HasDisabledClass()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi => mi
@@ -70,7 +70,7 @@ public class FlareMenuItemTests : FlareTestContext
     [Fact]
     public void MenuItemHasRoleMenuitem()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi =>
@@ -84,7 +84,7 @@ public class FlareMenuItemTests : FlareTestContext
     [Fact]
     public void ItemWithIcon_RendersIconSpan()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi => mi

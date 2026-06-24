@@ -13,7 +13,7 @@ public class FlareTreeExtendedTests : FlareTestContext
     [Fact]
     public void FlareTreeView_RendersRootElement()
     {
-        var cut = RenderComponent<FlareTreeView>();
+        var cut = Render<FlareTreeView>();
 
         Assert.NotEmpty(cut.FindAll(".flare-tree-view"));
     }
@@ -21,7 +21,7 @@ public class FlareTreeExtendedTests : FlareTestContext
     [Fact]
     public void FlareTreeItem_RendersLabelText()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Documents"));
 
         Assert.Contains("Documents", cut.Find(".flare-tree-item__label").TextContent);
@@ -30,7 +30,7 @@ public class FlareTreeExtendedTests : FlareTestContext
     [Fact]
     public void FlareTreeItem_WithChildren_RendersToggleButton()
     {
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Parent")
             .AddChildContent<FlareTreeItem>(bp => bp
                 .Add(x => x.Label, "Child")));
@@ -42,7 +42,7 @@ public class FlareTreeExtendedTests : FlareTestContext
     public void FlareTreeItem_Collapsed_ChildrenNotVisible()
     {
         // Default Expanded=false -> children should be hidden
-        var cut = RenderComponent<FlareTreeItem>(p => p
+        var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "Parent")
             .Add(x => x.Expanded, false)
             .AddChildContent<FlareTreeItem>(bp => bp
@@ -56,7 +56,7 @@ public class FlareTreeExtendedTests : FlareTestContext
     {
         // Verify HasChildren parameter is accepted without error
         var items = new[] { "Root" };
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.HasChildren, (Func<string, bool>)(_ => false)));
@@ -69,7 +69,7 @@ public class FlareTreeExtendedTests : FlareTestContext
     {
         // Verify ChildrenProvider parameter is accepted without error
         var items = new[] { "Root" };
-        var cut = RenderComponent<FlareDataTree<string>>(p => p
+        var cut = Render<FlareDataTree<string>>(p => p
             .Add(x => x.Items, items)
             .Add(x => x.KeySelector, (Func<string, object>)(s => s))
             .Add(x => x.ChildrenProvider,

@@ -39,7 +39,7 @@ public class C_FlareTabsVerticalTests : FlareTestContext
     [Fact]
     public void RendersHorizontalOrientation_Default()
     {
-        var cut = RenderComponent<FlareTabs>(p => p
+        var cut = Render<FlareTabs>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareTab>(0);
@@ -106,7 +106,7 @@ public class C_FlareAccordionTests : FlareTestContext
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = RenderComponent<FlareAccordion>();
+        var cut = Render<FlareAccordion>();
 
         Assert.NotEmpty(cut.FindAll(".flare-accordion"));
     }
@@ -114,7 +114,7 @@ public class C_FlareAccordionTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareAccordion>(p => p
+        var cut = Render<FlareAccordion>(p => p
             .AddChildContent("<p id=\"inner\">Hello</p>"));
 
         Assert.NotEmpty(cut.FindAll("#inner"));
@@ -123,7 +123,7 @@ public class C_FlareAccordionTests : FlareTestContext
     [Fact]
     public void AllowMultipleFalse_IsDefault()
     {
-        var cut = RenderComponent<FlareAccordion>();
+        var cut = Render<FlareAccordion>();
 
         Assert.NotEmpty(cut.FindAll(".flare-accordion"));
     }
@@ -131,7 +131,7 @@ public class C_FlareAccordionTests : FlareTestContext
     [Fact]
     public void AllowMultipleTrue_RendersComponent()
     {
-        var cut = RenderComponent<FlareAccordion>(p => p
+        var cut = Render<FlareAccordion>(p => p
             .Add(x => x.AllowMultiple, true));
 
         Assert.NotEmpty(cut.FindAll(".flare-accordion"));
@@ -140,7 +140,7 @@ public class C_FlareAccordionTests : FlareTestContext
     [Fact]
     public void RendersWithAdditionalAttributes()
     {
-        var cut = RenderComponent<FlareAccordion>(p => p
+        var cut = Render<FlareAccordion>(p => p
             .AddUnmatched("data-testid", "accordion-root"));
 
         Assert.Equal("accordion-root", cut.Find(".flare-accordion").GetAttribute("data-testid"));
@@ -149,7 +149,7 @@ public class C_FlareAccordionTests : FlareTestContext
     [Fact]
     public void ProvidesCascadingValue()
     {
-        var cut = RenderComponent<FlareAccordion>(p => p
+        var cut = Render<FlareAccordion>(p => p
             .AddChildContent<FlareAccordionPanel>(pp => pp
                 .Add(x => x.Header, "Panel A")));
 
@@ -159,7 +159,7 @@ public class C_FlareAccordionTests : FlareTestContext
     [Fact]
     public void RendersWithStyleParam()
     {
-        var cut = RenderComponent<FlareAccordion>(p => p
+        var cut = Render<FlareAccordion>(p => p
             .Add(x => x.Style, "border:1px solid red"));
 
         var div = cut.Find(".flare-accordion");
@@ -176,7 +176,7 @@ public class C_FlareAccordionPanelTests : FlareTestContext
     private IRenderedComponent<FlareAccordionPanel> RenderPanel(
         Action<ComponentParameterCollectionBuilder<FlareAccordionPanel>>? configure = null)
     {
-        return RenderComponent<FlareAccordion>(p => p
+        return Render<FlareAccordion>(p => p
             .AddChildContent<FlareAccordionPanel>(configure ?? (_ => { })))
             .FindComponent<FlareAccordionPanel>();
     }
@@ -265,7 +265,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = RenderComponent<FlareStepper>();
+        var cut = Render<FlareStepper>();
 
         Assert.NotEmpty(cut.FindAll(".flare-stepper"));
     }
@@ -273,7 +273,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void DefaultOrientation_HasHorizontalClass()
     {
-        var cut = RenderComponent<FlareStepper>();
+        var cut = Render<FlareStepper>();
 
         Assert.NotEmpty(cut.FindAll(".flare-stepper--horizontal"));
     }
@@ -281,7 +281,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void VerticalOrientation_HasVerticalClass()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .Add(x => x.Orientation, StepperOrientation.Vertical));
 
         Assert.NotEmpty(cut.FindAll(".flare-stepper--vertical"));
@@ -290,7 +290,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void RendersStepHeader()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent<FlareStep>(sp => sp
                 .Add(x => x.Label, "Step One")));
 
@@ -300,7 +300,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void SingleStep_IsActive()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent<FlareStep>(sp => sp
                 .Add(x => x.Label, "First")));
 
@@ -310,7 +310,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void MultipleSteps_FirstIsActive_SecondIsUpcoming()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareStep>(0);
@@ -331,7 +331,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void LinearTrue_IsDefault()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .Add(x => x.Linear, true));
 
         Assert.NotEmpty(cut.FindAll(".flare-stepper"));
@@ -340,7 +340,7 @@ public class C_FlareStepperTests : FlareTestContext
     [Fact]
     public void RendersConnectorBetweenSteps()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareStep>(0);
@@ -371,7 +371,7 @@ public class C_FlareBreadcrumbTests : FlareTestContext
     [Fact]
     public void RendersRootNav()
     {
-        var cut = RenderComponent<FlareBreadcrumb>(p => p
+        var cut = Render<FlareBreadcrumb>(p => p
             .Add(x => x.Items, _items));
 
         Assert.NotEmpty(cut.FindAll(".flare-breadcrumb"));
@@ -380,7 +380,7 @@ public class C_FlareBreadcrumbTests : FlareTestContext
     [Fact]
     public void RendersAllItems()
     {
-        var cut = RenderComponent<FlareBreadcrumb>(p => p
+        var cut = Render<FlareBreadcrumb>(p => p
             .Add(x => x.Items, _items));
 
         Assert.Equal(3, cut.FindAll(".flare-breadcrumb__item").Count);
@@ -389,7 +389,7 @@ public class C_FlareBreadcrumbTests : FlareTestContext
     [Fact]
     public void LastItem_HasCurrentClass()
     {
-        var cut = RenderComponent<FlareBreadcrumb>(p => p
+        var cut = Render<FlareBreadcrumb>(p => p
             .Add(x => x.Items, _items));
 
         var items = cut.FindAll(".flare-breadcrumb__item");
@@ -399,7 +399,7 @@ public class C_FlareBreadcrumbTests : FlareTestContext
     [Fact]
     public void NonLastItems_HaveLinks()
     {
-        var cut = RenderComponent<FlareBreadcrumb>(p => p
+        var cut = Render<FlareBreadcrumb>(p => p
             .Add(x => x.Items, _items));
 
         Assert.NotEmpty(cut.FindAll("a.flare-breadcrumb__link"));
@@ -408,7 +408,7 @@ public class C_FlareBreadcrumbTests : FlareTestContext
     [Fact]
     public void SeparatorRendered_BetweenItems()
     {
-        var cut = RenderComponent<FlareBreadcrumb>(p => p
+        var cut = Render<FlareBreadcrumb>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.Separator, ">"));
 
@@ -419,7 +419,7 @@ public class C_FlareBreadcrumbTests : FlareTestContext
     [Fact]
     public void CustomSeparator_Rendered()
     {
-        var cut = RenderComponent<FlareBreadcrumb>(p => p
+        var cut = Render<FlareBreadcrumb>(p => p
             .Add(x => x.Items, _items)
             .Add(x => x.Separator, "»"));
 
@@ -437,7 +437,7 @@ public class C_FlarePaginationTests : FlareTestContext
     [Fact]
     public void RendersRootNav()
     {
-        var cut = RenderComponent<FlarePagination>(p => p
+        var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 5));
 
         Assert.NotEmpty(cut.FindAll(".flare-pagination"));
@@ -446,7 +446,7 @@ public class C_FlarePaginationTests : FlareTestContext
     [Fact]
     public void RendersPageButtons()
     {
-        var cut = RenderComponent<FlarePagination>(p => p
+        var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 3)
             .Add(x => x.Current, 1));
 
@@ -457,7 +457,7 @@ public class C_FlarePaginationTests : FlareTestContext
     [Fact]
     public void PreviousButton_DisabledOnFirstPage()
     {
-        var cut = RenderComponent<FlarePagination>(p => p
+        var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 5)
             .Add(x => x.Current, 1));
 
@@ -468,7 +468,7 @@ public class C_FlarePaginationTests : FlareTestContext
     [Fact]
     public void NextButton_DisabledOnLastPage()
     {
-        var cut = RenderComponent<FlarePagination>(p => p
+        var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 5)
             .Add(x => x.Current, 5));
 
@@ -479,7 +479,7 @@ public class C_FlarePaginationTests : FlareTestContext
     [Fact]
     public void ActivePage_HasActiveClass()
     {
-        var cut = RenderComponent<FlarePagination>(p => p
+        var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 5)
             .Add(x => x.Current, 2));
 
@@ -490,7 +490,7 @@ public class C_FlarePaginationTests : FlareTestContext
     [Fact]
     public void LargePageCount_ShowsEllipsis()
     {
-        var cut = RenderComponent<FlarePagination>(p => p
+        var cut = Render<FlarePagination>(p => p
             .Add(x => x.TotalPages, 20)
             .Add(x => x.Current, 10));
 
@@ -507,7 +507,7 @@ public class C_FlareNavLinkTests : FlareTestContext
     [Fact]
     public void RendersAnchorTag()
     {
-        var cut = RenderComponent<FlareNavLink>(p => p
+        var cut = Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/home")
             .AddChildContent("Home"));
 
@@ -517,7 +517,7 @@ public class C_FlareNavLinkTests : FlareTestContext
     [Fact]
     public void RendersChildContentInTextSpan()
     {
-        var cut = RenderComponent<FlareNavLink>(p => p
+        var cut = Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/about")
             .AddChildContent("About Us"));
 
@@ -527,7 +527,7 @@ public class C_FlareNavLinkTests : FlareTestContext
     [Fact]
     public void HrefAttribute_AppliedToAnchor()
     {
-        var cut = RenderComponent<FlareNavLink>(p => p
+        var cut = Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/dashboard"));
 
         Assert.Equal("/dashboard", cut.Find("a").GetAttribute("href"));
@@ -536,7 +536,7 @@ public class C_FlareNavLinkTests : FlareTestContext
     [Fact]
     public void Active_True_HasActiveClass()
     {
-        var cut = RenderComponent<FlareNavLink>(p => p
+        var cut = Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/page")
             .Add(x => x.Active, true)
             .AddChildContent("Page"));
@@ -547,7 +547,7 @@ public class C_FlareNavLinkTests : FlareTestContext
     [Fact]
     public void Disabled_True_HasDisabledClass()
     {
-        var cut = RenderComponent<FlareNavLink>(p => p
+        var cut = Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/locked")
             .Add(x => x.Disabled, true)
             .AddChildContent("Locked"));
@@ -558,7 +558,7 @@ public class C_FlareNavLinkTests : FlareTestContext
     [Fact]
     public void Icon_RendersIconSpan()
     {
-        var cut = RenderComponent<FlareNavLink>(p => p
+        var cut = Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/settings")
             .Add(x => x.Icon, (RenderFragment)(b =>
             {
@@ -581,7 +581,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void RendersTemporary_DefaultVariant()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Temporary)
             .Add(x => x.Open, false));
 
@@ -593,7 +593,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void RendersPermanent()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Permanent));
 
         Assert.Contains("flare-drawer--permanent", cut.Find(".flare-drawer").ClassName);
@@ -602,7 +602,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void RendersMini()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Mini));
 
         Assert.Contains("flare-drawer--mini", cut.Find(".flare-drawer").ClassName);
@@ -611,7 +611,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void RendersScrimForTemporaryWhenOpen()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Temporary)
             .Add(x => x.Open, true));
 
@@ -621,7 +621,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void NoScrimForPermanent()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Permanent)
             .Add(x => x.Open, true));
 
@@ -631,7 +631,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void RendersChildContent()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Permanent)
             .AddChildContent("<nav class=\"nav-content\">Nav</nav>"));
 
@@ -641,7 +641,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void RendersOpenState()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Temporary)
             .Add(x => x.Open, true));
 
@@ -651,7 +651,7 @@ public class C_FlareDrawerTests : FlareTestContext
     [Fact]
     public void RendersClosedState_NoOpenClass()
     {
-        var cut = RenderComponent<FlareDrawer>(p => p
+        var cut = Render<FlareDrawer>(p => p
             .Add(x => x.Variant, DrawerVariant.Temporary)
             .Add(x => x.Open, false));
 
@@ -668,7 +668,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = RenderComponent<FlareMenu>();
+        var cut = Render<FlareMenu>();
 
         Assert.NotEmpty(cut.FindAll(".flare-menu"));
     }
@@ -676,7 +676,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void RendersActivatorDiv()
     {
-        var cut = RenderComponent<FlareMenu>();
+        var cut = Render<FlareMenu>();
 
         Assert.NotEmpty(cut.FindAll(".flare-menu__activator"));
     }
@@ -684,7 +684,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void MenuPanelHiddenInitially()
     {
-        var cut = RenderComponent<FlareMenu>();
+        var cut = Render<FlareMenu>();
 
         Assert.Empty(cut.FindAll(".flare-menu__panel"));
     }
@@ -692,7 +692,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void ClickActivator_OpensMenuPanel()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button id=\"act\">Open</button>")));
 
@@ -704,7 +704,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void MenuPanel_HasRoleMenu()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>")));
 
@@ -716,7 +716,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void RendersMenuItems_WhenOpen()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi =>
@@ -730,7 +730,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void DefaultAnchor_HasBottomLeftClass()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>")));
 
@@ -742,7 +742,7 @@ public class C_FlareMenuTests : FlareTestContext
     [Fact]
     public void RendersBackdrop_WhenOpen()
     {
-        var cut = RenderComponent<FlareMenu>(p => p
+        var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>")));
 
@@ -761,7 +761,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = RenderComponent<FlareNavGroup>();
+        var cut = Render<FlareNavGroup>();
 
         Assert.NotEmpty(cut.FindAll(".flare-nav-group"));
     }
@@ -769,7 +769,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void Label_RendersLabelText()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Label, "Navigation"));
 
         Assert.Contains("Navigation", cut.Find(".flare-nav-group__title").TextContent);
@@ -778,7 +778,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void Icon_RendersIconSpan()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Icon, "home"));
 
         Assert.Contains("home", cut.Find(".flare-nav-group__icon").TextContent);
@@ -787,7 +787,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void Expanded_False_HidesChildren()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Expanded, false)
             .AddChildContent("<a id=\"nav-child\">Link</a>"));
 
@@ -800,7 +800,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void Expanded_True_ShowsChildren()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Expanded, true)
             .AddChildContent("<a id=\"nav-child-visible\">Link</a>"));
 
@@ -810,7 +810,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void HeaderButton_IsClickable()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Expanded, false)
             .AddChildContent("<a id=\"nav-link\">Link</a>"));
 
@@ -822,7 +822,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void RendersChevronElement()
     {
-        var cut = RenderComponent<FlareNavGroup>();
+        var cut = Render<FlareNavGroup>();
 
         Assert.NotEmpty(cut.FindAll(".flare-nav-group__chevron"));
     }
@@ -830,7 +830,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     [Fact]
     public void Expanded_True_RendersChildContent()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Expanded, true)
             .AddChildContent("<span id=\"group-content\">Content</span>"));
 
@@ -848,7 +848,7 @@ public class C_FlareNavAutoExpandTests : FlareTestContext
     public void NavLink_OnActiveChanged_FiresWhenActive()
     {
         bool? reported = null;
-        RenderComponent<FlareNavLink>(p => p
+        Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/x")
             .Add(x => x.Active, true)
             .Add(x => x.OnActiveChanged, (bool a) => reported = a)
@@ -860,7 +860,7 @@ public class C_FlareNavAutoExpandTests : FlareTestContext
     [Fact]
     public void NavGroup_AutoExpands_WhenChildLinkActive()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Label, "Group")
             .Add(x => x.Expanded, false)
             .AddChildContent<FlareNavLink>(link => link
@@ -875,7 +875,7 @@ public class C_FlareNavAutoExpandTests : FlareTestContext
     [Fact]
     public void NavGroup_StaysCollapsed_WhenNoChildActive()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Label, "Group")
             .Add(x => x.Expanded, false)
             .AddChildContent<FlareNavLink>(link => link
@@ -888,7 +888,7 @@ public class C_FlareNavAutoExpandTests : FlareTestContext
     [Fact]
     public void NestedGroups_BothExpand_WhenDeepLinkActive()
     {
-        var cut = RenderComponent<FlareNavGroup>(p => p
+        var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Label, "Outer")
             .Add(x => x.Expanded, false)
             .AddChildContent<FlareNavGroup>(inner => inner

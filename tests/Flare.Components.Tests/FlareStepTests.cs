@@ -11,7 +11,7 @@ public class FlareStepTests : FlareTestContext
     [Fact]
     public void RendersStepLabel()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent<FlareStep>(s => s.Add(x => x.Label, "My Step")));
 
         Assert.Contains("My Step", cut.Markup);
@@ -20,7 +20,7 @@ public class FlareStepTests : FlareTestContext
     [Fact]
     public void RendersDescription_WhenProvided()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent<FlareStep>(s => s
                 .Add(x => x.Label, "Step")
                 .Add(x => x.Description, "Step description text")));
@@ -31,7 +31,7 @@ public class FlareStepTests : FlareTestContext
     [Fact]
     public void NoDescription_DescriptionElementAbsent()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent<FlareStep>(s => s.Add(x => x.Label, "Step")));
 
         Assert.Empty(cut.FindAll(".flare-stepper__description"));
@@ -40,7 +40,7 @@ public class FlareStepTests : FlareTestContext
     [Fact]
     public void StepNumber_DisplayedInCircle()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent<FlareStep>(s => s.Add(x => x.Label, "First")));
 
         // First step shows number "1" in the circle
@@ -51,7 +51,7 @@ public class FlareStepTests : FlareTestContext
     [Fact]
     public void TwoSteps_LabelsRenderedInOrder()
     {
-        var cut = RenderComponent<FlareStepper>(p => p
+        var cut = Render<FlareStepper>(p => p
             .AddChildContent(b =>
             {
                 b.OpenComponent<FlareStep>(0);
