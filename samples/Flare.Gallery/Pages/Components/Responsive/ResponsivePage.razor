@@ -1,0 +1,72 @@
+@page "/components/responsive"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Responsive_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareMediaQuery">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Responsive_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        @GalleryStrings.Responsive_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+
+<FlareText Typo="TypographyScale.TitleMedium" Style="margin:1.5rem 0 0.5rem;">@GalleryStrings.Responsive_GridTitle</FlareText>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem">
+    @GalleryStrings.Responsive_GridDescA <code>Xs=12 Sm=6 Md=4 Lg=3</code> @GalleryStrings.Responsive_GridDescB
+</FlareText>
+<FlareGrid Columns="12" Gap="FlareSpacing.Medium">
+    @for (var i = 1; i <= 8; i++)
+    {
+        var n = i;
+        <FlareCol Xs="12" Sm="6" Md="4" Lg="3">
+            <FlarePaper Elevation="1" Style="padding:1rem;text-align:center;">
+                <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Responsive_Card @n</FlareText>
+            </FlarePaper>
+        </FlareCol>
+    }
+</FlareGrid>
+
+<FlareText Typo="TypographyScale.TitleMedium" Style="margin:2rem 0 0.5rem;">@GalleryStrings.Responsive_VisibilityTitle</FlareText>
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareHidden Below="Breakpoint.Md">
+        <FlareAlert Severity="AlertSeverity.Info">@((MarkupString)GalleryStrings.Responsive_VisMdUp)</FlareAlert>
+    </FlareHidden>
+    <FlareHidden Above="Breakpoint.Sm">
+        <FlareAlert Severity="AlertSeverity.Success">@((MarkupString)GalleryStrings.Responsive_VisXsSm)</FlareAlert>
+    </FlareHidden>
+    <FlareHidden Only="Breakpoint.Md">
+        <FlareAlert Severity="AlertSeverity.Warning">@((MarkupString)GalleryStrings.Responsive_HiddenMd)</FlareAlert>
+    </FlareHidden>
+</FlareStack>
+
+<FlareText Typo="TypographyScale.TitleMedium" Style="margin:2rem 0 0.5rem;">@GalleryStrings.Responsive_MediaQueryTitle</FlareText>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem">
+    <code>FlareMediaQuery</code> @GalleryStrings.Responsive_MediaQueryDesc
+</FlareText>
+<FlareMediaQuery Context="bp" OnChanged="OnBreakpointChanged">
+    <FlarePaper Elevation="1" Style="padding:1rem;">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Responsive_CurrentBp <strong>@bp</strong></FlareText>
+        @if (bp <= Breakpoint.Sm)
+        {
+            <FlareText Color="FlareColor.Primary">@GalleryStrings.Responsive_CompactLayout</FlareText>
+        }
+        else if (bp == Breakpoint.Md)
+        {
+            <FlareText Color="FlareColor.Secondary">@GalleryStrings.Responsive_TabletLayout</FlareText>
+        }
+        else
+        {
+            <FlareText Color="FlareColor.Tertiary">@GalleryStrings.Responsive_DesktopLayout</FlareText>
+        }
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+            @GalleryStrings.Responsive_LastChange @_lastChange
+        </FlareText>
+    </FlarePaper>
+</FlareMediaQuery>
+
+@code {
+    private string _lastChange = GalleryStrings.Responsive_NoneYet;
+
+    private void OnBreakpointChanged(Breakpoint bp) => _lastChange = bp.ToString();
+}

@@ -1,0 +1,91 @@
+.flare-dialog-scrim {
+    position: fixed;
+    inset: 0;
+    background-color: color-mix(in srgb, var(--flare-color-scrim) 32%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.flare-dialog {
+    background-color: var(--flare-color-surface-container-high);
+    color: var(--flare-color-on-surface);
+    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    min-width: 17.5rem;
+    max-width: 35rem;
+    width: 100%;
+    box-shadow: var(--flare-elevation-3);
+    overflow: hidden;
+}
+
+.flare-dialog__icon {
+    display: flex;
+    justify-content: center;
+    color: var(--flare-color-secondary);
+    font-size: 1.5rem;
+    padding: var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem) 0;
+}
+
+.flare-dialog__header {
+    padding: var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem) var(--flare-spacing-8, 1rem);
+}
+
+.flare-dialog__header--centered { text-align: center; }
+
+.flare-dialog__divider {
+    height: 1px;
+    background: var(--flare-color-outline);
+    margin: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-8, 1rem);
+}
+
+.flare-dialog__title {
+    font-family: var(--flare-typescale-headline-small-font);
+    font-size: var(--flare-typescale-headline-small-size);
+    font-weight: var(--flare-typescale-headline-small-weight);
+    color: var(--flare-color-on-surface);
+    margin: 0;
+}
+
+.flare-dialog__content {
+    padding: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-dialog__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--flare-spacing-4, 0.5rem);
+    padding: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem);
+}
+
+/* DialogProvider message text */
+.flare-dialog-provider__message {
+    margin: 0;
+    color: var(--flare-color-on-surface-variant);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+}
+
+/* Size modifiers */
+.flare-dialog--xs   { max-width: 20rem; }
+.flare-dialog--sm   { max-width: 28rem; }
+.flare-dialog--md   { max-width: 35rem; }
+.flare-dialog--lg   { max-width: 50rem; }
+.flare-dialog--xl   { max-width: 70rem; }
+.flare-dialog--full      { max-width: calc(100vw - 3rem); max-height: calc(100vh - 3rem); }
+.flare-dialog--fullwidth { width: calc(100vw - 3rem); max-width: calc(100vw - 3rem); }
+
+/* On small screens: nearly full-screen and bottom-sheet aligned. */
+@media (max-width: 599px) {
+    .flare-dialog {
+        max-width: calc(100vw - 2rem) !important;
+        max-height: calc(100vh - 2rem) !important;
+        border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    }
+    .flare-dialog-scrim {
+        align-items: flex-end;
+    }
+}

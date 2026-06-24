@@ -1,0 +1,29 @@
+<FlareStack Style="overflow-x:auto;">
+    <FlareKanban Columns="_columns" Cards="_cards" CardsChanged="cards => _cards = cards.ToList()" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.75rem">
+        Drag cards between columns to change their status.
+    </FlareText>
+</FlareStack>
+
+@code {
+    private readonly List<KanbanColumn> _columns =
+    [
+        new("backlog", "Backlog",      "#94a3b8"),
+        new("todo",    "To Do",        "#6366f1"),
+        new("doing",   "In Progress",  "#f59e0b"),
+        new("done",    "Done",         "#10b981"),
+    ];
+
+    private List<KanbanCard> _cards =
+    [
+        new("1", "backlog", "Research competitors",  "Analyze MudBlazor, Blazorise",   "Research"),
+        new("2", "backlog", "Write ADRs",            Description: "Architecture decision records"),
+        new("3", "todo",    "FlareLayout component", "Admin shell layout",              "Feature"),
+        new("4", "todo",    "FlareCarousel",         "Swipeable slides",                "Feature"),
+        new("5", "doing",   "DataGrid grouping",     "GroupBy parameter",               "Feature",     "#6366f1"),
+        new("6", "doing",   "CSV export",            "Download datagrid data",          "Enhancement", "#f59e0b"),
+        new("7", "done",    "FlareHidden",           "Responsive visibility",           "Feature",     "#10b981"),
+        new("8", "done",    "DropZone component",    "Drag & drop file upload",         "Feature",     "#10b981"),
+        new("9", "done",    "43 bUnit tests",        "Full test coverage",              "Testing",     "#10b981"),
+    ];
+}

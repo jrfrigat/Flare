@@ -1,0 +1,133 @@
+@using Flare.Components.IDE
+
+<FlareIdeLayout Style="height:460px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <Ribbon>
+        <FlareRibbon OnTabChanged="OnRibbonTab">
+            <FlareRibbonTab Title="Home">
+                <FlareRibbonGroup Label="Clipboard">
+                    <FlareRibbonButton Icon="content_paste" Label="Paste" Tooltip="Paste" IsLarge="true"
+                                       OnClick="@(() => Set("Pasted"))" />
+                    <FlareRibbonButton Icon="content_cut" Tooltip="Cut" OnClick="@(() => Set("Cut"))" />
+                    <FlareRibbonButton Icon="content_copy" Tooltip="Copy" OnClick="@(() => Set("Copied"))" />
+                </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Edit">
+                    <FlareRibbonButton Icon="undo" Tooltip="Undo" />
+                    <FlareRibbonButton Icon="redo" Tooltip="Redo" />
+                    <FlareRibbonButton Icon="search" Tooltip="Find" />
+                </FlareRibbonGroup>
+            </FlareRibbonTab>
+            <FlareRibbonTab Title="View">
+                <FlareRibbonGroup Label="Zoom">
+                    <FlareRibbonButton Icon="zoom_in" Label="Zoom In" Tooltip="Zoom in" IsLarge="true" />
+                    <FlareRibbonButton Icon="zoom_out" Label="Zoom Out" Tooltip="Zoom out" IsLarge="true" />
+                </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Show">
+                    <FlareRibbonButton Icon="grid_on" Tooltip="Grid lines" />
+                    <FlareRibbonButton Icon="wrap_text" Tooltip="Word wrap" />
+                </FlareRibbonGroup>
+            </FlareRibbonTab>
+        </FlareRibbon>
+    </Ribbon>
+
+    <LeftToolPanel>
+        <FlareToolPanel Title="Explorer">
+            <ul class="ide-demo__tree">
+                <li><span class="material-symbols-rounded">folder</span> src</li>
+                <li class="ide-demo__tree-child"><span class="material-symbols-rounded">description</span> Program.cs</li>
+                <li class="ide-demo__tree-child"><span class="material-symbols-rounded">description</span> Startup.cs</li>
+                <li><span class="material-symbols-rounded">folder</span> wwwroot</li>
+                <li><span class="material-symbols-rounded">article</span> README.md</li>
+            </ul>
+        </FlareToolPanel>
+    </LeftToolPanel>
+
+    <ChildContent>
+        <FlareDocumentTabs OnTabChanged="OnDocTab">
+            <FlareDocumentTab Title="Program.cs" Icon="description" Modified="true">
+                <pre class="ide-demo__code">var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddFlare();
+
+var app = builder.Build();
+app.MapRazorComponents&lt;App&gt;();
+app.Run();</pre>
+            </FlareDocumentTab>
+            <FlareDocumentTab Title="README.md" Icon="article">
+                <div class="ide-demo__doc">
+                    <FlareText Typo="TypographyScale.TitleMedium">Flare IDE</FlareText>
+                    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+                        A desktop-style shell built from Flare components.
+                    </FlareText>
+                </div>
+            </FlareDocumentTab>
+            <FlareDocumentTab Title="App.razor" Icon="code" Closeable="false">
+                <pre class="ide-demo__code">&lt;FlareThemeProvider&gt;
+    &lt;Routes /&gt;
+&lt;/FlareThemeProvider&gt;</pre>
+            </FlareDocumentTab>
+        </FlareDocumentTabs>
+    </ChildContent>
+
+    <RightToolPanel>
+        <FlareToolPanel Title="Properties" Position="ToolPanelPosition.Right" Mode="IdePanelMode.AutoHide">
+            <dl class="ide-demo__props">
+                <dt>Name</dt><dd>Program.cs</dd>
+                <dt>Type</dt><dd>C# Source</dd>
+                <dt>Size</dt><dd>1.2 KB</dd>
+            </dl>
+        </FlareToolPanel>
+    </RightToolPanel>
+
+    <BottomPanel>
+        <FlareToolPanel Title="Output" Position="ToolPanelPosition.Bottom">
+            <FlareTabs>
+                <FlareTab Label="Output">
+                    <pre class="ide-demo__output">Build started...
+Build succeeded. 0 errors, 0 warnings.</pre>
+                </FlareTab>
+                <FlareTab Label="Error List" Badge="2">
+                    <ul class="ide-demo__errors">
+                        <li><span class="material-symbols-rounded ide-demo__err">error</span> CS0103: The name 'foo' does not exist (Program.cs, 12)</li>
+                        <li><span class="material-symbols-rounded ide-demo__warn">warning</span> CS0168: Variable 'x' is declared but never used (Startup.cs, 8)</li>
+                    </ul>
+                </FlareTab>
+                <FlareTab Label="Terminal">
+                    <pre class="ide-demo__output">PS C:\src&gt; dotnet run
+Listening on http://localhost:5000</pre>
+                </FlareTab>
+            </FlareTabs>
+        </FlareToolPanel>
+    </BottomPanel>
+
+    <StatusBar>
+        <FlareStatusBar>
+            <LeftContent>Ln 4, Col 18</LeftContent>
+            <CenterContent>@_status</CenterContent>
+            <RightContent>UTF-8 &nbsp;|&nbsp; C#</RightContent>
+        </FlareStatusBar>
+    </StatusBar>
+</FlareIdeLayout>
+
+<style>
+    .ide-demo__tree { list-style:none; margin:0; padding:0; font-size:0.85rem; }
+    .ide-demo__tree li { display:flex; align-items:center; gap:0.35rem; padding:0.2rem 0.25rem; cursor:default; }
+    .ide-demo__tree li .material-symbols-rounded { font-size:1rem; }
+    .ide-demo__tree-child { padding-left:1.25rem !important; }
+    .ide-demo__code, .ide-demo__output { margin:0; padding:0.5rem; font-family:monospace; font-size:0.8rem; white-space:pre-wrap; }
+    .ide-demo__doc { padding:0.75rem; display:flex; flex-direction:column; gap:0.35rem; }
+    .ide-demo__props { margin:0; font-size:0.8rem; display:grid; grid-template-columns:auto 1fr; gap:0.2rem 0.75rem; }
+    .ide-demo__props dt { color:var(--flare-color-on-surface-variant); }
+    .ide-demo__props dd { margin:0; }
+    .ide-demo__errors { list-style:none; margin:0; padding:0.25rem 0.5rem; font-size:0.8rem; }
+    .ide-demo__errors li { display:flex; align-items:center; gap:0.4rem; padding:0.2rem 0; }
+    .ide-demo__errors .material-symbols-rounded { font-size:1rem; }
+    .ide-demo__err { color:var(--flare-color-error); }
+    .ide-demo__warn { color:var(--flare-color-tertiary); }
+</style>
+
+@code {
+    private string _status = "Ready";
+
+    private void Set(string action) => _status = action;
+    private void OnRibbonTab(string? title) => _status = $"Ribbon: {title}";
+    private void OnDocTab(string title) => _status = $"Opened {title}";
+}

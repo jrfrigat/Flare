@@ -1,0 +1,28 @@
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareButton OnClick="@(() => _top = true)">Open Top</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _bottom = true)">Open Bottom</FlareButton>
+</FlareStack>
+
+<FlareDrawer @bind-Open="_top" Anchor="DrawerAnchor.Top" Height="180px" CloseOnEsc="true" CloseOnScrimClick="true">
+    <Header>Top sheet (Height=180px)</Header>
+    <ChildContent>
+        <FlareStack Style="padding:1rem;">
+            <FlareText Typo="TypographyScale.BodyMedium">Click the scrim or press Esc to close.</FlareText>
+        </FlareStack>
+    </ChildContent>
+</FlareDrawer>
+
+<FlareDrawer @bind-Open="_bottom" Anchor="DrawerAnchor.Bottom" Height="220px" CloseOnScrimClick="false">
+    <Header>Bottom sheet (CloseOnScrimClick=false)</Header>
+    <ChildContent>
+        <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
+            <FlareText Typo="TypographyScale.BodyMedium">Scrim click is disabled - use the button.</FlareText>
+            <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _bottom = false)">Close</FlareButton>
+        </FlareStack>
+    </ChildContent>
+</FlareDrawer>
+
+@code {
+    private bool _top;
+    private bool _bottom;
+}

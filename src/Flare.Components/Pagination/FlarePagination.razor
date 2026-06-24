@@ -1,0 +1,171 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<nav class="@BuildCssClass(_sizeClass, _colorClass)" style="@_inlineStyle" aria-label="@_navAriaLabel" @attributes="AdditionalAttributes">
+    @if (ShowInfo && TotalItems > 0)
+    {
+        <span class="@Css.Classes.Pagination.Info">
+            @if (InfoTemplate is not null)
+            {
+                @InfoTemplate(new PaginationInfoContext
+                {
+                    CurrentPage = Current,
+                    PageSize = PageSize,
+                    TotalItems = TotalItems,
+                    TotalPages = TotalPages,
+                    From = Math.Min(((Current - 1) * PageSize) + 1, TotalItems),
+                    To = Math.Min(Current * PageSize, TotalItems)
+                })
+            }
+            else
+            {
+                @(string.Format(FlareStrings.Pagination_Range, ((Current - 1) * PageSize) + 1, Math.Min(Current * PageSize, TotalItems), TotalItems))
+            }
+        </span>
+    }
+    @if (RowsPerPageOptions is { Length: > 0 })
+    {
+        <label class="@Css.Classes.Pagination.Rows" for="@_rowsId">
+            <span class="@Css.Classes.Pagination.RowsLabel">@(FlareStrings.DataGrid_RowsLabel)</span>
+            <select id="@_rowsId" class="@Css.Classes.Pagination.RowsSelect" value="@PageSize" @onchange="HandlePageSizeChange">
+                @foreach (var opt in RowsPerPageOptions)
+                {
+                    <option value="@opt">@opt</option>
+                }
+            </select>
+        </label>
+    }
+    @if (ShowFirstLast)
+    {
+        <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+                disabled="@(Current <= 1)"
+                aria-label="@(FlareStrings.Pagination_First)"
+                @onclick="@(() => GoTo(1))">«</button>
+    }
+
+    <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+            disabled="@(Current <= 1)"
+            aria-label="@(FlareStrings.Pagination_Prev)"
+            @onclick="@(() => GoTo(Current - 1))">‹</button>
+
+    @foreach (var page in _pageNumbers)
+    {
+        @if (page is null)
+        {
+            <span class="@Css.Classes.Pagination.Ellipsis" aria-hidden="true">...</span>
+        }
+        else
+        {
+            var p = page.Value;
+            <button class="@Css.Classes.Pagination.Btn @(p == Current ? Css.Classes.Pagination.BtnActive : "")"
+                    aria-label="@(string.Format(FlareStrings.Pagination_Page, p))"
+                    aria-current="@(p == Current ? "page" : null)"
+                    @onclick="@(() => GoTo(p))">@p</button>
+        }
+    }
+
+    <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+            disabled="@(Current >= TotalPages)"
+            aria-label="@(FlareStrings.Pagination_Next)"
+            @onclick="@(() => GoTo(Current + 1))">›</button>
+
+    @if (ShowFirstLast)
+    {
+        <button class="@Css.Classes.Pagination.Btn @Css.Classes.Pagination.BtnNav"
+                disabled="@(Current >= TotalPages)"
+                aria-label="@(FlareStrings.Pagination_Last)"
+                @onclick="@(() => GoTo(TotalPages))">»</button>
+    }
+</nav>
+
+@code {
+    /// <summary>Currently active page number (1-based).</summary>
+    [Parameter] public int Current { get; set; } = 1;
+    /// <summary>Supports <c>@bind-Current</c> two-way binding.</summary>
+    [Parameter] public EventCallback<int> CurrentChanged { get; set; }
+    /// <summary>Total number of pages available.</summary>
+    [Parameter] public int TotalPages { get; set; }
+    /// <summary>Total number of items across all pages. Used for info display.</summary>
+    [Parameter] public int TotalItems { get; set; }
+    /// <summary>Shows "First" («) and "Last" (») navigation buttons.</summary>
+    [Parameter] public bool ShowFirstLast { get; set; }
+    /// <summary>Shows page info (e.g., "1–10 of 100").</summary>
+    [Parameter] public bool ShowInfo { get; set; }
+    /// <summary>Custom template for page info display.</summary>
+    [Parameter] public RenderFragment<PaginationInfoContext>? InfoTemplate { get; set; }
+    /// <summary>Accessible label for the pagination nav element.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Size of the pagination controls.</summary>
+    [Parameter] public PaginationSize Size { get; set; } = PaginationSize.Md;
+    /// <summary>Semantic color applied to the active page button.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Page-size options shown in a rows-per-page selector. When null/empty the selector is hidden.</summary>
+    [Parameter] public int[]? RowsPerPageOptions { get; set; }
+    /// <summary>Current page size (rows per page) for the optional rows-per-page selector.</summary>
+    [Parameter] public int PageSize { get; set; }
+    /// <summary>Supports <c>@bind-PageSize</c> two-way binding.</summary>
+    [Parameter] public EventCallback<int> PageSizeChanged { get; set; }
+    /// <summary>Number of pages always shown at the start and end of the range.</summary>
+    [Parameter] public int BoundaryCount { get; set; } = 1;
+    /// <summary>Number of pages shown on each side of the current page.</summary>
+    [Parameter] public int SiblingCount { get; set; } = 2;
+
+    protected override string ComponentCssClass => Css.Classes.Pagination.Root;
+
+    private readonly string _rowsId = $"flare-pagination-rows-{Guid.NewGuid():N}";
+
+    private string _navAriaLabel => !string.IsNullOrEmpty(AriaLabel) ? AriaLabel : (FlareStrings.Nav_Pagination);
+
+    private string _sizeClass => Size switch
+    {
+        PaginationSize.Xs => Css.Classes.Pagination.SizeXs,
+        PaginationSize.Sm => Css.Classes.Pagination.Sm,
+        PaginationSize.Lg => Css.Classes.Pagination.Lg,
+        PaginationSize.Xl => Css.Classes.Pagination.SizeXl,
+        _                 => string.Empty,
+    };
+
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string? _inlineStyle => Color.StyleMainOn() is { } t ? t + Style : Style;
+
+    private async Task HandlePageSizeChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var size) && size != PageSize)
+            await PageSizeChanged.InvokeAsync(size);
+    }
+
+    private IEnumerable<int?> _pageNumbers
+    {
+        get
+        {
+            var visible = new SortedSet<int>();
+
+            for (var i = 1; i <= Math.Min(BoundaryCount, TotalPages); i++)
+                visible.Add(i);
+
+            for (var i = Math.Max(1, Current - SiblingCount); i <= Math.Min(TotalPages, Current + SiblingCount); i++)
+                visible.Add(i);
+
+            for (var i = Math.Max(1, TotalPages - BoundaryCount + 1); i <= TotalPages; i++)
+                visible.Add(i);
+
+            int? prev = null;
+            foreach (var p in visible)
+            {
+                if (prev.HasValue && p - prev > 1)
+                    yield return null;
+                yield return p;
+                prev = p;
+            }
+        }
+    }
+
+    private async Task GoTo(int page)
+    {
+        page = Math.Clamp(page, 1, Math.Max(1, TotalPages));
+        if (page != Current)
+        {
+            await CurrentChanged.InvokeAsync(page);
+        }
+    }
+}

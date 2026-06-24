@@ -1,0 +1,155 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+@if (Visible)
+{
+    <div class="@Css.Classes.Dialog.Scrim" @onclick="HandleScrimClick">
+        <div class="@BuildCssClass(_sizeClass)" style="@Style" @onclick:stopPropagation="true"
+             @attributes="AdditionalAttributes"
+             role="dialog" aria-modal="true"
+             aria-labelledby="@_titleId"
+             aria-describedby="@_contentId"
+             @ref="_dialogEl">
+            @if (Icon is not null)
+            {
+                <div class="@Css.Classes.Dialog.Icon" aria-hidden="true">@Icon</div>
+            }
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <div class="@Css.Classes.Dialog.Header @(Icon is not null ? Css.Classes.Dialog.HeaderCentered : null)">
+                    <h2 class="@Css.Classes.Dialog.Title" id="@_titleId">@Title</h2>
+                </div>
+            }
+            @if (Divider)
+            {
+                <div class="@Css.Classes.Dialog.Divider" role="separator"></div>
+            }
+            <div class="@Css.Classes.Dialog.Content" id="@_contentId">
+                @ChildContent
+            </div>
+            @if (Actions is not null)
+            {
+                <div class="@Css.Classes.Dialog.Actions">
+                    @Actions
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    /// <summary>Controls whether the dialog is shown.</summary>
+    [Parameter] public bool Visible { get; set; }
+    /// <summary>Callback raised when visibility should change.</summary>
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+    /// <summary>Title text displayed in the dialog header.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Optional hero icon shown centered above the title (MD3: secondary color).</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>Shows a divider between the header and the content (MD3 scroll divider).</summary>
+    [Parameter] public bool Divider { get; set; }
+    /// <summary>Main body content rendered inside the dialog.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Action buttons rendered in the dialog footer.</summary>
+    [Parameter] public RenderFragment? Actions { get; set; }
+    /// <summary>Closes the dialog when the scrim backdrop is clicked.</summary>
+    [Parameter] public bool CloseOnScrimClick { get; set; } = true;
+    /// <summary>Closes the dialog when the Escape key is pressed.</summary>
+    [Parameter] public bool CloseOnEsc { get; set; } = true;
+    /// <summary>Maximum width of the dialog.</summary>
+    [Parameter] public DialogSize Size { get; set; } = DialogSize.Md;
+
+    protected override string ComponentCssClass => Css.Classes.Dialog.Root;
+
+    private readonly string _id = Guid.NewGuid().ToString("N")[..8];
+    private string _titleId   => $"flare-dialog-title-{_id}";
+    private string _contentId => $"flare-dialog-content-{_id}";
+    private string? _sizeClass;
+    private ElementReference _dialogEl;
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<FlareDialog>? _dotNetRef;
+    private bool _wasVisible;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _sizeClass = Size switch
+        {
+            DialogSize.Xs         => Css.Classes.Dialog.SizeXs,
+            DialogSize.Sm         => Css.Classes.Dialog.SizeSm,
+            DialogSize.Lg         => Css.Classes.Dialog.SizeLg,
+            DialogSize.Xl         => Css.Classes.Dialog.SizeXl,
+            DialogSize.FullScreen => Css.Classes.Dialog.SizeFull,
+            DialogSize.FullWidth  => Css.Classes.Dialog.Fullwidth,
+            _                     => Css.Classes.Dialog.SizeMd,
+        };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Visible && !_wasVisible)
+        {
+            _wasVisible = true;
+            try
+            {
+                _module ??= await JS.InvokeAsync<IJSObjectReference>(
+                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                _dotNetRef ??= DotNetObjectReference.Create(this);
+
+                await _module.InvokeVoidAsync("lockBodyScroll");
+
+                if (CloseOnEsc)
+                    await _module.InvokeVoidAsync("registerDialogEscHandler", _id, _dotNetRef);
+
+                await _module.InvokeVoidAsync("trapFocus", _id, _dialogEl);
+            }
+            catch { /* SSR or pre-render: JS not available */ }
+        }
+        else if (!Visible && _wasVisible)
+        {
+            _wasVisible = false;
+            if (_module is not null)
+            {
+                try
+                {
+                    await _module.InvokeVoidAsync("unlockBodyScroll");
+                    await _module.InvokeVoidAsync("removeDialogEscHandler", _id);
+                    await _module.InvokeVoidAsync("releaseFocusTrap", _id);
+                }
+                catch { }
+            }
+        }
+    }
+
+    [JSInvokable]
+    public async Task CloseFromEsc()
+    {
+        if (CloseOnEsc)
+            await VisibleChanged.InvokeAsync(false);
+    }
+
+    private async Task HandleScrimClick()
+    {
+        if (CloseOnScrimClick)
+            await VisibleChanged.InvokeAsync(false);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (_module is not null)
+        {
+            // If the dialog is still open when disposed (e.g. page navigation), release locks.
+            if (_wasVisible)
+            {
+                try { await _module.InvokeVoidAsync("unlockBodyScroll"); } catch { }
+            }
+            try { await _module.InvokeVoidAsync("removeDialogEscHandler", _id); } catch { }
+            try { await _module.InvokeVoidAsync("releaseFocusTrap", _id); } catch { }
+            await _module.DisposeAsync();
+        }
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

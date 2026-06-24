@@ -1,0 +1,154 @@
+.flare-nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-1, 0.125rem);
+  padding: var(--flare-spacing-4, 0.5rem) 0;
+}
+
+/* Scroll the overflow but hide the scrollbar (HideScrollbar). Scrolling still works. */
+.flare-nav-menu--no-scrollbar {
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* legacy Edge/IE */
+}
+.flare-nav-menu--no-scrollbar::-webkit-scrollbar { width: 0; height: 0; }  /* WebKit */
+
+/* Nav Group */
+.flare-nav-group { display: flex; flex-direction: column; }
+
+.flare-nav-group__header {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-8, 1rem);
+  border: none;
+  background: transparent;
+  color: var(--flare-color-on-surface-variant);
+  font-family: var(--flare-typescale-label-large-font);
+  font-size: var(--flare-typescale-label-large-size);
+  font-weight: var(--flare-typescale-label-large-weight);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
+  transition: background-color var(--flare-motion-duration-short1);
+}
+
+.flare-nav-group__header:hover {
+  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+}
+
+.flare-nav-group__icon { display: inline-flex; font-size: 1.25rem; flex-shrink: 0; }
+.flare-nav-group__title { flex: 1; }
+
+.flare-nav-group__chevron {
+  font-size: 1rem;
+  transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-emphasized, ease-in-out);
+  display: inline-block;
+  margin-left: auto;
+  transform: rotate(0deg);
+}
+
+.flare-nav-group__chevron--open { transform: rotate(180deg); }
+
+/*
+   Expand/collapse animates grid-template-rows 0fr<->1fr, which interpolates to the real
+   content height - no fixed max-height cap, so arbitrarily long groups are never clipped.
+   Uses the active theme's emphasized motion tokens (MD3 Expressive / Fluent UI 2).
+*/
+.flare-nav-group__items {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-emphasized, ease-in-out);
+}
+
+.flare-nav-group__items--open { grid-template-rows: 1fr; }
+
+.flare-nav-group__items-inner {
+  display: flex;
+  flex-direction: column;
+  padding-left: var(--flare-spacing-8, 1rem);
+  gap: var(--flare-spacing-1, 0.125rem);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Nav Link */
+.flare-nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-8, 1rem);
+  border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
+  text-decoration: none;
+  color: var(--flare-color-on-surface-variant);
+  font-family: var(--flare-typescale-label-large-font);
+  font-size: var(--flare-typescale-label-large-size);
+  font-weight: var(--flare-typescale-label-large-weight);
+  transition: background-color var(--flare-motion-duration-short1), color var(--flare-motion-duration-short1);
+}
+
+.flare-nav-link:hover {
+  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-nav-link--active {
+  background: var(--flare-nav-active-indicator, var(--flare-color-secondary-container));
+  border-radius: var(--flare-nav-indicator-radius, var(--flare-shape-full));
+  border-left: var(--flare-nav-active-left-bar, none);
+  color: var(--flare-color-on-secondary-container);
+  font-weight: 600;
+}
+
+.flare-nav-link--active:hover {
+  background: var(--flare-nav-active-indicator, var(--flare-color-secondary-container));
+}
+
+.flare-nav-link--disabled {
+  opacity: var(--flare-state-disabled-opacity);
+  pointer-events: none;
+}
+
+.flare-nav-link__icon { display: inline-flex; font-size: 1.25rem; flex-shrink: 0; }
+.flare-nav-link__text { flex: 1; min-width: 0; }
+.flare-nav-link__badge {
+  background: var(--flare-color-error);
+  color: var(--flare-color-on-error);
+  border-radius: var(--flare-shape-full, 9999px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+/*
+   Mini-rail: trim every item to its icon. Text, group titles, the expand chevron and badges are
+   hidden and the icons are centered; nested group items collapse away (they have no icons). Turns
+   on via FlareNavMenu.Rail, or automatically inside a collapsed FlareLayout MiniRail drawer.
+*/
+.flare-nav-menu--rail .flare-nav-link__text,
+.flare-nav-menu--rail .flare-nav-link__badge,
+.flare-nav-menu--rail .flare-nav-group__title,
+.flare-nav-menu--rail .flare-nav-group__chevron {
+  display: none;
+}
+
+.flare-nav-menu--rail .flare-nav-link,
+.flare-nav-menu--rail .flare-nav-group__header {
+  justify-content: center;
+  gap: 0;
+  padding-inline: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-nav-menu--rail .flare-nav-link__icon,
+.flare-nav-menu--rail .flare-nav-group__icon {
+  font-size: 1.5rem;
+}
+
+/* Nested links carry no icon, so the expanded group body is hidden in the rail. */
+.flare-nav-menu--rail .flare-nav-group__items {
+  display: none;
+}

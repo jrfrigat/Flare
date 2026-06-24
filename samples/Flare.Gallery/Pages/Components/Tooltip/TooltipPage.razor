@@ -1,0 +1,14 @@
+@page "/components/tooltip"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Tooltip_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTooltip">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Tooltip_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Tooltip_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Tooltip_Placement" DemoType="typeof(Examples.TooltipPlacementDemo)" />
+<AutoDemoSection Title="Smart Position" DemoType="typeof(Examples.TooltipSmartPositionDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tooltip_Delay" DemoType="typeof(Examples.TooltipDelayDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tooltip_Rich" DemoType="typeof(Examples.TooltipRichDemo)" />

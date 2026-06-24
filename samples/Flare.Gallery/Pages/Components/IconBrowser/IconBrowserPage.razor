@@ -1,0 +1,126 @@
+@page "/components/icons"
+@inject IJSRuntime JS
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Icons_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareIcon">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Icons_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        @GalleryStrings.Icons_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+
+@* ── Tab bar ── *@
+<FlareStack Row Gap="FlareSpacing.XSmall" Style="margin-bottom:1.25rem;">
+    <FlareButton Variant="@(_tab == "svg" ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                 OnClick="@(() => SetTab("svg"))">
+        @GalleryStrings.Icons_SvgPack
+    </FlareButton>
+    <FlareButton Variant="@(_tab == "material" ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                 OnClick="@(() => SetTab("material"))">
+        @GalleryStrings.Icons_MaterialSymbols
+    </FlareButton>
+</FlareStack>
+
+@* ── Search + count ── *@
+<FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center" Wrap="true" Style="margin-bottom:1rem;">
+    <FlareField @bind-Value="_search"
+                Placeholder="@GalleryStrings.Icons_Search"
+                Style="max-width:22rem;" />
+    <FlareChip Label="@string.Format(GalleryStrings.Icons_TotalCount, _filtered.Count)" />
+    @if (_copiedName is not null)
+    {
+        <FlareChip Label="@($"{_copiedName} - {GalleryStrings.Icons_Copied}")" />
+    }
+</FlareStack>
+
+@* ── SVG Pack grid ── *@
+@if (_tab == "svg")
+{
+    <div class="icon-browser-grid">
+        @foreach (var name in _filtered)
+        {
+            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint" @onclick="@(() => CopyUsage(name))">
+                <FlareIcon Name="@name" SizePx="28" />
+                <span class="icon-card__label">@name</span>
+            </button>
+        }
+    </div>
+}
+
+@* ── Material Symbols reference ── *@
+@if (_tab == "material")
+{
+    <div class="icon-browser-grid">
+        @foreach (var name in _materialFiltered)
+        {
+            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint" @onclick="@(() => CopyUsage(name))">
+                <span class="material-symbols-rounded" style="font-size:28px;">@name</span>
+                <span class="icon-card__label">@name</span>
+            </button>
+        }
+    </div>
+}
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:1.5rem">
+    @GalleryStrings.Icons_CopyHint
+</FlareText>
+
+@code {
+    private string _tab = "svg";
+    private string _search = string.Empty;
+    private string? _copiedName;
+
+    private static readonly List<string> _allSvgIcons =
+        FlareIcons.All.ToList();
+
+    private static readonly List<string> _allMaterialIcons =
+    [
+        "home","add","close","check","search","settings","delete","edit","favorite","star",
+        "info","warning","error","check_circle","cancel","visibility","visibility_off","lock",
+        "person","group","email","phone","calendar_today","schedule","download","upload",
+        "share","refresh","menu","more_vert","more_horiz","expand_more","expand_less",
+        "chevron_right","chevron_left","filter_list","sort","drag_handle","open_in_new",
+        "copy_all","thumb_up","thumb_down","notifications","dark_mode","light_mode","palette",
+        "code","bug_report","rocket_launch","flash_on","speed","arrow_back","arrow_forward",
+        "arrow_drop_down","arrow_drop_up","done_all","folder","folder_open","save","print",
+        "attach_file","link","image","photo_camera","play_arrow","pause","stop","volume_up",
+        "volume_off","mic","mic_off","chat","send","reply","inbox","drafts","label","tag",
+        "bookmark","bookmark_border","star_border","thumb_up_off_alt","cloud","cloud_upload",
+        "cloud_download","wifi","bluetooth","battery_full","phone_android","laptop","monitor",
+        "keyboard","mouse","headphones","speaker","camera","videocam","location_on","map",
+        "directions","transit_enterexit","local_fire_department","ac_unit","wb_sunny",
+        "nightlight_round","access_time","event","today","history","update","sync",
+        "check_box","check_box_outline_blank","radio_button_checked","radio_button_unchecked",
+        "toggle_on","toggle_off","tune","dashboard","bar_chart","pie_chart","show_chart",
+        "table_chart","grid_view","view_list","view_module","view_column","article",
+        "description","insert_drive_file","folder_zip","picture_as_pdf","block","architecture"
+    ];
+
+    private List<string> _filtered => string.IsNullOrWhiteSpace(_search)
+        ? _allSvgIcons
+        : _allSvgIcons.Where(n => n.Contains(_search, StringComparison.OrdinalIgnoreCase)).ToList();
+
+    private List<string> _materialFiltered => string.IsNullOrWhiteSpace(_search)
+        ? _allMaterialIcons
+        : _allMaterialIcons.Where(n => n.Contains(_search, StringComparison.OrdinalIgnoreCase)).ToList();
+
+    private void SetTab(string tab)
+    {
+        _tab = tab;
+        _copiedName = null;
+    }
+
+    private async Task CopyUsage(string name)
+    {
+        var code = $"<FlareIcon Name=\"{name}\" />";
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", code);
+        _copiedName = name;
+        StateHasChanged();
+        await Task.Delay(2000);
+        if (_copiedName == name) _copiedName = null;
+        StateHasChanged();
+    }
+}

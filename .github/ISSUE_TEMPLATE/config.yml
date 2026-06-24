@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & discussions
+    url: https://github.com/jrfrigat/Flare/discussions
+    about: Ask questions, share ideas, and discuss usage here.
+  - name: Component gallery (live demos)
+    url: https://github.com/jrfrigat/Flare#readme
+    about: Browse live component demos before filing an issue.
+  - name: Report a security vulnerability
+    url: https://github.com/jrfrigat/Flare/security/policy
+    about: Please report security issues privately - do not open a public issue.

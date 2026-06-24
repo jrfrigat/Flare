@@ -1,0 +1,81 @@
+/* ==========================================================================
+   LIQUID GLASS - chrome (list / menu items, dialog header, snackbar, drawer
+   header, toggle button, FAB, breadcrumb). Performance-first, no backdrop blur.
+
+   Hover / selection states are soft accent-tinted; the FAB is a glossy accent
+   orb with a lensing rim; the snackbar is a dark translucent capsule. Token
+   driven for light + dark.
+   ========================================================================== */
+@scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
+
+    /* ---- List / menu items: soft accent hover + selection ---- */
+    .flare-list-item--clickable:hover,
+    .flare-menu-item:hover {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
+    }
+    .flare-list-item--selected {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 18%, transparent);
+        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
+    }
+
+    /* ---- Dialog header: a glassy title bar with a sheen ---- */
+    .flare-dialog__header {
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 60%);
+        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
+    }
+
+    /* ---- Drawer header: glassy bar ---- */
+    .flare-drawer__header {
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 60%);
+        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
+    }
+
+    /* ---- Snackbar: dark translucent capsule ---- */
+    .flare-snackbar {
+        background-color: color-mix(in srgb, var(--flare-color-inverse-surface) 92%, transparent);
+        box-shadow:
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.18),
+            var(--flare-liquid-shadow);
+    }
+
+    /* ---- Toggle button (segmented): translucent glass; pressed = accent pill ---- */
+    .flare-toggle-btn {
+        background-color: var(--flare-liquid-tint) !important;
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 55%) !important;
+        border: 1px solid var(--flare-liquid-edge) !important;
+        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
+    }
+    .flare-toggle-btn:hover {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 12%, var(--flare-liquid-tint-strong)) !important;
+        border-color: color-mix(in srgb, var(--flare-color-primary) 40%, transparent) !important;
+    }
+    .flare-toggle-btn--pressed {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-liquid-tint-strong)) !important;
+        border-color: var(--flare-color-primary) !important;
+        box-shadow:
+            inset 0 1px 0.5px var(--flare-liquid-rim),
+            0 1px 3px rgba(0, 0, 0, 0.14);
+    }
+
+    /* ---- FAB / FAB-menu trigger: glossy accent orb. The FAB fills with
+       --fc-container and its icon is --fc-on-container, so base the sheen on the
+       CONTAINER color (not --fc-main) to keep the icon readable in light + dark. ---- */
+    .flare-fab,
+    .flare-fab-menu__btn {
+        background-color: color-mix(in srgb, var(--fc-container, var(--flare-color-primary-container)) 92%, transparent);
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.08) 50%, transparent 65%) !important;
+        box-shadow:
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.6),
+            inset 0 -1px 1px rgba(0, 0, 0, 0.10),
+            var(--flare-liquid-shadow);
+    }
+    .flare-fab:active,
+    .flare-fab-menu__btn:active { transform: scale(0.94); }
+    /* Surface FAB keeps a neutral translucent fill. */
+    .flare-fab--surface {
+        background-color: var(--flare-liquid-tint-strong) !important;
+    }
+
+    /* ---- Breadcrumb link: accent on hover ---- */
+    .flare-breadcrumb__link:hover { color: var(--flare-color-primary); }
+}

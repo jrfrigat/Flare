@@ -1,0 +1,16 @@
+﻿@using Flare.Gallery.Resources
+
+<FlareChipGroup SelectedValues="_selected"
+                SelectedValuesChanged="v => _selected = v"
+                AriaLabel="@GalleryStrings.ChipGroup_AriaCategoryFilter">
+    <FlareChip Value="all" Label="@GalleryStrings.ChipGroup_All" />
+    <FlareChip Value="design" Label="@GalleryStrings.ChipGroup_Design" />
+    <FlareChip Value="code" Label="@GalleryStrings.ChipGroup_Code" />
+    <FlareChip Value="docs" Label="@GalleryStrings.ChipGroup_Docs" />
+</FlareChipGroup>
+@if (_selected.Any())
+{
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @GalleryStrings.Common_Selected @string.Join(", ", _selected)
+    </FlareText>
+}

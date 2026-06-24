@@ -1,0 +1,57 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<span class="@BuildCssClass(_variantClass, _animClass)"
+      style="@_sizeStyle @Style"
+      aria-busy="true"
+      aria-label="@(FlareStrings.Aria_Loading)"
+      role="status"
+      @attributes="AdditionalAttributes">
+</span>
+
+@code {
+    /// <summary>Shape of the skeleton placeholder: Rect, Text, or Circle.</summary>
+    [Parameter] public SkeletonVariant Variant { get; set; } = SkeletonVariant.Rect;
+    /// <summary>Loading animation style: Wave, Pulse, or None.</summary>
+    [Parameter] public SkeletonAnimation Animation { get; set; } = SkeletonAnimation.Wave;
+    /// <summary>CSS width applied inline to the skeleton element.</summary>
+    [Parameter] public string? Width { get; set; }
+    /// <summary>CSS height applied inline to the skeleton element.</summary>
+    [Parameter] public string? Height { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Skeleton.Root;
+
+    private string? _lastKey;
+    protected override bool ShouldRender()
+    {
+        var key = $"{Variant}:{Animation}:{Width}:{Height}";
+        if (key == _lastKey) return false;
+        _lastKey = key;
+        return true;
+    }
+
+    private string _variantClass => Variant switch
+    {
+        SkeletonVariant.Text   => Css.Classes.Skeleton.Text,
+        SkeletonVariant.Circle => Css.Classes.Skeleton.Circle,
+        _                      => Css.Classes.Skeleton.Rect
+    };
+
+    private string _animClass => Animation switch
+    {
+        SkeletonAnimation.Pulse => Css.Classes.Skeleton.Pulse,
+        SkeletonAnimation.None  => string.Empty,
+        _                       => Css.Classes.Skeleton.Wave
+    };
+
+    private string? _sizeStyle
+    {
+        get
+        {
+            var parts = new List<string>(2);
+            if (Width is not null) parts.Add($"width:{Width}");
+            if (Height is not null) parts.Add($"height:{Height}");
+            return parts.Count > 0 ? string.Join(';', parts) : null;
+        }
+    }
+}

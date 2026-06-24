@@ -1,0 +1,17 @@
+﻿@inject IDialogService DialogService
+@inject ISnackbarService Snackbar
+@inject IMessageBoxService MsgBox
+@inherits LocalizedPage
+
+<FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowConfirm">@GalleryStrings.Dialog_ShowConfirm</FlareButton>
+
+@code{
+    private async Task ShowConfirm()
+    {
+        var confirmed = await DialogService.ConfirmAsync(
+            "Delete item",
+            "Are you sure you want to delete this item? This action cannot be undone.",
+            "Delete", "Cancel");
+        Snackbar.Show(confirmed == true ? "Deleted!" : "Cancelled", confirmed == true ? SnackbarSeverity.Error : SnackbarSeverity.Normal);
+    }
+}

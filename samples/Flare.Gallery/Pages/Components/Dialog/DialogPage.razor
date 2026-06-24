@@ -1,0 +1,22 @@
+@page "/components/dialog"
+@inject IDialogService DialogService
+@inject ISnackbarService Snackbar
+@inject IMessageBoxService MsgBox
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Dialog_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDialog">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Dialog_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Dialog_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Dialog_Inline" DemoType="typeof(Examples.DialogInlineDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.Dialog_Icon" DemoType="typeof(Examples.DialogIconDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.Dialog_Confirm" DemoType="typeof(Examples.DialogConfirmDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.Dialog_Alert" DemoType="typeof(Examples.DialogAlertDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.Dialog_Prompt" DemoType="typeof(Examples.DialogPromptDemo)" />

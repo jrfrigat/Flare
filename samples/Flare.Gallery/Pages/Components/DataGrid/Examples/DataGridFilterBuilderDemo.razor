@@ -1,0 +1,18 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* Inside ToolbarContent the builder resolves the grid automatically: it offers the grid's
+   Filterable columns as fields and applies/clears the advanced filter directly - no wiring. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="20">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Filterable="true" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Filterable="true"
+                     FilterType="ColumnFilterType.Select" />
+        <FlareColumn Title="City" Field="@(p => p.City)" Filterable="true"
+                     FilterType="ColumnFilterType.Select" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="90px" Filterable="true"
+                     FilterType="ColumnFilterType.Number" Sortable="true" />
+    </Columns>
+    <ToolbarContent>
+        <DataGridFilterBuilder />
+    </ToolbarContent>
+</FlareDataGrid>

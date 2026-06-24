@@ -1,0 +1,395 @@
+/* -- FlareColorPicker ------------------------------------------------------- */
+
+.flare-colorpicker {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2, 0.25rem);
+}
+
+/* -- Label (popover mode) ------------------------------------------------- */
+
+.flare-colorpicker__label {
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+}
+
+/* -- Trigger (popover mode) ----------------------------------------------- */
+
+.flare-colorpicker__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-6, 0.75rem) var(--flare-spacing-3, 0.375rem) var(--flare-spacing-3, 0.375rem);
+    background: var(--flare-color-surface-container-highest);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-extra-small);
+    cursor: pointer;
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size, 0.875rem);
+    color: var(--flare-color-on-surface);
+    transition: border-color var(--flare-motion-duration-short2, 150ms);
+}
+
+.flare-colorpicker__trigger:hover {
+    border-color: var(--flare-color-outline);
+}
+
+.flare-colorpicker__trigger:focus-visible {
+    outline: 2px solid var(--flare-color-primary);
+    outline-offset: 2px;
+}
+
+.flare-colorpicker__trigger-swatch {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid var(--flare-color-outline-variant);
+    flex-shrink: 0;
+    background-image:
+        linear-gradient(45deg, #ccc 25%, transparent 25%),
+        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ccc 75%),
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    position: relative;
+    overflow: hidden;
+}
+
+.flare-colorpicker__trigger-swatch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    border-radius: inherit;
+}
+
+.flare-colorpicker__trigger-label {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+}
+
+/* -- Panel (popover container) -------------------------------------------- */
+
+.flare-colorpicker__panel {
+    /* Fixed + JS-positioned (positionAnchoredPanel) so the panel escapes a Card's overflow:hidden. */
+    position: fixed;
+    z-index: 1000;
+    background: var(--flare-color-surface-container);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-medium, 0.75rem);
+    box-shadow: var(--flare-elevation-2,
+        0 3px 1px -2px rgba(0,0,0,.2),
+        0 2px 2px rgba(0,0,0,.14),
+        0 1px 5px rgba(0,0,0,.12));
+    padding: var(--flare-spacing-6, 0.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-5, 0.625rem);
+    width: 260px;
+}
+
+/* -- Canvas --------------------------------------------------------------- */
+
+.flare-colorpicker__canvas-wrap {
+    position: relative;
+    border-radius: var(--flare-shape-extra-small, 4px);
+    overflow: hidden;
+    cursor: crosshair;
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.flare-colorpicker__canvas {
+    display: block;
+    width: 100%;
+    height: 160px;
+    border-radius: var(--flare-shape-extra-small, 4px);
+    touch-action: none;
+}
+
+/* -- Sliders -------------------------------------------------------------- */
+
+.flare-colorpicker__sliders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-3, 0.375rem);
+}
+
+.flare-colorpicker__slider-row {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-colorpicker__preview {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 2px solid var(--flare-color-outline-variant);
+    flex-shrink: 0;
+    background-image:
+        linear-gradient(45deg, #ccc 25%, transparent 25%),
+        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ccc 75%),
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+    position: relative;
+    overflow: hidden;
+}
+
+.flare-colorpicker__preview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+}
+
+.flare-colorpicker__slider-hue,
+.flare-colorpicker__slider-alpha {
+    flex: 1;
+    position: relative;
+    border-radius: 9999px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+}
+
+/* Shared range input styles */
+.flare-colorpicker__slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 12px;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 9999px;
+    outline: none;
+    position: relative;
+    z-index: 1;
+}
+
+/* Track gradients live on the input itself, by variant. Hue is the spectrum; alpha is a
+   checkerboard under a transparent->color fade (the solid color comes from --_alpha-color). */
+.flare-colorpicker__slider--hue {
+    background: linear-gradient(to right,
+        hsl(0,100%,50%), hsl(30,100%,50%), hsl(60,100%,50%),
+        hsl(90,100%,50%), hsl(120,100%,50%), hsl(150,100%,50%),
+        hsl(180,100%,50%), hsl(210,100%,50%), hsl(240,100%,50%),
+        hsl(270,100%,50%), hsl(300,100%,50%), hsl(330,100%,50%),
+        hsl(360,100%,50%));
+}
+.flare-colorpicker__slider--alpha {
+    background-image:
+        linear-gradient(45deg, #ccc 25%, transparent 25%),
+        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ccc 75%),
+        linear-gradient(-45deg, transparent 75%, #ccc 75%),
+        linear-gradient(to right, transparent, var(--_alpha-color, #000));
+    background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0, 0 0;
+}
+
+.flare-colorpicker__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid rgba(0,0,0,0.3);
+    box-shadow: var(--flare-elevation-1);
+    cursor: pointer;
+    transition: box-shadow var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-colorpicker__slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid rgba(0,0,0,0.3);
+    box-shadow: var(--flare-elevation-1);
+    cursor: pointer;
+}
+
+.flare-colorpicker__slider:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px var(--flare-color-primary-container, rgba(98,0,238,.2));
+}
+
+.flare-colorpicker__slider:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 3px var(--flare-color-primary-container, rgba(98,0,238,.2));
+}
+
+/* -- Text inputs ---------------------------------------------------------- */
+
+.flare-colorpicker__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-3, 0.375rem);
+}
+
+.flare-colorpicker__tabs {
+    display: flex;
+    gap: var(--flare-spacing-1, 2px);
+}
+
+.flare-colorpicker__tab {
+    flex: 1;
+    padding: var(--flare-spacing-2, 0.25rem) 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--flare-color-outline-variant);
+    color: var(--flare-color-on-surface-variant);
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: border-color var(--flare-motion-duration-short2, 150ms),
+                color var(--flare-motion-duration-short2, 150ms);
+}
+
+.flare-colorpicker__tab:hover {
+    color: var(--flare-color-on-surface);
+}
+
+.flare-colorpicker__tab--active {
+    border-bottom-color: var(--flare-color-primary);
+    color: var(--flare-color-primary);
+}
+
+.flare-colorpicker__input-row {
+    display: flex;
+    gap: var(--flare-spacing-3, 0.375rem);
+}
+
+.flare-colorpicker__input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: var(--flare-spacing-1, 2px);
+}
+
+.flare-colorpicker__input {
+    width: 100%;
+    padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-3, 0.375rem);
+    background: var(--flare-color-surface-container-highest);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-extra-small, 4px);
+    color: var(--flare-color-on-surface);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    outline: none;
+    transition: border-color var(--flare-motion-duration-short2, 150ms);
+    box-sizing: border-box;
+}
+
+.flare-colorpicker__input:focus {
+    border-color: var(--flare-color-primary);
+}
+
+/* Hide number spinners */
+.flare-colorpicker__input[type=number]::-webkit-inner-spin-button,
+.flare-colorpicker__input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.flare-colorpicker__input[type=number] { -moz-appearance: textfield; }
+
+.flare-colorpicker__input-label {
+    font-family: var(--flare-typescale-label-small-font);
+    font-size: 0.625rem;
+    color: var(--flare-color-on-surface-variant);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* HEX input full-width */
+.flare-colorpicker__input-row > .flare-colorpicker__input {
+    text-align: left;
+}
+
+/* -- Presets -------------------------------------------------------------- */
+
+.flare-colorpicker__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flare-spacing-3, 0.375rem);
+    padding-top: var(--flare-spacing-3, 0.375rem);
+    border-top: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-colorpicker__preset {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    border: 2px solid var(--flare-color-outline-variant);
+    cursor: pointer;
+    padding: 0;
+    transition: transform var(--flare-motion-duration-short1, 100ms),
+                border-color var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-colorpicker__preset:hover {
+    transform: scale(1.2);
+    border-color: var(--flare-color-outline);
+}
+
+.flare-colorpicker__preset:focus-visible {
+    outline: 2px solid var(--flare-color-primary);
+    outline-offset: 2px;
+}
+
+/* -- Inline mode ---------------------------------------------------------- */
+
+.flare-colorpicker.flare-colorpicker--inline {
+    display: flex;
+}
+
+.flare-colorpicker--inline .flare-colorpicker__panel {
+    position: static;
+    box-shadow: none;
+    border: 1px solid var(--flare-color-outline-variant);
+    width: auto;
+}
+
+/* -- Disabled ------------------------------------------------------------- */
+
+.flare-colorpicker--disabled {
+    opacity: var(--flare-state-disabled-opacity, 0.38);
+    pointer-events: none;
+}
+
+/* -- Eyedropper ----------------------------------------------------------- */
+
+.flare-colorpicker__eyedropper-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-colorpicker__eyedropper-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--flare-spacing-3, 0.375rem);
+    padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-5, 0.625rem);
+    font: inherit;
+    color: var(--flare-color-on-surface);
+    background: var(--flare-color-surface-container-highest);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-small);
+    cursor: pointer;
+    transition: background var(--flare-motion-duration-short2);
+}
+
+.flare-colorpicker__eyedropper-btn:hover {
+    background: color-mix(in srgb, var(--flare-color-primary) 8%, var(--flare-color-surface-container-highest));
+}

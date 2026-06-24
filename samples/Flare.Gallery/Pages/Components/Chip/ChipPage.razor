@@ -1,0 +1,13 @@
+@page "/components/chip"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Chip_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareChip">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Chip_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Chip_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Chip_Basic" DemoType="typeof(Examples.ChipBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Chip_IconAvatar" DemoType="typeof(Examples.ChipIconAvatarDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Chip_SizeColor" DemoType="typeof(Examples.ChipSizeColorDemo)" />

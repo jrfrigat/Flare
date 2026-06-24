@@ -1,0 +1,19 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* Row-level conditional formatting: RowClassFunc / RowStyleFunc take the row item and return a
+   CSS class / inline style. Here the whole row is tinted by score. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="10" RowStyleFunc="@RowStyle">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private string RowStyle(Person p) =>
+        p.Score >= 90 ? "background:var(--flare-color-success-container);color:var(--flare-color-on-success-container);"
+        : p.Score <= 74 ? "background:var(--flare-color-error-container);color:var(--flare-color-on-error-container);"
+        : "";
+}

@@ -1,0 +1,16 @@
+<FlareStack Align="FlareAlignItems.Start" Gap="FlareSpacing.XSmall">
+    <FlareOtpField @bind-Value="_errorOtp" Error="@_hasError" OnComplete="ValidateOtp" />
+    @if (_hasError)
+    {
+        <FlareText Color="FlareColor.Error" Typo="TypographyScale.BodySmall">
+            Invalid code. Expected 123456.
+        </FlareText>
+    }
+</FlareStack>
+
+@code {
+    private string _errorOtp = string.Empty;
+    private bool _hasError;
+
+    private void ValidateOtp(string v) => _hasError = v != "123456";
+}

@@ -1,0 +1,19 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* ShowPager="false" turns off the built-in pager; FlareDataGridPager is placed in FooterContent
+   instead (it resolves the grid from the cascade, like the toolbar components). A quick filter sits
+   in the footer next to it, showing that grid controls can live anywhere. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="4" ShowPager="false">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+    <FooterContent>
+        <FlareDataGridQuickFilter Placeholder="Search..." />
+        <FlareSpacer />
+        @* The pager owns its presentation: page-size options and visual size live here, not on the grid. *@
+        <FlareDataGridPager Size="PaginationSize.Sm" RowsPerPageOptions="@(new[] { 4, 8, 16 })" />
+    </FooterContent>
+</FlareDataGrid>

@@ -1,0 +1,11 @@
+@page "/components/confirm"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Confirm_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareConfirmDialogProvider">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Confirm_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Confirm_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Confirm_Basic" DemoType="typeof(Examples.ConfirmDemo)" />

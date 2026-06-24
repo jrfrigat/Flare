@@ -1,0 +1,130 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+<div class="@Css.Classes.Ide.DocTabs.Root" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.DocTabs.Bar" @ref="_barRef" role="tablist" aria-label="Document tabs">
+        @foreach (var tab in _tabs)
+        {
+            var isActive = tab == _activeTab;
+            <div class="@Css.Classes.Ide.DocTabs.Tab @(isActive ? Css.Classes.Ide.DocTabs.TabActive : "")"
+                 role="tab"
+                 aria-selected="@isActive"
+                 aria-controls="@tab.PanelId"
+                 tabindex="@(isActive ? 0 : -1)"
+                 @onclick="@(() => ActivateTab(tab))"
+                 @oncontextmenu="@((e) => HandleContextMenu(e, tab))"
+                 @oncontextmenu:preventDefault="true">
+                @if (tab.Icon is not null)
+                {
+                    <span class="material-symbols-rounded @Css.Classes.Ide.DocTabs.Icon">@tab.Icon</span>
+                }
+                <span class="@Css.Classes.Ide.DocTabs.Label">@tab.Title</span>
+                @if (tab.Modified)
+                {
+                    <span class="@Css.Classes.Ide.DocTabs.Modified" aria-label="Modified">*</span>
+                }
+                @if (tab.Closeable)
+                {
+                    <button class="@Css.Classes.Ide.DocTabs.Close"
+                            @onclick="@(() => CloseTab(tab))"
+                            @onclick:stopPropagation="true"
+                            aria-label="Close tab">
+                        <span class="material-symbols-rounded" style="font-size:0.875rem;">close</span>
+                    </button>
+                }
+            </div>
+        }
+    </div>
+    @if (OverflowBehavior == TabOverflowBehavior.Dropdown && _hiddenTabs.Count > 0)
+    {
+        <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
+                     OnClick="@ToggleDropdown"
+                     AriaLabel="Hidden tabs">
+            <span class="material-symbols-rounded" style="font-size:1rem;">expand_more</span>
+        </FlareButton>
+        @if (_dropdownOpen)
+        {
+            <div class="@Css.Classes.Ide.DocTabs.Dropdown" @onfocusout="CloseDropdown">
+                @foreach (var tab in _hiddenTabs)
+                {
+                    <button class="@Css.Classes.Ide.DocTabs.DropdownItem"
+                            @onclick="@(() => { _ = ActivateTab(tab); CloseDropdown(); })">
+                        @tab.Title
+                    </button>
+                }
+            </div>
+        }
+    }
+</div>
+
+<div class="@Css.Classes.Ide.DocTabs.Panels">
+    <CascadingValue Value="this">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public TabOverflowBehavior OverflowBehavior { get; set; } = TabOverflowBehavior.Scroll;
+    [Parameter] public EventCallback<string> OnTabClose { get; set; }
+    [Parameter] public EventCallback<string> OnTabChanged { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Ide.DocTabs.Root;
+
+    private readonly List<FlareDocumentTab> _tabs = [];
+    private FlareDocumentTab? _activeTab;
+    private bool _dropdownOpen;
+    private ElementReference _barRef;
+
+    private List<FlareDocumentTab> _hiddenTabs => _tabs.Skip(10).ToList();
+
+    public string? ActiveTabTitle => _activeTab?.Title;
+
+    internal void RegisterTab(FlareDocumentTab tab)
+    {
+        if (_tabs.Contains(tab)) return;
+        _tabs.Add(tab);
+        if (_activeTab is null)
+        {
+            _activeTab = tab;
+            StateHasChanged();
+        }
+    }
+
+    internal void UnregisterTab(FlareDocumentTab tab)
+    {
+        _tabs.Remove(tab);
+        if (_activeTab == tab)
+            _activeTab = _tabs.FirstOrDefault();
+        StateHasChanged();
+    }
+
+    internal async Task ActivateTab(FlareDocumentTab tab)
+    {
+        _activeTab = tab;
+        StateHasChanged();
+        await OnTabChanged.InvokeAsync(tab.Title);
+    }
+
+    internal bool IsTabActive(FlareDocumentTab tab) => tab == _activeTab;
+
+    private async Task CloseTab(FlareDocumentTab tab)
+    {
+        await OnTabClose.InvokeAsync(tab.Title);
+    }
+
+    private void HandleContextMenu(MouseEventArgs e, FlareDocumentTab tab)
+    {
+    }
+
+    private void ToggleDropdown()
+    {
+        _dropdownOpen = !_dropdownOpen;
+    }
+
+    private void CloseDropdown()
+    {
+        _dropdownOpen = false;
+    }
+
+}

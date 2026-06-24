@@ -1,0 +1,22 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* A horizontal icon command bar (the classic toolbar found in Visual Studio, Access and many editors).
+   Distinct from the ribbon: a single dense row of buttons and small controls. Structural only - place
+   FlareButton items, separators (FlareRibbonSeparator) or small inputs inside. *@
+<div class="@Css.Classes.Ide.Toolbar.Root @BuildCssClass(_denseClass)" role="toolbar" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>The toolbar's command buttons and controls.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Tightens spacing and button size for a denser bar.</summary>
+    [Parameter] public bool Dense { get; set; }
+
+    private string _denseClass => Dense ? Css.Classes.Ide.Toolbar.Dense : string.Empty;
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.Toolbar.Root;
+}

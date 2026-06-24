@@ -1,0 +1,60 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_colorClass, _sideClass)" role="listitem" style="@($"{_colorStyle}{Style}")" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Timeline.Connector">
+        <div class="@Css.Classes.Timeline.Dot">
+            @if (!string.IsNullOrEmpty(Icon))
+            {
+                <span class="material-symbols-rounded" aria-hidden="true">@Icon</span>
+            }
+        </div>
+        <div class="@Css.Classes.Timeline.Line"></div>
+    </div>
+    <div class="@Css.Classes.Timeline.Body">
+        @if (!string.IsNullOrEmpty(Time))
+        {
+            <span class="@Css.Classes.Timeline.Time">@Time</span>
+        }
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <p class="@Css.Classes.Timeline.Title">@Title</p>
+        }
+        @if (ChildContent is not null)
+        {
+            <div class="@Css.Classes.Timeline.Content">@ChildContent</div>
+        }
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] private FlareTimeline? Timeline { get; set; }
+
+    /// <summary>Additional body content for this timeline item.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Title text displayed in the item body.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Timestamp or date string shown above the title.</summary>
+    [Parameter] public string? Time { get; set; }
+    /// <summary>Material Symbols icon name shown in the dot.</summary>
+    [Parameter] public string? Icon { get; set; }
+    /// <summary>Dot/connector color. Defaults to <c>Primary</c>. Role (<c>FlareColor.Secondary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Primary;
+
+    protected override string ComponentCssClass => Css.Classes.Timeline.Item;
+
+    private int _index;
+
+    protected override void OnParametersSet()
+    {
+        _index = Timeline?.NextItemIndex() ?? 0;
+    }
+
+    // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main token.
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string _colorStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : string.Empty;
+
+    private string _sideClass => (Timeline?.Alternating ?? false)
+        ? (_index % 2 == 0 ? Css.Classes.Timeline.ItemLeft : Css.Classes.Timeline.ItemRight)
+        : string.Empty;
+}

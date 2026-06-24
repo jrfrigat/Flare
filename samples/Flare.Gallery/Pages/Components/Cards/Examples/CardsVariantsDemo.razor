@@ -1,0 +1,25 @@
+<div style="display:flex;flex-wrap:wrap;gap:1rem;">
+    @foreach (var v in _variants)
+    {
+        <FlareCard Variant="v.Variant" Style="flex:1 1 12rem;min-width:12rem;">
+            <FlareCardContent>
+                <FlareIcon Size="2rem" Color="FlareColor.Primary" Name="@v.Icon" />
+                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-top:0.5rem;">@v.Name</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">@v.Description</FlareText>
+            </FlareCardContent>
+        </FlareCard>
+    }
+</div>
+
+@code {
+    private record VariantInfo(CardVariant Variant, string Name, string Icon, string Description);
+
+    private readonly VariantInfo[] _variants =
+    {
+        new(CardVariant.Elevated, "Elevated", "layers", "Lifted above the surface with a drop shadow."),
+        new(CardVariant.Filled, "Filled", "palette", "Solid container tinted from the surface scale."),
+        new(CardVariant.Outlined, "Outlined", "border_outer", "A border separates it from the background."),
+        new(CardVariant.Tonal, "Tonal", "format_color_fill", "Soft tonal container (secondary-container)."),
+        new(CardVariant.Text, "Text", "wallpaper", "Transparent - blends into the page surface."),
+    };
+}

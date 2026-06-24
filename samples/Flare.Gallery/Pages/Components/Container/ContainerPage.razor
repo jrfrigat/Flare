@@ -1,0 +1,11 @@
+@page "/components/container"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Container_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareContainer">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Container_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Container_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Layout_Container" DemoType="typeof(Examples.ContainerDemo)" />

@@ -1,0 +1,197 @@
+.flare-progress {
+  display: block;
+  width: 100%;
+}
+
+/* Linear */
+.flare-progress--linear {
+  height: var(--flare-progress-linear-height, 4px);
+  background: var(--flare-color-secondary-container);
+  border-radius: var(--flare-progress-track-radius, var(--flare-shape-full));
+  overflow: hidden;
+  position: relative;
+}
+
+.flare-progress--linear .flare-progress__bar {
+  height: 100%;
+  background: var(--fc-main, var(--flare-color-primary));
+  border-radius: var(--flare-progress-track-radius, var(--flare-shape-full));
+  transition: width 0.3s var(--flare-motion-easing-standard);
+}
+
+/* MD3 split track: active indicator + gap + remaining track (no SVG).
+   Gap is token-driven - MD3 sets it to 4px, Fluent leaves it 0 (continuous bar). */
+.flare-progress--linear.flare-progress--split {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-progress-gap, 0);
+  background: transparent;
+}
+
+.flare-progress--linear.flare-progress--split .flare-progress__bar {
+  flex: 0 0 auto;   /* width comes from the inline width:% */
+  min-width: 0;
+}
+
+.flare-progress__remain {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  background: var(--flare-color-secondary-container);
+  border-radius: var(--flare-progress-track-radius, var(--flare-shape-full));
+  /* MD3: leave a gap before the trailing stop indicator so the track does not
+     run under the dot. Reserves gap + dot-size on the right (0 in Fluent). */
+  margin-right: calc(var(--flare-progress-gap, 0) + var(--flare-progress-stop-size, 0px));
+}
+
+/* MD3 trailing stop-indicator dot (token-gated; Fluent sets size to 0 -> hidden).
+   Scoped to the plain determinate linear bar - not buffer/query/indeterminate. */
+.flare-progress--linear:not(.flare-progress--buffer):not(.flare-progress--query):not(.flare-progress--indeterminate)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: var(--flare-progress-stop-inset, 0px);
+  transform: translateY(-50%);
+  width: var(--flare-progress-stop-size, 0px);
+  height: var(--flare-progress-stop-size, 0px);
+  border-radius: 50%;
+  background: var(--flare-progress-stop-color, var(--fc-main, var(--flare-color-primary)));
+}
+
+.flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
+  width: 40% !important;
+  animation: flare-progress-linear 1.5s infinite var(--flare-motion-easing-standard);
+}
+
+/* ==========================================================================
+   MD3 EXPRESSIVE WAVY LINEAR (spec)
+   Reuses the split-track layout (.flare-progress--split): active bar + gap +
+   remaining track + trailing stop indicator, so the wavy mode gets the SAME gap
+   (--flare-progress-gap) and stop dot as the plain split mode. The active bar
+   clips a single continuous sine <path> (drawn 1:1 in px for a constant wavelength)
+   and translates it one wavelength per cycle for a seamless flow. Theme tokens:
+   wavy-height (with-wave height), wave-length, wave-amplitude, wave-speed.
+   ========================================================================== */
+.flare-progress--wavy.flare-progress--linear {
+  height: var(--flare-progress-wavy-height, 10px);
+  background: transparent;
+}
+
+.flare-progress--wavy.flare-progress--linear .flare-progress__bar {
+  height: 100%;
+  overflow: hidden;          /* clips the wide wave path to the active width */
+  border-radius: 0;
+  background: transparent;
+  color: var(--fc-main, var(--flare-color-primary));   /* stroke="currentColor" */
+}
+
+.flare-progress__wave {
+  display: block;
+  height: 100%;
+  animation: flare-progress-wave var(--flare-progress-wave-speed, 1s) linear infinite;
+}
+
+/* Remaining track is a thin flat line, vertically centred in the taller wavy track. */
+.flare-progress--wavy.flare-progress--linear .flare-progress__remain {
+  height: var(--flare-progress-linear-height, 4px);
+}
+
+/* Flow: shift the wave by exactly one wavelength for a seamless loop. */
+@keyframes flare-progress-wave {
+  to { transform: translateX(calc(-1 * var(--flare-progress-wave-length, 40px))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flare-progress__wave { animation: none; }
+}
+
+/* ==========================================================================
+   MD3 EXPRESSIVE WAVY RING
+   Only the active arc is wavy (track stays a smooth circle). Flow: rotate the wavy
+   path while shifting stroke-dashoffset by the same fraction (pathLength=100, so a
+   full 360deg == 100 units). The fill window stays put on screen while the crests
+   travel around the active arc.
+   ========================================================================== */
+.flare-progress--wavy.flare-progress--circular .flare-progress__track,
+.flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
+  stroke-linejoin: round;
+}
+.flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flare-progress-ring-wave var(--flare-progress-wave-speed, 1s) linear infinite;
+}
+@keyframes flare-progress-ring-wave {
+  from { rotate: 0deg;   stroke-dashoffset: 0;   }
+  to   { rotate: 360deg; stroke-dashoffset: 100; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flare-progress--wavy.flare-progress--circular .flare-progress__indicator { animation: none; }
+}
+
+@keyframes flare-progress-linear {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* Circular */
+.flare-progress--circular {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.flare-progress__svg { width: 100%; height: 100%; }
+.flare-progress__track {
+  stroke: var(--flare-color-secondary-container);
+  stroke-width: var(--flare-progress-circular-width, 4px);
+}
+.flare-progress__indicator {
+  stroke: var(--fc-main, var(--flare-color-primary));
+  stroke-width: var(--flare-progress-circular-width, 4px);
+  stroke-linecap: var(--flare-progress-circular-cap, butt);
+  transition: stroke-dasharray 0.3s var(--flare-motion-easing-standard);
+}
+
+/* Determinate circular: the active arc + remaining-track arc (with the MD3 gap)
+   are computed as plain numeric stroke-dasharray values inline in the component -
+   no CSS calc() in stroke-dasharray, which several browsers reject. */
+
+.flare-progress--circular.flare-progress--indeterminate .flare-progress__svg {
+  animation: flare-progress-rotate 1.4s linear infinite;
+}
+
+.flare-progress--circular.flare-progress--indeterminate .flare-progress__indicator {
+  stroke-dasharray: 80 113.1;
+  animation: flare-progress-dash 1.4s ease-in-out infinite;
+}
+
+@keyframes flare-progress-rotate { 100% { transform: rotate(360deg); } }
+
+/* Buffer variant */
+.flare-progress--buffer .flare-progress__track { background: transparent; }
+.flare-progress__buffer-fill {
+    position: absolute; left: 0; top: 0; height: 100%;
+    background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 30%, transparent);
+    transition: width 0.3s ease;
+}
+
+/* Query variant */
+.flare-progress--query .flare-progress__bar {
+    width: 100% !important;
+    animation: flare-query 1.4s ease infinite;
+    background: linear-gradient(90deg, transparent, var(--fc-main, var(--flare-color-primary)), transparent);
+}
+
+@keyframes flare-query {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+@keyframes flare-progress-dash {
+  0%   { stroke-dasharray: 1 113.1; stroke-dashoffset: 0; }
+  50%  { stroke-dasharray: 90 113.1; stroke-dashoffset: -35; }
+  100% { stroke-dasharray: 90 113.1; stroke-dashoffset: -113; }
+}

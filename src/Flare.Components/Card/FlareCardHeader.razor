@@ -1,0 +1,45 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @if (Avatar is not null)
+    {
+        <div class="@Css.Classes.Card.HeaderAvatar">@Avatar</div>
+    }
+    <div class="@Css.Classes.Card.HeaderText">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <div class="@Css.Classes.Card.Title">@Title</div>
+            }
+            @if (!string.IsNullOrEmpty(Subtitle))
+            {
+                <div class="@Css.Classes.Card.Subtitle">@Subtitle</div>
+            }
+        }
+    </div>
+    @if (Action is not null)
+    {
+        <div class="@Css.Classes.Card.HeaderAction">@Action</div>
+    }
+</div>
+
+@code {
+    /// <summary>Optional leading avatar/icon slot.</summary>
+    [Parameter] public RenderFragment? Avatar { get; set; }
+    /// <summary>Optional trailing action slot (e.g. an icon button or menu).</summary>
+    [Parameter] public RenderFragment? Action { get; set; }
+    /// <summary>Title text (used when <see cref="ChildContent"/> is not provided).</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Subtitle text (used when <see cref="ChildContent"/> is not provided).</summary>
+    [Parameter] public string? Subtitle { get; set; }
+    /// <summary>Custom header content; overrides <see cref="Title"/>/<see cref="Subtitle"/>.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Card.Header;
+}

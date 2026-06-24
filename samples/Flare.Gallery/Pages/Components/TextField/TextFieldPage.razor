@@ -1,0 +1,12 @@
+@page "/components/text-field"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Input_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTextField">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Input_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Input_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Input_Basic" DemoType="typeof(Examples.TextFieldDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Field_Sizes" DemoType="typeof(Examples.TextFieldSizesDemo)" />

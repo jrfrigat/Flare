@@ -1,0 +1,14 @@
+@page "/components/chip-group"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.ChipGroup_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareChipGroup">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.ChipGroup_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.ChipGroup_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.ChipGroup_SingleSelect" DemoType="typeof(Examples.ChipGroupSingleDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ChipGroup_MultiSelect" DemoType="typeof(Examples.ChipGroupMultiDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ChipGroup_WithIcons" DemoType="typeof(Examples.ChipGroupIconDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ChipGroup_Closable" DemoType="typeof(Examples.ChipGroupClosableDemo)" />

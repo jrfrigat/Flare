@@ -1,0 +1,171 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+@inject Flare.Components.Services.ISplitterJsService SplitterJs
+
+@* A standalone resize handle placed BETWEEN two sibling elements inside a flex container - like
+   FlareSpacer, but draggable. Dragging (or arrowing when focused) resizes the previous and next
+   siblings along the flex axis; their combined size stays constant. *@
+<div class="@BuildCssClass(_orientationClass)"
+     role="separator"
+     tabindex="0"
+     aria-orientation="@_ariaOrientation"
+     aria-label="@AriaLabel"
+     style="@_rootStyle"
+     @ref="_gutter"
+     @onkeydown="HandleKeyDown"
+     @attributes="AdditionalAttributes">
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else if (!string.IsNullOrEmpty(Icon))
+    {
+        <span class="material-symbols-rounded @Css.Classes.Splitter.Icon @Css.Classes.Splitter.IconBase" aria-hidden="true">@Icon</span>
+        @if (!string.IsNullOrEmpty(HoverIcon))
+        {
+            <span class="material-symbols-rounded @Css.Classes.Splitter.Icon @Css.Classes.Splitter.IconHover" aria-hidden="true">@HoverIcon</span>
+        }
+    }
+    else
+    {
+        <span class="@Css.Classes.Splitter.GutterBar" aria-hidden="true"></span>
+    }
+</div>
+
+@code {
+    /// <summary>Resize axis.</summary>
+    public enum SplitterOrientation
+    {
+        /// <summary>Detect the axis from the enclosing flex container's direction (the default):
+        /// a <c>row</c> parent resizes widths, a <c>column</c> parent resizes heights.</summary>
+        Auto,
+        /// <summary>Resize the widths of the two horizontal neighbours (vertical handle).</summary>
+        Horizontal,
+        /// <summary>Resize the heights of the two vertical neighbours (horizontal handle).</summary>
+        Vertical,
+    }
+
+    /// <summary>Resize axis. Default <see cref="SplitterOrientation.Auto"/>: the splitter reads the
+    /// parent flex container's direction, so you usually do not need to set this. Provide an explicit
+    /// value only to override (e.g. a non-flex parent).</summary>
+    [Parameter] public SplitterOrientation Orientation { get; set; } = SplitterOrientation.Auto;
+
+    /// <summary>Minimum size in pixels (e.g. "120px") that either neighbour may be dragged to. Optional.</summary>
+    [Parameter] public string? MinSize { get; set; }
+
+    /// <summary>Maximum size in pixels (e.g. "600px") for the previous (left/top) neighbour. Optional.</summary>
+    [Parameter] public string? MaxSize { get; set; }
+
+    /// <summary>Keyboard step (px) applied when the handle is focused and arrowed. Default 16.</summary>
+    [Parameter] public int KeyboardStep { get; set; } = 16;
+
+    /// <summary>Accessible label for the resize handle. Default "Resize".</summary>
+    [Parameter] public string? AriaLabel { get; set; } = "Resize";
+
+    /// <summary>Thickness of the handle as a CSS length (e.g. "8px", "0.75rem"). Default 0.5rem.</summary>
+    [Parameter] public string? Size { get; set; }
+
+    /// <summary>Handle color (CSS color) shown when idle. Defaults to the surface-variant token.</summary>
+    [Parameter] public string? Color { get; set; }
+
+    /// <summary>Handle color (CSS color) shown on hover/focus. Defaults to a primary tint.</summary>
+    [Parameter] public string? HoverColor { get; set; }
+
+    /// <summary>Material Symbols icon shown in the centre of the handle, replacing the default grip bar.</summary>
+    [Parameter] public string? Icon { get; set; }
+
+    /// <summary>Material Symbols icon swapped in on hover/focus (only when <see cref="Icon"/> is set).</summary>
+    [Parameter] public string? HoverIcon { get; set; }
+
+    /// <summary>Fully custom centre content, overriding <see cref="Icon"/> and the default grip bar.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Invoked with the previous neighbour's new pixel size (e.g. "240px") after a resize.</summary>
+    [Parameter] public EventCallback<string> OnSizeChanged { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Splitter.Root;
+
+    // Inline only the customization that was set; everything else falls back to the CSS token defaults.
+    private string _rootStyle
+    {
+        get
+        {
+            var parts = new List<string>(4);
+            if (!string.IsNullOrEmpty(Size)) parts.Add($"{Css.Tokens.Splitter.GutterSize}:{Sanitize(Size)}");
+            if (!string.IsNullOrEmpty(Color)) parts.Add($"{Css.Tokens.Splitter.Color}:{Sanitize(Color)}");
+            if (!string.IsNullOrEmpty(HoverColor)) parts.Add($"{Css.Tokens.Splitter.HoverColor}:{Sanitize(HoverColor)}");
+            if (!string.IsNullOrEmpty(Style)) parts.Add(Style);
+            return string.Join(";", parts);
+        }
+    }
+
+    private static string Sanitize(string value) => Flare.Components.Security.CssValidator.StripDangerous(value);
+
+    // Orientation class: for Auto, JS resolves it from the parent at runtime, so render none here
+    // (the base CSS defaults to a horizontal handle until JS confirms or flips it).
+    private string _orientationClass => Orientation switch
+    {
+        SplitterOrientation.Horizontal => Css.Classes.Splitter.Horizontal,
+        SplitterOrientation.Vertical => Css.Classes.Splitter.Vertical,
+        _ => string.Empty,
+    };
+    private string _axis => Orientation switch
+    {
+        SplitterOrientation.Horizontal => "horizontal",
+        SplitterOrientation.Vertical => "vertical",
+        _ => "auto",
+    };
+    // Pre-JS default matches the horizontal handle (a vertical separator); JS corrects it for Auto.
+    private string _ariaOrientation => Orientation == SplitterOrientation.Vertical ? "horizontal" : "vertical";
+
+    private ElementReference _gutter;
+    private DotNetObjectReference<FlareSplitter>? _dotNetRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await SplitterJs.RegisterAsync(_gutter, _axis, MinSize, MaxSize, _dotNetRef);
+            }
+            catch (InvalidOperationException) { }
+            catch (JSException) { }
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnSplitChanged(string newSize)
+    {
+        if (!string.IsNullOrEmpty(newSize))
+            await OnSizeChanged.InvokeAsync(newSize);
+    }
+
+    // Keyboard resize: arrow keys nudge the previous neighbour. The resolved axis lives in JS (for
+    // Auto it depends on the parent), so the key's own axis is passed and JS ignores perpendicular keys.
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        var dir = e.Key switch
+        {
+            "ArrowRight" or "ArrowDown" => 1,
+            "ArrowLeft" or "ArrowUp" => -1,
+            _ => 0,
+        };
+        if (dir == 0) return;
+        var keyAxis = e.Key is "ArrowLeft" or "ArrowRight" ? "x" : "y";
+        if (_dotNetRef is null) return;
+        await SplitterJs.NudgeAsync(_gutter, _axis, dir * KeyboardStep, keyAxis, MinSize, MaxSize, _dotNetRef);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        // The JS service is shared (DI-owned); only detach this handle and release the callback ref.
+        try { await SplitterJs.RemoveAsync(_gutter); }
+        catch (JSDisconnectedException) { }
+        catch (InvalidOperationException) { }
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

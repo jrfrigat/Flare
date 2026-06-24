@@ -1,0 +1,12 @@
+@* ChildContent lets you supply your own <li> markup instead of Items. *@
+<FlareBreadcrumb AriaLabel="Custom breadcrumb">
+    <li class="flare-breadcrumb__item">
+        <a class="flare-breadcrumb__link" href="/">
+            <FlareIcon Size="1rem" Name="home" Style="vertical-align:middle" /> Home
+        </a>
+        <span class="flare-breadcrumb__separator" aria-hidden="true">/</span>
+    </li>
+    <li class="flare-breadcrumb__item flare-breadcrumb__item--current">
+        <span class="flare-breadcrumb__text" aria-current="page">Current page</span>
+    </li>
+</FlareBreadcrumb>

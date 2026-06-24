@@ -1,0 +1,40 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_layoutClass, Dense ? Css.Classes.Form.Dense : null)" style="@Style" @attributes="AdditionalAttributes">
+    <EditForm Model="@Model"
+              OnValidSubmit="HandleValidSubmit"
+              OnInvalidSubmit="HandleInvalidSubmit">
+        <DataAnnotationsValidator />
+        <CascadingValue Value="this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
+    </EditForm>
+</div>
+
+@code {
+    /// <summary>Model instance the form is bound to.</summary>
+    [Parameter, EditorRequired] public object Model { get; set; } = default!;
+    /// <summary>Content rendered inside the form.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Callback raised when the form passes all validation rules.</summary>
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    /// <summary>Callback raised when the form fails validation on submit.</summary>
+    [Parameter] public EventCallback<EditContext> OnInvalidSubmit { get; set; }
+    /// <summary>Controls how form fields are arranged: Vertical, Horizontal, or Inline.</summary>
+    [Parameter] public FormLayout Layout { get; set; } = FormLayout.Vertical;
+    /// <summary>Reduces spacing and padding of form fields when true.</summary>
+    [Parameter] public bool Dense { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Form.Root;
+
+    private string _layoutClass => Layout switch
+    {
+        FormLayout.Horizontal => Css.Classes.Form.Horizontal,
+        FormLayout.Inline     => Css.Classes.Form.Inline,
+        _                     => string.Empty,
+    };
+
+    private async Task HandleValidSubmit(EditContext ctx) => await OnValidSubmit.InvokeAsync(ctx);
+    private async Task HandleInvalidSubmit(EditContext ctx) => await OnInvalidSubmit.InvokeAsync(ctx);
+}

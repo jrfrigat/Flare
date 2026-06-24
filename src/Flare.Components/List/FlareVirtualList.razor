@@ -1,0 +1,31 @@
+@namespace Flare.Components
+@typeparam TItem
+@inherits FlareComponentBase
+@attribute [System.Obsolete("Use FlareList with Virtual=\"true\" instead - it covers the same virtualized rendering.")]
+
+<div class="@BuildCssClass()" style="@_containerStyle" @attributes="AdditionalAttributes" role="list">
+    <Virtualize Items="@_items" Context="item" OverscanCount="@OverscanCount">
+        <div class="@Css.Classes.Virtual.ListItem" role="listitem">
+            @if (ItemTemplate != null)
+            {
+                @ItemTemplate(item)
+            }
+        </div>
+    </Virtualize>
+</div>
+
+@code {
+    /// <summary>Data source list to virtualize and render.</summary>
+    [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
+    /// <summary>Template used to render each individual item.</summary>
+    [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+    /// <summary>CSS height of the scrollable container.</summary>
+    [Parameter] public string Height { get; set; } = "400px";
+    /// <summary>Number of extra items rendered outside the visible viewport.</summary>
+    [Parameter] public int OverscanCount { get; set; } = 3;
+
+    protected override string ComponentCssClass => Css.Classes.Virtual.List;
+
+    private ICollection<TItem> _items => Items as ICollection<TItem> ?? Items?.ToList() ?? [];
+    private string _containerStyle => $"height:{CssValidator.StripDangerous(Height)};overflow-y:auto;{Style}";
+}

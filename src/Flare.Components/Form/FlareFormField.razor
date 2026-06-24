@@ -1,0 +1,31 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(Required ? Css.Classes.Field.Required : null)" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Field.Label" for="@For">@Label</label>
+    }
+    <div class="@Css.Classes.Field.Control">
+        @ChildContent
+    </div>
+    @if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.Field.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Label text shown above the field control.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>ID of the input element this label targets (HTML for attribute).</summary>
+    [Parameter] public string? For { get; set; }
+    /// <summary>Helper text shown below the field control.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Marks the field as required, adding a visual indicator.</summary>
+    [Parameter] public bool Required { get; set; }
+    /// <summary>Field content (input, select, etc.).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Field.Root;
+}

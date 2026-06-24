@@ -1,0 +1,95 @@
+@page "/about"
+@inject NavigationManager Nav
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.About_Title - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareIcon Size="2.5rem" Color="FlareColor.Primary" Name="local_fire_department" Style="font-variation-settings:'FILL' 1,'wght' 700,'GRAD' 0,'opsz' 48" />
+        <FlareStack Gap="FlareSpacing.None">
+            <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.About_Title</FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+                @GalleryStrings.About_Subtitle
+            </FlareText>
+        </FlareStack>
+    </FlareStack>
+</GalleryPageTitle>
+
+<FlareStack Gap="FlareSpacing.Large">
+
+<section>
+    <FlareGrid Columns="3" Gap="FlareSpacing.Medium">
+        <FlareCol Span="1">
+            <FlareCard Variant="CardVariant.Filled" Style="text-align:center;">
+                <FlareText Color="FlareColor.Primary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">@_version</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.About_Version</FlareText>
+            </FlareCard>
+        </FlareCol>
+        <FlareCol Span="1">
+            <FlareCard Variant="CardVariant.Filled" Style="text-align:center;">
+                <FlareText Color="FlareColor.Secondary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">116+</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.About_Components</FlareText>
+            </FlareCard>
+        </FlareCol>
+        <FlareCol Span="1">
+            <FlareCard Variant="CardVariant.Filled" Style="text-align:center;">
+                <FlareText Color="FlareColor.Tertiary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">5</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.About_Themes</FlareText>
+            </FlareCard>
+        </FlareCol>
+    </FlareGrid>
+</section>
+
+<section>
+    <GallerySectionHeader Icon="new_releases" Title="@GalleryStrings.About_WhatsNew" />
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v@_version - 2026-05-30</FlareText>
+        <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+            @foreach (var item in _whatsNew)
+            {
+                <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+                    <FlareIcon Size="1rem" Color="FlareColor.Primary" Name="check_circle" Style="margin-top:2px" />
+                    <FlareText Typo="TypographyScale.BodyMedium">@item</FlareText>
+                </FlareStack>
+            }
+        </FlareStack>
+    </FlareCard>
+</section>
+
+<section>
+    <FlareCard Variant="CardVariant.Outlined" Style="text-align:center;">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
+            Flare is an open-source Blazor component library built with .NET 10.
+        </FlareText>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="@GoToGitHub">
+            <LeadingIcon><FlareIcon Size="1.1rem" Name="open_in_new" /></LeadingIcon>
+            <ChildContent>@GalleryStrings.About_ViewOnGitHub</ChildContent>
+        </FlareButton>
+    </FlareCard>
+</section>
+
+</FlareStack>
+
+@code {
+    private readonly string _version = "0.0.1";
+
+    private void GoToGitHub() => Nav.NavigateTo("https://github.com/jrfrigat/Flare", forceLoad: true);
+
+    private readonly string[] _whatsNew =
+    [
+        "Theme system v2: three independent axes - design system (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026) x palette x light/dark/auto",
+        "Class-toggle delivery: switching is a class swap on <html>, no per-switch CSS-var injection",
+        "Reusable palettes (Office + Material sets) and Palette.FromColors(brand) generation",
+        "Override any token via Md3/Fluent2 reference records; one-line anti-FOUC bootstrap",
+        "Full OWASP GS-1..GS-8 security audit - all critical findings fixed",
+        "XSS protection: FlareLink, FlareBreadcrumb, FlareNavLink, FlareImage blocked javascript: URIs",
+        "CSS injection guards on FlareGrid, FlareStack, FlareResizable, FlareText",
+        "FlareClipboard: eval() removed, replaced with safe JS interop",
+        "MarkdownParser: vbscript/data-uri/expression()/dangerous-tag defenses",
+        "HtmlSanitizer and CssValidator security utilities",
+        "1,190+ automated tests, 0 failures",
+        "Gallery rebuilt entirely on Flare components - no raw divs or magic code",
+    ];
+
+}

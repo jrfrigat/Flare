@@ -1,0 +1,745 @@
+/* Flare.Components.IDE - structural layout styles.
+   Sizing uses local --flare-ide-* layout variables (geometry, not theme tokens).
+   All visual theming comes from the base Flare design tokens (--flare-color-*, --flare-shape-*,
+   --flare-elevation-*, --flare-state-*); this package defines no theme tokens of its own. */
+
+/* === IDE Layout === */
+.flare-ide-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    position: relative; /* anchor for auto-hide flyout panels */
+    --flare-ide-left-width: 300px;
+    --flare-ide-right-width: 300px;
+    --flare-ide-bottom-height: 200px;
+    --flare-ide-rail: 32px;
+}
+
+.flare-ide-layout__ribbon {
+    flex-shrink: 0;
+}
+
+.flare-ide-layout__menubar {
+    flex-shrink: 0;
+}
+
+.flare-ide-layout__body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.flare-ide-layout__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-ide-layout__content {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+.flare-ide-layout__panel {
+    flex-shrink: 0;
+    position: relative;
+}
+
+.flare-ide-layout__panel-body {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.flare-ide-layout__panel--left {
+    width: var(--flare-ide-left-width);
+    border-right: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-ide-layout__panel--right {
+    width: var(--flare-ide-right-width);
+    border-left: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-ide-layout__bottom {
+    position: relative;
+    flex-shrink: 0;
+    height: var(--flare-ide-bottom-height);
+    border-top: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-ide-layout__bottom .flare-ide-layout__panel-body {
+    overflow: auto;
+}
+
+/* Collapsed: the region shrinks to a thin rail and frees its docked space. */
+.flare-ide-layout__panel--left.flare-ide-layout__panel--collapsed,
+.flare-ide-layout__panel--right.flare-ide-layout__panel--collapsed {
+    width: var(--flare-ide-rail);
+}
+
+.flare-ide-layout__bottom.flare-ide-layout__panel--collapsed {
+    height: var(--flare-ide-rail);
+}
+
+/* Auto-hide (floating): the region reserves only the rail; the body flies out over the content. */
+.flare-ide-layout__panel--left.flare-ide-layout__panel--floating,
+.flare-ide-layout__panel--right.flare-ide-layout__panel--floating {
+    width: var(--flare-ide-rail);
+}
+
+.flare-ide-layout__bottom.flare-ide-layout__panel--floating {
+    height: var(--flare-ide-rail);
+}
+
+.flare-ide-layout__panel--floating .flare-ide-layout__panel-body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 30;
+    background: var(--flare-color-surface);
+    box-shadow: var(--flare-elevation-3);
+}
+
+.flare-ide-layout__panel--left.flare-ide-layout__panel--floating .flare-ide-layout__panel-body {
+    left: 0;
+    width: var(--flare-ide-left-width);
+}
+
+.flare-ide-layout__panel--right.flare-ide-layout__panel--floating .flare-ide-layout__panel-body {
+    right: 0;
+    width: var(--flare-ide-right-width);
+}
+
+.flare-ide-layout__bottom.flare-ide-layout__panel--floating .flare-ide-layout__panel-body {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--flare-ide-bottom-height);
+}
+
+/* Collapsed-rail affordance (expand button). */
+.flare-ide-layout__rail {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-3, 6px);
+    width: 100%;
+    height: 100%;
+    padding: var(--flare-spacing-3, 6px) 0;
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-ide-layout__panel--left .flare-ide-layout__rail,
+.flare-ide-layout__panel--right .flare-ide-layout__rail {
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.flare-ide-layout__bottom .flare-ide-layout__rail {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0 var(--flare-spacing-4, 8px);
+}
+
+.flare-ide-layout__rail:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-ide-layout__rail-title {
+    writing-mode: vertical-rl;
+    font-size: 0.75rem;
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-ide-layout__bottom .flare-ide-layout__rail-title {
+    writing-mode: horizontal-tb;
+}
+
+/* Drag-resize dividers between a docked region and the document. */
+.flare-ide-layout__resizer {
+    flex-shrink: 0;
+    z-index: 5;
+    background: transparent;
+    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-ide-layout__resizer--col {
+    width: 5px;
+    margin: 0 -2px;
+    cursor: col-resize;
+}
+
+.flare-ide-layout__resizer--row {
+    height: 5px;
+    margin: -2px 0;
+    cursor: row-resize;
+}
+
+.flare-ide-layout__resizer:hover,
+.flare-ide-layout__resizer:focus-visible {
+    background: var(--flare-color-primary);
+    outline: none;
+}
+
+.flare-ide-layout__statusbar {
+    flex-shrink: 0;
+}
+
+/* === Ribbon === */
+.flare-ribbon {
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-ribbon__tabs {
+    display: flex;
+    gap: var(--flare-spacing-1, 2px);
+    padding: 0 var(--flare-spacing-2, 4px);
+}
+
+.flare-ribbon__tab {
+    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-8, 16px);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
+    color: inherit;
+    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-ribbon__tab:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-ribbon__tab--active {
+    background: var(--flare-color-surface);
+    font-weight: 500;
+}
+
+.flare-ribbon__commands {
+    display: flex;
+    padding: var(--flare-spacing-2, 4px);
+    gap: 0;
+    min-height: 74px;
+    align-items: stretch;
+}
+
+/* The active tab panel hosts the groups; lay them out in a row. */
+.flare-ribbon__tabpanel {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
+    min-width: 0;
+}
+
+.flare-ribbon__group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
+    border-right: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-ribbon__group:last-child {
+    border-right: none;
+}
+
+.flare-ribbon__group-content {
+    display: flex;
+    gap: var(--flare-spacing-1, 2px);
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Each ribbon button is wrapped in a FlareTooltip; that wrapper is the flex item. Center small
+   (icon) buttons vertically; let large (icon + label) buttons fill the group height. */
+.flare-ribbon__group-content > .flare-tooltip {
+    display: flex;
+    align-self: center;
+}
+
+.flare-ribbon__group-content > .flare-tooltip:has(.flare-ribbon__button--large) {
+    align-self: stretch;
+}
+
+.flare-ribbon__group-label {
+    font-size: 0.6875rem;
+    color: var(--flare-color-on-surface-variant);
+    margin-top: var(--flare-spacing-2, 4px);
+    text-align: center;
+}
+
+.flare-ribbon__button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Compress the base FlareButton chrome so ribbon commands are icon-sized, not full buttons
+   (the default button padding made them look scattered). */
+.flare-ribbon__commands .flare-ribbon__button {
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-3, 6px);
+    gap: var(--flare-spacing-1, 2px);
+    border-radius: var(--flare-shape-extra-small);
+}
+
+.flare-ribbon__commands .flare-ribbon__button--large {
+    min-width: 60px;
+    height: 100%;
+    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-4, 8px);
+}
+
+.flare-ribbon__button .material-symbols-rounded {
+    font-size: 1.25rem;
+}
+
+.flare-ribbon__button--large .material-symbols-rounded {
+    font-size: 1.5rem;
+}
+
+.flare-ribbon__button-label {
+    font-size: 0.6875rem;
+    margin-top: var(--flare-spacing-1, 2px);
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.flare-ribbon--collapsed .flare-ribbon__commands {
+    display: none;
+}
+
+.flare-ribbon__separator {
+    align-self: stretch;
+    width: 1px;
+    margin: var(--flare-spacing-2, 4px) var(--flare-spacing-3, 6px);
+    background: var(--flare-color-outline-variant);
+}
+
+.flare-ribbon__caret {
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+/* === Document Tabs === */
+.flare-doc-tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-doc-tabs__bar {
+    display: flex;
+    overflow-x: auto;
+    gap: 1px;
+    background: var(--flare-color-surface-variant);
+    scrollbar-width: thin;
+}
+
+.flare-doc-tabs__bar::-webkit-scrollbar {
+    height: 3px;
+}
+
+.flare-doc-tabs__tab {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-3, 6px);
+    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-6, 12px);
+    cursor: pointer;
+    font-size: 0.8125rem;
+    border: none;
+    background: none;
+    color: inherit;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease),
+                border-color var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-doc-tabs__tab:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-doc-tabs__tab--active {
+    background: var(--flare-color-surface);
+    border-bottom-color: var(--flare-color-primary);
+}
+
+.flare-doc-tabs__icon {
+    font-size: 1rem;
+}
+
+.flare-doc-tabs__modified {
+    color: var(--flare-color-primary);
+    font-weight: bold;
+}
+
+.flare-doc-tabs__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: none;
+    border-radius: var(--flare-shape-extra-small);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease),
+                background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-doc-tabs__tab:hover .flare-doc-tabs__close {
+    opacity: 1;
+}
+
+.flare-doc-tabs__close:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-pressed-opacity) * 100%), transparent);
+}
+
+.flare-doc-tabs__panels {
+    flex: 1;
+    min-height: 0;
+}
+
+.flare-doc-tabs__panel {
+    height: 100%;
+}
+
+.flare-doc-tabs__dropdown {
+    position: absolute;
+    z-index: 1000;
+    background: var(--flare-color-surface);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-small);
+    box-shadow: var(--flare-elevation-2);
+    padding: var(--flare-spacing-2, 4px) 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.flare-doc-tabs__dropdown-item {
+    display: block;
+    width: 100%;
+    padding: var(--flare-spacing-3, 6px) var(--flare-spacing-6, 12px);
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: inherit;
+}
+
+.flare-doc-tabs__dropdown-item:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+/* === Tool Panel === */
+.flare-toolpanel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.flare-toolpanel__header {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-2, 4px);
+    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
+    min-height: 28px;
+}
+
+.flare-toolpanel__title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    flex: 1;
+}
+
+.flare-toolpanel__toolbar {
+    display: flex;
+    gap: var(--flare-spacing-1, 2px);
+}
+
+.flare-toolpanel__content {
+    flex: 1;
+    overflow: auto;
+    padding: var(--flare-spacing-2, 4px);
+}
+
+.flare-toolpanel--collapsed .flare-toolpanel__content {
+    display: none;
+}
+
+.flare-toolpanel--collapsed .flare-toolpanel__title {
+    display: none;
+}
+
+.flare-toolpanel--collapsed .flare-toolpanel__toolbar {
+    display: none;
+}
+
+/* === Status Bar === */
+.flare-statusbar {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--flare-spacing-6, 12px);
+    font-size: 0.75rem;
+    min-height: 24px;
+}
+
+.flare-statusbar__left,
+.flare-statusbar__center,
+.flare-statusbar__right {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 8px);
+}
+
+.flare-statusbar__left {
+    flex: 1;
+}
+
+.flare-statusbar__center {
+    flex-shrink: 0;
+}
+
+.flare-statusbar__right {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+/* === Menu Bar === */
+.flare-menubar {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--flare-spacing-2, 4px);
+    min-height: 28px;
+}
+
+/* === Quick Access Toolbar === */
+.flare-qat {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-1, 2px);
+    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-3, 6px);
+}
+
+/* === Toolbar (icon command bar) === */
+.flare-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-2, 4px);
+    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
+    min-height: 36px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-toolbar--dense {
+    gap: var(--flare-spacing-1, 2px);
+    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-2, 4px);
+    min-height: 28px;
+}
+
+/* === Backstage (File menu) === */
+.flare-backstage {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    background: var(--flare-color-surface);
+    color: var(--flare-color-on-surface);
+}
+
+.flare-backstage__nav {
+    flex-shrink: 0;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-1, 2px);
+    padding: var(--flare-spacing-4, 8px);
+    background: var(--flare-color-surface-variant);
+    overflow-y: auto;
+}
+
+.flare-backstage__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: var(--flare-spacing-4, 8px);
+    border: none;
+    background: var(--flare-color-primary);
+    color: var(--flare-color-on-primary);
+    border-radius: var(--flare-shape-extra-small);
+    cursor: pointer;
+}
+
+.flare-backstage__nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-5, 10px);
+    width: 100%;
+    padding: var(--flare-spacing-4, 8px) var(--flare-spacing-6, 12px);
+    border: none;
+    background: none;
+    color: inherit;
+    text-align: left;
+    font-size: 0.875rem;
+    border-radius: var(--flare-shape-extra-small);
+    cursor: pointer;
+    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-backstage__nav-item:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-backstage__nav-item--active {
+    background: var(--flare-color-primary);
+    color: var(--flare-color-on-primary);
+}
+
+.flare-backstage__nav-item:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.flare-backstage__content {
+    flex: 1;
+    min-width: 0;
+    padding: var(--flare-spacing-12, 24px) var(--flare-spacing-16, 32px);
+    overflow: auto;
+}
+
+/* === Property Grid === */
+.flare-propgrid {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8125rem;
+}
+
+.flare-propgrid__title {
+    font-weight: 600;
+    padding: var(--flare-spacing-2, 4px) var(--flare-spacing-4, 8px);
+    background: var(--flare-color-surface-variant);
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-propgrid__row {
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    align-items: center;
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+    min-height: 26px;
+}
+
+.flare-propgrid__name {
+    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-4, 8px);
+    color: var(--flare-color-on-surface-variant);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-right: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-propgrid__value {
+    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-4, 8px);
+    min-width: 0;
+}
+
+/* === Formula Bar === */
+.flare-formula-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-3, 6px);
+    padding: 3px var(--flare-spacing-3, 6px);
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-formula-bar__namebox {
+    flex-shrink: 0;
+    width: 110px;
+}
+
+.flare-formula-bar__fx {
+    flex-shrink: 0;
+    font-style: italic;
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-formula-bar__input {
+    flex: 1;
+    min-width: 0;
+}
+
+/* === Sheet Tabs === */
+.flare-sheet-tabs {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-1, 2px);
+    padding: var(--flare-spacing-1, 2px) var(--flare-spacing-3, 6px);
+    overflow-x: auto;
+    background: var(--flare-color-surface-variant);
+    scrollbar-width: thin;
+}
+
+.flare-sheet-tabs__tab {
+    flex-shrink: 0;
+    padding: 3px 14px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
+    transition: background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-sheet-tabs__tab:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-sheet-tabs__tab--active {
+    background: var(--flare-color-surface);
+    border-color: var(--flare-color-outline-variant);
+    font-weight: 600;
+}
+
+.flare-sheet-tabs__add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: none;
+    color: inherit;
+    border-radius: var(--flare-shape-extra-small);
+    cursor: pointer;
+}
+
+.flare-sheet-tabs__add:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-sheet-tabs__add .material-symbols-rounded {
+    font-size: 1.1rem;
+}

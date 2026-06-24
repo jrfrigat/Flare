@@ -1,0 +1,125 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@if (ChildContent is not null)
+{
+    @* Speed-dial mode: the FAB is the trigger for a child FlareFloatingActionMenu *@
+    <div class="@_menuWrapperClass" style="@(Position == FabPosition.Static ? Style : null)">
+        <CascadingValue Value="_open" Name="FabMenuOpen">
+            <CascadingValue Value="@((Action)Close)" Name="CloseFabMenu">
+                @ChildContent
+            </CascadingValue>
+        </CascadingValue>
+        @RenderFab(isTrigger: true)
+    </div>
+}
+else if (Position != FabPosition.Static)
+{
+    <div class="@Css.Classes.Fab.Anchor @_anchorClass">
+        @RenderFab(isTrigger: false)
+    </div>
+}
+else
+{
+    @RenderFab(isTrigger: false)
+}
+
+@code {
+    /// <summary>The icon content rendered inside the FAB.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+
+    /// <summary>Optional label text. When set, renders as an extended FAB.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Accessible label forwarded as aria-label.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <summary>Size of the FAB (Sm 40dp, Md 56dp baseline, Lg 96dp).</summary>
+    [Parameter] public FabSize Size { get; set; } = FabSize.Md;
+
+    /// <summary>Color of the FAB (tonal container). Role -> shared color class; custom -> inline tokens. Default = theme default (primary-container).</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+
+    /// <summary>Positioning mode (BottomRight, BottomLeft, or Static for inline flow).</summary>
+    [Parameter] public FabPosition Position { get; set; } = FabPosition.BottomRight;
+
+    /// <summary>Callback invoked when the FAB is clicked (ignored in speed-dial mode - the FAB toggles the menu instead).</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    /// <summary>Optional <see cref="FlareFloatingActionMenu"/>. When present the FAB becomes a speed-dial trigger.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Fab.Root;
+
+    private bool _open;
+
+    private string? _sizeClass => Size switch
+    {
+        FabSize.Sm => Css.Classes.Fab.Sm,
+        FabSize.Lg => Css.Classes.Fab.Lg,
+        _          => null,
+    };
+
+    // Anchor CSS modifier for the current position (Static has no anchor).
+    private string? _anchorClass => Position switch
+    {
+        FabPosition.BottomLeft  => Css.Classes.Fab.AnchorBottomLeft,
+        FabPosition.BottomRight => Css.Classes.Fab.AnchorBottomRight,
+        _                       => null,
+    };
+
+    // Role -> shared color class; custom -> inline tonal tokens.
+    private string? _colorClass => Color.CssClass;
+
+    private string? _colorTokens => Color.StyleContainer();
+
+    private string? CombineStyle(string? extra)
+    {
+        if (_colorTokens is null) return extra;
+        if (string.IsNullOrEmpty(extra)) return _colorTokens;
+        return extra.TrimEnd().EndsWith(';') ? _colorTokens + extra : _colorTokens + ";" + extra;
+    }
+
+    private string _menuWrapperClass
+    {
+        get
+        {
+            var cls = Css.Classes.FabMenu.Wrapper;
+            if (Position != FabPosition.Static)
+                cls += $" {Css.Classes.Fab.Anchor} {_anchorClass}";
+            if (_open)
+                cls += $" {Css.Classes.FabMenu.Open}";
+            return cls;
+        }
+    }
+
+    private async Task HandleClick(MouseEventArgs e)
+    {
+        if (ChildContent is not null)
+            _open = !_open;
+        else if (OnClick.HasDelegate)
+            await OnClick.InvokeAsync(e);
+    }
+
+    private void Close() => _open = false;
+
+    private RenderFragment RenderFab(bool isTrigger) => __builder =>
+    {
+        <button class="@BuildCssClass(_sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
+                style="@CombineStyle(isTrigger ? null : Style)"
+                aria-label="@AriaLabel"
+                aria-expanded="@(isTrigger ? _open.ToString().ToLowerInvariant() : null)"
+                type="button"
+                @onclick="HandleClick"
+                @attributes="AdditionalAttributes">
+            @if (Icon is not null)
+            {
+                <span class="@Css.Classes.Fab.Icon">@Icon</span>
+            }
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                <span class="@Css.Classes.Fab.Label">@Label</span>
+            }
+        </button>
+    };
+}

@@ -1,0 +1,69 @@
+.flare-dropzone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 10rem;
+  padding: var(--flare-spacing-16, 2rem) var(--flare-spacing-12, 1.5rem);
+  border: 2px dashed var(--flare-color-outline);
+  border-radius: var(--flare-card-radius, var(--flare-shape-medium));
+  background: var(--flare-color-surface-container-low);
+  cursor: pointer;
+  transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+              background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  user-select: none;
+}
+
+.flare-dropzone:hover:not(.flare-dropzone--disabled) {
+  border-color: var(--flare-color-primary);
+  background: color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface));
+}
+
+.flare-dropzone--dragging {
+  border-color: var(--flare-color-primary);
+  background: color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface));
+  box-shadow: inset 0 0 0 2px var(--flare-color-primary);
+}
+
+.flare-dropzone--disabled {
+  opacity: var(--flare-state-disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.flare-dropzone__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.flare-dropzone__default {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  pointer-events: none;
+  text-align: center;
+}
+
+.flare-dropzone__icon {
+  font-size: 2.5rem;
+  color: var(--flare-color-primary);
+  transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-dropzone--dragging .flare-dropzone__icon { transform: scale(1.15); }
+
+.flare-dropzone__label {
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-dropzone__hint {
+  font-size: var(--flare-typescale-body-small-size);
+  color: var(--flare-color-on-surface-variant);
+}

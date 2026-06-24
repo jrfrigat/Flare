@@ -1,0 +1,102 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()">
+    <label class="@Css.Classes.Input.Label">@_label</label>
+    <div class="@Css.Classes.Color.CustomizerSwatches">
+        @foreach (var preset in Presets)
+        {
+            <button class="@Css.Classes.Color.CustomizerSwatch @(IsSelected(preset.Primary) ? Css.Classes.Color.CustomizerSwatchActive : "")"
+                    style="@($"--flare-swatch:{SafeColor(preset.Primary)}")"
+                    title="@preset.Name"
+                    @onclick="@(() => ApplyPreset(preset))">
+            </button>
+        }
+    </div>
+    @if (ShowColorPicker)
+    {
+        <div class="@Css.Classes.Color.CustomizerCustom">
+            <label class="@Css.Classes.Input.Label">@_customLabel</label>
+            <input type="color" class="@Css.Classes.Color.CustomizerPicker"
+                   value="@_currentPrimary"
+                   @onchange="OnColorChange" />
+        </div>
+    }
+    @if (ShowReset)
+    {
+        <button class="@Css.Classes.Button.Root @Css.Classes.Button.Text" @onclick="Reset">@_resetLabel</button>
+    }
+</div>
+
+@code {
+    /// <summary>Label text displayed above the color customizer.</summary>
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? CustomLabel { get; set; }
+    [Parameter] public string? ResetLabel { get; set; }
+    [Parameter] public bool ShowColorPicker { get; set; } = true;
+    [Parameter] public bool ShowReset { get; set; } = true;
+    [Parameter] public List<ColorPreset> Presets { get; set; } = DefaultPresets;
+
+    private string _label      => Label      ?? FlareStrings.ColorCustomizer_Label;
+    private string _customLabel => CustomLabel ?? FlareStrings.ColorCustomizer_Custom;
+    private string _resetLabel  => ResetLabel  ?? FlareStrings.ColorCustomizer_Reset;
+
+    private string _currentPrimary = "";
+    protected override string ComponentCssClass => Css.Classes.Color.Customizer;
+
+    private static readonly System.Text.RegularExpressions.Regex _hexRegex =
+        new(@"^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$|^#[0-9A-Fa-f]{8}$",
+            System.Text.RegularExpressions.RegexOptions.None,
+            TimeSpan.FromMilliseconds(100));
+
+    private static string SafeColor(string? color) =>
+        color is not null && _hexRegex.IsMatch(color) ? color : "#6750A4";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _currentPrimary = ThemeService?.GetCustomTokens()
+            .GetValueOrDefault(Css.Tokens.Color.Primary, "") ?? "";
+    }
+
+    private bool IsSelected(string color) =>
+        string.Equals(_currentPrimary, color, StringComparison.OrdinalIgnoreCase);
+
+    private void ApplyPreset(ColorPreset preset)
+    {
+        _currentPrimary = SafeColor(preset.Primary);
+        ThemeService?.SetCustomTokens(new Dictionary<string, string>
+        {
+            [Css.Tokens.Color.Primary] = _currentPrimary,
+            [Css.Tokens.Color.OnPrimary] = preset.OnPrimary,
+        });
+    }
+
+    private void OnColorChange(ChangeEventArgs e)
+    {
+        var raw = e.Value?.ToString() ?? "";
+        _currentPrimary = _hexRegex.IsMatch(raw) ? raw : "";
+        if (!string.IsNullOrEmpty(_currentPrimary))
+            ThemeService?.SetCustomToken(Css.Tokens.Color.Primary, _currentPrimary);
+    }
+
+    private void Reset()
+    {
+        _currentPrimary = "";
+        ThemeService?.ClearAllCustomTokens();
+    }
+
+    public static readonly List<ColorPreset> DefaultPresets =
+    [
+        new("Violet", "#6750A4", "#FFFFFF"),
+        new("Blue",   "#0F6CBD", "#FFFFFF"),
+        new("Teal",   "#00796B", "#FFFFFF"),
+        new("Green",  "#2E7D32", "#FFFFFF"),
+        new("Orange", "#E65100", "#FFFFFF"),
+        new("Red",    "#C62828", "#FFFFFF"),
+        new("Pink",   "#AD1457", "#FFFFFF"),
+        new("Brown",  "#4E342E", "#FFFFFF"),
+    ];
+
+    public record ColorPreset(string Name, string Primary, string OnPrimary);
+}

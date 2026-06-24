@@ -1,0 +1,33 @@
+@* MultiSelect lets several items be selected at once (aria-multiselectable). *@
+<FlareTreeView MultiSelect="true" AriaLabel="Selectable categories">
+    <FlareTreeItem Label="Frontend" Icon="folder" Expanded="true">
+        <FlareTreeItem Label="Blazor" Icon="check" @bind-Selected="_blazor" />
+        <FlareTreeItem Label="React" Icon="check" @bind-Selected="_react" />
+        <FlareTreeItem Label="Vue" Icon="check" @bind-Selected="_vue" />
+    </FlareTreeItem>
+    <FlareTreeItem Label="Backend" Icon="folder" Expanded="true">
+        <FlareTreeItem Label=".NET" Icon="check" @bind-Selected="_dotnet" />
+        <FlareTreeItem Label="Node" Icon="check" @bind-Selected="_node" />
+    </FlareTreeItem>
+</FlareTreeView>
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+    Selected: @string.Join(", ", Chosen())
+</FlareText>
+
+@code {
+    private bool _blazor = true;
+    private bool _react;
+    private bool _vue;
+    private bool _dotnet = true;
+    private bool _node;
+
+    private IEnumerable<string> Chosen()
+    {
+        if (_blazor) yield return "Blazor";
+        if (_react) yield return "React";
+        if (_vue) yield return "Vue";
+        if (_dotnet) yield return ".NET";
+        if (_node) yield return "Node";
+    }
+}

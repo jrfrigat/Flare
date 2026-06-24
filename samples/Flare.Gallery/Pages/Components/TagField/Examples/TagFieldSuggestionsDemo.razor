@@ -1,0 +1,32 @@
+@* Suggestions offers a static list filtered as you type; SearchFunc supplies them
+   asynchronously (server-side). Already-added tags are excluded automatically. *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:32rem;">
+    <FlareTagField @bind-Values="_skills" Label="Skills (static suggestions)"
+                   Suggestions="_allSkills" Placeholder="Type to search…" />
+
+    <FlareTagField @bind-Values="_users" Label="Assignees (async suggestions)"
+                   SearchFunc="SearchUsersAsync" MinChars="1" DebounceMs="250"
+                   Placeholder="Search users…" NoResultsText="No matching users" />
+</FlareStack>
+
+@code {
+    private IReadOnlyList<string> _skills = ["C#"];
+    private IReadOnlyList<string> _users = [];
+
+    private readonly string[] _allSkills =
+    [
+        "C#", "Blazor", "TypeScript", "Rust", "Go", "Python", "SQL", "Azure", "Docker", "Kubernetes",
+    ];
+
+    private static readonly string[] _userPool =
+    [
+        "Alice Johnson", "Bob Smith", "Carol White", "David Brown", "Eve Davis", "Frank Miller",
+    ];
+
+    // Simulates a server lookup with latency.
+    private async Task<IEnumerable<string>> SearchUsersAsync(string query)
+    {
+        await Task.Delay(200);
+        return _userPool.Where(u => u.Contains(query, StringComparison.OrdinalIgnoreCase));
+    }
+}

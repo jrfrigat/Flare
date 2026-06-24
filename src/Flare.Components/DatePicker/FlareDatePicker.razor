@@ -1,0 +1,533 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject TimeProvider TimeProvider
+@inject IJSRuntime JS
+
+<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.DatePicker.Label">@Label</label>
+    }
+    <div class="@Css.Classes.DatePicker.Field @(HasError ? Css.Classes.DatePicker.Error : "")" @ref="_fieldEl">
+        <input class="@Css.Classes.DatePicker.Control"
+               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+               type="text"
+               value="@_text"
+               readonly="@(!AllowInput)"
+               placeholder="@(Placeholder ?? _numericPattern)"
+               disabled="@Disabled"
+               aria-label="@(Label ?? Placeholder)"
+               @onfocus="HandleFocus"
+               @oninput="HandleInput"
+               @onchange="HandleTextChange"
+               @onblur="HandleBlur"
+               @attributes="AdditionalAttributes" />
+        @if (AllowPicker)
+        {
+            <button type="button" class="@Css.Classes.DatePicker.Toggle flare-input__icon flare-input__icon--trailing"
+                    disabled="@Disabled" aria-haspopup="dialog" aria-expanded="@_open"
+                    aria-label="@(FlareStrings.DatePicker_Today)" @onclick="Toggle">
+                <FlareIcon Name="calendar_month" Style="font-size:1.25rem;" />
+            </button>
+        }
+    </div>
+
+    @if (_open)
+    {
+        <div class="@Css.Classes.DatePicker.Scrim" @onclick="Close" aria-hidden="true"></div>
+        <div class="@Css.Classes.DatePicker.Panel" @ref="_panelEl">
+            <div class="@Css.Classes.DatePicker.Header">
+                <span @onclick:stopPropagation @onclick="() => { }">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="Previous">
+                        <LeadingIcon><FlareIcon Name="chevron_left" /></LeadingIcon>
+                    </FlareButton>
+                </span>
+                <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
+                        type="button" @onclick="CycleCalendarView" @onclick:stopPropagation>
+                    @HeaderLabel
+                </button>
+                <span @onclick:stopPropagation @onclick="() => { }">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="Next">
+                        <LeadingIcon><FlareIcon Name="chevron_right" /></LeadingIcon>
+                    </FlareButton>
+                </span>
+            </div>
+
+            @if (_calView == CalendarView.Day)
+            {
+                <div class="@Css.Classes.DatePicker.DayHeaders">
+                    @foreach (var d in DayHeaders)
+                    {
+                        <span>@d</span>
+                    }
+                </div>
+                <div class="@Css.Classes.DatePicker.Grid" role="grid" aria-label="@HeaderLabel" @onkeydown="HandleGridKeyDown" @onkeydown:stopPropagation>
+                    @foreach (var day in CalendarDays)
+                    {
+                        <button type="button"
+                                role="gridcell"
+                                aria-selected="@(day.Date == Value ? "true" : "false")"
+                                aria-current="@(day.Date == Today ? "date" : null)"
+                                class="@Css.Classes.DatePicker.Day
+                                       @(day.IsCurrentMonth ? "" : Css.Classes.DatePicker.DayOutside)
+                                       @(day.Date == Value ? Css.Classes.DatePicker.DaySelected : "")
+                                       @(day.Date == Today ? Css.Classes.DatePicker.DayToday : "")
+                                       @(IsDisabled(day.Date) ? Css.Classes.DatePicker.DayDisabled : "")"
+                                disabled="@IsDisabled(day.Date)"
+                                @onclick="@(() => SelectDay(day.Date))"
+                                @onclick:stopPropagation>
+                            @day.Date.Day
+                        </button>
+                    }
+                </div>
+            }
+            else if (_calView == CalendarView.Month)
+            {
+                <div class="@Css.Classes.DatePicker.MonthGrid">
+                    @for (var m = 1; m <= 12; m++)
+                    {
+                        var month = m;
+                        <button type="button"
+                                class="@Css.Classes.DatePicker.MonthBtn @(month == _viewMonth ? Css.Classes.DatePicker.MonthSelected : "")"
+                                @onclick="@(() => SelectMonth(month))"
+                                @onclick:stopPropagation>
+                            @(new DateTime(2000, month, 1).ToString("MMM", _culture))
+                        </button>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="@Css.Classes.DatePicker.YearGrid">
+                    @for (var y = _decadeStart; y < _decadeStart + 12; y++)
+                    {
+                        var year = y;
+                        <button type="button"
+                                class="@Css.Classes.DatePicker.YearBtn @(year == _viewYear ? Css.Classes.DatePicker.YearSelected : "")"
+                                @onclick="@(() => SelectYear(year))"
+                                @onclick:stopPropagation>
+                            @year
+                        </button>
+                    }
+                </div>
+            }
+
+            <div class="@Css.Classes.DatePicker.Footer">
+                @if (ShowClearButton)
+                {
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="ClearValue" @onclick:stopPropagation>@(ClearText ?? FlareStrings.Picker_Clear)</button>
+                }
+                @if (ShowTodayButton)
+                {
+                    <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="GoToToday" @onclick:stopPropagation>@(TodayText ?? FlareStrings.DatePicker_Today)</button>
+                }
+            </div>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@($"{Css.Classes.DatePicker.Helper} {Css.Classes.DatePicker.HelperError}")">@_displayedError</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.DatePicker.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Currently selected date (supports <c>@bind-Value</c>).</summary>
+    [Parameter] public DateOnly? Value { get; set; }
+    [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Display/parse format. Null (default) uses the culture short date pattern; can be a long format like "dd MMMM yyyy".</summary>
+    [Parameter] public string? DateFormat { get; set; }
+    /// <summary>Allows typing the date directly into the field (with auto-separator). Default true.</summary>
+    [Parameter] public bool AllowInput { get; set; } = true;
+    /// <summary>Allows opening the calendar popup (shows the calendar icon button). Default true.</summary>
+    [Parameter] public bool AllowPicker { get; set; } = true;
+    [Parameter] public DateOnly? Min { get; set; }
+    [Parameter] public DateOnly? Max { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public bool HasError { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public Expression<Func<DateOnly?>>? For { get; set; }
+    /// <summary>Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.</summary>
+    [Parameter] public string? ClearText { get; set; }
+    /// <summary>Override text for the Today button. When null, falls back to the localizer key DatePicker_Today.</summary>
+    [Parameter] public string? TodayText { get; set; }
+    [Parameter] public bool ShowClearButton { get; set; } = true;
+    [Parameter] public bool ShowTodayButton { get; set; } = true;
+    /// <summary>Predicate that disables specific dates (return true to disable). Applied on top of Min/Max.</summary>
+    [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
+    /// <summary>Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.DatePicker.Root;
+
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
+    /// Default keeps the theme's field style (MD3 filled / Fluent outlined).</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    private string? _variantClass => Variant switch
+    {
+        InputVariant.Filled => Css.Classes.Input.VariantFilled,
+        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
+        _ => null,
+    };
+    private string? _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.DatePicker.SizeXs,
+        FieldSize.Sm => Css.Classes.DatePicker.SizeSm,
+        FieldSize.Lg => Css.Classes.DatePicker.SizeLg,
+        FieldSize.Xl => Css.Classes.DatePicker.SizeXl,
+        _ => null,
+    };
+
+    private enum CalendarView { Day, Month, Year }
+
+    private bool _open;
+    private int _viewYear;
+    private int _viewMonth;
+    private CalendarView _calView = CalendarView.Day;
+    private FieldIdentifier _fieldId;
+
+    private ElementReference _fieldEl;
+    private ElementReference _panelEl;
+    private IJSObjectReference? _module;
+    private bool _panelPositioned;
+    private readonly string _panelId = $"flare-datepicker-{Guid.NewGuid():N}";
+
+    private int _decadeStart => (_viewYear / 12) * 12;
+
+    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+
+    private DayOfWeek _firstDayOfWeek => _culture.DateTimeFormat.FirstDayOfWeek;
+
+    private IReadOnlyList<string> DayHeaders
+    {
+        get
+        {
+            var first = (int)_firstDayOfWeek;
+            var fmt = _culture.DateTimeFormat;
+            return Enumerable.Range(0, 7)
+                .Select(i => fmt.GetShortestDayName((DayOfWeek)((first + i) % 7)))
+                .ToArray();
+        }
+    }
+
+    // Effective display/parse format (culture short pattern when not set).
+    private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
+    private string _separator => Nz(_culture.DateTimeFormat.DateSeparator, ".");
+    private bool _dayFirst => _culture.DateTimeFormat.ShortDatePattern.IndexOf('d') < _culture.DateTimeFormat.ShortDatePattern.IndexOf('M');
+    // Normalised numeric mask (always dd<sep>MM<sep>yyyy or MM<sep>dd<sep>yyyy), used for typing + placeholder.
+    private string _numericPattern => _dayFirst ? $"dd{_separator}MM{_separator}yyyy" : $"MM{_separator}dd{_separator}yyyy";
+
+    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
+
+    private string DisplayValue => Value.HasValue ? Value.Value.ToString(_format, _culture) : string.Empty;
+
+    // Strip to digits, insert the culture date separator after the 2nd and 4th digit. "01062026" -> "01.06.2026".
+    private string MaskDate(string? raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return string.Empty;
+        var digits = new string(raw.Where(char.IsDigit).Take(8).ToArray());
+        if (digits.Length <= 2) return digits;
+        if (digits.Length <= 4) return digits[..2] + _separator + digits[2..];
+        return digits[..2] + _separator + digits[2..4] + _separator + digits[4..];
+    }
+    private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
+
+    private string HeaderLabel => _calView switch
+    {
+        CalendarView.Month => _viewYear.ToString(),
+        CalendarView.Year  => $"{_decadeStart}-{_decadeStart + 11}",
+        _                  => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture),
+    };
+
+    private string MonthLabel => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture);
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private string _stateClass =>
+        HasError || !string.IsNullOrEmpty(_displayedError) ? Css.Classes.DatePicker.Error :
+        Disabled ? Css.Classes.DatePicker.Disabled : string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var anchor = Value ?? Today;
+        _viewYear = anchor.Year;
+        _viewMonth = anchor.Month;
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+
+        // Sync the field text when Value changes externally (not while the user is editing).
+        if (!_focused && !Equals(Value, _syncedValue))
+        {
+            _syncedValue = Value;
+            _text = DisplayValue;
+        }
+    }
+
+    private string _text = string.Empty;
+    private DateOnly? _syncedValue;
+    private bool _focused;
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    // Fixed-position the calendar under the field on open (and clean up on close) so it escapes a
+    // Card's overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_open == _panelPositioned) return;
+        try
+        {
+            _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
+            if (_open)
+                await _module.InvokeVoidAsync("positionAnchoredPanel", _panelId, _fieldEl, _panelEl, new { });
+            else
+                await _module.InvokeVoidAsync("removeAnchoredPanel", _panelId);
+            _panelPositioned = _open;
+        }
+        catch (JSDisconnectedException) { }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        if (_module is not null)
+        {
+            try
+            {
+                await _module.InvokeVoidAsync("removeAnchoredPanel", _panelId);
+                await _module.DisposeAsync();
+            }
+            catch (JSDisconnectedException) { }
+        }
+        await base.DisposeAsync();
+    }
+
+    private IReadOnlyList<CalendarDay> CalendarDays
+    {
+        get
+        {
+            var first = new DateOnly(_viewYear, _viewMonth, 1);
+            int dow = (int)first.DayOfWeek;
+            int firstDay = (int)_firstDayOfWeek;
+            int offset = (dow - firstDay + 7) % 7;
+            var start = first.AddDays(-offset);
+
+            var days = new CalendarDay[42];
+            for (int i = 0; i < 42; i++)
+            {
+                var d = start.AddDays(i);
+                days[i] = new CalendarDay(d, d.Month == _viewMonth);
+            }
+            return days;
+        }
+    }
+
+    private bool IsDisabled(DateOnly d) =>
+        (Min.HasValue && d < Min.Value) || (Max.HasValue && d > Max.Value) ||
+        (IsDateDisabled?.Invoke(d) ?? false);
+
+    private void CycleCalendarView()
+    {
+        _calView = _calView switch
+        {
+            CalendarView.Day   => CalendarView.Month,
+            CalendarView.Month => CalendarView.Year,
+            _                  => CalendarView.Day,
+        };
+    }
+
+    private void PrevView()
+    {
+        switch (_calView)
+        {
+            case CalendarView.Day:
+                if (_viewMonth == 1) { _viewMonth = 12; _viewYear--; }
+                else _viewMonth--;
+                break;
+            case CalendarView.Month:
+                _viewYear--;
+                break;
+            case CalendarView.Year:
+                _viewYear -= 12;
+                break;
+        }
+    }
+
+    private void NextView()
+    {
+        switch (_calView)
+        {
+            case CalendarView.Day:
+                if (_viewMonth == 12) { _viewMonth = 1; _viewYear++; }
+                else _viewMonth++;
+                break;
+            case CalendarView.Month:
+                _viewYear++;
+                break;
+            case CalendarView.Year:
+                _viewYear += 12;
+                break;
+        }
+    }
+
+    private void SelectMonth(int m)
+    {
+        _viewMonth = m;
+        _calView = CalendarView.Day;
+    }
+
+    private void SelectYear(int y)
+    {
+        _viewYear = y;
+        _calView = CalendarView.Month;
+    }
+
+    private void Toggle()
+    {
+        if (Disabled) return;
+        _open = !_open;
+        if (_open)
+        {
+            var anchor = Value ?? Today;
+            _viewYear = anchor.Year;
+            _viewMonth = anchor.Month;
+            _calView = CalendarView.Day;
+        }
+    }
+
+    private void Close() => _open = false;
+
+    private void GoToToday()
+    {
+        _viewYear = Today.Year;
+        _viewMonth = Today.Month;
+        _calView = CalendarView.Day;
+    }
+
+    private async Task SelectDay(DateOnly d)
+    {
+        await ValueChanged.InvokeAsync(d);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+        _open = false;
+    }
+
+    /// <summary>Parses a date typed directly into the field (keyboard entry).</summary>
+    private void HandleFocus()
+    {
+        _focused = true;
+        if (Value.HasValue) _text = Value.Value.ToString(_numericPattern, _culture); // edit in numeric form
+    }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        _text = MaskDate(e.Value?.ToString());
+        if (_text.Length == _numericPattern.Length && TryParseDate(_text, out var d) && !IsDisabled(d))
+            await CommitDate(d);
+    }
+
+    private async Task HandleTextChange(ChangeEventArgs e)
+    {
+        var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
+        _text = raw;
+        if (string.IsNullOrEmpty(raw)) { await CommitDate(null); return; }
+        if (TryParseDate(raw, out var d) && !IsDisabled(d))
+            await CommitDate(d);
+    }
+
+    private void HandleBlur()
+    {
+        _focused = false;
+        _text = DisplayValue; // reformat to the display format on blur
+    }
+
+    private bool TryParseDate(string s, out DateOnly d)
+    {
+        if (DateOnly.TryParseExact(s, _numericPattern, _culture, DateTimeStyles.None, out d)) return true;
+        if (DateOnly.TryParseExact(s, _format, _culture, DateTimeStyles.None, out d)) return true;
+        return DateOnly.TryParse(s, _culture, DateTimeStyles.None, out d);
+    }
+
+    private async Task CommitDate(DateOnly? d)
+    {
+        if (d.HasValue) { _viewYear = d.Value.Year; _viewMonth = d.Value.Month; }
+        _syncedValue = d;
+        await ValueChanged.InvokeAsync(d);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+
+    private async Task ClearValue()
+    {
+        await ValueChanged.InvokeAsync(null);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+        _open = false;
+    }
+
+    private async Task HandleGridKeyDown(KeyboardEventArgs e)
+    {
+        var current = Value ?? Today;
+        DateOnly? next = e.Key switch
+        {
+            "ArrowRight" => current.AddDays(1),
+            "ArrowLeft"  => current.AddDays(-1),
+            "ArrowDown"  => current.AddDays(7),
+            "ArrowUp"    => current.AddDays(-7),
+            "Enter" or " " => current,
+            _ => null
+        };
+
+        if (next is null) return;
+
+        if (e.Key is "Enter" or " ")
+        {
+            if (!IsDisabled(current))
+                await SelectDay(current);
+            return;
+        }
+
+        // Navigate view if needed
+        if (next.Value.Year != _viewYear || next.Value.Month != _viewMonth)
+        {
+            _viewYear = next.Value.Year;
+            _viewMonth = next.Value.Month;
+        }
+
+        await ValueChanged.InvokeAsync(next.Value);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+
+    private record CalendarDay(DateOnly Date, bool IsCurrentMonth);
+}

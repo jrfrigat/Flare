@@ -1,0 +1,56 @@
+/* ==========================================================================
+   AERO INPUTS + CHECKBOX / RADIO (Aero / Office 2010 / 1C)
+   Sunken fields with a faint inset shadow and a light-blue focus glow; glossy
+   checkbox/radio boxes that fill with a glossy accent when checked. Token-based
+   so light and dark both read correctly.
+   ========================================================================== */
+@scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
+
+    .flare-input__field,
+    .flare-select__control,
+    .flare-autocomplete__field,
+    .flare-datepicker__field,
+    .flare-datetimepicker__field,
+    .flare-timepicker__field,
+    .flare-tag-input {
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06);
+        transition: box-shadow var(--flare-motion-duration-short2, 90ms) ease,
+                    border-color var(--flare-motion-duration-short2, 90ms) ease;
+    }
+
+    /* Light-blue Aero glow + blue border on focus. */
+    .flare-input__field:focus-within,
+    .flare-select__control:focus,
+    .flare-autocomplete__field:focus-within,
+    .flare-datepicker__field:focus-within,
+    .flare-datetimepicker__field:focus-within,
+    .flare-timepicker__field:focus-within,
+    .flare-tag-input:focus-within {
+        border-color: var(--flare-color-primary);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 2px var(--flare-aero-glow);
+    }
+
+    /* ---- Checkbox / radio: sunken glossy box, glossy accent fill when checked ---- */
+    .flare-checkbox__indicator,
+    .flare-radio__indicator {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface) 72%, #ffffff) 0%,
+            color-mix(in srgb, var(--flare-color-surface) 92%, #000000) 100%);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10);
+        transition: box-shadow 90ms ease, border-color 90ms ease, background-image 90ms ease;
+    }
+    .flare-checkbox:not(.flare-checkbox--disabled):hover .flare-checkbox__indicator,
+    .flare-radio:not(.flare-radio--disabled):hover .flare-radio__indicator {
+        border-color: var(--flare-color-primary);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.10), 0 0 3px var(--flare-aero-glow);
+    }
+    .flare-checkbox__input:checked + .flare-checkbox__indicator {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 70%, #ffffff) 0%,
+            var(--fc-main, var(--flare-color-primary)) 50%,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 86%, #000000) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+}

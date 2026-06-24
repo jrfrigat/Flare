@@ -1,0 +1,25 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<nav class="@BuildCssClass(_openClass)"
+     style="@Style"
+     aria-hidden="@(_isOpen ? null : "true")"
+     @attributes="AdditionalAttributes">
+    @* Fixed-width inner that owns the scroll and keeps content from reflowing while the
+       drawer collapses; the nav clips it during the open/close animation. *@
+    <div class="@Css.Classes.Layout.DrawerInner">
+        @ChildContent
+    </div>
+</nav>
+
+@code {
+    [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
+
+    /// <summary>Child content rendered in the layout drawer.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Layout.Drawer;
+
+    private bool _isOpen => Layout?.DrawerOpen ?? true;
+    private string _openClass => _isOpen ? Css.Classes.Layout.DrawerOpenMod : string.Empty;
+}

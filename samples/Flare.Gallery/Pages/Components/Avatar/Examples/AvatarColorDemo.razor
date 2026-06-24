@@ -1,0 +1,14 @@
+@* Color sets the tonal background of text/initial avatars. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+    <FlareAvatar Text="Alice Johnson" Color="_purple" />
+    <FlareAvatar Text="Bob Smith" Color="_green" />
+    <FlareAvatar Text="Cara Lee" Color="_red" />
+    <FlareAvatar Text="Dan Ray" Color="_mauve" />
+</FlareStack>
+
+@code {
+    private readonly FlareColor _purple = FlareColor.Custom("#6750A4");
+    private readonly FlareColor _green = FlareColor.Custom("#2E6C47");
+    private readonly FlareColor _red = FlareColor.Custom("#B3261E");
+    private readonly FlareColor _mauve = FlareColor.Custom("#7D5260");
+}

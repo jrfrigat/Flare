@@ -1,0 +1,5 @@
+.flare-chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flare-spacing-4, 0.5rem);
+}

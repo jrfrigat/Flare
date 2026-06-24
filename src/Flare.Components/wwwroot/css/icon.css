@@ -1,0 +1,13 @@
+.flare-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fc-main, inherit);
+    /* Use title-large token as icon size baseline (~ 1.375rem / 22px MD3, 1rem Fluent2) */
+    font-size: var(--flare-typescale-title-large-size, 1.5rem);
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    line-height: 1;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

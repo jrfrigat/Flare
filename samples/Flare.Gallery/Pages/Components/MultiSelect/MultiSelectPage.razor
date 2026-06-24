@@ -1,0 +1,16 @@
+@page "/components/multi-select"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.MultiSelect_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareMultiSelect">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.MultiSelect_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.MultiSelect_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.MultiSelect_Basic" DemoType="typeof(Examples.MultiSelectBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.MultiSelect_WithHelperText" DemoType="typeof(Examples.MultiSelectHelperTextDemo)" />
+<AutoDemoSection Title="@GalleryStrings.EmptyState_ErrorState" DemoType="typeof(Examples.MultiSelectErrorStateDemo)" />
+<AutoDemoSection Title="@GalleryStrings.MultiSelect_ObjectItems" DemoType="typeof(Examples.MultiSelectObjectItemsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Select_ItemTemplate" DemoType="typeof(Examples.MultiSelectTemplateDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Field_Sizes" DemoType="typeof(Examples.MultiSelectSizesDemo)" />

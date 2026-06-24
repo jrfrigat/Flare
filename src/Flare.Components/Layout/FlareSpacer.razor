@@ -1,0 +1,8 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes"></div>
+
+@code {
+    protected override string ComponentCssClass => Css.Classes.Spacer.Root;
+}

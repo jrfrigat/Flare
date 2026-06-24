@@ -1,0 +1,12 @@
+@* Size scales the MD3 Expressive track thickness (XS 16dp … XL 96dp). *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
+    <FlareSlider @bind-Value="_v" Size="SliderSize.Xs" Label="XSmall (16dp)" />
+    <FlareSlider @bind-Value="_v" Size="SliderSize.Sm" Label="Small (24dp)" />
+    <FlareSlider @bind-Value="_v" Size="SliderSize.Md" Label="Medium (40dp)" />
+    <FlareSlider @bind-Value="_v" Size="SliderSize.Lg" Label="Large (56dp)" />
+    <FlareSlider @bind-Value="_v" Size="SliderSize.Xl" Label="XLarge (96dp)" />
+</FlareStack>
+
+@code {
+    private double _v = 50;
+}

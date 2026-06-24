@@ -1,0 +1,181 @@
+@namespace Flare.Components
+@using System.Globalization
+@inherits FlareComponentBase
+@inject TimeProvider TimeProvider
+
+<div class="@BuildCssClass(_multiClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Calendar.Nav">
+        <button class="@Css.Classes.Calendar.NavBtn" @onclick="PrevMonth" aria-label="@(FlareStrings.Calendar_PrevMonth)">
+            <span class="material-symbols-rounded">chevron_left</span>
+        </button>
+        <button class="@Css.Classes.Calendar.NavBtn" @onclick="NextMonth" aria-label="@(FlareStrings.Calendar_NextMonth)">
+            <span class="material-symbols-rounded">chevron_right</span>
+        </button>
+    </div>
+
+    <div class="@Css.Classes.Calendar.Months">
+        @for (var mi = 0; mi < MonthCount; mi++)
+        {
+            var monthOffset = mi;
+            var monthDate = _viewDate.AddMonths(monthOffset);
+            var monthCells = _allCells[mi];
+            <div class="@Css.Classes.Calendar.Month">
+                <div class="@Css.Classes.Calendar.Header">
+                    <FlareText Typo="TypographyScale.TitleMedium">@_culture.TextInfo.ToTitleCase(monthDate.ToString("MMMM yyyy", _culture))</FlareText>
+                </div>
+                <div class="@Css.Classes.Calendar.Grid" role="grid">
+                    @foreach (var name in DayHeaders)
+                    {
+                        <div class="@Css.Classes.Calendar.DayLabel">@name</div>
+                    }
+                    @foreach (var cell in monthCells)
+                    {
+                        var c = cell;
+                        <div class="@Css.Classes.Calendar.Cell @_cellClass(c)"
+                             @onclick="@(() => SelectDate(c))"
+                             role="button"
+                             tabindex="0"
+                             aria-label="@c.Date.ToString("D", _culture)"
+                             aria-pressed="@(SelectedDate == c.Date)"
+                             aria-current="@(c.Date == Today ? "date" : null)">
+                            <span class="@Css.Classes.Calendar.DayNum">@c.Date.Day</span>
+                            @foreach (var ev in c.Events.Take(MaxVisibleEvents))
+                            {
+                                var calEv = ev;
+                                <div class="@BuildCssClass(Css.Classes.Calendar.Event, calEv.Color.CssClass)"
+                                     style="@EventColorStyle(calEv.Color)"
+                                     @onclick="@(() => OnEventClick.InvokeAsync(calEv))"
+                                     @onclick:stopPropagation="true">
+                                    @calEv.Title
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    /// <summary>Events to display on the calendar grid cells.</summary>
+    [Parameter] public IReadOnlyList<CalendarEvent>? Events { get; set; }
+    /// <summary>Currently selected date value.</summary>
+    [Parameter] public DateOnly? SelectedDate { get; set; }
+    /// <summary>Callback raised when the selected date changes.</summary>
+    [Parameter] public EventCallback<DateOnly> SelectedDateChanged { get; set; }
+    /// <summary>Date used to determine the initial calendar view month.</summary>
+    [Parameter] public DateOnly? InitialDate { get; set; }
+    /// <summary>Callback raised when the user clicks on a calendar event.</summary>
+    [Parameter] public EventCallback<CalendarEvent> OnEventClick { get; set; }
+    /// <summary>Forces the week to start on Monday. When false (default), the first day of week
+    /// is taken from <see cref="Culture"/> (e.g. Sunday for en-US, Monday for most of Europe/RU).</summary>
+    [Parameter] public bool MondayFirst { get; set; }
+    /// <summary>Culture for day headers, month names and the first day of week. Default = CurrentUICulture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>Number of consecutive months to display side by side. Default: 1.</summary>
+    [Parameter] public int MonthCount { get; set; } = 1;
+    /// <summary>Maximum events shown per day cell. Prevents rendering DoS from large event lists.</summary>
+    [Parameter] public int MaxVisibleEvents { get; set; } = 3;
+
+    protected override string ComponentCssClass => Css.Classes.Calendar.Root;
+
+    // Event color: role -> flare-color-* class (sets --fc-container/--fc-on-container);
+    // custom -> inline tonal tokens; default -> primary-container fallback in CSS.
+    private static string? EventColorStyle(FlareColor color) => color.StyleContainerSolid();
+
+    private DateOnly _viewDate;
+    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+
+    // Week starts on Monday when forced, otherwise on the culture's first day of week.
+    private DayOfWeek _firstDayOfWeek => MondayFirst ? DayOfWeek.Monday : _culture.DateTimeFormat.FirstDayOfWeek;
+
+    // Localized shortest day-name headers, ordered from the first day of week.
+    private IEnumerable<string> DayHeaders
+    {
+        get
+        {
+            var first = (int)_firstDayOfWeek;
+            var fmt = _culture.DateTimeFormat;
+            return Enumerable.Range(0, 7).Select(i => fmt.GetShortestDayName((DayOfWeek)((first + i) % 7)));
+        }
+    }
+
+    private string _multiClass => MonthCount > 1 ? Css.Classes.Calendar.Multi : string.Empty;
+    private List<List<CalendarCell>> _allCells = [[]];
+
+    private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
+
+    protected override void OnInitialized()
+    {
+        _viewDate = InitialDate ?? Today;
+        RebuildCells();
+    }
+
+    protected override void OnParametersSet() => RebuildCells();
+
+    private void RebuildCells()
+    {
+        _allCells = [];
+        var count = Math.Max(1, MonthCount);
+        for (int mi = 0; mi < count; mi++)
+            _allCells.Add(BuildMonthCells(_viewDate.AddMonths(mi)));
+    }
+
+    private List<CalendarCell> BuildMonthCells(DateOnly monthDate)
+    {
+        var cells = new List<CalendarCell>();
+        var first = new DateOnly(monthDate.Year, monthDate.Month, 1);
+        int dow = (int)first.DayOfWeek;
+        int startOffset = ((dow - (int)_firstDayOfWeek) + 7) % 7;
+        var daysInMonth = DateTime.DaysInMonth(monthDate.Year, monthDate.Month);
+
+        for (int pad = 0; pad < startOffset; pad++)
+            cells.Add(new CalendarCell(first.AddDays(pad - startOffset), [], true));
+
+        for (int d = 1; d <= daysInMonth; d++)
+        {
+            var date = new DateOnly(monthDate.Year, monthDate.Month, d);
+            var evs = Events?.Where(e => e.Date == date).ToList() ?? [];
+            cells.Add(new CalendarCell(date, evs, false));
+        }
+
+        var remaining = 42 - cells.Count;
+        for (int i = 1; i <= remaining; i++)
+            cells.Add(new CalendarCell(new DateOnly(monthDate.Year, monthDate.Month, daysInMonth).AddDays(i), [], true));
+
+        return cells;
+    }
+
+    private Func<CalendarCell, string> _cellClass => cell =>
+    {
+        var parts = new List<string>();
+        if (cell.IsOtherMonth) parts.Add(Css.Classes.Calendar.CellOther);
+        if (cell.Date == Today) parts.Add(Css.Classes.Calendar.CellToday);
+        if (SelectedDate == cell.Date) parts.Add(Css.Classes.Calendar.CellSelected);
+        return string.Join(" ", parts);
+    };
+
+    private async Task SelectDate(CalendarCell cell)
+    {
+        if (cell.IsOtherMonth) return;
+        SelectedDate = cell.Date;
+        await SelectedDateChanged.InvokeAsync(cell.Date);
+    }
+
+    private void PrevMonth()
+    {
+        _viewDate = _viewDate.AddMonths(-1);
+        RebuildCells();
+        StateHasChanged();
+    }
+
+    private void NextMonth()
+    {
+        _viewDate = _viewDate.AddMonths(1);
+        RebuildCells();
+        StateHasChanged();
+    }
+
+    private sealed record CalendarCell(DateOnly Date, List<CalendarEvent> Events, bool IsOtherMonth);
+}

@@ -1,0 +1,15 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
+    <FlareTextArea @bind-Value="_bio" Label="Bio" Placeholder="Tell us about yourself…" Rows="3" MaxLength="200" />
+    <FlareTextArea @bind-Value="_notes" Label="Auto-grow, max 6 lines, outlined"
+                   AutoGrow="true" MaxLines="6" Variant="InputVariant.Outlined"
+                   Placeholder="Type several lines — grows up to 6, then scrolls…" />
+    <FlareTextArea Label="Disabled" Disabled Rows="2" Value="Read-only multiline content" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    @((_bio ?? "").Length)/200
+</FlareText>
+
+@code {
+    private string? _bio;
+    private string? _notes;
+}

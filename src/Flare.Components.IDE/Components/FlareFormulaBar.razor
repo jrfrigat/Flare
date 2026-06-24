@@ -1,0 +1,46 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* The spreadsheet formula bar (Excel): a "name box" showing the active cell reference, an fx marker,
+   and the cell/formula editor. Built on base FlareField so it themes with everything else. *@
+<div class="@Css.Classes.Ide.FormulaBar.Root" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.FormulaBar.NameBox">
+        <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
+                    Value="@CellRef" ValueChanged="OnCellRefChanged" AriaLabel="@NameBoxLabel" />
+    </div>
+    <span class="@Css.Classes.Ide.FormulaBar.Fx" aria-hidden="true">fx</span>
+    <div class="@Css.Classes.Ide.FormulaBar.Input">
+        <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
+                    Value="@Value" ValueChanged="OnValueChanged"
+                    Placeholder="@Placeholder" AriaLabel="@FormulaLabel" />
+    </div>
+</div>
+
+@code {
+    /// <summary>The active cell reference shown in the name box (e.g. "A1").</summary>
+    [Parameter] public string? CellRef { get; set; }
+
+    /// <summary>Raised when the name box text changes. Supports two-way binding.</summary>
+    [Parameter] public EventCallback<string?> CellRefChanged { get; set; }
+
+    /// <summary>The current cell content / formula.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>Raised when the formula text changes. Supports two-way binding.</summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>Placeholder for the formula editor.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>Accessible label for the name box (default "Name box").</summary>
+    [Parameter] public string NameBoxLabel { get; set; } = "Name box";
+
+    /// <summary>Accessible label for the formula editor (default "Formula").</summary>
+    [Parameter] public string FormulaLabel { get; set; } = "Formula";
+
+    private async Task OnCellRefChanged(string? value) => await CellRefChanged.InvokeAsync(value);
+    private async Task OnValueChanged(string? value) => await ValueChanged.InvokeAsync(value);
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.FormulaBar.Root;
+}

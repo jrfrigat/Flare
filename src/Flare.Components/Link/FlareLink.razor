@@ -1,0 +1,57 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@if (!string.IsNullOrEmpty(Href) && !Disabled)
+{
+    <a class="@BuildCssClass(_colorClass, _underlineClass)"
+       href="@_safeHref"
+       target="@Target"
+       rel="@(Target == "_blank" ? "noopener noreferrer" : null)"
+       title="@Title"
+       style="@_inlineStyle"
+       @attributes="AdditionalAttributes">@ChildContent</a>
+}
+else
+{
+    <span class="@BuildCssClass(_colorClass, _underlineClass, Disabled ? Css.Classes.Link.Disabled : null)"
+          role="link"
+          aria-disabled="@Disabled.ToString().ToLower()"
+          style="@_inlineStyle"
+          @attributes="AdditionalAttributes">@ChildContent</span>
+}
+
+@code {
+    /// <summary>Link text or content rendered inside the anchor.</summary>
+    [Parameter] public RenderFragment?  ChildContent { get; set; }
+    /// <summary>URL the link navigates to when clicked.</summary>
+    [Parameter] public string?          Href         { get; set; }
+    /// <summary>HTML target attribute (e.g. "_blank", "_self").</summary>
+    [Parameter] public string           Target       { get; set; } = "_self";
+    /// <summary>Link text color. Defaults to <c>Primary</c>; pass <c>FlareColor.Default</c> to inherit the surrounding text color. Role -> shared class; custom -> inline token.</summary>
+    [Parameter] public FlareColor       Color        { get; set; } = FlareColor.Primary;
+    /// <summary>Underline behavior: Always, Hover, or None.</summary>
+    [Parameter] public LinkUnderline    Underline    { get; set; } = LinkUnderline.Hover;
+    /// <summary>Renders the link as a non-interactive disabled span.</summary>
+    [Parameter] public bool             Disabled     { get; set; }
+    /// <summary>Tooltip text rendered as the HTML title attribute for accessibility.</summary>
+    [Parameter] public string?          Title        { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Link.Root;
+
+    /// <summary>Validates Href against known safe URI schemes; falls back to about:blank to block XSS.</summary>
+    private string _safeHref => Flare.Components.Security.CssValidator.IsHrefSafe(Href)
+        ? Href!
+        : "about:blank";
+
+    // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main;
+    // FlareColor.Default -> no class, link inherits surrounding color.
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+
+    private string _underlineClass => Underline switch
+    {
+        LinkUnderline.Always => Css.Classes.Link.UnderlineAlways,
+        LinkUnderline.None   => Css.Classes.Link.UnderlineNone,
+        _                    => Css.Classes.Link.UnderlineHover,
+    };
+}

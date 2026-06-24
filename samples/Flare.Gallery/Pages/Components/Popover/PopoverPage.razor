@@ -1,0 +1,12 @@
+@page "/components/popover"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Popover_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlarePopover">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Popover_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Popover_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Popover_Basic" DemoType="typeof(Examples.PopoverBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Popover_Placement" DemoType="typeof(Examples.PopoverPlacementDemo)" />

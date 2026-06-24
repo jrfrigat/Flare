@@ -1,0 +1,25 @@
+<div style="max-width:24rem;">
+    @* Full anatomy: Header / Body (Content) / Footer / Actions. *@
+    <FlareCard Variant="CardVariant.Elevated">
+        <FlareCardHeader Title="Project Apollo" Subtitle="Updated 2 hours ago">
+            <Avatar><FlareAvatar Text="Project Apollo" Size="AvatarSize.Md" /></Avatar>
+            <Action><FlareButton LeadingIcon="@_more" Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="More" /></Action>
+        </FlareCardHeader>
+        <FlareCardContent>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+                The body holds the main content. The footer below carries metadata, while actions host buttons.
+            </FlareText>
+        </FlareCardContent>
+        <FlareCardFooter>
+            <FlareText Typo="TypographyScale.BodySmall">12 tasks - 3 open - due Friday</FlareText>
+        </FlareCardFooter>
+        <FlareCardActions Align="CardActionsAlign.End">
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Details</FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm">Open</FlareButton>
+        </FlareCardActions>
+    </FlareCard>
+</div>
+
+@code {
+    private readonly RenderFragment _more = @<FlareIcon Name="more_vert" />;
+}

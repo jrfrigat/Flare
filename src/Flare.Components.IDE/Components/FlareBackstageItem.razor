@@ -1,0 +1,38 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* A navigation entry in a FlareBackstage rail (e.g. "New", "Open", "Save", "Print", "Options"). *@
+<button type="button"
+        class="@Css.Classes.Ide.Backstage.NavItem @BuildCssClass(_activeClass)"
+        disabled="@Disabled"
+        aria-current="@(Active ? "page" : null)"
+        @onclick="OnClick"
+        @attributes="AdditionalAttributes">
+    @if (Icon is not null)
+    {
+        <span class="material-symbols-rounded">@Icon</span>
+    }
+    <span class="@Css.Classes.Ide.Backstage.NavLabel">@Label</span>
+</button>
+
+@code {
+    /// <summary>Material icon name shown before the label.</summary>
+    [Parameter] public string? Icon { get; set; }
+
+    /// <summary>The entry's text.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Marks this entry as the currently selected one.</summary>
+    [Parameter] public bool Active { get; set; }
+
+    /// <summary>Whether the entry is disabled.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Raised when the entry is clicked.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    private string _activeClass => Active ? Css.Classes.Ide.Backstage.NavItemActive : string.Empty;
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.Backstage.NavItem;
+}

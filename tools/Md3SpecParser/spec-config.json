@@ -1,0 +1,209 @@
+{
+  "outputRoot": "C:\\Job\\Projects\\FrigaT\\Flare\\docs\\spec",
+  "outputFileName": "md3-expressive-spec.md",
+  "sources": [
+    {
+      "type": "App bar",
+      "folder": "app-bar",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.3ec622835c7987b5.json",
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.07341534518f78d0.json"
+      ]
+    },
+    {
+      "type": "Badge",
+      "folder": "badge",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.59a1b3a9a90ca8b3.json"
+      ]
+    },
+    {
+      "type": "Button",
+      "folder": "button",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.1c4257f8804f9478.json",
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.0fe2282006ae098b.json"
+      ]
+    },
+    {
+      "type": "Split button",
+      "folder": "split-button",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.624e8f2da4007fc8.json"
+      ]
+    },
+    {
+      "type": "Button Group",
+      "folder": "button-group",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.082d7fd6e058b011.json"
+      ]
+    },
+    {
+      "type": "FAB",
+      "folder": "fab",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.36500f77b86d20a5.json",
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.41587918e51cca98.json",
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.1a076cec8bc202c2.json"
+      ]
+    },
+    {
+      "type": "Menu",
+      "folder": "menu",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.385a28e5d3bb3dd0.json"
+      ]
+    },
+    {
+      "type": "Card",
+      "folder": "card",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.100ebfb4332adab1.json"
+      ]
+    },
+    {
+      "type": "Carousel",
+      "folder": "carousel",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.43a124d2adc8a2ef.json"
+      ]
+    },
+    {
+      "type": "Checkbox",
+      "folder": "checkbox",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.31f16b44fe03b0c0.json"
+      ]
+    },
+    {
+      "type": "Chip",
+      "folder": "chip",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.484a63be03b01a17.json"
+      ]
+    },
+    {
+      "type": "DatePicker",
+      "folder": "date-picker",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.01c5310367774eb8.json"
+      ]
+    },
+    {
+      "type": "TimePicker",
+      "folder": "time-picker",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.39f4b152dd9bd292.json"
+      ]
+    },
+    {
+      "type": "Dialog",
+      "folder": "dialog",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.0b1e39a67d5bafdc.json"
+      ]
+    },
+    {
+      "type": "Divider",
+      "folder": "divider",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.77f7657eb270e53d.json"
+      ]
+    },
+    {
+      "type": "List",
+      "folder": "list",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.6c818a16475113bd.json"
+      ]
+    },
+    {
+      "type": "Progress",
+      "folder": "progress",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.6f51f7ab7775a392.json"
+      ]
+    },
+    {
+      "type": "Nav",
+      "folder": "nav",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.52865380210a9b69.json",
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.376969f91547be8e.json",
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.5b55bd7cc1ea6e29.json"
+      ]
+    },
+    {
+      "type": "Radio",
+      "folder": "radio",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.6acb269a58d5f93f.json"
+      ]
+    },
+    {
+      "type": "Search",
+      "folder": "search",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.07341534518f78d0.json"
+      ]
+    },
+    {
+      "type": "Sheet",
+      "folder": "sheet",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.75e530a1014802b3.json",
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.06c2c925cf96adca.json"
+      ]
+    },
+    {
+      "type": "Slider",
+      "folder": "slider",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.0045edb815f2325e.json"
+      ]
+    },
+    {
+      "type": "Snackbar",
+      "folder": "snackbar",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.346ae12a744b45dd.json"
+      ]
+    },
+    {
+      "type": "Switch",
+      "folder": "switch",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.33b1b2925d9ff561.json"
+      ]
+    },
+    {
+      "type": "Tabs",
+      "folder": "tabs",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.6039f0080a95df1e.json"
+      ]
+    },
+    {
+      "type": "Input",
+      "folder": "input",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.60990dd98dea0998.json"
+      ]
+    },
+    {
+      "type": "Toolbar",
+      "folder": "toolbar",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.2956a7939bf0879c.json"
+      ]
+    },
+    {
+      "type": "Tooltip",
+      "folder": "tooltip",
+      "urls": [
+        "https://m3.material.io/_dsm/data/dsdb-m3/2026-05-19_05-50-01/TOKEN_TABLE.37697297db0555a6.json"
+      ]
+    }
+  ]
+}

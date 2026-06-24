@@ -1,0 +1,16 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* Wrap columns in <FlareColumnBand> to group them under a shared header. Bands nest, and plain
+   columns alongside a band span the full header height. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="10">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumnBand Title="Details">
+            <FlareColumn Title="Role" Field="@(p => p.Role)" />
+            <FlareColumnBand Title="Location">
+                <FlareColumn Title="City" Field="@(p => p.City)" />
+            </FlareColumnBand>
+        </FlareColumnBand>
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" Sortable="true" />
+    </Columns>
+</FlareDataGrid>

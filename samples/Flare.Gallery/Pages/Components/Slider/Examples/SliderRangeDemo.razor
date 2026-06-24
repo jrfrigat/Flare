@@ -1,0 +1,23 @@
+@* Range="true" turns FlareSlider into a two-handle range (Value = low, ValueEnd = high).
+   All slider features apply: sizes, colors, steps, indicator, vertical. *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
+    <FlareSlider Range="true" @bind-Value="_priceLow" @bind-ValueEnd="_priceHigh"
+                 Label="Price range" Min="0" Max="500" Step="10" Format="C0" />
+    <FlareSlider Range="true" @bind-Value="_lvlLow" @bind-ValueEnd="_lvlHigh"
+                 Label="Levels" Min="0" Max="100" Step="10"
+                 Color="FlareColor.Tertiary" Stepper="true" Indicator="true" />
+    <FlareStack Row Gap="FlareSpacing.Large">
+        <FlareSlider Range="true" Vertical="true" @bind-Value="_vLow" @bind-ValueEnd="_vHigh"
+                     ShowValue="false" Color="FlareColor.Secondary"
+                     Style="--flare-slider-length:12rem" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private double _priceLow = 80;
+    private double _priceHigh = 320;
+    private double _lvlLow = 20;
+    private double _lvlHigh = 70;
+    private double _vLow = 30;
+    private double _vHigh = 75;
+}

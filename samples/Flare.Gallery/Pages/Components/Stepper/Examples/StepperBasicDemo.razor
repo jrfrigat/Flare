@@ -1,0 +1,29 @@
+<FlareStepper>
+    <FlareStep Label="Account" Description="Basic info">
+        <Icon><FlareIcon Name="person" /></Icon>
+        <ChildContent>
+            <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">Enter your account details.</FlareText>
+            <FlareStack Gap="FlareSpacing.Small" Style="max-width:20rem;">
+                <FlareField TValue="string" Label="Name" Placeholder="John Doe" />
+                <FlareField TValue="string" Label="Email" Placeholder="john@example.com" Type="email" />
+            </FlareStack>
+        </ChildContent>
+    </FlareStep>
+    <FlareStep Label="Profile" Description="Customize" Optional="true">
+        <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">Configure your profile.</FlareText>
+        <FlareStack Gap="FlareSpacing.Small" Style="max-width:20rem;">
+            <FlareSelect TValue="string" Label="Role">
+                <option value="">Select role…</option>
+                <option value="dev">Developer</option>
+                <option value="design">Designer</option>
+                <option value="pm">Product Manager</option>
+            </FlareSelect>
+            <FlareSwitch Label="Public profile" />
+        </FlareStack>
+    </FlareStep>
+    <FlareStep Label="Review" Description="Confirm">
+        <FlareAlert Severity="AlertSeverity.Success" Title="Ready to submit">
+            All steps complete. Click Submit to finish.
+        </FlareAlert>
+    </FlareStep>
+</FlareStepper>

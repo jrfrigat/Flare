@@ -1,0 +1,21 @@
+@inject ISnackbarService Snackbar
+
+<FlareList TItem="object">
+    <FlareListItem Primary="Alice Johnson" Secondary="Senior Engineer"
+                   OnClick="@(() => Snackbar.Show("Alice clicked"))">
+        <Leading><FlareAvatar Text="Alice Johnson" Size="AvatarSize.Sm" /></Leading>
+        <Trailing><FlareIcon Name="chevron_right" /></Trailing>
+    </FlareListItem>
+    <FlareListItem Primary="Bob Smith" Secondary="Designer"
+                   OnClick="@(() => Snackbar.Show("Bob clicked"))">
+        <Leading><FlareAvatar Text="Bob Smith" Size="AvatarSize.Sm" /></Leading>
+        <Trailing><FlareIcon Name="chevron_right" /></Trailing>
+    </FlareListItem>
+    <FlareListItem Primary="Carol Williams" Secondary="Manager" Selected="true">
+        <Leading><FlareAvatar Text="Carol Williams" Size="AvatarSize.Sm" /></Leading>
+        <Trailing><FlareChip Label="Selected" /></Trailing>
+    </FlareListItem>
+    <FlareListItem Primary="Disabled item" Disabled="true">
+        <Leading><FlareIcon Name="block" /></Leading>
+    </FlareListItem>
+</FlareList>

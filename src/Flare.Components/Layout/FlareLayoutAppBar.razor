@@ -1,0 +1,38 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<header class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @if (DrawerToggle)
+    {
+        <button class="@Css.Classes.Layout.AppBarToggle @(_isOpen ? Css.Classes.Layout.AppbarToggleOpen : null)"
+                @onclick="ToggleDrawer"
+                aria-label="@(FlareStrings.Aria_ToggleDrawer)"
+                aria-expanded="@(_isOpen ? "true" : "false")"
+                type="button">
+            <span class="@Css.Classes.Burger.Root" aria-hidden="true">
+                <span class="@Css.Classes.Burger.Bar"></span>
+                <span class="@Css.Classes.Burger.Bar"></span>
+                <span class="@Css.Classes.Burger.Bar"></span>
+            </span>
+        </button>
+    }
+    @MenuButton
+    @ChildContent
+</header>
+
+@code {
+    [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
+
+    /// <summary>Child content rendered in the app bar.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Custom menu/hamburger button at the leading edge (slot-based API).</summary>
+    [Parameter] public RenderFragment? MenuButton { get; set; }
+    /// <summary>When true, automatically renders a hamburger icon that toggles the drawer via the cascading FlareLayoutContext.</summary>
+    [Parameter] public bool DrawerToggle { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Layout.AppBar;
+
+    private bool _isOpen => Layout?.DrawerOpen ?? true;
+
+    private void ToggleDrawer() => Layout?.ToggleDrawer();
+}

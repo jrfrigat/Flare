@@ -1,0 +1,17 @@
+@page "/components/layout-shell"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.LayoutShell_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareLayout">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.LayoutShell_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        @GalleryStrings.LayoutShell_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.LayoutShell_AdminShell" Description="@GalleryStrings.LayoutShell_AutoWireDesc"
+                 DemoType="typeof(Examples.LayoutShellAdminDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.LayoutShell_ManualBind" Description="@GalleryStrings.LayoutShell_ManualBindDesc"
+                 DemoType="typeof(Examples.LayoutShellManualBindDemo)" />

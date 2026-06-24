@@ -1,0 +1,51 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <div style="max-width:18rem;">
+        <FlareSelect TValue="DataGridLoadingIndicator" Items="_indicators"
+                     ItemLabel="@(i => i.ToString())" Value="_indicator"
+                     ValueChanged="OnIndicatorChanged" Label="Loading indicator" />
+    </div>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        Change the page (or sort a column) to trigger a reload - the chosen indicator shows during
+        the simulated 700&#8201;ms fetch.
+    </FlareText>
+
+    <FlareDataGrid @ref="_grid" TItem="Person" ItemsProvider="LoadAsync" PageSize="8"
+                   LoadingIndicator="_indicator" SkeletonRows="8">
+        <Columns>
+            <FlareColumn Title="#" Field="@(p => p.Score)" Width="90px" Sortable="true" />
+            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+            <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" />
+        </Columns>
+    </FlareDataGrid>
+</FlareStack>
+
+@code {
+    private FlareDataGrid<Person>? _grid;
+    private DataGridLoadingIndicator _indicator = DataGridLoadingIndicator.Spinner;
+    private static readonly DataGridLoadingIndicator[] _indicators = Enum.GetValues<DataGridLoadingIndicator>();
+
+    private static readonly string[] _roles = ["Engineer", "Designer", "Manager", "QA", "DevOps"];
+    private static readonly string[] _cities = ["Berlin", "London", "Paris", "Tokyo", "Madrid", "Toronto"];
+
+    private static readonly List<Person> _all = Enumerable.Range(1, 48)
+        .Select(i => new Person
+        {
+            Name = $"Person {i:00}",
+            Role = _roles[i % _roles.Length],
+            City = _cities[i % _cities.Length],
+            Score = i,
+        })
+        .ToList();
+
+    private void OnIndicatorChanged(DataGridLoadingIndicator value) => _indicator = value;
+
+    private async Task<DataGridResult<Person>> LoadAsync(DataGridRequest req)
+    {
+        await Task.Delay(700); // simulate network latency so the indicator is visible
+        var page = _all.Skip(req.Page * req.PageSize).Take(req.PageSize);
+        return new DataGridResult<Person>(page, _all.Count);
+    }
+}

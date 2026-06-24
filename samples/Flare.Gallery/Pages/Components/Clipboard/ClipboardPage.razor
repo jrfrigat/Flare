@@ -1,0 +1,11 @@
+@page "/components/clipboard"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Clipboard_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareClipboard">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Clipboard_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Clipboard_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Clipboard_Basic" DemoType="typeof(Examples.ClipboardDemo)" />

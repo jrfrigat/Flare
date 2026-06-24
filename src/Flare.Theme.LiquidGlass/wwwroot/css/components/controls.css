@@ -1,0 +1,82 @@
+/* ==========================================================================
+   LIQUID GLASS - switch / slider / progress / tabs.
+
+   Sunken translucent tracks with floating glass thumbs (bright rim + diffuse
+   shadow) and accent fills carrying a specular sheen. Tabs read as an iOS
+   segmented control: a frosted track with the active segment lifted as a glass
+   pill. Token driven for light + dark.
+   ========================================================================== */
+@scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
+
+    /* ---- Switch: the green iOS switch with a floating glass knob ---- */
+    .flare-switch__handle {
+        background-image: linear-gradient(180deg, #ffffff 0%, #f0f0f2 100%);
+        box-shadow:
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.9),
+            0 1px 3px rgba(0, 0, 0, 0.28),
+            0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+    .flare-switch__track {
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ---- Slider: sunken glass rail, accent fill, floating glass handle ---- */
+    .flare-slider__rail {
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+    .flare-slider__seg--active {
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 60%) !important;
+    }
+    /* The draggable handle is the native range thumb (webkit + moz). */
+    .flare-slider__input::-webkit-slider-thumb {
+        background-image: linear-gradient(180deg, #ffffff 0%, #f0f0f2 100%);
+        box-shadow:
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.9),
+            0 1px 3px rgba(0, 0, 0, 0.28),
+            0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+    .flare-slider__input::-moz-range-thumb {
+        background-image: linear-gradient(180deg, #ffffff 0%, #f0f0f2 100%);
+        box-shadow:
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.9),
+            0 1px 3px rgba(0, 0, 0, 0.28),
+            0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ---- Progress: rounded accent bar with a glass sheen ---- */
+    .flare-progress__track {
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
+    }
+    .flare-progress__indicator,
+    .flare-progress__bar {
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 55%, transparent 75%) !important;
+        box-shadow: inset 0 1px 0.5px rgba(255, 255, 255, 0.5);
+    }
+
+    /* ---- Tabs: iOS segmented control - frosted track, active = floating glass pill.
+       The tab strip (__bar) becomes the rounded translucent track; the active tab
+       lifts as a glass pill and the MD3 underline indicator is suppressed. ---- */
+    .flare-tabs__bar {
+        background-color: color-mix(in srgb, var(--flare-color-surface-container-high) 80%, transparent);
+        border-radius: var(--flare-shape-medium);
+        border-bottom: none !important;
+        padding: 3px;
+        gap: 2px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.10);
+    }
+    .flare-tabs__tab {
+        border-radius: calc(var(--flare-shape-medium) - 2px);
+        border-bottom-color: transparent !important;
+        transition: color 150ms ease;
+    }
+    .flare-tabs__tab--active {
+        background-color: var(--flare-liquid-tint-strong);
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 50%);
+        border-bottom-color: transparent !important;
+        box-shadow:
+            inset 0 1px 0.5px var(--flare-liquid-rim),
+            0 1px 3px rgba(0, 0, 0, 0.14);
+    }
+    /* Suppress the MD3 sliding ink bar; the floating pill above is the indicator. */
+    .flare-tabs--primary .flare-tabs__tab--active::after { display: none !important; }
+}

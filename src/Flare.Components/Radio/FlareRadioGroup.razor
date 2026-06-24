@@ -1,0 +1,102 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@typeparam TValue
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+
+<fieldset class="@BuildCssClass(_inlineClass, _errorClass, _colorClass, _labelClass)" style="@_inlineStyle" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <legend class="@Css.Classes.RadioGroup.Legend">@Label</legend>
+    }
+    <CascadingValue Value="_context" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@Css.Classes.RadioGroup.ErrorMsg">@_displayedError</span>
+    }
+</fieldset>
+
+@code {
+    /// <summary>Currently selected value in the group.</summary>
+    [Parameter] public TValue? Value { get; set; }
+    /// <summary>Callback invoked when the selected value changes.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    /// <summary>Radio button items rendered inside the group.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Legend label shown above the group.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Arranges radio buttons horizontally when true.</summary>
+    [Parameter] public bool Inline { get; set; }
+    /// <summary>Accent color of the selected radio (role -> shared class, custom -> inline token). Default = primary.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Label position relative to each radio (End = after, Start = before). Default End.</summary>
+    [Parameter] public LabelPlacement LabelPlacement { get; set; } = LabelPlacement.End;
+    /// <summary>Disables all radio buttons in the group.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Control size (Xs..Xl) applied to every radio in the group. Medium is the default.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<TValue>>? For { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.RadioGroup.Root;
+
+    private string _inlineClass => Inline ? Css.Classes.RadioGroup.Inline : string.Empty;
+    private string _errorClass => !string.IsNullOrEmpty(_displayedError) ? Css.Classes.RadioGroup.Error : string.Empty;
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string _labelClass => LabelPlacement == LabelPlacement.Start ? Css.Classes.RadioGroup.GroupLabelStart : string.Empty;
+    private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+    private FieldIdentifier _fieldId;
+    private FlareRadioGroupContext _context = default!;
+    private readonly string _groupName = $"flare-radio-{Guid.NewGuid():N}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+
+        _context = new FlareRadioGroupContext(
+            Value,
+            Disabled,
+            SelectBoxedAsync,
+            _groupName,
+            Size);
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private async Task SelectBoxedAsync(object? boxedValue)
+    {
+        TValue? value = boxedValue is TValue typed ? typed : default;
+        await ValueChanged.InvokeAsync(value);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+}

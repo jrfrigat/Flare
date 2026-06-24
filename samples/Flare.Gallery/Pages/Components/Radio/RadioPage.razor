@@ -1,0 +1,11 @@
+@page "/components/radio"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Radio_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareRadioGroup">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Radio_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Radio_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Radio_Basic" DemoType="typeof(Examples.RadioGroupDemo)" />

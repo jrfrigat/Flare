@@ -1,0 +1,100 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_gapClass, _alignClass, _justifyClass)" style="@_gridStyle" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Child content rendered inside the grid.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Number of equal-width columns in the grid. Ignored when <see cref="MinColumnWidth"/> is set.</summary>
+    [Parameter] public int Columns { get; set; } = 12;
+    /// <summary>
+    /// When set (any CSS length, e.g. "15rem"), the grid becomes responsive: it fits as many equal
+    /// columns as the width allows, each at least this wide (<c>repeat(auto-fill, minmax(min, 1fr))</c>).
+    /// This overrides <see cref="Columns"/> and needs no media queries.
+    /// </summary>
+    [Parameter] public string? MinColumnWidth { get; set; }
+    /// <summary>Spacing between all grid cells using design-token values.</summary>
+    [Parameter] public FlareSpacing Gap { get; set; } = FlareSpacing.Medium;
+    /// <summary>Raw CSS gap value used when <see cref="Gap"/> is <see cref="FlareSpacing.Custom"/>.</summary>
+    [Parameter] public string? GapValue { get; set; }
+    /// <summary>Overrides the row gap independently (raw CSS value, e.g. "0.5rem").</summary>
+    [Parameter] public string? RowGap { get; set; }
+    /// <summary>Overrides the column gap independently (raw CSS value, e.g. "0.5rem").</summary>
+    [Parameter] public string? ColumnGap { get; set; }
+    /// <summary>Justifies grid items along the inline (row) axis.</summary>
+    [Parameter] public FlareJustifyContent Justify { get; set; } = FlareJustifyContent.Default;
+    /// <summary>Aligns grid items along the block (column) axis.</summary>
+    [Parameter] public FlareAlignItems AlignItems { get; set; } = FlareAlignItems.Default;
+
+    protected override string ComponentCssClass => Css.Classes.Grid.Root;
+
+    private string? _gapClass;
+    private string? _alignClass;
+    private string? _justifyClass;
+    private string? _gridStyle;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _gapClass = Gap switch
+        {
+            FlareSpacing.None    => Css.Classes.Grid.GapNone,
+            FlareSpacing.XXSmall => Css.Classes.Grid.GapXxSmall,
+            FlareSpacing.XSmall  => Css.Classes.Grid.GapXSmall,
+            FlareSpacing.Small   => Css.Classes.Grid.GapSmall,
+            FlareSpacing.Large   => Css.Classes.Grid.GapLarge,
+            FlareSpacing.XLarge  => Css.Classes.Grid.GapXLarge,
+            FlareSpacing.Custom  => null,
+            _                    => Css.Classes.Grid.GapMedium,
+        };
+
+        _alignClass = AlignItems switch
+        {
+            FlareAlignItems.Stretch  => Css.Classes.Grid.AlignStretch,
+            FlareAlignItems.Center   => Css.Classes.Grid.AlignCenter,
+            FlareAlignItems.Start    => Css.Classes.Grid.AlignStart,
+            FlareAlignItems.End      => Css.Classes.Grid.AlignEnd,
+            FlareAlignItems.Baseline => Css.Classes.Grid.AlignBaseline,
+            _                        => null,
+        };
+
+        _justifyClass = Justify switch
+        {
+            FlareJustifyContent.Start        => Css.Classes.Grid.JustifyStart,
+            FlareJustifyContent.End          => Css.Classes.Grid.JustifyEnd,
+            FlareJustifyContent.Center       => Css.Classes.Grid.JustifyCenter,
+            FlareJustifyContent.SpaceBetween => Css.Classes.Grid.JustifySpaceBetween,
+            FlareJustifyContent.SpaceAround  => Css.Classes.Grid.JustifySpaceAround,
+            FlareJustifyContent.SpaceEvenly  => Css.Classes.Grid.JustifySpaceEvenly,
+            _                                => null,
+        };
+
+        var parts = new System.Text.StringBuilder();
+        // MinColumnWidth turns the grid into an auto-fitting responsive track set (no media queries);
+        // otherwise it is a fixed N-column grid. GS-3: sanitize the user-supplied length.
+        if (MinColumnWidth is not null)
+            parts.Append($"grid-template-columns:repeat(auto-fill,minmax({Flare.Components.Security.CssValidator.StripDangerous(MinColumnWidth)},1fr))");
+        else
+            parts.Append($"grid-template-columns:repeat({Columns},1fr)");
+
+        // RowGap/ColumnGap overrides take precedence over the Gap enum
+        // GS-3: sanitize all user-supplied CSS values before injection
+        if (RowGap is not null && ColumnGap is not null)
+            parts.Append($";gap:{Flare.Components.Security.CssValidator.StripDangerous(RowGap)} {Flare.Components.Security.CssValidator.StripDangerous(ColumnGap)}");
+        else if (RowGap is not null)
+            parts.Append($";row-gap:{Flare.Components.Security.CssValidator.StripDangerous(RowGap)}");
+        else if (ColumnGap is not null)
+            parts.Append($";column-gap:{Flare.Components.Security.CssValidator.StripDangerous(ColumnGap)}");
+        else if (Gap == FlareSpacing.Custom && GapValue is not null)
+            parts.Append($";gap:{Flare.Components.Security.CssValidator.StripDangerous(GapValue)}");
+
+        if (Style is not null)
+            parts.Append(';').Append(Style);
+
+        _gridStyle = parts.ToString();
+    }
+}

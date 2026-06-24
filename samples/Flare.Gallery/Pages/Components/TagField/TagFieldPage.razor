@@ -1,0 +1,13 @@
+@page "/components/tag-field"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.TagInput_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTagField">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.TagInput_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.TagInput_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.TagInput_Basic" DemoType="typeof(Examples.TagFieldBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.TagInput_Options" DemoType="typeof(Examples.TagFieldOptionsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.TagInput_Suggestions" DemoType="typeof(Examples.TagFieldSuggestionsDemo)" />

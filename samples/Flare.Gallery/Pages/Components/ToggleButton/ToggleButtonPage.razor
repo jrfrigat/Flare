@@ -1,0 +1,15 @@
+@page "/components/toggle-button"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.ToggleButton_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareToggleButton">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.ToggleButton_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.ToggleButton_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.ToggleButton_IconOnly" DemoType="typeof(Examples.ToggleButtonIconOnlyDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ToggleButton_WithLabel" DemoType="typeof(Examples.ToggleButtonWithLabelDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ToggleButton_SizesDisabled" DemoType="typeof(Examples.ToggleButtonSizesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ToggleButton_Group" DemoType="typeof(Examples.ToggleButtonGroupDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ToggleButton_GroupMulti" DemoType="typeof(Examples.ToggleButtonGroupMultiDemo)" />

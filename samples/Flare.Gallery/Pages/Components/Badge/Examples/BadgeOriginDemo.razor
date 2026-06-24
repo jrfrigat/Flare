@@ -1,0 +1,29 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <FlareBadge Count="3" Origin="BadgeOrigin.TopRight">
+            <FlareButton Variant="ButtonVariant.Outlined">TopRight</FlareButton>
+        </FlareBadge>
+        <FlareBadge Count="3" Origin="BadgeOrigin.TopLeft">
+            <FlareButton Variant="ButtonVariant.Outlined">TopLeft</FlareButton>
+        </FlareBadge>
+        <FlareBadge Count="3" Origin="BadgeOrigin.BottomRight">
+            <FlareButton Variant="ButtonVariant.Outlined">BottomRight</FlareButton>
+        </FlareBadge>
+        <FlareBadge Count="3" Origin="BadgeOrigin.BottomLeft">
+            <FlareButton Variant="ButtonVariant.Outlined">BottomLeft</FlareButton>
+        </FlareBadge>
+    </FlareStack>
+
+    <FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+        <FlareBadge Count="7" Visible="_visible">
+            <FlareButton Variant="ButtonVariant.Outlined">Inbox</FlareButton>
+        </FlareBadge>
+        <FlareButton OnClick="@(() => _visible = !_visible)">
+            @(_visible ? "Hide" : "Show") badge
+        </FlareButton>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private bool _visible = true;
+}

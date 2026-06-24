@@ -1,0 +1,78 @@
+.gallery-page-title {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--flare-color-outline-variant, #cac4d0);
+}
+
+.gallery-page-title__row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.gallery-page-title__main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.gallery-page-title__api {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    border: 1px solid var(--flare-color-outline, #79747e);
+    border-radius: var(--flare-shape-full, 9999px);
+    color: var(--flare-color-primary, #6750a4);
+    text-decoration: none;
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-large-size, 0.875rem);
+    font-weight: var(--flare-typescale-label-large-weight, 500);
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.gallery-page-title__api:hover {
+    background: color-mix(in srgb, var(--flare-color-primary, #6750a4) 8%, transparent);
+    border-color: var(--flare-color-primary, #6750a4);
+}
+
+.gallery-page-title__api-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+/* NuGet package indicator (click to copy the install command). */
+.gallery-page-title__pkg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    padding: 0.25rem 0.6rem;
+    background: var(--flare-color-surface-container, #f3edf7);
+    border: 1px solid var(--flare-color-outline-variant, #cac4d0);
+    border-radius: var(--flare-shape-small, 0.5rem);
+    color: var(--flare-color-on-surface-variant, #49454f);
+    cursor: pointer;
+    font-size: var(--flare-typescale-label-small-size, 0.75rem);
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.gallery-page-title__pkg:hover {
+    border-color: var(--flare-color-primary, #6750a4);
+    background: color-mix(in srgb, var(--flare-color-primary, #6750a4) 6%, var(--flare-color-surface-container, #f3edf7));
+}
+
+.gallery-page-title__pkg code {
+    font-family: var(--flare-typescale-body-medium-font, monospace);
+    color: var(--flare-color-on-surface, #1c1b1f);
+}
+
+.gallery-page-title__pkg-icon {
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--flare-color-primary, #6750a4);
+}

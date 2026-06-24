@@ -1,0 +1,17 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* A compact command strip (Office "Quick Access Toolbar"): a row of small icon buttons, typically
+   placed above or next to the ribbon. Purely structural - put FlareButton / FlareRibbonButton items
+   inside. *@
+<div class="@Css.Classes.Ide.Qat.Root" role="toolbar" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>The quick-access command buttons (usually small <c>FlareButton</c> items).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.Qat.Root;
+}

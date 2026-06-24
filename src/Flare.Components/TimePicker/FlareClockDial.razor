@@ -1,0 +1,197 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Web
+
+@* Reusable MD3 clock dial (tap + drag + keyboard). Used by FlareTimePicker and FlareDateTimePicker. *@
+<div class="@Css.Classes.ClockDial.Root" tabindex="0" @ref="_root" @onkeydown="OnKey">
+<div class="@Css.Classes.ClockDial.DialTop">
+    <div class="@Css.Classes.ClockDial.TimeFields">
+        <button type="button" class="@Css.Classes.ClockDial.TimeField @(_mode == DialMode.Hour ? Css.Classes.ClockDial.TimeFieldActive : "")"
+                @onclick="@(() => _mode = DialMode.Hour)">@_hourFieldText</button>
+        <span class="@Css.Classes.ClockDial.TimeFieldsSep">:</span>
+        <button type="button" class="@Css.Classes.ClockDial.TimeField @(_mode == DialMode.Minute ? Css.Classes.ClockDial.TimeFieldActive : "")"
+                @onclick="@(() => _mode = DialMode.Minute)">@Minute.ToString("00")</button>
+    </div>
+    @if (!Is24Hour)
+    {
+        <div class="@Css.Classes.ClockDial.Period">
+            <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(!_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
+                    @onclick="@(() => SetPeriod(false))">@_amText</button>
+            <button type="button" class="@Css.Classes.ClockDial.PeriodBtn @(_isPm ? Css.Classes.ClockDial.PeriodBtnSelected : "")"
+                    @onclick="@(() => SetPeriod(true))">@_pmText</button>
+        </div>
+    }
+</div>
+
+<div class="@Css.Classes.ClockDial.Dial" role="slider"
+     aria-label="@(_mode == DialMode.Hour ? "Hours" : "Minutes")"
+     aria-valuenow="@(_mode == DialMode.Hour ? Hour : Minute)"
+     @onpointerdown="OnDown" @onpointermove="OnMove" @onpointerup="OnUp" @onpointerleave="OnUp">
+    <div class="@Css.Classes.ClockDial.Center"></div>
+    <div class="@Css.Classes.ClockDial.Hand"
+         style="--flare-dial-angle:@(_handAngle.ToString(CultureInfo.InvariantCulture))deg;--flare-dial-len:@(_handLen.ToString(CultureInfo.InvariantCulture))"></div>
+    @foreach (var n in DialNumbers())
+    {
+        <span class="@Css.Classes.ClockDial.Num @(n.Selected ? Css.Classes.ClockDial.NumSelected : "")"
+              style="left:@(n.X.ToString(CultureInfo.InvariantCulture))%;top:@(n.Y.ToString(CultureInfo.InvariantCulture))%">@n.Label</span>
+    }
+</div>
+</div>
+
+@code {
+    /// <summary>Hour of day (0-23).</summary>
+    [Parameter] public int Hour { get; set; }
+    /// <summary>Raised when the hour changes.</summary>
+    [Parameter] public EventCallback<int> HourChanged { get; set; }
+    /// <summary>Minute (0-59).</summary>
+    [Parameter] public int Minute { get; set; }
+    /// <summary>Raised when the minute changes.</summary>
+    [Parameter] public EventCallback<int> MinuteChanged { get; set; }
+    /// <summary>24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.</summary>
+    [Parameter] public bool Is24Hour { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.ClockDial.Root;
+
+    private enum DialMode { Hour, Minute }
+
+    private const double DialSize = 256;
+    private const double OuterR = 40;
+    private const double InnerR = 26;
+
+    private DialMode _mode = DialMode.Hour;
+    private bool _dragging;
+    private ElementReference _root;
+    private string _buf = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try { await _root.FocusAsync(); } catch { /* focus is best-effort */ }
+        }
+    }
+
+    private async Task OnKey(KeyboardEventArgs e)
+    {
+        var key = e.Key;
+        if (key.Length == 1 && key[0] >= '0' && key[0] <= '9')
+        {
+            await FeedDigit(key[0]);
+        }
+        else if (key == "ArrowLeft") { _mode = DialMode.Hour; _buf = string.Empty; }
+        else if (key == "ArrowRight") { _mode = DialMode.Minute; _buf = string.Empty; }
+        else if (key == "Backspace") { _buf = string.Empty; }
+    }
+
+    private async Task FeedDigit(char c)
+    {
+        if (_mode == DialMode.Hour)
+        {
+            var (v, buf, complete) = TimeKeyboardEntry.Feed(_buf, c, 23);
+            _buf = buf;
+            await HourChanged.InvokeAsync(v);
+            if (complete) { _mode = DialMode.Minute; _buf = string.Empty; }
+        }
+        else
+        {
+            var (v, buf, complete) = TimeKeyboardEntry.Feed(_buf, c, 59);
+            _buf = buf;
+            await MinuteChanged.InvokeAsync(v);
+            if (complete) _buf = string.Empty;
+        }
+    }
+
+    private int _displayHour => Hour % 12 == 0 ? 12 : Hour % 12;
+    private bool _isPm => Hour >= 12;
+    private bool _innerHour => Is24Hour && (Hour == 0 || Hour >= 13);
+    private string _hourFieldText => Is24Hour ? Hour.ToString("00") : _displayHour.ToString("00");
+    private double _handAngle => _mode == DialMode.Hour ? (Hour % 12) * 30 : Minute * 6;
+    private double _handLen => _mode == DialMode.Hour && _innerHour ? InnerR : OuterR;
+    private string _amText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.AMDesignator, "AM");
+    private string _pmText => Nz(CultureInfo.CurrentUICulture.DateTimeFormat.PMDesignator, "PM");
+
+    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
+
+    private Task SetPeriod(bool pm) => HourChanged.InvokeAsync((Hour % 12) + (pm ? 12 : 0));
+
+    private async Task OnDown(PointerEventArgs e) { _dragging = true; await Apply(e.OffsetX, e.OffsetY); }
+    private async Task OnMove(PointerEventArgs e) { if (_dragging) await Apply(e.OffsetX, e.OffsetY); }
+    private void OnUp(PointerEventArgs e)
+    {
+        if (!_dragging) return;
+        _dragging = false;
+        if (_mode == DialMode.Hour) _mode = DialMode.Minute;
+    }
+
+    private async Task Apply(double offsetX, double offsetY)
+    {
+        var dx = offsetX - DialSize / 2;
+        var dy = offsetY - DialSize / 2;
+        var deg = (Math.Atan2(dx, -dy) * 180.0 / Math.PI + 360) % 360;
+
+        if (_mode == DialMode.Hour)
+        {
+            var pos = (int)Math.Round(deg / 30) % 12;
+            int hour;
+            if (Is24Hour)
+            {
+                var inner = Math.Sqrt(dx * dx + dy * dy) < DialSize / 2 * 0.66;
+                hour = inner ? (pos == 0 ? 0 : pos + 12) : (pos == 0 ? 12 : pos);
+            }
+            else
+            {
+                var n = pos == 0 ? 12 : pos;
+                hour = (n % 12) + (_isPm ? 12 : 0);
+            }
+            await HourChanged.InvokeAsync(hour);
+        }
+        else
+        {
+            await MinuteChanged.InvokeAsync((int)Math.Round(deg / 6) % 60);
+        }
+    }
+
+    private record struct DialNum(string Label, double X, double Y, bool Selected);
+
+    private IEnumerable<DialNum> DialNumbers()
+    {
+        if (_mode == DialMode.Hour)
+        {
+            if (Is24Hour)
+            {
+                for (var n = 1; n <= 12; n++)
+                {
+                    var p = n % 12;
+                    yield return new DialNum(n.ToString(), Px(p, OuterR), Py(p, OuterR), n == Hour);
+                }
+                int[] inner = { 0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
+                foreach (var h in inner)
+                {
+                    var p = h % 12;
+                    yield return new DialNum(h == 0 ? "00" : h.ToString(), Px(p, InnerR), Py(p, InnerR), h == Hour);
+                }
+            }
+            else
+            {
+                for (var n = 1; n <= 12; n++)
+                {
+                    var p = n % 12;
+                    yield return new DialNum(n.ToString(), Px(p, OuterR), Py(p, OuterR), n == _displayHour);
+                }
+            }
+        }
+        else
+        {
+            for (var n = 0; n < 60; n += 5)
+            {
+                var p = n / 5;
+                yield return new DialNum(n.ToString("00"), Px(p, OuterR), Py(p, OuterR), n == Minute);
+            }
+        }
+    }
+
+    private static double Px(int p, double r) => Math.Round(50 + r * Math.Sin(p * Math.PI / 6), 2);
+    private static double Py(int p, double r) => Math.Round(50 - r * Math.Cos(p * Math.PI / 6), 2);
+}

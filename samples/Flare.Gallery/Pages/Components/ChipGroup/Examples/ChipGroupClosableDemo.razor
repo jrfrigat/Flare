@@ -1,0 +1,12 @@
+@inject LanguageService Lang
+
+<FlareStack Row Gap="FlareSpacing.XSmall">
+    @foreach (var tag in _tags)
+    {
+        <FlareChip Label="@tag" Closable="true" OnClose="@(() => RemoveTag(tag))" />
+    }
+</FlareStack>
+@if (!_tags.Any())
+{
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">All chips removed.</FlareText>
+}

@@ -1,0 +1,14 @@
+<FlareButton Variant="ButtonVariant.Filled" Loading="@_loading" LoadingText="Saving…" OnClick="@ToggleLoading">
+    Save
+</FlareButton>
+<FlareButton Variant="ButtonVariant.Outlined" Loading="@_loading" OnClick="@ToggleLoading">
+    Submit
+</FlareButton>
+<FlareButton Variant="ButtonVariant.Tonal" Loading="@_loading" Size="ButtonSize.Sm" OnClick="@ToggleLoading">
+    Upload
+</FlareButton>
+
+@code{
+    private bool _loading;
+    private void ToggleLoading() => _loading = !_loading;
+}

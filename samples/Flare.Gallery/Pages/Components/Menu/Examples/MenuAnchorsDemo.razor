@@ -1,0 +1,42 @@
+@* Четыре положения панели относительно активатора (MenuAnchor) *@
+<FlareStack Row Gap="FlareSpacing.Large" Wrap Style="padding:4rem 0;">
+    <FlareMenu Anchor="MenuAnchor.BottomLeft">
+        <Activator>
+            <FlareButton Variant="ButtonVariant.Outlined">Bottom-left ▾</FlareButton>
+        </Activator>
+        <ChildContent>
+            <FlareMenuItem Icon="north_west">Bottom-left</FlareMenuItem>
+            <FlareMenuItem Icon="check">Option</FlareMenuItem>
+        </ChildContent>
+    </FlareMenu>
+
+    <FlareMenu Anchor="MenuAnchor.BottomRight">
+        <Activator>
+            <FlareButton Variant="ButtonVariant.Outlined">Bottom-right ▾</FlareButton>
+        </Activator>
+        <ChildContent>
+            <FlareMenuItem Icon="north_east">Bottom-right</FlareMenuItem>
+            <FlareMenuItem Icon="check">Option</FlareMenuItem>
+        </ChildContent>
+    </FlareMenu>
+
+    <FlareMenu Anchor="MenuAnchor.TopLeft">
+        <Activator>
+            <FlareButton Variant="ButtonVariant.Outlined">Top-left ▴</FlareButton>
+        </Activator>
+        <ChildContent>
+            <FlareMenuItem Icon="south_west">Top-left</FlareMenuItem>
+            <FlareMenuItem Icon="check">Option</FlareMenuItem>
+        </ChildContent>
+    </FlareMenu>
+
+    <FlareMenu Anchor="MenuAnchor.TopRight">
+        <Activator>
+            <FlareButton Variant="ButtonVariant.Outlined">Top-right ▴</FlareButton>
+        </Activator>
+        <ChildContent>
+            <FlareMenuItem Icon="south_east">Top-right</FlareMenuItem>
+            <FlareMenuItem Icon="check">Option</FlareMenuItem>
+        </ChildContent>
+    </FlareMenu>
+</FlareStack>

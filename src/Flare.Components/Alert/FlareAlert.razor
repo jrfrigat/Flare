@@ -1,0 +1,93 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@if (!_dismissed)
+{
+    <div class="@BuildCssClass(_severityClass, _variantClass, _dismissingClass)" role="alert" style="@Style" @attributes="AdditionalAttributes">
+        @if (!NoIcon)
+        {
+            <span class="@Css.Classes.Alert.Icon" aria-hidden="true">@if (Icon is not null) { @Icon } else { @_defaultIcon }</span>
+        }
+        <div class="@Css.Classes.Alert.Content">
+            @if (!string.IsNullOrEmpty(Title))
+            {
+                <div class="@Css.Classes.Alert.Title">@Title</div>
+            }
+            <div class="@Css.Classes.Alert.Body">@ChildContent</div>
+        </div>
+        @if (ShowCloseButton || Dismissible)
+        {
+            <button class="@Css.Classes.Alert.Close" type="button" aria-label="@(FlareStrings.Alert_Close)" @onclick="HandleClose">✕</button>
+        }
+    </div>
+}
+
+@code {
+    /// <summary>Severity level that controls color and icon.</summary>
+    [Parameter] public AlertSeverity Severity { get; set; } = AlertSeverity.Info;
+    /// <summary>Visual display variant: Filled (default), Outlined, or Text.</summary>
+    [Parameter] public AlertVariant Variant { get; set; } = AlertVariant.Filled;
+    /// <summary>Optional bold title displayed above the alert body.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Alert body content rendered below the title.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Custom icon content that overrides the default severity icon.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>Hides the leading icon entirely when true.</summary>
+    [Parameter] public bool NoIcon { get; set; }
+    /// <summary>Shows a close button that hides the alert. Alias for <see cref="Dismissible"/> for discoverability.</summary>
+    [Parameter] public bool ShowCloseButton { get; set; }
+    /// <summary>Shows a close button that hides the alert.</summary>
+    [Parameter] public bool Dismissible { get; set; }
+    /// <summary>Callback raised when the close button is clicked.</summary>
+    [Parameter] public EventCallback OnClose { get; set; }
+    /// <summary>Callback raised when the alert is dismissed.</summary>
+    [Parameter] public EventCallback OnDismiss { get; set; }
+    /// <summary>When true (default), applies a fade-out + slide-up animation before removing the alert.</summary>
+    [Parameter] public bool AnimateDismiss { get; set; } = true;
+
+    protected override string ComponentCssClass => Css.Classes.Alert.Root;
+
+    private bool _dismissed;
+    private bool _dismissing;
+
+    private string? _dismissingClass => _dismissing ? Css.Classes.Alert.Dismissing : null;
+
+    private string _severityClass => Severity switch
+    {
+        AlertSeverity.Success => Css.Classes.Alert.Success,
+        AlertSeverity.Warning => Css.Classes.Alert.Warning,
+        AlertSeverity.Error   => Css.Classes.Alert.Error,
+        AlertSeverity.Info    => Css.Classes.Alert.Info,
+        _                     => Css.Classes.Alert.Info,
+    };
+
+    private string _variantClass => Variant switch
+    {
+        AlertVariant.Outlined => Css.Classes.Alert.Outlined,
+        AlertVariant.Text     => Css.Classes.Alert.Text,
+        _                     => string.Empty,
+    };
+
+    private string _defaultIcon => Severity switch
+    {
+        AlertSeverity.Success => "✓",
+        AlertSeverity.Warning => "⚠",
+        AlertSeverity.Error   => "✕",
+        AlertSeverity.Info    => "ℹ",
+        _                     => "ℹ",
+    };
+
+    private async Task HandleClose()
+    {
+        if (AnimateDismiss)
+        {
+            _dismissing = true;
+            StateHasChanged();
+            await Task.Delay(300);
+        }
+        _dismissed = true;
+        await OnClose.InvokeAsync();
+        await OnDismiss.InvokeAsync();
+    }
+}

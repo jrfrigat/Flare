@@ -1,0 +1,8 @@
+﻿<FlareDataGrid Items="@DatagridData._people" PageSize="6">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Resizable />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Resizable />
+        <FlareColumn Title="City" Field="@(p => p.City)" Resizable />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+</FlareDataGrid>

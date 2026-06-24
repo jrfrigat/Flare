@@ -1,0 +1,16 @@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:32rem;">
+    <FlareTagField @bind-Values="_tags" Label="Technologies" Placeholder="Type and press Enter…" HelperText="Press Enter or comma to add a tag" />
+    <FlareTagField @bind-Values="_limited" Label="Skills (max 4)" Placeholder="Add up to 4 skills…" MaxTags="4" />
+    <FlareTagField Values="@_readonly" Label="Readonly" ReadOnly="true" />
+    <FlareTagField @bind-Values="_sized" Label="Small (Xs..Xl grid)" Size="FieldSize.Sm" Placeholder="Compact tags…" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+    Technologies: @string.Join(", ", _tags) | Skills: @string.Join(", ", _limited)
+</FlareText>
+
+@code {
+    private IReadOnlyList<string> _tags = ["Blazor", ".NET", "CSS"];
+    private IReadOnlyList<string> _limited = ["HTML", "CSS"];
+    private IReadOnlyList<string> _readonly = ["Material Design", "Fluent UI", "Blazor"];
+    private IReadOnlyList<string> _sized = ["xs", "sm"];
+}

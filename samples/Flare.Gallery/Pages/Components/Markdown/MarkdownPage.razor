@@ -1,0 +1,13 @@
+@page "/components/markdown"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Markdown_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareMarkdown">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Markdown_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Markdown_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Markdown_Static" DemoType="typeof(Examples.MarkdownStaticDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Markdown_LiveEditor" DemoType="typeof(Examples.MarkdownLiveEditorDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Markdown_Syntax" DemoType="typeof(Examples.MarkdownSyntaxDemo)" />

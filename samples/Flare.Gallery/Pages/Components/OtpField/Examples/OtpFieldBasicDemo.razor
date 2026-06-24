@@ -1,0 +1,17 @@
+<FlareStack Align="FlareAlignItems.Start" Gap="FlareSpacing.Small">
+    <FlareOtpField @bind-Value="_basic" OnComplete="OnBasicComplete" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        Value: <strong>@(string.IsNullOrEmpty(_basic) ? "(empty)" : _basic)</strong>
+        @if (_basicResult is not null)
+        {
+            <span style="color:var(--flare-color-primary);margin-left:0.5rem;">Complete: @_basicResult</span>
+        }
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string _basic = string.Empty;
+    private string? _basicResult;
+
+    private void OnBasicComplete(string v) => _basicResult = v;
+}

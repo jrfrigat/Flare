@@ -1,0 +1,10 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* A thin vertical rule separating buttons inside a ribbon group or a toolbar. *@
+<div class="@Css.Classes.Ide.Ribbon.Separator" role="separator" aria-orientation="vertical" @attributes="AdditionalAttributes"></div>
+
+@code {
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.Ribbon.Separator;
+}

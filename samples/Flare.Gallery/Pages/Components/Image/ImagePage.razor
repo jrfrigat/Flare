@@ -1,0 +1,16 @@
+@page "/components/image"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Image_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareImage">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Image_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Image_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Image_ObjectFit" DemoType="typeof(Examples.ImageObjectFitDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.Image_AspectRatioFluid" DemoType="typeof(Examples.ImageAspectRatioFluidDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.Image_SkeletonFallback" DemoType="typeof(Examples.ImageSkeletonFallbackDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Image_Options" DemoType="typeof(Examples.ImageOptionsDemo)" />

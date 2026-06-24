@@ -1,0 +1,54 @@
+@page "/"
+@using Flare.Legacy.Components
+@using Flare.Legacy.Data
+@using Flare.Legacy.Services
+@implements IDisposable
+@inject ISnackbarService Snackbar
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+@inject AppSettings Settings
+@inject WorkspaceState Workspace
+
+@* The first tab is the loans list - it is pinned (not closeable) and always shown. Loans and client
+   cards each open in their own closeable tab after it. The open tabs live in the scoped WorkspaceState
+   service, so they survive navigating away to another page and back. *@
+<FlareTabs ActiveIndex="Workspace.ActiveIndex" ActiveIndexChanged="OnActiveChanged"
+           Typo="TypographyScale.LabelMedium" Variant="@Settings.TabVariant" OnTabClose="Close">
+    <HeaderEnd>
+        <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Primary" OnClick="@(() => Snackbar.Show("Инструкция"))">Инструкция</FlareButton>
+        <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Outlined" Color="FlareColor.Error" OnClick="OpenNewBrowserTab">
+            <LeadingIcon><FlareIcon Size="0.85rem" Name="open_in_new" /></LeadingIcon>
+            <ChildContent>Открыть новую вкладку</ChildContent>
+        </FlareButton>
+    </HeaderEnd>
+    <ChildContent>
+        @* Pinned list tab (Closeable defaults to false). *@
+        <FlareTab Label="Список займов">
+            <LoansList OnOpenLoan="Workspace.OpenLoan" OnOpenClient="Workspace.OpenClient" />
+        </FlareTab>
+        @foreach (var doc in Workspace.Docs)
+        {
+            <FlareTab Label="@doc.Label" Closeable="true">
+                @if (doc.Kind == DocKind.Loan)
+                {
+                    <LoanDetail Loan="doc.Loan!" />
+                }
+                else
+                {
+                    <ClientCard ClientId="@(doc.ClientId!)" OnOpenLoan="Workspace.OpenLoan" />
+                }
+            </FlareTab>
+        }
+    </ChildContent>
+</FlareTabs>
+
+@code {
+    protected override void OnInitialized() => Workspace.Changed += OnWorkspaceChanged;
+    private void OnWorkspaceChanged() => InvokeAsync(StateHasChanged);
+    public void Dispose() => Workspace.Changed -= OnWorkspaceChanged;
+
+    private void OnActiveChanged(int index) => Workspace.ActiveIndex = index;
+    private void Close(string title) => Workspace.CloseByLabel(title);
+
+    private async Task OpenNewBrowserTab() => await JS.InvokeVoidAsync("open", Nav.BaseUri, "_blank");
+}

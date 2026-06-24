@@ -1,0 +1,104 @@
+.flare-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-8, 1rem);
+    box-sizing: border-box;
+    min-height: var(--flare-chip-height, 2rem); /* MD3 chip height 32dp */
+    border-radius: var(--flare-chip-radius, var(--flare-shape-small));
+    /* Цвет через общие токены роли (--fc-*); дефолт - нейтральный.
+       Роль -> класс flare-color-*; кастом -> инлайн --fc-main/--fc-on. */
+    border: 1px solid var(--fc-main, var(--flare-color-outline));
+    background-color: transparent;
+    color: var(--fc-main, var(--flare-color-on-surface-variant));
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-large-size);
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    transition:
+        background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
+        border-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-chip__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: -0.5rem;
+    border-radius: var(--flare-shape-full);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.flare-chip__avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* MD3: assist/suggestion leading icon uses the primary color; selected chips
+   inherit the chip's foreground so the icon matches the filled state. */
+.flare-chip__icon--leading { color: var(--flare-color-primary); }
+.flare-chip--selected .flare-chip__icon--leading { color: inherit; }
+
+/* MD3 elevated chip: filled surface-container-low with a level-1 shadow, no border. */
+.flare-chip--elevated {
+    background-color: var(--flare-color-surface-container-low);
+    border-color: transparent;
+    box-shadow: var(--flare-elevation-1);
+}
+.flare-chip--elevated:hover { box-shadow: var(--flare-elevation-2); }
+
+.flare-chip--xs { padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2, 0.25rem); }
+.flare-chip--xs .flare-chip__avatar { width: 1rem; height: 1rem; }
+.flare-chip--sm { padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-5, 0.625rem); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3, 0.375rem); }
+.flare-chip--sm .flare-chip__avatar { width: 1.125rem; height: 1.125rem; }
+.flare-chip--lg { padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-10, 1.25rem); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5, 0.625rem); }
+.flare-chip--lg .flare-chip__avatar { width: 1.875rem; height: 1.875rem; }
+.flare-chip--xl { padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-12, 1.5rem); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6, 0.75rem); }
+.flare-chip--xl .flare-chip__avatar { width: 2.25rem; height: 2.25rem; }
+
+.flare-chip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+.flare-chip:hover::before  { opacity: var(--flare-state-hover-opacity); }
+.flare-chip:focus-visible::before  { opacity: var(--flare-state-focus-opacity); }
+.flare-chip:active::before { opacity: var(--flare-state-pressed-opacity); }
+
+.flare-chip--selected {
+    background-color: var(--fc-main, var(--flare-color-secondary-container));
+    border-color: transparent;
+    color: var(--fc-on, var(--flare-color-on-secondary-container));
+}
+
+.flare-chip__label { flex: 1; }
+
+.flare-chip__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1em;
+    height: 1.1em;
+    margin-left: var(--flare-spacing-2, 0.25rem);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 50%;
+    color: currentColor;
+    opacity: 0.7;
+    font-size: 0.9em;
+    line-height: 1;
+    transition: opacity var(--flare-motion-duration-short1), background var(--flare-motion-duration-short1);
+}
+.flare-chip__close:hover {
+    opacity: 1;
+    background: color-mix(in srgb, currentColor 15%, transparent);
+}
+
+/* Цвет задаётся параметром Color (string) -> заполняет --_chip-fg/-border/-sel-bg/-sel-fg
+   инлайном. Отдельных per-color классов нет. */

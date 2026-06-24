@@ -1,0 +1,404 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Linq.Expressions
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="@BuildCssClass(_sizeClass, _disabledClass, _steppedClass, _indicatorClass, _colorClass, _verticalClass, _rangeClass, _marksClass)" style="@_rootStyle" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label) || (ShowValue && Range))
+    {
+        <div class="@Css.Classes.Slider.LabelRow">
+            <label class="@Css.Classes.Slider.Label">@Label</label>
+            @if (ShowValue)
+            {
+                <span class="@Css.Classes.Slider.Value">@_displayText</span>
+            }
+        </div>
+    }
+    <div class="@Css.Classes.Slider.Row">
+        @if (!string.IsNullOrEmpty(StartIcon))
+        {
+            <span class="@Css.Classes.Slider.Icon @Css.Classes.Slider.IconStart" aria-hidden="true">
+                <FlareIcon Name="@StartIcon" />
+            </span>
+        }
+        <div class="@Css.Classes.Slider.TrackArea">
+            <div class="@Css.Classes.Slider.TrackWrap"
+                 style="--_pct:@(_lowPct.ToString("F2", CultureInfo.InvariantCulture))%;--_pct-end:@(_highPct.ToString("F2", CultureInfo.InvariantCulture))%;--_init:@(_initPercent.ToString("F2", CultureInfo.InvariantCulture))%">
+                <div class="@Css.Classes.Slider.Rail" aria-hidden="true">
+                    @foreach (var seg in _segments)
+                    {
+                        <span class="@(seg.Active ? $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegActive}" : $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegInactive}")"
+                              style="@seg.Style"></span>
+                    }
+                </div>
+
+                @if (Range)
+                {
+                    <input class="@Css.Classes.Slider.Input @Css.Classes.Slider.InputLow"
+                           type="range"
+                           min="@_minText" max="@_maxText" step="@_stepText"
+                           value="@_valueAttr"
+                           disabled="@Disabled"
+                           style="z-index:@(_lowPct > 50 ? 5 : 2)"
+                           aria-orientation="@(Vertical ? "vertical" : null)"
+                           aria-label="@_lowAria"
+                           aria-valuetext="@_lowText"
+                           @oninput="HandleLowInput" />
+                    <input class="@Css.Classes.Slider.Input @Css.Classes.Slider.InputHigh"
+                           type="range"
+                           min="@_minText" max="@_maxText" step="@_stepText"
+                           value="@_valueEndAttr"
+                           disabled="@Disabled"
+                           aria-orientation="@(Vertical ? "vertical" : null)"
+                           aria-label="@_highAria"
+                           aria-valuetext="@_highText"
+                           @oninput="HandleHighInput" />
+                }
+                else
+                {
+                    <input class="@Css.Classes.Slider.Input"
+                           type="range"
+                           min="@_minText" max="@_maxText" step="@_stepText"
+                           value="@_valueAttr"
+                           disabled="@Disabled"
+                           aria-orientation="@(Vertical ? "vertical" : null)"
+                           aria-label="@(Label is null ? AriaLabel : null)"
+                           aria-valuetext="@_lowText"
+                           @oninput="HandleInput" />
+                }
+
+                @if (Stepper)
+                {
+                    <div class="@Css.Classes.Slider.Ticks" aria-hidden="true">
+                        @foreach (var stop in _stops)
+                        {
+                            <span class="@(stop.Active ? $"{Css.Classes.Slider.Tick} {Css.Classes.Slider.TickActive}" : Css.Classes.Slider.Tick)"
+                                  style="@(Vertical ? "bottom" : "left"):@(stop.Pct.ToString("F2", CultureInfo.InvariantCulture))%"></span>
+                        }
+                    </div>
+                }
+
+                @if (_marks.Count > 0)
+                {
+                    <div class="@Css.Classes.Slider.Marks" aria-hidden="true">
+                        @foreach (var mark in _marks)
+                        {
+                            <span class="@(mark.Active ? $"{Css.Classes.Slider.Mark} {Css.Classes.Slider.MarkActive}" : Css.Classes.Slider.Mark)"
+                                  style="@(Vertical ? "bottom" : "left"):@(mark.Pct.ToString("F2", CultureInfo.InvariantCulture))%">@mark.Label</span>
+                        }
+                    </div>
+                }
+
+                @if (Indicator)
+                {
+                    <div class="@Css.Classes.Slider.Bubble" aria-hidden="true">@_lowText</div>
+                    @if (Range)
+                    {
+                        <div class="@Css.Classes.Slider.Bubble @Css.Classes.Slider.BubbleHigh" aria-hidden="true">@_highText</div>
+                    }
+                }
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(EndIcon))
+        {
+            <span class="@Css.Classes.Slider.Icon @Css.Classes.Slider.IconEnd" aria-hidden="true">
+                <FlareIcon Name="@EndIcon" />
+            </span>
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@Css.Classes.Slider.Helper @Css.Classes.Slider.HelperError">@_displayedError</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.Slider.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Current value of the slider. In range mode this is the lower bound.</summary>
+    [Parameter] public double Value { get; set; }
+    /// <summary>Callback invoked when <see cref="Value"/> changes.</summary>
+    [Parameter] public EventCallback<double> ValueChanged { get; set; }
+    /// <summary>Enables a two-handle range slider (<see cref="Value"/> = low, <see cref="ValueEnd"/> = high).</summary>
+    [Parameter] public bool Range { get; set; }
+    /// <summary>Upper bound of the selected range (range mode only).</summary>
+    [Parameter] public double ValueEnd { get; set; } = 100;
+    /// <summary>Callback invoked when <see cref="ValueEnd"/> changes.</summary>
+    [Parameter] public EventCallback<double> ValueEndChanged { get; set; }
+    /// <summary>Minimum value of the slider range.</summary>
+    [Parameter] public double Min { get; set; } = 0;
+    /// <summary>Maximum value of the slider range.</summary>
+    [Parameter] public double Max { get; set; } = 100;
+    /// <summary>Increment step between slider positions. Defaults to 1; any positive decimal step is allowed.</summary>
+    [Parameter] public double Step { get; set; } = 1;
+    /// <summary>
+    /// Anchor the fill starts from (single mode). The active track is drawn between <see cref="Init"/> and
+    /// <see cref="Value"/>; defaults to <see cref="Min"/>. Set to a mid value (e.g. 0 for a
+    /// Min=-100/Max=100 left/right balance slider) so the fill grows out from that point. Ignored in range mode.
+    /// </summary>
+    [Parameter] public double? Init { get; set; }
+    /// <summary>Size variant (MD3 Expressive XSmall-XLarge). Controls track thickness and handle height.</summary>
+    [Parameter] public SliderSize Size { get; set; } = SliderSize.Xs;
+    /// <summary>Accent color of the active track and handle. Role (<c>FlareColor.Primary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token. Default uses the theme primary.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Material Symbols icon name shown before the track (e.g. "volume_mute").</summary>
+    [Parameter] public string? StartIcon { get; set; }
+    /// <summary>Material Symbols icon name shown after the track (e.g. "volume_up").</summary>
+    [Parameter] public string? EndIcon { get; set; }
+    /// <summary>Shows step (stop) indicators along the track at each <see cref="Step"/> position.</summary>
+    [Parameter] public bool Stepper { get; set; }
+    /// <summary>
+    /// Labeled marks placed under the track at specific values (value -> label), e.g.
+    /// <c>{ [0]="Low", [50]="Mid", [100]="High" }</c>. A mark is highlighted when it falls
+    /// within the selected span. Values outside [<see cref="Min"/>, <see cref="Max"/>] are ignored.
+    /// </summary>
+    [Parameter] public IReadOnlyDictionary<double, string>? Marks { get; set; }
+    /// <summary>Shows the floating value indicator above the handle(s) while interacting.</summary>
+    [Parameter] public bool Indicator { get; set; }
+    /// <summary>Renders the slider vertically (value increases upward). Length is set via the <c>--flare-slider-length</c> CSS var (default 12rem).</summary>
+    [Parameter] public bool Vertical { get; set; }
+    /// <summary>Label text displayed above the slider.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Accessible label used when no visible <see cref="Label"/> is provided.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Helper text shown below the slider.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Format string applied to the displayed value(s).</summary>
+    [Parameter] public string? Format { get; set; }
+    /// <summary>Shows the current value (or low-high range) next to the label when true.</summary>
+    [Parameter] public bool ShowValue { get; set; } = true;
+    /// <summary>Disables the slider when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<double>>? For { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Slider.Root;
+
+    private string _disabledClass => Disabled ? Css.Classes.Slider.Disabled : string.Empty;
+    private string _steppedClass => Stepper ? Css.Classes.Slider.Stepped : string.Empty;
+    private string _indicatorClass => Indicator ? Css.Classes.Slider.WithIndicator : string.Empty;
+    private string _verticalClass => Vertical ? Css.Classes.Slider.Vertical : string.Empty;
+    private string _rangeClass => Range ? Css.Classes.Slider.Range : string.Empty;
+    private string _marksClass => _marks.Count > 0 ? Css.Classes.Slider.WithMarks : string.Empty;
+
+    // Accent color: role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main.
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string? _rootStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+
+    private string _sizeClass => Size switch
+    {
+        SliderSize.Sm  => Css.Classes.Slider.Sm,
+        SliderSize.Md => Css.Classes.Slider.Md,
+        SliderSize.Lg  => Css.Classes.Slider.Lg,
+        SliderSize.Xl => Css.Classes.Slider.Xl,
+        _                 => Css.Classes.Slider.Xs,
+    };
+
+    private FieldIdentifier _fieldId;
+
+    // OWASP: silently clamp when Min > Max to prevent invalid range
+    private double _safeMin => Math.Min(Min, Max);
+    private double _safeMax => Math.Max(Min, Max);
+    private double _safeStep => Step > 0 ? Step : 1;
+
+    private double _pctOf(double val) => _safeMax > _safeMin
+        ? Math.Clamp((val - _safeMin) / (_safeMax - _safeMin) * 100, 0, 100)
+        : 0;
+
+    // Range invariant: the low handle never exceeds the high handle. Even if a consumer
+    // passes Value > ValueEnd, rendering uses the ordered pair so the UI never inverts.
+    private double _effLow => Range ? Math.Min(Value, ValueEnd) : Value;
+    private double _effHigh => Range ? Math.Max(Value, ValueEnd) : Value;
+
+    // In range mode --_pct = low handle, --_pct-end = high handle; single mode uses --_pct = value.
+    private double _lowPct => _pctOf(_effLow);
+    private double _highPct => _pctOf(_effHigh);
+    private double _initValue => Math.Clamp(Init ?? _safeMin, _safeMin, _safeMax);
+    private double _initPercent => _pctOf(_initValue);
+
+    // Filled span [lo,hi]: range -> [low,high]; single -> [Init,Value].
+    private double _spanLoPct => Range ? _lowPct : Math.Min(_lowPct, _initPercent);
+    private double _spanHiPct => Range ? _highPct : Math.Max(_lowPct, _initPercent);
+
+    // Track segments split by notches (gaps): around each handle, plus the Init anchor (single
+    // mode, when strictly interior). Outer ends (0%/100%) use the full track radius; notch-facing
+    // edges use the small gap radius. A segment is "active" when its midpoint is within the span.
+    private IEnumerable<(bool Active, string Style)> _segments
+    {
+        get
+        {
+            var inv = CultureInfo.InvariantCulture;
+            var lo = _spanLoPct;
+            var hi = _spanHiPct;
+            const string trk = "var(--_trk-radius)";
+            const string gpr = "var(--_gap-radius)";
+            string Pct(double d) => d.ToString("F2", inv);
+
+            var centers = new List<double>();
+            if (Range)
+            {
+                centers.Add(_lowPct);
+                if (Math.Abs(_highPct - _lowPct) > 0.001) centers.Add(_highPct);
+            }
+            else
+            {
+                centers.Add(_lowPct);
+                if (_initPercent > 0.001 && _initPercent < 99.999 && Math.Abs(_initPercent - _lowPct) > 0.001)
+                    centers.Add(_initPercent);
+            }
+            centers.Sort();
+
+            bool IsActive(double a, double b)
+            {
+                var mid = (a + b) / 2;
+                return hi - lo > 0.001 && mid > lo - 0.001 && mid < hi + 0.001;
+            }
+
+            // The track runs start->end: horizontal = left->right; vertical = bottom->top.
+            string Style(string start, string end, string rStart, string rEnd) => Vertical
+                ? $"bottom:{start};top:{end};border-radius:{rEnd} {rEnd} {rStart} {rStart};"
+                : $"left:{start};right:{end};border-radius:{rStart} {rEnd} {rEnd} {rStart};";
+
+            var startPct = 0.0;
+            var startOuter = true;
+            foreach (var c in centers)
+            {
+                var start = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))";
+                var end = $"calc(100% - {Pct(c)}% + var(--_gap))";
+                var rStart = startOuter ? trk : gpr;
+                yield return (IsActive(startPct, c), Style(start, end, rStart, gpr));
+                startPct = c;
+                startOuter = false;
+            }
+            var fStart = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))";
+            var fRStart = startOuter ? trk : gpr;
+            yield return (IsActive(startPct, 100), Style(fStart, "0", fRStart, trk));
+        }
+    }
+
+    private string _lowText => _effLow.ToString(Format ?? "G", CultureInfo.CurrentCulture);
+    private string _highText => _effHigh.ToString(Format ?? "G", CultureInfo.CurrentCulture);
+    private string _displayText => Range ? $"{_lowText} - {_highText}" : _lowText;
+    private string _lowAria => Range ? $"{Label ?? AriaLabel} minimum".Trim() : (Label ?? AriaLabel ?? string.Empty);
+    private string _highAria => $"{Label ?? AriaLabel} maximum".Trim();
+    private string _valueAttr => _effLow.ToString(CultureInfo.InvariantCulture);
+    private string _valueEndAttr => _effHigh.ToString(CultureInfo.InvariantCulture);
+    private string _minText => _safeMin.ToString(CultureInfo.InvariantCulture);
+    private string _maxText => _safeMax.ToString(CultureInfo.InvariantCulture);
+    private string _stepText => _safeStep.ToString(CultureInfo.InvariantCulture);
+
+    // Stop indicators: one per step. Capped to avoid DOM blow-up on tiny steps / huge ranges.
+    private const int MaxStops = 50;
+    private IEnumerable<(double Pct, bool Active)> _stops
+    {
+        get
+        {
+            var range = _safeMax - _safeMin;
+            if (!Stepper || range <= 0 || _safeStep <= 0) yield break;
+            var count = (int)Math.Round(range / _safeStep);
+            if (count < 1 || count > MaxStops) yield break;
+            var lo = Range ? _effLow : Math.Min(_initValue, Value);
+            var hi = Range ? _effHigh : Math.Max(_initValue, Value);
+            for (var i = 0; i <= count; i++)
+            {
+                var val = _safeMin + i * _safeStep;
+                var pct = (val - _safeMin) / range * 100;
+                yield return (pct, val >= lo - 1e-9 && val <= hi + 1e-9);
+            }
+        }
+    }
+
+    // Labeled marks (value -> label). Active when the value lies within the selected span.
+    private IReadOnlyList<(double Pct, string Label, bool Active)> _marks
+    {
+        get
+        {
+            if (Marks is null || Marks.Count == 0) return [];
+            var lo = Range ? _effLow : Math.Min(_initValue, Value);
+            var hi = Range ? _effHigh : Math.Max(_initValue, Value);
+            var list = new List<(double, string, bool)>(Marks.Count);
+            foreach (var kv in Marks)
+            {
+                if (kv.Key < _safeMin - 1e-9 || kv.Key > _safeMax + 1e-9) continue;
+                var active = kv.Key >= lo - 1e-9 && kv.Key <= hi + 1e-9;
+                list.Add((_pctOf(kv.Key), kv.Value, active));
+            }
+            return list;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        if (TryParse(e, out var v))
+        {
+            await ValueChanged.InvokeAsync(Math.Clamp(v, _safeMin, _safeMax));
+            NotifyEdit();
+        }
+    }
+
+    private async Task HandleLowInput(ChangeEventArgs e)
+    {
+        if (TryParse(e, out var v))
+        {
+            // low handle cannot pass the high handle
+            await ValueChanged.InvokeAsync(Math.Clamp(v, _safeMin, _effHigh));
+            NotifyEdit();
+        }
+    }
+
+    private async Task HandleHighInput(ChangeEventArgs e)
+    {
+        if (TryParse(e, out var v))
+        {
+            // high handle cannot drop below the low handle
+            await ValueEndChanged.InvokeAsync(Math.Clamp(v, _effLow, _safeMax));
+            NotifyEdit();
+        }
+    }
+
+    private static bool TryParse(ChangeEventArgs e, out double v) =>
+        double.TryParse(e.Value?.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out v);
+
+    private void NotifyEdit()
+    {
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+}

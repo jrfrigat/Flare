@@ -1,0 +1,15 @@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
+    <FlareSlider @bind-Value="_volume" Label="Volume" Min="0" Max="100" Step="1" ShowValue="true" />
+    <FlareSlider @bind-Value="_opacity" Label="Opacity" Min="0" Max="1" Step="0.05" Format="P0" ShowValue="true" />
+    <FlareSlider @bind-Value="_zoom" Label="Zoom" Min="50" Max="200" Step="10" ShowValue="true" />
+    <FlareSlider Value="50" Label="Disabled" Min="0" Max="100" Disabled="true" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+    Volume: @_volume | Opacity: @_opacity.ToString("P0") | Zoom: @_zoom%
+</FlareText>
+
+@code {
+    private double _volume = 60;
+    private double _opacity = 0.8;
+    private double _zoom = 100;
+}

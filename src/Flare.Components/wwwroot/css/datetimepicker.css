@@ -1,0 +1,252 @@
+.flare-datetimepicker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-datetimepicker__label {
+  font-family: var(--flare-typescale-label-medium-font, inherit);
+  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+  font-weight: var(--flare-typescale-label-medium-weight, 400);
+  color: var(--flare-color-on-surface-variant);
+  pointer-events: none;
+}
+
+.flare-datetimepicker__field {
+  display: flex;
+  align-items: center;
+  background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
+  border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
+  border: var(--flare-input-border, none);
+  border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
+  transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+  cursor: pointer;
+}
+
+.flare-datetimepicker__field:focus-within,
+.flare-datetimepicker__field:hover {
+  border: var(--flare-input-focus-border, none);
+  border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--flare-color-primary));
+}
+
+.flare-datetimepicker__control {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  color: var(--flare-color-on-surface);
+  cursor: pointer;
+}
+
+.flare-datetimepicker__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--flare-color-on-surface-variant);
+  border-radius: var(--flare-shape-full, 9999px);
+}
+.flare-datetimepicker__toggle:hover { color: var(--flare-color-on-surface); }
+.flare-datetimepicker__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
+
+.flare-datetimepicker__helper {
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-datetimepicker__helper--error {
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  color: var(--flare-color-error);
+}
+
+.flare-datetimepicker--error .flare-datetimepicker__field { border-bottom-color: var(--flare-color-error); }
+.flare-datetimepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+
+/* Panel */
+.flare-datetimepicker__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.flare-datetimepicker__panel {
+  position: fixed;
+  z-index: 1000;
+  background: var(--flare-color-surface-container-high);
+  border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
+  box-shadow: var(--flare-elevation-3);
+  padding: var(--flare-spacing-6, 0.75rem);
+  min-width: 280px;
+  /* top, left, min-width - set via inline style from JS bounds */
+}
+
+/* Tabs */
+.flare-datetimepicker__tabs {
+  display: flex;
+  gap: var(--flare-spacing-4, 0.5rem);
+  margin-bottom: var(--flare-spacing-6, 0.75rem);
+  border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-datetimepicker__tab {
+  background: none;
+  border: none;
+  padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-8, 1rem);
+  cursor: pointer;
+  color: var(--flare-color-on-surface-variant);
+  border-bottom: 2px solid transparent;
+  font-family: var(--flare-typescale-label-large-font, inherit);
+  font-size: var(--flare-typescale-body-medium-size, 0.875rem);
+  margin-bottom: -1px;
+  transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-datetimepicker__tab--active {
+  color: var(--flare-color-primary);
+  border-bottom-color: var(--flare-color-primary);
+}
+
+/* Calendar */
+.flare-datetimepicker__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-datetimepicker__nav-label {
+  font-weight: 500;
+  font-size: var(--flare-typescale-body-large-size, 1rem);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-datetimepicker__day-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--flare-color-on-surface-variant);
+  margin-bottom: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-datetimepicker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--flare-spacing-1, 2px);
+}
+
+.flare-datetimepicker__day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--flare-color-on-surface);
+  font-family: inherit;
+  transition: background-color var(--flare-motion-duration-short2);
+}
+
+.flare-datetimepicker__day:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
+}
+
+.flare-datetimepicker__day--other {
+  color: var(--flare-color-on-surface-variant);
+  opacity: 0.4;
+}
+
+.flare-datetimepicker__day--selected {
+  background: var(--flare-color-primary);
+  color: var(--flare-color-on-primary);
+}
+
+.flare-datetimepicker__day--selected:hover {
+  background: var(--flare-color-primary);
+}
+
+.flare-datetimepicker__day--today {
+  font-weight: 700;
+  color: var(--flare-color-primary);
+}
+
+.flare-datetimepicker__day--today.flare-datetimepicker__day--selected {
+  color: var(--flare-color-on-primary);
+}
+
+/* Time panel */
+.flare-datetimepicker__time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-12, 1.5rem) 0;
+  font-size: var(--flare-typescale-headline-small-size, 1.5rem);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-datetimepicker__time-input {
+  width: 3rem;
+  text-align: center;
+  border: 1px solid var(--flare-color-outline);
+  border-radius: var(--flare-shape-small);
+  padding: var(--flare-spacing-2, 0.25rem);
+  font-size: var(--flare-typescale-headline-small-size, 1.5rem);
+  background: var(--flare-color-surface-container-highest);
+  color: var(--flare-color-on-surface);
+  outline: none;
+  font-family: inherit;
+}
+
+.flare-datetimepicker__time-input:focus {
+  border-color: var(--flare-color-primary);
+  border-width: 2px;
+}
+
+/* Footer */
+.flare-datetimepicker__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--flare-spacing-4, 0.5rem);
+  margin-top: var(--flare-spacing-6, 0.75rem);
+  border-top: 1px solid var(--flare-color-outline-variant);
+  padding-top: var(--flare-spacing-4, 0.5rem);
+}
+
+/* Panels layout: calendar + time as TWO SEPARATE elevated cards with a gap between
+   them (MD3, like SplitButton). The outer panel becomes a transparent container; each
+   pane is its own surface. */
+.flare-datetimepicker__panel--split {
+  min-width: 36rem !important;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+.flare-datetimepicker__panes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--flare-datetimepicker-panel-gap, 1rem);
+  align-items: flex-start;
+}
+.flare-datetimepicker__panel--split .flare-datetimepicker__pane {
+  flex: 1 1 14rem;
+  min-width: 0;
+  background: var(--flare-color-surface-container-high);
+  border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
+  box-shadow: var(--flare-elevation-3);
+  padding: var(--flare-spacing-6, 0.75rem);
+}
+/* The clock dial is a fixed 256px - its pane must not shrink below it. */
+.flare-datetimepicker__panel--split .flare-datetimepicker__pane:has(.flare-clock-dial) {
+  flex: 0 0 16.5rem;
+  min-width: 16.5rem;
+}

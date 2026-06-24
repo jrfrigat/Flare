@@ -1,0 +1,45 @@
+.flare-appbar {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-appbar-gap, 0.25rem);
+    padding: 0 var(--flare-appbar-padding-x, 0.25rem);
+    min-height: var(--flare-appbar-height, 4rem);
+    background-color: var(--flare-color-surface);
+    color: var(--flare-color-on-surface);
+    box-shadow: var(--flare-elevation-0);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+}
+
+.flare-appbar--sticky {
+    position: sticky;
+    top: 0;
+    z-index: var(--flare-z-appbar, 1100);
+}
+
+.flare-appbar--elevation-0 { box-shadow: var(--flare-elevation-0); }
+.flare-appbar--elevation-1 { box-shadow: var(--flare-elevation-1, 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.08)); }
+.flare-appbar--elevation-2 { box-shadow: var(--flare-elevation-2, 0 3px 6px rgba(0,0,0,.13), 0 2px 4px rgba(0,0,0,.10)); }
+.flare-appbar--elevation-3 { box-shadow: var(--flare-elevation-3, 0 6px 12px rgba(0,0,0,.15), 0 4px 8px rgba(0,0,0,.12)); }
+.flare-appbar--elevation-4 { box-shadow: var(--flare-elevation-4, 0 10px 20px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.12)); }
+.flare-appbar--elevation-5 { box-shadow: var(--flare-elevation-5, 0 16px 32px rgba(0,0,0,.18), 0 8px 16px rgba(0,0,0,.14)); }
+
+.flare-appbar--dense {
+    min-height: var(--flare-appbar-height-dense, 3rem);
+}
+
+.flare-appbar__leading,
+.flare-appbar__trailing {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-appbar-gap, 0.25rem);
+    flex-shrink: 0;
+}
+
+.flare-appbar__title {
+    flex: 1;
+    padding: 0 var(--flare-appbar-title-padding-x, 0.75rem);
+    font-family: var(--flare-typescale-title-large-font);
+    font-size: var(--flare-typescale-title-large-size);
+    font-weight: var(--flare-typescale-title-large-weight);
+    color: var(--flare-color-on-surface);
+}

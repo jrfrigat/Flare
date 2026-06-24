@@ -1,0 +1,81 @@
+@namespace Flare.Components
+@implements IConfirmDialogService
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+    @if (_visible)
+    {
+        <div class="@Css.Classes.Confirmdialog.Backdrop" @onclick="Cancel">
+            <div class="@Css.Classes.Confirmdialog.Root" @onclick:stopPropagation="true"
+                 @onkeydown="OnKeyDown"
+                 role="alertdialog" aria-modal="true"
+                 aria-labelledby="@_titleId"
+                 aria-describedby="@_bodyId"
+                 tabindex="-1"
+                 @ref="_dialogEl">
+                <div class="@Css.Classes.Confirmdialog.Header">
+                    <h2 class="@Css.Classes.Confirmdialog.Title" id="@_titleId">@_title</h2>
+                </div>
+                <div class="@Css.Classes.Confirmdialog.Body" id="@_bodyId">@_message</div>
+                <div class="@Css.Classes.Confirmdialog.Footer">
+                    <button class="@Css.Classes.Confirmdialog.Btn @Css.Classes.Confirmdialog.BtnCancel"
+                            @onclick="Cancel">@_cancelLabel</button>
+                    <button class="@Css.Classes.Confirmdialog.Btn @Css.Classes.Confirmdialog.BtnConfirm"
+                            @onclick="Confirm">@_confirmLabel</button>
+                </div>
+            </div>
+        </div>
+    }
+</CascadingValue>
+
+@code {
+    /// <summary>Application content that can access the confirm dialog via cascading value.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private bool _visible;
+    private string _title = "";
+    private string _message = "";
+    private string _confirmLabel = "";
+    private string _cancelLabel = "";
+    private TaskCompletionSource<bool?>? _tcs;
+
+    // Unique IDs per instance - prevents aria-labelledby clashes when multiple providers exist.
+    private readonly string _instanceId = Guid.NewGuid().ToString("N")[..8];
+    private string _titleId => $"flare-cd-title-{_instanceId}";
+    private string _bodyId  => $"flare-cd-body-{_instanceId}";
+
+    private ElementReference _dialogEl;
+
+    public Task<bool?> ConfirmAsync(string title, string message,
+        string? confirmLabel = null, string? cancelLabel = null)
+    {
+        _title = title;
+        _message = message;
+        _confirmLabel = confirmLabel ?? FlareStrings.Dialog_Confirm;
+        _cancelLabel = cancelLabel ?? FlareStrings.Dialog_Cancel;
+        _visible = true;
+        _tcs = new TaskCompletionSource<bool?>();
+        InvokeAsync(StateHasChanged);
+        return _tcs.Task;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Move focus into the dialog when it opens so keyboard users can interact immediately.
+        if (_visible)
+        {
+            try { await _dialogEl.FocusAsync(); } catch { }
+        }
+    }
+
+    private void Confirm() { _visible = false; _tcs?.TrySetResult(true); }
+    private void Cancel()  { _visible = false; _tcs?.TrySetResult(false); }
+
+    /// <summary>Dismisses the dialog without a result (Escape key), resolving with null.</summary>
+    private void Dismiss()  { _visible = false; _tcs?.TrySetResult(null); }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape") Dismiss();
+    }
+}

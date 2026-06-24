@@ -1,0 +1,170 @@
+@* Requires interactive render mode (not compatible with static SSR). *@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <div class="flare-rte__toolbar">
+        @if (ShowHeadings)
+        {
+            <button class="flare-rte__tool" @onclick="@(() => ExecAsync("formatBlock", "H1"))" title="Heading 1" aria-label="Heading 1" disabled="@ReadOnly">
+                <span style="font-size:.85rem;font-weight:700;">H1</span>
+            </button>
+            <button class="flare-rte__tool" @onclick="@(() => ExecAsync("formatBlock", "H2"))" title="Heading 2" aria-label="Heading 2" disabled="@ReadOnly">
+                <span style="font-size:.85rem;font-weight:700;">H2</span>
+            </button>
+            <button class="flare-rte__tool" @onclick="@(() => ExecAsync("formatBlock", "H3"))" title="Heading 3" aria-label="Heading 3" disabled="@ReadOnly">
+                <span style="font-size:.85rem;font-weight:700;">H3</span>
+            </button>
+            <div class="flare-rte__separator"></div>
+        }
+        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("bold"))" title="Bold" aria-label="Bold" disabled="@ReadOnly">
+            <span class="material-symbols-rounded" style="font-size:1rem;font-variation-settings:'wght' 700;">format_bold</span>
+        </button>
+        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("italic"))" title="Italic" aria-label="Italic" disabled="@ReadOnly">
+            <span class="material-symbols-rounded" style="font-size:1rem;">format_italic</span>
+        </button>
+        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("underline"))" title="Underline" aria-label="Underline" disabled="@ReadOnly">
+            <span class="material-symbols-rounded" style="font-size:1rem;">format_underlined</span>
+        </button>
+        <div class="flare-rte__separator"></div>
+        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("insertUnorderedList"))" title="Bullet list" aria-label="Bullet list" disabled="@ReadOnly">
+            <span class="material-symbols-rounded" style="font-size:1rem;">format_list_bulleted</span>
+        </button>
+        <button class="flare-rte__tool" @onclick="@(() => ExecAsync("insertOrderedList"))" title="Numbered list" aria-label="Numbered list" disabled="@ReadOnly">
+            <span class="material-symbols-rounded" style="font-size:1rem;">format_list_numbered</span>
+        </button>
+        @if (ShowLink)
+        {
+            <div class="flare-rte__separator"></div>
+            <button class="flare-rte__tool @(_showLinkInput ? "flare-rte__tool--active" : "")"
+                    @onclick="ToggleLinkInput"
+                    title="Insert link" aria-label="Insert link" disabled="@ReadOnly">
+                <span class="material-symbols-rounded" style="font-size:1rem;">link</span>
+            </button>
+            @if (_showLinkInput)
+            {
+                <div class="flare-rte__link-input-wrap">
+                    <input class="flare-rte__link-input"
+                           type="url"
+                           placeholder="https://..."
+                           @bind="_linkUrl"
+                           @onkeydown="HandleLinkKeyDown" />
+                    <button class="flare-rte__tool" @onclick="InsertLinkAsync" title="Apply" aria-label="Apply link">
+                        <span class="material-symbols-rounded" style="font-size:1rem;">check</span>
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    <div id="@_editorId"
+         class="flare-rte__content"
+         role="textbox"
+         aria-multiline="true"
+         aria-label="@(Label ?? FlareStrings.RTE_Label)"
+         aria-readonly="@ReadOnly"
+         data-placeholder="@(Placeholder ?? FlareStrings.RTE_Placeholder)"
+         style="@_minHeightStyle">
+    </div>
+</div>
+
+@code {
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    /// <summary>HTML string representing the current editor content.</summary>
+    [Parameter] public string? Value { get; set; }
+    /// <summary>Callback raised when the editor content changes.</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    /// <summary>Accessible label for the editor content area.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Minimum CSS height of the editable content area.</summary>
+    [Parameter] public string MinHeight { get; set; } = "150px";
+    /// <summary>Placeholder text shown when the editor is empty. Defaults to the localized "RTE_Placeholder" string.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Disables editing; content is displayed read-only.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+    /// <summary>Shows H1/H2/H3 heading buttons in the toolbar.</summary>
+    [Parameter] public bool ShowHeadings { get; set; }
+    /// <summary>Shows a link-insertion button in the toolbar.</summary>
+    [Parameter] public bool ShowLink { get; set; }
+
+    protected override string ComponentCssClass => "flare-rte";
+
+    private readonly string _editorId = "rte-" + Guid.NewGuid().ToString("N")[..8];
+    private string _minHeightStyle => $"min-height:{MinHeight}";
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<FlareRichTextEditor>? _dotNetRef;
+
+    private bool _showLinkInput;
+    private string _linkUrl = string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            _module = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "./_content/Flare.Components.RichTextEditor/js/richtext.js");
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await _module.InvokeVoidAsync("init", _editorId, _dotNetRef);
+            if (!string.IsNullOrEmpty(Value))
+                await _module.InvokeVoidAsync("setContent", _editorId, Value);
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+    }
+
+    private async Task ExecAsync(string command, string? value = null)
+    {
+        if (_module is null) return;
+        try
+        {
+            await _module.InvokeVoidAsync("execCommand", _editorId, command, value);
+        }
+        catch (JSDisconnectedException) { }
+    }
+
+    private void ToggleLinkInput()
+    {
+        _showLinkInput = !_showLinkInput;
+        if (!_showLinkInput) _linkUrl = string.Empty;
+    }
+
+    private async Task InsertLinkAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(_linkUrl))
+        {
+            await ExecAsync("insertLink", _linkUrl);
+            _linkUrl = string.Empty;
+            _showLinkInput = false;
+        }
+    }
+
+    private async Task HandleLinkKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") await InsertLinkAsync();
+        else if (e.Key == "Escape") ToggleLinkInput();
+    }
+
+    [JSInvokable]
+    public async Task OnContentChanged(string html)
+    {
+        Value = html;
+        await ValueChanged.InvokeAsync(html);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("destroy", _editorId);
+                await _module.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException) { }
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

@@ -1,0 +1,311 @@
+@namespace Flare.Gallery.Components.Shared
+@inherits LocalizedPage
+@using System.Text
+@using Flare.Gallery.Api
+@inject NavigationManager Nav
+
+@if (_info is not null)
+{
+    <FlareStack Gap="FlareSpacing.Large">
+        @if (!string.IsNullOrWhiteSpace(_info.Summary))
+        {
+            <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@_info.Summary</FlareText>
+        }
+
+        @if (_parameters.Count == 0 && _events.Count == 0 && _info.Methods.Count == 0)
+        {
+            <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Api_Empty</FlareText>
+        }
+
+        @if (_parameters.Count > 0)
+        {
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Parameters</FlareText>
+                <FlareTable TItem="object" Bordered="true">
+                    <thead>
+                        <tr>
+                            <th>@GalleryStrings.Api_Name</th>
+                            <th>@GalleryStrings.Api_Type</th>
+                            <th>@GalleryStrings.Api_Default</th>
+                            <th>@GalleryStrings.Api_Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in _parameters)
+                        {
+                            <tr>
+                                <td>
+                                    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Wrap="true">
+                                        <code>@p.Name</code>
+                                        @if (p.IsRequired)
+                                        {
+                                            <FlareBadge Text="@GalleryStrings.Api_Required" Standalone="true" Color="FlareColor.Error" />
+                                        }
+                                        @if (IsInherited(p))
+                                        {
+                                            <FlareBadge Text="@GalleryStrings.Api_Inherited" Standalone="true" Color="FlareColor.Info" />
+                                        }
+                                    </FlareStack>
+                                </td>
+                                <td><code>@RenderTypeLinks(p.Type)</code></td>
+                                <td>
+                                    @if (p.Default is not null)
+                                    {
+                                        <code>@p.Default</code>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td>@Describe(p.Summary, p.Remarks)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </FlareTable>
+            </FlareStack>
+        }
+
+        @if (_events.Count > 0)
+        {
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Events</FlareText>
+                <FlareTable TItem="object" Bordered="true">
+                    <thead>
+                        <tr>
+                            <th>@GalleryStrings.Api_Name</th>
+                            <th>@GalleryStrings.Api_Type</th>
+                            <th>@GalleryStrings.Api_Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in _events)
+                        {
+                            <tr>
+                                <td><code>@e.Name</code></td>
+                                <td><code>@RenderTypeLinks(e.Type)</code></td>
+                                <td>@Describe(e.Summary, e.Remarks)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </FlareTable>
+            </FlareStack>
+        }
+
+        @if (_info.Methods.Count > 0)
+        {
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Methods</FlareText>
+                <FlareTable TItem="object" Bordered="true">
+                    <thead>
+                        <tr>
+                            <th>@GalleryStrings.Api_Name</th>
+                            <th>@GalleryStrings.Api_Returns</th>
+                            <th>@GalleryStrings.Api_Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in _info.Methods)
+                        {
+                            <tr>
+                                <td><code>@m.Signature</code></td>
+                                <td><code>@RenderTypeLinks(m.ReturnType)</code></td>
+                                <td>@Describe(m.Summary, m.ReturnSummary)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </FlareTable>
+            </FlareStack>
+        }
+
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Inherits</FlareText>
+            <FlareStack Row Wrap="true" Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                @for (var i = 0; i < _lineage.Count; i++)
+                {
+                    var item = _lineage[i];
+                    if (i > 0)
+                    {
+                        <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">›</FlareText>
+                    }
+                    if (item.IsCurrent)
+                    {
+                        <FlareChip Label="@item.Name" Size="ChipSize.Sm" Color="FlareColor.Primary" Selected="true" />
+                    }
+                    else if (ComponentApiRegistry.IsDocumented(item.Name))
+                    {
+                        <FlareChip Label="@item.Name" Size="ChipSize.Sm" OnClick="@(() => GoTo(item.Name))" />
+                    }
+                    else
+                    {
+                        <FlareChip Label="@item.Name" Size="ChipSize.Sm" />
+                    }
+                }
+            </FlareStack>
+        </FlareStack>
+
+        @if (_info.DerivedBy.Count > 0)
+        {
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Derived</FlareText>
+                <FlareStack Row Wrap="true" Gap="FlareSpacing.XSmall">
+                    @foreach (var child in _info.DerivedBy)
+                    {
+                        <FlareChip Label="@child" Size="ChipSize.Sm" OnClick="@(() => GoTo(child))" />
+                    }
+                </FlareStack>
+            </FlareStack>
+        }
+    </FlareStack>
+}
+else if (_enum is not null)
+{
+    <FlareStack Gap="FlareSpacing.Large">
+        @if (!string.IsNullOrWhiteSpace(_enum.Summary))
+        {
+            <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@_enum.Summary</FlareText>
+        }
+
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_Members</FlareText>
+            <FlareTable TItem="object" Bordered="true">
+                <thead>
+                    <tr>
+                        <th>@GalleryStrings.Api_Name</th>
+                        <th>@GalleryStrings.Api_Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in _enum.Members)
+                    {
+                        <tr>
+                            <td><code>@m.Name</code></td>
+                            <td>@(m.Summary ?? string.Empty)</td>
+                        </tr>
+                    }
+                </tbody>
+            </FlareTable>
+        </FlareStack>
+
+        @if (_enum.UsedBy.Count > 0)
+        {
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Api_UsedBy</FlareText>
+                <FlareStack Row Wrap="true" Gap="FlareSpacing.XSmall">
+                    @foreach (var user in _enum.UsedBy)
+                    {
+                        <FlareChip Label="@user" Size="ChipSize.Sm" OnClick="@(() => GoTo(user))" />
+                    }
+                </FlareStack>
+            </FlareStack>
+        }
+    </FlareStack>
+}
+else
+{
+    <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Api_NotFound</FlareText>
+}
+
+@code {
+    /// <summary>Type name to document, e.g. <c>FlareButton</c> or <c>FlareColor</c>.</summary>
+    [Parameter] public string? Component { get; set; }
+
+    private ApiComponentInfo? _info;
+    private ApiEnumInfo? _enum;
+    private IReadOnlyList<ApiParameterInfo> _parameters = System.Array.Empty<ApiParameterInfo>();
+    private IReadOnlyList<ApiParameterInfo> _events = System.Array.Empty<ApiParameterInfo>();
+    private List<LineageItem> _lineage = new();
+
+    protected override void OnParametersSet()
+    {
+        _info = Component is null ? null : ComponentApiRegistry.Get(Component);
+        _enum = _info is null && Component is not null ? ComponentApiRegistry.GetEnum(Component) : null;
+
+        if (_info is null)
+        {
+            _parameters = System.Array.Empty<ApiParameterInfo>();
+            _events = System.Array.Empty<ApiParameterInfo>();
+            _lineage = new();
+            return;
+        }
+
+        _parameters = _info.Parameters.Where(p => !p.IsEventCallback).ToList();
+        _events = _info.Parameters.Where(p => p.IsEventCallback).ToList();
+
+        // Oldest ancestor first (reverse the base chain), then the current type last.
+        _lineage = _info.Inherits
+            .Reverse()
+            .Select(name => new LineageItem(name, false))
+            .Append(new LineageItem(_info.Name, true))
+            .ToList();
+    }
+
+    private void GoTo(string componentName) => Nav.NavigateTo($"/api/{componentName}");
+
+    private readonly record struct LineageItem(string Name, bool IsCurrent);
+
+    private bool IsInherited(ApiParameterInfo p) =>
+        _info is not null && !string.Equals(p.DeclaringType, _info.Name, System.StringComparison.Ordinal);
+
+    private static string Describe(string? summary, string? secondary)
+    {
+        if (!string.IsNullOrWhiteSpace(summary))
+            return summary!;
+        return secondary ?? string.Empty;
+    }
+
+    // Renders a friendly type string, turning documented type tokens into /api links.
+    private RenderFragment RenderTypeLinks(string type) => builder =>
+    {
+        var seq = 0;
+        foreach (var token in Tokenize(type))
+        {
+            if (token.IsIdentifier && ComponentApiRegistry.IsDocumented(token.Text))
+            {
+                builder.OpenElement(seq++, "a");
+                builder.AddAttribute(seq++, "href", $"/api/{token.Text}");
+                builder.AddAttribute(seq++, "style", "color:var(--flare-color-primary);text-decoration:none;");
+                builder.AddContent(seq++, token.Text);
+                builder.CloseElement();
+            }
+            else
+            {
+                builder.AddContent(seq++, token.Text);
+            }
+        }
+    };
+
+    private static IEnumerable<TypeToken> Tokenize(string text)
+    {
+        var sb = new StringBuilder();
+        bool? inIdentifier = null;
+
+        foreach (var ch in text)
+        {
+            var isIdChar = char.IsLetterOrDigit(ch) || ch == '_';
+            if (inIdentifier is null)
+            {
+                inIdentifier = isIdChar;
+                sb.Append(ch);
+                continue;
+            }
+
+            if (isIdChar == inIdentifier)
+            {
+                sb.Append(ch);
+            }
+            else
+            {
+                yield return new TypeToken(sb.ToString(), inIdentifier.Value);
+                sb.Clear();
+                sb.Append(ch);
+                inIdentifier = isIdChar;
+            }
+        }
+
+        if (sb.Length > 0)
+            yield return new TypeToken(sb.ToString(), inIdentifier ?? false);
+    }
+
+    private readonly record struct TypeToken(string Text, bool IsIdentifier);
+}

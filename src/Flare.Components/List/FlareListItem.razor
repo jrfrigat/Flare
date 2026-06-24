@@ -1,0 +1,62 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<li class="@BuildCssClass(_clickableClass, _selectedClass, _disabledClass)"
+    role="@(OnClick.HasDelegate ? "button" : null)"
+    tabindex="@(OnClick.HasDelegate && !Disabled ? 0 : (int?)null)"
+    aria-disabled="@(Disabled ? "true" : null)"
+    aria-selected="@(Selected ? "true" : null)"
+    style="@Style"
+    @onclick="HandleClick"
+    @attributes="AdditionalAttributes">
+    @if (Leading is not null)
+    {
+        <div class="@Css.Classes.List.Leading">@Leading</div>
+    }
+    <div class="@Css.Classes.List.Content">
+        @if (!string.IsNullOrEmpty(Primary))
+        {
+            <span class="@Css.Classes.List.Primary">@Primary</span>
+        }
+        @if (!string.IsNullOrEmpty(Secondary))
+        {
+            <span class="@Css.Classes.List.Secondary">@Secondary</span>
+        }
+        @ChildContent
+    </div>
+    @if (Trailing is not null)
+    {
+        <div class="@Css.Classes.List.Trailing">@Trailing</div>
+    }
+</li>
+
+@code {
+    /// <summary>Additional content rendered inside the item body.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Content rendered at the start of the item.</summary>
+    [Parameter] public RenderFragment? Leading { get; set; }
+    /// <summary>Content rendered at the end of the item.</summary>
+    [Parameter] public RenderFragment? Trailing { get; set; }
+    /// <summary>Primary text label displayed in the item.</summary>
+    [Parameter] public string? Primary { get; set; }
+    /// <summary>Secondary text displayed below the primary label.</summary>
+    [Parameter] public string? Secondary { get; set; }
+    /// <summary>Whether the item is in a selected state.</summary>
+    [Parameter] public bool Selected { get; set; }
+    /// <summary>Prevents the item from being interacted with.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Callback raised when the item is clicked.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.List.Item;
+
+    private string _clickableClass => OnClick.HasDelegate ? Css.Classes.List.Clickable : string.Empty;
+    private string _selectedClass  => Selected  ? Css.Classes.List.Selected  : string.Empty;
+    private string _disabledClass  => Disabled  ? Css.Classes.List.Disabled  : string.Empty;
+
+    private async Task HandleClick()
+    {
+        if (!Disabled && OnClick.HasDelegate)
+            await OnClick.InvokeAsync();
+    }
+}

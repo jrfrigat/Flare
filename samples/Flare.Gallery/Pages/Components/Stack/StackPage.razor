@@ -1,0 +1,13 @@
+@page "/components/stack"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Stack_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareStack">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Stack_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Stack_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Layout_StackRow" DemoType="typeof(Examples.StackRowDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Layout_StackColumn" DemoType="typeof(Examples.StackColumnDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Layout_Spacer" DemoType="typeof(Examples.StackSpacerDemo)" />

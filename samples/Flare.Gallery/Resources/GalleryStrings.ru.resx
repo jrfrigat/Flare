@@ -1,0 +1,2214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common_ShowCode" xml:space="preserve">
+    <value>Показать код</value>
+  </data>
+  <data name="Pwa_NewVersion" xml:space="preserve">
+    <value>Доступна новая версия.</value>
+  </data>
+  <data name="Pwa_Update" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Pwa_Updating" xml:space="preserve">
+    <value>Обновление...</value>
+  </data>
+  <data name="Common_Selected" xml:space="preserve">
+    <value>Выбрано:</value>
+  </data>
+  <data name="Alerts_Title" xml:space="preserve">
+    <value>Оповещения</value>
+  </data>
+  <data name="Alerts_Subtitle" xml:space="preserve">
+    <value>FlareAlert - встроенная обратная связь: важности, варианты, иконки и закрытие.</value>
+  </data>
+  <data name="Alerts_Severity" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Alerts_Variants" xml:space="preserve">
+    <value>Варианты (Filled / Outlined / Text)</value>
+  </data>
+  <data name="Alerts_Icon" xml:space="preserve">
+    <value>Своя иконка и без иконки</value>
+  </data>
+  <data name="AlertDemo_InfoTitle" xml:space="preserve">
+    <value>Инфо</value>
+  </data>
+  <data name="AlertDemo_InfoBody" xml:space="preserve">
+    <value>Это информационное сообщение.</value>
+  </data>
+  <data name="AlertDemo_SuccessTitle" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+  <data name="AlertDemo_SuccessBody" xml:space="preserve">
+    <value>Операция успешно завершена.</value>
+  </data>
+  <data name="AlertDemo_WarningTitle" xml:space="preserve">
+    <value>Предупреждение</value>
+  </data>
+  <data name="AlertDemo_WarningBody" xml:space="preserve">
+    <value>Пожалуйста, проверьте перед продолжением.</value>
+  </data>
+  <data name="AlertDemo_ErrorTitle" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="AlertDemo_ErrorBody" xml:space="preserve">
+    <value>Что-то пошло не так. Нажмите ×, чтобы закрыть.</value>
+  </data>
+  <data name="AlertDemo_FilledBody" xml:space="preserve">
+    <value>Filled - вариант по умолчанию: сплошной тональный контейнер.</value>
+  </data>
+  <data name="AlertDemo_OutlinedBody" xml:space="preserve">
+    <value>Outlined - прозрачная заливка с цветной рамкой.</value>
+  </data>
+  <data name="AlertDemo_TextBody" xml:space="preserve">
+    <value>Text - без фона и рамки, только цветной текст.</value>
+  </data>
+  <data name="AlertDemo_CustomIconTitle" xml:space="preserve">
+    <value>Своя иконка</value>
+  </data>
+  <data name="AlertDemo_CustomIconBody" xml:space="preserve">
+    <value>Задайте собственный глиф через слот Icon.</value>
+  </data>
+  <data name="AlertDemo_NoIconTitle" xml:space="preserve">
+    <value>Без иконки</value>
+  </data>
+  <data name="AlertDemo_NoIconBody" xml:space="preserve">
+    <value>Параметр NoIcon полностью скрывает ведущую иконку.</value>
+  </data>
+  <data name="AlertDemo_NoTitleBody" xml:space="preserve">
+    <value>Заголовок необязателен - этот alert показывает только текст.</value>
+  </data>
+  <data name="Snackbar_Title" xml:space="preserve">
+    <value>Snackbar</value>
+  </data>
+  <data name="Snackbar_Subtitle" xml:space="preserve">
+    <value>Временные сообщения через ISnackbarService.</value>
+  </data>
+  <data name="Snackbar_Severity" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="Snackbar_Action" xml:space="preserve">
+    <value>Действие, длительность и кнопка закрытия</value>
+  </data>
+  <data name="Alerts_AnimateDismiss" xml:space="preserve">
+    <value>Анимированное скрытие</value>
+  </data>
+  <data name="Accordion_Title" xml:space="preserve">
+    <value>Аккордеон</value>
+  </data>
+  <data name="Accordion_Subtitle" xml:space="preserve">
+    <value>Сворачиваемые панели, раскрывающие содержимое по одной или по несколько сразу.</value>
+  </data>
+  <data name="Accordion_Basic" xml:space="preserve">
+    <value>Базовый (раскрытие по одной)</value>
+  </data>
+  <data name="Accordion_Multiple" xml:space="preserve">
+    <value>Несколько открытых одновременно</value>
+  </data>
+  <data name="Accordion_Expanded" xml:space="preserve">
+    <value>Раскрыт по умолчанию и двусторонняя привязка</value>
+  </data>
+  <data name="AccordionDemo_Q1" xml:space="preserve">
+    <value>Что такое Flare?</value>
+  </data>
+  <data name="AccordionDemo_A1" xml:space="preserve">
+    <value>Flare - библиотека Blazor-компонентов с переключением тем во время выполнения между Material Design 3 и Fluent UI 2.</value>
+  </data>
+  <data name="AccordionDemo_Q2" xml:space="preserve">
+    <value>Как работает переключение тем?</value>
+  </data>
+  <data name="AccordionDemo_A2" xml:space="preserve">
+    <value>Все компоненты используют CSS-переменные (--flare-*). Смена темы обновляет все переменные за один вызов - без перезагрузки страницы.</value>
+  </data>
+  <data name="AccordionDemo_Q3" xml:space="preserve">
+    <value>Это открытый исходный код?</value>
+  </data>
+  <data name="AccordionDemo_A3" xml:space="preserve">
+    <value>Да - Flare под лицензией MIT и доступен на GitHub.</value>
+  </data>
+  <data name="AccordionDemo_Shipping" xml:space="preserve">
+    <value>Доставка</value>
+  </data>
+  <data name="AccordionDemo_ShippingBody" xml:space="preserve">
+    <value>Бесплатная стандартная доставка для заказов от $50. На оформлении доступны экспресс-варианты.</value>
+  </data>
+  <data name="AccordionDemo_Returns" xml:space="preserve">
+    <value>Возврат</value>
+  </data>
+  <data name="AccordionDemo_ReturnsBody" xml:space="preserve">
+    <value>Верните любой товар в течение 30 дней с полным возвратом средств - без лишних вопросов.</value>
+  </data>
+  <data name="AccordionDemo_Warranty" xml:space="preserve">
+    <value>Гарантия</value>
+  </data>
+  <data name="AccordionDemo_WarrantyBody" xml:space="preserve">
+    <value>На каждый продукт распространяется ограниченная гарантия производителя на два года.</value>
+  </data>
+  <data name="AccordionDemo_DefaultOpen" xml:space="preserve">
+    <value>Раскрыт по умолчанию</value>
+  </data>
+  <data name="AccordionDemo_DefaultOpenBody" xml:space="preserve">
+    <value>Эта панель открыта изначально, потому что задано Expanded="true".</value>
+  </data>
+  <data name="AccordionDemo_Bound" xml:space="preserve">
+    <value>Панель с двусторонней привязкой</value>
+  </data>
+  <data name="AccordionDemo_BoundBody" xml:space="preserve">
+    <value>Переключение этой панели обновляет связанное поле через ExpandedChanged.</value>
+  </data>
+  <data name="AccordionDemo_StateOpen" xml:space="preserve">
+    <value>Вторая панель открыта</value>
+  </data>
+  <data name="AccordionDemo_StateClosed" xml:space="preserve">
+    <value>Вторая панель закрыта</value>
+  </data>
+  <data name="Avatar_Title" xml:space="preserve">
+    <value>Аватар</value>
+  </data>
+  <data name="Avatar_Subtitle" xml:space="preserve">
+    <value>FlareAvatar - размеры, формы, изображение и текстовый запасной вариант.</value>
+  </data>
+  <data name="Avatar_Sizes" xml:space="preserve">
+    <value>Размеры</value>
+  </data>
+  <data name="Avatar_Color" xml:space="preserve">
+    <value>Свой цвет</value>
+  </data>
+  <data name="Avatar_Variants" xml:space="preserve">
+    <value>Варианты</value>
+  </data>
+  <data name="Avatar_ImageFallback" xml:space="preserve">
+    <value>Изображение и запасной вариант</value>
+  </data>
+  <data name="Badge_Title" xml:space="preserve">
+    <value>Значок (Badge)</value>
+  </data>
+  <data name="Badge_Subtitle" xml:space="preserve">
+    <value>FlareBadge для счётчиков, точек и автономных статус-меток.</value>
+  </data>
+  <data name="Badge_Basic" xml:space="preserve">
+    <value>Счётчик, переполнение и точка</value>
+  </data>
+  <data name="Badge_Standalone" xml:space="preserve">
+    <value>Автономные метки и цвета</value>
+  </data>
+  <data name="Badge_Origin" xml:space="preserve">
+    <value>Позиция и видимость</value>
+  </data>
+  <data name="Chip_Title" xml:space="preserve">
+    <value>Чип (Chip)</value>
+  </data>
+  <data name="Chip_Subtitle" xml:space="preserve">
+    <value>FlareChip для тегов, фильтров и выбора.</value>
+  </data>
+  <data name="Chip_Basic" xml:space="preserve">
+    <value>Выбор, закрытие и отключение</value>
+  </data>
+  <data name="Chip_IconAvatar" xml:space="preserve">
+    <value>Иконка и аватар</value>
+  </data>
+  <data name="Chip_SizeColor" xml:space="preserve">
+    <value>Размеры, цвета и клик</value>
+  </data>
+  <data name="Breadcrumb_Title" xml:space="preserve">
+    <value>Хлебные крошки</value>
+  </data>
+  <data name="Breadcrumb_Subtitle" xml:space="preserve">
+    <value>FlareBreadcrumb - навигационная цепочка с настраиваемыми разделителями и сворачиванием.</value>
+  </data>
+  <data name="Breadcrumb_Breadcrumb" xml:space="preserve">
+    <value>Элементы</value>
+  </data>
+  <data name="Breadcrumb_Separator" xml:space="preserve">
+    <value>Разделитель, отключение и aria-label</value>
+  </data>
+  <data name="Breadcrumb_Custom" xml:space="preserve">
+    <value>Своё содержимое (ChildContent)</value>
+  </data>
+  <data name="Breadcrumb_Collapse" xml:space="preserve">
+    <value>Схлопывание длинных цепочек (MaxItems)</value>
+  </data>
+  <data name="Pagination_Title" xml:space="preserve">
+    <value>Пагинация</value>
+  </data>
+  <data name="Pagination_Subtitle" xml:space="preserve">
+    <value>FlarePagination с размерами, цветами и выбором размера страницы.</value>
+  </data>
+  <data name="Pagination_Basic" xml:space="preserve">
+    <value>Базовая</value>
+  </data>
+  <data name="Pagination_Options" xml:space="preserve">
+    <value>Первая/последняя, соседи, размер и цвет</value>
+  </data>
+  <data name="Pagination_PageSize" xml:space="preserve">
+    <value>Строк на странице</value>
+  </data>
+  <data name="ButtonExtras_AriaSettings" xml:space="preserve">
+    <value>Настройки (стандарт)</value>
+  </data>
+  <data name="ButtonExtras_AriaAdd" xml:space="preserve">
+    <value>Добавить (filled)</value>
+  </data>
+  <data name="ButtonExtras_AriaEdit" xml:space="preserve">
+    <value>Редактировать (tonal)</value>
+  </data>
+  <data name="ButtonExtras_AriaDelete" xml:space="preserve">
+    <value>Удалить (outlined)</value>
+  </data>
+  <data name="ButtonExtras_AriaDisabled" xml:space="preserve">
+    <value>Недоступно</value>
+  </data>
+  <data name="ButtonExtras_AriaSmall" xml:space="preserve">
+    <value>Маленький</value>
+  </data>
+  <data name="ButtonExtras_AriaMedium" xml:space="preserve">
+    <value>Средний</value>
+  </data>
+  <data name="ButtonExtras_AriaLarge" xml:space="preserve">
+    <value>Большой</value>
+  </data>
+  <data name="ButtonExtras_AriaAddPrimary" xml:space="preserve">
+    <value>Добавить (primary)</value>
+  </data>
+  <data name="ButtonExtras_AriaEditSecondary" xml:space="preserve">
+    <value>Редактировать (secondary)</value>
+  </data>
+  <data name="ButtonExtras_AriaShareTertiary" xml:space="preserve">
+    <value>Поделиться (tertiary)</value>
+  </data>
+  <data name="ButtonExtras_AriaFavoriteSurface" xml:space="preserve">
+    <value>В избранное (surface)</value>
+  </data>
+  <data name="ButtonExtras_Extended" xml:space="preserve">
+    <value>Расширенная</value>
+  </data>
+  <data name="ButtonExtras_AriaExtendedFAB" xml:space="preserve">
+    <value>Расширенная FAB</value>
+  </data>
+  <data name="Buttons_Title" xml:space="preserve">
+    <value>Кнопки</value>
+  </data>
+  <data name="Buttons_Subtitle" xml:space="preserve">
+    <value>FlareButton - 5 вариантов, 3 размера, поддержка иконок.</value>
+  </data>
+  <data name="Buttons_Variants" xml:space="preserve">
+    <value>Варианты</value>
+  </data>
+  <data name="Buttons_Sizes" xml:space="preserve">
+    <value>Размеры</value>
+  </data>
+  <data name="Buttons_Shapes" xml:space="preserve">
+    <value>Формы</value>
+  </data>
+  <data name="Buttons_Typo" xml:space="preserve">
+    <value>Типографика подписи</value>
+  </data>
+  <data name="Buttons_WithIcons" xml:space="preserve">
+    <value>С иконками</value>
+  </data>
+  <data name="Buttons_Loading" xml:space="preserve">
+    <value>Состояние загрузки</value>
+  </data>
+  <data name="Buttons_States" xml:space="preserve">
+    <value>Type, aria-pressed и отключение</value>
+  </data>
+  <data name="Calendar_Title" xml:space="preserve">
+    <value>Календарь</value>
+  </data>
+  <data name="Calendar_Subtitle" xml:space="preserve">
+    <value>FlareCalendar - месячный календарь с отображением событий, выбором дня и навигацией.</value>
+  </data>
+  <data name="Calendar_MonthView" xml:space="preserve">
+    <value>Вид по месяцам</value>
+  </data>
+  <data name="Calendar_Events" xml:space="preserve">
+    <value>События</value>
+  </data>
+  <data name="Calendar_Options" xml:space="preserve">
+    <value>С понедельника, неск. месяцев и лимит событий</value>
+  </data>
+  <data name="Cards_Title" xml:space="preserve">
+    <value>Карточка</value>
+  </data>
+  <data name="Cards_Subtitle" xml:space="preserve">
+    <value>FlareCard - варианты Elevated, Filled, Outlined, Tonal и Text с размерами, компактной раскладкой и выбором.</value>
+  </data>
+  <data name="Cards_RichContent" xml:space="preserve">
+    <value>Карточки с расширенным содержимым</value>
+  </data>
+  <data name="Cards_Variants" xml:space="preserve">
+    <value>Варианты</value>
+  </data>
+  <data name="Cards_Sizes" xml:space="preserve">
+    <value>Размеры</value>
+  </data>
+  <data name="Cards_Compact" xml:space="preserve">
+    <value>Компактный (горизонтальный)</value>
+  </data>
+  <data name="Cards_Selectable" xml:space="preserve">
+    <value>Выбираемые</value>
+  </data>
+  <data name="Cards_Anatomy" xml:space="preserve">
+    <value>Шапка / Тело / Подвал</value>
+  </data>
+  <data name="Carousel_Title" xml:space="preserve">
+    <value>Карусель</value>
+  </data>
+  <data name="Carousel_Subtitle" xml:space="preserve">
+    <value>FlareCarousel - слайды с автовоспроизведением, стрелками и точечными индикаторами.</value>
+  </data>
+  <data name="Carousel_Basic" xml:space="preserve">
+    <value>Базовая карусель</value>
+  </data>
+  <data name="Carousel_AutoPlay" xml:space="preserve">
+    <value>Автовоспроизведение</value>
+  </data>
+  <data name="Carousel_DotsOnly" xml:space="preserve">
+    <value>Только точки (без стрелок)</value>
+  </data>
+  <data name="Charts_Title" xml:space="preserve">
+    <value>Графики</value>
+  </data>
+  <data name="Charts_Subtitle" xml:space="preserve">
+    <value>FlareChart - SVG-графики: линейные, столбчатые, круговые и кольцевые. Без внешних зависимостей.</value>
+  </data>
+  <data name="Charts_Line" xml:space="preserve">
+    <value>Линейный график</value>
+  </data>
+  <data name="Charts_Bar" xml:space="preserve">
+    <value>Столбчатая диаграмма</value>
+  </data>
+  <data name="Charts_Pie" xml:space="preserve">
+    <value>Круговая диаграмма</value>
+  </data>
+  <data name="Charts_MultiLine" xml:space="preserve">
+    <value>Линейный график с несколькими сериями</value>
+  </data>
+  <data name="ChipGroup_Title" xml:space="preserve">
+    <value>Группа чипов</value>
+  </data>
+  <data name="ChipGroup_Subtitle" xml:space="preserve">
+    <value>FlareChipGroup - контейнер для элементов FlareChip с поддержкой одиночного и множественного выбора.</value>
+  </data>
+  <data name="ChipGroup_SingleSelect" xml:space="preserve">
+    <value>Одиночный выбор</value>
+  </data>
+  <data name="ChipGroup_MultiSelect" xml:space="preserve">
+    <value>Множественный выбор</value>
+  </data>
+  <data name="ChipGroup_WithIcons" xml:space="preserve">
+    <value>С иконками</value>
+  </data>
+  <data name="ChipGroup_AriaCategoryFilter" xml:space="preserve">
+    <value>Фильтр категорий</value>
+  </data>
+  <data name="ChipGroup_AriaTagFilter" xml:space="preserve">
+    <value>Фильтр тегов</value>
+  </data>
+  <data name="ChipGroup_AriaStatusFilter" xml:space="preserve">
+    <value>Фильтр статуса</value>
+  </data>
+  <data name="ChipGroup_All" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="ChipGroup_Design" xml:space="preserve">
+    <value>Дизайн</value>
+  </data>
+  <data name="ChipGroup_Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="ChipGroup_Docs" xml:space="preserve">
+    <value>Документация</value>
+  </data>
+  <data name="ChipGroup_Active" xml:space="preserve">
+    <value>Активный</value>
+  </data>
+  <data name="ChipGroup_Pending" xml:space="preserve">
+    <value>Ожидает</value>
+  </data>
+  <data name="ChipGroup_Archived" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="ChipGroup_Closable" xml:space="preserve">
+    <value>Закрываемые чипы</value>
+  </data>
+  <data name="ColorModeToggle_Title" xml:space="preserve">
+    <value>Переключатель темы</value>
+  </data>
+  <data name="ColorModeToggle_Subtitle" xml:space="preserve">
+    <value>FlareColorModeToggle - кнопка переключения между светлой и тёмной темой через FlareThemeProvider.</value>
+  </data>
+  <data name="ColorModeToggle_IconOnly" xml:space="preserve">
+    <value>Только иконка</value>
+  </data>
+  <data name="ColorModeToggle_WithLabel" xml:space="preserve">
+    <value>С подписью</value>
+  </data>
+  <data name="ColorModeToggle_CustomLabels" xml:space="preserve">
+    <value>Свои подписи</value>
+  </data>
+  <data name="ColorModeToggle_UsageNote" xml:space="preserve">
+    <value>Замечание по использованию</value>
+  </data>
+  <data name="ColorModeToggle_UsageText" xml:space="preserve">
+    <value>FlareColorModeToggle требует наличия FlareThemeProvider в дереве компонентов. Переключатель читает и записывает активную тему через внедрённый IThemeService.</value>
+  </data>
+  <data name="ColorPicker_Title" xml:space="preserve">
+    <value>Выбор цвета</value>
+  </data>
+  <data name="ColorPicker_Subtitle" xml:space="preserve">
+    <value>FlareColorPicker с привязкой hex-значения и предпросмотром.</value>
+  </data>
+  <data name="ColorPicker_Presets" xml:space="preserve">
+    <value>Предустановки</value>
+  </data>
+  <data name="ColorPicker_Options" xml:space="preserve">
+    <value>Пресеты, пипетка, формат и inline</value>
+  </data>
+  <data name="DataGrid_Title" xml:space="preserve">
+    <value>Таблица данных</value>
+  </data>
+  <data name="Ide_Title" xml:space="preserve">
+    <value>IDE-макет</value>
+  </data>
+  <data name="Ide_Subtitle" xml:space="preserve">
+    <value>Соберите оболочку IDE в стиле десктоп-приложения - лента, строка меню, вкладки документов, закрепляемые панели инструментов, изменяемый разделитель и строка состояния - целиком из компонентов Flare.</value>
+  </data>
+  <data name="DataGrid_Subtitle" xml:space="preserve">
+    <value>FlareDataGrid с сортируемыми колонками, пагинацией, группировкой, экспортом CSV, выбором строк, изменением ширины колонок и редактированием в ячейке.</value>
+  </data>
+  <data name="Dialog_Title" xml:space="preserve">
+    <value>Диалог</value>
+  </data>
+  <data name="Dialog_Subtitle" xml:space="preserve">
+    <value>Встроенный диалог @bind-Visible, диалоги через сервис.</value>
+  </data>
+  <data name="Dialog_Inline" xml:space="preserve">
+    <value>Встроенный</value>
+  </data>
+  <data name="Dialog_Icon" xml:space="preserve">
+    <value>Иконка и разделитель</value>
+  </data>
+  <data name="Dialog_Confirm" xml:space="preserve">
+    <value>Подтвердить</value>
+  </data>
+  <data name="Dialog_ShowConfirm" xml:space="preserve">
+    <value>Показать диалог подтверждения</value>
+  </data>
+  <data name="Dialog_Alert" xml:space="preserve">
+    <value>Оповещение</value>
+  </data>
+  <data name="Dialog_ShowAlert" xml:space="preserve">
+    <value>Показать диалог оповещения</value>
+  </data>
+  <data name="Dialog_Prompt" xml:space="preserve">
+    <value>Ввод данных</value>
+  </data>
+  <data name="Dialog_ShowPrompt" xml:space="preserve">
+    <value>Показать диалог ввода</value>
+  </data>
+  <data name="Drawer_Title" xml:space="preserve">
+    <value>Боковая панель</value>
+  </data>
+  <data name="Drawer_Basic" xml:space="preserve">
+    <value>Слева и справа, заголовок</value>
+  </data>
+  <data name="Drawer_Anchors" xml:space="preserve">
+    <value>Сверху/снизу, размер и закрытие</value>
+  </data>
+  <data name="Drawer_Subtitle" xml:space="preserve">
+    <value>FlareDrawer - выдвигается с любой стороны экрана со слотами Header и ChildContent.</value>
+  </data>
+  <data name="EmptyState_Title" xml:space="preserve">
+    <value>Пустое состояние</value>
+  </data>
+  <data name="EmptyState_Subtitle" xml:space="preserve">
+    <value>FlareEmptyState - заглушка, отображаемая когда список или представление не содержит данных.</value>
+  </data>
+  <data name="EmptyState_BasicWithAction" xml:space="preserve">
+    <value>Основное - с действием</value>
+  </data>
+  <data name="EmptyState_MinimalNoAction" xml:space="preserve">
+    <value>Минимальный - без действия</value>
+  </data>
+  <data name="EmptyState_ErrorState" xml:space="preserve">
+    <value>Состояние ошибки</value>
+  </data>
+  <data name="FileUpload_Title" xml:space="preserve">
+    <value>Загрузка файлов</value>
+  </data>
+  <data name="FileUpload_Subtitle" xml:space="preserve">
+    <value>FlareFileUpload и FlareDropZone для выбора файлов с поддержкой перетаскивания.</value>
+  </data>
+  <data name="FileUpload_DropZone" xml:space="preserve">
+    <value>Зона перетаскивания</value>
+  </data>
+  <data name="FileUpload_DropZoneCustom" xml:space="preserve">
+    <value>Зона перетаскивания - своё содержимое</value>
+  </data>
+  <data name="FileUpload_Multiple" xml:space="preserve">
+    <value>Множественный выбор</value>
+  </data>
+  <data name="FileUpload_SingleImageOnly" xml:space="preserve">
+    <value>Один файл, только изображение</value>
+  </data>
+  <data name="FormBuilder_Title" xml:space="preserve">
+    <value>Конструктор форм</value>
+  </data>
+  <data name="FormBuilder_Subtitle" xml:space="preserve">
+    <value>Генерация форм на основе модели. Декорируйте свойства атрибутом [FlareFormField] для меток и порядка полей.</value>
+  </data>
+  <data name="FormBuilder_AutoGenerated" xml:space="preserve">
+    <value>Автогенерируемая форма</value>
+  </data>
+  <data name="Forms_Title" xml:space="preserve">
+    <value>Валидация формы</value>
+  </data>
+  <data name="Forms_Subtitle" xml:space="preserve">
+    <value>EditForm с DataAnnotationsValidator и элементами формы Flare.</value>
+  </data>
+  <data name="Forms_Validation" xml:space="preserve">
+    <value>Форма с валидацией</value>
+  </data>
+  <data name="Icon_Title" xml:space="preserve">
+    <value>Иконка</value>
+  </data>
+  <data name="Icon_Subtitle" xml:space="preserve">
+    <value>FlareIcon - обёртка над Material Symbols Rounded.</value>
+  </data>
+  <data name="Icon_Basic" xml:space="preserve">
+    <value>Основной</value>
+  </data>
+  <data name="Icon_Variants" xml:space="preserve">
+    <value>Варианты</value>
+  </data>
+  <data name="Icon_ColorSize" xml:space="preserve">
+    <value>Цвет и размер</value>
+  </data>
+  <data name="Image_Title" xml:space="preserve">
+    <value>Изображение</value>
+  </data>
+  <data name="Image_Subtitle" xml:space="preserve">
+    <value>FlareImage с object-fit, соотношением сторон, fluid, ленивой загрузкой и скелетом.</value>
+  </data>
+  <data name="Image_ObjectFit" xml:space="preserve">
+    <value>Подгонка объекта</value>
+  </data>
+  <data name="Image_AspectRatioFluid" xml:space="preserve">
+    <value>Соотношение сторон и Fluid</value>
+  </data>
+  <data name="Image_SkeletonFallback" xml:space="preserve">
+    <value>Скелет и заглушка</value>
+  </data>
+  <data name="Image_Options" xml:space="preserve">
+    <value>Размер, скругление и ленивая загрузка</value>
+  </data>
+  <data name="Input_Title" xml:space="preserve">
+    <value>Текстовое поле</value>
+  </data>
+  <data name="Input_Subtitle" xml:space="preserve">
+    <value>FlareTextField - поле с меткой, подсказкой, иконками, ошибкой и режимом только для чтения.</value>
+  </data>
+  <data name="Input_Basic" xml:space="preserve">
+    <value>Метка, иконка, подсказка, ошибка и только чтение</value>
+  </data>
+  <data name="Field_Sizes" xml:space="preserve">
+    <value>Размеры (xs - xl)</value>
+  </data>
+  <data name="Field_Variants" xml:space="preserve">
+    <value>Варианты (filled / outlined)</value>
+  </data>
+  <data name="NumericField_Title" xml:space="preserve">
+    <value>Числовое поле (Numeric Field)</value>
+  </data>
+  <data name="NumericField_Subtitle" xml:space="preserve">
+    <value>FlareNumericField - типизированный ввод чисел с min/max, шагом, форматом, префиксом/суффиксом.</value>
+  </data>
+  <data name="NumericField_Basic" xml:space="preserve">
+    <value>Целое и дробное (min/max, шаг, формат)</value>
+  </data>
+  <data name="TextArea_Title" xml:space="preserve">
+    <value>Многострочное поле (Text Area)</value>
+  </data>
+  <data name="TextArea_Subtitle" xml:space="preserve">
+    <value>FlareTextArea - многострочный ввод с числом строк и макс. длиной.</value>
+  </data>
+  <data name="TextArea_Basic" xml:space="preserve">
+    <value>Строки, макс. длина и отключение</value>
+  </data>
+  <data name="Checkbox_Title" xml:space="preserve">
+    <value>Флажок (Checkbox)</value>
+  </data>
+  <data name="Checkbox_Subtitle" xml:space="preserve">
+    <value>FlareCheckbox - флажок с тремя состояниями (да/нет/неопределённо).</value>
+  </data>
+  <data name="Checkbox_Basic" xml:space="preserve">
+    <value>Отмечен, неопределённый и отключён</value>
+  </data>
+  <data name="Switch_Title" xml:space="preserve">
+    <value>Переключатель (Switch)</value>
+  </data>
+  <data name="Switch_Subtitle" xml:space="preserve">
+    <value>FlareSwitch - переключатель вкл/выкл.</value>
+  </data>
+  <data name="Switch_Basic" xml:space="preserve">
+    <value>Вкл/выкл и отключение</value>
+  </data>
+  <data name="Switch_Icons" xml:space="preserve">
+    <value>С иконками</value>
+  </data>
+  <data name="Radio_Title" xml:space="preserve">
+    <value>Группа радио (Radio Group)</value>
+  </data>
+  <data name="Radio_Subtitle" xml:space="preserve">
+    <value>FlareRadioGroup - одиночный выбор, в строку или столбцом.</value>
+  </data>
+  <data name="Radio_Basic" xml:space="preserve">
+    <value>В строку, столбцом и отключение</value>
+  </data>
+  <data name="InputMask_Title" xml:space="preserve">
+    <value>Поле с маской</value>
+  </data>
+  <data name="InputMask_Subtitle" xml:space="preserve">
+    <value>FlareMaskedField - ввод текста по фиксированному формату.</value>
+  </data>
+  <data name="InputMask_Basic" xml:space="preserve">
+    <value>Маски телефона, карты и даты</value>
+  </data>
+  <data name="Kanban_Title" xml:space="preserve">
+    <value>Канбан-доска</value>
+  </data>
+  <data name="Kanban_Subtitle" xml:space="preserve">
+    <value>FlareKanban - доска задач с перетаскиванием, колонками и карточками.</value>
+  </data>
+  <data name="Kanban_Board" xml:space="preserve">
+    <value>Доска</value>
+  </data>
+  <data name="Stack_Title" xml:space="preserve">
+    <value>Стек (Stack)</value>
+  </data>
+  <data name="Stack_Subtitle" xml:space="preserve">
+    <value>FlareStack - flex-раскладка строкой/колонкой с зазором, выравниванием и спейсером.</value>
+  </data>
+  <data name="Grid_Title" xml:space="preserve">
+    <value>Сетка (Grid)</value>
+  </data>
+  <data name="Grid_Subtitle" xml:space="preserve">
+    <value>FlareGrid / FlareCol - 12-колоночная сетка с адаптивными span.</value>
+  </data>
+  <data name="Container_Title" xml:space="preserve">
+    <value>Контейнер (Container)</value>
+  </data>
+  <data name="Container_Subtitle" xml:space="preserve">
+    <value>FlareContainer - центрированная обёртка контента с макс. шириной.</value>
+  </data>
+  <data name="Divider_Title" xml:space="preserve">
+    <value>Разделитель (Divider)</value>
+  </data>
+  <data name="Divider_Subtitle" xml:space="preserve">
+    <value>FlareDivider - горизонтальная/вертикальная линия с опциональным текстом.</value>
+  </data>
+  <data name="Resizable_Title" xml:space="preserve">
+    <value>Изменение размера (Resizable)</value>
+  </data>
+  <data name="Resizable_Subtitle" xml:space="preserve">
+    <value>FlareResizable - тяните за край, чтобы изменить размер панели.</value>
+  </data>
+  <data name="Resizable_Basic" xml:space="preserve">
+    <value>Тяните для изменения (край, min/max)</value>
+  </data>
+  <data name="ScrollTop_Title" xml:space="preserve">
+    <value>Кнопка наверх (Scroll Top)</value>
+  </data>
+  <data name="ScrollTop_Subtitle" xml:space="preserve">
+    <value>FlareScrollTop - кнопка «наверх», появляющаяся после порога прокрутки.</value>
+  </data>
+  <data name="ScrollTop_Basic" xml:space="preserve">
+    <value>Наверх (порог)</value>
+  </data>
+  <data name="Layout_StackRow" xml:space="preserve">
+    <value>Стек (строка)</value>
+  </data>
+  <data name="Layout_StackColumn" xml:space="preserve">
+    <value>Стек (колонка)</value>
+  </data>
+  <data name="Layout_Grid" xml:space="preserve">
+    <value>Сетка</value>
+  </data>
+  <data name="Layout_ResponsiveGrid" xml:space="preserve">
+    <value>Адаптивная сетка (измените размер окна)</value>
+  </data>
+  <data name="Layout_Divider" xml:space="preserve">
+    <value>Разделитель</value>
+  </data>
+  <data name="Layout_DividerWithText" xml:space="preserve">
+    <value>Разделитель с текстом</value>
+  </data>
+  <data name="Layout_Container" xml:space="preserve">
+    <value>Контейнер (MaxWidth)</value>
+  </data>
+  <data name="Layout_Spacer" xml:space="preserve">
+    <value>Разделитель пространства</value>
+  </data>
+  <data name="LayoutShell_Title" xml:space="preserve">
+    <value>Шаблон страницы</value>
+  </data>
+  <data name="LayoutShell_Subtitle" xml:space="preserve">
+    <value>FlareLayout - готовый шаблон с панелью приложения, складным боковым меню и основной областью контента.</value>
+  </data>
+  <data name="LayoutShell_AdminShell" xml:space="preserve">
+    <value>Шаблон администратора (живое демо)</value>
+  </data>
+  <data name="LayoutShell_AutoWireDesc" xml:space="preserve">
+    <value>Добавьте DrawerToggle="true" в FlareLayoutAppBar - кнопка-гамбургер появится автоматически и будет переключать боковую панель через каскадный контекст. Ручная привязка не нужна.</value>
+  </data>
+  <data name="LayoutShell_ManualBind" xml:space="preserve">
+    <value>Ручная привязка @bind-DrawerOpen (расширенный режим)</value>
+  </data>
+  <data name="LayoutShell_ManualBindDesc" xml:space="preserve">
+    <value>Используйте @bind-DrawerOpen для полного внешнего управления - удобно, когда нужно программно открывать/закрывать панель из родительского компонента.</value>
+  </data>
+  <data name="Link_Title" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="Link_Subtitle" xml:space="preserve">
+    <value>FlareLink с вариантами цвета и подчёркивания.</value>
+  </data>
+  <data name="Link_Colors" xml:space="preserve">
+    <value>Цвета</value>
+  </data>
+  <data name="Link_Underline" xml:space="preserve">
+    <value>Подчёркивание</value>
+  </data>
+  <data name="Link_States" xml:space="preserve">
+    <value>Target, title и отключение</value>
+  </data>
+  <data name="List_Title" xml:space="preserve">
+    <value>Список (List)</value>
+  </data>
+  <data name="List_Subtitle" xml:space="preserve">
+    <value>FlareList со слотами Leading/Trailing, выбором и плотным режимом.</value>
+  </data>
+  <data name="List_Basic" xml:space="preserve">
+    <value>Leading/Trailing, выбор и отключение</value>
+  </data>
+  <data name="List_Dense" xml:space="preserve">
+    <value>Плотный режим</value>
+  </data>
+  <data name="Tree_Title" xml:space="preserve">
+    <value>Дерево (Tree View)</value>
+  </data>
+  <data name="Tree_Subtitle" xml:space="preserve">
+    <value>FlareTreeView с вложенными элементами, иконками и множественным выбором.</value>
+  </data>
+  <data name="Tree_Basic" xml:space="preserve">
+    <value>Вложенные элементы и одиночный выбор</value>
+  </data>
+  <data name="Tree_MultiSelect" xml:space="preserve">
+    <value>Множественный выбор</value>
+  </data>
+  <data name="Menu_Title" xml:space="preserve">
+    <value>Меню</value>
+  </data>
+  <data name="Menu_Subtitle" xml:space="preserve">
+    <value>FlareMenu с иконками и выравниванием якоря.</value>
+  </data>
+  <data name="Menu_Items" xml:space="preserve">
+    <value>Элементы</value>
+  </data>
+  <data name="MultiSelect_Title" xml:space="preserve">
+    <value>Мультивыбор</value>
+  </data>
+  <data name="MultiSelect_Subtitle" xml:space="preserve">
+    <value>FlareMultiSelect - выпадающий список с поддержкой множественного выбора значений.</value>
+  </data>
+  <data name="MultiSelect_Basic" xml:space="preserve">
+    <value>Основное</value>
+  </data>
+  <data name="MultiSelect_WithHelperText" xml:space="preserve">
+    <value>С вспомогательным текстом</value>
+  </data>
+  <data name="MultiSelect_ObjectItems" xml:space="preserve">
+    <value>Объектные элементы</value>
+  </data>
+  <data name="NavMenu_Title" xml:space="preserve">
+    <value>Меню навигации</value>
+  </data>
+  <data name="NavMenu_Subtitle" xml:space="preserve">
+    <value>FlareNavMenu, FlareNavLink, FlareNavGroup.</value>
+  </data>
+  <data name="NavMenu_Basic" xml:space="preserve">
+    <value>Базовые ссылки</value>
+  </data>
+  <data name="NavMenu_NavGroup" xml:space="preserve">
+    <value>Группа навигации (сворачиваемая)</value>
+  </data>
+  <data name="NavMenu_Nested" xml:space="preserve">
+    <value>Вложенные группы + авто-раскрытие при активной ссылке</value>
+  </data>
+  <data name="NavMenu_HideScrollbar" xml:space="preserve">
+    <value>Прокрутка со скрытым скроллбаром</value>
+  </data>
+  <data name="NavMenu_Rail" xml:space="preserve">
+    <value>Мини-рейл (только иконки)</value>
+  </data>
+  <data name="OnThisPage_Title" xml:space="preserve">
+    <value>На этой странице</value>
+  </data>
+  <data name="OnThisPage_Subtitle" xml:space="preserve">
+    <value>FlareOnThisPage - оглавление со scroll-spy, которое собирает (и авто-создаёт) якоря страницы.</value>
+  </data>
+  <data name="OnThisPage_Demo" xml:space="preserve">
+    <value>Оглавление с авто-якорями</value>
+  </data>
+  <data name="OnThisPage_Block" xml:space="preserve">
+    <value>Блок оглавления (ручные ссылки)</value>
+  </data>
+  <data name="Overlay_Title" xml:space="preserve">
+    <value>Оверлей</value>
+  </data>
+  <data name="Overlay_Subtitle" xml:space="preserve">
+    <value>FlareOverlay - полноэкранная подложка со светлым и тёмным вариантами.</value>
+  </data>
+  <data name="Overlay_Overlay" xml:space="preserve">
+    <value>Тёмный и локальный оверлей</value>
+  </data>
+  <data name="Overlay_Light" xml:space="preserve">
+    <value>Светлый фон, прозрачность и z-index</value>
+  </data>
+  <data name="Popover_Title" xml:space="preserve">
+    <value>Popover</value>
+  </data>
+  <data name="Popover_Subtitle" xml:space="preserve">
+    <value>FlarePopover - привязанное содержимое с размещением и стрелкой.</value>
+  </data>
+  <data name="Popover_Basic" xml:space="preserve">
+    <value>Привязанное содержимое</value>
+  </data>
+  <data name="Popover_Placement" xml:space="preserve">
+    <value>Размещение, стрелка и min/max ширина</value>
+  </data>
+  <data name="PasswordInput_Title" xml:space="preserve">
+    <value>Поле пароля</value>
+  </data>
+  <data name="PasswordInput_Subtitle" xml:space="preserve">
+    <value>FlarePasswordField - текстовое поле со встроенным переключателем видимости пароля.</value>
+  </data>
+  <data name="PasswordInput_Basic" xml:space="preserve">
+    <value>Основное</value>
+  </data>
+  <data name="PasswordInput_WithHelperText" xml:space="preserve">
+    <value>С вспомогательным текстом</value>
+  </data>
+  <data name="PasswordInput_ErrorState" xml:space="preserve">
+    <value>Состояние ошибки</value>
+  </data>
+  <data name="PasswordInput_Disabled" xml:space="preserve">
+    <value>Недоступно</value>
+  </data>
+  <data name="DatePicker_Title" xml:space="preserve">
+    <value>Выбор даты (Date Picker)</value>
+  </data>
+  <data name="DatePicker_Subtitle" xml:space="preserve">
+    <value>FlareDatePicker - поле-календарь с min/max, форматом и кнопками сегодня/очистить.</value>
+  </data>
+  <data name="DatePicker_Basic" xml:space="preserve">
+    <value>Базовый, формат и отключение</value>
+  </data>
+  <data name="DatePicker_Constraints" xml:space="preserve">
+    <value>Min/max, сегодня/очистить и ошибка</value>
+  </data>
+  <data name="TimePicker_Title" xml:space="preserve">
+    <value>Выбор времени (Time Picker)</value>
+  </data>
+  <data name="TimePicker_Subtitle" xml:space="preserve">
+    <value>FlareTimePicker - выбор времени суток.</value>
+  </data>
+  <data name="TimePicker_Basic" xml:space="preserve">
+    <value>Базовый, подсказка, ошибка и отключение</value>
+  </data>
+  <data name="DateRangePicker_Title" xml:space="preserve">
+    <value>Выбор диапазона дат (Date Range Picker)</value>
+  </data>
+  <data name="DateRangePicker_Subtitle" xml:space="preserve">
+    <value>FlareDateRangePicker - выбор начальной и конечной даты.</value>
+  </data>
+  <data name="DateRangePicker_Basic" xml:space="preserve">
+    <value>Начало/конец, подписи и отключение</value>
+  </data>
+  <data name="DateRangePicker_Presets" xml:space="preserve">
+    <value>Быстрые диапазоны</value>
+  </data>
+  <data name="DateTimePicker_Title" xml:space="preserve">
+    <value>Выбор даты и времени (Date Time Picker)</value>
+  </data>
+  <data name="DateTimePicker_Subtitle" xml:space="preserve">
+    <value>FlareDateTimePicker - совместный выбор даты и времени.</value>
+  </data>
+  <data name="DateTimePicker_Basic" xml:space="preserve">
+    <value>Формат, min/max и отключение</value>
+  </data>
+  <data name="Progress_Title" xml:space="preserve">
+    <value>Прогресс</value>
+  </data>
+  <data name="Progress_Subtitle" xml:space="preserve">
+    <value>FlareProgress - линейные и круговые индикаторы: размеры, цвета и буфер.</value>
+  </data>
+  <data name="Progress_Linear" xml:space="preserve">
+    <value>Линейный</value>
+  </data>
+  <data name="Progress_Circular" xml:space="preserve">
+    <value>Круговой</value>
+  </data>
+  <data name="Skeleton_Title" xml:space="preserve">
+    <value>Скелетон</value>
+  </data>
+  <data name="Skeleton_Subtitle" xml:space="preserve">
+    <value>FlareSkeleton - заглушки для состояний загрузки.</value>
+  </data>
+  <data name="Skeleton_Variants" xml:space="preserve">
+    <value>Варианты (Text / Rect / Circle)</value>
+  </data>
+  <data name="Skeleton_Animation" xml:space="preserve">
+    <value>Анимация (Wave / Pulse / None)</value>
+  </data>
+  <data name="Progress_Buffer" xml:space="preserve">
+    <value>Буферный</value>
+  </data>
+  <data name="Progress_Query" xml:space="preserve">
+    <value>Запросный (обратная анимация)</value>
+  </data>
+  <data name="Progress_Sizes" xml:space="preserve">
+    <value>Размеры (круговой)</value>
+  </data>
+  <data name="Progress_Colors" xml:space="preserve">
+    <value>Цвета</value>
+  </data>
+  <data name="QrCode_Title" xml:space="preserve">
+    <value>QR-код</value>
+  </data>
+  <data name="QrCode_Subtitle" xml:space="preserve">
+    <value>FlareQrCode - генерирует полностью сканируемый SVG QR-код из строкового значения.</value>
+  </data>
+  <data name="QrCode_Basic" xml:space="preserve">
+    <value>Базовый QR-код</value>
+  </data>
+  <data name="QrCode_CustomSizeColors" xml:space="preserve">
+    <value>Размер и цвета</value>
+  </data>
+  <data name="QrCode_Large" xml:space="preserve">
+    <value>Крупный QR-код</value>
+  </data>
+  <data name="QrCode_Rounded" xml:space="preserve">
+    <value>Скругление модулей</value>
+  </data>
+  <data name="QrCode_Icon" xml:space="preserve">
+    <value>Иконка в центре</value>
+  </data>
+  <data name="QrCode_ErrorLevel" xml:space="preserve">
+    <value>Уровни коррекции ошибок</value>
+  </data>
+  <data name="Rating_Title" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="Rating_Subtitle" xml:space="preserve">
+    <value>FlareRating - 5 звёзд, 10 звёзд, только чтение и отключённый.</value>
+  </data>
+  <data name="Rating_ReadOnly" xml:space="preserve">
+    <value>Только чтение</value>
+  </data>
+  <data name="RichTextEditor_Title" xml:space="preserve">
+    <value>Редактор текста</value>
+  </data>
+  <data name="RichTextEditor_Subtitle" xml:space="preserve">
+    <value>FlareRichTextEditor - WYSIWYG-редактор с панелью форматирования на базе пользовательской JS-шины команд.</value>
+  </data>
+  <data name="RichTextEditor_Basic" xml:space="preserve">
+    <value>Базовый редактор</value>
+  </data>
+  <data name="RichTextEditor_ReadOnly" xml:space="preserve">
+    <value>Режим только чтение</value>
+  </data>
+  <data name="Select_Title" xml:space="preserve">
+    <value>Выбор (Select)</value>
+  </data>
+  <data name="Select_Subtitle" xml:space="preserve">
+    <value>FlareSelect - стилизованный список с шаблонами пунктов, группировкой и валидацией.</value>
+  </data>
+  <data name="Select_Basic" xml:space="preserve">
+    <value>Базовый и отключённый</value>
+  </data>
+  <data name="Select_ItemTemplate" xml:space="preserve">
+    <value>Свой шаблон пункта</value>
+  </data>
+  <data name="Select_Grouped" xml:space="preserve">
+    <value>Группировка из элементов</value>
+  </data>
+  <data name="Select_Validation" xml:space="preserve">
+    <value>Подсказка и ошибка</value>
+  </data>
+  <data name="Autocomplete_Title" xml:space="preserve">
+    <value>Автодополнение</value>
+  </data>
+  <data name="Autocomplete_Subtitle" xml:space="preserve">
+    <value>FlareAutocomplete с асинхронным поиском, группировкой и шаблонами элементов.</value>
+  </data>
+  <data name="Autocomplete_Basic" xml:space="preserve">
+    <value>Асинхронный поиск</value>
+  </data>
+  <data name="Autocomplete_Grouped" xml:space="preserve">
+    <value>Группировка элементов</value>
+  </data>
+  <data name="Autocomplete_Template" xml:space="preserve">
+    <value>Шаблон элемента и опции</value>
+  </data>
+  <data name="SignaturePad_Title" xml:space="preserve">
+    <value>Поле подписи</value>
+  </data>
+  <data name="SignaturePad_Subtitle" xml:space="preserve">
+    <value>FlareSignaturePad - рисование и захват подписи от руки на холсте.</value>
+  </data>
+  <data name="SignaturePad_Basic" xml:space="preserve">
+    <value>Основное</value>
+  </data>
+  <data name="SignaturePad_CustomStroke" xml:space="preserve">
+    <value>Своя линия</value>
+  </data>
+  <data name="Slider_Title" xml:space="preserve">
+    <value>Ползунок и диапазон</value>
+  </data>
+  <data name="Slider_Subtitle" xml:space="preserve">
+    <value>FlareSlider - одно значение, диапазон (два бегунка), размеры, цвета и вертикаль.</value>
+  </data>
+  <data name="Slider_Slider" xml:space="preserve">
+    <value>Значение, диапазон, шаг и формат</value>
+  </data>
+  <data name="Slider_Helper" xml:space="preserve">
+    <value>Подсказка и ошибка</value>
+  </data>
+  <data name="Slider_Sizes" xml:space="preserve">
+    <value>Размеры (XS–XL)</value>
+  </data>
+  <data name="Slider_Icons" xml:space="preserve">
+    <value>Иконки начала и конца</value>
+  </data>
+  <data name="Slider_Steps" xml:space="preserve">
+    <value>Индикаторы шагов и пузырёк значения</value>
+  </data>
+  <data name="Slider_Init" xml:space="preserve">
+    <value>Якорь Init (баланс)</value>
+  </data>
+  <data name="Slider_Colors" xml:space="preserve">
+    <value>Цвета</value>
+  </data>
+  <data name="Slider_Vertical" xml:space="preserve">
+    <value>Вертикальный</value>
+  </data>
+  <data name="Slider_Range" xml:space="preserve">
+    <value>Диапазон (два бегунка)</value>
+  </data>
+  <data name="Slider_Marks" xml:space="preserve">
+    <value>Метки с подписями</value>
+  </data>
+  <data name="SpeedDial_Title" xml:space="preserve">
+    <value>Быстрый набор</value>
+  </data>
+  <data name="Splitter_Title" xml:space="preserve">
+    <value>Splitter</value>
+  </data>
+  <data name="Splitter_Subtitle" xml:space="preserve">
+    <value>FlareSplitter - изменяемые панели (горизонтально/вертикально) с перетаскиваемым разделителем.</value>
+  </data>
+  <data name="Splitter_Basic" xml:space="preserve">
+    <value>Горизонтально и вертикально, min/max</value>
+  </data>
+  <data name="Stepper_Title" xml:space="preserve">
+    <value>Шаговый мастер</value>
+  </data>
+  <data name="Stepper_Subtitle" xml:space="preserve">
+    <value>FlareStepper для многоэтапного мастера.</value>
+  </data>
+  <data name="Stepper_Basic" xml:space="preserve">
+    <value>Горизонтальный stepper</value>
+  </data>
+  <data name="Stepper_Vertical" xml:space="preserve">
+    <value>Вертикальный, нелинейный и шаг с ошибкой</value>
+  </data>
+  <data name="Table_Title" xml:space="preserve">
+    <value>Таблица</value>
+  </data>
+  <data name="Table_Subtitle" xml:space="preserve">
+    <value>FlareTable - стандартный, полосатый+компактный, с рамкой, прикреплённым заголовком, группировкой строк и итоговой строкой.</value>
+  </data>
+  <data name="Table_Default" xml:space="preserve">
+    <value>По умолчанию (с подсветкой)</value>
+  </data>
+  <data name="Table_Striped" xml:space="preserve">
+    <value>Полосатый + компактный</value>
+  </data>
+  <data name="Table_Bordered" xml:space="preserve">
+    <value>С рамкой</value>
+  </data>
+  <data name="Table_StickyHeader" xml:space="preserve">
+    <value>Прикреплённый заголовок</value>
+  </data>
+  <data name="Table_GroupedRows" xml:space="preserve">
+    <value>Группировка строк</value>
+  </data>
+  <data name="Table_TotalsFooter" xml:space="preserve">
+    <value>Итоговая строка</value>
+  </data>
+  <data name="Tabs_Title" xml:space="preserve">
+    <value>Вкладки</value>
+  </data>
+  <data name="Tabs_Subtitle" xml:space="preserve">
+    <value>FlareTabs - варианты, закрываемые, вертикальные, прокручиваемые, бейджи и зоны заголовка.</value>
+  </data>
+  <data name="Tabs_Tabs" xml:space="preserve">
+    <value>Вкладки</value>
+  </data>
+  <data name="Tabs_Variants" xml:space="preserve">
+    <value>Варианты</value>
+  </data>
+  <data name="Tabs_CloseableTabs" xml:space="preserve">
+    <value>Закрываемые вкладки</value>
+  </data>
+  <data name="Tabs_Vertical" xml:space="preserve">
+    <value>Вертикальные, иконки и отключение</value>
+  </data>
+  <data name="Tabs_Scrollable" xml:space="preserve">
+    <value>Стрелки прокрутки при переполнении</value>
+  </data>
+  <data name="Tabs_Placement" xml:space="preserve">
+    <value>Расположение и поворот подписей</value>
+  </data>
+  <data name="Tabs_Controlled" xml:space="preserve">
+    <value>Управляемые и с подтверждением</value>
+  </data>
+  <data name="Tabs_Badges" xml:space="preserve">
+    <value>Значки и подсказки</value>
+  </data>
+  <data name="Tabs_HeaderZones" xml:space="preserve">
+    <value>Зоны заголовка и типографика</value>
+  </data>
+  <data name="TagInput_Title" xml:space="preserve">
+    <value>Поле тегов</value>
+  </data>
+  <data name="TagInput_Subtitle" xml:space="preserve">
+    <value>FlareTagField - без ограничений, максимум тегов и только чтение.</value>
+  </data>
+  <data name="TagInput_Basic" xml:space="preserve">
+    <value>Базовый, лимит тегов и только чтение</value>
+  </data>
+  <data name="TagInput_Options" xml:space="preserve">
+    <value>Цвет чипа, дубликаты, отключение и ошибка</value>
+  </data>
+  <data name="TagInput_Suggestions" xml:space="preserve">
+    <value>Подсказки (статичные и асинхронные)</value>
+  </data>
+  <data name="Timeline_Title" xml:space="preserve">
+    <value>Хронология</value>
+  </data>
+  <data name="Timeline_Subtitle" xml:space="preserve">
+    <value>FlareTimeline с цветовым кодированием, вариантами линии-соединителя и чередующимся макетом.</value>
+  </data>
+  <data name="Timeline_DashedConnector" xml:space="preserve">
+    <value>Пунктирный соединитель</value>
+  </data>
+  <data name="Timeline_DottedConnector" xml:space="preserve">
+    <value>Точечный соединитель + произвольный цвет точки</value>
+  </data>
+  <data name="Timeline_Alternating" xml:space="preserve">
+    <value>Чередующийся макет</value>
+  </data>
+  <data name="Timeline_Align" xml:space="preserve">
+    <value>Выравнивание вправо и свой цвет точки</value>
+  </data>
+  <data name="Tooltip_Title" xml:space="preserve">
+    <value>Подсказка</value>
+  </data>
+  <data name="Tooltip_Subtitle" xml:space="preserve">
+    <value>FlareTooltip с расположением сверху, снизу, слева и справа.</value>
+  </data>
+  <data name="Tooltip_Placement" xml:space="preserve">
+    <value>Расположение</value>
+  </data>
+  <data name="Tooltip_Delay" xml:space="preserve">
+    <value>Задержка</value>
+  </data>
+  <data name="Tooltip_Rich" xml:space="preserve">
+    <value>Богатое содержимое</value>
+  </data>
+  <data name="Clipboard_Title" xml:space="preserve">
+    <value>Буфер обмена (Clipboard)</value>
+  </data>
+  <data name="Clipboard_Subtitle" xml:space="preserve">
+    <value>FlareClipboard - копирование текста с обратной связью и своим триггером.</value>
+  </data>
+  <data name="Clipboard_Basic" xml:space="preserve">
+    <value>Копирование с обратной связью, OnCopied и свой слот</value>
+  </data>
+  <data name="Confirm_Title" xml:space="preserve">
+    <value>Диалог подтверждения</value>
+  </data>
+  <data name="Confirm_Subtitle" xml:space="preserve">
+    <value>FlareConfirmDialogProvider - ожидаемое подтверждение да/нет.</value>
+  </data>
+  <data name="Confirm_Basic" xml:space="preserve">
+    <value>Ожидаемое подтверждение (заголовок, текст, подписи)</value>
+  </data>
+  <data name="Shortcuts_Title" xml:space="preserve">
+    <value>Горячие клавиши (Shortcuts)</value>
+  </data>
+  <data name="Shortcuts_Subtitle" xml:space="preserve">
+    <value>FlareShortcuts - регистрация глобальных сочетаний клавиш.</value>
+  </data>
+  <data name="Shortcuts_Basic" xml:space="preserve">
+    <value>Клавиши, описание и OnActivated</value>
+  </data>
+  <data name="Transfer_Title" xml:space="preserve">
+    <value>Перенос элементов / двойной список</value>
+  </data>
+  <data name="Transfer_Subtitle" xml:space="preserve">
+    <value>FlareTransfer - перемещение элементов между двумя списками. Подходит для редакторов прав и сценариев множественного выбора.</value>
+  </data>
+  <data name="Transfer_PermissionsEditor" xml:space="preserve">
+    <value>Редактор прав</value>
+  </data>
+  <data name="Transfer_CustomLabel" xml:space="preserve">
+    <value>Своя метка элемента</value>
+  </data>
+  <data name="Typography_Title" xml:space="preserve">
+    <value>Типографика</value>
+  </data>
+  <data name="Typography_Subtitle" xml:space="preserve">
+    <value>Все 15 значений TypographyScale через FlareText.</value>
+  </data>
+  <data name="Typography_Scale" xml:space="preserve">
+    <value>Масштаб</value>
+  </data>
+  <data name="Typography_Weight" xml:space="preserve">
+    <value>Насыщенность</value>
+  </data>
+  <data name="Typography_ColorElement" xml:space="preserve">
+    <value>Цвет и элемент</value>
+  </data>
+  <data name="VideoPlayer_Title" xml:space="preserve">
+    <value>Видеоплеер</value>
+  </data>
+  <data name="VideoPlayer_Subtitle" xml:space="preserve">
+    <value>FlareVideoPlayer - HTML5 видео с кастомными элементами управления в стиле Flare.</value>
+  </data>
+  <data name="VideoPlayer_Basic" xml:space="preserve">
+    <value>Базовый видеоплеер</value>
+  </data>
+  <data name="VideoPlayer_AutoPlayLooping" xml:space="preserve">
+    <value>Автовоспроизведение с повтором</value>
+  </data>
+  <data name="VideoPlayer_Options" xml:space="preserve">
+    <value>Постер, скорость и aria-label</value>
+  </data>
+  <data name="VirtualList_Title" xml:space="preserve">
+    <value>Виртуальный список</value>
+  </data>
+  <data name="VirtualList_Subtitle" xml:space="preserve">
+    <value>FlareVirtualList рендерит только видимые строки для больших наборов данных.</value>
+  </data>
+  <data name="VirtualList_VirtualList" xml:space="preserve">
+    <value>10 000 элементов (Items, ItemTemplate, Height, OverscanCount)</value>
+  </data>
+  <data name="InfiniteScroll_Title" xml:space="preserve">
+    <value>Бесконечная прокрутка</value>
+  </data>
+  <data name="InfiniteScroll_Subtitle" xml:space="preserve">
+    <value>FlareInfiniteScroll подгружает содержимое при достижении низа.</value>
+  </data>
+  <data name="InfiniteScroll_Basic" xml:space="preserve">
+    <value>Загрузка по запросу (контент загрузки и конца)</value>
+  </data>
+  <data name="Lazy_Title" xml:space="preserve">
+    <value>Ленивый рендер</value>
+  </data>
+  <data name="Lazy_Subtitle" xml:space="preserve">
+    <value>FlareLazy откладывает построение поддерева, пока оно не приблизится к видимой области - можно отрисовать страницу из тяжёлых элементов, а реально существовать будут только видимые.</value>
+  </data>
+  <data name="Lazy_Defer" xml:space="preserve">
+    <value>Отложенный рендер по прокрутке</value>
+  </data>
+  <data name="Lazy_Defer_Desc" xml:space="preserve">
+    <value>Дерево компонентов каждой панели строится только при приближении к видимой области. Следите, как растёт счётчик смонтированных при прокрутке.</value>
+  </data>
+  <data name="Lazy_DataLoad" xml:space="preserve">
+    <value>Ленивая загрузка данных</value>
+  </data>
+  <data name="Lazy_DataLoad_Desc" xml:space="preserve">
+    <value>Используйте OnRevealed, чтобы запускать загрузку только когда блок появляется; Placeholder резервирует место, пока данные не пришли.</value>
+  </data>
+  <data name="DataTree_Title" xml:space="preserve">
+    <value>Дерево с данными</value>
+  </data>
+  <data name="DataTree_Subtitle" xml:space="preserve">
+    <value>Дерево на данных (FlareDataTree) с ленивой загрузкой дочерних элементов и Virtual="true" для эффективной прокрутки тысяч узлов.</value>
+  </data>
+  <data name="DataTree_LazyLoading" xml:space="preserve">
+    <value>Дерево с ленивой загрузкой</value>
+  </data>
+  <data name="DataTree_SimulatedAsync" xml:space="preserve">
+    <value>Имитация асинхронной загрузки (спиннер 300 мс)</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>О Flare</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="About_WhatsNew" xml:space="preserve">
+    <value>Что нового</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>Посмотреть на GitHub</value>
+  </data>
+  <data name="Nav_Comparison" xml:space="preserve">
+    <value>Сравнение</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="Nav_GettingStarted" xml:space="preserve">
+    <value>Начало работы</value>
+  </data>
+  <data name="Nav_Theming" xml:space="preserve">
+    <value>Темы оформления</value>
+  </data>
+  <data name="Nav_About" xml:space="preserve">
+    <value>О библиотеке</value>
+  </data>
+  <data name="Nav_Color" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="Color_Title" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="Color_Subtitle" xml:space="preserve">
+    <value>Единая система FlareColor — семантические роли, произвольные значения и генераторы цвета.</value>
+  </data>
+  <data name="Color_RolesTitle" xml:space="preserve">
+    <value>Семантические роли</value>
+  </data>
+  <data name="Color_RolesDesc" xml:space="preserve">
+    <value>Каждый компонент с цветом принимает один параметр Color типа FlareColor. Семантическая роль рендерится через общий кэшируемый CSS-класс и остаётся тема-зависимой в Material Design 3 и Fluent UI 2.</value>
+  </data>
+  <data name="Color_UsageTitle" xml:space="preserve">
+    <value>Применение цвета в коде</value>
+  </data>
+  <data name="Color_UsageDesc" xml:space="preserve">
+    <value>Передайте пресет роли, произвольный CSS-цвет или любую строку (неявное преобразование). Выражения ролей вида var(--flare-color-primary) сворачиваются обратно в быстрый class-путь.</value>
+  </data>
+  <data name="Color_GeneratorsTitle" xml:space="preserve">
+    <value>Генераторы: Random и Next</value>
+  </data>
+  <data name="Color_GeneratorsDesc" xml:space="preserve">
+    <value>FlareColor.Random() возвращает произвольный цвет #RRGGBB. color.Next() возвращает следующий цвет, поворачивая оттенок на золотой угол — детерминированно и равномерно, удобно для раскраски последовательности (серии графика, аватары, чипы).</value>
+  </data>
+  <data name="Color_RandomBtn" xml:space="preserve">
+    <value>Случайный</value>
+  </data>
+  <data name="Color_NextBtn" xml:space="preserve">
+    <value>Следующий</value>
+  </data>
+  <data name="Color_CurrentLabel" xml:space="preserve">
+    <value>Текущий</value>
+  </data>
+  <data name="Color_SequenceTitle" xml:space="preserve">
+    <value>Последовательность Next</value>
+  </data>
+  <data name="Color_SequenceDesc" xml:space="preserve">
+    <value>Начиная с текущего цвета, каждый образец — это Next() предыдущего.</value>
+  </data>
+  <data name="Color_AppliedTitle" xml:space="preserve">
+    <value>Применено к компонентам</value>
+  </data>
+  <data name="Theme_Settings" xml:space="preserve">
+    <value>Настройки темы</value>
+  </data>
+  <data name="Theme_DesignSystem" xml:space="preserve">
+    <value>Дизайн-система</value>
+  </data>
+  <data name="Theme_Palette" xml:space="preserve">
+    <value>Палитра</value>
+  </data>
+  <data name="Theme_PaletteOther" xml:space="preserve">
+    <value>Прочее</value>
+  </data>
+  <data name="Theme_PaletteGenerated" xml:space="preserve">
+    <value>Сгенерированные</value>
+  </data>
+  <data name="Theming_GenerateTitle" xml:space="preserve">
+    <value>Сгенерировать палитру из цвета</value>
+  </data>
+  <data name="Theming_GenerateDesc" xml:space="preserve">
+    <value>Выберите бренд-цвет; Palette.FromColors выведет полную палитру light + dark (бренд-роли, тонированные нейтрали, читаемые on-цвета) и применит её на лету.</value>
+  </data>
+  <data name="Theming_GenerateBtn" xml:space="preserve">
+    <value>Сгенерировать и применить</value>
+  </data>
+  <data name="Theming_ScopeTitle" xml:space="preserve">
+    <value>Локальная тема (FlareThemeScope)</value>
+  </data>
+  <data name="Theming_ScopeDesc" xml:space="preserve">
+    <value>FlareThemeScope меняет тему только для своего поддерева. Любая неуказанная ось наследуется от внешней темы - здесь переопределён только Mode, поэтому этот островок всегда тёмный (или светлый) независимо от темы приложения.</value>
+  </data>
+  <data name="Theming_ScopeDark" xml:space="preserve">
+    <value>Всегда тёмный островок</value>
+  </data>
+  <data name="Theming_ScopeLight" xml:space="preserve">
+    <value>Всегда светлый островок</value>
+  </data>
+  <data name="Theme_Mode" xml:space="preserve">
+    <value>Режим</value>
+  </data>
+  <data name="Theme_ModeLight" xml:space="preserve">
+    <value>Светлая</value>
+  </data>
+  <data name="Theme_ModeDark" xml:space="preserve">
+    <value>Тёмная</value>
+  </data>
+  <data name="Theme_ModeAuto" xml:space="preserve">
+    <value>Авто</value>
+  </data>
+  <data name="Nav_Components" xml:space="preserve">
+    <value>Компоненты</value>
+  </data>
+  <data name="Search_Placeholder" xml:space="preserve">
+    <value>Поиск страниц, компонентов, API...</value>
+  </data>
+  <data name="Search_NoResults" xml:space="preserve">
+    <value>Ничего не найдено</value>
+  </data>
+  <data name="Search_KindPage" xml:space="preserve">
+    <value>Страницы</value>
+  </data>
+  <data name="Search_KindComponent" xml:space="preserve">
+    <value>Компоненты</value>
+  </data>
+  <data name="Search_KindApi" xml:space="preserve">
+    <value>API</value>
+  </data>
+  <data name="GettingStarted_Title" xml:space="preserve">
+    <value>Начало работы</value>
+  </data>
+  <data name="GettingStarted_Subtitle" xml:space="preserve">
+    <value>Добавьте Flare в проект Blazor Server или WebAssembly за несколько минут.</value>
+  </data>
+  <data name="GettingStarted_Requirements" xml:space="preserve">
+    <value>Требования</value>
+  </data>
+  <data name="GettingStarted_RequirementsDesc" xml:space="preserve">
+    <value>Пакет SDK .NET 10 и проект Blazor WebAssembly или Blazor Server (поддерживаются оба).</value>
+  </data>
+  <data name="GettingStarted_DiSetup" xml:space="preserve">
+    <value>Настройка DI</value>
+  </data>
+  <data name="GettingStarted_DiSetupDesc" xml:space="preserve">
+    <value>Зарегистрируйте Flare в Program.cs. AddFlare также регистрирует ISnackbarService, IDialogService и IMessageBoxService, поэтому отдельная регистрация не нужна.</value>
+  </data>
+  <data name="GettingStarted_Styles" xml:space="preserve">
+    <value>Подключение стилей</value>
+  </data>
+  <data name="GettingStarted_StylesDesc" xml:space="preserve">
+    <value>Добавьте bootstrap-скрипт, CSS компонентов и (по желанию) шрифт Material Symbols на хост-страницу. CSS активной темы подключается автоматически через FlareThemeProvider.</value>
+  </data>
+  <data name="GettingStarted_ThemeProvider" xml:space="preserve">
+    <value>Оберните в провайдер темы</value>
+  </data>
+  <data name="GettingStarted_ThemeProviderDesc" xml:space="preserve">
+    <value>Оберните роутер в FlareThemeProvider. Автоматический тёмный режим включён по умолчанию (следит за prefers-color-scheme); отключить можно через RespectSystemColorScheme="false".</value>
+  </data>
+  <data name="GettingStarted_GlobalImports" xml:space="preserve">
+    <value>Глобальные using</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Current" xml:space="preserve">
+    <value>Текущая тема</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_SwitchTheme" xml:space="preserve">
+    <value>Сменить тему</value>
+  </data>
+  <data name="GettingStarted_ThemeSwitcher" xml:space="preserve">
+    <value>Переключатель тем</value>
+  </data>
+  <data name="GettingStarted_FormValidation" xml:space="preserve">
+    <value>Валидация форм</value>
+  </data>
+  <data name="GettingStarted_FormValidationDesc" xml:space="preserve">
+    <value>Flare полностью интегрируется со стандартными EditContext и DataAnnotations из Blazor.</value>
+  </data>
+  <data name="GettingStarted_DialogSnackbar" xml:space="preserve">
+    <value>Диалог и Snackbar</value>
+  </data>
+  <data name="GettingStarted_DialogSnackbarDesc" xml:space="preserve">
+    <value>Вызывайте диалоги и уведомления из типизированных сервисов; достаточно один раз добавить провайдеры в layout.</value>
+  </data>
+  <data name="GettingStarted_Docker" xml:space="preserve">
+    <value>Docker</value>
+  </data>
+  <data name="GettingStarted_DockerDesc" xml:space="preserve">
+    <value>Запуск Gallery PWA в контейнере.</value>
+  </data>
+  <data name="GettingStarted_TipTitle" xml:space="preserve">
+    <value>Совет</value>
+  </data>
+  <data name="Theming_Title" xml:space="preserve">
+    <value>Темы оформления</value>
+  </data>
+  <data name="Theming_Subtitle" xml:space="preserve">
+    <value>Переключение тем в реальном времени с помощью CSS-переменных. Перезагрузка страницы не требуется.</value>
+  </data>
+  <data name="Theming_LiveSwitcher" xml:space="preserve">
+    <value>Переключатель тем</value>
+  </data>
+  <data name="Theming_Active" xml:space="preserve">
+    <value>Активная</value>
+  </data>
+  <data name="Theming_AutoDarkMode" xml:space="preserve">
+    <value>Автоматический тёмный режим</value>
+  </data>
+  <data name="Theming_AutoDarkModeDesc" xml:space="preserve">
+    <value>FlareThemeProvider по умолчанию имеет RespectSystemColorScheme="true". Если тема не была выбрана вручную, провайдер подписывается на медиазапрос prefers-color-scheme через matchMedia. Если пользователь меняет оформление системы во время работы приложения, тема автоматически переключается между зарегистрированными светлым и тёмным вариантами - без перезагрузки страницы.</value>
+  </data>
+  <data name="Theming_AutoDarkModeNote" xml:space="preserve">
+    <value>После того как пользователь вручную выбирает тему (сохраняется в хранилище), автопереключение отключается для данной сессии до очистки хранилища.</value>
+  </data>
+  <data name="Theming_HowItWorks" xml:space="preserve">
+    <value>Как это работает</value>
+  </data>
+  <data name="Theming_HowItWorksDesc" xml:space="preserve">
+    <value>Все компоненты Flare используют CSS-переменные (--flare-*). При вызове ThemeService.SetThemeAsync(id) один вызов JavaScript обновляет все значения токенов в корне документа - без повторного рендеринга компонентов и перезагрузки страницы.</value>
+  </data>
+  <data name="Theming_CustomThemeDesc" xml:space="preserve">
+    <value>Чтобы создать свою тему, реализуйте интерфейс ITheme и заполните ThemeTokenSet значениями токенов. Назначьте её темой по умолчанию через AddFlare(opts =&gt; opts.DefaultTheme = new MyTheme()) или зарегистрируйте при старте как дополнительную выбираемую тему через IThemeService.RegisterTheme(new MyTheme()).</value>
+  </data>
+  <data name="Theming_CreateTheme" xml:space="preserve">
+    <value>Создание своей темы</value>
+  </data>
+  <data name="Theming_Token_PrimaryContainer" xml:space="preserve">
+    <value>Тональный контейнер для основных элементов</value>
+  </data>
+  <data name="Theming_Token_SurfaceContainer" xml:space="preserve">
+    <value>Заливка приподнятой поверхности (меню, карточки)</value>
+  </data>
+  <data name="Theming_Token_OnSurfaceVariant" xml:space="preserve">
+    <value>Второстепенный текст и иконки на поверхностях</value>
+  </data>
+  <data name="Theming_Token_ShapeSmall" xml:space="preserve">
+    <value>Малый радиус скругления (чипы, поля)</value>
+  </data>
+  <data name="Theming_Token_StateOpacity" xml:space="preserve">
+    <value>Непрозрачность hover-слоя состояния</value>
+  </data>
+  <data name="Theming_Token_Motion" xml:space="preserve">
+    <value>Короткая длительность перехода</value>
+  </data>
+  <data name="Theming_TokenReference" xml:space="preserve">
+    <value>Справочник токенов (пример)</value>
+  </data>
+  <data name="Theming_TokenCol" xml:space="preserve">
+    <value>Токен</value>
+  </data>
+  <data name="Theming_PurposeCol" xml:space="preserve">
+    <value>Назначение</value>
+  </data>
+  <data name="Theming_ExampleCol" xml:space="preserve">
+    <value>Пример значения (MD3 Light)</value>
+  </data>
+  <data name="Theming_Token_Primary" xml:space="preserve">
+    <value>Основной акцентный цвет</value>
+  </data>
+  <data name="Theming_Token_OnPrimary" xml:space="preserve">
+    <value>Текст на основном цвете</value>
+  </data>
+  <data name="Theming_Token_Secondary" xml:space="preserve">
+    <value>Вторичный акцент</value>
+  </data>
+  <data name="Theming_Token_Surface" xml:space="preserve">
+    <value>Фон карточки / диалога</value>
+  </data>
+  <data name="Theming_Token_OnSurface" xml:space="preserve">
+    <value>Текст на поверхности</value>
+  </data>
+  <data name="Theming_Token_Outline" xml:space="preserve">
+    <value>Цвет границы</value>
+  </data>
+  <data name="Theming_Token_Error" xml:space="preserve">
+    <value>Деструктивные действия</value>
+  </data>
+  <data name="Theming_Token_ShapeMedium" xml:space="preserve">
+    <value>Скругление карточки / диалога</value>
+  </data>
+  <data name="Theming_Token_ShapeFull" xml:space="preserve">
+    <value>Скругление чипа / кнопки-пилюли</value>
+  </data>
+  <data name="Theming_Token_BodyFont" xml:space="preserve">
+    <value>Семейство шрифтов текста</value>
+  </data>
+  <data name="Home_Title" xml:space="preserve">
+    <value>Flare</value>
+  </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>Красивые Blazor-компоненты с переключением тем в реальном времени</value>
+  </data>
+  <data name="Home_ComponentsLabel" xml:space="preserve">
+    <value>Компонентов</value>
+  </data>
+  <data name="Home_ThemesLabel" xml:space="preserve">
+    <value>Дизайн-системы</value>
+  </data>
+  <data name="Home_DotNetLabel" xml:space="preserve">
+    <value>.NET 10</value>
+  </data>
+  <data name="Home_ComponentsHeader" xml:space="preserve">
+    <value>Компоненты</value>
+  </data>
+  <data name="Home_Card_Buttons" xml:space="preserve">
+    <value>Кнопки</value>
+  </data>
+  <data name="Home_Card_Buttons_Desc" xml:space="preserve">
+    <value>5 вариантов · 3 размера</value>
+  </data>
+  <data name="Home_Card_Inputs" xml:space="preserve">
+    <value>Поля ввода</value>
+  </data>
+  <data name="Home_Card_Inputs_Desc" xml:space="preserve">
+    <value>Текст, числа, переключатели</value>
+  </data>
+  <data name="Home_Card_DataGrid" xml:space="preserve">
+    <value>Таблица данных</value>
+  </data>
+  <data name="Home_Card_DataGrid_Desc" xml:space="preserve">
+    <value>Сортировка, пагинация, фильтры</value>
+  </data>
+  <data name="Home_Card_Dialogs" xml:space="preserve">
+    <value>Диалоги</value>
+  </data>
+  <data name="Home_Card_Dialogs_Desc" xml:space="preserve">
+    <value>Встроенные и через сервис</value>
+  </data>
+  <data name="Home_Card_Feedback" xml:space="preserve">
+    <value>Обратная связь</value>
+  </data>
+  <data name="Home_Card_Feedback_Desc" xml:space="preserve">
+    <value>Оповещение, снэкбар, прогресс</value>
+  </data>
+  <data name="Home_Card_Navigation" xml:space="preserve">
+    <value>Навигация</value>
+  </data>
+  <data name="Home_Card_Navigation_Desc" xml:space="preserve">
+    <value>Вкладки, панель, шаговый мастер</value>
+  </data>
+  <data name="Home_Card_Display" xml:space="preserve">
+    <value>Отображение</value>
+  </data>
+  <data name="Home_Card_Display_Desc" xml:space="preserve">
+    <value>Типографика, аватар, значок</value>
+  </data>
+  <data name="Home_ThemeShowcase" xml:space="preserve">
+    <value>Витрина тем</value>
+  </data>
+  <data name="Home_ThemeShowcaseHint" xml:space="preserve">
+    <value>переключайте темы ниже, чтобы увидеть мгновенное обновление всех компонентов.</value>
+  </data>
+  <data name="Highlighter_Title" xml:space="preserve">
+    <value>Подсветка текста и редактор кода</value>
+  </data>
+  <data name="Highlighter_Subtitle" xml:space="preserve">
+    <value>FlareHighlighter - встроенная подсветка поисковых совпадений; FlareCodeEditor - редактор кода с синтаксической подсветкой.</value>
+  </data>
+  <data name="Highlighter_LiveSearch" xml:space="preserve">
+    <value>Живой поиск с подсветкой</value>
+  </data>
+  <data name="Highlighter_SearchTerm" xml:space="preserve">
+    <value>Поисковый запрос</value>
+  </data>
+  <data name="Highlighter_TypeToHighlight" xml:space="preserve">
+    <value>Введите для подсветки…</value>
+  </data>
+  <data name="Highlighter_CaseSensitivity" xml:space="preserve">
+    <value>Чувствительность к регистру</value>
+  </data>
+  <data name="Highlighter_MultipleOccurrences" xml:space="preserve">
+    <value>Несколько вхождений</value>
+  </data>
+  <data name="CodeEditor_Title" xml:space="preserve">
+    <value>FlareCodeEditor</value>
+  </data>
+  <data name="NumericField_PrefixSuffix" xml:space="preserve">
+    <value>Префикс и суффикс + инкремент клавишами стрелок</value>
+  </data>
+  <data name="NumericField_Formats" xml:space="preserve">
+    <value>Валюта, проценты, разделители и ограничение</value>
+  </data>
+  <data name="Markdown_Title" xml:space="preserve">
+    <value>Markdown</value>
+  </data>
+  <data name="Markdown_Subtitle" xml:space="preserve">
+    <value>FlareMarkdown - рендерер Markdown в HTML на чистом C#. Без JavaScript и сторонних пакетов.</value>
+  </data>
+  <data name="Markdown_LiveEditor" xml:space="preserve">
+    <value>Живой редактор</value>
+  </data>
+  <data name="Markdown_Static" xml:space="preserve">
+    <value>Статический рендер</value>
+  </data>
+  <data name="Markdown_Syntax" xml:space="preserve">
+    <value>Подсветка кода и санитайз</value>
+  </data>
+  <data name="ToggleButton_Title" xml:space="preserve">
+    <value>Кнопка-переключатель</value>
+  </data>
+  <data name="ToggleButton_Subtitle" xml:space="preserve">
+    <value>FlareToggleButton и FlareToggleGroup - элементы управления с состоянием.</value>
+  </data>
+  <data name="ToggleButton_IconOnly" xml:space="preserve">
+    <value>Только иконка</value>
+  </data>
+  <data name="ToggleButton_SizesDisabled" xml:space="preserve">
+    <value>Размеры и отключённое состояние</value>
+  </data>
+  <data name="ToggleButton_Group" xml:space="preserve">
+    <value>Группа переключателей</value>
+  </data>
+  <data name="ToggleButton_GroupMulti" xml:space="preserve">
+    <value>Группа переключателей - множественный выбор</value>
+  </data>
+  <data name="GettingStarted_Installation" xml:space="preserve">
+    <value>Установка</value>
+  </data>
+  <data name="GettingStarted_Installation_NuGet" xml:space="preserve">
+    <value>Установка NuGet-пакетов</value>
+  </data>
+  <data name="GettingStarted_Installation_NuGetDesc" xml:space="preserve">
+    <value>Добавьте Flare.Components и пакет темы в ваш проект.</value>
+  </data>
+  <data name="GettingStarted_Installation_Alert" xml:space="preserve">
+    <value>Flare требует .NET 10. Убедитесь, что ваш проект нацелен на net10.0.</value>
+  </data>
+  <data name="GettingStarted_Installation_Imports" xml:space="preserve">
+    <value>CSS-ссылки и _Imports.razor</value>
+  </data>
+  <data name="GettingStarted_Installation_ImportsDesc" xml:space="preserve">
+    <value>Добавьте шрифт Material Symbols и CSS Flare в App.razor, затем подключите пространства имён в _Imports.razor.</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup" xml:space="preserve">
+    <value>Настройка темы</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup_Provider" xml:space="preserve">
+    <value>FlareThemeProvider</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup_ProviderDesc" xml:space="preserve">
+    <value>Оберните приложение в FlareThemeProvider. Он применяет CSS активной темы и реагирует на системные изменения цветовой схемы.</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup_LiveHint" xml:space="preserve">
+    <value>Попробуйте переключить цветовой режим прямо сейчас:</value>
+  </data>
+  <data name="GettingStarted_FirstComponent" xml:space="preserve">
+    <value>Первый компонент</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Button" xml:space="preserve">
+    <value>FlareButton</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_ButtonDesc" xml:space="preserve">
+    <value>FlareButton поддерживает варианты Filled, Outlined, Text, Tonal и Elevated.</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_ClickMe" xml:space="preserve">
+    <value>Нажми меня</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_TextField" xml:space="preserve">
+    <value>FlareField с привязкой данных</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_TextFieldDesc" xml:space="preserve">
+    <value>Используйте @bind-Value для двусторонней привязки. HelperText отображается под полем.</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_NameLabel" xml:space="preserve">
+    <value>Ваше имя</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_NameHelper" xml:space="preserve">
+    <value>Введите ваше полное имя</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Submit" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="GettingStarted_Architecture" xml:space="preserve">
+    <value>Архитектура</value>
+  </data>
+  <data name="GettingStarted_Architecture_Base" xml:space="preserve">
+    <value>FlareComponentBase</value>
+  </data>
+  <data name="GettingStarted_Architecture_BaseDesc" xml:space="preserve">
+    <value>Все компоненты Flare наследуют FlareComponentBase, который предоставляет проброс Class, Style, Id и AdditionalAttributes.</value>
+  </data>
+  <data name="GettingStarted_Architecture_Tokens" xml:space="preserve">
+    <value>Дизайн-токены</value>
+  </data>
+  <data name="GettingStarted_Architecture_TokensDesc" xml:space="preserve">
+    <value>Flare использует CSS-переменные для всех визуальных значений. Смена темы меняет значения токенов - без перерисовки компонентов.</value>
+  </data>
+  <data name="GettingStarted_Accessibility" xml:space="preserve">
+    <value>Доступность</value>
+  </data>
+  <data name="GettingStarted_Accessibility_Aria" xml:space="preserve">
+    <value>Доступные кнопки с иконками</value>
+  </data>
+  <data name="GettingStarted_Accessibility_AriaDesc" xml:space="preserve">
+    <value>Всегда указывайте AriaLabel для кнопок только с иконкой. Декоративные иконки автоматически получают aria-hidden="true".</value>
+  </data>
+  <data name="GettingStarted_Accessibility_AriaSettings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="GettingStarted_Accessibility_AriaDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="GettingStarted_Icons" xml:space="preserve">
+    <value>Руководство по иконкам</value>
+  </data>
+  <data name="GettingStarted_Icons_Basic" xml:space="preserve">
+    <value>Использование FlareIcon</value>
+  </data>
+  <data name="GettingStarted_Icons_BasicDesc" xml:space="preserve">
+    <value>FlareIcon сначала проверяет встроенный SVG-пакет, затем использует Material Symbols через Google Fonts CDN.</value>
+  </data>
+  <data name="GettingStarted_Icons_Sizes" xml:space="preserve">
+    <value>Размеры иконок</value>
+  </data>
+  <data name="GettingStarted_Icons_SizesDesc" xml:space="preserve">
+    <value>Используйте SizePx (int) для SVG-иконок или Size (строка CSS) для Material Symbols.</value>
+  </data>
+  <data name="GettingStarted_Icons_FallbackTip" xml:space="preserve">
+    <value>Неизвестные названия иконок автоматически используют Material Symbols - дополнительная настройка не требуется.</value>
+  </data>
+  <data name="Icons_Title" xml:space="preserve">
+    <value>Иконки</value>
+  </data>
+  <data name="Icons_Subtitle" xml:space="preserve">
+    <value>Встроенный SVG-пакет иконок и справочник Material Symbols. Нажмите на иконку, чтобы скопировать использование.</value>
+  </data>
+  <data name="Icons_Search" xml:space="preserve">
+    <value>Поиск иконок...</value>
+  </data>
+  <data name="Icons_CopyHint" xml:space="preserve">
+    <value>Нажмите для копирования</value>
+  </data>
+  <data name="Icons_Copied" xml:space="preserve">
+    <value>Скопировано!</value>
+  </data>
+  <data name="Icons_SvgPack" xml:space="preserve">
+    <value>SVG-пакет</value>
+  </data>
+  <data name="Icons_MaterialSymbols" xml:space="preserve">
+    <value>Material Symbols</value>
+  </data>
+  <data name="Icons_TotalCount" xml:space="preserve">
+    <value>{0} иконок</value>
+  </data>
+  <data name="AvatarGroup_Title" xml:space="preserve">
+    <value>Группа аватаров</value>
+  </data>
+  <data name="DropZone_Subtitle" xml:space="preserve">
+    <value>FlareDropZone - область загрузки файлов перетаскиванием с настраиваемым оформлением.</value>
+  </data>
+  <data name="DropZone_Basic" xml:space="preserve">
+    <value>Базовая зона загрузки</value>
+  </data>
+  <data name="DropZone_AcceptFilter" xml:space="preserve">
+    <value>Фильтр по типам (PDF, изображения)</value>
+  </data>
+  <data name="DropZone_CustomContent" xml:space="preserve">
+    <value>Своё содержимое</value>
+  </data>
+  <data name="Paper_Title" xml:space="preserve">
+    <value>Paper</value>
+  </data>
+  <data name="Paper_Subtitle" xml:space="preserve">
+    <value>FlarePaper - материал с настраиваемой тенью и скруглением углов.</value>
+  </data>
+  <data name="Paper_ElevationLevels" xml:space="preserve">
+    <value>Уровни тени</value>
+  </data>
+  <data name="Paper_Square" xml:space="preserve">
+    <value>Без скругления</value>
+  </data>
+  <data name="Paper_AsContainer" xml:space="preserve">
+    <value>Как контейнер</value>
+  </data>
+  <data name="Timeline_Icon_Basic" xml:space="preserve">
+    <value>Базовый с иконками</value>
+  </data>
+  <data name="ToggleButton_WithLabel" xml:space="preserve">
+    <value>С подписью</value>
+  </data>
+  <data name="AvatarGroup_Subtitle" xml:space="preserve">
+    <value>FlareAvatarGroup - группа перекрывающихся аватаров со счётчиком остатка.</value>
+  </data>
+  <data name="AvatarGroup_BasicGroup" xml:space="preserve">
+    <value>Обычная группа</value>
+  </data>
+  <data name="AvatarGroup_Sizes" xml:space="preserve">
+    <value>Размеры</value>
+  </data>
+  <data name="AvatarGroup_Spacing" xml:space="preserve">
+    <value>Расстояние между аватарами</value>
+  </data>
+  <data name="Home_ThemeShowcase_Active" xml:space="preserve">
+    <value>Активная</value>
+  </data>
+  <data name="Common_HideCode" xml:space="preserve">
+    <value>Скрыть код</value>
+  </data>
+  <data name="About_Subtitle" xml:space="preserve">
+    <value>Blazor UI · .NET 10 · 116+ компонентов</value>
+  </data>
+  <data name="About_Components" xml:space="preserve">
+    <value>Компонентов</value>
+  </data>
+  <data name="About_Themes" xml:space="preserve">
+    <value>Дизайн-системы</value>
+  </data>
+
+  <!-- Comparison -->
+  <data name="Comparison_Title" xml:space="preserve"><value>Сравнение библиотек</value></data>
+  <data name="Comparison_Subtitle" xml:space="preserve"><value>Как Flare соотносится с другими Blazor-библиотеками компонентов</value></data>
+  <data name="Comparison_Criteria" xml:space="preserve"><value>Критерий</value></data>
+  <data name="Comparison_WhenFlare" xml:space="preserve"><value>Когда выбрать Flare</value></data>
+  <data name="Comparison_WhenMud" xml:space="preserve"><value>Когда выбрать MudBlazor</value></data>
+  <data name="Comparison_WhenBlazorise" xml:space="preserve"><value>Когда выбрать Blazorise</value></data>
+  <data name="Comparison_WhenFluent" xml:space="preserve"><value>Когда выбрать FluentUI Blazor</value></data>
+  <data name="IconButton_Title" xml:space="preserve"><value>Кнопка-иконка</value></data>
+  <data name="IconButton_Subtitle" xml:space="preserve"><value>Компактные кнопки только с иконкой: standard, filled, tonal и outlined.</value></data>
+  <data name="ButtonGroup_Title" xml:space="preserve"><value>Группа кнопок</value></data>
+  <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Связанные наборы кнопок с общими variant, color и size. В теме MD3 Expressive сегменты разделены зазором со скруглёнными внутренними углами и превращаются в капсулу при взаимодействии.</value></data>
+  <data name="ButtonGroup_Basic" xml:space="preserve"><value>Базовый</value></data>
+  <data name="ButtonGroup_Vertical" xml:space="preserve"><value>Вертикальный</value></data>
+  <data name="ButtonGroup_VariantsColors" xml:space="preserve"><value>Варианты и цвета (каскад)</value></data>
+  <data name="Menu_Anchors" xml:space="preserve"><value>Позиции привязки</value></data>
+  <data name="Menu_Groups" xml:space="preserve"><value>Сгруппированные секции</value></data>
+  <data name="Menu_Groups_Activator" xml:space="preserve"><value>Меню правки</value></data>
+  <data name="Menu_Group_Edit" xml:space="preserve"><value>Правка</value></data>
+  <data name="Menu_Group_View" xml:space="preserve"><value>Вид</value></data>
+  <data name="Menu_Action_Cut" xml:space="preserve"><value>Вырезать</value></data>
+  <data name="Menu_Action_Copy" xml:space="preserve"><value>Копировать</value></data>
+  <data name="Menu_Action_Paste" xml:space="preserve"><value>Вставить</value></data>
+  <data name="Menu_Action_ZoomIn" xml:space="preserve"><value>Увеличить</value></data>
+  <data name="Menu_Action_ZoomOut" xml:space="preserve"><value>Уменьшить</value></data>
+  <data name="ButtonGroup_FullWidth" xml:space="preserve"><value>На всю ширину</value></data>
+  <data name="SplitButton_Title" xml:space="preserve"><value>Сплит-кнопка</value></data>
+  <data name="SplitButton_Subtitle" xml:space="preserve"><value>Основное действие вместе с триггером выпадающего меню для связанных действий.</value></data>
+  <data name="SplitButton_VariantsColors" xml:space="preserve"><value>Варианты и цвета</value></data>
+  <data name="Fab_Title" xml:space="preserve"><value>Плавающая кнопка действия</value></data>
+  <data name="Fab_Subtitle" xml:space="preserve"><value>Заметная кнопка основного действия экрана: цветовые роли, размеры и расширенная форма с подписью.</value></data>
+  <data name="Fab_ColorsExtended" xml:space="preserve"><value>Цвета и расширенная</value></data>
+  <data name="FabMenu_Title" xml:space="preserve"><value>Меню FAB (Speed Dial)</value></data>
+  <data name="FabMenu_Subtitle" xml:space="preserve"><value>Плавающая кнопка, разворачивающаяся в набор связанных действий в выбранном направлении.</value></data>
+  <data name="Buttons_Colors" xml:space="preserve"><value>Цвета</value></data>
+  <data name="Buttons_CustomColor" xml:space="preserve"><value>Произвольный цвет (любой CSS-цвет)</value></data>
+  <data name="IconButton_AriaXSmall" xml:space="preserve"><value>Очень маленькая</value></data>
+  <data name="IconButton_AriaXLarge" xml:space="preserve"><value>Очень большая</value></data>
+  <data name="Api_Parameters" xml:space="preserve"><value>Параметры</value></data>
+  <data name="Api_Events" xml:space="preserve"><value>События</value></data>
+  <data name="Api_Methods" xml:space="preserve"><value>Методы</value></data>
+  <data name="Api_Name" xml:space="preserve"><value>Имя</value></data>
+  <data name="Api_Type" xml:space="preserve"><value>Тип</value></data>
+  <data name="Api_Default" xml:space="preserve"><value>По умолчанию</value></data>
+  <data name="Api_Description" xml:space="preserve"><value>Описание</value></data>
+  <data name="Api_Returns" xml:space="preserve"><value>Возвращает</value></data>
+  <data name="Api_Inherited" xml:space="preserve"><value>Унаследовано</value></data>
+  <data name="Api_Required" xml:space="preserve"><value>обязательный</value></data>
+  <data name="Api_NotFound" xml:space="preserve"><value>Компонент не найден.</value></data>
+  <data name="Api_Empty" xml:space="preserve"><value>Нет задокументированного публичного API для этого компонента.</value></data>
+  <data name="Nav_Api" xml:space="preserve"><value>API</value></data>
+  <data name="Nav_AllApi" xml:space="preserve"><value>Все API</value></data>
+  <data name="Nav_Services" xml:space="preserve"><value>Сервисы</value></data>
+  <data name="Services_DynamicTitle" xml:space="preserve"><value>Динамический цвет</value></data>
+  <data name="Services_DynamicSubtitle" xml:space="preserve"><value>Извлеките цвет-семя из обложки через IFlareColorExtractor и раскрасьте компоненты с помощью FlareColor.Dynamic.</value></data>
+  <data name="Services_DynamicUpload" xml:space="preserve"><value>Загрузить обложку</value></data>
+  <data name="Services_DynamicUrl" xml:space="preserve"><value>...или вставьте ссылку на изображение</value></data>
+  <data name="Services_DynamicLoad" xml:space="preserve"><value>Загрузить</value></data>
+  <data name="Services_DynamicHint" xml:space="preserve"><value>Для кросс-доменных ссылок нужен CORS; загруженные файлы работают всегда. Цвет-семя:</value></data>
+  <data name="Services_DynamicNowPlaying" xml:space="preserve"><value>Сейчас играет</value></data>
+  <data name="Services_DynamicTrack" xml:space="preserve"><value>Midnight Drive</value></data>
+  <data name="Services_DynamicArtist" xml:space="preserve"><value>The Flares</value></data>
+  <data name="Services_ScopeTitle" xml:space="preserve"><value>Локальная тема</value></data>
+  <data name="Services_ScopeSubtitle" xml:space="preserve"><value>FlareThemeScope перетемизирует поддерево. Одни и те же компоненты в разных темах, палитрах и режимах - всё на одной странице.</value></data>
+  <data name="Services_ClipboardTitle" xml:space="preserve"><value>Сервис буфера обмена</value></data>
+  <data name="Services_ClipboardSubtitle" xml:space="preserve"><value>IFlareClipboard - копирование и чтение текста (с запасным вариантом вне защищённого контекста) без обращения к IJSRuntime.</value></data>
+  <data name="Services_SnackbarTitle" xml:space="preserve"><value>Сервис снэкбара</value></data>
+  <data name="Services_SnackbarSubtitle" xml:space="preserve"><value>ISnackbarService.Show(...) показывает всплывающее уведомление из любого места - severity, длительность и необязательное действие.</value></data>
+  <data name="Services_DownloadTitle" xml:space="preserve"><value>Сервис скачивания</value></data>
+  <data name="Services_DownloadSubtitle" xml:space="preserve"><value>IFlareDownload скачивает файл на клиенте из данных в памяти (текст, CSV с BOM и т.д.).</value></data>
+  <data name="Services_MsgBoxTitle" xml:space="preserve"><value>Сервис диалогов</value></data>
+  <data name="Services_MsgBoxSubtitle" xml:space="preserve"><value>IMessageBoxService - ожидаемые из C# диалоги Confirm / Alert / Prompt без разметки.</value></data>
+  <data name="Services_Copy" xml:space="preserve"><value>Копировать</value></data>
+  <data name="Services_Read" xml:space="preserve"><value>Прочитать</value></data>
+  <data name="Services_WithAction" xml:space="preserve"><value>С действием</value></data>
+  <data name="Services_DownloadTxt" xml:space="preserve"><value>Скачать .txt</value></data>
+  <data name="Services_DownloadCsv" xml:space="preserve"><value>Скачать .csv</value></data>
+  <data name="Services_Confirm" xml:space="preserve"><value>Подтвердить</value></data>
+  <data name="Services_Alert" xml:space="preserve"><value>Оповещение</value></data>
+  <data name="Services_Prompt" xml:space="preserve"><value>Запрос</value></data>
+  <data name="Services_Result" xml:space="preserve"><value>Результат:</value></data>
+  <data name="Services_Usage" xml:space="preserve"><value>Использование</value></data>
+  <data name="Services_VersionCheckTitle" xml:space="preserve"><value>Сервис проверки версии</value></data>
+  <data name="Services_VersionCheckSubtitle" xml:space="preserve"><value>IVersionCheckService периодически проверяет выход новой версии приложения и поднимает событие - сам он ничего не отображает.</value></data>
+  <data name="Services_VersionCheckBody" xml:space="preserve"><value>Зарегистрируйте через AddFlareVersionCheck (периодичность, текущая версия, способ получения последней), подпишитесь на NewVersionAvailable в layout и выводите уведомление как угодно - здесь это toast.</value></data>
+  <data name="Services_VersionCheckWaiting" xml:space="preserve"><value>Ожидание первой проверки...</value></data>
+  <data name="Services_VersionCheckDetected" xml:space="preserve"><value>Обнаружена последняя версия:</value></data>
+  <data name="Services_VersionCheckNote" xml:space="preserve"><value>В этом демо проверка идёт каждые 10 секунд в режиме service worker: toast появится только после публикации новой сборки (меняется версия в assets-манифесте).</value></data>
+  <data name="Services_VersionCheckCurrent" xml:space="preserve"><value>Текущая версия</value></data>
+  <data name="Services_VersionCheckUpToDate" xml:space="preserve"><value>Актуальная версия - обновлений нет</value></data>
+  <data name="Services_VersionCheckChecking" xml:space="preserve"><value>Проверка обновлений...</value></data>
+  <data name="Services_VersionCheckCheckNow" xml:space="preserve"><value>Проверить сейчас</value></data>
+  <data name="Services_VersionCheckUpdate" xml:space="preserve"><value>Обновить</value></data>
+  <data name="Services_VersionCheckUpdating" xml:space="preserve"><value>Обновление...</value></data>
+  <data name="Services_VersionCheckUpdatedTo" xml:space="preserve"><value>Обновлено до</value></data>
+  <data name="Services_VersionCheckSimNote" xml:space="preserve"><value>Демо-симуляция: локальный пробник сообщает о новой версии через пару проверок, чтобы показать полный цикл (актуально -&gt; новая версия -&gt; обновление) без публикации новой сборки.</value></data>
+  <data name="Api_IndexTitle" xml:space="preserve"><value>Справочник API</value></data>
+  <data name="Api_IndexSubtitle" xml:space="preserve"><value>Автогенерируемый справочник параметров, событий и методов для всех компонентов Flare.</value></data>
+  <data name="Api_FilterPlaceholder" xml:space="preserve"><value>Фильтр компонентов…</value></data>
+  <data name="Api_Members" xml:space="preserve"><value>Члены</value></data>
+  <data name="Api_UsedBy" xml:space="preserve"><value>Используется в</value></data>
+  <data name="Api_Inherits" xml:space="preserve"><value>Наследуется от</value></data>
+  <data name="Api_Derived" xml:space="preserve"><value>Производные компоненты</value></data>
+  <data name="OtpField_Title" xml:space="preserve"><value>OTP-поле</value></data>
+  <data name="OtpField_Subtitle" xml:space="preserve"><value>Поле для одноразового пароля с автофокусом, поддержкой вставки и навигацией с клавиатуры.</value></data>
+  <data name="OtpField_Basic" xml:space="preserve"><value>Базовое</value></data>
+  <data name="OtpField_Pin" xml:space="preserve"><value>4-значный PIN (маскированный)</value></data>
+  <data name="OtpField_ErrorState" xml:space="preserve"><value>Состояние ошибки</value></data>
+  <data name="OtpField_Disabled" xml:space="preserve"><value>Отключено</value></data>
+  <data name="OtpField_Alphanumeric" xml:space="preserve"><value>Буквенно-цифровой (8 символов)</value></data>
+  <data name="Responsive_Title" xml:space="preserve"><value>Адаптивность и отзывчивость</value></data>
+  <data name="Responsive_Subtitle" xml:space="preserve"><value>Измените размер окна, чтобы увидеть адаптацию Flare. Контрольные точки: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920.</value></data>
+  <data name="Responsive_GridTitle" xml:space="preserve"><value>Адаптивная сетка (FlareGrid / FlareCol)</value></data>
+  <data name="Responsive_GridDescA" xml:space="preserve"><value>Каждая колонка -</value></data>
+  <data name="Responsive_GridDescB" xml:space="preserve"><value>- 1 в ряд на телефонах, 2 на планшетах, 3-4 на десктопе.</value></data>
+  <data name="Responsive_Card" xml:space="preserve"><value>Карточка</value></data>
+  <data name="Responsive_VisibilityTitle" xml:space="preserve"><value>Условная видимость (FlareHidden)</value></data>
+  <data name="Responsive_VisMdUp" xml:space="preserve"><value>Видно только на &lt;strong&gt;md и выше&lt;/strong&gt; (скрыто ниже 960px).</value></data>
+  <data name="Responsive_VisXsSm" xml:space="preserve"><value>Видно только на &lt;strong&gt;xs / sm&lt;/strong&gt; (скрыто выше 600px).</value></data>
+  <data name="Responsive_HiddenMd" xml:space="preserve"><value>Скрыто только в диапазоне &lt;strong&gt;md&lt;/strong&gt; (960-1279px).</value></data>
+  <data name="Responsive_MediaQueryTitle" xml:space="preserve"><value>Реактивная контрольная точка в C# (FlareMediaQuery)</value></data>
+  <data name="Responsive_MediaQueryDesc" xml:space="preserve"><value>предоставляет активную контрольную точку вашему C#-коду - динамически меняйте раскладку, число колонок или режим панели.</value></data>
+  <data name="Responsive_CurrentBp" xml:space="preserve"><value>Текущая контрольная точка:</value></data>
+  <data name="Responsive_CompactLayout" xml:space="preserve"><value>📱 Компактный макет - контент в один столбец.</value></data>
+  <data name="Responsive_TabletLayout" xml:space="preserve"><value>💻 Планшетный макет - две колонки.</value></data>
+  <data name="Responsive_DesktopLayout" xml:space="preserve"><value>🖥️ Десктопный макет - полноценная многоколоночная раскладка.</value></data>
+  <data name="Responsive_LastChange" xml:space="preserve"><value>Последнее изменение в C#:</value></data>
+  <data name="Responsive_NoneYet" xml:space="preserve"><value>(пока нет)</value></data>
+</root>

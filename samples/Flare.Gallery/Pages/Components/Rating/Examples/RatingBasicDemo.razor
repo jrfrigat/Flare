@@ -1,0 +1,21 @@
+<FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Start">
+    <FlareRating @bind-Value="_r1" Label="Your rating (5 stars)" AllowHalf="true" />
+    <FlareRating @bind-Value="_r2" Label="Difficulty (10 stars)" Max="10" />
+    <FlareRating Value="4" Label="Read-only (4/5)" ReadOnly="true" />
+    <FlareRating Value="2" Label="Disabled" Disabled="true" />
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Medium">
+        <FlareRating Value="3" Size="FieldSize.Xs" ReadOnly="true" />
+        <FlareRating Value="3" Size="FieldSize.Sm" ReadOnly="true" />
+        <FlareRating Value="3" Size="FieldSize.Md" ReadOnly="true" />
+        <FlareRating Value="3" Size="FieldSize.Lg" ReadOnly="true" />
+        <FlareRating Value="3" Size="FieldSize.Xl" ReadOnly="true" />
+    </FlareStack>
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+    Rating: @_r1/5 | Difficulty: @_r2/10
+</FlareText>
+
+@code {
+    private double _r1 = 2.5;
+    private double _r2 = 7;
+}

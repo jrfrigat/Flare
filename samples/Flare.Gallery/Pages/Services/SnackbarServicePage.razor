@@ -1,0 +1,46 @@
+@page "/services/snackbar"
+@inherits LocalizedPage
+@inject ISnackbarService Snackbar
+
+<PageTitle>@GalleryStrings.Services_SnackbarTitle - Flare</PageTitle>
+
+<GalleryPageTitle Package="Flare">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_SnackbarTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_SnackbarSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareCard Variant="CardVariant.Outlined">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+        <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => Snackbar.Show("Default notification"))">Normal</FlareButton>
+        <FlareButton Color="FlareColor.Info" OnClick="@(() => Snackbar.Show("Info message", SnackbarSeverity.Info))">Info</FlareButton>
+        <FlareButton Color="FlareColor.Success" OnClick="@(() => Snackbar.Show("Saved successfully", SnackbarSeverity.Success))">Success</FlareButton>
+        <FlareButton Color="FlareColor.Warning" OnClick="@(() => Snackbar.Show("Careful with that", SnackbarSeverity.Warning))">Warning</FlareButton>
+        <FlareButton Color="FlareColor.Error" OnClick="@(() => Snackbar.Show("Something went wrong", SnackbarSeverity.Error))">Error</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowWithAction">@GalleryStrings.Services_WithAction</FlareButton>
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    private int _undone;
+
+    private const string _usage = """
+        @inject ISnackbarService Snackbar
+
+        <FlareButton OnClick="@(() => Snackbar.Show("Saved", SnackbarSeverity.Success))">Save</FlareButton>
+
+        @code {
+            void DeleteWithUndo() =>
+                Snackbar.Show("Item deleted", SnackbarSeverity.Normal, durationMs: 6000,
+                    actionText: "Undo",
+                    onAction: () => { Restore(); return Task.CompletedTask; });
+        }
+        """;
+
+    private void ShowWithAction() =>
+        Snackbar.Show("Item deleted", SnackbarSeverity.Normal, durationMs: 6000,
+            actionText: "Undo",
+            onAction: () => { _undone++; Snackbar.Show("Restored", SnackbarSeverity.Success); return Task.CompletedTask; });
+}

@@ -1,0 +1,12 @@
+@page "/components/transfer"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Transfer_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTransfer">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Transfer_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Transfer_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Transfer_PermissionsEditor" DemoType="typeof(Examples.TransferPermissionsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Transfer_CustomLabel" DemoType="typeof(Examples.TransferCustomLabelDemo)" />

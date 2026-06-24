@@ -1,0 +1,147 @@
+/* =============================================
+   Flare Responsive Breakpoints & Utilities
+   xs: 0-599px | sm: 600px | md: 960px | lg: 1280px | xl: 1920px
+   ============================================= */
+
+/* Breakpoint CSS custom properties (read-only reference values) */
+:root {
+    --flare-bp-sm: 600px;
+    --flare-bp-md: 960px;
+    --flare-bp-lg: 1280px;
+    --flare-bp-xl: 1920px;
+}
+
+/* --- Visibility utilities --- */
+.flare-hidden         { display: none !important; }
+.flare-visible        { display: block !important; }
+
+/* Hide on specific sizes */
+@media (max-width: 599px)  { .flare-hide-xs { display: none !important; } }
+@media (min-width: 600px) and (max-width: 959px)  { .flare-hide-sm { display: none !important; } }
+@media (min-width: 960px) and (max-width: 1279px) { .flare-hide-md { display: none !important; } }
+@media (min-width: 1280px)                         { .flare-hide-lg { display: none !important; } }
+
+/* Show only on specific sizes */
+.flare-show-xs-only { display: none !important; }
+.flare-show-sm-only { display: none !important; }
+.flare-show-md-only { display: none !important; }
+@media (max-width: 599px)  { .flare-show-xs-only { display: block !important; } }
+@media (min-width: 600px) and (max-width: 959px)  { .flare-show-sm-only { display: block !important; } }
+@media (min-width: 960px) and (max-width: 1279px) { .flare-show-md-only { display: block !important; } }
+
+/* --- Flex utilities --- */
+.flare-flex       { display: flex; }
+.flare-flex-col   { display: flex; flex-direction: column; }
+.flare-flex-wrap  { flex-wrap: wrap; }
+.flare-flex-1     { flex: 1; }
+.flare-flex-auto  { flex: auto; }
+.flare-flex-none  { flex: none; }
+.flare-items-center  { align-items: center; }
+.flare-items-start   { align-items: flex-start; }
+.flare-items-end     { align-items: flex-end; }
+.flare-justify-between { justify-content: space-between; }
+.flare-justify-center  { justify-content: center; }
+.flare-justify-end     { justify-content: flex-end; }
+.flare-gap-sm   { gap: var(--flare-spacing-4, 0.5rem); }
+.flare-gap-md   { gap: var(--flare-spacing-8, 1rem); }
+.flare-gap-lg   { gap: var(--flare-spacing-12, 1.5rem); }
+
+/* --- Simple 12-column grid --- */
+.flare-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: calc(-1 * var(--flare-spacing-4, 0.5rem));
+}
+.flare-row > [class*="flare-col-"] {
+    padding: var(--flare-spacing-4, 0.5rem);
+    box-sizing: border-box;
+}
+
+/* xs (default) */
+.flare-col-1  { width: 8.333%; }
+.flare-col-2  { width: 16.667%; }
+.flare-col-3  { width: 25%; }
+.flare-col-4  { width: 33.333%; }
+.flare-col-5  { width: 41.667%; }
+.flare-col-6  { width: 50%; }
+.flare-col-7  { width: 58.333%; }
+.flare-col-8  { width: 66.667%; }
+.flare-col-9  { width: 75%; }
+.flare-col-10 { width: 83.333%; }
+.flare-col-11 { width: 91.667%; }
+.flare-col-12 { width: 100%; }
+
+/* sm breakpoint */
+@media (min-width: 600px) {
+    .flare-col-sm-1  { width: 8.333%; }
+    .flare-col-sm-2  { width: 16.667%; }
+    .flare-col-sm-3  { width: 25%; }
+    .flare-col-sm-4  { width: 33.333%; }
+    .flare-col-sm-5  { width: 41.667%; }
+    .flare-col-sm-6  { width: 50%; }
+    .flare-col-sm-7  { width: 58.333%; }
+    .flare-col-sm-8  { width: 66.667%; }
+    .flare-col-sm-9  { width: 75%; }
+    .flare-col-sm-10 { width: 83.333%; }
+    .flare-col-sm-11 { width: 91.667%; }
+    .flare-col-sm-12 { width: 100%; }
+}
+
+/* md breakpoint */
+@media (min-width: 960px) {
+    .flare-col-md-1  { width: 8.333%; }
+    .flare-col-md-2  { width: 16.667%; }
+    .flare-col-md-3  { width: 25%; }
+    .flare-col-md-4  { width: 33.333%; }
+    .flare-col-md-5  { width: 41.667%; }
+    .flare-col-md-6  { width: 50%; }
+    .flare-col-md-7  { width: 58.333%; }
+    .flare-col-md-8  { width: 66.667%; }
+    .flare-col-md-9  { width: 75%; }
+    .flare-col-md-10 { width: 83.333%; }
+    .flare-col-md-11 { width: 91.667%; }
+    .flare-col-md-12 { width: 100%; }
+}
+
+/* lg breakpoint */
+@media (min-width: 1280px) {
+    .flare-col-lg-1  { width: 8.333%; }
+    .flare-col-lg-2  { width: 16.667%; }
+    .flare-col-lg-3  { width: 25%; }
+    .flare-col-lg-4  { width: 33.333%; }
+    .flare-col-lg-5  { width: 41.667%; }
+    .flare-col-lg-6  { width: 50%; }
+    .flare-col-lg-7  { width: 58.333%; }
+    .flare-col-lg-8  { width: 66.667%; }
+    .flare-col-lg-9  { width: 75%; }
+    .flare-col-lg-10 { width: 83.333%; }
+    .flare-col-lg-11 { width: 91.667%; }
+    .flare-col-lg-12 { width: 100%; }
+}
+
+/* --- Spacing utilities --- */
+.flare-p-0  { padding: 0 !important; }
+.flare-p-sm { padding: var(--flare-spacing-4, 0.5rem) !important; }
+.flare-p-md { padding: var(--flare-spacing-8, 1rem) !important; }
+.flare-p-lg { padding: var(--flare-spacing-12, 1.5rem) !important; }
+.flare-m-0  { margin: 0 !important; }
+.flare-m-auto { margin: auto !important; }
+.flare-mx-auto { margin-left: auto !important; margin-right: auto !important; }
+.flare-mt-sm { margin-top: var(--flare-spacing-4, 0.5rem) !important; }
+.flare-mt-md { margin-top: var(--flare-spacing-8, 1rem) !important; }
+.flare-mt-lg { margin-top: var(--flare-spacing-12, 1.5rem) !important; }
+.flare-mb-sm { margin-bottom: var(--flare-spacing-4, 0.5rem) !important; }
+.flare-mb-md { margin-bottom: var(--flare-spacing-8, 1rem) !important; }
+.flare-mb-lg { margin-bottom: var(--flare-spacing-12, 1.5rem) !important; }
+
+/* Component-specific responsive overrides live with their component:
+   DataGrid -> datagrid.css, Dialog -> dialog.css. Container size modifiers
+   live in grid.css. Keep this file limited to cross-cutting utilities. */
+
+/* --- Text alignment utilities --- */
+.flare-text-left    { text-align: left !important; }
+.flare-text-center  { text-align: center !important; }
+.flare-text-right   { text-align: right !important; }
+@media (max-width: 599px) {
+    .flare-text-sm-center { text-align: center !important; }
+}

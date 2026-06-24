@@ -1,0 +1,15 @@
+@page "/components/timeline"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Timeline_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTimeline">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Timeline_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Timeline_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Timeline_Icon_Basic" DemoType="typeof(Examples.TimelineBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Timeline_DashedConnector" DemoType="typeof(Examples.TimelineDashedDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Timeline_DottedConnector" DemoType="typeof(Examples.TimelineDottedDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Timeline_Alternating" DemoType="typeof(Examples.TimelineAlternatingDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Timeline_Align" DemoType="typeof(Examples.TimelineAlignDemo)" />

@@ -1,0 +1,37 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_hiddenClass)" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Child content hidden at the specified breakpoint(s).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Hide content only at this exact breakpoint.</summary>
+    [Parameter] public Breakpoint? Only { get; set; }
+    /// <summary>Hide content below this breakpoint.</summary>
+    [Parameter] public Breakpoint? Below { get; set; }
+    /// <summary>Hide content above this breakpoint.</summary>
+    [Parameter] public Breakpoint? Above { get; set; }
+    /// <summary>Inverts the behavior: content is shown ONLY where it would otherwise be hidden.</summary>
+    [Parameter] public bool Invert { get; set; }
+
+    // The component owns no unconditional base class: the bare `flare-hidden`
+    // utility hides its element in every viewport, which would defeat the
+    // breakpoint-scoped behavior. Only the computed modifier class is emitted,
+    // so with no breakpoint set the component is a plain pass-through wrapper.
+    protected override string ComponentCssClass => "";
+
+    private string _hiddenClass
+    {
+        get
+        {
+            var inv = Invert ? "invert-" : string.Empty;
+            if (Only.HasValue)  return $"flare-hidden--{inv}only-{Only.Value.ToString().ToLowerInvariant()}";
+            if (Below.HasValue) return $"flare-hidden--{inv}below-{Below.Value.ToString().ToLowerInvariant()}";
+            if (Above.HasValue) return $"flare-hidden--{inv}above-{Above.Value.ToString().ToLowerInvariant()}";
+            return string.Empty;
+        }
+    }
+}

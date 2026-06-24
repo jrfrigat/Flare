@@ -1,0 +1,94 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_stateClass)"
+     style="@Style"
+     aria-label="@(AriaLabel ?? FlareStrings.DropZone_Label)"
+     @attributes="AdditionalAttributes"
+     @ondragover="HandleDragOver"
+     @ondragover:preventDefault="true"
+     @ondragleave="HandleDragLeave"
+     @ondrop="HandleDrop"
+     @ondrop:preventDefault="true">
+    <InputFile @ref="_inputFile"
+               id="@_inputId"
+               class="@Css.Classes.Dropzone.Input"
+               accept="@Accept"
+               multiple="@Multiple"
+               OnChange="HandleFilesChanged"
+               disabled="@Disabled" />
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <div class="@Css.Classes.Dropzone.Default">
+            <span class="material-symbols-rounded @Css.Classes.Dropzone.Icon">upload_file</span>
+            <span class="@Css.Classes.Dropzone.Label">
+                @if (_isDragging)
+                {
+                    <span>@(FlareStrings.DropZone_DropFiles)</span>
+                }
+                else
+                {
+                    <span>@(FlareStrings.DropZone_Browse)</span>
+                }
+            </span>
+            @if (!string.IsNullOrEmpty(Accept))
+            {
+                <span class="@Css.Classes.Dropzone.Hint">@(FlareStrings.DropZone_Accepted) @Accept</span>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Callback raised when files are dropped or selected.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> OnFilesDropped { get; set; }
+    /// <summary>Accepted file types (e.g. "image/*,.pdf"). Note: MIME type filtering is UX only - always validate file type on the server.</summary>
+    [Parameter] public string? Accept { get; set; }
+    /// <summary>Accessible label for the drop zone container. Defaults to the localized "File drop zone" string.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Allows selecting more than one file at a time.</summary>
+    [Parameter] public bool Multiple { get; set; } = true;
+    /// <summary>Maximum allowed file size in bytes per file.</summary>
+    [Parameter] public long MaxFileSize { get; set; } = 10 * 1024 * 1024; // 10 MB
+    /// <summary>Disables the drop zone and file input.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Custom content to render inside the drop zone.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Dropzone.Root;
+
+    private InputFile? _inputFile;
+    private bool _isDragging;
+    private readonly string _inputId = $"flare-dz-{Guid.NewGuid():N}";
+
+    private string _stateClass =>
+        Disabled ? Css.Classes.Dropzone.Disabled :
+        _isDragging ? Css.Classes.Dropzone.Dragging :
+        string.Empty;
+
+    private void HandleDragOver() { if (!Disabled) _isDragging = true; }
+    private void HandleDragLeave() { _isDragging = false; }
+
+    private async Task HandleDrop(DragEventArgs e)
+    {
+        _isDragging = false;
+        // Drop events on InputFile are handled by the browser input element triggered below.
+        // For drag-and-drop we rely on the InputFile's own drag support.
+    }
+
+    private async Task HandleFilesChanged(InputFileChangeEventArgs e)
+    {
+        _isDragging = false;
+        if (Disabled) return;
+        var files = e.GetMultipleFiles(Multiple ? int.MaxValue : 1)
+                     .Where(f => f.Size <= MaxFileSize)
+                     .ToList()
+                     .AsReadOnly();
+        if (OnFilesDropped.HasDelegate)
+            await OnFilesDropped.InvokeAsync(files);
+    }
+}

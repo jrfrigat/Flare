@@ -1,0 +1,21 @@
+@page "/components/qrcode"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.QrCode_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareQrCode">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.QrCode_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.QrCode_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.QrCode_Basic" DemoType="typeof(Examples.QrCodeBasicDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.QrCode_CustomSizeColors" DemoType="typeof(Examples.QrCodeCustomSizeColorsDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.QrCode_Large" DemoType="typeof(Examples.QrCodeLargeDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.QrCode_Rounded" DemoType="typeof(Examples.QrCodeRoundedDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.QrCode_Icon" DemoType="typeof(Examples.QrCodeIconDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.QrCode_ErrorLevel" DemoType="typeof(Examples.QrCodeErrorLevelDemo)" />

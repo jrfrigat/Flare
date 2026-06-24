@@ -1,0 +1,25 @@
+<FlareCalendar Events="_events" MondayFirst="true" MonthCount="2" MaxVisibleEvents="2"
+               InitialDate="_initial" OnEventClick="@(e => _clicked = e.Title)" />
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Two months · Monday first · max 2 events/day · clicked: @(_clicked ?? "-")
+</FlareText>
+
+@code {
+    private string? _clicked;
+    private readonly DateOnly _initial = DateOnly.FromDateTime(DateTime.Today);
+    private readonly List<CalendarEvent> _events;
+
+    public CalendarOptionsDemo()
+    {
+        var t = DateOnly.FromDateTime(DateTime.Today);
+        _events = new()
+        {
+            new("Standup", t.AddDays(1)),
+            new("Review", t.AddDays(1)),
+            new("Design", t.AddDays(1)),
+            new("Release", t.AddDays(10)),
+            new("Planning", t.AddDays(34)),
+        };
+    }
+}

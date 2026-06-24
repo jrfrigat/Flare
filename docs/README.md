@@ -1,0 +1,25 @@
+# Flare Documentation
+
+> [English](#english) · [Русский](#русский)
+
+## English
+
+| Doc | Description |
+| :-- | :-- |
+| [Getting Started](en/getting-started.md) | Install, DI setup, styles, first component |
+| [Architecture](en/architecture.md) | Module map, component patterns, theming deep-dive |
+| [Theme Creation Guide](en/theme-creation-guide.md) | Design tokens, palettes, custom themes |
+| [Component Code Conventions](en/component-conventions.md) | CSS bundle, token system, unified color, XML docs |
+
+## Русский
+
+| Документ | Описание |
+| :-- | :-- |
+| [Начало работы](ru/getting-started.md) | Установка, настройка DI, стили, первый компонент |
+| [Архитектура](ru/architecture.md) | Карта модулей, паттерны компонентов, система тем |
+| [Создание тем](ru/theme-creation-guide.md) | Дизайн-токены, палитры, кастомные темы |
+| [Конвенции кода компонентов](ru/component-conventions.md) | CSS-бандл, система токенов, единый цвет, XML-доки |
+
+---
+
+See also the live [Gallery](../samples/Flare.Gallery/) - interactive examples of every component.

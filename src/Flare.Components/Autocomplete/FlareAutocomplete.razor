@@ -1,0 +1,270 @@
+@namespace Flare.Components
+@inherits FlareFieldBase
+@typeparam TValue
+@using System.Linq.Expressions
+
+<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Autocomplete.Label" for="@_inputId">@Label</label>
+    }
+    <div class="@Css.Classes.Autocomplete.Wrapper">
+        <div class="@Css.Classes.Autocomplete.Field @(_open ? Css.Classes.Autocomplete.FieldOpen : "")">
+            <input class="@Css.Classes.Autocomplete.Control"
+                   id="@_inputId"
+                   style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+                   value="@_searchText"
+                   placeholder="@Placeholder"
+                   disabled="@Disabled"
+                   autocomplete="off"
+                   spellcheck="false"
+                   role="combobox"
+                   aria-expanded="@_open"
+                   aria-haspopup="listbox"
+                   aria-autocomplete="list"
+                   @oninput="HandleInput"
+                   @onfocus="HandleFocus"
+                   @onfocusout="HandleFocusOut"
+                   @onkeydown="HandleKeyDown" />
+            @if (Clearable && !Disabled && (Value is not null || !string.IsNullOrEmpty(_searchText)))
+            {
+                <button type="button" class="@Css.Classes.Autocomplete.Clear"
+                        tabindex="-1" aria-label="@(FlareStrings.Input_Clear)"
+                        @onmousedown:preventDefault @onclick="HandleClear">
+                    <span aria-hidden="true">&#x2715;</span>
+                </button>
+            }
+            <span class="@Css.Classes.Autocomplete.Icon">
+                @if (_searching)
+                {
+                    <FlareIcon Name="progress_activity" Class="@Css.Classes.Autocomplete.Spinner" />
+                }
+                else
+                {
+                    <FlareIcon Name="@(_open ? "expand_less" : "expand_more")" />
+                }
+            </span>
+        </div>
+        @if (_open)
+        {
+            <FlareListbox TItem="TValue"
+                          Items="_suggestions"
+                          GroupBy="GroupBy"
+                          ItemTemplate="ItemTemplate"
+                          ItemLabel="GetLabel"
+                          ActiveIndex="_focusedIdx"
+                          OnSelect="SelectItem"
+                          DropdownClass="@Css.Classes.Autocomplete.Dropdown"
+                          PreventMouseDownDefault="true">
+                <EmptyContent>
+                    <div class="@Css.Classes.Autocomplete.Empty" role="status">@NoResultsText</div>
+                </EmptyContent>
+            </FlareListbox>
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@Css.Classes.Autocomplete.Helper @Css.Classes.Autocomplete.HelperError">@_displayedError</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.Autocomplete.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Currently selected value (supports <c>@bind-Value</c>).</summary>
+    [Parameter] public TValue? Value { get; set; }
+    /// <summary>Callback invoked when the selected value changes.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    /// <summary>Static collection of items to search when no <see cref="SearchFunc"/> is supplied.</summary>
+    [Parameter] public IEnumerable<TValue>? Items { get; set; }
+    /// <summary>Async search callback invoked with the current query; returns the matching items.</summary>
+    [Parameter] public Func<string, Task<IEnumerable<TValue>>>? SearchFunc { get; set; }
+    /// <summary>Returns the display text for an item.</summary>
+    [Parameter] public Func<TValue, string> GetLabel { get; set; } = v => v?.ToString() ?? "";
+    /// <summary>Custom render template for a dropdown option. Overrides the <see cref="GetLabel"/> text.</summary>
+    [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
+    /// <summary>Label text displayed above the input.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Placeholder text shown when the input is empty.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Helper text shown below the input.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Disables the input when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>Minimum number of typed characters before a search runs. Default: 1.</summary>
+    [Parameter] public int MinChars { get; set; } = 1;
+    /// <summary>Maximum number of suggestions to display. Default: 10.</summary>
+    [Parameter] public int MaxItems { get; set; } = 10;
+    /// <summary>Milliseconds to wait after user input before triggering search. Default: 300ms.</summary>
+    [Parameter] public int DebounceMs { get; set; } = 300;
+    /// <summary>Text shown in the dropdown when a search returns no matches.</summary>
+    [Parameter] public string NoResultsText { get; set; } = "No results";
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<TValue?>>? For { get; set; }
+    /// <summary>Returns the group label for an item. When non-null, dropdown items are grouped.</summary>
+    [Parameter] public Func<TValue, string>? GroupBy { get; set; }
+    /// <summary>Shows a clear (x) button that resets the value and text.</summary>
+    [Parameter] public bool Clearable { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Autocomplete.Root;
+
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
+    /// Default keeps the theme's field style (MD3 filled / Fluent outlined).</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    private string? _variantClass => VariantClass(Variant);
+
+    /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    private string? _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Autocomplete.SizeXs,
+        FieldSize.Sm => Css.Classes.Autocomplete.SizeSm,
+        FieldSize.Lg => Css.Classes.Autocomplete.SizeLg,
+        FieldSize.Xl => Css.Classes.Autocomplete.SizeXl,
+        _ => null,
+    };
+
+    private readonly string _inputId = $"flare-autocomplete-{Guid.NewGuid():N}";
+
+    private string _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Autocomplete.Error :
+        Disabled ? Css.Classes.Autocomplete.Disabled : string.Empty;
+
+    private string _searchText = string.Empty;
+    private List<TValue> _suggestions = new();
+    private bool _open;
+    private bool _searching;
+    private int _focusedIdx = -1;
+    private CancellationTokenSource? _cts;
+
+    protected override void OnParametersSet()
+    {
+        UpdateFieldIdentifier(For);
+
+        if (Value is not null && string.IsNullOrEmpty(_searchText))
+            _searchText = GetLabel(Value);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        _cts?.Cancel();
+        await base.DisposeAsync();
+    }
+
+    private string? _displayedError => DisplayedError(ErrorText);
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        _searchText = e.Value?.ToString() ?? string.Empty;
+        _focusedIdx = -1;
+
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+        var token = _cts.Token;
+
+        if (_searchText.Length < MinChars)
+        {
+            _suggestions.Clear();
+            _open = false;
+            return;
+        }
+
+        _searching = true;
+        StateHasChanged();
+
+        try
+        {
+            if (DebounceMs > 0)
+                await Task.Delay(DebounceMs, token);
+
+            if (token.IsCancellationRequested) return;
+
+            IEnumerable<TValue> results;
+            if (SearchFunc is not null)
+                results = await SearchFunc(_searchText);
+            else
+                results = (Items ?? Enumerable.Empty<TValue>())
+                    .Where(x => GetLabel(x).Contains(_searchText, StringComparison.OrdinalIgnoreCase));
+
+            if (!token.IsCancellationRequested)
+            {
+                // Keep grouped items contiguous so the shared listbox renders group headers and the
+                // keyboard active index stays aligned with the rendered option order.
+                var taken = results.Take(MaxItems);
+                _suggestions = (GroupBy is null ? taken : taken.GroupBy(GroupBy).SelectMany(g => g)).ToList();
+                _open = true;
+                _searching = false;
+                StateHasChanged();
+            }
+        }
+        catch (TaskCanceledException) { }
+        finally
+        {
+            if (!token.IsCancellationRequested)
+            {
+                _searching = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void HandleFocus()
+    {
+        if (_suggestions.Any())
+            _open = true;
+    }
+
+    private async Task HandleFocusOut()
+    {
+        await Task.Delay(150);
+        _open = false;
+        _searchText = Value is not null ? GetLabel(Value) : string.Empty;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "ArrowDown":
+                _focusedIdx = Math.Min(_focusedIdx + 1, _suggestions.Count - 1);
+                break;
+            case "ArrowUp":
+                _focusedIdx = Math.Max(_focusedIdx - 1, 0);
+                break;
+            case "Enter":
+                if (_open && _focusedIdx >= 0 && _focusedIdx < _suggestions.Count)
+                    await SelectItem(_suggestions[_focusedIdx]);
+                break;
+            case "Escape":
+                _open = false;
+                break;
+        }
+    }
+
+    private async Task HandleClear()
+    {
+        _searchText = string.Empty;
+        _suggestions.Clear();
+        _open = false;
+        _focusedIdx = -1;
+        await ValueChanged.InvokeAsync(default);
+        NotifyFieldChanged();
+    }
+
+    private async Task SelectItem(TValue item)
+    {
+        _searchText = GetLabel(item);
+        _open = false;
+        _focusedIdx = -1;
+        _suggestions.Clear();
+        await ValueChanged.InvokeAsync(item);
+        NotifyFieldChanged();
+    }
+}

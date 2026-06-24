@@ -1,0 +1,11 @@
+@page "/components/textarea"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.TextArea_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTextArea">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.TextArea_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.TextArea_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.TextArea_Basic" DemoType="typeof(Examples.TextAreaDemo)" />

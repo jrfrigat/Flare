@@ -1,0 +1,56 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* A ribbon button that opens a dropdown menu / gallery (Office "Styles", "Paste options" etc.).
+   Built on the base FlareMenu: the activator is a ribbon-styled button and MenuContent holds the
+   menu items (FlareMenuItem). Large (icon + label + chevron) or small (icon + chevron) modes. *@
+<FlareTooltip Content="@Tooltip" Placement="@TooltipPlacement.Bottom">
+    <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="@Tooltip">
+        <Activator>
+            <FlareButton Variant="@ButtonVariant.Text" Size="@(IsLarge ? ButtonSize.Lg : ButtonSize.Sm)"
+                         Disabled="@Disabled" AriaLabel="@Tooltip"
+                         class="@(IsLarge ? $"{Css.Classes.Ide.Ribbon.Button} {Css.Classes.Ide.Ribbon.ButtonLarge}" : Css.Classes.Ide.Ribbon.Button)">
+                @if (Icon is not null)
+                {
+                    <span class="material-symbols-rounded">@Icon</span>
+                }
+                @if (!string.IsNullOrEmpty(Label))
+                {
+                    <span class="@Css.Classes.Ide.Ribbon.ButtonLabel">
+                        @Label <span class="material-symbols-rounded @Css.Classes.Ide.Ribbon.Caret" aria-hidden="true">arrow_drop_down</span>
+                    </span>
+                }
+                else
+                {
+                    <span class="material-symbols-rounded @Css.Classes.Ide.Ribbon.Caret" aria-hidden="true">arrow_drop_down</span>
+                }
+            </FlareButton>
+        </Activator>
+        <ChildContent>
+            @MenuContent
+        </ChildContent>
+    </FlareMenu>
+</FlareTooltip>
+
+@code {
+    /// <summary>Material icon name displayed in the button.</summary>
+    [Parameter] public string? Icon { get; set; }
+
+    /// <summary>Label text shown next to / below the icon.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Tooltip and accessible label for the dropdown.</summary>
+    [Parameter] public string? Tooltip { get; set; }
+
+    /// <summary>Large mode shows icon + label vertically; small mode is icon-only.</summary>
+    [Parameter] public bool IsLarge { get; set; }
+
+    /// <summary>Whether the dropdown is disabled.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>The dropdown menu items, typically <c>FlareMenuItem</c> entries.</summary>
+    [Parameter] public RenderFragment? MenuContent { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.Ribbon.Button;
+}

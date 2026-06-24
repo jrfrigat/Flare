@@ -1,0 +1,13 @@
+@page "/components/typography"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Typography_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareText">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Typography_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Typography_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Typography_Scale" DemoType="typeof(Examples.TypographyScaleDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Typography_Weight" DemoType="typeof(Examples.TypographyWeightDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Typography_ColorElement" DemoType="typeof(Examples.TypographyColorElementDemo)" />

@@ -1,0 +1,103 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_fitClass, _fluidClass)" style="@_wrapperStyle" @attributes="AdditionalAttributes">
+    @if (_loading && Skeleton)
+    {
+        <FlareSkeleton Style="width:100%;height:100%;" />
+    }
+    <img class="@Css.Classes.Image.Img"
+         src="@(_safeSrc ?? "about:blank")"
+         alt="@Alt"
+         loading="@(_lazy ? "lazy" : "eager")"
+         style="@_imgStyle"
+         @onload="HandleLoad"
+         @onerror="HandleError" />
+    @if (_errored && Fallback is not null)
+    {
+        @Fallback
+    }
+</div>
+
+@code {
+    /// <summary>URL of the image to display.</summary>
+    [Parameter] public string? Src { get; set; }
+    /// <summary>Accessible alt text for the image element.</summary>
+    [Parameter] public string? Alt { get; set; }
+    /// <summary>CSS width applied to the image wrapper.</summary>
+    [Parameter] public string? Width { get; set; }
+    /// <summary>CSS height applied to the image wrapper.</summary>
+    [Parameter] public string? Height { get; set; }
+    /// <summary>CSS object-fit strategy for the image.</summary>
+    [Parameter] public ImageObjectFit ObjectFit { get; set; } = ImageObjectFit.Cover;
+    /// <summary>CSS aspect-ratio applied to the image wrapper.</summary>
+    [Parameter] public string? AspectRatio { get; set; }
+    /// <summary>Makes the image expand to fill its container width.</summary>
+    [Parameter] public bool Fluid { get; set; }
+    /// <summary>Enables native lazy loading for the image.</summary>
+    [Parameter] public bool Lazy { get; set; }
+    /// <summary>Shows a skeleton placeholder while the image loads.</summary>
+    [Parameter] public bool Skeleton { get; set; }
+    /// <summary>CSS border-radius applied to the image wrapper.</summary>
+    [Parameter] public string? BorderRadius { get; set; }
+    /// <summary>Content rendered when the image fails to load.</summary>
+    [Parameter] public RenderFragment? Fallback { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Image.Root;
+
+    private bool _loading = true;
+    private bool _errored;
+    private string? _prevSrc;
+    private bool _lazy => Lazy;
+
+    protected override void OnParametersSet()
+    {
+        if (_prevSrc != Src)
+        {
+            _prevSrc = Src;
+            _loading = true;
+            _errored = false;
+        }
+    }
+
+    private string _fitClass => ObjectFit switch
+    {
+        ImageObjectFit.Contain   => Css.Classes.Image.Contain,
+        ImageObjectFit.Fill      => Css.Classes.Image.Fill,
+        ImageObjectFit.None      => Css.Classes.Image.None,
+        ImageObjectFit.ScaleDown => Css.Classes.Image.ScaleDown,
+        _                        => Css.Classes.Image.Cover,
+    };
+
+    private string _fluidClass => Fluid ? Css.Classes.Image.Fluid : string.Empty;
+
+    private string _wrapperStyle
+    {
+        get
+        {
+            var parts = new List<string>();
+            if (!string.IsNullOrEmpty(Width)) parts.Add($"width:{Width}");
+            if (!string.IsNullOrEmpty(Height)) parts.Add($"height:{Height}");
+            if (!string.IsNullOrEmpty(AspectRatio)) parts.Add($"aspect-ratio:{AspectRatio}");
+            if (!string.IsNullOrEmpty(BorderRadius)) parts.Add($"border-radius:{BorderRadius}");
+            if (!string.IsNullOrEmpty(Style)) parts.Add(Style);
+            return string.Join(";", parts);
+        }
+    }
+
+    private string _imgStyle => _errored && Fallback is not null ? "display:none" : string.Empty;
+
+    private void HandleLoad() { _loading = false; }
+    private void HandleError() { _loading = false; _errored = true; }
+
+    // OWASP: restrict src to safe URL schemes to prevent javascript: injection.
+    private static bool IsImageSrcSafe(string? src) =>
+        src is null ||
+        src.StartsWith('/') ||
+        src.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+        src.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+        src.StartsWith("data:image/", StringComparison.OrdinalIgnoreCase) ||
+        src.StartsWith("blob:", StringComparison.OrdinalIgnoreCase);
+
+    private string? _safeSrc => IsImageSrcSafe(Src) ? Src : null;
+}

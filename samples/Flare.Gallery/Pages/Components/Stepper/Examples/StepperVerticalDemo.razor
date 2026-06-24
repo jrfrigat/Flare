@@ -1,0 +1,19 @@
+<FlareStepper Orientation="StepperOrientation.Vertical" Linear="false" NonLinear="true"
+              OnStepChanged="@(i => _step = i)" AriaLabel="Setup steps">
+    <FlareStep Label="Details" Description="Editable in any order">
+        <FlareText Typo="TypographyScale.BodyMedium">Non-linear: jump between steps freely.</FlareText>
+    </FlareStep>
+    <FlareStep Label="Payment" HasError="true" ErrorText="Card declined">
+        <FlareText Typo="TypographyScale.BodyMedium">This step shows an error state.</FlareText>
+    </FlareStep>
+    <FlareStep Label="Done" Description="Finish">
+        <FlareText Typo="TypographyScale.BodyMedium">All set.</FlareText>
+    </FlareStep>
+</FlareStepper>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Current step index: @_step
+</FlareText>
+
+@code {
+    private int _step;
+}

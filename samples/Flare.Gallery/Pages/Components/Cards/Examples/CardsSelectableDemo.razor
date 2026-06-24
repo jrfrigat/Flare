@@ -1,0 +1,32 @@
+<div style="display:flex;flex-wrap:wrap;gap:1rem;">
+    @foreach (var plan in _plans)
+    {
+        <FlareCard Variant="CardVariant.Outlined"
+                   Selectable="true"
+                   Selected="_selected.Contains(plan)"
+                   OnSelectionChange="@(v => Toggle(plan, v))"
+                   Style="flex:1 1 12rem;min-width:12rem;">
+            <FlareCardHeader Title="@plan" Subtitle="Click to select" />
+            <FlareCardContent>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    Selectable cards toggle an accent ring - no explicit checkbox.
+                </FlareText>
+            </FlareCardContent>
+        </FlareCard>
+    }
+</div>
+
+<FlareText Typo="TypographyScale.BodyMedium" Style="margin-top:1rem;">
+    Selected: @(_selected.Count == 0 ? "none" : string.Join(", ", _selected))
+</FlareText>
+
+@code {
+    private readonly string[] _plans = { "Starter", "Pro", "Enterprise" };
+    private readonly HashSet<string> _selected = new();
+
+    private void Toggle(string plan, bool selected)
+    {
+        if (selected) _selected.Add(plan);
+        else _selected.Remove(plan);
+    }
+}

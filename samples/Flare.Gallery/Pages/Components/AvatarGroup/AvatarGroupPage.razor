@@ -1,0 +1,15 @@
+@page "/components/avatar-group"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.AvatarGroup_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareAvatarGroup">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.AvatarGroup_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">
+        @GalleryStrings.AvatarGroup_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.AvatarGroup_BasicGroup" DemoType="typeof(Examples.AvatarGroupBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.AvatarGroup_Sizes" DemoType="typeof(Examples.AvatarGroupSizesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.AvatarGroup_Spacing" DemoType="typeof(Examples.AvatarGroupSpacingDemo)" />

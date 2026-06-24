@@ -1,0 +1,19 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareDateRangePicker @bind-StartDate="_start" @bind-EndDate="_end"
+                          Label="Booking period"
+                          StartLabel="Check-in" EndLabel="Check-out"
+                          HelperText="Select check-in and check-out dates"
+                          Style="max-width:36rem;" />
+    <FlareDateRangePicker Label="Disabled" Disabled Style="max-width:36rem;" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    @if (_start.HasValue || _end.HasValue)
+    {
+        @($"{_start?.ToString("dd MMM yyyy") ?? "–"} -> {_end?.ToString("dd MMM yyyy") ?? "–"}")
+    }
+</FlareText>
+
+@code {
+    private DateOnly? _start;
+    private DateOnly? _end;
+}

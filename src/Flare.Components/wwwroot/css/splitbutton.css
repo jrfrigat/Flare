@@ -1,0 +1,128 @@
+/* Global bundle (not scoped): plain descendant selectors -- no ::deep, no nesting.
+   The split button renders:
+     .flare-split-btn(.flare-split-btn--{size})
+       .flare-btn.flare-split-btn__main
+       .flare-split-btn__menu > .flare-menu__activator > .flare-btn.flare-split-btn__trigger
+   Defaults below are the Medium (MD) corner system; size modifiers override per size. */
+
+.flare-split-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-split-btn-gap, 0.125rem);
+}
+
+.flare-split-btn__menu {
+    display: inline-flex;
+}
+
+.flare-split-btn .flare-menu__activator {
+    display: inline-flex;
+}
+
+/* Main action button (default = MD radii) */
+.flare-split-btn .flare-split-btn__main.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-main-radius-md-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-main-radius-md-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-main-radius-md-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-main-radius-md-bottom-left) !important;
+}
+
+/* Dropdown trigger button (default = MD radii) */
+.flare-split-btn .flare-split-btn__trigger.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-trigger-radius-md-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-trigger-radius-md-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-md-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-md-bottom-left) !important;
+    /* Trigger width: MD3 default = height (square), Fluent fixes 24dp via the token */
+    width: var(--flare-split-btn-trigger-width, var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)));
+    padding-inline: 0 !important;
+}
+
+.flare-split-btn .flare-split-btn__main:hover,
+.flare-split-btn .flare-split-btn__main:focus-visible,
+.flare-split-btn .flare-split-btn__trigger:hover,
+.flare-split-btn .flare-split-btn__trigger:focus-visible {
+    z-index: 1;
+}
+
+.flare-split-btn__caret {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--_caret-size, var(--flare-split-btn-caret-size-md, 1.25rem));
+    line-height: 1;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    transition: transform var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+/* Open state: flip the caret to point up while the menu is shown. */
+.flare-split-btn--open .flare-split-btn__caret {
+    transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   SIZE MODIFIERS (XS / SM / MD / LG / XL)
+   ========================================================================== */
+
+/* Extra Small */
+.flare-split-btn--xs { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-xs); --_caret-size: var(--flare-split-btn-caret-size-xs); }
+.flare-split-btn--xs .flare-split-btn__main.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-main-radius-xs-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-main-radius-xs-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-main-radius-xs-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-main-radius-xs-bottom-left) !important;
+}
+.flare-split-btn--xs .flare-split-btn__trigger.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-trigger-radius-xs-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-trigger-radius-xs-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-xs-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-xs-bottom-left) !important;
+}
+
+/* Small */
+.flare-split-btn--sm { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-sm); --_caret-size: var(--flare-split-btn-caret-size-sm); }
+.flare-split-btn--sm .flare-split-btn__main.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-main-radius-sm-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-main-radius-sm-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-main-radius-sm-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-main-radius-sm-bottom-left) !important;
+}
+.flare-split-btn--sm .flare-split-btn__trigger.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-trigger-radius-sm-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-trigger-radius-sm-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-sm-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-sm-bottom-left) !important;
+}
+
+/* Medium */
+.flare-split-btn--md { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-md); --_caret-size: var(--flare-split-btn-caret-size-md); }
+
+/* Large */
+.flare-split-btn--lg { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-lg); --_caret-size: var(--flare-split-btn-caret-size-lg); }
+.flare-split-btn--lg .flare-split-btn__main.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-main-radius-lg-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-main-radius-lg-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-main-radius-lg-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-main-radius-lg-bottom-left) !important;
+}
+.flare-split-btn--lg .flare-split-btn__trigger.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-trigger-radius-lg-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-trigger-radius-lg-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-lg-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-lg-bottom-left) !important;
+}
+
+/* Extra Large */
+.flare-split-btn--xl { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-xl); --_caret-size: var(--flare-split-btn-caret-size-xl); }
+.flare-split-btn--xl .flare-split-btn__main.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-main-radius-xl-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-main-radius-xl-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-main-radius-xl-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-main-radius-xl-bottom-left) !important;
+}
+.flare-split-btn--xl .flare-split-btn__trigger.flare-btn {
+    border-top-left-radius: var(--flare-split-btn-trigger-radius-xl-top-left) !important;
+    border-top-right-radius: var(--flare-split-btn-trigger-radius-xl-top-right) !important;
+    border-bottom-right-radius: var(--flare-split-btn-trigger-radius-xl-bottom-right) !important;
+    border-bottom-left-radius: var(--flare-split-btn-trigger-radius-xl-bottom-left) !important;
+}

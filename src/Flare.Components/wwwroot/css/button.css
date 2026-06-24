@@ -1,0 +1,320 @@
+﻿.flare-btn--full { display: flex; width: 100%; }
+
+.flare-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    /* Резервируем focus-ring прозрачным, чтобы появление анимировалось по цвету (MD3 ~100ms ease-out) */
+    outline: 3px solid transparent;
+    outline-offset: var(--flare-btn-focus-outline-offset, 2px);
+    cursor: pointer;
+    text-decoration: none;
+    user-select: none;
+    vertical-align: middle;
+    /* Токенизация через локальные свойства по умолчанию (Medium) */
+    height: var(--_flare-btn-height, var(--flare-btn-height-md, 3rem));
+    padding-inline: var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md, 1.5rem));
+    /* Адаптивный зазор по умолчанию привязан к Medium */
+    gap: var(--flare-btn-gap-md, 0.5rem);
+    /* БАЗОВАЯ ПОУГЛОВАЯ СИСТЕМА: слушает C# константы углов */
+    border-top-left-radius: var(--flare-btn-radius-md-top-left, var(--flare-shape-full, 9999px));
+    border-top-right-radius: var(--flare-btn-radius-md-top-right, var(--flare-shape-full, 9999px));
+    border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right, var(--flare-shape-full, 9999px));
+    border-bottom-left-radius: var(--flare-btn-radius-md-bottom-left, var(--flare-shape-full, 9999px));
+    /* Шрифты по умолчанию (Medium - задаёт тема через --flare-btn-label-md-*) */
+    font-family: var(--flare-btn-label-md-font, var(--flare-typescale-title-medium-font));
+    font-weight: var(--flare-btn-label-md-weight, var(--flare-typescale-title-medium-weight));
+    font-size: var(--flare-btn-label-md-size, var(--flare-typescale-title-medium-size));
+    line-height: var(--flare-btn-label-md-height, var(--flare-typescale-title-medium-height));
+    letter-spacing: var(--flare-btn-label-md-spacing, var(--flare-typescale-title-medium-spacing));
+    /* ОБЪЕДИНЕННЫЙ ИДЕАЛЬНЫЙ TRANSITION: контролирует визуал и все 4 угла */
+    /* NB: border-radius is intentionally NOT transitioned. Corner radii come from per-theme
+       tokens, so animating them would morph every button's geometry on a theme switch (the
+       leftover "MD3 shape" effect). Keep only colour/shadow/outline transitions. A press-time
+       shape morph, if wanted, should be a scoped :active transition - not a global one. */
+    transition: box-shadow var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), outline-color var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-decelerate, ease-out);
+    /* Резервируем 1px под рамку для всех кнопок (метод Fluent UI 2 & MD3) */
+    border: 1px solid transparent;
+}
+
+/* Цвет: варианты читают общие токены роли (--fc-*) с фолбэком на "Default".
+   Роль -> класс flare-color-* (color-roles.css) задаёт --fc-*; кастом -> инлайн на элементе. */
+
+    /* ==========================================================================
+   УНИВЕРСАЛЬНЫЕ СОСТОЯНИЯ (Слушают коэффициенты непрозрачности тем)
+   ========================================================================== */
+    .flare-btn::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background-color: currentColor;
+        opacity: 0;
+        transition: opacity var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard);
+        pointer-events: none;
+    }
+
+    .flare-btn:hover::before {
+        opacity: var(--flare-state-hover-opacity, 0.08);
+    }
+
+    .flare-btn:focus-visible::before {
+        opacity: var(--flare-state-focus-opacity, 0.12);
+    }
+
+    .flare-btn:active::before {
+        opacity: var(--flare-state-pressed-opacity, 0.12);
+        transition: opacity var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
+    }
+
+    .flare-btn:focus-visible {
+        outline: var(--flare-btn-focus-outline, 2px solid var(--flare-color-primary));
+        outline-offset: var(--flare-btn-focus-outline-offset, 2px);
+        box-shadow: var(--flare-btn-focus-shadow, none);
+    }
+
+/* ==========================================================================
+   БАЗОВЫЕ ВАРИАНТЫ СТИЛЕЙ
+   ========================================================================== */
+.flare-btn--filled {
+    background-color: var(--fc-main, var(--flare-color-primary));
+    color: var(--fc-on, var(--flare-color-on-primary));
+    box-shadow: var(--flare-elevation-0, none);
+}
+
+    .flare-btn--filled:hover {
+        box-shadow: var(--flare-btn-filled-hover-shadow, var(--flare-elevation-1, none));
+    }
+
+.flare-btn--outlined {
+    background-color: transparent;
+    /* Default (без цвета) = нейтральный MD3 (on-surface-variant / outline-variant); роль/кастом = акцент. */
+    color: var(--fc-main, var(--flare-color-on-surface-variant));
+    border-color: var(--fc-main, var(--flare-color-outline-variant));
+}
+
+.flare-btn--text {
+    background-color: transparent;
+    color: var(--fc-main, var(--flare-color-primary));
+    --_flare-btn-padding-inline: 0.75rem;
+}
+
+.flare-btn--elevated {
+    background-color: var(--flare-color-surface-container-low);
+    color: var(--fc-main, var(--flare-color-primary));
+    box-shadow: var(--flare-elevation-1);
+}
+
+    .flare-btn--elevated:hover {
+        box-shadow: var(--flare-elevation-2);
+    }
+
+.flare-btn--tonal {
+    background-color: var(--fc-container, var(--flare-color-secondary-container));
+    color: var(--fc-on-container, var(--flare-color-on-secondary-container));
+    box-shadow: var(--flare-elevation-0, none);
+}
+
+.flare-btn:disabled, .flare-btn[disabled] {
+    pointer-events: none;
+    opacity: var(--flare-state-disabled-opacity, 0.38);
+    box-shadow: var(--flare-elevation-0, none) !important;
+}
+
+/* ==========================================================================
+   АДАПТИВНАЯ СЕТКА РАЗМЕРОВ
+   ========================================================================== */
+.flare-btn--xs {
+    gap: var(--flare-btn-gap-xs, 0.25rem);
+    --_flare-btn-height: var(--flare-btn-height-xs, 2rem);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xs, 0.75rem);
+    --_flare-icon-size: var(--flare-btn-icon-size-xs, 1.25rem);
+    border-top-left-radius: var(--flare-btn-radius-xs-top-left);
+    border-top-right-radius: var(--flare-btn-radius-xs-top-right);
+    border-bottom-right-radius: var(--flare-btn-radius-xs-bottom-right);
+    border-bottom-left-radius: var(--flare-btn-radius-xs-bottom-left);
+    font-family: var(--flare-btn-label-xs-font);
+    font-weight: var(--flare-btn-label-xs-weight);
+    font-size: var(--flare-btn-label-xs-size);
+    line-height: var(--flare-btn-label-xs-height);
+    letter-spacing: var(--flare-btn-label-xs-spacing);
+}
+
+.flare-btn--sm {
+    gap: var(--flare-btn-gap-sm, 0.375rem);
+    --_flare-btn-height: var(--flare-btn-height-sm, 2.5rem);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-sm, 1rem);
+    --_flare-icon-size: var(--flare-btn-icon-size-sm, 1.25rem);
+    border-top-left-radius: var(--flare-btn-radius-sm-top-left);
+    border-top-right-radius: var(--flare-btn-radius-sm-top-right);
+    border-bottom-right-radius: var(--flare-btn-radius-sm-bottom-right);
+    border-bottom-left-radius: var(--flare-btn-radius-sm-bottom-left);
+    font-family: var(--flare-btn-label-sm-font);
+    font-weight: var(--flare-btn-label-sm-weight);
+    font-size: var(--flare-btn-label-sm-size);
+    line-height: var(--flare-btn-label-sm-height);
+    letter-spacing: var(--flare-btn-label-sm-spacing);
+}
+
+.flare-btn--md {
+    gap: var(--flare-btn-gap-md, 0.5rem);
+    --_flare-btn-height: var(--flare-btn-height-md, 3rem);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-md, 1.5rem);
+    --_flare-icon-size: var(--flare-btn-icon-size-md, 1.5rem);
+    border-top-left-radius: var(--flare-btn-radius-md-top-left);
+    border-top-right-radius: var(--flare-btn-radius-md-top-right);
+    border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right);
+    border-bottom-left-radius: var(--flare-btn-radius-md-bottom-left);
+    font-family: var(--flare-btn-label-md-font);
+    font-weight: var(--flare-btn-label-md-weight);
+    font-size: var(--flare-btn-label-md-size);
+    line-height: var(--flare-btn-label-md-height);
+    letter-spacing: var(--flare-btn-label-md-spacing);
+}
+
+.flare-btn--lg {
+    gap: var(--flare-btn-gap-lg, 0.5rem);
+    --_flare-btn-height: var(--flare-btn-height-lg, 3.5rem);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-lg, 2rem);
+    --_flare-icon-size: var(--flare-btn-icon-size-lg, 2rem);
+    border-top-left-radius: var(--flare-btn-radius-lg-top-left);
+    border-top-right-radius: var(--flare-btn-radius-lg-top-right);
+    border-bottom-right-radius: var(--flare-btn-radius-lg-bottom-right);
+    border-bottom-left-radius: var(--flare-btn-radius-lg-bottom-left);
+    font-family: var(--flare-btn-label-lg-font);
+    font-weight: var(--flare-btn-label-lg-weight);
+    font-size: var(--flare-btn-label-lg-size);
+    line-height: var(--flare-btn-label-lg-height);
+    letter-spacing: var(--flare-btn-label-lg-spacing);
+}
+
+.flare-btn--xl {
+    gap: var(--flare-btn-gap-xl, 0.75rem);
+    --_flare-btn-height: var(--flare-btn-height-xl, 4rem);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xl, 2.5rem);
+    --_flare-icon-size: var(--flare-btn-icon-size-xl, 2.5rem);
+    border-top-left-radius: var(--flare-btn-radius-xl-top-left);
+    border-top-right-radius: var(--flare-btn-radius-xl-top-right);
+    border-bottom-right-radius: var(--flare-btn-radius-xl-bottom-right);
+    border-bottom-left-radius: var(--flare-btn-radius-xl-bottom-left);
+    font-family: var(--flare-btn-label-xl-font);
+    font-weight: var(--flare-btn-label-xl-weight);
+    font-size: var(--flare-btn-label-xl-size);
+    line-height: var(--flare-btn-label-xl-height);
+    letter-spacing: var(--flare-btn-label-xl-spacing);
+}
+
+/* ==========================================================================
+   SHAPE AXIS (Fluent UI 2 + MD3 Expressive). Default = no class (theme's own
+   button radius). The three explicit shapes override the per-corner radii with
+   the shorthand, so they must sit after the size grid to win on source order
+   (equal specificity). border-radius is intentionally not transitioned here -
+   see the note on the base .flare-btn rule.
+
+   - Rounded:  rounded rectangle, theme shape scale (XS/SM -> medium,
+               MD -> large, LG/XL -> extra-large). Fluent "rounded" / MD3 "square".
+   - Circular: fully rounded pill (and a circle for icon-only buttons).
+   - Square:   sharp, non-rounded corners. Fluent "square".
+   ========================================================================== */
+.flare-btn--rounded { border-radius: var(--flare-shape-large); }
+.flare-btn--rounded.flare-btn--xs,
+.flare-btn--rounded.flare-btn--sm { border-radius: var(--flare-shape-medium); }
+.flare-btn--rounded.flare-btn--lg,
+.flare-btn--rounded.flare-btn--xl { border-radius: var(--flare-shape-extra-large); }
+
+.flare-btn--circular { border-radius: var(--flare-shape-full, 9999px); }
+
+.flare-btn--square { border-radius: var(--flare-shape-none, 0); }
+
+/* ==========================================================================
+   PRESS MORPH (MD3 Expressive, opt-in via .flare-btn--morph): the corner radius
+   animates while pressed. Scoped to this class only - the base .flare-btn keeps
+   border-radius out of its transition so theme switches never morph geometry.
+   The full base transition list is re-declared here (not appended) plus border-radius.
+   ========================================================================== */
+.flare-btn--morph {
+    transition: box-shadow var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
+                background-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
+                border-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
+                color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
+                outline-color var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-decelerate, ease-out),
+                border-radius var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-standard);
+}
+/* Default/Circular press toward a rounded rectangle; Rounded presses to a tighter
+   corner; Square stays sharp (no geometry morph for the hard-edged shape). */
+.flare-btn--morph:active { border-radius: var(--flare-shape-large); }
+.flare-btn--morph.flare-btn--rounded:active { border-radius: var(--flare-shape-small); }
+.flare-btn--morph.flare-btn--square:active { border-radius: var(--flare-shape-none, 0); }
+
+@media (prefers-reduced-motion: reduce) {
+    .flare-btn--morph { transition-duration: 0s; }
+}
+
+.flare-btn__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--_flare-icon-size, 1.125rem);
+    height: var(--_flare-icon-size, 1.125rem);
+    flex-shrink: 0;
+}
+
+/* Button label: never wraps inside the button. */
+.flare-btn__label {
+    white-space: nowrap;
+}
+
+/* Optically tuck each icon toward the button edge on its side (MD3 gives the icon side
+   slightly less padding than the label side). */
+.flare-btn__icon--leading {
+    margin-inline-start: calc(-1 * var(--flare-spacing-2, 0.25rem));
+}
+.flare-btn__icon--trailing {
+    margin-inline-end: calc(-1 * var(--flare-spacing-2, 0.25rem));
+}
+
+/* ==========================================================================
+   ICON-ONLY: иконка без текста -> квадрат (ширина = высоте), без боковых
+   отступов и зазора. Радиус наследуется от размера (full -> круг в MD3,
+   rect-радиус -> скруглённый квадрат во Fluent). Размер берётся из ButtonTokens.
+   ========================================================================== */
+.flare-btn--icon-only {
+    --_flare-btn-padding-inline: 0;
+    padding-inline: 0;
+    gap: 0;
+    width: var(--_flare-btn-height, var(--flare-btn-height-md, 3rem));
+    aspect-ratio: 1 / 1;
+}
+
+.flare-btn--loading {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.flare-btn__spinner {
+    width: var(--_flare-icon-size, 1.125rem);
+    height: var(--_flare-icon-size, 1.125rem);
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: flare-spin 0.7s linear infinite;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+@keyframes flare-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   ЦВЕТ (параметр Color: string)
+   Цвет больше НЕ задаётся классами. Параметр Color (любой CSS-цвет или Flare-роль
+   вида var(--flare-color-primary)) выставляет 7 локальных токенов инлайном на
+   элементе; для роли парные on-/-container выводятся автоматически. Варианты выше
+   красят только через эти токены - отдельных правил под каждый цвет не нужно.
+   ========================================================================== */

@@ -1,0 +1,15 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.5rem">
+    Columns defined with <code>&lt;FlareColumn&gt;</code> markup - supports Sortable, Filterable, Frozen, and more.
+</FlareText>
+
+<FlareDataGrid Items="@DatagridData._people" PageSize="6">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" Filterable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" Filterable="true"
+                     FilterType="ColumnFilterType.Select" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Sortable="true" Width="90px" />
+    </Columns>
+</FlareDataGrid>

@@ -1,0 +1,12 @@
+@page "/components/drawer"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Drawer_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDrawer">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Drawer_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Drawer_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Drawer_Basic" DemoType="typeof(Examples.DrawerBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Drawer_Anchors" DemoType="typeof(Examples.DrawerAnchorsDemo)" />

@@ -1,0 +1,27 @@
+@* Pinned rows stay visible above/below the scrolling data, outside sorting/filtering/paging -
+   ideal for a highlighted record on top and a totals row at the bottom. *@
+
+<FlareDataGrid Items="@_products" PageSize="5"
+               PinnedTopRows="@_featured" PinnedBottomRows="@_totals">
+    <Columns>
+        <FlareColumn Title="Product" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Units" Field="@(p => p.Units)" Type="ColumnDataType.Number" Format="N0" Sortable="true" />
+        <FlareColumn Title="Revenue" Field="@(p => p.Revenue)" Type="ColumnDataType.Number" Format="N0" Sortable="true" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private sealed record Product(string Name, int Units, decimal Revenue);
+
+    private readonly List<Product> _products =
+    [
+        new("Laptops", 1200, 1_440_000), new("Monitors", 860, 215_000),
+        new("Keyboards", 430, 25_800), new("Mice", 380, 11_400),
+        new("Webcams", 210, 14_700), new("Headsets", 540, 43_200),
+        new("Docks", 150, 30_000), new("Cables", 980, 9_800),
+    ];
+
+    private readonly List<Product> _featured = [new("** Best seller: Laptops **", 1200, 1_440_000)];
+
+    private List<Product> _totals => [new("TOTAL", _products.Sum(p => p.Units), _products.Sum(p => p.Revenue))];
+}

@@ -1,0 +1,54 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+
+@if (Open)
+{
+    <div class="@BuildCssClass(_absoluteClass)"
+         style="@_style"
+         @onclick="HandleClickAsync"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    /// <summary>Controls whether the overlay is visible.</summary>
+    [Parameter] public bool              Open        { get; set; }
+    /// <summary>Optional content rendered on top of the overlay.</summary>
+    [Parameter] public RenderFragment?   ChildContent { get; set; }
+    /// <summary>Callback raised when the overlay surface is clicked.</summary>
+    [Parameter] public EventCallback     OnClick     { get; set; }
+    /// <summary>Uses absolute positioning instead of fixed.</summary>
+    [Parameter] public bool              Absolute    { get; set; }
+    /// <summary>Renders a dark semi-transparent background.</summary>
+    [Parameter] public bool              Dark        { get; set; } = true;
+    /// <summary>Background opacity value between 0 and 1.</summary>
+    [Parameter] public double            Opacity     { get; set; } = 0.5;
+    /// <summary>CSS z-index applied to the overlay element.</summary>
+    [Parameter] public int               ZIndex      { get; set; } = 1200;
+
+    protected override string ComponentCssClass => Css.Classes.Overlay.Root;
+
+    private string _absoluteClass => Absolute ? Css.Classes.Overlay.Absolute : string.Empty;
+
+    private string _style
+    {
+        get
+        {
+            var parts = new List<string>
+            {
+                $"z-index:{ZIndex}",
+                $"opacity:{Opacity.ToString("F2", CultureInfo.InvariantCulture)}",
+            };
+            if (!Dark) parts.Add("background:transparent");
+            if (Style is not null) parts.Add(Style);
+            return string.Join(';', parts);
+        }
+    }
+
+    private async Task HandleClickAsync()
+    {
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync();
+    }
+}

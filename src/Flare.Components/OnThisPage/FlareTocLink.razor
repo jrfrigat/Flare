@@ -1,0 +1,27 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<li class="@Css.Classes.TableOfContents.Item" style="@($"--flare-toc-depth:{Math.Max(0, Level)}")">
+    <a class="@BuildCssClass(_activeClass)"
+       href="@Href"
+       aria-current="@(Active ? "true" : null)"
+       @attributes="AdditionalAttributes">@ChildContent</a>
+</li>
+
+@code {
+    /// <summary>Anchor target, e.g. <c>"#section"</c> or a full path plus fragment.</summary>
+    [Parameter] public string? Href { get; set; }
+
+    /// <summary>Marks this link as the active (current) entry.</summary>
+    [Parameter] public bool Active { get; set; }
+
+    /// <summary>Indent depth (0 = top level). Each level adds one indent step.</summary>
+    [Parameter] public int Level { get; set; }
+
+    /// <summary>Link text/content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.TableOfContents.Link;
+
+    private string? _activeClass => Active ? Css.Classes.TableOfContents.LinkActive : null;
+}

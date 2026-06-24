@@ -1,0 +1,112 @@
+@namespace Flare.Components
+@inject IMessageBoxService MessageBoxService
+@implements IDisposable
+
+@if (MessageBoxService.Current is { } req)
+{
+    <div class="@Css.Classes.Msgbox.Scrim" @onclick="@(req.Kind == MessageBoxKind.Alert ? Confirm : Cancel)">
+        <div class="@Css.Classes.Msgbox.Root" @onclick:stopPropagation="true"
+             @onkeydown="OnKeyDown"
+             role="@(req.Kind == MessageBoxKind.Alert ? "alertdialog" : "dialog")"
+             aria-modal="true"
+             aria-labelledby="@_titleId"
+             aria-describedby="@_contentId"
+             tabindex="-1"
+             @ref="_dialogEl">
+            <div class="@Css.Classes.Msgbox.Header">
+                <h2 id="@_titleId" class="@Css.Classes.Msgbox.Title">@req.Title</h2>
+            </div>
+            <div class="@Css.Classes.Msgbox.Content" id="@_contentId">
+                @if (req.Kind == MessageBoxKind.Prompt)
+                {
+                    @if (!string.IsNullOrEmpty(req.Label))
+                    {
+                        <label class="@Css.Classes.Msgbox.Label" for="@_inputId">@req.Label</label>
+                    }
+                    <input id="@_inputId"
+                           class="@Css.Classes.Msgbox.Input"
+                           type="text"
+                           @bind="_value"
+                           @bind:event="oninput"
+                           @onkeydown="OnInputKeyDown"
+                           placeholder="@req.DefaultValue" />
+                }
+                else if (!string.IsNullOrEmpty(req.Label))
+                {
+                    <p class="@Css.Classes.Msgbox.Message">@req.Label</p>
+                }
+            </div>
+            <div class="@Css.Classes.Msgbox.Actions">
+                @if (req.Kind != MessageBoxKind.Alert)
+                {
+                    <button class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnCancel" @onclick="Cancel">@req.CancelLabel</button>
+                }
+                <button class="@Css.Classes.Msgbox.Btn @Css.Classes.Msgbox.BtnConfirm" @onclick="Confirm">@req.ConfirmLabel</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string _value = "";
+
+    // Unique IDs prevent aria attribute clashes when multiple dialogs exist in the DOM.
+    private readonly string _instanceId = Guid.NewGuid().ToString("N")[..8];
+    private string _titleId  => $"flare-mb-title-{_instanceId}";
+    private string _contentId => $"flare-mb-content-{_instanceId}";
+    private string _inputId  => $"flare-mb-input-{_instanceId}";
+
+    private ElementReference _dialogEl;
+
+    protected override void OnInitialized()
+    {
+        MessageBoxService.OnStateChanged += HandleStateChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (MessageBoxService.Current is { } req)
+            _value = req.DefaultValue;
+    }
+
+    private void HandleStateChanged()
+    {
+        if (MessageBoxService.Current is { } req)
+            _value = req.DefaultValue;
+        InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (MessageBoxService.Current is not null)
+        {
+            try { await _dialogEl.FocusAsync(); } catch { }
+        }
+    }
+
+    private void Confirm() => MessageBoxService.Respond(_value.Length > 0 ? _value : "confirmed");
+    private void Cancel()  => MessageBoxService.Respond(null);
+
+    // Keyboard handler on the dialog container (catches Escape for close).
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            if (MessageBoxService.Current?.Kind == MessageBoxKind.Alert)
+                Confirm(); // Alert has no Cancel - Escape dismisses it via Confirm.
+            else
+                Cancel();
+        }
+    }
+
+    // Keyboard handler on the prompt input (Enter to confirm).
+    private void OnInputKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") Confirm();
+    }
+
+    public void Dispose()
+    {
+        MessageBoxService.OnStateChanged -= HandleStateChanged;
+    }
+}

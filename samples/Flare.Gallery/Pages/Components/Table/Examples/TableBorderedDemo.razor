@@ -1,0 +1,25 @@
+<FlareStack Style="padding:0;overflow:hidden;">
+    <FlareTable TItem="Person" Bordered="true">
+        <thead>
+            <tr><th>Name</th><th>Role</th><th>Score</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var p in _people)
+            {
+                <tr><td>@p.Name</td><td>@p.Role</td><td>@p.Score</td></tr>
+            }
+        </tbody>
+    </FlareTable>
+</FlareStack>
+
+@code {
+    private sealed record Person(string Name, string Role, int Score);
+
+    private readonly List<Person> _people =
+    [
+        new("Alice Johnson",   "Engineer",  92),
+        new("Bob Smith",       "Designer",  78),
+        new("Carol Williams",  "Manager",   85),
+        new("David Lee",       "Engineer",  91),
+    ];
+}

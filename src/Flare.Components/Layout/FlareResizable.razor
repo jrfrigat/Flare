@@ -1,0 +1,84 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<div class="@BuildCssClass() @Css.Classes.Resizable.Root flare-resizable--@Edge.ToString().ToLower()"
+     style="@BuildStyle()"
+     @attributes="AdditionalAttributes"
+     @ref="_container">
+    @ChildContent
+    <div class="@Css.Classes.Resizable.Handle" @ref="_handle"></div>
+</div>
+
+@code {
+    public enum ResizableEdge { Right, Bottom, Left, Top }
+
+    /// <summary>Content rendered inside the resizable container.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public ResizableEdge Edge { get; set; } = ResizableEdge.Right;
+    [Parameter] public string? InitialSize { get; set; }
+    [Parameter] public string? MinSize { get; set; }
+    [Parameter] public string? MaxSize { get; set; }
+    [Parameter] public EventCallback<string> OnResized { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Resizable.Root;
+
+    private ElementReference _container;
+    private ElementReference _handle;
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<FlareResizable>? _dotNetRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                _module ??= await JS.InvokeAsync<IJSObjectReference>(
+                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                await _module.InvokeVoidAsync("registerResizeHandle",
+                    _container, _handle, Edge.ToString().ToLower(),
+                    MinSize, MaxSize, _dotNetRef);
+            }
+            catch (InvalidOperationException) { }
+            catch (JSException) { }
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnResizedCallback(string newSize)
+    {
+        await OnResized.InvokeAsync(newSize);
+    }
+
+    private string BuildStyle()
+    {
+        var parts = new List<string>();
+        if (!string.IsNullOrEmpty(InitialSize))
+        {
+            // GS-3: sanitize user-supplied CSS value before injection
+            var safeSize = Flare.Components.Security.CssValidator.StripDangerous(InitialSize);
+            if (!string.IsNullOrEmpty(safeSize))
+            {
+                var prop = Edge is ResizableEdge.Right or ResizableEdge.Left ? "width" : "height";
+                parts.Add($"{prop}:{safeSize}");
+            }
+        }
+        if (!string.IsNullOrEmpty(Style)) parts.Add(Style);
+        return string.Join(";", parts);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+                await _module.InvokeVoidAsync("removeResizeHandle", _container);
+        }
+        catch { }
+        _dotNetRef?.Dispose();
+        if (_module is not null) await _module.DisposeAsync();
+    }
+}

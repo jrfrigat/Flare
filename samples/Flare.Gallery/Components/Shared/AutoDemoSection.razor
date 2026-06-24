@@ -1,0 +1,57 @@
+﻿@using Flare.Gallery.Components.Shared
+
+<DemoSection Title="@Title" Description="@Description" Tabs="@_tabs" AnchorId="@_anchorId"
+            MaxWidth="@MaxWidth" Height="@Height" MinHeight="@MinHeight" MaxHeight="@MaxHeight">
+    <DemoContent>
+        @if (DemoType is not null)
+        {
+            <DynamicComponent Type="DemoType" />
+        }
+    </DemoContent>
+</DemoSection>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public Type? DemoType { get; set; }
+
+    /// <summary>Maximum reading width of the section. Default Lg (1280px); Full for wide demos.</summary>
+    [Parameter] public ContainerMaxWidth MaxWidth { get; set; } = ContainerMaxWidth.Lg;
+    /// <summary>Preview surface height (CSS length). Unset = content height.</summary>
+    [Parameter] public string? Height { get; set; }
+    /// <summary>Minimum preview height.</summary>
+    [Parameter] public string? MinHeight { get; set; }
+    /// <summary>Maximum preview height.</summary>
+    [Parameter] public string? MaxHeight { get; set; }
+
+    private List<CodeTab> _tabs = new();
+
+    // ASCII, language-independent anchor derived from the (English) demo type name, e.g.
+    // "TabsVariantsDemo" -> "tabs-variants". Unique per page and stable across UI languages, so the
+    // fragment is not percent-encoded (which broke native scroll for Cyrillic title slugs).
+    private string? _anchorId => DemoType is null ? null : Kebab(StripDemo(DemoType.Name));
+
+    private static string StripDemo(string name) =>
+        name.EndsWith("Demo", StringComparison.Ordinal) ? name[..^4] : name;
+
+    private static string Kebab(string s)
+    {
+        var sb = new System.Text.StringBuilder(s.Length + 8);
+        for (var i = 0; i < s.Length; i++)
+        {
+            var c = s[i];
+            if (char.IsUpper(c)) { if (i > 0) sb.Append('-'); sb.Append(char.ToLowerInvariant(c)); }
+            else sb.Append(c);
+        }
+        return sb.ToString();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (DemoType is null) return;
+
+        var componentName = DemoType.Name;
+
+        _tabs = DemoCodeRegistry.GetTabs(componentName);
+    }
+}

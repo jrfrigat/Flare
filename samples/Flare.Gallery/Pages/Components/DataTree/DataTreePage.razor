@@ -1,0 +1,12 @@
+@page "/components/data-tree"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.DataTree_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDataTree">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.DataTree_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.DataTree_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.DataTree_LazyLoading" DemoType="typeof(Examples.DataTreeLazyLoadingDemo)" />
+<AutoDemoSection Title="@GalleryStrings.DataTree_SimulatedAsync" DemoType="typeof(Examples.DataTreeSimulatedAsyncDemo)" />

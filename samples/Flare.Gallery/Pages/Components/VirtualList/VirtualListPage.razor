@@ -1,0 +1,11 @@
+@page "/components/virtual-list"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.VirtualList_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareList">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.VirtualList_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.VirtualList_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.VirtualList_VirtualList" DemoType="typeof(Examples.VirtualListBasicDemo)" />

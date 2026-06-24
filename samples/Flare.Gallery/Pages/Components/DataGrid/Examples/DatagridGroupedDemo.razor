@@ -1,0 +1,10 @@
+<FlareDataGrid Items="@DatagridData._people" PageSize="20">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+    <Grouping>
+        <DataGridGroup Key="Role" Selector="@(p => p.Role)" />
+    </Grouping>
+</FlareDataGrid>

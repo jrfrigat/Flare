@@ -1,0 +1,133 @@
+.flare-calendar {
+    background: var(--flare-color-surface);
+    border-radius: var(--flare-shape-medium);
+    border: 1px solid var(--flare-color-outline-variant);
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Top navigation bar (prev / next month). */
+.flare-calendar__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+    background: var(--flare-color-surface-container-low);
+}
+
+/* Months wrapper - lays month panels side by side when MonthCount > 1. */
+.flare-calendar__months {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flare-calendar__month { flex: 1 1 0; min-width: 16rem; }
+
+/* Multi-month mode lifts the single-month width cap. */
+.flare-calendar--multi { max-width: none; }
+.flare-calendar--multi .flare-calendar__month + .flare-calendar__month {
+    border-left: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-calendar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+    background: var(--flare-color-surface-container-low);
+}
+
+.flare-calendar__nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: transparent;
+    border-radius: var(--flare-shape-full);
+    cursor: pointer;
+    color: var(--flare-color-on-surface);
+    transition: background var(--flare-motion-duration-short2, 150ms);
+}
+
+.flare-calendar__nav-btn:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent);
+}
+
+.flare-calendar__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-1, 0.125rem);
+}
+
+.flare-calendar__day-label {
+    text-align: center;
+    font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+    color: var(--flare-color-on-surface-variant);
+    padding: var(--flare-spacing-3, 0.375rem) 0;
+    font-weight: 600;
+}
+
+.flare-calendar__cell {
+    min-height: 3rem;
+    padding: var(--flare-spacing-2, 0.25rem);
+    border-radius: var(--flare-shape-extra-small);
+    cursor: pointer;
+    transition: background var(--flare-motion-duration-short2, 150ms);
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-1, 0.125rem);
+}
+
+.flare-calendar__cell:hover:not(.flare-calendar__cell--other) {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+}
+
+.flare-calendar__cell--other {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+}
+
+.flare-calendar__cell--today .flare-calendar__day-num {
+    background: var(--flare-color-primary);
+    color: var(--flare-color-on-primary);
+    border-radius: var(--flare-shape-full);
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.flare-calendar__cell--selected {
+    background: color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface));
+}
+
+.flare-calendar__day-num {
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    color: var(--flare-color-on-surface);
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flare-calendar__event {
+    /* Tonal: role class sets --fc-container/--fc-on-container; custom inlines them. */
+    background: var(--fc-container, var(--flare-color-primary-container));
+    color: var(--fc-on-container, var(--flare-color-on-primary-container));
+    border-radius: var(--flare-shape-extra-small, 2px);
+    font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+    padding: 0.0625rem var(--flare-spacing-2, 0.25rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

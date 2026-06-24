@@ -1,0 +1,42 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareDateTimePicker @bind-Value="_value" Label="Default (Auto layout)"
+                         Placeholder="Select date and time"
+                         Min="_min" Max="_max"
+                         HelperText="Auto: panes on wide viewports, tabs on narrow. Type 01.06.2026 14:30"
+                         Style="max-width:24rem;" />
+
+    <FlareDateTimePicker @bind-Value="_tabsDropdown" Label="Variant = Tabs, Dropdown time"
+                         Mode="DateTimeVariant.Tabs" TimeVariant="TimePickerVariant.Dropdown"
+                         HelperText="Switchable tabs; time as number fields"
+                         Style="max-width:24rem;" />
+
+    <FlareDateTimePicker @bind-Value="_tabsDial" Label="Variant = Tabs, Dial time"
+                         Mode="DateTimeVariant.Tabs" TimeVariant="TimePickerVariant.Dial"
+                         HelperText="Switchable tabs; time as MD3 clock"
+                         Style="max-width:24rem;" />
+
+    <FlareDateTimePicker @bind-Value="_panelsDial" Label="Variant = Panels, Dial time"
+                         Mode="DateTimeVariant.Panels" TimeVariant="TimePickerVariant.Dial"
+                         HelperText="Calendar + clock side by side (MD3 gap token)"
+                         Style="max-width:24rem;" />
+
+    <FlareDateTimePicker @bind-Value="_panelsDropdown" Label="Variant = Panels, Dropdown time"
+                         Mode="DateTimeVariant.Panels" TimeVariant="TimePickerVariant.Dropdown"
+                         HelperText="Calendar + number fields side by side"
+                         Style="max-width:24rem;" />
+
+    <FlareDateTimePicker Label="Disabled" Disabled Style="max-width:24rem;" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Selected: @(_value?.ToString("yyyy-MM-dd HH:mm") ?? "None")
+</FlareText>
+
+@code {
+    private DateTimeOffset? _value;
+    private DateTimeOffset? _tabsDropdown;
+    private DateTimeOffset? _tabsDial;
+    private DateTimeOffset? _panelsDial;
+    private DateTimeOffset? _panelsDropdown;
+    private readonly DateTimeOffset _min = DateTimeOffset.Now;
+    private readonly DateTimeOffset _max = DateTimeOffset.Now.AddDays(30);
+}

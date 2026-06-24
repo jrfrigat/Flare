@@ -1,0 +1,26 @@
+{
+  "name": "Flare - Blazor Component Library",
+  "short_name": "Flare",
+  "id": "./",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#fffbfe",
+  "theme_color": "#6750a4",
+  "description": "Interactive gallery for the Flare Blazor component library - Material Design 3 and Fluent UI 2 themes.",
+  "prefer_related_applications": false,
+  "categories": ["developer tools", "design"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}

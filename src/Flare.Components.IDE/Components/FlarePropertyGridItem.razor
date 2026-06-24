@@ -1,0 +1,32 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* One row of a FlarePropertyGrid: a property name and its value. Provide a plain Value string, or
+   ChildContent for a custom editor (e.g. a FlareField / FlareSelect / FlareCheckbox). *@
+<div class="@Css.Classes.Ide.PropGrid.Row" role="row" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.PropGrid.Name" role="cell" title="@Name">@Name</div>
+    <div class="@Css.Classes.Ide.PropGrid.Value" role="cell">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @Value
+        }
+    </div>
+</div>
+
+@code {
+    /// <summary>The property name shown in the left column.</summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>The property value shown when no <see cref="ChildContent"/> editor is supplied.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>A custom value editor (overrides <see cref="Value"/>), e.g. an input or select.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.PropGrid.Row;
+}

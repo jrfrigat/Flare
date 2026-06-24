@@ -1,0 +1,136 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Linq.Expressions
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="@BuildCssClass(_disabledClass, _readonlyClass, _colorClass, _sizeClass)"
+     role="group"
+     aria-label="@(Label ?? FlareStrings.Rating_Group)"
+     style="@_inlineStyle"
+     @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span class="@Css.Classes.Rating.Label">@Label</span>
+    }
+    <div class="@Css.Classes.Rating.Stars">
+        @for (var i = 1; i <= Max; i++)
+        {
+            var star = i;
+            var fill = _fillState(star);
+            <span class="@Css.Classes.Rating.StarWrap">
+                <button type="button"
+                        class="@Css.Classes.Rating.Star @(_starClass(fill))"
+                        aria-label="@(string.Format(FlareStrings.Rating_Star, star, Max))"
+                        disabled="@(Disabled || ReadOnly)"
+                        @onclick="@(() => SetValue(star))"
+                        @onmouseenter="@(() => SetHover(star))"
+                        @onmouseleave="@(() => SetHover(0))">
+                    @if (StarTemplate is not null)
+                    {
+                        @StarTemplate(fill == StarFill.Full)
+                    }
+                    else
+                    {
+                        <span>★</span>
+                    }
+                </button>
+                @if (AllowHalf && !Disabled && !ReadOnly)
+                {
+                    <span class="@Css.Classes.Rating.Half @Css.Classes.Rating.HalfLeft"
+                          @onclick="@(() => SetValue(star - 0.5))"
+                          @onmouseenter="@(() => SetHover(star - 0.5))"
+                          @onmouseleave="@(() => SetHover(0))"></span>
+                    <span class="@Css.Classes.Rating.Half @Css.Classes.Rating.HalfRight"
+                          @onclick="@(() => SetValue(star))"
+                          @onmouseenter="@(() => SetHover(star))"
+                          @onmouseleave="@(() => SetHover(0))"></span>
+                }
+            </span>
+        }
+    </div>
+</div>
+
+@code {
+    /// <summary>Currently selected star rating. Supports fractional values (e.g. 2.5) when <see cref="AllowHalf"/> is true.</summary>
+    [Parameter] public double Value { get; set; }
+    /// <summary>Callback invoked when the rating changes.</summary>
+    [Parameter] public EventCallback<double> ValueChanged { get; set; }
+    /// <summary>Total number of stars to display.</summary>
+    [Parameter] public int Max { get; set; } = 5;
+    /// <summary>Allows selecting half-star (0.5) increments.</summary>
+    [Parameter] public bool AllowHalf { get; set; }
+    /// <summary>Accessible label for the rating group.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Prevents changing the rating when true.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+    /// <summary>Disables all star buttons when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<double>>? For { get; set; }
+    /// <summary>Semantic color applied to the filled stars.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Star size (Xs..Xl). Medium is the default 1.5rem glyph.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Custom template for each star icon. Receives true when the star is filled.</summary>
+    [Parameter] public RenderFragment<bool>? StarTemplate { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Rating.Root;
+
+    private double _hover;
+    private FieldIdentifier _fieldId;
+
+    private enum StarFill { Empty, Half, Full }
+
+    private string _disabledClass => Disabled ? Css.Classes.Rating.Disabled : string.Empty;
+    private string _readonlyClass => ReadOnly ? Css.Classes.Rating.Readonly : string.Empty;
+    // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main.
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Rating.SizeXs,
+        FieldSize.Sm => Css.Classes.Rating.SizeSm,
+        FieldSize.Lg => Css.Classes.Rating.SizeLg,
+        FieldSize.Xl => Css.Classes.Rating.SizeXl,
+        _ => string.Empty,
+    };
+    private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+
+    private StarFill _fillState(int star)
+    {
+        var effective = _hover > 0 ? _hover : Value;
+        if (effective >= star) return StarFill.Full;
+        if (AllowHalf && effective >= star - 0.5) return StarFill.Half;
+        return StarFill.Empty;
+    }
+
+    private string _starClass(StarFill fill) => fill switch
+    {
+        StarFill.Full => Css.Classes.Rating.Filled,
+        StarFill.Half => Css.Classes.Rating.StarHalf,
+        _             => string.Empty,
+    };
+
+    private void SetHover(double v)
+    {
+        if (Disabled || ReadOnly) return;
+        _hover = v;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+    }
+
+    private async Task SetValue(double v)
+    {
+        if (Disabled || ReadOnly) return;
+        Value = v;
+        await ValueChanged.InvokeAsync(v);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+}

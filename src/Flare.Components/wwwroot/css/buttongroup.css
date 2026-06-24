@@ -1,0 +1,123 @@
+.flare-btn-group {
+    display: inline-flex;
+    box-sizing: border-box;
+}
+
+.flare-btn-group--full {
+    display: flex;
+    width: 100%;
+}
+
+.flare-btn-group--vertical {
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   ШВЫ И РАЗДЕЛИТЕЛИ
+   ========================================================================== */
+
+/* Горизонтальная группа: накладываем кнопки друг на друга по горизонтали на 1px */
+.flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
+    margin-left: -1px;
+    border-left: 1px solid var(--flare-color-outline-variant, var(--flare-color-outline, color-mix(in srgb, currentColor 30%, transparent)));
+}
+
+/* Вертикальная группа: накладываем по вертикали */
+.flare-btn-group--vertical .flare-btn:not(:first-child) {
+    margin-top: -1px;
+    border-top: 1px solid var(--flare-color-outline-variant, var(--flare-color-outline, color-mix(in srgb, currentColor 30%, transparent)));
+}
+
+/* Кольцо фокуса/ховера поверх соседей, чтобы его не обрезала соседняя кнопка */
+.flare-btn-group .flare-btn:hover,
+.flare-btn-group .flare-btn:focus-visible {
+    z-index: 1;
+}
+
+/* ==========================================================================
+   ПОУГЛОВАЯ ПЕРЕЗАПИСЬ РАДИУСОВ
+   Группа управляет поугловыми токенами кнопки (--flare-btn-radius-{size}-{side}).
+   Кнопка читает переменные ТОЛЬКО своего размера, поэтому одно правило безопасно
+   задаёт сразу все 5 размеров. Горизонталь и вертикаль разделены через :not(),
+   чтобы правила не конфликтовали; одиночная кнопка получает обе стороны (first+last).
+   ========================================================================== */
+
+/* 1. Уплощаем ВСЕ углы у каждой кнопки группы (любой размер) */
+.flare-btn-group .flare-btn {
+    --flare-btn-radius-xs-top-left: 0px !important;
+    --flare-btn-radius-xs-top-right: 0px !important;
+    --flare-btn-radius-xs-bottom-right: 0px !important;
+    --flare-btn-radius-xs-bottom-left: 0px !important;
+    --flare-btn-radius-sm-top-left: 0px !important;
+    --flare-btn-radius-sm-top-right: 0px !important;
+    --flare-btn-radius-sm-bottom-right: 0px !important;
+    --flare-btn-radius-sm-bottom-left: 0px !important;
+    --flare-btn-radius-md-top-left: 0px !important;
+    --flare-btn-radius-md-top-right: 0px !important;
+    --flare-btn-radius-md-bottom-right: 0px !important;
+    --flare-btn-radius-md-bottom-left: 0px !important;
+    --flare-btn-radius-lg-top-left: 0px !important;
+    --flare-btn-radius-lg-top-right: 0px !important;
+    --flare-btn-radius-lg-bottom-right: 0px !important;
+    --flare-btn-radius-lg-bottom-left: 0px !important;
+    --flare-btn-radius-xl-top-left: 0px !important;
+    --flare-btn-radius-xl-top-right: 0px !important;
+    --flare-btn-radius-xl-bottom-right: 0px !important;
+    --flare-btn-radius-xl-bottom-left: 0px !important;
+}
+
+/* 2. ГОРИЗОНТАЛЬ - первая кнопка: округляем ЛЕВЫЕ углы по форме темы */
+.flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
+    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-sm-top-left: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-md-top-left: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-md-bottom-left: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-lg-top-left: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-xl-top-left: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large, 2rem) !important;
+}
+
+/* ГОРИЗОНТАЛЬ - последняя кнопка: округляем ПРАВЫЕ углы */
+.flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
+    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-sm-top-right: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-md-top-right: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-md-bottom-right: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-lg-top-right: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-xl-top-right: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large, 2rem) !important;
+}
+
+/* 3. ВЕРТИКАЛЬ - первая кнопка: округляем ВЕРХНИЕ углы */
+.flare-btn-group--vertical .flare-btn:first-child {
+    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-sm-top-left: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-sm-top-right: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-md-top-left: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-md-top-right: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-lg-top-left: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-lg-top-right: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-xl-top-left: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xl-top-right: var(--flare-shape-large, 2rem) !important;
+}
+
+/* ВЕРТИКАЛЬ - последняя кнопка: округляем НИЖНИЕ углы */
+.flare-btn-group--vertical .flare-btn:last-child {
+    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small, 1rem) !important;
+    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small, 1.25rem) !important;
+    --flare-btn-radius-md-bottom-left: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-md-bottom-right: var(--flare-shape-small, 1.5rem) !important;
+    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium, 1.75rem) !important;
+    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large, 2rem) !important;
+}

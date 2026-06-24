@@ -1,0 +1,37 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<nav class="@BuildCssClass(_noScrollbarClass, _railClass)" style="@Style"
+     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? (FlareStrings.Nav_Navigation) : AriaLabel)"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</nav>
+
+@code {
+    /// <summary>Navigation items rendered inside the menu.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Accessible label for the navigation landmark, forwarded as aria-label.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>
+    /// When true, the menu scrolls its own overflow vertically but the scrollbar is hidden
+    /// (scrolling still works via wheel/touch/keyboard). Useful inside a fixed-height drawer.
+    /// </summary>
+    [Parameter] public bool HideScrollbar { get; set; }
+    /// <summary>
+    /// Mini-rail mode: collapses every item to its icon only -- link/group text, the group
+    /// expand chevron and link badges are hidden and the icons are centered. When the menu is
+    /// inside a <c>FlareLayout</c> with <c>MiniRail</c>, this turns on automatically while the
+    /// drawer is collapsed, so no wiring is needed; set it explicitly to force the rail anywhere.
+    /// </summary>
+    [Parameter] public bool Rail { get; set; }
+
+    // Drives the rail automatically when the layout drawer is collapsed into its icon rail.
+    [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Navigation.NavMenu;
+
+    private bool _isRail => Rail || (Layout?.RailCollapsed ?? false);
+
+    private string _noScrollbarClass => HideScrollbar ? Css.Classes.Navigation.NavMenuNoScrollbar : string.Empty;
+    private string _railClass => _isRail ? Css.Classes.Navigation.NavMenuRail : string.Empty;
+}

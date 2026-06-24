@@ -1,0 +1,12 @@
+@page "/components/date-picker"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.DatePicker_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDatePicker">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.DatePicker_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.DatePicker_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.DatePicker_Basic" DemoType="typeof(Examples.DatePickerBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.DatePicker_Constraints" DemoType="typeof(Examples.DatePickerConstraintsDemo)" />

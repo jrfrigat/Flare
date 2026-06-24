@@ -1,0 +1,107 @@
+@* Requires interactive render mode (not compatible with static SSR). *@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+@if (_headings.Count > 0 || ShowWhenEmpty)
+{
+    @* The presentational block does the rendering; this component only feeds it scanned headings. *@
+    <FlareTableOfContents Title="@_title" Class="@Class" Style="@Style">
+        @foreach (var h in _headings)
+        {
+            <FlareTocLink Href="@($"{_basePath}#{h.Id}")"
+                          Active="@_activeIds.Contains(h.Id)"
+                          Level="@(h.Level - _baseLevel)">@h.Text</FlareTocLink>
+        }
+    </FlareTableOfContents>
+}
+
+@code {
+    /// <summary>Heading shown above the list. Defaults to a localized "On this page".</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>
+    /// CSS selector of the content container to scan for headings. Null (default) scans the whole
+    /// document. Point it at your article/main element to ignore headings elsewhere on the page.
+    /// </summary>
+    [Parameter] public string? Root { get; set; }
+
+    /// <summary>CSS selector for the headings to list. Default <c>"h2, h3"</c>.</summary>
+    [Parameter] public string HeadingSelector { get; set; } = "h2, h3";
+
+    /// <summary>
+    /// CSS selector of the scrollable ancestor used for the active-section highlight, when the content
+    /// scrolls inside a panel rather than the page. Null (default) observes the viewport.
+    /// </summary>
+    [Parameter] public string? ScrollRoot { get; set; }
+
+    /// <summary>When true the (empty) container still renders before any heading is found. Default false.</summary>
+    [Parameter] public bool ShowWhenEmpty { get; set; }
+
+    /// <summary>Raised whenever the set of currently-visible (active) heading ids changes.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<string>> ActiveIdsChanged { get; set; }
+
+    // Pure collector: it owns no presentation. All styling/tokens live in FlareTableOfContents.
+    protected override string ComponentCssClass => "";
+
+    private string _title => Title ?? FlareStrings.OnThisPage_Title;
+    // Anchor links target the current page path (not a bare "#id", which Blazor would resolve
+    // against the base href and treat as a navigation to the site root).
+    private string _basePath
+    {
+        get
+        {
+            var uri = Nav.Uri;
+            var hash = uri.IndexOf('#');
+            return hash >= 0 ? uri[..hash] : uri;
+        }
+    }
+    // Opaque key for the JS observer registry (JS never touches the element itself, only keys by it).
+    private readonly string _handle = Guid.NewGuid().ToString("N");
+    private DotNetObjectReference<FlareOnThisPage>? _objRef;
+    private IReadOnlyList<TocHeading> _headings = [];
+    private HashSet<string> _activeIds = [];
+    private int _baseLevel = 2;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            _objRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("FlareToc.init", _handle, _objRef, Root, HeadingSelector, ScrollRoot);
+        }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+    }
+
+    /// <summary>Invoked by JS with the headings discovered in the content root.</summary>
+    [JSInvokable]
+    public void SetHeadings(TocHeading[] headings)
+    {
+        _headings = headings;
+        _baseLevel = headings.Length > 0 ? headings.Min(h => h.Level) : 2;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>Invoked by JS with the ids of every heading currently visible on screen.</summary>
+    [JSInvokable]
+    public async Task SetActive(string[] ids)
+    {
+        if (_activeIds.SetEquals(ids)) return;
+        _activeIds = [.. ids];
+        await InvokeAsync(StateHasChanged);
+        if (ActiveIdsChanged.HasDelegate) await ActiveIdsChanged.InvokeAsync(ids);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try { await JS.InvokeVoidAsync("FlareToc.dispose", _handle); }
+        catch (InvalidOperationException) { }
+        catch (JSException) { }
+        _objRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

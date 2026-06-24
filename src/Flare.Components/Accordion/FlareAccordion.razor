@@ -1,0 +1,32 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <CascadingValue Value="@this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    /// <summary>Accordion panels rendered as children.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>When true, multiple panels can be expanded simultaneously.</summary>
+    [Parameter] public bool AllowMultiple { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Accordion.Root;
+
+    private FlareAccordionPanel? _expandedPanel;
+
+    internal void PanelExpanded(FlareAccordionPanel panel)
+    {
+        if (AllowMultiple) return;
+        if (_expandedPanel is not null && _expandedPanel != panel)
+            _expandedPanel.Collapse();
+        _expandedPanel = panel;
+    }
+
+    internal void PanelCollapsed(FlareAccordionPanel panel)
+    {
+        if (_expandedPanel == panel) _expandedPanel = null;
+    }
+}

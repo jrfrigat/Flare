@@ -1,0 +1,13 @@
+@page "/components/tree"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Tree_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTreeView">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Tree_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Tree_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Tree_Basic" DemoType="typeof(Examples.TreeDemo)" />
+<AutoDemoSection Title="Drag and Drop" DemoType="typeof(Examples.TreeDragDropDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tree_MultiSelect" DemoType="typeof(Examples.TreeMultiSelectDemo)" />

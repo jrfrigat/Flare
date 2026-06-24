@@ -1,0 +1,13 @@
+@page "/components/link"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Link_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareLink">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Link_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Link_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Link_Colors" DemoType="typeof(Examples.LinkColorsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Link_Underline" DemoType="typeof(Examples.LinkUnderlineDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Link_States" DemoType="typeof(Examples.LinkStatesDemo)" />

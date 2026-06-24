@@ -1,0 +1,127 @@
+@namespace Flare.Components
+@typeparam TModel where TModel : new()
+@inherits FlareComponentBase
+@using System.Reflection
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <EditForm Model="@Model" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        @foreach (var field in _fields)
+        {
+            <div class="@Css.Classes.Formbuilder.Field">
+                @RenderField(field)
+            </div>
+        }
+        <div class="@Css.Classes.Formbuilder.Actions">
+            <FlareButton Type="@ButtonType.Submit" Variant="ButtonVariant.Filled">@(SubmitLabel ?? FlareStrings.FormBuilder_Submit)</FlareButton>
+            @if (ShowReset)
+            {
+                <FlareButton Type="@ButtonType.Reset" Variant="ButtonVariant.Outlined" OnClick="ResetForm">@(ResetLabel ?? FlareStrings.FormBuilder_Reset)</FlareButton>
+            }
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    /// <summary>Model instance the form is bound to.</summary>
+    [Parameter, EditorRequired] public TModel Model { get; set; } = new();
+    /// <summary>Callback raised after the form passes validation.</summary>
+    [Parameter] public EventCallback<TModel> OnValidSubmit { get; set; }
+    /// <summary>Label text for the form submit button. When null, falls back to the localizer key FormBuilder_Submit.</summary>
+    [Parameter] public string? SubmitLabel { get; set; }
+    /// <summary>Label text for the form reset button. When null, falls back to the localizer key FormBuilder_Reset.</summary>
+    [Parameter] public string? ResetLabel { get; set; }
+    /// <summary>Shows a reset button alongside the submit button.</summary>
+    [Parameter] public bool ShowReset { get; set; } = true;
+
+    protected override string ComponentCssClass => Css.Classes.Formbuilder.Root;
+
+    private IReadOnlyList<FormFieldMeta> _fields = [];
+
+    protected override void OnInitialized()
+    {
+        _fields = FormFieldMetaCache.GetOrBuild(typeof(TModel), BuildFields);
+    }
+
+    private static IReadOnlyList<FormFieldMeta> BuildFields(Type modelType)
+    {
+        return modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Select(p =>
+            {
+                var attr = p.GetCustomAttribute<FlareFormFieldAttribute>();
+                if (attr?.Ignore == true) return null;
+                var label = attr?.Label ?? SplitCamelCase(p.Name);
+                var placeholder = attr?.Placeholder ?? "";
+                var order = attr?.Order ?? 0;
+                var fieldType = GetFieldType(p.PropertyType);
+                return new FormFieldMeta { Property = p, Label = label, Placeholder = placeholder, Order = order, FieldType = fieldType };
+            })
+            .Where(f => f is not null)
+            .OrderBy(f => f!.Order)
+            .ThenBy(f => f!.Label)
+            .Cast<FormFieldMeta>()
+            .ToList();
+    }
+
+    private static FormFieldType GetFieldType(Type t)
+    {
+        var underlying = Nullable.GetUnderlyingType(t) ?? t;
+        if (underlying == typeof(bool)) return FormFieldType.Bool;
+        if (underlying == typeof(DateTime) || underlying == typeof(DateOnly)) return FormFieldType.Date;
+        if (underlying.IsEnum) return FormFieldType.Enum;
+        if (underlying == typeof(int) || underlying == typeof(long) || underlying == typeof(double) || underlying == typeof(float) || underlying == typeof(decimal))
+            return FormFieldType.Number;
+        return FormFieldType.Text;
+    }
+
+    private static string SplitCamelCase(string name)
+    {
+        var sb = new System.Text.StringBuilder();
+        foreach (var ch in name)
+        {
+            if (char.IsUpper(ch) && sb.Length > 0) sb.Append(' ');
+            sb.Append(ch);
+        }
+        return sb.ToString();
+    }
+
+    private RenderFragment RenderField(FormFieldMeta field) => builder =>
+    {
+        var value = field.Property.GetValue(Model);
+        switch (field.FieldType)
+        {
+            case FormFieldType.Bool:
+                builder.OpenComponent<FlareCheckbox>(0);
+                builder.AddAttribute(1, "Label", field.Label);
+                builder.AddAttribute(2, "Value", (bool?)(bool)(value ?? false));
+                builder.AddAttribute(3, "ValueChanged", EventCallback.Factory.Create<bool?>(this, v =>
+                {
+                    field.Property.SetValue(Model, v ?? false);
+                }));
+                builder.CloseComponent();
+                break;
+            default:
+                builder.OpenComponent<FlareField<string>>(0);
+                builder.AddAttribute(1, "Label", field.Label);
+                builder.AddAttribute(2, "Placeholder", field.Placeholder);
+                builder.AddAttribute(3, "Value", value?.ToString() ?? "");
+                builder.AddAttribute(4, "ValueChanged", EventCallback.Factory.Create<string>(this, v =>
+                {
+                    try { field.Property.SetValue(Model, Convert.ChangeType(v, field.Property.PropertyType)); } catch { }
+                }));
+                builder.CloseComponent();
+                break;
+        }
+    };
+
+    private async Task HandleValidSubmit()
+    {
+        await OnValidSubmit.InvokeAsync(Model);
+    }
+
+    private void ResetForm()
+    {
+        Model = new TModel();
+        // _fields is cached per type - no need to rebuild after reset
+    }
+}

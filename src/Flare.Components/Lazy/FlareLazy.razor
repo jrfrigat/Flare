@@ -1,0 +1,114 @@
+@* Requires interactive render mode (not compatible with static SSR). *@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+
+<div @ref="_el" class="@BuildCssClass()" style="@_style" @attributes="AdditionalAttributes">
+    @if (_revealed)
+    {
+        @ChildContent
+    }
+    else
+    {
+        @Placeholder
+    }
+</div>
+
+@code {
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    /// <summary>Content that is only rendered once this element scrolls near the viewport.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional content shown in place of <see cref="ChildContent"/> until it is revealed
+    /// (e.g. a <c>FlareSkeleton</c>). When unset the wrapper is empty until reveal; combine with
+    /// <see cref="MinHeight"/> so the page reserves space and the observer fires progressively.
+    /// </summary>
+    [Parameter] public RenderFragment? Placeholder { get; set; }
+
+    /// <summary>
+    /// IntersectionObserver <c>rootMargin</c> (CSS margin shorthand). Positive values reveal the
+    /// content before it is actually on screen for a seamless scroll. Default "200px".
+    /// </summary>
+    [Parameter] public string RootMargin { get; set; } = "200px";
+
+    /// <summary>
+    /// Minimum height (any CSS length) the wrapper reserves while the content is hidden, so the
+    /// layout does not collapse before reveal. Dropped once <see cref="ChildContent"/> is shown
+    /// (unless <see cref="KeepRendered"/> is false). Ignored when a <see cref="Placeholder"/> sizes itself.
+    /// </summary>
+    [Parameter] public string? MinHeight { get; set; }
+
+    /// <summary>
+    /// When true (default) the content stays rendered once revealed -- the cheap, flicker-free mode
+    /// that simply defers the initial mount. When false the content is unmounted again whenever it
+    /// scrolls out of view, capping memory for very long pages at the cost of re-mounting (and
+    /// losing transient UI state) on each pass.
+    /// </summary>
+    [Parameter] public bool KeepRendered { get; set; } = true;
+
+    /// <summary>Raised the first time (and, when <see cref="KeepRendered"/> is false, each time) the content becomes visible.</summary>
+    [Parameter] public EventCallback OnRevealed { get; set; }
+
+    /// <summary>
+    /// CSS selector of the scrollable ancestor to watch instead of the browser viewport. Resolved
+    /// with <c>element.closest(selector)</c>, so it works when the content lives inside an
+    /// <c>overflow:auto</c> panel (e.g. a side editor or dialog body) rather than the page itself.
+    /// Null (default) observes the viewport.
+    /// </summary>
+    [Parameter] public string? Root { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Lazy.Root;
+
+    private ElementReference _el;
+    private bool _revealed;
+    private bool _initialized;
+    private DotNetObjectReference<FlareLazy>? _objRef;
+
+    // Reserve space while hidden so the page does not collapse (which would make every instance
+    // intersect at once) and the observer fires progressively as the user scrolls.
+    private string? _style
+    {
+        get
+        {
+            var reserve = !_revealed && MinHeight is not null ? $"min-height:{MinHeight}" : null;
+            var parts = new[] { reserve, Style }.Where(s => !string.IsNullOrEmpty(s));
+            var joined = string.Join(';', parts);
+            return joined.Length > 0 ? joined : null;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _initialized) return;
+        _initialized = true;
+        try
+        {
+            _objRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("FlareLazy.init", _el, _objRef, RootMargin, KeepRendered, Root);
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+    }
+
+    /// <summary>Invoked by the IntersectionObserver when the wrapper enters or leaves the viewport.</summary>
+    [JSInvokable]
+    public Task OnVisibilityChanged(bool visible)
+    {
+        var next = KeepRendered ? (_revealed || visible) : visible;
+        if (next == _revealed) return Task.CompletedTask;
+        _revealed = next;
+        if (visible) _ = OnRevealed.InvokeAsync();
+        return InvokeAsync(StateHasChanged);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try { await JS.InvokeVoidAsync("FlareLazy.dispose", _el); }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        _objRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

@@ -1,0 +1,36 @@
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Gap="FlareSpacing.None">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">C# - editable, line numbers</FlareText>
+        <FlareCodeBlock @bind-Value="_codeCs" Language="csharp" Rows="8" LineNumbers="true" ReadOnly="false" />
+    </FlareStack>
+    <FlareStack Gap="FlareSpacing.None">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">JSON - editable</FlareText>
+        <FlareCodeBlock @bind-Value="_codeJson" Language="json" Rows="6" ReadOnly="false" />
+    </FlareStack>
+    <FlareStack Gap="FlareSpacing.None">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-bottom:0.5rem">Read-only</FlareText>
+        <FlareCodeBlock Value="@_codeReadOnly" Language="csharp" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private string _codeCs = """
+        public class Greeter
+        {
+            public string Greet(string name)
+                => $"Hello, {name}!";
+        }
+        """;
+
+    private string _codeJson = """
+        {
+          "name": "Flare",
+          "version": "1.0.0",
+          "stable": true
+        }
+        """;
+
+    private const string _codeReadOnly = "// Read-only mode - editing is disabled.\npublic static void Main() { }";
+}

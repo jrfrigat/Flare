@@ -1,0 +1,14 @@
+<FlareStack Style="max-width:32rem;">
+    <FlareFileUpload Accept=".jpg,.png,.gif,.webp" OnFilesChanged="HandleSingle" />
+    @if (_singleName is not null)
+    {
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Selected: @_singleName</FlareText>
+    }
+</FlareStack>
+
+@code {
+    private string? _singleName;
+
+    private void HandleSingle(IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files)
+        => _singleName = files.FirstOrDefault()?.Name;
+}

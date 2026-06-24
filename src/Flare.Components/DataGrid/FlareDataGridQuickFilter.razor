@@ -1,0 +1,49 @@
+@namespace Flare.Components
+@typeparam TItem
+@implements IDisposable
+@using Flare.Components.Resources
+
+@* A standalone global search box for a FlareDataGrid: typing filters rows where any visible column
+   contains the text (case-insensitive). Place it in the grid's ToolbarContent or anywhere, bound via
+   Grid. Debounced. *@
+<FlareField TValue="string" Type="search" Size="@Size" Immediate="true"
+            Placeholder="@(Placeholder ?? FlareStrings.DataGrid_Search)"
+            Value="@_text" ValueChanged="OnChanged" />
+
+@code {
+    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
+    // Grid parameter overrides it for standalone placement outside the grid.
+    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
+    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
+    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
+    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
+    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+    /// <summary>Placeholder text for the search box (defaults to the localized "Search").</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Field size of the search box.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Sm;
+    /// <summary>Debounce delay in milliseconds before the filter is applied (default 250).</summary>
+    [Parameter] public int DebounceMs { get; set; } = 250;
+
+    private string _text = "";
+    private Timer? _debounce;
+
+    private void OnChanged(string? value)
+    {
+        _text = value ?? "";
+        _debounce?.Dispose();
+        if (DebounceMs <= 0)
+        {
+            _ = Apply();
+            return;
+        }
+        _debounce = new Timer(_ => _ = InvokeAsync(Apply), null, DebounceMs, Timeout.Infinite);
+    }
+
+    private async Task Apply()
+    {
+        if (Owner is not null) await Owner.ApplyQuickFilter(_text);
+    }
+
+    public void Dispose() => _debounce?.Dispose();
+}

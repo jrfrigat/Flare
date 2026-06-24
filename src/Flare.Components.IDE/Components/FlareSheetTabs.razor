@@ -1,0 +1,59 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* The spreadsheet sheet-tab strip shown at the bottom of Excel: one pill per sheet plus an optional
+   add button. Controlled - bind Sheets / ActiveIndex and handle OnAddSheet. *@
+<div class="@Css.Classes.Ide.SheetTabs.Root" role="tablist" style="@Style" @attributes="AdditionalAttributes">
+    @if (Sheets is not null)
+    {
+        @for (var i = 0; i < Sheets.Count; i++)
+        {
+            var index = i;
+            var active = index == ActiveIndex;
+            <button type="button"
+                    class="@Css.Classes.Ide.SheetTabs.Tab @(active ? Css.Classes.Ide.SheetTabs.TabActive : "")"
+                    role="tab" aria-selected="@active"
+                    @onclick="@(() => SelectAsync(index))">
+                @Sheets[index]
+            </button>
+        }
+    }
+    @if (ShowAddButton)
+    {
+        <button type="button" class="@Css.Classes.Ide.SheetTabs.Add" aria-label="@AddLabel" @onclick="AddAsync">
+            <span class="material-symbols-rounded">add</span>
+        </button>
+    }
+</div>
+
+@code {
+    /// <summary>The sheet names rendered as tabs, in order.</summary>
+    [Parameter] public IReadOnlyList<string>? Sheets { get; set; }
+
+    /// <summary>Zero-based index of the active sheet.</summary>
+    [Parameter] public int ActiveIndex { get; set; }
+
+    /// <summary>Raised when the active sheet changes. Supports two-way binding.</summary>
+    [Parameter] public EventCallback<int> ActiveIndexChanged { get; set; }
+
+    /// <summary>Whether the trailing "add sheet" button is shown (default true).</summary>
+    [Parameter] public bool ShowAddButton { get; set; } = true;
+
+    /// <summary>Raised when the add button is clicked.</summary>
+    [Parameter] public EventCallback OnAddSheet { get; set; }
+
+    /// <summary>Accessible label for the add button (default "Add sheet").</summary>
+    [Parameter] public string AddLabel { get; set; } = "Add sheet";
+
+    private async Task SelectAsync(int index)
+    {
+        if (index == ActiveIndex) return;
+        ActiveIndex = index;
+        await ActiveIndexChanged.InvokeAsync(index);
+    }
+
+    private async Task AddAsync() => await OnAddSheet.InvokeAsync();
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.SheetTabs.Root;
+}

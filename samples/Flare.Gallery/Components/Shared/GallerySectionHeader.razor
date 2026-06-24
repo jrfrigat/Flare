@@ -1,0 +1,24 @@
+@namespace Flare.Gallery.Components.Shared
+
+<FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <FlareIcon Color="FlareColor.Primary" Name="@Icon" />
+    }
+    <FlareText Typo="TypographyScale.TitleLarge"
+               Class="@(string.IsNullOrEmpty(AnchorId) ? null : "demo-section__title")"
+               AnchorId="@AnchorId">@Title</FlareText>
+</FlareStack>
+
+@code {
+    /// <summary>Material Symbols icon name shown before the title.</summary>
+    [Parameter] public string  Icon  { get; set; } = "";
+    /// <summary>Section header title.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>
+    /// Optional ASCII anchor id. When set, the header carries the <c>demo-section__title</c> class
+    /// (so it joins the page's "On this page" TOC, like a <c>DemoSection</c>) and becomes a shareable
+    /// deep link. Use an ASCII slug - non-Latin ids break native fragment scrolling.
+    /// </summary>
+    [Parameter] public string? AnchorId { get; set; }
+}

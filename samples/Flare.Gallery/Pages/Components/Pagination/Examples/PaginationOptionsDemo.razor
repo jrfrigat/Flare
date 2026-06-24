@@ -1,0 +1,23 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.LabelMedium">ShowFirstLast + wider sibling/boundary count</FlareText>
+        <FlarePagination @bind-Current="_p1" TotalPages="30" ShowFirstLast="true"
+                         SiblingCount="1" BoundaryCount="2" AriaLabel="Article pages" />
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.LabelMedium">Small</FlareText>
+        <FlarePagination @bind-Current="_p2" TotalPages="10" Size="PaginationSize.Sm" />
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.LabelMedium">Large + primary color</FlareText>
+        <FlarePagination @bind-Current="_p3" TotalPages="10" Size="PaginationSize.Lg" Color="FlareColor.Primary" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private int _p1 = 5;
+    private int _p2 = 1;
+    private int _p3 = 1;
+}

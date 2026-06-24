@@ -1,0 +1,35 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/Flare.Gallery.Generators/Flare.Gallery.Generators.csproj" />
+    <Project Path="samples/Flare.Gallery/Flare.Gallery.csproj" />
+    <Project Path="samples/Flare.Legacy/Flare.Legacy.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Flare.Components.Carousel/Flare.Components.Carousel.csproj" />
+    <Project Path="src/Flare.Components.IDE/Flare.Components.IDE.csproj" />
+    <Project Path="src/Flare.Components.Kanban/Flare.Components.Kanban.csproj" />
+    <Project Path="src/Flare.Components.Media/Flare.Components.Media.csproj" />
+    <Project Path="src/Flare.Components.QrCode/Flare.Components.QrCode.csproj" />
+    <Project Path="src/Flare.Components.RichTextEditor/Flare.Components.RichTextEditor.csproj" />
+    <Project Path="src/Flare.Components.Transfer/Flare.Components.Transfer.csproj" />
+    <Project Path="src/Flare.Components/Flare.Components.csproj" />
+    <Project Path="src/Flare.Core/Flare.Core.csproj" />
+    <Project Path="src/Flare.Icons/Flare.Icons.csproj" Id="1941b520-97ed-4e50-90d5-4254ed103a11" />
+    <Project Path="src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj" />
+    <Project Path="src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj" />
+    <Project Path="src/Flare.Theme.Aero/Flare.Theme.Aero.csproj" />
+    <Project Path="src/Flare.Theme.LiquidGlass/Flare.Theme.LiquidGlass.csproj" />
+    <Project Path="src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj" />
+    <Project Path="src/Flare/Flare.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Flare.Components.Tests/Flare.Components.Tests.csproj" />
+    <Project Path="tests/Flare.Core.Tests/Flare.Core.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Flare.ApiDocGen/Flare.ApiDocGen.csproj" />
+    <Project Path="tools/Flare.CssAudit/Flare.CssAudit.csproj" />
+    <Project Path="tools/Flare.DemoGen/Flare.DemoGen.csproj" />
+    <Project Path="tools/Md3SpecParser/Md3SpecParser.csproj" />
+  </Folder>
+</Solution>

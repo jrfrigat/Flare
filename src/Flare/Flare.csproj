@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <PackageId>Flare</PackageId>
+    <Description>Flare - Blazor component library with runtime theme switching. 67 components, zero third-party CSS dependencies. Themes ship as independent packages (Flare.Theme.*); reference only the ones you want in your release.</Description>
+    <PackageTags>blazor;components;theming;material-design;fluent-ui;ui;dotnet;blazor-components</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Flare ships NO themes. Themes are independent packages (Flare.Theme.MaterialDesign3Expressive,
+      Flare.Theme.FluentUI2, Flare.Theme.Aero, ...) so each app references only the themes it ships,
+      keeping unused theme CSS/tokens out of the release. AddFlare auto-discovers every referenced
+      theme (RegisterAllBuiltInThemes), or register them explicitly via AddFlareTheme/AddFlarePalette.
+    -->
+    <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
+  </ItemGroup>
+
+</Project>

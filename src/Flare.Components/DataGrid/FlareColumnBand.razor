@@ -1,0 +1,53 @@
+@namespace Flare.Components
+@inherits FlareColumnBase
+@implements IDisposable
+
+@* Bands render no visible markup of their own: they cascade themselves so nested FlareColumn /
+   FlareColumnBand children register into Children (in declaration order). The grid reads that tree
+   to build the banded header. *@
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [CascadingParameter] private IFlareDataGridHost? Grid { get; set; }
+    [CascadingParameter] private FlareColumnBand? ParentBand { get; set; }
+
+    /// <summary>Child content: nested <see cref="FlareColumnBand"/> bands and/or FlareColumn columns.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private readonly List<FlareColumnBase> _children = [];
+
+    /// <summary>Children of this band (columns and nested bands) in declaration order.</summary>
+    internal IReadOnlyList<FlareColumnBase> Children => _children.OrderBy(c => c.DeclarationOrder).ToList();
+
+    /// <summary>Number of leaf columns under this band (recursively).</summary>
+    internal int LeafColumnCount => _children.Sum(c => c is FlareColumnBand b ? b.LeafColumnCount : 1);
+
+    /// <summary>Nesting depth of bands under this one (0 = only columns, no sub-bands).</summary>
+    internal int Depth => _children.OfType<FlareColumnBand>().Select(b => b.Depth + 1).DefaultIfEmpty(0).Max();
+
+    internal void AddChild(FlareColumnBase child)
+    {
+        if (_children.Contains(child)) return;
+        _children.Add(child);
+        Grid?.NotifyStructureChanged();
+    }
+
+    internal void RemoveChild(FlareColumnBase child)
+    {
+        if (_children.Remove(child)) Grid?.NotifyStructureChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        if (ParentBand is not null) ParentBand.AddChild(this);
+        else Grid?.AddBand(this);
+    }
+
+    public void Dispose()
+    {
+        if (ParentBand is not null) ParentBand.RemoveChild(this);
+        else Grid?.RemoveBand(this);
+    }
+}

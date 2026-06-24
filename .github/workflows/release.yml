@@ -1,0 +1,56 @@
+name: Release (NuGet)
+
+# Publishes all packable Flare packages to NuGet.org.
+# Trigger by pushing a version tag, e.g.:  git tag v0.0.1 && git push origin v0.0.1
+# MinVer derives the package version from that tag (prefix "v"), so the tag IS the version.
+on:
+  push:
+    tags: [ 'v*' ]
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # create the GitHub Release
+
+jobs:
+  publish:
+    name: Pack & push to NuGet
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # MinVer needs the tag + history
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore Flare.slnx
+
+      - name: Build (Release)
+        run: dotnet build Flare.slnx -c Release --no-restore
+
+      - name: Test
+        run: dotnet test Flare.slnx -c Release --no-build
+
+      # Only IsPackable=true projects produce packages (the 16 library packages); Gallery/Legacy/
+      # tests/tools are excluded. Symbols (.snupkg) are produced alongside via IncludeSymbols.
+      - name: Pack
+        run: dotnet pack Flare.slnx -c Release --no-build -o artifacts
+
+      - name: Push to NuGet.org
+        run: >
+          dotnet nuget push "artifacts/*.nupkg"
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" artifacts/*.nupkg --generate-notes --title "${{ github.ref_name }}"

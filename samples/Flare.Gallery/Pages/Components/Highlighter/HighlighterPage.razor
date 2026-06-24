@@ -1,0 +1,14 @@
+@page "/components/highlighter"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Highlighter_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareHighlighter">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Highlighter_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Highlighter_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Highlighter_LiveSearch" DemoType="typeof(Examples.HighlighterLiveSearchDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Highlighter_CaseSensitivity" DemoType="typeof(Examples.HighlighterCaseSensitivityDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Highlighter_MultipleOccurrences" DemoType="typeof(Examples.HighlighterMultipleOccurrencesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.CodeEditor_Title" DemoType="typeof(Examples.HighlighterCodeEditorDemo)" />

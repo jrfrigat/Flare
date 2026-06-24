@@ -1,0 +1,45 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+@implements IDisposable
+
+@if (Tabs.IsTabActive(this))
+{
+    <div class="@Css.Classes.Ide.DocTabs.Panel" id="@PanelId" role="tabpanel" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] private FlareDocumentTabs Tabs { get; set; } = default!;
+
+    /// <summary>Display title for the document tab.</summary>
+    [Parameter] public string Title { get; set; } = "";
+
+    /// <summary>Material icon name shown in the tab header.</summary>
+    [Parameter] public string? Icon { get; set; } = "description";
+
+    /// <summary>Whether the document has unsaved changes (shows a dot/asterisk indicator).</summary>
+    [Parameter] public bool Modified { get; set; }
+
+    /// <summary>Whether the tab can be closed by the user.</summary>
+    [Parameter] public bool Closeable { get; set; } = true;
+
+    /// <summary>Content rendered inside the document panel.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Ide.DocTabs.Panel;
+
+    internal string TabId { get; } = Guid.NewGuid().ToString("N")[..8];
+    internal string PanelId => $"flare-doc-panel-{TabId}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Tabs.RegisterTab(this);
+    }
+
+    public void Dispose()
+    {
+        Tabs.UnregisterTab(this);
+    }
+}

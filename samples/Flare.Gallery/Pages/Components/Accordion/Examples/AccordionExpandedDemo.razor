@@ -1,0 +1,18 @@
+@inherits LocalizedPage
+
+<FlareAccordion>
+    <FlareAccordionPanel Header="@GalleryStrings.AccordionDemo_DefaultOpen" Expanded="true">
+        @GalleryStrings.AccordionDemo_DefaultOpenBody
+    </FlareAccordionPanel>
+    <FlareAccordionPanel Header="@GalleryStrings.AccordionDemo_Bound" @bind-Expanded="_open">
+        @GalleryStrings.AccordionDemo_BoundBody
+    </FlareAccordionPanel>
+</FlareAccordion>
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium" Style="margin-top:0.75rem">
+    @(_open ? GalleryStrings.AccordionDemo_StateOpen : GalleryStrings.AccordionDemo_StateClosed)
+</FlareText>
+
+@code {
+    private bool _open;
+}

@@ -1,0 +1,38 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span class="@Css.Classes.FabMenu.Label" aria-hidden="true">@Label</span>
+    }
+    <button class="@Css.Classes.Fab.Root @Css.Classes.Fab.Sm @Css.Classes.Fab.Surface @Css.Classes.FabMenu.Btn"
+            type="button"
+            disabled="@Disabled"
+            aria-label="@(Label ?? Icon)"
+            @onclick="HandleClickAsync">
+        <span class="@Css.Classes.Fab.Icon material-symbols-rounded" aria-hidden="true">@Icon</span>
+    </button>
+</div>
+
+@code {
+    /// <summary>Material Symbols icon displayed on this action's small FAB.</summary>
+    [Parameter] public string Icon { get; set; } = "star";
+    /// <summary>Label shown beside the action button.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Prevents the action from being clicked.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Callback raised when the action is clicked.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    [CascadingParameter(Name = "CloseFabMenu")] private Action? CloseFabMenu { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.FabMenu.Item;
+
+    private async Task HandleClickAsync()
+    {
+        if (Disabled) return;
+        CloseFabMenu?.Invoke();
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync();
+    }
+}

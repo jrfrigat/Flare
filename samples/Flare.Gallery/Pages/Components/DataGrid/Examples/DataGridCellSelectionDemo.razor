@@ -1,0 +1,51 @@
+@using System.Globalization
+
+@* Excel-like cell selection: click a cell (or click-drag / Shift+Click) to select, arrow keys move,
+   Shift+Arrow extends, Ctrl+C copies the range and Ctrl+V pastes tab-separated text back into it. *@
+
+<FlareDataGrid TItem="Sales" Items="@_data" CellSelection="true" OnPaste="OnPaste" PageSize="8">
+    <Columns>
+        <FlareColumn Title="Product" Field="@(p => p.Name)" />
+        <FlareColumn Title="Q1" Field="@(p => p.Q1)" Type="ColumnDataType.Number" Format="N0" />
+        <FlareColumn Title="Q2" Field="@(p => p.Q2)" Type="ColumnDataType.Number" Format="N0" />
+        <FlareColumn Title="Q3" Field="@(p => p.Q3)" Type="ColumnDataType.Number" Format="N0" />
+        <FlareColumn Title="Q4" Field="@(p => p.Q4)" Type="ColumnDataType.Number" Format="N0" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private sealed class Sales
+    {
+        public string Name { get; set; } = "";
+        public int Q1 { get; set; }
+        public int Q2 { get; set; }
+        public int Q3 { get; set; }
+        public int Q4 { get; set; }
+    }
+
+    private readonly List<Sales> _data =
+    [
+        new() { Name = "Laptops",   Q1 = 1200, Q2 = 1450, Q3 = 1310, Q4 = 1600 },
+        new() { Name = "Monitors",  Q1 = 860,  Q2 = 920,  Q3 = 1010, Q4 = 1180 },
+        new() { Name = "Keyboards", Q1 = 430,  Q2 = 510,  Q3 = 470,  Q4 = 560 },
+        new() { Name = "Mice",      Q1 = 380,  Q2 = 410,  Q3 = 390,  Q4 = 450 },
+        new() { Name = "Webcams",   Q1 = 210,  Q2 = 260,  Q3 = 300,  Q4 = 340 },
+        new() { Name = "Headsets",  Q1 = 540,  Q2 = 600,  Q3 = 650,  Q4 = 720 },
+    ];
+
+    // Apply each pasted cell to its row by column key (the grid hands us item + column + value).
+    private void OnPaste(DataGridPaste<Sales> paste)
+    {
+        foreach (var cell in paste.Cells)
+        {
+            switch (cell.ColumnKey)
+            {
+                case "Product": cell.Item.Name = cell.Value; break;
+                case "Q1" when int.TryParse(cell.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var q1): cell.Item.Q1 = q1; break;
+                case "Q2" when int.TryParse(cell.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var q2): cell.Item.Q2 = q2; break;
+                case "Q3" when int.TryParse(cell.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var q3): cell.Item.Q3 = q3; break;
+                case "Q4" when int.TryParse(cell.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var q4): cell.Item.Q4 = q4; break;
+            }
+        }
+    }
+}

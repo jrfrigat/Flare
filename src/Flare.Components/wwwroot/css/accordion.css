@@ -1,0 +1,71 @@
+.flare-accordion {
+  border: 1px solid var(--flare-color-outline-variant);
+  border-radius: var(--flare-card-radius, var(--flare-shape-medium));
+  overflow: hidden;
+}
+
+.flare-accordion-panel + .flare-accordion-panel {
+  border-top: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-accordion-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-12, 1.5rem);
+  background: var(--flare-color-surface);
+  color: var(--flare-color-on-surface);
+  font-family: var(--flare-typescale-title-small-font);
+  font-size: var(--flare-typescale-title-small-size);
+  font-weight: var(--flare-typescale-title-small-weight);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-accordion-panel__header:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
+}
+
+/* Rich header content (icons/badges) sits inline before the chevron. */
+.flare-accordion-panel__header-text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  flex: 1;
+  min-width: 0;
+}
+
+/* Disabled panel */
+.flare-accordion-panel--disabled .flare-accordion-panel__header {
+  cursor: not-allowed;
+  opacity: var(--flare-state-disabled-opacity, 0.38);
+}
+
+.flare-accordion-panel__icon {
+  font-style: normal;
+  font-size: 0.875rem;
+  display: inline-block;
+  transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-accordion-panel--expanded .flare-accordion-panel__icon {
+  transform: rotate(180deg);
+}
+
+.flare-accordion-panel__content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+}
+
+.flare-accordion-panel--expanded .flare-accordion-panel__content {
+  max-height: 2000px;
+}
+
+.flare-accordion-panel__body {
+  padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-12, 1.5rem);
+  color: var(--flare-color-on-surface-variant);
+}

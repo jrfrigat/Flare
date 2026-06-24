@@ -1,0 +1,12 @@
+@page "/components/colorpicker"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.ColorPicker_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareColorPicker">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.ColorPicker_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.ColorPicker_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.ColorPicker_Presets" DemoType="typeof(Examples.ColorPickerDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ColorPicker_Options" DemoType="typeof(Examples.ColorPickerOptionsDemo)" />

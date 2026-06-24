@@ -1,0 +1,51 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@_colStyle" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Child content rendered inside the column.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Default column span across all breakpoints. Accepts any value (not just 1-12); it is
+    /// emitted as a CSS variable and resolved by the grid, so it tracks the parent grid's column count.</summary>
+    [Parameter] public int Span { get; set; } = 1;
+    /// <summary>Explicit grid-column-start position.</summary>
+    [Parameter] public int? ColStart { get; set; }
+    /// <summary>Column span at the xs breakpoint (&lt;600px).</summary>
+    [Parameter] public int? Xs { get; set; }  // <600px
+    /// <summary>Column span at the sm breakpoint (>=600px).</summary>
+    [Parameter] public int? Sm { get; set; }  // >=600px
+    /// <summary>Column span at the md breakpoint (>=960px).</summary>
+    [Parameter] public int? Md { get; set; }  // >=960px
+    /// <summary>Column span at the lg breakpoint (>=1280px).</summary>
+    [Parameter] public int? Lg { get; set; }  // >=1280px
+    /// <summary>Column span at the xl breakpoint (>=1920px).</summary>
+    [Parameter] public int? Xl { get; set; }  // >=1920px
+    /// <summary>Number of columns to offset (push) the column from the left.</summary>
+    [Parameter] public int Offset { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Col.Root;
+
+    // The span (per breakpoint) and start position are emitted as CSS custom properties that grid.css
+    // consumes via a mobile-first fallback cascade. This makes any span value work - it is no longer
+    // limited to the predefined 1-12 utility classes - and folds Offset/ColStart into the same rule.
+    private string _colStyle
+    {
+        get
+        {
+            var parts = new List<string>(8) { $"--flare-col-span:{Span}" };
+            if (Xs is int xs) parts.Add($"--flare-col-span-xs:{xs}");
+            if (Sm is int sm) parts.Add($"--flare-col-span-sm:{sm}");
+            if (Md is int md) parts.Add($"--flare-col-span-md:{md}");
+            if (Lg is int lg) parts.Add($"--flare-col-span-lg:{lg}");
+            if (Xl is int xl) parts.Add($"--flare-col-span-xl:{xl}");
+            // ColStart wins over Offset; Offset N starts the column at line N+1.
+            var start = ColStart ?? (Offset > 0 ? Offset + 1 : (int?)null);
+            if (start is int s) parts.Add($"--flare-col-start:{s}");
+            if (!string.IsNullOrWhiteSpace(Style)) parts.Add(Style);
+            return string.Join(';', parts);
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Start">
+    @foreach (var p in _placements)
+    {
+        <FlarePopover Open="_open == p" Placement="p" Arrow="true" MinWidth="10rem" MaxWidth="14rem">
+            <AnchorContent>
+                <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _open = _open == p ? null : p)">
+                    @p
+                </FlareButton>
+            </AnchorContent>
+            <ChildContent>
+                <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.75rem 1rem;">
+                    Placement = @p (MinWidth 10rem, MaxWidth 14rem)
+                </FlareText>
+            </ChildContent>
+        </FlarePopover>
+    }
+</FlareStack>
+
+@code {
+    private PopoverPlacement? _open;
+
+    private static readonly PopoverPlacement[] _placements =
+    [
+        PopoverPlacement.Top, PopoverPlacement.Bottom,
+        PopoverPlacement.Left, PopoverPlacement.Right,
+    ];
+}

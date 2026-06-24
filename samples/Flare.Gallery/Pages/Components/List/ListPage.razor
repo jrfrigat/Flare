@@ -1,0 +1,12 @@
+@page "/components/list"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.List_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareList">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.List_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.List_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.List_Basic" DemoType="typeof(Examples.ListDemo)" />
+<AutoDemoSection Title="@GalleryStrings.List_Dense" DemoType="typeof(Examples.ListDenseDemo)" />

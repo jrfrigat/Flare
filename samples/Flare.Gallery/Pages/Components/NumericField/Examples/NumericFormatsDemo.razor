@@ -1,0 +1,32 @@
+@using System.Globalization
+@* Format switches the field to focus-swap text mode: the value shows with group
+   separators / currency / percent while blurred and as a plain number while editing.
+   Min/Max are clamped on blur. Use Culture to localize separators and symbols. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="max-width:48rem;">
+    <FlareNumericField TValue="decimal" @bind-Value="_amount" Label="Currency (C2, en-US)"
+                       Format="C2" Culture="_enUs" Min="0" Max="1000000" Step="100" ShowStepper="true"
+                       Style="flex:1;min-width:13rem;" />
+    <FlareNumericField TValue="decimal" @bind-Value="_amountEu" Label="Currency (C2, de-DE)"
+                       Format="C2" Culture="_deDe" Min="0" Max="1000000" Step="100"
+                       Style="flex:1;min-width:13rem;" />
+    <FlareNumericField TValue="long" @bind-Value="_count" Label="Thousands (N0, en-US)"
+                       Format="N0" Culture="_enUs" Min="0" Max="100000000"
+                       Style="flex:1;min-width:13rem;" />
+    <FlareNumericField TValue="double" @bind-Value="_rate" Label="Percent (P1)"
+                       Format="P1" Culture="_enUs" Min="0" Max="1" Step="0.01"
+                       HelperText="Stored 0..1; shown as %"
+                       Style="flex:1;min-width:13rem;" />
+    <FlareNumericField TValue="int" @bind-Value="_clamped" Label="Clamp 0..10 on blur"
+                       Min="0" Max="10" HelperText="Type 999, blur -> 10"
+                       Style="flex:1;min-width:13rem;" />
+</FlareStack>
+
+@code {
+    private static readonly CultureInfo _enUs = CultureInfo.GetCultureInfo("en-US");
+    private static readonly CultureInfo _deDe = CultureInfo.GetCultureInfo("de-DE");
+    private decimal _amount = 12500.50m;
+    private decimal _amountEu = 12500.50m;
+    private long _count = 1250000;
+    private double _rate = 0.075;
+    private int _clamped = 5;
+}

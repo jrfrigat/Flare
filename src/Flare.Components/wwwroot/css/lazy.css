@@ -1,0 +1,5 @@
+/* FlareLazy: a plain block wrapper whose child content is mounted only once it scrolls
+   near the viewport. The min-height that reserves space while hidden is applied inline. */
+.flare-lazy {
+    display: block;
+}

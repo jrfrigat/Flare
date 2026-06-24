@@ -1,0 +1,62 @@
+/* FlareTableOfContents / FlareOnThisPage. One token-driven layout renders both the MD3 "pill"
+   look (filled rounded active link, no rail) and the FluentUI2 "rail" look (thin vertical line
+   with a left marker bar on the active link). Themes flip the look via --flare-toc-* tokens. */
+.flare-toc {
+  font-family: var(--flare-typescale-body-medium-font);
+  font-size: var(--flare-typescale-body-small-size, 0.8125rem);
+  line-height: 1.4;
+}
+
+.flare-toc__title {
+  margin-bottom: var(--flare-spacing-4, 0.5rem);
+  color: var(--flare-toc-title-color, var(--flare-color-on-surface-variant));
+  font-size: var(--flare-typescale-label-large-size);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.flare-toc__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  /* Rail: a vertical line beside the links (width/colour 0/transparent in MD3). */
+  border-inline-start: var(--flare-toc-rail-width, 0) solid var(--flare-toc-rail-color, transparent);
+}
+
+.flare-toc__item {
+  margin: 0;
+  /* Depth is set inline (--flare-toc-depth) from the heading level. */
+  padding-inline-start: calc(var(--flare-toc-indent, 0.75rem) * var(--flare-toc-depth, 0));
+}
+
+.flare-toc__link {
+  display: block;
+  position: relative;
+  padding-block: var(--flare-spacing-2, 0.25rem);
+  padding-inline: var(--flare-toc-link-pad-x, 0.75rem);
+  /* Left marker bar (Fluent); pulled over the rail line. 0-width in MD3. */
+  margin-inline-start: calc(-1 * var(--flare-toc-marker-width, 0));
+  border-inline-start: var(--flare-toc-marker-width, 0) solid transparent;
+  border-radius: var(--flare-toc-active-radius, var(--flare-shape-full));
+  color: var(--flare-toc-inactive-color, var(--flare-color-on-surface-variant));
+  text-decoration: none;
+  transition: color var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-standard, ease),
+              background var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-standard, ease),
+              border-color var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-standard, ease);
+}
+
+.flare-toc__link:hover {
+  color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
+  background: color-mix(in srgb, var(--flare-toc-active-bg, var(--flare-color-secondary-container)) 40%, transparent);
+}
+
+.flare-toc__link--active {
+  color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
+  background: var(--flare-toc-active-bg, var(--flare-color-secondary-container));
+  border-inline-start-color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
+  font-weight: 600;
+}

@@ -1,0 +1,11 @@
+@page "/components/kanban"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Kanban_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareKanban">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Kanban_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Kanban_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Kanban_Board" DemoType="typeof(Examples.KanbanBoardDemo)" />

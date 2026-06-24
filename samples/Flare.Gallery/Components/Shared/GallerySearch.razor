@@ -1,0 +1,41 @@
+@inherits LocalizedPage
+@inject GallerySearchService Search
+@inject NavigationManager Nav
+
+@* Global gallery search: bilingual (EN+RU) lookup over pages, components and API types.
+   Selecting a result navigates to its route. Results are grouped by kind.
+   Built entirely from Flare primitives (no gallery CSS): width via the field's own Style, the
+   responsive hide via Flare's own utility class, and the result row via FlareStack. *@
+<FlareAutocomplete TValue="SearchResult"
+                   Class="@Css.Classes.Hidden.BelowSm"
+                   Style="width:clamp(16rem, 48vw, 44rem)"
+                   Placeholder="@GalleryStrings.Search_Placeholder"
+                   NoResultsText="@GalleryStrings.Search_NoResults"
+                   SearchFunc="DoSearchAsync"
+                   GetLabel="@(r => r.Title)"
+                   GroupBy="@(r => r.KindLabel)"
+                   ValueChanged="OnSelected"
+                   Variant="InputVariant.Outlined"
+                   Clearable
+                   Size="FieldSize.Lg"
+                   MinChars="1"
+                   MaxItems="12"
+                   DebounceMs="150">
+    <ItemTemplate Context="r">
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small">
+            <FlareIcon Name="@r.Icon" Size="1.05rem" Color="FlareColor.OnSurfaceVariant" />
+            <FlareText>@r.Title</FlareText>
+        </FlareStack>
+    </ItemTemplate>
+</FlareAutocomplete>
+
+@code {
+    private Task<IEnumerable<SearchResult>> DoSearchAsync(string query) =>
+        Task.FromResult<IEnumerable<SearchResult>>(Search.Search(query));
+
+    private void OnSelected(SearchResult? result)
+    {
+        if (result is not null)
+            Nav.NavigateTo(result.Href);
+    }
+}

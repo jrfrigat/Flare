@@ -1,0 +1,136 @@
+@page "/color"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Color_Title - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Color_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Color_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareStack Gap="FlareSpacing.Large">
+
+<section>
+    <GallerySectionHeader Icon="palette" Title="@GalleryStrings.Color_RolesTitle" />
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
+            @GalleryStrings.Color_RolesDesc
+        </FlareText>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0.75rem;">
+            @foreach (var role in _roles)
+            {
+                <div class="flare-color-@role.Class"
+                     style="background:var(--fc-main);color:var(--fc-on);border-radius:var(--flare-shape-medium);padding:0.875rem 1rem;min-height:84px;display:flex;flex-direction:column;justify-content:space-between;">
+                    <strong>@role.Name</strong>
+                    <code style="font-size:0.75rem;opacity:0.9;">FlareColor.@role.Name</code>
+                </div>
+            }
+        </div>
+    </FlareCard>
+</section>
+
+<section>
+    <GallerySectionHeader Icon="code" Title="@GalleryStrings.Color_UsageTitle" />
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
+            @GalleryStrings.Color_UsageDesc
+        </FlareText>
+        <FlareCodeBlock Value="@_usageCode" Language="razor" />
+    </FlareCard>
+</section>
+
+<section>
+    <GallerySectionHeader Icon="auto_awesome" Title="@GalleryStrings.Color_GeneratorsTitle" />
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
+            @GalleryStrings.Color_GeneratorsDesc
+        </FlareText>
+
+        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="align-items:center;margin-bottom:1.5rem;">
+            <div style="@($"background:{_current.Value};width:88px;height:88px;border-radius:var(--flare-shape-large);border:1px solid var(--flare-color-outline-variant);")"></div>
+            <FlareStack Gap="FlareSpacing.XSmall">
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.Color_CurrentLabel</FlareText>
+                <code style="font-size:1.125rem;font-weight:600;">@_current.Value</code>
+            </FlareStack>
+            <FlareStack Row Gap="FlareSpacing.Small">
+                <FlareButton Variant="ButtonVariant.Filled" OnClick="RandomColor">
+                    <LeadingIcon><FlareIcon Name="casino" /></LeadingIcon>
+                    <ChildContent>@GalleryStrings.Color_RandomBtn</ChildContent>
+                </FlareButton>
+                <FlareButton Variant="ButtonVariant.Outlined" OnClick="NextColor">
+                    <LeadingIcon><FlareIcon Name="skip_next" /></LeadingIcon>
+                    <ChildContent>@GalleryStrings.Color_NextBtn</ChildContent>
+                </FlareButton>
+            </FlareStack>
+        </FlareStack>
+
+        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.5rem;">@GalleryStrings.Color_SequenceTitle</FlareText>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem">@GalleryStrings.Color_SequenceDesc</FlareText>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;">
+            @foreach (var c in Sequence())
+            {
+                <div title="@c.Value"
+                     style="@($"background:{c.Value};width:48px;height:48px;border-radius:var(--flare-shape-small);border:1px solid var(--flare-color-outline-variant);")"></div>
+            }
+        </div>
+
+        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;">@GalleryStrings.Color_AppliedTitle</FlareText>
+        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="align-items:center;">
+            <FlareButton Variant="ButtonVariant.Filled" Color="_current">Button</FlareButton>
+            <FlareChip Color="_current">Chip</FlareChip>
+            <div style="min-width:200px;">
+                <FlareProgress Color="_current" Value="65" />
+            </div>
+        </FlareStack>
+    </FlareCard>
+</section>
+
+</FlareStack>
+
+@code {
+    private const string _usageCode =
+        """
+        @* Semantic role -> shared, cached theme class (theme-aware) *@
+        <FlareButton Color="FlareColor.Primary">Primary</FlareButton>
+        <FlareProgress Color="FlareColor.Success" Value="70" />
+
+        @* Arbitrary CSS color -> inline tokens (sanitized) *@
+        <FlareSlider Color="FlareColor.Custom("#E91E63")" @bind-Value="_v" />
+
+        @* Implicit conversion from string also works *@
+        <FlareChip Color="@Colors.Tertiary">Tag</FlareChip>
+
+        @* Generators *@
+        var random = FlareColor.Random();   // arbitrary #RRGGBB
+        var next   = random.Next();         // next hue (golden angle)
+        """;
+
+    private sealed record RoleInfo(string Name, string Class);
+
+    private static readonly RoleInfo[] _roles =
+    [
+        new("Primary", "primary"),
+        new("Secondary", "secondary"),
+        new("Tertiary", "tertiary"),
+        new("Success", "success"),
+        new("Warning", "warning"),
+        new("Error", "error"),
+        new("Info", "info"),
+    ];
+
+    private FlareColor _current = FlareColor.Custom("#3366CC");
+
+    private void RandomColor() => _current = FlareColor.Random();
+    private void NextColor() => _current = _current.Next();
+
+    // The current color plus its next five Next() steps, to visualize the sequence.
+    private IEnumerable<FlareColor> Sequence()
+    {
+        var c = _current;
+        for (var i = 0; i < 6; i++)
+        {
+            yield return c;
+            c = c.Next();
+        }
+    }
+}

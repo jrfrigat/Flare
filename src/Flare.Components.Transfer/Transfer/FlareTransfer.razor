@@ -1,0 +1,130 @@
+@namespace Flare.Components
+@typeparam TItem
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <!-- Source list -->
+    <div class="flare-transfer__panel">
+        <div class="flare-transfer__panel-header">
+            <FlareText Typo="TypographyScale.LabelLarge">@SourceTitle (@_source.Count)</FlareText>
+        </div>
+        <div class="flare-transfer__list">
+            @foreach (var item in _source)
+            {
+                var it = item;
+                <div class="flare-transfer__item @(_srcSelected.Contains(it) ? "flare-transfer__item--selected" : "")"
+                     @onclick="@(() => ToggleSrcSelect(it))"
+                     role="option"
+                     aria-selected="@(_srcSelected.Contains(it))"
+                     tabindex="0">
+                    @ItemText(it)
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="flare-transfer__controls">
+        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+                     OnClick="MoveToTarget"
+                     Disabled="@(_srcSelected.Count == 0)"
+                     aria-label="@(FlareStrings.Transfer_MoveToTarget)">›</FlareButton>
+        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+                     OnClick="MoveAllToTarget"
+                     Disabled="@(_source.Count == 0)"
+                     aria-label="@(FlareStrings.Transfer_MoveAllToTarget)">»</FlareButton>
+        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+                     OnClick="MoveToSource"
+                     Disabled="@(_tgtSelected.Count == 0)"
+                     aria-label="@(FlareStrings.Transfer_MoveToSource)">‹</FlareButton>
+        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+                     OnClick="MoveAllToSource"
+                     Disabled="@(_target.Count == 0)"
+                     aria-label="@(FlareStrings.Transfer_MoveAllToSource)">«</FlareButton>
+    </div>
+
+    <!-- Target list -->
+    <div class="flare-transfer__panel">
+        <div class="flare-transfer__panel-header">
+            <FlareText Typo="TypographyScale.LabelLarge">@TargetTitle (@_target.Count)</FlareText>
+        </div>
+        <div class="flare-transfer__list">
+            @foreach (var item in _target)
+            {
+                var it = item;
+                <div class="flare-transfer__item @(_tgtSelected.Contains(it) ? "flare-transfer__item--selected" : "")"
+                     @onclick="@(() => ToggleTgtSelect(it))"
+                     role="option"
+                     aria-selected="@(_tgtSelected.Contains(it))"
+                     tabindex="0">
+                    @ItemText(it)
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>Items available in the source (left) panel.</summary>
+    [Parameter] public IReadOnlyList<TItem>? SourceItems { get; set; }
+    /// <summary>Items already placed in the target (right) panel.</summary>
+    [Parameter] public IReadOnlyList<TItem>? TargetItems { get; set; }
+    /// <summary>Callback raised when the target list changes.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<TItem>> TargetItemsChanged { get; set; }
+    /// <summary>Function that returns the display text for an item.</summary>
+    [Parameter] public Func<TItem, string>? ItemLabel { get; set; }
+    /// <summary>Header label shown above the source panel.</summary>
+    [Parameter] public string SourceTitle { get; set; } = "Available";
+    /// <summary>Header label shown above the target panel.</summary>
+    [Parameter] public string TargetTitle { get; set; } = "Selected";
+
+    protected override string ComponentCssClass => "flare-transfer";
+
+    private List<TItem> _source = [];
+    private List<TItem> _target = [];
+    private readonly HashSet<TItem> _srcSelected = [];
+    private readonly HashSet<TItem> _tgtSelected = [];
+
+    protected override void OnParametersSet()
+    {
+        _source = SourceItems?.ToList() ?? [];
+        _target = TargetItems?.ToList() ?? [];
+        _srcSelected.RemoveWhere(i => !_source.Contains(i));
+        _tgtSelected.RemoveWhere(i => !_target.Contains(i));
+    }
+
+    private string ItemText(TItem item) => ItemLabel?.Invoke(item) ?? item?.ToString() ?? "";
+
+    private void ToggleSrcSelect(TItem item) { if (!_srcSelected.Remove(item)) _srcSelected.Add(item); }
+    private void ToggleTgtSelect(TItem item) { if (!_tgtSelected.Remove(item)) _tgtSelected.Add(item); }
+
+    private async Task MoveToTarget()
+    {
+        foreach (var i in _srcSelected) { _source.Remove(i); _target.Add(i); }
+        _srcSelected.Clear();
+        await TargetItemsChanged.InvokeAsync(_target.AsReadOnly());
+    }
+
+    private async Task MoveAllToTarget()
+    {
+        _target.AddRange(_source);
+        _source.Clear();
+        _srcSelected.Clear();
+        await TargetItemsChanged.InvokeAsync(_target.AsReadOnly());
+    }
+
+    private async Task MoveToSource()
+    {
+        foreach (var i in _tgtSelected) { _target.Remove(i); _source.Add(i); }
+        _tgtSelected.Clear();
+        await TargetItemsChanged.InvokeAsync(_target.AsReadOnly());
+    }
+
+    private async Task MoveAllToSource()
+    {
+        _source.AddRange(_target);
+        _target.Clear();
+        _tgtSelected.Clear();
+        await TargetItemsChanged.InvokeAsync(_target.AsReadOnly());
+    }
+}

@@ -1,0 +1,143 @@
+@namespace Flare.Components
+@typeparam TItem
+@inherits FlareComponentBase
+
+<div class="@Css.Classes.Table.Container @(_stickyClass)">
+    <table class="@BuildCssClass(_stripedClass, _hoverClass, _borderedClass, _denseClass)"
+           style="@Style"
+           @attributes="AdditionalAttributes">
+
+        @if (!string.IsNullOrEmpty(Caption))
+        {
+            <caption>@Caption</caption>
+        }
+
+        @* --- Simple (non-typed) usage: consumer provides raw thead/tbody/tfoot --- *@
+        @if (Items is null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @* --- Typed usage: component manages thead, grouped tbody, and tfoot --- *@
+            <thead class="@Css.Classes.Table.THead">
+                @HeaderContent
+            </thead>
+
+            @if (GroupBy is null)
+            {
+                <tbody>
+                    @foreach (var item in Items)
+                    {
+                        @RowTemplate?.Invoke(item)
+                    }
+                </tbody>
+            }
+            else
+            {
+                @foreach (var group in Items.GroupBy(GroupBy))
+                {
+                    <tbody>
+                        <tr class="@Css.Classes.Table.GroupRow @(_collapsedGroups.Contains(group.Key) ? Css.Classes.Table.GroupRowCollapsed : "")"
+                            @onclick="() => ToggleGroup(group.Key)">
+                            <td colspan="@ColSpan">
+                                <span class="@Css.Classes.Table.GroupChevron">
+                                    @(_collapsedGroups.Contains(group.Key) ? "▶" : "▼")
+                                </span>
+                                @group.Key
+                            </td>
+                        </tr>
+                        @if (!_collapsedGroups.Contains(group.Key))
+                        {
+                            @foreach (var item in group)
+                            {
+                                @RowTemplate?.Invoke(item)
+                            }
+                        }
+                    </tbody>
+                }
+            }
+
+            @if (ShowFooter)
+            {
+                <tfoot class="@Css.Classes.Table.TFoot">
+                    @FooterContent?.Invoke(Items)
+                </tfoot>
+            }
+        }
+    </table>
+</div>
+
+@code {
+    // -- Simple (non-typed) API -----------------------------------------------
+
+    /// <summary>Raw table content for simple (non-typed) usage.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    // -- Accessibility ---------------------------------------------------------
+
+    /// <summary>
+    /// Accessible caption rendered as a &lt;caption&gt; element inside the table.
+    /// Provides a text summary of the table's purpose - not supported by MudBlazor or Blazorise.
+    /// </summary>
+    [Parameter] public string? Caption { get; set; }
+
+    // -- Typed API ------------------------------------------------------------
+
+    /// <summary>The data items to display. When set, the component manages rendering.</summary>
+    [Parameter] public IEnumerable<TItem>? Items { get; set; }
+
+    /// <summary>Renders the header row(s) inside &lt;thead&gt;.</summary>
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
+
+    /// <summary>Renders a single data row for each item.</summary>
+    [Parameter] public RenderFragment<TItem>? RowTemplate { get; set; }
+
+    /// <summary>Renders the footer row(s) inside &lt;tfoot&gt; receiving all items.</summary>
+    [Parameter] public RenderFragment<IEnumerable<TItem>>? FooterContent { get; set; }
+
+    /// <summary>When non-null, groups items by the returned string key.</summary>
+    [Parameter] public Func<TItem, string>? GroupBy { get; set; }
+
+    /// <summary>Number of columns (used for group-row colspan).</summary>
+    [Parameter] public int ColSpan { get; set; } = 100;
+
+    /// <summary>When true, renders a &lt;tfoot&gt; using FooterContent.</summary>
+    [Parameter] public bool ShowFooter { get; set; }
+
+    // -- Shared style parameters -----------------------------------------------
+
+    /// <summary>Alternates row background colors for readability.</summary>
+    [Parameter] public bool Striped { get; set; }
+
+    /// <summary>Highlights the row under the cursor.</summary>
+    [Parameter] public bool Hover { get; set; } = true;
+
+    /// <summary>Adds borders around all cells.</summary>
+    [Parameter] public bool Bordered { get; set; }
+
+    /// <summary>Reduces cell padding for a denser layout (consistent with other components' Dense).</summary>
+    [Parameter] public bool Dense { get; set; }
+
+    /// <summary>Pins the table header while the body scrolls.</summary>
+    [Parameter] public bool StickyHeader { get; set; }
+
+    // -- Internals ------------------------------------------------------------
+
+    protected override string ComponentCssClass => Css.Classes.Table.Root;
+
+    private readonly HashSet<string> _collapsedGroups = new(StringComparer.Ordinal);
+
+    private string _stripedClass  => Striped     ? Css.Classes.Table.Striped  : string.Empty;
+    private string _hoverClass    => Hover        ? Css.Classes.Table.Hover    : string.Empty;
+    private string _borderedClass => Bordered     ? Css.Classes.Table.Bordered : string.Empty;
+    private string _denseClass    => Dense        ? Css.Classes.Table.Dense    : string.Empty;
+    private string _stickyClass   => StickyHeader ? Css.Classes.Table.StickyContainer : string.Empty;
+
+    private void ToggleGroup(string key)
+    {
+        if (!_collapsedGroups.Remove(key))
+            _collapsedGroups.Add(key);
+    }
+
+}

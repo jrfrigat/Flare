@@ -1,0 +1,98 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+		<!--
+			The Gallery only ships English + Russian. We keep the full ICU dataset (it includes the
+			ru-RU calendar/number formats the DataGrid/date components rely on) but drop the legacy
+			BlazorWebAssemblyI18NMode=All code-page tables, which are only needed for non-Unicode
+			encodings and add weight for nothing here.
+		-->
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.8" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Flare.Components.Carousel\Flare.Components.Carousel.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.IDE\Flare.Components.IDE.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.Kanban\Flare.Components.Kanban.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.Media\Flare.Components.Media.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.QrCode\Flare.Components.QrCode.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.RichTextEditor\Flare.Components.RichTextEditor.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.Transfer\Flare.Components.Transfer.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Icons\Flare.Icons.csproj" />
+		<ProjectReference Include="..\..\src\Flare\Flare.csproj" />
+		<!--
+			Flare no longer ships themes; reference the theme packages the Gallery showcases directly.
+			AddFlare auto-discovers them (RegisterAllBuiltInThemes) from the loaded assemblies.
+		-->
+		<ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.FluentUI2\Flare.Theme.FluentUI2.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.Aero\Flare.Theme.Aero.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.LiquidGlass\Flare.Theme.LiquidGlass.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.VisualStudio\Flare.Theme.VisualStudio.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Flare.Gallery.Generators\Flare.Gallery.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		
+		<AdditionalFiles Include="Pages/Components/**/*Demo.razor" />
+		<AdditionalFiles Include="Pages/Components/**/*Demo.razor.cs" />
+		<AdditionalFiles Include="Pages/Components/**/*Demo.razor.css" />
+		<AdditionalFiles Include="Pages/Components/**/*Demo.json" />
+		
+		<AdditionalFiles Include="Pages/Components/**/Examples/*.razor" />
+	</ItemGroup>
+
+	<!--
+		Flare.Icons exposes its ~10,700 Material SVG paths as `const string` fields. The C# compiler
+		INLINES every `Icons.*` reference into the consuming assembly at compile time, so at runtime
+		nothing actually loads Flare.Icons.wasm. The trimmer cannot drop the data (ILLink does not
+		remove literal/const fields), so left as a normal reference the 6.8 MB assembly would ship in
+		the boot set and sit in the WASM heap on every page for nothing. Marking it lazy-load keeps it
+		out of the startup manifest and the linear heap; because all usage is const-inlined, it is
+		never requested. Apps that genuinely need runtime icon lookup can load it on demand via
+		LazyAssemblyLoader.
+	-->
+	<ItemGroup>
+		<BlazorWebAssemblyLazyLoad Include="Flare.Icons.wasm" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
+
+	<!--
+		Opt-in API documentation generation. Runs the Flare.ApiDocGen tool to (re)generate
+		Api/ComponentApiRegistry.g.cs from reflection + XML docs. Disabled by default so normal
+		builds and CI don't depend on it; enable with:  dotnet build -p:RunApiDocGen=true
+	-->
+	<Target Name="GenerateApiDocs" BeforeTargets="BeforeCompile" Condition="'$(RunApiDocGen)' == 'true'">
+		<Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)..\..\tools\Flare.ApiDocGen\Flare.ApiDocGen.csproj&quot; -c $(Configuration) -- &quot;$(MSBuildThisFileDirectory)Api\ComponentApiRegistry.g.cs&quot;" />
+	</Target>
+
+	<ItemGroup>
+	  <Compile Update="Resources\GalleryStrings.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>GalleryStrings.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\GalleryStrings.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>GalleryStrings.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+</Project>

@@ -1,0 +1,869 @@
+.flare-datagrid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.flare-datagrid__wrapper {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--flare-color-outline-variant);
+  border-radius: var(--flare-shape-medium);
+}
+
+.flare-datagrid__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--flare-typescale-body-medium-font);
+  font-size: var(--flare-typescale-body-medium-size);
+  color: var(--flare-color-on-surface);
+  background: var(--flare-color-surface);
+}
+
+.flare-datagrid__th {
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  text-align: left;
+  font-family: var(--flare-typescale-label-large-font);
+  font-size: var(--flare-typescale-label-large-size);
+  font-weight: var(--flare-typescale-label-large-weight);
+  color: var(--flare-color-on-surface-variant);
+  background: var(--flare-color-surface-container-low);
+  border-bottom: 1px solid var(--flare-color-outline-variant);
+  white-space: nowrap;
+}
+
+.flare-datagrid__th--sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.flare-datagrid__th--sortable:hover {
+  background: var(--flare-color-surface-container);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-datagrid__sort-icon {
+  margin-left: var(--flare-spacing-3, 0.375rem);
+  color: var(--flare-color-primary);
+  font-size: 1.125rem;
+  vertical-align: middle;
+}
+
+/* Appearance modifiers */
+.flare-datagrid--striped tbody tr.flare-datagrid__row:nth-of-type(even) {
+  background: var(--flare-color-surface-container-low);
+}
+
+.flare-datagrid--hoverable tbody tr.flare-datagrid__row:hover {
+  background: var(--flare-color-surface-container);
+}
+
+.flare-datagrid--dense .flare-datagrid__th,
+.flare-datagrid--dense .flare-datagrid__td {
+  padding-top: var(--flare-spacing-2, 0.25rem);
+  padding-bottom: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-datagrid__td {
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  border-bottom: 1px solid var(--flare-color-outline-variant);
+  vertical-align: middle;
+}
+
+.flare-datagrid__row:last-child .flare-datagrid__td {
+  border-bottom: none;
+}
+
+/* Hover effect only when Hoverable class is present */
+.flare-datagrid--hoverable .flare-datagrid__row:hover .flare-datagrid__td {
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
+}
+
+/* Selected row: tinted with the primary state layer. */
+.flare-datagrid__row--selected .flare-datagrid__td {
+  background: color-mix(in srgb, var(--flare-color-primary) 12%, var(--flare-color-surface));
+}
+.flare-datagrid__row--selected:hover .flare-datagrid__td {
+  background: color-mix(in srgb, var(--flare-color-primary) 18%, var(--flare-color-surface));
+}
+
+.flare-datagrid__empty {
+  padding: var(--flare-spacing-16, 2rem);
+  text-align: center;
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-datagrid__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-6, 0.75rem) 0;
+}
+
+.flare-datagrid__wrapper--virtual {
+  overflow-y: auto;
+  max-height: var(--_virtual-height, 400px);
+}
+
+/* Sticky header inside a scroll container. Stick the whole <thead> (not individual <th>):
+   per-cell sticky is unreliable for table cells and, with a multi-row header (column bands,
+   banded composite), every row would pin at top:0 and overlap. A sticky thead keeps all
+   header rows together above the scrolling body. z-index 3 keeps it over frozen body cells (2). */
+.flare-datagrid__wrapper--virtual thead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+/* Spinner/text loading overlay: centered over the (dimmed) table. */
+.flare-datagrid__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+  background: color-mix(in srgb, var(--flare-color-surface) 55%, transparent);
+  backdrop-filter: blur(0.5px);
+  pointer-events: none;
+}
+
+.flare-datagrid__table--loading {
+  opacity: 0.6;
+}
+
+/* Skeleton placeholder rows (virtual not-yet-loaded rows / skeleton loading mode). */
+.flare-datagrid__placeholder-row td {
+  padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-8, 1rem);
+}
+
+/* "Loading more" row at the bottom of an infinite-scroll grid. */
+.flare-datagrid__infinite-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  color: var(--flare-color-on-surface-variant);
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+}
+
+/* Thin indeterminate progress line pinned to the top edge of the table. */
+.flare-datagrid__progress-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: 3px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flare-datagrid__progress-line .flare-progress--linear {
+  height: 3px;
+  border-radius: 0;
+}
+
+.flare-datagrid__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-4, 0.5rem) 0;
+  justify-content: flex-end;
+}
+
+.flare-datagrid__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-4, 0.5rem) 0;
+  justify-content: flex-end;
+}
+
+.flare-datagrid__sort-priority {
+  font-size: 0.625rem;
+  vertical-align: super;
+  color: var(--flare-color-on-surface-variant);
+  margin-left: var(--flare-spacing-1, 0.125rem);
+}
+
+.flare-datagrid__th {
+  position: relative;
+}
+
+.flare-datagrid__resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background: var(--flare-color-outline-variant);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.flare-datagrid__th:hover .flare-datagrid__resize-handle {
+  opacity: 1;
+}
+
+.flare-datagrid__group-header td {
+  padding: 0;
+  font-weight: 600;
+  font-size: var(--flare-typescale-label-large-size);
+  color: var(--flare-color-on-surface-variant);
+  background: var(--flare-color-surface-container-low);
+  border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+/* Collapsible group header button: full-width, indents by nesting level. */
+.flare-datagrid__group-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  width: 100%;
+  /* 1.5rem indent per nesting level (var set inline as a unitless multiplier). */
+  padding: 0.5rem 1rem 0.5rem calc(1rem + var(--_group-indent, 0) * 1.5rem);
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.flare-datagrid__group-toggle:hover {
+  background: var(--flare-color-surface-container);
+}
+
+.flare-datagrid__group-toggle:focus-visible {
+  outline: 2px solid var(--flare-color-primary);
+  outline-offset: -2px;
+}
+
+.flare-datagrid__group-chevron {
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-datagrid__group-label {
+  flex: 0 1 auto;
+}
+
+/* Row count pill following the group label. */
+.flare-datagrid__group-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.25rem;
+  padding: 0 var(--flare-spacing-3, 0.375rem);
+  border-radius: 0.625rem;
+  background: var(--flare-color-secondary-container);
+  color: var(--flare-color-on-secondary-container);
+  font-size: var(--flare-typescale-label-small-size);
+  font-weight: 600;
+}
+
+/* Per-group aggregate chips pushed to the trailing edge. */
+.flare-datagrid__group-aggregate {
+  font-weight: 500;
+  color: var(--flare-color-on-surface-variant);
+  font-size: var(--flare-typescale-label-medium-size);
+}
+
+.flare-datagrid__group-aggregate:first-of-type {
+  margin-left: auto;
+}
+
+.flare-datagrid__group-aggregate + .flare-datagrid__group-aggregate {
+  margin-left: var(--flare-spacing-8, 1rem);
+}
+
+/* Keyboard navigation focus (ring only for keyboard focus, not mouse clicks). Uses the per-theme
+   focus-ring token so MD3 (3px) and Fluent (2px) each render their own spec. */
+.flare-datagrid__table:focus-visible {
+  outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+  outline-offset: 2px;
+}
+
+.flare-datagrid__td:focus-visible {
+  outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+  outline-offset: -2px;
+}
+
+/* Filter row */
+.flare-datagrid__filter-row th {
+  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-6, 0.75rem);
+  background: var(--flare-color-surface-container-low);
+  border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+/* Filter editors (row + advanced builder) use the outlined field variant regardless of theme.
+   The shared --flare-input-* tokens cascade into every nested FlareInput/Select/MultiSelect. */
+.flare-datagrid__filter-row,
+.flare-datagrid__filter-builder-panel {
+  --flare-input-bg: transparent;
+  --flare-input-border: 1px solid var(--flare-color-outline);
+  --flare-input-border-bottom: 1px solid var(--flare-color-outline);
+  --flare-input-radius: var(--flare-shape-extra-small);
+  --flare-input-focus-border: 2px solid var(--flare-color-primary);
+  --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
+}
+
+/* -- Advanced filter builder -------------------------------------------- */
+.flare-datagrid__filter-builder {
+  position: relative;
+  display: inline-flex;
+}
+
+.flare-datagrid__filter-builder-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  margin-left: var(--flare-spacing-2, 0.25rem);
+  padding: 0 var(--flare-spacing-2, 0.25rem);
+  border-radius: 0.5625rem;
+  background: var(--flare-color-primary);
+  color: var(--flare-color-on-primary);
+  font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+  font-weight: 600;
+}
+
+.flare-datagrid__filter-builder-panel {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-4, 0.5rem);
+  min-width: 34rem;
+  max-width: 90vw;
+  padding: var(--flare-spacing-6, 0.75rem);
+  background: var(--flare-color-surface-container-high);
+  color: var(--flare-color-on-surface);
+  border: 1px solid var(--flare-color-outline-variant);
+  border-radius: var(--flare-shape-medium, 0.75rem);
+  box-shadow: var(--flare-elevation-3, 0 4px 8px 3px rgba(0, 0, 0, 0.15));
+}
+
+.flare-datagrid__filter-builder-tree {
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+  overflow: auto;
+}
+
+/* A logical group: a card with a left accent rail; nested groups indent visually. */
+.flare-datagrid__filter-builder-group {
+  border: 1px solid var(--flare-color-outline-variant);
+  border-left: 3px solid var(--flare-color-primary);
+  border-radius: var(--flare-shape-small, 0.5rem);
+  background: var(--flare-color-surface-container);
+  padding: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-datagrid__filter-builder-group-head {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-2, 0.25rem);
+  flex-wrap: wrap;
+}
+
+.flare-datagrid__filter-builder-group-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-3, 0.375rem);
+  padding-top: var(--flare-spacing-3, 0.375rem);
+}
+
+/* AND/OR connector chip toggled by clicking. */
+.flare-datagrid__filter-builder-connector {
+  min-width: 3rem;
+  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-5, 0.625rem);
+  border: 1px solid var(--flare-color-primary);
+  border-radius: var(--flare-shape-full, 1rem);
+  background: var(--flare-color-primary-container);
+  color: var(--flare-color-on-primary-container);
+  font-size: var(--flare-typescale-label-medium-size);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.flare-datagrid__filter-builder-connector:hover { filter: brightness(1.05); }
+
+.flare-datagrid__filter-builder-row {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-3, 0.375rem);
+}
+
+.flare-datagrid__filter-builder-range-sep {
+  color: var(--flare-color-on-surface-variant);
+  font-size: var(--flare-typescale-label-medium-size);
+}
+
+/* Wrappers around the reused Flare Select / Input editors (sizing only). */
+.flare-datagrid__filter-builder-field { flex: 1 1 30%; min-width: 0; }
+.flare-datagrid__filter-builder-op    { flex: 1 1 28%; min-width: 0; }
+.flare-datagrid__filter-builder-value { flex: 1 1 26%; min-width: 0; }
+
+.flare-datagrid__filter-builder-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  padding-top: var(--flare-spacing-2, 0.25rem);
+}
+
+/* Reorderable column headers (drag-and-drop) */
+.flare-datagrid__th--draggable { cursor: grab; }
+.flare-datagrid__th--draggable:active { cursor: grabbing; }
+.flare-datagrid__th--dragging { opacity: 0.5; }
+.flare-datagrid__th--draggable.flare-datagrid__th--dragging { cursor: grabbing; }
+
+/* Composite cell: stacked fields laid out as a CSS grid inside one cell */
+.flare-datagrid__composite {
+    display: grid;
+    gap: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-6, 0.75rem);
+    align-items: baseline;
+    width: 100%;
+}
+.flare-datagrid__composite-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.flare-datagrid__composite-label {
+    font-size: 0.6875rem;
+    color: var(--flare-color-on-surface-variant);
+    line-height: 1.2;
+}
+.flare-datagrid__composite-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Excel-like cell-range selection (CellSelection). Range cells get a tinted primary wash; the
+   active (focus) cell gets a solid primary outline. */
+.flare-datagrid__cell--range {
+  background: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
+}
+.flare-datagrid__cell--active {
+  outline: 2px solid var(--flare-color-primary);
+  outline-offset: -2px;
+}
+
+/* While cell selection is on, suppress native text selection so a drag selects cells, not text. */
+.flare-datagrid--cell-select { user-select: none; }
+
+/* Pinned rows (PinnedTopRows / PinnedBottomRows): always visible, tinted to stand apart from data. */
+.flare-datagrid__row--pinned > .flare-datagrid__td {
+  background: var(--flare-color-surface-container);
+  font-weight: var(--flare-typescale-label-large-weight, 500);
+}
+thead .flare-datagrid__row--pinned > .flare-datagrid__td {
+  border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
+  border-top: 1px solid var(--flare-color-outline-variant);
+}
+
+/* Sticky footer aggregate row in scrolling/virtualized grids (mirrors the sticky header). */
+.flare-datagrid__wrapper--virtual tfoot {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+}
+.flare-datagrid__wrapper--virtual tfoot .flare-datagrid__td {
+  background: var(--flare-color-surface-container-low);
+}
+
+/* Column text alignment (logical: end = right in LTR). Applied to both header and body cells. */
+.flare-datagrid__cell--center { text-align: center; }
+.flare-datagrid__cell--end { text-align: end; }
+
+/* Boolean cell: read-only checkbox icon (true = primary, false = muted outline) */
+.flare-datagrid__bool {
+    font-size: 1.25rem;
+    line-height: 1;
+    vertical-align: middle;
+}
+.flare-datagrid__bool--on {
+    color: var(--flare-color-primary);
+}
+.flare-datagrid__bool--off {
+    color: var(--flare-color-outline);
+}
+
+/* Banded multi-row composite: each record spans several rows; cells align across the table */
+.flare-datagrid__th--composite,
+.flare-datagrid__td--composite {
+    border-inline-end: 1px solid var(--flare-color-outline-variant);
+}
+.flare-datagrid__row--record > td {
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+/* Heavier separator at the start of each record */
+.flare-datagrid__row--record-first > td,
+.flare-datagrid__row--record-first > th {
+    border-top: 2px solid var(--flare-color-outline-variant);
+}
+.flare-datagrid__table tbody > .flare-datagrid__row--record-first:first-child > td {
+    border-top: 0;
+}
+/* Per-field inline filter inside a composite sub-header */
+.flare-datagrid__composite-filter {
+    margin-top: var(--flare-spacing-2, 4px);
+    font-weight: 400;
+    cursor: auto;
+}
+
+/* Column band header (groups leaf columns under a shared title) */
+.flare-datagrid__th--band {
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+/* Reorderable rows (drag-and-drop) */
+.flare-datagrid__row--draggable { cursor: grab; }
+.flare-datagrid__row--draggable:active { cursor: grabbing; }
+.flare-datagrid__row--dragging { opacity: 0.5; }
+
+/* Frozen / sticky columns. With frozen columns the table grows to its natural width
+   (instead of compressing to 100%) so it scrolls horizontally and the sticky columns
+   have content to pin over. Per-cell `left` offsets are set by JS (updateFrozenOffsets). */
+.flare-datagrid__table--scroll-x {
+  width: max-content;
+  min-width: 100%;
+}
+
+.flare-datagrid__th--frozen,
+.flare-datagrid__td--frozen {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background-color: var(--flare-color-surface-container);
+}
+
+.flare-datagrid__th--frozen {
+  z-index: 3;
+  background-color: var(--flare-color-surface-container-high);
+}
+
+.flare-datagrid__th--frozen-right,
+.flare-datagrid__td--frozen-right {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  background-color: var(--flare-color-surface-container);
+}
+
+.flare-datagrid__th--frozen-right {
+  z-index: 3;
+  background-color: var(--flare-color-surface-container-high);
+}
+
+/* Expandable row detail */
+.flare-datagrid__detail-toggle-th {
+  width: 3rem;
+}
+
+.flare-datagrid__detail-toggle {
+  width: 3rem;
+  text-align: center;
+  padding: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-datagrid__detail-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--flare-color-on-surface-variant);
+  padding: var(--flare-spacing-2, 0.25rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--flare-shape-full);
+  line-height: 1;
+}
+
+.flare-datagrid__detail-btn:hover {
+  background-color: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.flare-datagrid__detail-btn > .material-symbols-rounded {
+  font-size: 1.25rem;
+}
+
+/* Batch-edit selection count in the toolbar. */
+.flare-datagrid__batch-count {
+  color: var(--flare-color-on-surface-variant);
+  font-size: var(--flare-typescale-body-small-size, 0.875rem);
+}
+
+/* Tree-mode expand/collapse toggle in the first cell. */
+.flare-datagrid__tree-toggle {
+  font-size: 1.25rem;
+  cursor: pointer;
+  margin-right: var(--flare-spacing-2, 4px);
+  vertical-align: middle;
+}
+
+/* Infinite-scroll IntersectionObserver sentinel (visually collapsed). */
+.flare-datagrid__sentinel-cell {
+  padding: 0;
+  border: 0;
+  height: 1px;
+}
+
+.flare-datagrid__sentinel {
+  height: 1px;
+}
+
+/* Material-symbol icon sized for toolbar/leading-icon button slots. */
+.flare-datagrid__btn-icon {
+  font-size: 1rem;
+}
+
+/* Small close ("x") icon in filter-builder rows/groups. */
+.flare-datagrid__close-icon {
+  font-size: 1.125rem;
+}
+
+/* Flexible spacer that pushes following toolbar actions to the end. */
+.flare-datagrid__spacer {
+  flex: 1 1 auto;
+}
+
+/* Full-viewport click-catcher that closes an open popover (filter builder, column picker). */
+.flare-datagrid__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+}
+
+.flare-datagrid__detail-row {
+  background-color: var(--flare-color-surface-container-low);
+}
+
+.flare-datagrid__detail-cell {
+  padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-12, 1.5rem);
+}
+
+/* Inline edit */
+.flare-datagrid__th--edit-actions,
+.flare-datagrid__td--edit-actions {
+  width: 5.5rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.flare-datagrid__row--editing .flare-datagrid__td {
+  background: color-mix(in srgb, var(--flare-color-primary) 6%, var(--flare-color-surface));
+}
+
+.flare-datagrid__cell--edit {
+  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-4, 0.5rem);
+}
+
+/* Column picker */
+.flare-datagrid__toolbar-end {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-datagrid__column-picker-wrap {
+  position: relative;
+}
+
+.flare-datagrid__column-picker {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: var(--flare-color-surface);
+  border: 1px solid var(--flare-color-outline);
+  border-radius: var(--flare-shape-small);
+  padding: var(--flare-spacing-4, 0.5rem);
+  min-width: 160px;
+  z-index: 10;
+  display: none;
+  box-shadow: var(--flare-elevation-2);
+}
+
+.flare-datagrid__column-picker--open {
+  display: block;
+}
+
+.flare-datagrid__column-picker-item {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-4, 0.5rem);
+  cursor: pointer;
+  border-radius: var(--flare-shape-extra-small);
+  font-size: var(--flare-typescale-body-small-size, 0.875rem);
+  color: var(--flare-color-on-surface);
+  user-select: none;
+}
+
+.flare-datagrid__column-picker-item:hover {
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
+}
+
+/* Menu filter (FilterMode.Menu): per-column trigger button + popover panel. */
+.flare-datagrid__filter-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-inline-start: var(--flare-spacing-2, 0.25rem);
+  padding: 0;
+  border: none;
+  border-radius: var(--flare-shape-full, 9999px);
+  background: transparent;
+  color: var(--flare-color-on-surface-variant);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
+              color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-datagrid__filter-trigger > .material-symbols-rounded { font-size: 1.125rem; }
+
+.flare-datagrid__filter-trigger:hover {
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-datagrid__filter-trigger--active {
+  color: var(--flare-color-primary);
+}
+
+.flare-datagrid__filter-menu {
+  position: absolute;
+  inset-inline-start: 0;
+  top: calc(100% + 4px);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-4, 0.5rem);
+  min-width: 13rem;
+  padding: var(--flare-spacing-6, 0.75rem);
+  background: var(--flare-color-surface-container);
+  border: 1px solid var(--flare-color-outline-variant);
+  border-radius: var(--flare-shape-small);
+  box-shadow: var(--flare-elevation-2);
+  text-align: start;
+  white-space: normal;
+  cursor: default;
+  font-weight: var(--flare-typescale-body-medium-weight, 400);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-datagrid__filter-menu-label {
+  font-family: var(--flare-typescale-label-small-font);
+  font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+  font-weight: var(--flare-typescale-label-large-weight, 500);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-datagrid__filter-menu-field { display: block; }
+
+/* Excel-style value checklist inside the menu filter. */
+.flare-datagrid__filter-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-1, 0.125rem);
+  max-height: 11rem;
+  overflow-y: auto;
+  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-1, 0.125rem);
+  border: 1px solid var(--flare-color-outline-variant);
+  border-radius: var(--flare-shape-extra-small);
+}
+
+.flare-datagrid__filter-menu-list > .flare-checkbox {
+  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-2, 0.25rem);
+  border-radius: var(--flare-shape-extra-small);
+}
+
+.flare-datagrid__filter-menu-list > .flare-checkbox:hover {
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-datagrid__filter-menu-divider {
+  height: 1px;
+  background: var(--flare-color-outline-variant);
+  margin: var(--flare-spacing-1, 0.125rem) 0;
+}
+
+.flare-datagrid__filter-menu-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--flare-spacing-4, 0.5rem);
+  margin-top: var(--flare-spacing-2, 0.25rem);
+}
+
+/* Selection checkbox column - narrow and centered. */
+.flare-datagrid__th--select,
+.flare-datagrid__td--select {
+  width: 2.75rem;
+  text-align: center;
+  padding-left: var(--flare-spacing-4, 0.5rem);
+  padding-right: var(--flare-spacing-4, 0.5rem);
+}
+
+/* Aggregate footer row. */
+.flare-datagrid__aggregate-row {
+  background: var(--flare-color-surface-container);
+  border-top: 2px solid var(--flare-color-outline-variant);
+}
+
+.flare-datagrid__td--aggregate {
+  font-weight: 600;
+  color: var(--flare-color-on-surface);
+}
+
+/* Bordered: column dividers */
+.flare-datagrid--bordered .flare-datagrid__th,
+.flare-datagrid--bordered .flare-datagrid__td {
+  border-right: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-datagrid--bordered .flare-datagrid__th:last-child,
+.flare-datagrid--bordered .flare-datagrid__td:last-child {
+  border-right: none;
+}
+
+.flare-datagrid--bordered .flare-datagrid__th {
+  border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+/* On small screens, let the table scroll horizontally instead of squashing columns. */
+@media (max-width: 599px) {
+  .flare-datagrid__wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .flare-datagrid {
+    min-width: 600px;
+  }
+}

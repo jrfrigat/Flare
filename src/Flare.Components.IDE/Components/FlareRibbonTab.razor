@@ -1,0 +1,41 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+@implements IDisposable
+
+@if (Ribbon.IsTabActive(this))
+{
+    <div class="@Css.Classes.Ide.Ribbon.TabPanel" id="@PanelId" role="tabpanel"
+         aria-labelledby="flare-ribbon-tab-@TabId"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] private FlareRibbon Ribbon { get; set; } = default!;
+
+    /// <summary>Display title for the ribbon tab.</summary>
+    [Parameter] public string Title { get; set; } = "";
+
+    /// <summary>Groups rendered inside this tab panel.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Disables this tab preventing activation.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Ide.Ribbon.TabPanel;
+
+    internal string TabId { get; } = Guid.NewGuid().ToString("N")[..8];
+    internal string PanelId => $"flare-ribbon-panel-{TabId}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Ribbon.RegisterTab(this);
+    }
+
+    public void Dispose()
+    {
+        Ribbon.UnregisterTab(this);
+    }
+}

@@ -1,0 +1,20 @@
+.flare-image {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.flare-image--fluid { width: 100%; }
+
+.flare-image__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.flare-image--cover    .flare-image__img { object-fit: cover; }
+.flare-image--contain  .flare-image__img { object-fit: contain; }
+.flare-image--fill     .flare-image__img { object-fit: fill; }
+.flare-image--none     .flare-image__img { object-fit: none; }
+.flare-image--scale-down .flare-image__img { object-fit: scale-down; }

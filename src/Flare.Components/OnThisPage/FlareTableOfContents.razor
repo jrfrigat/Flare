@@ -1,0 +1,24 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<nav class="@BuildCssClass()" style="@Style" aria-label="@(Title ?? _defaultLabel)" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <div class="@Css.Classes.TableOfContents.Title">@Title</div>
+    }
+    <ul class="@Css.Classes.TableOfContents.List">
+        @ChildContent
+    </ul>
+</nav>
+
+@code {
+    /// <summary>Optional heading shown above the links (e.g. "On this page"). When null no title is rendered.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>The links, typically a sequence of <see cref="FlareTocLink"/>.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.TableOfContents.Root;
+
+    private string _defaultLabel => FlareStrings.OnThisPage_Title;
+}

@@ -1,0 +1,29 @@
+@namespace Flare.Components
+@typeparam TItem
+@implements IDisposable
+
+@code {
+    [CascadingParameter] private FlareDataGrid<TItem>? Grid { get; set; }
+
+    /// <summary>Group-by field selector. Each distinct value produces one group at this level.</summary>
+    [Parameter] public Func<TItem, object?> Selector { get; set; } = _ => null;
+
+    /// <summary>Unique key for this grouping level, shown as the group-header prefix and sent to a
+    /// server-side provider via <c>DataGridRequest.GroupKeys</c>.</summary>
+    [Parameter] public string Key { get; set; } = "";
+
+    /// <summary>Aggregate definitions for this group level. When set, they override the grid-level
+    /// <c>Aggregates</c> for headers at this level.</summary>
+    [Parameter] public IReadOnlyList<AggregateDefinition<TItem>>? Aggregates { get; set; }
+
+    /// <summary>Custom group-header content, rendered in place of the default "Key: value" label.</summary>
+    [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+
+    /// <summary>Reserved for a custom group-footer template (not yet rendered).</summary>
+    [Parameter] public RenderFragment? FooterTemplate { get; set; }
+
+    protected override void OnInitialized() => Grid?.RegisterGroup(this);
+
+    /// <summary>Re-registers the level when its parameters change so reordering/edits take effect.</summary>
+    public void Dispose() => Grid?.UnregisterGroup(this);
+}

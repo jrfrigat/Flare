@@ -1,0 +1,44 @@
+<FlareStack Gap="FlareSpacing.Large" Direction="FlexDirection.Column">
+    <FlareText Typo="TypographyScale.TitleMedium">With Info Display</FlareText>
+    <FlarePagination 
+        Current="_page1" 
+        CurrentChanged="@(p => _page1 = p)" 
+        TotalPages="10" 
+        TotalItems="250"
+        ShowInfo="true" />
+    
+    <FlareText Typo="TypographyScale.TitleMedium">Custom Info Template</FlareText>
+    <FlarePagination 
+        Current="_page2" 
+        CurrentChanged="@(p => _page2 = p)" 
+        TotalPages="10" 
+        TotalItems="250"
+        PageSize="25"
+        ShowInfo="true">
+        <InfoTemplate>
+            <span>Showing @context.From–@context.To of @context.TotalItems items (Page @context.CurrentPage of @context.TotalPages)</span>
+        </InfoTemplate>
+    </FlarePagination>
+    
+    <FlareText Typo="TypographyScale.TitleMedium">With First/Last Buttons</FlareText>
+    <FlarePagination 
+        Current="_page3" 
+        CurrentChanged="@(p => _page3 = p)" 
+        TotalPages="20"
+        ShowFirstLast="true" />
+    
+    <FlareText Typo="TypographyScale.TitleMedium">Compact Size</FlareText>
+    <FlarePagination 
+        Current="_page4" 
+        CurrentChanged="@(p => _page4 = p)" 
+        TotalPages="10"
+        Size="PaginationSize.Sm"
+        ShowFirstLast="true" />
+</FlareStack>
+
+@code {
+    private int _page1 = 1;
+    private int _page2 = 1;
+    private int _page3 = 1;
+    private int _page4 = 1;
+}

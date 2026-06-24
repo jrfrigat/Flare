@@ -1,0 +1,10 @@
+<FlareStack Align="FlareAlignItems.Start" Gap="FlareSpacing.Small">
+    <FlareOtpField Length="8" InputMode="text" @bind-Value="_alpha" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        Value: @(string.IsNullOrEmpty(_alpha) ? "(empty)" : _alpha)
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string _alpha = string.Empty;
+}

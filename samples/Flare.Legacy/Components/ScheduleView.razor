@@ -1,0 +1,40 @@
+@namespace Flare.Legacy.Components
+
+<FlareStack Gap="FlareSpacing.XSmall">
+    <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">График на сегодня</FlareText>
+    <FlareCard Variant="CardVariant.Filled">
+        <FlareStack Gap="FlareSpacing.XXSmall">
+            @foreach (var s in _schedule)
+            {
+                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                    <FlareCheckbox Size="FieldSize.Xs" @bind-Value="s.Done" />
+                    <FlareText Typo="TypographyScale.LabelLarge" Weight="FontWeight.Bold">@s.Time</FlareText>
+                    <FlareText Typo="TypographyScale.LabelLarge" Style="@(s.Done == true ? "text-decoration:line-through;opacity:0.6" : null)">@s.Task</FlareText>
+                    <FlareSpacer />
+                    <FlareBadge Text="@s.Kind" Standalone="true" Color="@s.Color" />
+                </FlareStack>
+                <FlareDivider />
+            }
+            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">Выполнено: @_schedule.Count(x => x.Done == true) из @_schedule.Count</FlareText>
+        </FlareStack>
+    </FlareCard>
+</FlareStack>
+
+@code {
+    private sealed class ScheduleItem
+    {
+        public required string Time { get; init; }
+        public required string Task { get; init; }
+        public required string Kind { get; init; }
+        public required FlareColor Color { get; init; }
+        public bool? Done { get; set; }
+    }
+
+    private readonly List<ScheduleItem> _schedule =
+    [
+        new() { Time = "09:00", Task = "Обзвон портфеля \"Раннее взыскание\"", Kind = "Звонки", Color = FlareColor.Primary },
+        new() { Time = "11:30", Task = "Рассылка СМС по просрочке", Kind = "СМС", Color = FlareColor.Tertiary },
+        new() { Time = "14:00", Task = "Проверка обещаний оплаты", Kind = "Контроль", Color = FlareColor.Success, Done = true },
+        new() { Time = "16:00", Task = "Отчёт по эффективности за день", Kind = "Отчёт", Color = FlareColor.Warning },
+    ];
+}

@@ -1,0 +1,78 @@
+@namespace Flare.Components
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@if (_showHelp)
+{
+    <div class="@Css.Classes.Shortcuts.HelpScrim" @onclick="ToggleHelp">
+        <div class="@Css.Classes.Shortcuts.Help" role="dialog" aria-label="@(FlareStrings.Shortcuts_Title)" @onclick:stopPropagation="true">
+            <div class="@Css.Classes.Shortcuts.HelpHeader">
+                <span class="@Css.Classes.Shortcuts.HelpTitle">@(FlareStrings.Shortcuts_Title)</span>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="@(FlareStrings.Dialog_Close)" OnClick="ToggleHelp">
+                    <LeadingIcon><span class="material-symbols-rounded" aria-hidden="true">close</span></LeadingIcon>
+                </FlareButton>
+            </div>
+            <div class="@Css.Classes.Shortcuts.HelpList">
+                @foreach (var entry in _entries)
+                {
+                    <div class="@Css.Classes.Shortcuts.HelpRow">
+                        <kbd class="@Css.Classes.Shortcuts.HelpKbd">@entry.Keys</kbd>
+                        <span class="@Css.Classes.Shortcuts.HelpDesc">@entry.Description</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    /// <summary>Content the registered keyboard shortcuts apply to.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    internal readonly List<FlareShortcutEntry> _entries = new();
+
+    private bool _showHelp;
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<FlareShortcuts>? _dotNetRef;
+
+    internal void Register(FlareShortcutEntry entry) => _entries.Add(entry);
+    internal void Unregister(FlareShortcutEntry entry) => _entries.Remove(entry);
+
+    /// <summary>Toggles the help overlay showing all registered shortcuts.</summary>
+    public void ToggleHelp() { _showHelp = !_showHelp; StateHasChanged(); }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                _module ??= await JS.InvokeAsync<IJSObjectReference>(
+                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                _dotNetRef = DotNetObjectReference.Create(this);
+                await _module.InvokeVoidAsync("registerShortcutListener", _dotNetRef);
+            }
+            catch (InvalidOperationException) { }
+            catch (JSException) { }
+        }
+    }
+
+    [JSInvokable]
+    public Task HandleKeyDown(string keys) => FlareShortcutEntry.HandleKeyDown(keys);
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+                await _module.InvokeVoidAsync("removeShortcutListener");
+        }
+        catch { }
+        _dotNetRef?.Dispose();
+        if (_module is not null) await _module.DisposeAsync();
+    }
+}

@@ -1,0 +1,90 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject ISnackbarService SnackbarService
+
+<div class="@Css.Classes.Snackbar.Provider @_positionClass" aria-live="polite" aria-atomic="false">
+    @foreach (var msg in _messages)
+    {
+        var m = msg;
+        <div class="@Css.Classes.Snackbar.Root flare-snackbar--@m.Severity.ToString().ToLowerInvariant()"
+             role="status">
+            <span class="@Css.Classes.Snackbar.Text">@m.Text</span>
+            <div class="@Css.Classes.Snackbar.Actions">
+                @if (!string.IsNullOrEmpty(m.ActionText) && m.OnAction is not null)
+                {
+                    <button class="@Css.Classes.Snackbar.ActionBtn" type="button"
+                            @onclick="@(async () => await m.OnAction())">
+                        @m.ActionText
+                    </button>
+                }
+                @if (m.ShowClose)
+                {
+                    <button class="@Css.Classes.Snackbar.CloseBtn" type="button"
+                            aria-label="@(FlareStrings.Snackbar_Close)"
+                            @onclick="@(() => Dismiss(m.Id))">✕</button>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Maximum number of snackbar messages shown simultaneously.</summary>
+    [Parameter] public int MaxVisible { get; set; } = 5;
+    /// <summary>Screen position where the snackbar stack appears.</summary>
+    [Parameter] public SnackbarPosition Position { get; set; } = SnackbarPosition.BottomCenter;
+
+    private readonly List<SnackbarMessage> _messages = [];
+
+    protected override string ComponentCssClass => Css.Classes.Snackbar.Host;
+
+    private string _positionClass => Position switch
+    {
+        SnackbarPosition.TopLeft      => Css.Classes.Snackbar.TopLeft,
+        SnackbarPosition.TopCenter    => Css.Classes.Snackbar.TopCenter,
+        SnackbarPosition.TopRight     => Css.Classes.Snackbar.TopRight,
+        SnackbarPosition.BottomLeft   => Css.Classes.Snackbar.BottomLeft,
+        SnackbarPosition.BottomRight  => Css.Classes.Snackbar.BottomRight,
+        _                             => Css.Classes.Snackbar.BottomCenter,
+    };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        SnackbarService.OnShow += HandleShow;
+    }
+
+    private void HandleShow(SnackbarMessage msg)
+    {
+        InvokeAsync(async () =>
+        {
+            while (_messages.Count >= MaxVisible && _messages.Count > 0)
+                _messages.RemoveAt(0);
+            _messages.Add(msg);
+            StateHasChanged();
+            // DurationMs <= 0 keeps the snackbar until the user dismisses it (close/action) - useful
+            // for actionable notices like "a new version is available".
+            if (msg.DurationMs > 0)
+            {
+                await Task.Delay(msg.DurationMs);
+                Dismiss(msg.Id);
+            }
+        });
+    }
+
+    private void Dismiss(Guid id)
+    {
+        var msg = _messages.FirstOrDefault(m => m.Id == id);
+        if (msg is not null)
+        {
+            _messages.Remove(msg);
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        SnackbarService.OnShow -= HandleShow;
+        await base.DisposeAsync();
+    }
+}

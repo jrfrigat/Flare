@@ -1,0 +1,14 @@
+@page "/components/icon"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Icon_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareIcon">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Icon_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Icon_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Icon_Basic" DemoType="typeof(Examples.IconBasicDemo)" />
+
+<AutoDemoSection Title="@GalleryStrings.Icon_Variants" DemoType="typeof(Examples.IconVariantsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Icon_ColorSize" DemoType="typeof(Examples.IconColorSizeDemo)" />

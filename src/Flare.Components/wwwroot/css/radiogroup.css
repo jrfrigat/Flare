@@ -1,0 +1,30 @@
+.flare-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-4, 0.5rem);
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flare-radio-group--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--flare-spacing-8, 1rem);
+  align-items: center;
+}
+
+.flare-radio-group__legend {
+  font-family: var(--flare-typescale-label-medium-font, inherit);
+  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+  margin-bottom: var(--flare-spacing-2, 0.25rem);
+  padding: 0;
+  float: left;
+  width: 100%;
+}
+
+.flare-radio-group__error {
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  color: var(--flare-color-error);
+}

@@ -1,0 +1,81 @@
+@namespace Flare.Legacy.Layout
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject IThemeService ThemeService
+@inject IJSRuntime JS
+@inject IVersionCheckService VersionCheck
+@inject ISnackbarService Snackbar
+
+<FlareLayout @bind-DrawerOpen="_navOpen" MiniRail ContentMaxWidth="ContainerMaxWidth.Full">
+    <AppBar>
+        <FlareLayoutAppBar DrawerToggle="true">
+            <FlareText Typo="TypographyScale.TitleMedium" Weight="FontWeight.Bold">Legacy</FlareText>
+        </FlareLayoutAppBar>
+    </AppBar>
+    <Drawer>
+        <FlareLayoutDrawer>
+            <FlareNavMenu AriaLabel="Разделы">
+                <FlareNavLink Href="/" Match="NavMatchMode.Exact" Tooltip="Список займов">
+                    <Icon><FlareIcon Name="format_list_bulleted" /></Icon>
+                    <ChildContent>Список займов</ChildContent>
+                </FlareNavLink>
+                <FlareNavLink Href="/reports" Tooltip="Отчёты">
+                    <Icon><FlareIcon Name="insights" /></Icon>
+                    <ChildContent>Отчёты</ChildContent>
+                </FlareNavLink>
+                <FlareNavLink Href="/schedule" Tooltip="Рабочий график">
+                    <Icon><FlareIcon Name="schedule" /></Icon>
+                    <ChildContent>Рабочий график</ChildContent>
+                </FlareNavLink>
+                <FlareNavLink Href="/settings" Tooltip="Настройки">
+                    <Icon><FlareIcon Name="settings" /></Icon>
+                    <ChildContent>Настройки</ChildContent>
+                </FlareNavLink>
+            </FlareNavMenu>
+        </FlareLayoutDrawer>
+    </Drawer>
+    <Content>
+        @Body
+    </Content>
+</FlareLayout>
+
+<FlareSnackbarProvider />
+<FlareMessageBoxProvider />
+
+@code {
+    private bool _navOpen = true;
+
+    protected override void OnInitialized()
+    {
+        VersionCheck.NewVersionAvailable += OnNewVersionAsync;
+        VersionCheck.Start();
+    }
+
+    // Actionable, persistent toast: "Обновить" applies the waiting service worker and reloads
+    // (the service owns the service-worker plumbing - the app just calls ApplyUpdateAsync).
+    private Task OnNewVersionAsync(VersionCheckInfo info) => InvokeAsync(() =>
+        Snackbar.Show("Доступна новая версия приложения.", SnackbarSeverity.Info,
+            durationMs: 0, actionText: "Обновить", onAction: StartUpdateAsync));
+
+    // Confirm the click before the service worker activates and reloads, so the user sees that the
+    // update has started (the reload then replaces the page). Without this the button click gives no
+    // visible feedback until the reload happens.
+    private async Task StartUpdateAsync()
+    {
+        Snackbar.Show("Обновление...", SnackbarSeverity.Info, durationMs: 0, showClose: false);
+        await VersionCheck.ApplyUpdateAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            await ThemeService.EnsureStaticCssAsync();
+            await JS.InvokeVoidAsync("hideFlareSplash");
+        }
+        catch (Microsoft.JSInterop.JSDisconnectedException) { }
+    }
+
+    public void Dispose() => VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+}

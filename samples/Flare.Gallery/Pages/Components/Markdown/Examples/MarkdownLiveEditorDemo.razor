@@ -1,0 +1,23 @@
+<FlareGrid Columns="2" Gap="FlareSpacing.Medium" Style="align-items:start;">
+    <FlareCol Span="1">
+        <FlareStack Gap="FlareSpacing.XSmall">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">Markdown input</FlareText>
+            <textarea @bind="_liveInput" @bind:event="oninput"
+                      rows="18"
+                      style="width:100%;padding:0.75rem;border-radius:var(--flare-shape-small);border:1px solid var(--flare-color-outline);background:var(--flare-color-surface-container);color:var(--flare-color-on-surface);font-family:monospace;font-size:0.875em;resize:vertical;">
+            </textarea>
+        </FlareStack>
+    </FlareCol>
+    <FlareCol Span="1">
+        <FlareStack Gap="FlareSpacing.XSmall">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">Rendered output</FlareText>
+            <FlareCard Variant="CardVariant.Outlined" Style="min-height:12rem;">
+                <FlareMarkdown Value="@_liveInput" />
+            </FlareCard>
+        </FlareStack>
+    </FlareCol>
+</FlareGrid>
+
+@code {
+    private string _liveInput = "# Live Editor\n\nType **Markdown** here and see it rendered *instantly*.\n\n- Item one\n- Item two\n\n> A blockquote example.\n\n`inline code` and [Flare](https://github.com/jrfrigat/Flare)";
+}

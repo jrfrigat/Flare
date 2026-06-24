@@ -1,0 +1,12 @@
+@page "/components/on-this-page"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.OnThisPage_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareOnThisPage">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.OnThisPage_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.OnThisPage_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.OnThisPage_Block" DemoType="typeof(Examples.TableOfContentsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.OnThisPage_Demo" DemoType="typeof(Examples.OnThisPageDemo)" />

@@ -1,0 +1,38 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.5rem">
+    Scroll to the bottom: the next page is fetched and appended (25 rows per page, simulated
+    250&#8201;ms latency) until all 320 rows are loaded.
+</FlareText>
+
+<FlareDataGrid TItem="Person" ItemsProvider="LoadAsync" InfiniteScroll="true"
+               PageSize="25" VirtualHeight="420px">
+    <Columns>
+        <FlareColumn Title="#" Field="@(p => p.Score)" Width="90px" />
+        <FlareColumn Title="Name" Field="@(p => p.Name)" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private static readonly string[] _roles = ["Engineer", "Designer", "Manager", "QA", "DevOps"];
+    private static readonly string[] _cities = ["Berlin", "London", "Paris", "Tokyo", "Madrid", "Toronto"];
+
+    private static readonly List<Person> _all = Enumerable.Range(1, 320)
+        .Select(i => new Person
+        {
+            Name = $"Person {i:000}",
+            Role = _roles[i % _roles.Length],
+            City = _cities[i % _cities.Length],
+            Score = i,
+        })
+        .ToList();
+
+    private async Task<DataGridResult<Person>> LoadAsync(DataGridRequest req)
+    {
+        await Task.Delay(250); // simulate network latency so the "loading more" row is visible
+        var page = _all.Skip(req.Page * req.PageSize).Take(req.PageSize);
+        return new DataGridResult<Person>(page, _all.Count);
+    }
+}

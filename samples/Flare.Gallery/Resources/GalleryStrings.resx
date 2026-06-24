@@ -1,0 +1,2214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Common_ShowCode" xml:space="preserve">
+    <value>Show code</value>
+  </data>
+  <data name="Pwa_NewVersion" xml:space="preserve">
+    <value>A new version is available.</value>
+  </data>
+  <data name="Pwa_Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Pwa_Updating" xml:space="preserve">
+    <value>Updating...</value>
+  </data>
+  <data name="Common_Selected" xml:space="preserve">
+    <value>Selected:</value>
+  </data>
+  <data name="Alerts_Title" xml:space="preserve">
+    <value>Alerts</value>
+  </data>
+  <data name="Alerts_Subtitle" xml:space="preserve">
+    <value>FlareAlert - inline feedback with severities, variants, icons and dismiss.</value>
+  </data>
+  <data name="Alerts_Severity" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="Alerts_Variants" xml:space="preserve">
+    <value>Variants (Filled / Outlined / Text)</value>
+  </data>
+  <data name="Alerts_Icon" xml:space="preserve">
+    <value>Custom icon &amp; no icon</value>
+  </data>
+  <data name="AlertDemo_InfoTitle" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="AlertDemo_InfoBody" xml:space="preserve">
+    <value>This is an informational message.</value>
+  </data>
+  <data name="AlertDemo_SuccessTitle" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="AlertDemo_SuccessBody" xml:space="preserve">
+    <value>Operation completed successfully.</value>
+  </data>
+  <data name="AlertDemo_WarningTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="AlertDemo_WarningBody" xml:space="preserve">
+    <value>Please review before continuing.</value>
+  </data>
+  <data name="AlertDemo_ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="AlertDemo_ErrorBody" xml:space="preserve">
+    <value>Something went wrong. Click × to dismiss.</value>
+  </data>
+  <data name="AlertDemo_FilledBody" xml:space="preserve">
+    <value>Filled is the default variant - a solid tonal container.</value>
+  </data>
+  <data name="AlertDemo_OutlinedBody" xml:space="preserve">
+    <value>Outlined uses a transparent fill with a coloured border.</value>
+  </data>
+  <data name="AlertDemo_TextBody" xml:space="preserve">
+    <value>Text has no background or border - just coloured content.</value>
+  </data>
+  <data name="AlertDemo_CustomIconTitle" xml:space="preserve">
+    <value>Custom icon</value>
+  </data>
+  <data name="AlertDemo_CustomIconBody" xml:space="preserve">
+    <value>Provide your own glyph through the Icon slot.</value>
+  </data>
+  <data name="AlertDemo_NoIconTitle" xml:space="preserve">
+    <value>No icon</value>
+  </data>
+  <data name="AlertDemo_NoIconBody" xml:space="preserve">
+    <value>Set NoIcon to hide the leading icon entirely.</value>
+  </data>
+  <data name="AlertDemo_NoTitleBody" xml:space="preserve">
+    <value>A title is optional - this alert shows body content only.</value>
+  </data>
+  <data name="Snackbar_Title" xml:space="preserve">
+    <value>Snackbar</value>
+  </data>
+  <data name="Snackbar_Subtitle" xml:space="preserve">
+    <value>Transient messages shown via ISnackbarService.</value>
+  </data>
+  <data name="Snackbar_Severity" xml:space="preserve">
+    <value>Severity</value>
+  </data>
+  <data name="Snackbar_Action" xml:space="preserve">
+    <value>Action, duration &amp; close button</value>
+  </data>
+  <data name="Alerts_AnimateDismiss" xml:space="preserve">
+    <value>Animated Dismiss</value>
+  </data>
+  <data name="Accordion_Title" xml:space="preserve">
+    <value>Accordion</value>
+  </data>
+  <data name="Accordion_Subtitle" xml:space="preserve">
+    <value>Collapsible panels that reveal content one (or many) at a time.</value>
+  </data>
+  <data name="Accordion_Basic" xml:space="preserve">
+    <value>Basic (single expand)</value>
+  </data>
+  <data name="Accordion_Multiple" xml:space="preserve">
+    <value>Allow multiple open</value>
+  </data>
+  <data name="Accordion_Expanded" xml:space="preserve">
+    <value>Default expanded &amp; two-way binding</value>
+  </data>
+  <data name="AccordionDemo_Q1" xml:space="preserve">
+    <value>What is Flare?</value>
+  </data>
+  <data name="AccordionDemo_A1" xml:space="preserve">
+    <value>Flare is a Blazor component library with runtime theme switching between Material Design 3 and Fluent UI 2.</value>
+  </data>
+  <data name="AccordionDemo_Q2" xml:space="preserve">
+    <value>How does theme switching work?</value>
+  </data>
+  <data name="AccordionDemo_A2" xml:space="preserve">
+    <value>All components use CSS custom properties (--flare-*). Switching themes updates every variable in one call - no page reload.</value>
+  </data>
+  <data name="AccordionDemo_Q3" xml:space="preserve">
+    <value>Is it open source?</value>
+  </data>
+  <data name="AccordionDemo_A3" xml:space="preserve">
+    <value>Yes - Flare is MIT licensed and available on GitHub.</value>
+  </data>
+  <data name="AccordionDemo_Shipping" xml:space="preserve">
+    <value>Shipping</value>
+  </data>
+  <data name="AccordionDemo_ShippingBody" xml:space="preserve">
+    <value>Free standard shipping on all orders over $50. Express options available at checkout.</value>
+  </data>
+  <data name="AccordionDemo_Returns" xml:space="preserve">
+    <value>Returns</value>
+  </data>
+  <data name="AccordionDemo_ReturnsBody" xml:space="preserve">
+    <value>Return any item within 30 days for a full refund - no questions asked.</value>
+  </data>
+  <data name="AccordionDemo_Warranty" xml:space="preserve">
+    <value>Warranty</value>
+  </data>
+  <data name="AccordionDemo_WarrantyBody" xml:space="preserve">
+    <value>Every product is covered by a two-year limited manufacturer warranty.</value>
+  </data>
+  <data name="AccordionDemo_DefaultOpen" xml:space="preserve">
+    <value>Expanded by default</value>
+  </data>
+  <data name="AccordionDemo_DefaultOpenBody" xml:space="preserve">
+    <value>This panel starts open because Expanded="true" was set.</value>
+  </data>
+  <data name="AccordionDemo_Bound" xml:space="preserve">
+    <value>Two-way bound panel</value>
+  </data>
+  <data name="AccordionDemo_BoundBody" xml:space="preserve">
+    <value>Toggling this panel updates the bound field via ExpandedChanged.</value>
+  </data>
+  <data name="AccordionDemo_StateOpen" xml:space="preserve">
+    <value>Second panel is open</value>
+  </data>
+  <data name="AccordionDemo_StateClosed" xml:space="preserve">
+    <value>Second panel is closed</value>
+  </data>
+  <data name="Avatar_Title" xml:space="preserve">
+    <value>Avatar</value>
+  </data>
+  <data name="Avatar_Subtitle" xml:space="preserve">
+    <value>FlareAvatar - sizes, shapes, image and text fallback.</value>
+  </data>
+  <data name="Avatar_Sizes" xml:space="preserve">
+    <value>Sizes</value>
+  </data>
+  <data name="Avatar_Color" xml:space="preserve">
+    <value>Custom color</value>
+  </data>
+  <data name="Avatar_Variants" xml:space="preserve">
+    <value>Variants</value>
+  </data>
+  <data name="Avatar_ImageFallback" xml:space="preserve">
+    <value>Image &amp; Fallback</value>
+  </data>
+  <data name="Badge_Title" xml:space="preserve">
+    <value>Badge</value>
+  </data>
+  <data name="Badge_Subtitle" xml:space="preserve">
+    <value>FlareBadge for counts, dots and standalone status pills.</value>
+  </data>
+  <data name="Badge_Basic" xml:space="preserve">
+    <value>Count, overflow &amp; dot</value>
+  </data>
+  <data name="Badge_Standalone" xml:space="preserve">
+    <value>Standalone pills &amp; colors</value>
+  </data>
+  <data name="Badge_Origin" xml:space="preserve">
+    <value>Origin &amp; visibility</value>
+  </data>
+  <data name="Chip_Title" xml:space="preserve">
+    <value>Chip</value>
+  </data>
+  <data name="Chip_Subtitle" xml:space="preserve">
+    <value>FlareChip for tags, filters and selections.</value>
+  </data>
+  <data name="Chip_Basic" xml:space="preserve">
+    <value>Selectable, closeable &amp; disabled</value>
+  </data>
+  <data name="Chip_IconAvatar" xml:space="preserve">
+    <value>Leading icon &amp; avatar</value>
+  </data>
+  <data name="Chip_SizeColor" xml:space="preserve">
+    <value>Sizes, colors &amp; click</value>
+  </data>
+  <data name="Breadcrumb_Title" xml:space="preserve">
+    <value>Breadcrumb</value>
+  </data>
+  <data name="Breadcrumb_Subtitle" xml:space="preserve">
+    <value>FlareBreadcrumb - navigation trail with custom separators and collapsing.</value>
+  </data>
+  <data name="Breadcrumb_Breadcrumb" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="Breadcrumb_Separator" xml:space="preserve">
+    <value>Separator, disabled &amp; aria-label</value>
+  </data>
+  <data name="Breadcrumb_Custom" xml:space="preserve">
+    <value>Custom content (ChildContent)</value>
+  </data>
+  <data name="Breadcrumb_Collapse" xml:space="preserve">
+    <value>Overflow collapse (MaxItems)</value>
+  </data>
+  <data name="Pagination_Title" xml:space="preserve">
+    <value>Pagination</value>
+  </data>
+  <data name="Pagination_Subtitle" xml:space="preserve">
+    <value>FlarePagination with sizing, colors and page-size selection.</value>
+  </data>
+  <data name="Pagination_Basic" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="Pagination_Options" xml:space="preserve">
+    <value>First/last, siblings, size &amp; color</value>
+  </data>
+  <data name="Pagination_PageSize" xml:space="preserve">
+    <value>Rows per page</value>
+  </data>
+  <data name="ButtonExtras_AriaSettings" xml:space="preserve">
+    <value>Settings (standard)</value>
+  </data>
+  <data name="ButtonExtras_AriaAdd" xml:space="preserve">
+    <value>Add (filled)</value>
+  </data>
+  <data name="ButtonExtras_AriaEdit" xml:space="preserve">
+    <value>Edit (tonal)</value>
+  </data>
+  <data name="ButtonExtras_AriaDelete" xml:space="preserve">
+    <value>Delete (outlined)</value>
+  </data>
+  <data name="ButtonExtras_AriaDisabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="ButtonExtras_AriaSmall" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="ButtonExtras_AriaMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="ButtonExtras_AriaLarge" xml:space="preserve">
+    <value>Large</value>
+  </data>
+  <data name="ButtonExtras_AriaAddPrimary" xml:space="preserve">
+    <value>Add (primary)</value>
+  </data>
+  <data name="ButtonExtras_AriaEditSecondary" xml:space="preserve">
+    <value>Edit (secondary)</value>
+  </data>
+  <data name="ButtonExtras_AriaShareTertiary" xml:space="preserve">
+    <value>Share (tertiary)</value>
+  </data>
+  <data name="ButtonExtras_AriaFavoriteSurface" xml:space="preserve">
+    <value>Favorite (surface)</value>
+  </data>
+  <data name="ButtonExtras_Extended" xml:space="preserve">
+    <value>Extended</value>
+  </data>
+  <data name="ButtonExtras_AriaExtendedFAB" xml:space="preserve">
+    <value>Extended FAB</value>
+  </data>
+  <data name="Buttons_Title" xml:space="preserve">
+    <value>Buttons</value>
+  </data>
+  <data name="Buttons_Subtitle" xml:space="preserve">
+    <value>FlareButton - 5 variants, 3 sizes, icon support.</value>
+  </data>
+  <data name="Buttons_Variants" xml:space="preserve">
+    <value>Variants</value>
+  </data>
+  <data name="Buttons_Sizes" xml:space="preserve">
+    <value>Sizes</value>
+  </data>
+  <data name="Buttons_Shapes" xml:space="preserve">
+    <value>Shapes</value>
+  </data>
+  <data name="Buttons_Typo" xml:space="preserve">
+    <value>Label typography</value>
+  </data>
+  <data name="Buttons_WithIcons" xml:space="preserve">
+    <value>With Icons</value>
+  </data>
+  <data name="Buttons_Loading" xml:space="preserve">
+    <value>Loading State</value>
+  </data>
+  <data name="Buttons_States" xml:space="preserve">
+    <value>Type, aria-pressed &amp; disabled</value>
+  </data>
+  <data name="Calendar_Title" xml:space="preserve">
+    <value>Calendar</value>
+  </data>
+  <data name="Calendar_Subtitle" xml:space="preserve">
+    <value>FlareCalendar - monthly calendar with event display, day selection, and navigation.</value>
+  </data>
+  <data name="Calendar_MonthView" xml:space="preserve">
+    <value>Month View</value>
+  </data>
+  <data name="Calendar_Events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="Calendar_Options" xml:space="preserve">
+    <value>Monday-first, multi-month &amp; max events</value>
+  </data>
+  <data name="Cards_Title" xml:space="preserve">
+    <value>Card</value>
+  </data>
+  <data name="Cards_Subtitle" xml:space="preserve">
+    <value>FlareCard - Elevated, Filled, Outlined, Tonal, and Text variants with sizes, compact layout, and selection.</value>
+  </data>
+  <data name="Cards_RichContent" xml:space="preserve">
+    <value>Rich Content Cards</value>
+  </data>
+  <data name="Cards_Variants" xml:space="preserve">
+    <value>Variants</value>
+  </data>
+  <data name="Cards_Sizes" xml:space="preserve">
+    <value>Sizes</value>
+  </data>
+  <data name="Cards_Compact" xml:space="preserve">
+    <value>Compact (horizontal)</value>
+  </data>
+  <data name="Cards_Selectable" xml:space="preserve">
+    <value>Selectable</value>
+  </data>
+  <data name="Cards_Anatomy" xml:space="preserve">
+    <value>Header / Body / Footer</value>
+  </data>
+  <data name="Carousel_Title" xml:space="preserve">
+    <value>Carousel</value>
+  </data>
+  <data name="Carousel_Subtitle" xml:space="preserve">
+    <value>FlareCarousel - swipeable slides with auto-play, arrows, and dot indicators.</value>
+  </data>
+  <data name="Carousel_Basic" xml:space="preserve">
+    <value>Basic Carousel</value>
+  </data>
+  <data name="Carousel_AutoPlay" xml:space="preserve">
+    <value>Auto-play</value>
+  </data>
+  <data name="Carousel_DotsOnly" xml:space="preserve">
+    <value>Dots only (no arrows)</value>
+  </data>
+  <data name="Charts_Title" xml:space="preserve">
+    <value>Charts</value>
+  </data>
+  <data name="Charts_Subtitle" xml:space="preserve">
+    <value>FlareChart - SVG-based Line, Bar, Pie, and Donut charts. No external dependencies.</value>
+  </data>
+  <data name="Charts_Line" xml:space="preserve">
+    <value>Line Chart</value>
+  </data>
+  <data name="Charts_Bar" xml:space="preserve">
+    <value>Bar Chart</value>
+  </data>
+  <data name="Charts_Pie" xml:space="preserve">
+    <value>Pie Chart</value>
+  </data>
+  <data name="Charts_MultiLine" xml:space="preserve">
+    <value>Multi-series Line</value>
+  </data>
+  <data name="ChipGroup_Title" xml:space="preserve">
+    <value>Chip Group</value>
+  </data>
+  <data name="ChipGroup_Subtitle" xml:space="preserve">
+    <value>FlareChipGroup - a container for FlareChip items supporting single and multi-select modes.</value>
+  </data>
+  <data name="ChipGroup_SingleSelect" xml:space="preserve">
+    <value>Single Select</value>
+  </data>
+  <data name="ChipGroup_MultiSelect" xml:space="preserve">
+    <value>Multi Select</value>
+  </data>
+  <data name="ChipGroup_WithIcons" xml:space="preserve">
+    <value>With Leading Icons</value>
+  </data>
+  <data name="ChipGroup_AriaCategoryFilter" xml:space="preserve">
+    <value>Category filter</value>
+  </data>
+  <data name="ChipGroup_AriaTagFilter" xml:space="preserve">
+    <value>Tag filter</value>
+  </data>
+  <data name="ChipGroup_AriaStatusFilter" xml:space="preserve">
+    <value>Status filter</value>
+  </data>
+  <data name="ChipGroup_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ChipGroup_Design" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="ChipGroup_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="ChipGroup_Docs" xml:space="preserve">
+    <value>Docs</value>
+  </data>
+  <data name="ChipGroup_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="ChipGroup_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="ChipGroup_Archived" xml:space="preserve">
+    <value>Archived</value>
+  </data>
+  <data name="ChipGroup_Closable" xml:space="preserve">
+    <value>Closable Chips</value>
+  </data>
+  <data name="ColorModeToggle_Title" xml:space="preserve">
+    <value>Color Mode Toggle</value>
+  </data>
+  <data name="ColorModeToggle_Subtitle" xml:space="preserve">
+    <value>FlareColorModeToggle - a button that switches between light and dark themes via FlareThemeProvider.</value>
+  </data>
+  <data name="ColorModeToggle_IconOnly" xml:space="preserve">
+    <value>Icon Only</value>
+  </data>
+  <data name="ColorModeToggle_WithLabel" xml:space="preserve">
+    <value>With Label</value>
+  </data>
+  <data name="ColorModeToggle_CustomLabels" xml:space="preserve">
+    <value>Custom Labels</value>
+  </data>
+  <data name="ColorModeToggle_UsageNote" xml:space="preserve">
+    <value>Usage Note</value>
+  </data>
+  <data name="ColorModeToggle_UsageText" xml:space="preserve">
+    <value>FlareColorModeToggle requires FlareThemeProvider to be present in the component tree. The toggle reads and writes the active theme via the injected IThemeService.</value>
+  </data>
+  <data name="ColorPicker_Title" xml:space="preserve">
+    <value>Color Picker</value>
+  </data>
+  <data name="ColorPicker_Subtitle" xml:space="preserve">
+    <value>FlareColorPicker with hex value binding and preview swatch.</value>
+  </data>
+  <data name="ColorPicker_Presets" xml:space="preserve">
+    <value>Presets</value>
+  </data>
+  <data name="ColorPicker_Options" xml:space="preserve">
+    <value>Presets, eyedropper, format &amp; inline</value>
+  </data>
+  <data name="DataGrid_Title" xml:space="preserve">
+    <value>Data Grid</value>
+  </data>
+  <data name="Ide_Title" xml:space="preserve">
+    <value>IDE Layout</value>
+  </data>
+  <data name="Ide_Subtitle" xml:space="preserve">
+    <value>Compose a desktop-style IDE shell - ribbon, menu bar, document tabs, dockable tool panels, resizable splitter, and status bar - entirely from Flare components.</value>
+  </data>
+  <data name="DataGrid_Subtitle" xml:space="preserve">
+    <value>FlareDataGrid with sortable columns, pagination, grouping, CSV export, row selection, column resize, and inline editing.</value>
+  </data>
+  <data name="Dialog_Title" xml:space="preserve">
+    <value>Dialog</value>
+  </data>
+  <data name="Dialog_Subtitle" xml:space="preserve">
+    <value>Inline @bind-Visible dialog, service-based confirm and alert.</value>
+  </data>
+  <data name="Dialog_Inline" xml:space="preserve">
+    <value>Inline</value>
+  </data>
+  <data name="Dialog_Icon" xml:space="preserve">
+    <value>Hero icon &amp; divider</value>
+  </data>
+  <data name="Dialog_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Dialog_ShowConfirm" xml:space="preserve">
+    <value>Show confirm dialog</value>
+  </data>
+  <data name="Dialog_Alert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="Dialog_ShowAlert" xml:space="preserve">
+    <value>Show alert dialog</value>
+  </data>
+  <data name="Dialog_Prompt" xml:space="preserve">
+    <value>Prompt</value>
+  </data>
+  <data name="Dialog_ShowPrompt" xml:space="preserve">
+    <value>Show prompt dialog</value>
+  </data>
+  <data name="Drawer_Title" xml:space="preserve">
+    <value>Drawer</value>
+  </data>
+  <data name="Drawer_Basic" xml:space="preserve">
+    <value>Left &amp; right, header</value>
+  </data>
+  <data name="Drawer_Anchors" xml:space="preserve">
+    <value>Top/bottom, size &amp; close options</value>
+  </data>
+  <data name="Drawer_Subtitle" xml:space="preserve">
+    <value>FlareDrawer - slides in from any edge with Header and ChildContent slots.</value>
+  </data>
+  <data name="EmptyState_Title" xml:space="preserve">
+    <value>Empty State</value>
+  </data>
+  <data name="EmptyState_Subtitle" xml:space="preserve">
+    <value>FlareEmptyState - a placeholder shown when a list or view has no content to display.</value>
+  </data>
+  <data name="EmptyState_BasicWithAction" xml:space="preserve">
+    <value>Basic - with action</value>
+  </data>
+  <data name="EmptyState_MinimalNoAction" xml:space="preserve">
+    <value>Minimal - no action</value>
+  </data>
+  <data name="EmptyState_ErrorState" xml:space="preserve">
+    <value>Error State</value>
+  </data>
+  <data name="FileUpload_Title" xml:space="preserve">
+    <value>File Upload</value>
+  </data>
+  <data name="FileUpload_Subtitle" xml:space="preserve">
+    <value>FlareFileUpload and FlareDropZone for file input with drag &amp; drop support.</value>
+  </data>
+  <data name="FileUpload_DropZone" xml:space="preserve">
+    <value>Drop Zone</value>
+  </data>
+  <data name="FileUpload_DropZoneCustom" xml:space="preserve">
+    <value>Drop Zone - custom content</value>
+  </data>
+  <data name="FileUpload_Multiple" xml:space="preserve">
+    <value>Multiple</value>
+  </data>
+  <data name="FileUpload_SingleImageOnly" xml:space="preserve">
+    <value>Single file, image only</value>
+  </data>
+  <data name="FormBuilder_Title" xml:space="preserve">
+    <value>Form Builder</value>
+  </data>
+  <data name="FormBuilder_Subtitle" xml:space="preserve">
+    <value>Model-driven form generation. Decorate properties with [FlareFormField] for custom labels and ordering.</value>
+  </data>
+  <data name="FormBuilder_AutoGenerated" xml:space="preserve">
+    <value>Auto-generated form</value>
+  </data>
+  <data name="Forms_Title" xml:space="preserve">
+    <value>Form Validation</value>
+  </data>
+  <data name="Forms_Subtitle" xml:space="preserve">
+    <value>EditForm with DataAnnotationsValidator and Flare form controls.</value>
+  </data>
+  <data name="Forms_Validation" xml:space="preserve">
+    <value>Validated EditForm</value>
+  </data>
+  <data name="Icon_Title" xml:space="preserve">
+    <value>Icon</value>
+  </data>
+  <data name="Icon_Subtitle" xml:space="preserve">
+    <value>FlareIcon wrapping Material Symbols Rounded.</value>
+  </data>
+  <data name="Icon_Basic" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="Icon_Variants" xml:space="preserve">
+    <value>Variants</value>
+  </data>
+  <data name="Icon_ColorSize" xml:space="preserve">
+    <value>Color &amp; size</value>
+  </data>
+  <data name="Image_Title" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Image_Subtitle" xml:space="preserve">
+    <value>FlareImage with object-fit, aspect ratio, fluid, lazy loading, and skeleton placeholder.</value>
+  </data>
+  <data name="Image_ObjectFit" xml:space="preserve">
+    <value>Object Fit</value>
+  </data>
+  <data name="Image_AspectRatioFluid" xml:space="preserve">
+    <value>Aspect Ratio &amp; Fluid</value>
+  </data>
+  <data name="Image_SkeletonFallback" xml:space="preserve">
+    <value>Skeleton &amp; Fallback</value>
+  </data>
+  <data name="Image_Options" xml:space="preserve">
+    <value>Size, border radius &amp; lazy</value>
+  </data>
+  <data name="Input_Title" xml:space="preserve">
+    <value>Text Field</value>
+  </data>
+  <data name="Input_Subtitle" xml:space="preserve">
+    <value>FlareTextField - text field with label, helper, icons, error and read-only.</value>
+  </data>
+  <data name="Input_Basic" xml:space="preserve">
+    <value>Label, icon, helper, error &amp; read-only</value>
+  </data>
+  <data name="Field_Sizes" xml:space="preserve">
+    <value>Sizes (xs to xl)</value>
+  </data>
+  <data name="Field_Variants" xml:space="preserve">
+    <value>Variants (filled / outlined)</value>
+  </data>
+  <data name="NumericField_Title" xml:space="preserve">
+    <value>Numeric Field</value>
+  </data>
+  <data name="NumericField_Subtitle" xml:space="preserve">
+    <value>FlareNumericField - typed numeric input with min/max, step, format, prefix/suffix.</value>
+  </data>
+  <data name="NumericField_Basic" xml:space="preserve">
+    <value>Integer &amp; decimal (min/max, step, format)</value>
+  </data>
+  <data name="TextArea_Title" xml:space="preserve">
+    <value>Text Area</value>
+  </data>
+  <data name="TextArea_Subtitle" xml:space="preserve">
+    <value>FlareTextArea - multiline input with rows and max length.</value>
+  </data>
+  <data name="TextArea_Basic" xml:space="preserve">
+    <value>Rows, max length &amp; disabled</value>
+  </data>
+  <data name="Checkbox_Title" xml:space="preserve">
+    <value>Checkbox</value>
+  </data>
+  <data name="Checkbox_Subtitle" xml:space="preserve">
+    <value>FlareCheckbox - tri-state checkbox (true/false/indeterminate).</value>
+  </data>
+  <data name="Checkbox_Basic" xml:space="preserve">
+    <value>Checked, indeterminate &amp; disabled</value>
+  </data>
+  <data name="Switch_Title" xml:space="preserve">
+    <value>Switch</value>
+  </data>
+  <data name="Switch_Subtitle" xml:space="preserve">
+    <value>FlareSwitch - on/off toggle.</value>
+  </data>
+  <data name="Switch_Basic" xml:space="preserve">
+    <value>On/off &amp; disabled</value>
+  </data>
+  <data name="Switch_Icons" xml:space="preserve">
+    <value>With icons</value>
+  </data>
+  <data name="Radio_Title" xml:space="preserve">
+    <value>Radio Group</value>
+  </data>
+  <data name="Radio_Subtitle" xml:space="preserve">
+    <value>FlareRadioGroup - single choice, inline or stacked.</value>
+  </data>
+  <data name="Radio_Basic" xml:space="preserve">
+    <value>Inline, stacked &amp; disabled</value>
+  </data>
+  <data name="InputMask_Title" xml:space="preserve">
+    <value>Masked Field</value>
+  </data>
+  <data name="InputMask_Subtitle" xml:space="preserve">
+    <value>FlareMaskedField - fixed-format masked text input.</value>
+  </data>
+  <data name="InputMask_Basic" xml:space="preserve">
+    <value>Phone, card &amp; date masks</value>
+  </data>
+  <data name="Kanban_Title" xml:space="preserve">
+    <value>Kanban Board</value>
+  </data>
+  <data name="Kanban_Subtitle" xml:space="preserve">
+    <value>FlareKanban - drag-and-drop task board with columns and cards.</value>
+  </data>
+  <data name="Kanban_Board" xml:space="preserve">
+    <value>Board</value>
+  </data>
+  <data name="Stack_Title" xml:space="preserve">
+    <value>Stack</value>
+  </data>
+  <data name="Stack_Subtitle" xml:space="preserve">
+    <value>FlareStack - flex row/column layout with gap, alignment and a spacer.</value>
+  </data>
+  <data name="Grid_Title" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="Grid_Subtitle" xml:space="preserve">
+    <value>FlareGrid / FlareCol - a 12-column grid with responsive spans.</value>
+  </data>
+  <data name="Container_Title" xml:space="preserve">
+    <value>Container</value>
+  </data>
+  <data name="Container_Subtitle" xml:space="preserve">
+    <value>FlareContainer - centered, max-width content wrapper.</value>
+  </data>
+  <data name="Divider_Title" xml:space="preserve">
+    <value>Divider</value>
+  </data>
+  <data name="Divider_Subtitle" xml:space="preserve">
+    <value>FlareDivider - horizontal/vertical rule with optional centered text.</value>
+  </data>
+  <data name="Resizable_Title" xml:space="preserve">
+    <value>Resizable</value>
+  </data>
+  <data name="Resizable_Subtitle" xml:space="preserve">
+    <value>FlareResizable - drag an edge to resize the panel.</value>
+  </data>
+  <data name="Resizable_Basic" xml:space="preserve">
+    <value>Drag to resize (edge, min/max size)</value>
+  </data>
+  <data name="ScrollTop_Title" xml:space="preserve">
+    <value>Scroll Top</value>
+  </data>
+  <data name="ScrollTop_Subtitle" xml:space="preserve">
+    <value>FlareScrollTop - a back-to-top button shown past a scroll threshold.</value>
+  </data>
+  <data name="ScrollTop_Basic" xml:space="preserve">
+    <value>Back to top (threshold)</value>
+  </data>
+  <data name="Layout_StackRow" xml:space="preserve">
+    <value>Stack (Row)</value>
+  </data>
+  <data name="Layout_StackColumn" xml:space="preserve">
+    <value>Stack (Column)</value>
+  </data>
+  <data name="Layout_Grid" xml:space="preserve">
+    <value>Grid</value>
+  </data>
+  <data name="Layout_ResponsiveGrid" xml:space="preserve">
+    <value>Responsive Grid (resize browser to see)</value>
+  </data>
+  <data name="Layout_Divider" xml:space="preserve">
+    <value>Divider</value>
+  </data>
+  <data name="Layout_DividerWithText" xml:space="preserve">
+    <value>Divider with Text</value>
+  </data>
+  <data name="Layout_Container" xml:space="preserve">
+    <value>Container (MaxWidth)</value>
+  </data>
+  <data name="Layout_Spacer" xml:space="preserve">
+    <value>Spacer</value>
+  </data>
+  <data name="LayoutShell_Title" xml:space="preserve">
+    <value>Layout Shell</value>
+  </data>
+  <data name="LayoutShell_Subtitle" xml:space="preserve">
+    <value>FlareLayout - ready-made admin shell with app bar, collapsible drawer, and main content area.</value>
+  </data>
+  <data name="LayoutShell_AdminShell" xml:space="preserve">
+    <value>Admin Shell (live demo)</value>
+  </data>
+  <data name="LayoutShell_AutoWireDesc" xml:space="preserve">
+    <value>Add DrawerToggle="true" to FlareLayoutAppBar - the hamburger icon appears and toggles the drawer automatically via a cascading context. No manual binding needed.</value>
+  </data>
+  <data name="LayoutShell_ManualBind" xml:space="preserve">
+    <value>Manual @bind-DrawerOpen (advanced)</value>
+  </data>
+  <data name="LayoutShell_ManualBindDesc" xml:space="preserve">
+    <value>Use @bind-DrawerOpen for full external control - useful when you need to programmatically open/close from a parent component.</value>
+  </data>
+  <data name="Link_Title" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="Link_Subtitle" xml:space="preserve">
+    <value>FlareLink with color and underline variants.</value>
+  </data>
+  <data name="Link_Colors" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="Link_Underline" xml:space="preserve">
+    <value>Underline</value>
+  </data>
+  <data name="Link_States" xml:space="preserve">
+    <value>Target, title &amp; disabled</value>
+  </data>
+  <data name="List_Title" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="List_Subtitle" xml:space="preserve">
+    <value>FlareList with Leading/Trailing slots, selection and a dense mode.</value>
+  </data>
+  <data name="List_Basic" xml:space="preserve">
+    <value>Leading/Trailing, selected &amp; disabled</value>
+  </data>
+  <data name="List_Dense" xml:space="preserve">
+    <value>Dense</value>
+  </data>
+  <data name="Tree_Title" xml:space="preserve">
+    <value>Tree View</value>
+  </data>
+  <data name="Tree_Subtitle" xml:space="preserve">
+    <value>FlareTreeView with nested items, icons and multi-select.</value>
+  </data>
+  <data name="Tree_Basic" xml:space="preserve">
+    <value>Nested items &amp; single select</value>
+  </data>
+  <data name="Tree_MultiSelect" xml:space="preserve">
+    <value>Multi-select</value>
+  </data>
+  <data name="Menu_Title" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="Menu_Subtitle" xml:space="preserve">
+    <value>FlareMenu with icon items and anchor alignment.</value>
+  </data>
+  <data name="Menu_Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="MultiSelect_Title" xml:space="preserve">
+    <value>Multi Select</value>
+  </data>
+  <data name="MultiSelect_Subtitle" xml:space="preserve">
+    <value>FlareMultiSelect - a dropdown that allows selecting multiple values from a list.</value>
+  </data>
+  <data name="MultiSelect_Basic" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="MultiSelect_WithHelperText" xml:space="preserve">
+    <value>With Helper Text</value>
+  </data>
+  <data name="MultiSelect_ObjectItems" xml:space="preserve">
+    <value>Object Items</value>
+  </data>
+  <data name="NavMenu_Title" xml:space="preserve">
+    <value>Nav Menu</value>
+  </data>
+  <data name="NavMenu_Subtitle" xml:space="preserve">
+    <value>FlareNavMenu, FlareNavLink, FlareNavGroup.</value>
+  </data>
+  <data name="NavMenu_Basic" xml:space="preserve">
+    <value>Basic Nav Links</value>
+  </data>
+  <data name="NavMenu_NavGroup" xml:space="preserve">
+    <value>Nav Group (collapsible)</value>
+  </data>
+  <data name="NavMenu_Nested" xml:space="preserve">
+    <value>Nested groups + auto-expand on active</value>
+  </data>
+  <data name="NavMenu_HideScrollbar" xml:space="preserve">
+    <value>Scrollable with hidden scrollbar</value>
+  </data>
+  <data name="NavMenu_Rail" xml:space="preserve">
+    <value>Mini-rail (icons only)</value>
+  </data>
+  <data name="OnThisPage_Title" xml:space="preserve">
+    <value>On This Page</value>
+  </data>
+  <data name="OnThisPage_Subtitle" xml:space="preserve">
+    <value>FlareOnThisPage - a scroll-spy table of contents that collects (and auto-creates) page anchors.</value>
+  </data>
+  <data name="OnThisPage_Demo" xml:space="preserve">
+    <value>Table of contents with auto anchors</value>
+  </data>
+  <data name="OnThisPage_Block" xml:space="preserve">
+    <value>Table of contents block (manual links)</value>
+  </data>
+  <data name="Overlay_Title" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="Overlay_Subtitle" xml:space="preserve">
+    <value>FlareOverlay - full-screen backdrop with light and dark variants.</value>
+  </data>
+  <data name="Overlay_Overlay" xml:space="preserve">
+    <value>Dark &amp; scoped overlay</value>
+  </data>
+  <data name="Overlay_Light" xml:space="preserve">
+    <value>Light scrim, opacity &amp; z-index</value>
+  </data>
+  <data name="Popover_Title" xml:space="preserve">
+    <value>Popover</value>
+  </data>
+  <data name="Popover_Subtitle" xml:space="preserve">
+    <value>FlarePopover anchored content with placements and an optional arrow.</value>
+  </data>
+  <data name="Popover_Basic" xml:space="preserve">
+    <value>Anchored content</value>
+  </data>
+  <data name="Popover_Placement" xml:space="preserve">
+    <value>Placement, arrow &amp; min/max width</value>
+  </data>
+  <data name="PasswordInput_Title" xml:space="preserve">
+    <value>Password Field</value>
+  </data>
+  <data name="PasswordInput_Subtitle" xml:space="preserve">
+    <value>FlarePasswordField - a text field with a built-in show/hide toggle for passwords.</value>
+  </data>
+  <data name="PasswordInput_Basic" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="PasswordInput_WithHelperText" xml:space="preserve">
+    <value>With Helper Text</value>
+  </data>
+  <data name="PasswordInput_ErrorState" xml:space="preserve">
+    <value>Error State</value>
+  </data>
+  <data name="PasswordInput_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="DatePicker_Title" xml:space="preserve">
+    <value>Date Picker</value>
+  </data>
+  <data name="DatePicker_Subtitle" xml:space="preserve">
+    <value>FlareDatePicker - calendar field with min/max, format and today/clear actions.</value>
+  </data>
+  <data name="DatePicker_Basic" xml:space="preserve">
+    <value>Basic, format &amp; disabled</value>
+  </data>
+  <data name="DatePicker_Constraints" xml:space="preserve">
+    <value>Min/max, today/clear &amp; error</value>
+  </data>
+  <data name="TimePicker_Title" xml:space="preserve">
+    <value>Time Picker</value>
+  </data>
+  <data name="TimePicker_Subtitle" xml:space="preserve">
+    <value>FlareTimePicker - select a time of day.</value>
+  </data>
+  <data name="TimePicker_Basic" xml:space="preserve">
+    <value>Basic, helper, error &amp; disabled</value>
+  </data>
+  <data name="DateRangePicker_Title" xml:space="preserve">
+    <value>Date Range Picker</value>
+  </data>
+  <data name="DateRangePicker_Subtitle" xml:space="preserve">
+    <value>FlareDateRangePicker - pick a start and end date.</value>
+  </data>
+  <data name="DateRangePicker_Basic" xml:space="preserve">
+    <value>Start/end, labels &amp; disabled</value>
+  </data>
+  <data name="DateRangePicker_Presets" xml:space="preserve">
+    <value>Quick-range presets</value>
+  </data>
+  <data name="DateTimePicker_Title" xml:space="preserve">
+    <value>Date Time Picker</value>
+  </data>
+  <data name="DateTimePicker_Subtitle" xml:space="preserve">
+    <value>FlareDateTimePicker - combined date and time selection.</value>
+  </data>
+  <data name="DateTimePicker_Basic" xml:space="preserve">
+    <value>Format, min/max &amp; disabled</value>
+  </data>
+  <data name="Progress_Title" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="Progress_Subtitle" xml:space="preserve">
+    <value>FlareProgress - linear and circular indicators with sizes, colors and buffer.</value>
+  </data>
+  <data name="Progress_Linear" xml:space="preserve">
+    <value>Linear</value>
+  </data>
+  <data name="Progress_Circular" xml:space="preserve">
+    <value>Circular</value>
+  </data>
+  <data name="Skeleton_Title" xml:space="preserve">
+    <value>Skeleton</value>
+  </data>
+  <data name="Skeleton_Subtitle" xml:space="preserve">
+    <value>FlareSkeleton placeholders for loading states.</value>
+  </data>
+  <data name="Skeleton_Variants" xml:space="preserve">
+    <value>Variants (Text / Rect / Circle)</value>
+  </data>
+  <data name="Skeleton_Animation" xml:space="preserve">
+    <value>Animation (Wave / Pulse / None)</value>
+  </data>
+  <data name="Progress_Buffer" xml:space="preserve">
+    <value>Buffer</value>
+  </data>
+  <data name="Progress_Query" xml:space="preserve">
+    <value>Query (Reverse Indeterminate)</value>
+  </data>
+  <data name="Progress_Sizes" xml:space="preserve">
+    <value>Sizes (Circular)</value>
+  </data>
+  <data name="Progress_Colors" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="QrCode_Title" xml:space="preserve">
+    <value>QR Code</value>
+  </data>
+  <data name="QrCode_Subtitle" xml:space="preserve">
+    <value>FlareQrCode - renders a fully scannable SVG QR code from any string value.</value>
+  </data>
+  <data name="QrCode_Basic" xml:space="preserve">
+    <value>Basic QR Code</value>
+  </data>
+  <data name="QrCode_CustomSizeColors" xml:space="preserve">
+    <value>Custom Size &amp; Colors</value>
+  </data>
+  <data name="QrCode_Large" xml:space="preserve">
+    <value>Large QR Code</value>
+  </data>
+  <data name="QrCode_Rounded" xml:space="preserve">
+    <value>Rounded Modules</value>
+  </data>
+  <data name="QrCode_Icon" xml:space="preserve">
+    <value>Centre Icon</value>
+  </data>
+  <data name="QrCode_ErrorLevel" xml:space="preserve">
+    <value>Error Correction Levels</value>
+  </data>
+  <data name="Rating_Title" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="Rating_Subtitle" xml:space="preserve">
+    <value>FlareRating - 5-star, 10-star, readonly, and disabled.</value>
+  </data>
+  <data name="Rating_ReadOnly" xml:space="preserve">
+    <value>Read-only</value>
+  </data>
+  <data name="RichTextEditor_Title" xml:space="preserve">
+    <value>Rich Text Editor</value>
+  </data>
+  <data name="RichTextEditor_Subtitle" xml:space="preserve">
+    <value>FlareRichTextEditor - WYSIWYG editor with formatting toolbar, powered by a custom JS command bus.</value>
+  </data>
+  <data name="RichTextEditor_Basic" xml:space="preserve">
+    <value>Basic Editor</value>
+  </data>
+  <data name="RichTextEditor_ReadOnly" xml:space="preserve">
+    <value>Read-only Mode</value>
+  </data>
+  <data name="Select_Title" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Select_Subtitle" xml:space="preserve">
+    <value>FlareSelect - a styled dropdown with item templates, grouping and validation.</value>
+  </data>
+  <data name="Select_Basic" xml:space="preserve">
+    <value>Basic &amp; disabled</value>
+  </data>
+  <data name="Select_ItemTemplate" xml:space="preserve">
+    <value>Custom item template</value>
+  </data>
+  <data name="Select_Grouped" xml:space="preserve">
+    <value>Grouped from items</value>
+  </data>
+  <data name="Select_Validation" xml:space="preserve">
+    <value>Helper text &amp; error</value>
+  </data>
+  <data name="Autocomplete_Title" xml:space="preserve">
+    <value>Autocomplete</value>
+  </data>
+  <data name="Autocomplete_Subtitle" xml:space="preserve">
+    <value>FlareAutocomplete with async search, grouping and item templates.</value>
+  </data>
+  <data name="Autocomplete_Basic" xml:space="preserve">
+    <value>Async search</value>
+  </data>
+  <data name="Autocomplete_Grouped" xml:space="preserve">
+    <value>Grouped items</value>
+  </data>
+  <data name="Autocomplete_Template" xml:space="preserve">
+    <value>Item template &amp; options</value>
+  </data>
+  <data name="SignaturePad_Title" xml:space="preserve">
+    <value>Signature Pad</value>
+  </data>
+  <data name="SignaturePad_Subtitle" xml:space="preserve">
+    <value>FlareSignaturePad - draw and capture a freehand signature on a canvas.</value>
+  </data>
+  <data name="SignaturePad_Basic" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="SignaturePad_CustomStroke" xml:space="preserve">
+    <value>Custom stroke</value>
+  </data>
+  <data name="Slider_Title" xml:space="preserve">
+    <value>Slider &amp; Range</value>
+  </data>
+  <data name="Slider_Subtitle" xml:space="preserve">
+    <value>FlareSlider - single value, range (two handles), sizes, colors &amp; vertical.</value>
+  </data>
+  <data name="Slider_Slider" xml:space="preserve">
+    <value>Value, range, step &amp; format</value>
+  </data>
+  <data name="Slider_Helper" xml:space="preserve">
+    <value>Helper text &amp; error</value>
+  </data>
+  <data name="Slider_Sizes" xml:space="preserve">
+    <value>Sizes (XS–XL)</value>
+  </data>
+  <data name="Slider_Icons" xml:space="preserve">
+    <value>Start &amp; end icons</value>
+  </data>
+  <data name="Slider_Steps" xml:space="preserve">
+    <value>Step indicators &amp; value bubble</value>
+  </data>
+  <data name="Slider_Init" xml:space="preserve">
+    <value>Init anchor (balance)</value>
+  </data>
+  <data name="Slider_Colors" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="Slider_Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="Slider_Range" xml:space="preserve">
+    <value>Range (two handles)</value>
+  </data>
+  <data name="Slider_Marks" xml:space="preserve">
+    <value>Labeled marks</value>
+  </data>
+  <data name="SpeedDial_Title" xml:space="preserve">
+    <value>Speed Dial</value>
+  </data>
+  <data name="Splitter_Title" xml:space="preserve">
+    <value>Splitter</value>
+  </data>
+  <data name="Splitter_Subtitle" xml:space="preserve">
+    <value>FlareSplitter - resizable split panes (horizontal/vertical) with a draggable gutter.</value>
+  </data>
+  <data name="Splitter_Basic" xml:space="preserve">
+    <value>Horizontal &amp; vertical, min/max</value>
+  </data>
+  <data name="Stepper_Title" xml:space="preserve">
+    <value>Stepper</value>
+  </data>
+  <data name="Stepper_Subtitle" xml:space="preserve">
+    <value>FlareStepper with multi-step wizard flow.</value>
+  </data>
+  <data name="Stepper_Basic" xml:space="preserve">
+    <value>Horizontal stepper</value>
+  </data>
+  <data name="Stepper_Vertical" xml:space="preserve">
+    <value>Vertical, non-linear &amp; error step</value>
+  </data>
+  <data name="Table_Title" xml:space="preserve">
+    <value>Table</value>
+  </data>
+  <data name="Table_Subtitle" xml:space="preserve">
+    <value>FlareTable - default, striped+compact, bordered, sticky header, grouped rows, and totals footer.</value>
+  </data>
+  <data name="Table_Default" xml:space="preserve">
+    <value>Default (hover)</value>
+  </data>
+  <data name="Table_Striped" xml:space="preserve">
+    <value>Striped + Compact</value>
+  </data>
+  <data name="Table_Bordered" xml:space="preserve">
+    <value>Bordered</value>
+  </data>
+  <data name="Table_StickyHeader" xml:space="preserve">
+    <value>Sticky Header</value>
+  </data>
+  <data name="Table_GroupedRows" xml:space="preserve">
+    <value>Grouped Rows</value>
+  </data>
+  <data name="Table_TotalsFooter" xml:space="preserve">
+    <value>Totals Footer</value>
+  </data>
+  <data name="Tabs_Title" xml:space="preserve">
+    <value>Tabs</value>
+  </data>
+  <data name="Tabs_Subtitle" xml:space="preserve">
+    <value>FlareTabs - variants, closeable, vertical, scrollable, badges and header zones.</value>
+  </data>
+  <data name="Tabs_Tabs" xml:space="preserve">
+    <value>Tabs</value>
+  </data>
+  <data name="Tabs_Variants" xml:space="preserve">
+    <value>Variants</value>
+  </data>
+  <data name="Tabs_CloseableTabs" xml:space="preserve">
+    <value>Closeable Tabs</value>
+  </data>
+  <data name="Tabs_Vertical" xml:space="preserve">
+    <value>Vertical, icons &amp; disabled</value>
+  </data>
+  <data name="Tabs_Scrollable" xml:space="preserve">
+    <value>Overflow scroll arrows</value>
+  </data>
+  <data name="Tabs_Placement" xml:space="preserve">
+    <value>Placement &amp; label rotation</value>
+  </data>
+  <data name="Tabs_Controlled" xml:space="preserve">
+    <value>Controlled &amp; guarded</value>
+  </data>
+  <data name="Tabs_Badges" xml:space="preserve">
+    <value>Badges &amp; tooltips</value>
+  </data>
+  <data name="Tabs_HeaderZones" xml:space="preserve">
+    <value>Header zones &amp; typography</value>
+  </data>
+  <data name="TagInput_Title" xml:space="preserve">
+    <value>Tag Field</value>
+  </data>
+  <data name="TagInput_Subtitle" xml:space="preserve">
+    <value>FlareTagField - unbounded, max tags, and readonly variants.</value>
+  </data>
+  <data name="TagInput_Basic" xml:space="preserve">
+    <value>Basic, max tags &amp; readonly</value>
+  </data>
+  <data name="TagInput_Options" xml:space="preserve">
+    <value>Chip color, duplicates, disabled &amp; error</value>
+  </data>
+  <data name="TagInput_Suggestions" xml:space="preserve">
+    <value>Suggestions (static &amp; async)</value>
+  </data>
+  <data name="Timeline_Title" xml:space="preserve">
+    <value>Timeline</value>
+  </data>
+  <data name="Timeline_Subtitle" xml:space="preserve">
+    <value>FlareTimeline with color-coded entries, connector variants, and alternating layout.</value>
+  </data>
+  <data name="Timeline_DashedConnector" xml:space="preserve">
+    <value>Dashed Connector</value>
+  </data>
+  <data name="Timeline_DottedConnector" xml:space="preserve">
+    <value>Dotted Connector + Custom Dot Color</value>
+  </data>
+  <data name="Timeline_Alternating" xml:space="preserve">
+    <value>Alternating Layout</value>
+  </data>
+  <data name="Timeline_Align" xml:space="preserve">
+    <value>Right align &amp; custom dot color</value>
+  </data>
+  <data name="Tooltip_Title" xml:space="preserve">
+    <value>Tooltip</value>
+  </data>
+  <data name="Tooltip_Subtitle" xml:space="preserve">
+    <value>FlareTooltip with Top, Bottom, Left, Right placements.</value>
+  </data>
+  <data name="Tooltip_Placement" xml:space="preserve">
+    <value>Placement</value>
+  </data>
+  <data name="Tooltip_Delay" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="Tooltip_Rich" xml:space="preserve">
+    <value>Rich content</value>
+  </data>
+  <data name="Clipboard_Title" xml:space="preserve">
+    <value>Clipboard</value>
+  </data>
+  <data name="Clipboard_Subtitle" xml:space="preserve">
+    <value>FlareClipboard - copy text with feedback and a custom trigger.</value>
+  </data>
+  <data name="Clipboard_Basic" xml:space="preserve">
+    <value>Copy with feedback, OnCopied &amp; custom slot</value>
+  </data>
+  <data name="Confirm_Title" xml:space="preserve">
+    <value>Confirm Dialog</value>
+  </data>
+  <data name="Confirm_Subtitle" xml:space="preserve">
+    <value>FlareConfirmDialogProvider - await a yes/no confirmation.</value>
+  </data>
+  <data name="Confirm_Basic" xml:space="preserve">
+    <value>Awaitable confirm (title, message, labels)</value>
+  </data>
+  <data name="Shortcuts_Title" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="Shortcuts_Subtitle" xml:space="preserve">
+    <value>FlareShortcuts - register global keyboard shortcuts.</value>
+  </data>
+  <data name="Shortcuts_Basic" xml:space="preserve">
+    <value>Keys, description &amp; OnActivated</value>
+  </data>
+  <data name="Transfer_Title" xml:space="preserve">
+    <value>Transfer / Dual List Box</value>
+  </data>
+  <data name="Transfer_Subtitle" xml:space="preserve">
+    <value>FlareTransfer - move items between two lists. Useful for permission editors and multi-select scenarios.</value>
+  </data>
+  <data name="Transfer_PermissionsEditor" xml:space="preserve">
+    <value>Permissions Editor</value>
+  </data>
+  <data name="Transfer_CustomLabel" xml:space="preserve">
+    <value>Custom item label</value>
+  </data>
+  <data name="Typography_Title" xml:space="preserve">
+    <value>Typography</value>
+  </data>
+  <data name="Typography_Subtitle" xml:space="preserve">
+    <value>All 15 TypographyScale values via FlareText.</value>
+  </data>
+  <data name="Typography_Scale" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="Typography_Weight" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Typography_ColorElement" xml:space="preserve">
+    <value>Color &amp; element</value>
+  </data>
+  <data name="VideoPlayer_Title" xml:space="preserve">
+    <value>Video Player</value>
+  </data>
+  <data name="VideoPlayer_Subtitle" xml:space="preserve">
+    <value>FlareVideoPlayer - HTML5 video with Flare-themed custom controls.</value>
+  </data>
+  <data name="VideoPlayer_Basic" xml:space="preserve">
+    <value>Basic Video Player</value>
+  </data>
+  <data name="VideoPlayer_AutoPlayLooping" xml:space="preserve">
+    <value>Auto-play Looping</value>
+  </data>
+  <data name="VideoPlayer_Options" xml:space="preserve">
+    <value>Poster, playback rates &amp; aria-label</value>
+  </data>
+  <data name="VirtualList_Title" xml:space="preserve">
+    <value>Virtual List</value>
+  </data>
+  <data name="VirtualList_Subtitle" xml:space="preserve">
+    <value>FlareVirtualList renders only visible rows for large datasets.</value>
+  </data>
+  <data name="VirtualList_VirtualList" xml:space="preserve">
+    <value>10,000 items (Items, ItemTemplate, Height, OverscanCount)</value>
+  </data>
+  <data name="InfiniteScroll_Title" xml:space="preserve">
+    <value>Infinite Scroll</value>
+  </data>
+  <data name="InfiniteScroll_Subtitle" xml:space="preserve">
+    <value>FlareInfiniteScroll loads more content as the user reaches the bottom.</value>
+  </data>
+  <data name="InfiniteScroll_Basic" xml:space="preserve">
+    <value>Load on demand (loading &amp; end content)</value>
+  </data>
+  <data name="Lazy_Title" xml:space="preserve">
+    <value>Lazy Render</value>
+  </data>
+  <data name="Lazy_Subtitle" xml:space="preserve">
+    <value>FlareLazy defers building a subtree until it scrolls near the viewport - render a page of heavy items while only the visible ones actually exist.</value>
+  </data>
+  <data name="Lazy_Defer" xml:space="preserve">
+    <value>Defer on scroll</value>
+  </data>
+  <data name="Lazy_Defer_Desc" xml:space="preserve">
+    <value>Each panel's component tree is built only when it nears the viewport. Watch the mounted counter climb as you scroll.</value>
+  </data>
+  <data name="Lazy_DataLoad" xml:space="preserve">
+    <value>Lazy data loading</value>
+  </data>
+  <data name="Lazy_DataLoad_Desc" xml:space="preserve">
+    <value>Use OnRevealed to start fetching only when the block appears; a Placeholder reserves the space until the data arrives.</value>
+  </data>
+  <data name="DataTree_Title" xml:space="preserve">
+    <value>Data Tree</value>
+  </data>
+  <data name="DataTree_Subtitle" xml:space="preserve">
+    <value>Data-driven tree (FlareDataTree) with lazy-loading children and Virtual="true" for efficient scrolling over thousands of nodes.</value>
+  </data>
+  <data name="DataTree_LazyLoading" xml:space="preserve">
+    <value>Lazy-loading tree</value>
+  </data>
+  <data name="DataTree_SimulatedAsync" xml:space="preserve">
+    <value>Simulated async load (300 ms spinner)</value>
+  </data>
+  <data name="About_Title" xml:space="preserve">
+    <value>About Flare</value>
+  </data>
+  <data name="About_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="About_WhatsNew" xml:space="preserve">
+    <value>What's New</value>
+  </data>
+  <data name="About_ViewOnGitHub" xml:space="preserve">
+    <value>View on GitHub</value>
+  </data>
+  <data name="Nav_Comparison" xml:space="preserve">
+    <value>Comparison</value>
+  </data>
+  <data name="Nav_Overview" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="Nav_GettingStarted" xml:space="preserve">
+    <value>Getting Started</value>
+  </data>
+  <data name="Nav_Theming" xml:space="preserve">
+    <value>Theming</value>
+  </data>
+  <data name="Nav_About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Nav_Color" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="Color_Title" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="Color_Subtitle" xml:space="preserve">
+    <value>The unified FlareColor system - semantic roles, custom values, and color generators.</value>
+  </data>
+  <data name="Color_RolesTitle" xml:space="preserve">
+    <value>Semantic roles</value>
+  </data>
+  <data name="Color_RolesDesc" xml:space="preserve">
+    <value>Every color-aware component takes a single Color parameter of type FlareColor. A semantic role renders via a shared, cached CSS class and stays theme-aware in both Material Design 3 and Fluent UI 2.</value>
+  </data>
+  <data name="Color_UsageTitle" xml:space="preserve">
+    <value>Using color in code</value>
+  </data>
+  <data name="Color_UsageDesc" xml:space="preserve">
+    <value>Pass a role preset, an arbitrary CSS color, or any string (implicit conversion). Role expressions like var(--flare-color-primary) resolve back to the fast class path.</value>
+  </data>
+  <data name="Color_GeneratorsTitle" xml:space="preserve">
+    <value>Generators: Random and Next</value>
+  </data>
+  <data name="Color_GeneratorsDesc" xml:space="preserve">
+    <value>FlareColor.Random() returns an arbitrary #RRGGBB color. color.Next() returns the next color by rotating its hue by the golden angle - deterministic and well-spread, ideal for coloring a sequence (chart series, avatars, chips).</value>
+  </data>
+  <data name="Color_RandomBtn" xml:space="preserve">
+    <value>Random</value>
+  </data>
+  <data name="Color_NextBtn" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Color_CurrentLabel" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Color_SequenceTitle" xml:space="preserve">
+    <value>Next sequence</value>
+  </data>
+  <data name="Color_SequenceDesc" xml:space="preserve">
+    <value>Starting from the current color, each swatch is the previous one's Next().</value>
+  </data>
+  <data name="Color_AppliedTitle" xml:space="preserve">
+    <value>Applied to components</value>
+  </data>
+  <data name="Theme_Settings" xml:space="preserve">
+    <value>Theme settings</value>
+  </data>
+  <data name="Theme_DesignSystem" xml:space="preserve">
+    <value>Design system</value>
+  </data>
+  <data name="Theme_Palette" xml:space="preserve">
+    <value>Palette</value>
+  </data>
+  <data name="Theme_PaletteOther" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Theme_PaletteGenerated" xml:space="preserve">
+    <value>Generated</value>
+  </data>
+  <data name="Theming_GenerateTitle" xml:space="preserve">
+    <value>Generate a palette from a color</value>
+  </data>
+  <data name="Theming_GenerateDesc" xml:space="preserve">
+    <value>Pick a brand color; Palette.FromColors derives a full light + dark palette (brand roles, tinted neutrals, readable on-colors) and applies it on the fly.</value>
+  </data>
+  <data name="Theming_GenerateBtn" xml:space="preserve">
+    <value>Generate and apply</value>
+  </data>
+  <data name="Theming_ScopeTitle" xml:space="preserve">
+    <value>Scoped theme (FlareThemeScope)</value>
+  </data>
+  <data name="Theming_ScopeDesc" xml:space="preserve">
+    <value>FlareThemeScope re-themes just its subtree. Any axis left unset inherits from the surrounding theme - here only Mode is overridden, so this island stays dark (or light) regardless of the app theme.</value>
+  </data>
+  <data name="Theming_ScopeDark" xml:space="preserve">
+    <value>Always-dark island</value>
+  </data>
+  <data name="Theming_ScopeLight" xml:space="preserve">
+    <value>Always-light island</value>
+  </data>
+  <data name="Theme_Mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="Theme_ModeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Theme_ModeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Theme_ModeAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Nav_Components" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="Search_Placeholder" xml:space="preserve">
+    <value>Search pages, components, API...</value>
+  </data>
+  <data name="Search_NoResults" xml:space="preserve">
+    <value>Nothing found</value>
+  </data>
+  <data name="Search_KindPage" xml:space="preserve">
+    <value>Pages</value>
+  </data>
+  <data name="Search_KindComponent" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="Search_KindApi" xml:space="preserve">
+    <value>API</value>
+  </data>
+  <data name="GettingStarted_Title" xml:space="preserve">
+    <value>Getting Started</value>
+  </data>
+  <data name="GettingStarted_Subtitle" xml:space="preserve">
+    <value>Add Flare to a Blazor Server or WebAssembly project in minutes.</value>
+  </data>
+  <data name="GettingStarted_Requirements" xml:space="preserve">
+    <value>Requirements</value>
+  </data>
+  <data name="GettingStarted_RequirementsDesc" xml:space="preserve">
+    <value>.NET 10 SDK, and a Blazor WebAssembly or Blazor Server project (both are supported).</value>
+  </data>
+  <data name="GettingStarted_DiSetup" xml:space="preserve">
+    <value>DI setup</value>
+  </data>
+  <data name="GettingStarted_DiSetupDesc" xml:space="preserve">
+    <value>Register Flare in Program.cs. AddFlare also registers ISnackbarService, IDialogService and IMessageBoxService, so no separate registration is needed.</value>
+  </data>
+  <data name="GettingStarted_Styles" xml:space="preserve">
+    <value>Wiring up the styles</value>
+  </data>
+  <data name="GettingStarted_StylesDesc" xml:space="preserve">
+    <value>Add the bootstrap script, the component CSS and (optionally) the Material Symbols font to your host page. The active theme's CSS is wired up automatically by FlareThemeProvider.</value>
+  </data>
+  <data name="GettingStarted_ThemeProvider" xml:space="preserve">
+    <value>Wrap with the theme provider</value>
+  </data>
+  <data name="GettingStarted_ThemeProviderDesc" xml:space="preserve">
+    <value>Wrap your router in FlareThemeProvider. Automatic dark mode is on by default (it watches prefers-color-scheme); turn it off with RespectSystemColorScheme="false".</value>
+  </data>
+  <data name="GettingStarted_GlobalImports" xml:space="preserve">
+    <value>Global imports</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Current" xml:space="preserve">
+    <value>Current theme</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_SwitchTheme" xml:space="preserve">
+    <value>Switch theme</value>
+  </data>
+  <data name="GettingStarted_ThemeSwitcher" xml:space="preserve">
+    <value>Theme switcher</value>
+  </data>
+  <data name="GettingStarted_FormValidation" xml:space="preserve">
+    <value>Form validation</value>
+  </data>
+  <data name="GettingStarted_FormValidationDesc" xml:space="preserve">
+    <value>Flare integrates fully with Blazor's standard EditContext and DataAnnotations.</value>
+  </data>
+  <data name="GettingStarted_DialogSnackbar" xml:space="preserve">
+    <value>Dialog and Snackbar</value>
+  </data>
+  <data name="GettingStarted_DialogSnackbarDesc" xml:space="preserve">
+    <value>Call dialogs and toasts from typed services; just add the providers once in your layout.</value>
+  </data>
+  <data name="GettingStarted_Docker" xml:space="preserve">
+    <value>Docker</value>
+  </data>
+  <data name="GettingStarted_DockerDesc" xml:space="preserve">
+    <value>Run the Gallery PWA in a container.</value>
+  </data>
+  <data name="GettingStarted_TipTitle" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="Theming_Title" xml:space="preserve">
+    <value>Theming</value>
+  </data>
+  <data name="Theming_Subtitle" xml:space="preserve">
+    <value>Runtime theme switching with CSS custom properties. No page reload required.</value>
+  </data>
+  <data name="Theming_LiveSwitcher" xml:space="preserve">
+    <value>Live Theme Switcher</value>
+  </data>
+  <data name="Theming_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Theming_AutoDarkMode" xml:space="preserve">
+    <value>Automatic Dark Mode</value>
+  </data>
+  <data name="Theming_AutoDarkModeDesc" xml:space="preserve">
+    <value>FlareThemeProvider has RespectSystemColorScheme="true" by default. When no theme has been manually saved, the provider subscribes to the OS prefers-color-scheme media query via matchMedia. If the user changes their system appearance while the app is open, the theme auto-switches between the registered light and dark variants - no page reload required.</value>
+  </data>
+  <data name="Theming_AutoDarkModeNote" xml:space="preserve">
+    <value>Once a user manually selects a theme (saved to storage), auto-switching is disabled for that session until storage is cleared.</value>
+  </data>
+  <data name="Theming_HowItWorks" xml:space="preserve">
+    <value>How it works</value>
+  </data>
+  <data name="Theming_HowItWorksDesc" xml:space="preserve">
+    <value>All Flare components use CSS custom properties (--flare-*). When you call ThemeService.SetThemeAsync(id), a single JavaScript call updates all token values in the document root - no component re-render, no page reload.</value>
+  </data>
+  <data name="Theming_CustomThemeDesc" xml:space="preserve">
+    <value>To create a custom theme, implement the ITheme interface and fill a ThemeTokenSet with your token values. Set it as the default via AddFlare(opts =&gt; opts.DefaultTheme = new MyTheme()), or register it at startup as an extra selectable theme through IThemeService.RegisterTheme(new MyTheme()).</value>
+  </data>
+  <data name="Theming_CreateTheme" xml:space="preserve">
+    <value>Create your own theme</value>
+  </data>
+  <data name="Theming_Token_PrimaryContainer" xml:space="preserve">
+    <value>Tonal container for primary elements</value>
+  </data>
+  <data name="Theming_Token_SurfaceContainer" xml:space="preserve">
+    <value>Elevated surface fill (menus, cards)</value>
+  </data>
+  <data name="Theming_Token_OnSurfaceVariant" xml:space="preserve">
+    <value>Secondary text and icons on surfaces</value>
+  </data>
+  <data name="Theming_Token_ShapeSmall" xml:space="preserve">
+    <value>Small corner radius (chips, fields)</value>
+  </data>
+  <data name="Theming_Token_StateOpacity" xml:space="preserve">
+    <value>Hover state-layer opacity</value>
+  </data>
+  <data name="Theming_Token_Motion" xml:space="preserve">
+    <value>Short transition duration</value>
+  </data>
+  <data name="Theming_TokenReference" xml:space="preserve">
+    <value>Token Reference (sample)</value>
+  </data>
+  <data name="Theming_TokenCol" xml:space="preserve">
+    <value>Token</value>
+  </data>
+  <data name="Theming_PurposeCol" xml:space="preserve">
+    <value>Purpose</value>
+  </data>
+  <data name="Theming_ExampleCol" xml:space="preserve">
+    <value>Example value (MD3 Light)</value>
+  </data>
+  <data name="Theming_Token_Primary" xml:space="preserve">
+    <value>Primary accent color</value>
+  </data>
+  <data name="Theming_Token_OnPrimary" xml:space="preserve">
+    <value>Text on primary</value>
+  </data>
+  <data name="Theming_Token_Secondary" xml:space="preserve">
+    <value>Secondary accent</value>
+  </data>
+  <data name="Theming_Token_Surface" xml:space="preserve">
+    <value>Card/dialog background</value>
+  </data>
+  <data name="Theming_Token_OnSurface" xml:space="preserve">
+    <value>Text on surface</value>
+  </data>
+  <data name="Theming_Token_Outline" xml:space="preserve">
+    <value>Border color</value>
+  </data>
+  <data name="Theming_Token_Error" xml:space="preserve">
+    <value>Destructive actions</value>
+  </data>
+  <data name="Theming_Token_ShapeMedium" xml:space="preserve">
+    <value>Card/dialog radius</value>
+  </data>
+  <data name="Theming_Token_ShapeFull" xml:space="preserve">
+    <value>Pill/chip radius</value>
+  </data>
+  <data name="Theming_Token_BodyFont" xml:space="preserve">
+    <value>Body font family</value>
+  </data>
+  <data name="Home_Title" xml:space="preserve">
+    <value>Flare</value>
+  </data>
+  <data name="Home_Subtitle" xml:space="preserve">
+    <value>Beautiful Blazor components with runtime theme switching</value>
+  </data>
+  <data name="Home_ComponentsLabel" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="Home_ThemesLabel" xml:space="preserve">
+    <value>Design systems</value>
+  </data>
+  <data name="Home_DotNetLabel" xml:space="preserve">
+    <value>.NET 10</value>
+  </data>
+  <data name="Home_ComponentsHeader" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="Home_Card_Buttons" xml:space="preserve">
+    <value>Buttons</value>
+  </data>
+  <data name="Home_Card_Buttons_Desc" xml:space="preserve">
+    <value>5 variants · 3 sizes</value>
+  </data>
+  <data name="Home_Card_Inputs" xml:space="preserve">
+    <value>Inputs</value>
+  </data>
+  <data name="Home_Card_Inputs_Desc" xml:space="preserve">
+    <value>Text, numeric, toggle</value>
+  </data>
+  <data name="Home_Card_DataGrid" xml:space="preserve">
+    <value>Data Grid</value>
+  </data>
+  <data name="Home_Card_DataGrid_Desc" xml:space="preserve">
+    <value>Sort, page, filter</value>
+  </data>
+  <data name="Home_Card_Dialogs" xml:space="preserve">
+    <value>Dialogs</value>
+  </data>
+  <data name="Home_Card_Dialogs_Desc" xml:space="preserve">
+    <value>Inline &amp; service-based</value>
+  </data>
+  <data name="Home_Card_Feedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="Home_Card_Feedback_Desc" xml:space="preserve">
+    <value>Alert, snackbar, progress</value>
+  </data>
+  <data name="Home_Card_Navigation" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Home_Card_Navigation_Desc" xml:space="preserve">
+    <value>Tabs, drawer, stepper</value>
+  </data>
+  <data name="Home_Card_Display" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="Home_Card_Display_Desc" xml:space="preserve">
+    <value>Typography, avatar, badge</value>
+  </data>
+  <data name="Home_ThemeShowcase" xml:space="preserve">
+    <value>Theme Showcase</value>
+  </data>
+  <data name="Home_ThemeShowcaseHint" xml:space="preserve">
+    <value>switch themes below to see all components update instantly.</value>
+  </data>
+  <data name="Highlighter_Title" xml:space="preserve">
+    <value>Highlighter &amp; Code Editor</value>
+  </data>
+  <data name="Highlighter_Subtitle" xml:space="preserve">
+    <value>FlareHighlighter for inline text search highlighting, FlareCodeEditor for syntax-highlighted code input.</value>
+  </data>
+  <data name="Highlighter_LiveSearch" xml:space="preserve">
+    <value>Live Search Highlight</value>
+  </data>
+  <data name="Highlighter_SearchTerm" xml:space="preserve">
+    <value>Search term</value>
+  </data>
+  <data name="Highlighter_TypeToHighlight" xml:space="preserve">
+    <value>Type to highlight…</value>
+  </data>
+  <data name="Highlighter_CaseSensitivity" xml:space="preserve">
+    <value>Case Sensitivity</value>
+  </data>
+  <data name="Highlighter_MultipleOccurrences" xml:space="preserve">
+    <value>Multiple Occurrences</value>
+  </data>
+  <data name="CodeEditor_Title" xml:space="preserve">
+    <value>FlareCodeEditor</value>
+  </data>
+  <data name="NumericField_PrefixSuffix" xml:space="preserve">
+    <value>Prefix &amp; Suffix + Arrow Key Increment</value>
+  </data>
+  <data name="NumericField_Formats" xml:space="preserve">
+    <value>Currency, percent, separators &amp; clamp</value>
+  </data>
+  <data name="Markdown_Title" xml:space="preserve">
+    <value>Markdown</value>
+  </data>
+  <data name="Markdown_Subtitle" xml:space="preserve">
+    <value>FlareMarkdown - pure C# Markdown-to-HTML renderer. No JavaScript, no external packages.</value>
+  </data>
+  <data name="Markdown_LiveEditor" xml:space="preserve">
+    <value>Live Editor</value>
+  </data>
+  <data name="Markdown_Static" xml:space="preserve">
+    <value>Static render</value>
+  </data>
+  <data name="Markdown_Syntax" xml:space="preserve">
+    <value>Syntax highlight &amp; sanitize</value>
+  </data>
+  <data name="ToggleButton_Title" xml:space="preserve">
+    <value>Toggle Button</value>
+  </data>
+  <data name="ToggleButton_Subtitle" xml:space="preserve">
+    <value>FlareToggleButton and FlareToggleGroup - stateful toggle controls.</value>
+  </data>
+  <data name="ToggleButton_IconOnly" xml:space="preserve">
+    <value>Icon Only</value>
+  </data>
+  <data name="ToggleButton_SizesDisabled" xml:space="preserve">
+    <value>Sizes &amp; Disabled</value>
+  </data>
+  <data name="ToggleButton_Group" xml:space="preserve">
+    <value>Toggle Group</value>
+  </data>
+  <data name="ToggleButton_GroupMulti" xml:space="preserve">
+    <value>Toggle Group - Multi Select</value>
+  </data>
+  <data name="GettingStarted_Installation" xml:space="preserve">
+    <value>Installation</value>
+  </data>
+  <data name="GettingStarted_Installation_NuGet" xml:space="preserve">
+    <value>Install NuGet packages</value>
+  </data>
+  <data name="GettingStarted_Installation_NuGetDesc" xml:space="preserve">
+    <value>Add Flare.Components and a theme package to your project.</value>
+  </data>
+  <data name="GettingStarted_Installation_Alert" xml:space="preserve">
+    <value>Flare targets .NET 10. Make sure your project targets net10.0.</value>
+  </data>
+  <data name="GettingStarted_Installation_Imports" xml:space="preserve">
+    <value>Add CSS links &amp; _Imports.razor</value>
+  </data>
+  <data name="GettingStarted_Installation_ImportsDesc" xml:space="preserve">
+    <value>Add the Material Symbols font and Flare CSS to App.razor, then import namespaces in _Imports.razor.</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup" xml:space="preserve">
+    <value>Theme Setup</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup_Provider" xml:space="preserve">
+    <value>FlareThemeProvider</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup_ProviderDesc" xml:space="preserve">
+    <value>Wrap your app in FlareThemeProvider. It applies the active theme CSS and responds to system color-scheme changes.</value>
+  </data>
+  <data name="GettingStarted_ThemeSetup_LiveHint" xml:space="preserve">
+    <value>Try toggling the color mode live:</value>
+  </data>
+  <data name="GettingStarted_FirstComponent" xml:space="preserve">
+    <value>Your First Component</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Button" xml:space="preserve">
+    <value>FlareButton</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_ButtonDesc" xml:space="preserve">
+    <value>FlareButton supports Filled, Outlined, Text, Tonal and Elevated variants.</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_ClickMe" xml:space="preserve">
+    <value>Click me</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_TextField" xml:space="preserve">
+    <value>FlareField with binding</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_TextFieldDesc" xml:space="preserve">
+    <value>Use @bind-Value for two-way data binding. HelperText appears below the field.</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_NameLabel" xml:space="preserve">
+    <value>Your name</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_NameHelper" xml:space="preserve">
+    <value>Enter your full name</value>
+  </data>
+  <data name="GettingStarted_FirstComponent_Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="GettingStarted_Architecture" xml:space="preserve">
+    <value>Architecture</value>
+  </data>
+  <data name="GettingStarted_Architecture_Base" xml:space="preserve">
+    <value>FlareComponentBase</value>
+  </data>
+  <data name="GettingStarted_Architecture_BaseDesc" xml:space="preserve">
+    <value>All Flare components inherit FlareComponentBase which provides Class, Style, Id and AdditionalAttributes pass-through.</value>
+  </data>
+  <data name="GettingStarted_Architecture_Tokens" xml:space="preserve">
+    <value>Design Tokens</value>
+  </data>
+  <data name="GettingStarted_Architecture_TokensDesc" xml:space="preserve">
+    <value>Flare exposes all visual values as CSS custom properties. Switching themes swaps the token values - no re-render required.</value>
+  </data>
+  <data name="GettingStarted_Accessibility" xml:space="preserve">
+    <value>Accessibility</value>
+  </data>
+  <data name="GettingStarted_Accessibility_Aria" xml:space="preserve">
+    <value>Accessible Icon Buttons</value>
+  </data>
+  <data name="GettingStarted_Accessibility_AriaDesc" xml:space="preserve">
+    <value>Always provide AriaLabel for icon-only controls. Decorative icons auto-receive aria-hidden="true".</value>
+  </data>
+  <data name="GettingStarted_Accessibility_AriaSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="GettingStarted_Accessibility_AriaDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="GettingStarted_Icons" xml:space="preserve">
+    <value>Icons Guide</value>
+  </data>
+  <data name="GettingStarted_Icons_Basic" xml:space="preserve">
+    <value>Using FlareIcon</value>
+  </data>
+  <data name="GettingStarted_Icons_BasicDesc" xml:space="preserve">
+    <value>FlareIcon checks the built-in SVG pack first, then falls back to Material Symbols via the Google Fonts CDN.</value>
+  </data>
+  <data name="GettingStarted_Icons_Sizes" xml:space="preserve">
+    <value>Icon Sizes</value>
+  </data>
+  <data name="GettingStarted_Icons_SizesDesc" xml:space="preserve">
+    <value>Use SizePx (int) for SVG pack icons or Size (CSS string) for Material Symbols.</value>
+  </data>
+  <data name="GettingStarted_Icons_FallbackTip" xml:space="preserve">
+    <value>Unknown icon names automatically fall back to Material Symbols - no extra configuration needed.</value>
+  </data>
+  <data name="Icons_Title" xml:space="preserve">
+    <value>Icons</value>
+  </data>
+  <data name="Icons_Subtitle" xml:space="preserve">
+    <value>Built-in SVG icon pack and Material Symbols reference. Click any icon to copy its usage.</value>
+  </data>
+  <data name="Icons_Search" xml:space="preserve">
+    <value>Search icons...</value>
+  </data>
+  <data name="Icons_CopyHint" xml:space="preserve">
+    <value>Click to copy usage</value>
+  </data>
+  <data name="Icons_Copied" xml:space="preserve">
+    <value>Copied!</value>
+  </data>
+  <data name="Icons_SvgPack" xml:space="preserve">
+    <value>SVG Pack</value>
+  </data>
+  <data name="Icons_MaterialSymbols" xml:space="preserve">
+    <value>Material Symbols</value>
+  </data>
+  <data name="Icons_TotalCount" xml:space="preserve">
+    <value>{0} icons</value>
+  </data>
+  <data name="AvatarGroup_Title" xml:space="preserve">
+    <value>Avatar Group</value>
+  </data>
+  <data name="DropZone_Subtitle" xml:space="preserve">
+    <value>FlareDropZone - drag &amp;amp; drop file upload area with customizable styling.</value>
+  </data>
+  <data name="DropZone_Basic" xml:space="preserve">
+    <value>Basic Drop Zone</value>
+  </data>
+  <data name="DropZone_AcceptFilter" xml:space="preserve">
+    <value>Accept Filter (PDF, Images)</value>
+  </data>
+  <data name="DropZone_CustomContent" xml:space="preserve">
+    <value>Custom Content</value>
+  </data>
+  <data name="Paper_Title" xml:space="preserve">
+    <value>Paper</value>
+  </data>
+  <data name="Paper_Subtitle" xml:space="preserve">
+    <value>FlarePaper - material surface with configurable elevation and rounded corners.</value>
+  </data>
+  <data name="Paper_ElevationLevels" xml:space="preserve">
+    <value>Elevation Levels</value>
+  </data>
+  <data name="Paper_Square" xml:space="preserve">
+    <value>Square (no border radius)</value>
+  </data>
+  <data name="Paper_AsContainer" xml:space="preserve">
+    <value>As a Container</value>
+  </data>
+  <data name="Timeline_Icon_Basic" xml:space="preserve">
+    <value>Basic with Icons</value>
+  </data>
+  <data name="ToggleButton_WithLabel" xml:space="preserve">
+    <value>With Label</value>
+  </data>
+  <data name="AvatarGroup_Subtitle" xml:space="preserve">
+    <value>FlareAvatarGroup - stack overlapping avatars with an overflow counter.</value>
+  </data>
+  <data name="AvatarGroup_BasicGroup" xml:space="preserve">
+    <value>Basic Group</value>
+  </data>
+  <data name="AvatarGroup_Sizes" xml:space="preserve">
+    <value>Sizes</value>
+  </data>
+  <data name="AvatarGroup_Spacing" xml:space="preserve">
+    <value>Spacing</value>
+  </data>
+  <data name="Home_ThemeShowcase_Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Common_HideCode" xml:space="preserve">
+    <value>Hide code</value>
+  </data>
+  <data name="About_Subtitle" xml:space="preserve">
+    <value>Blazor UI · .NET 10 · 116+ components</value>
+  </data>
+  <data name="About_Components" xml:space="preserve">
+    <value>Components</value>
+  </data>
+  <data name="About_Themes" xml:space="preserve">
+    <value>Design systems</value>
+  </data>
+
+  <!-- Comparison -->
+  <data name="Comparison_Title" xml:space="preserve"><value>Library Comparison</value></data>
+  <data name="Comparison_Subtitle" xml:space="preserve"><value>How Flare compares to other Blazor component libraries</value></data>
+  <data name="Comparison_Criteria" xml:space="preserve"><value>Criteria</value></data>
+  <data name="Comparison_WhenFlare" xml:space="preserve"><value>When to choose Flare</value></data>
+  <data name="Comparison_WhenMud" xml:space="preserve"><value>When to choose MudBlazor</value></data>
+  <data name="Comparison_WhenBlazorise" xml:space="preserve"><value>When to choose Blazorise</value></data>
+  <data name="Comparison_WhenFluent" xml:space="preserve"><value>When to choose FluentUI Blazor</value></data>
+  <data name="IconButton_Title" xml:space="preserve"><value>Icon Button</value></data>
+  <data name="IconButton_Subtitle" xml:space="preserve"><value>Compact, icon-only buttons in standard, filled, tonal and outlined variants.</value></data>
+  <data name="ButtonGroup_Title" xml:space="preserve"><value>Button Group</value></data>
+  <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Connected sets of buttons sharing variant, color and size. In the MD3 Expressive theme segments are separated by a gap with rounded inner corners and morph into a full capsule on interaction.</value></data>
+  <data name="ButtonGroup_Basic" xml:space="preserve"><value>Basic</value></data>
+  <data name="ButtonGroup_Vertical" xml:space="preserve"><value>Vertical</value></data>
+  <data name="ButtonGroup_VariantsColors" xml:space="preserve"><value>Variants &amp; colors (cascade)</value></data>
+  <data name="Menu_Anchors" xml:space="preserve"><value>Anchor positions</value></data>
+  <data name="Menu_Groups" xml:space="preserve"><value>Grouped sections</value></data>
+  <data name="Menu_Groups_Activator" xml:space="preserve"><value>Edit menu</value></data>
+  <data name="Menu_Group_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Menu_Group_View" xml:space="preserve"><value>View</value></data>
+  <data name="Menu_Action_Cut" xml:space="preserve"><value>Cut</value></data>
+  <data name="Menu_Action_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Menu_Action_Paste" xml:space="preserve"><value>Paste</value></data>
+  <data name="Menu_Action_ZoomIn" xml:space="preserve"><value>Zoom in</value></data>
+  <data name="Menu_Action_ZoomOut" xml:space="preserve"><value>Zoom out</value></data>
+  <data name="ButtonGroup_FullWidth" xml:space="preserve"><value>Full width</value></data>
+  <data name="SplitButton_Title" xml:space="preserve"><value>Split Button</value></data>
+  <data name="SplitButton_Subtitle" xml:space="preserve"><value>A primary action paired with a dropdown trigger for related secondary actions.</value></data>
+  <data name="SplitButton_VariantsColors" xml:space="preserve"><value>Variants &amp; colors</value></data>
+  <data name="Fab_Title" xml:space="preserve"><value>Floating Action Button</value></data>
+  <data name="Fab_Subtitle" xml:space="preserve"><value>A prominent button for the primary action of a screen, available in color roles, sizes and an extended form with a label.</value></data>
+  <data name="Fab_ColorsExtended" xml:space="preserve"><value>Colors &amp; extended</value></data>
+  <data name="FabMenu_Title" xml:space="preserve"><value>FAB Menu (Speed Dial)</value></data>
+  <data name="FabMenu_Subtitle" xml:space="preserve"><value>A floating action button that expands into a set of related actions in a chosen direction.</value></data>
+  <data name="Buttons_Colors" xml:space="preserve"><value>Colors</value></data>
+  <data name="Buttons_CustomColor" xml:space="preserve"><value>Custom color (any CSS color)</value></data>
+  <data name="IconButton_AriaXSmall" xml:space="preserve"><value>Extra small</value></data>
+  <data name="IconButton_AriaXLarge" xml:space="preserve"><value>Extra large</value></data>
+  <data name="Api_Parameters" xml:space="preserve"><value>Parameters</value></data>
+  <data name="Api_Events" xml:space="preserve"><value>Events</value></data>
+  <data name="Api_Methods" xml:space="preserve"><value>Methods</value></data>
+  <data name="Api_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Api_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Api_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="Api_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Api_Returns" xml:space="preserve"><value>Returns</value></data>
+  <data name="Api_Inherited" xml:space="preserve"><value>Inherited</value></data>
+  <data name="Api_Required" xml:space="preserve"><value>required</value></data>
+  <data name="Api_NotFound" xml:space="preserve"><value>Component not found.</value></data>
+  <data name="Api_Empty" xml:space="preserve"><value>No documented public API for this component.</value></data>
+  <data name="Nav_Api" xml:space="preserve"><value>API</value></data>
+  <data name="Nav_AllApi" xml:space="preserve"><value>All API</value></data>
+  <data name="Nav_Services" xml:space="preserve"><value>Services</value></data>
+  <data name="Services_DynamicTitle" xml:space="preserve"><value>Dynamic color</value></data>
+  <data name="Services_DynamicSubtitle" xml:space="preserve"><value>Extract a seed color from a cover with IFlareColorExtractor, then theme components with FlareColor.Dynamic.</value></data>
+  <data name="Services_DynamicUpload" xml:space="preserve"><value>Upload a cover</value></data>
+  <data name="Services_DynamicUrl" xml:space="preserve"><value>...or paste an image URL</value></data>
+  <data name="Services_DynamicLoad" xml:space="preserve"><value>Load</value></data>
+  <data name="Services_DynamicHint" xml:space="preserve"><value>Cross-origin URLs need CORS; uploaded files always work. Seed:</value></data>
+  <data name="Services_DynamicNowPlaying" xml:space="preserve"><value>Now playing</value></data>
+  <data name="Services_DynamicTrack" xml:space="preserve"><value>Midnight Drive</value></data>
+  <data name="Services_DynamicArtist" xml:space="preserve"><value>The Flares</value></data>
+  <data name="Services_ScopeTitle" xml:space="preserve"><value>Theme scope</value></data>
+  <data name="Services_ScopeSubtitle" xml:space="preserve"><value>FlareThemeScope re-themes a subtree. The same components rendered under different themes, palettes and modes - all live on one page.</value></data>
+  <data name="Services_ClipboardTitle" xml:space="preserve"><value>Clipboard service</value></data>
+  <data name="Services_ClipboardSubtitle" xml:space="preserve"><value>IFlareClipboard - copy and read text (with a non-secure-context fallback) without touching IJSRuntime.</value></data>
+  <data name="Services_SnackbarTitle" xml:space="preserve"><value>Snackbar service</value></data>
+  <data name="Services_SnackbarSubtitle" xml:space="preserve"><value>ISnackbarService.Show(...) enqueues a transient notification from anywhere - severities, duration and an optional action.</value></data>
+  <data name="Services_DownloadTitle" xml:space="preserve"><value>Download service</value></data>
+  <data name="Services_DownloadSubtitle" xml:space="preserve"><value>IFlareDownload triggers a client-side file download from in-memory content (text, CSV with BOM, etc.).</value></data>
+  <data name="Services_MsgBoxTitle" xml:space="preserve"><value>Message box service</value></data>
+  <data name="Services_MsgBoxSubtitle" xml:space="preserve"><value>IMessageBoxService - awaitable Confirm / Alert / Prompt dialogs from C#, no markup required.</value></data>
+  <data name="Services_Copy" xml:space="preserve"><value>Copy</value></data>
+  <data name="Services_Read" xml:space="preserve"><value>Read</value></data>
+  <data name="Services_WithAction" xml:space="preserve"><value>With action</value></data>
+  <data name="Services_DownloadTxt" xml:space="preserve"><value>Download .txt</value></data>
+  <data name="Services_DownloadCsv" xml:space="preserve"><value>Download .csv</value></data>
+  <data name="Services_Confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="Services_Alert" xml:space="preserve"><value>Alert</value></data>
+  <data name="Services_Prompt" xml:space="preserve"><value>Prompt</value></data>
+  <data name="Services_Result" xml:space="preserve"><value>Result:</value></data>
+  <data name="Services_Usage" xml:space="preserve"><value>Usage</value></data>
+  <data name="Services_VersionCheckTitle" xml:space="preserve"><value>Version check service</value></data>
+  <data name="Services_VersionCheckSubtitle" xml:space="preserve"><value>IVersionCheckService polls for a newer app version on a configurable interval and raises an event - it renders nothing itself.</value></data>
+  <data name="Services_VersionCheckBody" xml:space="preserve"><value>Register it with AddFlareVersionCheck (interval, current version, how to fetch the latest), subscribe to NewVersionAvailable in your layout and surface the update however you like - here it shows a toast.</value></data>
+  <data name="Services_VersionCheckWaiting" xml:space="preserve"><value>Waiting for the first check...</value></data>
+  <data name="Services_VersionCheckDetected" xml:space="preserve"><value>Latest version detected:</value></data>
+  <data name="Services_VersionCheckNote" xml:space="preserve"><value>This demo polls every 10 seconds in service-worker mode: a toast appears only after you publish a newer build (the deployed assets-manifest version changes).</value></data>
+  <data name="Services_VersionCheckCurrent" xml:space="preserve"><value>Current version</value></data>
+  <data name="Services_VersionCheckUpToDate" xml:space="preserve"><value>Up to date - no newer version</value></data>
+  <data name="Services_VersionCheckChecking" xml:space="preserve"><value>Checking for updates...</value></data>
+  <data name="Services_VersionCheckCheckNow" xml:space="preserve"><value>Check now</value></data>
+  <data name="Services_VersionCheckUpdate" xml:space="preserve"><value>Update</value></data>
+  <data name="Services_VersionCheckUpdating" xml:space="preserve"><value>Updating...</value></data>
+  <data name="Services_VersionCheckUpdatedTo" xml:space="preserve"><value>Updated to</value></data>
+  <data name="Services_VersionCheckSimNote" xml:space="preserve"><value>Simulated demo: a local probe reports a newer version after a couple of checks, so you can see the full flow (up to date -&gt; new version -&gt; update) without publishing a new build.</value></data>
+  <data name="Api_IndexTitle" xml:space="preserve"><value>API Reference</value></data>
+  <data name="Api_IndexSubtitle" xml:space="preserve"><value>Auto-generated parameter, event and method reference for every Flare component.</value></data>
+  <data name="Api_FilterPlaceholder" xml:space="preserve"><value>Filter components…</value></data>
+  <data name="Api_Members" xml:space="preserve"><value>Members</value></data>
+  <data name="Api_UsedBy" xml:space="preserve"><value>Used by</value></data>
+  <data name="Api_Inherits" xml:space="preserve"><value>Inherits from</value></data>
+  <data name="Api_Derived" xml:space="preserve"><value>Derived components</value></data>
+  <data name="OtpField_Title" xml:space="preserve"><value>OTP Field</value></data>
+  <data name="OtpField_Subtitle" xml:space="preserve"><value>One-time password input with auto-focus, paste support, and keyboard navigation.</value></data>
+  <data name="OtpField_Basic" xml:space="preserve"><value>Basic</value></data>
+  <data name="OtpField_Pin" xml:space="preserve"><value>4-Digit PIN (Masked)</value></data>
+  <data name="OtpField_ErrorState" xml:space="preserve"><value>Error State</value></data>
+  <data name="OtpField_Disabled" xml:space="preserve"><value>Disabled</value></data>
+  <data name="OtpField_Alphanumeric" xml:space="preserve"><value>Alphanumeric (8-char)</value></data>
+  <data name="Responsive_Title" xml:space="preserve"><value>Responsive &amp; Adaptivity</value></data>
+  <data name="Responsive_Subtitle" xml:space="preserve"><value>Resize the window to see Flare adapt. Breakpoints: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920.</value></data>
+  <data name="Responsive_GridTitle" xml:space="preserve"><value>Responsive grid (FlareGrid / FlareCol)</value></data>
+  <data name="Responsive_GridDescA" xml:space="preserve"><value>Each column is</value></data>
+  <data name="Responsive_GridDescB" xml:space="preserve"><value>- 1 per row on phones, 2 on tablets, 3-4 on desktop.</value></data>
+  <data name="Responsive_Card" xml:space="preserve"><value>Card</value></data>
+  <data name="Responsive_VisibilityTitle" xml:space="preserve"><value>Conditional visibility (FlareHidden)</value></data>
+  <data name="Responsive_VisMdUp" xml:space="preserve"><value>Visible only on &lt;strong&gt;md and up&lt;/strong&gt; (hidden below 960px).</value></data>
+  <data name="Responsive_VisXsSm" xml:space="preserve"><value>Visible only on &lt;strong&gt;xs / sm&lt;/strong&gt; (hidden above 600px).</value></data>
+  <data name="Responsive_HiddenMd" xml:space="preserve"><value>Hidden only at the &lt;strong&gt;md&lt;/strong&gt; range (960-1279px).</value></data>
+  <data name="Responsive_MediaQueryTitle" xml:space="preserve"><value>Reactive breakpoint in C# (FlareMediaQuery)</value></data>
+  <data name="Responsive_MediaQueryDesc" xml:space="preserve"><value>exposes the active breakpoint to your C# logic - switch layouts, column counts, or drawer modes dynamically.</value></data>
+  <data name="Responsive_CurrentBp" xml:space="preserve"><value>Current breakpoint:</value></data>
+  <data name="Responsive_CompactLayout" xml:space="preserve"><value>📱 Compact layout - stacking content vertically.</value></data>
+  <data name="Responsive_TabletLayout" xml:space="preserve"><value>💻 Tablet layout - two-column content.</value></data>
+  <data name="Responsive_DesktopLayout" xml:space="preserve"><value>🖥️ Desktop layout - full multi-column experience.</value></data>
+  <data name="Responsive_LastChange" xml:space="preserve"><value>Last change reported to C#:</value></data>
+  <data name="Responsive_NoneYet" xml:space="preserve"><value>(none yet)</value></data>
+</root>

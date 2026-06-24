@@ -1,0 +1,151 @@
+@namespace Flare.Components
+@typeparam TItem
+@inherits FlareComponentBase
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+<div class="@BuildCssClass()" style="@($"{Style};height:{Height}")" @attributes="AdditionalAttributes">
+    <Virtualize Items="@_flat" Context="node" OverscanCount="5">
+        <div class="@Css.Classes.TreeView.VNode"
+             style="@($"--flare-vtree-indent:{(node.Level * 1.25).ToString(System.Globalization.CultureInfo.InvariantCulture)}rem")"
+             role="treeitem"
+             aria-expanded="@(node.HasChildren ? node.IsExpanded.ToString().ToLower() : null)"
+             aria-selected="@node.IsSelected.ToString().ToLower()"
+             aria-level="@(node.Level + 1)"
+             aria-busy="@(node.IsLoading ? "true" : null)"
+             @key="KeySelector(node.Item)"
+             @onclick="@(() => SelectAsync(node))"
+             tabindex="@(node.IsSelected ? 0 : -1)">
+            @if (node.HasChildren || node.IsLoading)
+            {
+                <button class="@Css.Classes.TreeView.VExpandBtn"
+                        @onclick="@(() => ToggleAsync(node))"
+                        @onclick:stopPropagation="true"
+                        disabled="@node.IsLoading"
+                        aria-label="@(node.IsExpanded ? (FlareStrings.Tree_Collapse) : (FlareStrings.Tree_Expand))">
+                    <span class="material-symbols-rounded">
+                        @(node.IsLoading ? "progress_activity" : node.IsExpanded ? "expand_more" : "chevron_right")
+                    </span>
+                </button>
+            }
+            else
+            {
+                <span class="@Css.Classes.TreeView.VLeafSpacer"></span>
+            }
+            <span class="@(node.IsLoading ? Css.Classes.TreeView.VNodeLoading : null)">
+                @if (ItemTemplate is not null)
+                {
+                    @ItemTemplate(node.Item)
+                }
+            </span>
+        </div>
+    </Virtualize>
+</div>
+
+@code {
+    /// <summary>Root-level items to render in the virtual tree.</summary>
+    [Parameter, EditorRequired] public IEnumerable<TItem>? Items { get; set; }
+    /// <summary>Function that returns a unique key for each item.</summary>
+    [Parameter, EditorRequired] public Func<TItem, object> KeySelector { get; set; } = x => x!;
+    /// <summary>Async function that loads children for a given item.</summary>
+    [Parameter] public Func<TItem, Task<IEnumerable<TItem>>>? ChildrenProvider { get; set; }
+    /// <summary>
+    /// Optional predicate that reports whether an item has children without pre-loading them.
+    /// When set, a node shows an expand chevron if this returns true even before children are fetched.
+    /// </summary>
+    [Parameter] public Func<TItem, bool>? HasChildren { get; set; }
+    /// <summary>Template used to render each tree node's content.</summary>
+    [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+    /// <summary>CSS height of the virtualized scrollable container.</summary>
+    [Parameter] public string Height { get; set; } = "400px";
+    /// <summary>Callback raised when a tree node is clicked.</summary>
+    [Parameter] public EventCallback<TItem> ItemClick { get; set; }
+    /// <summary>Callback raised when a tree node becomes selected.</summary>
+    [Parameter] public EventCallback<TItem> ItemSelected { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.TreeView.VTree;
+
+    private List<VirtualTreeNode<TItem>> _flat = [];
+    private IEnumerable<TItem>? _lastItems;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // Only rebuild the flat list when the Items reference changes.
+        // Rebuilding on every parameter update destroys the user's expanded state.
+        if (!ReferenceEquals(Items, _lastItems))
+        {
+            _lastItems = Items;
+            await RebuildFlatListAsync();
+        }
+    }
+
+    private async Task RebuildFlatListAsync()
+    {
+        _flat.Clear();
+        if (Items is null) return;
+        foreach (var item in Items)
+        {
+            bool hasKids = HasChildren is not null ? HasChildren(item) : ChildrenProvider is not null;
+            _flat.Add(new VirtualTreeNode<TItem> { Item = item, Level = 0, HasChildren = hasKids });
+        }
+        await Task.CompletedTask;
+    }
+
+    private async Task ToggleAsync(VirtualTreeNode<TItem> node)
+    {
+        if (!node.IsExpanded)
+        {
+            node.IsExpanded = true;
+            if (!node.ChildrenLoaded && ChildrenProvider is not null)
+            {
+                node.IsLoading = true;
+                StateHasChanged();
+
+                var children = (await ChildrenProvider(node.Item)).ToList();
+
+                node.IsLoading = false;
+                node.ChildrenLoaded = true;
+
+                if (children.Count == 0)
+                {
+                    node.HasChildren = false;
+                    node.IsExpanded = false;
+                }
+                else
+                {
+                    var idx = _flat.IndexOf(node) + 1;
+                    foreach (var child in children)
+                    {
+                        bool hasKids = HasChildren is not null ? HasChildren(child) : ChildrenProvider is not null;
+                        _flat.Insert(idx++, new VirtualTreeNode<TItem>
+                        {
+                            Item = child,
+                            Level = node.Level + 1,
+                            HasChildren = hasKids
+                        });
+                    }
+                }
+            }
+        }
+        else
+        {
+            node.IsExpanded = false;
+            RemoveDescendants(node);
+        }
+    }
+
+    private void RemoveDescendants(VirtualTreeNode<TItem> parent)
+    {
+        var idx = _flat.IndexOf(parent) + 1;
+        while (idx < _flat.Count && _flat[idx].Level > parent.Level)
+            _flat.RemoveAt(idx);
+    }
+
+    private async Task SelectAsync(VirtualTreeNode<TItem> node)
+    {
+        foreach (var n in _flat)
+            n.IsSelected = false;
+        node.IsSelected = true;
+        if (ItemClick.HasDelegate) await ItemClick.InvokeAsync(node.Item);
+        if (ItemSelected.HasDelegate) await ItemSelected.InvokeAsync(node.Item);
+    }
+}

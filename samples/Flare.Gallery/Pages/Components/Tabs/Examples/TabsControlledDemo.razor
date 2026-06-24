@@ -1,0 +1,37 @@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
+    <FlareStack Row="true" Wrap="true" Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="Prev" Disabled="@(_active == 0)">Prev</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="Next" Disabled="@(_active == 2)">Next</FlareButton>
+        <FlareText Typo="TypographyScale.BodyMedium">Active index: <strong>@_active</strong></FlareText>
+        <FlareSwitch @bind-Value="_guard" Label="Block leaving tab 1" />
+    </FlareStack>
+
+    <FlareTabs @bind-ActiveIndex="_active" OnPreviewInteraction="Guard">
+        <FlareTab Label="One">
+            <FlareText Typo="TypographyScale.BodyMedium">First panel. Use the buttons above or click a tab.</FlareText>
+        </FlareTab>
+        <FlareTab Label="Two">
+            <FlareText Typo="TypographyScale.BodyMedium">Second panel. Toggle the switch to veto leaving this tab.</FlareText>
+        </FlareTab>
+        <FlareTab Label="Three">
+            <FlareText Typo="TypographyScale.BodyMedium">Third panel.</FlareText>
+        </FlareTab>
+    </FlareTabs>
+</FlareStack>
+
+@code {
+    private int _active;
+    private bool _guard;
+
+    private void Prev() => _active = Math.Max(0, _active - 1);
+    private void Next() => _active = Math.Min(2, _active + 1);
+
+    // Veto switching away from tab index 1 while the guard is on.
+    private void Guard(TabInteractionEventArgs e)
+    {
+        if (_guard && _active == 1 && e.PanelIndex != 1)
+            e.Cancel = true;
+    }
+}
+
+@* Two-way @bind-ActiveIndex drives the tabs from external buttons; OnPreviewInteraction vetoes switching. *@

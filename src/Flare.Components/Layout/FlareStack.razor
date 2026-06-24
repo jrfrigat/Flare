@@ -1,0 +1,84 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_dirClass, _wrapClass, _gapClass, _alignClass, _justifyClass)"
+     style="@_resolvedStyle"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Child content rendered inside the stack.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Flex direction - row or column (default).</summary>
+    [Parameter] public bool Row { get; set; }
+    /// <summary>Flex direction - reverse or not (default).</summary>
+    [Parameter] public bool Reverse { get; set; }
+    /// <summary>Spacing between child elements using design-token values.</summary>
+    [Parameter] public FlareSpacing Gap { get; set; } = FlareSpacing.Medium;
+    /// <summary>Raw CSS gap value used when <see cref="Gap"/> is <see cref="FlareSpacing.Custom"/>.</summary>
+    [Parameter] public string? GapValue { get; set; }
+    /// <summary>Allows children to wrap onto multiple lines.</summary>
+    [Parameter] public bool Wrap { get; set; }
+    /// <summary>Cross-axis alignment of children.</summary>
+    [Parameter] public FlareAlignItems Align { get; set; } = FlareAlignItems.Default;
+    /// <summary>Main-axis justification of children.</summary>
+    [Parameter] public FlareJustifyContent Justify { get; set; } = FlareJustifyContent.Default;
+
+    protected override string ComponentCssClass => Css.Classes.Stack.Root;
+
+    private string _dirClass => Row
+    ? (Reverse ? Css.Classes.Stack.RowReverse : Css.Classes.Stack.Row)
+    : (Reverse ? Css.Classes.Stack.ColumnReverse : Css.Classes.Stack.Column);
+
+    private string _wrapClass => Wrap ? Css.Classes.Stack.Wrap : string.Empty;
+
+    private string? _gapClass;
+    private string? _alignClass;
+    private string? _justifyClass;
+    private string? _resolvedStyle;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _gapClass = Gap switch
+        {
+            FlareSpacing.None    => Css.Classes.Stack.GapNone,
+            FlareSpacing.XXSmall => Css.Classes.Stack.GapXxSmall,
+            FlareSpacing.XSmall  => Css.Classes.Stack.GapXSmall,
+            FlareSpacing.Small   => Css.Classes.Stack.GapSmall,
+            FlareSpacing.Large   => Css.Classes.Stack.GapLarge,
+            FlareSpacing.XLarge  => Css.Classes.Stack.GapXLarge,
+            FlareSpacing.Custom  => null,
+            _                    => Css.Classes.Stack.GapMedium,
+        };
+
+        _alignClass = Align switch
+        {
+            FlareAlignItems.Stretch  => Css.Classes.Stack.AlignStretch,
+            FlareAlignItems.Center   => Css.Classes.Stack.AlignCenter,
+            FlareAlignItems.Start    => Css.Classes.Stack.AlignStart,
+            FlareAlignItems.End      => Css.Classes.Stack.AlignEnd,
+            FlareAlignItems.Baseline => Css.Classes.Stack.AlignBaseline,
+            _                        => null,
+        };
+
+        _justifyClass = Justify switch
+        {
+            FlareJustifyContent.Start        => Css.Classes.Stack.JustifyStart,
+            FlareJustifyContent.End          => Css.Classes.Stack.JustifyEnd,
+            FlareJustifyContent.Center       => Css.Classes.Stack.JustifyCenter,
+            FlareJustifyContent.SpaceBetween => Css.Classes.Stack.JustifySpaceBetween,
+            FlareJustifyContent.SpaceAround  => Css.Classes.Stack.JustifySpaceAround,
+            FlareJustifyContent.SpaceEvenly  => Css.Classes.Stack.JustifySpaceEvenly,
+            _                                => null,
+        };
+
+        // GS-3: sanitize user-supplied CSS value before injection
+        var safeGapValue = Flare.Components.Security.CssValidator.StripDangerous(GapValue);
+        _resolvedStyle = Gap == FlareSpacing.Custom && safeGapValue is not null
+            ? (Style is not null ? $"gap:{safeGapValue};{Style}" : $"gap:{safeGapValue}")
+            : Style;
+    }
+}

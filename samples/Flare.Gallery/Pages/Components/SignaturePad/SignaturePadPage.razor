@@ -1,0 +1,12 @@
+@page "/components/signaturepad"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.SignaturePad_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareSignaturePad">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.SignaturePad_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.SignaturePad_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.SignaturePad_Basic" DemoType="typeof(Examples.SignaturePadBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.SignaturePad_CustomStroke" DemoType="typeof(Examples.SignaturePadCustomStrokeDemo)" />

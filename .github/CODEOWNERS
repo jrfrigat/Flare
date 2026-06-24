@@ -1,0 +1,3 @@
+# Default owner for everything in the repo. Add more specific lines below to route
+# reviews of particular areas to other maintainers as the project grows.
+* @jrfrigat

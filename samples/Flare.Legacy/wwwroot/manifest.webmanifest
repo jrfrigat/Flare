@@ -1,0 +1,20 @@
+{
+  "name": "Flare Legacy - демо корпоративного приложения",
+  "short_name": "Legacy",
+  "id": "./",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#c9c9c9",
+  "theme_color": "#2f6cb0",
+  "description": "Демо корпоративного (1С-подобного) приложения, собранного целиком из компонентов Flare.",
+  "prefer_related_applications": false,
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}

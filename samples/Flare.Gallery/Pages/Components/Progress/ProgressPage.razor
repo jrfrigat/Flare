@@ -1,0 +1,16 @@
+@page "/components/progress"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Progress_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareProgress">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Progress_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Progress_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Progress_Linear" DemoType="typeof(Examples.ProgressLinearDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Progress_Circular" DemoType="typeof(Examples.ProgressCircularDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Progress_Sizes" DemoType="typeof(Examples.ProgressSizesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Progress_Colors" DemoType="typeof(Examples.ProgressColorsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Progress_Buffer" DemoType="typeof(Examples.ProgressBufferDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Progress_Query" DemoType="typeof(Examples.ProgressQueryDemo)" />

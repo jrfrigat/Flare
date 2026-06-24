@@ -1,0 +1,13 @@
+@page "/components/empty-state"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.EmptyState_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareEmptyState">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.EmptyState_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.EmptyState_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.EmptyState_BasicWithAction" DemoType="typeof(Examples.EmptyStateBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.EmptyState_MinimalNoAction" DemoType="typeof(Examples.EmptyStateMinimalDemo)" />
+<AutoDemoSection Title="@GalleryStrings.EmptyState_ErrorState" DemoType="typeof(Examples.EmptyStateErrorDemo)" />

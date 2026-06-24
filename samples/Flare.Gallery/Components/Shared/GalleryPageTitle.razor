@@ -1,0 +1,71 @@
+@namespace Flare.Gallery.Components.Shared
+@inject NavigationManager Nav
+@inject Flare.Components.IFlareClipboard Clipboard
+
+<div class="gallery-page-title">
+    <div class="gallery-page-title__row">
+        <div class="gallery-page-title__main">
+            @ChildContent
+        </div>
+        @if (!string.IsNullOrEmpty(Api))
+        {
+            <a class="gallery-page-title__api" href="@($"/api/{Api}")">
+                <span class="material-symbols-rounded gallery-page-title__api-icon">data_object</span>
+                <span>@GalleryStrings.Nav_Api</span>
+                <span class="material-symbols-rounded gallery-page-title__api-icon">open_in_new</span>
+            </a>
+        }
+    </div>
+    @* NuGet package this component/service ships in - click to copy the install command. *@
+    <button class="gallery-page-title__pkg" type="button" @onclick="CopyInstallAsync" title="@($"dotnet add package {_package}")">
+        <span class="material-symbols-rounded gallery-page-title__pkg-icon">package_2</span>
+        <code>@_package</code>
+        <span class="material-symbols-rounded gallery-page-title__pkg-icon">@(_copied ? "check" : "content_copy")</span>
+    </button>
+</div>
+
+@code {
+    /// <summary>Page heading content (title and subtitle).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional component type name (e.g. <c>FlareButton</c>). When set, renders an
+    /// "API" link to <c>/api/{Api}</c> in the page header.
+    /// </summary>
+    [Parameter] public string? Api { get; set; }
+
+    /// <summary>Overrides the auto-detected NuGet package id for this page.</summary>
+    [Parameter] public string? Package { get; set; }
+
+    private string _package = "Flare.Components";
+    private bool _copied;
+
+    protected override void OnParametersSet() => _package = Package ?? ResolvePackage();
+
+    // The standalone libraries map by route; everything else ships in Flare.Components.
+    private string ResolvePackage()
+    {
+        var path = Nav.ToBaseRelativePath(Nav.Uri).Split('?', '#')[0].TrimEnd('/');
+        var seg = path.Contains('/') ? path[(path.LastIndexOf('/') + 1)..] : path;
+        return seg switch
+        {
+            "carousel" => "Flare.Components.Carousel",
+            "kanban" => "Flare.Components.Kanban",
+            "qrcode" => "Flare.Components.QrCode",
+            "rich-text-editor" => "Flare.Components.RichTextEditor",
+            "transfer" => "Flare.Components.Transfer",
+            "signaturepad" or "videoplayer" or "fileupload" => "Flare.Components.Media",
+            _ => "Flare.Components",
+        };
+    }
+
+    private async Task CopyInstallAsync()
+    {
+        await Clipboard.CopyAsync($"dotnet add package {_package}");
+        _copied = true;
+        StateHasChanged();
+        await Task.Delay(1500);
+        _copied = false;
+        StateHasChanged();
+    }
+}

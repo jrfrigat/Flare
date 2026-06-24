@@ -1,0 +1,14 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+<div class="@Css.Classes.Ide.Ribbon.Group" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.Ribbon.GroupContent">
+        @ChildContent
+    </div>
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <div class="@Css.Classes.Ide.Ribbon.GroupLabel">
+            @Label
+        </div>
+    }
+</div>

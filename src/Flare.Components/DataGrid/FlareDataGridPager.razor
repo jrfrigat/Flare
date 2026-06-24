@@ -1,0 +1,58 @@
+@namespace Flare.Components
+@typeparam TItem
+@using Flare.Components.Resources
+
+@* A standalone pager for a FlareDataGrid. Bound to the grid via the cascade (when placed in
+   ToolbarContent / FooterContent) or via an explicit Grid override; renders nothing for a
+   virtualized or infinite-scroll grid, or when there is a single page and no page-size choice.
+   Page size and current page are owned by the grid (data concern); this component owns the pager's
+   presentation (page-size options, label, first/last and sibling/boundary counts). *@
+@if (Owner is { PagingEnabled: true } g && (g.PageCount > 1 || _options.Count > 1))
+{
+    <FlarePagination Current="@(g.CurrentPageIndex + 1)"
+                     TotalPages="@g.PageCount"
+                     CurrentChanged="@(p => g.GoToPageAsync(p - 1))"
+                     RowsPerPageOptions="@(_options.Count > 1 ? [.. _options] : null)"
+                     PageSize="@g.EffectivePageSize"
+                     PageSizeChanged="@(s => g.SetPageSizeAsync(s))"
+                     Size="@Size"
+                     ShowFirstLast="@ShowFirstLast"
+                     BoundaryCount="@BoundaryCount"
+                     SiblingCount="@SiblingCount"
+                     AriaLabel="@_label" />
+}
+
+@code {
+    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent / FooterContent);
+    // the explicit Grid parameter overrides it for standalone placement outside the grid.
+    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
+    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
+    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
+    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
+    /// <summary>Visual size of the pagination control.</summary>
+    [Parameter] public PaginationSize Size { get; set; } = PaginationSize.Md;
+
+    /// <summary>Page-size choices offered in the rows-per-page dropdown. When null (the default), the
+    /// grid's <see cref="FlareDataGrid{TItem}.RowsPerPageOptions"/> are used; set this to control the
+    /// options from the pager instead. A single option (or none) hides the dropdown.</summary>
+    [Parameter] public IReadOnlyList<int>? RowsPerPageOptions { get; set; }
+
+    /// <summary>Accessible label / rows-per-page caption. When null (the default), the grid's
+    /// <c>RowsLabel</c> is used, then a localized fallback.</summary>
+    [Parameter] public string? RowsLabel { get; set; }
+
+    /// <summary>Shows first/last jump buttons in addition to prev/next.</summary>
+    [Parameter] public bool ShowFirstLast { get; set; }
+
+    /// <summary>How many page buttons to always show at each end (passed to the pagination control).</summary>
+    [Parameter] public int BoundaryCount { get; set; } = 1;
+
+    /// <summary>How many page buttons to show on each side of the current page (passed to the pagination control).</summary>
+    [Parameter] public int SiblingCount { get; set; } = 2;
+
+    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+
+    // Presentation overrides fall back to the grid's values (so the built-in pager keeps working).
+    private IReadOnlyList<int> _options => RowsPerPageOptions ?? Owner?.RowsPerPageOptions ?? [];
+    private string _label => RowsLabel ?? Owner?.RowsLabel ?? FlareStrings.DataGrid_RowsLabel;
+}

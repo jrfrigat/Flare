@@ -1,0 +1,129 @@
+.flare-tag-input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2, 0.25rem);
+    cursor: text;
+}
+
+.flare-tag-input__label {
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+    pointer-events: none;
+}
+
+.flare-tag-input__field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--flare-spacing-3, 0.375rem);
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
+    min-height: 2.75rem;
+    background: var(--flare-input-bg, var(--flare-color-surface-container-highest));
+    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
+    border: var(--flare-input-border, none);
+    border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
+    transition: border-color var(--flare-motion-duration-short2, 150ms);
+}
+
+.flare-tag-input--focused .flare-tag-input__field {
+    border: var(--flare-input-focus-border, none);
+    border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--flare-color-primary));
+}
+
+.flare-tag-input--error .flare-tag-input__field {
+    border-color: var(--flare-color-error);
+}
+
+.flare-tag-input__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-2, 0.25rem);
+    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
+    background: var(--flare-color-secondary-container);
+    color: var(--flare-color-on-secondary-container);
+    border-radius: var(--flare-chip-radius, var(--flare-shape-small));
+    font-size: var(--flare-typescale-label-large-size, 0.875rem);
+    font-family: var(--flare-typescale-label-large-font);
+    line-height: 1.5;
+}
+
+.flare-tag-input__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: inherit;
+    line-height: 1;
+    transition: background var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-tag-input__remove:hover {
+    background: color-mix(in srgb, var(--flare-color-on-secondary-container) 20%, transparent);
+}
+
+.flare-tag-input__input {
+    flex: 1;
+    min-width: 8rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--flare-typescale-body-large-font);
+    font-size: var(--flare-typescale-body-large-size);
+    color: var(--flare-color-on-surface);
+    padding: var(--flare-spacing-1, 0.125rem) 0;
+}
+
+.flare-tag-input__helper {
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-tag-input__helper--error { color: var(--flare-color-error); }
+.flare-tag-input--disabled { opacity: var(--flare-state-disabled-opacity, 0.38); pointer-events: none; }
+
+/* ---- Suggestions dropdown ---- */
+.flare-tag-input__wrapper {
+    position: relative;
+}
+
+.flare-tag-input__dropdown {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    max-height: 16rem;
+    overflow-y: auto;
+    background: var(--flare-color-surface-container, var(--flare-color-surface));
+    border-radius: var(--flare-shape-extra-small, 0.5rem);
+    box-shadow: var(--flare-elevation-2, 0 2px 6px rgba(0, 0, 0, 0.2));
+    padding: var(--flare-spacing-2, 0.25rem) 0;
+}
+
+.flare-tag-input__option {
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
+    cursor: pointer;
+    font-family: var(--flare-typescale-body-large-font);
+    font-size: var(--flare-typescale-body-large-size, 0.875rem);
+    color: var(--flare-color-on-surface);
+    transition: background var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-tag-input__option:hover,
+.flare-tag-input__option--active {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+}
+
+.flare-tag-input__empty {
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+}

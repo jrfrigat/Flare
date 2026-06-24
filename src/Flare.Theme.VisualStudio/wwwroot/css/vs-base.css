@@ -1,0 +1,14 @@
+/* Visual Studio 2026 theme base bundle.
+   The signature document-tab gap/selection lives in components/tabs.css (also listed in
+   VisualStudioTheme.StyleAssets, so each file is injected exactly once). */
+
+/* Scoped chrome touches that apply to the whole VS surface. */
+@scope (.flare-theme-visualstudio) to (.flare-root:not(.flare-theme-visualstudio)) {
+
+    /* Menus, popovers and dialogs get the flat VS drop shadow. */
+    .flare-menu__panel,
+    .flare-popover__paper,
+    .flare-select__dropdown {
+        box-shadow: var(--flare-elevation-3);
+    }
+}

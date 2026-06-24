@@ -1,0 +1,56 @@
+<div style="height:420px;overflow:hidden;border-radius:var(--flare-shape-medium);">
+    <FlareLayout>
+        <AppBar>
+            <FlareLayoutAppBar DrawerToggle="true">
+                <FlareText Typo="TypographyScale.TitleLarge">My App</FlareText>
+                <FlareStack Row Style="flex:1;" />
+                <FlareAvatar Icon="account_circle" Size="AvatarSize.Sm" />
+            </FlareLayoutAppBar>
+        </AppBar>
+        <Drawer>
+            <FlareLayoutDrawer>
+                <FlareStack Style="padding:1rem 0.5rem;">
+                    <FlareNavMenu>
+                        <FlareNavLink Href="#" Match="NavMatchMode.Exact">
+                            <Icon><FlareIcon Size="1.1rem" Name="dashboard" /></Icon>
+                            <ChildContent>Dashboard</ChildContent>
+                        </FlareNavLink>
+                        <FlareNavLink Href="#">
+                            <Icon><FlareIcon Size="1.1rem" Name="people" /></Icon>
+                            <ChildContent>Users</ChildContent>
+                        </FlareNavLink>
+                        <FlareNavLink Href="#">
+                            <Icon><FlareIcon Size="1.1rem" Name="settings" /></Icon>
+                            <ChildContent>Settings</ChildContent>
+                        </FlareNavLink>
+                    </FlareNavMenu>
+                </FlareStack>
+            </FlareLayoutDrawer>
+        </Drawer>
+        <Content>
+            <FlareLayoutContent>
+                <FlareText Typo="TypographyScale.HeadlineSmall" Style="margin-bottom:1rem;">Dashboard</FlareText>
+                <FlareGrid Columns="3" Gap="FlareSpacing.Small">
+                    <FlareCol Span="1">
+                        <FlareCard>
+                            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">Users</FlareText>
+                            <FlareText Typo="TypographyScale.DisplaySmall">1,234</FlareText>
+                        </FlareCard>
+                    </FlareCol>
+                    <FlareCol Span="1">
+                        <FlareCard>
+                            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">Revenue</FlareText>
+                            <FlareText Typo="TypographyScale.DisplaySmall">$56k</FlareText>
+                        </FlareCard>
+                    </FlareCol>
+                    <FlareCol Span="1">
+                        <FlareCard>
+                            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">Orders</FlareText>
+                            <FlareText Typo="TypographyScale.DisplaySmall">891</FlareText>
+                        </FlareCard>
+                    </FlareCol>
+                </FlareGrid>
+            </FlareLayoutContent>
+        </Content>
+    </FlareLayout>
+</div>

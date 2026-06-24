@@ -1,0 +1,95 @@
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject IThemeService ThemeService
+@inject IJSRuntime JS
+@inject NavigationManager NavManager
+@inject IVersionCheckService VersionCheck
+@inject ISnackbarService Snackbar
+
+<FlareLayout @bind-DrawerOpen="_navOpen" ContentMaxWidth="ContainerMaxWidth.Full">
+    <AppBar>
+        <FlareLayoutAppBar DrawerToggle="true">
+            <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
+                <FlareLink Href="/" Underline="LinkUnderline.None" Color="FlareColor.Default">
+                    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                        <FlareIcon Color="FlareColor.Primary" Icon="@Icons.Custom.Brands.FlareLogoShort" Size="2.25rem" AriaLabel="Flare" />
+                        <FlareText Typo="TypographyScale.TitleLarge" Weight="FontWeight.ExtraBold" Style="letter-spacing:-0.5px;">Flare</FlareText>
+                    </FlareStack>
+                </FlareLink>
+                <FlareBadge Text="v0.0.1" Standalone="true" Color="FlareColor.Secondary" />
+                <FlareSpacer />
+                <GallerySearch />
+                <FlareSpacer />
+                <LanguageToggle />
+                <FlareDivider Vertical="true" />
+                <ThemeSwitcher />
+            </FlareStack>
+        </FlareLayoutAppBar>
+    </AppBar>
+    <Drawer>
+        <FlareLayoutDrawer>
+            <NavMenu />
+        </FlareLayoutDrawer>
+    </Drawer>
+    <Content>
+        @* Two-column doc layout built from Flare primitives: a flexible content column and a fixed
+           "On this page" rail. The rail hides below the md breakpoint (Css.Classes.Hidden.BelowMd) --
+           when it does, the content column simply fills the row. No gallery CSS. *@
+        <FlareStack Row Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start">
+            @* Plain content host: Flare has no "fills remaining space" primitive, so the flex sizing
+               (grow + min-width:0 to let wide code blocks shrink) is expressed inline. The id is a
+               scan target for the TOC, not a styling hook. *@
+            <div id="gallery-main" style="flex:1;min-width:0;">@Body</div>
+            @* Recreated per navigation (@key) so it re-scans the new page's demo-section titles.
+               Sticky positioning is a layout concern of this rail, expressed via the component's Style. *@
+            <FlareOnThisPage @key="NavManager.Uri"
+                             Root="#gallery-main"
+                             HeadingSelector=".demo-section__title"
+                             Class="@Css.Classes.Hidden.BelowMd"
+                             Style="position:sticky;top:1rem;flex:none;width:14rem;max-height:calc(100vh - 6rem);overflow-y:auto;" />
+        </FlareStack>
+    </Content>
+</FlareLayout>
+
+<FlareSnackbarProvider />
+<FlareMessageBoxProvider />
+
+@code {
+    private bool _navOpen = true;
+
+    protected override void OnInitialized()
+    {
+        // The service polls in the background; surface any new version as a toast.
+        VersionCheck.NewVersionAvailable += OnNewVersionAsync;
+        VersionCheck.Start();
+    }
+
+    // Actionable, persistent toast: "Update" applies the waiting service worker and reloads
+    // (the service owns the service-worker plumbing - the app just calls ApplyUpdateAsync).
+    private Task OnNewVersionAsync(VersionCheckInfo info) => InvokeAsync(() =>
+        Snackbar.Show(GalleryStrings.Pwa_NewVersion, SnackbarSeverity.Info,
+            durationMs: 0, actionText: GalleryStrings.Pwa_Update, onAction: StartUpdateAsync));
+
+    // Confirm the click before the service worker activates and reloads, so the user sees that the
+    // update has started (the reload then replaces the page).
+    private async Task StartUpdateAsync()
+    {
+        Snackbar.Show(GalleryStrings.Pwa_Updating, SnackbarSeverity.Info, durationMs: 0, showClose: false);
+        await VersionCheck.ApplyUpdateAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            // Make sure the theme stylesheet is applied (culture is already initialized in
+            // Program.cs before the app runs), then reveal the app -- no unstyled white flash.
+            await ThemeService.EnsureStaticCssAsync();
+            await JS.InvokeVoidAsync("hideFlareSplash");
+        }
+        catch (Microsoft.JSInterop.JSDisconnectedException) { }
+    }
+
+    public void Dispose() => VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+}

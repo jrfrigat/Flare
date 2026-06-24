@@ -1,0 +1,11 @@
+@page "/components/rating"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Rating_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareRating">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Rating_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Rating_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Rating_ReadOnly" DemoType="typeof(Examples.RatingBasicDemo)" />

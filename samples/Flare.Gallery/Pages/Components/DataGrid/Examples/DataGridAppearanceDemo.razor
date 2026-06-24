@@ -1,0 +1,28 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <FlareSwitch @bind-Value="_striped" Label="Striped" />
+        <FlareSwitch @bind-Value="_hoverable" Label="Hoverable" />
+        <FlareSwitch @bind-Value="_dense" Label="Dense" />
+        <FlareSwitch @bind-Value="_bordered" Label="Bordered" />
+    </FlareStack>
+
+    <FlareDataGrid Items="@DatagridData._people" PageSize="8"
+                   Striped="_striped" Hoverable="_hoverable" Dense="_dense" Bordered="_bordered"
+                   RowKey="@(p => p.Name)">
+        <Columns>
+            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+            <FlareColumn Title="City" Field="@(p => p.City)" />
+            <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+        </Columns>
+    </FlareDataGrid>
+</FlareStack>
+
+@code {
+    private bool _striped = true;
+    private bool _hoverable = true;
+    private bool _dense;
+    private bool _bordered;
+}

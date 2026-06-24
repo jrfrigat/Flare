@@ -1,0 +1,30 @@
+<EditForm Model="_model" OnValidSubmit="@(() => _submitted++)">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareButton Type="ButtonType.Submit">Submit</FlareButton>
+        <FlareButton Type="ButtonType.Reset" Variant="ButtonVariant.Outlined">Reset</FlareButton>
+        <FlareButton Variant="@(_pressed ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                     AriaPressed="_pressed" OnClick="@(() => _pressed = !_pressed)">
+            Toggle (aria-pressed=@_pressed.ToString().ToLowerInvariant())
+        </FlareButton>
+        <FlareButton Disabled="true">Disabled</FlareButton>
+    </FlareStack>
+</EditForm>
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Submitted @_submitted time(s)
+</FlareText>
+
+<FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Stretch" Style="margin-top:1rem;max-width:24rem;">
+    <FlareButton FullWidth="true">Full width</FlareButton>
+    <FlareButton FullWidth="true" Variant="ButtonVariant.Outlined"
+                 Href="https://github.com/jrfrigat/Flare" Target="_blank">
+        <LeadingIcon><FlareIcon Name="open_in_new" /></LeadingIcon>
+        <ChildContent>Link button (renders &lt;a&gt;)</ChildContent>
+    </FlareButton>
+</FlareStack>
+
+@code {
+    private readonly object _model = new();
+    private bool _pressed;
+    private int _submitted;
+}

@@ -1,0 +1,27 @@
+@namespace Flare.Legacy.Components
+@using Flare.Legacy.Services
+@inject AppSettings Settings
+
+@if (Settings.LoadStyle == LoadStyle.Ring)
+{
+    <FlareStack Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center" Gap="FlareSpacing.Small" Style="min-height:8rem">
+        <FlareProgress Variant="ProgressVariant.Circular" />
+        <FlareText Typo="TypographyScale.LabelMedium" Color="FlareColor.OnSurfaceVariant">@(Text ?? "Загрузка...")</FlareText>
+    </FlareStack>
+}
+else
+{
+    <FlareStack Gap="FlareSpacing.XSmall">
+        @for (var i = 0; i < Rows; i++)
+        {
+            <FlareSkeleton Height="1.6rem" />
+        }
+    </FlareStack>
+}
+
+@code {
+    /// <summary>Text shown next to the ring (Ring style only).</summary>
+    [Parameter] public string? Text { get; set; }
+    /// <summary>Number of skeleton rows (Skeleton style only).</summary>
+    [Parameter] public int Rows { get; set; } = 6;
+}

@@ -1,0 +1,41 @@
+@* Multi-level columns: a composite "Employee" column stacks several fields across two rows
+   (like Radzen's composite data cells), next to a frozen index and plain columns. *@
+<FlareDataGrid Items="@_employees" PageSize="6">
+    <Columns>
+        <FlareColumn Title="#" Field="@(e => e.Id)" Width="56px" Frozen="true" />
+
+        <FlareColumn Title="Employee">
+            <Composite>
+                <FlareColumnRow>
+                    <FlareColumn Title="First name" Field="@(e => e.FirstName)" Sortable="true" Filterable="true" />
+                    <FlareColumn Title="Last name" Field="@(e => e.LastName)" Sortable="true" Filterable="true" />
+                    <FlareColumn Title="City" Field="@(e => e.City)" Sortable="true" Filterable="true" />
+                </FlareColumnRow>
+                <FlareColumnRow>
+                    <FlareColumn Title="Job title" Field="@(e => e.JobTitle)" Sortable="true" Filterable="true" />
+                    <FlareColumn Title="Hired" Field="@(e => e.HireDate.ToString("yyyy-MM-dd"))" Sortable="true" />
+                    <FlareColumn Title="Phone" Field="@(e => e.Phone)" />
+                </FlareColumnRow>
+            </Composite>
+        </FlareColumn>
+
+        <FlareColumn Title="Country" Field="@(e => e.Country)" Width="140px" Sortable="true" />
+        <FlareColumn Title="Salary" Field="@(e => "$" + e.Salary.ToString("N0"))" Width="120px" Sortable="true" SortKey="Salary" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private sealed record Employee(
+        int Id, string FirstName, string LastName, string JobTitle,
+        string City, string Country, DateOnly HireDate, string Phone, decimal Salary);
+
+    private readonly List<Employee> _employees =
+    [
+        new(1, "Alice", "Johnson", "Engineering Manager", "Berlin", "Germany", new(2019, 3, 12), "+49 30 123456", 98000),
+        new(2, "Bob", "Smith", "UX Designer", "London", "UK", new(2021, 7, 1), "+44 20 7946 0958", 72000),
+        new(3, "Carol", "Williams", "Product Manager", "Paris", "France", new(2018, 11, 5), "+33 1 70 18 99 00", 88000),
+        new(4, "David", "Lee", "Senior Engineer", "Tokyo", "Japan", new(2020, 1, 20), "+81 3 6384 0000", 91000),
+        new(5, "Emma", "Davis", "QA Lead", "New York", "USA", new(2022, 5, 9), "+1 212 555 0142", 74000),
+        new(6, "Frank", "Miller", "DevOps Engineer", "Amsterdam", "Netherlands", new(2017, 9, 30), "+31 20 794 0000", 86000),
+    ];
+}

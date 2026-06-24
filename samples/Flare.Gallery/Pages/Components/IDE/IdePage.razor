@@ -1,0 +1,64 @@
+@page "/components/ide"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Ide_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareIdeLayout">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Ide_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Ide_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareStack Gap="FlareSpacing.Medium" Style="margin-bottom:1.5rem;">
+    <FlareText Typo="TypographyScale.BodyMedium">
+        <strong>Flare.Components.IDE</strong> is an optional package that builds a desktop-IDE shell
+        on top of the core Flare components and design tokens - no custom theming. Compose
+        <code>FlareIdeLayout</code> from these parts:
+    </FlareText>
+
+    <FlareStack Gap="FlareSpacing.Small">
+        <div><strong>FlareIdeLayout</strong> - the shell. Named slots: <code>Ribbon</code>,
+            <code>MenuBar</code>, <code>LeftToolPanel</code>, <code>ChildContent</code> (document area),
+            <code>RightToolPanel</code>, <code>BottomPanel</code>, <code>StatusBar</code>.</div>
+        <div><strong>FlareRibbon</strong> / <strong>FlareRibbonTab</strong> / <strong>FlareRibbonGroup</strong> /
+            <strong>FlareRibbonButton</strong> - tabbed command ribbon with large (icon + label) and small
+            (icon-only) buttons; <code>SizeMode</code> collapses it to tabs only.</div>
+        <div><strong>FlareDocumentTabs</strong> / <strong>FlareDocumentTab</strong> - editor-style tabs with
+            per-tab <code>Icon</code>, <code>Modified</code> indicator, <code>Closeable</code>, overflow
+            handling, and <code>OnTabChanged</code> / <code>OnTabClose</code> callbacks.</div>
+        <div><strong>FlareToolPanel</strong> - collapsible dockable panel (left / right / bottom) with an
+            optional header toolbar. Inside a layout, collapsing frees the docked space (the region
+            shrinks to a thin rail); <code>Mode="IdePanelMode.AutoHide"</code> makes it fly out over the
+            content instead of taking space.</div>
+        <div><strong>Region resizing</strong> - drag the divider between a docked panel and the
+            document (or focus it and arrow) to resize; built into <code>FlareIdeLayout</code> via the
+            <code>*Resizable</code> / <code>MinPanelSize</code> parameters. For arbitrary layouts use the
+            standalone <strong>FlareSplitter</strong> between any two flex siblings.</div>
+        <div><strong>FlareMenuBar</strong> - a thin horizontal bar for top-level menus.</div>
+        <div><strong>FlareStatusBar</strong> - three-section status bar (<code>LeftContent</code>,
+            <code>CenterContent</code>, <code>RightContent</code>).</div>
+        <div><strong>FlareQuickAccessToolbar</strong> / <strong>FlareToolbar</strong> - the Office
+            quick-access strip and a classic icon command bar.</div>
+        <div><strong>FlareRibbonDropdown</strong> / <strong>FlareRibbonSeparator</strong> - ribbon
+            dropdown galleries (built on <code>FlareMenu</code>) and in-group separators.</div>
+        <div><strong>FlareBackstage</strong> / <strong>FlareBackstageItem</strong> - the full-surface
+            "File" menu with a navigation rail and content area.</div>
+        <div><strong>FlarePropertyGrid</strong> / <strong>FlarePropertyGridItem</strong> - a name/value
+            property sheet whose values can be plain text or any editor.</div>
+        <div><strong>FlareFormulaBar</strong> - a spreadsheet formula bar (name box + fx + editor).</div>
+        <div><strong>FlareSheetTabs</strong> - the spreadsheet sheet-tab strip with an add button.</div>
+    </FlareStack>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        Install: <code>dotnet add package Flare.Components.IDE</code> and reference
+        <code>_content/Flare.Components.IDE/css/flare-ide.css</code>.
+    </FlareText>
+</FlareStack>
+
+<AutoDemoSection Title="Full IDE Layout" DemoType="typeof(Examples.IdeLayoutDemo)"
+    Description="Ribbon, explorer, document tabs, properties, a tabbed Output/Error/Terminal panel, and a status bar composed with FlareIdeLayout. Drag the dividers between regions to resize them (or focus a divider and use the arrow keys); collapse the explorer to a rail and try the auto-hide Properties flyout." />
+
+<AutoDemoSection Title="Office shell (Word / Excel)" DemoType="typeof(Examples.IdeOfficeDemo)"
+    Description="Quick-access toolbar, a ribbon with a dropdown gallery and separator, a backstage (File) overlay, a formula bar, an Excel-like grid with cell selection, and a sheet-tab strip. Click File to open the backstage." />
+
+<AutoDemoSection Title="Studio shell (Visual Studio / Access)" DemoType="typeof(Examples.IdeStudioDemo)"
+    Description="Menu bar + icon toolbar, a Solution/Navigation tree, document tabs hosting a datasheet, a Properties sheet with editable values, an output panel, and a status bar." />

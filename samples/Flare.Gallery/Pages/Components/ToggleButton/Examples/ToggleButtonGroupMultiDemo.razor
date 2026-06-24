@@ -1,0 +1,23 @@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareToggleGroup TValue="string" MultiSelect="true" @bind-Values="_formatting">
+        <FlareToggleButton Value="@("bold")" AriaLabel="Bold">
+            <OffIcon><FlareIcon Name="format_bold" /></OffIcon>
+            <ChildContent>Bold</ChildContent>
+        </FlareToggleButton>
+        <FlareToggleButton Value="@("italic")" AriaLabel="Italic">
+            <OffIcon><FlareIcon Name="format_italic" /></OffIcon>
+            <ChildContent>Italic</ChildContent>
+        </FlareToggleButton>
+        <FlareToggleButton Value="@("underline")" AriaLabel="Underline">
+            <OffIcon><FlareIcon Name="format_underlined" /></OffIcon>
+            <ChildContent>Underline</ChildContent>
+        </FlareToggleButton>
+    </FlareToggleGroup>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Active: @string.Join(", ", _formatting ?? [])
+    </FlareText>
+</FlareStack>
+
+@code {
+    private IReadOnlyList<string?>? _formatting;
+}

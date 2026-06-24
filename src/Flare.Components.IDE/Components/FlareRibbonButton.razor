@@ -1,0 +1,37 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+<FlareTooltip Content="@Tooltip" Placement="@TooltipPlacement.Bottom">
+    @if (IsLarge)
+    {
+        <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Lg"
+                     Disabled="@Disabled" OnClick="@OnClick"
+                     AriaLabel="@Tooltip"
+                     class="@($"{Css.Classes.Ide.Ribbon.Button} {Css.Classes.Ide.Ribbon.ButtonLarge}")">
+            @if (Icon is not null)
+            {
+                <span class="material-symbols-rounded">@Icon</span>
+            }
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                <span class="@Css.Classes.Ide.Ribbon.ButtonLabel">@Label</span>
+            }
+        </FlareButton>
+    }
+    else
+    {
+        <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Sm"
+                     Disabled="@Disabled" OnClick="@OnClick"
+                     AriaLabel="@Tooltip"
+                     class="@Css.Classes.Ide.Ribbon.Button">
+            @if (Icon is not null)
+            {
+                <span class="material-symbols-rounded">@Icon</span>
+            }
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                <span class="@Css.Classes.Ide.Ribbon.ButtonLabel">@Label</span>
+            }
+        </FlareButton>
+    }
+</FlareTooltip>

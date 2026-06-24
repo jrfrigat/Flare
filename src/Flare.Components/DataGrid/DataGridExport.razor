@@ -1,0 +1,92 @@
+@namespace Flare.Components
+@typeparam TItem
+@using Flare.Components.Resources
+
+@if (Exporters?.Count > 0)
+{
+    @if (Split && Exporters.Count > 1)
+    {
+        @* Split button: the first exporter is the primary action; the rest open in the dropdown. *@
+        var primary = Exporters[0];
+        <FlareSplitButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm"
+                          OnClick="@(_ => ExportAsync(primary))"
+                          MenuAriaLabel="@FlareStrings.DataGrid_MoreExports">
+            <ChildContent>
+                @if (!string.IsNullOrEmpty(primary.Icon))
+                {
+                    <span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">@primary.Icon</span>
+                }
+                @primary.Label
+            </ChildContent>
+            <MenuItems>
+                @foreach (var exporter in Exporters.Skip(1))
+                {
+                    var exp = exporter;
+                    <FlareMenuItem Icon="@exp.Icon" OnClick="@(() => ExportAsync(exp))">@exp.Label</FlareMenuItem>
+                }
+            </MenuItems>
+        </FlareSplitButton>
+    }
+    else
+    {
+        @foreach (var exporter in Exporters)
+        {
+            var exp = exporter;
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                         OnClick="@(() => ExportAsync(exp))"
+                         AriaLabel="@exp.Label">
+                <LeadingIcon>
+                    @if (!string.IsNullOrEmpty(exp.Icon))
+                    {
+                        <span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">@exp.Icon</span>
+                    }
+                </LeadingIcon>
+                <ChildContent>@exp.Label</ChildContent>
+            </FlareButton>
+        }
+    }
+}
+
+@code {
+    /// <summary>File name used when exporting data (without extension).</summary>
+    [Parameter] public string FileName { get; set; } = "export";
+
+    /// <summary>List of pluggable exporters rendered as toolbar buttons.</summary>
+    [Parameter] public IReadOnlyList<IDataGridExporter<TItem>>? Exporters { get; set; }
+
+    /// <summary>When true (and there is more than one exporter), renders a split button: the first
+    /// exporter is the primary action and the remaining exporters open in the dropdown menu. When
+    /// false (the default) every exporter is rendered as its own button.</summary>
+    [Parameter] public bool Split { get; set; }
+
+    /// <summary>Callback raised when an export is completed. The parameter is the exporter ID.</summary>
+    [Parameter] public EventCallback<string> OnExported { get; set; }
+
+    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
+    // Grid parameter overrides it for standalone placement outside the grid.
+    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
+
+    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
+    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used; its
+    /// current (filtered/sorted) data and visible columns - including type/format-aware values - are
+    /// exported.</summary>
+    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
+    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+
+    /// <summary>Advanced override: supply the export data directly instead of reading it from
+    /// <see cref="Grid"/>. When set it takes precedence.</summary>
+    [Parameter] public Func<Task<DataGridExportData<TItem>>>? DataProvider { get; set; }
+
+    [Inject] private IFlareDownload Download { get; set; } = default!;
+
+    private async Task ExportAsync(IDataGridExporter<TItem> exporter)
+    {
+        var data = DataProvider is not null ? await DataProvider()
+                 : Owner is not null ? Owner.GetExportData(FileName)
+                 : null;
+        if (data is null) return;
+
+        await exporter.ExportAsync(data, Download);
+        await OnExported.InvokeAsync(exporter.Id);
+    }
+}

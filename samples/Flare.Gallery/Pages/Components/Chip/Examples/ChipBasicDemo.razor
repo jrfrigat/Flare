@@ -1,0 +1,19 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+        <FlareChip Label="Design" @bind-Selected="_c1" />
+        <FlareChip Label="Engineering" @bind-Selected="_c2" />
+        <FlareChip Label="Product" @bind-Selected="_c3" />
+        <FlareChip Label="Closeable" Closeable OnClose="@(() => _closed = true)" />
+        <FlareChip Label="Disabled" Disabled="true" />
+    </FlareStack>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Design: @_c1 | Engineering: @_c2 | Product: @_c3 | Closed: @_closed
+    </FlareText>
+</FlareStack>
+
+@code {
+    private bool _c1 = true;
+    private bool _c2;
+    private bool _c3;
+    private bool _closed;
+}

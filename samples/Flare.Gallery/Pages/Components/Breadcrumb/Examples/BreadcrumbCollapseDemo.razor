@@ -1,0 +1,18 @@
+@* MaxItems collapses the middle of a long chain into an expandable ellipsis.
+   ItemsBeforeCollapse / ItemsAfterCollapse control how many ends stay visible. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareBreadcrumb Items="@_deep" MaxItems="4" />
+    <FlareBreadcrumb Items="@_deep" MaxItems="3" ItemsBeforeCollapse="1" ItemsAfterCollapse="1" />
+</FlareStack>
+
+@code {
+    private readonly BreadcrumbItem[] _deep =
+    [
+        new("Home", "/"),
+        new("Catalog", "/catalog"),
+        new("Electronics", "/catalog/electronics"),
+        new("Computers", "/catalog/electronics/computers"),
+        new("Laptops", "/catalog/electronics/computers/laptops"),
+        new("UltraBook 14"),
+    ];
+}

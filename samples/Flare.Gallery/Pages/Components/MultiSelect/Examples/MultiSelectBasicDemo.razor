@@ -1,0 +1,21 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:22rem;">
+    <FlareMultiSelect TValue="string"
+                      Items="_fruits"
+                      GetLabel="x => x"
+                      SelectedValues="_selectedFruits"
+                      SelectedValuesChanged="v => _selectedFruits = v.ToList()"
+                      Chips="true"
+                      Searchable="true"
+                      Label="Select fruits (chips)" />
+    @if (_selectedFruits.Any())
+    {
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+            Selected: @string.Join(", ", _selectedFruits)
+        </FlareText>
+    }
+</FlareStack>
+
+@code {
+    private readonly List<string> _fruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry"];
+    private List<string> _selectedFruits = [];
+}

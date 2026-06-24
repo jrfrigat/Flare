@@ -1,0 +1,29 @@
+<div style="display:grid;grid-template-columns:1fr 14rem;gap:2rem;align-items:start">
+    <div class="toc-demo-content">
+        <FlareText Typo="TypographyScale.HeadlineSmall" AnchorId="installation">Installation</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">Add the NuGet package and register the theme provider. This heading has an explicit AnchorId.</FlareText>
+        <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Scroll down to watch the active section track in the list on the right.</p>
+
+        <FlareText Typo="TypographyScale.TitleMedium">Prerequisites</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">No AnchorId here - FlareOnThisPage slugifies the text and assigns the id automatically.</FlareText>
+        <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
+
+        <FlareText Typo="TypographyScale.HeadlineSmall" AnchorId="usage">Usage</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">Drop the component beside your content; the scroll container is detected automatically.</FlareText>
+        <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
+
+        <FlareText Typo="TypographyScale.TitleMedium">Configuration</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">Hover a heading to reveal its "#" deep link.</FlareText>
+        <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
+
+        <FlareText Typo="TypographyScale.HeadlineSmall">Accessibility</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">The active section is mirrored with aria-current as you scroll.</FlareText>
+        <p style="height:14rem;margin:0;color:var(--flare-color-on-surface-variant)">Filler content.</p>
+    </div>
+
+    <FlareOnThisPage Root=".toc-demo-content"
+                     HeadingSelector="h4, h5"
+                     Style="position:sticky;top:1rem" />
+</div>
+
+@* FlareOnThisPage scans .toc-demo-content; headings without an AnchorId get an auto-generated anchor. *@

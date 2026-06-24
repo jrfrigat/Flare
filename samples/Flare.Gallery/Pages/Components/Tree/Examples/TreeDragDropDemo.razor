@@ -1,0 +1,61 @@
+<FlareStack Gap="FlareSpacing.Large" Direction="FlexDirection.Column">
+    <FlareText Typo="TypographyScale.TitleMedium">Drag and Drop</FlareText>
+    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+        Drag items to reorder them within the tree.
+    </FlareText>
+    
+    <FlareTreeView Draggable="true" OnItemDrop="HandleDrop">
+        <FlareTreeItem Label="Documents" ItemData="@("documents")" Expanded="true">
+            <FlareTreeItem Label="Work" ItemData="@("work")" />
+            <FlareTreeItem Label="Personal" ItemData="@("personal")" />
+            <FlareTreeItem Label="Projects" ItemData="@("projects")" />
+        </FlareTreeItem>
+        <FlareTreeItem Label="Images" ItemData="@("images")" Expanded="true">
+            <FlareTreeItem Label="Photos" ItemData="@("photos")" />
+            <FlareTreeItem Label="Screenshots" ItemData="@("screenshots")" />
+        </FlareTreeItem>
+        <FlareTreeItem Label="Downloads" ItemData="@("downloads")" />
+    </FlareTreeView>
+    
+    @if (_lastDrop is not null)
+    {
+        <FlareText Color="FlareColor.Primary">
+            Last drop: @_lastDrop.SourceItem → @_lastDrop.TargetItem (@_lastDrop.Position)
+        </FlareText>
+    }
+    
+    <FlareText Typo="TypographyScale.TitleMedium">Drag with Icons</FlareText>
+    <FlareTreeView Draggable="true" OnItemDrop="HandleDrop2">
+        <FlareTreeItem Label="Home" Icon="home" ItemData="@("home")" />
+        <FlareTreeItem Label="Settings" Icon="settings" ItemData="@("settings")" Expanded="true">
+            <FlareTreeItem Label="General" Icon="tune" ItemData="@("general")" />
+            <FlareTreeItem Label="Security" Icon="security" ItemData="@("security")" />
+            <FlareTreeItem Label="Privacy" Icon="lock" ItemData="@("privacy")" />
+        </FlareTreeItem>
+        <FlareTreeItem Label="Help" Icon="help" ItemData="@("help")" />
+    </FlareTreeView>
+    
+    @if (_lastDrop2 is not null)
+    {
+        <FlareText Color="FlareColor.Primary">
+            Last drop: @_lastDrop2.SourceItem → @_lastDrop2.TargetItem (@_lastDrop2.Position)
+        </FlareText>
+    }
+</FlareStack>
+
+@code {
+    private TreeDropEventArgs? _lastDrop;
+    private TreeDropEventArgs? _lastDrop2;
+    
+    private void HandleDrop(TreeDropEventArgs args)
+    {
+        _lastDrop = args;
+        StateHasChanged();
+    }
+    
+    private void HandleDrop2(TreeDropEventArgs args)
+    {
+        _lastDrop2 = args;
+        StateHasChanged();
+    }
+}

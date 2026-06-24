@@ -1,0 +1,25 @@
+<FlareDataTree TItem="TreeNode"
+                  Items="@_roots"
+                  KeySelector="@(n => n.Id)"
+                  ChildrenProvider="@LoadChildren"
+                  HasChildren="@(n => n.HasKids)"
+                  Height="320px">
+    <ItemTemplate Context="node">
+        <FlareText Typo="TypographyScale.BodyMedium">@node.Name</FlareText>
+    </ItemTemplate>
+</FlareDataTree>
+
+@code {
+    private record TreeNode(int Id, string Name, bool HasKids);
+
+    private IEnumerable<TreeNode> _roots = Enumerable.Range(1, 20)
+        .Select(i => new TreeNode(i, $"Root {i}", i % 3 != 0));
+
+    private async Task<IEnumerable<TreeNode>> LoadChildren(TreeNode node)
+    {
+        await Task.Delay(50);
+        if (!node.HasKids) return [];
+        return Enumerable.Range(1, 4).Select(i =>
+            new TreeNode(node.Id * 100 + i, $"{node.Name} › Child {i}", i == 1));
+    }
+}

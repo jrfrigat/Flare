@@ -1,0 +1,13 @@
+@page "/components/numeric-field"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.NumericField_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareNumericField">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.NumericField_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.NumericField_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.NumericField_Basic" DemoType="typeof(Examples.NumericFieldDemo)" />
+<AutoDemoSection Title="@GalleryStrings.NumericField_PrefixSuffix" DemoType="typeof(Examples.NumericPrefixSuffixDemo)" />
+<AutoDemoSection Title="@GalleryStrings.NumericField_Formats" DemoType="typeof(Examples.NumericFormatsDemo)" />

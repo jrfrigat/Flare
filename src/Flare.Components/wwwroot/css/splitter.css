@@ -1,0 +1,72 @@
+/* ==========================================================================
+   FlareSplitter - a standalone drag handle placed between two flex siblings.
+   The component IS the handle; it resizes its previous/next siblings via JS.
+   ========================================================================== */
+.flare-splitter {
+    flex: 0 0 auto;
+    align-self: stretch; /* fill the cross axis of the parent flex container */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--flare-splitter-color, var(--flare-color-surface-variant));
+    touch-action: none;
+    transition: background var(--flare-motion-duration-short1, 100ms);
+    /* Horizontal handle (vertical separator) is the default; --vertical flips it. The orientation is
+       auto-detected from the parent flex direction, so usually no class is needed up front. */
+    width: var(--flare-splitter-gutter-size, 0.5rem);
+    cursor: col-resize;
+}
+
+.flare-splitter:hover,
+.flare-splitter:focus-visible {
+    background: var(--flare-splitter-hover-color, color-mix(in srgb, var(--flare-color-primary) 24%, transparent));
+    outline: none;
+}
+
+/* Optional centre icon (replaces the grip bar); a hover icon swaps in on hover/focus. */
+.flare-splitter__icon {
+    pointer-events: none;
+    line-height: 1;
+    font-size: var(--flare-splitter-icon-size, 1.125rem);
+    color: var(--flare-splitter-icon-color, var(--flare-color-on-surface-variant));
+}
+
+.flare-splitter__icon--hover {
+    display: none;
+}
+
+.flare-splitter:has(.flare-splitter__icon--hover):hover .flare-splitter__icon--base,
+.flare-splitter:has(.flare-splitter__icon--hover):focus-visible .flare-splitter__icon--base {
+    display: none;
+}
+
+.flare-splitter:hover .flare-splitter__icon--hover,
+.flare-splitter:focus-visible .flare-splitter__icon--hover {
+    display: inline-flex;
+}
+
+.flare-splitter--vertical {
+    width: auto;
+    height: var(--flare-splitter-gutter-size, 0.5rem);
+    cursor: row-resize;
+}
+
+/* Grip bar: short rounded line centered in the handle (horizontal default). */
+.flare-splitter__gutter-bar {
+    background: var(--flare-color-outline, var(--flare-color-on-surface-variant));
+    border-radius: var(--flare-shape-full, 9999px);
+    pointer-events: none;
+    width: 2px;
+    height: 1.75rem;
+}
+
+.flare-splitter--vertical .flare-splitter__gutter-bar {
+    width: 1.75rem;
+    height: 2px;
+}
+
+@media (forced-colors: active) {
+    .flare-splitter { background: ButtonFace; }
+    .flare-splitter:focus-visible { outline: 2px solid ButtonText; }
+}

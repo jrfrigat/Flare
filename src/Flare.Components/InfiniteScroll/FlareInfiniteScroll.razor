@@ -1,0 +1,91 @@
+@* Requires interactive render mode (not compatible with static SSR). *@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+    <div @ref="_sentinel" class="@Css.Classes.Infinite.ScrollSentinel" aria-hidden="true"></div>
+    @if (_loading)
+    {
+        <div class="@Css.Classes.Infinite.ScrollLoading">
+            @if (LoadingContent != null)
+            {
+                @LoadingContent
+            }
+            else
+            {
+                <FlareProgress Variant="ProgressVariant.Circular" />
+            }
+        </div>
+    }
+    @if (!HasMore && EndContent != null)
+    {
+        <div class="@Css.Classes.Infinite.ScrollEnd">@EndContent</div>
+    }
+</div>
+
+@code {
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    /// <summary>Content rendered inside the scrollable container.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Content displayed while more items are loading.</summary>
+    [Parameter] public RenderFragment? LoadingContent { get; set; }
+    /// <summary>Content displayed when there are no more items.</summary>
+    [Parameter] public RenderFragment? EndContent { get; set; }
+    /// <summary>Callback raised when the scroll sentinel is reached.</summary>
+    [Parameter] public EventCallback OnLoadMore { get; set; }
+    /// <summary>Indicates whether more items are available to load.</summary>
+    [Parameter] public bool HasMore { get; set; } = true;
+    /// <summary>IntersectionObserver rootMargin value (CSS margin shorthand). Default "0px".</summary>
+    [Parameter] public string RootMargin { get; set; } = "0px";
+
+    protected override string ComponentCssClass => Css.Classes.Infinite.Scroll;
+
+    private ElementReference _sentinel;
+    private bool _loading;
+    private DotNetObjectReference<FlareInfiniteScroll>? _objRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            _objRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("FlareInfiniteScroll.init", _sentinel, _objRef, RootMargin);
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+    }
+
+    [JSInvokable]
+    public async Task TriggerLoad()
+    {
+        if (_loading || !HasMore) return;
+        _loading = true;
+        StateHasChanged();
+        try
+        {
+            await OnLoadMore.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"FlareInfiniteScroll.OnLoadMore failed: {ex.Message}");
+        }
+        finally
+        {
+            _loading = false;
+            StateHasChanged();
+        }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try { await JS.InvokeVoidAsync("FlareInfiniteScroll.dispose", _sentinel); }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        _objRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

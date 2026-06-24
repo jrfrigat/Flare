@@ -1,0 +1,24 @@
+<FlareDataTree TItem="TreeNode"
+                  Items="@_slowRoots"
+                  KeySelector="@(n => n.Id)"
+                  ChildrenProvider="@LoadChildrenSlow"
+                  HasChildren="@(n => n.HasKids)"
+                  Height="280px">
+    <ItemTemplate Context="node">
+        <FlareText Typo="TypographyScale.BodyMedium">@node.Name</FlareText>
+    </ItemTemplate>
+</FlareDataTree>
+
+@code {
+    private record TreeNode(int Id, string Name, bool HasKids);
+
+    private IEnumerable<TreeNode> _slowRoots = Enumerable.Range(1, 5)
+        .Select(i => new TreeNode(i * 1000, $"Folder {i}", true));
+
+    private async Task<IEnumerable<TreeNode>> LoadChildrenSlow(TreeNode node)
+    {
+        await Task.Delay(300);
+        return Enumerable.Range(1, 3).Select(i =>
+            new TreeNode(node.Id + i, $"{node.Name} › Child {i}", i == 1));
+    }
+}

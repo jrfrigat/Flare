@@ -1,0 +1,49 @@
+@namespace Flare.Components
+@typeparam TValue
+
+<label class="@Css.Classes.Radio.Root @(_disabled ? Css.Classes.Radio.Disabled : "") @_sizeClass">
+    <span class="@Css.Classes.Radio.Container">
+        <input class="@Css.Classes.Radio.Input"
+               type="radio"
+               name="@(GroupContext?.GroupName)"
+               checked="@_checked"
+               disabled="@_disabled"
+               @onchange="HandleChange" />
+        <span class="@Css.Classes.Radio.Indicator" aria-hidden="true"></span>
+    </span>
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span class="@Css.Classes.Radio.Label">@Label</span>
+    }
+</label>
+
+@code {
+    [CascadingParameter] private FlareRadioGroupContext? GroupContext { get; set; }
+    /// <summary>Value this radio button represents in the group.</summary>
+    [Parameter] public TValue? Value { get; set; }
+    /// <summary>Label text displayed next to the radio button.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Disables this radio button individually.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    private bool _checked => GroupContext is not null
+        && GroupContext.SelectedValue is TValue selected
+        && EqualityComparer<TValue>.Default.Equals(selected, Value);
+
+    private bool _disabled => Disabled || (GroupContext?.GroupDisabled ?? false);
+
+    private string _sizeClass => (GroupContext?.GroupSize ?? FieldSize.Md) switch
+    {
+        FieldSize.Xs => Css.Classes.Radio.SizeXs,
+        FieldSize.Sm => Css.Classes.Radio.SizeSm,
+        FieldSize.Lg => Css.Classes.Radio.SizeLg,
+        FieldSize.Xl => Css.Classes.Radio.SizeXl,
+        _ => string.Empty,
+    };
+
+    private async Task HandleChange()
+    {
+        if (GroupContext is not null)
+            await GroupContext.Select(Value);
+    }
+}

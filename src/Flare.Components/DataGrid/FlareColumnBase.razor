@@ -1,0 +1,47 @@
+@namespace Flare.Components
+@inherits ComponentBase
+
+@code {
+    // Components are constructed in declaration order (the renderer creates each child frame in
+    // order), so a construction-time counter gives a stable declaration ordinal - unlike
+    // OnInitialized, whose timing differs between plain columns and bands.
+    private static int _seqCounter;
+    internal int DeclarationOrder { get; } = System.Threading.Interlocked.Increment(ref _seqCounter);
+
+    /// <summary>Header text displayed in the column/band heading.</summary>
+    [Parameter] public string Title { get; set; } = "";
+
+    /// <summary>Stable identity of this header node, used to key grid state (visibility, order) and to
+    /// match the node to its projected column. Defaults to <see cref="Title"/>; <see cref="FlareColumn{TItem}"/>
+    /// overrides it with its Id/SortKey so columns stay identifiable when titles are duplicated or localized.</summary>
+    internal virtual string ColumnKey => Title;
+
+    /// <summary>Fixed CSS width applied to the column/band.</summary>
+    [Parameter] public string? Width { get; set; }
+
+    /// <summary>Sticks this column to the left edge when the table scrolls horizontally.</summary>
+    [Parameter] public bool Frozen { get; set; }
+
+    /// <summary>Sticks this column to the right edge when the table scrolls horizontally.</summary>
+    [Parameter] public bool FrozenRight { get; set; }
+
+    /// <summary>Custom CSS class for the column/band header.</summary>
+    [Parameter] public string? CssClass { get; set; }
+
+    /// <summary>Captures any unmatched HTML attributes.</summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    // Composite layout: rows of stacked fields rendered as a CSS grid inside this column's cell.
+    private readonly List<FlareColumnRow> _compositeRows = [];
+
+    /// <summary>Composite rows under this column (declaration order). Non-empty = composite host.</summary>
+    internal IReadOnlyList<FlareColumnRow> CompositeRows => _compositeRows.OrderBy(r => r.DeclarationOrder).ToList();
+
+    internal void AddCompositeRow(FlareColumnRow row)
+    {
+        if (!_compositeRows.Contains(row)) _compositeRows.Add(row);
+    }
+
+    internal void RemoveCompositeRow(FlareColumnRow row) => _compositeRows.Remove(row);
+}

@@ -1,0 +1,16 @@
+@page "/components/table"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Table_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTable">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Table_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Table_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Table_Default" DemoType="typeof(Examples.TableDefaultDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Table_Striped" DemoType="typeof(Examples.TableStripedDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Table_Bordered" DemoType="typeof(Examples.TableBorderedDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Table_StickyHeader" DemoType="typeof(Examples.TableStickyHeaderDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Table_GroupedRows" DemoType="typeof(Examples.TableGroupedRowsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Table_TotalsFooter" DemoType="typeof(Examples.TableTotalsFooterDemo)" />

@@ -1,0 +1,33 @@
+.flare-menu-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-menu-item-gap-between, 0);
+    padding: var(--flare-menu-group-padding, 0);
+    border-radius: var(--flare-menu-group-radius, 0);
+    /* MD3 Expressive: a group is a rounded "island" surface. Default themes keep it transparent. */
+    background: var(--flare-menu-group-bg, transparent);
+}
+
+/* Заголовок секции: типографика title-small, цвет on-surface-variant */
+.flare-menu-group__label {
+    padding: var(--flare-menu-item-padding-block, 0.5rem) var(--flare-menu-item-padding-inline, 1rem);
+    font-family: var(--flare-typescale-title-small-font);
+    font-weight: var(--flare-typescale-title-small-weight);
+    font-size: var(--flare-typescale-title-small-size);
+    line-height: var(--flare-typescale-title-small-height);
+    letter-spacing: var(--flare-typescale-title-small-spacing);
+    color: var(--flare-color-on-surface-variant);
+}
+
+/* Adjacent groups are separated by a gap (MD3 Expressive: two distinct "islands").
+   An optional divider line can be enabled per theme via --flare-menu-group-divider. */
+.flare-menu-group + .flare-menu-group {
+    margin-top: var(--flare-menu-group-gap, 0.5rem);
+    border-top: var(--flare-menu-group-divider, none);
+}
+
+/* Внутри группы пункты не повторяют форму контейнера панели (крайние углы = обычные) */
+.flare-menu-group .flare-menu-item:first-child,
+.flare-menu-group .flare-menu-item:last-child {
+    border-radius: var(--flare-menu-item-radius, 0);
+}

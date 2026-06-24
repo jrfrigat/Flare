@@ -1,0 +1,55 @@
+/* Visual Studio 2026 document tabs.
+
+   Reproduces the modern VS 2026 shell tab strip on the default/underline/primary horizontal
+   variants: a neutral strip with a small gap between tabs, and a "flowing" active tab - a
+   rounded-top selection that floats above the strip so the strip background wraps around its
+   rounded corners (the VS 2026 look, vs the square top-accent tab of VS 2022). The active fill is
+   lighter than the strip (white editor surface in light, a lifted selection gray in dark).
+   Tonal/Filled/Text/Outlined keep their token-driven base look. */
+
+@scope (.flare-theme-visualstudio) to (.flare-root:not(.flare-theme-visualstudio)) {
+
+    /* The VS document-tab strip (Default / Underline / Primary, horizontal only). */
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__bar-wrap {
+        background: var(--flare-vs-tab-strip-bg, var(--flare-color-surface-container));
+        border-bottom: 1px solid var(--flare-tabs-divider-color, var(--flare-color-outline-variant));
+    }
+
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__bar {
+        gap: var(--flare-vs-tab-gap, 2px);
+        align-items: flex-end;
+        padding: 0 var(--flare-vs-tab-gap, 2px);
+    }
+
+    /* Tab body: compact VS padding, rounded TOP corners so the strip flows around them, no
+       top-accent line and no bottom underline. The transparent border-top keeps the active/inactive
+       heights identical (no jump on selection). */
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab {
+        padding: 0.3125rem 0.75rem;
+        border: none;
+        border-top: 1px solid transparent;
+        margin-bottom: 0;
+        border-radius: var(--flare-vs-tab-radius, 6px) var(--flare-vs-tab-radius, 6px) 0 0;
+        color: var(--flare-tabs-inactive-color, var(--flare-color-on-surface-variant));
+    }
+
+    /* Hover on an inactive tab: a subtle rounded-top wash that also flows with the strip. */
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab:hover:not(:disabled):not(.flare-tabs__tab--active) {
+        background: var(--flare-color-surface-container-high);
+        color: var(--flare-color-on-surface);
+    }
+
+    /* Active tab: a lighter, rounded-top "floating" selection; the strip wraps its corners. */
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab--active,
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab--active:hover {
+        background: var(--flare-vs-tab-active-bg, var(--flare-color-surface));
+        color: var(--flare-tabs-selected-fg, var(--flare-color-on-surface));
+        border-top-color: transparent;
+        border-bottom: none;
+    }
+
+    /* Drop the MD3 bottom underline / primary pseudo-indicator under the VS look. */
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab--active::after {
+        display: none;
+    }
+}

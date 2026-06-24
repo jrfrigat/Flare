@@ -1,0 +1,139 @@
+/* ==========================================================================
+   MD3 EXPRESSIVE button group: РАЗДЕЛЁННЫЕ сегменты с зазором (как split button)
+   - между кнопками зазор (gap), а не нахлёст;
+   - внутренние углы скруглены (shape-small ~ 8dp), внешние торцы - капсула;
+   - на ховере/нажатии сегмент выдавливается в полную капсулу.
+   Fluent остаётся "связным" (connected) - этот файл только для темы MD3.
+
+   Обёрнуто в @scope, чтобы MD3-геометрия группы не протекала в вложенный scope
+   чужой темы (Fluent через FlareThemeScope внутри MD3-приложения): нижняя граница
+   обрывает каскад на любом вложенном .flare-root, который НЕ md3-expressive.
+   В чужом scope группа возвращается к базовому connected-стилю (buttongroup.css).
+   ========================================================================== */
+@scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
+
+    /* 1. Зазор между сегментами (2dp, как у split button) */
+    .flare-btn-group {
+        gap: var(--flare-btn-group-gap, 0.125rem);
+    }
+
+    /* 2. Снимаем нахлёст -1px и шовную границу connected-режима */
+    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
+        margin-left: 0;
+        border-left-color: transparent;
+    }
+
+    .flare-btn-group--vertical .flare-btn:not(:first-child) {
+        margin-top: 0;
+        border-top-color: transparent;
+    }
+
+    /* Outlined сохраняет собственную рамку на стыке (идёт после общего сброса) */
+    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn--outlined:not(:first-child) {
+        border-left-color: var(--flare-color-outline);
+    }
+
+    .flare-btn-group--vertical .flare-btn--outlined:not(:first-child) {
+        border-top-color: var(--flare-color-outline);
+    }
+
+    /* 3. Внутренние углы ВСЕХ сегментов - небольшое скругление (вместо плоских 0) */
+    .flare-btn-group .flare-btn {
+        --flare-btn-radius-xs-top-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-xs-top-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-xs-bottom-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-xs-bottom-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-sm-top-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-sm-top-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-sm-bottom-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-sm-bottom-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-md-top-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-md-top-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-md-bottom-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-md-bottom-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-lg-top-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-lg-top-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-lg-bottom-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-lg-bottom-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-xl-top-left: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-xl-top-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-xl-bottom-right: var(--flare-shape-small, 0.5rem) !important;
+        --flare-btn-radius-xl-bottom-left: var(--flare-shape-small, 0.5rem) !important;
+    }
+
+    /* ======================================================================
+       ВНЕШНИЕ ТОРЦЫ - полная "капсула" (height / 2)
+       Кнопка читает токены только своего размера, поэтому одно правило задаёт все 5.
+       Горизонталь и вертикаль разделены через :not(), чтобы не конфликтовать.
+       ====================================================================== */
+
+    /* ГОРИЗОНТАЛЬ - первая кнопка: левые торцы в капсулу */
+    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
+        --flare-btn-radius-xs-top-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-xs-bottom-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-sm-top-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-sm-bottom-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-md-top-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-md-bottom-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-lg-top-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-lg-bottom-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-xl-top-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+        --flare-btn-radius-xl-bottom-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+    }
+
+    /* ГОРИЗОНТАЛЬ - последняя кнопка: правые торцы в капсулу */
+    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
+        --flare-btn-radius-xs-top-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-xs-bottom-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-sm-top-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-sm-bottom-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-md-top-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-md-bottom-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-lg-top-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-lg-bottom-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-xl-top-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+        --flare-btn-radius-xl-bottom-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+    }
+
+    /* ВЕРТИКАЛЬ - первая кнопка: верхние торцы в капсулу */
+    .flare-btn-group--vertical .flare-btn:first-child {
+        --flare-btn-radius-xs-top-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-xs-top-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-sm-top-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-sm-top-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-md-top-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-md-top-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-lg-top-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-lg-top-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-xl-top-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+        --flare-btn-radius-xl-top-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+    }
+
+    /* ВЕРТИКАЛЬ - последняя кнопка: нижние торцы в капсулу */
+    .flare-btn-group--vertical .flare-btn:last-child {
+        --flare-btn-radius-xs-bottom-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-xs-bottom-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
+        --flare-btn-radius-sm-bottom-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-sm-bottom-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
+        --flare-btn-radius-md-bottom-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-md-bottom-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
+        --flare-btn-radius-lg-bottom-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-lg-bottom-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
+        --flare-btn-radius-xl-bottom-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+        --flare-btn-radius-xl-bottom-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
+    }
+
+    /* ======================================================================
+       EXPRESSIVE: сегмент выдавливается в круглую капсулу при взаимодействии [specs]
+       Радиус берём от ФАКТИЧЕСКОЙ высоты (--_flare-btn-height задаёт размерный класс),
+       поэтому одно правило покрывает все размеры. border-radius (0,4,0) перебивает
+       и морфинг одиночной кнопки (0,3,0), и scoped (0,2,0) - !important не нужен.
+       ====================================================================== */
+    .flare-btn-group .flare-btn:hover,
+    .flare-btn-group .flare-btn:focus-visible,
+    .flare-btn-group .flare-btn:active {
+        border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2);
+        /* z-index держим через !important: специфичность РАВНА scoped z-index:1 (тай), решает порядок загрузки */
+        z-index: 2 !important;
+    }
+}

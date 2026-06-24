@@ -1,0 +1,76 @@
+@inherits LocalizedPage
+@using Flare.Gallery.Api
+@using Flare.Gallery.Models
+
+<FlareNavMenu>
+    <FlareNavLink Href="/" Match="NavMatchMode.Exact">
+        <Icon><FlareIcon Size="1.1rem" Name="home" /></Icon>
+        <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
+    </FlareNavLink>
+    <FlareNavLink Href="/getting-started">
+        <Icon><FlareIcon Size="1.1rem" Name="rocket_launch" /></Icon>
+        <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
+    </FlareNavLink>
+    <FlareNavLink Href="/theming">
+        <Icon><FlareIcon Size="1.1rem" Name="palette" /></Icon>
+        <ChildContent>@GalleryStrings.Nav_Theming</ChildContent>
+    </FlareNavLink>
+    <FlareNavLink Href="/color">
+        <Icon><FlareIcon Size="1.1rem" Name="format_color_fill" /></Icon>
+        <ChildContent>@GalleryStrings.Nav_Color</ChildContent>
+    </FlareNavLink>
+    <FlareNavLink Href="/custom-theme">
+        <Icon><FlareIcon Size="1.1rem" Name="tune" /></Icon>
+        <ChildContent>Custom Theme</ChildContent>
+    </FlareNavLink>
+    <FlareNavLink Href="/about">
+        <Icon><FlareIcon Size="1.1rem" Name="info" /></Icon>
+        <ChildContent>@GalleryStrings.Nav_About</ChildContent>
+    </FlareNavLink>
+
+    @*
+        Components are grouped into categories from ComponentCatalog -- the single source of truth
+        shared with the global search index, so routes are never duplicated. Category labels and
+        component names are English-only by request. Sub-groups start collapsed; the active page
+        auto-expands its whole group chain.
+    *@
+    <FlareNavGroup Label="@GalleryStrings.Nav_Components" Icon="category" Expanded="true">
+        @foreach (var group in ComponentCatalog.Groups)
+        {
+            <FlareNavGroup Label="@group.Label" Icon="@group.Icon">
+                @foreach (var c in ComponentCatalog.InGroup(group.Group))
+                {
+                    <FlareNavLink Href="@c.Href">@c.Name</FlareNavLink>
+                }
+            </FlareNavGroup>
+        }
+    </FlareNavGroup>
+
+    @* Services: typed C# services + live demos that combine several components. *@
+    <FlareNavGroup Label="@GalleryStrings.Nav_Services" Icon="bolt" Expanded="true">
+        <FlareNavLink Href="/services/dynamic-color">Dynamic Color</FlareNavLink>
+        <FlareNavLink Href="/services/theme-scope">Theme Scope</FlareNavLink>
+        <FlareNavLink Href="/services/clipboard">Clipboard</FlareNavLink>
+        <FlareNavLink Href="/services/snackbar">Snackbar</FlareNavLink>
+        <FlareNavLink Href="/services/download">Download</FlareNavLink>
+        <FlareNavLink Href="/services/messagebox">Message Box</FlareNavLink>
+        <FlareNavLink Href="/services/version-check">Version Check</FlareNavLink>
+    </FlareNavGroup>
+
+    @*
+        API group is data-driven from the generated ComponentApiRegistry, so it always
+        matches the documented component set.
+    *@
+    <FlareNavGroup Label="@GalleryStrings.Nav_Api" Icon="data_object">
+        <FlareNavLink Href="/api" Match="NavMatchMode.Exact">@GalleryStrings.Nav_AllApi</FlareNavLink>
+        @foreach (var name in _apiComponents)
+        {
+            <FlareNavLink Href="@($"/api/{name}")">@name</FlareNavLink>
+        }
+    </FlareNavGroup>
+</FlareNavMenu>
+
+@code {
+    private static readonly IReadOnlyList<string> _apiComponents =
+        ComponentApiRegistry.Components.Keys.OrderBy(k => k, StringComparer.Ordinal).ToList();
+}

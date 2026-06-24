@@ -1,0 +1,46 @@
+@namespace Flare.Components
+@inherits FlareColumnBase
+@implements IDisposable
+
+@* A visual row inside a composite column. Cascades itself so child FlareColumn fields register into
+   Fields (declaration order). Renders no visible markup of its own. *@
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [CascadingParameter(Name = "CompositeHost")] private FlareColumnBase? CompositeHost { get; set; }
+    [CascadingParameter] private IFlareDataGridHost? Grid { get; set; }
+
+    /// <summary>Field columns laid out left-to-right in this composite row.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private readonly List<FlareColumnBase> _fields = [];
+
+    /// <summary>Field columns of this row in declaration order.</summary>
+    internal IReadOnlyList<FlareColumnBase> Fields => _fields.OrderBy(f => f.DeclarationOrder).ToList();
+
+    internal void AddField(FlareColumnBase field)
+    {
+        if (_fields.Contains(field)) return;
+        _fields.Add(field);
+        Grid?.NotifyStructureChanged();
+    }
+
+    internal void RemoveField(FlareColumnBase field)
+    {
+        if (_fields.Remove(field)) Grid?.NotifyStructureChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        CompositeHost?.AddCompositeRow(this);
+        Grid?.NotifyStructureChanged();
+    }
+
+    public void Dispose()
+    {
+        CompositeHost?.RemoveCompositeRow(this);
+        Grid?.NotifyStructureChanged();
+    }
+}

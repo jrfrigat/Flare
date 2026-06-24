@@ -1,0 +1,17 @@
+<FlareTabs OnTabClose="HandleTabClose">
+    @foreach (var tab in _closeableTabs)
+    {
+        <FlareTab Label="@tab" Closeable="true">
+            <FlareText Typo="TypographyScale.BodyMedium">Content for <strong>@tab</strong>.</FlareText>
+        </FlareTab>
+    }
+</FlareTabs>
+@if (_closeableTabs.Count == 0)
+{
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-top:0.5rem">All tabs closed.</FlareText>
+}
+
+@code {
+    private List<string> _closeableTabs = ["Dashboard", "Settings", "Profile", "Reports"];
+    private void HandleTabClose(string label) => _closeableTabs.Remove(label);
+}

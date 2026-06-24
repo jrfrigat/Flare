@@ -1,0 +1,24 @@
+@inject ISnackbarService Snackbar
+
+<FlareStack Gap="FlareSpacing.None">
+    <FlareStack Row Gap="FlareSpacing.Medium" Style="margin-bottom:1rem;">
+        <FlareButton OnClick="@(() => _darkOpen = true)">Show dark overlay</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _loadingOpen = true)">Show loading overlay</FlareButton>
+    </FlareStack>
+    <FlareCard Style="position:relative;height:6rem;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-small);overflow:hidden;display:flex;align-items:center;justify-content:center;">
+        <FlareText Typo="TypographyScale.BodyMedium">Scoped overlay area - click button above to overlay it</FlareText>
+        <FlareOverlay Open="@_loadingOpen" Absolute="true" Opacity="0.7" OnClick="@(() => _loadingOpen = false)">
+            <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="color:white;">
+                <FlareProgress Variant="ProgressVariant.Circular" />
+                <FlareText Typo="TypographyScale.LabelMedium" Style="color:white;">Loading…</FlareText>
+            </FlareStack>
+        </FlareOverlay>
+    </FlareCard>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Click the overlay to dismiss.</FlareText>
+    <FlareOverlay Open="@_darkOpen" OnClick="@(() => _darkOpen = false)" />
+</FlareStack>
+
+@code {
+    private bool _darkOpen;
+    private bool _loadingOpen;
+}

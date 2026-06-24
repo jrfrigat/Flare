@@ -1,0 +1,63 @@
+@inject ISnackbarService Snackbar
+
+<FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Start">
+    <FlarePopover @bind-Open="_popInfo" Placement="PopoverPlacement.BottomStart">
+        <AnchorContent>
+            <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _popInfo = !_popInfo)">User info ▾</FlareButton>
+        </AnchorContent>
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.Small" Style="padding:1rem;min-width:16rem;">
+                <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Style="margin-bottom:0.75rem;">
+                    <FlareAvatar Text="Alice Johnson" Size="AvatarSize.Lg" />
+                    <FlareStack Gap="FlareSpacing.None">
+                        <FlareText Typo="TypographyScale.TitleSmall">Alice Johnson</FlareText>
+                        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">Senior Engineer · Berlin</FlareText>
+                    </FlareStack>
+                </FlareStack>
+                <FlareDivider Style="margin:0.25rem 0 0.5rem;" />
+                <FlareLink Href="#" Underline="LinkUnderline.Hover">View profile</FlareLink>
+            </FlareStack>
+        </ChildContent>
+    </FlarePopover>
+
+    <FlarePopover @bind-Open="_popHelp" Placement="PopoverPlacement.RightStart" Arrow="true">
+        <AnchorContent>
+            <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _popHelp = !_popHelp)">
+                <FlareIcon Name="help_outline" /> Help
+            </FlareButton>
+        </AnchorContent>
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.XSmall" Style="padding:0.75rem 1rem;max-width:18rem;">
+                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-bottom:0.5rem;">How to use Popover</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    Wrap your trigger in AnchorContent and place any content inside ChildContent. Control visibility with @@bind-Open.
+                </FlareText>
+            </FlareStack>
+        </ChildContent>
+    </FlarePopover>
+
+    <FlarePopover @bind-Open="_popConfirm" Placement="PopoverPlacement.TopStart">
+        <AnchorContent>
+            <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _popConfirm = !_popConfirm)">Delete item</FlareButton>
+        </AnchorContent>
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.XSmall" Style="padding:1rem;max-width:16rem;">
+                <FlareText Typo="TypographyScale.TitleSmall" Style="margin-bottom:0.5rem;">Confirm deletion</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem">This action cannot be undone.</FlareText>
+                <FlareStack Gap="FlareSpacing.XSmall" Justify="FlareJustifyContent.End">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _popConfirm = false)">Cancel</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm"
+                                 OnClick="@(() => { _popConfirm = false; Snackbar.Show("Deleted!", SnackbarSeverity.Error); })">
+                        Delete
+                    </FlareButton>
+                </FlareStack>
+            </FlareStack>
+        </ChildContent>
+    </FlarePopover>
+</FlareStack>
+
+@code {
+    private bool _popInfo;
+    private bool _popHelp;
+    private bool _popConfirm;
+}

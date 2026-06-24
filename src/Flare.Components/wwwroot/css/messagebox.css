@@ -1,0 +1,105 @@
+.flare-msgbox-scrim {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in srgb, var(--flare-color-scrim) 32%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+}
+
+.flare-msgbox {
+    background: var(--flare-color-surface-container-high);
+    color: var(--flare-color-on-surface);
+    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    min-width: 17.5rem;
+    max-width: 30rem;
+    width: 100%;
+    box-shadow: var(--flare-elevation-3);
+    overflow: hidden;
+}
+
+.flare-msgbox__header {
+    padding: var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem) var(--flare-spacing-6, 0.75rem);
+}
+
+.flare-msgbox__title {
+    font-family: var(--flare-typescale-headline-small-font);
+    font-size: var(--flare-typescale-headline-small-size);
+    font-weight: var(--flare-typescale-headline-small-weight);
+    color: var(--flare-color-on-surface);
+    margin: 0;
+}
+
+.flare-msgbox__content {
+    padding: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-8, 1rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-3, 0.375rem);
+}
+
+.flare-msgbox__message {
+    margin: 0;
+    color: var(--flare-color-on-surface-variant);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+    line-height: 1.5;
+}
+
+.flare-msgbox__label {
+    font-size: var(--flare-typescale-label-medium-size);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-msgbox__input {
+    width: 100%;
+    padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-6, 0.75rem);
+    border: 1px solid var(--flare-color-outline);
+    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small));
+    background: var(--flare-color-surface);
+    color: var(--flare-color-on-surface);
+    font-size: var(--flare-typescale-body-medium-size);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.flare-msgbox__input:focus {
+    border-color: var(--flare-color-primary);
+    outline: 2px solid var(--flare-color-primary);
+    outline-offset: -2px;
+}
+
+.flare-msgbox__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--flare-spacing-4, 0.5rem);
+    padding: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem);
+}
+
+.flare-msgbox__btn {
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-10, 1.25rem);
+    border-radius: var(--flare-btn-radius, var(--flare-shape-full));
+    border: none;
+    cursor: pointer;
+    font-size: var(--flare-typescale-label-large-size);
+    font-weight: var(--flare-typescale-label-large-weight);
+    transition: background var(--flare-motion-duration-short2);
+}
+
+.flare-msgbox__btn--cancel {
+    background: transparent;
+    color: var(--flare-color-primary);
+}
+
+.flare-msgbox__btn--cancel:hover {
+    background: color-mix(in srgb, var(--flare-color-primary) 8%, transparent);
+}
+
+.flare-msgbox__btn--confirm {
+    background: var(--flare-color-primary);
+    color: var(--flare-color-on-primary);
+}
+
+.flare-msgbox__btn--confirm:hover {
+    background: color-mix(in srgb, var(--flare-color-on-primary) 8%, var(--flare-color-primary));
+}

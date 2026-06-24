@@ -1,0 +1,108 @@
+.flare-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-2, 0.25rem);
+  flex-wrap: wrap;
+}
+
+/* "X-Y of Z" info text: muted secondary text, matching the rows-per-page label. */
+.flare-pagination__info {
+  color: var(--flare-color-on-surface-variant);
+  font-size: var(--flare-typescale-body-medium-size);
+  white-space: nowrap;
+}
+
+.flare-pagination__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 var(--flare-spacing-4, 0.5rem);
+  border: 1px solid var(--flare-color-outline-variant);
+  border-radius: var(--flare-shape-extra-small);
+  background: transparent;
+  color: var(--flare-color-on-surface);
+  font-family: var(--flare-typescale-label-large-font);
+  font-size: var(--flare-typescale-label-large-size);
+  cursor: pointer;
+  transition:
+    background-color var(--flare-motion-duration-short1),
+    border-color var(--flare-motion-duration-short1);
+}
+
+.flare-pagination__btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  border-color: var(--flare-color-outline);
+}
+
+/* Active page: role class sets --fc-main/--fc-on; custom inlines them; default primary. */
+.flare-pagination__btn--active {
+  background: var(--fc-main, var(--flare-color-primary));
+  border-color: var(--fc-main, var(--flare-color-primary));
+  color: var(--fc-on, var(--flare-color-on-primary));
+}
+
+.flare-pagination__btn--active:hover {
+  background: var(--fc-main, var(--flare-color-primary)) !important;
+}
+
+.flare-pagination__btn--nav {
+  font-size: var(--flare-typescale-title-medium-size, 1.25rem);
+  line-height: 1;
+}
+
+.flare-pagination__btn:disabled {
+  opacity: var(--flare-state-disabled-opacity);
+  cursor: not-allowed;
+}
+
+.flare-pagination__ellipsis {
+  min-width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--flare-color-on-surface-variant);
+  font-size: var(--flare-typescale-body-large-size, 1.125rem);
+}
+
+/* Rows-per-page selector */
+.flare-pagination__rows {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  margin-right: var(--flare-spacing-4, 0.5rem);
+  color: var(--flare-color-on-surface-variant);
+  font-size: var(--flare-typescale-body-medium-size);
+}
+.flare-pagination__rows-label {
+  white-space: nowrap;
+}
+.flare-pagination__rows-select {
+  height: 2.25rem;
+  padding: 0 var(--flare-spacing-4, 0.5rem);
+  border: 1px solid var(--flare-color-outline-variant);
+  border-radius: var(--flare-shape-extra-small);
+  background: var(--flare-color-surface);
+  color: var(--flare-color-on-surface);
+  font-family: var(--flare-typescale-body-medium-font);
+  font-size: var(--flare-typescale-body-medium-size);
+  cursor: pointer;
+}
+
+/* Size variants (Xs..Xl; Md is the unmodified default) */
+.flare-pagination--xs .flare-pagination__btn,
+.flare-pagination--xs .flare-pagination__ellipsis,
+.flare-pagination--xs .flare-pagination__rows-select { min-width: 1.5rem; height: 1.5rem; font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--sm .flare-pagination__btn,
+.flare-pagination--sm .flare-pagination__ellipsis,
+.flare-pagination--sm .flare-pagination__rows-select { min-width: 1.75rem; height: 1.75rem; font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--lg .flare-pagination__btn,
+.flare-pagination--lg .flare-pagination__ellipsis,
+.flare-pagination--lg .flare-pagination__rows-select { min-width: 2.75rem; height: 2.75rem; font-size: var(--flare-typescale-title-medium-size); }
+.flare-pagination--xl .flare-pagination__btn,
+.flare-pagination--xl .flare-pagination__ellipsis,
+.flare-pagination--xl .flare-pagination__rows-select { min-width: 3.25rem; height: 3.25rem; font-size: var(--flare-typescale-title-large-size); }
+
+/* Semantic color of the active page button */

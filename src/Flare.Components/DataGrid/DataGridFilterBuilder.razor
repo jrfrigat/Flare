@@ -1,0 +1,207 @@
+@namespace Flare.Components
+@typeparam TItem
+
+<div class="@Css.Classes.DataGrid.FilterBuilder">
+    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle"
+                 Color="@(_advancedCount > 0 ? FlareColor.Primary : FlareColor.Default)">
+        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">filter_alt</span></LeadingIcon>
+        <ChildContent>
+            @(Label ?? FlareStrings.DataGrid_ConfigureFilters)
+            @if (_advancedCount > 0)
+            {
+                <span class="@Css.Classes.DataGrid.FilterBuilderCount">@_advancedCount</span>
+            }
+        </ChildContent>
+    </FlareButton>
+    @if (_open)
+    {
+        <div class="@Css.Classes.DataGrid.FilterBuilderPanel">
+            <div class="@Css.Classes.DataGrid.FilterBuilderTree">
+                @RenderGroup((_root, null))
+            </div>
+            <div class="@Css.Classes.DataGrid.FilterBuilderActions">
+                <span class="@Css.Classes.DataGrid.Spacer"></span>
+                <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="Clear">@FlareStrings.DataGrid_ClearFilters</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Apply">@FlareStrings.DataGrid_ApplyFilters</FlareButton>
+            </div>
+        </div>
+        <div class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
+    }
+</div>
+
+@code {
+    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
+    // Grid parameter overrides it for standalone placement outside the grid.
+    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
+    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
+    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
+    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
+    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+
+    /// <summary>Label shown on the builder button. Defaults to a localized "Configure filters".</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Optional explicit filter fields (column keys). When null, the bound grid's
+    /// <see cref="FlareDataGrid{TItem}.FilterableColumns"/> are offered.</summary>
+    [Parameter] public IReadOnlyList<string>? AvailableColumns { get; set; }
+
+    /// <summary>Optional notification raised with the built filter tree when the user applies. The
+    /// bound grid is updated automatically; use this only to observe the change.</summary>
+    [Parameter] public EventCallback<DataGridFilterGroup> OnApply { get; set; }
+
+    /// <summary>Optional notification raised when the user clears the filter. The bound grid is
+    /// updated automatically; use this only to observe the change.</summary>
+    [Parameter] public EventCallback OnCleared { get; set; }
+
+    private bool _open;
+    private FilterGroupNode _root = new() { Conditions = { new() } };
+    private int _advancedCount => CountConditions(_root);
+
+    // Filter fields as (Key, Title): explicit AvailableColumns (Key == Title), else the grid's columns.
+    private IReadOnlyList<(string Key, string Title)> _columns =>
+        AvailableColumns is not null
+            ? AvailableColumns.Select(k => (k, k)).ToList()
+            : Owner?.FilterableColumns ?? [];
+    private List<string> _columnKeys => _columns.Select(c => c.Key).ToList();
+    private string ColumnLabel(string key)
+    {
+        var hit = _columns.FirstOrDefault(c => c.Key == key).Title;
+        return string.IsNullOrEmpty(hit) ? key : hit;
+    }
+
+    // Seed the first (empty) condition's field with the first available column so the user can fill in
+    // a value and apply without first opening the field dropdown. BuildTree drops conditions whose
+    // Key is empty, so an unseeded default condition would silently apply nothing.
+    protected override void OnParametersSet()
+    {
+        var keys = _columnKeys;
+        if (keys.Count > 0
+            && _root.Conditions.Count == 1
+            && string.IsNullOrEmpty(_root.Conditions[0].Key))
+        {
+            _root.Conditions[0].Key = keys[0];
+        }
+    }
+
+    private void Toggle() => _open = !_open;
+    private void Close() => _open = false;
+
+    private async Task Apply()
+    {
+        var tree = BuildTree(_root);
+        _open = false;
+        if (Owner is not null) await Owner.ApplyAdvancedFilter(tree);
+        if (OnApply.HasDelegate) await OnApply.InvokeAsync(tree);
+    }
+
+    private async Task Clear()
+    {
+        _root = new FilterGroupNode { Conditions = { new() } };
+        _open = false;
+        if (Owner is not null) await Owner.ClearAdvancedFilter();
+        if (OnCleared.HasDelegate) await OnCleared.InvokeAsync();
+    }
+
+    private DataGridFilterGroup BuildTree(FilterGroupNode node)
+    {
+        var conditions = node.Conditions
+            .Where(c => !string.IsNullOrEmpty(c.Key))
+            .Select(c => new DataGridFilter(c.Key, c.Operator, c.Value, c.Value2, c.Values.Count > 0 ? c.Values : null))
+            .ToList();
+        var groups = node.Groups.Select(BuildTree).ToList();
+        return new DataGridFilterGroup(node.Or, conditions, groups);
+    }
+
+    private int CountConditions(FilterGroupNode g)
+    {
+        var count = g.Conditions.Count;
+        foreach (var sub in g.Groups) count += CountConditions(sub);
+        return count;
+    }
+
+    private void AddCondition(FilterGroupNode g) => g.Conditions.Add(new());
+    private void AddGroup(FilterGroupNode g) => g.Groups.Add(new FilterGroupNode { Conditions = { new() } });
+    private void RemoveCondition(FilterGroupNode g, FilterCondition c) => g.Conditions.Remove(c);
+    private void RemoveGroup(FilterGroupNode parent, FilterGroupNode g) => parent.Groups.Remove(g);
+
+    private string OperatorLabel(FilterOperator op) => op switch
+    {
+        FilterOperator.Contains => FlareStrings.DataGrid_OpContains, FilterOperator.Equals => FlareStrings.DataGrid_OpEquals,
+        FilterOperator.NotEquals => FlareStrings.DataGrid_OpNotEquals, FilterOperator.StartsWith => FlareStrings.DataGrid_OpStartsWith,
+        FilterOperator.EndsWith => FlareStrings.DataGrid_OpEndsWith, FilterOperator.GreaterThan => FlareStrings.DataGrid_OpGreaterThan,
+        FilterOperator.GreaterThanOrEqual => FlareStrings.DataGrid_OpGreaterOrEqual, FilterOperator.LessThan => FlareStrings.DataGrid_OpLessThan,
+        FilterOperator.LessThanOrEqual => FlareStrings.DataGrid_OpLessOrEqual, FilterOperator.Between => FlareStrings.DataGrid_OpBetween,
+        FilterOperator.NotBetween => FlareStrings.DataGrid_OpNotBetween, FilterOperator.In => FlareStrings.DataGrid_OpIn,
+        FilterOperator.NotIn => FlareStrings.DataGrid_OpNotIn, FilterOperator.IsNull => FlareStrings.DataGrid_OpIsNull,
+        FilterOperator.IsNotNull => FlareStrings.DataGrid_OpIsNotNull, _ => op.ToString(),
+    };
+
+    private bool OpHasNoValue(FilterOperator op) => op is FilterOperator.IsNull or FilterOperator.IsNotNull;
+
+    RenderFragment<(FilterGroupNode Node, FilterGroupNode? Parent)> RenderGroup = null!;
+    protected override void OnInitialized()
+    {
+        RenderGroup = ctx =>
+        @<text>
+            <div class="@Css.Classes.DataGrid.FilterBuilderGroup">
+                <div class="@Css.Classes.DataGrid.FilterBuilderGroupHead">
+                    <button type="button" class="@Css.Classes.DataGrid.FilterBuilderConnector"
+                            @onclick="@(() => { ctx.Node.Or = !ctx.Node.Or; StateHasChanged(); })">
+                        @(ctx.Node.Or ? FlareStrings.DataGrid_Or : FlareStrings.DataGrid_And)
+                    </button>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddCondition(ctx.Node); StateHasChanged(); })">
+                        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">add</span></LeadingIcon>
+                        <ChildContent>@FlareStrings.DataGrid_AddCondition</ChildContent>
+                    </FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddGroup(ctx.Node); StateHasChanged(); })">
+                        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">create_new_folder</span></LeadingIcon>
+                        <ChildContent>@FlareStrings.DataGrid_AddGroup</ChildContent>
+                    </FlareButton>
+                    @if (ctx.Parent is not null)
+                    {
+                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                     OnClick="@(() => { RemoveGroup(ctx.Parent!, ctx.Node); StateHasChanged(); })"
+                                     AriaLabel="@FlareStrings.DataGrid_RemoveGroup">
+                            <span class="material-symbols-rounded @Css.Classes.DataGrid.CloseIcon">close</span>
+                        </FlareButton>
+                    }
+                </div>
+                <div class="@Css.Classes.DataGrid.FilterBuilderGroupBody">
+                    @foreach (var cond in ctx.Node.Conditions)
+                    {
+                        var c = cond;
+                        <div class="@Css.Classes.DataGrid.FilterBuilderRow">
+                            <div class="@Css.Classes.DataGrid.FilterBuilderField">
+                                <FlareSelect TValue="string" Size="FieldSize.Xs" Items="_columnKeys" ItemLabel="ColumnLabel"
+                                             Value="@c.Key" ValueChanged="@(v => { c.Key = v ?? string.Empty; StateHasChanged(); })" />
+                            </div>
+                            <div class="@Css.Classes.DataGrid.FilterBuilderOp">
+                                <FlareSelect TValue="FilterOperator" Size="FieldSize.Xs"
+                                             Items="Enum.GetValues(typeof(FilterOperator)).Cast<FilterOperator>().ToList()"
+                                             ItemLabel="OperatorLabel" Value="@c.Operator"
+                                             ValueChanged="@(v => { c.Operator = v; StateHasChanged(); })" />
+                            </div>
+                            @if (!OpHasNoValue(c.Operator))
+                            {
+                                <div class="@Css.Classes.DataGrid.FilterBuilderValue">
+                                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true"
+                                                Placeholder="@FlareStrings.DataGrid_FilterValue" Value="@c.Value"
+                                                ValueChanged="@(v => { c.Value = v; StateHasChanged(); })" />
+                                </div>
+                            }
+                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                         OnClick="@(() => { RemoveCondition(ctx.Node, c); StateHasChanged(); })"
+                                         AriaLabel="@FlareStrings.DataGrid_RemoveCondition">
+                                <span class="material-symbols-rounded @Css.Classes.DataGrid.CloseIcon">close</span>
+                            </FlareButton>
+                        </div>
+                    }
+                    @foreach (var sub in ctx.Node.Groups)
+                    {
+                        @RenderGroup((sub, ctx.Node))
+                    }
+                </div>
+            </div>
+        </text>;
+    }
+}

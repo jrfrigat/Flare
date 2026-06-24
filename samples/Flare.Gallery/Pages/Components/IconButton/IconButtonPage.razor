@@ -1,0 +1,12 @@
+@page "/components/icon-button"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.IconButton_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareButton">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.IconButton_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.IconButton_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Buttons_Variants" DemoType="typeof(Examples.IconButtonVariantsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Sizes" DemoType="typeof(Examples.IconButtonSizesDemo)" />

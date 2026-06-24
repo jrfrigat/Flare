@@ -1,0 +1,13 @@
+@* Frozen columns pin to either edge: Name and Role stay on the left (cumulative offsets) and
+   Actions stays on the right (FrozenRight), while the middle columns scroll horizontally. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="6">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Frozen Width="180px" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Frozen Width="160px" />
+        <FlareColumn Title="City" Field="@(p => p.City)" Width="220px" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="220px" />
+        <FlareColumn Title="City (2)" Field="@(p => p.City)" Width="220px" />
+        <FlareColumn Title="Score (2)" Field="@(p => p.Score)" Width="220px" />
+        <FlareColumn Title="Actions" Field="@(p => "View")" FrozenRight Width="120px" />
+    </Columns>
+</FlareDataGrid>

@@ -1,0 +1,11 @@
+@page "/components/fab-menu"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.FabMenu_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareFloatingActionMenu">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.FabMenu_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.FabMenu_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.SpeedDial_Title" DemoType="typeof(Examples.FabMenuDemo)" />

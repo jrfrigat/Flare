@@ -1,0 +1,18 @@
+.flare-validation-summary {
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  border-radius: var(--flare-shape-small);
+  background: var(--flare-color-error-container);
+  color: var(--flare-color-on-error-container);
+  font-family: var(--flare-typescale-body-small-font);
+  font-size: var(--flare-typescale-body-small-size);
+}
+
+.flare-validation-summary__list {
+  margin: 0;
+  padding: 0 0 0 var(--flare-spacing-10, 1.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-validation-summary__item { line-height: 1.4; }

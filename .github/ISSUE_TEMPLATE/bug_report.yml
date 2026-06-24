@@ -1,0 +1,59 @@
+name: Bug report
+description: Report something that is not working as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please search existing issues first.
+        For security vulnerabilities, do NOT open an issue - see SECURITY.md.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected instead.
+      placeholder: When I ... I expected ... but instead ...
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps (or a minimal repro project/snippet) that trigger the issue.
+      placeholder: |
+        1. Add <FlareSelect ... />
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: flare-version
+    attributes:
+      label: Flare version
+      placeholder: e.g. 0.0.1
+    validations:
+      required: true
+  - type: dropdown
+    id: render-mode
+    attributes:
+      label: Render mode
+      options:
+        - Blazor WebAssembly
+        - Blazor Server
+        - Other / not sure
+    validations:
+      required: true
+  - type: input
+    id: dotnet-version
+    attributes:
+      label: .NET version
+      placeholder: e.g. .NET 10.0.x
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: e.g. Chrome 140, Firefox 130
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context
+      description: Logs, console errors, screenshots, etc.

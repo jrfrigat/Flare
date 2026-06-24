@@ -1,0 +1,50 @@
+.flare-divider {
+  border: none;
+  border-top: 1px solid var(--flare-color-outline-variant);
+  margin: 0;
+}
+
+.flare-divider--vertical {
+  width: 1px;
+  height: 100%;
+  background: var(--flare-color-outline-variant);
+  border: none;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+.flare-divider--text {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-6, 0.75rem);
+  border: none;
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-divider--text::before,
+.flare-divider--text::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--flare-color-outline-variant);
+}
+
+.flare-divider--text-left::before { flex: 0 0 1rem; }
+.flare-divider--text-right::after { flex: 0 0 1rem; }
+
+/* Inset divider (MD3) - indents from the leading edge */
+.flare-divider--inset {
+  margin-inline-start: var(--flare-spacing-32, 4rem);
+}
+
+/* Middle-inset divider (MD3) - indents from both edges */
+.flare-divider--middle-inset {
+  margin-inline-start: var(--flare-spacing-32, 4rem);
+  margin-inline-end: var(--flare-spacing-32, 4rem);
+}
+
+.flare-divider__text {
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+  white-space: nowrap;
+}

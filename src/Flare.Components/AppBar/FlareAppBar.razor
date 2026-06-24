@@ -1,0 +1,48 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<header class="@BuildCssClass(_stickyClass, _elevationClass, _denseClass)"
+        style="@Style"
+        aria-label="@AriaLabel"
+        @attributes="AdditionalAttributes">
+    @if (Leading is not null)
+    {
+        <div class="@Css.Classes.AppBar.Leading">@Leading</div>
+    }
+    <div class="@Css.Classes.AppBar.Title">
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <span>@Title</span>
+        }
+        @TitleContent
+    </div>
+    @if (Trailing is not null)
+    {
+        <div class="@Css.Classes.AppBar.Trailing">@Trailing</div>
+    }
+</header>
+
+@code {
+    /// <summary>Plain-text title displayed in the app bar.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Custom content rendered in the title area.</summary>
+    [Parameter] public RenderFragment? TitleContent { get; set; }
+    /// <summary>Content placed at the leading (left) edge.</summary>
+    [Parameter] public RenderFragment? Leading { get; set; }
+    /// <summary>Content placed at the trailing (right) edge.</summary>
+    [Parameter] public RenderFragment? Trailing { get; set; }
+    /// <summary>Sticks the app bar to the top of the viewport.</summary>
+    [Parameter] public bool Sticky { get; set; } = true;
+    /// <summary>Shadow elevation level (0-5). Defaults to 4.</summary>
+    [Parameter] public int Elevation { get; set; } = 4;
+    /// <summary>When true, reduces the app bar height to the dense variant.</summary>
+    [Parameter] public bool Dense { get; set; }
+    /// <summary>Accessible label for the header landmark. Set when multiple <c>&lt;header&gt;</c> elements are present on the page.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.AppBar.Root;
+
+    private string _stickyClass     => Sticky ? Css.Classes.AppBar.Sticky : string.Empty;
+    private string _elevationClass  => $"flare-appbar--elevation-{Math.Clamp(Elevation, 0, 5)}";
+    private string _denseClass      => Dense ? Css.Classes.AppBar.Dense : string.Empty;
+}

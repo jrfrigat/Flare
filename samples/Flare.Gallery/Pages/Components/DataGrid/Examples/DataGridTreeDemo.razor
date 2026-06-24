@@ -1,0 +1,43 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareDataGrid Items="@_employees" PageSize="20"
+               Tree="@(new DataGridTreeConfig<Employee>
+               {
+                   ChildrenSelector = e => e.Subordinates,
+                   InitiallyExpanded = e => e.Level < 2,
+                   IndentWidth = "24px"
+               })">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(e => e.Name)" />
+        <FlareColumn Title="Position" Field="@(e => e.Position)" />
+        <FlareColumn Title="Department" Field="@(e => e.Department)" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private readonly List<Employee> _employees = new()
+    {
+        new Employee { Name = "Иван Петров", Position = "CEO", Department = "Руководство", Level = 0,
+            Subordinates = new[]
+            {
+                new Employee { Name = "Мария Сидорова", Position = "CTO", Department = "Разработка", Level = 1,
+                    Subordinates = new[]
+                    {
+                        new Employee { Name = "Алексей Козлов", Position = "Team Lead", Department = "Backend", Level = 2 },
+                        new Employee { Name = "Елена Волкова", Position = "Team Lead", Department = "Frontend", Level = 2 },
+                    }
+                },
+                new Employee { Name = "Дмитрий Новиков", Position = "CFO", Department = "Финансы", Level = 1 },
+            }
+        },
+    };
+
+    private sealed class Employee
+    {
+        public string Name { get; set; } = "";
+        public string Position { get; set; } = "";
+        public string Department { get; set; } = "";
+        public int Level { get; set; }
+        public IEnumerable<Employee>? Subordinates { get; set; }
+    }
+}

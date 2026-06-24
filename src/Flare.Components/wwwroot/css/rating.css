@@ -1,0 +1,67 @@
+.flare-rating {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2, 0.25rem);
+    /* Single source for the star size; size classes below override --_rt-size. */
+    --_rt-size: var(--flare-rating-size, 1.5rem);
+}
+
+/* Size grid (Xs..Xl): scales the star glyph. */
+.flare-rating--xs { --_rt-size: 1rem; }
+.flare-rating--sm { --_rt-size: 1.25rem; }
+.flare-rating--lg { --_rt-size: 2rem; }
+.flare-rating--xl { --_rt-size: 2.5rem; }
+
+.flare-rating__label {
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-rating__stars {
+    display: flex;
+    gap: var(--flare-spacing-1, 0.125rem);
+}
+
+.flare-rating__star {
+    background: transparent;
+    border: none;
+    padding: var(--flare-spacing-1, 0.125rem);
+    cursor: pointer;
+    font-size: var(--_rt-size);
+    line-height: 1;
+    color: var(--flare-color-outline-variant);
+    transition: color var(--flare-motion-duration-short1, 100ms), transform var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-rating__star:hover:not(:disabled) {
+    transform: scale(1.15);
+}
+
+.flare-rating__star--filled { color: var(--fc-main, var(--flare-color-primary)); }
+
+/* Half-star: glyph filled 50% via background-clip text */
+.flare-rating__star--half {
+    background: linear-gradient(90deg, var(--fc-main, var(--flare-color-primary)) 50%, var(--flare-color-outline-variant) 50%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Half-click overlay zones */
+.flare-rating__star-wrap { position: relative; display: inline-flex; }
+.flare-rating__half {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    cursor: pointer;
+    z-index: 1;
+}
+.flare-rating__half--left  { left: 0; }
+.flare-rating__half--right { right: 0; }
+
+.flare-rating--disabled { opacity: var(--flare-state-disabled-opacity, 0.38); pointer-events: none; }
+.flare-rating--readonly .flare-rating__star { cursor: default; }
+.flare-rating--readonly .flare-rating__star:hover { transform: none; }

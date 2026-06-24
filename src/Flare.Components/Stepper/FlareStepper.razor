@@ -1,0 +1,186 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_orientClass)" style="@Style" @attributes="AdditionalAttributes">
+    @* Hidden registration area - FlareStep instances initialize and register here *@
+    <CascadingValue Value="@this" IsFixed="true">
+        <div class="@Css.Classes.Stepper.Registry" aria-hidden="true">@ChildContent</div>
+    </CascadingValue>
+
+    @* Step indicators *@
+    <div class="@Css.Classes.Stepper.Header" role="tablist" aria-label="@(AriaLabel ?? FlareStrings.Stepper_ProgressLabel)">
+        @for (int i = 0; i < _steps.Count; i++)
+        {
+            var step = _steps[i];
+            var idx = i;
+            var state = GetState(i);
+            var isLast = i == _steps.Count - 1;
+
+            <div class="@Css.Classes.Stepper.Step @GetStepClass(state)"
+                 role="tab"
+                 aria-selected="@(GetState(idx) == StepState.Active ? "true" : "false")"
+                 aria-disabled="@(!CanGoTo(idx) ? "true" : "false")"
+                 id="flare-step-@idx"
+                 @onclick="@(() => TryGoTo(idx))">
+                <div class="@Css.Classes.Stepper.Circle @(step.HasError ? Css.Classes.Stepper.CircleError : "")">
+                    @if (step.HasError)
+                    {
+                        <span aria-hidden="true">!</span>
+                        <span class="@Css.Classes.Visually.Hidden">@(FlareStrings.Stepper_Error)</span>
+                    }
+                    else if (state == StepState.Completed)
+                    {
+                        <span aria-hidden="true">✓</span>
+                        <span class="@Css.Classes.Visually.Hidden">@(FlareStrings.Stepper_Completed)</span>
+                    }
+                    else if (step.Icon is not null)
+                    {
+                        @step.Icon
+                        <span class="@Css.Classes.Visually.Hidden">@(string.Format(FlareStrings.Stepper_Step, i + 1))</span>
+                    }
+                    else
+                    {
+                        <span aria-hidden="true">@(i + 1)</span>
+                        <span class="@Css.Classes.Visually.Hidden">@(string.Format(FlareStrings.Stepper_Step, i + 1))</span>
+                    }
+                </div>
+                <div class="@Css.Classes.Stepper.Labels">
+                    <span class="@Css.Classes.Stepper.Label">@step.Label</span>
+                    @if (step.Optional)
+                    {
+                        <span class="@Css.Classes.Stepper.Optional">@step.OptionalText</span>
+                    }
+                    @if (step.HasError && !string.IsNullOrEmpty(step.ErrorText))
+                    {
+                        <span class="@Css.Classes.Stepper.ErrorText">@step.ErrorText</span>
+                    }
+                    else if (!string.IsNullOrEmpty(step.Description))
+                    {
+                        <span class="@Css.Classes.Stepper.Description">@step.Description</span>
+                    }
+                </div>
+            </div>
+
+            @if (!isLast)
+            {
+                <div class="@Css.Classes.Stepper.Connector @(i < _activeIndex ? Css.Classes.Stepper.ConnectorCompleted : "")"></div>
+            }
+        }
+    </div>
+
+    @* Content area *@
+    @{
+        var activeStep = _steps.ElementAtOrDefault(_activeIndex);
+        if (activeStep?.ChildContent is not null)
+        {
+            <div class="@Css.Classes.Stepper.Content" role="tabpanel" aria-labelledby="flare-step-@_activeIndex">
+                @activeStep.ChildContent
+                <div class="@Css.Classes.Stepper.Nav">
+                    @if (!IsFirst)
+                    {
+                        <button class="@Css.Classes.Stepper.NavBtn" @onclick="Back">@(FlareStrings.Stepper_Back)</button>
+                    }
+                    @if (!IsLast)
+                    {
+                        <button class="@Css.Classes.Stepper.NavBtn @Css.Classes.Stepper.NavBtnPrimary" @onclick="Next">@(FlareStrings.Stepper_Next)</button>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    /// <summary>FlareStep descriptors registered as children.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Layout orientation - horizontal or vertical.</summary>
+    [Parameter] public StepperOrientation Orientation { get; set; } = StepperOrientation.Horizontal;
+    /// <summary>Prevents skipping ahead to non-completed steps.</summary>
+    [Parameter] public bool Linear { get; set; } = true;
+    /// <summary>Allows clicking any step regardless of completion when true.</summary>
+    [Parameter] public bool NonLinear { get; set; }
+    /// <summary>Callback fired when the active step index changes.</summary>
+    [Parameter] public EventCallback<int> OnStepChanged { get; set; }
+    /// <summary>Accessible label for the step indicator tab list. Defaults to localised "Progress steps".</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Stepper.Root;
+
+    private string _orientClass => Orientation == StepperOrientation.Vertical
+        ? Css.Classes.Stepper.Vertical
+        : Css.Classes.Stepper.Horizontal;
+
+    private readonly List<FlareStep> _steps = [];
+    private int _activeIndex;
+
+    public int ActiveIndex => _activeIndex;
+    public bool IsFirst => _activeIndex == 0;
+    public bool IsLast => _activeIndex >= _steps.Count - 1;
+
+    internal void RegisterStep(FlareStep step)
+    {
+        if (_steps.Contains(step)) return;
+        _steps.Add(step);
+        StateHasChanged();
+    }
+
+    internal void UnregisterStep(FlareStep step)
+    {
+        _steps.Remove(step);
+        if (_activeIndex >= _steps.Count) _activeIndex = Math.Max(0, _steps.Count - 1);
+        StateHasChanged();
+    }
+
+    private StepState GetState(int idx) =>
+        idx < _activeIndex ? StepState.Completed :
+        idx == _activeIndex ? StepState.Active :
+        StepState.Upcoming;
+
+    private string GetStepClass(StepState state) => state switch
+    {
+        StepState.Completed => Css.Classes.Stepper.StepCompleted,
+        StepState.Active    => Css.Classes.Stepper.StepActive,
+        _                   => Css.Classes.Stepper.StepUpcoming
+    };
+
+    private bool CanGoTo(int idx) =>
+        !Linear || NonLinear || idx <= _activeIndex;
+
+    private async Task TryGoTo(int idx)
+    {
+        if (!CanGoTo(idx) || idx == _activeIndex) return;
+        _activeIndex = idx;
+        await OnStepChanged.InvokeAsync(_activeIndex);
+    }
+
+    public async Task Next()
+    {
+        if (!IsLast)
+        {
+            _activeIndex++;
+            await OnStepChanged.InvokeAsync(_activeIndex);
+            StateHasChanged();
+        }
+    }
+
+    public async Task Back()
+    {
+        if (!IsFirst)
+        {
+            _activeIndex--;
+            await OnStepChanged.InvokeAsync(_activeIndex);
+            StateHasChanged();
+        }
+    }
+
+    public async Task GoTo(int index)
+    {
+        index = Math.Clamp(index, 0, _steps.Count - 1);
+        if (index != _activeIndex && CanGoTo(index))
+        {
+            _activeIndex = index;
+            await OnStepChanged.InvokeAsync(_activeIndex);
+            StateHasChanged();
+        }
+    }
+}

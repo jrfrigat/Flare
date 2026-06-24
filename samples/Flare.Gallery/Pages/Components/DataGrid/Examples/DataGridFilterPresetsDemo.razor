@@ -1,0 +1,31 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* FlareDataGridFilterPresets offers a list of named advanced-filter presets. Choosing one applies
+   its DataGridFilterGroup to the grid; "(No filter)" clears it. *@
+
+<FlareDataGrid Items="@DatagridData._people" PageSize="6">
+    <ToolbarContent>
+        @* Inside ToolbarContent the grid is resolved automatically - no TItem or Grid needed. *@
+        <FlareDataGridFilterPresets Presets="@_presets" />
+    </ToolbarContent>
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Type="ColumnDataType.Number" Width="80px" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    // Each preset is a named advanced filter (DataGridFilterGroup).
+    private readonly DataGridFilterPreset[] _presets =
+    [
+        new("Engineers", new DataGridFilterGroup(false,
+            [new DataGridFilter("Role", FilterOperator.Equals, "Engineer")], [])),
+        new("High score (>= 85)", new DataGridFilterGroup(false,
+            [new DataGridFilter("Score", FilterOperator.GreaterThanOrEqual, "85")], [])),
+        new("Berlin engineers", new DataGridFilterGroup(false,
+            [new DataGridFilter("City", FilterOperator.Equals, "Berlin"),
+             new DataGridFilter("Role", FilterOperator.Equals, "Engineer")], [])),
+    ];
+}

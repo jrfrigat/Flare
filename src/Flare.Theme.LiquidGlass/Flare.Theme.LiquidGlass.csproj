@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <PackageId>Flare.Theme.LiquidGlass</PackageId>
+    <Description>Liquid Glass (frosted "liquid glass") theme for the Flare Blazor component library</Description>
+    <PackageTags>blazor;theming;ios;glass;liquid-glass;apple;frosted;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Core\Flare.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,333 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System
+@using System.Globalization
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.TimePicker.Label">@Label</label>
+    }
+    <div class="@Css.Classes.TimePicker.Field" @ref="_fieldEl">
+        <input class="@Css.Classes.TimePicker.Control"
+               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+               type="text"
+               inputmode="numeric"
+               maxlength="5"
+               value="@_text"
+               placeholder="@(Placeholder ?? "HH:mm")"
+               disabled="@Disabled"
+               aria-label="@(Label ?? "Time")"
+               @oninput="HandleInput"
+               @onchange="HandleCommitText"
+               @attributes="AdditionalAttributes" />
+        <button type="button" class="@Css.Classes.TimePicker.Toggle flare-input__icon flare-input__icon--trailing"
+                disabled="@Disabled" aria-haspopup="dialog" aria-expanded="@_open"
+                aria-label="Open time picker" @onclick="Toggle">
+            <FlareIcon Name="schedule" Style="font-size:1.25rem;" />
+        </button>
+    </div>
+
+    @if (_open)
+    {
+        <div class="@Css.Classes.TimePicker.Scrim" @onclick="Close" aria-hidden="true"></div>
+        <div class="@($"{Css.Classes.TimePicker.Panel} {Css.Classes.TimePicker.Panel}--{PopupVariant.ToString().ToLowerInvariant()}")"
+             @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@Headline">
+            <div class="@Css.Classes.TimePicker.PanelHeadline">@Headline</div>
+
+            @if (PopupVariant == TimePickerVariant.Dial)
+            {
+                <FlareClockDial Hour="_tempHour" HourChanged="h => _tempHour = h"
+                                Minute="_tempMinute" MinuteChanged="m => _tempMinute = m"
+                                Is24Hour="_is24Hour" />
+            }
+            else
+            {
+                <div class="@Css.Classes.TimePicker.Display" aria-hidden="true">
+                    <span class="@Css.Classes.TimePicker.DisplayPart @(_dropActive == 0 ? Css.Classes.TimePicker.DisplayPartActive : "")">@_tempHour.ToString("00")</span>
+                    <span class="@Css.Classes.TimePicker.DisplaySep">:</span>
+                    <span class="@Css.Classes.TimePicker.DisplayPart @(_dropActive == 1 ? Css.Classes.TimePicker.DisplayPartActive : "")">@_tempMinute.ToString("00")</span>
+                </div>
+                <div class="@Css.Classes.TimePicker.Columns" tabindex="0" @ref="_dropRef" @onkeydown="OnDropKey">
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="Hours">
+                        @for (var h = 0; h < 24; h++)
+                        {
+                            var hour = h;
+                            <button type="button"
+                                    class="@Css.Classes.TimePicker.Cell @(hour == _tempHour ? Css.Classes.TimePicker.CellSelected : "")"
+                                    role="option" aria-selected="@(hour == _tempHour)"
+                                    @onclick="@(() => _tempHour = hour)">@hour.ToString("00")</button>
+                        }
+                    </div>
+                    <div class="@Css.Classes.TimePicker.ColumnsSep">:</div>
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="Minutes">
+                        @for (var m = 0; m < 60; m += MinuteStep)
+                        {
+                            var min = m;
+                            <button type="button"
+                                    class="@Css.Classes.TimePicker.Cell @(min == _tempMinute ? Css.Classes.TimePicker.CellSelected : "")"
+                                    role="option" aria-selected="@(min == _tempMinute)"
+                                    @onclick="@(() => _tempMinute = min)">@min.ToString("00")</button>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="@Css.Classes.TimePicker.Actions">
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Close">@CancelText</FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm">@OkText</FlareButton>
+            </div>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@($"{Css.Classes.TimePicker.Helper} {Css.Classes.TimePicker.HelperError}")">@_displayedError</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.TimePicker.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Currently selected time.</summary>
+    [Parameter] public TimeOnly? Value { get; set; }
+    /// <summary>Callback invoked when the selected time changes.</summary>
+    [Parameter] public EventCallback<TimeOnly?> ValueChanged { get; set; }
+    /// <summary>Label text displayed above the time picker.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Placeholder shown when empty. Default "HH:mm".</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Helper text shown below the time picker.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Disables the time picker when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>Popup style: MD3 clock <see cref="TimePickerVariant.Dial"/> (default) or <see cref="TimePickerVariant.Dropdown"/> columns.</summary>
+    [Parameter] public TimePickerVariant PopupVariant { get; set; } = TimePickerVariant.Dial;
+    /// <summary>Visual variant (Filled/Outlined) of the trigger field, shared with FlareField.
+    /// Default keeps the theme's field style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>Control size (Xs..Xl) of the trigger field, shared with FlareField. Medium is the default.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture.</summary>
+    [Parameter] public bool? Use24Hour { get; set; }
+    /// <summary>Minute increment shown in the Dropdown column. Default 1.</summary>
+    [Parameter] public int MinuteStep { get; set; } = 1;
+    /// <summary>Headline shown at the top of the picker popup.</summary>
+    [Parameter] public string Headline { get; set; } = "Select time";
+    /// <summary>Confirm button text. Default "OK".</summary>
+    [Parameter] public string OkText { get; set; } = "OK";
+    /// <summary>Cancel button text. Default "Cancel".</summary>
+    [Parameter] public string CancelText { get; set; } = "Cancel";
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<TimeOnly?>>? For { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.TimePicker.Root;
+
+    private FieldIdentifier _fieldId;
+    private bool _open;
+    private int _tempHour;
+    private int _tempMinute;
+    private string _text = string.Empty;
+    private TimeOnly? _syncedValue;
+    private bool _is24Hour;
+
+    private ElementReference _fieldEl;
+    private ElementReference _panelEl;
+    private IJSObjectReference? _module;
+    private bool _panelPositioned;
+    private readonly string _panelId = $"flare-timepicker-{Guid.NewGuid():N}";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (MinuteStep < 1) MinuteStep = 1;
+        _is24Hour = Use24Hour ?? !CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern.Contains('h');
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+
+        if (!Equals(Value, _syncedValue))
+        {
+            _syncedValue = Value;
+            _text = Value?.ToString("HH:mm") ?? string.Empty;
+        }
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        if (_module is not null)
+        {
+            try
+            {
+                await _module.InvokeVoidAsync("removeAnchoredPanel", _panelId);
+                await _module.DisposeAsync();
+            }
+            catch (JSDisconnectedException) { }
+        }
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private string _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.TimePicker.Error :
+        Disabled ? Css.Classes.TimePicker.Disabled : string.Empty;
+
+    private string _variantClass => Variant switch
+    {
+        InputVariant.Filled => Css.Classes.Input.VariantFilled,
+        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
+        _ => string.Empty,
+    };
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.TimePicker.SizeXs,
+        FieldSize.Sm => Css.Classes.TimePicker.SizeSm,
+        FieldSize.Lg => Css.Classes.TimePicker.SizeLg,
+        FieldSize.Xl => Css.Classes.TimePicker.SizeXl,
+        _ => string.Empty,
+    };
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        _text = MaskTime(e.Value?.ToString());
+        if (_text.Length == 5 && TimeOnly.TryParseExact(_text, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var t))
+            await Commit(t);
+    }
+
+    private async Task HandleCommitText(ChangeEventArgs e)
+    {
+        _text = MaskTime(e.Value?.ToString());
+        if (string.IsNullOrEmpty(_text)) { await Commit(null); return; }
+        if (TimeOnly.TryParseExact(_text, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var t) ||
+            TimeOnly.TryParse(_text, CultureInfo.CurrentUICulture, DateTimeStyles.None, out t))
+        {
+            _text = t.ToString("HH:mm");
+            await Commit(t);
+        }
+    }
+
+    private static string MaskTime(string? raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return string.Empty;
+        var digits = new string(raw.Where(char.IsDigit).Take(4).ToArray());
+        if (digits.Length <= 2) return digits;
+        var hh = digits[..2];
+        var mm = digits[2..];
+        if (int.TryParse(hh, out var h) && h > 23) hh = "23";
+        if (mm.Length == 2 && int.TryParse(mm, out var m) && m > 59) mm = "59";
+        return $"{hh}:{mm}";
+    }
+
+    private ElementReference _dropRef;
+    private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
+    private string _dropBuf = string.Empty;
+    private bool _focusDrop;
+
+    private void Toggle()
+    {
+        if (Disabled) return;
+        if (!_open)
+        {
+            _tempHour = Value?.Hour ?? 0;
+            _tempMinute = Value?.Minute ?? 0;
+            _dropActive = 0;
+            _dropBuf = string.Empty;
+            _focusDrop = PopupVariant == TimePickerVariant.Dropdown;
+        }
+        _open = !_open;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Fixed-position the popup under the field on open (clean up on close) so it escapes a Card's
+        // overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
+        if (_open != _panelPositioned)
+        {
+            try
+            {
+                _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
+                if (_open)
+                    await _module.InvokeVoidAsync("positionAnchoredPanel", _panelId, _fieldEl, _panelEl, new { });
+                else
+                    await _module.InvokeVoidAsync("removeAnchoredPanel", _panelId);
+                _panelPositioned = _open;
+            }
+            catch (JSDisconnectedException) { }
+        }
+
+        if (_focusDrop)
+        {
+            _focusDrop = false;
+            try { await _dropRef.FocusAsync(); } catch { /* best-effort */ }
+        }
+    }
+
+    private void OnDropKey(KeyboardEventArgs e)
+    {
+        var key = e.Key;
+        if (key.Length == 1 && key[0] >= '0' && key[0] <= '9')
+        {
+            if (_dropActive == 0)
+            {
+                var (v, buf, complete) = TimeKeyboardEntry.Feed(_dropBuf, key[0], 23);
+                _dropBuf = buf; _tempHour = v;
+                if (complete) { _dropActive = 1; _dropBuf = string.Empty; }
+            }
+            else
+            {
+                var (v, buf, complete) = TimeKeyboardEntry.Feed(_dropBuf, key[0], 59);
+                _dropBuf = buf; _tempMinute = v;
+                if (complete) _dropBuf = string.Empty;
+            }
+        }
+        else if (key == "ArrowLeft") { _dropActive = 0; _dropBuf = string.Empty; }
+        else if (key == "ArrowRight") { _dropActive = 1; _dropBuf = string.Empty; }
+        else if (key == "Backspace") { _dropBuf = string.Empty; }
+    }
+
+    private void Close() => _open = false;
+
+    private async Task Confirm()
+    {
+        _open = false;
+        await Commit(new TimeOnly(_tempHour, _tempMinute));
+    }
+
+    private async Task Commit(TimeOnly? value)
+    {
+        _syncedValue = value;
+        _text = value?.ToString("HH:mm") ?? string.Empty;
+        await ValueChanged.InvokeAsync(value);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+}

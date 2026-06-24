@@ -1,0 +1,31 @@
+@* Shape axis: Default (theme's own shape), Rounded (rounded rectangle), Circular (pill),
+   Square (sharp corners). Every value resolves to per-theme shape tokens. *@
+<FlareStack Row>
+    <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Default">Default</FlareButton>
+    <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Rounded">Rounded</FlareButton>
+    <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Circular">Circular</FlareButton>
+    <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Square">Square</FlareButton>
+</FlareStack>
+
+<FlareStack Row>
+    <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Default">Default</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Rounded">Rounded</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Circular">Circular</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Square">Square</FlareButton>
+</FlareStack>
+
+@* Icon-only: Circular gives a true circle, Square a hard-edged tile. *@
+<FlareStack Row>
+    <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Default" AriaLabel="Default">
+        <LeadingIcon><FlareIcon Icon="favorite" /></LeadingIcon>
+    </FlareButton>
+    <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Rounded" AriaLabel="Rounded">
+        <LeadingIcon><FlareIcon Icon="favorite" /></LeadingIcon>
+    </FlareButton>
+    <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Circular" AriaLabel="Circular">
+        <LeadingIcon><FlareIcon Icon="favorite" /></LeadingIcon>
+    </FlareButton>
+    <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Square" AriaLabel="Square">
+        <LeadingIcon><FlareIcon Icon="favorite" /></LeadingIcon>
+    </FlareButton>
+</FlareStack>

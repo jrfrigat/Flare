@@ -1,0 +1,36 @@
+<FlareGrid Columns="2" Gap="FlareSpacing.Medium">
+    <FlareCol Span="1">
+        @* Clickable / link card with media + anatomy slots *@
+        <FlareCard Variant="CardVariant.Elevated" Href="https://github.com/" Target="_blank">
+            <FlareCardMedia Src="https://picsum.photos/seed/flare/600/300" Alt="Cover image" Height="10rem" />
+            <FlareCardHeader Title="Mountain retreat" Subtitle="Clickable card (renders as a link)" />
+            <FlareCardContent>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    The whole card is interactive: hover state layer, keyboard focus, opens in a new tab.
+                </FlareText>
+            </FlareCardContent>
+        </FlareCard>
+    </FlareCol>
+    <FlareCol Span="1">
+        @* Anatomy: header (avatar + action) / content / actions *@
+        <FlareCard Variant="CardVariant.Outlined">
+            <FlareCardHeader Title="Alice Johnson" Subtitle="Senior Engineer · Berlin">
+                <Avatar><FlareAvatar Text="Alice Johnson" Size="AvatarSize.Md" /></Avatar>
+                <Action><FlareButton LeadingIcon="@_more" Variant="ButtonVariant.Text" Size="ButtonSize.Sm" AriaLabel="More" /></Action>
+            </FlareCardHeader>
+            <FlareCardContent>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    FlareCardHeader / Content / Actions replace the old inline padding + dividers.
+                </FlareText>
+            </FlareCardContent>
+            <FlareCardActions Align="CardActionsAlign.End">
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">View profile</FlareButton>
+                <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm">Message</FlareButton>
+            </FlareCardActions>
+        </FlareCard>
+    </FlareCol>
+</FlareGrid>
+
+@code {
+    private readonly RenderFragment _more = @<FlareIcon Name="more_vert" />;
+}

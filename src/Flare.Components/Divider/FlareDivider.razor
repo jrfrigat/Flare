@@ -1,0 +1,53 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@if (Vertical)
+{
+    <div class="@BuildCssClass(Css.Classes.Divider.Vertical, _insetClass)" style="@Style" aria-hidden="true" @attributes="AdditionalAttributes"></div>
+}
+else if (!string.IsNullOrEmpty(Text))
+{
+    <div class="@BuildCssClass(Css.Classes.Divider.Text, _textAlignClass, _insetClass)" style="@Style" aria-hidden="true" @attributes="AdditionalAttributes">
+        <span class="@Css.Classes.Divider.TextContent">@Text</span>
+    </div>
+}
+else
+{
+    <hr class="@BuildCssClass(_insetClass)" style="@Style" aria-hidden="true" @attributes="AdditionalAttributes" />
+}
+
+@code {
+    /// <summary>Renders a vertical divider instead of horizontal.</summary>
+    [Parameter] public bool Vertical { get; set; }
+    /// <summary>Optional text label centered in the divider (e.g. "OR").</summary>
+    [Parameter] public string? Text { get; set; }
+    /// <summary>Controls where the text label is anchored when <see cref="Text"/> is set.</summary>
+    [Parameter] public DividerTextAlign TextAlign { get; set; } = DividerTextAlign.Center;
+    /// <summary>Inset style (None full-bleed, Inset leading-edge, MiddleInset both edges), per MD3.</summary>
+    [Parameter] public DividerInset Inset { get; set; } = DividerInset.None;
+
+    protected override string ComponentCssClass => Css.Classes.Divider.Root;
+
+    private string _insetClass => Inset switch
+    {
+        DividerInset.Inset => Css.Classes.Divider.Inset,
+        DividerInset.MiddleInset => Css.Classes.Divider.MiddleInset,
+        _ => string.Empty,
+    };
+
+    private string? _lastKey;
+    protected override bool ShouldRender()
+    {
+        var key = $"{Vertical}:{Text}:{TextAlign}:{Inset}";
+        if (key == _lastKey) return false;
+        _lastKey = key;
+        return true;
+    }
+
+    private string _textAlignClass => TextAlign switch
+    {
+        DividerTextAlign.Left  => Css.Classes.Divider.TextLeft,
+        DividerTextAlign.Right => Css.Classes.Divider.TextRight,
+        _                      => Css.Classes.Divider.TextCenter,
+    };
+}

@@ -1,0 +1,93 @@
+/* Visually-hidden utility - content readable by screen readers, invisible on screen */
+.flare-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Global focus ring - uses theme token so it adapts per theme. Shown only for keyboard
+   (and other non-pointer) focus via :focus-visible. */
+:focus-visible {
+    outline: var(--flare-focus-ring, 2px solid currentColor);
+    outline-offset: 2px;
+}
+
+/* Universal safety net: a pointer (mouse/touch) focus must never draw a focus ring. Any element
+   that still styles a ring on the broad :focus state (its own rule or a third-party one) has the
+   outline cleared when the focus did not come from the keyboard. Keyboard focus uses :focus-visible,
+   which this selector never matches, so the ring above is preserved. Applies to every element. */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Flare interactive elements - explicit focus ring using theme token */
+.flare-btn:focus-visible,
+.flare-chip:focus-visible,
+.flare-tab:focus-visible,
+.flare-accordion-panel__header:focus-visible,
+.flare-nav-link:focus-visible,
+.flare-pagination__btn:focus-visible,
+.flare-calendar__nav-btn:focus-visible,
+.flare-calendar__cell:focus-visible,
+.flare-carousel__arrow:focus-visible,
+.flare-carousel__dot:focus-visible,
+.flare-kanban__card:focus-visible,
+.flare-transfer__item:focus-visible,
+.flare-rating__star:focus-visible,
+.flare-rte__tool:focus-visible,
+.flare-stepper__step:focus-visible,
+.flare-tree-item__toggle:focus-visible,
+.flare-tree-item__row:focus-visible {
+    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline-offset: 2px;
+}
+
+/* Text-field controls indicate focus via their own active indicator (the field's bottom
+   border on :focus-within), per MD3/Fluent. Suppress the generic focus-ring outline so a
+   click/focus doesn't draw a full ring around the field. Must come after the rules above so
+   it wins at equal specificity (and beats the global :focus-visible). */
+.flare-input__control:focus-visible,
+.flare-autocomplete__control:focus-visible,
+.flare-select__control:focus-visible,
+.flare-multiselect__control:focus-visible,
+.flare-textarea__control:focus-visible,
+.flare-datepicker__control:focus-visible,
+.flare-datetimepicker__control:focus-visible,
+.flare-timepicker__control:focus-visible,
+.flare-tag-input__input:focus-visible {
+    outline: none;
+}
+
+/* Ensure disabled elements don't show focus ring */
+[disabled]:focus-visible,
+[aria-disabled="true"]:focus-visible {
+    outline: none;
+}
+
+/* High-contrast mode support */
+@media (forced-colors: active) {
+    :focus-visible {
+        outline: 3px solid ButtonText;
+        outline-offset: 2px;
+    }
+}
+
+/* Keyboard navigation for tab/menu/tree roles (roving tabindex) */
+[role="tab"]:focus-visible,
+[role="menuitem"]:focus-visible,
+[role="treeitem"]:focus-visible {
+    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline-offset: 2px;
+}
+
+[role="tablist"] [role="tab"][tabindex="0"]:focus-visible,
+[role="menu"] [role="menuitem"][tabindex="0"]:focus-visible {
+    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline-offset: 2px;
+}

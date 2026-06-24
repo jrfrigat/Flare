@@ -1,0 +1,14 @@
+@page "/components/pagination"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Pagination_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlarePagination">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Pagination_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Pagination_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Pagination_Basic" DemoType="typeof(Examples.PaginationBasicDemo)" />
+<AutoDemoSection Title="Info Display" DemoType="typeof(Examples.PaginationInfoDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Pagination_Options" DemoType="typeof(Examples.PaginationOptionsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Pagination_PageSize" DemoType="typeof(Examples.PaginationPageSizeDemo)" />

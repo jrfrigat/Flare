@@ -1,0 +1,434 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+@using System.Globalization
+@inject TimeProvider TimeProvider
+@inject IJSRuntime JS
+
+<div class="@BuildCssClass(_variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.DateTimePicker.Label">@Label</label>
+    }
+    <div class="@Css.Classes.DateTimePicker.Field" @ref="_fieldRef">
+        <input class="@Css.Classes.DateTimePicker.Control"
+               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+               type="text"
+               disabled="@Disabled"
+               readonly="@(!AllowInput)"
+               placeholder="@(Placeholder ?? _numericPattern)"
+               aria-label="@(Label ?? Placeholder)"
+               value="@_text"
+               @onfocus="HandleFocus"
+               @oninput="HandleInput"
+               @onchange="HandleTextChange"
+               @onblur="HandleBlur" />
+        @if (AllowPicker)
+        {
+            <button type="button" class="@Css.Classes.DateTimePicker.Toggle flare-input__icon flare-input__icon--trailing"
+                    disabled="@Disabled" aria-haspopup="dialog" aria-expanded="@_open"
+                    aria-label="Open date-time picker" @onclick="TogglePanel">
+                <FlareIcon Name="calendar_clock" Style="font-size:1.25rem;" />
+            </button>
+        }
+    </div>
+    @if (_open)
+    {
+        <div class="@Css.Classes.DateTimePicker.Scrim" @onclick="() => _open = false" aria-hidden="true"></div>
+        <div class="@Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" style="@_panelStyle">
+            @if (_panels)
+            {
+                <div class="@Css.Classes.DateTimePicker.Panes">
+                    <div class="@Css.Classes.DateTimePicker.Pane">@_calendar</div>
+                    <div class="@Css.Classes.DateTimePicker.Pane">@_time</div>
+                </div>
+            }
+            else
+            {
+                <div class="@Css.Classes.DateTimePicker.Tabs">
+                    <button class="@Css.Classes.DateTimePicker.Tab @(_activeTab == 0 ? Css.Classes.DateTimePicker.TabActive : "")"
+                            type="button" @onclick='() => _activeTab = 0'>@(FlareStrings.DateTimePicker_DateTab)</button>
+                    <button class="@Css.Classes.DateTimePicker.Tab @(_activeTab == 1 ? Css.Classes.DateTimePicker.TabActive : "")"
+                            type="button" @onclick='() => _activeTab = 1'>@(FlareStrings.DateTimePicker_TimeTab)</button>
+                </div>
+                @if (_activeTab == 0) { @_calendar } else { @_time }
+            }
+            <div class="@Css.Classes.DateTimePicker.Footer">
+                <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Clear" @onclick:stopPropagation>@(FlareStrings.Picker_Clear)</button>
+                <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
+            </div>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ErrorText))
+    {
+        <span class="@($"{Css.Classes.DateTimePicker.Helper} {Css.Classes.DateTimePicker.HelperError}")" role="alert">@ErrorText</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.DateTimePicker.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Currently selected date and time (supports <c>@bind-Value</c>).</summary>
+    [Parameter] public DateTimeOffset? Value { get; set; }
+    [Parameter] public EventCallback<DateTimeOffset?> ValueChanged { get; set; }
+    [Parameter] public DateTimeOffset? Min { get; set; }
+    [Parameter] public DateTimeOffset? Max { get; set; }
+    /// <summary>Display/parse format. Null (default) uses the culture short date + time pattern.</summary>
+    [Parameter] public string? DateTimeFormat { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>Allows typing the value directly into the field (with auto-separators). Default true.</summary>
+    [Parameter] public bool AllowInput { get; set; } = true;
+    /// <summary>Allows opening the picker popup (shows the icon button). Default true.</summary>
+    [Parameter] public bool AllowPicker { get; set; } = true;
+    /// <summary>Time tab style: <see cref="TimePickerVariant.Dial"/> (clock) or <see cref="TimePickerVariant.Dropdown"/> (number fields, default).</summary>
+    [Parameter] public TimePickerVariant TimeVariant { get; set; } = TimePickerVariant.Dropdown;
+    /// <summary>Popup layout: <see cref="DateTimeVariant.Auto"/> (default, responsive), <see cref="DateTimeVariant.Tabs"/> or <see cref="DateTimeVariant.Panels"/> (side by side).</summary>
+    [Parameter] public DateTimeVariant Mode { get; set; } = DateTimeVariant.Auto;
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
+    /// Default keeps the theme's field style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Forces 12/24-hour clock on the dial. Null auto-detects from culture.</summary>
+    [Parameter] public bool? Use24Hour { get; set; }
+    /// <summary>Culture for the calendar and parsing. Default = CurrentUICulture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.DateTimePicker.Root;
+
+    private string _variantClass => Variant switch
+    {
+        InputVariant.Filled => Css.Classes.Input.VariantFilled,
+        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
+        _ => string.Empty,
+    };
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.DateTimePicker.SizeXs,
+        FieldSize.Sm => Css.Classes.DateTimePicker.SizeSm,
+        FieldSize.Lg => Css.Classes.DateTimePicker.SizeLg,
+        FieldSize.Xl => Css.Classes.DateTimePicker.SizeXl,
+        _ => string.Empty,
+    };
+
+    private bool _open;
+    private int _activeTab;
+    private DateOnly? _selectedDate;
+    private int _hour;
+    private int _minute;
+    private DateOnly _viewDate;
+    private ElementReference _fieldRef;
+    private double _panelTop;
+    private double _panelLeft;
+    private double _panelMinWidth = 280;
+    private bool _is24Hour;
+    private string _bp = "Xs";
+    private IJSObjectReference? _bpModule;
+    private DotNetObjectReference<FlareDateTimePicker>? _bpRef;
+    private readonly string _bpId = $"dtp-{Guid.NewGuid():N}";
+    private string _text = string.Empty;
+    private DateTimeOffset? _syncedValue;
+    private bool _focused;
+
+    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    private string _format => string.IsNullOrEmpty(DateTimeFormat)
+        ? $"{_culture.DateTimeFormat.ShortDatePattern} {_culture.DateTimeFormat.ShortTimePattern}"
+        : DateTimeFormat;
+    private string _dateSep => Nz(_culture.DateTimeFormat.DateSeparator, ".");
+    private bool _dayFirst => _culture.DateTimeFormat.ShortDatePattern.IndexOf('d') < _culture.DateTimeFormat.ShortDatePattern.IndexOf('M');
+    private string _numericPattern => (_dayFirst ? $"dd{_dateSep}MM{_dateSep}yyyy" : $"MM{_dateSep}dd{_dateSep}yyyy") + " HH:mm";
+
+    private static string Nz(string? s, string fallback) => string.IsNullOrEmpty(s) ? fallback : s;
+
+    private string _panelStyle =>
+        $"top:{_panelTop.ToString("F1", CultureInfo.InvariantCulture)}px;" +
+        $"left:{_panelLeft.ToString("F1", CultureInfo.InvariantCulture)}px;" +
+        $"min-width:{_panelMinWidth.ToString("F1", CultureInfo.InvariantCulture)}px";
+
+    private record struct FieldBounds(double Top, double Bottom, double Left, double Width, double ViewportHeight, double ViewportWidth);
+
+    // Layout: Auto resolves to Panels on >= md (960px) viewports, Tabs otherwise.
+    private DateTimeVariant _effectiveVariant => Mode switch
+    {
+        DateTimeVariant.Panels => DateTimeVariant.Panels,
+        DateTimeVariant.Auto => _bp is "Md" or "Lg" or "Xl" ? DateTimeVariant.Panels : DateTimeVariant.Tabs,
+        _ => DateTimeVariant.Tabs,
+    };
+    private bool _panels => _effectiveVariant == DateTimeVariant.Panels;
+
+    // Calendar pane (nav + headers + grid) - reused by Tabs and Panels.
+    private RenderFragment _calendar => @<text>
+        <div class="@Css.Classes.DateTimePicker.Nav">
+            <span @onclick:stopPropagation @onclick="() => { }">
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="Previous">
+                    <LeadingIcon><FlareIcon Name="chevron_left" /></LeadingIcon>
+                </FlareButton>
+            </span>
+            <span class="@Css.Classes.DateTimePicker.NavLabel">@_viewDate.ToString("MMMM yyyy", _culture)</span>
+            <span @onclick:stopPropagation @onclick="() => { }">
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="Next">
+                    <LeadingIcon><FlareIcon Name="chevron_right" /></LeadingIcon>
+                </FlareButton>
+            </span>
+        </div>
+        <div class="@Css.Classes.DateTimePicker.DayHeaders">
+            @foreach (var d in DayHeaders)
+            {
+                <span>@d</span>
+            }
+        </div>
+        <div class="@Css.Classes.DateTimePicker.Grid" role="grid" aria-label="@_viewDate.ToString("MMMM yyyy", _culture)">
+            @foreach (var day in GetCalendarDays())
+            {
+                var d = day;
+                <button type="button"
+                        role="gridcell"
+                        aria-selected="@(d == _selectedDate ? "true" : "false")"
+                        aria-current="@(d == Today ? "date" : null)"
+                        class="@Css.Classes.DateTimePicker.Day
+                               @(d.Month != _viewDate.Month ? Css.Classes.DateTimePicker.DayOther : "")
+                               @(d == _selectedDate ? Css.Classes.DateTimePicker.DaySelected : "")
+                               @(d == Today ? Css.Classes.DateTimePicker.DayToday : "")"
+                        @onclick="() => SelectDate(d)"
+                        @onclick:stopPropagation>@d.Day</button>
+            }
+        </div>
+    </text>;
+
+    // Time pane (clock dial or number inputs) - reused by Tabs and Panels.
+    private RenderFragment _time => @<text>
+        @if (TimeVariant == TimePickerVariant.Dial)
+        {
+            <FlareClockDial Hour="_hour" HourChanged="h => _hour = h"
+                            Minute="_minute" MinuteChanged="m => _minute = m"
+                            Is24Hour="_is24Hour" />
+        }
+        else
+        {
+            <div class="@Css.Classes.DateTimePicker.Time">
+                <input type="number" min="0" max="23" class="@Css.Classes.DateTimePicker.TimeInput"
+                       value="@_hour" @onchange="e => SetHour(e.Value?.ToString())" />
+                <span>:</span>
+                <input type="number" min="0" max="59" class="@Css.Classes.DateTimePicker.TimeInput"
+                       value="@_minute" @onchange="e => SetMinute(e.Value?.ToString())" />
+            </div>
+        }
+    </text>;
+
+    private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
+
+    private IReadOnlyList<string> DayHeaders
+    {
+        get
+        {
+            var first = (int)_culture.DateTimeFormat.FirstDayOfWeek;
+            var fmt = _culture.DateTimeFormat;
+            return Enumerable.Range(0, 7)
+                .Select(i => fmt.GetShortestDayName((DayOfWeek)((first + i) % 7)))
+                .ToArray();
+        }
+    }
+
+    private string FormattedValue => Value.HasValue ? Value.Value.ToString(_format, _culture) : string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _viewDate = Today;
+    }
+
+    protected override void OnParametersSet()
+    {
+        _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
+        if (Value.HasValue)
+        {
+            _selectedDate = DateOnly.FromDateTime(Value.Value.DateTime);
+            _hour = Value.Value.Hour;
+            _minute = Value.Value.Minute;
+            if (!_open) _viewDate = _selectedDate.Value;
+        }
+        if (!_focused && !Equals(Value, _syncedValue))
+        {
+            _syncedValue = Value;
+            _text = FormattedValue;
+        }
+    }
+
+    // Strip to digits, format as dd<sep>MM<sep>yyyy HH:mm. "010620261233" -> "01.06.2026 12:33".
+    private string MaskDateTime(string? raw)
+    {
+        if (string.IsNullOrEmpty(raw)) return string.Empty;
+        var d = new string(raw.Where(char.IsDigit).Take(12).ToArray());
+        var sb = new System.Text.StringBuilder();
+        for (var i = 0; i < d.Length; i++)
+        {
+            if (i == 2 || i == 4) sb.Append(_dateSep);
+            else if (i == 8) sb.Append(' ');
+            else if (i == 10) sb.Append(':');
+            sb.Append(d[i]);
+        }
+        return sb.ToString();
+    }
+
+    private bool TryParse(string s, out DateTimeOffset value)
+    {
+        if (DateTimeOffset.TryParseExact(s, _numericPattern, _culture, DateTimeStyles.None, out value)) return true;
+        if (DateTimeOffset.TryParseExact(s, _format, _culture, DateTimeStyles.None, out value)) return true;
+        return DateTimeOffset.TryParse(s, _culture, DateTimeStyles.None, out value);
+    }
+
+    private void HandleFocus()
+    {
+        _focused = true;
+        if (Value.HasValue) _text = Value.Value.ToString(_numericPattern, _culture);
+    }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        _text = MaskDateTime(e.Value?.ToString());
+        if (_text.Length == _numericPattern.Length && TryParse(_text, out var dt) && InRange(dt))
+            await CommitValue(dt);
+    }
+
+    private async Task HandleTextChange(ChangeEventArgs e)
+    {
+        var raw = e.Value?.ToString()?.Trim() ?? string.Empty;
+        _text = raw;
+        if (string.IsNullOrEmpty(raw)) { await CommitValue(null); return; }
+        if (TryParse(raw, out var dt) && InRange(dt))
+            await CommitValue(dt);
+    }
+
+    private void HandleBlur()
+    {
+        _focused = false;
+        _text = FormattedValue;
+    }
+
+    private bool InRange(DateTimeOffset dt) =>
+        (!Min.HasValue || dt >= Min.Value) && (!Max.HasValue || dt <= Max.Value);
+
+    private async Task CommitValue(DateTimeOffset? dt)
+    {
+        if (dt.HasValue)
+        {
+            _selectedDate = DateOnly.FromDateTime(dt.Value.DateTime);
+            _hour = dt.Value.Hour;
+            _minute = dt.Value.Minute;
+            _viewDate = _selectedDate.Value;
+        }
+        else
+        {
+            _selectedDate = null;
+        }
+        _syncedValue = dt;
+        await ValueChanged.InvokeAsync(dt);
+    }
+
+    private async Task TogglePanel()
+    {
+        if (Disabled) return;
+        _open = !_open;
+        if (_open)
+        {
+            try
+            {
+                var b = await JS.InvokeAsync<FieldBounds>("flareGetBounds", _fieldRef);
+                // The clock dial is 256px + panel padding; keep the panel wide enough so it never overflows.
+                var floor = TimeVariant == TimePickerVariant.Dial ? 320 : 280;
+                _panelMinWidth = Math.Max(floor, b.Width);
+                const double panelHeight = 380;
+                if (b.Bottom + panelHeight + 4 > b.ViewportHeight && b.Top > panelHeight)
+                    _panelTop = b.Top - panelHeight - 4;
+                else
+                    _panelTop = b.Bottom + 4;
+                var right = b.Left + _panelMinWidth;
+                _panelLeft = right > b.ViewportWidth ? Math.Max(0, b.ViewportWidth - _panelMinWidth - 8) : b.Left;
+            }
+            catch
+            {
+                _panelTop = 200;
+                _panelLeft = 0;
+            }
+        }
+    }
+
+    private void PrevMonth() => _viewDate = _viewDate.AddMonths(-1);
+    private void NextMonth() => _viewDate = _viewDate.AddMonths(1);
+
+    private void SelectDate(DateOnly d)
+    {
+        _selectedDate = d;
+        _activeTab = 1;
+    }
+
+    private void SetHour(string? v) =>
+        _hour = int.TryParse(v, out var h) ? Math.Clamp(h, 0, 23) : _hour;
+
+    private void SetMinute(string? v) =>
+        _minute = int.TryParse(v, out var m) ? Math.Clamp(m, 0, 59) : _minute;
+
+    private async Task Confirm()
+    {
+        if (_selectedDate.HasValue)
+            await CommitValue(new DateTimeOffset(_selectedDate.Value.ToDateTime(new TimeOnly(_hour, _minute))));
+        _open = false;
+    }
+
+    private async Task Clear()
+    {
+        await CommitValue(null);
+        _open = false;
+    }
+
+    private IEnumerable<DateOnly> GetCalendarDays()
+    {
+        var first = new DateOnly(_viewDate.Year, _viewDate.Month, 1);
+        int firstDayOfWeek = (int)_culture.DateTimeFormat.FirstDayOfWeek;
+        int offset = ((int)first.DayOfWeek - firstDayOfWeek + 7) % 7;
+        var start = first.AddDays(-offset);
+        for (int i = 0; i < 42; i++)
+            yield return start.AddDays(i);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Mode == DateTimeVariant.Auto)
+        {
+            try
+            {
+                _bpModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
+                _bpRef = DotNetObjectReference.Create(this);
+                _bp = await _bpModule.InvokeAsync<string>("subscribeBreakpoint", _bpId, _bpRef);
+                StateHasChanged();
+            }
+            catch { /* breakpoint sync is best-effort */ }
+        }
+    }
+
+    /// <summary>JS callback when the viewport breakpoint changes (Auto layout).</summary>
+    [JSInvokable]
+    public Task OnBreakpointChanged(string breakpoint)
+    {
+        _bp = breakpoint;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (_bpModule is not null)
+        {
+            try { await _bpModule.InvokeVoidAsync("unsubscribeBreakpoint", _bpId); } catch { }
+            try { await _bpModule.DisposeAsync(); } catch { }
+        }
+        _bpRef?.Dispose();
+    }
+}

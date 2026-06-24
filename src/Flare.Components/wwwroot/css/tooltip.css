@@ -1,0 +1,64 @@
+.flare-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.flare-tooltip__content {
+  position: absolute;
+  z-index: 1000;
+  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-6, 0.75rem);
+  background: var(--flare-color-inverse-surface);
+  color: var(--flare-color-inverse-on-surface);
+  font-family: var(--flare-typescale-body-small-font);
+  font-size: var(--flare-typescale-body-small-size);
+  line-height: var(--flare-typescale-body-small-height);
+  letter-spacing: var(--flare-typescale-body-small-spacing);
+  border-radius: var(--flare-shape-extra-small);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--flare-motion-duration-short1),
+              visibility var(--flare-motion-duration-short1);
+}
+
+/* MD3 rich tooltip: surface container, on-surface text, elevation 3, wraps. */
+.flare-tooltip__content--rich {
+  background: var(--flare-color-surface-container);
+  color: var(--flare-color-on-surface);
+  box-shadow: var(--flare-elevation-3);
+  white-space: normal;
+  max-width: 18rem;
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+}
+
+.flare-tooltip:hover .flare-tooltip__content,
+.flare-tooltip:focus-within .flare-tooltip__content,
+.flare-tooltip__content--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.flare-tooltip--top .flare-tooltip__content {
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.flare-tooltip--bottom .flare-tooltip__content {
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.flare-tooltip--left .flare-tooltip__content {
+  right: calc(100% + 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.flare-tooltip--right .flare-tooltip__content {
+  left: calc(100% + 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+}

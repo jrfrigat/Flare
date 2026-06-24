@@ -1,0 +1,93 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@if (Href is not null)
+{
+    <a class="@BuildCssClass(_disabledClass)"
+       role="menuitem"
+       href="@_safeHref"
+       tabindex="@_tabIndex"
+       aria-disabled="@Disabled.ToString().ToLowerInvariant()"
+       style="@Style"
+       @onclick="HandleClick"
+       @onclick:preventDefault="@Disabled"
+       @attributes="AdditionalAttributes">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded" aria-hidden="true">@Icon</span>
+        }
+        <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
+    </a>
+}
+else
+{
+    <button class="@BuildCssClass(_disabledClass)"
+            role="menuitem"
+            type="button"
+            disabled="@Disabled"
+            tabindex="@_tabIndex"
+            style="@Style"
+            @onclick="HandleClick"
+            @attributes="AdditionalAttributes">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded" aria-hidden="true">@Icon</span>
+        }
+        <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
+    </button>
+}
+
+@code {
+    /// <summary>Text or content rendered as the menu item label.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Material Symbols icon displayed before the label.</summary>
+    [Parameter] public string? Icon { get; set; }
+    /// <summary>Prevents the menu item from being clicked.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>URL the menu item navigates to. When set renders an anchor element instead of a button.</summary>
+    [Parameter] public string? Href { get; set; }
+    /// <summary>Callback raised when the menu item is clicked.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    [CascadingParameter(Name = "CloseMenu")] private Func<Task>? CloseMenu { get; set; }
+    [CascadingParameter(Name = "MenuFocusedItem")] private FlareMenuItem? MenuFocusedItem { get; set; }
+    [CascadingParameter(Name = "RegisterMenuItem")] private Action<FlareMenuItem>? RegisterMenuItem { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Menu.Item;
+
+    private string _disabledClass => Disabled
+        ? Css.Classes.Menu.ItemDisabled
+        : (ReferenceEquals(MenuFocusedItem, this) ? Css.Classes.Menu.ItemFocused : string.Empty);
+
+    private string _tabIndex => (!Disabled && ReferenceEquals(MenuFocusedItem, this)) ? "0" : "-1";
+
+    /// <summary>
+    /// Validates <see cref="Href"/> against a scheme allowlist (GS-2): only relative, fragment,
+    /// http(s), mailto and tel URLs are allowed; blocks <c>javascript:</c>, <c>vbscript:</c>, <c>data:</c> etc.
+    /// </summary>
+    /// <param name="href">The candidate URL.</param>
+    /// <returns><c>true</c> when the URL is safe to render in an anchor.</returns>
+    private static bool IsHrefSafe(string? href) =>
+        href is null || href.StartsWith('/') || href.StartsWith('#') ||
+        href.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+        href.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+        href.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase) ||
+        href.StartsWith("tel:", StringComparison.OrdinalIgnoreCase);
+
+    private string _safeHref => IsHrefSafe(Href) ? Href! : "about:blank";
+
+    /// <summary>Registers this item with the parent <see cref="FlareMenu"/> for keyboard navigation.</summary>
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        RegisterMenuItem?.Invoke(this);
+    }
+
+    /// <summary>Invokes <see cref="OnClick"/> (unless disabled) and closes the parent menu.</summary>
+    private async Task HandleClick()
+    {
+        if (Disabled) return;
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync();
+        if (CloseMenu is not null) await CloseMenu();
+    }
+}

@@ -1,0 +1,12 @@
+@page "/components/skeleton"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Skeleton_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareSkeleton">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Skeleton_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Skeleton_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Skeleton_Variants" DemoType="typeof(Examples.SkeletonVariantsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Skeleton_Animation" DemoType="typeof(Examples.SkeletonAnimationDemo)" />

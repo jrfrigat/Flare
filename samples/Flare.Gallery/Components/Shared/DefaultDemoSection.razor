@@ -1,0 +1,51 @@
+﻿@namespace Flare.Gallery.Components.Shared
+
+<DemoSection Title="@Title" Description="@Description" Tabs="@_tabs"
+            MaxWidth="@MaxWidth" Height="@Height" MinHeight="@MinHeight" MaxHeight="@MaxHeight">
+    <DemoContent>
+        @DemoContent
+    </DemoContent>
+</DemoSection>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? DemoContent { get; set; }
+
+    /// <summary>Maximum reading width of the section. Default Lg (1280px); Full for wide demos.</summary>
+    [Parameter] public ContainerMaxWidth MaxWidth { get; set; } = ContainerMaxWidth.Lg;
+    /// <summary>Preview surface height (CSS length). Unset = content height.</summary>
+    [Parameter] public string? Height { get; set; }
+    /// <summary>Minimum preview height.</summary>
+    [Parameter] public string? MinHeight { get; set; }
+    /// <summary>Maximum preview height.</summary>
+    [Parameter] public string? MaxHeight { get; set; }
+
+    // Старые параметры для ручного ввода кода
+    [Parameter] public string? RazorCode { get; set; }
+    [Parameter] public string? CsharpCode { get; set; }
+    [Parameter] public string? CssCode { get; set; }
+
+    private List<CodeTab> _tabs = new();
+
+    protected override void OnParametersSet()
+    {
+        _tabs.Clear();
+
+        // Формируем вкладки на основе переданных строк
+        if (!string.IsNullOrWhiteSpace(RazorCode))
+        {
+            _tabs.Add(new CodeTab { Title = "Razor", Language = "razor", Code = RazorCode });
+        }
+
+        if (!string.IsNullOrWhiteSpace(CsharpCode))
+        {
+            _tabs.Add(new CodeTab { Title = "C#", Language = "csharp", Code = CsharpCode });
+        }
+
+        if (!string.IsNullOrWhiteSpace(CssCode))
+        {
+            _tabs.Add(new CodeTab { Title = "CSS", Language = "css", Code = CssCode });
+        }
+    }
+}

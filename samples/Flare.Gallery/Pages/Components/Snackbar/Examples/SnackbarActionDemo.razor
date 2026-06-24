@@ -1,0 +1,18 @@
+@inject ISnackbarService Snackbar
+
+<FlareButton OnClick="ShowWithAction">With action</FlareButton>
+<FlareButton OnClick="@(() => Snackbar.Show("Stays for 10 seconds", SnackbarSeverity.Info, durationMs: 10000))">Long duration</FlareButton>
+<FlareButton OnClick="@(() => Snackbar.Show("No close button", SnackbarSeverity.Normal, showClose: false))">No close button</FlareButton>
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium" Style="margin-top:0.75rem">
+    Last action: @_lastAction
+</FlareText>
+
+@code {
+    private string _lastAction = "-";
+
+    private void ShowWithAction()
+        => Snackbar.Show("Item deleted", SnackbarSeverity.Success,
+            actionText: "UNDO",
+            onAction: () => { _lastAction = "Undo clicked"; InvokeAsync(StateHasChanged); return Task.CompletedTask; });
+}

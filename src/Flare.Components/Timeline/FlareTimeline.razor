@@ -1,0 +1,43 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_alignClass, _connectorClass, _alternatingClass)" style="@Style" @attributes="AdditionalAttributes">
+    <CascadingValue Value="@this" IsFixed="false">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    /// <summary>Timeline items rendered inside the container.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Controls alignment of items: Left, Right, or Alternate.</summary>
+    [Parameter] public TimelineAlign Align { get; set; } = TimelineAlign.Left;
+    /// <summary>Connector line style: Solid (default), Dashed, or Dotted.</summary>
+    [Parameter] public ConnectorVariant Connector { get; set; } = ConnectorVariant.Solid;
+    /// <summary>When true, odd items appear on the left and even items on the right.</summary>
+    [Parameter] public bool Alternating { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Timeline.Root;
+
+    private string _alignClass => Align switch
+    {
+        TimelineAlign.Right     => Css.Classes.Timeline.Right,
+        TimelineAlign.Alternate => Css.Classes.Timeline.Alternate,
+        _                       => string.Empty,
+    };
+
+    private string _connectorClass => Connector switch
+    {
+        ConnectorVariant.Dashed => Css.Classes.Timeline.Dashed,
+        ConnectorVariant.Dotted => Css.Classes.Timeline.Dotted,
+        _                       => string.Empty,
+    };
+
+    private string _alternatingClass => Alternating ? Css.Classes.Timeline.Alternating : string.Empty;
+
+    internal int _itemIndex;
+
+    internal int NextItemIndex() => _itemIndex++;
+
+    protected override void OnParametersSet() => _itemIndex = 0;
+}

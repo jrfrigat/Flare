@@ -1,0 +1,19 @@
+@inject IThemeService ThemeService
+@using Flare.Core.Services
+
+@* Anti-FOUC bootstrap for SSR/prerender: emits a synchronous <script> in <head> that sets
+   the initial theme/palette/mode classes on <html> from localStorage before paint. For pure
+   static WASM, paste FlareBootstrap.GenerateScript(...) into index.html instead (a component
+   renders after Blazor has started, which is too late for the very first paint). *@
+<HeadContent>
+    <script>@((MarkupString)_script)</script>
+</HeadContent>
+
+@code {
+    private string _script => Flare.Core.Services.FlareBootstrap.GenerateScript(
+        ThemeService.Themes.Select(t => t.Id),
+        ThemeService.Palettes.Select(p => p.Id),
+        ThemeService.CurrentTheme.Id,
+        ThemeService.CurrentPalette.Id,
+        ThemeService.Mode);
+}

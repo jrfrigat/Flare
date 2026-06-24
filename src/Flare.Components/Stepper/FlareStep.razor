@@ -1,0 +1,28 @@
+@namespace Flare.Components
+@implements IDisposable
+
+@* Non-rendering - registers with FlareStepper and exposes ChildContent *@
+
+@code {
+    [CascadingParameter] internal FlareStepper? Parent { get; set; }
+    /// <summary>Short label displayed in the step indicator.</summary>
+    [Parameter] public string Label { get; set; } = string.Empty;
+    /// <summary>Optional secondary description below the label.</summary>
+    [Parameter] public string? Description { get; set; }
+    /// <summary>Content shown when this step is active.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>When true the step indicator shows an error icon.</summary>
+    [Parameter] public bool HasError { get; set; }
+    /// <summary>Error message displayed below the step label when HasError is true.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Custom icon shown in the step indicator (instead of the step number) when not completed/errored.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>Marks the step as optional (shows a small "optional" caption under the label).</summary>
+    [Parameter] public bool Optional { get; set; }
+    /// <summary>Caption shown for an optional step. Default "Optional".</summary>
+    [Parameter] public string OptionalText { get; set; } = "Optional";
+
+    protected override void OnInitialized() => Parent?.RegisterStep(this);
+
+    public void Dispose() => Parent?.UnregisterStep(this);
+}

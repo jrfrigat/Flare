@@ -1,0 +1,27 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Medium" Wrap="true">
+        <FlareToggleButton @bind-Toggled="_fav" AriaLabel="Favourite">
+            <OffIcon><FlareIcon Name="favorite_border" /></OffIcon>
+            <OnIcon><FlareIcon Color="FlareColor.Error" Name="favorite" /></OnIcon>
+        </FlareToggleButton>
+
+        <FlareToggleButton @bind-Toggled="_bookmark" AriaLabel="Bookmark">
+            <OffIcon><FlareIcon Name="bookmark_border" /></OffIcon>
+            <OnIcon><FlareIcon Name="bookmark" /></OnIcon>
+        </FlareToggleButton>
+
+        <FlareToggleButton @bind-Toggled="_mute" AriaLabel="Mute">
+            <OffIcon><FlareIcon Name="volume_up" /></OffIcon>
+            <OnIcon><FlareIcon Name="volume_off" /></OnIcon>
+        </FlareToggleButton>
+    </FlareStack>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Fav: @_fav | Bookmark: @_bookmark | Mute: @_mute
+    </FlareText>
+</FlareStack>
+
+@code {
+    private bool _fav;
+    private bool _bookmark;
+    private bool _mute;
+}

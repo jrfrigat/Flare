@@ -1,0 +1,61 @@
+/* ==========================================================================
+   EXPRESSIVE ЭФФЕКТЫ ДЛЯ ОДИНОЧНОЙ КНОПКИ (MD3 EXPRESSIVE ТЕМА) [specs]
+   Используется один файл для Light и Dark тем
+
+   Обёрнуто в @scope: эти MD3-эффекты применяются ТОЛЬКО внутри ближайшего корня
+   .flare-theme-md3-expressive и не протекают в вложенный scope чужой темы
+   (например FlareThemeScope c Fluent внутри MD3-приложения). Нижняя граница
+   обрывает каскад на любом вложенном .flare-root, который НЕ md3-expressive;
+   вложенный md3-scope границей не является (он открывает свой scope), поэтому
+   вложенность той же темы работает. Близость scope (proximity) даёт этим правилам
+   победу над базовым (unscoped) button.css при равной специфичности, поэтому
+   снятие старого префикса .flare-theme-* сохраняет поведение каскада.
+   ========================================================================== */
+@scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
+
+    /* 0. Тайминг слоя состояния по спецификации MD3: hover/focus overlay fade 150ms [specs]
+       (pressed/ripple переопределяется ниже на short1 50ms через :active) */
+    .flare-btn::before {
+        transition: opacity 150ms var(--flare-motion-easing-standard) !important;
+    }
+
+    /* 1. Наведение на Outlined: Google требует полупрозрачный подкрас фона [specs] */
+    .flare-btn--outlined:hover {
+        background-color: color-mix(in srgb, currentColor 8%, transparent);
+    }
+
+    /* 2. Наведение на Tonal: Google требует приподнимание Tonal кнопки на ховере (Elevation 1) [specs] */
+    .flare-btn--tonal:hover {
+        box-shadow: var(--flare-btn-filled-hover-shadow, var(--flare-elevation-1));
+    }
+
+    /* 3. Имитация Expressive Ripple (Пульсация из центра) при клике [specs] */
+    .flare-btn:active::before {
+        transform: scale(2) !important;
+        transition: opacity var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard), transform var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard) !important;
+    }
+
+    /* ======================================================================
+       DYNAMIC SHAPE MORPHING (УМНЫЙ ПОУГЛОВОЙ МОРФИНГ ФОРМЫ) [specs]
+       Радиус морфинга считается от ФАКТИЧЕСКОЙ высоты кнопки: размерные классы
+       (.flare-btn--xs/sm/md/lg/xl) выставляют локальную --_flare-btn-height,
+       поэтому одно правило корректно работает для всех 5 размеров (fallback - Medium).
+       ====================================================================== */
+
+    /* Наведение (Hover): радиус сжимается до 33% от высоты (мягкий прямоугольник) [specs] */
+    .flare-btn:hover {
+        --_shape-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 3);
+        border-top-left-radius: var(--_shape-radius);
+        border-top-right-radius: var(--_shape-radius);
+        border-bottom-right-radius: var(--_shape-radius);
+        border-bottom-left-radius: var(--_shape-radius);
+    }
+
+    /* Нажатие (Pressed): радиус скругления углов по спецификации MD3 - поразмерно
+       (XS/S = 8dp, M = 12dp, L/XL = 16dp). */
+    .flare-btn--xs:active { border-radius: 0.5rem; }   /* 8dp */
+    .flare-btn--sm:active { border-radius: 0.5rem; }   /* 8dp */
+    .flare-btn--md:active { border-radius: 0.75rem; }  /* 12dp */
+    .flare-btn--lg:active { border-radius: 1rem; }     /* 16dp */
+    .flare-btn--xl:active { border-radius: 1rem; }     /* 16dp */
+}

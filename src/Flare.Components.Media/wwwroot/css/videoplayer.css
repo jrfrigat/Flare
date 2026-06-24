@@ -1,0 +1,59 @@
+.flare-video-player {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--flare-color-inverse-surface, #1c1b1f);
+    border-radius: var(--flare-shape-medium);
+    overflow: hidden;
+    position: relative;
+}
+
+.flare-video-player__video {
+    width: 100%;
+    display: block;
+}
+
+.flare-video-player__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
+    background-color: color-mix(in srgb, var(--flare-color-inverse-surface) 92%, transparent);
+    color: var(--flare-color-inverse-on-surface, #f5eff7);
+}
+
+.flare-video-player__progress {
+    flex: 1;
+    accent-color: var(--flare-color-primary);
+}
+
+.flare-video-player__time {
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    white-space: nowrap;
+    color: var(--flare-color-inverse-on-surface, #f5eff7);
+}
+
+.flare-video-player__btn {
+    background: none;
+    border: none;
+    color: var(--flare-color-inverse-on-surface, #f5eff7);
+    cursor: pointer;
+    padding: var(--flare-spacing-2, 0.25rem);
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--flare-shape-extra-small);
+    transition: background var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-video-player__btn:hover {
+    background: color-mix(in srgb, var(--flare-color-inverse-on-surface, #f5eff7) 12%, transparent);
+}
+
+.flare-video-player__rate {
+    background: var(--flare-color-surface-container);
+    color: var(--flare-color-on-surface);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-extra-small);
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-2, 0.25rem);
+    cursor: pointer;
+}

@@ -1,0 +1,31 @@
+@namespace Flare.Legacy.Components
+@inject ISnackbarService Snackbar
+
+<FlareStack Gap="FlareSpacing.XSmall">
+    <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Сформировать отчёт</FlareText>
+    <FlareGrid Columns="4" Gap="FlareSpacing.XSmall">
+        @foreach (var report in _reports)
+        {
+            <FlareCard Variant="CardVariant.Filled">
+                <FlareStack Gap="FlareSpacing.XXSmall" Align="FlareAlignItems.Start">
+                    <FlareIcon Size="1.4rem" Name="@report.Icon" Color="FlareColor.Primary" />
+                    <FlareText Typo="TypographyScale.LabelLarge" Weight="FontWeight.Bold">@report.Title</FlareText>
+                    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">@report.Description</FlareText>
+                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Отчёт: " + report.Title))">Сформировать</FlareButton>
+                </FlareStack>
+            </FlareCard>
+        }
+    </FlareGrid>
+</FlareStack>
+
+@code {
+    private sealed record Report(string Title, string Description, string Icon);
+
+    private static readonly Report[] _reports =
+    [
+        new("Реестр платежей", "Все платежи за период", "receipt_long"),
+        new("Просроченные займы", "Список с просрочкой > 0", "warning"),
+        new("Эффективность взыскания", "По сотрудникам и портфелям", "insights"),
+        new("Обещания оплаты", "ДП на ближайшие 7 дней", "event_available"),
+    ];
+}

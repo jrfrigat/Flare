@@ -1,0 +1,14 @@
+@page "/components/color-mode-toggle"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.ColorModeToggle_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareColorModeToggle">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.ColorModeToggle_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.ColorModeToggle_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.ColorModeToggle_IconOnly" DemoType="typeof(Examples.ColorModeToggleIconOnlyDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ColorModeToggle_WithLabel" DemoType="typeof(Examples.ColorModeToggleWithLabelDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ColorModeToggle_CustomLabels" DemoType="typeof(Examples.ColorModeToggleCustomLabelsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ColorModeToggle_UsageNote" DemoType="typeof(Examples.ColorModeToggleUsageNoteDemo)" />

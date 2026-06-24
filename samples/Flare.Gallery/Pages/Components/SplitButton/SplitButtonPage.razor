@@ -1,0 +1,12 @@
+@page "/components/split-button"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.SplitButton_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareSplitButton">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.SplitButton_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.SplitButton_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.SplitButton_VariantsColors" DemoType="typeof(Examples.SplitButtonDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Sizes" DemoType="typeof(Examples.SplitButtonSizesDemo)" />

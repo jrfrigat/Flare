@@ -1,0 +1,19 @@
+@page "/components/tabs"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Tabs_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareTabs">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Tabs_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Tabs_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Tabs_Tabs" DemoType="typeof(Examples.TabsBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_Variants" DemoType="typeof(Examples.TabsVariantsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_CloseableTabs" DemoType="typeof(Examples.TabsCloseableDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_Vertical" DemoType="typeof(Examples.TabsVerticalDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_Scrollable" DemoType="typeof(Examples.TabsScrollableDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_Placement" DemoType="typeof(Examples.TabsPlacementDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_Controlled" DemoType="typeof(Examples.TabsControlledDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_Badges" DemoType="typeof(Examples.TabsBadgesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Tabs_HeaderZones" DemoType="typeof(Examples.TabsHeaderZonesDemo)" />

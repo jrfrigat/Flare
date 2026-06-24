@@ -1,0 +1,14 @@
+@page "/components/avatar"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Avatar_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareAvatar">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Avatar_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Avatar_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Avatar_ImageFallback" DemoType="typeof(Examples.AvatarImageFallbackDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Avatar_Variants" DemoType="typeof(Examples.AvatarShapesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Avatar_Sizes" DemoType="typeof(Examples.AvatarSizesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Avatar_Color" DemoType="typeof(Examples.AvatarColorDemo)" />

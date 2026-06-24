@@ -1,0 +1,131 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject TimeProvider TimeProvider
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Daterangepicker.Label">@Label</label>
+    }
+    @if (ShowPresets)
+    {
+        <div class="@Css.Classes.Daterangepicker.Presets" role="group" aria-label="@Label">
+            @foreach (var preset in _effectivePresets)
+            {
+                var p = preset;
+                <button type="button"
+                        class="@Css.Classes.Daterangepicker.Preset @(IsActivePreset(p) ? Css.Classes.Daterangepicker.PresetActive : "")"
+                        disabled="@Disabled"
+                        aria-pressed="@(IsActivePreset(p) ? "true" : "false")"
+                        @onclick="@(() => ApplyPreset(p))">@p.Label</button>
+            }
+        </div>
+    }
+    <div class="@Css.Classes.Daterangepicker.Fields">
+        <FlareDatePicker Value="@StartDate"
+                         ValueChanged="HandleStartChanged"
+                         Label="@(StartLabel ?? FlareStrings.DateRangePicker_StartLabel)"
+                         ErrorText="@ErrorText"
+                         Disabled="@Disabled"
+                         Typo="@Typo"
+                         Variant="@Variant"
+                         Size="@Size"
+                         Max="@EndDate" />
+        <span class="@Css.Classes.Daterangepicker.Sep material-symbols-rounded">arrow_forward</span>
+        <FlareDatePicker Value="@EndDate"
+                         ValueChanged="HandleEndChanged"
+                         Label="@(EndLabel ?? FlareStrings.DateRangePicker_EndLabel)"
+                         Disabled="@Disabled"
+                         Typo="@Typo"
+                         Variant="@Variant"
+                         Size="@Size"
+                         Min="@StartDate" />
+    </div>
+    @if (!string.IsNullOrEmpty(ErrorText))
+    {
+        <span class="@Css.Classes.DatePicker.Helper @Css.Classes.DatePicker.HelperError">@ErrorText</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.DatePicker.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Start date of the selected range.</summary>
+    [Parameter] public DateOnly? StartDate { get; set; }
+    /// <summary>Callback invoked when the start date changes.</summary>
+    [Parameter] public EventCallback<DateOnly?> StartDateChanged { get; set; }
+    /// <summary>End date of the selected range.</summary>
+    [Parameter] public DateOnly? EndDate { get; set; }
+    /// <summary>Callback invoked when the end date changes.</summary>
+    [Parameter] public EventCallback<DateOnly?> EndDateChanged { get; set; }
+    /// <summary>Overall label shown above both date pickers.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Label for the start date picker. When null, falls back to the localizer key DateRangePicker_StartLabel.</summary>
+    [Parameter] public string? StartLabel { get; set; }
+    /// <summary>Label for the end date picker. When null, falls back to the localizer key DateRangePicker_EndLabel.</summary>
+    [Parameter] public string? EndLabel { get; set; }
+    /// <summary>Helper text shown below the range picker.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Error message shown below the range picker.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Disables both date pickers when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Optional typography scale for the input text, forwarded to both date fields. Null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>Visual variant (Filled/Outlined), forwarded to both date fields. Default keeps the theme's field style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>Control size (Xs..Xl), forwarded to both date fields. Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Shows a row of quick-range preset chips (Today, Last 7 days, This month, ...).</summary>
+    [Parameter] public bool ShowPresets { get; set; }
+    /// <summary>Custom preset list. When null, a localized default set is used (requires <see cref="ShowPresets"/>).</summary>
+    [Parameter] public IReadOnlyList<DateRangePreset>? Presets { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
+
+    private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
+
+    private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresets;
+
+    // Localized default presets. Ranges are computed relative to the supplied "today".
+    private static readonly IReadOnlyList<DateRangePreset> DefaultPresets =
+    [
+        new(FlareStrings.DateRangePicker_Today,      t => (t, t)),
+        new(FlareStrings.DateRangePicker_Yesterday,  t => (t.AddDays(-1), t.AddDays(-1))),
+        new(FlareStrings.DateRangePicker_Last7Days,  t => (t.AddDays(-6), t)),
+        new(FlareStrings.DateRangePicker_Last30Days, t => (t.AddDays(-29), t)),
+        new(FlareStrings.DateRangePicker_ThisMonth,  t => (new DateOnly(t.Year, t.Month, 1), new DateOnly(t.Year, t.Month, 1).AddMonths(1).AddDays(-1))),
+        new(FlareStrings.DateRangePicker_LastMonth,  t => { var f = new DateOnly(t.Year, t.Month, 1).AddMonths(-1); return (f, f.AddMonths(1).AddDays(-1)); }),
+        new(FlareStrings.DateRangePicker_ThisYear,   t => (new DateOnly(t.Year, 1, 1), new DateOnly(t.Year, 12, 31))),
+    ];
+
+    private bool IsActivePreset(DateRangePreset preset)
+    {
+        if (!StartDate.HasValue || !EndDate.HasValue) return false;
+        var (s, e) = preset.Range(Today);
+        return StartDate.Value == s && EndDate.Value == e;
+    }
+
+    private async Task ApplyPreset(DateRangePreset preset)
+    {
+        if (Disabled) return;
+        var (s, e) = preset.Range(Today);
+        await StartDateChanged.InvokeAsync(s);
+        await EndDateChanged.InvokeAsync(e);
+    }
+
+    private async Task HandleStartChanged(DateOnly? value)
+    {
+        await StartDateChanged.InvokeAsync(value);
+        // clamp: if start > end, clear end
+        if (value.HasValue && EndDate.HasValue && value.Value > EndDate.Value)
+            await EndDateChanged.InvokeAsync(null);
+    }
+
+    private async Task HandleEndChanged(DateOnly? value)
+    {
+        await EndDateChanged.InvokeAsync(value);
+    }
+}

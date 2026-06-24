@@ -1,0 +1,392 @@
+@namespace Flare.Legacy.Components
+@using Flare.Legacy.Data
+@using Flare.Legacy.Services
+@implements IDisposable
+@inject ISnackbarService Snackbar
+@inject LoanBackend Backend
+@inject AppSettings Settings
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+@* The detailed loan screen, identical to the original Gallery "ЗАЙМ ПО" layout (card/button placement),
+   parameterised per loan and "fetched from the backend" (simulated latency) before it renders. *@
+@if (_loading)
+{
+    <LoadingView Text="Загрузка карточки займа..." Rows="10" />
+}
+else
+{
+<FlareStack Gap="FlareSpacing.XSmall">
+
+    @* Top form band - seven dense field groups *@
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareGrid Columns="7" Gap="FlareSpacing.XSmall" AlignItems="FlareAlignItems.Start">
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareTextField Size="FieldSize.Xs" Label="ID займа" Value="@Loan.LoanId" ReadOnly Clearable />
+                <FlareTextField Size="FieldSize.Xs" Label="займ/клиент" Value="@Loan.ClientId" ReadOnly />
+                <FlareTextField Size="FieldSize.Xs" Label="Документы и справки" Value="0 003 83 5 ..." ReadOnly />
+            </FlareStack>
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareTextField Size="FieldSize.Xs" Label="ID клиента" Value="@Loan.ClientId" ReadOnly />
+                <FlareTextField Size="FieldSize.Xs" Label="Договор" Value="@Loan.LoanNumber" ReadOnly />
+                <FlareTextField Size="FieldSize.Xs" Label="Номер ВА ПМ" Value="+7 967 000-00-00" ReadOnly />
+            </FlareStack>
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareTextField Size="FieldSize.Xs" Label="Стадия" Value="@Loan.Stage" ReadOnly>
+                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                </FlareTextField>
+                <FlareTextField Size="FieldSize.Xs" Label="ПМ (продажи)" Value="Галиузов Д.Ю." ReadOnly />
+            </FlareStack>
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareTextField Size="FieldSize.Xs" Label="Статус займа" Value="Выдан" ReadOnly>
+                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                </FlareTextField>
+                <FlareTextField Size="FieldSize.Xs" Label="Дата выдачи" Value="10.06.2026" ReadOnly />
+            </FlareStack>
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareTextField Size="FieldSize.Xs" Label="Передан в портфель" Value="10.06.2026" ReadOnly />
+                <FlareTextField Size="FieldSize.Xs" Label="Портфель" Value="Раннее взыскание / ПКО Добробыт" ReadOnly>
+                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                </FlareTextField>
+            </FlareStack>
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareTextField Size="FieldSize.Xs" Label="Статус клиента" Value="Обычный" ReadOnly />
+                <FlareTextField Size="FieldSize.Xs" Label="Мораторий" Value="168" ReadOnly />
+                <FlareTextField Size="FieldSize.Xs" Label="Остаток моратория" Value="153" ReadOnly />
+            </FlareStack>
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareTextField Size="FieldSize.Xs" Label="Статус взаимодействий" Value="Новый" ReadOnly>
+                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                </FlareTextField>
+            </FlareStack>
+        </FlareGrid>
+    </FlareCard>
+
+    @* Main work area: three panel columns | status rail (14:2 of a 16-column grid). *@
+    <FlareGrid Columns="16" Gap="FlareSpacing.XSmall" AlignItems="FlareAlignItems.Start">
+        <FlareCol Span="14">
+            <FlareGrid Columns="3" Gap="FlareSpacing.XSmall" AlignItems="FlareAlignItems.Start">
+                <FlareCol Span="2">
+                    <FlareGrid Columns="2" Gap="FlareSpacing.XSmall" AlignItems="FlareAlignItems.Start">
+                        @* ---- Left column ---- *@
+                        <FlareCol Span="1">
+                            <FlareStack Gap="FlareSpacing.XSmall">
+                                <FlareCard Variant="CardVariant.Outlined">
+                                    <FlareStack Gap="FlareSpacing.XXSmall">
+                                        @Header("Общие данные")
+                                        <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                                            @LV("ФИО", Loan.ClientName, 3, 9)
+                                            @LV("Дата рожд.", Loan.BirthDate, 3, 4)
+                                            @LV("Полных лет", "36", 3, 2)
+                                            <FlareCol Span="12"><FlareTextArea Typo="TypographyScale.LabelSmall" Label="Адрес фактический" Value="ОБЛ. ПРИМЕРНАЯ, Г. ДЕМО, С. ПРИМЕР, УЛ. ОБРАЗЦОВАЯ, Д. 1" Rows="2" ReadOnly /></FlareCol>
+                                            <FlareCol Span="12"><FlareTextArea Typo="TypographyScale.LabelSmall" Label="Адрес регистрации" Value="ОБЛ. ПРИМЕРНАЯ, Г. ДЕМО, С. ПРИМЕР, УЛ. ОБРАЗЦОВАЯ, Д. 1" Rows="2" ReadOnly /></FlareCol>
+                                            @LV("Доход", Loan.Income, 3, 4)
+                                            @LV("Членов семьи", "", 3, 2)
+                                        </FlareGrid>
+                                    </FlareStack>
+                                </FlareCard>
+
+                                <FlareCard Variant="CardVariant.Outlined">
+                                    <FlareStack Gap="FlareSpacing.XXSmall">
+                                        @Header("Работа")
+                                        <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                                            @LV("Организация", "ООО \"Ромашка\"", 4)
+                                            @LV("Должность", "Менеджер", 4)
+                                            <FlareCol Span="12"><FlareTextArea Typo="TypographyScale.LabelSmall" Label="Адрес" Value="Г. ДЕМО, ПР. ПРИМЕРНЫЙ, Д. 5, ОФ. 10" Rows="2" ReadOnly /></FlareCol>
+                                            @LV("ИНН", "000000000000", 4)
+                                            @LV("Сайт", "отсутствует", 4)
+                                        </FlareGrid>
+                                        <FlareTextArea Typo="TypographyScale.LabelSmall" Label="Комментарий к месту работы" @bind-Value="_comment" Rows="2" />
+                                    </FlareStack>
+                                </FlareCard>
+
+                                <FlareCard Variant="CardVariant.Outlined">
+                                    <FlareGrid Columns="2" Gap="FlareSpacing.XXSmall">
+                                        @foreach (var label in _leftActions)
+                                        {
+                                            <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show(label))">@label</FlareButton>
+                                        }
+                                    </FlareGrid>
+                                </FlareCard>
+                            </FlareStack>
+                        </FlareCol>
+
+                        @* ---- Middle column ---- *@
+                        <FlareCol Span="1">
+                            <FlareStack Gap="FlareSpacing.XSmall">
+                                <FlareCard Variant="CardVariant.Outlined">
+                                    <FlareStack Gap="FlareSpacing.XXSmall">
+                                        @Header("Данные по задолженности")
+                                        <FlareStack Row Wrap Gap="FlareSpacing.XXSmall">
+                                            <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Filled" Color="FlareColor.Primary" OnClick="@(() => Snackbar.Show("Расчёт"))">РАСЧЕТ</FlareButton>
+                                            <FlareSpacer />
+                                            <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Filled" Color="FlareColor.Tertiary" OnClick="@(() => Snackbar.Show("Доступные продукты"))">ДОСТУПНЫЕ ПРОДУКТЫ</FlareButton>
+                                            <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Filled" Color="FlareColor.Success" OnClick="@(() => Snackbar.Show("Оплата"))">ОПЛАТА</FlareButton>
+                                            <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Filled" Color="FlareColor.Success" OnClick="@(() => Snackbar.Show("Платежи"))">ПЛАТЕЖИ</FlareButton>
+                                        </FlareStack>
+                                        <FlareTable TItem="object" Bordered Dense Hover="false">
+                                            <thead>
+                                                <tr><th></th><th>За период</th><th>ОД</th><th>Проценты</th><th>Пеня</th></tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr><td>Нач.</td><td>2 335,27</td><td>689,02</td><td>1 646,07</td><td>0,18</td></tr>
+                                                <tr><td>Прос.</td><td>1 169,03</td><td>326,24</td><td>842,61</td><td>---</td></tr>
+                                                <tr><td><FlareText Weight="FontWeight.Bold">Итого</FlareText></td><td>2 335,27</td><td>689,02</td><td>1 646,07</td><td>0,18</td></tr>
+                                            </tbody>
+                                        </FlareTable>
+                                        <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                                            @LV("Полное погаш.", Loan.Balance, 4, 4)
+                                            @LV("ДП", "1", 2, 2)
+                                            @LV("Остаток плат.", "0,00", 4, 4)
+                                            @LV("Всего плат.", "0", 2, 2)
+                                            @LV("Выпл. сумма", "0,00", 4, 4)
+                                            @LV("Дата посл.", "", 2, 2)
+                                            @LV("Сумма посл.", "0,00", 4, 4)
+                                        </FlareGrid>
+                                    </FlareStack>
+                                </FlareCard>
+
+                                <FlareCard Variant="CardVariant.Outlined">
+                                    <FlareStack Gap="FlareSpacing.XXSmall">
+                                        @Header("Иск. данные займа")
+                                        <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                                            @LV("Выдан", "26.05.2026", 3, 3)
+                                            @LV("Ставка, %", "0,800", 3, 3)
+                                            @LV("Пени, %", "0,050", 3, 3)
+                                            @LV("Сумма", "7 500,00", 3, 3)
+                                            @LV("Срок", "168", 3, 3)
+                                            @LV("Продукт", "Без вопросов", 3, 3)
+                                        </FlareGrid>
+                                        <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Открыть действия"))">
+                                            <LeadingIcon><FlareIcon Size="0.9rem" Name="open_in_new" /></LeadingIcon>
+                                            <ChildContent>Открыть действия</ChildContent>
+                                        </FlareButton>
+                                    </FlareStack>
+                                </FlareCard>
+                            </FlareStack>
+                        </FlareCol>
+
+                        @* Promise-of-payment table: its own grid row, spanning the first two of three columns. *@
+                        <FlareCol Span="2">
+                            <FlareCard Variant="CardVariant.Outlined">
+                                <FlareTable TItem="object" Bordered Dense Hover="false">
+                                    <thead>
+                                        <tr><th>Обещание оплаты</th><th>когда дано</th><th>оплатить до</th><th>сумму</th><th>сотрудник</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+                                    </tbody>
+                                </FlareTable>
+                            </FlareCard>
+                        </FlareCol>
+                    </FlareGrid>
+                </FlareCol>
+
+                @* ---- Right column ---- *@
+                <FlareCol Span="1">
+                    <FlareStack Gap="FlareSpacing.XSmall">
+                        <FlareCard Variant="CardVariant.Outlined">
+                            <FlareStack Gap="FlareSpacing.XXSmall">
+                                @Header("Собственник займа")
+                                <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                                    @LV("МФК", "Саммит", 4, 8)
+                                    @LV("Категория", "К2-К3", 4, 2)
+                                    @LV("Пролонгаций", "0", 4, 2)
+                                    @LV("Уступка прав 3л.", "Не согласен", 4, 8)
+                                    @LV("Пред. собственник", "", 4, 8)
+                                </FlareGrid>
+                                <FlareGrid Columns="2" Gap="FlareSpacing.XXSmall">
+                                    @foreach (var (label, primary) in _ownerButtons)
+                                    {
+                                        <FlareButton Size="ButtonSize.Xs"
+                                                        Variant="@(primary ? ButtonVariant.Filled : ButtonVariant.Tonal)"
+                                                        Color="@(primary ? FlareColor.Primary : FlareColor.Default)"
+                                                        FullWidth
+                                                        OnClick="@(() => Snackbar.Show(label))">@label</FlareButton>
+                                    }
+                                </FlareGrid>
+                            </FlareStack>
+                        </FlareCard>
+
+                        <FlareCard Variant="CardVariant.Outlined">
+                            <FlareStack Gap="FlareSpacing.XXSmall">
+                                @Header("Время клиента / Контакты")
+                                @* Stat strip: four compact fields in one row, labels above values, time highlighted *@
+                                <FlareGrid Columns="4" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.End">
+                                    <FlareCol Span="1">
+                                        <FlareStack Gap="FlareSpacing.None">
+                                            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">Время клиента</FlareText>
+                                            <FlareBadge Text="15:24" Standalone="true" Color="FlareColor.Success" />
+                                        </FlareStack>
+                                    </FlareCol>
+                                    <FlareCol Span="1"><FlareTextField Size="FieldSize.Xs" Label="ФЗ230 день СМС" Value="2" ReadOnly /></FlareCol>
+                                    <FlareCol Span="1"><FlareTextField Size="FieldSize.Xs" Label="ФЗ230 нед. СМС" Value="4" ReadOnly /></FlareCol>
+                                    <FlareCol Span="1"><FlareTextField Size="FieldSize.Xs" Label="ФЗ230 звонки" Value="1" ReadOnly /></FlareCol>
+                                </FlareGrid>
+                                <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                                    @ContactRow("Email", "anna.demo@example.com", "alternate_email")
+                                    @ContactRow("Telegram", "anna_demo", "send")
+                                </FlareGrid>
+                                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+                                    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">Мобильные телефоны</FlareText>
+                                    <FlareSpacer />
+                                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Success" OnClick="AddPhone"><FlareIcon Size="0.9rem" Name="add" /></FlareButton>
+                                </FlareStack>
+                                @foreach (var ph in _phones)
+                                {
+                                    <FlareCard Variant="CardVariant.Outlined">
+                                        <FlareStack Gap="FlareSpacing.XXSmall">
+                                            @* Phone number and its communication buttons share one row, as in the reference *@
+                                            <FlareStack Row Wrap Align="FlareAlignItems.Center" Gap="FlareSpacing.None">
+                                                <FlareText Typo="TypographyScale.LabelLarge" Weight="FontWeight.Bold">@ph.Number</FlareText>
+                                                @foreach (var (icon, color) in _phoneActions)
+                                                {
+                                                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="@color" OnClick="@(() => Snackbar.Show($"{icon}: {ph.Number}"))">
+                                                        <LeadingIcon><FlareIcon Size="0.8rem" Name="@icon" /></LeadingIcon>
+                                                    </FlareButton>
+                                                }
+                                            </FlareStack>
+                                            <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                                                @LV("Отношение к клиенту", ph.Relation, 5, 7)
+                                                @LV("Доп. информация", ph.Info, 5, 7)
+                                                @LV("Комментарий", ph.Comment, 5, 7)
+                                            </FlareGrid>
+                                        </FlareStack>
+                                    </FlareCard>
+                                }
+                            </FlareStack>
+                        </FlareCard>
+                    </FlareStack>
+                </FlareCol>
+            </FlareGrid>
+        </FlareCol>
+
+        @* ---- Far-right status rail ---- *@
+        <FlareCol Span="2">
+            <FlareCard Variant="CardVariant.Outlined">
+                <FlareStack Gap="FlareSpacing.XXSmall">
+                    <FlareCheckbox Size="FieldSize.Xs" @bind-Value="_needVisit" Label="Нужен выезд" />
+                    <FlareCheckbox Size="FieldSize.Xs" @bind-Value="_recommendStop" Label="Рекомендовано прекращение" />
+                    <FlareCheckbox Size="FieldSize.Xs" @bind-Value="_refuseInteraction" Label="Отказ от взаимодействий" />
+                    <FlareCheckbox Size="FieldSize.Xs" @bind-Value="_potentialBankrupt" Label="Потенц. банкрот" />
+                    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.Error">Гарант. выдана</FlareText>
+                    <FlareDivider />
+                    <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                        @LV("Банкрот", "Нет", 5, 7)
+                        @LV("Дата заявл. ДП", "", 5, 7)
+                        @LV("+ дней", "0", 5, 7)
+                        @LV("Дата ДП", "", 5, 7)
+                        @LV("Самозапрет", "Нет", 5, 7)
+                    </FlareGrid>
+                    <FlareCheckbox Size="FieldSize.Xs" @bind-Value="_refuseCa" Label="Отказ от взаим. с КА" />
+                    <FlareDivider />
+                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Filled" Color="FlareColor.Primary" FullWidth OnClick="@(() => Snackbar.Show("Служба заботы"))">Служба заботы</FlareButton>
+                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Комментарии"))">КОММЕНТАРИИ</FlareButton>
+                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Проверка авто"))">Проверка авто</FlareButton>
+                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Инфосфера"))">Инфосфера</FlareButton>
+                </FlareStack>
+            </FlareCard>
+        </FlareCol>
+    </FlareGrid>
+</FlareStack>
+}
+
+@code {
+    /// <summary>The loan whose details this tab shows.</summary>
+    [Parameter] public required LoanRow Loan { get; set; }
+
+    private bool _loading = true;
+
+    private string _comment = "";
+    private bool? _needVisit;
+    private bool? _recommendStop;
+    private bool? _refuseInteraction;
+    private bool? _potentialBankrupt;
+    private bool? _refuseCa;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Settings.Changed += OnChanged;
+        // Simulate fetching the full card from the backend.
+        await Backend.GetLoanAsync(Loan.LoanId);
+        _loading = false;
+    }
+
+    private void OnChanged() => InvokeAsync(StateHasChanged);
+    public void Dispose() => Settings.Changed -= OnChanged;
+
+    private async Task OpenNewBrowserTab() => await JS.InvokeVoidAsync("open", Nav.BaseUri, "_blank");
+
+    private void AddPhone()
+    {
+        _phones.Add(new Phone("9000000000", "Новый контакт", "", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
+        Snackbar.Show("Добавлен телефон");
+    }
+
+    // Inline "label : value" pair as two cells of a 12-column FlareGrid row (right-aligned label).
+    private RenderFragment LV(string label, string? value, int lab = 4, int val = 8) =>@<text>
+        <FlareCol Span="@lab">
+            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant" Align="TextAlign.End">@label</FlareText>
+        </FlareCol>
+        <FlareCol Span="@val">
+            <FlareTextField Size="FieldSize.Xs" Value="@value" ReadOnly />
+        </FlareCol>
+    </text>;
+
+    private RenderFragment ContactRow(string label, string? value, string channelIcon) =>@<text>
+        <FlareCol Span="3">
+            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant" Align="TextAlign.End">@label</FlareText>
+        </FlareCol>
+        <FlareCol Span="6">
+            <FlareTextField Size="FieldSize.Xs" Value="@value" ReadOnly />
+        </FlareCol>
+        <FlareCol Span="3">
+            <FlareStack Row Wrap Align="FlareAlignItems.Center" Gap="FlareSpacing.None">
+                <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" OnClick="@(() => Snackbar.Show("Скопировано"))"><LeadingIcon><FlareIcon Size="0.8rem" Name="content_copy" /></LeadingIcon></FlareButton>
+                <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Primary" OnClick="@(() => Snackbar.Show(label))"><LeadingIcon><FlareIcon Size="0.8rem" Name="@channelIcon" /></LeadingIcon></FlareButton>
+            </FlareStack>
+        </FlareCol>
+    </text>;
+
+    private RenderFragment Header(string title) =>@<text>
+        <FlareText Typo="TypographyScale.TitleSmall" Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant">@title</FlareText>
+        <FlareDivider />
+    </text>;
+
+    private static readonly string[] _railIcons =
+        ["home", "folder", "description", "grid_view", "work", "insights", "schedule", "logout"];
+
+    private static readonly string[] _leftActions =
+    [
+        "Сменить портфель", "История взаимодействий", "История изменений",
+        "Отправленные СМС", "Частично досрочное погашение",
+    ];
+
+    private static readonly (string Label, bool Primary)[] _ownerButtons =
+    [
+        ("Письма", false), ("График платежей", true),
+        ("Реструктуризация", false), ("Файлы", false),
+        ("Реестр документов", false), ("Способы оплаты", false),
+        ("Ранее выданные займы", false), ("История продаж", false),
+        ("Сигналы 2.0", false), ("ГЕО МП", false),
+        ("ФССП", false), ("Доп. услуги", false),
+    ];
+
+    private static readonly (string Icon, FlareColor Color)[] _phoneActions =
+    [
+        ("content_copy", FlareColor.Default),
+        ("call", FlareColor.Error),
+        ("sms", FlareColor.Primary),
+        ("mail", FlareColor.Primary),
+        ("chat", FlareColor.Success),
+    ];
+
+    private sealed record Phone(string Number, string Relation, string Info, string Comment);
+
+    private readonly List<Phone> _phones =
+    [
+        new("9021658099", "Сотовый / мобильный", "рабочий / мобильный", "2026-05-26 07:48:44"),
+        new("9024657152", "Работа", "", ""),
+        new("9085991927", "Друг / Подруга / Знакомый", "Дмитрий", ""),
+    ];
+}

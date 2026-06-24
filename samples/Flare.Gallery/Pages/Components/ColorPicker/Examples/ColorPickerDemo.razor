@@ -1,0 +1,11 @@
+<FlareStack Row Gap="FlareSpacing.XLarge" Wrap="true" Align="FlareAlignItems.Start">
+    <FlareColorPicker @bind-Value="_color1" Label="Primary color" />
+    <FlareColorPicker @bind-Value="_color2" Label="Accent color" />
+    <FlareColorPicker Value="#6750a4" Label="Disabled" Disabled="true" />
+</FlareStack>
+<FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Style="margin-top:1.5rem;">
+    <div style="width:3rem;height:3rem;border-radius:var(--flare-shape-small);background:@_color1;border:1px solid var(--flare-color-outline-variant);"></div>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@_color1</FlareText>
+    <div style="width:3rem;height:3rem;border-radius:var(--flare-shape-small);background:@_color2;border:1px solid var(--flare-color-outline-variant);margin-left:1rem;"></div>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@_color2</FlareText>
+</FlareStack>

@@ -1,0 +1,29 @@
+<FlareStack Style="padding:0;overflow:hidden;">
+    <FlareTable TItem="Person" Items="_people"
+                GroupBy="@(p => p.Role)"
+                ColSpan="4"
+                HeaderContent="@_headerContent"
+                RowTemplate="@_rowTemplate" />
+</FlareStack>
+
+@code {
+    private sealed record Person(string Name, string Role, string City, int Score);
+
+    private readonly List<Person> _people =
+    [
+        new("Alice Johnson",   "Engineer",  "Berlin",     92),
+        new("Bob Smith",       "Designer",  "London",     78),
+        new("Carol Williams",  "Manager",   "Paris",      85),
+        new("David Lee",       "Engineer",  "Tokyo",      91),
+        new("Emma Davis",      "QA",        "New York",   74),
+        new("Frank Miller",    "DevOps",    "Amsterdam",  88),
+        new("Grace Wilson",    "Designer",  "Barcelona",  82),
+        new("Henry Taylor",    "Engineer",  "Berlin",     95),
+    ];
+
+    private RenderFragment _headerContent =>
+        @<tr><th>Name</th><th>Role</th><th>City</th><th>Score</th></tr>;
+
+    private RenderFragment<Person> _rowTemplate =>
+        p => @<tr><td>@p.Name</td><td>@p.Role</td><td>@p.City</td><td>@p.Score</td></tr>;
+}

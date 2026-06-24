@@ -1,0 +1,72 @@
+/* Keyboard-shortcuts help dialog (FlareShortcuts). */
+.flare-shortcuts-help__scrim {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in srgb, var(--flare-color-scrim) 32%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.flare-shortcuts-help {
+    background: var(--flare-color-surface-container-high);
+    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    box-shadow: var(--flare-elevation-3);
+    padding: var(--flare-spacing-12, 1.5rem);
+    min-width: 320px;
+    max-width: 480px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    outline: none;
+}
+
+.flare-shortcuts-help__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--flare-spacing-8, 1rem);
+}
+
+.flare-shortcuts-help__title {
+    font-family: var(--flare-typescale-headline-small-font);
+    font-size: var(--flare-typescale-headline-small-size);
+    font-weight: var(--flare-typescale-headline-small-weight);
+    color: var(--flare-color-on-surface);
+}
+
+.flare-shortcuts-help__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-shortcuts-help__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--flare-spacing-8, 1rem);
+    padding: var(--flare-spacing-3, 0.375rem) 0;
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-shortcuts-help__row:last-child { border-bottom: none; }
+
+.flare-shortcuts-help__kbd {
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-small-size, 0.75rem);
+    color: var(--flare-color-on-surface);
+    background: var(--flare-color-surface-container-highest);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-extra-small);
+    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
+    white-space: nowrap;
+}
+
+.flare-shortcuts-help__desc {
+    flex: 1;
+    color: var(--flare-color-on-surface-variant);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+}

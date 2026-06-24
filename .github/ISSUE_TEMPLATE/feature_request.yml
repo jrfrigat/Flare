@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest a new component, parameter, or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / use case
+      description: What are you trying to do that Flare does not support today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: The component, parameter, or API you would like. Sketches/snippets welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds or other approaches you have tried.
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional context

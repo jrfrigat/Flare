@@ -1,0 +1,27 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+<div class="@Css.Classes.Ide.StatusBar.Root" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.StatusBar.Left">
+        @LeftContent
+    </div>
+    <div class="@Css.Classes.Ide.StatusBar.Center">
+        @CenterContent
+    </div>
+    <div class="@Css.Classes.Ide.StatusBar.Right">
+        @RightContent
+    </div>
+</div>
+
+@code {
+    /// <summary>Content rendered in the left section (e.g. line/column info).</summary>
+    [Parameter] public RenderFragment? LeftContent { get; set; }
+
+    /// <summary>Content rendered in the center section.</summary>
+    [Parameter] public RenderFragment? CenterContent { get; set; }
+
+    /// <summary>Content rendered in the right section (e.g. language, encoding).</summary>
+    [Parameter] public RenderFragment? RightContent { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Ide.StatusBar.Root;
+}

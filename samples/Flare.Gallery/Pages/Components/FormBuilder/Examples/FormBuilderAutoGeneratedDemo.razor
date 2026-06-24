@@ -1,0 +1,35 @@
+<FlareStack Style="max-width:480px;">
+    <FlareFormBuilder TModel="ContactForm" Model="@_contact" OnValidSubmit="HandleSubmit" />
+    @if (_submitted)
+    {
+        <FlareAlert Severity="AlertSeverity.Success" Style="margin-top:1rem;">
+            Submitted: @_contact.FirstName @_contact.LastName - @_contact.Email
+        </FlareAlert>
+    }
+</FlareStack>
+
+@code {
+    public class ContactForm
+    {
+        [FlareFormField(Label = "First Name", Order = 1)]
+        public string FirstName { get; set; } = "";
+
+        [FlareFormField(Label = "Last Name", Order = 2)]
+        public string LastName { get; set; } = "";
+
+        [FlareFormField(Label = "Email", Placeholder = "you@example.com", Order = 3)]
+        public string Email { get; set; } = "";
+
+        [FlareFormField(Label = "Subscribe to newsletter", Order = 4)]
+        public bool Subscribe { get; set; }
+    }
+
+    private ContactForm _contact = new();
+    private bool _submitted;
+
+    private void HandleSubmit(ContactForm form)
+    {
+        _submitted = true;
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,78 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<nav class="@BuildCssClass()" style="@Style" aria-label="@_ariaLabel" @attributes="AdditionalAttributes">
+    <ol class="@Css.Classes.Breadcrumb.List">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else if (Items is not null)
+        {
+            var list = Items.ToList();
+            var total = list.Count;
+            // Collapse the middle into an expander when MaxItems is exceeded.
+            var collapse = !_expanded && MaxItems > 0 && total > MaxItems
+                           && ItemsBeforeCollapse + ItemsAfterCollapse < total;
+            for (int i = 0; i < total; i++)
+            {
+                var isLast = i == total - 1;
+                if (collapse && i == ItemsBeforeCollapse)
+                {
+                    <li class="@Css.Classes.Breadcrumb.Item">
+                        <button type="button" class="@Css.Classes.Breadcrumb.Expander"
+                                aria-label="@(FlareStrings.Breadcrumb_Expand)"
+                                @onclick="() => _expanded = true">...</button>
+                        <span class="@Css.Classes.Breadcrumb.Separator" aria-hidden="true">@Separator</span>
+                    </li>
+                }
+                if (collapse && i >= ItemsBeforeCollapse && i < total - ItemsAfterCollapse)
+                {
+                    continue; // hidden middle item
+                }
+
+                var item = list[i];
+                <li class="@Css.Classes.Breadcrumb.Item @(isLast ? Css.Classes.Breadcrumb.Current : "")">
+                    @if (!isLast && item.Href is not null && !item.Disabled && Flare.Components.Security.CssValidator.IsHrefSafe(item.Href))
+                    {
+                        <a class="@Css.Classes.Breadcrumb.Link" href="@item.Href">@item.Text</a>
+                    }
+                    else
+                    {
+                        <span class="@Css.Classes.Breadcrumb.Text" aria-current="@(isLast ? "page" : null)">@item.Text</span>
+                    }
+                    @if (!isLast)
+                    {
+                        <span class="@Css.Classes.Breadcrumb.Separator" aria-hidden="true">@Separator</span>
+                    }
+                </li>
+            }
+        }
+    </ol>
+</nav>
+
+@code {
+    /// <summary>Data items rendered as breadcrumb links.</summary>
+    [Parameter] public IEnumerable<BreadcrumbItem>? Items { get; set; }
+    /// <summary>Custom content rendered instead of Items.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Character or string rendered between breadcrumb items.</summary>
+    [Parameter] public string Separator { get; set; } = "/";
+    /// <summary>Accessible label for the breadcrumb nav element.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>
+    /// When the item count exceeds this value, the middle items collapse into an expandable
+    /// ellipsis (Items mode only). 0 (default) disables collapsing.
+    /// </summary>
+    [Parameter] public int MaxItems { get; set; }
+    /// <summary>Number of leading items kept visible when collapsed. Default 1.</summary>
+    [Parameter] public int ItemsBeforeCollapse { get; set; } = 1;
+    /// <summary>Number of trailing items kept visible when collapsed. Default 1.</summary>
+    [Parameter] public int ItemsAfterCollapse { get; set; } = 1;
+
+    protected override string ComponentCssClass => Css.Classes.Breadcrumb.Root;
+
+    private bool _expanded;
+
+    private string _ariaLabel => !string.IsNullOrEmpty(AriaLabel) ? AriaLabel : (FlareStrings.Nav_Breadcrumb);
+}

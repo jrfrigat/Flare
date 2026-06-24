@@ -1,0 +1,71 @@
+/* Plot area - anchors the absolutely-positioned tooltip. */
+.flare-chart__plot {
+    position: relative;
+    width: 100%;
+}
+
+.flare-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-4, 0.5rem);
+    background: var(--flare-color-surface);
+    border-radius: var(--flare-shape-medium);
+    border: 1px solid var(--flare-color-outline-variant);
+    padding: var(--flare-spacing-8, 1rem);
+}
+
+.flare-chart__title {
+    margin-bottom: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-chart__svg {
+    width: 100%;
+    height: auto;
+}
+
+.flare-chart__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flare-spacing-6, 0.75rem);
+    margin-top: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-chart__legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-3, 0.375rem);
+    font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-chart__legend-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: var(--flare-shape-full);
+    flex-shrink: 0;
+    background: var(--flare-chart-dot);
+}
+
+/* Transparent hit zones over pie/donut slices. */
+.flare-chart__hit {
+    cursor: pointer;
+}
+
+.flare-chart__tooltip {
+    position: absolute;
+    /* left/top are a % of the SVG box at the data point; lift the bubble above
+       and centre it horizontally on that point */
+    transform: translate(-50%, calc(-100% - 8px));
+    pointer-events: none;
+    background: var(--flare-color-surface-container-highest);
+    color: var(--flare-color-on-surface);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-extra-small);
+    padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-5, 0.625rem);
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    line-height: 1.5;
+    white-space: pre;
+    box-shadow: var(--flare-elevation-2);
+    z-index: 10;
+    max-width: 14rem;
+}

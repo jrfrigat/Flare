@@ -1,0 +1,104 @@
+@* Requires interactive render mode (not compatible with static SSR). *@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <canvas @ref="_canvas"
+            class="flare-signature-pad__canvas"
+            width="@Width"
+            height="@Height"
+            role="img"
+            aria-label="@(AriaLabel ?? "Signature pad")">
+    </canvas>
+</div>
+
+@code {
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    /// <summary>Width of the drawing canvas in pixels.</summary>
+    [Parameter] public int Width { get; set; } = 400;
+
+    /// <summary>Height of the drawing canvas in pixels.</summary>
+    [Parameter] public int Height { get; set; } = 200;
+
+    /// <summary>CSS color value used for the stroke. Defaults to the on-surface design token.</summary>
+    [Parameter] public string StrokeColor { get; set; } = "var(--flare-color-on-surface)";
+
+    /// <summary>Width of the drawn stroke in pixels.</summary>
+    [Parameter] public double StrokeWidth { get; set; } = 2.0;
+
+    /// <summary>Varies stroke width with pointer/pen pressure (0.4x-1.6x of <see cref="StrokeWidth"/>). Default true.</summary>
+    [Parameter] public bool PressureSensitive { get; set; } = true;
+
+    /// <summary>Callback raised after the user finishes a stroke.</summary>
+    [Parameter] public EventCallback OnChanged { get; set; }
+
+    /// <summary>Accessible label for the signature canvas. Defaults to "Signature pad".</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    protected override string ComponentCssClass => "flare-signature-pad";
+
+    private readonly string _padId = Guid.NewGuid().ToString("N");
+    private ElementReference _canvas;
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<FlareSignaturePad>? _dotNetRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            _module = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "./_content/Flare.Components.Media/js/signature.js");
+            _dotNetRef = DotNetObjectReference.Create(this);
+            await _module.InvokeVoidAsync("init", _padId, _canvas, _dotNetRef);
+            await _module.InvokeVoidAsync("setStrokeStyle", _padId, StrokeColor, StrokeWidth, PressureSensitive);
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+    }
+
+    /// <summary>Returns the current canvas content as a base-64-encoded PNG data URL, or null when unavailable.</summary>
+    public async Task<string?> GetDataUrlAsync()
+    {
+        if (_module is null) return null;
+        try
+        {
+            return await _module.InvokeAsync<string?>("getDataUrl", _padId);
+        }
+        catch (JSDisconnectedException) { return null; }
+    }
+
+    /// <summary>Clears all drawn strokes from the canvas.</summary>
+    public async Task ClearAsync()
+    {
+        if (_module is null) return;
+        try
+        {
+            await _module.InvokeVoidAsync("clear", _padId);
+        }
+        catch (JSDisconnectedException) { }
+    }
+
+    [JSInvokable]
+    public async Task OnSignatureChanged()
+    {
+        await OnChanged.InvokeAsync();
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("destroy", _padId);
+                await _module.DisposeAsync();
+            }
+        }
+        catch (JSDisconnectedException) { }
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
+    }
+}

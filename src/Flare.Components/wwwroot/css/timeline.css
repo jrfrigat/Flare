@@ -1,0 +1,118 @@
+.flare-timeline {
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-timeline-item {
+    display: flex;
+    gap: var(--flare-spacing-8, 1rem);
+    position: relative;
+    /* Drives the dot border (currentColor). Role class sets --fc-main; custom inlines it. */
+    color: var(--fc-main, var(--flare-color-primary));
+}
+
+.flare-timeline-item__connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 2rem;
+}
+
+.flare-timeline-item__dot {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--flare-color-surface);
+    border: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.flare-timeline-item__dot .material-symbols-rounded {
+    font-size: 0.75rem;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    color: currentColor;
+}
+
+.flare-timeline-item__line {
+    flex: 1;
+    width: 2px;
+    background: var(--flare-color-outline-variant);
+    min-height: 1rem;
+    margin-top: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-timeline-item:last-child .flare-timeline-item__line { display: none; }
+
+.flare-timeline-item__body {
+    flex: 1;
+    padding-bottom: var(--flare-spacing-12, 1.5rem);
+    min-width: 0;
+}
+
+.flare-timeline-item__time {
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+    display: block;
+    margin-bottom: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-timeline-item__title {
+    margin: 0 0 var(--flare-spacing-3, 0.375rem);
+    font-family: var(--flare-typescale-title-small-font);
+    font-size: var(--flare-typescale-title-small-size, 0.875rem);
+    font-weight: var(--flare-typescale-title-small-weight, 500);
+    color: var(--flare-color-on-surface);
+}
+
+.flare-timeline-item__content {
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+    color: var(--flare-color-on-surface-variant);
+}
+
+/* Connector variants */
+.flare-timeline--dashed .flare-timeline-item__line {
+    background: none;
+    border-left: 2px dashed var(--flare-color-outline-variant);
+    width: 0;
+}
+
+.flare-timeline--dotted .flare-timeline-item__line {
+    background: none;
+    border-left: 2px dotted var(--flare-color-outline-variant);
+    width: 0;
+}
+
+/* Align = Right: mirror the row so the connector sits on the trailing edge. */
+.flare-timeline--right .flare-timeline-item { flex-direction: row-reverse; }
+.flare-timeline--right .flare-timeline-item__body { text-align: right; }
+
+/* Align = Alternate: alternate sides per item (CSS-only via nth-child). */
+.flare-timeline--alternate .flare-timeline-item:nth-child(even) { flex-direction: row-reverse; }
+.flare-timeline--alternate .flare-timeline-item:nth-child(even) .flare-timeline-item__body { text-align: right; }
+
+/* Alternating layout */
+.flare-timeline--alternating {
+    position: relative;
+}
+
+.flare-timeline--alternating .flare-timeline-item {
+    width: 100%;
+}
+
+.flare-timeline--alternating .flare-timeline__item--left {
+    flex-direction: row;
+}
+
+.flare-timeline--alternating .flare-timeline__item--right {
+    flex-direction: row-reverse;
+}
+
+.flare-timeline--alternating .flare-timeline__item--right .flare-timeline-item__body {
+    text-align: right;
+}

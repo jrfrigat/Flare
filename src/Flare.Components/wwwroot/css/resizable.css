@@ -1,0 +1,7 @@
+.flare-resizable { position: relative; overflow: hidden; }
+.flare-resizable__handle { position: absolute; z-index: 10; background: transparent; transition: background 0.15s; }
+.flare-resizable__handle:hover { background: var(--flare-color-primary-container); }
+.flare-resizable--right .flare-resizable__handle { top: 0; right: 0; width: 4px; height: 100%; cursor: col-resize; }
+.flare-resizable--left .flare-resizable__handle { top: 0; left: 0; width: 4px; height: 100%; cursor: col-resize; }
+.flare-resizable--bottom .flare-resizable__handle { bottom: 0; left: 0; height: 4px; width: 100%; cursor: row-resize; }
+.flare-resizable--top .flare-resizable__handle { top: 0; left: 0; height: 4px; width: 100%; cursor: row-resize; }

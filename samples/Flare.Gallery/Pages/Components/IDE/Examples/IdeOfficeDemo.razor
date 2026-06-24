@@ -1,0 +1,109 @@
+@using Flare.Components.IDE
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* Word/Excel-style shell built only from Flare + Flare.Components.IDE: a quick-access toolbar, a
+   ribbon with a dropdown gallery and a separator, a backstage (File) overlay, a formula bar, an
+   Excel-like data grid with cell selection, and a sheet-tab strip. No custom theming. *@
+<div style="position:relative;height:520px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <FlareIdeLayout Style="height:100%;">
+        <Ribbon>
+            <FlareQuickAccessToolbar>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => _fileOpen = true)">File</FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save">
+                    <span class="material-symbols-rounded" style="font-size:1rem;">save</span>
+                </FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Undo">
+                    <span class="material-symbols-rounded" style="font-size:1rem;">undo</span>
+                </FlareButton>
+            </FlareQuickAccessToolbar>
+            <FlareRibbon>
+                <FlareRibbonTab Title="Home">
+                    <FlareRibbonGroup Label="Clipboard">
+                        <FlareRibbonButton Icon="content_paste" Label="Paste" Tooltip="Paste" IsLarge="true" />
+                        <FlareRibbonButton Icon="content_cut" Tooltip="Cut" />
+                        <FlareRibbonButton Icon="content_copy" Tooltip="Copy" />
+                    </FlareRibbonGroup>
+                    <FlareRibbonGroup Label="Font">
+                        <FlareRibbonButton Icon="format_bold" Tooltip="Bold" />
+                        <FlareRibbonButton Icon="format_italic" Tooltip="Italic" />
+                        <FlareRibbonButton Icon="format_underlined" Tooltip="Underline" />
+                        <FlareRibbonSeparator />
+                        <FlareRibbonDropdown Icon="format_color_fill" Tooltip="Fill color">
+                            <MenuContent>
+                                <FlareMenuItem Icon="circle">Red</FlareMenuItem>
+                                <FlareMenuItem Icon="circle">Green</FlareMenuItem>
+                                <FlareMenuItem Icon="circle">Blue</FlareMenuItem>
+                            </MenuContent>
+                        </FlareRibbonDropdown>
+                    </FlareRibbonGroup>
+                    <FlareRibbonGroup Label="Styles">
+                        <FlareRibbonDropdown Icon="table_chart" Label="Cell Styles" Tooltip="Cell styles" IsLarge="true">
+                            <MenuContent>
+                                <FlareMenuItem>Normal</FlareMenuItem>
+                                <FlareMenuItem>Heading 1</FlareMenuItem>
+                                <FlareMenuItem>Currency</FlareMenuItem>
+                            </MenuContent>
+                        </FlareRibbonDropdown>
+                    </FlareRibbonGroup>
+                </FlareRibbonTab>
+                <FlareRibbonTab Title="Insert">
+                    <FlareRibbonGroup Label="Charts">
+                        <FlareRibbonButton Icon="bar_chart" Label="Column" Tooltip="Column chart" IsLarge="true" />
+                        <FlareRibbonButton Icon="pie_chart" Label="Pie" Tooltip="Pie chart" IsLarge="true" />
+                    </FlareRibbonGroup>
+                </FlareRibbonTab>
+            </FlareRibbon>
+        </Ribbon>
+
+        <ChildContent>
+            <div style="display:flex;flex-direction:column;height:100%;">
+                <FlareFormulaBar CellRef="@_cellRef" Value="@_formula" ValueChanged="@(v => _formula = v)" />
+                <div style="flex:1;min-height:0;overflow:auto;">
+                    <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
+                        <Columns>
+                            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+                            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+                            <FlareColumn Title="City" Field="@(p => p.City)" />
+                            <FlareColumn Title="Score" Field="@(p => p.Score)" Type="ColumnDataType.Number" />
+                        </Columns>
+                    </FlareDataGrid>
+                </div>
+                <FlareSheetTabs Sheets="@_sheets" ActiveIndex="@_sheet"
+                                ActiveIndexChanged="@(i => _sheet = i)" OnAddSheet="AddSheet" />
+            </div>
+        </ChildContent>
+
+        <StatusBar>
+            <FlareStatusBar>
+                <LeftContent>Ready</LeftContent>
+                <RightContent>Count: @DatagridData._people.Count</RightContent>
+            </FlareStatusBar>
+        </StatusBar>
+    </FlareIdeLayout>
+
+    <FlareBackstage @bind-Open="_fileOpen">
+        <NavContent>
+            <FlareBackstageItem Icon="note_add" Label="New" Active="true" />
+            <FlareBackstageItem Icon="folder_open" Label="Open" />
+            <FlareBackstageItem Icon="save" Label="Save" />
+            <FlareBackstageItem Icon="print" Label="Print" />
+            <FlareBackstageItem Icon="settings" Label="Options" />
+        </NavContent>
+        <ChildContent>
+            <FlareText Typo="TypographyScale.HeadlineSmall">New</FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+                Choose a template to get started, then return with the back arrow.
+            </FlareText>
+        </ChildContent>
+    </FlareBackstage>
+</div>
+
+@code {
+    private bool _fileOpen;
+    private string? _cellRef = "A1";
+    private string? _formula = "=SUM(D2:D20)";
+    private int _sheet;
+    private readonly List<string> _sheets = ["Sheet1", "Sheet2", "Budget"];
+
+    private void AddSheet() => _sheets.Add($"Sheet{_sheets.Count + 1}");
+}

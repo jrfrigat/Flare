@@ -1,0 +1,12 @@
+@page "/components/rich-text-editor"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.RichTextEditor_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareRichTextEditor">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.RichTextEditor_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.RichTextEditor_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.RichTextEditor_Basic" DemoType="typeof(Examples.RichTextEditorBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.RichTextEditor_ReadOnly" DemoType="typeof(Examples.RichTextEditorReadOnlyDemo)" />

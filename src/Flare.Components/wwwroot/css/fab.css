@@ -1,0 +1,95 @@
+﻿.flare-fab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--flare-fab-gap, 0.75rem);
+    padding: var(--flare-fab-padding-md, 1rem);
+    border: none;
+    border-radius: var(--flare-fab-radius, var(--flare-shape-large));
+    /* Тональный цвет через общие токены роли (--fc-*); дефолт - primary-container.
+       Роль -> класс flare-color-*; кастом -> инлайн --fc-container/--fc-on-container. */
+    background-color: var(--fc-container, var(--flare-color-primary-container));
+    color: var(--fc-on-container, var(--flare-color-on-primary-container));
+    box-shadow: var(--flare-fab-shadow, var(--flare-elevation-3));
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    outline: none;
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-large-size);
+    font-weight: var(--flare-typescale-label-large-weight);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+}
+
+    .flare-fab::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background-color: currentColor;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+    }
+
+    .flare-fab:hover::before {
+        opacity: var(--flare-state-hover-opacity);
+    }
+
+    .flare-fab:hover {
+        box-shadow: var(--flare-fab-hover-shadow, var(--flare-elevation-4));
+    }
+
+    .flare-fab:active::before {
+        opacity: var(--flare-state-pressed-opacity);
+    }
+
+    .flare-fab:focus-visible {
+        outline: var(--flare-btn-focus-outline, 2px solid var(--flare-color-primary));
+        outline-offset: var(--flare-btn-focus-outline-offset, 2px);
+        box-shadow: var(--flare-btn-focus-shadow, none);
+    }
+
+.flare-fab--sm {
+    padding: var(--flare-fab-padding-sm, 0.5rem);
+    border-radius: var(--flare-fab-radius-sm, var(--flare-shape-medium));
+}
+
+.flare-fab--lg {
+    padding: var(--flare-fab-padding-lg, 1.75rem);
+    border-radius: var(--flare-fab-radius-lg, var(--flare-shape-extra-large));
+}
+
+/* Surface variant (MD3): used by the small action FABs inside a FAB menu. */
+.flare-fab--surface {
+    background-color: var(--flare-color-surface-container-high);
+    color: var(--flare-color-primary);
+}
+
+/* Цвет задаётся параметром Color (FlareColor) -> заполняет --_fab-bg/--_fab-on инлайном.
+   Отдельных per-color классов нет. */
+
+.flare-fab__icon {
+    display: inline-flex;
+    align-items: center;
+}
+
+.flare-fab__label {
+    white-space: nowrap;
+}
+
+/* Позиционирование */
+.flare-fab-anchor {
+    position: fixed;
+    z-index: 900;
+}
+
+.flare-fab-anchor--bottom-right {
+    bottom: var(--flare-fab-anchor-offset, 1.5rem);
+    right: var(--flare-fab-anchor-offset, 1.5rem);
+}
+
+.flare-fab-anchor--bottom-left {
+    bottom: var(--flare-fab-anchor-offset, 1.5rem);
+    left: var(--flare-fab-anchor-offset, 1.5rem);
+}

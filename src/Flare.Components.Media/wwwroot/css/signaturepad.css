@@ -1,0 +1,13 @@
+.flare-signature-pad {
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-signature-pad__canvas {
+    border: 1px solid var(--flare-color-outline);
+    border-radius: var(--flare-shape-small);
+    background-color: var(--flare-color-surface);
+    touch-action: none;
+    cursor: crosshair;
+}

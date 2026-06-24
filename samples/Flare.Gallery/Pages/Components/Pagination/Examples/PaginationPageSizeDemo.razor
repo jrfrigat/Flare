@@ -1,0 +1,22 @@
+<FlarePagination @bind-Current="_page"
+                 TotalPages="@_totalPages"
+                 PageSize="_pageSize"
+                 PageSizeChanged="OnPageSizeChanged"
+                 RowsPerPageOptions="@(new[] { 10, 25, 50, 100 })" />
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+    @_pageSize rows per page · page @_page of @_totalPages
+</FlareText>
+
+@code {
+    private const int TotalItems = 240;
+    private int _page = 1;
+    private int _pageSize = 25;
+    private int _totalPages => (int)Math.Ceiling(TotalItems / (double)_pageSize);
+
+    private void OnPageSizeChanged(int size)
+    {
+        _pageSize = size;
+        _page = 1;
+    }
+}

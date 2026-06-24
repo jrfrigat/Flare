@@ -1,0 +1,167 @@
+.flare-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-6, 0.75rem);
+    cursor: pointer;
+    user-select: none;
+    /* Single source for the box dimension; size classes below override --_cb-size. */
+    --_cb-size: var(--flare-checkbox-size, 1.125rem);
+}
+
+/* Label before the checkbox */
+.flare-checkbox--label-start { flex-direction: row-reverse; }
+
+.flare-checkbox__container {
+    position: relative;
+    width: var(--_cb-size);
+    height: var(--_cb-size);
+    flex-shrink: 0;
+}
+
+/* MD3 state-layer circle (40dp around 18dp box = 0.6875rem spread each side) */
+.flare-checkbox__container::before {
+    content: '';
+    position: absolute;
+    inset: -0.6875rem;
+    border-radius: 50%;
+    background: transparent;
+    transition: background var(--flare-motion-duration-short1, 100ms) ease;
+    pointer-events: none;
+}
+
+/* State layer is an MD3 trait - Fluent sets these tokens to transparent (no halo) */
+.flare-checkbox:not(.flare-checkbox--disabled):hover .flare-checkbox__container::before {
+    background: var(--flare-checkbox-state-layer-hover,
+        color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent));
+}
+
+/* When checked - use primary tint for the state layer */
+.flare-checkbox:not(.flare-checkbox--disabled):has(.flare-checkbox__input:checked):hover .flare-checkbox__container::before {
+    background: var(--flare-checkbox-state-layer-hover-checked,
+        color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 8%, transparent));
+}
+
+.flare-checkbox__input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.flare-checkbox__indicator {
+    display: block;
+    position: relative;
+    box-sizing: border-box;   /* keep the box exactly --_cb-size incl. border */
+    width: var(--_cb-size);
+    height: var(--_cb-size);
+    /* MD3 checkbox corner = 2dp; Fluent overrides via --flare-checkbox-radius */
+    border-radius: var(--flare-checkbox-radius, 2px);
+    border: var(--flare-checkbox-border-width, 2px) solid var(--flare-color-outline);
+    background-color: transparent;
+    transition:
+        background-color var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease),
+        border-color var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease);
+}
+
+/* Checked state - filled with the accent (--fc-main, default primary) + checkmark */
+.flare-checkbox__input:checked + .flare-checkbox__indicator {
+    background-color: var(--fc-main, var(--flare-color-primary));
+    border-color: var(--fc-main, var(--flare-color-primary));
+}
+
+/* Checkmark via ::after - suppressed when also indeterminate so the dash wins */
+.flare-checkbox__input:checked + .flare-checkbox__indicator:not(.flare-checkbox__indicator--indeterminate)::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--_cb-size) * 0.28);   /* ~5px at default 18px */
+    height: calc(var(--_cb-size) * 0.5);   /* ~9px at default 18px */
+    border-style: solid;
+    border-color: var(--flare-color-on-primary);
+    border-width: 0 2px 2px 0;
+    /* center the rotated tick; -60% Y compensates for the rotation's optical offset */
+    transform: translate(-50%, -60%) rotate(45deg);
+}
+
+/* Indeterminate */
+.flare-checkbox__indicator--indeterminate {
+    background-color: var(--flare-color-primary);
+    border-color: var(--flare-color-primary);
+}
+
+.flare-checkbox__indicator--indeterminate::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--_cb-size) * 0.5);   /* ~9px at default 18px */
+    height: 2px;
+    background: var(--flare-color-on-primary);
+    transform: translate(-50%, -50%);
+}
+
+/* Focus-visible ring (a11y) - MD3: secondary 3dp (focus.indicator); Fluent: inner+outer double ring */
+.flare-checkbox__input:focus-visible + .flare-checkbox__indicator {
+    outline: var(--flare-checkbox-focus-outline, 3px solid var(--flare-color-secondary));
+    outline-offset: var(--flare-checkbox-focus-outline-offset, 2px);
+    box-shadow: var(--flare-checkbox-focus-shadow, none);
+}
+
+.flare-checkbox__label {
+    font-family: var(--flare-typescale-body-large-font);
+    font-size: var(--flare-typescale-body-large-size);
+    color: var(--flare-color-on-surface);
+}
+
+.flare-checkbox__error {
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    color: var(--flare-color-error);
+}
+
+.flare-checkbox--disabled { opacity: var(--flare-state-disabled-opacity, 0.38); pointer-events: none; }
+
+/* Size grid (Xs..Xl): scales the box via --_cb-size; the label font tracks the size. */
+.flare-checkbox--xs { --_cb-size: 0.875rem; gap: var(--flare-spacing-4, 0.5rem); }
+.flare-checkbox--xs .flare-checkbox__label { font-size: var(--flare-typescale-body-small-size); }
+.flare-checkbox--sm { --_cb-size: 1rem; gap: var(--flare-spacing-5, 0.625rem); }
+.flare-checkbox--sm .flare-checkbox__label { font-size: var(--flare-typescale-body-medium-size); }
+.flare-checkbox--lg { --_cb-size: 1.375rem; }
+.flare-checkbox--lg .flare-checkbox__label { font-size: var(--flare-typescale-title-medium-size); }
+.flare-checkbox--xl { --_cb-size: 1.625rem; }
+.flare-checkbox--xl .flare-checkbox__label { font-size: var(--flare-typescale-title-large-size); }
+
+.flare-checkbox--error .flare-checkbox__indicator {
+    border-color: var(--flare-color-error);
+}
+.flare-checkbox--error .flare-checkbox__input:checked + .flare-checkbox__indicator {
+    background-color: var(--flare-color-error);
+    border-color: var(--flare-color-error);
+}
+
+/* Custom-icon mode: the supplied icon replaces the default box fill + checkmark. */
+.flare-checkbox--custom-icon .flare-checkbox__indicator {
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--flare-color-on-surface-variant);
+    font-size: 1.125rem;
+}
+.flare-checkbox--custom-icon .flare-checkbox__input:checked + .flare-checkbox__indicator {
+    background: transparent;
+    color: var(--fc-main, var(--flare-color-primary));
+}
+.flare-checkbox--custom-icon .flare-checkbox__indicator::after {
+    content: none !important;
+}
+.flare-checkbox--custom-icon .flare-checkbox__indicator .flare-icon,
+.flare-checkbox--custom-icon .flare-checkbox__indicator .material-symbols-rounded {
+    font-size: 1.125rem;
+    width: 1em;
+    height: 1em;
+}

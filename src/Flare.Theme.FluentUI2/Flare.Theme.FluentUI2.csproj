@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <PackageId>Flare.Theme.FluentUI2</PackageId>
+    <Description>Fluent UI 2 light and dark themes for the Flare Blazor component library</Description>
+    <PackageTags>blazor;theming;fluent-ui;fluent2;microsoft-fluent;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Core\Flare.Core.csproj" />
+  </ItemGroup>
+
+</Project>

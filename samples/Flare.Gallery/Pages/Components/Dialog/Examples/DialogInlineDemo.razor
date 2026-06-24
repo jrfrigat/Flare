@@ -1,0 +1,48 @@
+﻿@inject IDialogService DialogService
+@inject ISnackbarService Snackbar
+@inject IMessageBoxService MsgBox
+@inherits LocalizedPage
+
+<FlareButton OnClick="@(() => _visible = true)">Open inline dialog</FlareButton>
+<FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowConfirm">Service confirm</FlareButton>
+<FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowAlert">Service alert</FlareButton>
+<FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowPrompt">Message box prompt</FlareButton>
+
+<FlareDialog @bind-Visible="_visible" Title="Flare Dialog">
+    <ChildContent>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+            This dialog uses tokens from the active theme. Switch themes to see it update instantly - no page reload needed.
+        </FlareText>
+    </ChildContent>
+    <Actions>
+        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _visible = false)">Cancel</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _visible = false)">Confirm</FlareButton>
+    </Actions>
+</FlareDialog>
+
+@code{
+    private bool _visible;
+
+    private async Task ShowConfirm()
+    {
+        var confirmed = await DialogService.ConfirmAsync(
+            "Delete item",
+            "Are you sure you want to delete this item? This action cannot be undone.",
+            "Delete", "Cancel");
+        Snackbar.Show(confirmed == true ? "Deleted!" : "Cancelled", confirmed == true ? SnackbarSeverity.Error : SnackbarSeverity.Normal);
+    }
+
+    private async Task ShowAlert()
+    {
+        await DialogService.AlertAsync("Information", "This is a programmatic alert dialog.");
+    }
+
+    private async Task ShowPrompt()
+    {
+        var result = await MsgBox.PromptAsync("Enter your name", "Name", "Alice");
+        if (result is not null)
+            Snackbar.Show($"Hello, {result}!", SnackbarSeverity.Success);
+        else
+            Snackbar.Show("Cancelled", SnackbarSeverity.Normal);
+    }
+}

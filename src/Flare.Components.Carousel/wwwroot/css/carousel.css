@@ -1,0 +1,83 @@
+.flare-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--flare-shape-medium);
+    background: var(--flare-color-surface-container-low);
+    user-select: none;
+}
+
+.flare-carousel__viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.flare-carousel__track {
+    display: flex;
+    transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-emphasized, ease);
+    will-change: transform;
+}
+
+.flare-carousel__slide {
+    min-width: 100%;
+    flex-shrink: 0;
+}
+
+/* Navigation arrows */
+.flare-carousel__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--flare-shape-full);
+    background: color-mix(in srgb, var(--flare-color-surface) 85%, transparent);
+    color: var(--flare-color-on-surface);
+    border: 1px solid var(--flare-color-outline-variant);
+    cursor: pointer;
+    transition: background var(--flare-motion-duration-short2, 150ms);
+    backdrop-filter: blur(4px);
+}
+
+.flare-carousel__arrow:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 12%, var(--flare-color-surface));
+}
+
+.flare-carousel__arrow:disabled {
+    opacity: 0.38;
+    cursor: default;
+}
+
+.flare-carousel__arrow--prev { left: 0.5rem; }
+.flare-carousel__arrow--next { right: 0.5rem; }
+
+/* Dot indicators */
+.flare-carousel__dots {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--flare-spacing-3, 0.375rem);
+    z-index: 10;
+}
+
+.flare-carousel__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--flare-shape-full);
+    background: color-mix(in srgb, var(--flare-color-on-surface) 40%, transparent);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background var(--flare-motion-duration-short2, 150ms),
+                width var(--flare-motion-duration-short2, 150ms);
+}
+
+.flare-carousel__dot--active {
+    width: 1.25rem;
+    background: var(--flare-color-primary);
+}

@@ -1,0 +1,35 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareAutocomplete TValue="string"
+                       @bind-Value="_selectedCity"
+                       Label="City"
+                       Placeholder="Type to search…"
+                       SearchFunc="SearchCities"
+                       MinChars="1"
+                       Clearable="true"
+                       Style="max-width:24rem;" />
+    <FlareAutocomplete TValue="string"
+                       @bind-Value="_selectedCity"
+                       Label="City (Large - Xs..Xl grid)"
+                       Placeholder="Type to search…"
+                       SearchFunc="SearchCities"
+                       MinChars="1"
+                       Size="FieldSize.Lg"
+                       Style="max-width:24rem;" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Selected: @_selectedCity</FlareText>
+</FlareStack>
+
+@code {
+    private string? _selectedCity;
+
+    private static readonly string[] _cities =
+    [
+        "Amsterdam", "Barcelona", "Berlin", "Brussels", "Budapest",
+        "Copenhagen", "Dublin", "Helsinki", "Kyiv", "Lisbon",
+        "London", "Madrid", "Milan", "Oslo", "Paris",
+        "Prague", "Rome", "Singapore", "Stockholm", "Tokyo",
+        "Toronto", "Vienna", "Warsaw", "Zurich"
+    ];
+
+    private Task<IEnumerable<string>> SearchCities(string query) =>
+        Task.FromResult(_cities.Where(c => c.Contains(query, StringComparison.OrdinalIgnoreCase)));
+}

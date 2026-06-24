@@ -1,0 +1,33 @@
+<FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
+    <FlareSplitButton Variant="ButtonVariant.Filled" OnClick="@(() => _last = "Save")">
+        <ChildContent>Save</ChildContent>
+        <MenuItems>
+            <FlareMenuItem Icon="save_as" OnClick="@(() => _last = "Save as…")">Save as…</FlareMenuItem>
+            <FlareMenuItem Icon="done_all" OnClick="@(() => _last = "Save all")">Save all</FlareMenuItem>
+            <FlareMenuItem Icon="download" OnClick="@(() => _last = "Export")">Export…</FlareMenuItem>
+        </MenuItems>
+    </FlareSplitButton>
+
+    <FlareSplitButton Variant="ButtonVariant.Outlined" Color="FlareColor.Secondary" OnClick="@(() => _last = "Reply")">
+        <ChildContent>Reply</ChildContent>
+        <MenuItems>
+            <FlareMenuItem Icon="reply_all" OnClick="@(() => _last = "Reply all")">Reply all</FlareMenuItem>
+            <FlareMenuItem Icon="forward" OnClick="@(() => _last = "Forward")">Forward</FlareMenuItem>
+        </MenuItems>
+    </FlareSplitButton>
+
+    <FlareSplitButton Variant="ButtonVariant.Filled" Disabled="true" MenuAriaLabel="Disabled actions">
+        <ChildContent>Disabled</ChildContent>
+        <MenuItems>
+            <FlareMenuItem>Unavailable</FlareMenuItem>
+        </MenuItems>
+    </FlareSplitButton>
+
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Last action: @_last
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string _last = "-";
+}

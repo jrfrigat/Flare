@@ -1,0 +1,19 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="max-width:32rem;">
+        <FlareSelect TValue="string" @bind-Value="_role" Label="Role" Style="flex:1;min-width:12rem;">
+            <option value="">Select role…</option>
+            <option value="dev">Developer</option>
+            <option value="design">Designer</option>
+            <option value="qa">QA</option>
+            <option value="devops">DevOps</option>
+        </FlareSelect>
+        <FlareSelect TValue="string" Label="Disabled" Disabled Style="flex:1;min-width:12rem;">
+            <option value="">Not available</option>
+        </FlareSelect>
+    </FlareStack>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Selected role: @_role</FlareText>
+</FlareStack>
+
+@code {
+    private string? _role;
+}

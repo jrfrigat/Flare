@@ -1,0 +1,25 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* A name/value property sheet (Visual Studio "Properties" window, Access property sheet). Optional
+   Title header; rows are FlarePropertyGridItem entries whose value can be plain text or any editor. *@
+<div class="@Css.Classes.Ide.PropGrid.Root" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <div class="@Css.Classes.Ide.PropGrid.Title">@Title</div>
+    }
+    <div class="@Css.Classes.Ide.PropGrid.Body" role="table">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    /// <summary>Optional category/header text shown above the rows.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>The property rows, typically <c>FlarePropertyGridItem</c> components.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.PropGrid.Root;
+}

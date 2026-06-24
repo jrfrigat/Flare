@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Flare.DemoGen generates a "show every parameter" Gallery example (.razor) from a Flare
+    component's metadata. It reflects over the built Flare.Components.dll, finds a component's
+    Parameter properties, and emits one section per parameter (enum to each member, bool to
+    off/on, RenderFragment to content/icon slot, EventCallback wired, FlareColor presets).
+    Run it from the repo root with the component name (e.g. Button), which maps to FlareButton
+    and writes the Gallery Buttons/Examples/ButtonsExample.razor file.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Flare.Tools.DemoGen</RootNamespace>
+    <AssemblyName>demogen</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <!-- The Components/Web types (RenderFragment, EventCallback, ParameterAttribute) come from the
+       ASP.NET Core shared framework so reflected property types resolve to the same identities. -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Internal tool: no packaging/versioning helpers. -->
+    <PackageReference Remove="MinVer" />
+    <PackageReference Remove="Microsoft.SourceLink.GitHub" />
+  </ItemGroup>
+
+</Project>

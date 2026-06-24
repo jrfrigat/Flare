@@ -1,0 +1,112 @@
+.flare-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.flare-menu__activator {
+    display: inline-flex;
+}
+
+.flare-menu__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+}
+
+.flare-menu__panel {
+    position: absolute;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-menu-item-gap-between, 0);
+    min-width: var(--flare-menu-panel-min-width, 10rem);
+    background: var(--flare-menu-panel-bg, var(--flare-color-surface-container));
+    border-radius: var(--flare-menu-panel-radius, var(--flare-popover-radius, var(--flare-shape-small)));
+    box-shadow: var(--flare-menu-panel-shadow, var(--flare-elevation-2));
+    padding: var(--flare-menu-panel-padding-block, 0.25rem) var(--flare-menu-panel-padding-inline, 0);
+    animation: var(--flare-menu-panel-enter-animation, flare-menu-in) var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-decelerate, ease-out);
+}
+
+/* MD3 Expressive: when the menu is split into groups, the panel becomes a transparent
+   container so the groups read as separate floating "islands" with no backing behind them.
+   Themes opt in via tokens; otherwise the panel keeps its normal surface. */
+.flare-menu__panel:has(.flare-menu-group) {
+    background: var(--flare-menu-grouped-panel-bg, var(--flare-menu-panel-bg, var(--flare-color-surface-container)));
+    box-shadow: var(--flare-menu-grouped-panel-shadow, var(--flare-menu-panel-shadow, var(--flare-elevation-2)));
+}
+
+/* Each group can carry its own elevation so the islands visibly float. */
+.flare-menu-group { box-shadow: var(--flare-menu-group-shadow, none); }
+
+/* MD3: scale + fade (раскрытие из угла якоря) */
+@keyframes flare-menu-in {
+    from { opacity: 0; transform: scale(0.95) translateY(-0.25rem); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);         }
+}
+
+/* Fluent: только fade + лёгкий сдвиг, без scale */
+@keyframes flare-menu-in-fluent {
+    from { opacity: 0; transform: translateY(-0.25rem); }
+    to   { opacity: 1; transform: translateY(0);         }
+}
+
+/* Origin анимации зависит от якоря (раскрытие "из" угла активатора) */
+.flare-menu__panel--bottom-left  { top: calc(100% + 0.25rem); left: 0;  transform-origin: top left; }
+.flare-menu__panel--bottom-right { top: calc(100% + 0.25rem); right: 0; transform-origin: top right; }
+.flare-menu__panel--top-left     { bottom: calc(100% + 0.25rem); left: 0;  transform-origin: bottom left; }
+.flare-menu__panel--top-right    { bottom: calc(100% + 0.25rem); right: 0; transform-origin: bottom right; }
+
+/* Submenu styles */
+.flare-submenu {
+    position: relative;
+}
+
+.flare-submenu__activator {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+    width: 100%;
+}
+
+.flare-submenu__icon {
+    margin-left: auto;
+    font-size: 1.125rem;
+    color: var(--flare-color-on-surface-variant);
+    transition: transform var(--flare-motion-duration-short2);
+}
+
+.flare-submenu:hover > .flare-submenu__activator .flare-submenu__icon,
+.flare-submenu[aria-expanded="true"] > .flare-submenu__activator .flare-submenu__icon {
+    transform: rotate(90deg);
+}
+
+.flare-submenu__panel {
+    position: absolute;
+    z-index: 201;
+    min-width: var(--flare-menu-panel-min-width, 10rem);
+    background: var(--flare-menu-panel-bg, var(--flare-color-surface-container));
+    border-radius: var(--flare-menu-panel-radius, var(--flare-popover-radius, var(--flare-shape-small)));
+    box-shadow: var(--flare-menu-panel-shadow, var(--flare-elevation-2));
+    padding: var(--flare-menu-panel-padding-block, 0.25rem) var(--flare-menu-panel-padding-inline, 0);
+}
+
+/* Submenu placement variants */
+.flare-submenu__panel--end {
+    top: 0;
+    left: calc(100% + 0.25rem);
+}
+
+.flare-submenu__panel--start {
+    top: 0;
+    right: calc(100% + 0.25rem);
+}
+
+.flare-submenu__panel--bottom {
+    top: calc(100% + 0.25rem);
+    left: 0;
+}
+
+.flare-submenu__panel--top {
+    bottom: calc(100% + 0.25rem);
+    left: 0;
+}

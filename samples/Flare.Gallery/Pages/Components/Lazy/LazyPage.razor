@@ -1,0 +1,15 @@
+@page "/components/lazy"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Lazy_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareLazy">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Lazy_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Lazy_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Lazy_Defer" DemoType="typeof(Examples.LazyDeferDemo)"
+    Description="@GalleryStrings.Lazy_Defer_Desc" />
+
+<AutoDemoSection Title="@GalleryStrings.Lazy_DataLoad" DemoType="typeof(Examples.LazyDataLoadDemo)"
+    Description="@GalleryStrings.Lazy_DataLoad_Desc" />

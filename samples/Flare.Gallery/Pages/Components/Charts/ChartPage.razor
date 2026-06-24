@@ -1,0 +1,16 @@
+@page "/components/charts"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Charts_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareChart">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Charts_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        @GalleryStrings.Charts_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Charts_Line" DemoType="typeof(Examples.ChartsLineDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Charts_Bar" DemoType="typeof(Examples.ChartsBarDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Charts_Pie" DemoType="typeof(Examples.ChartsPieDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Charts_MultiLine" DemoType="typeof(Examples.ChartsMultiLineDemo)" />

@@ -1,0 +1,188 @@
+:root {
+    --flare-drawer-width: 260px;
+    --flare-drawer-mini-width: 3.5rem;
+}
+
+.flare-layout {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    /* Fixed viewport height so the drawer and content scroll independently (the page
+       itself never scrolls). Self-sufficient: no host html/body/#app heights required. */
+    height: 100dvh;
+    overflow: hidden;
+    background: var(--flare-color-background);
+    color: var(--flare-color-on-background);
+}
+
+.flare-layout__body {
+    display: grid;
+    grid-template-columns: 0 1fr;
+    min-height: 0; /* allow the row to shrink so children can own their scroll */
+    overflow: hidden;
+    position: relative;
+    /* Animate the drawer collapse/expand on desktop */
+    transition: grid-template-columns var(--flare-motion-duration-medium2, 250ms)
+                var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
+}
+
+.flare-layout--drawer-open .flare-layout__body {
+    grid-template-columns: var(--flare-drawer-width) 1fr;
+}
+
+/* Mini-rail: the collapsed drawer stays as a narrow icon rail instead of disappearing.
+   The inner shrinks to the rail width and a nested FlareNavMenu renders icon-only (it reads the
+   collapsed state from the layout context), so only the centered icons remain. */
+.flare-layout--mini-rail:not(.flare-layout--drawer-open) .flare-layout__body {
+    grid-template-columns: var(--flare-drawer-mini-width) 1fr;
+}
+.flare-layout--mini-rail .flare-layout-drawer {
+    border-right: 1px solid var(--flare-color-outline-variant);
+}
+.flare-layout--mini-rail .flare-layout-drawer__inner {
+    transition: width var(--flare-motion-duration-medium2, 250ms)
+                var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
+}
+.flare-layout--mini-rail:not(.flare-layout--drawer-open) .flare-layout-drawer__inner {
+    width: var(--flare-drawer-mini-width);
+}
+
+.flare-layout__main {
+    overflow: auto;
+    min-width: 0;
+    min-height: 0;
+    /* Content padding is built in (theme-overridable via the token); no host class needed. */
+    padding: var(--flare-layout-content-padding, 1.5rem 2rem);
+}
+
+/* AppBar */
+.flare-layout-appbar {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-6, 0.75rem);
+    padding: 0 var(--flare-spacing-8, 1rem);
+    height: 64px;
+    background: var(--flare-color-surface);
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-shrink: 0;
+    color: var(--flare-color-on-surface);
+}
+
+/* Drawer: the nav clips its fixed-width inner during the collapse animation. */
+.flare-layout-drawer {
+    background: var(--flare-color-surface-container-low);
+    overflow: hidden;
+    min-width: 0;
+}
+
+/* Inner owns the fixed width (no reflow while collapsing) and the independent scroll. */
+.flare-layout-drawer__inner {
+    width: var(--flare-drawer-width);
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    border-right: 1px solid var(--flare-color-outline-variant);
+}
+
+/* AppBar drawer-toggle button */
+.flare-layout-appbar__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    border-radius: var(--flare-shape-full, 50%);
+    color: inherit;
+    cursor: pointer;
+    transition: background var(--flare-motion-duration-short2, 100ms);
+}
+.flare-layout-appbar__toggle:hover {
+    background: var(--flare-color-surface-container-highest, rgba(0,0,0,.08));
+}
+
+/* Animated hamburger that morphs into an X when the drawer is open */
+.flare-burger {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 14px;
+}
+.flare-burger__bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transition: top var(--flare-motion-duration-short4, 200ms) ease,
+                transform var(--flare-motion-duration-short4, 200ms) ease,
+                opacity var(--flare-motion-duration-short2, 100ms) ease;
+}
+.flare-burger__bar:nth-child(1) { top: 0; }
+.flare-burger__bar:nth-child(2) { top: 6px; }
+.flare-burger__bar:nth-child(3) { top: 12px; }
+.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(1) { top: 6px; transform: rotate(45deg); }
+.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(2) { opacity: 0; }
+.flare-layout-appbar__toggle--open .flare-burger__bar:nth-child(3) { top: 6px; transform: rotate(-45deg); }
+
+/* Content slot */
+.flare-layout-content {
+    padding: var(--flare-layout-content-padding, 1.5rem 2rem);
+}
+
+/* Content frame: full width by default; the size modifiers cap and center it while the
+   scrollbar stays on the scrolling <main> at the window edge. Used by FlareLayout
+   (ContentMaxWidth) and FlareLayoutContent (MaxWidth). */
+.flare-layout__content-frame { width: 100%; }
+
+/* Optional readable-width caps. Placement (margin-inline) is set separately by the
+   --align-* classes so the cap and the horizontal alignment are independent. */
+.flare-layout-content--xs { max-width: 480px;  }
+.flare-layout-content--sm { max-width: 600px;  }
+.flare-layout-content--md { max-width: 960px;  }
+.flare-layout-content--lg { max-width: 1280px; }
+.flare-layout-content--xl { max-width: 1920px; }
+
+/* Horizontal placement of a capped content frame within the main area (logical, RTL-aware) */
+.flare-layout-content--align-start  { margin-inline: 0 auto; }
+.flare-layout-content--align-center { margin-inline: auto; }
+.flare-layout-content--align-end    { margin-inline: auto 0; }
+
+/* Mobile-only scrim behind the off-canvas drawer */
+.flare-layout__scrim { display: none; }
+
+/* Mobile overlay drawer */
+@media (max-width: 959px) {
+    .flare-layout__body {
+        grid-template-columns: 1fr !important;
+    }
+    .flare-layout-drawer {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        bottom: 0;
+        z-index: 200;
+        width: var(--flare-drawer-width);
+        transform: translateX(-100%);
+        transition: transform var(--flare-motion-duration-medium1, 200ms) ease;
+        box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0,0,0,.16));
+    }
+    .flare-layout--drawer-open .flare-layout-drawer {
+        transform: translateX(0);
+    }
+    .flare-layout--drawer-open .flare-layout__scrim {
+        display: block;
+        position: fixed;
+        inset: 64px 0 0 0;
+        z-index: 150;
+        background: var(--flare-color-scrim, #000);
+        opacity: 0.45;
+    }
+}

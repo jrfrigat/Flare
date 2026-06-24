@@ -1,0 +1,47 @@
+@page "/api"
+@inherits LocalizedPage
+@using Flare.Gallery.Api
+
+<PageTitle>@GalleryStrings.Api_IndexTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Api_IndexTitle</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Api_IndexSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareField TValue="string" @bind-Value="_filter" Placeholder="@GalleryStrings.Api_FilterPlaceholder" Clearable="true" Style="max-width:24rem;">
+        <LeadingIcon><FlareIcon Name="search" /></LeadingIcon>
+    </FlareField>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:0.75rem;">
+        @foreach (var c in Filtered)
+        {
+            <a href="@($"/api/{c.Name}")" style="text-decoration:none;color:inherit;">
+                <FlareCard Variant="CardVariant.Outlined">
+                    <FlareStack Gap="FlareSpacing.XXSmall">
+                        <FlareText Typo="TypographyScale.TitleMedium" Color="@Colors.Primary">@c.Name</FlareText>
+                        @if (!string.IsNullOrWhiteSpace(c.Summary))
+                        {
+                            <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">@c.Summary</FlareText>
+                        }
+                    </FlareStack>
+                </FlareCard>
+            </a>
+        }
+    </div>
+</FlareStack>
+
+@code {
+    private string _filter = string.Empty;
+
+    private static readonly IReadOnlyList<ApiComponentInfo> All =
+        ComponentApiRegistry.Components.Values
+            .OrderBy(c => c.Name, StringComparer.Ordinal)
+            .ToList();
+
+    private IEnumerable<ApiComponentInfo> Filtered =>
+        string.IsNullOrWhiteSpace(_filter)
+            ? All
+            : All.Where(c => c.Name.Contains(_filter, StringComparison.OrdinalIgnoreCase));
+}

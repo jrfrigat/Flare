@@ -1,0 +1,10 @@
+<FlareStack Align="FlareAlignItems.Start" Gap="FlareSpacing.Small">
+    <FlareOtpField Length="4" Masked="true" @bind-Value="_pin" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        PIN: @(string.IsNullOrEmpty(_pin) ? "(empty)" : new string('•', _pin.Length))
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string _pin = string.Empty;
+}

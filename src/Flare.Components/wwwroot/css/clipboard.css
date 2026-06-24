@@ -1,0 +1,3 @@
+/* FlareClipboard renders a FlareButton, so the button styling (variant/size/gloss) provides the
+   box, border, padding and hover. Only the brief copied-state accent lives here. */
+.flare-clipboard--copied { color: var(--flare-color-primary); border-color: var(--flare-color-primary); }

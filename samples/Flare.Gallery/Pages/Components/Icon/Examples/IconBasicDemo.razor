@@ -1,0 +1,21 @@
+@inherits LocalizedPage
+
+<FlareStack Row Wrap Gap="FlareSpacing.Large">
+    @foreach (var icon in _icons)
+    {
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="width:5rem;">
+            <FlareIcon Size="1.75rem" Color="FlareColor.OnSurfaceVariant" Name="@icon" />
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Align="TextAlign.Center" Style="word-break:break-all">@icon</FlareText>
+        </FlareStack>
+    }
+</FlareStack>
+
+@code {
+    private static readonly string[] _icons =
+    [
+        "home", "settings", "search", "person", "notifications",
+        "star", "favorite", "edit", "delete", "add",
+        "close", "check", "arrow_forward", "arrow_back", "menu",
+        "share", "download", "upload", "info", "warning"
+    ];
+}

@@ -1,0 +1,123 @@
+@page "/components/datagrid"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.DataGrid_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDataGrid">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.DataGrid_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.DataGrid_Subtitle</FlareText>
+</GalleryPageTitle>
+
+@* ===== Basic ===== *@
+
+<AutoDemoSection Title="Basic DataGrid" DemoType="typeof(Examples.DataGridBasicDemo)"
+    Description="Minimal DataGrid with sorting and pagination." />
+
+@* ===== Appearance ===== *@
+
+<AutoDemoSection Title="Appearance" DemoType="typeof(Examples.DataGridAppearanceDemo)"
+    Description="Striped, hoverable, dense, and bordered modes." />
+
+@* ===== Filtering ===== *@
+
+<AutoDemoSection Title="Filtering" DemoType="typeof(Examples.DataGridFilteringDemo)"
+    Description="Inline filters + advanced filter builder with FilterMode selector." />
+
+<AutoDemoSection Title="Quick Filter (global search)" DemoType="typeof(Examples.DataGridQuickFilterDemo)"
+    Description="FlareDataGridQuickFilter - a standalone search box bound to the grid that filters across all visible columns." />
+
+<AutoDemoSection Title="Filter Presets" DemoType="typeof(Examples.DataGridFilterPresetsDemo)"
+    Description="FlareDataGridFilterPresets - a list of named advanced-filter presets; choosing one applies its conditions to the grid." />
+
+@* ===== Sorting ===== *@
+
+<AutoDemoSection Title="Multi-Sort" DemoType="typeof(Examples.DataGridMultiSortDemo)"
+    Description="Hold Shift+Click to sort by multiple columns." />
+
+@* ===== Selection ===== *@
+
+<AutoDemoSection Title="Row Selection" DemoType="typeof(Examples.DataGridRowSelectionDemo)"
+    Description="Single and multiple row selection with checkboxes." />
+
+@* ===== Editing ===== *@
+
+<AutoDemoSection Title="Inline Editing" DemoType="typeof(Examples.DataGridInlineEditingDemo)"
+    Description="Edit rows inline with EditMode.Inline." />
+
+<AutoDemoSection Title="Batch Editing" DemoType="typeof(Examples.DataGridBatchEditingDemo)"
+    Description="Edit multiple rows and save all at once with EditMode.Batch." />
+
+@* ===== Features ===== *@
+
+<AutoDemoSection Title="Column Bands" DemoType="typeof(Examples.DataGridColumnBandsDemo)"
+    Description="Group columns under shared headers with FlareColumnBand." />
+
+<AutoDemoSection Title="Frozen Columns" DemoType="typeof(Examples.DataGridFrozenColumnDemo)"
+    Description="Pin columns to the left edge with Frozen or to the right edge with FrozenRight; both stack with cumulative offsets." />
+
+<AutoDemoSection Title="Column Picker" DemoType="typeof(Examples.DataGridColumnPickerDemo)"
+    Description="DataGridColumnPicker component for show/hide columns." />
+
+<AutoDemoSection Title="Reorder Columns &amp; Rows" DemoType="typeof(Examples.DataGridReorderDemo)"
+    Description="Drag-and-drop reordering with ReorderableColumns and RowReorderable." />
+
+<AutoDemoSection Title="Multi-level Columns" DemoType="typeof(Examples.DataGridMultiLevelDemo)"
+    Description="Banded composite: each record spans several rows with fields aligned across the table (DevExpress banded-view style)." />
+
+<AutoDemoSection Title="Multi-level Columns (virtualized)" DemoType="typeof(Examples.DataGridBandedVirtualDemo)"
+    Description="500 banded records with Virtual=true - each record spans several rows, only the visible ones render." />
+
+<AutoDemoSection Title="Composite Card" DemoType="typeof(Examples.DataGridCompositeDemo)"
+    Description="CompositeMode.Card stacks the same fields inside a single cell (a card per record)." />
+
+<AutoDemoSection Title="Pinned Rows" DemoType="typeof(Examples.DataGridPinnedRowsDemo)"
+    Description="PinnedTopRows / PinnedBottomRows stay visible above and below the scrolling data, outside sorting, filtering and paging (e.g. a highlighted row and a totals row)." />
+
+<AutoDemoSection Title="Row Detail" DemoType="typeof(Examples.DataGridRowDetailDemo)"
+    Description="Expandable detail rows with RowDetailTemplate." />
+
+<AutoDemoSection Title="Conditional Formatting" DemoType="typeof(Examples.DataGridConditionalFormattingDemo)"
+    Description="Highlight whole rows by value with RowClassFunc / RowStyleFunc." />
+
+<AutoDemoSection Title="Cell Styling" DemoType="typeof(Examples.DataGridCellStylingDemo)"
+    Description="Style individual cells with FlareColumn.ClassFunc and StyleFunc." />
+
+<AutoDemoSection Title="Cell Selection (Excel-like)" DemoType="typeof(Examples.DataGridCellSelectionDemo)"
+    Description="Click-drag or Shift+Click to select cells (arrow keys / Shift+Arrow also work), Ctrl+C copies the range as tab-separated text and Ctrl+V pastes it back via OnPaste. Enable with CellSelection." />
+
+<AutoDemoSection Title="Column Types" DemoType="typeof(Examples.DataGridColumnTypesDemo)"
+    Description="Type-aware rendering: boolean as a checkbox icon, culture- and format-aware dates and numbers via FlareColumn.Type/Format. Type is auto-detected when not set; filter editors and text alignment (numbers right, booleans centered) follow the column type. Override per column with FlareColumn.Align." />
+
+@* ===== Data Loading ===== *@
+
+<AutoDemoSection Title="Queryable (IQueryable / EF Core)" DemoType="typeof(Examples.DataGridQueryableDemo)"
+    Description="Bind an IQueryable (e.g. an EF Core DbSet) and the grid translates sort/filter/paging into an expression tree that runs in the database - no ItemsProvider code." />
+
+<AutoDemoSection Title="Virtual Scrolling" DemoType="typeof(Examples.DataGridVirtualLoadDemo)"
+    Description="Load data on demand with Virtual=true and ItemsProvider." />
+
+<AutoDemoSection Title="Infinite Scroll" DemoType="typeof(Examples.DataGridInfiniteScrollDemo)"
+    Description="Accumulate rows as user scrolls with InfiniteScroll=true." />
+
+@* ===== Grouping ===== *@
+
+<AutoDemoSection Title="Grouping" DemoType="typeof(Examples.DatagridGroupedDemo)"
+    Description="Group rows by field value with nested DataGridGroup components." />
+
+<AutoDemoSection Title="Nested Grouping" DemoType="typeof(Examples.DatagridNestedGroupDemo)"
+    Description="Multiple DataGridGroup levels with per-group aggregates." />
+
+@* ===== Tree ===== *@
+
+<AutoDemoSection Title="Tree Grid" DemoType="typeof(Examples.DataGridTreeDemo)"
+    Description="Hierarchical data with expand/collapse using Tree parameter." />
+
+@* ===== Export ===== *@
+
+<AutoDemoSection Title="Export" DemoType="typeof(Examples.DataGridExportDemo)"
+    Description="DataGridExport component with CSV, JSON, TSV, Excel exporters." />
+
+@* ===== Layout ===== *@
+
+<AutoDemoSection Title="Footer &amp; standalone pager" DemoType="typeof(Examples.DataGridFooterPagerDemo)"
+    Description="ShowPager=false plus FooterContent (the toolbar's bottom counterpart): FlareDataGridPager and a quick filter live in the footer, resolving the grid from the cascade so grid controls can be placed anywhere." />

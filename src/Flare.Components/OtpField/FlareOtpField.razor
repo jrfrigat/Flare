@@ -1,0 +1,152 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IJSRuntime JS
+@inject IFlareClipboard Clipboard
+
+<div class="@BuildCssClass(_disabledClass)" style="@Style" @attributes="AdditionalAttributes" role="group" aria-label="@(AriaLabel ?? FlareStrings.OtpInput_GroupLabel)">
+    @for (var i = 0; i < Length; i++)
+    {
+        var idx = i;
+        <input class="@Css.Classes.Otp.Cell @(idx == _active ? Css.Classes.Otp.CellFocused : "") @(Error ? Css.Classes.Otp.CellError : "")"
+               type="@_inputType"
+               inputmode="@InputMode"
+               maxlength="1"
+               value="@(_digits[idx])"
+               disabled="@Disabled"
+               autocomplete="@AutoComplete"
+               aria-label="@(string.Format(FlareStrings.OtpInput_CellLabel, idx + 1, Length))"
+               @ref="_refs[idx]"
+               @oninput="@(e => OnInput(e, idx))"
+               @onkeydown="@(e => OnKeyDown(e, idx))"
+               @onfocus="@(() => _active = idx)"
+               @onblur="@(() => _active = -1)"
+               @onpaste="@(e => OnPaste(e))" />
+    }
+</div>
+
+@code {
+    /// <summary>Number of OTP digits. Default is 6.</summary>
+    [Parameter] public int Length { get; set; } = 6;
+    /// <summary>Current value as a string of digits. Supports @bind-Value. Empty string means no input.</summary>
+    [Parameter] public string Value { get; set; } = string.Empty;
+    /// <summary>Callback fired when the value changes.</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    /// <summary>Callback fired when all digits are filled.</summary>
+    [Parameter] public EventCallback<string> OnComplete { get; set; }
+    /// <summary>When true, hides digits like a password field.</summary>
+    [Parameter] public bool Masked { get; set; }
+    /// <summary>Numeric input mode (default). Set to "text" for alphanumeric codes.</summary>
+    [Parameter] public string InputMode { get; set; } = "numeric";
+    /// <summary>Disables all input cells.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Applies error styling to all cells.</summary>
+    [Parameter] public bool Error { get; set; }
+    /// <summary>ARIA group label for accessibility. When null, falls back to the localizer key OtpInput_GroupLabel.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>HTML autocomplete value for each input cell. Use "one-time-code" to enable browser OTP autofill. Default: "off".</summary>
+    [Parameter] public string AutoComplete { get; set; } = "off";
+
+    protected override string ComponentCssClass => Css.Classes.Otp.Root;
+    private string _disabledClass => Disabled ? Css.Classes.Otp.Disabled : string.Empty;
+    private string _inputType => Masked ? "password" : "text";
+
+    private string[] _digits = [];
+    private ElementReference[] _refs = [];
+    private int _active = -1;
+
+    protected override void OnParametersSet()
+    {
+        if (_digits.Length != Length)
+        {
+            _digits = new string[Length];
+            _refs = new ElementReference[Length];
+        }
+
+        for (var i = 0; i < Length; i++)
+            _digits[i] = i < Value.Length ? Value[i].ToString() : string.Empty;
+    }
+
+    private async Task OnInput(ChangeEventArgs e, int idx)
+    {
+        var text = e.Value?.ToString() ?? string.Empty;
+        if (string.IsNullOrEmpty(text))
+        {
+            _digits[idx] = string.Empty;
+        }
+        else
+        {
+            _digits[idx] = text[^1].ToString();
+            if (idx < Length - 1)
+                await FocusCell(idx + 1);
+        }
+
+        await NotifyChange();
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e, int idx)
+    {
+        switch (e.Key)
+        {
+            case "Backspace":
+                if (string.IsNullOrEmpty(_digits[idx]) && idx > 0)
+                {
+                    _digits[idx - 1] = string.Empty;
+                    await FocusCell(idx - 1);
+                    await NotifyChange();
+                }
+                else if (!string.IsNullOrEmpty(_digits[idx]))
+                {
+                    _digits[idx] = string.Empty;
+                    await NotifyChange();
+                }
+                break;
+            case "ArrowLeft":
+                if (idx > 0) await FocusCell(idx - 1);
+                break;
+            case "ArrowRight":
+                if (idx < Length - 1) await FocusCell(idx + 1);
+                break;
+            case "Delete":
+                _digits[idx] = string.Empty;
+                await NotifyChange();
+                break;
+        }
+    }
+
+    private async Task OnPaste(ClipboardEventArgs e)
+    {
+        var text = await Clipboard.ReadAsync();
+        if (string.IsNullOrEmpty(text)) return;
+        var clean = new string(text.Where(c => char.IsLetterOrDigit(c)).ToArray());
+        for (var i = 0; i < Length && i < clean.Length; i++)
+            _digits[i] = clean[i].ToString();
+        var focus = Math.Min(clean.Length, Length - 1);
+        await FocusCell(focus);
+        await NotifyChange();
+    }
+
+    private async Task NotifyChange()
+    {
+        var value = string.Concat(_digits);
+        await ValueChanged.InvokeAsync(value);
+        if (value.Length == Length && _digits.All(d => !string.IsNullOrEmpty(d)))
+            await OnComplete.InvokeAsync(value);
+        StateHasChanged();
+    }
+
+    private async Task FocusCell(int idx)
+    {
+        _active = idx;
+        try { await JS.InvokeVoidAsync("flareOtp.focus", _refs[idx]); }
+        catch { /* ignore if not yet rendered */ }
+    }
+
+    /// <summary>Clears all digits and focuses the first cell.</summary>
+    public async Task ClearAsync()
+    {
+        for (var i = 0; i < Length; i++) _digits[i] = string.Empty;
+        await ValueChanged.InvokeAsync(string.Empty);
+        await FocusCell(0);
+        StateHasChanged();
+    }
+}

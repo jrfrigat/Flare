@@ -1,0 +1,44 @@
+<FlareStack Gap="FlareSpacing.Small">
+    <div style="position:sticky;top:0;z-index:1;padding:0.5rem 0;background:var(--flare-color-surface);">
+        <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Wrap>
+            <FlareChip Label="@($"Mounted: {_mounted.Count} / {Total}")" />
+            <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+                Scroll down - each panel mounts only when it nears the viewport.
+            </FlareText>
+        </FlareStack>
+    </div>
+
+    @for (var i = 0; i < Total; i++)
+    {
+        var index = i;
+        <FlareLazy MinHeight="84px" RootMargin="120px" OnRevealed="@(() => Reveal(index))">
+            <Placeholder>
+                <FlareSkeleton Variant="SkeletonVariant.Rect" Height="84px" />
+            </Placeholder>
+            <ChildContent>
+                <FlareCard Variant="CardVariant.Filled">
+                    <FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+                        <FlareIcon Name="widgets" Color="FlareColor.Primary" Size="1.5rem" />
+                        <FlareStack Gap="FlareSpacing.None">
+                            <FlareText Typo="TypographyScale.TitleSmall">Panel @(index + 1)</FlareText>
+                            <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+                                Mounted on demand - its component tree was never built until now.
+                            </FlareText>
+                        </FlareStack>
+                    </FlareStack>
+                </FlareCard>
+            </ChildContent>
+        </FlareLazy>
+    }
+</FlareStack>
+
+@code {
+    private const int Total = 24;
+    private readonly HashSet<int> _mounted = [];
+
+    private void Reveal(int index)
+    {
+        if (_mounted.Add(index))
+            StateHasChanged();
+    }
+}

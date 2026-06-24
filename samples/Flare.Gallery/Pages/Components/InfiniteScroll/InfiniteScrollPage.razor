@@ -1,0 +1,11 @@
+@page "/components/infinite-scroll"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.InfiniteScroll_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareInfiniteScroll">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.InfiniteScroll_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.InfiniteScroll_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.InfiniteScroll_Basic" DemoType="typeof(Examples.InfiniteScrollDemo)" />

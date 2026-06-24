@@ -1,0 +1,48 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" role="group" aria-label="@AriaLabel" style="@Style" @attributes="AdditionalAttributes">
+    <CascadingValue Value="_context" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    /// <summary>The chips to display.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Allow multiple chips to be selected simultaneously.</summary>
+    [Parameter] public bool MultiSelect { get; set; }
+    /// <summary>The currently selected values.</summary>
+    [Parameter] public IReadOnlyCollection<string> SelectedValues { get; set; } = Array.Empty<string>();
+    /// <summary>Fires when the selection changes.</summary>
+    [Parameter] public EventCallback<IReadOnlyCollection<string>> SelectedValuesChanged { get; set; }
+    /// <summary>Accessible label for the chip group.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Chip.Group;
+
+    private FlareChipGroupContext _context = default!;
+
+    protected override void OnParametersSet()
+    {
+        _context = new FlareChipGroupContext(
+            SelectedValues.ToHashSet(),
+            MultiSelect,
+            ToggleAsync);
+    }
+
+    private async Task ToggleAsync(string value)
+    {
+        HashSet<string> next;
+        if (MultiSelect)
+        {
+            next = new HashSet<string>(SelectedValues);
+            if (!next.Remove(value)) next.Add(value);
+        }
+        else
+        {
+            next = SelectedValues.Contains(value) ? new HashSet<string>() : new HashSet<string> { value };
+        }
+        await SelectedValuesChanged.InvokeAsync(next.ToArray());
+    }
+}

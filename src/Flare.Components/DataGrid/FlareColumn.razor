@@ -1,0 +1,122 @@
+@namespace Flare.Components
+@typeparam TItem
+@inherits FlareColumnBase
+@implements IDisposable
+
+@* A composite-host column renders its layout descriptors (FlareColumnRow) so they register; it
+   produces no visible markup here - the grid renders the composite grid in the column's cell. *@
+@if (Composite is not null)
+{
+    <CascadingValue Name="CompositeHost" Value="@((FlareColumnBase)this)" IsFixed="true">
+        @Composite
+    </CascadingValue>
+}
+
+@code {
+    [CascadingParameter] private FlareDataGrid<TItem>? Grid { get; set; }
+    [CascadingParameter] private FlareColumnBand? Band { get; set; }
+    [CascadingParameter] private FlareColumnRow? Row { get; set; }
+    /// <summary>Stable column identity used to key all grid state (sort, filters, visibility, order,
+    /// persistence) and the server sort/filter key. Defaults to <see cref="SortKey"/> then
+    /// <see cref="FlareColumnBase.Title"/>. Set this only to disambiguate columns that share a title
+    /// (a localized or duplicated header) on a purely client-side grid.</summary>
+    [Parameter] public string? Id { get; set; }
+    /// <summary>Value selector used for sorting and default cell text.</summary>
+    [Parameter] public Func<TItem, object?>? Field { get; set; }
+    /// <summary>Semantic data type of the column. Drives type-aware cell rendering (boolean as a
+    /// checkbox icon, culture- and <see cref="Format"/>-aware dates and numbers) and the default
+    /// inline filter editor. The default <see cref="ColumnDataType.Auto"/> infers the type from the
+    /// runtime cell value. Ignored when <see cref="Template"/> is set.</summary>
+    [Parameter] public ColumnDataType Type { get; set; } = ColumnDataType.Auto;
+    /// <summary>Optional .NET format string applied to the cell value, e.g. <c>"N2"</c>, <c>"C"</c>
+    /// (currency) or <c>"yyyy-MM-dd"</c>. Applied with the current culture.</summary>
+    [Parameter] public string? Format { get; set; }
+    /// <summary>Text rendered when the cell value is null (default: empty string).</summary>
+    [Parameter] public string? NullText { get; set; }
+    /// <summary>Horizontal alignment of this column's header and cells. When null (the default) the
+    /// alignment is derived from <see cref="Type"/> (or the inferred data type): numbers align to the
+    /// trailing edge, booleans center, everything else leads.</summary>
+    [Parameter] public ColumnAlign? Align { get; set; }
+    /// <summary>Custom cell render template overriding Field output.</summary>
+    [Parameter] public RenderFragment<TItem>? Template { get; set; }
+    /// <summary>Enables click-to-sort on this column.</summary>
+    [Parameter] public bool Sortable { get; set; }
+    /// <summary>Sort key sent to the server-side items provider.</summary>
+    [Parameter] public string? SortKey { get; set; }
+    /// <summary>Initial sort priority in multi-column sort order.</summary>
+    [Parameter] public int SortPriority { get; set; }
+    /// <summary>Allows the user to resize this column by dragging.</summary>
+    [Parameter] public bool Resizable { get; set; }
+    /// <summary>Marks the column cells as editable.</summary>
+    [Parameter] public bool Editable { get; set; }
+    /// <summary>Custom edit template rendered when a cell is in edit mode.</summary>
+    [Parameter] public RenderFragment<TItem>? EditTemplate { get; set; }
+    /// <summary>Shows a filter input in the column header filter row.</summary>
+    [Parameter] public bool Filterable { get; set; }
+    /// <summary>Type of inline filter editor shown when <see cref="Filterable"/> is true (text box,
+    /// dropdown, number or date). When null (the default) the editor is derived from <see cref="Type"/>
+    /// (or the inferred data type): boolean/enum get a dropdown, numbers a number box, dates a date box.</summary>
+    [Parameter] public ColumnFilterType? FilterType { get; set; }
+    /// <summary>Explicit option values for a <see cref="ColumnFilterType.Select"/> filter. When null,
+    /// the distinct cell values of the column are used.</summary>
+    [Parameter] public IEnumerable<string>? FilterOptions { get; set; }
+    /// <summary>
+    /// Debounce delay in milliseconds for this column's filter input. Set to 0 for instant filtering.
+    /// Overrides the grid-level <c>FilterDebounceMs</c> when set.
+    /// </summary>
+    [Parameter] public int? FilterDebounceMs { get; set; }
+    /// <summary>Returns extra CSS class(es) for this column's cell, given the row item. Use for
+    /// value-driven cell formatting (e.g. red text on negative numbers).</summary>
+    [Parameter] public Func<TItem, string>? ClassFunc { get; set; }
+    /// <summary>Returns an inline style string for this column's cell, given the row item.</summary>
+    [Parameter] public Func<TItem, string>? StyleFunc { get; set; }
+    /// <summary>Custom row comparison used when this column is sorted, overriding the default comparison
+    /// of <see cref="Field"/> values. Receives two rows; return a value like <see cref="System.Comparison{T}"/>
+    /// (negative/zero/positive). Ascending uses the result as-is, descending negates it. Use for
+    /// domain-specific ordering (e.g. a custom status order) that a property comparison cannot express.</summary>
+    [Parameter] public Comparison<TItem>? SortComparison { get; set; }
+    /// <summary>Custom filter predicate for this column, overriding the built-in text/number/date match.
+    /// Receives the row and the current filter text; return true to keep the row. Use for cross-field or
+    /// computed filtering that the default per-cell match cannot express.</summary>
+    [Parameter] public Func<TItem, string, bool>? FilterFunc { get; set; }
+    /// <summary>Composite layout: nested <see cref="FlareColumnRow"/> rows of field columns. When set,
+    /// this column is a layout host (no Field). See <see cref="CompositeMode"/>.</summary>
+    [Parameter] public RenderFragment? Composite { get; set; }
+    /// <summary>How the composite lays out: <see cref="Flare.Components.CompositeMode.Banded"/> (default;
+    /// each record spans several table rows, fields align across the table) or
+    /// <see cref="Flare.Components.CompositeMode.Card"/> (all fields in one cell as a CSS grid).</summary>
+    [Parameter] public CompositeMode CompositeMode { get; set; } = CompositeMode.Banded;
+    /// <summary>Grid-column span for this field inside a composite row (default 1).</summary>
+    [Parameter] public int ColSpan { get; set; } = 1;
+
+    /// <summary>This column's stable identity: explicit Id, else SortKey, else Title.</summary>
+    internal override string ColumnKey => Id ?? SortKey ?? Title;
+
+    protected override void OnInitialized()
+    {
+        // A column inside a composite row is a field of that row, not a grid column.
+        if (Row is not null)
+        {
+            Row.AddField(this);
+            return;
+        }
+
+        Grid?.AddColumn(this);
+        // Header structure: a column inside a band reports to it; otherwise it is a top-level header node.
+        if (Band is not null) Band.AddChild(this);
+        else Grid?.AddTopLevelColumn(this);
+    }
+
+    public void Dispose()
+    {
+        if (Row is not null)
+        {
+            Row.RemoveField(this);
+            return;
+        }
+
+        Grid?.RemoveColumn(this);
+        if (Band is not null) Band.RemoveChild(this);
+        else Grid?.RemoveTopLevelColumn(this);
+    }
+}

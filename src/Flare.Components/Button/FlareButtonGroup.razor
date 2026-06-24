@@ -1,0 +1,43 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* The group manages geometry via CSS (seams + per-corner radii) and cascades
+   Size/Variant/Color to child FlareButton via FlareButtonGroupContext. *@
+<div class="@BuildCssClass(_verticalClass, _fullWidthClass)"
+     style="@Style"
+     @attributes="AdditionalAttributes">
+
+    <CascadingValue Value="_context">
+        @ChildContent
+    </CascadingValue>
+</div>
+
+@code {
+    /// <summary>The buttons to render inside the group.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Layout vertical direction of the group.</summary>
+    [Parameter] public bool Vertical { get; set; }
+
+    /// <summary>When true, the group stretches to fill the full width of its container.</summary>
+    [Parameter] public bool FullWidth { get; set; }
+
+    /// <summary>Visual style variant applied to all buttons in the group. Null keeps each button's own Variant.</summary>
+    [Parameter] public ButtonVariant? Variant { get; set; }
+
+    /// <summary>Color applied to all buttons in the group. Null keeps each button's own Color.</summary>
+    [Parameter] public FlareColor? Color { get; set; }
+
+    /// <summary>Size applied to all buttons in the group. Null keeps each button's own Size.</summary>
+    [Parameter] public ButtonSize? Size { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.ButtonGroup.Root;
+
+    // Records have value equality, so CascadingValue re-renders children only when settings change.
+    private FlareButtonGroupContext _context = new(null, null, null);
+
+    protected override void OnParametersSet() => _context = new(Size, Variant, Color);
+
+    private string _verticalClass => Vertical ? Css.Classes.ButtonGroup.Vertical : string.Empty;
+    private string _fullWidthClass => FullWidth ? Css.Classes.ButtonGroup.Full : string.Empty;
+}

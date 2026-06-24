@@ -1,0 +1,12 @@
+@page "/components/divider"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Divider_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDivider">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Divider_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Divider_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Layout_Divider" DemoType="typeof(Examples.DividerBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Layout_DividerWithText" DemoType="typeof(Examples.DividerTextDemo)" />

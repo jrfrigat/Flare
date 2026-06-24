@@ -1,0 +1,300 @@
+@page "/getting-started"
+@inherits LocalizedPage
+@inject IThemeService ThemeService
+
+<PageTitle>@GalleryStrings.GettingStarted_Title - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.GettingStarted_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.GettingStarted_Subtitle</FlareText>
+</GalleryPageTitle>
+
+@* This page mirrors docs/en/getting-started.md section-by-section. Code-only steps use a
+   FlareCodeBlock under the section header; the steps that show a usable component add a small
+   live demo above the code. *@
+<FlareStack Gap="FlareSpacing.Large">
+
+@* -- Requirements ------------------------------------------------------------ *@
+<section>
+    <GallerySectionHeader Icon="rule" Title="@GalleryStrings.GettingStarted_Requirements" AnchorId="requirements" />
+    <FlareAlert Severity="AlertSeverity.Info">@GalleryStrings.GettingStarted_RequirementsDesc</FlareAlert>
+</section>
+
+@* -- 1. Installation --------------------------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="download" Title="@GalleryStrings.GettingStarted_Installation" AnchorId="installation" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        @GalleryStrings.GettingStarted_Installation_NuGetDesc
+    </FlareText>
+    <FlareCodeBlock Value="@_installCode" Language="bash" />
+    <FlareAlert Severity="AlertSeverity.Info" Style="margin-top:1rem;">@GalleryStrings.GettingStarted_Installation_Alert</FlareAlert>
+</section>
+
+@* -- 2. DI setup ------------------------------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="settings" Title="@GalleryStrings.GettingStarted_DiSetup" AnchorId="di-setup" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        @GalleryStrings.GettingStarted_DiSetupDesc
+    </FlareText>
+    <FlareCodeBlock Value="@_diSetupCode" Language="csharp" />
+</section>
+
+@* -- 3. Wiring up the styles ------------------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="style" Title="@GalleryStrings.GettingStarted_Styles" AnchorId="styles" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        @GalleryStrings.GettingStarted_StylesDesc
+    </FlareText>
+    <FlareCodeBlock Value="@_stylesCode" Language="html" />
+</section>
+
+@* -- 4. Wrap with the theme provider ----------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="palette" Title="@GalleryStrings.GettingStarted_ThemeProvider" AnchorId="theme-provider" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        @GalleryStrings.GettingStarted_ThemeProviderDesc
+    </FlareText>
+    <FlareCodeBlock Value="@_themeProviderCode" Language="razor" />
+</section>
+
+@* -- 5. Global imports ------------------------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="code" Title="@GalleryStrings.GettingStarted_GlobalImports" AnchorId="global-imports" />
+    <FlareCodeBlock Value="@_globalImportsCode" Language="razor" />
+</section>
+
+@* -- 6. First component (live) ----------------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="play_arrow" Title="@GalleryStrings.GettingStarted_FirstComponent" AnchorId="first-component" />
+    <FlareCard Style="margin-bottom:1rem;">
+        <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
+            <FlareText Typo="TypographyScale.HeadlineMedium">Hello, Flare!</FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.GettingStarted_FirstComponent_Current: <strong>@ThemeService.CurrentTheme.DisplayName</strong>
+            </FlareText>
+            <FlareButton OnClick="SwitchTheme" Variant="ButtonVariant.Filled">@GalleryStrings.GettingStarted_FirstComponent_SwitchTheme</FlareButton>
+        </FlareStack>
+    </FlareCard>
+    <FlareCodeBlock Value="@_firstComponentCode" Language="razor" />
+</section>
+
+@* -- 7. Theme switcher (live) ------------------------------------------------ *@
+<section>
+    <GallerySectionHeader Icon="contrast" Title="@GalleryStrings.GettingStarted_ThemeSwitcher" AnchorId="theme-switcher" />
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:1rem;">
+        @foreach (var theme in ThemeService.Themes)
+        {
+            var id = theme.Id;
+            <FlareButton Variant="@(ThemeService.CurrentTheme.Id == id ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                         OnClick="@(() => ThemeService.SetThemeAsync(id))">
+                @theme.DisplayName
+            </FlareButton>
+        }
+    </FlareStack>
+    <FlareCodeBlock Value="@_themeSwitcherCode" Language="razor" />
+</section>
+
+@* -- 8. Form validation ------------------------------------------------------ *@
+<section>
+    <GallerySectionHeader Icon="fact_check" Title="@GalleryStrings.GettingStarted_FormValidation" AnchorId="form-validation" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        @GalleryStrings.GettingStarted_FormValidationDesc
+    </FlareText>
+    <FlareCodeBlock Value="@_formValidationCode" Language="razor" />
+</section>
+
+@* -- 9. Dialog and Snackbar -------------------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="notifications" Title="@GalleryStrings.GettingStarted_DialogSnackbar" AnchorId="dialog-snackbar" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        @GalleryStrings.GettingStarted_DialogSnackbarDesc
+    </FlareText>
+    <FlareCodeBlock Value="@_dialogSnackbarCode" Language="razor" />
+</section>
+
+@* -- 10. Docker -------------------------------------------------------------- *@
+<section>
+    <GallerySectionHeader Icon="deployed_code" Title="@GalleryStrings.GettingStarted_Docker" AnchorId="docker" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.75rem;">
+        @GalleryStrings.GettingStarted_DockerDesc
+    </FlareText>
+    <FlareCodeBlock Value="@_dockerCode" Language="bash" />
+</section>
+
+</FlareStack>
+
+@code {
+    private async Task SwitchTheme()
+    {
+        var themes = ThemeService.Themes;
+        var current = ThemeService.CurrentTheme;
+        var next = themes.SkipWhile(t => t.Id != current.Id).Skip(1).FirstOrDefault()
+                   ?? themes.FirstOrDefault();
+        if (next is not null)
+            await ThemeService.SetThemeAsync(next.Id);
+    }
+
+    // ── 1. Installation ─────────────────────────────────────────────────────────
+    private const string _installCode =
+        """
+        # Core: abstractions (Flare.Core) + 100+ components (Flare.Components)
+        dotnet add package Flare
+
+        # Themes ship separately - add the ones you need
+        dotnet add package Flare.Theme.MaterialDesign3Expressive
+        dotnet add package Flare.Theme.FluentUI2
+        # and, if needed: Flare.Theme.Aero, Flare.Theme.LiquidGlass, Flare.Theme.VisualStudio
+        """;
+
+    // ── 2. DI setup ─────────────────────────────────────────────────────────────
+    private const string _diSetupCode =
+        """
+        // Program.cs
+        using Flare.Extensions;
+        using Flare.Theme.MaterialDesign3Expressive;
+        using Flare.Theme.FluentUI2;
+
+        builder.Services.AddFlare(opts =>
+        {
+            opts.DefaultTheme = new Md3Theme();        // default design system
+            opts.DefaultPalette = Md3Palettes.Violet;  // default palette
+            opts.DefaultMode = ThemeMode.Auto;         // Light / Dark / Auto
+        });
+
+        // Register the other themes that should be available at runtime.
+        // AddFlareTheme also force-loads the theme assembly (important for trimmed/WASM builds).
+        builder.Services.AddFlareTheme(new Fluent2Theme());
+        """;
+
+    // ── 3. Wiring up the styles ──────────────────────────────────────────────────
+    private const string _stylesCode =
+        """
+        <!-- index.html (WASM) or App.razor / _Host.cshtml (Server) <head> -->
+        <head>
+            <!-- One line: theme classes + anti-FOUC splash before the first frame -->
+            <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+            <!-- All component styles -->
+            <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
+            <!-- Material Symbols icons (optional, but recommended) -->
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        </head>
+        """;
+
+    // ── 4. Theme provider ────────────────────────────────────────────────────────
+    private const string _themeProviderCode =
+        """
+        <!-- App.razor -->
+        <FlareThemeProvider>
+            <Router AppAssembly="@typeof(App).Assembly">
+                <Found Context="routeData">
+                    <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+                </Found>
+            </Router>
+        </FlareThemeProvider>
+        """;
+
+    // ── 5. Global imports ────────────────────────────────────────────────────────
+    private const string _globalImportsCode =
+        """
+        @* _Imports.razor *@
+        @using Flare.Components
+        @using Flare.Core.Abstractions
+        @using Flare.Core.Tokens
+        """;
+
+    // ── 6. First component ───────────────────────────────────────────────────────
+    private const string _firstComponentCode =
+        """
+        @page "/hello"
+        @inject IThemeService ThemeService
+
+        <FlareCard>
+            <FlareText Typo="TypographyScale.HeadlineMedium">Hello, Flare!</FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                Current theme: @ThemeService.CurrentTheme.DisplayName
+            </FlareText>
+            <FlareButton OnClick="SwitchTheme" Variant="ButtonVariant.Filled">
+                Switch theme
+            </FlareButton>
+        </FlareCard>
+
+        @code {
+            private async Task SwitchTheme()
+            {
+                var themes = ThemeService.Themes;
+                var current = ThemeService.CurrentTheme;
+                var next = themes.SkipWhile(t => t.Id != current.Id).Skip(1).FirstOrDefault()
+                           ?? themes.FirstOrDefault();
+                if (next is not null)
+                    await ThemeService.SetThemeAsync(next.Id);
+            }
+        }
+        """;
+
+    // ── 7. Theme switcher ────────────────────────────────────────────────────────
+    private const string _themeSwitcherCode =
+        """
+        @inject IThemeService ThemeService
+
+        @foreach (var theme in ThemeService.Themes)
+        {
+            <FlareButton Variant="ButtonVariant.Outlined"
+                         OnClick="@(() => ThemeService.SetThemeAsync(theme.Id))">
+                @theme.DisplayName
+            </FlareButton>
+        }
+        """;
+
+    // ── 8. Form validation ───────────────────────────────────────────────────────
+    private const string _formValidationCode =
+        """
+        <EditForm Model="@_model" OnValidSubmit="Submit">
+            <DataAnnotationsValidator />
+
+            <FlareTextField @bind-Value="_model.Name" Label="Name" />
+            <FlareTextField @bind-Value="_model.Email" Label="Email" />
+            <FlareSelect @bind-Value="_model.Role" Label="Role" Items="@_roles" />
+
+            <ValidationSummary />
+
+            <FlareButton Type="ButtonType.Submit" Variant="ButtonVariant.Filled">
+                Submit
+            </FlareButton>
+        </EditForm>
+        """;
+
+    // ── 9. Dialog and Snackbar ─────────────────────────────────────────────────────
+    private const string _dialogSnackbarCode =
+        """
+        @inject IDialogService Dialog
+        @inject ISnackbarService Snackbar
+
+        @* Add the providers once in your layout: *@
+        <FlareDialogProvider />
+        <FlareSnackbarProvider />
+
+        @code {
+            private async Task Delete()
+            {
+                var confirmed = await Dialog.ConfirmAsync(
+                    "Delete record",
+                    "This action cannot be undone.",
+                    "Delete", "Cancel");
+
+                if (confirmed == true)
+                {
+                    // perform the delete...
+                    Snackbar.Show("Record deleted", SnackbarSeverity.Success);
+                }
+            }
+        }
+        """;
+
+    // ── 10. Docker ────────────────────────────────────────────────────────────────
+    private const string _dockerCode =
+        """
+        # Run the Gallery PWA
+        docker compose up --build
+        # Open http://localhost:8080
+        """;
+}

@@ -1,0 +1,67 @@
+@page "/services/messagebox"
+@inherits LocalizedPage
+@inject IMessageBoxService MessageBox
+
+<PageTitle>@GalleryStrings.Services_MsgBoxTitle - Flare</PageTitle>
+
+<GalleryPageTitle Package="Flare">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_MsgBoxTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_MsgBoxSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareCard Variant="CardVariant.Outlined">
+    <FlareStack Gap="FlareSpacing.Medium">
+        <FlareStack Row Wrap Gap="FlareSpacing.Small">
+            <FlareButton OnClick="ConfirmAsync">@GalleryStrings.Services_Confirm</FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="AlertAsync">@GalleryStrings.Services_Alert</FlareButton>
+            <FlareButton Variant="ButtonVariant.Outlined" OnClick="PromptAsync">@GalleryStrings.Services_Prompt</FlareButton>
+        </FlareStack>
+        @if (_result is not null)
+        {
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_Result <code>@_result</code></FlareText>
+        }
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    private string? _result;
+
+    private const string _usage = """
+        @inject IMessageBoxService MessageBox
+
+        @code {
+            async Task Delete()
+            {
+                if (await MessageBox.ConfirmAsync("Delete?", "This cannot be undone."))
+                    DoDelete();
+            }
+
+            async Task Rename()
+            {
+                var name = await MessageBox.PromptAsync("Rename", "New name", "Untitled");
+                if (name is not null) Apply(name);
+            }
+        }
+        """;
+
+    private async Task ConfirmAsync()
+    {
+        var ok = await MessageBox.ConfirmAsync("Delete item?", "This action cannot be undone.");
+        _result = ok.ToString();
+    }
+
+    private async Task AlertAsync()
+    {
+        await MessageBox.AlertAsync("Heads up", "Your changes have been saved.");
+        _result = "dismissed";
+    }
+
+    private async Task PromptAsync()
+    {
+        var name = await MessageBox.PromptAsync("Rename", "New name", "Untitled");
+        _result = name ?? "(cancelled)";
+    }
+}

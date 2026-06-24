@@ -1,0 +1,66 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()"
+     style="--flare-avatar-group-spacing:@Spacing; @Style"
+     @attributes="AdditionalAttributes">
+    <CascadingValue Value="@this" IsFixed="true">
+        @ChildContent
+    </CascadingValue>
+    @if (_overflow > 0)
+    {
+        <div class="@Css.Classes.Avatar.GroupOverflow @Css.Classes.Avatar.Root flare-avatar--@_sizeKey"
+             role="img"
+             aria-label="@_overflowLabel"
+             title="@_overflowLabel">
+            <span class="@Css.Classes.Avatar.Initials" aria-hidden="true">+@_overflow</span>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Avatar items to render in the group.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Maximum number of avatars to display before showing an overflow badge.</summary>
+    [Parameter] public int Max { get; set; } = 5;
+    /// <summary>Size shared by the overflow badge (child avatars set their own size).</summary>
+    [Parameter] public AvatarSize Size { get; set; } = AvatarSize.Md;
+    /// <summary>Negative margin applied between avatars, e.g. "-0.75rem".</summary>
+    [Parameter] public string Spacing { get; set; } = "-0.75rem";
+
+    protected override string ComponentCssClass => Css.Classes.Avatar.Group;
+
+    private int _overflow;
+    private int _visibleCount;
+
+    private string _overflowLabel =>
+        string.Format(FlareStrings.Avatar_OverflowMore, _overflow);
+
+    private string _sizeKey => Size switch
+    {
+        AvatarSize.Xs => "xs",
+        AvatarSize.Sm => "sm",
+        AvatarSize.Lg => "lg",
+        AvatarSize.Xl => "xl",
+        _             => "md",
+    };
+
+    /// <summary>Called by child FlareAvatar; returns true if the avatar should be visible.</summary>
+    internal bool RegisterAvatar()
+    {
+        _visibleCount++;
+        if (_visibleCount > Max)
+        {
+            _overflow++;
+            InvokeAsync(StateHasChanged);
+            return false;
+        }
+        return true;
+    }
+
+    protected override void OnParametersSet()
+    {
+        _overflow = 0;
+        _visibleCount = 0;
+    }
+}

@@ -1,0 +1,69 @@
+/* ==========================================================================
+   LIQUID GLASS - base bundle (Apple "Liquid Glass" look, performance-first).
+
+   The look: lightly translucent tinted surfaces over a soft palette backdrop,
+   a bright light edge bent around the rim (lensing), a soft specular sheen
+   across the top, and a gentle floating shadow. Driven by --flare-liquid-*
+   tokens so it flips correctly between light and dark mode (see DarkExtended).
+
+   NOTE: deliberately NO backdrop-filter / no background-attachment:fixed - those
+   are GPU-expensive. The glass illusion comes from cheap tints + gradients +
+   inset highlights, so it stays smooth even with many controls on screen.
+
+   Scoped so nothing leaks into a nested non-glass theme root.
+   ========================================================================== */
+@import "components/button.css";
+@import "components/input.css";
+@import "components/controls.css";
+@import "components/surfaces.css";
+@import "components/chrome.css";
+@import "components/pickers.css";
+
+@scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
+
+    /* Soft tinted backdrop (palette-derived) so the translucent surfaces sit on
+       colour, not flat white. A static gradient - cheap, no fixed attachment. */
+    body,
+    .flare-root {
+        background-image:
+            radial-gradient(1100px 760px at 10% -8%, color-mix(in srgb, var(--flare-color-primary) 20%, transparent), transparent 60%),
+            radial-gradient(900px 700px at 96% 6%, color-mix(in srgb, var(--flare-color-tertiary) 18%, transparent), transparent 55%),
+            radial-gradient(900px 900px at 50% 112%, color-mix(in srgb, var(--flare-color-info) 18%, transparent), transparent 55%);
+    }
+
+    /* ---- The shared glass material: floating translucent surface ----
+       background-color  -> the translucent tint
+       background-image  -> the specular sheen across the top
+       box-shadow        -> lensing rim (top + bottom inner light) + float shadow
+       Cards are decorative, so they keep the lighter, more translucent glass. */
+    .flare-card {
+        background-color: var(--flare-liquid-tint);
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 42%);
+        border: 1px solid var(--flare-liquid-edge);
+        box-shadow:
+            inset 0 1px 1px var(--flare-liquid-rim),
+            inset 0 -1px 1px var(--flare-liquid-rim-low),
+            var(--flare-liquid-shadow);
+    }
+
+    /* ---- Text-bearing floating surfaces (menus, dropdowns, dialogs, drawers,
+       popovers) ----
+       Same glass framing (rim + edge + float shadow) but a nearly-opaque tint and
+       a softer sheen, so the colourful backdrop no longer bleeds through and the
+       text stays readable. This fixes the low-contrast text in dropdowns/modals
+       while keeping the Liquid Glass look. */
+    .flare-menu__panel,
+    .flare-popover__paper,
+    .flare-select__dropdown,
+    .flare-autocomplete__dropdown,
+    .flare-dialog,
+    .flare-drawer {
+        background-color: var(--flare-liquid-content-tint);
+        background-image: linear-gradient(180deg, var(--flare-liquid-content-sheen) 0%, transparent 42%);
+        border: 1px solid var(--flare-liquid-edge);
+        box-shadow:
+            inset 0 1px 1px var(--flare-liquid-rim),
+            inset 0 -1px 1px var(--flare-liquid-rim-low),
+            var(--flare-liquid-shadow);
+    }
+}

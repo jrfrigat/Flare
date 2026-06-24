@@ -1,0 +1,206 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@{
+    RenderFragment _inner =@<text>
+        @if (Loading)
+        {
+            <span class="@Css.Classes.Button.Spinner"></span>
+            @if (LoadingText is not null)
+            {
+                <span class="@Css.Classes.Button.Label @_typoClass">@LoadingText</span>
+            }
+            else if (ChildContent is not null)
+            {
+                <span class="@Css.Classes.Button.Label @_typoClass">@ChildContent</span>
+            }
+        }
+        else
+        {
+            @if (LeadingIcon is not null)
+            {
+                <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconLeading">@LeadingIcon</span>
+            }
+            @if (ChildContent is not null)
+            {
+                <span class="@Css.Classes.Button.Label @_typoClass">@ChildContent</span>
+            }
+            @if (TrailingIcon is not null)
+            {
+                <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconTrailing">@TrailingIcon</span>
+            }
+        }
+    </text>;
+}
+@if (Href is not null)
+{
+    @* Link button: rendered as <a>. Disabled/Loading removes href and marks aria-disabled. *@
+    <a class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _morphClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
+       style="@_buttonStyle"
+       href="@(Disabled || Loading ? null : Href)"
+       target="@Target"
+       role="button"
+       aria-label="@AriaLabel"
+       aria-disabled="@(Disabled || Loading ? "true" : null)"
+       aria-busy="@(Loading ? "true" : null)"
+       tabindex="@(Disabled || Loading ? "-1" : null)"
+       @onclick="OnClick"
+       @attributes="AdditionalAttributes">@_inner</a>
+}
+else
+{
+    <button class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _morphClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
+            style="@_buttonStyle"
+            disabled="@(Disabled || Loading)"
+            type="@Type.ToString().ToLowerInvariant()"
+            aria-label="@AriaLabel"
+            aria-pressed="@(AriaPressed ? "true" : null)"
+            aria-busy="@(Loading ? "true" : null)"
+            @onclick="OnClick"
+            @attributes="AdditionalAttributes">@_inner</button>
+}
+
+@code {
+    /// <summary>Button label and inner content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Icon rendered before the button label.</summary>
+    [Parameter] public RenderFragment? LeadingIcon { get; set; }
+    /// <summary>Icon rendered after the button label.</summary>
+    [Parameter] public RenderFragment? TrailingIcon { get; set; }
+    /// <summary>Visual style variant of the button.</summary>
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Filled;
+    /// <summary>Size of the button.</summary>
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    /// <summary>
+    /// Overrides the label's typography with a type-scale value (font family/size/weight/line-height).
+    /// When <c>null</c> (default) the label uses the per-<see cref="Size"/> button label typography.
+    /// </summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>
+    /// Corner shape of the button. <see cref="ButtonShape.Default"/> keeps the theme's native shape;
+    /// <see cref="ButtonShape.Rounded"/>, <see cref="ButtonShape.Circular"/> and
+    /// <see cref="ButtonShape.Square"/> force a rounded rectangle, pill, or sharp corners.
+    /// </summary>
+    [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
+    /// <summary>Opt-in MD3 Expressive press morph: the corner radius animates while the button is pressed.</summary>
+    [Parameter] public bool PressMorph { get; set; }
+    /// <summary>Disables the button when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>HTML type attribute of the button element (Button, Submit, or Reset).</summary>
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.Button;
+    /// <summary>Callback invoked when the button is clicked.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    /// <summary>Accessible label for the button, forwarded as aria-label.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Indicates pressed state for toggle buttons, forwarded as aria-pressed.</summary>
+    [Parameter] public bool AriaPressed { get; set; }
+    /// <summary>Shows a spinner and disables the button when true.</summary>
+    [Parameter] public bool Loading { get; set; }
+    /// <summary>Replaces the button label text while Loading is true.</summary>
+    [Parameter] public string? LoadingText { get; set; }
+    /// <summary>
+    /// Color of the button. Use a semantic preset (<c>FlareColor.Primary</c>) - rendered via a shared
+    /// CSS class (fast path) - or an arbitrary color via <c>FlareColor.Custom("#FF0000")</c> /
+    /// <c>@("#FF0000")</c>, which inlines the local color tokens (filled text auto-contrasted, or set
+    /// via <see cref="OnColor"/>). Default keeps the theme default.
+    /// </summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Optional foreground color for the filled variant when <see cref="Color"/> is a custom color.</summary>
+    [Parameter] public string? OnColor { get; set; }
+    /// <summary>Stretches the button to the full width of its container.</summary>
+    [Parameter] public bool FullWidth { get; set; }
+    /// <summary>When set, the button renders as a link (&lt;a&gt;) to this URL. Disabled/Loading removes the href.</summary>
+    [Parameter] public string? Href { get; set; }
+    /// <summary>Target for the link button (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>
+    [Parameter] public string? Target { get; set; }
+
+    /// <summary>Settings inherited from an enclosing FlareButtonGroup; group values override when set.</summary>
+    [CascadingParameter] private FlareButtonGroupContext? GroupContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Button.Root;
+
+    private ButtonVariant _effectiveVariant => GroupContext?.Variant ?? Variant;
+    private ButtonSize _effectiveSize => GroupContext?.Size ?? Size;
+    private FlareColor _effectiveColor => GroupContext?.Color ?? Color;
+
+    private string _variantClass => _effectiveVariant switch
+    {
+        ButtonVariant.Filled => Css.Classes.Button.Filled,
+        ButtonVariant.Outlined => Css.Classes.Button.Outlined,
+        ButtonVariant.Text => Css.Classes.Button.Text,
+        ButtonVariant.Elevated => Css.Classes.Button.Elevated,
+        ButtonVariant.Tonal => Css.Classes.Button.Tonal,
+        _ => Css.Classes.Button.Filled,
+    };
+
+    private string _sizeClass => _effectiveSize switch
+    {
+        ButtonSize.Xs => Css.Classes.Button.Xs,
+        ButtonSize.Sm => Css.Classes.Button.Sm,
+        ButtonSize.Md => Css.Classes.Button.Md,
+        ButtonSize.Lg => Css.Classes.Button.Lg,
+        ButtonSize.Xl => Css.Classes.Button.Xl,
+        _ => Css.Classes.Button.Md,
+    };
+
+    // Optional label type-scale override. Reuses the shared typography utility classes
+    // (flare-text--*), which set font-* on the label span and so win over the inherited
+    // per-size button font. Null -> no class, label keeps the size-based typography.
+    private string? _typoClass => Typo switch
+    {
+        TypographyScale.DisplayLarge => Css.Classes.Text.DisplayLarge,
+        TypographyScale.DisplayMedium => Css.Classes.Text.DisplayMedium,
+        TypographyScale.DisplaySmall => Css.Classes.Text.DisplaySmall,
+        TypographyScale.HeadlineLarge => Css.Classes.Text.HeadlineLarge,
+        TypographyScale.HeadlineMedium => Css.Classes.Text.HeadlineMedium,
+        TypographyScale.HeadlineSmall => Css.Classes.Text.HeadlineSmall,
+        TypographyScale.TitleLarge => Css.Classes.Text.TitleLarge,
+        TypographyScale.TitleMedium => Css.Classes.Text.TitleMedium,
+        TypographyScale.TitleSmall => Css.Classes.Text.TitleSmall,
+        TypographyScale.BodyLarge => Css.Classes.Text.BodyLarge,
+        TypographyScale.BodyMedium => Css.Classes.Text.BodyMedium,
+        TypographyScale.BodySmall => Css.Classes.Text.BodySmall,
+        TypographyScale.LabelLarge => Css.Classes.Text.LabelLarge,
+        TypographyScale.LabelMedium => Css.Classes.Text.LabelMedium,
+        TypographyScale.LabelSmall => Css.Classes.Text.LabelSmall,
+        _ => null,
+    };
+
+    private string _shapeClass => Shape switch
+    {
+        ButtonShape.Rounded => Css.Classes.Button.Rounded,
+        ButtonShape.Circular => Css.Classes.Button.Circular,
+        ButtonShape.Square => Css.Classes.Button.Square,
+        _ => string.Empty,
+    };
+
+    private string _morphClass => PressMorph ? Css.Classes.Button.Morph : string.Empty;
+
+    private string _loadingClass => Loading ? Css.Classes.Button.Loading : string.Empty;
+
+    // Role path -> shared color class (fast, cached). Custom/Default -> none.
+    private string _colorClass => _effectiveColor.CssClass ?? string.Empty;
+
+    // Custom path -> inline the 4 generic color tokens (Default/role -> null, no inline).
+    private string? _buttonStyle
+    {
+        get
+        {
+            var tokens = BuildColorTokens();
+            if (tokens is null) return Style;
+            if (string.IsNullOrEmpty(Style)) return tokens;
+            return Style.TrimEnd().EndsWith(';') ? tokens + Style : tokens + ";" + Style;
+        }
+    }
+
+    // Custom -> derived tokens; dynamic -> precomputed tonal set; role/default -> null.
+    private string? BuildColorTokens() => _effectiveColor.StyleFull(OnColor);
+
+    // Icon-only: an icon is present but no text (ChildContent) -> square icon button.
+    private bool _iconOnly => ChildContent is null && !Loading
+        && (LeadingIcon is not null || TrailingIcon is not null);
+
+    private string _iconOnlyClass => _iconOnly ? Css.Classes.Button.IconOnly : string.Empty;
+
+    private string _fullWidthClass => FullWidth ? Css.Classes.Button.Full : string.Empty;
+}

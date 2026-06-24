@@ -1,0 +1,30 @@
+@* ReorderableColumns lets the user drag column headers to reorder them; RowReorderable lets the
+   user drag rows. Column order is reported via OnColumnOrderChanged (and DataGridState.ColumnOrder)
+   so a host can persist it; pass ColumnOrder to restore a saved layout. Row reorder raises
+   OnRowReordered - the host updates its own data (the grid never mutates Items). *@
+<FlareDataGrid Items="@_people" PageSize="6"
+               ReorderableColumns="true" OnColumnOrderChanged="@(o => { _order = o; })"
+               RowReorderable="true" OnRowReordered="@((DataGridRowReorder<Person> e) => OnRowReordered(e))">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="90px" />
+    </Columns>
+</FlareDataGrid>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Drag a column header or a row. Column order: @string.Join(" -> ", _order)
+</FlareText>
+
+@code {
+    // Row reorder mutates a local copy; the grid never mutates Items itself.
+    private List<Person> _people = DatagridData._people.ToList();
+    private IReadOnlyList<string> _order = ["Name", "Role", "City", "Score"];
+
+    private void OnRowReordered(DataGridRowReorder<Person> e)
+    {
+        _people.RemoveAt(e.OldIndex);
+        _people.Insert(e.NewIndex, e.Item);
+        _people = [.. _people];
+    }
+}

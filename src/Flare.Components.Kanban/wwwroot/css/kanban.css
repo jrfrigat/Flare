@@ -1,0 +1,84 @@
+.flare-kanban {
+    display: flex;
+    gap: var(--flare-spacing-6, 0.75rem);
+    overflow-x: auto;
+    padding-bottom: var(--flare-spacing-4, 0.5rem);
+    align-items: flex-start;
+}
+
+.flare-kanban__column {
+    flex-shrink: 0;
+    width: 240px;
+    background: var(--flare-color-surface-container-low);
+    border-radius: var(--flare-shape-medium);
+    border: 1px solid var(--flare-color-outline-variant);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-kanban__col-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-6, 0.75rem);
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+    background: var(--flare-color-surface-container);
+}
+
+.flare-kanban__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 var(--flare-spacing-2, 0.25rem);
+    background: var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-full);
+    font-size: 0.6875rem;
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-kanban__cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-4, 0.5rem);
+    min-height: 3rem;
+}
+
+.flare-kanban__card {
+    background: var(--flare-color-surface);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-small);
+    padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-6, 0.75rem);
+    cursor: grab;
+    touch-action: none;
+    transition: box-shadow var(--flare-motion-duration-short2, 150ms),
+                opacity var(--flare-motion-duration-short2, 150ms);
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-kanban__card:hover {
+    box-shadow: var(--flare-elevation-2, 0 2px 6px rgba(0,0,0,.12));
+}
+
+.flare-kanban__card--dragging {
+    opacity: 0.4;
+    cursor: grabbing;
+}
+
+.flare-kanban__tag {
+    display: inline-block;
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-3, 0.375rem);
+    border-radius: var(--flare-shape-full);
+    background: var(--flare-color-secondary-container);
+    color: var(--flare-color-on-secondary-container);
+    margin-bottom: var(--flare-spacing-3, 0.375rem);
+    align-self: flex-start;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}

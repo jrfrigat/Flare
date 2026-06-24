@@ -1,0 +1,24 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+<div class="@Css.Classes.Ide.Ribbon.Root @BuildCssClass(_collapsedClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.Ribbon.Tabs" role="tablist">
+        @foreach (var tab in _tabs)
+        {
+            var isActive = tab == _activeTab;
+            <button class="@Css.Classes.Ide.Ribbon.Tab @(isActive ? Css.Classes.Ide.Ribbon.TabActive : "")"
+                    role="tab"
+                    aria-selected="@isActive"
+                    aria-controls="@tab.PanelId"
+                    tabindex="@(isActive ? 0 : -1)"
+                    @onclick="@(() => ActivateTab(tab))">
+                @tab.Title
+            </button>
+        }
+    </div>
+    <div class="@Css.Classes.Ide.Ribbon.Commands">
+        <CascadingValue Value="this">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>

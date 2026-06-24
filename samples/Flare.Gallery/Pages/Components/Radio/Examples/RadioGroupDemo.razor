@@ -1,0 +1,33 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareRadioGroup TValue="string" @bind-Value="_role" Label="Role" Inline="true">
+        <FlareRadio TValue="string" Value="@("dev")" Label="Developer" />
+        <FlareRadio TValue="string" Value="@("design")" Label="Designer" />
+        <FlareRadio TValue="string" Value="@("qa")" Label="QA" />
+    </FlareRadioGroup>
+
+    <FlareRadioGroup TValue="string" @bind-Value="_plan" Label="Plan (stacked)">
+        <FlareRadio TValue="string" Value="@("free")" Label="Free" />
+        <FlareRadio TValue="string" Value="@("pro")" Label="Pro" />
+        <FlareRadio TValue="string" Value="@("ent")" Label="Enterprise" Disabled="true" />
+    </FlareRadioGroup>
+
+    <FlareRadioGroup TValue="string" @bind-Value="_size" Label="Tertiary color + label before"
+                     Color="FlareColor.Tertiary" LabelPlacement="LabelPlacement.Start">
+        <FlareRadio TValue="string" Value="@("s")" Label="Small" />
+        <FlareRadio TValue="string" Value="@("m")" Label="Medium" />
+        <FlareRadio TValue="string" Value="@("l")" Label="Large" />
+    </FlareRadioGroup>
+
+    <FlareRadioGroup TValue="string" @bind-Value="_density" Label="Large size (Xs..Xl grid)" Inline="true" Size="FieldSize.Lg">
+        <FlareRadio TValue="string" Value="@("a")" Label="Alpha" />
+        <FlareRadio TValue="string" Value="@("b")" Label="Beta" />
+    </FlareRadioGroup>
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Role: @_role · Plan: @_plan</FlareText>
+
+@code {
+    private string? _role = "dev";
+    private string? _plan = "free";
+    private string? _size = "m";
+    private string? _density = "a";
+}

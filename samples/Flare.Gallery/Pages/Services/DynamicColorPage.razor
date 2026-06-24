@@ -1,0 +1,144 @@
+@page "/services/dynamic-color"
+@inherits LocalizedPage
+@using Microsoft.AspNetCore.Components.Forms
+@inject IFlareColorExtractor Extractor
+
+<PageTitle>@GalleryStrings.Services_DynamicTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_DynamicTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_DynamicSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareStack Gap="FlareSpacing.Large">
+
+    @* ---- Source picker ---------------------------------------------------------------- *@
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareStack Gap="FlareSpacing.Medium">
+            <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+                <label class="flare-btn flare-btn--tonal flare-btn--md" style="cursor:pointer;">
+                    <FlareIcon Name="upload" Size="1.25rem" />
+                    <span class="flare-btn__label">@GalleryStrings.Services_DynamicUpload</span>
+                    <InputFile OnChange="OnFileAsync" accept="image/*" style="display:none;" />
+                </label>
+                <FlareField TValue="string" @bind-Value="_url" Label="@GalleryStrings.Services_DynamicUrl"
+                            Placeholder="https://..." Style="flex:1;min-width:16rem;" />
+                <FlareButton Variant="ButtonVariant.Filled" OnClick="LoadUrlAsync">@GalleryStrings.Services_DynamicLoad</FlareButton>
+            </FlareStack>
+            <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@GalleryStrings.Services_DynamicHint</FlareText>
+                <FlareChip Color="@_dynamic">@_seed</FlareChip>
+            </FlareStack>
+            @if (!string.IsNullOrEmpty(_fileError))
+            {
+                <FlareAlert Severity="AlertSeverity.Error" Style="margin-top:0.5rem;">@_fileError</FlareAlert>
+            }
+        </FlareStack>
+    </FlareCard>
+
+    @* ---- "Music player" themed by the extracted color --------------------------------- *@
+    <div style="max-width:24rem;">
+        <FlareCard Style="@($"padding:1.25rem;overflow:hidden;{_dynamic.StyleFull()}")">
+            <FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
+                @* Cover *@
+                <div style="aspect-ratio:1/1;border-radius:var(--flare-shape-large);overflow:hidden;
+                            background:linear-gradient(135deg, var(--fc-container), var(--fc-main));
+                            display:flex;align-items:center;justify-content:center;">
+                    @if (_imageUrl is not null)
+                    {
+                        <img src="@_imageUrl" alt="cover" style="width:100%;height:100%;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <FlareIcon Name="music_note" Size="4rem" Style="color:var(--fc-on-container);opacity:.7;" />
+                    }
+                </div>
+
+                @* Track info *@
+                <FlareStack Gap="FlareSpacing.None">
+                    <FlareText Typo="TypographyScale.LabelSmall" Style="color:var(--fc-main);">@GalleryStrings.Services_DynamicNowPlaying</FlareText>
+                    <FlareText Typo="TypographyScale.TitleLarge">@GalleryStrings.Services_DynamicTrack</FlareText>
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_DynamicArtist</FlareText>
+                </FlareStack>
+
+                @* Progress (dynamic accent) *@
+                <FlareProgress Value="38" Color="@_dynamic" />
+
+                @* Transport controls *@
+                <FlareStack Row Justify="FlareJustifyContent.SpaceBetween" Align="FlareAlignItems.Center">
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Shuffle"><LeadingIcon><FlareIcon Name="shuffle" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Previous"><LeadingIcon><FlareIcon Name="skip_previous" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Lg" Color="@_dynamic" AriaLabel="Play"><LeadingIcon><FlareIcon Name="play_arrow" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Next"><LeadingIcon><FlareIcon Name="skip_next" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Repeat"><LeadingIcon><FlareIcon Name="repeat" /></LeadingIcon></FlareButton>
+                </FlareStack>
+            </FlareStack>
+        </FlareCard>
+    </div>
+    <FlareText Typo="TypographyScale.TitleSmall" Style="margin-top:0.5rem">@GalleryStrings.Services_Usage</FlareText>
+    <FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+</FlareStack>
+
+@code {
+    private string _seed = "#6750A4";
+
+    private const string _usage = """
+        @inject IFlareColorExtractor Extractor
+
+        <FlareButton Color="_accent">Play</FlareButton>
+
+        @code {
+            FlareColor _accent = FlareColor.Primary;
+
+            async Task FromCover(string imageUrl)
+            {
+                var seed = await Extractor.GetDominantColorAsync(imageUrl);
+                if (seed is not null)
+                    _accent = FlareColor.Dynamic(seed);   // harmonized, contrast-safe, light/dark
+            }
+        }
+        """;
+    private string _url = "";
+    private string? _imageUrl;
+
+    private FlareColor _dynamic => FlareColor.Dynamic(_seed);
+
+    private const long MaxFileSize = 50 * 1024 * 1024; // 50 MB
+    private string? _fileError;
+
+    private async Task OnFileAsync(InputFileChangeEventArgs e)
+    {
+        _fileError = null;
+        var file = e.File;
+        if (file.Size > MaxFileSize)
+        {
+            _fileError = $"File size ({file.Size / 1024 / 1024} MB) exceeds maximum ({MaxFileSize / 1024 / 1024} MB).";
+            return;
+        }
+        try
+        {
+            using var ms = new MemoryStream();
+            await file.OpenReadStream(MaxFileSize).CopyToAsync(ms);
+            _imageUrl = $"data:{file.ContentType};base64,{Convert.ToBase64String(ms.ToArray())}";
+            await ExtractAsync();
+        }
+        catch (Exception ex)
+        {
+            _fileError = $"Error reading file: {ex.Message}";
+        }
+    }
+
+    private async Task LoadUrlAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_url)) return;
+        _imageUrl = _url.Trim();
+        await ExtractAsync();
+    }
+
+    private async Task ExtractAsync()
+    {
+        if (_imageUrl is null) return;
+        var seed = await Extractor.GetDominantColorAsync(_imageUrl);
+        if (!string.IsNullOrWhiteSpace(seed)) _seed = seed!;
+    }
+}

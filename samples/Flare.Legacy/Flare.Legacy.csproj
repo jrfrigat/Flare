@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>Flare.Legacy</RootNamespace>
+		<!-- The legacy app is single-language Russian. InvariantGlobalization is intentionally NOT set:
+		     it would force the invariant culture and make Flare's component strings (FlareStrings) fall
+		     back to the English default. We load the full ICU data so ru-RU formatting + the ru resource
+		     satellite resolve; the culture is pinned to ru-RU in Program.cs. -->
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+		<!-- PWA: emit the offline service-worker assets manifest on publish so the service worker can
+		     detect a new deployment and prompt the user to update (see PwaUpdatePrompt + pwa-update.js). -->
+		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.8" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- The dev worker is a network-only no-op; the published worker (service-worker.published.js)
+		     does the offline caching and version detection. -->
+		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Flare\Flare.csproj" />
+		<!-- The theme packages are referenced directly so their assemblies are in the WASM boot set
+		     and Settings can switch between every built-in theme (Flare references them transitively,
+		     but WASM only loads directly-reachable theme assemblies). -->
+		<ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.FluentUI2\Flare.Theme.FluentUI2.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.Aero\Flare.Theme.Aero.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.LiquidGlass\Flare.Theme.LiquidGlass.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.VisualStudio\Flare.Theme.VisualStudio.csproj" />
+	</ItemGroup>
+
+</Project>

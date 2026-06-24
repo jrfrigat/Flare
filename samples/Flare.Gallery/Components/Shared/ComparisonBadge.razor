@@ -1,0 +1,23 @@
+@namespace Flare.Gallery.Components.Shared
+
+@if (Value == "✅")
+{
+    <FlareChip Label="✅ Yes" Size="ChipSize.Sm" Color="FlareColor.Success" />
+}
+else if (Value == "⚠️")
+{
+    <FlareChip Label="⚠️ Partial" Size="ChipSize.Sm" Color="FlareColor.Warning" />
+}
+else if (Value == "❌")
+{
+    <FlareChip Label="❌ No" Size="ChipSize.Sm" Color="FlareColor.Error" />
+}
+else
+{
+    @Value
+}
+
+@code {
+    /// <summary>Raw comparison marker (✅ / ⚠️ / ❌) or arbitrary text.</summary>
+    [Parameter] public string Value { get; set; } = "";
+}

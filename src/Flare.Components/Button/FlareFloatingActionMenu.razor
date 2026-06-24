@@ -1,0 +1,32 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_dirClass, _open ? Css.Classes.FabMenu.ListOpen : null)"
+     role="menu"
+     aria-hidden="@((!_open).ToString().ToLowerInvariant())"
+     style="@Style"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>The <see cref="FlareFloatingActionMenuItem"/> entries.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Direction the menu expands from the FAB.</summary>
+    [Parameter] public FabMenuDirection Direction { get; set; } = FabMenuDirection.Up;
+
+    [CascadingParameter(Name = "FabMenuOpen")] private bool Open { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.FabMenu.List;
+
+    private bool _open => Open;
+
+    private string _dirClass => Direction switch
+    {
+        FabMenuDirection.Down  => Css.Classes.FabMenu.Down,
+        FabMenuDirection.Left  => Css.Classes.FabMenu.Left,
+        FabMenuDirection.Right => Css.Classes.FabMenu.Right,
+        _                      => Css.Classes.FabMenu.Up,
+    };
+}

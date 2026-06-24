@@ -1,0 +1,112 @@
+.flare-multiselect { display: flex; flex-direction: column; gap: var(--flare-spacing-2, 0.25rem); position: relative; }
+.flare-multiselect__label { font-size: var(--flare-typescale-label-medium-size, 0.75rem); color: var(--flare-color-on-surface-variant); }
+.flare-multiselect__control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
+    border: var(--flare-input-border, none);
+    border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
+    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
+    padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+    cursor: pointer;
+    user-select: none;
+}
+.flare-multiselect--open .flare-multiselect__control { border-bottom-color: var(--flare-color-primary); }
+.flare-multiselect__value { flex: 1; color: var(--flare-color-on-surface); font-size: var(--flare-typescale-body-large-size); }
+.flare-multiselect__placeholder { color: var(--flare-color-on-surface-variant); }
+
+/* Size grid (Xs..Xl): control padding sets height, value font-size scales the text. */
+.flare-multiselect--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4, 0.5rem); }
+.flare-multiselect--xs .flare-multiselect__value { font-size: var(--flare-typescale-label-medium-size, 0.75rem); }
+.flare-multiselect--sm .flare-multiselect__control { padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-5, 0.625rem); }
+.flare-multiselect--sm .flare-multiselect__value { font-size: var(--flare-typescale-body-medium-size, 0.8125rem); }
+.flare-multiselect--lg .flare-multiselect__control { padding: 0.875rem 1.125rem; }
+.flare-multiselect--lg .flare-multiselect__value { font-size: var(--flare-typescale-title-medium-size, 1rem); }
+.flare-multiselect--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10, 1.25rem); }
+.flare-multiselect--xl .flare-multiselect__value { font-size: var(--flare-typescale-title-large-size, 1.125rem); }
+
+/* GroupBy header */
+.flare-multiselect__group-header {
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem) var(--flare-spacing-2, 0.25rem);
+    font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--flare-color-on-surface-variant);
+}
+
+/* Chips display mode */
+.flare-multiselect__chips { display: flex; flex-wrap: wrap; gap: var(--flare-spacing-2, 0.25rem); }
+.flare-multiselect__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-2, 0.25rem);
+    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
+    border-radius: var(--flare-shape-full, 9999px);
+    background: var(--flare-color-secondary-container);
+    color: var(--flare-color-on-secondary-container);
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    line-height: 1.4;
+}
+.flare-multiselect__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 1rem;
+    height: 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-size: 0.7rem;
+    border-radius: var(--flare-shape-full, 9999px);
+}
+.flare-multiselect__chip-remove:hover { background: color-mix(in srgb, var(--flare-color-on-secondary-container) 12%, transparent); }
+/* Surface + option visuals come from the shared .flare-listbox (listbox.css); only the
+   anchoring lives here. */
+.flare-multiselect__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--flare-spacing-2, 0.25rem);
+}
+.flare-multiselect__helper { font-size: var(--flare-typescale-body-small-size, 0.75rem); color: var(--flare-color-on-surface-variant); }
+.flare-multiselect__helper--error { color: var(--flare-color-error); }
+.flare-multiselect__arrow { color: var(--flare-color-on-surface-variant); }
+
+/* In-dropdown search box. */
+.flare-multiselect__search-wrap {
+    padding: var(--flare-spacing-4, 0.5rem);
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+    position: sticky;
+    top: 0;
+    background: var(--flare-color-surface-container-high);
+    z-index: 1;
+}
+
+.flare-multiselect__search {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+    color: var(--flare-color-on-surface);
+    background: var(--flare-color-surface-container-highest);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-extra-small);
+    padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-5, 0.625rem);
+    outline: none;
+}
+
+.flare-multiselect__search:focus { border-color: var(--flare-color-primary); }
+
+/* The option's checkbox is presentational - the whole row handles toggling, so the
+   checkbox must not capture the click (otherwise it would toggle twice and cancel out). */
+.flare-multiselect__option .flare-checkbox { pointer-events: none; }
+
+/* "Select all" option sits above the list with a divider. */
+.flare-multiselect__option--select-all {
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+    font-weight: 500;
+}

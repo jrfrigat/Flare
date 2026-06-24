@@ -1,0 +1,15 @@
+﻿@using Flare.Gallery.Resources
+
+<FlareChipGroup SelectedValues="_selected"
+                SelectedValuesChanged="v => _selected = v"
+                AriaLabel="@GalleryStrings.ChipGroup_AriaStatusFilter">
+    <FlareChip Value="active" Label="@GalleryStrings.ChipGroup_Active">
+        <LeadingIcon><FlareIcon>check_circle</FlareIcon></LeadingIcon>
+    </FlareChip>
+    <FlareChip Value="pending" Label="@GalleryStrings.ChipGroup_Pending">
+        <LeadingIcon><FlareIcon>schedule</FlareIcon></LeadingIcon>
+    </FlareChip>
+    <FlareChip Value="archived" Label="@GalleryStrings.ChipGroup_Archived">
+        <LeadingIcon><FlareIcon>archive</FlareIcon></LeadingIcon>
+    </FlareChip>
+</FlareChipGroup>

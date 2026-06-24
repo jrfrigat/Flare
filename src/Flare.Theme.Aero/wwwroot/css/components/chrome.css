@@ -1,0 +1,100 @@
+/* ==========================================================================
+   AERO CHROME (list/menu items, dialog header, snackbar, drawer header,
+   toggle button, FAB, breadcrumb). Glossy gradients + edge highlights, all from
+   theme tokens (light + dark).
+   ========================================================================== */
+@scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
+
+    /* ---- List / menu items: glossy blue selection + hover tint ---- */
+    .flare-list-item--clickable:hover,
+    .flare-menu-item:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 10%, transparent) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 18%, transparent) 100%);
+    }
+    .flare-list-item--selected {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 16%, transparent) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 26%, transparent) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    /* ---- Dialog header: glossy Aero window title bar ---- */
+    .flare-dialog__header {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 22%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 9%, var(--flare-color-surface)) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Drawer header: glossy bar ---- */
+    .flare-drawer__header {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface-container) 45%, #ffffff) 0%,
+            var(--flare-color-surface-container) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Snackbar: glossy dark capsule ---- */
+    .flare-snackbar {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-inverse-surface) 82%, #ffffff) 0%,
+            var(--flare-color-inverse-surface) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), var(--flare-elevation-3);
+    }
+
+    /* ---- Toggle button (segmented): glossy command button; pressed = sunken accent ---- */
+    .flare-toggle-btn {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface) 70%, #ffffff) 0%,
+            color-mix(in srgb, var(--flare-color-surface) 92%, #000000) 100%) !important;
+        border: 1px solid var(--flare-color-outline-variant) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+    .flare-toggle-btn:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-color-surface)) 100%) !important;
+        border-color: var(--flare-color-primary) !important;
+    }
+    .flare-toggle-btn--pressed {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 34%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 20%, var(--flare-color-surface)) 100%) !important;
+        border-color: var(--flare-color-primary) !important;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.18);
+    }
+
+    /* ---- FAB / FAB-menu trigger: glossy orb. The FAB fills with --fc-container and
+       its text/icon is --fc-on-container, so base the gloss on the CONTAINER color
+       (not --fc-main) to keep the icon readable in light AND dark. ---- */
+    .flare-fab,
+    .flare-fab-menu__btn {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-container, var(--flare-color-primary-container)) 38%, #ffffff) 0%,
+            var(--fc-container, var(--flare-color-primary-container)) 55%,
+            color-mix(in srgb, var(--fc-container, var(--flare-color-primary-container)) 88%, #000000) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), var(--flare-elevation-2);
+    }
+    /* Surface FAB keeps its neutral surface fill (glossy). */
+    .flare-fab--surface {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface-container-high) 45%, #ffffff) 0%,
+            var(--flare-color-surface-container-high) 100%) !important;
+    }
+
+    /* ---- Breadcrumb link: blue hover ---- */
+    .flare-breadcrumb__link:hover {
+        color: var(--flare-color-primary);
+    }
+}

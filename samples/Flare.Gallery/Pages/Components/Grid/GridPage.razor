@@ -1,0 +1,12 @@
+@page "/components/grid"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Grid_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareGrid">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Grid_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Grid_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Layout_Grid" DemoType="typeof(Examples.GridBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Layout_ResponsiveGrid" DemoType="typeof(Examples.GridResponsiveDemo)" />

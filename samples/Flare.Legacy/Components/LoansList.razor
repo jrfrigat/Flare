@@ -1,0 +1,69 @@
+@namespace Flare.Legacy.Components
+@using Flare.Legacy.Data
+@using Flare.Legacy.Services
+@implements IDisposable
+@inject LoanBackend Backend
+@inject AppSettings Settings
+
+<FlareStack Gap="FlareSpacing.XSmall">
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Портфель займов</FlareText>
+        <FlareSpacer />
+        <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" OnClick="Refresh">
+            <LeadingIcon><FlareIcon Size="0.85rem" Name="refresh" /></LeadingIcon>
+            <ChildContent>Обновить</ChildContent>
+        </FlareButton>
+    </FlareStack>
+
+    @* Data comes from the fake backend (ItemsProvider) so every load/sort/filter/search shows the
+       loading indicator selected in Settings. @key bumps a full reload on "Обновить" and when the
+       paging mode (pagination vs infinite scroll) changes. *@
+    <FlareDataGrid @key="@($"{_reloadKey}-{Settings.GridMode}")" TItem="LoanRow" ItemsProvider="@Backend.QueryAsync"
+                   LoadingIndicator="@Settings.GridIndicator" LoadingText="Загрузка займов..."
+                   PageSize="20" InfiniteScroll="@Settings.InfiniteScroll" Height="600px"
+                   Striped Hover Bordered Dense>
+        <Columns>
+            <FlareColumn Title="ID договора" Field="@(r => r.LoanId)" Sortable="true" Filterable="true" Width="120px" />
+            <FlareColumn Title="Номер договора" Field="@(r => r.LoanNumber)" Sortable="true" Filterable="true" Width="190px">
+                <Template Context="row">
+                    <ColumnLoan LoanId="@row.LoanId" LoanNumber="@row.LoanNumber" OnOpen="@(() => OnOpenLoan.InvokeAsync(row))" />
+                </Template>
+            </FlareColumn>
+            <FlareColumn Title="ID клиента" Field="@(r => r.ClientId)" Sortable="true" Filterable="true" Width="110px" />
+            <FlareColumn Title="ФИО" Field="@(r => r.ClientName)" Sortable="true" Filterable="true">
+                <Template Context="row">
+                    <ColumnClient ClientId="@row.ClientId" ClientName="@row.ClientName" OnOpen="@(() => OnOpenClient.InvokeAsync(row))" />
+                </Template>
+            </FlareColumn>
+            @* Status column: multi-select dropdown filter (distinct stages). *@
+            <FlareColumn Title="Стадия" Field="@(r => r.Stage)" Sortable="true"
+                         Filterable="true" FilterType="ColumnFilterType.Select" Width="150px" />
+            <FlareColumn Title="Остаток" Field="@(r => r.Balance)" Filterable="true" Width="120px" />
+            <FlareColumn Title="Просрочка" Field="@(r => r.Overdue)" Filterable="true" Width="120px" />
+        </Columns>
+        <ToolbarContent>
+            @* Quick search across contract id/number, client id and full name. *@
+            <FlareDataGridQuickFilter TItem="LoanRow"
+                                      Placeholder="Поиск: ИД договора, ИД клиента, ФИО, номер договора" />
+            <FlareSpacer />
+            @* Advanced filter builder (dbForge-style); resolves the grid automatically. *@
+            <DataGridFilterBuilder />
+        </ToolbarContent>
+    </FlareDataGrid>
+</FlareStack>
+
+@code {
+    /// <summary>Raised with the loan row to open in its own tab.</summary>
+    [Parameter] public EventCallback<LoanRow> OnOpenLoan { get; set; }
+
+    /// <summary>Raised with a row whose client's card should open in its own tab.</summary>
+    [Parameter] public EventCallback<LoanRow> OnOpenClient { get; set; }
+
+    private int _reloadKey;
+
+    private void Refresh() => _reloadKey++;
+
+    protected override void OnInitialized() => Settings.Changed += OnChanged;
+    private void OnChanged() => InvokeAsync(StateHasChanged);
+    public void Dispose() => Settings.Changed -= OnChanged;
+}

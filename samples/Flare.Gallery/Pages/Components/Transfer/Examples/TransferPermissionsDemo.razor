@@ -1,0 +1,16 @@
+<div>
+    <FlareTransfer TItem="string"
+                   SourceItems="_available"
+                   TargetItems="_granted"
+                   TargetItemsChanged="items => _granted = items.ToList()"
+                   SourceTitle="Available Permissions"
+                   TargetTitle="Granted" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.75rem">
+        Granted: @string.Join(", ", _granted)
+    </FlareText>
+</div>
+
+@code {
+    private List<string> _available = ["users.read", "users.write", "orders.read", "orders.write", "reports.view", "admin.access"];
+    private List<string> _granted = [];
+}

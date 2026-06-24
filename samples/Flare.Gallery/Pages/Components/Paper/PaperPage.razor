@@ -1,0 +1,13 @@
+@page "/components/paper"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Paper_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlarePaper">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Paper_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Paper_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Paper_ElevationLevels" DemoType="typeof(Examples.PaperElevationDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Paper_Square" DemoType="typeof(Examples.PaperSquareDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Paper_AsContainer" DemoType="typeof(Examples.PaperContainerDemo)" />

@@ -1,0 +1,15 @@
+<FlareStack Gap="FlareSpacing.None">
+    <FlareStack Row Gap="FlareSpacing.Medium" Style="margin-bottom:1rem;">
+        <FlareButton OnClick="@(() => _open = true)">Show light overlay</FlareButton>
+    </FlareStack>
+    <FlareCard Style="position:relative;height:6rem;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-small);overflow:hidden;display:flex;align-items:center;justify-content:center;">
+        <FlareText Typo="TypographyScale.BodyMedium">Light scrim (Dark=false) with custom Opacity and ZIndex</FlareText>
+        <FlareOverlay Open="_open" Absolute="true" Dark="false" Opacity="0.6" ZIndex="5"
+                      OnClick="@(() => _open = false)" />
+    </FlareCard>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Click the overlay to dismiss.</FlareText>
+</FlareStack>
+
+@code {
+    private bool _open;
+}

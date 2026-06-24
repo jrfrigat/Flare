@@ -1,0 +1,55 @@
+@* FlareSplitter is a standalone handle placed BETWEEN two flex siblings (like FlareSpacer, but
+   draggable). Drag it - or focus it and use the arrow keys - to resize the neighbours. It detects
+   the axis from the parent flex direction, so neither demo sets Orientation. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareText Typo="TypographyScale.TitleMedium">Horizontal</FlareText>
+    <div style="display:flex; height:14rem; border:1px solid var(--flare-color-outline-variant); border-radius:var(--flare-shape-medium); overflow:hidden;">
+        <div style="flex:0 0 35%; overflow:auto; padding:1rem;">
+            <FlareText Typo="TypographyScale.TitleSmall">Navigator</FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                First pane. Drag the divider to the right or left.
+            </FlareText>
+        </div>
+        <FlareSplitter MinSize="120px" MaxSize="480px" OnSizeChanged="s => _size = s" />
+        <div style="flex:1 1 0; overflow:auto; padding:1rem;">
+            <FlareText Typo="TypographyScale.TitleSmall">Editor</FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                Second pane fills the remaining space.
+            </FlareText>
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(_size))
+    {
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">First pane: @_size</FlareText>
+    }
+
+    <FlareText Typo="TypographyScale.TitleMedium">Vertical</FlareText>
+    <div style="display:flex; flex-direction:column; height:18rem; border:1px solid var(--flare-color-outline-variant); border-radius:var(--flare-shape-medium); overflow:hidden;">
+        <div style="flex:0 0 40%; overflow:auto; padding:1rem;">
+            <FlareText Typo="TypographyScale.TitleSmall">Preview</FlareText>
+        </div>
+        <FlareSplitter MinSize="64px" />
+        <div style="flex:1 1 0; overflow:auto; padding:1rem;">
+            <FlareText Typo="TypographyScale.TitleSmall">Console</FlareText>
+        </div>
+    </div>
+
+    <FlareText Typo="TypographyScale.TitleMedium">Customized</FlareText>
+    <div style="display:flex; height:14rem; border:1px solid var(--flare-color-outline-variant); border-radius:var(--flare-shape-medium); overflow:hidden;">
+        <div style="flex:0 0 50%; overflow:auto; padding:1rem;">
+            <FlareText Typo="TypographyScale.TitleSmall">Left</FlareText>
+        </div>
+        @* Custom thickness, a centre icon that swaps on hover, and idle/hover colors (from tokens). *@
+        <FlareSplitter Size="14px"
+                       Icon="drag_indicator" HoverIcon="open_with"
+                       Color="var(--flare-color-surface-container-high)"
+                       HoverColor="var(--flare-color-primary-container)" />
+        <div style="flex:1 1 0; overflow:auto; padding:1rem;">
+            <FlareText Typo="TypographyScale.TitleSmall">Right</FlareText>
+        </div>
+    </div>
+</FlareStack>
+
+@code {
+    private string? _size;
+}

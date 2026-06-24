@@ -1,0 +1,15 @@
+@page "/components/carousel"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Carousel_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareCarousel">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Carousel_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        @GalleryStrings.Carousel_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Carousel_Basic" DemoType="typeof(Examples.CarouselBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Carousel_AutoPlay" DemoType="typeof(Examples.CarouselAutoPlayDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Carousel_DotsOnly" DemoType="typeof(Examples.CarouselDotsOnlyDemo)" />

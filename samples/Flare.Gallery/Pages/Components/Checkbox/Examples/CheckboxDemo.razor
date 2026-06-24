@@ -1,0 +1,28 @@
+<FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+    <FlareCheckbox @bind-Value="_a" Label="Option A" />
+    <FlareCheckbox @bind-Value="_b" Label="Option B" />
+    <FlareCheckbox @bind-Value="_c" Label="@($"Indeterminate (bool? = {(_c?.ToString() ?? "null")})")" />
+    <FlareCheckbox @bind-Value="_d" Label="Secondary color" Color="FlareColor.Secondary" />
+    <FlareCheckbox @bind-Value="_e" Label="Label before (Start)" LabelPlacement="LabelPlacement.Start" />
+    <FlareCheckbox @bind-Value="_f" Label="Custom icons (heart)">
+        <CheckedIcon><FlareIcon Name="favorite" /></CheckedIcon>
+        <UncheckedIcon><FlareIcon Name="favorite_border" /></UncheckedIcon>
+    </FlareCheckbox>
+    <FlareCheckbox Value="false" Label="Disabled" Disabled="true" />
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Medium">
+        <FlareCheckbox Value="true" Label="Xs" Size="FieldSize.Xs" />
+        <FlareCheckbox Value="true" Label="Sm" Size="FieldSize.Sm" />
+        <FlareCheckbox Value="true" Label="Md" Size="FieldSize.Md" />
+        <FlareCheckbox Value="true" Label="Lg" Size="FieldSize.Lg" />
+        <FlareCheckbox Value="true" Label="Xl" Size="FieldSize.Xl" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private bool? _a = true;
+    private bool? _b = false;
+    private bool? _c = null;   // null -> indeterminate; click resolves to true/false
+    private bool? _d = true;
+    private bool? _e = true;
+    private bool? _f = true;
+}

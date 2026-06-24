@@ -1,0 +1,73 @@
+/* ==========================================================================
+   LIQUID GLASS - pickers + chrome (calendar / date / time / dropzone / datagrid
+   / nav / appbar). Performance-first, no backdrop blur.
+
+   The app bar and nav are translucent tinted surfaces; calendar / picker headers
+   get a sheen; selected days are glossy accent orbs. Token driven for light +
+   dark.
+   ========================================================================== */
+@scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
+
+    /* ---- App bar: translucent tinted toolbar (the iOS navigation bar) ---- */
+    .flare-appbar {
+        background-color: color-mix(in srgb, var(--flare-color-surface) 90%, transparent) !important;
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 70%);
+        box-shadow: inset 0 -1px 0 var(--flare-liquid-edge), 0 1px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    /* ---- Calendar / date / time / nav group header: light sheen bar ---- */
+    .flare-calendar__header,
+    .flare-datepicker__header,
+    .flare-timepicker__panel-headline,
+    .flare-nav-group__header {
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 65%);
+        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
+    }
+
+    /* ---- Selected day / cell: glossy accent orb (text stays on-primary -> dark-safe) ---- */
+    .flare-datepicker__day--selected,
+    .flare-calendar__cell--selected,
+    .flare-timepicker__cell--selected,
+    .flare-timepicker__period-btn--selected,
+    .flare-datepicker__month-btn--selected,
+    .flare-datepicker__year-btn--selected {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 90%, transparent) !important;
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, transparent 60%) !important;
+        box-shadow:
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.5),
+            0 1px 4px color-mix(in srgb, var(--flare-color-primary) 32%, transparent);
+    }
+    .flare-datepicker__day:hover:not(.flare-datepicker__day--selected):not(.flare-datepicker__day--disabled),
+    .flare-calendar__cell:hover:not(.flare-calendar__cell--selected) {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
+    }
+
+    /* ---- Dropzone: translucent surface; accent tint while dragging ---- */
+    .flare-dropzone {
+        background-color: var(--flare-liquid-tint);
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 60%);
+        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
+    }
+    .flare-dropzone--dragging {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-liquid-tint-strong)) !important;
+        box-shadow:
+            inset 0 1px 0.5px var(--flare-liquid-rim),
+            0 0 0 3px var(--flare-liquid-glow);
+    }
+
+    /* ---- DataGrid header: translucent header strip ---- */
+    .flare-datagrid__th {
+        background-color: color-mix(in srgb, var(--flare-color-surface-container) 82%, transparent) !important;
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 70%) !important;
+        box-shadow: inset 0 -1px 0 var(--flare-liquid-edge);
+    }
+
+    /* ---- Nav: soft accent active item + hover tint ---- */
+    .flare-nav-link--active {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 18%, transparent);
+        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
+    }
+    .flare-nav-link:not(.flare-nav-link--active):not(.flare-nav-link--disabled):hover {
+        background-color: color-mix(in srgb, var(--flare-color-primary) 10%, transparent);
+    }
+}

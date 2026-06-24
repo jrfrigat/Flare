@@ -1,0 +1,16 @@
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareAlert Severity="AlertSeverity.Success" Title="@GalleryStrings.AlertDemo_CustomIconTitle">
+        <Icon><FlareIcon Name="rocket_launch" /></Icon>
+        <ChildContent>@GalleryStrings.AlertDemo_CustomIconBody</ChildContent>
+    </FlareAlert>
+
+    <FlareAlert Severity="AlertSeverity.Info" NoIcon="true" Title="@GalleryStrings.AlertDemo_NoIconTitle">
+        @GalleryStrings.AlertDemo_NoIconBody
+    </FlareAlert>
+
+    <FlareAlert Severity="AlertSeverity.Warning">
+        @GalleryStrings.AlertDemo_NoTitleBody
+    </FlareAlert>
+</FlareStack>

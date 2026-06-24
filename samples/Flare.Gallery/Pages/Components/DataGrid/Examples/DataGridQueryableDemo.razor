@@ -1,0 +1,23 @@
+@* Queryable source: the grid translates its sort/filter/paging into a LINQ expression tree
+   (DataGridQuery) and runs it against the IQueryable - here an in-memory list, but an EF Core
+   DbSet would push the same query to the database with no hand-written code. *@
+
+<FlareDataGrid Queryable="@_people" PageSize="8" FilterMode="DataGridFilterMode.Simple">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" Filterable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" Filterable="true" />
+        <FlareColumn Title="Age" Field="@(p => p.Age)" Type="ColumnDataType.Number" Sortable="true"
+                     Filterable="true" FilterType="ColumnFilterType.Number" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private record Citizen(string Name, string City, int Age);
+
+    private static readonly string[] _cities = ["Berlin", "London", "Paris", "Tokyo", "Madrid"];
+
+    // IQueryable source; for a real app this would be dbContext.Set<Citizen>().
+    private readonly IQueryable<Citizen> _people = Enumerable.Range(1, 60)
+        .Select(i => new Citizen($"Person {i:00}", _cities[i % _cities.Length], 20 + (i * 7) % 45))
+        .AsQueryable();
+}

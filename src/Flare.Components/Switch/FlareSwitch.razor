@@ -1,0 +1,111 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+
+<label class="@BuildCssClass(_stateClass, _withIconClass, _colorClass, _labelClass, _sizeClass)" style="@_inlineStyle" @attributes="AdditionalAttributes">
+    <span class="@Css.Classes.Switch.Track">
+        <input class="@Css.Classes.Switch.Input"
+               type="checkbox"
+               role="switch"
+               aria-checked="@Value"
+               checked="@Value"
+               disabled="@Disabled"
+               @onchange="HandleChange" />
+        <span class="@Css.Classes.Switch.Thumb" aria-hidden="true">
+            <span class="@Css.Classes.Switch.Handle">@_handleIcon</span>
+        </span>
+    </span>
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span class="@Css.Classes.Switch.Label">@Label</span>
+    }
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@Css.Classes.Switch.Error">@_displayedError</span>
+    }
+</label>
+
+@code {
+    /// <summary>Whether the switch is on.</summary>
+    [Parameter] public bool Value { get; set; }
+    /// <summary>Callback invoked when the toggle state changes.</summary>
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+    /// <summary>Label text displayed next to the switch.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Disables the switch when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Accent color of the selected track (role -> shared class, custom -> inline token). Default = primary.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Switch size (Sm or Md). Default Md (MD3 52x32dp).</summary>
+    [Parameter] public SwitchSize Size { get; set; } = SwitchSize.Md;
+    /// <summary>Label position relative to the switch (End = after, Start = before). Default End.</summary>
+    [Parameter] public LabelPlacement LabelPlacement { get; set; } = LabelPlacement.End;
+    /// <summary>Icon shown on the handle when the switch is ON (MD3 "with icon", e.g. a check mark).</summary>
+    [Parameter] public RenderFragment? SelectedIcon { get; set; }
+    /// <summary>Icon shown on the handle when the switch is OFF. Optional; when omitted the off handle is plain.</summary>
+    [Parameter] public RenderFragment? UnselectedIcon { get; set; }
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<bool>>? For { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Switch.Root;
+
+    private string _stateClass => Disabled ? Css.Classes.Switch.Disabled : string.Empty;
+    private bool _hasIcons => SelectedIcon is not null || UnselectedIcon is not null;
+    private string? _withIconClass => _hasIcons ? Css.Classes.Switch.WithIcon : null;
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string _sizeClass => Size switch
+    {
+        SwitchSize.Xs => Css.Classes.Switch.Xs,
+        SwitchSize.Sm => Css.Classes.Switch.Sm,
+        SwitchSize.Lg => Css.Classes.Switch.Lg,
+        SwitchSize.Xl => Css.Classes.Switch.Xl,
+        _             => string.Empty, // Md is the default (base tokens)
+    };
+    private string _labelClass => LabelPlacement == LabelPlacement.Start ? Css.Classes.Switch.LabelStart : string.Empty;
+    private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+    private RenderFragment? _handleIcon => Value ? SelectedIcon : UnselectedIcon;
+    private FieldIdentifier _fieldId;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private async Task HandleChange(ChangeEventArgs e)
+    {
+        var val = e.Value is bool b && b;
+        await ValueChanged.InvokeAsync(val);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+}

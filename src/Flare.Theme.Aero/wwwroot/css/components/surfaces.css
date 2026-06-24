@@ -1,0 +1,108 @@
+/* ==========================================================================
+   AERO SURFACES (chip / alert / badge / table / accordion / pagination /
+   stepper / tooltip). Glossy gradients + edge highlights, all from theme tokens
+   so they read correctly in light and dark.
+   ========================================================================== */
+@scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
+
+    /* ---- Chips: glossy capsule; selected fills with a glossy accent ---- */
+    .flare-chip {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface) 55%, #ffffff) 0%,
+            var(--flare-color-surface-container-high) 100%);
+        border: 1px solid var(--flare-color-outline-variant);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .flare-chip--selected,
+    .flare-chip--elevated {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 64%, #ffffff) 0%,
+            var(--fc-main, var(--flare-color-primary)) 50%,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 86%, #000000) 100%) !important;
+    }
+
+    /* ---- Alerts: a faint top gloss over the tinted panel ---- */
+    .flare-alert {
+        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0) 55%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Badges: glossy pill ---- */
+    .flare-badge {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-error)) 70%, #ffffff) 0%,
+            var(--fc-main, var(--flare-color-error)) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Table header: the classic glossy Office/Aero grid header ---- */
+    .flare-table thead th {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface-container) 40%, #ffffff) 0%,
+            var(--flare-color-surface-container) 55%,
+            color-mix(in srgb, var(--flare-color-surface-container) 88%, #000000) 100%) !important;
+        border-bottom: 1px solid var(--flare-color-outline) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Accordion header: glossy group-header bar ---- */
+    .flare-accordion-panel__header {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface-container) 45%, #ffffff) 0%,
+            var(--flare-color-surface-container) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .flare-accordion-panel__header:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 12%, var(--flare-color-surface-container)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 20%, var(--flare-color-surface-container)) 100%);
+    }
+
+    /* ---- Pagination buttons: glossy like command buttons ---- */
+    .flare-pagination__btn {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface) 70%, #ffffff) 0%,
+            color-mix(in srgb, var(--flare-color-surface) 92%, #000000) 100%) !important;
+        border: 1px solid var(--flare-color-outline-variant) !important;
+    }
+    .flare-pagination__btn:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-color-surface)) 100%) !important;
+        border-color: var(--flare-color-primary) !important;
+    }
+    .flare-pagination__btn--active {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 78%, #ffffff) 0%,
+            var(--flare-color-primary) 50%,
+            color-mix(in srgb, var(--flare-color-primary) 86%, #000000) 100%) !important;
+        border-color: color-mix(in srgb, var(--flare-color-primary) 55%, #000000) !important;
+    }
+
+    /* ---- Stepper circle: glossy accent ---- */
+    .flare-stepper__circle {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 70%, #ffffff) 0%,
+            var(--fc-main, var(--flare-color-primary)) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Tooltip: glossy dark capsule ---- */
+    .flare-tooltip__content {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-inverse-surface) 82%, #ffffff) 0%,
+            var(--flare-color-inverse-surface) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+}

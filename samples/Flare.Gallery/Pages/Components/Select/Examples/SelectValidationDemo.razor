@@ -1,0 +1,19 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:24rem;">
+    <FlareSelect TValue="string" @bind-Value="_priority" Label="Priority"
+                 HelperText="Choose how urgent this task is">
+        <option value="">Select…</option>
+        <option value="low">Low</option>
+        <option value="med">Medium</option>
+        <option value="high">High</option>
+    </FlareSelect>
+
+    <FlareSelect TValue="string" Label="Country" ErrorText="This field is required">
+        <option value="">Select…</option>
+        <option value="de">Germany</option>
+        <option value="fr">France</option>
+    </FlareSelect>
+</FlareStack>
+
+@code {
+    private string? _priority;
+}

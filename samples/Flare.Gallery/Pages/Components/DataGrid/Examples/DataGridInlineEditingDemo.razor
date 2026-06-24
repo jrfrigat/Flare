@@ -1,0 +1,49 @@
+@using System.Globalization
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.5rem">
+    Click the pencil to edit a row. The editor is chosen automatically from each column's type:
+    a checkbox for booleans, a dropdown for enums, a date picker for dates and a numeric input for numbers.
+</FlareText>
+
+<FlareDataGrid @ref="_grid" TItem="Employee" Items="@_people" PageSize="5" OnRowSaved="OnSaved">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(e => e.Name)" Editable="true" />
+        <FlareColumn Title="Active" Field="@(e => e.Active)" Editable="true" />
+        <FlareColumn Title="Role" Field="@(e => e.Role)" Editable="true" />
+        <FlareColumn Title="Salary" Field="@(e => e.Salary)" Type="ColumnDataType.Number" Format="N0" Editable="true" />
+        <FlareColumn Title="Hired" Field="@(e => e.Hired)" Type="ColumnDataType.Date" Editable="true" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private enum Role { Engineer, Designer, Manager }
+
+    private sealed class Employee
+    {
+        public string Name { get; set; } = "";
+        public bool Active { get; set; }
+        public Role Role { get; set; }
+        public decimal Salary { get; set; }
+        public DateTime Hired { get; set; }
+    }
+
+    private FlareDataGrid<Employee>? _grid;
+
+    private readonly List<Employee> _people =
+    [
+        new() { Name = "Alice Johnson", Active = true,  Role = Role.Engineer, Salary = 98000, Hired = new DateTime(2021, 3, 14) },
+        new() { Name = "Bob Smith",     Active = false, Role = Role.Designer, Salary = 76000, Hired = new DateTime(2019, 11, 2) },
+        new() { Name = "Carol Williams",Active = true,  Role = Role.Manager,  Salary = 91000, Hired = new DateTime(2020, 1, 20) },
+    ];
+
+    // The edit buffer holds round-trip-safe strings (invariant numbers, ISO dates), so parse them back.
+    private void OnSaved(Employee e)
+    {
+        var v = _grid!.GetEditValues();
+        if (v.TryGetValue("Name", out var name)) e.Name = name;
+        if (v.TryGetValue("Active", out var active)) e.Active = bool.TryParse(active, out var b) && b;
+        if (v.TryGetValue("Role", out var role) && Enum.TryParse<Role>(role, out var r)) e.Role = r;
+        if (v.TryGetValue("Salary", out var sal) && decimal.TryParse(sal, NumberStyles.Any, CultureInfo.InvariantCulture, out var s)) e.Salary = s;
+        if (v.TryGetValue("Hired", out var hired) && DateTime.TryParse(hired, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)) e.Hired = d;
+    }
+}

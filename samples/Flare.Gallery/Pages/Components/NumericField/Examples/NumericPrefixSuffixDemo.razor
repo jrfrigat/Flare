@@ -1,0 +1,11 @@
+<FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="max-width:40rem;">
+    <FlareNumericField TValue="double" @bind-Value="_price" Label="Price" Prefix="€" Min="0" Max="9999" Step="0.01" Format="F2" Style="flex:1;min-width:12rem;" />
+    <FlareNumericField TValue="double" @bind-Value="_weight" Label="Weight" Suffix="kg" Min="0" Max="500" Step="0.5" Format="F1" Style="flex:1;min-width:12rem;" />
+    <FlareNumericField TValue="int" @bind-Value="_percent" Label="Percentage" Suffix="%" Min="0" Max="100" Step="1" Style="flex:1;min-width:12rem;" />
+</FlareStack>
+
+@code {
+    private double _price = 19.99;
+    private double _weight = 72.5;
+    private int _percent = 50;
+}

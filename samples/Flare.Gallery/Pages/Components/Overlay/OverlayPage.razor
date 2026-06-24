@@ -1,0 +1,12 @@
+@page "/components/overlay"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Overlay_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareOverlay">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Overlay_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Overlay_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Overlay_Overlay" DemoType="typeof(Examples.OverlayBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Overlay_Light" DemoType="typeof(Examples.OverlayLightDemo)" />

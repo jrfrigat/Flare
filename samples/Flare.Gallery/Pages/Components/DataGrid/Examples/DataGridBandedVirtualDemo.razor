@@ -1,0 +1,61 @@
+@* Virtualized banded composite: 500 employee records, each spanning two table rows.
+   Virtual="true" keeps scrolling smooth - only the visible records are rendered. *@
+<FlareDataGrid Items="@_employees" Virtual="true" Height="360px">
+    <Columns>
+        <FlareColumn Title="#" Field="@(e => e.Id)" Width="64px" Frozen="true" />
+
+        <FlareColumn Title="Employee">
+            <Composite>
+                <FlareColumnRow>
+                    <FlareColumn Title="First name" Field="@(e => e.FirstName)" Sortable="true" />
+                    <FlareColumn Title="Last name" Field="@(e => e.LastName)" Sortable="true" />
+                    <FlareColumn Title="City" Field="@(e => e.City)" Sortable="true" />
+                </FlareColumnRow>
+                <FlareColumnRow>
+                    <FlareColumn Title="Job title" Field="@(e => e.JobTitle)" Sortable="true" />
+                    <FlareColumn Title="Hired" Field="@(e => e.HireDate.ToString("yyyy-MM-dd"))" Sortable="true" />
+                    <FlareColumn Title="Phone" Field="@(e => e.Phone)" />
+                </FlareColumnRow>
+            </Composite>
+        </FlareColumn>
+
+        <FlareColumn Title="Country" Field="@(e => e.Country)" Width="140px" Sortable="true" />
+        <FlareColumn Title="Salary" Field="@(e => "$" + e.Salary.ToString("N0"))" Width="120px" Sortable="true" SortKey="Salary" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private sealed record Employee(
+        int Id, string FirstName, string LastName, string JobTitle,
+        string City, string Country, DateOnly HireDate, string Phone, decimal Salary);
+
+    private static readonly string[] _first = ["Alice", "Bob", "Carol", "David", "Emma", "Frank", "Grace", "Henry"];
+    private static readonly string[] _last = ["Johnson", "Smith", "Williams", "Lee", "Davis", "Miller", "Brown", "Wilson"];
+    private static readonly string[] _titles = ["Engineering Manager", "UX Designer", "Product Manager", "Senior Engineer", "QA Lead", "DevOps Engineer"];
+    private static readonly (string City, string Country)[] _places =
+    [
+        ("Berlin", "Germany"), ("London", "UK"), ("Paris", "France"), ("Tokyo", "Japan"),
+        ("New York", "USA"), ("Amsterdam", "Netherlands"), ("Madrid", "Spain"), ("Oslo", "Norway"),
+    ];
+
+    private readonly List<Employee> _employees = BuildEmployees();
+
+    private static List<Employee> BuildEmployees()
+    {
+        var list = new List<Employee>(500);
+        for (var i = 1; i <= 500; i++)
+        {
+            var place = _places[i % _places.Length];
+            list.Add(new Employee(
+                i,
+                _first[i % _first.Length],
+                _last[(i / _first.Length) % _last.Length],
+                _titles[i % _titles.Length],
+                place.City, place.Country,
+                new DateOnly(2015 + i % 10, 1 + i % 12, 1 + i % 28),
+                $"+1 555 {1000 + i:0000}",
+                60000 + i % 40 * 1000));
+        }
+        return list;
+    }
+}

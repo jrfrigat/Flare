@@ -1,0 +1,54 @@
+<FlareStack Style="max-width:32rem;">
+    <FlareCard Variant="CardVariant.Outlined" Style="height:380px;overflow-y:auto;padding:0;">
+        <FlareInfiniteScroll OnLoadMore="LoadMore" HasMore="@_hasMore" RootMargin="120px">
+            <ChildContent>
+                <FlareList TItem="object">
+                    @foreach (var item in _feed)
+                    {
+                        <FlareListItem Primary="@item.Title" Secondary="@item.Time">
+                            <Leading><FlareAvatar Icon="article" Variant="AvatarVariant.Tonal" /></Leading>
+                        </FlareListItem>
+                    }
+                </FlareList>
+            </ChildContent>
+            <LoadingContent>
+                <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Style="padding:1rem;justify-content:center;">
+                    <FlareProgress Variant="ProgressVariant.Circular" Size="24" />
+                    <FlareText Typo="TypographyScale.BodySmall">Loading more…</FlareText>
+                </FlareStack>
+            </LoadingContent>
+            <EndContent>
+                <FlareText Typo="TypographyScale.BodySmall" Align="TextAlign.Center" Style="padding:1rem;display:block;">You've reached the end</FlareText>
+            </EndContent>
+        </FlareInfiniteScroll>
+    </FlareCard>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.5rem">
+        Scroll to the bottom to load more. @_feed.Count items loaded.
+    </FlareText>
+</FlareStack>
+
+@code {
+    record FeedItem(string Title, string Time);
+
+    private List<FeedItem> _feed = [];
+    private bool _hasMore = true;
+    private int _page;
+
+    protected override void OnInitialized()
+    {
+        _feed = Enumerable.Range(1, 15)
+            .Select(i => new FeedItem($"Article #{i}", $"{i} min ago"))
+            .ToList();
+        _page = 1;
+    }
+
+    private async Task LoadMore()
+    {
+        await Task.Delay(800);
+        _page++;
+        int start = (_page - 1) * 15 + 1;
+        _feed.AddRange(Enumerable.Range(start, 15)
+            .Select(i => new FeedItem($"Article #{i}", $"{i} min ago")));
+        if (_page >= 4) _hasMore = false;
+    }
+}

@@ -1,0 +1,82 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_expanded ? Css.Classes.Accordion.Expanded : null, Disabled ? Css.Classes.Accordion.PanelDisabled : null)" style="@Style" @attributes="AdditionalAttributes">
+    <button class="@Css.Classes.Accordion.Header" type="button" @onclick="Toggle"
+            id="@_headerId"
+            disabled="@Disabled"
+            aria-expanded="@_expanded.ToString().ToLowerInvariant()"
+            aria-controls="@_contentId">
+        <span class="@Css.Classes.Accordion.PanelHeaderText">
+            @if (HeaderContent is not null)
+            {
+                @HeaderContent
+            }
+            else
+            {
+                @Header
+            }
+        </span>
+        <span class="@Css.Classes.Accordion.Icon" aria-hidden="true">▾</span>
+    </button>
+    <div class="@Css.Classes.Accordion.Content"
+         id="@_contentId"
+         role="region"
+         aria-labelledby="@_headerId">
+        <div class="@Css.Classes.Accordion.Body">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] private FlareAccordion? Accordion { get; set; }
+    /// <summary>Text displayed in the panel's toggle header button.</summary>
+    [Parameter] public string Header { get; set; } = "";
+    /// <summary>Rich header content (icons, badges, custom markup); overrides <see cref="Header"/> when set.</summary>
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
+    /// <summary>Disables the panel's toggle (cannot expand/collapse).</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Content revealed when the panel is expanded.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Controls whether the panel is currently expanded.</summary>
+    [Parameter] public bool Expanded { get; set; }
+    /// <summary>Callback fired when the expanded state changes.</summary>
+    [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Accordion.Panel;
+
+    private bool _expanded;
+    private bool _initialised;
+    private readonly string _panelId = Guid.NewGuid().ToString("N")[..8];
+    private string _headerId => $"flare-accordion-hdr-{_panelId}";
+    private string _contentId => $"flare-accordion-cnt-{_panelId}";
+
+    protected override void OnParametersSet()
+    {
+        // Only sync from the Expanded parameter on first render.
+        // After that, local toggle state is authoritative so that parent
+        // re-renders (e.g. from sibling panel collapsing) do not reset expansion.
+        if (!_initialised)
+        {
+            _expanded = Expanded;
+            _initialised = true;
+        }
+    }
+
+    private async Task Toggle()
+    {
+        _expanded = !_expanded;
+        if (_expanded)
+            Accordion?.PanelExpanded(this);
+        else
+            Accordion?.PanelCollapsed(this);
+        await ExpandedChanged.InvokeAsync(_expanded);
+    }
+
+    internal void Collapse()
+    {
+        _expanded = false;
+        StateHasChanged();
+    }
+}

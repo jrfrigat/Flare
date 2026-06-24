@@ -1,0 +1,59 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@Css.Classes.Tabs.Panel @(_isActive ? "" : Css.Classes.Tabs.PanelHidden)"
+     role="tabpanel"
+     id="@PanelId"
+     aria-labelledby="@TabId">
+    @* Lazy mode renders only the active panel, so inactive (heavy) content is never built or kept. *@
+    @if (!_lazy || _isActive)
+    {
+        @ChildContent
+    }
+</div>
+
+@code {
+    [CascadingParameter] private FlareTabsContext? TabsContext { get; set; }
+    /// <summary>Tab button label shown in the tab bar.</summary>
+    [Parameter] public string Label { get; set; } = "";
+    /// <summary>Content rendered in the tab panel when active.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Icon rendered before the tab label.</summary>
+    [Parameter] public RenderFragment? LeadingIcon { get; set; }
+    /// <summary>Prevents the tab from being selected.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Shows a close button on the tab.</summary>
+    [Parameter] public bool Closeable { get; set; }
+    /// <summary>Optional badge text/count shown after the tab label (e.g. an unread count).</summary>
+    [Parameter] public string? Badge { get; set; }
+    /// <summary>Color of the badge / dot. Default <see cref="FlareColor.Error"/>.</summary>
+    [Parameter] public FlareColor BadgeColor { get; set; } = FlareColor.Error;
+    /// <summary>Renders the badge as a small dot with no text (overrides <see cref="Badge"/> text).</summary>
+    [Parameter] public bool BadgeDot { get; set; }
+    /// <summary>Tooltip text shown on hover/focus of the tab (native <c>title</c>).</summary>
+    [Parameter] public string? Tooltip { get; set; }
+    /// <summary>Invoked when the tab button is clicked, before activation. Fires even for the active tab.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    /// <summary>Stable GUID-based ID for the tab trigger element.</summary>
+    internal string TabId { get; } = $"tab-{Guid.NewGuid():N}";
+    /// <summary>Stable GUID-based ID for the tab panel element.</summary>
+    internal string PanelId { get; } = $"panel-{Guid.NewGuid():N}";
+
+    protected override string ComponentCssClass => Css.Classes.Tabs.Tab;
+
+    private bool _isActive => TabsContext?.ActiveTab == this;
+    private bool _lazy => TabsContext?.Lazy == true;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        TabsContext?.Register(this);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        TabsContext?.Unregister(this);
+        await base.DisposeAsync();
+    }
+}

@@ -1,0 +1,30 @@
+@inherits LocalizedPage
+
+<div style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-end;">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareQrCode Value="https://github.com/jrfrigat/Flare"
+                     Size="200"
+                     ErrorCorrectionLevel="QrErrorCorrectionLevel.H"
+                     IconUrl="favicon.png" />
+        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">IconUrl + ErrorCorrectionLevel.H</span>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareQrCode Value="https://github.com/jrfrigat/Flare"
+                     Size="200"
+                     CornerRadius="0.4"
+                     ForeColor="#1B5E20" BackColor="#F1F8E9"
+                     ErrorCorrectionLevel="QrErrorCorrectionLevel.H"
+                     IconUrl="favicon.png" />
+        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">Rounded + Icon + custom colors</span>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareQrCode Value="https://github.com/jrfrigat/Flare"
+                     Size="200"
+                     CornerRadius="0.5"
+                     ForeColor="#6750A4" BackColor="#F3EFF7"
+                     ErrorCorrectionLevel="QrErrorCorrectionLevel.H"
+                     IconUrl="icon-192.png"
+                     IconSize="44" />
+        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">Circle modules + Icon</span>
+    </div>
+</div>

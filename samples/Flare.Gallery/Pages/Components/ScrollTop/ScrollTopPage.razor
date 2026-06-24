@@ -1,0 +1,11 @@
+@page "/components/scroll-top"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.ScrollTop_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareScrollTop">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.ScrollTop_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.ScrollTop_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.ScrollTop_Basic" DemoType="typeof(Examples.ScrollTopDemo)" />

@@ -1,0 +1,18 @@
+﻿@using Flare.Gallery.Resources
+
+<FlareChipGroup MultiSelect="true"
+                SelectedValues="_selected"
+                SelectedValuesChanged="v => _selected = v"
+                AriaLabel="@GalleryStrings.ChipGroup_AriaTagFilter">
+    <FlareChip Value="blazor" Label="Blazor" />
+    <FlareChip Value="dotnet" Label=".NET" />
+    <FlareChip Value="csharp" Label="C#" />
+    <FlareChip Value="wasm" Label="WebAssembly" />
+    <FlareChip Value="ui" Label="UI" />
+</FlareChipGroup>
+@if (_selected.Any())
+{
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @GalleryStrings.Common_Selected @string.Join(", ", _selected)
+    </FlareText>
+}

@@ -1,0 +1,24 @@
+<FlareStack Style="max-width:36rem;">
+    <FlareDropZone OnFilesDropped="HandleDropped" Accept=".jpg,.png,.pdf,.docx" Multiple="true" />
+    @if (_dropped.Count > 0)
+    {
+        <FlareStack Gap="FlareSpacing.XSmall" Style="margin-top:1rem;">
+            <FlareText Typo="TypographyScale.LabelMedium" Style="margin-bottom:0.5rem;">Dropped files:</FlareText>
+            <FlareList TItem="object" Style="border:1px solid var(--flare-color-outline-variant);">
+                @foreach (var f in _dropped)
+                {
+                    <FlareListItem Primary="@f.Name" Secondary="@($"{f.Size / 1024} KB")">
+                        <Leading><FlareIcon Name="insert_drive_file" /></Leading>
+                    </FlareListItem>
+                }
+            </FlareList>
+        </FlareStack>
+    }
+</FlareStack>
+
+@code {
+    private IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> _dropped = [];
+
+    private void HandleDropped(IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files)
+        => _dropped = files;
+}

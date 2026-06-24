@@ -1,0 +1,30 @@
+<FlareStack Style="max-width:32rem;">
+    <FlareList TItem="ListRow" Virtual="true" Items="_bigList" Height="320px" OverscanCount="6">
+        <ItemTemplate Context="row">
+            <FlareListItem Primary="@row.Name" Secondary="@row.Email">
+                <Leading><FlareAvatar Label="@row.Initials" /></Leading>
+                <Trailing><FlareChip Label="@row.Role" /></Trailing>
+            </FlareListItem>
+        </ItemTemplate>
+    </FlareList>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-top:0.5rem">
+        @_bigList.Count items - only visible rows are rendered.
+    </FlareText>
+</FlareStack>
+
+@code {
+    record ListRow(int Id, string Name, string Email, string Role)
+    {
+        public string Initials => string.Concat(Name.Split(' ').Select(p => p[0]));
+    }
+
+    private List<ListRow> _bigList = [];
+    private readonly string[] _roles = ["Admin", "User", "Editor", "Viewer"];
+
+    protected override void OnInitialized()
+    {
+        _bigList = Enumerable.Range(1, 10_000)
+            .Select(i => new ListRow(i, $"User {i}", $"user{i}@example.com", _roles[i % _roles.Length]))
+            .ToList();
+    }
+}

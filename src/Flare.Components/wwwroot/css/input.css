@@ -1,0 +1,289 @@
+.flare-input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2, 0.25rem);
+    position: relative;
+}
+
+/* Per-field variant override (independent of theme) - drives the shared --flare-input-* tokens.
+   Applied to FlareInput / FlareNumericField / FlareTextArea roots. Default = theme decides. */
+.flare-input-variant--filled {
+    --flare-input-bg: var(--flare-color-surface-container-highest);
+    --flare-input-border: none;
+    --flare-input-border-bottom: 1px solid var(--flare-color-on-surface-variant);
+    --flare-input-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
+    --flare-input-focus-border: none;
+    --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
+}
+.flare-input-variant--outlined {
+    --flare-input-bg: transparent;
+    --flare-input-border: 1px solid var(--flare-color-outline);
+    --flare-input-border-bottom: 1px solid var(--flare-color-outline);
+    --flare-input-radius: var(--flare-shape-extra-small);
+    --flare-input-focus-border: 2px solid var(--flare-color-primary);
+    --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
+}
+
+.flare-input__label {
+    font-family: var(--flare-typescale-label-medium-font, var(--flare-typescale-label-large-font));
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    font-weight: var(--flare-typescale-label-medium-weight, 400);
+    color: var(--flare-color-on-surface-variant);
+    pointer-events: none;
+}
+
+.flare-input__field {
+    display: flex;
+    align-items: center;
+    background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
+    background-image: none;
+    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
+    border: var(--flare-input-border, none);
+    border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
+    transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+                background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+/* MD3 hover: active indicator -> on-surface (1dp) + an 8% state layer over the container.
+   Themes opt in via the tokens; default leaves the rest indicator unchanged. */
+.flare-input__field:hover {
+    background-image: var(--flare-input-hover-state-layer, none);
+    border-bottom: var(--flare-input-hover-border-bottom, var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant)));
+}
+
+/* Focus comes after hover so the focus indicator wins when the field is focused (the hover
+   state layer may still show while hovering a focused field, per MD3). */
+.flare-input__field:focus-within {
+    border: var(--flare-input-focus-border, none);
+    border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--fc-main, var(--flare-color-primary)));
+}
+
+.flare-input__control {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    /* Block padding drives the field height (MD3 filled = 56dp via 1rem + 24px line). */
+    padding: var(--flare-input-padding, 0.75rem 1rem);
+    font-family: var(--flare-typescale-body-large-font);
+    font-size: var(--flare-typescale-body-large-size);
+    color: var(--flare-color-on-surface);
+    /* MD3 caret follows the field's accent (--fc-main), default primary */
+    caret-color: var(--fc-main, var(--flare-color-primary));
+}
+
+/* Size grid (Xs..Xl): block padding sets the field height, font-size scales the text.
+   Single source of truth for the WHOLE input family -- FlareField/NumericField/MaskedField
+   (flare-input__control), Autocomplete, TagField, Select and the Date/DateTime/Time pickers --
+   so the field size scale lives in one place. */
+.flare-input--xs .flare-input__control,
+.flare-autocomplete--xs .flare-autocomplete__control,
+.flare-tag-input--xs .flare-tag-input__input,
+.flare-select--xs .flare-select__control,
+.flare-datepicker--xs .flare-datepicker__control,
+.flare-datetimepicker--xs .flare-datetimepicker__control,
+.flare-timepicker--xs .flare-timepicker__control { padding: 0.1875rem var(--flare-spacing-4, 0.5rem);  font-size: var(--flare-typescale-label-medium-size, 0.75rem); }
+.flare-input--sm .flare-input__control,
+.flare-autocomplete--sm .flare-autocomplete__control,
+.flare-tag-input--sm .flare-tag-input__input,
+.flare-select--sm .flare-select__control,
+.flare-datepicker--sm .flare-datepicker__control,
+.flare-datetimepicker--sm .flare-datetimepicker__control,
+.flare-timepicker--sm .flare-timepicker__control { padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-5, 0.625rem); font-size: var(--flare-typescale-body-medium-size, 0.8125rem); }
+.flare-input--lg .flare-input__control,
+.flare-autocomplete--lg .flare-autocomplete__control,
+.flare-tag-input--lg .flare-tag-input__input,
+.flare-select--lg .flare-select__control,
+.flare-datepicker--lg .flare-datepicker__control,
+.flare-datetimepicker--lg .flare-datetimepicker__control,
+.flare-timepicker--lg .flare-timepicker__control { padding: 0.875rem 1.125rem; font-size: var(--flare-typescale-title-medium-size, 1rem); }
+.flare-input--xl .flare-input__control,
+.flare-autocomplete--xl .flare-autocomplete__control,
+.flare-tag-input--xl .flare-tag-input__input,
+.flare-select--xl .flare-select__control,
+.flare-datepicker--xl .flare-datepicker__control,
+.flare-datetimepicker--xl .flare-datetimepicker__control,
+.flare-timepicker--xl .flare-timepicker__control { padding: 1.125rem var(--flare-spacing-10, 1.25rem);  font-size: var(--flare-typescale-title-large-size, 1.125rem); }
+
+/* Placeholder text is muted (MD3: on-surface-variant). */
+.flare-input__control::placeholder {
+    color: var(--flare-input-placeholder-color, var(--flare-color-on-surface-variant));
+    opacity: 1;
+}
+
+.flare-input__icon { display: inline-flex; align-items: center; padding: 0 var(--flare-spacing-4, 0.5rem); color: var(--flare-color-on-surface-variant); }
+.flare-input__icon--leading  { order: -1; }
+.flare-input__icon--trailing { order: 1; }
+
+.flare-input__adornment {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--flare-spacing-4, 0.5rem);
+    color: var(--flare-color-on-surface-variant);
+    font-size: var(--flare-typescale-body-medium-size);
+    white-space: nowrap;
+}
+.flare-input__adornment--start { order: -2; }
+.flare-input__adornment--end   { order: 2; }
+
+/* Drop the control's edge padding on the side that already has an adornment. */
+.flare-input--has-adornment-start .flare-input__control { padding-left: 0; }
+.flare-input--has-adornment-end   .flare-input__control { padding-right: 0; }
+
+.flare-input__clear {
+    order: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--flare-spacing-2, 0.25rem);
+    margin: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--flare-color-on-surface-variant);
+    border-radius: var(--flare-shape-full);
+    transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+                background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+.flare-input__clear:hover {
+    color: var(--flare-color-on-surface);
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+.flare-input__clear:focus-visible {
+    outline: 2px solid var(--flare-color-primary);
+    outline-offset: 1px;
+}
+
+/* Supporting-text row: helper/error on the left, character counter on the right (MD3). */
+.flare-input__support {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--flare-spacing-8, 1rem);
+}
+
+.flare-input__helper {
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+}
+.flare-input__helper--error { color: var(--flare-color-error); }
+
+/* Counter sits at the trailing edge; margin-left:auto keeps it right-aligned when no helper text. */
+.flare-input__counter {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+    font-variant-numeric: tabular-nums;
+}
+.flare-input--error .flare-input__counter { color: var(--flare-color-error); }
+
+.flare-input--error .flare-input__field {
+  border-color: var(--flare-color-error);
+  border-bottom-color: var(--flare-color-error);
+}
+/* Error hover: indicator darkens (MD3 error.hover = error + 8% on-surface, so darker in light /
+   lighter in dark). The 8% state layer itself already shows via the generic :hover rule. */
+.flare-input--error .flare-input__field:hover {
+  border-bottom-color: var(--flare-input-error-hover-indicator,
+    color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error)));
+}
+
+/* Disabled (MD3): container at 4% on-surface, active indicator at 38%, content at 38%
+   (separate, not one blanket opacity). */
+.flare-input--disabled { pointer-events: none; }
+.flare-input--disabled .flare-input__field {
+    background: var(--flare-input-disabled-bg,
+        color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent));
+    border-bottom-color: var(--flare-input-disabled-indicator,
+        color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent));
+}
+.flare-input--disabled .flare-input__control,
+.flare-input--disabled .flare-input__label,
+.flare-input--disabled .flare-input__label--floating,
+.flare-input--disabled .flare-input__helper,
+.flare-input--disabled .flare-input__adornment,
+.flare-input--disabled .flare-input__icon {
+    opacity: var(--flare-state-disabled-opacity, 0.38);
+}
+
+.flare-numericfield__prefix,
+.flare-numericfield__suffix {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--flare-spacing-4, 0.5rem);
+    color: var(--flare-color-on-surface-variant);
+    font-size: var(--flare-typescale-body-large-size);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.flare-numericfield__prefix { padding-left: var(--flare-spacing-8, 1rem); padding-right: var(--flare-spacing-2, 0.25rem); }
+.flare-numericfield__suffix { padding-left: var(--flare-spacing-2, 0.25rem); padding-right: var(--flare-spacing-8, 1rem); }
+
+.flare-numericfield__stepper {
+    display: inline-flex;
+    flex-direction: column;
+    border-left: 1px solid var(--flare-color-outline-variant);
+    align-self: stretch;
+}
+.flare-numericfield__step {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    padding: 0 var(--flare-spacing-2, 0.25rem);
+    border: none;
+    background: transparent;
+    color: var(--flare-color-on-surface-variant);
+    font-size: 0.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+.flare-numericfield__step:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    color: var(--flare-color-on-surface);
+}
+.flare-numericfield__step:disabled { opacity: var(--flare-state-disabled-opacity); cursor: not-allowed; }
+.flare-numericfield__step--up { border-bottom: 1px solid var(--flare-color-outline-variant); }
+
+/* Floating label */
+.flare-input--floating .flare-input__field { position: relative; }
+.flare-input--floating .flare-input__label--floating {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--flare-typescale-body-large-size);
+    color: var(--flare-color-on-surface-variant);
+    pointer-events: none;
+    transition: top var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+                font-size var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+                color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+/* Float up (position + size) when focused OR populated. */
+.flare-input--floating .flare-input__field:focus-within .flare-input__label--floating,
+.flare-input--floating .flare-input__control:not(:placeholder-shown) ~ .flare-input__label--floating {
+    top: 0.25rem;
+    /* MD3 populated label = 12pt / 16pt line. */
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    line-height: var(--flare-typescale-body-small-height, 1rem);
+}
+/* MD3: the label turns primary ONLY while focused; populated-but-unfocused stays
+   on-surface-variant (inherited from the base floating-label rule). */
+.flare-input--floating .flare-input__field:focus-within .flare-input__label--floating {
+    color: var(--fc-main, var(--flare-color-primary));
+}
+
+/* Error state colors (MD3): label, caret, trailing icon -> error (active indicator handled
+   above; supporting text via __helper--error). Leading icon stays neutral per spec. The third
+   selector beats the focus-primary label rule so an errored+focused label stays error. */
+.flare-input--error .flare-input__label,
+.flare-input--error .flare-input__label--floating,
+.flare-input--error.flare-input--floating .flare-input__field:focus-within .flare-input__label--floating {
+    color: var(--flare-color-error);
+}
+.flare-input--error .flare-input__control { caret-color: var(--flare-color-error); }
+.flare-input--error .flare-input__icon--trailing { color: var(--flare-color-error); }

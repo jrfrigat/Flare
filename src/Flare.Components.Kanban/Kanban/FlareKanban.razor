@@ -1,0 +1,106 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IJSRuntime JS
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" role="group">
+    @if (Columns != null)
+    {
+        @foreach (var col in Columns)
+        {
+            var colCards = CardsForColumn(col.Id);
+            <div class="flare-kanban__column"
+                 role="region"
+                 aria-label="@col.Title"
+                 data-kanban-column="@col.Id"
+                 @ondragover:preventDefault="true"
+                 @ondrop="@(() => DropCard(col.Id))">
+                <div class="flare-kanban__col-header"
+                     style="@(col.Color != null ? $"border-top:3px solid {col.Color}" : "")">
+                    <FlareText Typo="TypographyScale.LabelLarge">@col.Title</FlareText>
+                    <span class="flare-kanban__count" aria-label="@colCards.Count cards">@colCards.Count</span>
+                </div>
+                <div class="flare-kanban__cards" role="list">
+                    @foreach (var card in colCards)
+                    {
+                        var c = card;
+                        <div class="flare-kanban__card @(_dragging == c.Id ? "flare-kanban__card--dragging" : "")"
+                             role="listitem"
+                             aria-grabbed="@(_dragging == c.Id ? "true" : "false")"
+                             draggable="true"
+                             @ondragstart="@(() => StartDrag(c.Id))"
+                             @ondragend="EndDrag"
+                             @ontouchstart="@((TouchEventArgs te) => OnCardTouchStart(c.Id))"
+                             @ontouchend="@((TouchEventArgs te) => OnCardTouchEnd(te))">
+                            @if (c.Tag is not null)
+                            {
+                                <span class="flare-kanban__tag"
+                                      style="@(c.TagColor != null ? $"background:{c.TagColor}" : "")">@c.Tag</span>
+                            }
+                            <FlareText Typo="TypographyScale.BodyMedium">@c.Title</FlareText>
+                            @if (c.Description is not null)
+                            {
+                                <FlareText Typo="TypographyScale.BodySmall"
+                                           Style="color:var(--flare-color-on-surface-variant);margin-top:0.25rem;">@c.Description</FlareText>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    /// <summary>Column definitions that structure the Kanban board.</summary>
+    [Parameter] public IReadOnlyList<KanbanColumn>? Columns { get; set; }
+    /// <summary>Cards to distribute across the Kanban columns.</summary>
+    [Parameter] public IReadOnlyList<KanbanCard>? Cards { get; set; }
+    /// <summary>Callback raised when cards are moved between columns.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<KanbanCard>> CardsChanged { get; set; }
+
+    protected override string ComponentCssClass => "flare-kanban";
+
+    private List<KanbanCard> _cards = [];
+    private string? _dragging;
+
+    protected override void OnParametersSet() => _cards = Cards?.ToList() ?? [];
+
+    private List<KanbanCard> CardsForColumn(string colId) =>
+        _cards.Where(c => c.ColumnId == colId).ToList();
+
+    private void StartDrag(string cardId) => _dragging = cardId;
+    private void EndDrag() => _dragging = null;
+
+    private void OnCardTouchStart(string cardId) => _dragging = cardId;
+
+    private async Task OnCardTouchEnd(TouchEventArgs e)
+    {
+        if (_dragging is null) return;
+        if (e.ChangedTouches.Length > 0)
+        {
+            var touch = e.ChangedTouches[0];
+            try
+            {
+                var colId = await JS.InvokeAsync<string?>(
+                    "getKanbanColumnAtPoint", touch.ClientX, touch.ClientY);
+                if (!string.IsNullOrEmpty(colId))
+                {
+                    await DropCard(colId);
+                    return;
+                }
+            }
+            catch { /* JS interop not available */ }
+        }
+        _dragging = null;
+    }
+
+    private async Task DropCard(string colId)
+    {
+        if (_dragging is null) return;
+        var idx = _cards.FindIndex(c => c.Id == _dragging);
+        if (idx >= 0)
+            _cards[idx] = _cards[idx] with { ColumnId = colId };
+        _dragging = null;
+        await CardsChanged.InvokeAsync(_cards.AsReadOnly());
+    }
+}

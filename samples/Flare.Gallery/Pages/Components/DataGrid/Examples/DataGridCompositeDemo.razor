@@ -1,0 +1,20 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* CompositeMode.Card stacks all fields inside one cell (a card per record). The default
+   CompositeMode.Banded instead spreads them across real table rows - see "Multi-level Columns". *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="8">
+    <Columns>
+        <FlareColumn Title="Employee" Width="280px" CompositeMode="CompositeMode.Card">
+            <Composite>
+                <FlareColumnRow>
+                    <FlareColumn Title="Name" Field="@(p => p.Name)" />
+                    <FlareColumn Title="City" Field="@(p => p.City)" />
+                </FlareColumnRow>
+                <FlareColumnRow>
+                    <FlareColumn Title="Role" Field="@(p => p.Role)" ColSpan="2" />
+                </FlareColumnRow>
+            </Composite>
+        </FlareColumn>
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="90px" Sortable="true" />
+    </Columns>
+</FlareDataGrid>

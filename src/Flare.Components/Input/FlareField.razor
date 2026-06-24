@@ -1,0 +1,252 @@
+@namespace Flare.Components
+@inherits FlareFieldBase
+@typeparam TValue
+@using System.ComponentModel
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="@BuildCssClass(_stateClass, FloatingLabel ? Css.Classes.Input.Floating : null, AdornmentStart is not null ? Css.Classes.Input.HasAdornmentStart : null, AdornmentEnd is not null ? Css.Classes.Input.HasAdornmentEnd : null, _colorClass, _variantClass, _sizeClass)" style="@_inlineStyle">
+    @if (!FloatingLabel && !string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Input.Label" for="@_inputId">@Label</label>
+    }
+    <div class="@Css.Classes.Input.Field">
+        @if (AdornmentStart is not null)
+        {
+            <span class="@Css.Classes.Input.Adornment @Css.Classes.Input.AdornmentStart">@AdornmentStart</span>
+        }
+        @if (LeadingIcon is not null)
+        {
+            <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconLeading" aria-hidden="true">@LeadingIcon</span>
+        }
+        <input class="@Css.Classes.Input.Control"
+               id="@_inputId"
+               style="@_typoStyle"
+               value="@Value"
+               placeholder="@Placeholder"
+               disabled="@Disabled"
+               readonly="@ReadOnly"
+               type="@Type"
+               maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
+               aria-label="@AriaLabel"
+               aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+               aria-describedby="@_computedDescribedBy"
+               @onchange="HandleChange"
+               @oninput="HandleInput"
+               @onkeydown="OnKeyDown"
+               @onkeyup="OnKeyUp"
+               @attributes="AdditionalAttributes" />
+        @if (Clearable && _hasValue && !Disabled && !ReadOnly)
+        {
+            <button type="button"
+                    class="@Css.Classes.Input.Clear"
+                    aria-label="@(FlareStrings.Input_Clear)"
+                    tabindex="-1"
+                    @onclick="HandleClear">
+                <span aria-hidden="true">&#x2715;</span>
+            </button>
+        }
+        @if (TrailingIcon is not null)
+        {
+            <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconTrailing" aria-hidden="true">@TrailingIcon</span>
+        }
+        @if (AdornmentEnd is not null)
+        {
+            <span class="@Css.Classes.Input.Adornment @Css.Classes.Input.AdornmentEnd">@AdornmentEnd</span>
+        }
+        @if (FloatingLabel && !string.IsNullOrEmpty(Label))
+        {
+            <label class="@Css.Classes.Input.Label @Css.Classes.Input.LabelFloating" for="@_inputId">@Label</label>
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(_displayedError) || !string.IsNullOrEmpty(HelperText) || _showCounter)
+    {
+        <div class="@Css.Classes.Input.Support">
+            @if (!string.IsNullOrEmpty(_displayedError))
+            {
+                <span id="@_errorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@_displayedError</span>
+            }
+            else if (!string.IsNullOrEmpty(HelperText))
+            {
+                <span id="@_helperId" class="@Css.Classes.Input.Helper">@HelperText</span>
+            }
+            @if (_showCounter)
+            {
+                <span class="@Css.Classes.Input.Counter" aria-hidden="true">@_charCount@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Current value of the input.</summary>
+    [Parameter] public TValue? Value { get; set; }
+    /// <summary>Callback invoked when the value changes.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    /// <summary>Label text displayed above the input.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Placeholder text shown when the input is empty.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Helper text shown below the input.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Icon rendered inside the leading edge of the input.</summary>
+    [Parameter] public RenderFragment? LeadingIcon { get; set; }
+    /// <summary>Icon rendered inside the trailing edge of the input.</summary>
+    [Parameter] public RenderFragment? TrailingIcon { get; set; }
+    /// <summary>Content rendered before the input field as a leading adornment (e.g. currency symbol, prefix text, or button).</summary>
+    [Parameter] public RenderFragment? AdornmentStart { get; set; }
+    /// <summary>Content rendered after the input field as a trailing adornment (e.g. unit label, suffix text, or button).</summary>
+    [Parameter] public RenderFragment? AdornmentEnd { get; set; }
+    /// <summary>Disables the input when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Makes the input read-only when true.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+    /// <summary>HTML type attribute of the underlying input element.</summary>
+    [Parameter] public string Type { get; set; } = "text";
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<TValue>>? For { get; set; }
+    /// <summary>Accessible label for the input, forwarded as aria-label.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Space-separated IDs of elements that describe the input, forwarded as aria-describedby.</summary>
+    [Parameter] public string? AriaDescribedBy { get; set; }
+    /// <summary>Renders the label as an animated floating label that moves above the input on focus.</summary>
+    [Parameter] public bool FloatingLabel { get; set; }
+    /// <summary>Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.</summary>
+    [Parameter] public int MaxLength { get; set; } = 0;
+    /// <summary>Shows a clear (x) button inside the field when the input has a non-empty value.</summary>
+    [Parameter] public bool Clearable { get; set; }
+    /// <summary>Shows a character counter in the supporting-text row (per MD3). Renders the current length,
+    /// and "current/<see cref="MaxLength"/>" when MaxLength is set.</summary>
+    [Parameter] public bool ShowCharacterCount { get; set; }
+    /// <summary>Semantic color that influences the focus/active border of the input field.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font.
+    /// Null keeps the size default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>When true, the value updates on every keystroke (oninput) rather than only on change/blur.</summary>
+    [Parameter] public bool Immediate { get; set; }
+    /// <summary>Debounce in milliseconds for <see cref="Immediate"/> updates. 0 = no debounce.</summary>
+    [Parameter] public int DebounceInterval { get; set; }
+    /// <summary>Invoked on keydown in the input.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+    /// <summary>Invoked on keyup in the input.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Input.Root;
+
+    private readonly string _inputId = $"flare-input-{Guid.NewGuid():N}";
+    private string _helperId => $"{_inputId}-help";
+    private string _errorId => $"{_inputId}-err";
+    private string? _describedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+
+    private string? _computedDescribedBy
+    {
+        get
+        {
+            var parts = new System.Collections.Generic.List<string>();
+            if (!string.IsNullOrEmpty(_describedBy)) parts.Add(_describedBy);
+            if (!string.IsNullOrEmpty(AriaDescribedBy)) parts.Add(AriaDescribedBy);
+            return parts.Count > 0 ? string.Join(' ', parts) : null;
+        }
+    }
+
+    protected override void OnParametersSet() => UpdateFieldIdentifier(For);
+
+    public override async ValueTask DisposeAsync()
+    {
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+        await base.DisposeAsync();
+    }
+
+    private string? _displayedError => DisplayedError(ErrorText);
+
+    private string _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
+
+    // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main token.
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string? _variantClass => VariantClass(Variant);
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
+        _ => string.Empty,
+    };
+    private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+    // Typo wins over the size-derived font via an inline style (the size-grid selectors out-specify a class).
+    private string? _typoStyle => Typo is { } t ? FlareTypography.FontStyle(t) : null;
+
+    private int _charCount => Value?.ToString()?.Length ?? 0;
+    // MD3: a character limit implies a visible counter; ShowCharacterCount forces one without a limit.
+    private bool _showCounter => ShowCharacterCount || MaxLength > 0;
+
+    private bool _hasValue => Value switch
+    {
+        null => false,
+        string s => !string.IsNullOrEmpty(s),
+        _ => true,
+    };
+
+    private async Task HandleClear()
+    {
+        await ValueChanged.InvokeAsync(default);
+        NotifyFieldChanged();
+    }
+
+    private CancellationTokenSource? _debounceCts;
+
+    private Task HandleChange(ChangeEventArgs e) => EmitValue(e.Value?.ToString());
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        if (!Immediate) return;            // off -> commit only on change/blur
+        var raw = e.Value?.ToString();
+        if (DebounceInterval <= 0)
+        {
+            await EmitValue(raw);
+            return;
+        }
+        _debounceCts?.Cancel();
+        _debounceCts = new CancellationTokenSource();
+        var token = _debounceCts.Token;
+        try
+        {
+            await Task.Delay(DebounceInterval, token);
+            await InvokeAsync(() => EmitValue(raw));
+        }
+        catch (TaskCanceledException) { }
+    }
+
+    private async Task EmitValue(string? raw)
+    {
+        TValue? converted = default;
+        if (raw is not null)
+        {
+            var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+            try
+            {
+                var converter = TypeDescriptor.GetConverter(targetType);
+                if (converter.CanConvertFrom(typeof(string)))
+                    converted = (TValue?)converter.ConvertFromInvariantString(raw);
+            }
+            catch { }
+        }
+
+        await ValueChanged.InvokeAsync(converted);
+
+        NotifyFieldChanged();
+    }
+}

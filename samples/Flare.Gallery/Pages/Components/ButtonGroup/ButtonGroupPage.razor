@@ -1,0 +1,15 @@
+@page "/components/button-group"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.ButtonGroup_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareButtonGroup">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.ButtonGroup_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.ButtonGroup_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.ButtonGroup_Basic" DemoType="typeof(Examples.ButtonGroupBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ButtonGroup_VariantsColors" DemoType="typeof(Examples.ButtonGroupVariantsColorsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ButtonGroup_Vertical" DemoType="typeof(Examples.ButtonGroupVerticalDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Sizes" DemoType="typeof(Examples.ButtonGroupSizesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.ButtonGroup_FullWidth" DemoType="typeof(Examples.ButtonGroupFullWidthDemo)" />

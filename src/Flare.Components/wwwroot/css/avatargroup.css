@@ -1,0 +1,26 @@
+.flare-avatar-group {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.flare-avatar-group .flare-avatar,
+.flare-avatar-group__overflow {
+    margin-inline-start: var(--flare-avatar-group-spacing, -0.75rem);
+    border: 2px solid var(--flare-color-surface);
+    box-sizing: content-box;
+    position: relative;
+}
+
+.flare-avatar-group .flare-avatar:first-child,
+.flare-avatar-group__overflow:first-child {
+    margin-inline-start: 0;
+}
+
+.flare-avatar-group__overflow {
+    background: var(--flare-avatar-overflow-bg, var(--flare-color-surface-container));
+    color: var(--flare-avatar-overflow-color, var(--flare-color-on-surface));
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: default;
+}

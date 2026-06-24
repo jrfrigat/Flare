@@ -1,0 +1,168 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@typeparam TItem
+
+@* Shared dropdown listbox used by FlareSelect, FlareMultiSelect and FlareAutocomplete.
+   Renders the option surface (grouping, selected/active states, optional checkbox rows,
+   optional trailing check, optional virtualization and an empty state) once so every
+   field-family popup looks and behaves the same. The host owns open/close state, focus
+   and keyboard handling; this component renders the active descendant and raises
+   OnSelect when a row is clicked. Visuals come from the shared .flare-listbox CSS. *@
+
+<div class="@BuildCssClass(DropdownClass)"
+     @ref="_root"
+     role="listbox"
+     aria-multiselectable="@(Multiselectable ? "true" : null)"
+     aria-labelledby="@AriaLabelledBy"
+     @onmousedown:preventDefault="PreventMouseDownDefault">
+    @Header
+    @{ var options = BuildOptions(); }
+    @if (options.Count == 0)
+    {
+        @EmptyContent
+    }
+    else if (Virtualizable && GroupBy is null && options.Count > VirtualizeThreshold)
+    {
+        <Virtualize Items="options" Context="opt" OverscanCount="3">
+            @_renderOption(opt)
+        </Virtualize>
+    }
+    else
+    {
+        string? lastGroup = null;
+        for (var i = 0; i < options.Count; i++)
+        {
+            var opt = options[i];
+            opt.Active = i == ActiveIndex;
+            if (GroupBy is not null && !string.Equals(opt.Group, lastGroup, StringComparison.Ordinal))
+            {
+                lastGroup = opt.Group;
+                <div class="@Css.Classes.Listbox.GroupHeader">@opt.Group</div>
+            }
+            @_renderOption(opt)
+        }
+    }
+</div>
+
+@code {
+    /// <summary>Items to render, already in final display order. When grouping, items of the
+    /// same group must be contiguous so group headers render at the correct boundaries.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = System.Array.Empty<TItem>();
+
+    /// <summary>Returns the group label for an item. When non-null, options are grouped under headers.</summary>
+    [Parameter] public Func<TItem, string>? GroupBy { get; set; }
+
+    /// <summary>Custom render template for an option row. Overrides the <see cref="ItemLabel"/> text.</summary>
+    [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+
+    /// <summary>Returns the display text for an option when no <see cref="ItemTemplate"/> is supplied.</summary>
+    [Parameter] public Func<TItem, string>? ItemLabel { get; set; }
+
+    /// <summary>Predicate that marks an item as selected (selected styling and aria-selected). Null = never selected.</summary>
+    [Parameter] public Func<TItem, bool>? Selected { get; set; }
+
+    /// <summary>Renders a leading checkbox on every option row (multi-select mode).</summary>
+    [Parameter] public bool Multiple { get; set; }
+
+    /// <summary>Renders a trailing check mark on the selected option (single-select mode).</summary>
+    [Parameter] public bool ShowCheck { get; set; }
+
+    /// <summary>Enables virtualized rendering when the option count exceeds <see cref="VirtualizeThreshold"/>
+    /// and no grouping is active.</summary>
+    [Parameter] public bool Virtualizable { get; set; }
+
+    /// <summary>Option count above which virtualized rendering kicks in (when <see cref="Virtualizable"/>). Default: 50.</summary>
+    [Parameter] public int VirtualizeThreshold { get; set; } = 50;
+
+    /// <summary>Optional content rendered at the top of the popup before the options (e.g. a search box or a select-all row).</summary>
+    [Parameter] public RenderFragment? Header { get; set; }
+
+    /// <summary>Content rendered in place of the options when <see cref="Items"/> is empty (e.g. a "no results" message).</summary>
+    [Parameter] public RenderFragment? EmptyContent { get; set; }
+
+    /// <summary>Index of the active (keyboard-highlighted) option, into <see cref="Items"/>. -1 = none.</summary>
+    [Parameter] public int ActiveIndex { get; set; } = -1;
+
+    /// <summary>Invoked with the item of the option that was clicked.</summary>
+    [Parameter] public EventCallback<TItem> OnSelect { get; set; }
+
+    /// <summary>Extra CSS class applied to each option row (e.g. the host's own option class for test/styling hooks).</summary>
+    [Parameter] public string? OptionClass { get; set; }
+
+    /// <summary>Extra CSS class applied to the listbox root, used by the host for anchoring/positioning.</summary>
+    [Parameter] public string? DropdownClass { get; set; }
+
+    /// <summary>Sets aria-multiselectable on the listbox root.</summary>
+    [Parameter] public bool Multiselectable { get; set; }
+
+    /// <summary>Value forwarded to aria-labelledby on the listbox root.</summary>
+    [Parameter] public string? AriaLabelledBy { get; set; }
+
+    /// <summary>Prevents the default mousedown on the listbox so clicking an option does not blur the
+    /// host's input before the click registers (used by FlareAutocomplete).</summary>
+    [Parameter] public bool PreventMouseDownDefault { get; set; }
+
+    /// <summary>Stops click propagation from option rows (used by hosts that close on an outside pointer-down).</summary>
+    [Parameter] public bool StopPropagation { get; set; }
+
+    /// <summary>The listbox root element, for anchored positioning by the host.</summary>
+    public ElementReference Element => _root;
+
+    protected override string ComponentCssClass => Css.Classes.Listbox.Root;
+
+    private ElementReference _root;
+
+    /// <summary>One rendered option built from an <see cref="Items"/> entry.</summary>
+    private sealed class OptionEntry
+    {
+        public TItem Item = default!;
+        public RenderFragment? Template;
+        public string? Text;
+        public string? Group;
+        public bool Selected;
+        public bool Active;
+    }
+
+    private List<OptionEntry> BuildOptions() =>
+        Items.Select(i => new OptionEntry
+        {
+            Item = i,
+            Template = ItemTemplate?.Invoke(i),
+            Text = ItemTemplate is null ? (ItemLabel?.Invoke(i) ?? i?.ToString() ?? string.Empty) : null,
+            Group = GroupBy?.Invoke(i),
+            Selected = Selected?.Invoke(i) ?? false,
+        }).ToList();
+
+    private string OptionCss(OptionEntry opt)
+    {
+        var parts = new List<string>(4) { Css.Classes.Listbox.Option };
+        if (!string.IsNullOrEmpty(OptionClass)) parts.Add(OptionClass!);
+        if (opt.Selected) parts.Add(Css.Classes.Listbox.OptionSelected);
+        if (opt.Active) parts.Add(Css.Classes.Listbox.OptionActive);
+        return string.Join(' ', parts);
+    }
+
+    private RenderFragment<OptionEntry> _renderOption => opt =>
+    @<div class="@OptionCss(opt)"
+          role="option"
+          aria-selected="@opt.Selected"
+          @onclick="() => OnSelect.InvokeAsync(opt.Item)"
+          @onclick:stopPropagation="StopPropagation">
+        @if (Multiple)
+        {
+            <FlareCheckbox Value="opt.Selected" />
+        }
+        @if (opt.Template is not null)
+        {
+            @opt.Template
+        }
+        else
+        {
+            <span>@opt.Text</span>
+        }
+        @if (ShowCheck && opt.Selected)
+        {
+            <FlareIcon Name="check" Class="@Css.Classes.Listbox.Check" />
+        }
+    </div>;
+}

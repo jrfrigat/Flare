@@ -1,0 +1,94 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_resolvedSelectedClass, _sizeClass, _elevatedClass, _colorClass)" style="@_chipStyle" @attributes="AdditionalAttributes" role="button" tabindex="0" @onclick="HandleClick" @onkeydown="HandleKeyDown">
+    @if (Avatar is not null)
+    {
+        <span class="@Css.Classes.Chip.Avatar">@Avatar</span>
+    }
+    else if (LeadingIcon is not null)
+    {
+        <span class="@Css.Classes.Chip.Icon @Css.Classes.Chip.IconLeading">@LeadingIcon</span>
+    }
+    <span class="@Css.Classes.Chip.Label">@Label</span>
+    @if (Closeable || Closable)
+    {
+        <button class="@Css.Classes.Chip.Close" type="button" @onclick="HandleClose" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Chip_Delete)">
+            &#x2715;
+        </button>
+    }
+</div>
+
+@code {
+    /// <summary>Text label displayed inside the chip.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Value used by FlareChipGroup to identify this chip.</summary>
+    [Parameter] public string? Value { get; set; }
+    /// <summary>Icon content rendered before the chip label.</summary>
+    [Parameter] public RenderFragment? LeadingIcon { get; set; }
+    /// <summary>Avatar content rendered at the leading edge (takes precedence over <see cref="LeadingIcon"/>).</summary>
+    [Parameter] public RenderFragment? Avatar { get; set; }
+    /// <summary>Size of the chip.</summary>
+    [Parameter] public ChipSize Size { get; set; } = ChipSize.Md;
+    /// <summary>Whether the chip is in a selected/active state.</summary>
+    [Parameter] public bool Selected { get; set; }
+    /// <summary>Callback raised when the selected state toggles.</summary>
+    [Parameter] public EventCallback<bool> SelectedChanged { get; set; }
+    /// <summary>Shows a close button to remove the chip.</summary>
+    [Parameter] public bool Closeable { get; set; }
+    /// <summary>Shows a close button to remove the chip. Alias for <see cref="Closeable"/>.</summary>
+    [Parameter] public bool Closable { get; set; }
+    /// <summary>Callback raised when the close button is clicked.</summary>
+    [Parameter] public EventCallback OnClose { get; set; }
+    /// <summary>Callback raised when the chip body is clicked.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+    /// <summary>Color of the chip. Role -> shared color class; custom -> inline tokens. Default = theme default.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Renders the chip as an elevated chip (filled surface with a shadow, no border).</summary>
+    [Parameter] public bool Elevated { get; set; }
+
+    /// <summary>Parent chip group context providing selection state management.</summary>
+    [CascadingParameter] public FlareChipGroupContext? GroupContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Chip.Root;
+
+    private bool _isSelected => GroupContext is not null
+        ? GroupContext.SelectedValues.Contains(Value ?? "")
+        : Selected;
+
+    private string _resolvedSelectedClass => _isSelected ? Css.Classes.Chip.Selected : string.Empty;
+    private string _elevatedClass => Elevated ? Css.Classes.Chip.Elevated : string.Empty;
+    private string _colorClass => Color.CssClass ?? string.Empty;
+
+    // Custom/dynamic -> inline --fc-main (fg/border/selected-bg) + --fc-on (selected text).
+    private string? _chipStyle => Color.StyleMainOn() is { } t ? t + Style : Style;
+    private string _sizeClass => Size switch
+    {
+        ChipSize.Xs => Css.Classes.Chip.SizeXs,
+        ChipSize.Sm => Css.Classes.Chip.Sm,
+        ChipSize.Lg => Css.Classes.Chip.Lg,
+        ChipSize.Xl => Css.Classes.Chip.SizeXl,
+        _           => string.Empty,
+    };
+
+    private async Task HandleClick()
+    {
+        if (GroupContext is not null)
+        {
+            await GroupContext.Toggle(Value ?? "");
+        }
+        else
+        {
+            await SelectedChanged.InvokeAsync(!Selected);
+        }
+        await OnClick.InvokeAsync();
+    }
+
+    private async Task HandleClose() => await OnClose.InvokeAsync();
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key is "Enter" or " ")
+            await HandleClick();
+    }
+}

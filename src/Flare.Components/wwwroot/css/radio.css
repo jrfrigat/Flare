@@ -1,0 +1,112 @@
+.flare-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--flare-spacing-6, 0.75rem);
+  cursor: pointer;
+  user-select: none;
+  /* Single source for the ring dimension; size classes below override --_rb-size. */
+  --_rb-size: var(--flare-radio-size, 1.25rem);
+}
+
+/* Label before each radio (group-level LabelPlacement=Start) */
+.flare-radio-group--label-start .flare-radio { flex-direction: row-reverse; }
+
+.flare-radio__container {
+  position: relative;
+  width: var(--_rb-size);
+  height: var(--_rb-size);
+  flex-shrink: 0;
+}
+
+/* MD3 state-layer (40dp вокруг 20dp кольца). Цвет: on-surface (unselected) / primary (selected).
+   Fluent гасит halo через --flare-radio-state-layer-* = transparent. */
+.flare-radio__container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: none;
+  transition: background var(--flare-motion-duration-short1, 100ms) ease;
+}
+
+.flare-radio:not(.flare-radio--disabled):hover .flare-radio__container::before {
+  background: var(--flare-radio-state-layer-hover,
+    color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent));
+}
+
+.flare-radio:not(.flare-radio--disabled):has(.flare-radio__input:checked):hover .flare-radio__container::before {
+  background: var(--flare-radio-state-layer-hover-checked,
+    color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 8%, transparent));
+}
+
+.flare-radio__input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.flare-radio__indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--_rb-size);
+  height: var(--_rb-size);
+  border-radius: 50%;
+  border: 2px solid var(--flare-color-on-surface-variant);
+  background: transparent;
+  transition:
+    border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-radio__indicator::after {
+  content: '';
+  width: calc(var(--_rb-size) * 0.5);
+  height: calc(var(--_rb-size) * 0.5);
+  border-radius: 50%;
+  background: var(--fc-main, var(--flare-color-primary));
+  transform: scale(0);
+  transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-radio__input:checked + .flare-radio__indicator {
+  border-color: var(--fc-main, var(--flare-color-primary));
+}
+
+.flare-radio__input:checked + .flare-radio__indicator::after {
+  transform: scale(1);
+}
+
+.flare-radio__label {
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  color: var(--flare-color-on-surface);
+}
+
+/* Focus-visible ring (a11y) */
+.flare-radio__input:focus-visible + .flare-radio__indicator {
+  outline: 2px solid var(--flare-color-primary);
+  outline-offset: 2px;
+}
+
+.flare-radio--disabled {
+  opacity: var(--flare-state-disabled-opacity);
+  pointer-events: none;
+}
+
+/* Size grid (Xs..Xl): scales the ring via --_rb-size; the label font tracks the size. */
+.flare-radio--xs { --_rb-size: 1rem; gap: var(--flare-spacing-4, 0.5rem); }
+.flare-radio--xs .flare-radio__label { font-size: var(--flare-typescale-body-small-size); }
+.flare-radio--sm { --_rb-size: 1.125rem; gap: var(--flare-spacing-5, 0.625rem); }
+.flare-radio--sm .flare-radio__label { font-size: var(--flare-typescale-body-medium-size); }
+.flare-radio--lg { --_rb-size: 1.5rem; }
+.flare-radio--lg .flare-radio__label { font-size: var(--flare-typescale-title-medium-size); }
+.flare-radio--xl { --_rb-size: 1.75rem; }
+.flare-radio--xl .flare-radio__label { font-size: var(--flare-typescale-title-large-size); }

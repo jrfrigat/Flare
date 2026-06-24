@@ -1,0 +1,21 @@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:32rem;">
+    <FlareTagField @bind-Values="_tags" Label="Colored chips, duplicates allowed"
+                   AllowDuplicates="true" ChipColor="ColorFor"
+                   Placeholder="Add tags…" />
+    <FlareTagField Values="@_fixed" Label="Disabled" Disabled="true" />
+    <FlareTagField Label="With error" ErrorText="At least one tag is required" />
+</FlareStack>
+
+@code {
+    private IReadOnlyList<string> _tags = ["red", "green", "blue"];
+    private IReadOnlyList<string> _fixed = ["locked", "tag"];
+
+    // ChipColor maps each tag to a CSS color.
+    private string? ColorFor(string tag) => tag.ToLowerInvariant() switch
+    {
+        "red" => "#B3261E",
+        "green" => "#2E6C47",
+        "blue" => "#0F6CBD",
+        _ => null,
+    };
+}

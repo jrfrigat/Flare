@@ -1,0 +1,115 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using Flare.Components.Security
+
+@if (_visible)
+{
+    <div class="@BuildCssClass(_sizeClass, _shapeClass, Color.CssClass)"
+         style="@_colorStyle @Style"
+         title="@(string.IsNullOrEmpty(Alt) ? Text : Alt)"
+         role="img"
+         aria-label="@(string.IsNullOrEmpty(Alt) ? null : Alt)"
+         aria-hidden="@(string.IsNullOrEmpty(Alt) ? "true" : null)"
+         @attributes="AdditionalAttributes">
+        @if (_safeImage is not null)
+        {
+            <img class="@Css.Classes.Avatar.Img" src="@_safeImage" alt="@Alt" />
+        }
+        else if (!string.IsNullOrEmpty(Text))
+        {
+            <span class="@Css.Classes.Avatar.Initials" aria-label="@Text">@_initials</span>
+        }
+        else
+        {
+            <span class="@Css.Classes.Avatar.Icon material-symbols-rounded" aria-hidden="true">person</span>
+        }
+    </div>
+}
+
+@code {
+    /// <summary>URL of the image displayed as the avatar.</summary>
+    [Parameter] public string? Src { get; set; }
+    /// <summary>Name or initials text used when no image is provided.</summary>
+    [Parameter] public string? Text { get; set; }
+    /// <summary>Alt text for the avatar image element.</summary>
+    [Parameter] public string? Alt { get; set; }
+    /// <summary>Background color of the avatar. Role -> shared class (tonal); custom -> inline tokens. Default = a stable color picked from the text.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Size variant controlling the avatar dimensions.</summary>
+    [Parameter] public AvatarSize Size { get; set; } = AvatarSize.Md;
+    /// <summary>Shape of the avatar: Circle, Square, or Rounded.</summary>
+    [Parameter] public AvatarShape Shape { get; set; } = AvatarShape.Circle;
+
+    /// <summary>Parent avatar group that manages max-visible and overflow counting.</summary>
+    [CascadingParameter] public FlareAvatarGroup? Group { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Avatar.Root;
+
+    private bool _visible = true;
+
+    private string? _lastContent;
+    protected override bool ShouldRender()
+    {
+        var current = $"{Src}:{Text}:{Alt}:{Color}:{Size}:{Shape}";
+        if (current == _lastContent) return false;
+        _lastContent = current;
+        return true;
+    }
+
+    protected override void OnParametersSet()
+    {
+        _visible = Group is null || Group.RegisterAvatar();
+    }
+
+    private static readonly (string bg, string fg)[] _palette =
+    [
+        ("var(--flare-color-primary-container)", "var(--flare-color-on-primary-container)"),
+        ("var(--flare-color-secondary-container)", "var(--flare-color-on-secondary-container)"),
+        ("var(--flare-color-tertiary-container)", "var(--flare-color-on-tertiary-container)"),
+        ("var(--flare-color-error-container)", "var(--flare-color-on-error-container)"),
+    ];
+
+    private string _sizeClass => Size switch
+    {
+        AvatarSize.Xs => Css.Classes.Avatar.SizeXs,
+        AvatarSize.Sm => Css.Classes.Avatar.Sm,
+        AvatarSize.Lg => Css.Classes.Avatar.Lg,
+        AvatarSize.Xl => Css.Classes.Avatar.Xl,
+        _             => Css.Classes.Avatar.Md
+    };
+
+    private string _shapeClass => Shape switch
+    {
+        AvatarShape.Square  => Css.Classes.Avatar.Square,
+        AvatarShape.Rounded => Css.Classes.Avatar.Rounded,
+        _                   => string.Empty
+    };
+
+    private string? _safeImage => CssValidator.IsImageSrcSafe(Src) ? Src : null;
+
+    // All paths feed the shared --fc-container/--fc-on-container tokens (avatar is tonal):
+    // custom -> inline value + contrast; default -> stable palette pick; role -> null (class sets them).
+    private string? _colorStyle
+    {
+        get
+        {
+            if (Color.StyleContainerSolid() is { } tokens) return tokens;   // custom or dynamic
+            if (Color.IsRole) return null;
+            if (string.IsNullOrEmpty(Text)) return null;
+            var idx = Math.Abs(Text.Aggregate(0, (a, c) => a + c)) % _palette.Length;
+            var (bg, fg) = _palette[idx];
+            return $"{Css.Tokens.LocalColor.Container}:{bg};{Css.Tokens.LocalColor.OnContainer}:{fg};";
+        }
+    }
+
+    private string GetInitials(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name)) return "?";
+        ReadOnlySpan<char> span = name.AsSpan().Trim();
+        int spaceIdx = span.IndexOf(' ');
+        if (spaceIdx < 0) return span[0].ToString().ToUpperInvariant();
+        return new string([span[0], span[spaceIdx + 1]]).ToUpperInvariant();
+    }
+
+    private string _initials => GetInitials(Text);
+}

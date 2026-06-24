@@ -1,0 +1,31 @@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
+    <FlareSelect TValue="TabsVariant" @bind-Value="_variant" Items="_variantValues" Label="Variant" Style="max-width:18rem" />
+
+    <FlareTabs Variant="_variant">
+        <FlareTab Label="Overview">
+            <LeadingIcon><FlareIcon Name="dashboard" /></LeadingIcon>
+            <ChildContent>
+                <FlareText Typo="TypographyScale.BodyMedium">Switch the selector above to preview each theme-independent variant.</FlareText>
+            </ChildContent>
+        </FlareTab>
+        <FlareTab Label="Activity">
+            <LeadingIcon><FlareIcon Name="bolt" /></LeadingIcon>
+            <ChildContent>
+                <FlareText Typo="TypographyScale.BodyMedium">Underline, Primary, Text, Tonal, Filled and Outlined.</FlareText>
+            </ChildContent>
+        </FlareTab>
+        <FlareTab Label="Settings">
+            <LeadingIcon><FlareIcon Name="settings" /></LeadingIcon>
+            <ChildContent>
+                <FlareText Typo="TypographyScale.BodyMedium">Each theme reskins the variants through its tokens.</FlareText>
+            </ChildContent>
+        </FlareTab>
+    </FlareTabs>
+</FlareStack>
+
+@code {
+    private TabsVariant _variant = TabsVariant.Filled;
+    private static readonly TabsVariant[] _variantValues = Enum.GetValues<TabsVariant>();
+}
+
+@* Theme-independent tab variants (mirrors button/field): Default, Underline, Primary, Text, Tonal, Filled, Outlined. *@

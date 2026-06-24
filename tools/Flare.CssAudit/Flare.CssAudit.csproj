@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Flare.CssAudit - internal CLI that keeps CssClasses in sync with the component CSS.
+
+    It collects every class name from Flare.Components/wwwroot/css/*.css, compares them with
+    the constants in Flare.Core/CssClasses.cs (both directions), and can generate C# constants
+    for classes that exist in CSS but are missing from CssClasses (grouped by CSS file).
+
+    Not packaged / not published. Run from the tool folder: dotnet run (check or generate).
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Flare.Tools.CssAudit</RootNamespace>
+    <AssemblyName>cssaudit</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Internal tool: no packaging/versioning helpers needed. -->
+    <PackageReference Remove="MinVer" />
+    <PackageReference Remove="Microsoft.SourceLink.GitHub" />
+  </ItemGroup>
+
+</Project>

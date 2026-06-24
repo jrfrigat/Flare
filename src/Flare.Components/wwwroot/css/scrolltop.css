@@ -1,0 +1,38 @@
+.flare-scroll-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--flare-color-primary);
+    color: var(--flare-color-on-primary);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--flare-elevation-3);
+    z-index: 120;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(0.75rem);
+    transition: opacity var(--flare-motion-duration-short3, 200ms),
+                transform var(--flare-motion-duration-short3, 200ms) var(--flare-motion-easing-decelerate, ease-out),
+                background var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-scroll-top--visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.flare-scroll-top:hover {
+    background: color-mix(in srgb, var(--flare-color-on-primary) 8%, var(--flare-color-primary));
+}
+
+.flare-scroll-top .material-symbols-rounded {
+    font-size: 1.5rem;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

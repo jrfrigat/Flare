@@ -1,0 +1,112 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject ICollisionService CollisionService
+@implements IAsyncDisposable
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @AnchorContent
+    @if (Open)
+    {
+        <div class="@Css.Classes.Popover.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
+        <div @ref="_floatingRef"
+             class="@Css.Classes.Popover.Paper @_placementClass @_arrowClass"
+             style="@_floatingStyle">
+            <CascadingValue Value="@((Func<Task>)CloseAsync)" Name="ClosePopover">
+                @ChildContent
+            </CascadingValue>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Content rendered inside the popover panel.</summary>
+    [Parameter] public RenderFragment?      ChildContent  { get; set; }
+    /// <summary>The anchor element that the popover is attached to.</summary>
+    [Parameter] public RenderFragment?      AnchorContent { get; set; }
+    /// <summary>Controls whether the popover panel is visible.</summary>
+    [Parameter] public bool                 Open          { get; set; }
+    /// <summary>Callback raised when the open state should change.</summary>
+    [Parameter] public EventCallback<bool>  OpenChanged   { get; set; }
+    /// <summary>Position of the panel relative to the anchor element.</summary>
+    [Parameter] public PopoverPlacement     Placement     { get; set; } = PopoverPlacement.BottomStart;
+    /// <summary>CSS max-width applied to the popover panel.</summary>
+    [Parameter] public string?              MaxWidth      { get; set; }
+    /// <summary>CSS min-width applied to the popover panel.</summary>
+    [Parameter] public string?              MinWidth      { get; set; }
+    /// <summary>Shows a directional arrow pointing to the anchor.</summary>
+    [Parameter] public bool                 Arrow         { get; set; }
+    /// <summary>Enables collision detection (flip/shift) to keep the popover within viewport.</summary>
+    [Parameter] public bool                 SmartPosition { get; set; }
+    /// <summary>Offset in pixels between anchor and popover.</summary>
+    [Parameter] public int                  Offset        { get; set; } = 8;
+
+    protected override string ComponentCssClass => Css.Classes.Popover.Anchor;
+
+    private ElementReference _floatingRef;
+    private string? _floatingStyle;
+    private bool _initialized;
+
+    private string _placementClass => Placement switch
+    {
+        PopoverPlacement.Top         => Css.Classes.Popover.PaperTop,
+        PopoverPlacement.TopStart    => Css.Classes.Popover.PaperTopStart,
+        PopoverPlacement.TopEnd      => Css.Classes.Popover.PaperTopEnd,
+        PopoverPlacement.Bottom      => Css.Classes.Popover.PaperBottom,
+        PopoverPlacement.BottomEnd   => Css.Classes.Popover.PaperBottomEnd,
+        PopoverPlacement.Left        => Css.Classes.Popover.PaperLeft,
+        PopoverPlacement.LeftStart   => Css.Classes.Popover.PaperLeftStart,
+        PopoverPlacement.LeftEnd     => Css.Classes.Popover.PaperLeftEnd,
+        PopoverPlacement.Right       => Css.Classes.Popover.PaperRight,
+        PopoverPlacement.RightStart  => Css.Classes.Popover.PaperRightStart,
+        PopoverPlacement.RightEnd    => Css.Classes.Popover.PaperRightEnd,
+        _                            => Css.Classes.Popover.PaperBottomStart,
+    };
+
+    private string _arrowClass => Arrow ? Css.Classes.Popover.Arrow : string.Empty;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || !Open || !SmartPosition) return;
+
+        await UpdatePositionAsync();
+        _initialized = true;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Open && SmartPosition && _initialized)
+        {
+            await UpdatePositionAsync();
+        }
+    }
+
+    private async Task UpdatePositionAsync()
+    {
+        try
+        {
+            var placement = Placement.ToString().ToLowerInvariant();
+            var result = await CollisionService.CalculatePlacementAsync(
+                _floatingRef,
+                _floatingRef,
+                placement,
+                new CollisionOptions
+                {
+                    Offset = Offset,
+                    Flip = true,
+                    Shift = true,
+                    ArrowSize = Arrow ? 8 : 0
+                });
+
+            _floatingStyle = $"position:fixed;top:{result.Top:F0}px;left:{result.Left:F0}px;z-index:9999";
+            StateHasChanged();
+        }
+        catch (InvalidOperationException) { }
+    }
+
+    private async Task CloseAsync() => await OpenChanged.InvokeAsync(false);
+
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();
+    }
+}

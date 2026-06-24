@@ -1,0 +1,100 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<button class="@BuildCssClass(_pressedClass, _sizeClass, _iconOnlyClass)"
+        style="@Style"
+        type="button"
+        disabled="@Disabled"
+        aria-label="@AriaLabel"
+        aria-pressed="@(_pressed ? "true" : "false")"
+        @onclick="HandleClick"
+        @attributes="AdditionalAttributes">
+    @{ var icon = _pressed ? (OnIcon ?? OffIcon) : OffIcon; }
+    @if (icon is not null)
+    {
+        <span class="@Css.Classes.ToggleButton.Icon">@icon</span>
+    }
+    @if (ChildContent is not null)
+    {
+        <span class="@Css.Classes.ToggleButton.Label">@ChildContent</span>
+    }
+</button>
+
+@code {
+    /// <summary>Button label content shown alongside the icon.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Icon rendered when the button is not pressed.</summary>
+    [Parameter] public RenderFragment? OffIcon { get; set; }
+    /// <summary>Icon rendered when the button is pressed. Defaults to OffIcon if not set.</summary>
+    [Parameter] public RenderFragment? OnIcon { get; set; }
+    /// <summary>Whether the button is currently in the pressed/active state.</summary>
+    [Parameter] public bool Toggled { get; set; }
+    /// <summary>Callback raised when the pressed state changes.</summary>
+    [Parameter] public EventCallback<bool> ToggledChanged { get; set; }
+    /// <summary>Size of the toggle button.</summary>
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    /// <summary>Disables the button when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Accessible label forwarded as aria-label.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>The value reported to a parent FlareToggleGroup when toggled.</summary>
+    [Parameter] public object? Value { get; set; }
+
+    /// <summary>Cascading context supplied by a parent FlareToggleGroup.</summary>
+    [CascadingParameter] public FlareToggleGroupContext? Group { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.ToggleButton.Root;
+
+    private bool _pressed;
+    // Tracks the last Toggled parameter seen so we can detect external changes vs local clicks
+    private bool _lastToggled;
+
+    private string _pressedClass => _pressed ? Css.Classes.ToggleButton.Pressed : string.Empty;
+
+    private string _sizeClass => Size switch
+    {
+        ButtonSize.Xs => Css.Classes.ToggleButton.Xs,
+        ButtonSize.Sm => Css.Classes.ToggleButton.Sm,
+        ButtonSize.Md => Css.Classes.ToggleButton.Md,
+        ButtonSize.Lg => Css.Classes.ToggleButton.Lg,
+        ButtonSize.Xl => Css.Classes.ToggleButton.Xl,
+        _ => Css.Classes.ToggleButton.Md,
+    };
+
+    private string _iconOnlyClass => ChildContent is null ? Css.Classes.ToggleButton.IconOnly : string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        if (Group is not null)
+        {
+            _pressed = Group.SelectedValues.Contains(Value);
+        }
+        else if (ToggledChanged.HasDelegate)
+        {
+            // Controlled: always follow the bound parameter
+            _pressed = Toggled;
+            _lastToggled = Toggled;
+        }
+        else if (Toggled != _lastToggled)
+        {
+            // Uncontrolled but caller changed Toggled externally - respect it
+            _pressed = Toggled;
+            _lastToggled = Toggled;
+        }
+        // Otherwise: uncontrolled with no external change - keep local _pressed state
+    }
+
+    private async Task HandleClick()
+    {
+        if (Disabled) return;
+        if (Group is not null)
+        {
+            await Group.Toggle(Value);
+        }
+        else
+        {
+            _pressed = !_pressed;
+            await ToggledChanged.InvokeAsync(_pressed);
+        }
+    }
+}

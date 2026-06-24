@@ -1,0 +1,17 @@
+﻿@inject ISnackbarService Snackbar
+@inject IMessageBoxService MsgBox
+@inherits LocalizedPage
+
+<FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowPrompt">@GalleryStrings.Dialog_ShowPrompt</FlareButton>
+
+@code {
+
+    private async Task ShowPrompt()
+    {
+        var result = await MsgBox.PromptAsync("Enter your name", "Name", "Alice");
+        if (result is not null)
+            Snackbar.Show($"Hello, {result}!", SnackbarSeverity.Success);
+        else
+            Snackbar.Show("Cancelled", SnackbarSeverity.Normal);
+    }
+}

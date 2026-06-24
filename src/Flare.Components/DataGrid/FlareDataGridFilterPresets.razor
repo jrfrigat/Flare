@@ -1,0 +1,45 @@
+@namespace Flare.Components
+@typeparam TItem
+@using Flare.Components.Resources
+
+@* A list of named, preset advanced filters for a FlareDataGrid. Each preset is a DataGridFilterGroup;
+   choosing one applies it to the grid (the first "(No filter)" entry clears). Bind via Grid. *@
+<FlareSelect TValue="string" Size="@Size" Items="@_options" Value="@_selected" ValueChanged="OnSelected" />
+
+@code {
+    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
+    // Grid parameter overrides it for standalone placement outside the grid.
+    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
+    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
+    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
+    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
+    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+    /// <summary>The named filter presets to offer. Each preset's <c>Filter</c> is an advanced filter tree.</summary>
+    [Parameter] public IReadOnlyList<DataGridFilterPreset>? Presets { get; set; }
+    /// <summary>Field size of the select.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Sm;
+
+    private string _selected = "";
+    private string _noFilter => FlareStrings.DataGrid_NoFilter;
+
+    // The "(No filter)" clear entry first, then the preset names.
+    private List<string> _options =>
+        [_noFilter, .. (Presets ?? []).Select(p => p.Name)];
+
+    protected override void OnParametersSet()
+    {
+        // Default the selection to the clear entry on first render.
+        if (string.IsNullOrEmpty(_selected)) _selected = _noFilter;
+    }
+
+    private async Task OnSelected(string? name)
+    {
+        _selected = name ?? _noFilter;
+        if (Owner is null) return;
+        var preset = Presets?.FirstOrDefault(p => p.Name == _selected);
+        if (preset is not null)
+            await Owner.ApplyAdvancedFilter(preset.Filter);
+        else
+            await Owner.ClearAdvancedFilter();
+    }
+}

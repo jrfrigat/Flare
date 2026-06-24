@@ -1,0 +1,182 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="@BuildCssClass(_stateClass, AutoGrow ? Css.Classes.Textarea.Autogrow : null, _variantClass)" style="@Style">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Textarea.Label" for="@_textareaId">@Label</label>
+    }
+    <div class="@Css.Classes.Textarea.Field">
+        <textarea class="@Css.Classes.Textarea.Control"
+                  id="@_textareaId"
+                  style="@_controlStyle"
+                  placeholder="@Placeholder"
+                  disabled="@Disabled"
+                  readonly="@ReadOnly"
+                  rows="@Rows"
+                  maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
+                  aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+                  aria-describedby="@_computedDescribedBy"
+                  @onchange="HandleChange"
+                  @oninput="HandleInput"
+                  @attributes="AdditionalAttributes">@Value</textarea>
+    </div>
+    @if (!string.IsNullOrEmpty(_displayedError) || !string.IsNullOrEmpty(HelperText) || _showCounter)
+    {
+        <div class="@Css.Classes.Textarea.Support">
+            @if (!string.IsNullOrEmpty(_displayedError))
+            {
+                <span id="@_errorId" class="@Css.Classes.Textarea.Helper @Css.Classes.Textarea.HelperError" role="alert">@_displayedError</span>
+            }
+            else if (!string.IsNullOrEmpty(HelperText))
+            {
+                <span id="@_helperId" class="@Css.Classes.Textarea.Helper">@HelperText</span>
+            }
+            @if (_showCounter)
+            {
+                <span class="@Css.Classes.Textarea.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Current text content of the textarea.</summary>
+    [Parameter] public string? Value { get; set; }
+    /// <summary>Callback invoked when the text changes.</summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    /// <summary>Label text displayed above the textarea.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Placeholder text shown when the textarea is empty.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Helper text shown below the textarea.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Disables the textarea when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Makes the textarea read-only when true.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+    /// <summary>Optional typography scale for the textarea text. Overrides the default body font.
+    /// Null keeps the component default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>Number of visible text rows.</summary>
+    [Parameter] public int Rows { get; set; } = 4;
+    /// <summary>Auto-resizes the textarea height to fit its content (zero-JS, via CSS field-sizing).</summary>
+    [Parameter] public bool AutoGrow { get; set; }
+    /// <summary>With <see cref="AutoGrow"/>, caps growth at this many lines (then scrolls). 0 = unlimited.</summary>
+    [Parameter] public int MaxLines { get; set; }
+    /// <summary>Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.</summary>
+    [Parameter] public int MaxLength { get; set; } = 0;
+    /// <summary>Shows a character counter in the supporting-text row. Auto-enabled when <see cref="MaxLength"/> is set.</summary>
+    [Parameter] public bool ShowCharacterCount { get; set; }
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>When true, the value updates on every keystroke (oninput) rather than only on change/blur.</summary>
+    [Parameter] public bool Immediate { get; set; }
+    /// <summary>Debounce in milliseconds for <see cref="Immediate"/> updates. 0 = no debounce.</summary>
+    [Parameter] public int DebounceInterval { get; set; }
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<string?>>? For { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Textarea.Root;
+
+    private readonly string _textareaId = $"flare-textarea-{Guid.NewGuid():N}";
+    private string _helperId => $"{_textareaId}-help";
+    private string _errorId  => $"{_textareaId}-err";
+    private string? _computedDescribedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+
+    private FieldIdentifier _fieldId;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private string _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Textarea.Error :
+        Disabled ? Css.Classes.Textarea.Disabled : string.Empty;
+
+    private string _variantClass => Variant switch
+    {
+        InputVariant.Filled => Css.Classes.Input.VariantFilled,
+        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
+        _ => string.Empty,
+    };
+
+    private bool _showCounter => ShowCharacterCount || MaxLength > 0;
+
+    // Typo wins over the size-derived font via an inline style (size-grid selectors out-specify a class).
+    private string? _typoStyle => Typo is { } t ? FlareTypography.FontStyle(t) : null;
+
+    private string? _controlStyle
+    {
+        get
+        {
+            var parts = new List<string>();
+            if (MaxLines > 0) parts.Add($"--flare-textarea-max-lines:{MaxLines}");
+            if (_typoStyle is not null) parts.Add(_typoStyle);
+            return parts.Count > 0 ? string.Join(';', parts) : null;
+        }
+    }
+
+    private CancellationTokenSource? _debounceCts;
+
+    private Task HandleChange(ChangeEventArgs e) => EmitValue(e.Value?.ToString());
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        if (!Immediate) return;
+        var val = e.Value?.ToString();
+        if (DebounceInterval <= 0) { await EmitValue(val); return; }
+        _debounceCts?.Cancel();
+        _debounceCts = new CancellationTokenSource();
+        var token = _debounceCts.Token;
+        try
+        {
+            await Task.Delay(DebounceInterval, token);
+            await InvokeAsync(() => EmitValue(val));
+        }
+        catch (TaskCanceledException) { }
+    }
+
+    private async Task EmitValue(string? val)
+    {
+        await ValueChanged.InvokeAsync(val);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+}

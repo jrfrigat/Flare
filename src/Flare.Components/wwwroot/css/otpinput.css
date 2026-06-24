@@ -1,0 +1,47 @@
+.flare-otp {
+    display: flex;
+    gap: var(--flare-spacing-4, 0.5rem);
+    align-items: center;
+}
+
+.flare-otp__cell {
+    width: 2.75rem;
+    height: 3rem;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    border: 2px solid var(--flare-color-outline);
+    border-radius: var(--flare-shape-small);
+    background: var(--flare-color-surface);
+    color: var(--flare-color-on-surface);
+    outline: none;
+    transition: border-color var(--flare-motion-duration-short2),
+                box-shadow  var(--flare-motion-duration-short2);
+    caret-color: transparent;
+    cursor: pointer;
+}
+
+.flare-otp__cell:focus,
+.flare-otp__cell--focused {
+    border-color: var(--flare-color-primary);
+    box-shadow: 0 0 0 2px var(--flare-color-primary-container);
+}
+
+.flare-otp__cell--error {
+    border-color: var(--flare-color-error);
+}
+
+.flare-otp__cell--error:focus {
+    box-shadow: 0 0 0 2px var(--flare-color-error-container);
+}
+
+.flare-otp--disabled .flare-otp__cell {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flare-otp__cell { transition: none; }
+}

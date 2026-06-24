@@ -1,0 +1,84 @@
+/* ==========================================================================
+   LIQUID GLASS - buttons (performance-first, no backdrop blur).
+
+   Filled (prominent) buttons are lightly translucent accent capsules with a
+   specular sheen and a bright lensing rim. Tonal / outlined / elevated are
+   translucent tinted capsules. Every variant springs on press. All colors come
+   from theme tokens so it reads correctly in light AND dark mode.
+   ========================================================================== */
+@scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
+
+    .flare-btn {
+        transition:
+            transform var(--flare-motion-duration-short1, 100ms) var(--flare-motion-easing-emphasized),
+            filter 120ms ease,
+            background-color 150ms ease,
+            box-shadow 150ms ease;
+    }
+    /* Drop the MD3 translucent state layer; the sheen IS the feedback. */
+    .flare-btn::before { opacity: 0 !important; }
+
+    /* The liquid squash on press. */
+    .flare-btn:active { transform: scale(0.96); }
+
+    /* ---- Filled: lightly translucent accent capsule with sheen + lensing rim ---- */
+    .flare-btn--filled {
+        background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 88%, transparent);
+        background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.10) 45%, transparent 60%);
+        border: 1px solid color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 50%, transparent);
+        box-shadow:
+            inset 0 1px 0.5px rgba(255, 255, 255, 0.55),
+            inset 0 -1px 1px rgba(0, 0, 0, 0.12),
+            0 4px 14px color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 32%, transparent);
+    }
+    .flare-btn--filled:hover {
+        background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 96%, transparent);
+        filter: saturate(1.05);
+    }
+    .flare-btn--filled:active { filter: brightness(0.94); }
+
+    /* ---- Translucent glass secondary capsules (tonal / outlined / elevated) ---- */
+    .flare-btn--tonal,
+    .flare-btn--outlined,
+    .flare-btn--elevated {
+        box-shadow:
+            inset 0 1px 1px var(--flare-liquid-rim),
+            inset 0 -1px 1px var(--flare-liquid-rim-low),
+            0 3px 12px rgba(0, 0, 0, 0.10);
+    }
+
+    .flare-btn--tonal {
+        background-color: color-mix(in srgb, var(--fc-container, var(--flare-color-secondary-container)) 82%, transparent);
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 45%);
+        border: 1px solid var(--flare-liquid-edge);
+        color: var(--fc-on-container, var(--flare-color-on-secondary-container));
+    }
+    .flare-btn--tonal:hover {
+        background-color: color-mix(in srgb, var(--fc-container, var(--flare-color-secondary-container)) 94%, transparent);
+    }
+
+    .flare-btn--outlined,
+    .flare-btn--elevated {
+        background-color: var(--flare-liquid-tint);
+        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 45%);
+        border: 1px solid color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 30%, var(--flare-liquid-edge));
+        color: var(--flare-color-on-surface);
+    }
+    .flare-btn--outlined:hover,
+    .flare-btn--elevated:hover {
+        background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 16%, var(--flare-liquid-tint-strong));
+        border-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 45%, transparent);
+    }
+
+    /* Text buttons stay clear: just a soft accent tint on hover. */
+    .flare-btn--text { background-image: none; box-shadow: none; }
+    .flare-btn--text:hover {
+        background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 12%, transparent);
+    }
+
+    .flare-btn:disabled,
+    .flare-btn[disabled] {
+        background-image: none;
+        box-shadow: none;
+    }
+}

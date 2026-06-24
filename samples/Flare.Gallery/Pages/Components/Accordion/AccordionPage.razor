@@ -1,0 +1,13 @@
+@page "/components/accordion"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Accordion_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareAccordion">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Accordion_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Accordion_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Accordion_Basic" DemoType="typeof(Examples.AccordionBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Accordion_Multiple" DemoType="typeof(Examples.AccordionMultipleDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Accordion_Expanded" DemoType="typeof(Examples.AccordionExpandedDemo)" />

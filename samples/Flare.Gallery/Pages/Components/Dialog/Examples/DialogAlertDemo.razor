@@ -1,0 +1,14 @@
+﻿@inject IDialogService DialogService
+@inject ISnackbarService Snackbar
+@inject IMessageBoxService MsgBox
+@inherits LocalizedPage
+
+<FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowAlert">@GalleryStrings.Dialog_ShowAlert</FlareButton>
+
+@code {
+
+    private async Task ShowAlert()
+    {
+        await DialogService.AlertAsync("Information", "This is a programmatic alert dialog.");
+    }
+}

@@ -1,0 +1,23 @@
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:40rem;">
+    <FlareTimePicker @bind-Value="_time" Label="Dial (MD3 clock)"
+                     HelperText="Type 1233 -> 12:33, or pick on the clock" Style="flex:1;min-width:12rem;" />
+    <FlareTimePicker @bind-Value="_time3" Label="Dial, forced 24h"
+                     Use24Hour="true"
+                     HelperText="Two rings, no AM/PM (auto by culture)" Style="flex:1;min-width:12rem;" />
+    <FlareTimePicker @bind-Value="_time2" Label="Dropdown (columns)"
+                     PopupVariant="TimePickerVariant.Dropdown" MinuteStep="5"
+                     HelperText="24h hour/minute columns" Style="flex:1;min-width:12rem;" />
+    <FlareTimePicker Label="Disabled" Disabled Style="flex:1;min-width:12rem;" />
+    <FlareTimePicker @bind-Value="_required" Label="Required (error until set)"
+                     ErrorText="@(_required is null ? "Time is required" : null)" Style="flex:1;min-width:12rem;" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Dial: @(_time?.ToString("HH:mm") ?? "-") | Dropdown: @(_time2?.ToString("HH:mm") ?? "-")
+</FlareText>
+
+@code {
+    private TimeOnly? _time;
+    private TimeOnly? _time2;
+    private TimeOnly? _time3;
+    private TimeOnly? _required;
+}

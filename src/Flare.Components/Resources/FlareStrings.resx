@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" msdata:IgnoreCase="true" msdata:SystemTranslatable="false" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+
+  <!-- DataGrid -->
+  <data name="DataGrid_NoData" xml:space="preserve"><value>No data</value></data>
+  <data name="DataGrid_Loading" xml:space="preserve"><value>Loading…</value></data>
+  <data name="DataGrid_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="DataGrid_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="DataGrid_Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="DataGrid_FilterPlaceholder" xml:space="preserve"><value>Filter…</value></data>
+  <data name="DataGrid_ConfigureFilters" xml:space="preserve"><value>Configure filtering</value></data>
+  <data name="DataGrid_ToggleColumns" xml:space="preserve"><value>Show/hide columns</value></data>
+  <data name="DataGrid_ExportCsv" xml:space="preserve"><value>Export to CSV</value></data>
+  <data name="DataGrid_ExportJson" xml:space="preserve"><value>Export to JSON</value></data>
+  <data name="DataGrid_ExportTsv" xml:space="preserve"><value>Export to TSV</value></data>
+  <data name="DataGrid_ExportExcel" xml:space="preserve"><value>Export to Excel</value></data>
+  <data name="DataGrid_MoreExports" xml:space="preserve"><value>More export options</value></data>
+  <data name="DataGrid_FilterValue" xml:space="preserve"><value>Value</value></data>
+  <data name="DataGrid_FilterValue2" xml:space="preserve"><value>and</value></data>
+  <data name="DataGrid_AddCondition" xml:space="preserve"><value>Add condition</value></data>
+  <data name="DataGrid_RemoveCondition" xml:space="preserve"><value>Remove condition</value></data>
+  <data name="DataGrid_ApplyFilters" xml:space="preserve"><value>Apply</value></data>
+  <data name="DataGrid_ClearFilters" xml:space="preserve"><value>Clear all</value></data>
+  <data name="DataGrid_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="DataGrid_ClearFilter" xml:space="preserve"><value>Clear</value></data>
+  <data name="DataGrid_SelectAll" xml:space="preserve"><value>(Select all)</value></data>
+  <data name="DataGrid_Search" xml:space="preserve"><value>Search</value></data>
+  <data name="DataGrid_AnnounceSortAsc" xml:space="preserve"><value>Sorted by {0}, ascending</value></data>
+  <data name="DataGrid_AnnounceSortDesc" xml:space="preserve"><value>Sorted by {0}, descending</value></data>
+  <data name="DataGrid_AnnounceSortCleared" xml:space="preserve"><value>Sorting cleared</value></data>
+  <data name="DataGrid_AnnounceFiltered" xml:space="preserve"><value>{0} results</value></data>
+  <data name="DataGrid_AnnouncePage" xml:space="preserve"><value>Page {0} of {1}</value></data>
+  <data name="DataGrid_FilterPresets" xml:space="preserve"><value>Preset filter</value></data>
+  <data name="DataGrid_NoFilter" xml:space="preserve"><value>(No filter)</value></data>
+  <data name="DataGrid_OpContains" xml:space="preserve"><value>contains</value></data>
+  <data name="DataGrid_OpEquals" xml:space="preserve"><value>equals</value></data>
+  <data name="DataGrid_OpNotEquals" xml:space="preserve"><value>not equals</value></data>
+  <data name="DataGrid_OpStartsWith" xml:space="preserve"><value>starts with</value></data>
+  <data name="DataGrid_OpEndsWith" xml:space="preserve"><value>ends with</value></data>
+  <data name="DataGrid_OpGreaterThan" xml:space="preserve"><value>greater than</value></data>
+  <data name="DataGrid_OpGreaterOrEqual" xml:space="preserve"><value>greater or equal</value></data>
+  <data name="DataGrid_OpLessThan" xml:space="preserve"><value>less than</value></data>
+  <data name="DataGrid_OpLessOrEqual" xml:space="preserve"><value>less or equal</value></data>
+  <data name="DataGrid_OpBetween" xml:space="preserve"><value>is between</value></data>
+  <data name="DataGrid_OpNotBetween" xml:space="preserve"><value>is not between</value></data>
+  <data name="DataGrid_OpIn" xml:space="preserve"><value>is any of</value></data>
+  <data name="DataGrid_OpNotIn" xml:space="preserve"><value>is none of</value></data>
+  <data name="DataGrid_OpIsNull" xml:space="preserve"><value>is null</value></data>
+  <data name="DataGrid_OpIsNotNull" xml:space="preserve"><value>is not null</value></data>
+  <data name="DataGrid_And" xml:space="preserve"><value>And</value></data>
+  <data name="DataGrid_Or" xml:space="preserve"><value>Or</value></data>
+  <data name="DataGrid_AddGroup" xml:space="preserve"><value>Add group</value></data>
+  <data name="DataGrid_RemoveGroup" xml:space="preserve"><value>Remove group</value></data>
+  <data name="DataGrid_ColumnsLabel" xml:space="preserve"><value>Columns</value></data>
+  <data name="DataGrid_RowsLabel" xml:space="preserve"><value>Rows:</value></data>
+
+  <!-- Dialog / ConfirmDialog -->
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Confirm</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Dialog_Ok" xml:space="preserve"><value>OK</value></data>
+  <data name="Dialog_Close" xml:space="preserve"><value>Close</value></data>
+
+  <!-- DatePicker / TimePicker -->
+  <data name="Picker_Ok" xml:space="preserve"><value>OK</value></data>
+  <data name="Picker_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Picker_Clear" xml:space="preserve"><value>Clear</value></data>
+
+  <!-- Alert -->
+  <data name="Alert_Close" xml:space="preserve"><value>Close</value></data>
+
+  <!-- Snackbar -->
+  <data name="Snackbar_Close" xml:space="preserve"><value>Close</value></data>
+
+  <!-- Theme / ColorCustomizer / ColorModeToggle -->
+  <data name="ColorCustomizer_Label" xml:space="preserve"><value>Theme Color</value></data>
+  <data name="ColorCustomizer_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="ColorCustomizer_Reset" xml:space="preserve"><value>Reset</value></data>
+  <data name="Theme_ToggleDark" xml:space="preserve"><value>Switch to dark mode</value></data>
+  <data name="Theme_ToggleLight" xml:space="preserve"><value>Switch to light mode</value></data>
+
+  <!-- Chip -->
+  <data name="Chip_Delete" xml:space="preserve"><value>Delete chip</value></data>
+
+  <!-- Calendar -->
+  <data name="Calendar_PrevMonth" xml:space="preserve"><value>Previous month</value></data>
+  <data name="Calendar_NextMonth" xml:space="preserve"><value>Next month</value></data>
+
+  <!-- Stepper -->
+  <data name="Stepper_Back" xml:space="preserve"><value>Back</value></data>
+  <data name="Stepper_Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Stepper_Error" xml:space="preserve"><value>Error</value></data>
+
+  <!-- DropZone -->
+  <data name="DropZone_DropFiles" xml:space="preserve"><value>Drop files here</value></data>
+  <data name="DropZone_Browse" xml:space="preserve"><value>Drag &amp; drop files or click to browse</value></data>
+  <data name="DropZone_Accepted" xml:space="preserve"><value>Accepted:</value></data>
+  <data name="DropZone_Label" xml:space="preserve"><value>File drop zone</value></data>
+
+  <!-- Misc accessibility -->
+  <data name="Aria_Loading" xml:space="preserve"><value>Loading</value></data>
+  <data name="Aria_CloseTab" xml:space="preserve"><value>Close tab</value></data>
+  <data name="Tabs_ScrollBack" xml:space="preserve"><value>Scroll tabs backward</value></data>
+  <data name="Tabs_ScrollForward" xml:space="preserve"><value>Scroll tabs forward</value></data>
+  <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Toggle drawer</value></data>
+  <data name="Aria_TogglePassword" xml:space="preserve"><value>Toggle password visibility</value></data>
+
+  <!-- Input -->
+  <data name="Input_Clear" xml:space="preserve"><value>Clear</value></data>
+
+  <!-- NumericField -->
+  <data name="NumericField_Increment" xml:space="preserve"><value>Increment</value></data>
+  <data name="NumericField_Decrement" xml:space="preserve"><value>Decrement</value></data>
+
+  <!-- Tree -->
+  <data name="Tree_Expand" xml:space="preserve"><value>Expand</value></data>
+  <data name="Tree_Collapse" xml:space="preserve"><value>Collapse</value></data>
+
+  <!-- Navigation -->
+  <data name="Nav_Navigation" xml:space="preserve"><value>Navigation</value></data>
+  <data name="Nav_Breadcrumb" xml:space="preserve"><value>Breadcrumb</value></data>
+  <data name="Breadcrumb_Expand" xml:space="preserve"><value>Show hidden breadcrumbs</value></data>
+  <data name="Nav_Pagination" xml:space="preserve"><value>Pagination</value></data>
+  <data name="Nav_BackToTop" xml:space="preserve"><value>Back to top</value></data>
+  <data name="Pagination_First" xml:space="preserve"><value>First page</value></data>
+  <data name="Pagination_Prev" xml:space="preserve"><value>Previous page</value></data>
+  <data name="Pagination_Next" xml:space="preserve"><value>Next page</value></data>
+  <data name="Pagination_Last" xml:space="preserve"><value>Last page</value></data>
+  <data name="Pagination_Page" xml:space="preserve"><value>Page {0}</value></data>
+  <data name="Pagination_Range" xml:space="preserve"><value>{0}–{1} of {2}</value></data>
+  <data name="SpeedDial_Actions" xml:space="preserve"><value>Actions</value></data>
+
+  <!-- Avatar / EmptyState -->
+  <data name="Avatar_OverflowMore" xml:space="preserve"><value>{0} more</value></data>
+  <data name="EmptyState_Label" xml:space="preserve"><value>Empty</value></data>
+
+  <!-- Rating -->
+  <data name="Rating_Group" xml:space="preserve"><value>Rating</value></data>
+  <data name="Rating_Star" xml:space="preserve"><value>{0} out of {1}</value></data>
+
+  <!-- Clipboard / Shortcuts -->
+  <data name="Clipboard_Copy" xml:space="preserve"><value>Copy to clipboard</value></data>
+  <data name="Clipboard_Copied" xml:space="preserve"><value>Copied!</value></data>
+  <data name="Shortcuts_Title" xml:space="preserve"><value>Keyboard Shortcuts</value></data>
+
+  <!-- Stepper (extended) -->
+  <data name="Stepper_ProgressLabel" xml:space="preserve"><value>Progress steps</value></data>
+  <data name="Stepper_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="Stepper_Step" xml:space="preserve"><value>Step {0}</value></data>
+
+  <!-- Carousel -->
+  <data name="Carousel_Label" xml:space="preserve"><value>Carousel</value></data>
+  <data name="Carousel_Prev" xml:space="preserve"><value>Previous slide</value></data>
+  <data name="Carousel_Next" xml:space="preserve"><value>Next slide</value></data>
+  <data name="Carousel_GoToSlide" xml:space="preserve"><value>Go to slide {0}</value></data>
+
+  <!-- FileUpload / RichTextEditor -->
+  <data name="FileUpload_DropText" xml:space="preserve"><value>Drop files here or click to browse</value></data>
+  <data name="FileUpload_Accepted" xml:space="preserve"><value>Accepted:</value></data>
+  <data name="RTE_Label" xml:space="preserve"><value>Rich text editor</value></data>
+  <data name="RTE_Placeholder" xml:space="preserve"><value>Start typing…</value></data>
+
+  <!-- MultiSelect -->
+  <data name="MultiSelect_Search" xml:space="preserve"><value>Search…</value></data>
+  <data name="MultiSelect_SelectAll" xml:space="preserve"><value>Select all</value></data>
+
+  <!-- DatePicker / DateTimePicker / DateRangePicker -->
+  <data name="DatePicker_Today" xml:space="preserve"><value>Today</value></data>
+  <data name="DateTimePicker_DateTab" xml:space="preserve"><value>Date</value></data>
+  <data name="DateTimePicker_TimeTab" xml:space="preserve"><value>Time</value></data>
+  <data name="DateRangePicker_StartLabel" xml:space="preserve"><value>Start date</value></data>
+  <data name="DateRangePicker_EndLabel" xml:space="preserve"><value>End date</value></data>
+  <data name="DateRangePicker_Today" xml:space="preserve"><value>Today</value></data>
+  <data name="DateRangePicker_Yesterday" xml:space="preserve"><value>Yesterday</value></data>
+  <data name="DateRangePicker_Last7Days" xml:space="preserve"><value>Last 7 days</value></data>
+  <data name="DateRangePicker_Last30Days" xml:space="preserve"><value>Last 30 days</value></data>
+  <data name="DateRangePicker_ThisMonth" xml:space="preserve"><value>This month</value></data>
+  <data name="DateRangePicker_LastMonth" xml:space="preserve"><value>Last month</value></data>
+  <data name="DateRangePicker_ThisYear" xml:space="preserve"><value>This year</value></data>
+
+  <!-- ColorPicker -->
+  <data name="ColorPicker_Label" xml:space="preserve"><value>Color picker</value></data>
+  <data name="ColorPicker_EyeDropperTitle" xml:space="preserve"><value>Pick color from screen</value></data>
+  <data name="ColorPicker_EyeDropperLabel" xml:space="preserve"><value>Pick color</value></data>
+
+  <!-- OtpInput -->
+  <data name="OtpInput_GroupLabel" xml:space="preserve"><value>One-time password</value></data>
+  <data name="OtpInput_CellLabel" xml:space="preserve"><value>Digit {0} of {1}</value></data>
+
+  <!-- TagInput -->
+  <data name="TagInput_Remove" xml:space="preserve"><value>Remove</value></data>
+
+  <!-- FormBuilder -->
+  <data name="FormBuilder_Submit" xml:space="preserve"><value>Submit</value></data>
+  <data name="FormBuilder_Reset" xml:space="preserve"><value>Reset</value></data>
+
+  <!-- OnThisPage -->
+  <data name="OnThisPage_Title" xml:space="preserve"><value>On this page</value></data>
+
+  <!-- Transfer -->
+  <data name="Transfer_MoveToTarget" xml:space="preserve"><value>Move selected to target</value></data>
+  <data name="Transfer_MoveAllToTarget" xml:space="preserve"><value>Move all to target</value></data>
+  <data name="Transfer_MoveToSource" xml:space="preserve"><value>Move selected to source</value></data>
+  <data name="Transfer_MoveAllToSource" xml:space="preserve"><value>Move all to source</value></data>
+
+</root>

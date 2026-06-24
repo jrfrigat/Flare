@@ -1,0 +1,21 @@
+<FlareBreadcrumb Items="@_crumbs1" />
+<FlareBreadcrumb Items="@_crumbs2" />
+
+
+@code
+{
+    private readonly BreadcrumbItem[] _crumbs1 =
+    [
+        new("Home", "/"),
+        new("Components", "/components"),
+        new("Breadcrumb"),
+    ];
+
+    private readonly BreadcrumbItem[] _crumbs2 =
+    [
+        new("Dashboard", "/"),
+        new("Settings", "/settings"),
+        new("Profile", "/settings/profile"),
+        new("Edit"),
+    ];
+}

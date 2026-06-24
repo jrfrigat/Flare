@@ -1,0 +1,29 @@
+<div style="height:320px;overflow:hidden;border-radius:var(--flare-shape-medium);">
+    <FlareLayout @bind-DrawerOpen="_open">
+        <AppBar>
+            <FlareLayoutAppBar>
+                <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _open = !_open)">
+                    <LeadingIcon><FlareIcon Name="menu" /></LeadingIcon>
+                    <ChildContent>Menu</ChildContent>
+                </FlareButton>
+                <FlareText Typo="TypographyScale.TitleLarge" Style="margin-left:0.5rem;">Manual bind</FlareText>
+            </FlareLayoutAppBar>
+        </AppBar>
+        <Drawer>
+            <FlareLayoutDrawer>
+                <FlareStack Style="padding:1rem 0.5rem;">
+                    <FlareText Typo="TypographyScale.BodyMedium">Drawer state is driven by the parent.</FlareText>
+                </FlareStack>
+            </FlareLayoutDrawer>
+        </Drawer>
+        <Content>
+            <FlareLayoutContent>
+                <FlareText Typo="TypographyScale.BodyMedium">Drawer open: @_open</FlareText>
+            </FlareLayoutContent>
+        </Content>
+    </FlareLayout>
+</div>
+
+@code {
+    private bool _open = true;
+}

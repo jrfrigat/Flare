@@ -1,0 +1,30 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_maxWidthClass, _fluidClass)" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Child content rendered inside the container.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Maximum width constraint for the container.</summary>
+    [Parameter] public ContainerMaxWidth MaxWidth { get; set; } = ContainerMaxWidth.Lg;
+    /// <summary>When true, container spans full available width (overrides MaxWidth).</summary>
+    [Parameter] public bool Fluid { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Container.Root;
+
+    private string _fluidClass => Fluid ? Css.Classes.Container.Fluid : string.Empty;
+
+    private string _maxWidthClass => Fluid ? string.Empty : MaxWidth switch
+    {
+        ContainerMaxWidth.Xs => Css.Classes.Container.Xs,
+        ContainerMaxWidth.Sm => Css.Classes.Container.Sm,
+        ContainerMaxWidth.Md => Css.Classes.Container.Md,
+        ContainerMaxWidth.Lg => Css.Classes.Container.Lg,
+        ContainerMaxWidth.Xl => Css.Classes.Container.Xl,
+        ContainerMaxWidth.Full => Css.Classes.Container.Full,
+        _ => Css.Classes.Container.Lg
+    };
+}

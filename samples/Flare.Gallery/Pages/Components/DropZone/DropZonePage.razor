@@ -1,0 +1,13 @@
+@page "/components/dropzone"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.FileUpload_DropZone - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDropZone">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.FileUpload_DropZone</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.DropZone_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.DropZone_Basic" DemoType="typeof(Examples.DropZoneBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.DropZone_AcceptFilter" DemoType="typeof(Examples.DropZoneAcceptFilterDemo)" />
+<AutoDemoSection Title="@GalleryStrings.DropZone_CustomContent" DemoType="typeof(Examples.DropZoneCustomContentDemo)" />

@@ -1,0 +1,442 @@
+/* ==========================================================================
+   FlareSlider - MD3 Expressive (default) / theme-overridable
+   Per-size MD3 geometry lives in --_trk-* / --_hnd-* vars on the size classes.
+   Presentation resolves as var(--flare-slider-X, <size/default>) so a theme can
+   override ANY aspect via plain tokens (thin rail, circular thumb, even a clip-path
+   shape) without being limited to a fixed set of shapes. Empty theme tokens are not
+   emitted, so MD3 keeps its per-size geometry from the size classes.
+   The visual track is drawn as rounded rail segments; the native <input type=range>
+   sits transparently on top for interaction + thumb.
+   ========================================================================== */
+.flare-slider {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2, 0.25rem);
+}
+
+/* ---- Size geometry (MD3 Expressive spec "## Размеры", dp -> rem) ----
+   track 16/24/40/56/96dp - handle 44/44/52/68/108dp - track-shape 8/8/12/16/28dp */
+.flare-slider--xs { --_trk-h: 1rem;   --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 20px; }
+.flare-slider--sm { --_trk-h: 1.5rem; --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 22px; }
+.flare-slider--md { --_trk-h: 2.5rem; --_hnd-h: 3.25rem; --_trk-r: 0.75rem; --_icon: 24px; }
+.flare-slider--lg { --_trk-h: 3.5rem; --_hnd-h: 4.25rem; --_trk-r: 1rem;    --_icon: 24px; }
+.flare-slider--xl { --_trk-h: 6rem;   --_hnd-h: 6.75rem; --_trk-r: 1.75rem; --_icon: 32px; }
+
+/* ---- Resolved presentation vars (theme token -> per-size/default fallback) ---- */
+.flare-slider {
+    --_trk-height:  var(--flare-slider-track-height, var(--_trk-h, 16px));
+    --_trk-radius:  var(--flare-slider-track-radius, var(--_trk-r, 8px));
+    --_gap-radius:  var(--flare-slider-gap-radius, 2px);
+    --_gap:         var(--flare-slider-gap, 6px);
+    --_hnd-height:  var(--flare-slider-handle-height, var(--_hnd-h, 44px));
+    --_hnd-width:   var(--flare-slider-handle-width, 4px);
+    --_hnd-width-pressed: var(--flare-slider-handle-pressed-width, 2px);
+    --_hnd-radius:  var(--flare-slider-handle-radius, var(--flare-shape-full, 9999px));
+    --_hnd-clip:    var(--flare-slider-handle-clip, none);
+    --_hnd-border-w: var(--flare-slider-handle-border-width, 0px);
+    /* accent: per-instance Color (--fc-main) wins, then theme token, then default */
+    --_active:      var(--fc-main, var(--flare-slider-active-color, var(--flare-color-primary)));
+    --_hnd-color:   var(--flare-slider-handle-fill, var(--_active));
+    --_inactive:    var(--flare-slider-inactive-color, var(--flare-color-secondary-container));
+    --_sl-size:     var(--flare-slider-state-layer-size, 40px);
+    --_sl-hover:    var(--flare-slider-state-hover-opacity, 0.08);
+    --_sl-pressed:  var(--flare-slider-state-pressed-opacity, 0.10);
+    --_stop:        var(--flare-slider-stop-color, var(--flare-color-on-secondary-container));
+    --_stop-sel:    var(--flare-slider-stop-color-selected, var(--flare-color-on-primary));
+    --_value-bg:    var(--flare-slider-value-bg, var(--flare-color-inverse-surface));
+    --_value-color: var(--flare-slider-value-color, var(--flare-color-inverse-on-surface));
+}
+
+.flare-slider__label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flare-slider__label {
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-slider__value {
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    font-weight: 500;
+    color: var(--_active);
+}
+
+/* ---- Row: optional start/end icons flanking the track ---- */
+.flare-slider__row {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-slider__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--flare-color-on-surface-variant);
+    font-size: var(--_icon, 24px);
+    flex-shrink: 0;
+}
+.flare-slider__icon .flare-icon { font-size: inherit; }
+
+/* Intentional state/marker hooks for consumers (and tests). They carry no library styling --
+   the visuals come from the base classes / dedicated elements:
+     --stepped / --with-indicator  -> tick marks (.flare-slider__ticks) and the value bubble
+                                       (.flare-slider__value) are rendered when Stepper/Indicator
+                                       are set; these root classes just expose the state.
+     __icon--start / __icon--end   -> styled by .flare-slider__icon; the modifier marks the side.
+     __input--low                  -> the in-flow low range input (the high input overlays it via
+                                       .flare-slider--range .flare-slider__input--high).
+   Declared here (empty) so they are part of the public CSS contract and stay in sync. */
+.flare-slider--stepped,
+.flare-slider--with-indicator,
+.flare-slider__icon--start,
+.flare-slider__icon--end,
+.flare-slider__input--low { /* marker hooks - no own styling */ }
+
+/* track-area is the flex cell (horizontal) / rotation box (vertical) */
+.flare-slider__track-area {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* ---- Track wrapper hosts the rail segments, input, ticks and value bubble ---- */
+.flare-slider__track-wrap {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* ---- Visual rail segments (decorative; input handles interaction) ---- */
+.flare-slider__rail {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: var(--_trk-height);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+.flare-slider__seg {
+    position: absolute;
+    top: 0;
+    height: 100%;
+}
+.flare-slider__seg--active   { background: var(--_active); }
+.flare-slider__seg--inactive { background: var(--_inactive); }
+
+.flare-slider__input {
+    -webkit-appearance: none;
+    appearance: none;
+    position: relative;
+    display: block;
+    width: 100%;
+    /* input box spans the handle height so the (taller) thumb centres on the rail */
+    height: var(--_hnd-height);
+    margin: 0;
+    background: transparent;   /* rail segments draw the track */
+    outline: none;
+    cursor: pointer;
+    border: none;
+}
+.flare-slider__input::-webkit-slider-runnable-track { background: transparent; border: none; height: 100%; }
+.flare-slider__input::-moz-range-track { background: transparent; border: none; height: 100%; }
+
+/* Handle. MD3 = tall narrow bar (border-width 0); a theme sets handle width/height/radius/
+   border-width/clip-path tokens for any other shape (circle, triangle, ...). */
+.flare-slider__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    margin-top: 0;          /* full-height thumb on a full-height track -> vertically centred */
+    width: var(--_hnd-width);
+    height: var(--_hnd-height);
+    border-radius: var(--_hnd-radius);
+    clip-path: var(--_hnd-clip);
+    background: var(--_hnd-color);
+    border: var(--_hnd-border-w) solid var(--_active);
+    box-shadow: 0 0 0 0 transparent;
+    transition: width var(--flare-motion-duration-short2, 150ms),
+                box-shadow var(--flare-motion-duration-short2, 150ms);
+}
+
+.flare-slider__input::-moz-range-thumb {
+    box-sizing: border-box;
+    width: var(--_hnd-width);
+    height: var(--_hnd-height);
+    border-radius: var(--_hnd-radius);
+    clip-path: var(--_hnd-clip);
+    background: var(--_hnd-color);
+    border: var(--_hnd-border-w) solid var(--_active);
+    transition: width var(--flare-motion-duration-short2, 150ms),
+                box-shadow var(--flare-motion-duration-short2, 150ms);
+}
+
+/* State layer (hover/focus) - translucent halo around the handle */
+.flare-slider__input:hover::-webkit-slider-thumb,
+.flare-slider__input:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 calc(var(--_sl-size) / 2)
+        color-mix(in srgb, var(--_active) calc(var(--_sl-hover) * 100%), transparent);
+}
+.flare-slider__input:hover::-moz-range-thumb,
+.flare-slider__input:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 calc(var(--_sl-size) / 2)
+        color-mix(in srgb, var(--_active) calc(var(--_sl-hover) * 100%), transparent);
+}
+
+/* Pressed: handle narrows to the pressed width + stronger state layer (MD3 Expressive) */
+.flare-slider__input:active::-webkit-slider-thumb {
+    width: var(--_hnd-width-pressed);
+    box-shadow: 0 0 0 calc(var(--_sl-size) / 2)
+        color-mix(in srgb, var(--_active) calc(var(--_sl-pressed) * 100%), transparent);
+}
+.flare-slider__input:active::-moz-range-thumb {
+    width: var(--_hnd-width-pressed);
+    box-shadow: 0 0 0 calc(var(--_sl-size) / 2)
+        color-mix(in srgb, var(--_active) calc(var(--_sl-pressed) * 100%), transparent);
+}
+
+/* ---- Stop indicators (Stepper) ---- */
+.flare-slider__ticks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+.flare-slider__tick {
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -50%);
+    width: var(--flare-slider-stop-size, 4px);
+    height: var(--flare-slider-stop-size, 4px);
+    border-radius: 50%;
+    background: var(--_stop);
+}
+.flare-slider__tick--active { background: var(--_stop-sel); }
+
+/* ---- Labeled marks (Marks) ----
+   A layer just below the track; each mark is centred on its value's percent. The host
+   reserves space via --with-marks so labels do not overlap the helper text. */
+.flare-slider--with-marks .flare-slider__track-area { margin-bottom: var(--flare-spacing-12, 1.5rem); }
+.flare-slider__marks {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(50% + var(--_trk-height) / 2 + 0.25rem);
+    height: 0;
+    pointer-events: none;
+}
+.flare-slider__mark {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-family: var(--flare-typescale-label-small-font);
+    font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+    color: var(--flare-color-on-surface-variant);
+}
+.flare-slider__mark--active {
+    color: var(--_active);
+    font-weight: 500;
+}
+/* vertical: marks run to the right of the track */
+.flare-slider--vertical.flare-slider--with-marks .flare-slider__track-area {
+    margin-bottom: 0;
+    margin-right: 2.5rem;
+}
+.flare-slider--vertical .flare-slider__marks {
+    left: calc(50% + var(--_trk-height) / 2 + 0.5rem);
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    height: auto;
+}
+.flare-slider--vertical .flare-slider__mark {
+    top: auto;
+    left: 0;
+    transform: translateY(50%);
+}
+
+/* ---- Value indicator bubble (Indicator) ----
+   Positioned by the same --_pct the track uses. Shown while hovering/focusing.
+   NOTE: pure-CSS centering overflows the container at the 0%/100% extremes and
+   ignores the thumb width - precise positioning needs JS (see Summary section 0 JS-SYNC J9). */
+.flare-slider__bubble {
+    position: absolute;
+    bottom: calc(100% - 6px);
+    left: var(--_pct, 0%);
+    transform: translateX(-50%) scale(0.8);
+    transform-origin: bottom center;
+    min-width: 3rem;
+    box-sizing: border-box;
+    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
+    border-radius: var(--flare-shape-small, 0.5rem);
+    background: var(--_value-bg);
+    color: var(--_value-color);
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-large-size, 0.875rem);
+    line-height: 1.25rem;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short2, 150ms),
+                transform var(--flare-motion-duration-short2, 150ms);
+}
+.flare-slider__track-wrap:hover .flare-slider__bubble,
+.flare-slider__track-wrap:focus-within .flare-slider__bubble {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+.flare-slider__helper {
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    color: var(--flare-color-on-surface-variant);
+}
+.flare-slider__helper--error { color: var(--flare-color-error); }
+
+/* ==========================================================================
+   Range (two handles) - the low input stays in flow (gives the track its height);
+   the high input overlays it. Both inputs are click-through; only the thumbs are
+   interactive, so either handle is grabbable. The active fill is the segment(s)
+   between the two thumbs (handled by the segment generator).
+   ========================================================================== */
+.flare-slider--range .flare-slider__input { pointer-events: none; }
+.flare-slider--range .flare-slider__input::-webkit-slider-thumb { pointer-events: auto; }
+.flare-slider--range .flare-slider__input::-moz-range-thumb { pointer-events: auto; }
+.flare-slider--range .flare-slider__input--high {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+}
+/* second value bubble tracks the high handle */
+.flare-slider__bubble--high { left: var(--_pct-end, 0%); }
+.flare-slider--vertical .flare-slider__bubble--high {
+    bottom: var(--_pct-end, 0%);
+    left: calc(100% - 6px);
+}
+
+/* ==========================================================================
+   Vertical orientation - a real vertical layout (NO rotate). The native input uses
+   writing-mode:vertical-rl (min at bottom, max at top, ArrowUp increases); the rail
+   segments / ticks are laid out along the block (top<->bottom) axis. Length is set via
+   --flare-slider-length (default 12rem).
+   ========================================================================== */
+.flare-slider--vertical .flare-slider__row {
+    flex-direction: column-reverse;   /* DOM start/end icons -> bottom/top */
+    align-items: center;
+    width: max-content;
+}
+.flare-slider--vertical .flare-slider__track-area {
+    flex: 0 0 auto;
+    width: var(--_hnd-height);
+    height: var(--flare-slider-length, 12rem);
+}
+.flare-slider--vertical .flare-slider__track-wrap {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+/* rail runs vertically, centred horizontally */
+.flare-slider--vertical .flare-slider__rail {
+    left: 50%;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: var(--_trk-height);
+    height: auto;
+    transform: translateX(-50%);
+}
+.flare-slider--vertical .flare-slider__seg {
+    top: auto;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+/* native vertical range. writing-mode makes it vertical; direction:rtl flips the
+   value axis so the minimum is at the BOTTOM and ArrowUp/drag-up increase - matching
+   the bottom-anchored rail fill. */
+.flare-slider--vertical .flare-slider__input {
+    writing-mode: vertical-rl;
+    direction: rtl;
+    width: var(--_hnd-height);
+    height: 100%;
+}
+.flare-slider--vertical .flare-slider__input::-webkit-slider-runnable-track { width: 100%; height: 100%; }
+/* handle is a horizontal bar across the vertical track -> swap thumb dimensions */
+.flare-slider--vertical .flare-slider__input::-webkit-slider-thumb {
+    width: var(--_hnd-height);
+    height: var(--_hnd-width);
+}
+.flare-slider--vertical .flare-slider__input::-moz-range-thumb {
+    width: var(--_hnd-height);
+    height: var(--_hnd-width);
+}
+.flare-slider--vertical .flare-slider__input:active::-webkit-slider-thumb {
+    width: var(--_hnd-height);
+    height: var(--_hnd-width-pressed);
+}
+.flare-slider--vertical .flare-slider__input:active::-moz-range-thumb {
+    width: var(--_hnd-height);
+    height: var(--_hnd-width-pressed);
+}
+/* ticks sit on the vertical rail */
+.flare-slider--vertical .flare-slider__ticks {
+    left: 50%;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    height: auto;
+}
+.flare-slider--vertical .flare-slider__tick {
+    top: auto;
+    left: 0;
+}
+/* value bubble to the right of the handle, upright */
+.flare-slider--vertical .flare-slider__bubble {
+    bottom: var(--_pct, 0%);
+    left: calc(100% - 6px);
+    transform: translateY(50%) scale(0.8);
+    transform-origin: left center;
+}
+.flare-slider--vertical .flare-slider__track-wrap:hover .flare-slider__bubble,
+.flare-slider--vertical .flare-slider__track-wrap:focus-within .flare-slider__bubble {
+    transform: translateY(50%) scale(1);
+}
+
+/* Disabled: split opacity - active 0.38 / inactive 0.12 (MD3) */
+.flare-slider--disabled { pointer-events: none; }
+.flare-slider--disabled {
+    --_active: color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent);
+    --_inactive: color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent);
+}
+.flare-slider--disabled .flare-slider__input::-webkit-slider-thumb {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent);
+    border-width: 0;
+}
+.flare-slider--disabled .flare-slider__input::-moz-range-thumb {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent);
+    border-width: 0;
+}
+.flare-slider--disabled .flare-slider__label,
+.flare-slider--disabled .flare-slider__value,
+.flare-slider--disabled .flare-slider__icon {
+    opacity: var(--flare-state-disabled-opacity, 0.38);
+}
+
+/* Forced-colors (Windows High Contrast) - keep the handle focus ring visible */
+@media (forced-colors: active) {
+    .flare-slider__input:focus-visible::-webkit-slider-thumb { outline: 2px solid ButtonText; }
+    .flare-slider__input:focus-visible::-moz-range-thumb { outline: 2px solid ButtonText; }
+}

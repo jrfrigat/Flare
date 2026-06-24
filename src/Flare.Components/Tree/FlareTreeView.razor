@@ -1,0 +1,45 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<ul class="@BuildCssClass()" role="tree"
+    aria-label="@AriaLabel"
+    aria-multiselectable="@(MultiSelect ? "true" : null)"
+    style="@Style"
+    @attributes="AdditionalAttributes">
+    <CascadingValue Value="1" Name="Level" IsFixed="true">
+        <CascadingValue Value="Draggable" Name="TreeDraggable" IsFixed="true">
+            <CascadingValue Value="OnItemDrop" Name="TreeOnItemDrop" IsFixed="true">
+                <CascadingValue Value="OnItemDragStart" Name="TreeOnItemDragStart" IsFixed="true">
+                    <CascadingValue Value="OnItemDragEnd" Name="TreeOnItemDragEnd" IsFixed="true">
+                        <CascadingValue Value="_dragCoordinator" Name="TreeDragCoordinator" IsFixed="true">
+                            @ChildContent
+                        </CascadingValue>
+                    </CascadingValue>
+                </CascadingValue>
+            </CascadingValue>
+        </CascadingValue>
+    </CascadingValue>
+</ul>
+
+@code {
+    /// <summary>Tree items rendered inside the tree view.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Accessible label for the tree, forwarded as aria-label.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>When true, multiple tree items may be selected simultaneously.
+    /// Exposes aria-multiselectable="true" on the tree root for assistive technologies.</summary>
+    [Parameter] public bool MultiSelect { get; set; }
+    /// <summary>Enables drag-and-drop reordering of tree items.</summary>
+    [Parameter] public bool Draggable { get; set; }
+    /// <summary>Callback raised when an item is dropped on a valid target. Contains source item and target item.</summary>
+    [Parameter] public EventCallback<TreeDropEventArgs> OnItemDrop { get; set; }
+    /// <summary>Callback raised when an item drag starts.</summary>
+    [Parameter] public EventCallback<TreeDragEventArgs> OnItemDragStart { get; set; }
+    /// <summary>Callback raised when an item drag ends.</summary>
+    [Parameter] public EventCallback OnItemDragEnd { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.TreeView.Root;
+
+    // Shared with every descendant FlareTreeItem so a drop target can report the dragged source.
+    private readonly TreeDragDropCoordinator _dragCoordinator = new();
+}

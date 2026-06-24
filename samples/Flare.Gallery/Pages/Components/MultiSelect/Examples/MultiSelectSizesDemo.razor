@@ -1,0 +1,22 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:22rem;">
+    <FlareMultiSelect TValue="string" Size="FieldSize.Xs" Items="_fruits" GetLabel="x => x"
+                      SelectedValues="_v" SelectedValuesChanged="v => _v = v.ToList()"
+                      Chips="true" Label="Extra small (xs)" />
+    <FlareMultiSelect TValue="string" Size="FieldSize.Sm" Items="_fruits" GetLabel="x => x"
+                      SelectedValues="_v" SelectedValuesChanged="v => _v = v.ToList()"
+                      Chips="true" Label="Small (sm)" />
+    <FlareMultiSelect TValue="string" Size="FieldSize.Md" Items="_fruits" GetLabel="x => x"
+                      SelectedValues="_v" SelectedValuesChanged="v => _v = v.ToList()"
+                      Chips="true" Label="Medium (md, default)" />
+    <FlareMultiSelect TValue="string" Size="FieldSize.Lg" Items="_fruits" GetLabel="x => x"
+                      SelectedValues="_v" SelectedValuesChanged="v => _v = v.ToList()"
+                      Chips="true" Label="Large (lg)" />
+    <FlareMultiSelect TValue="string" Size="FieldSize.Xl" Items="_fruits" GetLabel="x => x"
+                      SelectedValues="_v" SelectedValuesChanged="v => _v = v.ToList()"
+                      Chips="true" Label="Extra large (xl)" />
+</FlareStack>
+
+@code {
+    private readonly List<string> _fruits = ["Apple", "Banana", "Cherry", "Date"];
+    private List<string> _v = [];
+}

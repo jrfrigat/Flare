@@ -1,0 +1,102 @@
+@using Flare.Components.IDE
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* Visual Studio / Access-style shell: a menu bar + icon toolbar, a Solution/Navigation tree in the
+   left panel, document tabs hosting a datasheet (FlareDataGrid), a Properties sheet on the right, an
+   Output panel at the bottom, and a status bar. All from base Flare + Flare.Components.IDE. *@
+<FlareIdeLayout Style="height:520px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+    <MenuBar>
+        <FlareMenuBar>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">File</FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Edit</FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">View</FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Build</FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Debug</FlareButton>
+        </FlareMenuBar>
+        <FlareToolbar Dense="true">
+            <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => _status = "Running...")">
+                <LeadingIcon><span class="material-symbols-rounded" style="font-size:1rem;">play_arrow</span></LeadingIcon>
+                <ChildContent>Start</ChildContent>
+            </FlareButton>
+            <FlareRibbonSeparator />
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save all">
+                <span class="material-symbols-rounded" style="font-size:1rem;">save</span>
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build">
+                <span class="material-symbols-rounded" style="font-size:1rem;">build</span>
+            </FlareButton>
+        </FlareToolbar>
+    </MenuBar>
+
+    <LeftToolPanel>
+        <FlareToolPanel Title="Solution Explorer">
+            <FlareTreeView AriaLabel="Solution Explorer">
+                <FlareTreeItem Label="MyApp" Icon="folder" Expanded="true">
+                    <FlareTreeItem Label="Properties" Icon="folder" />
+                    <FlareTreeItem Label="Pages" Icon="folder" Expanded="true">
+                        <FlareTreeItem Label="Index.razor" Icon="description"
+                                       OnClick="@(() => _status = "Index.razor")" />
+                        <FlareTreeItem Label="Customers.razor" Icon="description"
+                                       OnClick="@(() => _status = "Customers.razor")" />
+                    </FlareTreeItem>
+                    <FlareTreeItem Label="Program.cs" Icon="description" />
+                </FlareTreeItem>
+            </FlareTreeView>
+        </FlareToolPanel>
+    </LeftToolPanel>
+
+    <ChildContent>
+        <FlareDocumentTabs>
+            <FlareDocumentTab Title="Customers" Icon="table_view">
+                <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
+                    <Columns>
+                        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+                        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+                        <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" />
+                        <FlareColumn Title="Score" Field="@(p => p.Score)" Type="ColumnDataType.Number" />
+                    </Columns>
+                </FlareDataGrid>
+            </FlareDocumentTab>
+            <FlareDocumentTab Title="Program.cs" Icon="code" Modified="true">
+                <pre style="margin:0;padding:0.5rem;font-family:monospace;font-size:0.8rem;">var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddFlare();
+var app = builder.Build();
+app.Run();</pre>
+            </FlareDocumentTab>
+        </FlareDocumentTabs>
+    </ChildContent>
+
+    <RightToolPanel>
+        <FlareToolPanel Title="Properties" Position="ToolPanelPosition.Right">
+            <FlarePropertyGrid Title="Customers (DataGrid)">
+                <FlarePropertyGridItem Name="Name" Value="dgCustomers" />
+                <FlarePropertyGridItem Name="Dock" Value="Fill" />
+                <FlarePropertyGridItem Name="ReadOnly">
+                    <FlareCheckbox Value="false" />
+                </FlarePropertyGridItem>
+                <FlarePropertyGridItem Name="RowSource">
+                    <FlareField TValue="string" Size="FieldSize.Sm" Value="@_rowSource" />
+                </FlarePropertyGridItem>
+            </FlarePropertyGrid>
+        </FlareToolPanel>
+    </RightToolPanel>
+
+    <BottomPanel>
+        <FlareToolPanel Title="Output" Position="ToolPanelPosition.Bottom">
+            <pre style="margin:0;padding:0.5rem;font-family:monospace;font-size:0.8rem;">Build started...
+Build succeeded. 0 errors, 0 warnings.</pre>
+        </FlareToolPanel>
+    </BottomPanel>
+
+    <StatusBar>
+        <FlareStatusBar>
+            <LeftContent>@_status</LeftContent>
+            <RightContent>Ln 1, Col 1 &nbsp;|&nbsp; UTF-8 &nbsp;|&nbsp; C#</RightContent>
+        </FlareStatusBar>
+    </StatusBar>
+</FlareIdeLayout>
+
+@code {
+    private string _status = "Ready";
+    private string? _rowSource = "SELECT * FROM Customers";
+}

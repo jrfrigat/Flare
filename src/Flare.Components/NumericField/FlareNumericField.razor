@@ -1,0 +1,353 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@typeparam TValue
+@using System.ComponentModel
+@using System.Linq.Expressions
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Input.Label" for="@_inputId">@Label</label>
+    }
+    <div class="@Css.Classes.Input.Field">
+        @if (!string.IsNullOrEmpty(Prefix))
+        {
+            <span class="@Css.Classes.Numericfield.Prefix">@Prefix</span>
+        }
+        <input class="@Css.Classes.Input.Control"
+               id="@_inputId"
+               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+               type="@(_useTextMode ? "text" : "number")"
+               inputmode="@(_useTextMode ? "decimal" : null)"
+               value="@_inputDisplay"
+               placeholder="@Placeholder"
+               disabled="@Disabled"
+               readonly="@ReadOnly"
+               min="@(_useTextMode ? null : _minStr)"
+               max="@(_useTextMode ? null : _maxStr)"
+               step="@(_useTextMode ? null : _stepStr)"
+               aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+               aria-describedby="@_computedDescribedBy"
+               @onfocus="HandleFocus"
+               @onchange="HandleChange"
+               @oninput="HandleInput"
+               @onblur="HandleBlur"
+               @onkeydown="HandleKeyDown" />
+        @if (!string.IsNullOrEmpty(Suffix))
+        {
+            <span class="@Css.Classes.Numericfield.Suffix">@Suffix</span>
+        }
+        @if (ShowStepper)
+        {
+            <span class="@Css.Classes.Numericfield.Stepper">
+                <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepUp"
+                        tabindex="-1" disabled="@(Disabled || ReadOnly)"
+                        aria-label="@(FlareStrings.NumericField_Increment)"
+                        @onclick="@(() => StepBy(Step ?? 1))">▲</button>
+                <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepDown"
+                        tabindex="-1" disabled="@(Disabled || ReadOnly)"
+                        aria-label="@(FlareStrings.NumericField_Decrement)"
+                        @onclick="@(() => StepBy(-(Step ?? 1)))">▼</button>
+            </span>
+        }
+    </div>
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span id="@_errorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@_displayedError</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span id="@_helperId" class="@Css.Classes.Input.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Current numeric value of the field.</summary>
+    [Parameter] public TValue? Value { get; set; }
+    /// <summary>Callback invoked when the numeric value changes.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    /// <summary>Label text displayed above the field.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Placeholder text shown when the field is empty.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Helper text shown below the field.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Minimum allowed value.</summary>
+    [Parameter] public double? Min { get; set; }
+    /// <summary>Maximum allowed value.</summary>
+    [Parameter] public double? Max { get; set; }
+    /// <summary>Increment step used by the number input.</summary>
+    [Parameter] public double? Step { get; set; }
+    /// <summary>
+    /// Display format applied while the field is not focused: standard .NET numeric format
+    /// (e.g. "N0" group separators, "C2" currency, "P0" percent). Setting this switches the
+    /// control to a text field that shows the formatted value when blurred and a plain editable
+    /// number while focused (focus-swap), so separators/currency symbols do not block typing.
+    /// </summary>
+    [Parameter] public string? Format { get; set; }
+    /// <summary>Culture used to render and parse <see cref="Format"/>. Defaults to the current UI culture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>Disables the field when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Makes the field read-only when true.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>Non-editable text rendered before the input (e.g. currency symbol).</summary>
+    [Parameter] public string? Prefix { get; set; }
+    /// <summary>Non-editable text rendered after the input (e.g. unit label).</summary>
+    [Parameter] public string? Suffix { get; set; }
+    /// <summary>Shows up/down stepper buttons that increment/decrement by <see cref="Step"/> (default 1).</summary>
+    [Parameter] public bool ShowStepper { get; set; }
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>When true, the value updates on every keystroke (oninput) rather than only on change/blur.</summary>
+    [Parameter] public bool Immediate { get; set; }
+    /// <summary>Debounce in milliseconds for <see cref="Immediate"/> updates. 0 = no debounce.</summary>
+    [Parameter] public int DebounceInterval { get; set; }
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<TValue>>? For { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Input.Root;
+
+    private readonly string _inputId = $"flare-numeric-{Guid.NewGuid():N}";
+    private string _helperId => $"{_inputId}-help";
+    private string _errorId  => $"{_inputId}-err";
+    private string? _computedDescribedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+
+    private FieldIdentifier _fieldId;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private string _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
+
+    private string _variantClass => Variant switch
+    {
+        InputVariant.Filled => Css.Classes.Input.VariantFilled,
+        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
+        _ => string.Empty,
+    };
+
+    // Reuses the shared flare-input size grid (NumericField renders flare-input__field/__control).
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
+        _ => string.Empty,
+    };
+
+    // Format set -> focus-swap text mode (separators/currency/percent cannot live in type=number).
+    private bool _useTextMode => !string.IsNullOrEmpty(Format);
+    private bool _focused;
+    private string _text = string.Empty;
+    private CultureInfo _fmtCulture => Culture ?? CultureInfo.CurrentCulture;
+
+    // What the input element shows. Number mode: raw invariant value. Text mode: the live edit
+    // buffer while focused, the formatted value when blurred.
+    private string? _inputDisplay => _useTextMode
+        ? (_focused ? _text : _formattedDisplay)
+        : (Value is null ? null : Convert.ToString(Value, CultureInfo.InvariantCulture));
+
+    // Blurred display: Value rendered with Format in the chosen culture.
+    private string? _formattedDisplay
+    {
+        get
+        {
+            if (Value is null) return null;
+            try { return ((IFormattable)Value).ToString(Format, _fmtCulture); }
+            catch { return Convert.ToString(Value, _fmtCulture); }
+        }
+    }
+
+    // Focused (editable) display: plain number in the culture, no group separators/symbols.
+    private string _rawEditable => Value is null ? string.Empty : (Convert.ToString(Value, _fmtCulture) ?? string.Empty);
+
+    private string? _minStr  => Min?.ToString(CultureInfo.InvariantCulture);
+    private string? _maxStr  => Max?.ToString(CultureInfo.InvariantCulture);
+    private string? _stepStr => Step?.ToString(CultureInfo.InvariantCulture);
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (ReadOnly || Disabled) return;
+        if (e.Key == "ArrowUp") await StepBy(Step ?? 1);
+        else if (e.Key == "ArrowDown") await StepBy(-(Step ?? 1));
+    }
+
+    private async Task StepBy(double delta)
+    {
+        if (ReadOnly || Disabled) return;
+
+        var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+        double current = 0;
+        if (Value is not null)
+        {
+            try { current = Convert.ToDouble(Value, CultureInfo.InvariantCulture); }
+            catch { }
+        }
+
+        double next = current + delta;
+        if (Min.HasValue && next < Min.Value) next = Min.Value;
+        if (Max.HasValue && next > Max.Value) next = Max.Value;
+
+        TValue? converted = default;
+        try
+        {
+            var converter = TypeDescriptor.GetConverter(targetType);
+            var str = next.ToString(CultureInfo.InvariantCulture);
+            if (converter.CanConvertFrom(typeof(string)))
+                converted = (TValue?)converter.ConvertFromInvariantString(str);
+        }
+        catch { }
+
+        // Keep the editable buffer in sync so a focused text-mode field reflects the step.
+        if (_useTextMode && _focused)
+            _text = next.ToString(_fmtCulture);
+
+        await ValueChanged.InvokeAsync(converted);
+
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+
+    private CancellationTokenSource? _debounceCts;
+
+    private void HandleFocus()
+    {
+        if (!_useTextMode) return;
+        _focused = true;
+        _text = _rawEditable; // swap to the plain editable form
+    }
+
+    private async Task HandleBlur()
+    {
+        if (!_useTextMode) return;
+        _focused = false;
+        await InvokeAsync(StateHasChanged); // re-render the formatted display
+    }
+
+    // change fires on blur/commit -> always clamp to Min/Max.
+    private Task HandleChange(ChangeEventArgs e)
+    {
+        var raw = e.Value?.ToString();
+        if (_useTextMode) _text = raw ?? string.Empty;
+        return Commit(raw, clamp: true);
+    }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        var raw = e.Value?.ToString();
+        if (_useTextMode) _text = raw ?? string.Empty;
+        if (!Immediate) return;
+        // While typing, do not clamp (lets the user pass through intermediate values like "-").
+        if (DebounceInterval <= 0) { await Commit(raw, clamp: false); return; }
+        _debounceCts?.Cancel();
+        _debounceCts = new CancellationTokenSource();
+        var token = _debounceCts.Token;
+        try
+        {
+            await Task.Delay(DebounceInterval, token);
+            await InvokeAsync(() => Commit(raw, clamp: false));
+        }
+        catch (TaskCanceledException) { }
+    }
+
+    // Parse + (optionally) clamp + convert to TValue + emit. In text mode the raw string may
+    // carry culture separators/currency/percent symbols; parse tolerantly.
+    private async Task Commit(string? raw, bool clamp)
+    {
+        TValue? converted = default;
+        if (!string.IsNullOrWhiteSpace(raw))
+        {
+            if (TryParseNumber(raw, out var d))
+            {
+                if (clamp)
+                {
+                    if (Min.HasValue && d < Min.Value) d = Min.Value;
+                    if (Max.HasValue && d > Max.Value) d = Max.Value;
+                }
+                // Number mode without clamp change keeps the original invariant token (full
+                // precision for decimal/long); otherwise convert from the parsed double.
+                var token = (!_useTextMode && !clamp) ? raw! : d.ToString(CultureInfo.InvariantCulture);
+                converted = ConvertFromInvariant(token);
+            }
+        }
+
+        await ValueChanged.InvokeAsync(converted);
+
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+
+    // Tolerant parse: try the culture (currency/thousands), then a stripped fallback (e.g. percent).
+    private bool TryParseNumber(string raw, out double value)
+    {
+        var c = _useTextMode ? _fmtCulture : CultureInfo.InvariantCulture;
+        if (double.TryParse(raw, NumberStyles.Any, c, out value)) return true;
+
+        var dec = c.NumberFormat.NumberDecimalSeparator;
+        var sb = new System.Text.StringBuilder(raw.Length);
+        foreach (var ch in raw)
+        {
+            if (char.IsDigit(ch) || ch == '-' || ch == '+') sb.Append(ch);
+            else if (dec.Length == 1 && ch == dec[0]) sb.Append('.');
+        }
+        return double.TryParse(sb.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+    }
+
+    private static TValue? ConvertFromInvariant(string invariant)
+    {
+        var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+        try
+        {
+            var converter = TypeDescriptor.GetConverter(targetType);
+            if (converter.CanConvertFrom(typeof(string)))
+                return (TValue?)converter.ConvertFromInvariantString(invariant);
+        }
+        catch { }
+        return default;
+    }
+}

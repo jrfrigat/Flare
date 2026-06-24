@@ -1,0 +1,43 @@
+@* Custom color: FlareColor.Custom("...") inlines the color tokens - one value
+   styles every variant. Filled text is auto-contrasted. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+        <FlareButton Color="_pink">Filled</FlareButton>
+        <FlareButton Variant="ButtonVariant.Tonal" Color="_pink">Tonal</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Color="_pink">Outlined</FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" Color="_pink">Text</FlareButton>
+        <FlareButton Variant="ButtonVariant.Elevated" Color="_pink">Elevated</FlareButton>
+    </FlareStack>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+        <FlareButton Color="_teal">Teal</FlareButton>
+        <FlareButton Color="_amber">Amber (auto dark text)</FlareButton>
+        <FlareButton Color="_indigo">Indigo (rgb)</FlareButton>
+        <FlareButton Color="FlareColor.Primary">FlareColor.Primary (role)</FlareButton>
+    </FlareStack>
+
+    @* MD3 dynamic color: one seed (e.g. extracted from an album cover) -> a harmonized, contrast-safe
+       tonal set applied across components, auto-adapting to light/dark. *@
+    <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant" Style="margin-top:0.5rem">
+        Dynamic color (FlareColor.Dynamic) - pick a "cover" color:
+    </FlareText>
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareColorPicker @bind-Value="_seed" />
+        <FlareButton Color="_dynamic">Play</FlareButton>
+        <FlareButton Variant="ButtonVariant.Tonal" Color="_dynamic">Tonal</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Color="_dynamic">Outlined</FlareButton>
+        <FlareChip Color="_dynamic">Now playing</FlareChip>
+        <FlareAvatar Color="_dynamic">FL</FlareAvatar>
+        <FlareButton Color="@FlareColor.Dynamic(_seed, DynamicVariant.Vibrant)">Vibrant</FlareButton>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private readonly FlareColor _pink = FlareColor.Custom("#E91E63");
+    private readonly FlareColor _teal = FlareColor.Custom("#00897B");
+    private readonly FlareColor _amber = FlareColor.Custom("#FFC107");
+    private readonly FlareColor _indigo = FlareColor.Custom("rgb(63,81,181)");
+
+    private string _seed = "#6750A4";
+    private FlareColor _dynamic => FlareColor.Dynamic(_seed);
+}

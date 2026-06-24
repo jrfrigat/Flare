@@ -1,0 +1,23 @@
+<div style="display:flex;flex-direction:column;gap:1rem;max-width:32rem;">
+    @* Compact = horizontal layout: media leading, content beside (FluentUI 2 horizontal orientation). *@
+    <FlareCard Variant="CardVariant.Elevated" Compact="true">
+        <FlareCardMedia Src="https://picsum.photos/seed/flare-c1/400/400" Alt="Cover" />
+        <FlareCardHeader Title="Compact card" Subtitle="Compact = true" />
+        <FlareCardContent>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                The media sits on the leading side and the anatomy slots stack beside it.
+            </FlareText>
+        </FlareCardContent>
+    </FlareCard>
+
+    @* The same card vertical (default) for comparison. *@
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareCardMedia Src="https://picsum.photos/seed/flare-c2/600/240" Alt="Cover" Height="8rem" />
+        <FlareCardHeader Title="Vertical card" Subtitle="Compact = false (default)" />
+        <FlareCardContent>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                Media on top, content below - the standard vertical orientation.
+            </FlareText>
+        </FlareCardContent>
+    </FlareCard>
+</div>

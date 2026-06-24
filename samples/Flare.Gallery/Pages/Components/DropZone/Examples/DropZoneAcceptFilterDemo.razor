@@ -1,0 +1,16 @@
+<FlareStack Style="max-width:36rem;">
+    <FlareDropZone Accept="image/*" OnFilesDropped="HandleImages" />
+    @if (_images.Count > 0)
+    {
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+            @_images.Count image(s) selected
+        </FlareText>
+    }
+</FlareStack>
+
+@code {
+    private List<Microsoft.AspNetCore.Components.Forms.IBrowserFile> _images = new();
+
+    private void HandleImages(IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files)
+        => _images = files.ToList();
+}

@@ -1,0 +1,251 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject Flare.Components.Services.ITreeJsService TreeJs
+
+<li class="@BuildCssClass(_dragClass, _draggingClass)" role="treeitem"
+    aria-expanded="@(HasChildren ? _expanded.ToString().ToLowerInvariant() : null)"
+    aria-selected="@Selected.ToString().ToLowerInvariant()"
+    aria-level="@Level"
+    tabindex="@(Selected ? 0 : -1)"
+    draggable="@(Draggable ? "true" : null)"
+    style="@Style"
+    @onkeydown="HandleKeyDownAsync"
+    @ondragstart="HandleDragStartAsync"
+    @ondragover:preventDefault="Draggable"
+    @ondragover="HandleDragOverAsync"
+    @ondragleave="HandleDragLeaveAsync"
+    @ondrop="HandleDropAsync"
+    @ondragend="HandleDragEndAsync"
+    @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Tree.ItemRow @(Selected ? Css.Classes.TreeView.Row : "")"
+         @ref="_rowElement"
+         @onclick="HandleRowClickAsync">
+        @if (HasChildren)
+        {
+            <button type="button"
+                    class="@Css.Classes.TreeView.Toggle"
+                    @onclick="ToggleAsync"
+                    @onclick:stopPropagation="true"
+                    tabindex="-1"
+                    aria-label="@(_expanded ? (FlareStrings.Tree_Collapse) : (FlareStrings.Tree_Expand))">
+                <span class="material-symbols-rounded" aria-hidden="true">@(_expanded ? "expand_more" : "chevron_right")</span>
+            </button>
+        }
+        else
+        {
+            <span class="@Css.Classes.TreeView.TogglePlaceholder"></span>
+        }
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <span class="@Css.Classes.Tree.ItemIcon material-symbols-rounded" aria-hidden="true">@Icon</span>
+        }
+        <span class="@Css.Classes.TreeView.Label">@Label</span>
+        @if (Draggable)
+        {
+            <span class="@Css.Classes.TreeView.DragHandle material-symbols-rounded" aria-hidden="true">drag_indicator</span>
+        }
+    </div>
+    @if (_expanded && HasChildren)
+    {
+        <ul class="@Css.Classes.TreeView.Children" role="group">
+            <CascadingValue Value="@(Level + 1)" Name="Level" IsFixed="false">
+                @ChildContent
+            </CascadingValue>
+        </ul>
+    }
+</li>
+
+@code {
+    /// <summary>Child tree items nested under this item.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Text label displayed for this tree item.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Material Symbols icon name shown beside the label.</summary>
+    [Parameter] public string? Icon { get; set; }
+    /// <summary>Whether this item is currently selected.</summary>
+    [Parameter] public bool Selected { get; set; }
+    /// <summary>Callback raised when the selected state changes.</summary>
+    [Parameter] public EventCallback<bool> SelectedChanged { get; set; }
+    /// <summary>Whether the item starts in an expanded state.</summary>
+    [Parameter] public bool Expanded { get; set; }
+    /// <summary>Callback raised when the item row is clicked.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+    /// <summary>Optional data object associated with this item for drag-and-drop events.</summary>
+    [Parameter] public object? ItemData { get; set; }
+    /// <summary>Current nesting depth of this item; propagated automatically via CascadingValue.
+    /// Level 1 is the top-most level (root items inside FlareTreeView).</summary>
+    [CascadingParameter(Name = "Level")] public int Level { get; set; } = 1;
+    /// <summary>Whether drag-and-drop is enabled on the parent tree.</summary>
+    [CascadingParameter(Name = "TreeDraggable")] private bool Draggable { get; set; }
+    /// <summary>Callback for item drop events.</summary>
+    [CascadingParameter(Name = "TreeOnItemDrop")] private EventCallback<TreeDropEventArgs>? OnItemDrop { get; set; }
+    /// <summary>Callback for item drag start events.</summary>
+    [CascadingParameter(Name = "TreeOnItemDragStart")] private EventCallback<TreeDragEventArgs>? OnItemDragStart { get; set; }
+    /// <summary>Callback for item drag end events.</summary>
+    [CascadingParameter(Name = "TreeOnItemDragEnd")] private EventCallback? OnItemDragEnd { get; set; }
+    /// <summary>Tree-wide coordinator tracking the dragged source item.</summary>
+    [CascadingParameter(Name = "TreeDragCoordinator")] private TreeDragDropCoordinator? DragCoordinator { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.TreeView.Item;
+
+    private bool _expanded;
+    private bool _expandedInitialized;
+    private bool _isDragOver;
+    private bool _dragging;
+    private TreeDropPosition _dropPosition = TreeDropPosition.Inside;
+    private string? _dragClass;
+    private ElementReference _rowElement;
+
+    // The item currently being dragged is dimmed via flare-tree-item--dragging.
+    private string? _draggingClass => _dragging ? Css.Classes.TreeView.Dragging : null;
+
+    private bool HasChildren => ChildContent is not null;
+
+    protected override void OnParametersSet()
+    {
+        if (!_expandedInitialized)
+        {
+            _expanded = Expanded;
+            _expandedInitialized = true;
+        }
+        UpdateDragClass();
+    }
+
+    private void UpdateDragClass()
+    {
+        if (!Draggable)
+        {
+            _dragClass = null;
+            return;
+        }
+
+        _dragClass = _isDragOver ? _dropPosition switch
+        {
+            TreeDropPosition.Before => Css.Classes.TreeView.DropBefore,
+            TreeDropPosition.After => Css.Classes.TreeView.DropAfter,
+            TreeDropPosition.Inside => Css.Classes.TreeView.DropInside,
+            _ => null
+        } : null;
+    }
+
+    private async Task ToggleAsync()
+    {
+        _expanded = !_expanded;
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleRowClickAsync()
+    {
+        if (!Selected)
+            await SelectedChanged.InvokeAsync(true);
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync();
+        if (HasChildren) await ToggleAsync();
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "Enter":
+            case " ":
+                await SelectedChanged.InvokeAsync(!Selected);
+                if (HasChildren) await ToggleAsync();
+                break;
+            case "ArrowRight":
+                if (HasChildren && !_expanded)
+                    await ToggleAsync();
+                break;
+            case "ArrowLeft":
+                if (HasChildren && _expanded)
+                    await ToggleAsync();
+                break;
+        }
+    }
+
+    private async Task HandleDragStartAsync(DragEventArgs e)
+    {
+        if (!Draggable) return;
+        _dragging = true;
+        // Record the source so the eventual drop target reports the real item, not itself.
+        if (DragCoordinator is not null) DragCoordinator.DraggedItem = ItemData ?? this;
+        StateHasChanged();
+        if (OnItemDragStart is not null)
+        {
+            await OnItemDragStart.Value.InvokeAsync(new TreeDragEventArgs
+            {
+                Item = ItemData ?? this
+            });
+        }
+    }
+
+    private async Task HandleDragOverAsync(DragEventArgs e)
+    {
+        if (!Draggable) return;
+        _isDragOver = true;
+
+        // DragEventArgs gives the cursor's clientY but not the row's bounds, so ask JS which
+        // third of the row the cursor is over: top -> Before, bottom -> After, middle -> Inside.
+        var zone = await TreeJs.GetDropZoneAsync(_rowElement, e.ClientY);
+        var newPosition = zone switch
+        {
+            "before" => TreeDropPosition.Before,
+            "after" => TreeDropPosition.After,
+            _ => TreeDropPosition.Inside,
+        };
+
+        // Only re-render when the indicator actually changes (dragover fires continuously).
+        if (newPosition != _dropPosition || _dragClass is null)
+        {
+            _dropPosition = newPosition;
+            UpdateDragClass();
+            StateHasChanged();
+        }
+    }
+
+    private void HandleDragLeaveAsync(DragEventArgs e)
+    {
+        if (!Draggable) return;
+        _isDragOver = false;
+        _dropPosition = TreeDropPosition.Inside;
+        UpdateDragClass();
+        StateHasChanged();
+    }
+
+    private async Task HandleDropAsync(DragEventArgs e)
+    {
+        if (!Draggable) return;
+        _isDragOver = false;
+        // Capture the resolved position before resetting the drag-over state for the next drag.
+        var position = _dropPosition;
+        _dropPosition = TreeDropPosition.Inside;
+        UpdateDragClass();
+
+        if (OnItemDrop is not null)
+        {
+            await OnItemDrop.Value.InvokeAsync(new TreeDropEventArgs
+            {
+                SourceItem = DragCoordinator?.DraggedItem ?? ItemData ?? this,
+                TargetItem = ItemData ?? this,
+                Position = position
+            });
+        }
+        StateHasChanged();
+    }
+
+    private async Task HandleDragEndAsync(DragEventArgs e)
+    {
+        if (!Draggable) return;
+        _isDragOver = false;
+        _dragging = false;
+        _dropPosition = TreeDropPosition.Inside;
+        // Drag finished (dropped or cancelled): clear the shared source.
+        if (DragCoordinator is not null) DragCoordinator.DraggedItem = null;
+        UpdateDragClass();
+
+        if (OnItemDragEnd is not null)
+        {
+            await OnItemDragEnd.Value.InvokeAsync();
+        }
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,37 @@
+/* Reusable state-layer utilities: paint a translucent overlay (::before) over an element on
+   hover / focus-visible / pressed / dragged, using the --flare-state-*-opacity tokens (every
+   theme sets them). Opt-in: add the class for the state(s) you want -- each is self-contained.
+   The disabled helpers dim an element (or a lower-emphasis container). */
+
+.flare-state-layer-hover,
+.flare-state-layer-focus,
+.flare-state-layer-pressed,
+.flare-state-layer-dragged { position: relative; }
+
+.flare-state-layer-hover::before,
+.flare-state-layer-focus::before,
+.flare-state-layer-pressed::before,
+.flare-state-layer-dragged::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: currentcolor;
+    opacity: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-state-layer-hover:hover::before { opacity: var(--flare-state-hover-opacity, 0.08); }
+.flare-state-layer-focus:focus-visible::before { opacity: var(--flare-state-focus-opacity, 0.12); }
+.flare-state-layer-pressed:active::before { opacity: var(--flare-state-pressed-opacity, 0.12); }
+.flare-state-layer-dragged[aria-grabbed="true"]::before { opacity: var(--flare-state-dragged-opacity, 0.16); }
+
+/* Disabled helpers: dim the element (and a lower-emphasis container variant). */
+.flare-state-disabled {
+    opacity: var(--flare-state-disabled-opacity, 0.38);
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.flare-state-disabled-container { opacity: var(--flare-state-disabled-container-opacity, 0.12); }

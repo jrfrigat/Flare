@@ -1,0 +1,35 @@
+/* Marker / hook classes
+ *
+ * These classes are rendered by components as semantic, state or structural hooks but carry no
+ * visual style of their own: the actual appearance (where any) comes from a sibling, parent or
+ * co-class, the class marks the default variant, or it labels a logic-only wrapper. They are
+ * declared here so the CSS <-> CssClasses contract stays complete and consumers/JS have a stable,
+ * documented target. Keep them empty -- add real rules to the component's own stylesheet instead.
+ */
+
+/* State / default-variant markers (the styled counterpart lives beside each). */
+.flare-checkbox--indeterminate {}     /* visual: .flare-checkbox__indicator--indeterminate */
+.flare-radio-group--error {}          /* error is surfaced through the helper text */
+.flare-nav-group--expanded {}         /* expansion is a conditional render, not a CSS toggle */
+.flare-fab-menu--open {}              /* visual: .flare-fab--menu-open / .flare-fab-menu__list--open */
+.flare-layout-drawer--open {}         /* visual: parent .flare-layout--drawer-open */
+.flare-markdown--highlight {}         /* toggles syntax highlighting (highlight.js classes) */
+.flare-splitter--horizontal {}        /* default orientation; --vertical carries the rule */
+.flare-stepper--horizontal {}         /* default orientation; --vertical carries the rule */
+.flare-divider--text-center {}        /* default label position; --text-left/right carry the rule */
+.flare-numericfield__step--down {}    /* shares .flare-numericfield__step; --down is positional */
+
+/* Co-styled element markers (a sibling class carries the visual). */
+.flare-chip__icon {}                  /* visual: .flare-chip__icon-leading / -trailing */
+.flare-icon--svg {}                   /* inline-SVG icon root; sized by the surrounding context */
+.flare-select__option {}              /* visual: .flare-listbox__option */
+.flare-timepicker__display-part {}    /* visual: .flare-timepicker__display-part--active */
+
+/* Structural roots / cells (no visual of their own). */
+.flare-clipboard {}                   /* wrapper around the copy control */
+.flare-media-query {}                 /* logic-only wrapper; renders children by breakpoint */
+.flare-password-input {}              /* wraps the field; styled via the input classes */
+.flare-snackbar-provider-host {}      /* portal host for snackbars */
+.flare-field__control {}              /* form-field control slot */
+.flare-datagrid__filter-th {}         /* empty filter-row header cell (spacer) */
+.flare-datagrid__loading-text {}      /* loading label; inherits text styles */

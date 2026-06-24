@@ -1,0 +1,25 @@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareText Typo="TypographyScale.BodyMedium">
+        A fixed "back to top" button that appears once you scroll the content down past a configurable
+        threshold. Scroll this page down - it appears in the bottom-right corner; click it to glide back up.
+    </FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        Usage: <code>&lt;FlareScrollTop Threshold="200" /&gt;</code> watches the page (window). Pass
+        <code>Selector</code> to watch an app-shell scroll container instead - this Gallery scrolls its
+        <code>&lt;main&gt;</code>, so the demo uses <code>Selector=".flare-layout__main"</code>.
+    </FlareText>
+
+    <FlareDivider />
+
+    @* Filler content so the page is tall enough to scroll in the Gallery shell. *@
+    @for (var i = 1; i <= 24; i++)
+    {
+        var n = i;
+        <FlareText Typo="TypographyScale.BodyMedium">
+            <strong>@n.</strong> Keep scrolling down. The back-to-top button fades in once you pass the
+            200px threshold, and clicking it smoothly returns you to the top of the content.
+        </FlareText>
+    }
+
+    <FlareScrollTop Threshold="200" Selector=".flare-layout__main" />
+</FlareStack>

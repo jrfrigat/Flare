@@ -1,0 +1,36 @@
+@* Marks places labeled ticks under the track at specific values (value -> label).
+   A mark highlights when it falls inside the selected span. Works in range and vertical too. *@
+<FlareStack Gap="FlareSpacing.XLarge" Style="max-width:32rem;">
+    <FlareSlider @bind-Value="_quality" Label="Quality" Min="0" Max="100" Step="25"
+                 Stepper="true" Marks="_qualityMarks" />
+
+    <FlareSlider Range="true" @bind-Value="_priceLow" @bind-ValueEnd="_priceHigh"
+                 Label="Price range" Min="0" Max="1000" Step="50" Format="C0"
+                 Color="FlareColor.Tertiary" Marks="_priceMarks" />
+
+    <FlareStack Row Gap="FlareSpacing.XLarge">
+        <FlareSlider Vertical="true" @bind-Value="_level" Min="0" Max="3" Step="1"
+                     ShowValue="false" Color="FlareColor.Secondary"
+                     Marks="_levelMarks" Style="--flare-slider-length:11rem" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private double _quality = 50;
+    private double _priceLow = 200;
+    private double _priceHigh = 750;
+    private double _level = 2;
+
+    private readonly Dictionary<double, string> _qualityMarks = new()
+    {
+        [0] = "Low", [25] = "Fair", [50] = "Good", [75] = "Great", [100] = "Max",
+    };
+    private readonly Dictionary<double, string> _priceMarks = new()
+    {
+        [0] = "$0", [500] = "$500", [1000] = "$1k",
+    };
+    private readonly Dictionary<double, string> _levelMarks = new()
+    {
+        [0] = "Off", [1] = "Eco", [2] = "Auto", [3] = "Boost",
+    };
+}

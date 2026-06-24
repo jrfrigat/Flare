@@ -1,0 +1,20 @@
+<FlareStack Style="max-width:36rem;">
+    <FlareDropZone Accept=".pdf" Multiple="false" OnFilesDropped="HandlePdf">
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="text-align:center;padding:2rem;">
+            <FlareIcon Size="3rem" Color="FlareColor.Primary" Name="picture_as_pdf" />
+            <FlareText Typo="TypographyScale.BodyLarge">Drop a PDF here</FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">or click to browse</FlareText>
+        </FlareStack>
+    </FlareDropZone>
+    @if (_pdf is not null)
+    {
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">@_pdf</FlareText>
+    }
+</FlareStack>
+
+@code {
+    private string? _pdf;
+
+    private void HandlePdf(IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files)
+        => _pdf = files.FirstOrDefault() is { } f ? $"Selected: {f.Name} ({f.Size / 1024} KB)" : null;
+}

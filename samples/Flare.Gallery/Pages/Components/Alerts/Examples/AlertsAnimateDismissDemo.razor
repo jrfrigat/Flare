@@ -1,0 +1,16 @@
+@if (_showAnimatedAlert)
+{
+    <FlareAlert Severity="AlertSeverity.Info" Title="Animated dismiss" AnimateDismiss="true"
+                Dismissible="true" OnClose="@(() => _showAnimatedAlert = false)">
+        Click × to see the fade-out slide-up animation before this alert disappears.
+    </FlareAlert>
+}
+else
+{
+    <FlareButton OnClick="@(() => _showAnimatedAlert = true)">Reset demo</FlareButton>
+}
+
+@code
+{
+    private bool _showAnimatedAlert = true;
+}

@@ -1,0 +1,164 @@
+/* -- Provider position variants -- */
+.flare-snackbar-provider {
+  position: fixed;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--flare-spacing-4, 0.5rem);
+  z-index: 9000;
+  pointer-events: none;
+  align-items: center;
+}
+
+/* Default: bottom-center */
+.flare-snackbar-provider,
+.flare-snackbar-provider--bottom-center {
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+}
+
+.flare-snackbar-provider--top-center {
+  top: 1.5rem;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+}
+
+.flare-snackbar-provider--bottom-left {
+  bottom: 1.5rem;
+  left: 1.5rem;
+  right: auto;
+  transform: none;
+  align-items: flex-start;
+}
+
+.flare-snackbar-provider--bottom-right {
+  bottom: 1.5rem;
+  right: 1.5rem;
+  left: auto;
+  transform: none;
+  align-items: flex-end;
+}
+
+.flare-snackbar-provider--top-left {
+  top: 1.5rem;
+  bottom: auto;
+  left: 1.5rem;
+  right: auto;
+  transform: none;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.flare-snackbar-provider--top-right {
+  top: 1.5rem;
+  bottom: auto;
+  right: 1.5rem;
+  left: auto;
+  transform: none;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* -- Snackbar item -- */
+.flare-snackbar {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-4, 0.5rem);
+  min-width: 20rem;
+  max-width: 36rem;
+  /* MD3: single-line 48dp, two-line grows to ~68dp via wrapping content */
+  min-height: var(--flare-snackbar-min-height, 3rem);
+  padding: 0.875rem var(--flare-spacing-10, 1.25rem);
+  border-radius: var(--flare-snackbar-radius, var(--flare-shape-extra-small));
+  background: var(--flare-color-inverse-surface);
+  color: var(--flare-color-inverse-on-surface);
+  font-family: var(--flare-typescale-body-medium-font);
+  font-size: var(--flare-typescale-body-medium-size);
+  box-shadow: var(--flare-elevation-3);
+  pointer-events: auto;
+  animation: flare-snackbar-in var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+}
+
+@keyframes flare-snackbar-in {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.flare-snackbar__text {
+  flex: 1;
+}
+
+.flare-snackbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--flare-spacing-2, 0.25rem);
+  flex-shrink: 0;
+}
+
+.flare-snackbar__action-btn {
+  background: transparent;
+  border: none;
+  /* Default suits the inverse-surface snackbar; severity surfaces flip this to currentColor below. */
+  color: var(--_snackbar-action-color, var(--flare-color-inverse-primary));
+  font-size: var(--flare-typescale-label-large-size);
+  font-weight: var(--flare-typescale-label-large-weight);
+  cursor: pointer;
+  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-4, 0.5rem);
+  border-radius: var(--flare-shape-extra-small);
+}
+
+.flare-snackbar__action-btn:hover {
+  background: color-mix(in srgb, var(--_snackbar-action-color, var(--flare-color-inverse-primary)) 12%, transparent);
+}
+
+.flare-snackbar__close-btn {
+  background: transparent;
+  border: none;
+  color: var(--_snackbar-btn-color, var(--flare-color-inverse-on-surface));
+  cursor: pointer;
+  padding: var(--flare-spacing-2, 0.25rem);
+  border-radius: var(--flare-shape-full);
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.flare-snackbar__close-btn:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--_snackbar-btn-color, var(--flare-color-inverse-on-surface)) 12%, transparent);
+}
+
+/* -- Severity variants -- */
+/* Severity surfaces use a colored/tonal background, so the action + close buttons must follow that
+   surface's on-color (currentColor) instead of the inverse-* defaults, which are only legible on the
+   default inverse-surface snackbar (and barely visible on e.g. the light Info / primary-container). */
+.flare-snackbar--error,
+.flare-snackbar--success,
+.flare-snackbar--warning,
+.flare-snackbar--info {
+  --_snackbar-action-color: currentColor;
+  --_snackbar-btn-color: currentColor;
+}
+
+.flare-snackbar--error {
+  background: var(--flare-color-error);
+  color: var(--flare-color-on-error);
+}
+
+.flare-snackbar--success {
+  background: var(--flare-color-secondary-container);
+  color: var(--flare-color-on-secondary-container);
+}
+
+.flare-snackbar--warning {
+  background: var(--flare-color-tertiary-container);
+  color: var(--flare-color-on-tertiary-container);
+}
+
+.flare-snackbar--info {
+  background: var(--flare-color-primary-container);
+  color: var(--flare-color-on-primary-container);
+}

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <PackageId>Flare.Theme.Aero</PackageId>
+    <Description>Aero (Windows 7 Aero / Office 2010 / 1C) theme for the Flare Blazor component library</Description>
+    <PackageTags>blazor;theming;aero;aero;windows7;office2010;1c;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Core\Flare.Core.csproj" />
+  </ItemGroup>
+
+</Project>

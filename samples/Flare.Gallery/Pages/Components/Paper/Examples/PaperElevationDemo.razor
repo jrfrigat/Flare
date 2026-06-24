@@ -1,0 +1,12 @@
+<FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.End">
+    @for (var e = 0; e <= 5; e++)
+    {
+        var elev = e;
+        <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+            <FlarePaper Elevation="@elev" Padding="FlareSpacing.Custom" PaddingValue="1.5rem 2rem">
+                <FlareText Typo="TypographyScale.TitleMedium">@elev</FlareText>
+            </FlarePaper>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Elevation @elev</FlareText>
+        </FlareStack>
+    }
+</FlareStack>

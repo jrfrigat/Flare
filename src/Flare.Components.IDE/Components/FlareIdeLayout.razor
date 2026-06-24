@@ -1,0 +1,108 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+@implements IAsyncDisposable
+
+@* The layout cascades itself so hosted FlareToolPanel components can route their collapse to it.
+   A collapsed (or auto-hidden) region renders only a thin rail and frees its docked space.
+   Docked, expanded regions get a drag-resize divider between them and the document. *@
+<CascadingValue Value="this">
+    <div class="@Css.Classes.Ide.Layout.Root" style="@_rootStyle" @ref="_rootRef" @attributes="AdditionalAttributes">
+        @if (Ribbon is not null)
+        {
+            <div class="@Css.Classes.Ide.Layout.Ribbon">
+                @Ribbon
+            </div>
+        }
+        @if (MenuBar is not null)
+        {
+            <div class="@Css.Classes.Ide.Layout.MenuBar">
+                @MenuBar
+            </div>
+        }
+        <div class="@Css.Classes.Ide.Layout.Body">
+            @if (LeftToolPanel is not null)
+            {
+                <div class="@PanelClass(ToolPanelPosition.Left, Css.Classes.Ide.Layout.PanelLeft)">
+                    @if (LeftCollapsed)
+                    {
+                        @RenderRail(ToolPanelPosition.Left)
+                    }
+                    else
+                    {
+                        <div class="@Css.Classes.Ide.Layout.PanelBody">@LeftToolPanel</div>
+                    }
+                </div>
+            }
+            @if (ShowResizer(ToolPanelPosition.Left))
+            {
+                @RenderResizer(ToolPanelPosition.Left)
+            }
+            <div class="@Css.Classes.Ide.Layout.Main">
+                <div class="@Css.Classes.Ide.Layout.Content">
+                    @ChildContent
+                </div>
+            </div>
+            @if (ShowResizer(ToolPanelPosition.Right))
+            {
+                @RenderResizer(ToolPanelPosition.Right)
+            }
+            @if (RightToolPanel is not null)
+            {
+                <div class="@PanelClass(ToolPanelPosition.Right, Css.Classes.Ide.Layout.PanelRight)">
+                    @if (RightCollapsed)
+                    {
+                        @RenderRail(ToolPanelPosition.Right)
+                    }
+                    else
+                    {
+                        <div class="@Css.Classes.Ide.Layout.PanelBody">@RightToolPanel</div>
+                    }
+                </div>
+            }
+        </div>
+        @if (ShowResizer(ToolPanelPosition.Bottom))
+        {
+            @RenderResizer(ToolPanelPosition.Bottom)
+        }
+        @if (BottomPanel is not null)
+        {
+            <div class="@PanelClass(ToolPanelPosition.Bottom, Css.Classes.Ide.Layout.Bottom)">
+                @if (BottomCollapsed)
+                {
+                    @RenderRail(ToolPanelPosition.Bottom)
+                }
+                else
+                {
+                    <div class="@Css.Classes.Ide.Layout.PanelBody">@BottomPanel</div>
+                }
+            </div>
+        }
+        @if (StatusBar is not null)
+        {
+            <div class="@Css.Classes.Ide.Layout.StatusBar">
+                @StatusBar
+            </div>
+        }
+    </div>
+</CascadingValue>
+
+@code {
+    private RenderFragment RenderResizer(ToolPanelPosition position) =>@<div
+        class="@Css.Classes.Ide.Layout.Resizer @(position == ToolPanelPosition.Bottom ? Css.Classes.Ide.Layout.ResizerRow : Css.Classes.Ide.Layout.ResizerCol)"
+        role="separator"
+        tabindex="0"
+        aria-orientation="@(position == ToolPanelPosition.Bottom ? "horizontal" : "vertical")"
+        aria-label="Resize panel"
+        @onmousedown="@(() => StartResize(position))"
+        @onmousedown:preventDefault="true"
+        @onkeydown="@(e => ResizeStep(position, e))"></div>;
+
+    private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@Css.Classes.Ide.Layout.Rail"
+            @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="Expand panel">
+        <span class="material-symbols-rounded">@RailIcon(position)</span>
+        @if (!string.IsNullOrEmpty(TitleOf(position)))
+        {
+            <span class="@Css.Classes.Ide.Layout.RailTitle">@TitleOf(position)</span>
+        }
+    </button>;
+}

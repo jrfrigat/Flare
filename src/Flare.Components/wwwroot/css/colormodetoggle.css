@@ -1,0 +1,18 @@
+.flare-color-mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--flare-color-on-surface);
+    padding: var(--flare-spacing-4, 0.5rem);
+    border-radius: var(--flare-shape-full);
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-large-size);
+    transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+.flare-color-mode-toggle:hover {
+    background-color: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+}
+.flare-color-mode-toggle__label { pointer-events: none; }

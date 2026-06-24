@@ -1,0 +1,12 @@
+@* StartIcon / EndIcon render Material Symbols flanking the track. *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
+    <FlareSlider @bind-Value="_volume" Label="Volume"
+                 StartIcon="volume_mute" EndIcon="volume_up" />
+    <FlareSlider @bind-Value="_brightness" Label="Brightness" Size="SliderSize.Md"
+                 StartIcon="brightness_low" EndIcon="brightness_high" />
+</FlareStack>
+
+@code {
+    private double _volume = 40;
+    private double _brightness = 70;
+}

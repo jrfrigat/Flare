@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="xml:space" msdata:IgnoreCase="true" msdata:SystemTranslatable="false" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+
+  <!-- DataGrid -->
+  <data name="DataGrid_NoData" xml:space="preserve"><value>Нет данных</value></data>
+  <data name="DataGrid_Loading" xml:space="preserve"><value>Загрузка…</value></data>
+  <data name="DataGrid_Save" xml:space="preserve"><value>Сохранить</value></data>
+  <data name="DataGrid_Cancel" xml:space="preserve"><value>Отмена</value></data>
+  <data name="DataGrid_Edit" xml:space="preserve"><value>Изменить</value></data>
+  <data name="DataGrid_FilterPlaceholder" xml:space="preserve"><value>Фильтр…</value></data>
+  <data name="DataGrid_ConfigureFilters" xml:space="preserve"><value>Настроить фильтрацию</value></data>
+  <data name="DataGrid_ToggleColumns" xml:space="preserve"><value>Показать/скрыть столбцы</value></data>
+  <data name="DataGrid_ExportCsv" xml:space="preserve"><value>Экспорт в CSV</value></data>
+  <data name="DataGrid_ExportJson" xml:space="preserve"><value>Экспорт в JSON</value></data>
+  <data name="DataGrid_ExportTsv" xml:space="preserve"><value>Экспорт в TSV</value></data>
+  <data name="DataGrid_ExportExcel" xml:space="preserve"><value>Экспорт в Excel</value></data>
+  <data name="DataGrid_MoreExports" xml:space="preserve"><value>Другие форматы экспорта</value></data>
+  <data name="DataGrid_FilterValue" xml:space="preserve"><value>Значение</value></data>
+  <data name="DataGrid_FilterValue2" xml:space="preserve"><value>и</value></data>
+  <data name="DataGrid_AddCondition" xml:space="preserve"><value>Добавить условие</value></data>
+  <data name="DataGrid_RemoveCondition" xml:space="preserve"><value>Удалить условие</value></data>
+  <data name="DataGrid_ApplyFilters" xml:space="preserve"><value>Применить</value></data>
+  <data name="DataGrid_ClearFilters" xml:space="preserve"><value>Очистить все</value></data>
+  <data name="DataGrid_Filter" xml:space="preserve"><value>Фильтр</value></data>
+  <data name="DataGrid_ClearFilter" xml:space="preserve"><value>Очистить</value></data>
+  <data name="DataGrid_SelectAll" xml:space="preserve"><value>(Выбрать все)</value></data>
+  <data name="DataGrid_Search" xml:space="preserve"><value>Поиск</value></data>
+  <data name="DataGrid_AnnounceSortAsc" xml:space="preserve"><value>Сортировка по {0}, по возрастанию</value></data>
+  <data name="DataGrid_AnnounceSortDesc" xml:space="preserve"><value>Сортировка по {0}, по убыванию</value></data>
+  <data name="DataGrid_AnnounceSortCleared" xml:space="preserve"><value>Сортировка сброшена</value></data>
+  <data name="DataGrid_AnnounceFiltered" xml:space="preserve"><value>Результатов: {0}</value></data>
+  <data name="DataGrid_AnnouncePage" xml:space="preserve"><value>Страница {0} из {1}</value></data>
+  <data name="DataGrid_FilterPresets" xml:space="preserve"><value>Готовый фильтр</value></data>
+  <data name="DataGrid_NoFilter" xml:space="preserve"><value>(Без фильтра)</value></data>
+  <data name="DataGrid_OpContains" xml:space="preserve"><value>содержит</value></data>
+  <data name="DataGrid_OpEquals" xml:space="preserve"><value>равно</value></data>
+  <data name="DataGrid_OpNotEquals" xml:space="preserve"><value>не равно</value></data>
+  <data name="DataGrid_OpStartsWith" xml:space="preserve"><value>начинается с</value></data>
+  <data name="DataGrid_OpEndsWith" xml:space="preserve"><value>заканчивается на</value></data>
+  <data name="DataGrid_OpGreaterThan" xml:space="preserve"><value>больше</value></data>
+  <data name="DataGrid_OpGreaterOrEqual" xml:space="preserve"><value>больше или равно</value></data>
+  <data name="DataGrid_OpLessThan" xml:space="preserve"><value>меньше</value></data>
+  <data name="DataGrid_OpLessOrEqual" xml:space="preserve"><value>меньше или равно</value></data>
+  <data name="DataGrid_OpBetween" xml:space="preserve"><value>в диапазоне</value></data>
+  <data name="DataGrid_OpNotBetween" xml:space="preserve"><value>вне диапазона</value></data>
+  <data name="DataGrid_OpIn" xml:space="preserve"><value>один из</value></data>
+  <data name="DataGrid_OpNotIn" xml:space="preserve"><value>ни один из</value></data>
+  <data name="DataGrid_OpIsNull" xml:space="preserve"><value>пусто</value></data>
+  <data name="DataGrid_OpIsNotNull" xml:space="preserve"><value>не пусто</value></data>
+  <data name="DataGrid_And" xml:space="preserve"><value>И</value></data>
+  <data name="DataGrid_Or" xml:space="preserve"><value>Или</value></data>
+  <data name="DataGrid_AddGroup" xml:space="preserve"><value>Добавить группу</value></data>
+  <data name="DataGrid_RemoveGroup" xml:space="preserve"><value>Удалить группу</value></data>
+  <data name="DataGrid_ColumnsLabel" xml:space="preserve"><value>Столбцы</value></data>
+  <data name="DataGrid_RowsLabel" xml:space="preserve"><value>Строки:</value></data>
+
+  <!-- Dialog / ConfirmDialog -->
+  <data name="Dialog_Confirm" xml:space="preserve"><value>Подтвердить</value></data>
+  <data name="Dialog_Cancel" xml:space="preserve"><value>Отмена</value></data>
+  <data name="Dialog_Ok" xml:space="preserve"><value>ОК</value></data>
+  <data name="Dialog_Close" xml:space="preserve"><value>Закрыть</value></data>
+
+  <!-- DatePicker / TimePicker -->
+  <data name="Picker_Ok" xml:space="preserve"><value>ОК</value></data>
+  <data name="Picker_Cancel" xml:space="preserve"><value>Отмена</value></data>
+  <data name="Picker_Clear" xml:space="preserve"><value>Очистить</value></data>
+
+  <!-- Alert -->
+  <data name="Alert_Close" xml:space="preserve"><value>Закрыть</value></data>
+
+  <!-- Snackbar -->
+  <data name="Snackbar_Close" xml:space="preserve"><value>Закрыть</value></data>
+
+  <!-- Theme / ColorCustomizer / ColorModeToggle -->
+  <data name="ColorCustomizer_Label" xml:space="preserve"><value>Цвет темы</value></data>
+  <data name="ColorCustomizer_Custom" xml:space="preserve"><value>Своё значение</value></data>
+  <data name="ColorCustomizer_Reset" xml:space="preserve"><value>Сбросить</value></data>
+  <data name="Theme_ToggleDark" xml:space="preserve"><value>Переключить на тёмную тему</value></data>
+  <data name="Theme_ToggleLight" xml:space="preserve"><value>Переключить на светлую тему</value></data>
+
+  <!-- Chip -->
+  <data name="Chip_Delete" xml:space="preserve"><value>Удалить тег</value></data>
+
+  <!-- Calendar -->
+  <data name="Calendar_PrevMonth" xml:space="preserve"><value>Предыдущий месяц</value></data>
+  <data name="Calendar_NextMonth" xml:space="preserve"><value>Следующий месяц</value></data>
+
+  <!-- Stepper -->
+  <data name="Stepper_Back" xml:space="preserve"><value>Назад</value></data>
+  <data name="Stepper_Next" xml:space="preserve"><value>Далее</value></data>
+  <data name="Stepper_Error" xml:space="preserve"><value>Ошибка</value></data>
+
+  <!-- DropZone -->
+  <data name="DropZone_DropFiles" xml:space="preserve"><value>Перетащите файлы сюда</value></data>
+  <data name="DropZone_Browse" xml:space="preserve"><value>Перетащите файлы или нажмите для выбора</value></data>
+  <data name="DropZone_Accepted" xml:space="preserve"><value>Допустимые:</value></data>
+  <data name="DropZone_Label" xml:space="preserve"><value>Зона перетаскивания файлов</value></data>
+
+  <!-- Misc accessibility -->
+  <data name="Aria_Loading" xml:space="preserve"><value>Загрузка</value></data>
+  <data name="Aria_CloseTab" xml:space="preserve"><value>Закрыть вкладку</value></data>
+  <data name="Tabs_ScrollBack" xml:space="preserve"><value>Прокрутить вкладки назад</value></data>
+  <data name="Tabs_ScrollForward" xml:space="preserve"><value>Прокрутить вкладки вперёд</value></data>
+  <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Переключить меню</value></data>
+  <data name="Aria_TogglePassword" xml:space="preserve"><value>Показать/скрыть пароль</value></data>
+
+  <!-- Input -->
+  <data name="Input_Clear" xml:space="preserve"><value>Очистить</value></data>
+
+  <!-- NumericField -->
+  <data name="NumericField_Increment" xml:space="preserve"><value>Увеличить</value></data>
+  <data name="NumericField_Decrement" xml:space="preserve"><value>Уменьшить</value></data>
+
+  <!-- Tree -->
+  <data name="Tree_Expand" xml:space="preserve"><value>Развернуть</value></data>
+  <data name="Tree_Collapse" xml:space="preserve"><value>Свернуть</value></data>
+
+  <!-- Navigation -->
+  <data name="Nav_Navigation" xml:space="preserve"><value>Навигация</value></data>
+  <data name="Nav_Breadcrumb" xml:space="preserve"><value>Хлебные крошки</value></data>
+  <data name="Breadcrumb_Expand" xml:space="preserve"><value>Показать скрытые крошки</value></data>
+  <data name="Nav_Pagination" xml:space="preserve"><value>Пагинация</value></data>
+  <data name="Nav_BackToTop" xml:space="preserve"><value>Наверх</value></data>
+  <data name="Pagination_First" xml:space="preserve"><value>Первая страница</value></data>
+  <data name="Pagination_Prev" xml:space="preserve"><value>Предыдущая страница</value></data>
+  <data name="Pagination_Next" xml:space="preserve"><value>Следующая страница</value></data>
+  <data name="Pagination_Last" xml:space="preserve"><value>Последняя страница</value></data>
+  <data name="Pagination_Page" xml:space="preserve"><value>Страница {0}</value></data>
+  <data name="Pagination_Range" xml:space="preserve"><value>{0}–{1} из {2}</value></data>
+  <data name="SpeedDial_Actions" xml:space="preserve"><value>Действия</value></data>
+
+  <!-- Avatar / EmptyState -->
+  <data name="Avatar_OverflowMore" xml:space="preserve"><value>ещё {0}</value></data>
+  <data name="EmptyState_Label" xml:space="preserve"><value>Нет данных</value></data>
+
+  <!-- Rating -->
+  <data name="Rating_Group" xml:space="preserve"><value>Рейтинг</value></data>
+  <data name="Rating_Star" xml:space="preserve"><value>{0} из {1}</value></data>
+
+  <!-- Clipboard / Shortcuts -->
+  <data name="Clipboard_Copy" xml:space="preserve"><value>Копировать в буфер</value></data>
+  <data name="Clipboard_Copied" xml:space="preserve"><value>Скопировано!</value></data>
+  <data name="Shortcuts_Title" xml:space="preserve"><value>Горячие клавиши</value></data>
+
+  <!-- Stepper (extended) -->
+  <data name="Stepper_ProgressLabel" xml:space="preserve"><value>Шаги прогресса</value></data>
+  <data name="Stepper_Completed" xml:space="preserve"><value>Выполнено</value></data>
+  <data name="Stepper_Step" xml:space="preserve"><value>Шаг {0}</value></data>
+
+  <!-- Carousel -->
+  <data name="Carousel_Label" xml:space="preserve"><value>Карусель</value></data>
+  <data name="Carousel_Prev" xml:space="preserve"><value>Предыдущий слайд</value></data>
+  <data name="Carousel_Next" xml:space="preserve"><value>Следующий слайд</value></data>
+  <data name="Carousel_GoToSlide" xml:space="preserve"><value>Перейти к слайду {0}</value></data>
+
+  <!-- FileUpload / RichTextEditor -->
+  <data name="FileUpload_DropText" xml:space="preserve"><value>Перетащите файлы или нажмите для выбора</value></data>
+  <data name="FileUpload_Accepted" xml:space="preserve"><value>Допустимые форматы:</value></data>
+  <data name="RTE_Label" xml:space="preserve"><value>Редактор текста</value></data>
+  <data name="RTE_Placeholder" xml:space="preserve"><value>Начните вводить текст…</value></data>
+
+  <!-- MultiSelect -->
+  <data name="MultiSelect_Search" xml:space="preserve"><value>Поиск…</value></data>
+  <data name="MultiSelect_SelectAll" xml:space="preserve"><value>Выбрать все</value></data>
+
+  <!-- DatePicker / DateTimePicker / DateRangePicker -->
+  <data name="DatePicker_Today" xml:space="preserve"><value>Сегодня</value></data>
+  <data name="DateTimePicker_DateTab" xml:space="preserve"><value>Дата</value></data>
+  <data name="DateTimePicker_TimeTab" xml:space="preserve"><value>Время</value></data>
+  <data name="DateRangePicker_StartLabel" xml:space="preserve"><value>Начальная дата</value></data>
+  <data name="DateRangePicker_EndLabel" xml:space="preserve"><value>Конечная дата</value></data>
+  <data name="DateRangePicker_Today" xml:space="preserve"><value>Сегодня</value></data>
+  <data name="DateRangePicker_Yesterday" xml:space="preserve"><value>Вчера</value></data>
+  <data name="DateRangePicker_Last7Days" xml:space="preserve"><value>Последние 7 дней</value></data>
+  <data name="DateRangePicker_Last30Days" xml:space="preserve"><value>Последние 30 дней</value></data>
+  <data name="DateRangePicker_ThisMonth" xml:space="preserve"><value>Текущий месяц</value></data>
+  <data name="DateRangePicker_LastMonth" xml:space="preserve"><value>Прошлый месяц</value></data>
+  <data name="DateRangePicker_ThisYear" xml:space="preserve"><value>Текущий год</value></data>
+
+  <!-- ColorPicker -->
+  <data name="ColorPicker_Label" xml:space="preserve"><value>Выбор цвета</value></data>
+  <data name="ColorPicker_EyeDropperTitle" xml:space="preserve"><value>Выбрать цвет с экрана</value></data>
+  <data name="ColorPicker_EyeDropperLabel" xml:space="preserve"><value>Выбрать цвет</value></data>
+
+  <!-- OtpInput -->
+  <data name="OtpInput_GroupLabel" xml:space="preserve"><value>Одноразовый пароль</value></data>
+  <data name="OtpInput_CellLabel" xml:space="preserve"><value>Цифра {0} из {1}</value></data>
+
+  <!-- TagInput -->
+  <data name="TagInput_Remove" xml:space="preserve"><value>Удалить</value></data>
+
+  <!-- FormBuilder -->
+  <data name="FormBuilder_Submit" xml:space="preserve"><value>Отправить</value></data>
+  <data name="FormBuilder_Reset" xml:space="preserve"><value>Сбросить</value></data>
+
+  <!-- OnThisPage -->
+  <data name="OnThisPage_Title" xml:space="preserve"><value>На этой странице</value></data>
+
+  <!-- Transfer -->
+  <data name="Transfer_MoveToTarget" xml:space="preserve"><value>Переместить выбранные</value></data>
+  <data name="Transfer_MoveAllToTarget" xml:space="preserve"><value>Переместить все</value></data>
+  <data name="Transfer_MoveToSource" xml:space="preserve"><value>Вернуть выбранные</value></data>
+  <data name="Transfer_MoveAllToSource" xml:space="preserve"><value>Вернуть все</value></data>
+
+</root>

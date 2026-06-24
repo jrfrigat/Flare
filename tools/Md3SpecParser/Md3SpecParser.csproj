@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Flare.Tools.Md3SpecParser</RootNamespace>
+    <AssemblyName>md3spec</AssemblyName>
+    <!-- Auxiliary tool: never published as a NuGet package. -->
+    <IsPackable>false</IsPackable>
+    <!-- Avoid the repo-wide docfx requirement for an internal tool. -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- This internal tool needs no packaging/versioning helpers; drop the
+         repo-wide refs so it restores with zero external NuGet dependencies. -->
+    <PackageReference Remove="MinVer" />
+    <PackageReference Remove="Microsoft.SourceLink.GitHub" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Sample config copied next to the binary for convenience. -->
+    <None Update="spec-config.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

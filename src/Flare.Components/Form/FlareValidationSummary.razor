@@ -1,0 +1,41 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using Microsoft.AspNetCore.Components.Forms
+
+@if (_messages.Any())
+{
+    <div class="@BuildCssClass()" role="alert" style="@Style" @attributes="AdditionalAttributes">
+        <ul class="@Css.Classes.Validation.SummaryList">
+            @foreach (var msg in _messages)
+            {
+                <li class="@Css.Classes.Validation.SummaryItem">@msg</li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Validation.Summary;
+
+    private IEnumerable<string> _messages =>
+        EditContext?.GetValidationMessages() ?? [];
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        await base.DisposeAsync();
+    }
+}

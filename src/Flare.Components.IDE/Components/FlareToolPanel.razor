@@ -1,0 +1,32 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+<div class="@Css.Classes.Ide.ToolPanel.Root @BuildCssClass(_positionClass, _collapsedClass)"
+     style="@_rootStyle"
+     @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Ide.ToolPanel.Header">
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <span class="@Css.Classes.Ide.ToolPanel.Title">@Title</span>
+        }
+        @if (ShowToolbar)
+        {
+            <div class="@Css.Classes.Ide.ToolPanel.Toolbar">
+                @ToolbarContent
+            </div>
+        }
+        <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
+                     OnClick="@ToggleCollapsed"
+                     AriaLabel="@(Collapsed ? "Expand" : "Collapse")">
+            <span class="material-symbols-rounded" style="font-size:1rem;">
+                @(Collapsed ? "chevron_right" : "expand_less")
+            </span>
+        </FlareButton>
+    </div>
+    @if (!Collapsed)
+    {
+        <div class="@Css.Classes.Ide.ToolPanel.Content">
+            @ChildContent
+        </div>
+    }
+</div>

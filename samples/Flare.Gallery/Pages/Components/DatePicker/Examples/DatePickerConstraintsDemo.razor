@@ -1,0 +1,29 @@
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Style="max-width:36rem;">
+    <FlareDatePicker @bind-Value="_date" Label="This month only"
+                     Min="_min" Max="_max"
+                     HelperText="Min/Max restrict the selectable range"
+                     TodayText="Today" ClearText="Clear"
+                     ShowTodayButton="true" ShowClearButton="true"
+                     Style="flex:1;min-width:14rem;" />
+    <FlareDatePicker @bind-Value="_weekday" Label="Weekdays only (no weekends)"
+                     IsDateDisabled="@(d => d.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)"
+                     HelperText="IsDateDisabled greys out Sat/Sun"
+                     Style="flex:1;min-width:14rem;" />
+    <FlareDatePicker @bind-Value="_localized" Label="German culture"
+                     Culture="_deCulture"
+                     HelperText="Localized day/month names, Monday first"
+                     Style="flex:1;min-width:14rem;" />
+    <FlareDatePicker @bind-Value="_required" Label="Required (error until set)"
+                     ErrorText="@(_required is null ? "Date is required" : null)" HasError="_required is null"
+                     Style="flex:1;min-width:14rem;" />
+</FlareStack>
+
+@code {
+    private DateOnly? _date;
+    private DateOnly? _weekday;
+    private DateOnly? _localized;
+    private DateOnly? _required;
+    private readonly System.Globalization.CultureInfo _deCulture = System.Globalization.CultureInfo.GetCultureInfo("de-DE");
+    private readonly DateOnly _min = DateOnly.FromDateTime(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1));
+    private readonly DateOnly _max = DateOnly.FromDateTime(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1));
+}

@@ -1,0 +1,38 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareStack Gap="FlareSpacing.Large">
+    @* Default: one button per exporter. Inside ToolbarContent the export resolves the grid
+       automatically (no TItem or Grid needed) and applies each column's type/format-aware text. *@
+    <FlareDataGrid Items="@DatagridData._people" PageSize="5">
+        <ToolbarContent>
+            <DataGridExport FileName="people" Exporters="@_exporters" />
+        </ToolbarContent>
+        <Columns>
+            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+            <FlareColumn Title="City" Field="@(p => p.City)" />
+            <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" Format="N0" />
+        </Columns>
+    </FlareDataGrid>
+
+    @* Split=true: the first exporter (CSV) is the primary button; the rest open in the dropdown. *@
+    <FlareDataGrid Items="@DatagridData._people" PageSize="5">
+        <ToolbarContent>
+            <DataGridExport FileName="people" Split="true" Exporters="@_exporters" />
+        </ToolbarContent>
+        <Columns>
+            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+            <FlareColumn Title="City" Field="@(p => p.City)" />
+            <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" Format="N0" />
+        </Columns>
+    </FlareDataGrid>
+</FlareStack>
+
+@code {
+    private readonly IReadOnlyList<IDataGridExporter<Person>> _exporters =
+    [
+        DataGridExporters.Csv<Person>(), DataGridExporters.Json<Person>(),
+        DataGridExporters.Excel<Person>(), DataGridExporters.Pdf<Person>(),
+    ];
+}

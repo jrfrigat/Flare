@@ -1,0 +1,30 @@
+.flare-link {
+    display: inline;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    /* Role class sets --fc-main; custom inlines it; FlareColor.Default -> inherit. */
+    color: var(--fc-main, inherit);
+    transition: color var(--flare-motion-duration-short1, 100ms),
+                opacity var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-link--underline-always { text-decoration: underline; }
+.flare-link--underline-hover:hover { text-decoration: underline; }
+.flare-link--underline-none { text-decoration: none; }
+
+.flare-link:hover:not(.flare-link--disabled) { opacity: 0.8; }
+
+.flare-link--disabled {
+    opacity: var(--flare-state-disabled-opacity, 0.38);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.flare-link:focus-visible {
+    outline: 2px solid var(--flare-color-primary);
+    outline-offset: 2px;
+    border-radius: var(--flare-shape-extra-small);
+}

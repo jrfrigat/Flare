@@ -1,0 +1,142 @@
+@namespace Flare.Components
+@typeparam TItem
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes"
+     role="region" aria-roledescription="carousel" aria-label="@(FlareStrings.Carousel_Label)"
+     tabindex="0"
+     @onkeydown="OnKeyDown"
+     @onmouseenter="PauseAutoPlay"
+     @onmouseleave="ResumeAutoPlay">
+    <div class="flare-carousel__viewport"
+         @onpointerdown="OnPointerDown"
+         @onpointerup="OnPointerUp"
+         @ontouchstart="OnTouchStart"
+         @ontouchend="OnTouchEnd">
+        <div class="flare-carousel__track" style="transform:translateX(-@(_current * 100)%)">
+            @if (Items != null && ItemTemplate != null)
+            {
+                @foreach (var item in Items)
+                {
+                    <div class="flare-carousel__slide">@ItemTemplate(item)</div>
+                }
+            }
+        </div>
+    </div>
+
+    @if (ShowArrows && _count > 1)
+    {
+        <button class="flare-carousel__arrow flare-carousel__arrow--prev"
+                @onclick="Prev"
+                aria-label="@(FlareStrings.Carousel_Prev)"
+                disabled="@(!Loop && _current == 0)">
+            <span class="material-symbols-rounded">chevron_left</span>
+        </button>
+        <button class="flare-carousel__arrow flare-carousel__arrow--next"
+                @onclick="Next"
+                aria-label="@(FlareStrings.Carousel_Next)"
+                disabled="@(!Loop && _current >= _count - 1)">
+            <span class="material-symbols-rounded">chevron_right</span>
+        </button>
+    }
+
+    @if (ShowDots && _count > 1)
+    {
+        <div class="flare-carousel__dots" role="tablist">
+            @for (int i = 0; i < _count; i++)
+            {
+                var idx = i;
+                <button class="flare-carousel__dot @(_current == idx ? "flare-carousel__dot--active" : "")"
+                        @onclick="@(() => GoTo(idx))"
+                        role="tab"
+                        aria-selected="@(_current == idx)"
+                        aria-label="@(string.Format(FlareStrings.Carousel_GoToSlide, idx + 1))">
+                </button>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Data items to render as carousel slides.</summary>
+    [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
+    /// <summary>Template used to render each slide's content.</summary>
+    [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+    /// <summary>Automatically advances slides on a timer.</summary>
+    [Parameter] public bool AutoPlay { get; set; }
+    /// <summary>Milliseconds between automatic slide advances.</summary>
+    [Parameter] public int AutoPlayIntervalMs { get; set; } = 4000;
+    /// <summary>Shows previous and next navigation arrow buttons.</summary>
+    [Parameter] public bool ShowArrows { get; set; } = true;
+    /// <summary>Shows dot indicators for direct slide navigation.</summary>
+    [Parameter] public bool ShowDots { get; set; } = true;
+    /// <summary>Wraps from the last slide back to the first.</summary>
+    [Parameter] public bool Loop { get; set; } = true;
+
+    protected override string ComponentCssClass => "flare-carousel";
+
+    private int _current;
+    private int _count => Items?.Count ?? 0;
+    private System.Threading.Timer? _timer;
+    private bool _paused;
+    private double _dragStartX;
+
+    protected override void OnParametersSet()
+    {
+        if (AutoPlay && _timer == null && _count > 1)
+            _timer = new System.Threading.Timer(_ => InvokeAsync(() =>
+            {
+                if (_paused) return;
+                Next();
+                StateHasChanged();
+            }), null, AutoPlayIntervalMs, AutoPlayIntervalMs);
+        else if (!AutoPlay && _timer != null)
+        {
+            _timer.Dispose();
+            _timer = null;
+        }
+    }
+
+    private void Prev() => _current = Loop ? (_current - 1 + _count) % _count : Math.Max(0, _current - 1);
+    private void Next() => _current = Loop ? (_current + 1) % _count : Math.Min(_count - 1, _current + 1);
+    private void GoTo(int idx) => _current = idx;
+
+    private void PauseAutoPlay() => _paused = true;
+    private void ResumeAutoPlay() => _paused = false;
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "ArrowLeft") Prev();
+        else if (e.Key == "ArrowRight") Next();
+    }
+
+    // Unified pointer (mouse/pen/touch) drag-swipe.
+    private void OnPointerDown(PointerEventArgs e) => _dragStartX = e.ClientX;
+
+    private void OnPointerUp(PointerEventArgs e) => ApplySwipe(_dragStartX - e.ClientX);
+
+    // Fallback for browsers firing touch events without pointer events.
+    private void OnTouchStart(TouchEventArgs e)
+    {
+        if (e.Touches.Length > 0) _dragStartX = e.Touches[0].ClientX;
+    }
+
+    private void OnTouchEnd(TouchEventArgs e)
+    {
+        if (e.ChangedTouches.Length > 0)
+            ApplySwipe(_dragStartX - e.ChangedTouches[0].ClientX);
+    }
+
+    private void ApplySwipe(double delta)
+    {
+        if (Math.Abs(delta) <= 40) return;
+        if (delta > 0) Next();
+        else Prev();
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        _timer?.Dispose();
+        await base.DisposeAsync();
+    }
+}

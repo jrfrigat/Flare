@@ -1,0 +1,12 @@
+@page "/components/snackbar"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Snackbar_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareSnackbarProvider">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Snackbar_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Snackbar_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Snackbar_Severity" DemoType="typeof(Examples.SnackbarSeverityDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Snackbar_Action" DemoType="typeof(Examples.SnackbarActionDemo)" />

@@ -1,0 +1,166 @@
+.flare-card {
+    /* Per-card knobs (overridden by size modifiers). Defaults map to the theme's CardTokens. */
+    --_card-radius: var(--flare-card-radius, var(--flare-shape-medium));
+    --_card-actions-gap: var(--flare-card-actions-gap, 0.5rem);
+
+    position: relative;
+    border-radius: var(--_card-radius);
+    overflow: hidden;
+    color: var(--flare-color-on-surface);
+    transition:
+        box-shadow var(--flare-card-transition-duration, var(--flare-motion-duration-short2))
+                   var(--flare-card-transition-easing, var(--flare-motion-easing-standard)),
+        border-color var(--flare-card-transition-duration, var(--flare-motion-duration-short2))
+                   var(--flare-card-transition-easing, var(--flare-motion-easing-standard));
+}
+
+/* Inner padding for raw-content cards (those NOT composed from the structured sub-parts). The
+   four directional tokens default to 0 so existing layouts are unchanged; a theme sets them via
+   CardTokens.Padding*. Composed cards keep managing their own padding through __media/__header/
+   __content/__footer/__actions, so the :has() guard skips them to avoid double padding. */
+.flare-card:not(:has(> .flare-card__media, > .flare-card__header, > .flare-card__content, > .flare-card__footer, > .flare-card__actions)) {
+    padding:
+        var(--flare-card-padding-top, 0)
+        var(--flare-card-padding-right, 0)
+        var(--flare-card-padding-bottom, 0)
+        var(--flare-card-padding-left, 0);
+}
+
+/* ----- Variants (theme-independent; each theme reskins via CardTokens) ----- */
+.flare-card--elevated {
+    background-color: var(--flare-card-elevated-bg, var(--flare-color-surface-container-low));
+    box-shadow: var(--flare-card-elevation, var(--flare-elevation-1));
+    border: none;
+}
+
+.flare-card--filled {
+    background-color: var(--flare-card-filled-bg, var(--flare-color-surface-container-highest));
+    box-shadow: var(--flare-elevation-0);
+    border: var(--flare-card-filled-border, none);
+}
+
+.flare-card--outlined {
+    background-color: var(--flare-card-outlined-bg, var(--flare-color-surface));
+    border: var(--flare-card-outlined-border, 1px solid var(--flare-color-outline-variant));
+    box-shadow: var(--flare-elevation-0);
+}
+
+.flare-card--tonal {
+    background-color: var(--flare-card-tonal-bg, var(--flare-color-secondary-container));
+    color: var(--flare-card-tonal-color, var(--flare-color-on-secondary-container));
+    box-shadow: var(--flare-elevation-0);
+    border: none;
+}
+
+.flare-card--text {
+    background-color: transparent;
+    color: var(--flare-card-text-color, var(--flare-color-on-surface));
+    box-shadow: var(--flare-elevation-0);
+    border: none;
+}
+
+/* ----- Size: corner radius + actions gap (from the theme shape scale) ----- */
+.flare-card--sm {
+    --_card-radius: var(--flare-shape-small);
+    --_card-actions-gap: var(--flare-spacing-2, 0.25rem);
+}
+.flare-card--md {
+    --_card-radius: var(--flare-card-radius, var(--flare-shape-medium));
+    --_card-actions-gap: var(--flare-card-actions-gap, 0.5rem);
+}
+.flare-card--lg {
+    --_card-radius: var(--flare-shape-large);
+    --_card-actions-gap: var(--flare-spacing-6, 0.75rem);
+}
+
+/* ----- Interactive (clickable / link / selectable): pointer, state layer, focus ring ----- */
+.flare-card--clickable {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    -webkit-tap-highlight-color: transparent;
+}
+.flare-card--clickable:hover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: color-mix(in srgb, var(--flare-card-state-layer, var(--flare-color-on-surface)) 8%, transparent);
+}
+.flare-card--clickable:focus-visible {
+    outline: 3px solid var(--flare-color-secondary);
+    outline-offset: 2px;
+}
+/* Only interactive elevated cards lift on hover (static cards must not move). */
+.flare-card--elevated.flare-card--clickable:hover {
+    box-shadow: var(--flare-card-elevation-hover, var(--flare-elevation-2));
+}
+
+/* ----- Selectable: accent ring on selection (no explicit checkbox) ----- */
+.flare-card--selectable { cursor: pointer; }
+.flare-card--selected {
+    border: var(--flare-card-selected-border, 2px solid var(--flare-color-primary));
+    background-color: var(--flare-card-selected-bg, color-mix(in srgb, var(--flare-color-primary) 8%, transparent));
+}
+
+/* ----- Compact: horizontal layout (media leading, content beside) ----- */
+.flare-card--compact:has(> .flare-card__media) {
+    display: grid;
+    grid-template-columns: minmax(0, 12rem) 1fr;
+    align-items: stretch;
+}
+.flare-card--compact:has(> .flare-card__media) > .flare-card__media {
+    grid-column: 1;
+    grid-row: 1 / 999;
+    width: 100%;
+    height: 100%;
+}
+.flare-card--compact:has(> .flare-card__media) > :not(.flare-card__media) {
+    grid-column: 2;
+}
+
+/* ----- Anatomy slots ----- */
+.flare-card__media {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--flare-card-media-radius, 0);
+}
+.flare-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-8, 1rem);
+    padding: var(--flare-card-header-padding, 16px 16px 0 16px);
+}
+.flare-card__header-avatar { display: inline-flex; flex-shrink: 0; }
+.flare-card__header-text { flex: 1; min-width: 0; }
+.flare-card__header-action { display: inline-flex; flex-shrink: 0; }
+.flare-card__title {
+    font-family: var(--flare-card-title-font-family, var(--flare-typescale-title-medium-font));
+    font-size: var(--flare-card-title-font-size, var(--flare-typescale-title-medium-size, 1rem));
+    font-weight: var(--flare-typescale-title-medium-weight, 500);
+    color: var(--flare-card-title-color, var(--flare-color-on-surface));
+}
+.flare-card__subtitle {
+    font-family: var(--flare-card-subtitle-font-family, var(--flare-typescale-body-medium-font));
+    font-size: var(--flare-card-subtitle-font-size, var(--flare-typescale-body-medium-size, 0.875rem));
+    color: var(--flare-card-subtitle-color, var(--flare-color-on-surface-variant));
+}
+.flare-card__content { padding: var(--flare-card-content-padding, 16px); }
+.flare-card__header + .flare-card__content { padding-top: 0; }
+.flare-card__footer {
+    padding: var(--flare-card-footer-padding, 8px 16px 16px 16px);
+    color: var(--flare-color-on-surface-variant);
+}
+.flare-card__content + .flare-card__footer { padding-top: 0; }
+.flare-card__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--_card-actions-gap);
+    padding: var(--flare-card-actions-padding, 8px 16px 16px 16px);
+}
+.flare-card__actions--end { justify-content: flex-end; }
+.flare-card__actions--between { justify-content: space-between; }
+.flare-card__content + .flare-card__actions,
+.flare-card__footer + .flare-card__actions { padding-top: 0; }

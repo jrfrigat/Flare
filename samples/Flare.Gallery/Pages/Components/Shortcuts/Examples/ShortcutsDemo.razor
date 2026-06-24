@@ -1,0 +1,26 @@
+<FlareShortcuts>
+    <FlareShortcutEntry Keys="ctrl+s" Description="Save" OnActivated="OnSave" />
+    <FlareShortcutEntry Keys="ctrl+k" Description="Open search" OnActivated="OnSearch" />
+</FlareShortcuts>
+
+<FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+    <FlareText Typo="TypographyScale.LabelMedium">Press a shortcut to activate it:</FlareText>
+    <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
+        <kbd style="background:var(--flare-color-surface-container-high);padding:0.2rem 0.5rem;border-radius:4px;font-family:monospace;">Ctrl+S</kbd>
+        <FlareText Typo="TypographyScale.BodySmall">Save</FlareText>
+    </FlareStack>
+    <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
+        <kbd style="background:var(--flare-color-surface-container-high);padding:0.2rem 0.5rem;border-radius:4px;font-family:monospace;">Ctrl+K</kbd>
+        <FlareText Typo="TypographyScale.BodySmall">Open search</FlareText>
+    </FlareStack>
+    @if (!string.IsNullOrEmpty(_fired))
+    {
+        <FlareAlert Severity="AlertSeverity.Info" Style="margin-top:0.25rem;">Fired: @_fired</FlareAlert>
+    }
+</FlareStack>
+
+@code {
+    private string _fired = "";
+    private void OnSave() { _fired = "Ctrl+S (Save)"; StateHasChanged(); }
+    private void OnSearch() { _fired = "Ctrl+K (Open search)"; StateHasChanged(); }
+}

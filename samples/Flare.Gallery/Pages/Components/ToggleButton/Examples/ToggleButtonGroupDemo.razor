@@ -1,0 +1,21 @@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareToggleGroup TValue="string" @bind-Value="_alignment">
+        <FlareToggleButton Value="@("left")" AriaLabel="Align left">
+            <OffIcon><FlareIcon Name="format_align_left" /></OffIcon>
+        </FlareToggleButton>
+        <FlareToggleButton Value="@("center")" AriaLabel="Align center">
+            <OffIcon><FlareIcon Name="format_align_center" /></OffIcon>
+        </FlareToggleButton>
+        <FlareToggleButton Value="@("right")" AriaLabel="Align right">
+            <OffIcon><FlareIcon Name="format_align_right" /></OffIcon>
+        </FlareToggleButton>
+        <FlareToggleButton Value="@("justify")" AriaLabel="Justify">
+            <OffIcon><FlareIcon Name="format_align_justify" /></OffIcon>
+        </FlareToggleButton>
+    </FlareToggleGroup>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Alignment: @_alignment</FlareText>
+</FlareStack>
+
+@code {
+    private string? _alignment;
+}

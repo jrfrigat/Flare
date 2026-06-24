@@ -1,0 +1,22 @@
+services:
+  flare-gallery:
+    build:
+      context: .
+      dockerfile: samples/Flare.Gallery/Dockerfile
+    image: flare-gallery:latest
+    restart: unless-stopped
+    networks:
+      - proxy_network
+
+  flare-legacy:
+    build:
+      context: .
+      dockerfile: samples/Flare.Legacy/Dockerfile
+    image: flare-legacy:latest
+    restart: unless-stopped
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    external: true

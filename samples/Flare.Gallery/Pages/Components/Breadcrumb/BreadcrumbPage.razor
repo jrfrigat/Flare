@@ -1,0 +1,14 @@
+@page "/components/breadcrumb"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Breadcrumb_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareBreadcrumb">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Breadcrumb_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Breadcrumb_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Breadcrumb_Breadcrumb" DemoType="typeof(Examples.BreadcrumbDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Breadcrumb_Separator" DemoType="typeof(Examples.BreadcrumbSeparatorDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Breadcrumb_Custom" DemoType="typeof(Examples.BreadcrumbCustomDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Breadcrumb_Collapse" DemoType="typeof(Examples.BreadcrumbCollapseDemo)" />

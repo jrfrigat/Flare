@@ -1,0 +1,632 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IFlareDataGridHost
+@typeparam TItem
+@attribute [CascadingTypeParameter(nameof(TItem))]
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.Rendering
+@inject IJSRuntime JS
+@inject IFlareDownload Download
+@inject IFlareClipboard Clipboard
+
+@* Rebuild the projected column set once per render if a structural change marked it dirty. *@
+@{ EnsureColumnsBuilt(); }
+<div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered)" style="@Style" @attributes="AdditionalAttributes">
+    @* Screen-reader announcements for sort/filter/page changes. *@
+    <div role="status" aria-live="polite" class="flare-visually-hidden">@_ariaAnnouncement</div>
+    <!-- Column descriptors render nothing visually -->
+    <CascadingValue Value="@this" IsFixed="true">
+        @Columns
+        @Grouping
+    </CascadingValue>
+
+    @if (ToolbarContent != null || ShowColumnPicker || _batchEditingItems.Count > 0)
+    {
+        <div class="@Css.Classes.DataGrid.Toolbar">
+            @* Cascade the grid so toolbar children (quick filter, presets, export, filter builder,
+               column picker) resolve it automatically - no explicit Grid="..." needed in-grid.
+               Not IsFixed: the subtree must re-render with the grid so toolbar children pick up
+               columns/state built after their first render. *@
+            <CascadingValue Value="@this">
+                @ToolbarContent
+            </CascadingValue>
+            @if (ShowColumnPicker)
+            {
+                <DataGridColumnPicker TItem="TItem" Label="@ColumnsButtonLabel" Grid="@this" />
+            }
+            @if (_batchEditingItems.Count > 0)
+            {
+                <div class="@Css.Classes.DataGrid.ToolbarEnd">
+                    <span class="@Css.Classes.DataGrid.BatchCount">
+                        @_batchEditingItems.Count @(FlareStrings.DataGrid_RowsLabel)
+                    </span>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="CancelBatchAsync">
+                        @FlareStrings.DataGrid_Cancel
+                    </FlareButton>
+                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="SaveBatchAsync">
+                        @FlareStrings.DataGrid_Save
+                    </FlareButton>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="@_wrapperClass" style="@_wrapperStyle" @ref="_wrapperRef">
+        @if (_loading && LoadingIndicator == DataGridLoadingIndicator.ProgressLine)
+        {
+            <div class="@Css.Classes.DataGrid.ProgressLine">
+                <FlareProgress Variant="ProgressVariant.Linear" />
+            </div>
+        }
+        else if (_loading && (LoadingIndicator == DataGridLoadingIndicator.Spinner || LoadingIndicator == DataGridLoadingIndicator.Text))
+        {
+            <div class="@Css.Classes.DataGrid.Loading">
+                @if (LoadingIndicator == DataGridLoadingIndicator.Spinner)
+                {
+                    <FlareProgress Variant="ProgressVariant.Circular" Size="36" />
+                }
+                <span class="@Css.Classes.DataGrid.LoadingText">@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
+            </div>
+        }
+        <table @ref="_tableRef"
+               tabindex="0"
+               role="grid"
+               class="@Css.Classes.DataGrid.Table @(_dimTable ? Css.Classes.DataGrid.TableLoading : "") @(_hasFrozen ? Css.Classes.DataGrid.TableScrollX : "") @(CellSelection ? Css.Classes.DataGrid.CellSelectMode : "")"
+               aria-rowcount="@_totalRows"
+               aria-colcount="@_totalColumnCount"
+               @onkeydown="HandleGridKeyDown"
+               @onmouseup="OnCellMouseUp"
+               @onmouseleave="OnCellMouseUp">
+            <thead>
+                @if (_hasBandedComposite)
+                {
+                    @RenderBandedCompositeHead()
+                }
+                else if (_hasBands)
+                {
+                    @RenderBandedHead()
+                }
+                else
+                {
+                <tr role="row" aria-rowindex="1">
+                    @if (RowDetailTemplate != null)
+                    {
+                        <th class="@Css.Classes.DataGrid.Th @Css.Classes.DataGrid.DetailToggleTh"></th>
+                    }
+                    @if (SelectionMode == SelectionMode.Multiple)
+                    {
+                        <th role="columnheader" class="@Css.Classes.DataGrid.Th @Css.Classes.DataGrid.ThSelect">
+                            <FlareCheckbox Value="_selectAllState" ValueChanged="@(_ => ToggleSelectAll())" />
+                        </th>
+                    }
+                    @foreach (var col in _gridColumns)
+                    {
+                        @if (_hiddenColumns.Contains(col.Key)) { continue; }
+                        @RenderColumnHeaderTh(col, 1)
+                    }
+                    @if (_inlineEditEnabled)
+                    {
+                        <th class="@Css.Classes.DataGrid.Th @Css.Classes.DataGrid.ThEditActions"></th>
+                    }
+                </tr>
+                }
+                @* Banded composite renders per-field filters in the sub-headers; a single filter row
+                   cannot align to its multi-row records, so the flat filter row is suppressed there. *@
+                @if (!_hasBandedComposite && FilterMode == DataGridFilterMode.Simple && _gridColumns.Any(c => c.Filterable))
+                {
+                    <tr class="@Css.Classes.DataGrid.FilterRow">
+                        @if (RowDetailTemplate != null)
+                        {
+                            <th class="@Css.Classes.DataGrid.FilterTh"></th>
+                        }
+                        @if (SelectionMode == SelectionMode.Multiple)
+                        {
+                            <th class="@Css.Classes.DataGrid.FilterTh"></th>
+                        }
+                        @foreach (var col in _gridColumns)
+                        {
+                            @if (_hiddenColumns.Contains(col.Key)) { continue; }
+                            <th class="@Css.Classes.DataGrid.FilterTh">
+                                @if (col.Filterable)
+                                {
+                                    @RenderFilterEditor(new(col.Key, ResolveFilterType(col.Key, col.FilterType, col.Type), col.FilterOptions))
+                                }
+                            </th>
+                        }
+                        @if (_inlineEditEnabled)
+                        {
+                            <th class="@Css.Classes.DataGrid.FilterTh"></th>
+                        }
+                    </tr>
+                }
+                @foreach (var item in _pinnedTop)
+                {
+                    @RenderPinnedRow(item)
+                }
+            </thead>
+            @{
+                // Simple data row shared by both virtualization modes.
+                RenderFragment<TItem> VirtualRow = item =>
+                @<tr @key="_rowKey(item)" class="@Css.Classes.DataGrid.Row @(_selection.Contains(item) ? Css.Classes.DataGrid.RowSelected : "")
+                               @(_editingItem is not null && ReferenceEquals(_editingItem, item) ? Css.Classes.DataGrid.RowEditing : "")
+                               @(RowClassFunc?.Invoke(item) ?? "")"
+                        style="@(RowStyleFunc?.Invoke(item))"
+                        @onclick="@(() => HandleRowClickAsync(item))">
+                    @if (SelectionMode == SelectionMode.Multiple)
+                    {
+                        <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox Value="@_selection.Contains(item)" ValueChanged="@(_ => HandleRowClickAsync(item))" /></td>
+                    }
+                    @foreach (var col in _gridColumns)
+                    {
+                        @if (_hiddenColumns.Contains(col.Key)) { continue; }
+                        <td role="gridcell" class="@Css.Classes.DataGrid.Td @_tdFrozenClass(col) @AlignClass(col) @(col.ClassFunc?.Invoke(item) ?? "")"
+                            style="@CombineStyle(GetTreeIndentStyle(col, item), col.StyleFunc?.Invoke(item))">
+                            @if (_treeMode && col == _gridColumns.First() && Tree?.ChildrenSelector?.Invoke(item)?.Any() == true)
+                            {
+                                <span class="material-symbols-rounded @Css.Classes.DataGrid.TreeToggle"
+                                      @onclick:stopPropagation="true" @onclick="@(() => ToggleExpand(item))">
+                                    @(IsExpanded(item) ? Tree!.ExpandedIcon : Tree!.CollapsedIcon)
+                                </span>
+                            }
+                            @RenderCell(col, item)
+                        </td>
+                    }
+                    @if (_inlineEditEnabled)
+                    {
+                        <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdEditActions" @onclick:stopPropagation="true">@RenderEditActions(item)</td>
+                    }
+                </tr>;
+
+                // Skeleton placeholder row (per virtual row not yet loaded, or while loading in skeleton mode).
+                RenderFragment SkeletonRow =
+                @<tr class="@Css.Classes.DataGrid.Row @Css.Classes.DataGrid.PlaceholderRow">
+                    @if (SelectionMode == SelectionMode.Multiple)
+                    {
+                        <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect"></td>
+                    }
+                    @foreach (var col in _gridColumns)
+                    {
+                        @if (_hiddenColumns.Contains(col.Key)) { continue; }
+                        <td class="@Css.Classes.DataGrid.Td"><FlareSkeleton Variant="SkeletonVariant.Text" Height="1rem" /></td>
+                    }
+                    @if (_inlineEditEnabled)
+                    {
+                        <td class="@Css.Classes.DataGrid.Td"></td>
+                    }
+                </tr>;
+            }
+            <tbody>
+                @if (_hasBandedComposite)
+                {
+                    @* Each record spans several <tr>; Virtualize uses a fixed per-record ItemSize
+                       (record-rows * row-height) so multi-row records virtualize correctly. *@
+                    @if (_shouldVirtualize && _provider is null)
+                    {
+                        <Virtualize @ref="_virtualizeClientRef" Items="@SortedUnpaged()" SpacerElement="tr" Context="item"
+                                    OverscanCount="_effectiveOverscanCount" ItemSize="@_recordItemSize">
+                            @RenderBandedCompositeRecord(item)
+                        </Virtualize>
+                    }
+                    else
+                    {
+                        @foreach (var item in _pageItems)
+                        {
+                            @RenderBandedCompositeRecord(item)
+                        }
+                    }
+                    @if (!_loading && !_pageItems.Any() && !_shouldVirtualize)
+                    {
+                        <tr>
+                            <td colspan="@(_bandedColumnCount == 0 ? 1 : _bandedColumnCount)" class="@Css.Classes.DataGrid.Empty">
+                                @if (EmptyStateContent is not null) { @EmptyStateContent }
+                                else { <FlareEmptyState Title="@FlareStrings.DataGrid_NoData" Compact="true" /> }
+                            </td>
+                        </tr>
+                    }
+                }
+                else if (_shouldVirtualize && _provider is not null)
+                {
+                    <Virtualize @ref="_virtualizeProviderRef" TItem="TItem" ItemsProvider="ProvideVirtualItems" SpacerElement="tr"
+                                Context="item" OverscanCount="_effectiveOverscanCount" ItemSize="@_effectiveVirtualItemSize">
+                        <ItemContent>@VirtualRow(item)</ItemContent>
+                        <Placeholder>@SkeletonRow</Placeholder>
+                    </Virtualize>
+                }
+                else if (_shouldVirtualize)
+                {
+                    <Virtualize @ref="_virtualizeClientRef" Items="@Sorted()" SpacerElement="tr" Context="item" OverscanCount="_effectiveOverscanCount">
+                        @VirtualRow(item)
+                    </Virtualize>
+                }
+                else if (_loading && LoadingIndicator == DataGridLoadingIndicator.Skeleton)
+                {
+                    for (var i = 0; i < 5; i++)
+                    {
+                        @SkeletonRow
+                    }
+                }
+                else if (_effectiveGroups.Count > 0)
+                {
+                    var colSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
+                    if (colSpan == 0) { colSpan = 1; }
+                    BuildGroupedLines();
+                    @foreach (var line in _groupedLines)
+                    {
+                        if (line is GroupLine gl)
+                        {
+                            var collapsed = _collapsedGroups.Contains(gl.Path);
+                            <tr class="@Css.Classes.DataGrid.GroupHeader" data-level="@gl.Level">
+                                <td colspan="@colSpan">
+                                    <button type="button" class="@Css.Classes.DataGrid.GroupToggle"
+                                            style="--_group-indent:@(gl.Level)"
+                                            aria-expanded="@((!collapsed).ToString().ToLowerInvariant())"
+                                            @onclick="@(() => ToggleGroup(gl.Path))">
+                                        <span class="material-symbols-rounded @Css.Classes.DataGrid.GroupChevron">
+                                            @(collapsed ? "chevron_right" : "expand_more")
+                                        </span>
+                                        @if (gl.HeaderTemplate is not null)
+                                        {
+                                            <span class="@Css.Classes.DataGrid.GroupLabel">@gl.HeaderTemplate</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="@Css.Classes.DataGrid.GroupLabel">@gl.Display</span>
+                                        }
+                                        <span class="@Css.Classes.DataGrid.GroupCount">@gl.Count</span>
+                                        @foreach (var (title, value) in gl.Aggregates)
+                                        {
+                                            <span class="@Css.Classes.DataGrid.GroupAggregate">@title: @value</span>
+                                        }
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            var item = (TItem)line;
+                            <tr @key="_rowKey(item)" class="@Css.Classes.DataGrid.Row @(_selection.Contains(item) ? Css.Classes.DataGrid.RowSelected : "")
+                                       @(_editingItem is not null && ReferenceEquals(_editingItem, item) ? Css.Classes.DataGrid.RowEditing : "")
+                                       @(RowClassFunc?.Invoke(item) ?? "")"
+                                style="@(RowStyleFunc?.Invoke(item))"
+                                @onclick="@(() => HandleRowClickAsync(item))">
+                                @if (SelectionMode == SelectionMode.Multiple)
+                                {
+                                    <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox Value="@_selection.Contains(item)" ValueChanged="@(_ => HandleRowClickAsync(item))" /></td>
+                                }
+                                @foreach (var col in _gridColumns)
+                                {
+                                    @if (_hiddenColumns.Contains(col.Key)) { continue; }
+                                    <td role="gridcell" class="@Css.Classes.DataGrid.Td @_tdFrozenClass(col) @AlignClass(col) @(col.ClassFunc?.Invoke(item) ?? "")"
+                                         style="@(col.StyleFunc?.Invoke(item))">
+                                        @RenderCell(col, item)
+                                    </td>
+                                }
+                                @if (_inlineEditEnabled)
+                                {
+                                    <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdEditActions" @onclick:stopPropagation="true">
+                                        @RenderEditActions(item)
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    var _rowIdx = 0;
+                    @foreach (var item in _pageItems)
+                    {
+                        var rowIdx = _rowIdx++;
+                        var isEditing = _inlineEditEnabled && _editingItem is not null && ReferenceEquals(_editingItem, item);
+                        // aria-rowindex is 1-based; +2 accounts for the header row and the 1-based offset.
+                        var ariaRowIndex = _page * _effectivePageSize + rowIdx + 2;
+                        <tr @key="_rowKey(item)"
+                            role="row"
+                            aria-rowindex="@ariaRowIndex"
+                            aria-selected="@(SelectionMode != SelectionMode.None ? _selection.Contains(item).ToString().ToLowerInvariant() : null)"
+                            class="@Css.Classes.DataGrid.Row @(_selection.Contains(item) ? Css.Classes.DataGrid.RowSelected : "")
+                                   @(isEditing ? Css.Classes.DataGrid.RowEditing : "")
+                                   @(RowReorderable ? Css.Classes.DataGrid.RowDraggable : "")
+                                   @(_dragRow is not null && EqualityComparer<TItem>.Default.Equals(_dragRow, item) ? Css.Classes.DataGrid.RowDragging : "")
+                                   @(RowClassFunc?.Invoke(item) ?? "")"
+                            style="@(RowStyleFunc?.Invoke(item))"
+                            draggable="@(RowReorderable ? "true" : null)"
+                            @ondragstart="@(() => OnRowDragStart(item))"
+                            @ondragover:preventDefault="RowReorderable"
+                            @ondrop="@(() => OnRowDrop(item))"
+                            @ondragend="OnRowDragEnd"
+                            @onclick="@(() => HandleRowClickAsync(item))">
+                            @if (RowDetailTemplate != null)
+                            {
+                                <td class="@Css.Classes.DataGrid.DetailToggle">
+                                    <button class="@Css.Classes.DataGrid.DetailBtn"
+                                            @onclick:stopPropagation="true"
+                                            @onclick="@(() => ToggleRowDetail(rowIdx))"
+                                            aria-expanded="@(_expandedRows.Contains(rowIdx).ToString().ToLowerInvariant())">
+                                        <span class="material-symbols-rounded">
+                                            @(_expandedRows.Contains(rowIdx) ? "expand_less" : "expand_more")
+                                        </span>
+                                    </button>
+                                </td>
+                            }
+                            @if (SelectionMode == SelectionMode.Multiple)
+                            {
+                                <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdSelect" @onclick:stopPropagation="true"><FlareCheckbox Value="@_selection.Contains(item)" ValueChanged="@(_ => HandleRowClickAsync(item))" /></td>
+                            }
+                            @{ var _colIdx = 0; }
+                            @foreach (var col in _gridColumns)
+                            {
+                                @if (_hiddenColumns.Contains(col.Key)) { continue; }
+                                var colIdx = _colIdx++;
+                                var isFocusCell = _focusRow == rowIdx && _focusCol == colIdx;
+                                var cellRow = rowIdx; var cellCol = colIdx;
+                                <td role="gridcell" class="@Css.Classes.DataGrid.Td @_tdFrozenClass(col) @(isEditing ? Css.Classes.DataGrid.TdEdit : "") @AlignClass(col) @(InCellRange(rowIdx, colIdx) ? Css.Classes.DataGrid.CellRange : "") @(CellSelection && isFocusCell ? Css.Classes.DataGrid.CellActive : "") @(col.ClassFunc?.Invoke(item) ?? "")"
+                                    style="@(col.StyleFunc?.Invoke(item))"
+                                    tabindex="@(isFocusCell ? "0" : "-1")"
+                                    @onmousedown="@(e => OnCellMouseDown(cellRow, cellCol, e))"
+                                    @onmouseenter="@(() => OnCellMouseEnter(cellRow, cellCol))">
+                                    @RenderCellOrInput(col, item, isEditing)
+                                </td>
+                            }
+                            @if (_inlineEditEnabled)
+                            {
+                                <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdEditActions" @onclick:stopPropagation="true">
+                                    @RenderEditActions(item)
+                                </td>
+                            }
+                        </tr>
+                        @if (RowDetailTemplate != null && _expandedRows.Contains(rowIdx))
+                        {
+                            var detailColSpan = _totalColumnCount + 1 + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
+                            <tr class="@Css.Classes.DataGrid.DetailRow">
+                                <td colspan="@detailColSpan" class="@Css.Classes.DataGrid.DetailCell">
+                                    @RowDetailTemplate(item)
+                                </td>
+                            </tr>
+                        }
+                    }
+                    @if (!_loading && !_infiniteLoading && !_pageItems.Any())
+                    {
+                        var emptyColSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
+                        <tr>
+                            <td colspan="@(emptyColSpan == 0 ? 1 : emptyColSpan)"
+                                class="@Css.Classes.DataGrid.Empty">
+                                @if (EmptyStateContent is not null)
+                                {
+                                    @EmptyStateContent
+                                }
+                                else
+                                {
+                                    <FlareEmptyState Title="@FlareStrings.DataGrid_NoData" Compact="true" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                    @if (_infiniteMode)
+                    {
+                        @* "Loading more" row honoring the loading indicator. *@
+                        @if (_infiniteLoading)
+                        {
+                            @if (LoadingIndicator == DataGridLoadingIndicator.Skeleton)
+                            {
+                                for (var i = 0; i < 3; i++) { @SkeletonRow }
+                            }
+                            else
+                            {
+                                var moreColSpan = _totalColumnCount + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0) + (_inlineEditEnabled ? 1 : 0);
+                                <tr class="@Css.Classes.DataGrid.PlaceholderRow">
+                                    <td colspan="@(moreColSpan == 0 ? 1 : moreColSpan)" class="@Css.Classes.DataGrid.InfiniteMore">
+                                        <FlareProgress Variant="ProgressVariant.Circular" Size="28" />
+                                        <span>@(LoadingText ?? FlareStrings.DataGrid_Loading)</span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        @* Sentinel observed by IntersectionObserver to trigger the next page. *@
+                        <tr aria-hidden="true">
+                            <td class="@Css.Classes.DataGrid.SentinelCell">
+                                <div @ref="_infiniteSentinel" class="@Css.Classes.DataGrid.Sentinel"></div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+            @if (_pinnedBottom.Count > 0 || Aggregates is { Count: > 0 })
+            {
+                <tfoot>
+                    @foreach (var item in _pinnedBottom)
+                    {
+                        @RenderPinnedRow(item)
+                    }
+                    @if (Aggregates is { Count: > 0 })
+                    {
+                        // Reuse the already-materialised sorted list - avoids a second full enumeration.
+                        var aggSrc = _sortedCache ?? Sorted();
+                        <tr class="@Css.Classes.DataGrid.AggregateRow">
+                            @if (RowDetailTemplate != null) { <td class="@Css.Classes.DataGrid.Td"></td> }
+                            @if (SelectionMode == SelectionMode.Multiple) { <td class="@Css.Classes.DataGrid.Td"></td> }
+                            @foreach (var col in _gridColumns)
+                            {
+                                @if (_hiddenColumns.Contains(col.Key)) { continue; }
+                                var agg = Aggregates.FirstOrDefault(a => a.ColumnTitle == col.Title);
+                                <td class="@Css.Classes.DataGrid.Td @Css.Classes.DataGrid.TdAggregate">
+                                    @if (agg is not null)
+                                    {
+                                        @ComputeAggregate(agg, aggSrc)
+                                    }
+                                </td>
+                            }
+                            @if (_inlineEditEnabled) { <td class="@Css.Classes.DataGrid.Td"></td> }
+                        </tr>
+                    }
+                </tfoot>
+            }
+        </table>
+    </div>
+
+    @if (FooterContent != null)
+    {
+        <div class="@Css.Classes.DataGrid.Footer">
+            @* Cascade the grid so footer children resolve it automatically - no Grid="..." needed. *@
+            <CascadingValue Value="@this">
+                @FooterContent
+            </CascadingValue>
+        </div>
+    }
+
+    @if (ShowPager && PagingEnabled && (_totalPages > 1 || RowsPerPageOptions.Count > 1))
+    {
+        <div class="@Css.Classes.DataGrid.Pagination">
+            <FlareDataGridPager TItem="TItem" Grid="@this" />
+        </div>
+    }
+</div>
+
+@code {
+
+    // Shared inline filter editor (used by the Simple filter row and banded composite sub-headers).
+    private RenderFragment RenderFilterEditor(FilterEditorCtx ctx) =>
+    @<text>
+        @if (ctx.Type == ColumnFilterType.Select)
+        {
+            <FlareMultiSelect TValue="string" Size="FieldSize.Sm"
+                              Items="@(ctx.Options ?? DistinctValues(ctx.Key))"
+                              SelectedValues="@SelectedFilterValues(ctx.Key)"
+                              SelectedValuesChanged="@(v => OnSelectFilterChanged(ctx.Key, v))"
+                              Placeholder="@(FilterPlaceholder ?? FlareStrings.DataGrid_FilterPlaceholder)"
+                              Chips="true" Searchable="true" />
+        }
+        else if (ctx.Type == ColumnFilterType.Number)
+        {
+            <FlareField TValue="string" Type="number" Immediate="true" Size="FieldSize.Sm"
+                        Placeholder="@(FilterPlaceholder ?? FlareStrings.DataGrid_FilterPlaceholder)"
+                        Value="@TypedFilterValue(ctx.Key)"
+                        ValueChanged="@(v => OnTypedFilterChanged(ctx.Key, FilterOperator.Equals, v))" />
+        }
+        else if (ctx.Type == ColumnFilterType.Date)
+        {
+            <FlareField TValue="string" Type="date" Immediate="true" Size="FieldSize.Sm"
+                        Value="@TypedFilterValue(ctx.Key)"
+                        ValueChanged="@(v => OnTypedFilterChanged(ctx.Key, FilterOperator.Equals, v))" />
+        }
+        else
+        {
+            <FlareField TValue="string" Type="text" Immediate="true" Size="FieldSize.Sm"
+                        Placeholder="@(FilterPlaceholder ?? FlareStrings.DataGrid_FilterPlaceholder)"
+                        Value="@TextFilterValue(ctx.Key)"
+                        ValueChanged="@(v => OnFilterInput(ctx.Key, v ?? string.Empty))" />
+        }
+    </text>;
+
+    // A pinned (always-visible) row: same columns as a data row but outside selection/edit/paging.
+    private RenderFragment RenderPinnedRow(TItem item) =>
+    @<tr class="@Css.Classes.DataGrid.PinnedRow" role="row">
+        @if (RowDetailTemplate != null) { <td class="@Css.Classes.DataGrid.Td"></td> }
+        @if (SelectionMode == SelectionMode.Multiple) { <td class="@Css.Classes.DataGrid.Td"></td> }
+        @foreach (var col in _gridColumns)
+        {
+            @if (_hiddenColumns.Contains(col.Key)) { continue; }
+            <td role="gridcell" class="@Css.Classes.DataGrid.Td @_tdFrozenClass(col) @AlignClass(col) @(col.ClassFunc?.Invoke(item) ?? "")"
+                style="@(col.StyleFunc?.Invoke(item))">
+                @RenderCell(col, item)
+            </td>
+        }
+        @if (_inlineEditEnabled) { <td class="@Css.Classes.DataGrid.Td"></td> }
+    </tr>;
+
+    // Shared leaf column header th (used by both the flat header row and the banded header).
+    private RenderFragment RenderColumnHeaderTh(GridColumn<TItem> col, int rowSpan) =>
+    @<th role="columnheader"
+        class="@_thClass(col) @(ReorderableColumns ? Css.Classes.DataGrid.ThDraggable : "") @(_dragColumn == col.Key ? Css.Classes.DataGrid.ThDragging : "")"
+        style="@(col.Width is not null ? $"width:{col.Width}" : null)"
+        rowspan="@(rowSpan > 1 ? rowSpan.ToString() : null)"
+        aria-sort="@_ariaSort(col)"
+        draggable="@(ReorderableColumns ? "true" : null)"
+        @ondragstart="@(() => OnColumnDragStart(col.Key))"
+        @ondragenter="@(() => OnColumnDragEnter(col.Key))"
+        @ondragover:preventDefault="ReorderableColumns"
+        @ondrop="@(() => OnColumnDrop(col.Key))"
+        @ondragend="OnColumnDragEnd"
+        @onclick="@(async (e) => await OnHeaderClick(col, e))">
+        @col.Title
+        @if (col.Sortable)
+        {
+            var sortIdx = _sortStack.FindIndex(s => s.Column.Key == col.Key);
+            if (sortIdx >= 0)
+            {
+                <span class="material-symbols-rounded @Css.Classes.DataGrid.SortIcon">
+                    @(_sortStack[sortIdx].Direction == SortDirection.Ascending ? "arrow_upward" : "arrow_downward")
+                </span>
+            }
+            if (_sortStack.Count > 1 && sortIdx >= 0)
+            {
+                <span class="@Css.Classes.DataGrid.SortPriority">@(sortIdx + 1)</span>
+            }
+        }
+        @if (col.Resizable)
+        {
+            <span class="@Css.Classes.DataGrid.ResizeHandle" @onclick:stopPropagation="true"></span>
+        }
+        @if (FilterMode == DataGridFilterMode.Menu && col.Filterable)
+        {
+            var filterActive = _typedFilters.ContainsKey(col.Key);
+            <button type="button"
+                    class="@Css.Classes.DataGrid.FilterTrigger @(filterActive ? Css.Classes.DataGrid.FilterTriggerActive : "")"
+                    aria-label="@FlareStrings.DataGrid_Filter"
+                    aria-haspopup="dialog"
+                    aria-expanded="@(_filterMenuOpen == col.Key ? "true" : "false")"
+                    @onclick:stopPropagation="true"
+                    @onclick="@(() => ToggleFilterMenu(col.Key))">
+                <span class="material-symbols-rounded">@(filterActive ? "filter_alt" : "filter_list")</span>
+            </button>
+            @if (_filterMenuOpen == col.Key)
+            {
+                @* stopPropagation: keep clicks inside the menu (operator/value/buttons) from bubbling
+                   to the th and toggling the column sort. *@
+                <div class="@Css.Classes.DataGrid.FilterMenu" role="dialog" aria-label="@FlareStrings.DataGrid_Filter"
+                     @onclick:stopPropagation="true">
+                    <span class="@Css.Classes.DataGrid.FilterMenuLabel">@col.Title</span>
+                    @* Excel-style value checklist: search + (Select all) + the distinct values. *@
+                    <div class="@Css.Classes.DataGrid.FilterMenuField">
+                        <FlareField TValue="string" Type="search" Size="FieldSize.Sm" Immediate="true"
+                                    Placeholder="@FlareStrings.DataGrid_Search"
+                                    Value="@_filterMenuSearch"
+                                    ValueChanged="@(v => _filterMenuSearch = v ?? "")" />
+                    </div>
+                    <div class="@Css.Classes.DataGrid.FilterMenuList">
+                        <FlareCheckbox Label="@FlareStrings.DataGrid_SelectAll"
+                                       Value="@MenuAllSelected(col.Key)"
+                                       ValueChanged="@(_ => ToggleSelectAllMenu(col.Key))" />
+                        @foreach (var v in MenuFilterValues(col.Key))
+                        {
+                            var val = v;
+                            <FlareCheckbox Label="@val"
+                                           Value="@_filterMenuValues.Contains(val)"
+                                           ValueChanged="@(_ => ToggleMenuValue(val))" />
+                        }
+                    </div>
+                    <div class="@Css.Classes.DataGrid.FilterMenuDivider"></div>
+                    <div class="@Css.Classes.DataGrid.FilterMenuField">
+                        <FlareSelect TValue="string" Size="FieldSize.Sm"
+                                     Items="@_menuFilterOperators"
+                                     Value="@_filterMenuOperator"
+                                     ValueChanged="@(v => _filterMenuOperator = v ?? "contains")" />
+                    </div>
+                    <div class="@Css.Classes.DataGrid.FilterMenuField">
+                        <FlareField TValue="string" Size="FieldSize.Sm" Immediate="true"
+                                    Placeholder="@FlareStrings.DataGrid_FilterValue"
+                                    Value="@_filterMenuValue"
+                                    ValueChanged="@(v => _filterMenuValue = v ?? "")" />
+                    </div>
+                    <div class="@Css.Classes.DataGrid.FilterMenuActions">
+                        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm"
+                                     OnClick="@(() => ClearFilterMenu(col.Key))">@FlareStrings.DataGrid_ClearFilter</FlareButton>
+                        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm"
+                                     OnClick="@(() => ApplyFilterMenu(col.Key))">@FlareStrings.DataGrid_ApplyFilters</FlareButton>
+                    </div>
+                </div>
+            }
+        }
+    </th>;
+
+}

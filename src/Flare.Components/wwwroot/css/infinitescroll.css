@@ -1,0 +1,37 @@
+.flare-infinite-scroll {
+    display: flex;
+    flex-direction: column;
+}
+
+.flare-infinite-scroll__sentinel {
+    height: 1px;
+    flex-shrink: 0;
+}
+
+.flare-infinite-scroll__loading {
+    display: flex;
+    justify-content: center;
+    padding: var(--flare-spacing-12, 1.5rem);
+}
+
+.flare-infinite-scroll__end {
+    display: flex;
+    justify-content: center;
+    padding: var(--flare-spacing-8, 1rem);
+    color: var(--flare-color-on-surface-variant);
+    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+}
+
+.flare-virtual-list {
+    background: var(--flare-color-surface);
+    border-radius: var(--flare-shape-medium);
+    overflow: hidden;
+}
+
+.flare-virtual-list__item {
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}
+
+.flare-virtual-list__item:last-child {
+    border-bottom: none;
+}

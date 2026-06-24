@@ -1,0 +1,98 @@
+.flare-autocomplete {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-2, 0.25rem);
+}
+
+.flare-autocomplete__label {
+  font-family: var(--flare-typescale-label-medium-font, inherit);
+  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+  font-weight: var(--flare-typescale-label-medium-weight, 400);
+  color: var(--flare-color-on-surface-variant);
+  pointer-events: none;
+}
+
+.flare-autocomplete__wrapper {
+  position: relative;
+}
+
+.flare-autocomplete__field {
+  display: flex;
+  align-items: center;
+  background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
+  border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
+  border: var(--flare-input-border, none);
+  border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
+  transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-autocomplete__field:focus-within,
+.flare-autocomplete__field--open {
+  border: var(--flare-input-focus-border, none);
+  border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--flare-color-primary));
+}
+
+.flare-autocomplete__control {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-autocomplete__icon {
+  padding: 0 var(--flare-spacing-6, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.flare-autocomplete__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0 var(--flare-spacing-2, 0.25rem);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--flare-color-on-surface-variant);
+  border-radius: var(--flare-shape-full);
+}
+.flare-autocomplete__clear:hover { color: var(--flare-color-on-surface); }
+
+/* Anchors the shared .flare-listbox popup under the field; the listbox supplies the
+   surface (background, radius, elevation, scrolling). Only positioning lives here. */
+.flare-autocomplete__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.flare-autocomplete__empty {
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  color: var(--flare-color-on-surface-variant);
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  font-style: italic;
+}
+
+.flare-autocomplete__helper {
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-autocomplete__helper--error { color: var(--flare-color-error); }
+.flare-autocomplete--error .flare-autocomplete__field { border-color: var(--flare-color-error); }
+.flare-autocomplete--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+
+@keyframes flare-spin { to { transform: rotate(360deg); } }
+
+.flare-autocomplete__spinner {
+    font-size: 1rem;
+    animation: flare-spin 1s linear infinite;
+}

@@ -1,0 +1,17 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* FlareDataGridQuickFilter is a standalone search box bound to the grid (Grid="_grid"). Typing
+   filters rows where any visible column contains the text, case-insensitive. *@
+
+<FlareDataGrid Items="@DatagridData._people" PageSize="6">
+    <ToolbarContent>
+        @* Inside ToolbarContent the grid is resolved automatically - no TItem or Grid needed. *@
+        <FlareDataGridQuickFilter Placeholder="Search all columns..." />
+    </ToolbarContent>
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+</FlareDataGrid>

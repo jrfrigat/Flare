@@ -1,0 +1,54 @@
+@page "/services/clipboard"
+@inherits LocalizedPage
+@inject IFlareClipboard Clipboard
+@inject ISnackbarService Snackbar
+
+<PageTitle>@GalleryStrings.Services_ClipboardTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_ClipboardTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_ClipboardSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareCard Variant="CardVariant.Outlined" Style="max-width:36rem;">
+    <FlareStack Gap="FlareSpacing.Medium">
+        <FlareField TValue="string" @bind-Value="_text" Label="Text" Placeholder="Type something to copy..." />
+        <FlareStack Row Gap="FlareSpacing.Small">
+            <FlareButton OnClick="CopyAsync"><LeadingIcon><FlareIcon Name="content_copy" /></LeadingIcon><ChildContent>@GalleryStrings.Services_Copy</ChildContent></FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="ReadAsync"><LeadingIcon><FlareIcon Name="content_paste" /></LeadingIcon><ChildContent>@GalleryStrings.Services_Read</ChildContent></FlareButton>
+        </FlareStack>
+        @if (_read is not null)
+        {
+            <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_Result <code>@_read</code></FlareText>
+        }
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    private string _text = "Hello from Flare";
+    private string? _read;
+
+    private const string _usage = """
+        @inject IFlareClipboard Clipboard
+
+        <FlareButton OnClick="Copy">Copy</FlareButton>
+
+        @code {
+            string? _text;
+
+            async Task Copy() => await Clipboard.CopyAsync("Hello from Flare");
+            async Task Paste() => _text = await Clipboard.ReadAsync();
+        }
+        """;
+
+    private async Task CopyAsync()
+    {
+        await Clipboard.CopyAsync(_text);
+        Snackbar.Show($"{GalleryStrings.Services_Copy}: {_text}", SnackbarSeverity.Success);
+    }
+
+    private async Task ReadAsync() => _read = await Clipboard.ReadAsync();
+}

@@ -1,0 +1,29 @@
+<FlareStack Gap="FlareSpacing.Large" Direction="FlexDirection.Column">
+    <FlareText Typo="TypographyScale.TitleMedium">Smart Positioning</FlareText>
+    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+        Tooltips automatically flip to stay within the viewport.
+    </FlareText>
+    
+    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Top">
+            <FlareButton>Top (Smart)</FlareButton>
+        </FlareTooltip>
+        
+        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Bottom">
+            <FlareButton>Bottom (Smart)</FlareButton>
+        </FlareTooltip>
+        
+        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Left">
+            <FlareButton>Left (Smart)</FlareButton>
+        </FlareTooltip>
+        
+        <FlareTooltip Content="I flip when near viewport edge" SmartPosition="true" Placement="TooltipPlacement.Right">
+            <FlareButton>Right (Smart)</FlareButton>
+        </FlareTooltip>
+    </div>
+    
+    <FlareText Typo="TypographyScale.TitleMedium">Custom Offset</FlareText>
+    <FlareTooltip Content="16px offset" SmartPosition="true" Offset="16" Placement="TooltipPlacement.Top">
+        <FlareButton>16px Offset</FlareButton>
+    </FlareTooltip>
+</FlareStack>

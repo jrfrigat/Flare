@@ -1,0 +1,55 @@
+@namespace Flare.Components
+@typeparam TItem
+@inherits FlareComponentBase
+
+@if (Virtual && Items is not null)
+{
+    <div class="@BuildCssClass(_denseClass)"
+         style="@_containerStyle"
+         role="list"
+         @attributes="AdditionalAttributes">
+        <Virtualize Items="@_virtualizeItems" Context="item" OverscanCount="@OverscanCount">
+            @if (ItemTemplate is not null)
+            {
+                @ItemTemplate(item)
+            }
+        </Virtualize>
+    </div>
+}
+else
+{
+    <ul class="@BuildCssClass(_denseClass)"
+        role="list"
+        style="@Style"
+        @attributes="AdditionalAttributes">
+        @ChildContent
+    </ul>
+}
+
+@code {
+    /// <summary>Child list items rendered inside the list (non-virtual mode).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Reduces vertical padding for a compact appearance.</summary>
+    [Parameter] public bool Dense { get; set; }
+    /// <summary>Enables Blazor Virtualize for large datasets.</summary>
+    [Parameter] public bool Virtual { get; set; }
+    /// <summary>Data source when Virtual=true.</summary>
+    [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
+    /// <summary>Template used to render each item when Virtual=true.</summary>
+    [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+    /// <summary>Fixed height of the virtualized container.</summary>
+    [Parameter] public string Height { get; set; } = "400px";
+    /// <summary>Max height of the virtualized container (used instead of Height when set).</summary>
+    [Parameter] public string? MaxHeight { get; set; }
+    /// <summary>Number of extra items rendered outside the visible viewport.</summary>
+    [Parameter] public int OverscanCount { get; set; } = 3;
+
+    protected override string ComponentCssClass => Css.Classes.List.Root;
+
+    private string _denseClass => Dense ? Css.Classes.List.Dense : string.Empty;
+    private string _containerStyle => string.IsNullOrEmpty(MaxHeight)
+        ? $"height:{CssValidator.StripDangerous(Height)};overflow-y:auto;{Style}"
+        : $"max-height:{CssValidator.StripDangerous(MaxHeight)};overflow-y:auto;{Style}";
+    private ICollection<TItem> _virtualizeItems =>
+        Items as ICollection<TItem> ?? Items?.ToList() ?? [];
+}

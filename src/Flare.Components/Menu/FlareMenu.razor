@@ -1,0 +1,116 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_denseClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Menu.Activator" @onclick="Toggle" aria-haspopup="menu" aria-expanded="@_open.ToString().ToLowerInvariant()" aria-controls="@_panelId">
+        @Activator
+    </div>
+    @if (_open)
+    {
+        <div class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
+        <div id="@_panelId" class="@Css.Classes.Menu.Panel @_anchorClass" role="menu" tabindex="-1" aria-label="@AriaLabel" @onkeydown="HandleMenuKeyDown">
+            <CascadingValue Value="@((Func<Task>)CloseAsync)" Name="CloseMenu">
+                <CascadingValue Value="@_focusedItem" Name="MenuFocusedItem">
+                    <CascadingValue Value="@((Action<FlareMenuItem>)RegisterItem)" Name="RegisterMenuItem">
+                        @ChildContent
+                    </CascadingValue>
+                </CascadingValue>
+            </CascadingValue>
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Element that opens the menu when clicked.</summary>
+    [Parameter] public RenderFragment? Activator { get; set; }
+    /// <summary>Menu items rendered inside the dropdown panel.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Corner of the activator the panel aligns to.</summary>
+    [Parameter] public MenuAnchor Anchor { get; set; } = MenuAnchor.BottomLeft;
+    /// <summary>Accessible label for the menu panel (role="menu").</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Callback triggered whenever the menu open state changes.</summary>
+    [Parameter] public EventCallback<bool> OnToggle { get; set; }
+    /// <summary>Reduces item height/padding for a denser menu (consistent with other components' Dense).</summary>
+    [Parameter] public bool Dense { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Menu.Root;
+
+    private string? _denseClass => Dense ? Css.Classes.Menu.Dense : null;
+
+    private bool _open;
+    private FlareMenuItem? _focusedItem;
+    private readonly List<FlareMenuItem> _items = [];
+    private readonly string _panelId = "flare-menu-" + Guid.NewGuid().ToString("N")[..8];
+
+    private string _anchorClass => Anchor switch
+    {
+        MenuAnchor.BottomRight => Css.Classes.Menu.BottomRight,
+        MenuAnchor.TopLeft     => Css.Classes.Menu.TopLeft,
+        MenuAnchor.TopRight    => Css.Classes.Menu.TopRight,
+        MenuAnchor.BottomLeft  => Css.Classes.Menu.BottomLeft,
+        _                      => Css.Classes.Menu.BottomLeft,
+    };
+
+    /// <summary>Opens the menu when closed, or closes it when open, and raises <see cref="OnToggle"/>.</summary>
+    private async Task Toggle()
+    {
+        _open = !_open;
+        if (!_open)
+        {
+            _items.Clear();
+            _focusedItem = null;
+        }
+
+        await OnToggle.InvokeAsync(_open);
+    }
+
+    /// <summary>Closes the menu, clears registered items and keyboard focus, and raises <see cref="OnToggle"/>.</summary>
+    private async Task CloseAsync()
+    {
+        _open = false;
+        _items.Clear();
+        _focusedItem = null;
+
+        await OnToggle.InvokeAsync(false);
+    }
+
+    /// <summary>Registers a child <see cref="FlareMenuItem"/> for keyboard navigation. Called by items on init.</summary>
+    /// <param name="item">The menu item to track.</param>
+    internal void RegisterItem(FlareMenuItem item)
+    {
+        if (!_items.Contains(item))
+            _items.Add(item);
+    }
+
+    /// <summary>Handles keyboard navigation inside the open panel (Escape closes; Arrow/Home/End move focus; Tab cycles).</summary>
+    /// <param name="e">The keyboard event arguments.</param>
+    private async Task HandleMenuKeyDown(KeyboardEventArgs e)
+    {
+        if (!_open) return;
+
+        if (e.Key == "Escape") { await CloseAsync(); return; }
+
+        var enabled = _items.Where(i => !i.Disabled).ToList();
+        if (enabled.Count == 0) return;
+
+        var currentIdx = _focusedItem is not null ? enabled.IndexOf(_focusedItem) : -1;
+
+        if (e.Key == "ArrowDown")
+            _focusedItem = enabled[(currentIdx + 1) % enabled.Count];
+        else if (e.Key == "ArrowUp")
+            _focusedItem = enabled[((currentIdx - 1) + enabled.Count) % enabled.Count];
+        else if (e.Key == "Home")
+            _focusedItem = enabled[0];
+        else if (e.Key == "End")
+            _focusedItem = enabled[^1];
+        else if (e.Key == "Tab")
+        {
+            // Tab cycles through menu items
+            if (e.ShiftKey)
+                _focusedItem = enabled[((currentIdx - 1) + enabled.Count) % enabled.Count];
+            else
+                _focusedItem = enabled[(currentIdx + 1) % enabled.Count];
+        }
+    }
+}

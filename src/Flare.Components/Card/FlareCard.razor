@@ -1,0 +1,110 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using Microsoft.AspNetCore.Components.Web
+
+@if (Href is not null)
+{
+    <a class="@CssClass" style="@Style"
+       href="@Href" target="@Target" @attributes="AdditionalAttributes">
+        @ChildContent
+    </a>
+}
+else
+{
+    <div class="@CssClass" style="@Style"
+         role="@Role" tabindex="@(_interactive ? "0" : null)"
+         aria-checked="@AriaChecked"
+         @onclick="HandleClick" @onkeydown="HandleKeyDown" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    /// <summary>Child content rendered inside the card. Compose with FlareCardMedia / FlareCardHeader / FlareCardContent / FlareCardFooter / FlareCardActions.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Visual variant - Elevated (default), Filled, Outlined, Tonal, or Text. Mirrors ButtonVariant.</summary>
+    [Parameter] public CardVariant Variant { get; set; } = CardVariant.Elevated;
+
+    /// <summary>Overall size - controls corner radius and inner gap. Default Md.</summary>
+    [Parameter] public CardSize Size { get; set; } = CardSize.Md;
+
+    /// <summary>When true, lays the card out horizontally (media on the leading side, content beside it), like FluentUI 2 horizontal orientation. Default false (vertical).</summary>
+    [Parameter] public bool Compact { get; set; }
+
+    /// <summary>Click handler. When set (or Href), the card becomes interactive (hover state layer, role=button, keyboard focus).</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    /// <summary>When set, the card renders as a link (&lt;a&gt;) to this URL.</summary>
+    [Parameter] public string? Href { get; set; }
+
+    /// <summary>Target for the link card (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>
+    [Parameter] public string? Target { get; set; }
+
+    /// <summary>When true, the card can be toggled selected (role=checkbox). Selection shows an accent ring.</summary>
+    [Parameter] public bool Selectable { get; set; }
+
+    /// <summary>Whether a selectable card is currently selected. Supports two-way binding (@bind-Selected).</summary>
+    [Parameter] public bool Selected { get; set; }
+
+    /// <summary>Fired when the selected state changes (enables @bind-Selected).</summary>
+    [Parameter] public EventCallback<bool> SelectedChanged { get; set; }
+
+    /// <summary>Fired with the new selected state whenever the user toggles a selectable card.</summary>
+    [Parameter] public EventCallback<bool> OnSelectionChange { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Card.Root;
+
+    private bool _clickable => Href is not null || OnClick.HasDelegate;
+    private bool _interactive => _clickable || Selectable;
+
+    private string CssClass => BuildCssClass(
+        _variantClass, _sizeClass,
+        Compact ? Css.Classes.Card.Compact : string.Empty,
+        _interactive ? Css.Classes.Card.Clickable : string.Empty,
+        Selectable ? Css.Classes.Card.Selectable : string.Empty,
+        Selectable && Selected ? Css.Classes.Card.Selected : string.Empty);
+
+    private string? Role => Selectable ? "checkbox" : (_clickable ? "button" : null);
+    private string? AriaChecked => Selectable ? (Selected ? "true" : "false") : null;
+
+    private async Task HandleClick(MouseEventArgs e)
+    {
+        if (Selectable) await ToggleSelected();
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync(e);
+    }
+
+    // role=button/checkbox needs explicit keyboard activation (Enter/Space) - the browser does not
+    // synthesize a click for a non-native interactive element.
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (!_interactive) return;
+        if (e.Key is not ("Enter" or " " or "Spacebar")) return;
+        if (Selectable) await ToggleSelected();
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync(new MouseEventArgs());
+    }
+
+    private async Task ToggleSelected()
+    {
+        Selected = !Selected;
+        if (SelectedChanged.HasDelegate) await SelectedChanged.InvokeAsync(Selected);
+        if (OnSelectionChange.HasDelegate) await OnSelectionChange.InvokeAsync(Selected);
+    }
+
+    private string _variantClass => Variant switch
+    {
+        CardVariant.Filled   => Css.Classes.Card.Filled,
+        CardVariant.Outlined => Css.Classes.Card.Outlined,
+        CardVariant.Text     => Css.Classes.Card.Text,
+        CardVariant.Tonal    => Css.Classes.Card.Tonal,
+        CardVariant.Elevated => Css.Classes.Card.Elevated,
+        _                    => Css.Classes.Card.Elevated,
+    };
+
+    private string _sizeClass => Size switch
+    {
+        CardSize.Sm => Css.Classes.Card.SizeSm,
+        CardSize.Lg => Css.Classes.Card.SizeLg,
+        _           => Css.Classes.Card.SizeMd,
+    };
+}

@@ -1,0 +1,12 @@
+@page "/components/stepper"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Stepper_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareStepper">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Stepper_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Stepper_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Stepper_Basic" DemoType="typeof(Examples.StepperBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Stepper_Vertical" DemoType="typeof(Examples.StepperVerticalDemo)" />

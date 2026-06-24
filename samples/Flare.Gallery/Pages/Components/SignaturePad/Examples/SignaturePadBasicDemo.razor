@@ -1,0 +1,36 @@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareSignaturePad @ref="_pad" Width="400" Height="200" OnChanged="OnSignatureChanged" />
+    <FlareStack Row Gap="FlareSpacing.Small">
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="SaveAsync">Save</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="ClearAsync">Clear</FlareButton>
+    </FlareStack>
+    @if (_dataUrl is not null)
+    {
+        <FlareStack Gap="FlareSpacing.None">
+            <FlareText Typo="TypographyScale.LabelMedium" Style="margin-bottom:0.5rem;">Saved signature</FlareText>
+            <img src="@_dataUrl" alt="Signature" style="border:1px solid var(--flare-color-outline-variant);border-radius:0.5rem;display:block;" />
+        </FlareStack>
+    }
+</FlareStack>
+
+@code {
+    private FlareSignaturePad? _pad;
+    private string? _dataUrl;
+
+    private void OnSignatureChanged() => StateHasChanged();
+
+    private async Task SaveAsync()
+    {
+        if (_pad is not null)
+            _dataUrl = await _pad.GetDataUrlAsync();
+    }
+
+    private async Task ClearAsync()
+    {
+        if (_pad is not null)
+        {
+            await _pad.ClearAsync();
+            _dataUrl = null;
+        }
+    }
+}

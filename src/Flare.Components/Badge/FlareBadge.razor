@@ -1,0 +1,72 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_originClass, _standaloneClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+    @if (Visible)
+    {
+        @if (!Dot)
+        {
+            <span class="@Css.Classes.Badge.Indicator @_colorClass" style="@_colorStyle" aria-label="@_label">
+                @_label
+            </span>
+        }
+        else
+        {
+            <span class="@Css.Classes.Badge.Indicator @Css.Classes.Badge.IndicatorDot @_colorClass" style="@_colorStyle" aria-hidden="true"></span>
+        }
+    }
+</div>
+
+@code {
+    /// <summary>The element the badge indicator is anchored to. When omitted, the badge renders standalone.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Arbitrary text label shown on the indicator. Overrides <see cref="Count"/> when set.</summary>
+    [Parameter] public string? Text { get; set; }
+    /// <summary>
+    /// Renders the badge as an inline pill instead of a corner indicator. Enabled automatically
+    /// when there is no <see cref="ChildContent"/> anchor.
+    /// </summary>
+    [Parameter] public bool Standalone { get; set; }
+    /// <summary>Numeric count displayed on the badge indicator.</summary>
+    [Parameter] public int Count { get; set; }
+    /// <summary>Maximum count shown before displaying "N+" notation.</summary>
+    [Parameter] public int Max { get; set; } = 99;
+    /// <summary>Shows a small dot indicator instead of a count.</summary>
+    [Parameter] public bool Dot { get; set; }
+    /// <summary>Controls visibility of the badge indicator.</summary>
+    [Parameter] public bool Visible { get; set; } = true;
+    /// <summary>Corner position of the badge indicator relative to its anchor.</summary>
+    [Parameter] public BadgeOrigin Origin { get; set; } = BadgeOrigin.TopRight;
+    /// <summary>Semantic color of the badge indicator.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Indicator size (Xs..Xl). Medium is the default 16dp indicator.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+
+    protected override string ComponentCssClass => Css.Classes.Badge.Root;
+
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Badge.SizeXs,
+        FieldSize.Sm => Css.Classes.Badge.SizeSm,
+        FieldSize.Lg => Css.Classes.Badge.SizeLg,
+        FieldSize.Xl => Css.Classes.Badge.SizeXl,
+        _ => string.Empty,
+    };
+
+    private string _label => Text ?? (Count > Max ? $"{Max}+" : Count.ToString());
+
+    private string _standaloneClass => Standalone || ChildContent is null ? Css.Classes.Badge.Standalone : string.Empty;
+
+    // Role -> shared flare-color-* class (sets --fc-main/--fc-on); custom -> inline tokens.
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string? _colorStyle => Color.StyleMainOn();
+
+    private string _originClass => Origin switch
+    {
+        BadgeOrigin.TopLeft     => Css.Classes.Badge.TopLeft,
+        BadgeOrigin.BottomRight => Css.Classes.Badge.BottomRight,
+        BadgeOrigin.BottomLeft  => Css.Classes.Badge.BottomLeft,
+        _                       => Css.Classes.Badge.TopRight,
+    };
+}

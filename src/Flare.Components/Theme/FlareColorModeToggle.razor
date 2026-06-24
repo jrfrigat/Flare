@@ -1,0 +1,39 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using Flare.Core.Tokens
+
+<button class="@BuildCssClass()" @onclick="ToggleAsync"
+        aria-label="@(_isDark ? (FlareStrings.Theme_ToggleLight) : (FlareStrings.Theme_ToggleDark))">
+    <FlareIcon Name="@(_isDark ? "light_mode" : "dark_mode")" />
+    @if (ShowLabel)
+    {
+        <span class="@Css.Classes.Color.ModeToggleLabel">@(_isDark ? LightLabel : DarkLabel)</span>
+    }
+</button>
+
+@code {
+    private bool _isDark;
+
+    /// <summary>Show a text label beside the icon.</summary>
+    [Parameter] public bool ShowLabel { get; set; }
+    /// <summary>Label text when clicking switches to light mode.</summary>
+    [Parameter] public string LightLabel { get; set; } = "Light";
+    /// <summary>Label text when clicking switches to dark mode.</summary>
+    [Parameter] public string DarkLabel { get; set; } = "Dark";
+
+    protected override string ComponentCssClass => Css.Classes.Color.ModeToggle;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _isDark = ThemeService?.IsDark == true;
+    }
+
+    private async Task ToggleAsync()
+    {
+        if (ThemeService == null) return;
+        _isDark = !_isDark;
+        // Explicitly pin the mode (leaves Auto only until the user expresses a preference).
+        await ThemeService.SetModeAsync(_isDark ? ThemeMode.Dark : ThemeMode.Light);
+    }
+}

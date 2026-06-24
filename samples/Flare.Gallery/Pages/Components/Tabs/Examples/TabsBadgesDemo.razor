@@ -1,0 +1,22 @@
+<FlareTabs>
+    <FlareTab Label="Inbox" Badge="24" BadgeColor="FlareColor.Primary" Tooltip="Unread messages">
+        <LeadingIcon><FlareIcon Name="inbox" /></LeadingIcon>
+        <ChildContent>
+            <FlareText Typo="TypographyScale.BodyMedium">Colored count badge plus a hover tooltip.</FlareText>
+        </ChildContent>
+    </FlareTab>
+    <FlareTab Label="Activity" BadgeDot="true" BadgeColor="FlareColor.Error" Tooltip="New activity">
+        <LeadingIcon><FlareIcon Name="bolt" /></LeadingIcon>
+        <ChildContent>
+            <FlareText Typo="TypographyScale.BodyMedium">A dot badge marks unseen activity without a number.</FlareText>
+        </ChildContent>
+    </FlareTab>
+    <FlareTab Label="Archive" Tooltip="Archived items">
+        <LeadingIcon><FlareIcon Name="archive" /></LeadingIcon>
+        <ChildContent>
+            <FlareText Typo="TypographyScale.BodyMedium">No badge.</FlareText>
+        </ChildContent>
+    </FlareTab>
+</FlareTabs>
+
+@* Per-tab Badge with BadgeColor, dot badges (BadgeDot), and native Tooltip text. *@

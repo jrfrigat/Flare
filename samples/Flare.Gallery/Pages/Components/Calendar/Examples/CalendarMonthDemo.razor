@@ -1,0 +1,17 @@
+﻿<FlareCalendar SelectedDate="_selected" SelectedDateChanged="@(d => _selected = d)" />
+
+@if (_selected.HasValue)
+{
+    <FlareChip Label="@($"Selected: {_selected.Value:MMMM d, yyyy}")" />
+}
+else
+{
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+        Click a day to select it.
+    </FlareText>
+}
+
+@code
+{
+    private DateOnly? _selected;
+}

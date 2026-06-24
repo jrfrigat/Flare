@@ -1,0 +1,143 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+
+<div class="@BuildCssClass()" style="@Style; position:relative; display:inline-block; line-height:0;"
+     @attributes="AdditionalAttributes">
+    @if (_matrix is not null)
+    {
+        int modules = _matrix.GetLength(0);
+        double moduleSize = (double)Size / (modules + 8);
+        double offset = 4 * moduleSize;
+        double rx = CornerRadius * moduleSize;
+        string shapeRendering = CornerRadius == 0.0 ? " shape-rendering=\"crispEdges\"" : "";
+
+        <svg width="@Size" height="@Size" viewBox="0 0 @Size @Size"
+             xmlns="http://www.w3.org/2000/svg"
+             role="img"
+             aria-label="@(!string.IsNullOrEmpty(AriaLabel) ? AriaLabel : $"QR code for: {Value}")"
+             shape-rendering="@(CornerRadius == 0.0 ? "crispEdges" : "auto")">
+            <rect x="0" y="0" width="@Size" height="@Size" stroke="none"
+                  style="fill:@BackColor" />
+
+            @for (int r = 0; r < modules; r++)
+            {
+                for (int c = 0; c < modules; c++)
+                {
+                    if (_matrix[r, c])
+                    {
+                        double x = offset + c * moduleSize;
+                        double y = offset + r * moduleSize;
+                        <rect x="@x.ToString("F3", CultureInfo.InvariantCulture)"
+                              y="@y.ToString("F3", CultureInfo.InvariantCulture)"
+                              width="@moduleSize.ToString("F3", CultureInfo.InvariantCulture)"
+                              height="@moduleSize.ToString("F3", CultureInfo.InvariantCulture)"
+                              rx="@rx.ToString("F3", CultureInfo.InvariantCulture)"
+                              ry="@rx.ToString("F3", CultureInfo.InvariantCulture)"
+                              stroke="none"
+                              style="fill:@ForeColor" />
+                    }
+                }
+            }
+
+            @if (!string.IsNullOrEmpty(IconUrl))
+            {
+                double iconW = IconSize > 0 ? IconSize : Size * 0.28;
+                double iconH = iconW;
+                double iconX = (Size - iconW) / 2.0;
+                double iconY = (Size - iconH) / 2.0;
+                double bgPad = iconW * 0.18;
+                double bgX = iconX - bgPad;
+                double bgY = iconY - bgPad;
+                double bgW = iconW + bgPad * 2;
+                double bgH = iconH + bgPad * 2;
+                double bgRx = bgPad;
+                <rect x="@bgX.ToString("F3", CultureInfo.InvariantCulture)"
+                      y="@bgY.ToString("F3", CultureInfo.InvariantCulture)"
+                      width="@bgW.ToString("F3", CultureInfo.InvariantCulture)"
+                      height="@bgH.ToString("F3", CultureInfo.InvariantCulture)"
+                      rx="@bgRx.ToString("F3", CultureInfo.InvariantCulture)"
+                      ry="@bgRx.ToString("F3", CultureInfo.InvariantCulture)"
+                      stroke="none"
+                      style="fill:@BackColor" />
+                <image href="@IconUrl"
+                       x="@iconX.ToString("F3", CultureInfo.InvariantCulture)"
+                       y="@iconY.ToString("F3", CultureInfo.InvariantCulture)"
+                       width="@iconW.ToString("F3", CultureInfo.InvariantCulture)"
+                       height="@iconH.ToString("F3", CultureInfo.InvariantCulture)"
+                       preserveAspectRatio="xMidYMid meet" />
+            }
+        </svg>
+
+        @if (IconContent is not null)
+        {
+            double iconSizePx = IconSize > 0 ? IconSize : Size * 0.28;
+            <div style="position:absolute; top:50%; left:50%;
+                        transform:translate(-50%,-50%);
+                        width:@(iconSizePx.ToString("F0", CultureInfo.InvariantCulture))px;
+                        height:@(iconSizePx.ToString("F0", CultureInfo.InvariantCulture))px;
+                        background:@BackColor;
+                        border-radius:@(CornerRadius > 0 ? "50%" : "6px");
+                        display:flex; align-items:center; justify-content:center;
+                        overflow:hidden; pointer-events:none;">
+                @IconContent
+            </div>
+        }
+    }
+    else
+    {
+        <svg width="@Size" height="@Size" viewBox="0 0 @Size @Size"
+             xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="@Size" height="@Size" stroke="none"
+                  style="fill:@BackColor" />
+            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
+                  style="fill:@ForeColor" font-size="12">Value too long</text>
+        </svg>
+    }
+</div>
+
+@code {
+    /// <summary>The data string to encode as a QR code.</summary>
+    [Parameter] public string Value { get; set; } = "";
+
+    /// <summary>Pixel width and height of the rendered SVG.</summary>
+    [Parameter] public int Size { get; set; } = 200;
+
+    /// <summary>CSS color for the dark QR code modules.</summary>
+    [Parameter] public string ForeColor { get; set; } = "var(--flare-color-on-surface)";
+
+    /// <summary>CSS color for the light QR code background.</summary>
+    [Parameter] public string BackColor { get; set; } = "var(--flare-color-surface)";
+
+    /// <summary>Accessible label for the SVG element.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <summary>Error correction level. Higher levels allow more data recovery. Default: M.</summary>
+    [Parameter] public QrErrorCorrectionLevel ErrorCorrectionLevel { get; set; } = QrErrorCorrectionLevel.M;
+
+    /// <summary>
+    /// Corner radius as a fraction of the module size (0.0 = square, 0.5 = circle).
+    /// </summary>
+    [Parameter] public double CornerRadius { get; set; } = 0.0;
+
+    /// <summary>URL of an image to overlay in the centre of the QR code.</summary>
+    [Parameter] public string? IconUrl { get; set; }
+
+    /// <summary>Custom content to overlay in the centre of the QR code.</summary>
+    [Parameter] public RenderFragment? IconContent { get; set; }
+
+    /// <summary>
+    /// Pixel size of the centre icon. 0 = automatic (28% of Size).
+    /// Use with ErrorCorrectionLevel = H for maximum reliability.
+    /// </summary>
+    [Parameter] public double IconSize { get; set; } = 0;
+
+    protected override string ComponentCssClass => "flare-qrcode";
+
+    private bool[,]? _matrix;
+
+    protected override void OnParametersSet()
+    {
+        _matrix = QrCodeGenerator.Generate(Value, ErrorCorrectionLevel);
+    }
+}

@@ -1,0 +1,33 @@
+@* ShowPresets renders a row of quick-range chips (Today, Last 7 days, This month, ...).
+   Clicking a chip sets both dates; the active range is highlighted. Pass Presets to
+   provide a custom set. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareDateRangePicker @bind-StartDate="_start" @bind-EndDate="_end"
+                          Label="Report period" ShowPresets="true"
+                          Style="max-width:36rem;" />
+
+    <FlareDateRangePicker @bind-StartDate="_qStart" @bind-EndDate="_qEnd"
+                          Label="Custom presets (quarters)" ShowPresets="true"
+                          Presets="_quarters" Style="max-width:36rem;" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    @if (_start.HasValue || _end.HasValue)
+    {
+        @($"{_start?.ToString("dd MMM yyyy") ?? "-"} -> {_end?.ToString("dd MMM yyyy") ?? "-"}")
+    }
+</FlareText>
+
+@code {
+    private DateOnly? _start;
+    private DateOnly? _end;
+    private DateOnly? _qStart;
+    private DateOnly? _qEnd;
+
+    private readonly List<DateRangePreset> _quarters =
+    [
+        new("Q1", t => (new DateOnly(t.Year, 1, 1), new DateOnly(t.Year, 3, 31))),
+        new("Q2", t => (new DateOnly(t.Year, 4, 1), new DateOnly(t.Year, 6, 30))),
+        new("Q3", t => (new DateOnly(t.Year, 7, 1), new DateOnly(t.Year, 9, 30))),
+        new("Q4", t => (new DateOnly(t.Year, 10, 1), new DateOnly(t.Year, 12, 31))),
+    ];
+}

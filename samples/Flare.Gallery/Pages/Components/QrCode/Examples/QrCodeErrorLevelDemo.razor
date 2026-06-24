@@ -1,0 +1,24 @@
+@inherits LocalizedPage
+
+<div style="display:flex; gap:24px; flex-wrap:wrap; align-items:flex-end;">
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareQrCode Value="Hello Flare!"
+                     Size="160" ErrorCorrectionLevel="QrErrorCorrectionLevel.L" />
+        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">L - ~7% recovery</span>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareQrCode Value="Hello Flare!"
+                     Size="160" ErrorCorrectionLevel="QrErrorCorrectionLevel.M" />
+        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">M - ~15% recovery (default)</span>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareQrCode Value="Hello Flare!"
+                     Size="160" ErrorCorrectionLevel="QrErrorCorrectionLevel.Q" />
+        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">Q - ~25% recovery</span>
+    </div>
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <FlareQrCode Value="Hello Flare!"
+                     Size="160" ErrorCorrectionLevel="QrErrorCorrectionLevel.H" />
+        <span style="font-size:12px; color:var(--flare-color-on-surface-variant);">H - ~30% recovery (use with icons)</span>
+    </div>
+</div>

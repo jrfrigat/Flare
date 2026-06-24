@@ -1,0 +1,46 @@
+/* Stock Blazor WebAssembly boot chrome only (pre-render loading splash + error bar). The app itself
+   - layout, nav, pages - is built entirely from Flare components with no custom CSS. */
+
+html, body { margin: 0; height: 100%; }
+
+/* Loading splash shown until Blazor + the theme CSS are ready. */
+.loading-progress {
+    position: fixed;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    top: calc(50% - 4rem);
+    left: calc(50% - 4rem);
+}
+.loading-progress circle {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 0.4rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
+.loading-progress circle:last-child {
+    stroke: #2f6cb0;
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(50% - 0.8rem) 0 auto 0.2rem;
+}
+.loading-progress-text::after { content: var(--blazor-load-percentage-text, "Загрузка"); }
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, .2);
+    display: none;
+    left: 0;
+    padding: .6rem 1.25rem .7rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+#blazor-error-ui .dismiss { cursor: pointer; position: absolute; right: .75rem; top: .5rem; }

@@ -1,0 +1,85 @@
+.flare-codeblock {
+    position: relative;
+    border: 1px solid var(--flare-color-outline);
+    border-radius: var(--flare-shape-small);
+    overflow: hidden;
+    font-family: monospace;
+    font-size: 0.875rem;
+    background: var(--flare-color-surface-container-high);
+}
+
+.flare-codeblock__textarea {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--flare-color-on-surface);
+    resize: none;
+    border: none;
+    padding: var(--flare-spacing-8, 1rem);
+    box-sizing: border-box;
+    font: inherit;
+    outline: none;
+    z-index: 1;
+    tab-size: 4;
+}
+
+.flare-codeblock__highlight {
+    padding: var(--flare-spacing-8, 1rem);
+    min-height: 100%;
+    white-space: pre;
+    overflow: auto;
+    margin: 0;
+    color: var(--flare-color-on-surface);
+    background: var(--flare-color-surface-container-high);
+}
+
+.flare-codeblock__highlight code {
+    font: inherit;
+    background: none;
+    padding: 0;
+}
+
+/* Read-only blocks fit their content (no absolute overlay, no fixed min-height). */
+.flare-codeblock--readonly .flare-codeblock__highlight {
+    min-height: 0;
+}
+
+/* Syntax token colours, driven entirely by Flare theme tokens so the palette
+   follows the active design system and light/dark mode (built-in highlighter,
+   no third-party theme CSS). */
+.flare-codeblock__highlight .flare-hl-keyword  { color: var(--flare-color-primary); }
+.flare-codeblock__highlight .flare-hl-type     { color: var(--flare-color-tertiary); }
+.flare-codeblock__highlight .flare-hl-string   { color: var(--flare-color-success); }
+.flare-codeblock__highlight .flare-hl-number   { color: var(--flare-color-warning); }
+.flare-codeblock__highlight .flare-hl-literal  { color: var(--flare-color-info); }
+.flare-codeblock__highlight .flare-hl-property { color: var(--flare-color-secondary); }
+.flare-codeblock__highlight .flare-hl-tag      { color: var(--flare-color-primary); }
+.flare-codeblock__highlight .flare-hl-attr     { color: var(--flare-color-tertiary); }
+.flare-codeblock__highlight .flare-hl-meta     { color: var(--flare-color-info); }
+.flare-codeblock__highlight .flare-hl-comment  { color: var(--flare-color-on-surface-variant); font-style: italic; }
+
+.flare-codeblock__linenumbers {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-4, 0.5rem);
+    text-align: right;
+    color: var(--flare-color-on-surface-variant);
+    user-select: none;
+    min-width: 2.5rem;
+    border-right: 1px solid var(--flare-color-outline-variant);
+    background: var(--flare-color-surface-container);
+    white-space: pre;
+    font: inherit;
+    line-height: inherit;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.flare-codeblock--line-numbers .flare-codeblock__textarea,
+.flare-codeblock--line-numbers .flare-codeblock__highlight {
+    padding-left: calc(2.5rem + 1.5rem);
+}

@@ -1,0 +1,22 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_alignClass)" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Action buttons of the card (e.g. FlareButton).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Horizontal alignment of the actions. Default Start.</summary>
+    [Parameter] public CardActionsAlign Align { get; set; } = CardActionsAlign.Start;
+
+    protected override string ComponentCssClass => Css.Classes.Card.Actions;
+
+    private string _alignClass => Align switch
+    {
+        CardActionsAlign.End     => Css.Classes.Card.ActionsEnd,
+        CardActionsAlign.Between => Css.Classes.Card.ActionsBetween,
+        _                        => string.Empty, // Start is the default alignment (no modifier class)
+    };
+}

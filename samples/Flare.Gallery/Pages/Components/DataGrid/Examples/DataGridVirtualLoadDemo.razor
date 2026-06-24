@@ -1,0 +1,38 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.5rem">
+    5,000 rows served in windows by an ItemsProvider. Scroll fast to see skeleton placeholders
+    while each window loads (simulated 400&#8201;ms latency).
+</FlareText>
+
+<FlareDataGrid TItem="Person" ItemsProvider="LoadAsync" Virtual="true" VirtualHeight="420px" OverscanCount="12">
+    <Columns>
+        <FlareColumn Title="#" Field="@(p => p.Score)" Width="90px" />
+        <FlareColumn Title="Name" Field="@(p => p.Name)" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private static readonly string[] _roles = ["Engineer", "Designer", "Manager", "QA", "DevOps"];
+    private static readonly string[] _cities = ["Berlin", "London", "Paris", "Tokyo", "Madrid", "Toronto"];
+
+    private static readonly List<Person> _all = Enumerable.Range(1, 5000)
+        .Select(i => new Person
+        {
+            Name = $"Person {i:0000}",
+            Role = _roles[i % _roles.Length],
+            City = _cities[i % _cities.Length],
+            Score = i,
+        })
+        .ToList();
+
+    private async Task<DataGridResult<Person>> LoadAsync(DataGridRequest req)
+    {
+        await Task.Delay(400); // simulate network latency so skeleton placeholders are visible
+        var start = req.StartIndex ?? 0;
+        var count = req.Count ?? req.PageSize;
+        return new DataGridResult<Person>(_all.Skip(start).Take(count), _all.Count);
+    }
+}

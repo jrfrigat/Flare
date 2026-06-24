@@ -1,0 +1,35 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Gap="FlareSpacing.Large" Align="FlareAlignItems.Center">
+        <FlareText Typo="TypographyScale.LabelLarge">Режим фильтра:</FlareText>
+        <FlareSelect TValue="DataGridFilterMode" @bind-Value="_filterMode"
+                     Items="@(new[] { DataGridFilterMode.Simple, DataGridFilterMode.Menu })"
+                     Size="FieldSize.Sm" />
+        <FlareSwitch @bind-Value="_showBuilder" Label="Расширенный фильтр" />
+    </FlareStack>
+
+    <FlareDataGrid Items="@DatagridData._people" PageSize="10" FilterMode="_filterMode">
+        <Columns>
+            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" Filterable="true" />
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" Filterable="true"
+                         FilterType="ColumnFilterType.Select" />
+            <FlareColumn Title="City" Field="@(p => p.City)" Filterable="true"
+                         FilterType="ColumnFilterType.Select" />
+            <FlareColumn Title="Score" Field="@(p => p.Score)" Width="90px" Filterable="true"
+                         FilterType="ColumnFilterType.Number" Sortable="true" />
+        </Columns>
+        <ToolbarContent>
+            @if (_showBuilder)
+            {
+                @* Auto-wired: resolves the grid and its filterable columns from the cascade. *@
+                <DataGridFilterBuilder />
+            }
+        </ToolbarContent>
+    </FlareDataGrid>
+</FlareStack>
+
+@code {
+    private DataGridFilterMode _filterMode = DataGridFilterMode.Simple;
+    private bool _showBuilder;
+}

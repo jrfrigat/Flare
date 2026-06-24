@@ -1,0 +1,60 @@
+name: CI
+
+# Build + test + packaging validation on every push/PR. Publishing lives in separate workflows:
+#   release.yml  - pushes NuGet packages on  v*         tags
+#   gallery.yml  - builds/pushes the Docker image on gallery-v* tags
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: Build, test & validate packaging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # MinVer needs full history/tags to compute the version
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore Flare.slnx
+
+      - name: Build (Release)
+        run: dotnet build Flare.slnx -c Release --no-restore
+
+      - name: Test
+        run: dotnet test Flare.slnx -c Release --no-build --logger "trx;LogFileName=test-results.trx"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/*.trx'
+          if-no-files-found: ignore
+
+      # Pack here too so a packaging break (missing README/icon, CS1591, etc.) fails CI, not release.
+      # IsPackable=false on Gallery/Legacy/tests/tools means only the publishable packages are produced.
+      - name: Pack (validation only)
+        run: dotnet pack Flare.slnx -c Release --no-build -o artifacts
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts/*.nupkg

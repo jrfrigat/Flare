@@ -1,0 +1,24 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareDataGrid Items="@DatagridData._people" PageSize="20" Aggregates="@_aggregates">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+    @* Two grouping levels (Role, then City) - rendered as nested collapsible sections. *@
+    <Grouping>
+        <DataGridGroup Key="Role" Selector="@(p => p.Role)" />
+        <DataGridGroup Key="City" Selector="@(p => p.City)" />
+    </Grouping>
+</FlareDataGrid>
+
+@code {
+    // Per-group aggregates shown on every group header (count of rows + average/max score).
+    private readonly IReadOnlyList<AggregateDefinition<Person>> _aggregates =
+    [
+        new() { ColumnTitle = "Count",     Type = AggregateType.Count },
+        new() { ColumnTitle = "Avg score", Type = AggregateType.Average, ValueSelector = p => p.Score, Format = "N1" },
+        new() { ColumnTitle = "Max score", Type = AggregateType.Max,     ValueSelector = p => p.Score, Format = "N0" },
+    ];
+}

@@ -1,0 +1,102 @@
+@namespace Flare.Legacy.Components
+@using Flare.Legacy.Services
+@implements IDisposable
+@inject AppSettings Settings
+@inject IThemeService ThemeService
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Настройки приложения</FlareText>
+
+    @* ---- Theme block ---- *@
+    <FlareCard Variant="CardVariant.Filled">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Тема</FlareText>
+            <FlareDivider />
+            <FlareSelect TValue="string" Label="Тема оформления"
+                         Items="@_themeIds"
+                         ItemLabel="@(id => ThemeService.Themes.First(t => t.Id == id).DisplayName)"
+                         Value="@ThemeService.CurrentTheme.Id"
+                         ValueChanged="OnThemeChanged" />
+
+            <FlareSelect TValue="ThemeMode" Label="Режим (светлый / тёмный)"
+                         Items="_modes"
+                         ItemLabel="@(m => m switch { ThemeMode.Light => "Светлый", ThemeMode.Dark => "Тёмный", _ => "Авто (как в системе)" })"
+                         Value="@ThemeService.Mode"
+                         ValueChanged="OnModeChanged" />
+        </FlareStack>
+    </FlareCard>
+
+    @* ---- Grids & loading block ---- *@
+    <FlareCard Variant="CardVariant.Filled">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Гриды и загрузка</FlareText>
+            <FlareDivider />
+            <FlareSelect TValue="GridMode" Label="Отображение грида"
+                         Items="_gridModes"
+                         ItemLabel="@(m => m == GridMode.Pagination ? "Пагинация" : "Бесконечная подгрузка")"
+                         Value="@Settings.GridMode"
+                         ValueChanged="@(v => Set(() => Settings.GridMode = v))" />
+
+            <FlareSelect TValue="LoadStyle" Label="Стиль загрузки (datagrid и формы)"
+                         Items="_loadStyles"
+                         ItemLabel="@(s => s == LoadStyle.Skeleton ? "Скелетон" : "Кольцо + текст")"
+                         Value="@Settings.LoadStyle"
+                         ValueChanged="@(v => Set(() => Settings.LoadStyle = v))" />
+
+            <FlareNumericField TValue="int" Label="Задержка имитации backend (мс)"
+                               Value="@Settings.BackendDelayMs"
+                               ValueChanged="@(v => Set(() => Settings.BackendDelayMs = v))"
+                               Min="0" Max="10000" Step="100" ShowStepper />
+        </FlareStack>
+    </FlareCard>
+
+    @* ---- Tabs block ---- *@
+    <FlareCard Variant="CardVariant.Filled">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Вкладки</FlareText>
+            <FlareDivider />
+            <FlareSelect TValue="TabsVariant" Label="Вид вкладок (Tab variant)"
+                         Items="_tabVariants"
+                         ItemLabel="@(v => v.ToString())"
+                         Value="@Settings.TabVariant"
+                         ValueChanged="@(v => Set(() => Settings.TabVariant = v))" />
+        </FlareStack>
+    </FlareCard>
+</FlareStack>
+
+@code {
+    private List<string> _themeIds = [];
+    private static readonly LoadStyle[] _loadStyles = Enum.GetValues<LoadStyle>();
+    private static readonly GridMode[] _gridModes = Enum.GetValues<GridMode>();
+    private static readonly TabsVariant[] _tabVariants = Enum.GetValues<TabsVariant>();
+    private static readonly ThemeMode[] _modes = [ThemeMode.Light, ThemeMode.Dark, ThemeMode.Auto];
+
+    protected override void OnInitialized()
+    {
+        _themeIds = ThemeService.Themes.Select(t => t.Id).ToList();
+        ThemeService.OnThemeChanged += OnThemeServiceChanged;
+    }
+
+    private Task OnThemeServiceChanged() => InvokeAsync(StateHasChanged);
+
+    private async Task OnThemeChanged(string? themeId)
+    {
+        if (string.IsNullOrEmpty(themeId)) return;
+        await ThemeService.SetThemeAsync(themeId);
+        // Activate the theme's own default palette (MD3 -> Violet, the others -> their Blue).
+        var theme = ThemeService.Themes.FirstOrDefault(t => t.Id == themeId);
+        if (theme is not null)
+            await ThemeService.SetPaletteAsync(theme.DefaultPaletteId);
+    }
+
+    private Task OnModeChanged(ThemeMode mode) => ThemeService.SetModeAsync(mode);
+
+    // Apply a setting mutation and notify dependent components.
+    private void Set(Action mutate)
+    {
+        mutate();
+        Settings.NotifyChanged();
+    }
+
+    public void Dispose() => ThemeService.OnThemeChanged -= OnThemeServiceChanged;
+}

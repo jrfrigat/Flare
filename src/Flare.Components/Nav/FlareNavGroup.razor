@@ -1,0 +1,81 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_expandedClass)" style="@Style" @attributes="AdditionalAttributes">
+    <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
+        @if (Icon is not null)
+        {
+            <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
+        }
+        <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
+        <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
+    </button>
+    <div class="@Css.Classes.Nav.GroupItems @(_expanded ? Css.Classes.Nav.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
+        <div class="@Css.Classes.Nav.GroupItemsInner">
+            @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
+            <CascadingValue Value="this" IsFixed="true">
+                @ChildContent
+            </CascadingValue>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Nearest ancestor group (set when this group is nested inside another), so expansion
+    // bubbles up the whole chain when a deeply nested link becomes active.
+    [CascadingParameter] private FlareNavGroup? ParentGroup { get; set; }
+
+    /// <summary>Material Symbols icon name rendered before the label.</summary>
+    [Parameter] public string? Icon { get; set; }
+    /// <summary>Group title text.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Child nav links rendered inside the group.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Whether the group is expanded. Supports <c>@bind-Expanded</c>.</summary>
+    [Parameter] public bool Expanded { get; set; }
+    /// <summary>Callback fired when the expanded state changes.</summary>
+    [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Navigation.NavGroup;
+
+    // Internal expanded state. Kept separate from the Expanded parameter so an auto-expansion
+    // (from an active child) is NOT reset when a parent component re-renders and re-applies the
+    // original Expanded value. The parameter only re-seeds this when it actually changes.
+    private bool _expanded;
+    private bool _lastParamExpanded;
+
+    private string _expandedClass => _expanded ? Css.Classes.Navigation.NavGroupExpanded : string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        if (Expanded != _lastParamExpanded)
+        {
+            _expanded = Expanded;
+            _lastParamExpanded = Expanded;
+        }
+    }
+
+    private async Task Toggle()
+    {
+        _expanded = !_expanded;
+        await ExpandedChanged.InvokeAsync(_expanded);
+    }
+
+    /// <summary>
+    /// Expands this group (and every ancestor group) in response to a descendant
+    /// <c>FlareNavLink</c> becoming active. Safe to call when already expanded.
+    /// </summary>
+    public async Task ExpandFromChild()
+    {
+        var changed = !_expanded;
+        if (changed)
+        {
+            _expanded = true;
+            await ExpandedChanged.InvokeAsync(true);
+        }
+        if (ParentGroup is not null)
+            await ParentGroup.ExpandFromChild();
+        if (changed)
+            StateHasChanged();
+    }
+}

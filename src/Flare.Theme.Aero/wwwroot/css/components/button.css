@@ -1,0 +1,116 @@
+/* ==========================================================================
+   AERO BUTTONS (Windows 7 Aero / Office 2010 / 1C)
+   Glossy vertical gradient + 1px border + inset top highlight; light-blue glow
+   on hover and a sunken inset on press. All colors are theme tokens (resolved
+   via color-mix), so the gloss works in BOTH light and dark mode.
+   ========================================================================== */
+@scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
+
+    .flare-btn {
+        border: 1px solid var(--flare-color-outline);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--flare-color-surface) 60%, #ffffff);
+        transition:
+            background-color var(--flare-motion-duration-short2, 90ms) ease,
+            border-color var(--flare-motion-duration-short2, 90ms) ease,
+            box-shadow var(--flare-motion-duration-short2, 90ms) ease;
+    }
+
+    /* Suppress the MD3 translucent state layer; the gradient swap IS the hover effect. */
+    .flare-btn::before { opacity: 0 !important; }
+
+    /* ---- Filled (accent) button: glossy gradient of the resolved color ---- */
+    .flare-btn--filled {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 78%, #ffffff) 0%,
+            var(--fc-main, var(--flare-color-primary)) 48%,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 86%, #000000) 100%);
+        border-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 55%, #000000);
+    }
+    .flare-btn--filled:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 62%, #ffffff) 0%,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 90%, #ffffff) 48%,
+            var(--fc-main, var(--flare-color-primary)) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 4px var(--flare-aero-glow);
+    }
+    .flare-btn--filled:active {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 88%, #000000) 0%,
+            var(--fc-main, var(--flare-color-primary)) 100%);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ---- Tonal (the classic gray "command" button): silver gradient ---- */
+    .flare-btn--tonal {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-container, var(--flare-color-secondary-container)) 35%, #ffffff) 0%,
+            color-mix(in srgb, var(--fc-container, var(--flare-color-secondary-container)) 75%, #ffffff) 48%,
+            var(--fc-container, var(--flare-color-secondary-container)) 52%,
+            color-mix(in srgb, var(--fc-container, var(--flare-color-secondary-container)) 90%, #000000) 100%);
+        border-color: var(--flare-color-outline);
+        color: var(--fc-on-container, var(--flare-color-on-secondary-container));
+    }
+    .flare-btn--tonal:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-color-surface)) 100%);
+        border-color: var(--flare-color-primary);
+        box-shadow: inset 0 1px 0 color-mix(in srgb, var(--flare-color-surface) 50%, #ffffff), 0 0 3px var(--flare-aero-glow);
+        color: var(--flare-color-on-surface);
+    }
+    .flare-btn--tonal:active {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 32%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 18%, var(--flare-color-surface)) 100%);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.18);
+    }
+
+    /* ---- Outlined / Elevated: glossy "surface" button (white in light, slate in dark) ---- */
+    .flare-btn--outlined,
+    .flare-btn--elevated {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface) 72%, #ffffff) 0%,
+            var(--flare-color-surface) 48%,
+            color-mix(in srgb, var(--flare-color-surface) 90%, #000000) 100%);
+        border: 1px solid var(--flare-color-outline);
+        color: var(--flare-color-on-surface);
+    }
+    .flare-btn--outlined:hover,
+    .flare-btn--elevated:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-color-surface)) 100%);
+        border-color: var(--flare-color-primary);
+        box-shadow: 0 0 3px var(--flare-aero-glow);
+        color: var(--flare-color-on-surface);
+    }
+    .flare-btn--outlined:active,
+    .flare-btn--elevated:active {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 32%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 18%, var(--flare-color-surface)) 100%);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+    }
+
+    /* Text buttons stay light: just a subtle hover tint, no gradient. */
+    .flare-btn--text { border-color: transparent; box-shadow: none; background-image: none; }
+    .flare-btn--text:hover {
+        background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 12%, transparent);
+        border-color: transparent;
+    }
+
+    .flare-btn:disabled,
+    .flare-btn[disabled] {
+        background-image: none;
+        box-shadow: none;
+    }
+}

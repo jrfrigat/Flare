@@ -1,0 +1,70 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@typeparam TValue
+
+<CascadingValue Value="_context" IsFixed="false">
+    <div class="@BuildCssClass(_orientationClass)" style="@Style" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    /// <summary>Selected value when MultiSelect is false.</summary>
+    [Parameter] public TValue? Value { get; set; }
+    /// <summary>Callback raised when the single selection changes.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    /// <summary>Selected values when MultiSelect is true.</summary>
+    [Parameter] public IReadOnlyList<TValue?>? Values { get; set; }
+    /// <summary>Callback raised when the multi-selection changes.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<TValue?>> ValuesChanged { get; set; }
+    /// <summary>Allows multiple buttons to be active simultaneously.</summary>
+    [Parameter] public bool MultiSelect { get; set; }
+    /// <summary>Child FlareToggleButton components.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>"horizontal" (default) or "vertical".</summary>
+    [Parameter] public string Orientation { get; set; } = "horizontal";
+
+    protected override string ComponentCssClass => Css.Classes.ToggleGroup.Root;
+
+    private string _orientationClass =>
+        Orientation == "vertical" ? Css.Classes.ToggleGroup.Vertical : string.Empty;
+
+    private HashSet<object?> _selected = new();
+    private FlareToggleGroupContext _context = null!;
+
+    protected override void OnParametersSet()
+    {
+        var newSelected = MultiSelect
+            ? new HashSet<object?>(Values?.Cast<object?>() ?? Enumerable.Empty<object?>())
+            : Value is not null ? new HashSet<object?> { Value } : new HashSet<object?>();
+
+        // Only rebuild context when the selection set actually changed to avoid
+        // forcing a full subtree re-render on every parent parameter set.
+        if (_context is null || !newSelected.SetEquals(_selected))
+        {
+            _selected = newSelected;
+            _context = new FlareToggleGroupContext(_selected, MultiSelect, HandleToggle);
+        }
+    }
+
+    private async Task HandleToggle(object? value)
+    {
+        if (MultiSelect)
+        {
+            if (!_selected.Add(value))
+                _selected.Remove(value);
+
+            _context = new FlareToggleGroupContext(new HashSet<object?>(_selected), MultiSelect, HandleToggle);
+            await ValuesChanged.InvokeAsync(_selected.Cast<TValue?>().ToList());
+        }
+        else
+        {
+            var next = _selected.Contains(value) ? default : (TValue?)value;
+            _selected = next is not null ? new HashSet<object?> { next } : new HashSet<object?>();
+            _context = new FlareToggleGroupContext(new HashSet<object?>(_selected), MultiSelect, HandleToggle);
+            await ValueChanged.InvokeAsync(next);
+        }
+
+        StateHasChanged();
+    }
+}

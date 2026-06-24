@@ -1,0 +1,48 @@
+@* Placement puts the bar on any side (Top/Bottom/Left/Right). LabelRotation rotates
+   each label by 0/90/180/270 degrees (handy for vertical Left/Right bars). *@
+<FlareStack Gap="FlareSpacing.XLarge">
+    <div>
+        <FlareText Typo="TypographyScale.LabelLarge" Color="FlareColor.OnSurfaceVariant">Placement</FlareText>
+        <FlareStack Row Gap="FlareSpacing.Small" Wrap Style="margin-top:0.5rem;">
+            @foreach (var p in _placements)
+            {
+                <FlareButton Variant="@(p == _placement ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                             Size="ButtonSize.Sm" OnClick="@(() => _placement = p)">@p</FlareButton>
+            }
+        </FlareStack>
+    </div>
+    <div>
+        <FlareText Typo="TypographyScale.LabelLarge" Color="FlareColor.OnSurfaceVariant">Label rotation</FlareText>
+        <FlareStack Row Gap="FlareSpacing.Small" Wrap Style="margin-top:0.5rem;">
+            @foreach (var r in _rotations)
+            {
+                <FlareButton Variant="@(r == _rotation ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                             Size="ButtonSize.Sm" OnClick="@(() => _rotation = r)">@_rotLabel(r)</FlareButton>
+            }
+        </FlareStack>
+    </div>
+
+    <div style="min-height:14rem;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);padding:0.5rem;">
+        <FlareTabs Placement="_placement" LabelRotation="_rotation">
+            <FlareTab Label="Overview"><FlareText>Overview panel.</FlareText></FlareTab>
+            <FlareTab Label="Activity"><FlareText>Activity panel.</FlareText></FlareTab>
+            <FlareTab Label="Settings"><FlareText>Settings panel.</FlareText></FlareTab>
+        </FlareTabs>
+    </div>
+</FlareStack>
+
+@code {
+    private TabsPlacement _placement = TabsPlacement.Left;
+    private TabLabelRotation _rotation = TabLabelRotation.None;
+
+    private readonly TabsPlacement[] _placements = Enum.GetValues<TabsPlacement>();
+    private readonly TabLabelRotation[] _rotations = Enum.GetValues<TabLabelRotation>();
+
+    private string _rotLabel(TabLabelRotation r) => r switch
+    {
+        TabLabelRotation.Rotate90 => "90",
+        TabLabelRotation.Rotate180 => "180",
+        TabLabelRotation.Rotate270 => "270",
+        _ => "0",
+    };
+}

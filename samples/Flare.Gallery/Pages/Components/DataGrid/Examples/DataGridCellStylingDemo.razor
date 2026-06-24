@@ -1,0 +1,21 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* Cell-level formatting lives on the column: FlareColumn.ClassFunc / StyleFunc take the row item
+   and return a CSS class / inline style for that column's cell. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="10">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px"
+                     ClassFunc="@((Person p) => ScoreClass(p))" StyleFunc="@((Person p) => ScoreStyle(p))" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private string ScoreClass(Person p) =>
+        p.Score >= 90 ? "flare-color-success" : p.Score <= 74 ? "flare-color-error" : "";
+
+    private string ScoreStyle(Person p) =>
+        p.Score >= 90 ? "font-weight:bold" : "";
+}

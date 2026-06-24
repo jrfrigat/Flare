@@ -1,0 +1,21 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
+    <FlareTextField @bind-Value="_name" Label="Name" Placeholder="Enter name…" Clearable="true" />
+    <FlareTextField @bind-Value="_email" Label="Email" Placeholder="name@example.com" HelperText="We won't share your email.">
+        <LeadingIcon><FlareIcon Name="email" /></LeadingIcon>
+    </FlareTextField>
+    <FlareTextField @bind-Value="_outlined" Label="Outlined variant" Variant="InputVariant.Outlined" Placeholder="Outlined regardless of theme" />
+    <FlareTextField @bind-Value="_live" Label="Immediate + debounce 300ms" Immediate="true" DebounceInterval="300" HelperText="@($"Live value: {_live}")" />
+    <FlareTextField Label="Error example" Placeholder="Required field" ErrorText="This field is required." />
+    <FlareTextField @bind-Value="_readonly" Label="Read-only" ReadOnly="true" />
+    <FlareTextField @bind-Value="_bio" Label="Bio" Placeholder="Short bio…" Immediate="true"
+                MaxLength="80" ShowCharacterCount="true" HelperText="Keep it brief." />
+</FlareStack>
+
+@code {
+    private string? _name;
+    private string? _email;
+    private string? _outlined;
+    private string? _live;
+    private string? _readonly = "Readonly value";
+    private string? _bio;
+}

@@ -1,0 +1,156 @@
+@namespace Flare.Gallery.Components.Shared
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Medium" Style="@_sectionStyle">
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <FlareStack Gap="FlareSpacing.XXSmall">
+            <FlareText Typo="TypographyScale.TitleLarge" Class="demo-section__title" AnchorId="@_anchorId">@Title</FlareText>
+            @if (!string.IsNullOrEmpty(Description))
+            {
+                <FlareText Typo="TypographyScale.BodyMedium" Color="@Colors.OnSurfaceVariant">@Description</FlareText>
+            }
+        </FlareStack>
+    }
+
+    @* Preview + its code toggle are grouped in a tight inner stack so the "show code" button
+       hugs its own example (small gap) rather than drifting toward the next section's content.
+       FlareLazy defers mounting the live demo until it scrolls near the viewport, so a page with
+       many demos never instantiates all of them at once (caps the WASM heap high-water mark). *@
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareLazy MinHeight="@(MinHeight ?? Height ?? "200px")">
+            <FlarePaper Elevation="0" Padding="FlareSpacing.Large" Style="@_previewStyle">
+                @DemoContent
+            </FlarePaper>
+        </FlareLazy>
+
+        @if (Tabs is not null && Tabs.Any())
+        {
+            <FlareStack Gap="FlareSpacing.XSmall">
+                <FlareStack Row Justify="FlareJustifyContent.Start">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="ToggleCode">
+                        <LeadingIcon><FlareIcon Name="@(_codeOpen ? "expand_less" : "code")" /></LeadingIcon>
+                        <ChildContent>@(_codeOpen ? GalleryStrings.Common_HideCode : GalleryStrings.Common_ShowCode)</ChildContent>
+                    </FlareButton>
+                </FlareStack>
+
+                @if (_codeOpen)
+                {
+                    <FlareTabs @bind-ActiveIndex="_activeCodeTab">
+                        <HeaderEnd>
+                            @* One copy button in the tab bar - copies the active tab's code (no per-tab row). *@
+                            <FlareClipboard Text="@_activeCode" />
+                        </HeaderEnd>
+                        <ChildContent>
+                            @foreach (var tab in Tabs)
+                            {
+                                <FlareTab Label="@tab.Title">
+                                    <FlareCodeBlock Value="@tab.Code" Language="@tab.Language" />
+                                </FlareTab>
+                            }
+                        </ChildContent>
+                    </FlareTabs>
+                }
+            </FlareStack>
+        }
+    </FlareStack>
+</FlareStack>
+
+@code {
+    /// <summary>Section title shown above the demo preview.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Optional supporting description under the title.</summary>
+    [Parameter] public string? Description { get; set; }
+    /// <summary>The live demo content rendered in the preview surface.</summary>
+    [Parameter] public RenderFragment? DemoContent { get; set; }
+    /// <summary>Source-code tabs (Razor/C#/CSS/JSON) revealed by the toggle.</summary>
+    [Parameter] public IEnumerable<CodeTab>? Tabs { get; set; }
+
+    /// <summary>
+    /// Explicit ASCII anchor id for the section title. Provided by <c>AutoDemoSection</c> from the
+    /// (English) demo type name so the anchor is stable and language-independent. Falls back to a
+    /// slug of <see cref="Title"/> when unset.
+    /// </summary>
+    [Parameter] public string? AnchorId { get; set; }
+
+    /// <summary>Maximum reading width of the whole section. Defaults to <see cref="ContainerMaxWidth.Lg"/>
+    /// (1280px); set <see cref="ContainerMaxWidth.Full"/> for a wide demo (DataGrid, IDE) or a smaller
+    /// size to constrain it. The Gallery layout itself is full width, so this is the per-demo cap.</summary>
+    [Parameter] public ContainerMaxWidth MaxWidth { get; set; } = ContainerMaxWidth.Lg;
+    /// <summary>Preview surface height as a CSS length (e.g. "32rem"). Unset = content height.
+    /// Useful for demos that need a tall canvas (DataGrid, IDE).</summary>
+    [Parameter] public string? Height { get; set; }
+    /// <summary>Minimum preview height (CSS length).</summary>
+    [Parameter] public string? MinHeight { get; set; }
+    /// <summary>Maximum preview height (CSS length).</summary>
+    [Parameter] public string? MaxHeight { get; set; }
+
+    private bool _codeOpen;
+    private int _activeCodeTab;
+
+    private void ToggleCode() => _codeOpen = !_codeOpen;
+
+    // Code of the currently selected code tab - bound to the single clipboard button in the tab
+    // header so it copies whichever tab is active.
+    private string _activeCode
+    {
+        get
+        {
+            var list = Tabs?.ToList();
+            if (list is null || list.Count == 0) return string.Empty;
+            return list[Math.Clamp(_activeCodeTab, 0, list.Count - 1)].Code;
+        }
+    }
+
+    // Stable anchor id for the section title, so FlareOnThisPage can link to it and the URL is
+    // shareable. Prefer the explicit (ASCII, language-independent) AnchorId; the localized-title
+    // slug is only a fallback and would break native anchor scrolling for non-Latin titles.
+    private string? _anchorId => !string.IsNullOrWhiteSpace(AnchorId) ? AnchorId : Slugify(Title);
+
+    private static string? Slugify(string? text)
+    {
+        if (string.IsNullOrWhiteSpace(text)) return null;
+        var sb = new System.Text.StringBuilder(text.Length);
+        var dash = false;
+        foreach (var ch in text.Trim().ToLowerInvariant())
+        {
+            if (char.IsLetterOrDigit(ch)) { sb.Append(ch); dash = false; }
+            else if (!dash && sb.Length > 0) { sb.Append('-'); dash = true; }
+        }
+        var slug = sb.ToString().Trim('-');
+        return slug.Length > 0 ? slug : null;
+    }
+
+    // Vertical breathing room so consecutive demo sections (which may be plain siblings on a page)
+    // are clearly separated -- otherwise one section's "show code" button sits right against the
+    // next section's content. Combined with the MaxWidth cap (default Lg; Full removes the cap).
+    private string _sectionStyle
+    {
+        get
+        {
+            var maxWidth = MaxWidth switch
+            {
+                ContainerMaxWidth.Xs => "max-width:480px",
+                ContainerMaxWidth.Sm => "max-width:600px",
+                ContainerMaxWidth.Md => "max-width:960px",
+                ContainerMaxWidth.Lg => "max-width:1280px",
+                ContainerMaxWidth.Xl => "max-width:1920px",
+                _ => null, // Full -- no cap
+            };
+            return maxWidth is null ? "padding-block:1.5rem" : $"{maxWidth};padding-block:1.5rem";
+        }
+    }
+
+    // Optional fixed/min/max height for the preview canvas (e.g. tall DataGrid/IDE demos).
+    private string? _previewStyle
+    {
+        get
+        {
+            var parts = new List<string>(3);
+            if (!string.IsNullOrEmpty(Height)) parts.Add($"height:{Height}");
+            if (!string.IsNullOrEmpty(MinHeight)) parts.Add($"min-height:{MinHeight}");
+            if (!string.IsNullOrEmpty(MaxHeight)) parts.Add($"max-height:{MaxHeight}");
+            return parts.Count > 0 ? string.Join(";", parts) : null;
+        }
+    }
+}

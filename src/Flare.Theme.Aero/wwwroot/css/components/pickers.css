@@ -1,0 +1,93 @@
+/* ==========================================================================
+   AERO PICKERS + CHROME (calendar / date / time / dropzone / datagrid / nav /
+   appbar). Color-bearing surfaces (appbar, nav, selected days) keep their base
+   color and get a glossy SHEEN overlay so text contrast survives light + dark.
+   ========================================================================== */
+@scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
+
+    /* ---- App bar: glossy sheen over the base color (Aero title bar) ---- */
+    .flare-appbar {
+        background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.22) 0%,
+            rgba(255, 255, 255, 0.04) 48%,
+            rgba(0, 0, 0, 0.05) 52%,
+            rgba(0, 0, 0, 0.10) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    /* ---- Calendar / date / time header: light glossy bar ---- */
+    .flare-calendar__header,
+    .flare-datepicker__header,
+    .flare-timepicker__panel-headline,
+    .flare-nav-group__header {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface-container) 45%, #ffffff) 0%,
+            var(--flare-color-surface-container) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Selected day/cell: glossy accent (text stays on-primary -> dark-safe) ---- */
+    .flare-datepicker__day--selected,
+    .flare-calendar__cell--selected,
+    .flare-timepicker__cell--selected,
+    .flare-timepicker__period-btn--selected,
+    .flare-datepicker__month-btn--selected,
+    .flare-datepicker__year-btn--selected {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 72%, #ffffff) 0%,
+            var(--flare-color-primary) 50%,
+            color-mix(in srgb, var(--flare-color-primary) 86%, #000000) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .flare-datepicker__day:hover:not(.flare-datepicker__day--selected):not(.flare-datepicker__day--disabled),
+    .flare-calendar__cell:hover:not(.flare-calendar__cell--selected) {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 12%, transparent) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 20%, transparent) 100%);
+    }
+
+    /* ---- Dropzone: glossy surface; accent tint while dragging ---- */
+    .flare-dropzone {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface) 60%, #ffffff) 0%,
+            var(--flare-color-surface-container-low) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .flare-dropzone--dragging {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 24%, var(--flare-color-surface)) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 4px var(--flare-aero-glow);
+    }
+
+    /* ---- DataGrid header: the glossy Office grid header ---- */
+    .flare-datagrid__th {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface-container) 40%, #ffffff) 0%,
+            var(--flare-color-surface-container) 55%,
+            color-mix(in srgb, var(--flare-color-surface-container) 88%, #000000) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    /* ---- Nav: glossy active item + hover tint (translucent, color-safe) ---- */
+    .flare-nav-link--active {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 16%, transparent) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 28%, transparent) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    }
+    .flare-nav-link:not(.flare-nav-link--active):not(.flare-nav-link--disabled):hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 9%, transparent) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 16%, transparent) 100%);
+    }
+}

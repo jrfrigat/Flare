@@ -1,0 +1,11 @@
+@page "/components/forms"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Forms_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareForm">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Forms_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Forms_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Forms_Validation" DemoType="typeof(Examples.FormsValidationDemo)" />

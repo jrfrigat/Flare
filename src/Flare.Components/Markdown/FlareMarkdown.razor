@@ -1,0 +1,25 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_highlightClass)" style="@Style" @attributes="AdditionalAttributes">
+    @((MarkupString)_html)
+</div>
+
+@code {
+    /// <summary>Markdown source text to render.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>When true, strips script tags and dangerous attribute patterns from the rendered HTML. Default: true.</summary>
+    [Parameter] public bool SanitizeHtml { get; set; } = true;
+
+    /// <summary>When true, applies CSS-based syntax highlighting classes to fenced code blocks.</summary>
+    [Parameter] public bool SyntaxHighlight { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Markdown.Root;
+
+    private string _highlightClass => SyntaxHighlight ? Css.Classes.Markdown.Highlight : string.Empty;
+    private string _html = string.Empty;
+
+    protected override void OnParametersSet() =>
+        _html = MarkdownParser.ToHtml(Value, SanitizeHtml);
+}

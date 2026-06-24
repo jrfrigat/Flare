@@ -1,0 +1,9 @@
+<FlarePagination Current="_page" CurrentChanged="@(p => { _page = p; _last = p; })" TotalPages="20" />
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+    Page @_page of 20 - last change event: @_last
+</FlareText>
+
+@code {
+    private int _page = 1;
+    private int _last = 1;
+}

@@ -1,0 +1,24 @@
+/* Aero theme (Windows 7 Aero / Office 2010 / 1C) base bundle.
+   The glossy gradient/glow effects live in the scoped component files below. */
+@import "components/button.css";
+@import "components/input.css";
+@import "components/controls.css";
+@import "components/surfaces.css";
+@import "components/chrome.css";
+@import "components/pickers.css";
+
+/* Scoped chrome touches that apply to the whole aero surface. */
+@scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
+
+    /* Panels/cards: a faint top inset highlight over the flat surface (Aero "glass" hint). */
+    .flare-card {
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    /* Menus, popovers and dialogs get the soft Aero drop shadow. */
+    .flare-menu__panel,
+    .flare-popover__paper,
+    .flare-select__dropdown {
+        box-shadow: var(--flare-elevation-3);
+    }
+}

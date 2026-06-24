@@ -1,0 +1,45 @@
+.flare-color-customizer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-6, 0.75rem);
+}
+
+.flare-color-customizer__swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-color-customizer__swatch {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 150ms, transform 150ms;
+    /* Preset accent supplied per-swatch as a CSS variable. */
+    background-color: var(--flare-swatch);
+}
+.flare-color-customizer__swatch:hover {
+    transform: scale(1.1);
+}
+.flare-color-customizer__swatch--active {
+    border-color: var(--flare-color-on-surface);
+    transform: scale(1.15);
+}
+
+.flare-color-customizer__custom {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+}
+
+.flare-color-customizer__picker {
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+}

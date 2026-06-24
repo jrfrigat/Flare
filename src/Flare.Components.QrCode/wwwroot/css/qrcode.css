@@ -1,0 +1,8 @@
+.flare-qrcode {
+    display: inline-block;
+    line-height: 0;
+}
+
+.flare-qrcode svg {
+    display: block;
+}

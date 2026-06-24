@@ -1,0 +1,21 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" role="group" aria-label="@Label" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <div class="@Css.Classes.Menu.GroupLabel" aria-hidden="true">@Label</div>
+    }
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Optional section header rendered above the group's items.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>The menu items (<see cref="FlareMenuItem"/>) that belong to this group.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Menu.Group;
+}

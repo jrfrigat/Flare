@@ -1,0 +1,11 @@
+﻿<FlareDataGrid Items="@DatagridData._people" PageSize="6"
+               SelectionMode="SelectionMode.Multiple"
+               SelectedItems="@_selected"
+               SelectedItemsChanged="@((HashSet<Person> s) => OnSelectionChanged(s))">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+</FlareDataGrid>

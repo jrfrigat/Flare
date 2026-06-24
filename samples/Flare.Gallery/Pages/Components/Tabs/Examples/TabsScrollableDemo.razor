@@ -1,0 +1,20 @@
+@* When the tab bar overflows its container, prev/next scroll arrows appear automatically
+   (the bar is also scrollable by trackpad/drag). Resize the window to see arrows toggle. *@
+<div style="max-width:32rem;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
+    <FlareTabs>
+        @foreach (var t in _tabs)
+        {
+            <FlareTab Label="@t">
+                <FlareText Typo="TypographyScale.BodyMedium">Content for @t.</FlareText>
+            </FlareTab>
+        }
+    </FlareTabs>
+</div>
+
+@code {
+    private readonly string[] _tabs =
+    [
+        "Overview", "Specifications", "Pricing", "Reviews", "Shipping",
+        "Warranty", "Support", "Accessories", "Compare", "FAQ",
+    ];
+}

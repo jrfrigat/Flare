@@ -1,0 +1,17 @@
+@page "/components/otp-field"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.OtpField_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareOtpField">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.OtpField_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        @GalleryStrings.OtpField_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.OtpField_Basic" DemoType="typeof(Examples.OtpFieldBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.OtpField_Pin" DemoType="typeof(Examples.OtpFieldPinDemo)" />
+<AutoDemoSection Title="@GalleryStrings.OtpField_ErrorState" DemoType="typeof(Examples.OtpFieldErrorStateDemo)" />
+<AutoDemoSection Title="@GalleryStrings.OtpField_Disabled" DemoType="typeof(Examples.OtpFieldDisabledDemo)" />
+<AutoDemoSection Title="@GalleryStrings.OtpField_Alphanumeric" DemoType="typeof(Examples.OtpFieldAlphanumericDemo)" />

@@ -1,0 +1,31 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<main class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Layout.ContentFrame @_maxWidthClass @_alignClass">
+        @ChildContent
+    </div>
+</main>
+
+@code {
+    /// <summary>Child content rendered in the layout content area.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>
+    /// Optional readable-width cap for the content; the content is centered horizontally while
+    /// the scrollbar stays at the window edge. Defaults to <see cref="ContainerMaxWidth.Full"/>
+    /// (no constraint -- full width with padding).
+    /// </summary>
+    [Parameter] public ContainerMaxWidth MaxWidth { get; set; } = ContainerMaxWidth.Full;
+
+    /// <summary>
+    /// Horizontal placement of the content when <see cref="MaxWidth"/> caps it. Defaults to
+    /// <see cref="LayoutContentAlignment.Center"/>.
+    /// </summary>
+    [Parameter] public LayoutContentAlignment Alignment { get; set; } = LayoutContentAlignment.Center;
+
+    protected override string ComponentCssClass => Css.Classes.Layout.Content;
+
+    private string _maxWidthClass => LayoutContentWidth.ToClass(MaxWidth);
+    private string _alignClass => LayoutContentWidth.ToAlignClass(Alignment);
+}

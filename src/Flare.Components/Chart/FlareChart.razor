@@ -1,0 +1,337 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @if (Title is not null)
+    {
+        <div class="@Css.Classes.Chart.Title">
+            <FlareText Typo="TypographyScale.TitleMedium">@Title</FlareText>
+        </div>
+    }
+    <div class="@Css.Classes.Chart.Plot">
+        <svg class="@Css.Classes.Chart.Svg" viewBox="0 0 @_svgW @_svgH" xmlns="http://www.w3.org/2000/svg"
+             aria-label="@(Title ?? "Chart")" role="img">
+            <title>@(Title ?? "Chart")</title>
+            @if (!string.IsNullOrEmpty(Description))
+            {
+                <desc>@Description</desc>
+            }
+            @switch (Type)
+            {
+                case ChartType.Bar: @RenderBar(); break;
+                case ChartType.Pie: @RenderPie(false); break;
+                case ChartType.Donut: @RenderPie(true); break;
+                default: @RenderLine(); break;
+            }
+
+            @* Transparent hit zones in viewBox units, so detection scales with the SVG
+               (mouse offsets in rendered px would not match the 0..400 viewBox). *@
+            @if (Type is ChartType.Line or ChartType.Bar)
+            {
+                @foreach (var cat in _categories)
+                {
+                    var c = cat;
+                    <rect x="@F(c.XLeft)" y="@F(_padT)" width="@F(c.Width)" height="@F(_plotH)"
+                          fill="transparent"
+                          @onmouseenter="() => SetHoverCategory(c.Index, c.XCenter)"
+                          @onmouseleave="ClearHover" />
+                }
+            }
+            else if (Type is ChartType.Pie or ChartType.Donut)
+            {
+                @foreach (var slice in _slices)
+                {
+                    var s = slice;
+                    <path d="@s.Path" fill="transparent" class="@Css.Classes.Chart.Hit"
+                          @onmouseenter="() => SetHoverSlice(s.Index, s.Cx, s.Cy)"
+                          @onmouseleave="ClearHover" />
+                }
+            }
+        </svg>
+        @if (_tooltipVisible && !string.IsNullOrEmpty(_tooltipText))
+        {
+            <div class="@Css.Classes.Chart.Tooltip"
+                 style="@(string.Create(_inv, $"left:{_hoverXPct:F2}%;top:{_hoverYPct:F2}%"))">
+                @_tooltipText
+            </div>
+        }
+    </div>
+    @if (Data?.Series is { Count: > 0 } series)
+    {
+        <div class="@Css.Classes.Chart.Legend">
+            @for (int i = 0; i < series.Count; i++)
+            {
+                var idx = i;
+                <div class="@Css.Classes.Chart.LegendItem">
+                    <span class="@Css.Classes.Chart.LegendDot" style="@($"--flare-chart-dot:{GetColor(idx)}")"></span>
+                    <span>@series[idx].Label</span>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>Chart rendering type: Line, Bar, Pie, or Donut.</summary>
+    [Parameter] public ChartType Type { get; set; } = ChartType.Line;
+    /// <summary>Data series and labels to visualize in the chart.</summary>
+    [Parameter] public ChartData? Data { get; set; }
+    /// <summary>Optional title displayed above the chart and used as the SVG accessible name.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Optional description for the SVG &lt;desc&gt; element, improving screen-reader context.</summary>
+    [Parameter] public string? Description { get; set; }
+    /// <summary>SVG viewport height in pixels.</summary>
+    [Parameter] public int Height { get; set; } = 220;
+
+    protected override string ComponentCssClass => Css.Classes.Chart.Root;
+
+    // SVG numeric attributes require '.' as the decimal separator; never use the current
+    // culture (e.g. ru-RU formats 192.0 as "192,0", which is invalid in SVG).
+    private static readonly System.Globalization.CultureInfo _inv = System.Globalization.CultureInfo.InvariantCulture;
+
+    private const int _svgW = 400;
+    private int _svgH => Height;
+    private const int _padL = 36, _padR = 12, _padT = 12, _padB = 28;
+    private int _plotW => _svgW - _padL - _padR;
+    private int _plotH => _svgH - _padT - _padB;
+
+    // Tooltip state. Position is a percentage of the SVG box so it tracks the scaled
+    // viewBox without needing the rendered pixel size.
+    private bool _tooltipVisible;
+    private double _hoverXPct;
+    private double _hoverYPct;
+    private string _tooltipText = string.Empty;
+
+    private string F(double d) => d.ToString("F1", _inv);
+
+    private static readonly string[] _palette =
+    [
+        "var(--flare-color-primary)",
+        "var(--flare-color-secondary)",
+        "var(--flare-color-tertiary)",
+        "var(--flare-color-error)",
+        "var(--flare-color-primary-container)",
+        "var(--flare-color-secondary-container)",
+        "var(--flare-color-tertiary-container)",
+        "var(--flare-color-error-container)",
+    ];
+
+    private string GetColor(int idx) =>
+        Data?.Series[idx].Color ?? _palette[idx % _palette.Length];
+
+    /// <summary>Clamps NaN/Infinity data values to 0 to prevent SVG coordinate corruption.</summary>
+    private static double SafeValue(double v) =>
+        double.IsNaN(v) || double.IsInfinity(v) ? 0.0 : v;
+
+    private int _pts => Data?.Series is { Count: > 0 } s ? s.Max(x => x.Values.Count) : 0;
+
+    // Category hit zones (line/bar), in viewBox units.
+    private IEnumerable<(int Index, double XLeft, double Width, double XCenter)> _categories
+    {
+        get
+        {
+            int pts = _pts;
+            if (pts <= 0) yield break;
+            if (Type == ChartType.Bar)
+            {
+                double groupW = _plotW / (double)pts;
+                for (int i = 0; i < pts; i++)
+                {
+                    double left = _padL + i * groupW;
+                    yield return (i, left, groupW, left + groupW / 2);
+                }
+            }
+            else
+            {
+                double step = pts > 1 ? _plotW / (double)(pts - 1) : _plotW;
+                for (int i = 0; i < pts; i++)
+                {
+                    double center = _padL + (pts > 1 ? i * step : _plotW / 2.0);
+                    double width = pts > 1 ? step : _plotW;
+                    yield return (i, center - width / 2, width, center);
+                }
+            }
+        }
+    }
+
+    // Slice geometry (pie/donut) shared by the visual paths and the hit zones.
+    private IEnumerable<(int Index, string Path, double Cx, double Cy)> _slices
+    {
+        get
+        {
+            if (Data?.Series is not { Count: > 0 } series) yield break;
+            bool donut = Type == ChartType.Donut;
+            double cx = _svgW / 2.0, cy = _svgH / 2.0;
+            double r = Math.Min(cx, cy) - 16;
+            double inner = donut ? r * 0.55 : 0;
+            double total = series.Sum(s => s.Values.FirstOrDefault());
+            if (total == 0) yield break;
+
+            double startAngle = -Math.PI / 2;
+            for (int i = 0; i < series.Count; i++)
+            {
+                double val = SafeValue(series[i].Values.FirstOrDefault());
+                double sweep = val / total * 2 * Math.PI;
+                double endAngle = startAngle + sweep;
+                double x1 = cx + r * Math.Cos(startAngle), y1 = cy + r * Math.Sin(startAngle);
+                double x2 = cx + r * Math.Cos(endAngle), y2 = cy + r * Math.Sin(endAngle);
+                double ix1 = cx + inner * Math.Cos(startAngle), iy1 = cy + inner * Math.Sin(startAngle);
+                double ix2 = cx + inner * Math.Cos(endAngle), iy2 = cy + inner * Math.Sin(endAngle);
+                int largeArc = sweep > Math.PI ? 1 : 0;
+                string path = donut
+                    ? string.Create(_inv, $"M {x1:F2} {y1:F2} A {r:F2} {r:F2} 0 {largeArc} 1 {x2:F2} {y2:F2} L {ix2:F2} {iy2:F2} A {inner:F2} {inner:F2} 0 {largeArc} 0 {ix1:F2} {iy1:F2} Z")
+                    : string.Create(_inv, $"M {cx:F2} {cy:F2} L {x1:F2} {y1:F2} A {r:F2} {r:F2} 0 {largeArc} 1 {x2:F2} {y2:F2} Z");
+                double mid = startAngle + sweep / 2;
+                double rMid = donut ? (r + inner) / 2 : r * 0.6;
+                yield return (i, path, cx + rMid * Math.Cos(mid), cy + rMid * Math.Sin(mid));
+                startAngle = endAngle;
+            }
+        }
+    }
+
+    private (double Min, double Max) _scale()
+    {
+        var all = Data!.Series.SelectMany(s => s.Values).ToList();
+        if (all.Count == 0) return (0, 1);
+        double min = all.Min(), max = all.Max();
+        if (Type == ChartType.Bar) { max = Math.Max(max, 0); min = Math.Min(min, 0); }
+        if (max == min) max = min + 1;
+        return (min, max);
+    }
+
+    private double _yOf(double v, double min, double max) =>
+        _padT + _plotH - (SafeValue(v) - min) / (max - min) * _plotH;
+
+    private void SetHoverCategory(int index, double xCenter)
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        var label = (Data?.Labels is { } ls && index < ls.Count) ? ls[index] : index.ToString();
+        var parts = series.Where(s => index < s.Values.Count)
+            .Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}"));
+        _tooltipText = $"{label}\n{string.Join("\n", parts)}";
+
+        var (min, max) = _scale();
+        double yTop = series.Where(s => index < s.Values.Count)
+            .Select(s => _yOf(s.Values[index], min, max))
+            .DefaultIfEmpty(_padT).Min();
+
+        _hoverXPct = xCenter / _svgW * 100;
+        _hoverYPct = yTop / _svgH * 100;
+        _tooltipVisible = true;
+    }
+
+    private void SetHoverSlice(int index, double cx, double cy)
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        double total = series.Sum(s => s.Values.FirstOrDefault());
+        double pct = total > 0 ? series[index].Values.FirstOrDefault() / total * 100 : 0;
+        _tooltipText = string.Create(_inv, $"{series[index].Label}: {pct:F1}%");
+        _hoverXPct = cx / _svgW * 100;
+        _hoverYPct = cy / _svgH * 100;
+        _tooltipVisible = true;
+    }
+
+    private void ClearHover() => _tooltipVisible = false;
+
+    private RenderFragment RenderLine() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        var allVals = series.SelectMany(s => s.Values).ToList();
+        if (allVals.Count == 0) return;
+        double min = allVals.Min(), max = allVals.Max();
+        if (max == min) { max = min + 1; }
+        int pts = series.Max(s => s.Values.Count);
+
+        // Grid lines
+        builder.AddMarkupContent(0, GridLines(min, max));
+
+        for (int si = 0; si < series.Count; si++)
+        {
+            var vals = series[si].Values;
+            if (vals.Count == 0) continue;
+            var points = vals.Select((v, i) =>
+            {
+                double sv = SafeValue(v);
+                double x = _padL + (pts > 1 ? i * _plotW / (double)(pts - 1) : _plotW / 2.0);
+                double y = _padT + _plotH - (sv - min) / (max - min) * _plotH;
+                return string.Create(_inv, $"{x:F1},{y:F1}");
+            });
+            var color = GetColor(si);
+            // Colors go through the style attribute: var() is not resolved in SVG
+            // presentation attributes (fill=/stroke=), only in CSS property values.
+            builder.AddMarkupContent(si + 1,
+                $"<polyline points=\"{string.Join(" ", points)}\" fill=\"none\" stroke-width=\"2\" stroke-linejoin=\"round\" style=\"stroke:{color}\"/>");
+        }
+        builder.AddMarkupContent(series.Count + 1, AxisLabels(min, max, pts));
+    };
+
+    private RenderFragment RenderBar() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        var allVals = series.SelectMany(s => s.Values).ToList();
+        if (allVals.Count == 0) return;
+        double max = Math.Max(allVals.Max(), 0), min = Math.Min(allVals.Min(), 0);
+        if (max == min) max = min + 1;
+        int pts = series.Max(s => s.Values.Count);
+        double groupW = _plotW / (double)pts;
+        double barW = groupW / (series.Count + 1);
+
+        builder.AddMarkupContent(0, GridLines(min, max));
+
+        for (int si = 0; si < series.Count; si++)
+        {
+            var vals = series[si].Values;
+            var color = GetColor(si);
+            for (int i = 0; i < vals.Count; i++)
+            {
+                double sv = SafeValue(vals[i]);
+                double x = _padL + i * groupW + si * barW + barW * 0.25;
+                double zeroY = _padT + _plotH - (0 - min) / (max - min) * _plotH;
+                double barH = Math.Abs(sv / (max - min) * _plotH);
+                double y = sv >= 0 ? zeroY - barH : zeroY;
+                builder.AddMarkupContent(si * 100 + i,
+                    string.Create(_inv, $"<rect x=\"{x:F1}\" y=\"{y:F1}\" width=\"{barW * 0.85:F1}\" height=\"{barH:F1}\" rx=\"2\" style=\"fill:{color}\"/>"));
+            }
+        }
+        builder.AddMarkupContent(9999, AxisLabels(min, max, pts));
+    };
+
+    private RenderFragment RenderPie(bool donut) => builder =>
+    {
+        // donut vs pie is already encoded in Type, which _slices reads.
+        foreach (var slice in _slices)
+        {
+            builder.AddMarkupContent(slice.Index,
+                $"<path d=\"{slice.Path}\" stroke-width=\"1.5\" style=\"fill:{GetColor(slice.Index)};stroke:var(--flare-color-surface)\"/>");
+        }
+    };
+
+    private string GridLines(double min, double max)
+    {
+        var sb = new System.Text.StringBuilder();
+        int steps = 4;
+        for (int i = 0; i <= steps; i++)
+        {
+            double v = min + (max - min) * i / steps;
+            double y = _padT + _plotH - (v - min) / (max - min) * _plotH;
+            sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{y:F1}\" x2=\"{_svgW - _padR}\" y2=\"{y:F1}\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>"));
+            sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{v:G3}</text>"));
+        }
+        return sb.ToString();
+    }
+
+    private string AxisLabels(double min, double max, int pts)
+    {
+        if (Data?.Labels is not { Count: > 0 } labels) return "";
+        var sb = new System.Text.StringBuilder();
+        int step = Math.Max(1, pts / 6);
+        for (int i = 0; i < pts; i += step)
+        {
+            if (i >= labels.Count) break;
+            double x = _padL + (pts > 1 ? i * _plotW / (double)(pts - 1) : _plotW / 2.0);
+            double y = _padT + _plotH + 14;
+            sb.Append(string.Create(_inv, $"<text x=\"{x:F1}\" y=\"{y:F1}\" text-anchor=\"middle\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{labels[i]}</text>"));
+        }
+        return sb.ToString();
+    }
+}

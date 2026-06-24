@@ -1,0 +1,15 @@
+@page "/components/navmenu"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.NavMenu_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareNavMenu">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.NavMenu_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.NavMenu_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.NavMenu_Basic" DemoType="typeof(Examples.NavMenuBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.NavMenu_NavGroup" DemoType="typeof(Examples.NavMenuGroupDemo)" />
+<AutoDemoSection Title="@GalleryStrings.NavMenu_Nested" DemoType="typeof(Examples.NavMenuNestedDemo)" />
+<AutoDemoSection Title="@GalleryStrings.NavMenu_Rail" DemoType="typeof(Examples.NavMenuRailDemo)" />
+<AutoDemoSection Title="@GalleryStrings.NavMenu_HideScrollbar" DemoType="typeof(Examples.NavMenuHideScrollbarDemo)" />

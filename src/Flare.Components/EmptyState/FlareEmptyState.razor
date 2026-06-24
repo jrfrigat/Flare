@@ -1,0 +1,38 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_compactClass)" role="region" aria-label="@(Title ?? FlareStrings.EmptyState_Label)" aria-live="polite">
+    @if (Icon != null)
+    {
+        <div class="@Css.Classes.Empty.StateIcon">@Icon</div>
+    }
+    @if (!string.IsNullOrEmpty(Title))
+    {
+        <h3 class="@Css.Classes.Empty.StateTitle">@Title</h3>
+    }
+    @if (!string.IsNullOrEmpty(Description))
+    {
+        <p class="@Css.Classes.Empty.StateDescription">@Description</p>
+    }
+    @if (ActionContent != null)
+    {
+        <div class="@Css.Classes.Empty.StateAction">@ActionContent</div>
+    }
+</div>
+
+@code {
+    /// <summary>Icon content displayed above the title.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>Main heading text.</summary>
+    [Parameter] public string? Title { get; set; }
+    /// <summary>Supporting description text.</summary>
+    [Parameter] public string? Description { get; set; }
+    /// <summary>Action slot for buttons or links.</summary>
+    [Parameter] public RenderFragment? ActionContent { get; set; }
+    /// <summary>Compact layout (smaller icon/title and tighter padding) for inline empty states inside cards or lists.</summary>
+    [Parameter] public bool Compact { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Empty.State;
+
+    private string _compactClass => Compact ? Css.Classes.Empty.StateCompact : string.Empty;
+}

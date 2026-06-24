@@ -1,0 +1,7 @@
+@inject ISnackbarService Snackbar
+
+<FlareButton OnClick="@(() => Snackbar.Show("Default message"))">Default</FlareButton>
+<FlareButton OnClick="@(() => Snackbar.Show("Success!", SnackbarSeverity.Success))">Success</FlareButton>
+<FlareButton OnClick="@(() => Snackbar.Show("Warning!", SnackbarSeverity.Warning))">Warning</FlareButton>
+<FlareButton OnClick="@(() => Snackbar.Show("Error occurred", SnackbarSeverity.Error))">Error</FlareButton>
+<FlareButton OnClick="@(() => Snackbar.Show("Info message", SnackbarSeverity.Info))">Info</FlareButton>

@@ -1,0 +1,25 @@
+<FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+    <FlareSwitch @bind-Value="_a" Label="Notifications" />
+    <FlareSwitch @bind-Value="_b" Label="Dark mode" />
+    <FlareSwitch @bind-Value="_c" Label="Tertiary color" Color="FlareColor.Tertiary" />
+    <FlareStack Row="true" Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center" Wrap="true">
+        <FlareSwitch @bind-Value="_d" Size="SwitchSize.Xs" Label="Xs" LabelPlacement="LabelPlacement.Start" />
+        <FlareSwitch @bind-Value="_d" Size="SwitchSize.Sm" Label="Sm" LabelPlacement="LabelPlacement.Start" />
+        <FlareSwitch @bind-Value="_d" Size="SwitchSize.Md" Label="Md" LabelPlacement="LabelPlacement.Start" />
+        <FlareSwitch @bind-Value="_d" Size="SwitchSize.Lg" Label="Lg" LabelPlacement="LabelPlacement.Start" />
+        <FlareSwitch @bind-Value="_d" Size="SwitchSize.Xl" Label="Xl" LabelPlacement="LabelPlacement.Start" />
+    </FlareStack>
+    <FlareSwitch @bind-Value="_e" Label="Label before (Start)" LabelPlacement="LabelPlacement.Start" />
+    <FlareSwitch Disabled="true" Label="Locked setting" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Notifications: @_a | Dark mode: @_b
+</FlareText>
+
+@code {
+    private bool _a = true;
+    private bool _b;
+    private bool _c = true;
+    private bool _d;
+    private bool _e = true;
+}

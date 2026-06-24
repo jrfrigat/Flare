@@ -1,0 +1,42 @@
+<FlareStack Row Gap="FlareSpacing.Small">
+    <FlareButton OnClick="@(() => _leftOpen = true)">Open Left</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _rightOpen = true)">Open Right</FlareButton>
+</FlareStack>
+
+<FlareDrawer @bind-Open="_leftOpen" Anchor="DrawerAnchor.Left">
+    <Header>Navigation</Header>
+    <ChildContent>
+        <FlareNavMenu>
+            <FlareNavLink Href="/" Match="NavMatchMode.Exact">
+                <Icon><FlareIcon Size="1.1rem" Name="home" /></Icon>
+                <ChildContent>Home</ChildContent>
+            </FlareNavLink>
+            <FlareNavGroup Title="Components" DefaultExpanded="true">
+                <FlareNavLink Href="/components/buttons">Buttons</FlareNavLink>
+                <FlareNavLink Href="/components/inputs">Inputs</FlareNavLink>
+                <FlareNavLink Href="/components/datagrid">Data Grid</FlareNavLink>
+            </FlareNavGroup>
+        </FlareNavMenu>
+    </ChildContent>
+</FlareDrawer>
+
+<FlareDrawer @bind-Open="_rightOpen" Anchor="DrawerAnchor.Right">
+    <Header>Settings</Header>
+    <ChildContent>
+        <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
+            <FlareSwitch Label="Notifications" Value="true" />
+            <FlareSwitch Label="Dark mode" />
+            <FlareSelect TValue="string" Label="Language">
+                <option value="en">English</option>
+                <option value="de">Deutsch</option>
+                <option value="fr">Français</option>
+            </FlareSelect>
+            <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _rightOpen = false)">Save</FlareButton>
+        </FlareStack>
+    </ChildContent>
+</FlareDrawer>
+
+@code {
+    private bool _leftOpen;
+    private bool _rightOpen;
+}

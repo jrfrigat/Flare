@@ -1,0 +1,13 @@
+@page "/components/videoplayer"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.VideoPlayer_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareVideoPlayer">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.VideoPlayer_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.VideoPlayer_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.VideoPlayer_Basic" DemoType="typeof(Examples.VideoPlayerBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.VideoPlayer_AutoPlayLooping" DemoType="typeof(Examples.VideoPlayerAutoPlayDemo)" />
+<AutoDemoSection Title="@GalleryStrings.VideoPlayer_Options" DemoType="typeof(Examples.VideoPlayerOptionsDemo)" />

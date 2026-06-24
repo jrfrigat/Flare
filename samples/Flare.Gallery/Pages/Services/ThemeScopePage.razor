@@ -1,0 +1,64 @@
+@page "/services/theme-scope"
+@inherits LocalizedPage
+@using Flare.Core.Tokens
+
+<PageTitle>@GalleryStrings.Services_ScopeTitle - Flare</PageTitle>
+
+<GalleryPageTitle Package="Flare">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_ScopeTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_ScopeSubtitle</FlareText>
+</GalleryPageTitle>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(18rem,1fr));gap:1rem;">
+    @foreach (var s in _scopes)
+    {
+        <FlareThemeScope Theme="@s.Theme" Palette="@s.Palette" Mode="s.Mode">
+            <FlareCard Variant="CardVariant.Outlined" Style="height:100%;">
+                <FlareStack Gap="FlareSpacing.Medium">
+                    <FlareText Typo="TypographyScale.LabelLarge">@s.Label</FlareText>
+
+                    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                        <FlareButton>Filled</FlareButton>
+                        <FlareButton Variant="ButtonVariant.Tonal">Tonal</FlareButton>
+                        <FlareButton Variant="ButtonVariant.Outlined">Outlined</FlareButton>
+                    </FlareStack>
+
+                    <FlareButtonGroup>
+                        <FlareButton>Day</FlareButton>
+                        <FlareButton>Week</FlareButton>
+                        <FlareButton>Month</FlareButton>
+                    </FlareButtonGroup>
+
+                    <FlareField TValue="string" Label="Email" Placeholder="name@example.com" />
+                </FlareStack>
+            </FlareCard>
+        </FlareThemeScope>
+    }
+</div>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    private const string _usage = """
+        @* Unset axes inherit from the surrounding theme. *@
+        <FlareThemeScope Theme="md3-expressive" Palette="md3-green" Mode="ThemeMode.Dark">
+            <FlareButton>Themed locally</FlareButton>
+            <FlareField TValue="string" Label="Email" />
+        </FlareThemeScope>
+        """;
+
+    private record Scope(string Theme, string Palette, ThemeMode Mode, string Label);
+
+    private static readonly Scope[] _scopes =
+    [
+        new("md3-expressive", "md3-violet", ThemeMode.Light, "MD3 Expressive - Violet - Light"),
+        new("md3-expressive", "md3-violet", ThemeMode.Dark,  "MD3 Expressive - Violet - Dark"),
+        new("md3-expressive", "md3-green",  ThemeMode.Light, "MD3 Expressive - Green - Light"),
+        new("md3-expressive", "md3-orange", ThemeMode.Dark,  "MD3 Expressive - Orange - Dark"),
+        new("fluent2",        "fluent-blue", ThemeMode.Light, "Fluent UI 2 - Blue - Light"),
+        new("fluent2",        "fluent-blue", ThemeMode.Dark,  "Fluent UI 2 - Blue - Dark"),
+        new("fluent2",        "fluent-word", ThemeMode.Light, "Fluent UI 2 - Word - Light"),
+        new("fluent2",        "fluent-excel", ThemeMode.Dark, "Fluent UI 2 - Excel - Dark"),
+    ];
+}

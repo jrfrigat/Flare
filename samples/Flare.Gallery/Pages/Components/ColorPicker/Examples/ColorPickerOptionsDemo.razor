@@ -1,0 +1,16 @@
+<FlareStack Row Wrap Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start">
+    <FlareColorPicker @bind-Value="_color" Label="Presets + eyedropper + RGB"
+                      Presets="_presets" ShowEyeDropper="true" Format="ColorFormat.Rgb" />
+    <FlareColorPicker Value="#6750A4" Label="Inline" Inline="true" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
+    Value: @_color
+</FlareText>
+
+@code {
+    private string? _color = "rgb(103, 80, 164)";
+    private readonly string[] _presets =
+    [
+        "#6750A4", "#2E6C47", "#B3261E", "#7D5260", "#0F6CBD", "#FFB300"
+    ];
+}

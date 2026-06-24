@@ -1,0 +1,25 @@
+<FlareConfirmDialogProvider @ref="_provider">
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="ShowConfirm">Delete item</FlareButton>
+</FlareConfirmDialogProvider>
+
+@if (_result.HasValue)
+{
+    <FlareAlert Severity="@(_result.Value ? AlertSeverity.Success : AlertSeverity.Info)" Style="margin-top:0.75rem;">
+        Result: @(_result.Value ? "Confirmed" : "Cancelled")
+    </FlareAlert>
+}
+
+@code {
+    private FlareConfirmDialogProvider? _provider;
+    private bool? _result;
+
+    private async Task ShowConfirm()
+    {
+        if (_provider is not null)
+            _result = await _provider.ConfirmAsync(
+                "Delete item",
+                "Are you sure you want to delete this item? This cannot be undone.",
+                confirmLabel: "Delete",
+                cancelLabel: "Keep");
+    }
+}

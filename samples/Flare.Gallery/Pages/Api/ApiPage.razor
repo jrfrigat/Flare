@@ -1,0 +1,42 @@
+@page "/api/{ComponentName}"
+@inherits LocalizedPage
+@using Flare.Gallery.Api
+
+<PageTitle>@_displayName API - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@_displayName</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@_fullName</FlareText>
+</GalleryPageTitle>
+
+<ApiSection Component="@ComponentName" />
+
+@code {
+    /// <summary>Component type name from the route, e.g. <c>FlareButton</c>.</summary>
+    [Parameter] public string? ComponentName { get; set; }
+
+    private string _displayName = string.Empty;
+    private string? _fullName;
+
+    protected override void OnParametersSet()
+    {
+        if (ComponentName is null)
+        {
+            _displayName = string.Empty;
+            _fullName = null;
+            return;
+        }
+
+        var component = ComponentApiRegistry.Get(ComponentName);
+        if (component is not null)
+        {
+            _displayName = component.Name;
+            _fullName = component.FullName;
+            return;
+        }
+
+        var enumInfo = ComponentApiRegistry.GetEnum(ComponentName);
+        _displayName = enumInfo?.Name ?? ComponentName;
+        _fullName = enumInfo?.FullName;
+    }
+}

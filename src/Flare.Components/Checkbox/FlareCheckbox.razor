@@ -1,0 +1,133 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+
+<label class="@BuildCssClass(_stateClass, _colorClass, _sizeClass, _labelClass, _iconClass)" style="@_inlineStyle" @attributes="AdditionalAttributes">
+    <span class="@Css.Classes.Checkbox.Container">
+        <input class="@Css.Classes.Checkbox.Input"
+               type="checkbox"
+               aria-checked="@(_indeterminate ? "mixed" : (Value == true ? "true" : "false"))"
+               checked="@(Value == true)"
+               disabled="@Disabled"
+               @onchange="HandleChange" />
+        <span class="@Css.Classes.Checkbox.Indicator @(_indeterminate ? Css.Classes.Checkbox.IndicatorIndeterminate : "")" aria-hidden="true">
+            @if (_hasIcons)
+            {
+                @if (_indeterminate)
+                {
+                    @IndeterminateIcon
+                }
+                else if (Value == true)
+                {
+                    @CheckedIcon
+                }
+                else
+                {
+                    @UncheckedIcon
+                }
+            }
+        </span>
+    </span>
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span class="@Css.Classes.Checkbox.Label">@Label</span>
+    }
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@Css.Classes.Checkbox.ErrorMsg">@_displayedError</span>
+    }
+</label>
+
+@code {
+    /// <summary>Tri-state value: true = checked, false = unchecked, null = indeterminate.</summary>
+    [Parameter] public bool? Value { get; set; }
+    /// <summary>Callback invoked when the checked state changes (always true/false - a click resolves the indeterminate state).</summary>
+    [Parameter] public EventCallback<bool?> ValueChanged { get; set; }
+    /// <summary>Label text displayed next to the checkbox.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Disables the checkbox when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Accent color of the checked indicator (role -> shared class, custom -> inline token). Default = primary.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Label position relative to the checkbox (End = after, Start = before). Default End.</summary>
+    [Parameter] public LabelPlacement LabelPlacement { get; set; } = LabelPlacement.End;
+    /// <summary>Control size (Xs..Xl), shared scale. Medium is the default 18dp box.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Custom icon shown when checked (replaces the default check mark).</summary>
+    [Parameter] public RenderFragment? CheckedIcon { get; set; }
+    /// <summary>Custom icon shown when unchecked.</summary>
+    [Parameter] public RenderFragment? UncheckedIcon { get; set; }
+    /// <summary>Custom icon shown when indeterminate.</summary>
+    [Parameter] public RenderFragment? IndeterminateIcon { get; set; }
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<bool>>? For { get; set; }
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Checkbox.Root;
+
+    private string _colorClass => Color.CssClass ?? string.Empty;
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Checkbox.SizeXs,
+        FieldSize.Sm => Css.Classes.Checkbox.SizeSm,
+        FieldSize.Lg => Css.Classes.Checkbox.SizeLg,
+        FieldSize.Xl => Css.Classes.Checkbox.SizeXl,
+        _ => string.Empty,
+    };
+    private string _labelClass => LabelPlacement == LabelPlacement.Start ? Css.Classes.Checkbox.LabelStart : string.Empty;
+    private bool _hasIcons => CheckedIcon is not null || UncheckedIcon is not null || IndeterminateIcon is not null;
+    private string _iconClass => _hasIcons ? Css.Classes.Checkbox.CustomIcon : string.Empty;
+    private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
+
+    /// <summary>The checkbox is indeterminate when its value is null.</summary>
+    private bool _indeterminate => Value is null;
+
+    private FieldIdentifier _fieldId;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private string _stateClass =>
+        Disabled ? Css.Classes.Checkbox.Disabled :
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Checkbox.Error :
+        _indeterminate ? Css.Classes.Checkbox.Indeterminate : string.Empty;
+
+    private async Task HandleChange(ChangeEventArgs e)
+    {
+        var val = e.Value is bool b && b;
+        await ValueChanged.InvokeAsync(val);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+}

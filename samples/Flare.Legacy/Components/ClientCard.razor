@@ -1,0 +1,90 @@
+@namespace Flare.Legacy.Components
+@using Flare.Legacy.Data
+@using Flare.Legacy.Services
+@inject LoanBackend Backend
+@inject AppSettings Settings
+
+@* The client card: general borrower info plus the list of all their contracts. Each contract row has
+   an "open" button (ColumnLoan) that opens that loan in its own tab. *@
+@if (_loading)
+{
+    <LoadingView Text="Загрузка карточки клиента..." Rows="8" />
+}
+else if (_client is null)
+{
+    <FlareText Color="FlareColor.Error">Клиент не найден.</FlareText>
+}
+else
+{
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareCard Variant="CardVariant.Filled">
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareText Typo="TypographyScale.TitleSmall" Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant">Клиент</FlareText>
+                <FlareDivider />
+                <FlareGrid Columns="12" Gap="FlareSpacing.XXSmall" AlignItems="FlareAlignItems.Center">
+                    @LV("ФИО", _client.Name, 2, 10)
+                    @LV("ID клиента", _client.ClientId, 2, 4)
+                    @LV("Статус", _client.Status, 2, 4)
+                    @LV("Дата рожд.", _client.BirthDate, 2, 4)
+                    @LV("Доход", _client.Income, 2, 4)
+                    @LV("Телефон", _client.Phone, 2, 4)
+                    @LV("Договоров", _loans.Count.ToString(), 2, 4)
+                </FlareGrid>
+            </FlareStack>
+        </FlareCard>
+
+        <FlareCard Variant="CardVariant.Filled">
+            <FlareStack Gap="FlareSpacing.XXSmall">
+                <FlareText Typo="TypographyScale.TitleSmall" Align="TextAlign.Center" Color="FlareColor.OnSurfaceVariant">Договоры клиента</FlareText>
+                <FlareDivider />
+                <FlareDataGrid TItem="LoanRow" Items="_loans" PageSize="10"
+                               Striped Hover Bordered Dense>
+                    <Columns>
+                        <FlareColumn Title="ID договора" Field="@(r => r.LoanId)" Sortable="true" Width="120px" />
+                        <FlareColumn Title="Номер договора" Field="@(r => r.LoanNumber)" Sortable="true" Width="190px">
+                            <Template Context="row">
+                                <ColumnLoan LoanId="@row.LoanId" LoanNumber="@row.LoanNumber" OnOpen="@(() => OnOpenLoan.InvokeAsync(row))" />
+                            </Template>
+                        </FlareColumn>
+                        <FlareColumn Title="Стадия" Field="@(r => r.Stage)" Sortable="true" Width="150px" />
+                        <FlareColumn Title="Остаток" Field="@(r => r.Balance)" Width="120px" />
+                        <FlareColumn Title="Просрочка" Field="@(r => r.Overdue)" Width="120px" />
+                    </Columns>
+                </FlareDataGrid>
+            </FlareStack>
+        </FlareCard>
+    </FlareStack>
+}
+
+@code {
+    /// <summary>Id of the client to show.</summary>
+    [Parameter] public required string ClientId { get; set; }
+
+    /// <summary>Raised with a contract row when its "open" button is clicked.</summary>
+    [Parameter] public EventCallback<LoanRow> OnOpenLoan { get; set; }
+
+    private bool _loading = true;
+    private Client? _client;
+    private List<LoanRow> _loans = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Backend.GetClientAsync(ClientId);
+        if (result is { } r)
+        {
+            _client = r.Client;
+            _loans = [.. r.Loans];
+        }
+        _loading = false;
+    }
+
+    // Inline "label : value" pair as two cells of a 12-column FlareGrid row (right-aligned label).
+    private RenderFragment LV(string label, string? value, int lab, int val) =>@<text>
+        <FlareCol Span="@lab">
+            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant" Align="TextAlign.End">@label</FlareText>
+        </FlareCol>
+        <FlareCol Span="@val">
+            <FlareTextField Size="FieldSize.Xs" Value="@value" ReadOnly />
+        </FlareCol>
+    </text>;
+}

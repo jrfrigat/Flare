@@ -1,0 +1,41 @@
+@namespace Flare.Components.IDE
+@inherits FlareComponentBase
+
+@* The Office "File" backstage: a full-surface overlay with a left navigation rail (FlareBackstageItem
+   entries) and a content area. Toggle with Open; the back arrow raises OpenChanged(false). *@
+@if (Open)
+{
+    <div class="@Css.Classes.Ide.Backstage.Root" role="dialog" aria-modal="true" style="@Style" @attributes="AdditionalAttributes">
+        <div class="@Css.Classes.Ide.Backstage.Nav">
+            <button type="button" class="@Css.Classes.Ide.Backstage.Back" aria-label="@CloseLabel" @onclick="CloseAsync">
+                <span class="material-symbols-rounded">arrow_back</span>
+            </button>
+            @NavContent
+        </div>
+        <div class="@Css.Classes.Ide.Backstage.Content">
+            @ChildContent
+        </div>
+    </div>
+}
+
+@code {
+    /// <summary>Whether the backstage is shown.</summary>
+    [Parameter] public bool Open { get; set; }
+
+    /// <summary>Raised when the open state changes (e.g. the back arrow closes it). Supports two-way binding.</summary>
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    /// <summary>Left navigation entries, typically <c>FlareBackstageItem</c> components.</summary>
+    [Parameter] public RenderFragment? NavContent { get; set; }
+
+    /// <summary>The content shown for the selected navigation entry.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Accessible label for the back/close button (default "Close").</summary>
+    [Parameter] public string CloseLabel { get; set; } = "Close";
+
+    private async Task CloseAsync() => await OpenChanged.InvokeAsync(false);
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Ide.Backstage.Root;
+}

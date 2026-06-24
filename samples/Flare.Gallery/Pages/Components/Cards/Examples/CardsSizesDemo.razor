@@ -1,0 +1,28 @@
+<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start;">
+    @foreach (var s in _sizes)
+    {
+        <FlareCard Variant="CardVariant.Outlined" Size="s.Size" Style="flex:1 1 12rem;min-width:12rem;">
+            <FlareCardHeader Title="@s.Name" Subtitle="@s.Hint" />
+            <FlareCardContent>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    Size controls the corner radius and the actions gap from the theme shape scale.
+                </FlareText>
+            </FlareCardContent>
+            <FlareCardActions Align="CardActionsAlign.End">
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Cancel</FlareButton>
+                <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm">OK</FlareButton>
+            </FlareCardActions>
+        </FlareCard>
+    }
+</div>
+
+@code {
+    private record SizeInfo(CardSize Size, string Name, string Hint);
+
+    private readonly SizeInfo[] _sizes =
+    {
+        new(CardSize.Sm, "Small", "shape-small radius"),
+        new(CardSize.Md, "Medium", "shape-medium radius (default)"),
+        new(CardSize.Lg, "Large", "shape-large radius"),
+    };
+}

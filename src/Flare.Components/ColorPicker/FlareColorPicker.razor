@@ -1,0 +1,806 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IJSRuntime JS
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+@implements IAsyncDisposable
+
+@if (Inline)
+{
+    <div class="@BuildCssClass(_disabledClass)" style="@Style" @attributes="AdditionalAttributes">
+        @RenderPanel()
+    </div>
+}
+else
+{
+    <div class="@BuildCssClass(_disabledClass)" style="@Style" @attributes="AdditionalAttributes" @ref="_rootEl">
+        @if (!string.IsNullOrEmpty(Label))
+        {
+            <label class="@Css.Classes.Colorpicker.Label" for="@_triggerId">@Label</label>
+        }
+        <button type="button"
+                id="@_triggerId"
+                @ref="_triggerEl"
+                class="@Css.Classes.Colorpicker.Trigger"
+                style="@_safeTriggerCssVar"
+                disabled="@Disabled"
+                @onclick="TogglePanel"
+                aria-haspopup="dialog"
+                aria-expanded="@_open.ToString().ToLowerInvariant()">
+            <span class="@Css.Classes.Colorpicker.TriggerSwatch" style="@_safeSwatchStyle"></span>
+            <span class="@Css.Classes.Colorpicker.TriggerLabel">@_currentFormatted</span>
+        </button>
+        @if (_open)
+        {
+            <div class="@Css.Classes.Colorpicker.Panel" @ref="_panelEl" role="dialog" aria-label="@(FlareStrings.ColorPicker_Label)">
+                @RenderPanel()
+            </div>
+        }
+    </div>
+}
+
+@code {
+    // -- Parameters -------------------------------------------------------------
+
+    /// <summary>Selected color as a hex string (#RRGGBB or #RRGGBBAA).</summary>
+    [Parameter] public string? Value { get; set; }
+    /// <summary>Callback invoked when the selected color changes.</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    /// <summary>When true the picker is always shown inline; otherwise a popover trigger is used.</summary>
+    [Parameter] public bool Inline { get; set; }
+    /// <summary>Preset color swatches shown at the bottom of the picker.</summary>
+    [Parameter] public IEnumerable<string>? Presets { get; set; }
+    /// <summary>Label text displayed above the trigger button (non-inline mode).</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Disables the color picker when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<string?>>? For { get; set; }
+    /// <summary>Shows an eyedropper button to sample a color from the screen (Chrome/Edge only).</summary>
+    [Parameter] public bool ShowEyeDropper { get; set; }
+    /// <summary>Output format for the color value emitted by <see cref="ValueChanged"/>. Defaults to <see cref="ColorFormat.Hex"/>.</summary>
+    [Parameter] public ColorFormat Format { get; set; } = ColorFormat.Hex;
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Colorpicker.Root;
+
+    // -- OWASP: hex-only regex guards CSS injection via style attributes ---------
+
+    private static readonly System.Text.RegularExpressions.Regex _hexColorRegex =
+        new(@"^#[0-9A-Fa-f]{3}$|^#[0-9A-Fa-f]{6}$|^#[0-9A-Fa-f]{8}$",
+            System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    private bool _isCurrentHexSafe => _currentHexSafe;
+
+    /// <summary>Returns <see cref="_currentHex"/> only when it is a valid hex color; otherwise empty string.</summary>
+    private string _safeCurrentHex => _isCurrentHexSafe ? _currentHex : string.Empty;
+
+    private string _safeSwatchStyle => _isCurrentHexSafe ? $"background:{_currentHex}" : string.Empty;
+    private string _safeTriggerCssVar => _isCurrentHexSafe ? $"--_cp-trigger-color:{_currentHex}" : string.Empty;
+
+    private static string _safePresetStyle(string preset) =>
+        _hexColorRegex.IsMatch(preset ?? string.Empty) ? $"background:{preset}" : string.Empty;
+
+    // -- Internal state ----------------------------------------------------------
+
+    private string _disabledClass => Disabled ? Css.Classes.Colorpicker.Disabled : string.Empty;
+    private FieldIdentifier _fieldId;
+    private readonly string _triggerId = $"flare-colorpicker-{Guid.NewGuid():N}";
+
+    // HSL + Alpha working state
+    private double _hue = 0;           // 0-360
+    private double _saturation = 100;  // 0-100
+    private double _lightness = 50;    // 0-100
+    private double _alpha = 1.0;       // 0-1
+
+    // Text inputs
+    private string _hexInput = "#ff0000";
+    private string _rInput = "255";
+    private string _gInput = "0";
+    private string _bInput = "0";
+    private string _hInput = "0";
+    private string _sInput = "100";
+    private string _lInput = "50";
+
+    private string _activeTab = "hex"; // hex | rgb | hsl
+    private bool _open;
+
+    // Canvas element reference
+    private ElementReference _canvas;
+    private ElementReference _canvasContainer;
+    private bool _canvasInitialized;
+    private DotNetObjectReference<FlareColorPicker>? _selfRef;
+    // Popover root, used to anchor the document-level outside-click listener (no overlay element),
+    // so the page still scrolls freely while the panel is open.
+    private ElementReference _rootEl;
+    private ElementReference _triggerEl;
+    private ElementReference _panelEl;
+    private bool _outsideRegistered;
+    // flareColorPicker is an ES module export (not a window global), so it must be reached
+    // through the imported module reference, not a global JS.InvokeVoidAsync("flareColorPicker...").
+    private IJSObjectReference? _module;
+
+    private async Task<IJSObjectReference> ModuleAsync() =>
+        _module ??= await JS.InvokeAsync<IJSObjectReference>(
+            "import", "./_content/Flare.Components/js/flare-theme.js");
+
+    // Current hex (and its validity) cached from the HSL+alpha state -- recomputed only when that
+    // state changes (in SyncInputsFromHsl), not on every property access, so a render no longer runs
+    // the HSL->RGB conversion several times over.
+    private string _currentHex = "#ff0000";
+    private bool _currentHexSafe = true;
+    // The value emitted / shown on the trigger, rendered in the chosen Format (hex by default,
+    // or rgb()/rgba()/hsl()). The swatch always uses the hex form, which is valid CSS either way.
+    private string _currentFormatted = "#ff0000";
+
+    // -- Lifecycle ---------------------------------------------------------------
+
+    private string? _lastParsedValue;
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+
+        // Parse the incoming Value (hex, rgb()/rgba() or hsl()/hsla()) only when the string itself
+        // changed -- comparing the raw value, not its canonical form, so an rgba() input does not
+        // re-parse on every render just because we emit it with normalized spacing.
+        var incoming = Value ?? "#ff0000";
+        if (incoming != _lastParsedValue)
+        {
+            _lastParsedValue = incoming;
+            if (!string.IsNullOrWhiteSpace(incoming))
+                ParseColorToState(incoming);
+        }
+    }
+
+    private string? _closedSig;
+    private bool _renderedOpen;
+
+    protected override bool ShouldRender()
+    {
+        // Always render across an open<->closed transition so the panel/backdrop are added or
+        // removed; otherwise a close (e.g. backdrop click) with an unchanged color would be skipped
+        // by the closed-signature shortcut below and leave the panel stuck open.
+        if (_open != _renderedOpen) return true;
+
+        // An open or inline picker is actively interactive -- always render. A closed trigger only
+        // reflects its color/label/disabled/style, so when a parent with many pickers re-renders,
+        // skip the ones whose visible state did not actually change. Bail out (render) when the
+        // caller passes pass-through attributes, since those can change outside this signature.
+        if (_open || Inline || AdditionalAttributes is not null) return true;
+        var sig = string.Concat(_currentFormatted, "|", Disabled ? "1" : "0", "|", Label, "|", Style);
+        if (sig == _closedSig) return false;
+        _closedSig = sig;
+        return true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _renderedOpen = _open;
+        if (firstRender && Inline)
+            await InitCanvasAsync();
+        else if (_open && !_canvasInitialized)
+            await InitCanvasAsync();
+
+        // Popover mode only: register/unregister the document outside-click listener as the
+        // panel opens and closes. Inline mode has no panel to dismiss.
+        if (!Inline && _open != _outsideRegistered)
+            await SyncOutsideClickAsync();
+    }
+
+    private async Task SyncOutsideClickAsync()
+    {
+        try
+        {
+            var module = await ModuleAsync();
+            if (_open)
+            {
+                _selfRef ??= DotNetObjectReference.Create(this);
+                await module.InvokeVoidAsync("registerOutsideClick", _triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
+                // Fixed-position the panel under the trigger so a Card's overflow:hidden can't crop it.
+                await module.InvokeVoidAsync("positionAnchoredPanel", _triggerId, _triggerEl, _panelEl, new { });
+            }
+            else
+            {
+                await module.InvokeVoidAsync("removeOutsideClick", _triggerId);
+                await module.InvokeVoidAsync("removeAnchoredPanel", _triggerId);
+            }
+            _outsideRegistered = _open;
+        }
+        catch (JSDisconnectedException) { }
+    }
+
+    /// <summary>Closes the panel; invoked from JS when a pointer-down lands outside the picker.</summary>
+    [JSInvokable]
+    public Task CloseFromOutside()
+    {
+        if (!_open) return Task.CompletedTask;
+        ClosePanel();
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private async Task InitCanvasAsync()
+    {
+        _selfRef ??= DotNetObjectReference.Create(this);
+        try
+        {
+            var module = await ModuleAsync();
+            await module.InvokeVoidAsync("flareColorPicker.init", _canvas, _selfRef, _hue, _saturation, _lightness);
+            _canvasInitialized = true;
+        }
+        catch { /* JS not ready yet */ }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+            {
+                if (_outsideRegistered)
+                {
+                    await _module.InvokeVoidAsync("removeOutsideClick", _triggerId);
+                    await _module.InvokeVoidAsync("removeAnchoredPanel", _triggerId);
+                }
+                await _module.InvokeVoidAsync("flareColorPicker.destroy", _canvas);
+                await _module.DisposeAsync();
+            }
+        }
+        catch { }
+        _selfRef?.Dispose();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        await base.DisposeAsync();
+    }
+
+    // -- JS callbacks ------------------------------------------------------------
+
+    [JSInvokable]
+    public async Task OnCanvasPick(double saturation, double lightness)
+    {
+        _saturation = Math.Clamp(saturation, 0, 100);
+        _lightness = Math.Clamp(lightness, 0, 100);
+        SyncInputsFromHsl();
+        await NotifyChange();
+    }
+
+    // -- Popover helpers ---------------------------------------------------------
+
+    private async Task TogglePanel()
+    {
+        _open = !_open;
+        if (_open)
+        {
+            _canvasInitialized = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ClosePanel()
+    {
+        _open = false;
+        _canvasInitialized = false;
+    }
+
+    // -- Event handlers ----------------------------------------------------------
+
+    private async Task HandleHueInput(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(), out var v))
+        {
+            _hue = Math.Clamp(v, 0, 360);
+            SyncInputsFromHsl();
+            await RefreshCanvas();
+            await NotifyChange();
+        }
+    }
+
+    private async Task HandleAlphaInput(ChangeEventArgs e)
+    {
+        if (double.TryParse(e.Value?.ToString(),
+            System.Globalization.NumberStyles.Any,
+            System.Globalization.CultureInfo.InvariantCulture, out var v))
+        {
+            _alpha = Math.Clamp(v, 0, 1);
+            SyncInputsFromHsl();
+            await NotifyChange();
+        }
+    }
+
+    private async Task HandleHexInput(ChangeEventArgs e)
+    {
+        var s = (e.Value?.ToString() ?? "").Trim();
+        // Accept bare hex (add the #), a full #hex, or a CSS rgb()/rgba()/hsl()/hsla() string.
+        if (s.Length > 0 && s[0] != '#'
+            && !s.StartsWith("rgb", StringComparison.OrdinalIgnoreCase)
+            && !s.StartsWith("hsl", StringComparison.OrdinalIgnoreCase))
+            s = "#" + s;
+        _hexInput = s;
+        if (TryParseColor(s, out var r, out var g, out var b, out var a))
+        {
+            RgbToHsl(r, g, b, out var h, out var sat, out var l);
+            _hue = h; _saturation = sat; _lightness = l; _alpha = a;
+            SyncInputsFromHsl();
+            await RefreshCanvas();
+            await NotifyChange();
+        }
+    }
+
+    private async Task HandleRgbInput()
+    {
+        if (int.TryParse(_rInput, out var r) && int.TryParse(_gInput, out var g) && int.TryParse(_bInput, out var b))
+        {
+            r = Math.Clamp(r, 0, 255); g = Math.Clamp(g, 0, 255); b = Math.Clamp(b, 0, 255);
+            RgbToHsl(r, g, b, out var h, out var sat, out var l);
+            _hue = h; _saturation = sat; _lightness = l;
+            SyncInputsFromHsl();
+            await RefreshCanvas();
+            await NotifyChange();
+        }
+    }
+
+    private async Task HandleHslInput()
+    {
+        if (double.TryParse(_hInput, out var h) && double.TryParse(_sInput, out var s) && double.TryParse(_lInput, out var l))
+        {
+            _hue = Math.Clamp(h, 0, 360);
+            _saturation = Math.Clamp(s, 0, 100);
+            _lightness = Math.Clamp(l, 0, 100);
+            SyncInputsFromHsl();
+            await RefreshCanvas();
+            await NotifyChange();
+        }
+    }
+
+    private async Task SelectPreset(string color)
+    {
+        ParseColorToState(color);
+        SyncInputsFromHsl();
+        await RefreshCanvas();
+        await NotifyChange();
+    }
+
+    private async Task OpenEyeDropperAsync()
+    {
+        try
+        {
+            var module = await ModuleAsync();
+            var hex = await module.InvokeAsync<string?>("openEyeDropper");
+            if (!string.IsNullOrEmpty(hex))
+            {
+                ParseColorToState(hex);
+                SyncInputsFromHsl();
+                await RefreshCanvas();
+                await NotifyChange();
+            }
+        }
+        catch { /* EyeDropper cancelled or not supported */ }
+    }
+
+    // -- Color math helpers ------------------------------------------------------
+
+    private void ParseColorToState(string value)
+    {
+        if (TryParseColor(value, out var r, out var g, out var b, out var a))
+        {
+            RgbToHsl(r, g, b, out var h, out var sat, out var l);
+            _hue = h; _saturation = sat; _lightness = l; _alpha = a;
+            SyncInputsFromHsl();
+        }
+    }
+
+    private void SyncInputsFromHsl()
+    {
+        var hex = AlphaToHex();
+        _hexInput = hex;
+        _currentHex = hex;
+        _currentHexSafe = _hexColorRegex.IsMatch(hex);
+        _currentFormatted = FormatColor();
+        HslToRgb(_hue, _saturation, _lightness, out var r, out var g, out var b);
+        _rInput = r.ToString();
+        _gInput = g.ToString();
+        _bInput = b.ToString();
+        _hInput = ((int)Math.Round(_hue)).ToString();
+        _sInput = ((int)Math.Round(_saturation)).ToString();
+        _lInput = ((int)Math.Round(_lightness)).ToString();
+    }
+
+    private string AlphaToHex()
+    {
+        HslToRgb(_hue, _saturation, _lightness, out var r, out var g, out var b);
+        if (_alpha >= 1.0)
+            return $"#{r:X2}{g:X2}{b:X2}";
+        var a = (int)Math.Round(_alpha * 255);
+        return $"#{r:X2}{g:X2}{b:X2}{a:X2}";
+    }
+
+    private static bool TryParseHex(string hex, out int r, out int g, out int b, out double a)
+    {
+        r = g = b = 0; a = 1.0;
+        hex = hex.TrimStart('#').Trim();
+        if (hex.Length == 3)
+            hex = $"{hex[0]}{hex[0]}{hex[1]}{hex[1]}{hex[2]}{hex[2]}";
+        if (hex.Length == 6)
+        {
+            if (!int.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out var rgb)) return false;
+            r = (rgb >> 16) & 0xFF; g = (rgb >> 8) & 0xFF; b = rgb & 0xFF;
+            return true;
+        }
+        if (hex.Length == 8)
+        {
+            if (!long.TryParse(hex, System.Globalization.NumberStyles.HexNumber, null, out var rgba)) return false;
+            r = (int)((rgba >> 24) & 0xFF); g = (int)((rgba >> 16) & 0xFF);
+            b = (int)((rgba >> 8) & 0xFF); a = ((rgba & 0xFF) / 255.0);
+            return true;
+        }
+        return false;
+    }
+
+    // Accepts a #hex (3/6/8), a CSS rgb()/rgba() or hsl()/hsla() string. Channels may be 0-255 or
+    // a percentage; alpha is 0-1 (or a percentage). Returns RGB + alpha.
+    private static bool TryParseColor(string value, out int r, out int g, out int b, out double a)
+    {
+        r = g = b = 0; a = 1.0;
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        var s = value.Trim();
+        if (s.StartsWith('#')) return TryParseHex(s, out r, out g, out b, out a);
+
+        var isHsl = s.StartsWith("hsl", StringComparison.OrdinalIgnoreCase);
+        if (!isHsl && !s.StartsWith("rgb", StringComparison.OrdinalIgnoreCase)) return false;
+
+        var open = s.IndexOf('(');
+        var close = s.IndexOf(')');
+        if (open < 0 || close <= open) return false;
+        var parts = s[(open + 1)..close]
+            .Split(new[] { ',', '/' }, StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length < 3) return false;
+
+        if (parts.Length >= 4 && !TryAlpha(parts[3], out a)) return false;
+
+        if (isHsl)
+        {
+            if (!TryNumber(parts[0], out var h) || !TryPercent(parts[1], out var sat) || !TryPercent(parts[2], out var l))
+                return false;
+            HslToRgb(((h % 360) + 360) % 360, Math.Clamp(sat, 0, 100), Math.Clamp(l, 0, 100), out r, out g, out b);
+            return true;
+        }
+
+        return TryChannel(parts[0], out r) && TryChannel(parts[1], out g) && TryChannel(parts[2], out b);
+    }
+
+    private static bool TryNumber(string s, out double v) =>
+        double.TryParse(s.Trim(), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out v);
+
+    private static bool TryPercent(string s, out double v)
+    {
+        s = s.Trim().TrimEnd('%');
+        return TryNumber(s, out v);
+    }
+
+    // An rgb() channel: 0-255 integer or a 0-100% value.
+    private static bool TryChannel(string s, out int v)
+    {
+        v = 0;
+        s = s.Trim();
+        if (s.EndsWith('%') && TryNumber(s[..^1], out var pct)) { v = (int)Math.Round(Math.Clamp(pct, 0, 100) / 100 * 255); return true; }
+        if (TryNumber(s, out var n)) { v = (int)Math.Round(Math.Clamp(n, 0, 255)); return true; }
+        return false;
+    }
+
+    // Alpha: 0-1 number or a 0-100% value.
+    private static bool TryAlpha(string s, out double a)
+    {
+        a = 1.0;
+        s = s.Trim();
+        if (s.EndsWith('%') && TryNumber(s[..^1], out var pct)) { a = Math.Clamp(pct / 100, 0, 1); return true; }
+        if (TryNumber(s, out var n)) { a = Math.Clamp(n, 0, 1); return true; }
+        return false;
+    }
+
+    // Serializes the current color in the requested output Format.
+    private string FormatColor() => Format switch
+    {
+        ColorFormat.Rgb => RgbString(),
+        ColorFormat.Hsl => HslString(),
+        _ => AlphaToHex(),
+    };
+
+    private string RgbString()
+    {
+        HslToRgb(_hue, _saturation, _lightness, out var r, out var g, out var b);
+        return _alpha >= 1.0
+            ? $"rgb({r}, {g}, {b})"
+            : $"rgba({r}, {g}, {b}, {_alpha.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)})";
+    }
+
+    private string HslString()
+    {
+        var h = (int)Math.Round(_hue);
+        var s = (int)Math.Round(_saturation);
+        var l = (int)Math.Round(_lightness);
+        return _alpha >= 1.0
+            ? $"hsl({h}, {s}%, {l}%)"
+            : $"hsla({h}, {s}%, {l}%, {_alpha.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture)})";
+    }
+
+    private static void RgbToHsl(int r, int g, int b, out double h, out double s, out double l)
+    {
+        double rf = r / 255.0, gf = g / 255.0, bf = b / 255.0;
+        double max = Math.Max(rf, Math.Max(gf, bf));
+        double min = Math.Min(rf, Math.Min(gf, bf));
+        double delta = max - min;
+        l = (max + min) / 2.0;
+        if (delta == 0) { h = 0; s = 0; return; }
+        s = delta / (1 - Math.Abs(2 * l - 1));
+        if (max == rf)      h = 60 * (((gf - bf) / delta) % 6);
+        else if (max == gf) h = 60 * ((bf - rf) / delta + 2);
+        else                h = 60 * ((rf - gf) / delta + 4);
+        if (h < 0) h += 360;
+        s *= 100; l *= 100;
+    }
+
+    private static void HslToRgb(double h, double s, double l, out int r, out int g, out int b)
+    {
+        s /= 100; l /= 100;
+        double c = (1 - Math.Abs(2 * l - 1)) * s;
+        double x = c * (1 - Math.Abs((h / 60) % 2 - 1));
+        double m = l - c / 2;
+        double rf, gf, bf;
+        if      (h < 60)  { rf = c; gf = x; bf = 0; }
+        else if (h < 120) { rf = x; gf = c; bf = 0; }
+        else if (h < 180) { rf = 0; gf = c; bf = x; }
+        else if (h < 240) { rf = 0; gf = x; bf = c; }
+        else if (h < 300) { rf = x; gf = 0; bf = c; }
+        else              { rf = c; gf = 0; bf = x; }
+        r = (int)Math.Round((rf + m) * 255);
+        g = (int)Math.Round((gf + m) * 255);
+        b = (int)Math.Round((bf + m) * 255);
+    }
+
+    private async Task RefreshCanvas()
+    {
+        if (_canvasInitialized && _module is not null)
+        {
+            try { await _module.InvokeVoidAsync("flareColorPicker.setHue", _canvas, _hue); }
+            catch { }
+        }
+    }
+
+    private async Task NotifyChange()
+    {
+        var value = _currentFormatted;
+        // Treat our own emitted value as already-parsed so the echo back through Value does not
+        // re-parse (and possibly round-trip-shift) the state we just produced.
+        _lastParsedValue = value;
+        await ValueChanged.InvokeAsync(value);
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+        StateHasChanged();
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+        _lastParsedValue = Value ?? "#ff0000";
+        ParseColorToState(_lastParsedValue);
+    }
+
+    // -- Render helpers ----------------------------------------------------------
+
+    private RenderFragment RenderPanel() => __builder =>
+    {
+        // HSL gradient canvas area
+        __builder.OpenElement(0, "div");
+        __builder.AddAttribute(1, "class", Css.Classes.Colorpicker.CanvasWrap);
+        __builder.AddElementReferenceCapture(2, r => _canvasContainer = r);
+
+            __builder.OpenElement(3, "canvas");
+            __builder.AddAttribute(4, "class", Css.Classes.Colorpicker.Canvas);
+            __builder.AddAttribute(5, "width", "240");
+            __builder.AddAttribute(6, "height", "160");
+            __builder.AddElementReferenceCapture(7, r => _canvas = r);
+            __builder.CloseElement();
+
+            // Crosshair overlay handled by JS
+        __builder.CloseElement();
+
+        // Hue slider
+        __builder.OpenElement(10, "div");
+        __builder.AddAttribute(11, "class", Css.Classes.Colorpicker.Sliders);
+
+            __builder.OpenElement(12, "div");
+            __builder.AddAttribute(13, "class", Css.Classes.Colorpicker.SliderRow);
+                __builder.OpenElement(14, "div");
+                __builder.AddAttribute(15, "class", Css.Classes.Colorpicker.SliderHue);
+                    __builder.OpenElement(16, "input");
+                    __builder.AddAttribute(17, "type", "range");
+                    __builder.AddAttribute(18, "class", $"{Css.Classes.Colorpicker.Slider} {Css.Classes.Colorpicker.SliderHueMod}");
+                    __builder.AddAttribute(19, "min", "0");
+                    __builder.AddAttribute(20, "max", "360");
+                    __builder.AddAttribute(21, "step", "1");
+                    __builder.AddAttribute(22, "value", ((int)_hue).ToString());
+                    __builder.AddAttribute(23, "oninput", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleHueInput));
+                    __builder.CloseElement();
+                __builder.CloseElement();
+                __builder.OpenElement(24, "div");
+                __builder.AddAttribute(25, "class", Css.Classes.Colorpicker.Preview);
+                __builder.AddAttribute(26, "style", _safeSwatchStyle);
+                __builder.CloseElement();
+            __builder.CloseElement();
+
+            // Alpha slider
+            __builder.OpenElement(30, "div");
+            __builder.AddAttribute(31, "class", Css.Classes.Colorpicker.SliderRow);
+                __builder.OpenElement(32, "div");
+                __builder.AddAttribute(33, "class", Css.Classes.Colorpicker.SliderAlpha);
+                __builder.AddAttribute(34, "style", $"--_alpha-color:{HslSolid()}");
+                    __builder.OpenElement(35, "input");
+                    __builder.AddAttribute(36, "type", "range");
+                    __builder.AddAttribute(37, "class", $"{Css.Classes.Colorpicker.Slider} {Css.Classes.Colorpicker.SliderAlphaMod}");
+                    __builder.AddAttribute(38, "min", "0");
+                    __builder.AddAttribute(39, "max", "1");
+                    __builder.AddAttribute(40, "step", "0.01");
+                    __builder.AddAttribute(41, "value", _alpha.ToString("F2", System.Globalization.CultureInfo.InvariantCulture));
+                    __builder.AddAttribute(42, "oninput", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleAlphaInput));
+                    __builder.CloseElement();
+                __builder.CloseElement();
+            __builder.CloseElement();
+
+        __builder.CloseElement(); // sliders
+
+        // Text inputs (tabbed)
+        __builder.OpenElement(50, "div");
+        __builder.AddAttribute(51, "class", Css.Classes.Colorpicker.Inputs);
+
+            // Tab buttons
+            __builder.OpenElement(52, "div");
+            __builder.AddAttribute(53, "class", Css.Classes.Colorpicker.Tabs);
+            foreach (var tab in new[] { "hex", "rgb", "hsl" })
+            {
+                var t = tab;
+                __builder.OpenElement(54, "button");
+                __builder.AddAttribute(55, "type", "button");
+                __builder.AddAttribute(56, "class", $"{Css.Classes.Colorpicker.Tab}{(_activeTab == t ? " " + Css.Classes.Colorpicker.TabActive : "")}");
+                __builder.AddAttribute(57, "onclick", EventCallback.Factory.Create(this, () => { _activeTab = t; }));
+                __builder.AddContent(58, t.ToUpper());
+                __builder.CloseElement();
+            }
+            __builder.CloseElement();
+
+            // HEX input
+            if (_activeTab == "hex")
+            {
+                __builder.OpenElement(60, "div");
+                __builder.AddAttribute(61, "class", Css.Classes.Colorpicker.InputRow);
+                    __builder.OpenElement(62, "input");
+                    __builder.AddAttribute(63, "type", "text");
+                    __builder.AddAttribute(64, "class", Css.Classes.Colorpicker.Input);
+                    __builder.AddAttribute(65, "value", _hexInput);
+                    __builder.AddAttribute(66, "placeholder", "#000000");
+                    __builder.AddAttribute(67, "onchange", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleHexInput));
+                    __builder.CloseElement();
+                __builder.CloseElement();
+            }
+
+            // RGB inputs
+            if (_activeTab == "rgb")
+            {
+                __builder.OpenElement(70, "div");
+                __builder.AddAttribute(71, "class", Css.Classes.Colorpicker.InputRow);
+                foreach (var (label, field, setter) in new (string, string, Action<string>)[]
+                {
+                    ("R", _rInput, v => _rInput = v),
+                    ("G", _gInput, v => _gInput = v),
+                    ("B", _bInput, v => _bInput = v),
+                })
+                {
+                    var s = setter;
+                    __builder.OpenElement(72, "label");
+                    __builder.AddAttribute(73, "class", Css.Classes.Colorpicker.InputGroup);
+                        __builder.OpenElement(74, "input");
+                        __builder.AddAttribute(75, "type", "number");
+                        __builder.AddAttribute(76, "class", Css.Classes.Colorpicker.Input);
+                        __builder.AddAttribute(77, "min", "0");
+                        __builder.AddAttribute(78, "max", "255");
+                        __builder.AddAttribute(79, "value", field);
+                        __builder.AddAttribute(80, "oninput", EventCallback.Factory.Create<ChangeEventArgs>(this,
+                            async e => { s(e.Value?.ToString() ?? ""); await HandleRgbInput(); }));
+                        __builder.CloseElement();
+                        __builder.OpenElement(81, "span");
+                        __builder.AddAttribute(82, "class", Css.Classes.Colorpicker.InputLabel);
+                        __builder.AddContent(83, label);
+                        __builder.CloseElement();
+                    __builder.CloseElement();
+                }
+                __builder.CloseElement();
+            }
+
+            // HSL inputs
+            if (_activeTab == "hsl")
+            {
+                __builder.OpenElement(90, "div");
+                __builder.AddAttribute(91, "class", Css.Classes.Colorpicker.InputRow);
+                foreach (var (label, field, max, setter) in new (string, string, int, Action<string>)[]
+                {
+                    ("H", _hInput, 360, v => _hInput = v),
+                    ("S", _sInput, 100, v => _sInput = v),
+                    ("L", _lInput, 100, v => _lInput = v),
+                })
+                {
+                    var s = setter; var mx = max;
+                    __builder.OpenElement(92, "label");
+                    __builder.AddAttribute(93, "class", Css.Classes.Colorpicker.InputGroup);
+                        __builder.OpenElement(94, "input");
+                        __builder.AddAttribute(95, "type", "number");
+                        __builder.AddAttribute(96, "class", Css.Classes.Colorpicker.Input);
+                        __builder.AddAttribute(97, "min", "0");
+                        __builder.AddAttribute(98, "max", mx.ToString());
+                        __builder.AddAttribute(99, "value", field);
+                        __builder.AddAttribute(100, "oninput", EventCallback.Factory.Create<ChangeEventArgs>(this,
+                            async e => { s(e.Value?.ToString() ?? ""); await HandleHslInput(); }));
+                        __builder.CloseElement();
+                        __builder.OpenElement(101, "span");
+                        __builder.AddAttribute(102, "class", Css.Classes.Colorpicker.InputLabel);
+                        __builder.AddContent(103, label);
+                        __builder.CloseElement();
+                    __builder.CloseElement();
+                }
+                __builder.CloseElement();
+            }
+
+        __builder.CloseElement(); // inputs
+
+        // Preset swatches
+        if (Presets?.Any() == true)
+        {
+            __builder.OpenElement(110, "div");
+            __builder.AddAttribute(111, "class", Css.Classes.Colorpicker.Presets);
+            foreach (var preset in Presets)
+            {
+                var p = preset;
+                __builder.OpenElement(112, "button");
+                __builder.AddAttribute(113, "type", "button");
+                __builder.AddAttribute(114, "class", Css.Classes.Colorpicker.Preset);
+                __builder.AddAttribute(115, "style", _safePresetStyle(p));
+                __builder.AddAttribute(116, "title", p);
+                __builder.AddAttribute(117, "onclick", EventCallback.Factory.Create(this, () => SelectPreset(p)));
+                __builder.CloseElement();
+            }
+            __builder.CloseElement();
+        }
+
+        // EyeDropper button
+        if (ShowEyeDropper)
+        {
+            __builder.OpenElement(120, "div");
+            __builder.AddAttribute(121, "class", Css.Classes.Colorpicker.EyedropperRow);
+                __builder.OpenElement(122, "button");
+                __builder.AddAttribute(123, "type", "button");
+                __builder.AddAttribute(124, "class", Css.Classes.Colorpicker.EyedropperBtn);
+                __builder.AddAttribute(125, "title", FlareStrings.ColorPicker_EyeDropperTitle);
+                __builder.AddAttribute(126, "onclick", EventCallback.Factory.Create(this, OpenEyeDropperAsync));
+                    __builder.OpenElement(127, "span");
+                    __builder.AddAttribute(128, "class", "material-symbols-rounded");
+                    __builder.AddContent(129, "colorize");
+                    __builder.CloseElement();
+                    __builder.OpenElement(130, "span");
+                    __builder.AddContent(131, FlareStrings.ColorPicker_EyeDropperLabel);
+                    __builder.CloseElement();
+                __builder.CloseElement();
+            __builder.CloseElement();
+        }
+    };
+
+    private string HslSolid()
+    {
+        HslToRgb(_hue, _saturation, _lightness, out var r, out var g, out var b);
+        return $"#{r:X2}{g:X2}{b:X2}";
+    }
+}

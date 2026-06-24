@@ -1,0 +1,14 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareDataGrid Items="@DatagridData._people" PageSize="8"
+                   EditMode="DataGridEditMode.Batch"
+                   RowKey="@(p => p.Name)">
+        <Columns>
+            <FlareColumn Title="Name" Field="@(p => p.Name)" Editable="true" />
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Editable="true" />
+            <FlareColumn Title="City" Field="@(p => p.City)" />
+            <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" Editable="true" />
+        </Columns>
+    </FlareDataGrid>
+</FlareStack>

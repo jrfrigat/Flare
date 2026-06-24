@@ -1,0 +1,236 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Linq.Expressions
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Input.Label">@Label</label>
+    }
+    <div class="@Css.Classes.Input.Field">
+        <input class="@Css.Classes.Input.Control"
+               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+               type="text"
+               value="@_display"
+               placeholder="@(_placeholder ?? Placeholder)"
+               disabled="@Disabled"
+               readonly="@ReadOnly"
+               maxlength="@Pattern?.Length"
+               @oninput="HandleInput"
+               @attributes="AdditionalAttributes" />
+    </div>
+    @if (!string.IsNullOrEmpty(_displayedError))
+    {
+        <span class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError">@_displayedError</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span class="@Css.Classes.Input.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>Current unmasked value of the input.</summary>
+    [Parameter] public string? Value { get; set; }
+    /// <summary>Callback invoked when the value changes.</summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    /// <summary>Mask pattern; use # digit, A letter, * alphanumeric. Overrides <see cref="Preset"/>.</summary>
+    [Parameter] public string? Mask { get; set; }
+    /// <summary>Ready-made mask preset (Phone/Date/Time/IpAddress/CreditCard/Ssn). Used when <see cref="Mask"/> is not set.</summary>
+    [Parameter] public MaskPreset Preset { get; set; } = MaskPreset.None;
+    /// <summary>
+    /// When true (default), the mask is applied automatically as the user types -- literal
+    /// characters (separators like <c>-</c>, <c>/</c>, <c>(</c>) are inserted for them. Set false
+    /// to disable auto-formatting and let the user type the value freely.
+    /// </summary>
+    [Parameter] public bool AutoApply { get; set; } = true;
+    /// <summary>Label text displayed above the input.</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Placeholder text shown when the input is empty.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+    /// <summary>Helper text shown below the input.</summary>
+    [Parameter] public string? HelperText { get; set; }
+    /// <summary>Overrides validation with a custom error message.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Disables the input when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Makes the input read-only when true.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
+    /// Default keeps the theme's field style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>Expression used to bind and validate the field.</summary>
+    [Parameter] public Expression<Func<string?>>? For { get; set; }
+
+    private string _variantClass => Variant switch
+    {
+        InputVariant.Filled => Css.Classes.Input.VariantFilled,
+        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
+        _ => string.Empty,
+    };
+    private string _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
+        _ => string.Empty,
+    };
+
+    [CascadingParameter] private EditContext? EditContext { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Input.Root;
+
+    private FieldIdentifier _fieldId;
+    private string _display = string.Empty;
+
+    // Effective mask: explicit Mask wins, else the selected preset.
+    private string? Pattern => Mask ?? (Preset switch
+    {
+        MaskPreset.Phone      => "(###) ###-####",
+        MaskPreset.Date       => "##/##/####",
+        MaskPreset.Time       => "##:##",
+        MaskPreset.IpAddress  => "###.###.###.###",
+        MaskPreset.CreditCard => "#### #### #### ####",
+        MaskPreset.Ssn        => "###-##-####",
+        _ => null,
+    });
+
+    // Auto-derived placeholder from mask: '#','A','*' -> '_', literals kept
+    private string? _placeholder => Pattern is null ? null : string.Concat(Pattern.Select(c =>
+        c == '#' || c == 'A' || c == '*' ? '_' : c));
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged += OnValidationChanged;
+        if (!string.IsNullOrEmpty(Value))
+            _display = AutoApply ? ApplyMask(Value) : Value;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (EditContext is not null && For is not null)
+            _fieldId = FieldIdentifier.Create(For);
+    }
+
+    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (EditContext is not null)
+            EditContext.OnValidationStateChanged -= OnValidationChanged;
+        await base.DisposeAsync();
+    }
+
+    private string? _validationError =>
+        EditContext is not null && For is not null
+            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
+            : null;
+
+    private string? _displayedError => ErrorText ?? _validationError;
+
+    private string _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
+
+    private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(100);
+
+    /// <summary>Validates that <paramref name="value"/> matches <see cref="Mask"/> when treated as a regex pattern. Returns true when Mask is null or empty.</summary>
+    private bool MatchesMask(string value)
+    {
+        if (string.IsNullOrEmpty(Pattern)) return true;
+        try
+        {
+            return Regex.IsMatch(value, Pattern, RegexOptions.None, RegexTimeout);
+        }
+        catch (RegexMatchTimeoutException) { return false; }
+    }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        var raw = e.Value?.ToString() ?? string.Empty;
+        if (AutoApply)
+        {
+            _display = ApplyMask(raw);
+            var unmasked = ExtractRaw(_display);
+            await ValueChanged.InvokeAsync(unmasked.Length > 0 ? _display : null);
+        }
+        else
+        {
+            _display = raw;
+            await ValueChanged.InvokeAsync(raw.Length > 0 ? raw : null);
+        }
+        if (EditContext is not null && For is not null)
+            EditContext.NotifyFieldChanged(_fieldId);
+    }
+
+    // Apply mask: '#'=digit, 'A'=letter, '*'=alphanumeric, others=literals
+    private string ApplyMask(string input)
+    {
+        if (string.IsNullOrEmpty(Pattern)) return input;
+        var raw = ExtractRaw(input);
+        // Empty -> render nothing so the placeholder pattern shows (no leading literals yet).
+        if (raw.Length == 0) return string.Empty;
+        var result = new System.Text.StringBuilder();
+        var ri = 0;
+        foreach (var mc in Pattern)
+        {
+            var isPlaceholder = mc is '#' or 'A' or '*';
+            if (isPlaceholder)
+            {
+                // A placeholder needs a typed char; stop once the input is exhausted.
+                if (ri >= raw.Length) break;
+                var c = raw[ri];
+                var ok = mc switch
+                {
+                    '#' => char.IsDigit(c),
+                    'A' => char.IsLetter(c),
+                    _ => char.IsLetterOrDigit(c),
+                };
+                if (!ok) break;
+                result.Append(c);
+                ri++;
+            }
+            else
+            {
+                // Literal separator: auto-insert it (even when the input is exhausted, so the
+                // separator appears as soon as the preceding group is complete).
+                result.Append(mc);
+                if (ri < raw.Length && raw[ri] == mc) ri++;
+            }
+        }
+        return result.ToString();
+    }
+
+    // Extract only the user-typed characters (strip mask literals)
+    private string ExtractRaw(string masked)
+    {
+        if (string.IsNullOrEmpty(Pattern)) return masked;
+        var result = new System.Text.StringBuilder();
+        var mi = 0;
+        foreach (var c in masked)
+        {
+            if (mi >= Pattern.Length) break;
+            var mc = Pattern[mi];
+            if (mc == '#' || mc == 'A' || mc == '*')
+            {
+                result.Append(c);
+                mi++;
+            }
+            else
+            {
+                if (c == mc) mi++;
+            }
+        }
+        return result.ToString();
+    }
+}

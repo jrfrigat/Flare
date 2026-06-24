@@ -1,0 +1,31 @@
+@* Type-aware columns: boolean renders as a checkbox icon, dates/numbers are culture- and
+   format-aware. "Active" sets no Type and is auto-detected from the bool value; the others set
+   Type/Format explicitly. Filter editors are derived from the column type automatically. *@
+
+<FlareDataGrid Items="@_employees" PageSize="8" FilterDebounceMs="0">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" Filterable="true" />
+        <FlareColumn Title="Active" Field="@(e => e.Active)" Filterable="true" />
+        <FlareColumn Title="Department" Field="@(e => e.Department)" Filterable="true" />
+        <FlareColumn Title="Hire date" Field="@(e => e.HireDate)" Type="ColumnDataType.Date"
+                     Sortable="true" Filterable="true" />
+        <FlareColumn Title="Salary" Field="@(e => e.Salary)" Type="ColumnDataType.Number"
+                     Format="N0" Sortable="true" Width="120px" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private enum Dept { Engineering, Design, Sales, Support }
+
+    private sealed record Employee(string Name, bool Active, Dept Department, DateTime HireDate, decimal Salary);
+
+    private readonly List<Employee> _employees =
+    [
+        new("Alice Johnson", true,  Dept.Engineering, new DateTime(2021, 3, 14), 98000m),
+        new("Bob Smith",     false, Dept.Design,      new DateTime(2019, 11, 2), 76000m),
+        new("Carol Williams",true,  Dept.Sales,       new DateTime(2022, 6, 30), 64000m),
+        new("David Lee",     true,  Dept.Engineering, new DateTime(2020, 1, 20), 91000m),
+        new("Emma Davis",    false, Dept.Support,     new DateTime(2023, 9, 5),  52000m),
+        new("Frank Miller",  true,  Dept.Sales,       new DateTime(2018, 4, 11), 70000m),
+    ];
+}

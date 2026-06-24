@@ -1,0 +1,198 @@
+@page "/services/version-check"
+@implements IAsyncDisposable
+@inherits LocalizedPage
+@inject ISnackbarService Snackbar
+@using Flare.Components.Services
+
+<PageTitle>@GalleryStrings.Services_VersionCheckTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_VersionCheckTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_VersionCheckSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareCard Variant="CardVariant.Outlined" Style="max-width:40rem;">
+    <FlareStack Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckBody</FlareText>
+
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+            <FlareIcon Name="check_circle" Color="FlareColor.OnSurfaceVariant" />
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_VersionCheckCurrent: <strong>@_currentVersion</strong>
+            </FlareText>
+        </FlareStack>
+
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+            @if (_updating)
+            {
+                <FlareProgress Variant="ProgressVariant.Circular" Size="20" Color="FlareColor.Primary" />
+                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckUpdating</FlareText>
+            }
+            else if (_detected is not null)
+            {
+                <FlareIcon Name="system_update" Color="FlareColor.Warning" />
+                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckDetected <strong>@_detected</strong></FlareText>
+            }
+            else if (_checking)
+            {
+                <FlareProgress Variant="ProgressVariant.Circular" Size="20" Color="FlareColor.Primary" />
+                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckChecking</FlareText>
+            }
+            else
+            {
+                <FlareIcon Name="check_circle" Color="FlareColor.Success" />
+                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckUpToDate</FlareText>
+            }
+        </FlareStack>
+
+        <FlareStack Row Wrap Gap="FlareSpacing.Small">
+            <FlareButton Variant="ButtonVariant.Outlined" OnClick="CheckNowAsync" Disabled="@(_checking || _updating)">
+                <LeadingIcon><FlareIcon Name="refresh" /></LeadingIcon>
+                <ChildContent>@GalleryStrings.Services_VersionCheckCheckNow</ChildContent>
+            </FlareButton>
+            @if (_detected is not null || _updating)
+            {
+                <FlareButton Variant="ButtonVariant.Filled" OnClick="ApplyUpdate" Disabled="@_updating">
+                    <LeadingIcon><FlareIcon Name="system_update" /></LeadingIcon>
+                    <ChildContent>@(_updating ? GalleryStrings.Services_VersionCheckUpdating : GalleryStrings.Services_VersionCheckUpdate)</ChildContent>
+                </FlareButton>
+            }
+        </FlareStack>
+
+        <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Services_VersionCheckSimNote</FlareText>
+        <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Services_VersionCheckNote</FlareText>
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="csharp" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    // A self-contained demo instance (generic mode) with a simulated probe, so the full lifecycle
+    // is visible here without deploying a new build. The real app-wide service is registered in
+    // Program.cs in service-worker mode (see MainLayout) and only fires after an actual new release.
+    private VersionCheckService? _demo;
+
+    private string _currentVersion = "1.0.0";
+    private string _nextVersion = "1.1.0";
+    private string? _detected;
+    private bool _checking;
+    private bool _updating;
+    private int _checks;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized(); // LocalizedPage: subscribe to language changes
+        var opts = new FlareVersionCheckOptions
+        {
+            CurrentVersion = _currentVersion,
+            Interval = TimeSpan.FromSeconds(5),
+            CheckImmediately = true,
+            // First check reports the running version (up to date); after a couple of checks the
+            // probe "sees" a newer deployed version, which raises NewVersionAvailable.
+            CheckForLatestVersion = _ =>
+            {
+                _checks++;
+                var reported = _checks >= 2 ? _nextVersion : _currentVersion;
+                return Task.FromResult<string?>(reported);
+            },
+        };
+        _demo = new VersionCheckService(opts);
+        _demo.NewVersionAvailable += OnNewVersionAsync;
+        _demo.Start();
+    }
+
+    private Task OnNewVersionAsync(VersionCheckInfo info) => InvokeAsync(() =>
+    {
+        _detected = info.LatestVersion;
+        _checking = false;
+        StateHasChanged();
+    });
+
+    private async Task CheckNowAsync()
+    {
+        if (_demo is null) return;
+        _checking = true;
+        StateHasChanged();
+        await _demo.CheckNowAsync();
+        // If the check did not surface a newer version, drop back to the up-to-date state.
+        if (_detected is null) _checking = false;
+        StateHasChanged();
+    }
+
+    // Mirrors the real "Update" action: a production app calls VersionCheck.ApplyUpdateAsync() to
+    // activate the waiting service worker and reload. Here we surface progress (an "updating" state +
+    // a short delay to stand in for the apply+reload) and confirm with a snackbar, so the click has
+    // clear feedback instead of silently swapping the version.
+    private async Task ApplyUpdate()
+    {
+        if (_demo is null || _updating || _detected is null) return;
+
+        var target = _detected;
+        _updating = true;
+        _detected = null;          // leave the "new version" state, enter "updating..."
+        StateHasChanged();
+
+        await _demo.ApplyUpdateAsync(); // no-op in generic mode; shown for parity with real usage
+        await Task.Delay(1200);         // stand in for the service-worker activation + reload
+
+        _currentVersion = target;
+        _nextVersion = BumpMinor(_currentVersion);
+        _checks = 0;                // restart the cycle so the next version is not detected instantly
+        _updating = false;
+        StateHasChanged();
+
+        Snackbar.Show($"{GalleryStrings.Services_VersionCheckUpdatedTo} {target}", SnackbarSeverity.Success);
+    }
+
+    private static string BumpMinor(string version)
+    {
+        var parts = version.Split('.');
+        if (parts.Length >= 2 && int.TryParse(parts[1], out var minor))
+            parts[1] = (minor + 1).ToString();
+        return string.Join('.', parts);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_demo is not null)
+        {
+            _demo.NewVersionAvailable -= OnNewVersionAsync;
+            await _demo.DisposeAsync();
+        }
+    }
+
+    private const string _usage = """
+        // Program.cs - service-worker mode. The service registers the SW (ServiceWorkerPath defaults
+        // to service-worker.js), polls the deployed version, and can apply the update. No app JS needed.
+        builder.Services.AddFlareVersionCheck(opts =>
+        {
+            opts.Interval = TimeSpan.FromSeconds(10);
+            opts.UseServiceWorker = true;
+        });
+
+        // ...or generic mode: provide your own probe (e.g. poll a version.json).
+        builder.Services.AddFlareVersionCheck(opts =>
+        {
+            opts.Interval = TimeSpan.FromMinutes(30);
+            opts.CurrentVersion = "1.0.0";
+            opts.CheckForLatestVersion = async ct =>
+                (await http.GetFromJsonAsync<VersionDto>("version.json", ct))?.Version;
+        });
+
+        // MainLayout.razor - the service renders nothing; you decide how to surface it.
+        @inject IVersionCheckService VersionCheck
+        @inject ISnackbarService Snackbar
+
+        protected override void OnInitialized()
+        {
+            VersionCheck.NewVersionAvailable += OnNewVersion;
+            VersionCheck.Start();
+        }
+
+        // Persistent, actionable toast: "Update" applies the waiting worker and reloads.
+        Task OnNewVersion(VersionCheckInfo info) => InvokeAsync(() =>
+            Snackbar.Show("A new version is available", SnackbarSeverity.Info,
+                durationMs: 0, actionText: "Update", onAction: VersionCheck.ApplyUpdateAsync));
+        """;
+}

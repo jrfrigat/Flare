@@ -1,0 +1,14 @@
+@* Color accepts a semantic role (FlareColor.Primary…) or a custom value (FlareColor.Custom("#…")). *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
+    <FlareSlider @bind-Value="_v" Label="Primary (default)" Color="FlareColor.Primary" />
+    <FlareSlider @bind-Value="_v" Label="Secondary" Color="FlareColor.Secondary" />
+    <FlareSlider @bind-Value="_v" Label="Tertiary" Color="FlareColor.Tertiary" />
+    <FlareSlider @bind-Value="_v" Label="Success" Color="FlareColor.Success" Stepper="true" Min="0" Max="100" Step="20" />
+    <FlareSlider @bind-Value="_v" Label="Error" Color="FlareColor.Error" />
+    <FlareSlider @bind-Value="_v" Label="Custom #E91E63" Color="_pink" Size="SliderSize.Md" Indicator="true" />
+</FlareStack>
+
+@code {
+    private double _v = 60;
+    private readonly FlareColor _pink = FlareColor.Custom("#E91E63");
+}

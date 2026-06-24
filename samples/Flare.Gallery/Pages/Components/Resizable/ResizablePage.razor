@@ -1,0 +1,11 @@
+@page "/components/resizable"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Resizable_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareResizable">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Resizable_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Resizable_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Resizable_Basic" DemoType="typeof(Examples.ResizableDemo)" />

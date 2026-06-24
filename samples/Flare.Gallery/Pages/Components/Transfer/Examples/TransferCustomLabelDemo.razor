@@ -1,0 +1,22 @@
+<FlareTransfer TItem="Permission"
+               SourceItems="_permissions"
+               TargetItems="_enabledPermissions"
+               TargetItemsChanged="items => _enabledPermissions = items.ToList()"
+               ItemLabel="p => p.Label"
+               SourceTitle="All Permissions"
+               TargetTitle="Active" />
+
+@code {
+    private record Permission(string Id, string Label);
+
+    private readonly List<Permission> _permissions =
+    [
+        new("r:users",      "Read Users"),
+        new("w:users",      "Write Users"),
+        new("r:orders",     "Read Orders"),
+        new("w:orders",     "Write Orders"),
+        new("view:reports", "View Reports"),
+    ];
+
+    private List<Permission> _enabledPermissions = [];
+}

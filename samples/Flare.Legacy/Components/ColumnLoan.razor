@@ -1,0 +1,22 @@
+@namespace Flare.Legacy.Components
+
+@* Reusable loan cell: an "open" icon-button on the left plus the contract number. Used in any grid
+   that lists contracts so the open action and the number stay on one row. *@
+<FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall" Wrap="false">
+    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Primary"
+                 title="@($"Открыть договор {LoanId}")" OnClick="OnOpen">
+        <FlareIcon Size="0.95rem" Name="open_in_new" />
+    </FlareButton>
+    <FlareText Typo="TypographyScale.LabelMedium">@LoanNumber</FlareText>
+</FlareStack>
+
+@code {
+    /// <summary>Contract id (used for the open tooltip/action).</summary>
+    [Parameter] public string LoanId { get; set; } = "";
+
+    /// <summary>Contract number shown next to the open button.</summary>
+    [Parameter] public string LoanNumber { get; set; } = "";
+
+    /// <summary>Raised when the open button is clicked.</summary>
+    [Parameter] public EventCallback OnOpen { get; set; }
+}

@@ -1,0 +1,17 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<img class="@BuildCssClass()" style="@_mediaStyle" src="@Src" alt="@Alt" loading="lazy" @attributes="AdditionalAttributes" />
+
+@code {
+    /// <summary>Image source URL.</summary>
+    [Parameter] public string? Src { get; set; }
+    /// <summary>Alternative text for the image (accessibility).</summary>
+    [Parameter] public string? Alt { get; set; }
+    /// <summary>CSS height of the media area (e.g. "12rem", "180px"). Default 12rem.</summary>
+    [Parameter] public string Height { get; set; } = "12rem";
+
+    protected override string ComponentCssClass => Css.Classes.Card.Media;
+
+    private string _mediaStyle => $"height:{Height};{Style}";
+}

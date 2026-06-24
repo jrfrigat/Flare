@@ -1,0 +1,43 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareAutocomplete TValue="UserItem"
+                       @bind-Value="_user"
+                       Label="Assignee"
+                       Placeholder="Search users…"
+                       Items="_users"
+                       GetLabel="@(u => u.Name)"
+                       MinChars="1"
+                       MaxItems="5"
+                       DebounceMs="200"
+                       NoResultsText="No matching users"
+                       HelperText="Custom item template with avatar + email"
+                       Style="max-width:24rem;">
+        <ItemTemplate Context="u">
+            <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                <FlareAvatar Text="@u.Name" Size="AvatarSize.Sm" />
+                <FlareStack Gap="FlareSpacing.None">
+                    <FlareText Typo="TypographyScale.BodyMedium">@u.Name</FlareText>
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@u.Email</FlareText>
+                </FlareStack>
+            </FlareStack>
+        </ItemTemplate>
+    </FlareAutocomplete>
+
+    <FlareAutocomplete TValue="string" Label="Disabled" Disabled
+                       Items="@(new[] { "One", "Two" })" Style="max-width:24rem;" />
+</FlareStack>
+
+@code {
+    private UserItem? _user;
+
+    private record UserItem(string Name, string Email);
+
+    private static readonly UserItem[] _users =
+    [
+        new("Alice Johnson",  "alice@example.com"),
+        new("Bob Smith",      "bob@example.com"),
+        new("Carol Williams", "carol@example.com"),
+        new("Dave Brown",     "dave@example.com"),
+        new("Erin Davis",     "erin@example.com"),
+        new("Frank Miller",   "frank@example.com"),
+    ];
+}

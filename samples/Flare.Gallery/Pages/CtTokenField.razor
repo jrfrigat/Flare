@@ -1,0 +1,45 @@
+@namespace Flare.Gallery.Pages
+@using System.Text.Json.Nodes
+
+@* One editable theme-token leaf. It mutates the shared JSON tree in place and raises NO callback
+   to the page, so typing or picking a color re-renders only this field - not the whole editor
+   (which holds dozens of color pickers). The page reads the trees back on Confirm/Export. *@
+@if (_isColor)
+{
+    <FlareColorPicker Value="@_value" ValueChanged="OnChanged" Format="_format" />
+}
+else
+{
+    <FlareField TValue="string" Size="FieldSize.Sm" Value="@_value" ValueChanged="OnChanged" />
+}
+
+@code {
+    /// <summary>The JSON record node that owns this leaf.</summary>
+    [Parameter] public JsonObject Parent { get; set; } = default!;
+    /// <summary>The property name of the leaf inside <see cref="Parent"/>.</summary>
+    [Parameter] public string PropKey { get; set; } = "";
+
+    private string _value = string.Empty;
+    private bool _isColor;
+    private ColorFormat _format = ColorFormat.Hex;
+
+    protected override void OnParametersSet()
+    {
+        _value = Parent[PropKey]?.ToString() ?? string.Empty;
+        var v = _value.TrimStart();
+        // Only a value that *is* a single color (not e.g. a shadow "0 1px rgba(...)") gets the
+        // picker; its format is kept so editing round-trips rgba()/hsl() instead of forcing hex.
+        if (v.StartsWith('#')) { _isColor = true; _format = ColorFormat.Hex; }
+        else if (v.StartsWith("rgb(", StringComparison.OrdinalIgnoreCase) || v.StartsWith("rgba(", StringComparison.OrdinalIgnoreCase))
+            { _isColor = true; _format = ColorFormat.Rgb; }
+        else if (v.StartsWith("hsl(", StringComparison.OrdinalIgnoreCase) || v.StartsWith("hsla(", StringComparison.OrdinalIgnoreCase))
+            { _isColor = true; _format = ColorFormat.Hsl; }
+        else _isColor = false;
+    }
+
+    private void OnChanged(string? v)
+    {
+        _value = v ?? string.Empty;
+        Parent[PropKey] = _value; // write straight into the shared tree; no page re-render
+    }
+}

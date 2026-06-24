@@ -1,0 +1,68 @@
+/* ==========================================================================
+   AERO CONTROLS (switch / slider / progress / tabs)
+   Glossy gradients + inset sunken tracks, all from theme tokens (light + dark).
+   ========================================================================== */
+@scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
+
+    /* ---- Switch: sunken track, glossy knob ---- */
+    .flare-switch__thumb {
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+    }
+    .flare-switch__handle {
+        background-image: linear-gradient(to bottom, #ffffff 0%, #e6e6e6 100%);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ---- Slider: sunken rail, glossy accent fill ---- */
+    .flare-slider__rail {
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.14);
+    }
+    .flare-slider__seg--active {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 62%, #ffffff) 0%,
+            var(--flare-color-primary) 50%,
+            color-mix(in srgb, var(--flare-color-primary) 86%, #000000) 100%) !important;
+    }
+
+    /* ---- Progress: the iconic glossy Aero bar ---- */
+    .flare-progress__track {
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.14);
+    }
+    .flare-progress__indicator,
+    .flare-progress__bar {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 60%, #ffffff) 0%,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 88%, #ffffff) 45%,
+            var(--fc-main, var(--flare-color-primary)) 55%,
+            color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 85%, #000000) 100%) !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+
+    /* ---- Tabs: raised Office/Aero tabs with a glossy gradient ---- */
+    .flare-tabs__tab {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-surface) 55%, #ffffff) 0%,
+            color-mix(in srgb, var(--flare-color-surface-container) 80%, #000000) 100%) !important;
+        border: 1px solid var(--flare-color-outline-variant);
+        border-bottom-color: transparent;
+        border-radius: var(--flare-shape-small) var(--flare-shape-small) 0 0;
+        margin-right: 2px;
+    }
+    .flare-tabs__tab:hover {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 12%, var(--flare-color-surface)) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 22%, var(--flare-color-surface)) 100%);
+    }
+    .flare-tabs__tab--active {
+        background-image: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface)) 0%,
+            var(--flare-color-surface) 100%) !important;
+        border-color: var(--flare-color-outline);
+        border-bottom-color: var(--flare-color-surface);
+    }
+}

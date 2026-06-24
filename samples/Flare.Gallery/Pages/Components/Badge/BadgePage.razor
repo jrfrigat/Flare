@@ -1,0 +1,13 @@
+@page "/components/badge"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Badge_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareBadge">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Badge_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Badge_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Badge_Basic" DemoType="typeof(Examples.BadgeBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Badge_Standalone" DemoType="typeof(Examples.BadgeStandaloneDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Badge_Origin" DemoType="typeof(Examples.BadgeOriginDemo)" />

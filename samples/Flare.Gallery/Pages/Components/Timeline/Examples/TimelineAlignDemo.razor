@@ -1,0 +1,13 @@
+<FlareStack Style="max-width:32rem;">
+    <FlareTimeline Align="TimelineAlign.Right">
+        <FlareTimelineItem Title="Created" Time="09:00" Icon="add" Color="_custom">Branch created.</FlareTimelineItem>
+        <FlareTimelineItem Title="Review" Time="11:30" Icon="visibility" Color="FlareColor.Warning">Awaiting review.</FlareTimelineItem>
+        <FlareTimelineItem Title="Merged" Time="14:00" Icon="check" Color="FlareColor.Success">Merged to main.</FlareTimelineItem>
+    </FlareTimeline>
+</FlareStack>
+
+@* Align=Right places content on the right; a custom FlareColor overrides the dot color. *@
+
+@code {
+    private readonly FlareColor _custom = FlareColor.Custom("#6750A4");
+}

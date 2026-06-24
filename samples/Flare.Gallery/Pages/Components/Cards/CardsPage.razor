@@ -1,0 +1,18 @@
+@page "/components/cards"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Cards_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareCard">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Cards_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        @GalleryStrings.Cards_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Cards_Variants" DemoType="typeof(Examples.CardsVariantsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Cards_Sizes" DemoType="typeof(Examples.CardsSizesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Cards_Compact" DemoType="typeof(Examples.CardsCompactDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Cards_Selectable" DemoType="typeof(Examples.CardsSelectableDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Cards_Anatomy" DemoType="typeof(Examples.CardsAnatomyDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Cards_RichContent" DemoType="typeof(Examples.CardsRichDemo)" />

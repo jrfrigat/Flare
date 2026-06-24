@@ -1,0 +1,19 @@
+@page "/components/buttons"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Buttons_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareButton">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Buttons_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Buttons_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Buttons_Variants" DemoType="typeof(Examples.ButtonsVariantsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Colors" DemoType="typeof(Examples.ButtonsColorsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_CustomColor" DemoType="typeof(Examples.ButtonsCustomColorDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Sizes" DemoType="typeof(Examples.ButtonSizesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Shapes" DemoType="typeof(Examples.ButtonsShapesDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Typo" DemoType="typeof(Examples.ButtonsTypoDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_WithIcons" DemoType="typeof(Examples.ButtonsWithIconsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Loading" DemoType="typeof(Examples.ButtonsLoadingDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_States" DemoType="typeof(Examples.ButtonsStatesDemo)" />

@@ -1,0 +1,346 @@
+@page "/custom-theme"
+@inject IThemeService ThemeService
+@inject IFlareDownload Download
+@implements IDisposable
+@using System.Text
+@using System.Text.Json
+@using System.Text.Json.Nodes
+@using System.Text.Json.Serialization
+@using Flare.Core.Tokens
+@using Flare.Core.Tokens.Components
+@using Flare.Core.Services
+
+<PageTitle>Custom Theme - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">Custom Theme</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">
+        Build a complete theme at runtime from the typed ITheme.Design (DesignTokens) and Palette
+        (ColorScheme) - palette colors, spacing, shape, typography, motion and every component token.
+        The editor binds directly to the token records, so the tabs mirror their structure. Click
+        Confirm to apply your edits (they override the active theme via CustomizeDesign / CustomizeColors);
+        Reset restores the current theme. Export the typed config to JSON and load it back later.
+    </FlareText>
+</GalleryPageTitle>
+
+<FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:1rem;">
+    <FlareButton Variant="ButtonVariant.Filled" OnClick="Apply">
+        <LeadingIcon><FlareIcon Name="check" /></LeadingIcon>
+        <ChildContent>Confirm</ChildContent>
+    </FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="Reset">
+        <LeadingIcon><FlareIcon Name="restart_alt" /></LeadingIcon>
+        <ChildContent>Reset</ChildContent>
+    </FlareButton>
+    <FlareSpacer />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        Base: <strong>@ThemeService.CurrentTheme.DisplayName</strong> / @ThemeService.CurrentPalette.Name / @(ThemeService.IsDark ? "Dark" : "Light")
+    </FlareText>
+</FlareStack>
+
+@* Two-column layout from Flare primitives: a 12-col grid whose columns collapse to full width below
+   the md breakpoint. The preview sticks while the (tall) editor scrolls on wide screens; when the
+   columns stack on narrow screens it is the last item in flow, so sticky has no visible effect. *@
+<FlareGrid Columns="12" Gap="FlareSpacing.Large" AlignItems="FlareAlignItems.Start">
+    <FlareCol Span="12" Md="8">
+        @* Lazy: only the open tab's editor (hundreds of token fields) is built - the others stay
+           out of the DOM until selected, and the edits live in the JSON trees so nothing is lost. *@
+        <FlareTabs Lazy="true">
+            <FlareTab Label="Palette">
+                @* Flare has no scroll-container primitive, so the constrained-scroll panel is a plain
+                   div with token-based inline style (CtScroll). data-scroll is the FlareLazy hook
+                   (a JS selector target, not a styling class). *@
+                <div style="@CtScroll" data-scroll>
+                    <FlareText Typo="TypographyScale.TitleSmall" Style="margin:0.5rem 0;">Light colors</FlareText>
+                    @RenderGroup(_light)
+                    <FlareDivider Style="margin:1.25rem 0;" />
+                    <FlareText Typo="TypographyScale.TitleSmall" Style="margin:0.5rem 0;">Dark colors</FlareText>
+                    @* The dark-colors half (another ~45 pickers) sits below the scroll fold; defer it
+                       within the editor's own scroll panel so the tab opens with half the work. *@
+                    <FlareLazy Root="[data-scroll]" RootMargin="150px" MinHeight="50vh">
+                        @RenderGroup(_dark)
+                    </FlareLazy>
+                </div>
+            </FlareTab>
+
+            <FlareTab Label="Spacing"><div style="@CtScroll">@GroupTab("Spacing")</div></FlareTab>
+            <FlareTab Label="Shape"><div style="@CtScroll">@GroupTab("Shape")</div></FlareTab>
+            <FlareTab Label="Typography"><div style="@CtScroll">@GroupTab("Typography")</div></FlareTab>
+            <FlareTab Label="Motion"><div style="@CtScroll">@GroupTab("Motion")</div></FlareTab>
+            <FlareTab Label="Elevation"><div style="@CtScroll">@GroupTab("Elevation")</div></FlareTab>
+            <FlareTab Label="State"><div style="@CtScroll">@GroupTab("State")</div></FlareTab>
+
+            <FlareTab Label="Components">
+                <div style="@CtScroll">@RenderComponents()</div>
+            </FlareTab>
+
+            <FlareTab Label="Export JSON">
+                <FlareStack Gap="FlareSpacing.Small">
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                        Generate the current theme config (typed DesignTokens + ColorScheme), then copy or download it.
+                    </FlareText>
+                    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                        <FlareButton Variant="ButtonVariant.Tonal" OnClick="BuildExport">
+                            <LeadingIcon><FlareIcon Name="data_object" /></LeadingIcon>
+                            <ChildContent>Generate JSON</ChildContent>
+                        </FlareButton>
+                        <FlareButton Variant="ButtonVariant.Outlined" OnClick="DownloadJson" Disabled="@string.IsNullOrEmpty(_exportJson)">
+                            <LeadingIcon><FlareIcon Name="download" /></LeadingIcon>
+                            <ChildContent>Download</ChildContent>
+                        </FlareButton>
+                        @if (!string.IsNullOrEmpty(_exportJson))
+                        {
+                            <FlareClipboard Text="@_exportJson" />
+                        }
+                    </FlareStack>
+
+                    @if (!string.IsNullOrEmpty(_exportJson))
+                    {
+                        <FlareCodeBlock Value="@_exportJson" Language="json" ReadOnly="true" />
+                    }
+                </FlareStack>
+            </FlareTab>
+
+            <FlareTab Label="Import JSON">
+                <FlareStack Gap="FlareSpacing.Small">
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                        Paste a theme config and load it - it replaces the editor values and applies them.
+                    </FlareText>
+                    <FlareTextArea @bind-Value="_importText" Rows="8" Placeholder="Paste a theme JSON here..." />
+                    @if (!string.IsNullOrEmpty(_importError))
+                    {
+                        <FlareText Color="FlareColor.Error" Typo="TypographyScale.BodySmall">@_importError</FlareText>
+                    }
+                    <FlareStack Row Gap="FlareSpacing.Small">
+                        <FlareButton Variant="ButtonVariant.Filled" OnClick="Import" Disabled="@string.IsNullOrWhiteSpace(_importText)">
+                            <LeadingIcon><FlareIcon Name="upload" /></LeadingIcon>
+                            <ChildContent>Load and apply</ChildContent>
+                        </FlareButton>
+                    </FlareStack>
+                </FlareStack>
+            </FlareTab>
+        </FlareTabs>
+    </FlareCol>
+
+    <FlareCol Span="12" Md="4" Style="position:sticky;top:1rem;">
+        <FlareCard Variant="CardVariant.Outlined">
+            <FlareStack Gap="FlareSpacing.Medium">
+                <FlareText Typo="TypographyScale.TitleMedium">Live preview</FlareText>
+
+                <FlareText Typo="TypographyScale.HeadlineSmall">Headline</FlareText>
+                <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+                    Body text reacts to your typography, color and spacing edits in real time.
+                </FlareText>
+
+                <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                    <FlareButton Variant="ButtonVariant.Filled">Filled</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Tonal">Tonal</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Outlined">Outlined</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text">Text</FlareButton>
+                </FlareStack>
+
+                <FlareButtonGroup>
+                    <FlareButton>Day</FlareButton>
+                    <FlareButton>Week</FlareButton>
+                    <FlareButton>Month</FlareButton>
+                </FlareButtonGroup>
+
+                <FlareField TValue="string" Label="Email" Placeholder="name@example.com" />
+
+                <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+                    <FlareCheckbox Value="true" Label="Checkbox" />
+                    <FlareSwitch Value="true" Label="Switch" />
+                    <FlareChip Label="Chip" />
+                </FlareStack>
+
+                <FlareAlert Severity="AlertSeverity.Info" Title="Heads up">Alerts use the same tokens.</FlareAlert>
+
+                <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                    <FlareBadge Text="Primary" Standalone="true" Color="FlareColor.Primary" />
+                    <FlareBadge Text="Success" Standalone="true" Color="FlareColor.Success" />
+                    <FlareBadge Text="Warning" Standalone="true" Color="FlareColor.Warning" />
+                    <FlareBadge Text="Error" Standalone="true" Color="FlareColor.Error" />
+                </FlareStack>
+            </FlareStack>
+        </FlareCard>
+    </FlareCol>
+</FlareGrid>
+
+@code {
+    // The editable theme is the typed token surface itself, mirrored as mutable JSON trees so the
+    // generic editor can bind to every leaf while the tabs follow the DesignTokens / ColorScheme
+    // record structure. On Confirm the trees are deserialized back into DesignTokens + ColorScheme
+    // and pushed through the typed CustomizeDesign / CustomizeColors overrides.
+    private JsonObject _design = new();
+    private JsonObject _light = new();
+    private JsonObject _dark = new();
+
+    // Constrained-scroll panel style for each editor tab. Flare has no scroll-container primitive,
+    // so this token-light layout is inlined (see the data-scroll divs above) rather than living in
+    // gallery CSS; padding-right keeps the scrollbar off the content.
+    private const string CtScroll = "max-height:60vh;overflow:auto;padding-right:0.5rem;";
+
+    private string _exportJson = string.Empty;
+    private string? _importText;
+    private string? _importError;
+
+    // DesignTokens sub-records that get their own dedicated editor tab; everything else
+    // (the per-component records, plus the FocusRing leaf) lives under "Components".
+    private static readonly HashSet<string> _coreGroups = new(StringComparer.Ordinal)
+        { "Spacing", "Shape", "Typography", "Motion", "Elevation", "State" };
+
+    private static readonly JsonSerializerOptions _jsonOpts = new()
+    {
+        WriteIndented = true,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString,
+    };
+
+    private sealed record ThemeConfig(DesignTokens Design, ColorScheme Light, ColorScheme Dark);
+
+    protected override void OnInitialized()
+    {
+        LoadFromCurrent();
+        ThemeService.OnThemeChanged += OnThemeChangedAsync;
+    }
+
+    private void LoadFromCurrent()
+    {
+        _design = ToNode(ThemeService.CurrentTheme.Design);
+        _light = ToNode(ThemeService.CurrentPalette.Light);
+        _dark = ToNode(ThemeService.CurrentPalette.Dark);
+    }
+
+    private static JsonObject ToNode<T>(T value) =>
+        JsonSerializer.SerializeToNode(value, _jsonOpts)!.AsObject();
+
+    private static T FromNode<T>(JsonObject node) =>
+        JsonSerializer.Deserialize<T>(node, _jsonOpts)!;
+
+    // Re-apply on global mode/theme change so the matching color set is used.
+    private async Task OnThemeChangedAsync()
+    {
+        if (ThemeService.GetCustomTokens().Count > 0)
+            Apply();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    // Edits only mutate the local JSON trees; nothing is applied until the user clicks Confirm.
+    // Confirm deserializes them into the typed records and pushes them through the typed API --
+    // only the tokens that actually differ from the active theme land in the custom-token layer.
+    private void Apply()
+    {
+        var design = FromNode<DesignTokens>(_design);
+        var light = FromNode<ColorScheme>(_light);
+        var dark = FromNode<ColorScheme>(_dark);
+
+        ThemeService.CustomizeDesign(_ => design);
+        ThemeService.CustomizeColors(_ => ThemeService.IsDark ? dark : light);
+    }
+
+    private void Reset()
+    {
+        ThemeService.ClearAllCustomTokens();
+        LoadFromCurrent();
+        _exportJson = string.Empty;
+    }
+
+    private void BuildExport()
+    {
+        var cfg = new ThemeConfig(
+            FromNode<DesignTokens>(_design),
+            FromNode<ColorScheme>(_light),
+            FromNode<ColorScheme>(_dark));
+        _exportJson = JsonSerializer.Serialize(cfg, _jsonOpts);
+    }
+
+    private async Task DownloadJson()
+    {
+        if (string.IsNullOrEmpty(_exportJson)) return;
+        try { await Download.DownloadAsync("flare-theme.json", _exportJson, "application/json"); }
+        catch (Microsoft.JSInterop.JSDisconnectedException) { }
+    }
+
+    private void Import()
+    {
+        _importError = null;
+        try
+        {
+            var cfg = JsonSerializer.Deserialize<ThemeConfig>(_importText!, _jsonOpts);
+            if (cfg is null) { _importError = "Invalid JSON."; return; }
+            _design = ToNode(cfg.Design);
+            _light = ToNode(cfg.Light);
+            _dark = ToNode(cfg.Dark);
+            Apply();
+        }
+        catch (JsonException ex)
+        {
+            _importError = "Could not parse JSON: " + ex.Message;
+        }
+    }
+
+    // Split a PascalCase property name into spaced words ("GapMd" -> "Gap Md").
+    private static string HumanizeProp(string name)
+    {
+        var sb = new StringBuilder(name.Length + 4);
+        for (var i = 0; i < name.Length; i++)
+        {
+            var ch = name[i];
+            if (i > 0 && char.IsUpper(ch) && !char.IsUpper(name[i - 1])) sb.Append(' ');
+            sb.Append(ch);
+        }
+        return sb.ToString();
+    }
+
+    private RenderFragment GroupTab(string key) =>
+        _design[key] is JsonObject o ? RenderGroup(o) : (RenderFragment)(_ => { });
+
+    // The Components tab: the FocusRing leaf plus every non-core component record.
+    private RenderFragment RenderComponents() =>@<text>
+        @{ var leaves = _design.Where(p => p.Value is JsonValue).ToList(); }
+        @if (leaves.Count > 0)
+        {
+            <FlareGrid MinColumnWidth="15rem" RowGap="0.75rem" ColumnGap="1rem" Style="padding-top:0.5rem;">
+                @foreach (var (key, _) in leaves) { @LeafField(_design, key) }
+            </FlareGrid>
+        }
+        @foreach (var (key, val) in _design
+            .Where(p => p.Value is JsonObject && !_coreGroups.Contains(p.Key) && p.Key != "Extended")
+            .OrderBy(p => p.Key))
+        {
+            <FlareText Typo="TypographyScale.TitleSmall" Style="margin:1rem 0 0.25rem;">@HumanizeProp(key)</FlareText>
+            @RenderGroup(val!.AsObject())
+        }
+    </text>;
+
+    // Recursively render a record node: its string/number leaves in a grid, then each nested record.
+    private RenderFragment RenderGroup(JsonObject obj) =>@<text>
+        @{
+            var leaves = obj.Where(p => p.Value is JsonValue).ToList();
+            var nested = obj.Where(p => p.Value is JsonObject).ToList();
+        }
+        @if (leaves.Count > 0)
+        {
+            <FlareGrid MinColumnWidth="15rem" RowGap="0.75rem" ColumnGap="1rem" Style="padding-top:0.5rem;">
+                @foreach (var (key, _) in leaves) { @LeafField(obj, key) }
+            </FlareGrid>
+        }
+        @foreach (var (key, val) in nested)
+        {
+            <FlareText Typo="TypographyScale.LabelLarge" Color="FlareColor.OnSurfaceVariant" Style="margin:0.75rem 0 0.25rem;">@HumanizeProp(key)</FlareText>
+            @RenderGroup(val!.AsObject())
+        }
+    </text>;
+
+    // Each leaf is an isolated component that writes straight into the JSON tree, so editing one
+    // field never re-renders the editor's other (dozens of) fields. @key keeps diffing stable.
+    @* A FlareStack (div, NOT a <label>): a label forwards inner clicks (backdrop, canvas) to its first
+       control (the picker trigger), which reopens the popover the moment its backdrop closes it. The
+       label is a truncating caption built from FlareText (no gallery CSS). *@
+    private RenderFragment LeafField(JsonObject parent, string key) =>@<FlareStack Gap="FlareSpacing.XXSmall" Style="min-width:0;" @key="key">
+        <FlareText Element="span" Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant"
+                   Style="text-transform:capitalize;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="@key">@HumanizeProp(key)</FlareText>
+        <CtTokenField Parent="@parent" PropKey="@key" />
+    </FlareStack>;
+
+    public void Dispose() => ThemeService.OnThemeChanged -= OnThemeChangedAsync;
+}

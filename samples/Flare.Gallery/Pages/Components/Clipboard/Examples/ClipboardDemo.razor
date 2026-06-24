@@ -1,0 +1,21 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:30rem;">
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small"
+                Style="background:var(--flare-color-surface-container);padding:0.75rem;border-radius:var(--flare-shape-small);">
+        <FlareText Typo="TypographyScale.BodySmall" Style="flex:1;font-family:monospace;">dotnet add package Flare.Components</FlareText>
+        <FlareClipboard Text="dotnet add package Flare.Components" ShowFeedback="true" OnCopied="@(() => _count++)" />
+    </FlareStack>
+
+    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.BodyMedium">Custom trigger &amp; feedback:</FlareText>
+        <FlareClipboard Text="Copied from a custom slot">
+            <ChildContent><FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined">Copy</FlareButton></ChildContent>
+            <FeedbackContent><FlareChip Label="Copied!" Color="@Colors.Success" /></FeedbackContent>
+        </FlareClipboard>
+    </FlareStack>
+
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Copied count (OnCopied): @_count</FlareText>
+</FlareStack>
+
+@code {
+    private int _count;
+}

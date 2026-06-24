@@ -1,0 +1,45 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IDialogService DialogService
+
+@if (DialogService.Current is not null)
+{
+    var req = DialogService.Current;
+    <FlareDialog Visible="true"
+                 Title="@req.Title"
+                 CloseOnScrimClick="false"
+                 CloseOnEsc="false">
+        <ChildContent>
+            <p class="@Css.Classes.Dialog.ProviderMessage">@req.Message</p>
+        </ChildContent>
+        <Actions>
+            @if (req.ShowCancel)
+            {
+                <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => DialogService.Respond(false))">
+                    @req.CancelLabel
+                </FlareButton>
+            }
+            <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => DialogService.Respond(true))">
+                @req.ConfirmLabel
+            </FlareButton>
+        </Actions>
+    </FlareDialog>
+}
+
+@code {
+    protected override string ComponentCssClass => string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        DialogService.OnStateChanged += HandleStateChanged;
+    }
+
+    private void HandleStateChanged() => InvokeAsync(StateHasChanged);
+
+    public override async ValueTask DisposeAsync()
+    {
+        DialogService.OnStateChanged -= HandleStateChanged;
+        await base.DisposeAsync();
+    }
+}

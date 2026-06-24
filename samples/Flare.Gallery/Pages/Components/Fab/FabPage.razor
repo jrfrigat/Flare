@@ -1,0 +1,12 @@
+@page "/components/fab"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Fab_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareFloatingActionButton">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Fab_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Fab_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Fab_ColorsExtended" DemoType="typeof(Examples.FabColorsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Buttons_Sizes" DemoType="typeof(Examples.FabSizesDemo)" />

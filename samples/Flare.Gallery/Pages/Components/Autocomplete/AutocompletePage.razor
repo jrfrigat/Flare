@@ -1,0 +1,13 @@
+@page "/components/autocomplete"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Autocomplete_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareAutocomplete">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Autocomplete_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Autocomplete_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Autocomplete_Basic" DemoType="typeof(Examples.AutocompleteBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Autocomplete_Grouped" DemoType="typeof(Examples.AutocompleteGroupedDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Autocomplete_Template" DemoType="typeof(Examples.AutocompleteTemplateDemo)" />

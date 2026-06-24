@@ -1,0 +1,12 @@
+<FlareBreadcrumb Items="@_crumbs" Separator="›" AriaLabel="Breadcrumb with chevron separators" />
+<FlareBreadcrumb Items="@_crumbs" Separator="-" />
+
+@code {
+    private readonly BreadcrumbItem[] _crumbs =
+    [
+        new("Home", "/"),
+        new("Library", "/library"),
+        new("Archived", "/library/archived", Disabled: true),
+        new("Document"),
+    ];
+}

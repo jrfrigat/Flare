@@ -1,0 +1,12 @@
+.flare-tabs__panel {
+  animation: flare-tab-fade var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+}
+
+.flare-tab-panel--hidden {
+  display: none;
+}
+
+@keyframes flare-tab-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

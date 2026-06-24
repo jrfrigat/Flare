@@ -1,0 +1,44 @@
+@page "/services/download"
+@inherits LocalizedPage
+@inject IFlareDownload Download
+
+<PageTitle>@GalleryStrings.Services_DownloadTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_DownloadTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_DownloadSubtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareCard Variant="CardVariant.Outlined" Style="max-width:36rem;">
+    <FlareStack Gap="FlareSpacing.Medium">
+        <FlareTextArea @bind-Value="_content" Label="Content" Rows="4" />
+        <FlareStack Row Gap="FlareSpacing.Small">
+            <FlareButton OnClick="@(() => Download.DownloadAsync("flare-note.txt", _content, "text/plain"))">
+                <LeadingIcon><FlareIcon Name="download" /></LeadingIcon><ChildContent>@GalleryStrings.Services_DownloadTxt</ChildContent>
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => Download.DownloadCsvAsync("flare-data.csv", _csv))">
+                <LeadingIcon><FlareIcon Name="table_view" /></LeadingIcon><ChildContent>@GalleryStrings.Services_DownloadCsv</ChildContent>
+            </FlareButton>
+        </FlareStack>
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    private string _content = "Exported from Flare.";
+    private const string _csv = "Name,Role\nAda,Engineer\nGrace,Admiral\n";
+
+    private const string _usage = """
+        @inject IFlareDownload Download
+
+        @code {
+            async Task Export()
+            {
+                await Download.DownloadAsync("note.txt", "hello", "text/plain");
+                await Download.DownloadCsvAsync("data.csv", "A,B\n1,2\n");
+            }
+        }
+        """;
+}

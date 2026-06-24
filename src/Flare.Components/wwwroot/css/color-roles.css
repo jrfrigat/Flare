@@ -1,0 +1,73 @@
+/* ==========================================================================
+   ОБЩИЕ КЛАССЫ РОЛЕЙ ЦВЕТА
+   Единый набор классов для ВСЕХ компонентов. Каждый класс выставляет 4 локальных
+   токена роли; компонент читает нужное подмножество через var(--fc-*, fallback):
+     --fc-main         основной акцент
+     --fc-on           контраст на main (текст на заливке)
+     --fc-container    мягкий тональный фон
+     --fc-on-container текст на тональном фоне
+   Это статичный кэшируемый CSS (быстрый путь для семантических цветов). Произвольный
+   цвет (FlareColor.Custom) инлайнит эти же токены на элементе.
+   ========================================================================== */
+
+/* Expose the active light/dark mode to CSS color-scheme so that light-dark() values
+   (used by FlareColor.Dynamic) resolve correctly, and native controls/scrollbars match. */
+.flare-mode-light { color-scheme: light; }
+.flare-mode-dark  { color-scheme: dark;  }
+
+.flare-color-primary {
+    --fc-main: var(--flare-color-primary);
+    --fc-on: var(--flare-color-on-primary);
+    --fc-container: var(--flare-color-primary-container);
+    --fc-on-container: var(--flare-color-on-primary-container);
+}
+.flare-color-secondary {
+    --fc-main: var(--flare-color-secondary);
+    --fc-on: var(--flare-color-on-secondary);
+    --fc-container: var(--flare-color-secondary-container);
+    --fc-on-container: var(--flare-color-on-secondary-container);
+}
+.flare-color-tertiary {
+    --fc-main: var(--flare-color-tertiary);
+    --fc-on: var(--flare-color-on-tertiary);
+    --fc-container: var(--flare-color-tertiary-container);
+    --fc-on-container: var(--flare-color-on-tertiary-container);
+}
+.flare-color-success {
+    --fc-main: var(--flare-color-success);
+    --fc-on: var(--flare-color-on-success);
+    --fc-container: var(--flare-color-success-container);
+    --fc-on-container: var(--flare-color-on-success-container);
+}
+.flare-color-warning {
+    --fc-main: var(--flare-color-warning);
+    --fc-on: var(--flare-color-on-warning);
+    --fc-container: var(--flare-color-warning-container);
+    --fc-on-container: var(--flare-color-on-warning-container);
+}
+.flare-color-error {
+    --fc-main: var(--flare-color-error);
+    --fc-on: var(--flare-color-on-error);
+    --fc-container: var(--flare-color-error-container);
+    --fc-on-container: var(--flare-color-on-error-container);
+}
+.flare-color-info {
+    --fc-main: var(--flare-color-info);
+    --fc-on: var(--flare-color-on-info);
+    --fc-container: var(--flare-color-info-container);
+    --fc-on-container: var(--flare-color-on-info-container);
+}
+/* Neutral content roles (text/icons on surfaces). No tonal container pair -- map to the
+   surface family so --fc-on/--fc-container stay sensible if a component reads them. */
+.flare-color-on-surface {
+    --fc-main: var(--flare-color-on-surface);
+    --fc-on: var(--flare-color-surface);
+    --fc-container: var(--flare-color-surface);
+    --fc-on-container: var(--flare-color-on-surface);
+}
+.flare-color-on-surface-variant {
+    --fc-main: var(--flare-color-on-surface-variant);
+    --fc-on: var(--flare-color-surface);
+    --fc-container: var(--flare-color-surface-variant);
+    --fc-on-container: var(--flare-color-on-surface-variant);
+}

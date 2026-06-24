@@ -1,0 +1,34 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:22rem;">
+    <FlareMultiSelect TValue="Country"
+                      Items="_countries"
+                      GetLabel="c => c.Name"
+                      GetValue="c => c"
+                      GroupBy="c => c.Region"
+                      Chips="true"
+                      SelectedValues="_selectedCountries"
+                      SelectedValuesChanged="v => _selectedCountries = v.ToList()"
+                      Label="Countries (grouped by region)"
+                      Placeholder="Select countries" />
+    @if (_selectedCountries.Any())
+    {
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+            Codes: @string.Join(", ", _selectedCountries.Select(c => c.Code))
+        </FlareText>
+    }
+</FlareStack>
+
+@code {
+    private record Country(string Name, string Code, string Region);
+
+    private readonly List<Country> _countries =
+    [
+        new("United States", "US", "Americas"),
+        new("Canada", "CA", "Americas"),
+        new("Germany", "DE", "Europe"),
+        new("France", "FR", "Europe"),
+        new("Japan", "JP", "Asia"),
+        new("Russia", "RU", "Europe"),
+    ];
+
+    private List<Country> _selectedCountries = [];
+}

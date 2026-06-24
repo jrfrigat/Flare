@@ -1,0 +1,11 @@
+@page "/components/shortcuts"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Shortcuts_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareShortcuts">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Shortcuts_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Shortcuts_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Shortcuts_Basic" DemoType="typeof(Examples.ShortcutsDemo)" />

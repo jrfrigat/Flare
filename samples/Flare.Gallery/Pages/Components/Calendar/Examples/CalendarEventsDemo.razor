@@ -1,0 +1,29 @@
+﻿@inject LanguageService Lang
+
+<FlareCalendar Events="_events" SelectedDate="_selected" SelectedDateChanged="@(d => _selected = d)" />
+
+<FlareText Typo="TypographyScale.LabelMedium" Style="margin-bottom:0.5rem;">Events this month:</FlareText>
+<FlareList TItem="object" Style="max-width:200px;border:1px solid var(--flare-color-outline-variant);">
+    @foreach (var ev in _events)
+    {
+        <FlareListItem Primary="@ev.Title" Secondary="@ev.Date.ToString("MMM d")" />
+    }
+</FlareList>
+
+@code{
+    private DateOnly? _selected;
+    private List<CalendarEvent> _events;
+
+    public CalendarEventsDemo()
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        _events = new()
+        {
+            new("Team Standup", today.AddDays(1)),
+            new("Sprint Review", today.AddDays(3), FlareColor.Secondary),
+            new("Design Sync", today.AddDays(5), FlareColor.Tertiary),
+            new("Release", today.AddDays(7), FlareColor.Error),
+            new("Retro", today.AddDays(14), FlareColor.Custom("#7D5260")),
+        };
+    }
+}

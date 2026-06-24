@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <PackageId>Flare.Components.Media</PackageId>
+    <RootNamespace>Flare.Components</RootNamespace>
+    <Description>Flare media components - VideoPlayer, SignaturePad, FileUpload for the Flare Blazor component library.</Description>
+    <PackageTags>blazor;components;media;video;signature;fileupload</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
+  </ItemGroup>
+
+</Project>

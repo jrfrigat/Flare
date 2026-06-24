@@ -1,0 +1,59 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<span class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+    @((MarkupString)_rendered)
+</span>
+
+@code {
+    /// <summary>Full text in which to highlight occurrences of <see cref="Highlight"/>.</summary>
+    [Parameter] public string? Text { get; set; }
+    /// <summary>The search term to highlight within <see cref="Text"/>.</summary>
+    [Parameter] public string? Highlight { get; set; }
+    /// <summary>When true, matching is case-insensitive.</summary>
+    [Parameter] public bool CaseSensitive { get; set; }
+    /// <summary>Syntax language hint (e.g. 'csharp', 'javascript'). Used for CSS class only - does not execute code.</summary>
+    [Parameter] public string? Language { get; set; }
+    /// <summary>Maximum characters displayed. 0 = unlimited.</summary>
+    [Parameter] public int MaxLength { get; set; } = 0;
+
+    protected override string ComponentCssClass => Css.Classes.Highlighter.Root;
+
+    private string _displayCode => MaxLength > 0 && Text?.Length > MaxLength ? Text[..MaxLength] : Text ?? string.Empty;
+
+    private string _rendered = string.Empty;
+
+    protected override void OnParametersSet() => _rendered = BuildRendered();
+
+    private string BuildRendered()
+    {
+        var text = _displayCode;
+        if (string.IsNullOrEmpty(text)) return string.Empty;
+        if (string.IsNullOrEmpty(Highlight)) return System.Web.HttpUtility.HtmlEncode(text);
+
+        var comparison = CaseSensitive
+            ? StringComparison.Ordinal
+            : StringComparison.OrdinalIgnoreCase;
+
+        var sb = new System.Text.StringBuilder();
+        int start = 0;
+        int len = Highlight.Length;
+
+        while (start < text.Length)
+        {
+            int idx = text.IndexOf(Highlight, start, comparison);
+            if (idx < 0)
+            {
+                sb.Append(System.Web.HttpUtility.HtmlEncode(text[start..]));
+                break;
+            }
+            sb.Append(System.Web.HttpUtility.HtmlEncode(text[start..idx]));
+            sb.Append("<mark class=\"flare-highlighter__mark\">");
+            sb.Append(System.Web.HttpUtility.HtmlEncode(text.Substring(idx, len)));
+            sb.Append("</mark>");
+            start = idx + len;
+        }
+
+        return sb.ToString();
+    }
+}

@@ -1,0 +1,69 @@
+.flare-confirmdialog__backdrop {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in srgb, var(--flare-color-scrim) 32%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.flare-confirmdialog {
+    background: var(--flare-color-surface-container-high);
+    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    box-shadow: var(--flare-elevation-3);
+    padding: var(--flare-spacing-12, 1.5rem);
+    min-width: 280px;
+    max-width: 420px;
+    width: 90%;
+    outline: none; /* dialog element receives focus; remove default outline */
+}
+
+.flare-confirmdialog__header { margin-bottom: var(--flare-spacing-6, 0.75rem); }
+
+.flare-confirmdialog__title {
+    font-family: var(--flare-typescale-headline-small-font);
+    font-size: var(--flare-typescale-headline-small-size);
+    font-weight: var(--flare-typescale-headline-small-weight);
+    color: var(--flare-color-on-surface);
+    margin: 0;
+}
+
+.flare-confirmdialog__body {
+    color: var(--flare-color-on-surface-variant);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+    margin-bottom: var(--flare-spacing-12, 1.5rem);
+    line-height: 1.5;
+}
+
+.flare-confirmdialog__footer { display: flex; justify-content: flex-end; gap: var(--flare-spacing-6, 0.75rem); }
+
+.flare-confirmdialog__btn {
+    border: none;
+    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-10, 1.25rem);
+    border-radius: var(--flare-btn-radius, var(--flare-shape-full));
+    cursor: pointer;
+    font-family: var(--flare-typescale-label-large-font);
+    font-size: var(--flare-typescale-label-large-size);
+    font-weight: var(--flare-typescale-label-large-weight);
+    transition: background var(--flare-motion-duration-short2);
+}
+
+.flare-confirmdialog__btn--cancel {
+    background: transparent;
+    color: var(--flare-color-primary);
+}
+
+.flare-confirmdialog__btn--cancel:hover {
+    background: color-mix(in srgb, var(--flare-color-primary) 8%, transparent);
+}
+
+.flare-confirmdialog__btn--confirm {
+    background: var(--flare-color-primary);
+    color: var(--flare-color-on-primary);
+}
+
+.flare-confirmdialog__btn--confirm:hover {
+    background: color-mix(in srgb, var(--flare-color-on-primary) 8%, var(--flare-color-primary));
+}

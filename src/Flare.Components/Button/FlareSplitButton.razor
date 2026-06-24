@@ -1,0 +1,63 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_sizeClass, _openedClass)" style="@Style" @attributes="AdditionalAttributes">
+    <FlareButton Class="@Css.Classes.SplitButton.Main"
+                 Variant="Variant" Color="Color" Size="Size"
+                 Disabled="Disabled" OnClick="OnClick">
+        @ChildContent
+    </FlareButton>
+    <FlareMenu Anchor="MenuAnchor.BottomRight" AriaLabel="@MenuAriaLabel" Class="@Css.Classes.SplitButton.Menu" OnToggle="ToggleMenuState">
+        <Activator>
+            <FlareButton Class="@Css.Classes.SplitButton.Trigger"
+                         Variant="Variant" Color="Color" Size="Size"
+                         Disabled="Disabled" AriaLabel="@MenuAriaLabel">
+                <span class="material-symbols-rounded @Css.Classes.SplitButton.Caret" aria-hidden="true">expand_more</span>
+            </FlareButton>
+        </Activator>
+        <ChildContent>
+            @MenuItems
+        </ChildContent>
+    </FlareMenu>
+</div>
+
+@code {
+    /// <summary>Label/content of the primary action button.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>FlareMenuItem entries shown in the dropdown opened by the trigger.</summary>
+    [Parameter] public RenderFragment? MenuItems { get; set; }
+    /// <summary>Visual style variant applied to both the main and trigger buttons.</summary>
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Filled;
+    /// <summary>Size applied to both buttons.</summary>
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    /// <summary>Semantic color applied to both buttons.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Disables the whole split button.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Callback invoked when the primary action button is clicked.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    /// <summary>Accessible label for the dropdown trigger (aria-label / menu label).</summary>
+    [Parameter] public string MenuAriaLabel { get; set; } = "More actions";
+
+    protected override string ComponentCssClass => Css.Classes.SplitButton.Root;
+    
+    private bool _menuOpen;
+
+    private void ToggleMenuState(bool opened)
+    {
+        _menuOpen = opened;
+    }
+    
+    // Size mapping for the split-button CSS isolation
+    private string _sizeClass => Size switch
+    {
+        ButtonSize.Xs => Css.Classes.SplitButton.Xs,
+        ButtonSize.Sm => Css.Classes.SplitButton.Sm,
+        ButtonSize.Md => Css.Classes.SplitButton.Md,
+        ButtonSize.Lg => Css.Classes.SplitButton.Lg,
+        ButtonSize.Xl => Css.Classes.SplitButton.Xl,
+        _ => Css.Classes.SplitButton.Md,
+    };
+
+    private string _openedClass => _menuOpen ? Css.Classes.SplitButton.Opened : string.Empty;
+}

@@ -1,0 +1,30 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareSelect TValue="Priority"
+                 @bind-Value="_priority"
+                 Label="Priority"
+                 Placeholder="Choose priority"
+                 Items="_priorities"
+                 ItemLabel="@(p => p.Name)"
+                 Style="max-width:24rem;">
+        <ItemTemplate>
+            <FlareIcon Name="@context.Icon" Color="@context.Color" />
+            <span>@context.Name</span>
+        </ItemTemplate>
+    </FlareSelect>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Selected: @(_priority?.Name ?? "—")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private Priority? _priority;
+
+    private record Priority(string Name, string Icon, FlareColor Color);
+
+    private readonly Priority[] _priorities =
+    [
+        new("Low", "arrow_downward", FlareColor.Info),
+        new("Medium", "drag_handle", FlareColor.Warning),
+        new("High", "arrow_upward", FlareColor.Error),
+    ];
+}

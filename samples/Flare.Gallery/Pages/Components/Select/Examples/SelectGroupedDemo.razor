@@ -1,0 +1,34 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareSelect TValue="CountryItem"
+                 @bind-Value="_selectedCountry"
+                 Label="Country"
+                 Items="_countries"
+                 ItemLabel="@(c => c.Name)"
+                 GroupBy="@(c => c.Continent)"
+                 Style="max-width:24rem;" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Selected: @_selectedCountry?.Name
+    </FlareText>
+</FlareStack>
+
+@code {
+    private CountryItem? _selectedCountry;
+
+    private record CountryItem(string Code, string Name, string Continent);
+
+    private static readonly CountryItem[] _countries =
+    [
+        new("DE", "Germany",   "Europe"),
+        new("FR", "France",    "Europe"),
+        new("GB", "UK",        "Europe"),
+        new("PL", "Poland",    "Europe"),
+        new("US", "USA",       "Americas"),
+        new("CA", "Canada",    "Americas"),
+        new("BR", "Brazil",    "Americas"),
+        new("JP", "Japan",     "Asia"),
+        new("CN", "China",     "Asia"),
+        new("IN", "India",     "Asia"),
+        new("NG", "Nigeria",   "Africa"),
+        new("AU", "Australia", "Oceania"),
+    ];
+}

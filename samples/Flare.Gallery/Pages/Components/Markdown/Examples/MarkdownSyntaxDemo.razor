@@ -1,0 +1,14 @@
+<FlareMarkdown Value="@_md" SyntaxHighlight="true" SanitizeHtml="true" />
+
+@code {
+    private const string _md = @"## Syntax highlighting
+
+Inline `code` and fenced blocks are highlighted when `SyntaxHighlight` is on:
+
+```csharp
+// Override theme colors at runtime -- only changed roles are pushed:
+themeService.CustomizeColors(c => c with { Primary = ""#006782"" });
+```
+
+> HTML is sanitized by default (`SanitizeHtml=true`).";
+}

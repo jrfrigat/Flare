@@ -1,0 +1,154 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IJSRuntime JS
+
+<div class="@_rootClass" style="@(_heightStyle + Style)" @attributes="AdditionalAttributes">
+    @if (LineNumbers)
+    {
+        <div class="@Css.Classes.Codeblock.Linenumbers" aria-hidden="true">@_lineNumbersText</div>
+    }
+    <pre class="@Css.Classes.Codeblock.Highlight" aria-hidden="@(ReadOnly ? null : "true")"><code>@((MarkupString)_highlightedHtml)</code></pre>
+    @if (!ReadOnly)
+    {
+        <textarea class="@Css.Classes.Codeblock.Textarea"
+                  role="textbox"
+                  aria-multiline="true"
+                  aria-label="@(Language) code editor"
+                  rows="@Rows"
+                  spellcheck="false"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  maxlength="@(MaxLength > 0 ? MaxLength : int.MaxValue)"
+                  value="@_displayValue"
+                  @oninput="HandleInput"
+                  @onscroll="SyncScroll"
+                  @ref="_textarea"></textarea>
+    }
+</div>
+
+@code {
+    /// <summary>The code string displayed (and edited when <see cref="ReadOnly"/> is false).</summary>
+    [Parameter] public string? Value { get; set; }
+    /// <summary>Callback invoked when the user edits the code (ignored while read-only).</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    /// <summary>highlight.js language hint (e.g. "csharp", "javascript").</summary>
+    [Parameter] public string Language { get; set; } = "csharp";
+    /// <summary>Number of visible rows in edit mode (controls height via line-height).</summary>
+    [Parameter] public int Rows { get; set; } = 10;
+    /// <summary>Renders a static, non-editable highlighted block when true. Default true.</summary>
+    [Parameter] public bool ReadOnly { get; set; } = true;
+    /// <summary>Shows line numbers in the left gutter when true.</summary>
+    [Parameter] public bool LineNumbers { get; set; }
+    /// <summary>Maximum characters accepted/displayed. 0 = unlimited.</summary>
+    [Parameter] public int MaxLength { get; set; } = 0;
+    /// <summary>Enables Tab indentation and bracket/quote auto-closing in edit mode. Default true.</summary>
+    [Parameter] public bool SmartEditing { get; set; } = true;
+    /// <summary>Number of spaces inserted by the Tab key when <see cref="SmartEditing"/> is enabled.</summary>
+    [Parameter] public int IndentSize { get; set; } = 2;
+
+    protected override string ComponentCssClass => Css.Classes.Codeblock.Root;
+
+    private string _displayValue => MaxLength > 0 && Value?.Length > MaxLength ? Value[..MaxLength] : Value ?? string.Empty;
+
+    private IJSObjectReference? _module;
+    private ElementReference _textarea;
+    private string _highlightedHtml = string.Empty;
+    private string _lineNumbersText = string.Empty;
+
+    private string _rootClass
+    {
+        get
+        {
+            var cls = BuildCssClass();
+            if (ReadOnly) cls += " flare-codeblock--readonly";
+            if (LineNumbers) cls += " flare-codeblock--line-numbers";
+            return cls;
+        }
+    }
+
+    // Read-only blocks size to their content; the editor uses a fixed, scrollable height.
+    private string _heightStyle => ReadOnly ? string.Empty : $"height:{Rows * 1.5}rem;";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                _module = await JS.InvokeAsync<IJSObjectReference>(
+                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                if (SmartEditing && !ReadOnly)
+                    await _module.InvokeVoidAsync("enableCodeEditorKeys", _textarea, IndentSize);
+            }
+            catch { /* JS interop not available (prerender) */ }
+        }
+
+        var prev = _highlightedHtml;
+        await UpdateHighlightAsync();
+        if (_highlightedHtml != prev)
+            await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await UpdateHighlightAsync();
+        UpdateLineNumbers();
+    }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        var text = e.Value?.ToString() ?? string.Empty;
+        await ValueChanged.InvokeAsync(text);
+        UpdateLineNumbers();
+        await UpdateHighlightAsync();
+    }
+
+    private async Task SyncScroll()
+    {
+        // Scroll sync is handled by CSS overflow; no JS needed for basic use.
+        await Task.CompletedTask;
+    }
+
+    private async Task UpdateHighlightAsync()
+    {
+        var display = _displayValue;
+        if (_module is null)
+        {
+            _highlightedHtml = System.Web.HttpUtility.HtmlEncode(display);
+            return;
+        }
+
+        try
+        {
+            var result = await _module.InvokeAsync<string?>(
+                "getHighlightedHtml", display, Language);
+            _highlightedHtml = result ?? System.Web.HttpUtility.HtmlEncode(display);
+        }
+        catch
+        {
+            _highlightedHtml = System.Web.HttpUtility.HtmlEncode(display);
+        }
+    }
+
+    private void UpdateLineNumbers()
+    {
+        if (!LineNumbers) return;
+        var lines = _displayValue.Split('\n').Length;
+        _lineNumbersText = string.Join('\n', Enumerable.Range(1, lines));
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+            {
+                if (SmartEditing && !ReadOnly)
+                    await _module.InvokeVoidAsync("disableCodeEditorKeys", _textarea);
+                await _module.DisposeAsync();
+            }
+        }
+        catch { /* ignored */ }
+        await base.DisposeAsync();
+    }
+}

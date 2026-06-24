@@ -1,0 +1,800 @@
+using Microsoft.AspNetCore.Components;
+
+namespace Flare.Components.Tests.Component;
+
+// ------------------------------------------------------------------------------
+// FlareClipboard  (8 tests from Wave6)
+// ------------------------------------------------------------------------------
+
+public class C_FlareClipboardTests : FlareTestContext
+{
+    [Fact]
+    public void RendersRootButton()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "hello"));
+
+        Assert.NotEmpty(cut.FindAll("button.flare-clipboard"));
+    }
+
+    [Fact]
+    public void RendersDefaultCopyIcon_WhenNoChildContent()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "hello"));
+
+        Assert.Contains("content_copy", cut.Markup);
+    }
+
+    [Fact]
+    public void RendersChildContent_WhenProvided()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "copy me")
+            .AddChildContent("<span id=\"copy-label\">Copy</span>"));
+
+        Assert.NotEmpty(cut.FindAll("#copy-label"));
+    }
+
+    [Fact]
+    public void InitialState_NotCopied_NoCheckedClass()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "hello"));
+
+        Assert.Empty(cut.FindAll(".flare-clipboard--copied"));
+    }
+
+    [Fact]
+    public void TextParam_IsRequired_RendersWithValue()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "some content"));
+
+        Assert.NotEmpty(cut.FindAll("button.flare-clipboard"));
+    }
+
+    [Fact]
+    public void ButtonHasTypeButton()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "value"));
+
+        Assert.Equal("button", cut.Find("button").GetAttribute("type"));
+    }
+
+    [Fact]
+    public void AdditionalAttributes_AppliedToButton()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "data")
+            .AddUnmatched("data-testid", "clipboard-btn"));
+
+        Assert.Equal("clipboard-btn", cut.Find("button").GetAttribute("data-testid"));
+    }
+
+    [Fact]
+    public void FeedbackContent_NotRenderedInitially()
+    {
+        var cut = RenderComponent<FlareClipboard>(p => p
+            .Add(x => x.Text, "hello")
+            .Add(x => x.FeedbackContent, (RenderFragment)(b =>
+            {
+                b.OpenElement(0, "span");
+                b.AddAttribute(1, "id", "feedback-content");
+                b.CloseElement();
+            })));
+
+        Assert.Empty(cut.FindAll("#feedback-content"));
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareShortcuts  (3 tests from Wave6)
+// ------------------------------------------------------------------------------
+
+public class C_FlareShortcutsTests : FlareTestContext
+{
+    [Fact]
+    public void RendersWithoutError()
+    {
+        var cut = RenderComponent<FlareShortcuts>();
+
+        Assert.NotNull(cut.Instance);
+    }
+
+    [Fact]
+    public void RendersChildContent()
+    {
+        var cut = RenderComponent<FlareShortcuts>(p => p
+            .AddChildContent("<span id=\"shortcut-child\">Help</span>"));
+
+        Assert.NotEmpty(cut.FindAll("#shortcut-child"));
+    }
+
+    [Fact]
+    public void RendersMultipleChildren()
+    {
+        var cut = RenderComponent<FlareShortcuts>(p => p
+            .AddChildContent("<p id=\"a\">A</p><p id=\"b\">B</p>"));
+
+        Assert.NotEmpty(cut.FindAll("#a"));
+        Assert.NotEmpty(cut.FindAll("#b"));
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareScrollTop  (6 tests from Wave6)
+// ------------------------------------------------------------------------------
+
+public class C_FlareScrollTopTests : FlareTestContext
+{
+    [Fact]
+    public void RendersButtonElement()
+    {
+        var cut = RenderComponent<FlareScrollTop>();
+
+        Assert.NotEmpty(cut.FindAll("button.flare-scroll-top"));
+    }
+
+    [Fact]
+    public void ButtonHasAriaLabel()
+    {
+        var cut = RenderComponent<FlareScrollTop>();
+
+        Assert.Equal("Back to top", cut.Find("button").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void ButtonHasTypeButton()
+    {
+        var cut = RenderComponent<FlareScrollTop>();
+
+        Assert.Equal("button", cut.Find("button").GetAttribute("type"));
+    }
+
+    [Fact]
+    public void NotVisibleByDefault_NoVisibleClass()
+    {
+        var cut = RenderComponent<FlareScrollTop>();
+
+        Assert.DoesNotContain("flare-scroll-top--visible", cut.Find("button").ClassName ?? "");
+    }
+
+    [Fact]
+    public void RendersDefaultArrowIcon()
+    {
+        var cut = RenderComponent<FlareScrollTop>();
+
+        Assert.Contains("keyboard_arrow_up", cut.Markup);
+    }
+
+    [Fact]
+    public void ThresholdParam_AcceptsCustomValue()
+    {
+        var cut = RenderComponent<FlareScrollTop>(p => p
+            .Add(x => x.Threshold, 500));
+
+        Assert.Equal(500, cut.Instance.Threshold);
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareFloatingActionButton + FlareFloatingActionMenu (FAB speed-dial)  (7 tests)
+// ------------------------------------------------------------------------------
+
+public class C_FlareFabMenuTests : FlareTestContext
+{
+    private IRenderedComponent<FlareFloatingActionButton> RenderFabMenu() =>
+        RenderComponent<FlareFloatingActionButton>(p => p
+            .Add(x => x.AriaLabel, "Actions")
+            .Add(x => x.Position, FabPosition.Static)
+            .AddChildContent<FlareFloatingActionMenu>(menu => menu
+                .Add(m => m.Direction, FabMenuDirection.Up)
+                .AddChildContent<FlareFloatingActionMenuItem>(item => item
+                    .Add(i => i.Icon, "edit")
+                    .Add(i => i.Label, "Edit"))));
+
+    [Fact]
+    public void PlainFab_NoMenu_RendersFabWithoutWrapper()
+    {
+        var cut = RenderComponent<FlareFloatingActionButton>(p => p
+            .Add(x => x.Position, FabPosition.Static)
+            .Add(x => x.AriaLabel, "Add"));
+
+        Assert.NotEmpty(cut.FindAll("button.flare-fab"));
+        Assert.Empty(cut.FindAll(".flare-fab-menu"));
+    }
+
+    [Fact]
+    public void MenuMode_RendersWrapperAndTriggerFab()
+    {
+        var cut = RenderFabMenu();
+
+        Assert.NotEmpty(cut.FindAll(".flare-fab-menu"));
+        Assert.NotEmpty(cut.FindAll(".flare-fab-menu > button.flare-fab"));
+    }
+
+    [Fact]
+    public void MenuMode_RendersMenuList()
+    {
+        var cut = RenderFabMenu();
+
+        Assert.NotEmpty(cut.FindAll(".flare-fab-menu__list"));
+    }
+
+    [Fact]
+    public void RendersActionItem_AsSmallFab()
+    {
+        var cut = RenderFabMenu();
+
+        Assert.NotEmpty(cut.FindAll(".flare-fab-menu__item"));
+        Assert.NotEmpty(cut.FindAll("button.flare-fab-menu__btn.flare-fab--sm"));
+    }
+
+    [Fact]
+    public void ClosedByDefault_NoOpenClass()
+    {
+        var cut = RenderFabMenu();
+
+        Assert.DoesNotContain("flare-fab-menu--open", cut.Find(".flare-fab-menu").ClassName ?? "");
+        Assert.DoesNotContain("flare-fab-menu__list--open", cut.Find(".flare-fab-menu__list").ClassName ?? "");
+    }
+
+    [Fact]
+    public void ClickTrigger_OpensMenu()
+    {
+        var cut = RenderFabMenu();
+
+        cut.Find(".flare-fab-menu > button.flare-fab").Click();
+
+        Assert.Contains("flare-fab-menu--open", cut.Find(".flare-fab-menu").ClassName ?? "");
+        Assert.Contains("flare-fab-menu__list--open", cut.Find(".flare-fab-menu__list").ClassName ?? "");
+    }
+
+    [Fact]
+    public void Trigger_HasAriaExpanded()
+    {
+        var cut = RenderFabMenu();
+
+        var trigger = cut.Find(".flare-fab-menu > button.flare-fab");
+        Assert.Equal("false", trigger.GetAttribute("aria-expanded"));
+
+        trigger.Click();
+        Assert.Equal("true", cut.Find(".flare-fab-menu > button.flare-fab").GetAttribute("aria-expanded"));
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareToggleGroup  (8 tests from Wave7)
+// ------------------------------------------------------------------------------
+
+public class C_FlareToggleGroupTests : FlareTestContext
+{
+    [Fact]
+    public void RendersRootDiv()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>();
+
+        Assert.NotEmpty(cut.FindAll(".flare-togglegroup"));
+    }
+
+    [Fact]
+    public void Horizontal_Default_NoVerticalClass()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>(p => p
+            .Add(x => x.Orientation, "horizontal"));
+
+        Assert.DoesNotContain("flare-togglegroup--vertical", cut.Find("div").ClassName ?? "");
+    }
+
+    [Fact]
+    public void Vertical_Orientation_AddsVerticalClass()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>(p => p
+            .Add(x => x.Orientation, "vertical"));
+
+        Assert.Contains("flare-togglegroup--vertical", cut.Find("div").ClassName ?? "");
+    }
+
+    [Fact]
+    public void RendersChildContent()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>(p => p
+            .AddChildContent("<span id=\"toggle-child\">Item</span>"));
+
+        Assert.NotEmpty(cut.FindAll("#toggle-child"));
+    }
+
+    [Fact]
+    public void MultiSelect_False_IsDefault()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>();
+
+        Assert.False(cut.Instance.MultiSelect);
+    }
+
+    [Fact]
+    public void MultiSelect_True_AcceptedWithoutError()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>(p => p
+            .Add(x => x.MultiSelect, true));
+
+        Assert.True(cut.Instance.MultiSelect);
+    }
+
+    [Fact]
+    public void ChildToggleButton_RendersInsideGroup()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>(p => p
+            .AddChildContent<FlareToggleButton>(bp => bp
+                .Add(x => x.Value, "A")));
+
+        Assert.NotEmpty(cut.FindAll("button.flare-toggle-btn"));
+    }
+
+    [Fact]
+    public void AdditionalAttributes_PassThrough()
+    {
+        var cut = RenderComponent<FlareToggleGroup<string>>(p => p
+            .AddUnmatched("data-testid", "toggle-group"));
+
+        Assert.Equal("toggle-group", cut.Find(".flare-togglegroup").GetAttribute("data-testid"));
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareTagField  (5 tests from Wave3)
+// ------------------------------------------------------------------------------
+
+public class C_FlareTagFieldTests : FlareTestContext
+{
+    [Fact]
+    public void RendersRootElement()
+    {
+        var cut = RenderComponent<FlareTagField>();
+
+        Assert.NotEmpty(cut.FindAll(".flare-tag-input"));
+    }
+
+    [Fact]
+    public void RendersInputField()
+    {
+        var cut = RenderComponent<FlareTagField>();
+
+        Assert.NotEmpty(cut.FindAll("input.flare-tag-input__input"));
+    }
+
+    [Fact]
+    public void PlaceholderRendered()
+    {
+        var cut = RenderComponent<FlareTagField>(p => p
+            .Add(x => x.Placeholder, "Add a tag..."));
+
+        Assert.Equal("Add a tag...", cut.Find("input.flare-tag-input__input").GetAttribute("placeholder"));
+    }
+
+    [Fact]
+    public void DisabledState_HidesInput()
+    {
+        var cut = RenderComponent<FlareTagField>(p => p
+            .Add(x => x.Disabled, true));
+
+        Assert.Empty(cut.FindAll("input.flare-tag-input__input"));
+    }
+
+    [Fact]
+    public void RendersExistingTags()
+    {
+        var cut = RenderComponent<FlareTagField>(p => p
+            .Add(x => x.Values, (IReadOnlyList<string>)["Alpha", "Beta"]));
+
+        var chips = cut.FindAll(".flare-tag-input__chip");
+        Assert.Equal(2, chips.Count);
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareSlider  (5 tests from Wave3)
+// ------------------------------------------------------------------------------
+
+public class C_FlareSliderTests : FlareTestContext
+{
+    [Fact]
+    public void RendersRootElement()
+    {
+        var cut = RenderComponent<FlareSlider>();
+
+        Assert.NotEmpty(cut.FindAll(".flare-slider"));
+    }
+
+    [Fact]
+    public void RendersRangeInput()
+    {
+        var cut = RenderComponent<FlareSlider>();
+
+        var input = cut.Find("input[type='range']");
+        Assert.NotNull(input);
+    }
+
+    [Fact]
+    public void DisabledState_InputHasDisabledAttribute()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Disabled, true));
+
+        Assert.True(cut.Find("input[type='range']").HasAttribute("disabled"));
+    }
+
+    [Fact]
+    public void MinMaxAttributes_AppliedToInput()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, 10.0)
+            .Add(x => x.Max, 200.0));
+
+        var input = cut.Find("input[type='range']");
+        Assert.Equal("10", input.GetAttribute("min"));
+        Assert.Equal("200", input.GetAttribute("max"));
+    }
+
+    [Fact]
+    public void RendersLabel()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Label, "Volume"));
+
+        Assert.Contains("Volume", cut.Find(".flare-slider__label").TextContent);
+    }
+
+    [Theory]
+    [InlineData(SliderSize.Xs, "flare-slider--xs")]
+    [InlineData(SliderSize.Sm, "flare-slider--sm")]
+    [InlineData(SliderSize.Md, "flare-slider--md")]
+    [InlineData(SliderSize.Lg, "flare-slider--lg")]
+    [InlineData(SliderSize.Xl, "flare-slider--xl")]
+    public void Size_AppliesSizeClass(SliderSize size, string expected)
+    {
+        var cut = RenderComponent<FlareSlider>(p => p.Add(x => x.Size, size));
+
+        Assert.Contains(expected, cut.Find(".flare-slider").ClassName);
+    }
+
+    [Fact]
+    public void StartAndEndIcons_Rendered()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.StartIcon, "volume_mute")
+            .Add(x => x.EndIcon, "volume_up"));
+
+        Assert.NotEmpty(cut.FindAll(".flare-slider__icon--start"));
+        Assert.NotEmpty(cut.FindAll(".flare-slider__icon--end"));
+    }
+
+    [Fact]
+    public void Stepper_RendersStopIndicators()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 4.0).Add(x => x.Step, 1.0)
+            .Add(x => x.Stepper, true));
+
+        // 0,1,2,3,4 -> 5 stops
+        Assert.Equal(5, cut.FindAll(".flare-slider__tick").Count);
+    }
+
+    [Fact]
+    public void Stepper_ActiveStops_MarkedBelowValue()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 4.0).Add(x => x.Step, 1.0)
+            .Add(x => x.Value, 2.0).Add(x => x.Stepper, true));
+
+        // values 0,1,2 are <= 2 -> 3 active ticks
+        Assert.Equal(3, cut.FindAll(".flare-slider__tick--active").Count);
+    }
+
+    [Fact]
+    public void Indicator_RendersValueBubble()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Indicator, true).Add(x => x.Value, 42.0));
+
+        Assert.Contains("42", cut.Find(".flare-slider__bubble").TextContent);
+    }
+
+    [Fact]
+    public void Stepper_HugeStepCount_SkipsRendering()
+    {
+        // range/step = 100000 > MaxStops cap -> no ticks rendered
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100000.0).Add(x => x.Step, 1.0)
+            .Add(x => x.Stepper, true));
+
+        Assert.Empty(cut.FindAll(".flare-slider__tick"));
+    }
+
+    [Fact]
+    public void RendersRailSegments_WithActiveFill()
+    {
+        // Init=Min (default), Value mid -> inactive|active|inactive split, >=1 active
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Value, 50.0));
+
+        Assert.NotEmpty(cut.FindAll(".flare-slider__seg"));
+        Assert.NotEmpty(cut.FindAll(".flare-slider__seg--active"));
+    }
+
+    [Fact]
+    public void Vertical_AppliesClassAndAriaOrientation()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p.Add(x => x.Vertical, true));
+
+        Assert.Contains("flare-slider--vertical", cut.Find(".flare-slider").ClassName);
+        Assert.Equal("vertical", cut.Find("input[type='range']").GetAttribute("aria-orientation"));
+    }
+
+    [Fact]
+    public void Horizontal_NoAriaOrientation()
+    {
+        var cut = RenderComponent<FlareSlider>();
+
+        Assert.False(cut.Find("input[type='range']").HasAttribute("aria-orientation"));
+    }
+
+    [Fact]
+    public void Color_Role_AppliesColorClass()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p.Add(x => x.Color, FlareColor.Secondary));
+
+        Assert.Contains("flare-color-secondary", cut.Find(".flare-slider").ClassName);
+    }
+
+    [Fact]
+    public void Color_Custom_InlinesAccentToken()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Color, FlareColor.Custom("#E91E63")));
+
+        Assert.Contains("--fc-main:#E91E63", cut.Find(".flare-slider").GetAttribute("style"));
+    }
+
+    [Fact]
+    public void Range_RendersTwoInputsAndRangeClass()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Range, true)
+            .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 80.0));
+
+        Assert.Contains("flare-slider--range", cut.Find(".flare-slider").ClassName);
+        Assert.Equal(2, cut.FindAll("input[type='range']").Count);
+        Assert.NotEmpty(cut.FindAll(".flare-slider__input--low"));
+        Assert.NotEmpty(cut.FindAll(".flare-slider__input--high"));
+    }
+
+    [Fact]
+    public void Range_SetsBothPctVars()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Range, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0)
+            .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 80.0));
+
+        var style = cut.Find(".flare-slider__track-wrap").GetAttribute("style")!;
+        Assert.Contains("--_pct:20.00%", style);
+        Assert.Contains("--_pct-end:80.00%", style);
+    }
+
+    [Fact]
+    public void Range_InvertedValues_OrderedForDisplay()
+    {
+        // Value > ValueEnd -> the rendered low/high pct never invert
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Range, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0)
+            .Add(x => x.Value, 80.0).Add(x => x.ValueEnd, 20.0));
+
+        var style = cut.Find(".flare-slider__track-wrap").GetAttribute("style")!;
+        Assert.Contains("--_pct:20.00%", style);
+        Assert.Contains("--_pct-end:80.00%", style);
+    }
+
+    [Fact]
+    public void Range_ShowValue_RendersLowHigh()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Range, true).Add(x => x.Label, "Band")
+            .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 80.0));
+
+        Assert.Contains("20", cut.Find(".flare-slider__value").TextContent);
+        Assert.Contains("80", cut.Find(".flare-slider__value").TextContent);
+    }
+
+    [Fact]
+    public void InteriorInit_AddsAnchorGap_ThreeSegments()
+    {
+        // Init interior (0) between Min=-100/Max=100 with Value=-50 -> notch at handle AND
+        // at the anchor -> three rail segments.
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, -100.0).Add(x => x.Max, 100.0)
+            .Add(x => x.Init, 0.0).Add(x => x.Value, -50.0));
+
+        Assert.Equal(3, cut.FindAll(".flare-slider__seg").Count);
+    }
+
+    [Fact]
+    public void Init_DefaultsToMin_FillStartsAtZero()
+    {
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Value, 50.0));
+
+        var wrap = cut.Find(".flare-slider__track-wrap");
+        Assert.Contains("--_init:0.00%", wrap.GetAttribute("style"));
+    }
+
+    [Fact]
+    public void Init_SetsAnchorPercent()
+    {
+        // Min=-100, Max=100, Init=0 -> init anchor at 50%
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, -100.0).Add(x => x.Max, 100.0)
+            .Add(x => x.Init, 0.0).Add(x => x.Value, -50.0));
+
+        var wrap = cut.Find(".flare-slider__track-wrap");
+        var style = wrap.GetAttribute("style")!;
+        Assert.Contains("--_init:50.00%", style);
+        Assert.Contains("--_pct:25.00%", style);   // value -50 -> 25%
+    }
+
+    [Fact]
+    public void Init_ActiveStops_SpanInitToValue()
+    {
+        // Min=-100,Max=100,Init=0,Value=-50,Step=50 -> stops at -100,-50,0,50,100
+        // active span [-50, 0] -> stops -50 and 0 active = 2
+        var cut = RenderComponent<FlareSlider>(p => p
+            .Add(x => x.Min, -100.0).Add(x => x.Max, 100.0)
+            .Add(x => x.Init, 0.0).Add(x => x.Value, -50.0)
+            .Add(x => x.Step, 50.0).Add(x => x.Stepper, true));
+
+        Assert.Equal(2, cut.FindAll(".flare-slider__tick--active").Count);
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareList  (6 tests from Wave5)
+// ------------------------------------------------------------------------------
+
+public class C_FlareListTests : FlareTestContext
+{
+    [Fact]
+    public void RendersRootUl()
+    {
+        var cut = RenderComponent<FlareList<object>>();
+
+        Assert.NotEmpty(cut.FindAll("ul.flare-list"));
+    }
+
+    [Fact]
+    public void HasRoleList()
+    {
+        var cut = RenderComponent<FlareList<object>>();
+
+        Assert.Equal("list", cut.Find("ul.flare-list").GetAttribute("role"));
+    }
+
+    [Fact]
+    public void RendersChildContent()
+    {
+        var cut = RenderComponent<FlareList<object>>(p => p
+            .AddChildContent("<li id=\"custom-li\">Item</li>"));
+
+        Assert.NotEmpty(cut.FindAll("#custom-li"));
+    }
+
+    [Fact]
+    public void Dense_HasDenseClass()
+    {
+        var cut = RenderComponent<FlareList<object>>(p => p
+            .Add(x => x.Dense, true));
+
+        Assert.NotEmpty(cut.FindAll(".flare-list--dense"));
+    }
+
+    [Fact]
+    public void NotDense_NoDenseClass()
+    {
+        var cut = RenderComponent<FlareList<object>>(p => p
+            .Add(x => x.Dense, false));
+
+        Assert.Empty(cut.FindAll(".flare-list--dense"));
+    }
+
+    [Fact]
+    public void RendersListItems()
+    {
+        var cut = RenderComponent<FlareList<object>>(p => p
+            .AddChildContent<FlareListItem>(li =>
+                li.Add(x => x.Primary, "First Item")));
+
+        Assert.NotEmpty(cut.FindAll(".flare-list-item"));
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareListItem  (8 tests from Wave5)
+// ------------------------------------------------------------------------------
+
+public class C_FlareListItemTests : FlareTestContext
+{
+    [Fact]
+    public void RendersLiElement()
+    {
+        var cut = RenderComponent<FlareListItem>();
+
+        Assert.NotEmpty(cut.FindAll("li.flare-list-item"));
+    }
+
+    [Fact]
+    public void RendersPrimaryText()
+    {
+        var cut = RenderComponent<FlareListItem>(p => p
+            .Add(x => x.Primary, "Primary Label"));
+
+        Assert.Contains("Primary Label", cut.Markup);
+        Assert.NotEmpty(cut.FindAll(".flare-list-item__primary"));
+    }
+
+    [Fact]
+    public void RendersSecondaryText()
+    {
+        var cut = RenderComponent<FlareListItem>(p => p
+            .Add(x => x.Primary, "Title")
+            .Add(x => x.Secondary, "Subtitle text"));
+
+        Assert.Contains("Subtitle text", cut.Markup);
+        Assert.NotEmpty(cut.FindAll(".flare-list-item__secondary"));
+    }
+
+    [Fact]
+    public void NoPrimary_NoPrimarySpan()
+    {
+        var cut = RenderComponent<FlareListItem>();
+
+        Assert.Empty(cut.FindAll(".flare-list-item__primary"));
+    }
+
+    [Fact]
+    public void Disabled_HasDisabledClass()
+    {
+        var cut = RenderComponent<FlareListItem>(p => p
+            .Add(x => x.Disabled, true));
+
+        Assert.NotEmpty(cut.FindAll(".flare-list-item--disabled"));
+    }
+
+    [Fact]
+    public void Selected_HasSelectedClass()
+    {
+        var cut = RenderComponent<FlareListItem>(p => p
+            .Add(x => x.Selected, true));
+
+        Assert.NotEmpty(cut.FindAll(".flare-list-item--selected"));
+    }
+
+    [Fact]
+    public void NotSelected_NoSelectedClass()
+    {
+        var cut = RenderComponent<FlareListItem>(p => p
+            .Add(x => x.Selected, false));
+
+        Assert.Empty(cut.FindAll(".flare-list-item--selected"));
+    }
+
+    [Fact]
+    public void WithClickHandler_HasClickableClass()
+    {
+        var cut = RenderComponent<FlareListItem>(p => p
+            .Add(x => x.OnClick, EventCallback.Factory.Create(this, () => { })));
+
+        Assert.NotEmpty(cut.FindAll(".flare-list-item--clickable"));
+    }
+}

@@ -1,0 +1,60 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:34rem;">
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        The card below is not fetched until it scrolls into view. FlareLazy raises
+        <strong>OnRevealed</strong>, which starts the (simulated) load; a skeleton holds the space
+        until then, and a spinner shows while the data arrives.
+    </FlareText>
+
+    @* Spacer so the lazy block starts below the fold and the reveal is observable. *@
+    <div style="height:38vh;border:1px dashed var(--flare-color-outline-variant);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+        <FlareText Color="FlareColor.OnSurfaceVariant">Scroll down to reveal &amp; load the card</FlareText>
+    </div>
+
+    <FlareLazy MinHeight="150px" RootMargin="0px" OnRevealed="LoadAsync">
+        <Placeholder>
+            <FlareSkeleton Variant="SkeletonVariant.Rect" Height="150px" />
+        </Placeholder>
+        <ChildContent>
+            @if (_data is null)
+            {
+                <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center"
+                            Style="padding:2.5rem;justify-content:center;">
+                    <FlareProgress Variant="ProgressVariant.Circular" Size="24" />
+                    <FlareText Typo="TypographyScale.BodySmall">Fetching data on reveal...</FlareText>
+                </FlareStack>
+            }
+            else
+            {
+                <FlareCard Variant="CardVariant.Outlined">
+                    <FlareStack Gap="FlareSpacing.Small">
+                        <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                            <FlareIcon Name="cloud_done" Color="FlareColor.Primary" />
+                            <FlareText Typo="TypographyScale.TitleMedium">Loaded just in time</FlareText>
+                        </FlareStack>
+                        @foreach (var row in _data)
+                        {
+                            <FlareText Typo="TypographyScale.BodyMedium">@row</FlareText>
+                        }
+                    </FlareStack>
+                </FlareCard>
+            }
+        </ChildContent>
+    </FlareLazy>
+</FlareStack>
+
+@code {
+    private List<string>? _data;
+
+    private async Task LoadAsync()
+    {
+        if (_data is not null) return;
+        await Task.Delay(1200); // simulate a network/database fetch kicked off only on reveal
+        _data =
+        [
+            "Record 1 - fetched after the block entered the viewport",
+            "Record 2 - no work happened while it was off-screen",
+            "Record 3 - OnRevealed drives lazy data loading",
+        ];
+        StateHasChanged();
+    }
+}

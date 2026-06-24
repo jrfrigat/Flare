@@ -1,0 +1,65 @@
+@namespace Flare.Components
+@implements IDisposable
+
+@code {
+    [CascadingParameter] public FlareShortcuts? Shortcuts { get; set; }
+    [Parameter, EditorRequired] public string Keys { get; set; } = "";
+    [Parameter, EditorRequired] public EventCallback OnActivated { get; set; }
+    [Parameter] public string? Description { get; set; }
+
+    private static readonly Dictionary<string, List<FlareShortcutEntry>> _globalRegistry = new();
+
+    // Tracks the key combo under which this entry is currently registered,
+    // so that if Keys parameter changes we can unregister from the old key first.
+    private string? _registeredKeys;
+
+    protected override void OnInitialized()
+    {
+        Shortcuts?.Register(this);
+        RegisterInGlobal(Keys);
+    }
+
+    protected override void OnParametersSet()
+    {
+        // If Keys changed after initialization, update the global registry
+        if (_registeredKeys is not null && _registeredKeys != Keys)
+        {
+            RemoveFromGlobal(_registeredKeys);
+            RegisterInGlobal(Keys);
+        }
+    }
+
+    private void RegisterInGlobal(string keys)
+    {
+        if (string.IsNullOrEmpty(keys)) return;
+        if (!_globalRegistry.ContainsKey(keys))
+            _globalRegistry[keys] = new();
+        _globalRegistry[keys].Add(this);
+        _registeredKeys = keys;
+    }
+
+    private void RemoveFromGlobal(string keys)
+    {
+        if (_globalRegistry.TryGetValue(keys, out var list))
+        {
+            list.Remove(this);
+            if (list.Count == 0) _globalRegistry.Remove(keys);
+        }
+        _registeredKeys = null;
+    }
+
+    [JSInvokable]
+    public static async Task HandleKeyDown(string keys)
+    {
+        if (_globalRegistry.TryGetValue(keys, out var entries))
+            foreach (var e in entries.ToList())
+                await e.OnActivated.InvokeAsync();
+    }
+
+    public void Dispose()
+    {
+        Shortcuts?.Unregister(this);
+        if (_registeredKeys is not null)
+            RemoveFromGlobal(_registeredKeys);
+    }
+}

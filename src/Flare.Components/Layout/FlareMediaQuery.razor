@@ -1,0 +1,85 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+@if (ChildContent is not null)
+{
+    <CascadingValue Value="_current" IsFixed="false">
+        @ChildContent(_current)
+    </CascadingValue>
+}
+
+@code {
+    /// <summary>
+    /// Content rendered with the current <see cref="Breakpoint"/> as context, e.g.
+    /// <c>&lt;FlareMediaQuery Context="bp"&gt;@if (bp &lt;= Breakpoint.Sm) { ... }&lt;/FlareMediaQuery&gt;</c>.
+    /// The breakpoint is also supplied to descendants as a cascading value.
+    /// </summary>
+    [Parameter] public RenderFragment<Breakpoint>? ChildContent { get; set; }
+
+    /// <summary>Raised whenever the active breakpoint changes.</summary>
+    [Parameter] public EventCallback<Breakpoint> OnChanged { get; set; }
+
+    /// <summary>The breakpoint assumed during prerender / before the first JS measurement. Default Md.</summary>
+    [Parameter] public Breakpoint InitialBreakpoint { get; set; } = Breakpoint.Md;
+
+    /// <summary>The currently active breakpoint.</summary>
+    public Breakpoint Current => _current;
+
+    protected override string ComponentCssClass => Css.Classes.MediaQuery.Root;
+
+    private Breakpoint _current;
+    private bool _appliedOnce;
+    private IJSObjectReference? _module;
+    private DotNetObjectReference<FlareMediaQuery>? _ref;
+    private readonly string _id = Guid.NewGuid().ToString("N");
+
+    protected override void OnInitialized() => _current = InitialBreakpoint;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            _module = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "./_content/Flare.Components/js/flare-theme.js");
+            _ref = DotNetObjectReference.Create(this);
+            var bp = await _module.InvokeAsync<string>("subscribeBreakpoint", _id, _ref);
+            await ApplyAsync(bp);
+        }
+        catch (InvalidOperationException) { /* prerender */ }
+        catch (JSDisconnectedException) { }
+    }
+
+    [JSInvokable]
+    public Task OnBreakpointChanged(string bp) => ApplyAsync(bp);
+
+    private async Task ApplyAsync(string bp)
+    {
+        if (!Enum.TryParse<Breakpoint>(bp, out var parsed)) return;
+        if (parsed == _current && _appliedOnce) return;
+        _appliedOnce = true;
+        var changed = parsed != _current;
+        _current = parsed;
+        if (changed)
+            await OnChanged.InvokeAsync(_current);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        try
+        {
+            if (_module is not null)
+            {
+                await _module.InvokeVoidAsync("unsubscribeBreakpoint", _id);
+                await _module.DisposeAsync();
+            }
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+        _ref?.Dispose();
+        await base.DisposeAsync();
+    }
+}

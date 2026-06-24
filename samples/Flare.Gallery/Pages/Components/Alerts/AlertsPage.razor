@@ -1,0 +1,14 @@
+@page "/components/alerts"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Alerts_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareAlert">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Alerts_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">@GalleryStrings.Alerts_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Alerts_Severity" DemoType="typeof(Examples.AlertsSeverityDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Alerts_Variants" DemoType="typeof(Examples.AlertsVariantsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Alerts_Icon" DemoType="typeof(Examples.AlertsIconDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Alerts_AnimateDismiss" DemoType="typeof(Examples.AlertsAnimateDismissDemo)" />

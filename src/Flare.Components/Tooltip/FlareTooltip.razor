@@ -1,0 +1,106 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject ICollisionService CollisionService
+@implements IAsyncDisposable
+
+<div class="@BuildCssClass(_placementClass)" style="@Style" @attributes="AdditionalAttributes"
+     aria-describedby="@(_hasTooltip ? _tooltipId : null)">
+    @ChildContent
+    <div @ref="_floatingRef"
+         class="@Css.Classes.Tooltip.Content @(Open ? Css.Classes.Tooltip.ContentVisible : "")"
+         role="tooltip"
+         id="@_tooltipId"
+         style="@_floatingStyle">
+        @if (TooltipContent is not null)
+        {
+            @TooltipContent
+        }
+        else if (!string.IsNullOrEmpty(Content))
+        {
+            @Content
+        }
+    </div>
+</div>
+
+@code {
+    /// <summary>The element that triggers the tooltip on hover.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Text displayed inside the tooltip bubble.</summary>
+    [Parameter] public string? Content { get; set; }
+    /// <summary>Rich content rendered inside the tooltip bubble. Takes priority over <see cref="Content"/>.</summary>
+    [Parameter] public RenderFragment? TooltipContent { get; set; }
+    /// <summary>Position of the tooltip relative to the trigger element.</summary>
+    [Parameter] public TooltipPlacement Placement { get; set; } = TooltipPlacement.Top;
+    /// <summary>Enables smart positioning (flip/shift) to keep tooltip within viewport.</summary>
+    [Parameter] public bool SmartPosition { get; set; }
+    /// <summary>Offset in pixels between trigger and tooltip.</summary>
+    [Parameter] public int Offset { get; set; } = 8;
+    /// <summary>Controls whether the tooltip is visible (for programmatic control).</summary>
+    [Parameter] public bool Open { get; set; }
+    /// <summary>Callback raised when the open state should change.</summary>
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Tooltip.Root;
+
+    private readonly string _tooltipId = $"flare-tip-{Guid.NewGuid():N}"[..20];
+    private bool _hasTooltip => TooltipContent is not null || !string.IsNullOrEmpty(Content);
+
+    private ElementReference _floatingRef;
+    private string? _floatingStyle;
+    private bool _initialized;
+
+    private string _placementClass => Placement switch
+    {
+        TooltipPlacement.Bottom => Css.Classes.Tooltip.Bottom,
+        TooltipPlacement.Left   => Css.Classes.Tooltip.Left,
+        TooltipPlacement.Right  => Css.Classes.Tooltip.Right,
+        _                       => Css.Classes.Tooltip.Top,
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Open && SmartPosition)
+        {
+            await UpdatePositionAsync();
+            _initialized = true;
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Open && SmartPosition && _initialized)
+        {
+            await UpdatePositionAsync();
+        }
+    }
+
+    private async Task UpdatePositionAsync()
+    {
+        if (_floatingRef.Context is null) return;
+        try
+        {
+            var placement = Placement.ToString().ToLowerInvariant();
+            var result = await CollisionService.CalculatePlacementAsync(
+                _floatingRef,
+                _floatingRef,
+                placement,
+                new CollisionOptions
+                {
+                    Offset = Offset,
+                    Flip = true,
+                    Shift = true,
+                    ArrowSize = 0
+                });
+
+            _floatingStyle = $"position:fixed;top:{result.Top:F0}px;left:{result.Left:F0}px;z-index:9999";
+            StateHasChanged();
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        await base.DisposeAsync();
+    }
+}

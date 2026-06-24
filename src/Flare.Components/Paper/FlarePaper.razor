@@ -1,0 +1,53 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_elevationClass, _squareClass, _paddingClass, _outlinedClass)"
+     style="@_resolvedStyle"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>Content rendered inside the paper surface.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Shadow elevation level (0-5).</summary>
+    [Parameter] public int Elevation { get; set; } = 1;
+    /// <summary>When true, removes border-radius for a flat rectangular shape.</summary>
+    [Parameter] public bool Square { get; set; }
+    /// <summary>When true, uses a 1dp outline instead of a shadow (elevation is ignored).</summary>
+    [Parameter] public bool Outlined { get; set; }
+    /// <summary>Padding applied inside the paper surface using design-token values.</summary>
+    [Parameter] public FlareSpacing Padding { get; set; } = FlareSpacing.None;
+    /// <summary>Raw CSS padding value used when <see cref="Padding"/> is <see cref="FlareSpacing.Custom"/>.</summary>
+    [Parameter] public string? PaddingValue { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Paper.Root;
+
+    private string _elevationClass => Outlined ? Css.Classes.Paper.Elevation0 : $"flare-paper--elevation-{Math.Clamp(Elevation, 0, 5)}";
+    private string _squareClass    => Square ? Css.Classes.Paper.Square : string.Empty;
+    private string _outlinedClass  => Outlined ? Css.Classes.Paper.Outlined : string.Empty;
+
+    private string? _paddingClass;
+    private string? _resolvedStyle;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _paddingClass = Padding switch
+        {
+            FlareSpacing.None    => null,
+            FlareSpacing.XXSmall => Css.Classes.Paper.PaddingXxSmall,
+            FlareSpacing.XSmall  => Css.Classes.Paper.PaddingXSmall,
+            FlareSpacing.Small   => Css.Classes.Paper.PaddingSmall,
+            FlareSpacing.Medium  => Css.Classes.Paper.PaddingMedium,
+            FlareSpacing.Large   => Css.Classes.Paper.PaddingLarge,
+            FlareSpacing.XLarge  => Css.Classes.Paper.PaddingXLarge,
+            _                    => null,
+        };
+
+        _resolvedStyle = Padding == FlareSpacing.Custom && PaddingValue is not null
+            ? (Style is not null ? $"padding:{PaddingValue};{Style}" : $"padding:{PaddingValue}")
+            : Style;
+    }
+}

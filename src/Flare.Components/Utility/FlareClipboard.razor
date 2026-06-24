@@ -1,0 +1,67 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject IFlareClipboard Clipboard
+
+@* Copy-to-clipboard control. Built on FlareButton so it inherits the active theme's button
+   styling (variants, sizes, gloss) and stays visually consistent with the rest of the UI.
+   The flare-clipboard / flare-clipboard--copied classes are kept for styling and tests. *@
+<FlareButton Variant="@Variant"
+             Size="@Size"
+             Class="@_clipboardClass"
+             Style="@Style"
+             OnClick="CopyAsync"
+             title="@(_copied ? (FlareStrings.Clipboard_Copied) : (FlareStrings.Clipboard_Copy))"
+             @attributes="AdditionalAttributes">
+    @if (_copied && FeedbackContent is not null)
+    {
+        @FeedbackContent
+    }
+    else if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <span class="material-symbols-rounded flare-icon" aria-hidden="true">
+            @(_copied ? "check" : "content_copy")
+        </span>
+    }
+</FlareButton>
+
+@code {
+    /// <summary>Text copied to the clipboard when the control is activated.</summary>
+    [Parameter, EditorRequired] public string Text { get; set; } = "";
+    /// <summary>Custom content shown inside the button (replaces the default copy icon).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Content shown for the brief "copied" confirmation (replaces the check icon).</summary>
+    [Parameter] public RenderFragment? FeedbackContent { get; set; }
+    /// <summary>Raised after the text is copied.</summary>
+    [Parameter] public EventCallback OnCopied { get; set; }
+    /// <summary>Shows the brief copied confirmation (icon/text swap) after copying. Default true.</summary>
+    [Parameter] public bool ShowFeedback { get; set; } = true;
+    /// <summary>Button variant of the copy control. Default Outlined.</summary>
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Outlined;
+    /// <summary>Button size of the copy control. Default Sm.</summary>
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Sm;
+
+    protected override string ComponentCssClass => Css.Classes.Clipboard.Root;
+
+    private bool _copied;
+
+    private string _clipboardClass =>
+        _copied ? $"{Css.Classes.Clipboard.Root} {Css.Classes.Clipboard.Copied}" : Css.Classes.Clipboard.Root;
+
+    private async Task CopyAsync()
+    {
+        await Clipboard.CopyAsync(Text);   // typed service: async API + execCommand fallback
+        if (ShowFeedback)
+        {
+            _copied = true;
+            StateHasChanged();
+            await Task.Delay(2000);
+            _copied = false;
+            StateHasChanged();
+        }
+        await OnCopied.InvokeAsync();
+    }
+}

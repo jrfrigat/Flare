@@ -1,0 +1,45 @@
+@inject ISnackbarService Snackbar
+
+<div style="max-width:28rem;">
+    <EditForm Model="@_model" OnValidSubmit="HandleValid">
+        <DataAnnotationsValidator />
+        <FlareStack Gap="FlareSpacing.Medium">
+            <FlareField TValue="string" Label="Name" Placeholder="Enter name…"
+                        @bind-Value="_model.Name"
+                        For="@(() => _model.Name)" />
+            <FlareField TValue="string" Label="Email" Placeholder="name@example.com"
+                        @bind-Value="_model.Email"
+                        For="@(() => _model.Email)" />
+            <FlareCheckbox Label="Accept terms"
+                           Value="_model.AcceptsTerms"
+                           ValueChanged="@(v => _model.AcceptsTerms = v ?? false)"
+                           For="@(() => _model.AcceptsTerms)" />
+            <FlareValidationSummary />
+            <FlareStack Row Gap="FlareSpacing.XSmall">
+                <FlareButton Variant="ButtonVariant.Filled" Type="@ButtonType.Submit">Submit</FlareButton>
+                <FlareButton Variant="ButtonVariant.Outlined" Type="@ButtonType.Reset" OnClick="Reset">Reset</FlareButton>
+            </FlareStack>
+        </FlareStack>
+    </EditForm>
+</div>
+
+@code {
+    private FormModel _model = new();
+
+    private sealed class FormModel
+    {
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Name is required")]
+        [System.ComponentModel.DataAnnotations.MinLength(2, ErrorMessage = "Min 2 characters")]
+        public string? Name { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Required(ErrorMessage = "Email is required")]
+        [System.ComponentModel.DataAnnotations.EmailAddress(ErrorMessage = "Invalid email")]
+        public string? Email { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms")]
+        public bool AcceptsTerms { get; set; }
+    }
+
+    private void HandleValid() => Snackbar.Show("Form submitted!", SnackbarSeverity.Success);
+    private void Reset() => _model = new();
+}

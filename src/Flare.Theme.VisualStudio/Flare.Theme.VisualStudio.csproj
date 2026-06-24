@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <PackageId>Flare.Theme.VisualStudio</PackageId>
+    <Description>Visual Studio 2026 light and dark themes for the Flare Blazor component library</Description>
+    <PackageTags>blazor;theming;visual-studio;vs2026;microsoft;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Core\Flare.Core.csproj" />
+  </ItemGroup>
+
+</Project>

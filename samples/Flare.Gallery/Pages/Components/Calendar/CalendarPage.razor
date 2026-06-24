@@ -1,0 +1,15 @@
+@page "/components/calendar"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Calendar_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareCalendar">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Calendar_Title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">
+        @GalleryStrings.Calendar_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Calendar_MonthView" DemoType="typeof(Examples.CalendarMonthDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Calendar_Events" DemoType="typeof(Examples.CalendarEventsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Calendar_Options" DemoType="typeof(Examples.CalendarOptionsDemo)" />

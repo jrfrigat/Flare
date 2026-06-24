@@ -1,0 +1,20 @@
+<FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="max-width:32rem;">
+    <FlareNumericField TValue="int" @bind-Value="_numInt" Label="Integer" Min="0" Max="100" Step="1" Style="flex:1;min-width:12rem;" />
+    <FlareNumericField TValue="double" @bind-Value="_numDouble" Label="Decimal" Min="-10" Max="10" Step="0.5" Format="F2" Style="flex:1;min-width:12rem;" />
+    <FlareNumericField TValue="int" @bind-Value="_numStep" Label="Outlined + stepper" Variant="InputVariant.Outlined" ShowStepper="true" Min="0" Max="100" Style="flex:1;min-width:12rem;" />
+    <FlareNumericField TValue="int" @bind-Value="_numLive" Label="Immediate + debounce 400ms" Immediate="true" DebounceInterval="400" Min="0" Max="1000" Style="flex:1;min-width:12rem;" />
+    <FlareNumericField TValue="int" @bind-Value="_numSm" Label="Small (Xs..Xl grid)" Size="FieldSize.Sm" Min="0" Max="100" Style="flex:1;min-width:12rem;" />
+    <FlareNumericField TValue="int" @bind-Value="_numLg" Label="Large (Xs..Xl grid)" Size="FieldSize.Lg" Min="0" Max="100" Style="flex:1;min-width:12rem;" />
+</FlareStack>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Live: @_numLive
+</FlareText>
+
+@code {
+    private int _numInt = 42;
+    private double _numDouble = 3.14;
+    private int _numStep = 10;
+    private int _numLive = 0;
+    private int _numSm = 5;
+    private int _numLg = 50;
+}

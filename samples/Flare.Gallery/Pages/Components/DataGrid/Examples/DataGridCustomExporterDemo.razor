@@ -1,0 +1,39 @@
+@* Exporters is a pluggable list: mix the standard exporters (DataGridExporters.Csv/Excel/...)
+   with your own IDataGridExporter<T>. Here a custom Markdown exporter sits beside Excel. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="5" Exporters="_exporters" ExportFileName="people">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" />
+        <FlareColumn Title="City" Field="@(p => p.City)" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    // Standard exporters + a custom one, all decoupled from the grid.
+    private readonly IReadOnlyList<IDataGridExporter<Person>> _exporters =
+    [
+        DataGridExporters.Excel<Person>(),
+        DataGridExporters.Csv<Person>(),
+        new MarkdownExporter(),
+    ];
+
+    // A custom exporter: implement IDataGridExporter<T> and download via IFlareDownload.
+    private sealed class MarkdownExporter : IDataGridExporter<Person>
+    {
+        public string Id => "MD";
+        public string Label => "Markdown";
+        public string? Icon => "data_object";
+
+        public Task ExportAsync(DataGridExportData<Person> data, IFlareDownload download)
+        {
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("| " + string.Join(" | ", data.Columns.Select(c => c.Title)) + " |");
+            sb.AppendLine("| " + string.Join(" | ", data.Columns.Select(_ => "---")) + " |");
+            foreach (var row in data.Rows)
+                sb.AppendLine("| " + string.Join(" | ", data.Columns.Select(c => c.Value(row))) + " |");
+            var file = data.FileName + ".md";
+            return download.DownloadAsync(file, sb.ToString(), "text/markdown").AsTask();
+        }
+    }
+}

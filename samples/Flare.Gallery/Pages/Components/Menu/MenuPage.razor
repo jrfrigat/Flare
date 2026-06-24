@@ -1,0 +1,14 @@
+@page "/components/menu"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Menu_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareMenu">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Menu_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Menu_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Menu_Items" DemoType="typeof(Examples.MenuItemsDemo)" />
+<AutoDemoSection Title="Submenus" DemoType="typeof(Examples.MenuSubmenuDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Menu_Groups" DemoType="typeof(Examples.MenuGroupsDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Menu_Anchors" DemoType="typeof(Examples.MenuAnchorsDemo)" />

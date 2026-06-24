@@ -1,0 +1,196 @@
+/*
+ * Flare RTL Support
+ *
+ * This file provides Right-to-Left (RTL) support for all Flare components.
+ * Apply by adding dir="rtl" to the root element or using FlareThemeProvider with RTL mode.
+ *
+ * Uses CSS logical properties for automatic RTL adaptation.
+ */
+
+/* Root RTL indicator */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* ============================================
+   Layout Components
+   ============================================ */
+
+/* Grid - reverse column order */
+[dir="rtl"] .flare-grid {
+  direction: rtl;
+}
+
+/* Stack - reverse row direction */
+[dir="rtl"] .flare-stack--row {
+  direction: rtl;
+}
+
+/* ============================================
+   Navigation Components
+   ============================================ */
+
+/* Tabs - reverse tab order */
+[dir="rtl"] .flare-tabs__bar {
+  direction: rtl;
+}
+
+[dir="rtl"] .flare-tabs__tab {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Breadcrumb - reverse separator */
+[dir="rtl"] .flare-breadcrumb__separator {
+  transform: scaleX(-1);
+}
+
+/* Drawer - reverse anchor */
+[dir="rtl"] .flare-drawer--left {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .flare-drawer--right {
+  right: auto;
+  left: 0;
+}
+
+/* Nav - reverse indicator */
+[dir="rtl"] .flare-nav-link {
+  text-align: right;
+}
+
+/* ============================================
+   Input Components
+   ============================================ */
+
+/* Input - reverse adornment positions */
+[dir="rtl"] .flare-input__adornment--start {
+  padding-left: 0;
+  padding-right: var(--flare-spacing-6, 0.75rem);
+}
+
+[dir="rtl"] .flare-input__adornment--end {
+  padding-right: 0;
+  padding-left: var(--flare-spacing-6, 0.75rem);
+}
+
+[dir="rtl"] .flare-input__icon--leading {
+  margin-left: 0;
+  margin-right: var(--flare-spacing-4, 0.5rem);
+}
+
+[dir="rtl"] .flare-input__icon--trailing {
+  margin-right: 0;
+  margin-left: var(--flare-spacing-4, 0.5rem);
+}
+
+/* Select - reverse arrow */
+[dir="rtl"] .flare-select__control {
+  background-position: left 0.75rem center;
+}
+
+/* ============================================
+   Data Display Components
+   ============================================ */
+
+/* DataGrid - reverse column order */
+[dir="rtl"] .flare-datagrid {
+  direction: rtl;
+}
+
+[dir="rtl"] .flare-datagrid__th,
+[dir="rtl"] .flare-datagrid__td {
+  text-align: right;
+}
+
+/* Table - reverse */
+[dir="rtl"] .flare-table {
+  direction: rtl;
+}
+
+/* List - reverse */
+[dir="rtl"] .flare-list-item {
+  text-align: right;
+}
+
+/* ============================================
+   Overlay Components
+   ============================================ */
+
+/* Dialog - maintain center position */
+[dir="rtl"] .flare-dialog {
+  /* Dialog is centered, no RTL adjustment needed */
+}
+
+/* Drawer - reverse slide direction */
+[dir="rtl"] .flare-drawer--left {
+  transform: translateX(100%);
+}
+
+[dir="rtl"] .flare-drawer--left.flare-drawer--open {
+  transform: translateX(0);
+}
+
+[dir="rtl"] .flare-drawer--right {
+  transform: translateX(-100%);
+}
+
+[dir="rtl"] .flare-drawer--right.flare-drawer--open {
+  transform: translateX(0);
+}
+
+/* ============================================
+   Feedback Components
+   ============================================ */
+
+/* Progress - no RTL adjustment needed */
+/* Snackbar - reverse position */
+[dir="rtl"] .flare-snackbar {
+  left: auto;
+  right: 1rem;
+}
+
+/* Alert - reverse icon position */
+[dir="rtl"] .flare-alert {
+  text-align: right;
+}
+
+/* ============================================
+   Button Components
+   ============================================ */
+
+/* Button - no RTL adjustment needed */
+/* ButtonGroup - reverse */
+[dir="rtl"] .flare-btn-group {
+  direction: rtl;
+}
+
+[dir="rtl"] .flare-btn-group .flare-btn + .flare-btn {
+  border-left: none;
+  border-right: 1px solid;
+}
+
+/* SplitButton - reverse */
+[dir="rtl"] .flare-split-btn {
+  direction: rtl;
+}
+
+/* ============================================
+   Form Components
+   ============================================ */
+
+/* Checkbox - no RTL adjustment needed */
+/* Radio - no RTL adjustment needed */
+/* Switch - no RTL adjustment needed */
+/* Slider - no RTL adjustment needed */
+
+/* ============================================
+   Typography
+   ============================================ */
+
+/* Text alignment utilities (the single-dash helpers defined in responsive.css). */
+[dir="rtl"] .flare-text-left { text-align: right; }
+[dir="rtl"] .flare-text-right { text-align: left; }

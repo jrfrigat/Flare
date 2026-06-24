@@ -1,0 +1,14 @@
+**/.git
+**/.gitignore
+**/bin
+**/obj
+**/.vs
+**/*.user
+**/node_modules
+**/TestResults
+**/nupkg
+.claude
+.claude-flow
+.swarm
+*.md
+!README.md

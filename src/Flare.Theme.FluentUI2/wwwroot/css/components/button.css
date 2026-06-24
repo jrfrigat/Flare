@@ -1,0 +1,83 @@
+/* ==========================================================================
+   УНИКАЛЬНЫЕ ЭФФЕКТЫ ДЛЯ BUTTON (FLUENT UI 2 SPECIFICATION) [specs]
+   Используется один файл для Light и Dark тем Microsoft
+
+   Обёрнуто в @scope: эффекты Fluent применяются ТОЛЬКО внутри ближайшего корня
+   .flare-theme-fluent2 и не протекают в вложенный scope чужой темы (например MD3
+   через FlareThemeScope внутри Fluent-приложения). Нижняя граница обрывает каскад
+   на любом вложенном .flare-root, который НЕ fluent2.
+   ========================================================================== */
+@scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
+
+    /*
+       1. ДВОЙНОЕ ФОКУСНОЕ КОЛЬЦО ПО СПЕЦИФИКАЦИИ MICROSOFT [specs]
+       Переопределяем цвета фокуса в зависимости от выбранного стиля кнопки
+    */
+
+    /* Залитая кнопка (Accent / Filled): внутренний фокус черный, внешний белый */
+    .flare-btn--filled:focus-visible {
+        outline: 2px solid var(--flare-fluent-focus-stroke-color, #000000) !important;
+        box-shadow: 0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF) !important;
+    }
+
+    /* Контурные и текстовые кнопки (Standard / Subtle): внутренний фокус СИНИЙ (Primary) [specs] */
+    .flare-btn--outlined:focus-visible,
+    .flare-btn--tonal:focus-visible,
+    .flare-btn--elevated:focus-visible,
+    .flare-btn--text:focus-visible {
+        outline: 2px solid var(--flare-color-primary) !important;
+        box-shadow: 0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF) !important;
+    }
+
+    /*
+       2. АДАПТИВНЫЕ ПАДДИНГИ ДЛЯ SUBTLE ВАРИАНТА КНОПКИ (--text) [specs]
+       Спецификация требует, чтобы Subtle-кнопки имели укороченные боковые отступы.
+    */
+    .flare-btn--text.flare-btn--xs {
+        --_flare-btn-padding-inline: 0.25rem;
+    }
+    /* 4px */
+    .flare-btn--text.flare-btn--sm {
+        --_flare-btn-padding-inline: 0.375rem;
+    }
+    /* 6px */
+    .flare-btn--text.flare-btn--md {
+        --_flare-btn-padding-inline: 0.5rem;
+    }
+    /* 8px */
+    .flare-btn--text.flare-btn--lg {
+        --_flare-btn-padding-inline: 0.625rem;
+    }
+    /* 10px */
+    .flare-btn--text.flare-btn--xl {
+        --_flare-btn-padding-inline: 0.75rem;
+    }
+    /* 12px */
+
+    /*
+       3. КИНЕМАТИКА НАЖАТИЯ WINDOWS 11 (MOUDLE PRESSED EFFECT) [specs]
+       Заменяем мгновенный взрыв MD3 на упругий ход клавиши Fluent UI 2
+    */
+    .flare-btn:active::before {
+        /* Переключаем на тайминг Microsoft (83ms) и упругое сглаживание */
+        transition: opacity var(--flare-motion-duration-short2, 83ms) var(--flare-motion-easing-standard) !important;
+    }
+
+    /*
+       4. ЗАЛИВНЫЕ (FILLED) КНОПКИ: ЯВНЫЙ ФОН ПО СОСТОЯНИЯМ (FLUENT UI 2) [specs]
+       У filled текст белый -> полупрозрачный overlay (currentColor) ОСВЕТЛЯЛ фон, и
+       pressed получался светлее hover. По F2 нажатие - самое тёмное. Поэтому для filled
+       подавляем осветляющий overlay и задаём затемнённый фон на hover/active.
+       Цвета аппроксимируют бренд-рампу F2 (Primary): rest #0F6CBD - hover #115EA3 -
+       pressed #0C3B5E - через color-mix от роли (работает и в light, и в dark).
+    */
+    .flare-btn--filled:hover::before,
+    .flare-btn--filled:focus-visible::before,
+    .flare-btn--filled:active::before { opacity: 0 !important; }
+
+    /* Filled hover/active: darken the button's OWN color. --fc-main is set by the color role
+       (flare-color-*) or a custom color, falling back to the brand primary -- so this works for
+       every color (the old per-color .flare-btn--<color> selectors are no longer rendered). */
+    .flare-btn--filled:hover  { background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 87%, #000); }
+    .flare-btn--filled:active { background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 52%, #000); }
+}

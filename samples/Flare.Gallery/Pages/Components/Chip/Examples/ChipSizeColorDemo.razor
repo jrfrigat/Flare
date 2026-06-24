@@ -1,0 +1,23 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareChip Label="Small" Size="ChipSize.Sm" />
+        <FlareChip Label="Medium" Size="ChipSize.Md" />
+        <FlareChip Label="Large" Size="ChipSize.Lg" />
+    </FlareStack>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareChip Label="Default" />
+        <FlareChip Label="Primary" Color="@Colors.Primary" />
+        <FlareChip Label="Secondary" Color="@Colors.Secondary" />
+        <FlareChip Label="Clickable" Value="picked" OnClick="@(() => _clicks++)" />
+        <FlareChip Label="Elevated" Elevated="true" />
+    </FlareStack>
+
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Clickable chip clicks: @_clicks
+    </FlareText>
+</FlareStack>
+
+@code {
+    private int _clicks;
+}

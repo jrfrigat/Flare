@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # NuGet package references across the solution.
+  - package-ecosystem: nuget
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      # Keep routine updates to a few PRs by grouping minor/patch bumps together.
+      nuget-minor-and-patch:
+        update-types: [minor, patch]
+    labels: [dependencies]
+
+  # GitHub Actions used by the workflows.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    labels: [dependencies, ci]

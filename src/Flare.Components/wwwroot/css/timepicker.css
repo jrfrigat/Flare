@@ -1,0 +1,265 @@
+.flare-timepicker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-2, 0.25rem);
+  position: relative;
+}
+
+.flare-timepicker__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--flare-color-on-surface-variant);
+  border-radius: var(--flare-shape-full, 9999px);
+}
+.flare-timepicker__toggle:hover { color: var(--flare-color-on-surface); }
+.flare-timepicker__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
+
+/* Picker popup (MD3: 28dp container, elevation 6, surface-container-high). */
+.flare-timepicker__scrim { position: fixed; inset: 0; z-index: 20; }
+.flare-timepicker__panel {
+  /* Fixed + JS-positioned (positionAnchoredPanel) so the popup escapes a Card's overflow:hidden. */
+  position: fixed;
+  z-index: 21;
+  min-width: 17rem;
+  padding: var(--flare-spacing-8, 1rem);
+  background: var(--flare-color-surface-container-high, var(--flare-color-surface-container-highest));
+  color: var(--flare-color-on-surface);
+  border-radius: var(--flare-timepicker-panel-radius, var(--flare-shape-extra-large));
+  box-shadow: var(--flare-elevation-3);
+}
+.flare-timepicker__panel-headline {
+  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.flare-timepicker__display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-2, 0.25rem);
+  margin: var(--flare-spacing-4, 0.5rem) 0 var(--flare-spacing-8, 1rem);
+  font-size: 2.75rem;
+  line-height: 1;
+  color: var(--flare-color-on-surface);
+}
+.flare-timepicker__display-sep { color: var(--flare-color-on-surface-variant); }
+.flare-timepicker__display-part--active { color: var(--flare-color-primary); }
+
+/* Keyboard-focusable surfaces - selection is shown by the dial/cells, so no visible ring. */
+.flare-clock-dial:focus,
+.flare-clock-dial:focus-visible,
+.flare-timepicker__columns:focus,
+.flare-timepicker__columns:focus-visible { outline: none; }
+.flare-clock-dial { display: block; }
+.flare-timepicker__columns { display: flex; align-items: stretch; justify-content: center; gap: var(--flare-spacing-4, 0.5rem); }
+.flare-timepicker__columns-sep { align-self: center; font-size: 1.5rem; color: var(--flare-color-on-surface-variant); }
+.flare-timepicker__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-1, 0.125rem);
+  max-height: 12rem;
+  overflow-y: auto;
+  padding: var(--flare-spacing-2, 0.25rem);
+  scrollbar-width: none;          /* Firefox: hide scrollbar */
+  -ms-overflow-style: none;       /* old Edge */
+}
+.flare-timepicker__col::-webkit-scrollbar { width: 0; height: 0; display: none; }  /* WebKit */
+.flare-timepicker__cell {
+  min-width: 3rem;
+  padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
+  border: none;
+  background: transparent;
+  border-radius: var(--flare-shape-full, 9999px);
+  cursor: pointer;
+  color: var(--flare-color-on-surface);
+  font-size: var(--flare-typescale-body-large-size, 1rem);
+  text-align: center;
+  transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+.flare-timepicker__cell:hover {
+  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+}
+.flare-timepicker__cell--selected {
+  background: var(--flare-color-primary-container);
+  color: var(--flare-color-on-primary-container);
+}
+.flare-timepicker__actions { display: flex; justify-content: flex-end; gap: var(--flare-spacing-4, 0.5rem); margin-top: var(--flare-spacing-6, 0.75rem); }
+
+/* ---- Dial variant (MD3 clock) ---- */
+.flare-timepicker__panel--dial { min-width: 19rem; }
+.flare-timepicker__dial-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-8, 1rem);
+  margin: var(--flare-spacing-6, 0.75rem) 0 var(--flare-spacing-4, 0.5rem);
+}
+.flare-timepicker__time-fields { display: flex; align-items: center; gap: var(--flare-spacing-2, 0.25rem); }
+.flare-timepicker__time-fields-sep { font-size: 2.5rem; color: var(--flare-color-on-surface-variant); }
+.flare-timepicker__time-field {
+  font-size: 2.75rem;
+  line-height: 1;
+  min-width: 5rem;
+  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-4, 0.5rem);
+  border: none;
+  border-radius: var(--flare-shape-small);
+  background: var(--flare-color-surface-container-highest);
+  color: var(--flare-color-on-surface);
+  cursor: pointer;
+}
+.flare-timepicker__time-field--active {
+  background: var(--flare-color-primary-container);
+  color: var(--flare-color-on-primary-container);
+}
+.flare-timepicker__period { display: inline-flex; flex-direction: column; border: 1px solid var(--flare-color-outline); border-radius: var(--flare-shape-small); overflow: hidden; }
+.flare-timepicker__period-btn {
+  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-6, 0.75rem);
+  border: none;
+  background: transparent;
+  color: var(--flare-color-on-surface-variant);
+  cursor: pointer;
+  font-size: var(--flare-typescale-label-large-size, 0.875rem);
+}
+.flare-timepicker__period-btn--selected {
+  background: var(--flare-color-tertiary-container, var(--flare-color-primary-container));
+  color: var(--flare-color-on-tertiary-container, var(--flare-color-on-primary-container));
+}
+
+.flare-timepicker__dial {
+  position: relative;
+  width: 256px;            /* fixed so pointer math (center = 128px) is exact */
+  height: 256px;
+  margin: var(--flare-spacing-4, 0.5rem) auto;
+  border-radius: 50%;
+  background: var(--flare-color-surface-container-highest);
+  touch-action: none;      /* allow drag without scrolling */
+  cursor: pointer;
+  user-select: none;
+}
+/* Children are visual only - the dial itself receives all pointer events for tap/drag. */
+.flare-timepicker__dial-center,
+.flare-timepicker__dial-hand,
+.flare-timepicker__dial-num { pointer-events: none; }
+.flare-timepicker__dial-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--flare-color-primary);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.flare-timepicker__dial-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 2px;
+  height: calc(var(--flare-dial-len, 40) * 1%);
+  background: var(--flare-color-primary);
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(var(--flare-dial-angle, 0deg));
+  transition: transform var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard),
+              height var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard);
+  z-index: 1;
+}
+.flare-timepicker__dial-num {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  color: var(--flare-color-on-surface);
+  font-size: var(--flare-typescale-body-large-size, 1rem);
+  z-index: 3;
+}
+.flare-timepicker__dial-num--selected {
+  background: var(--flare-color-primary);
+  color: var(--flare-color-on-primary);
+}
+
+.flare-timepicker__label {
+  font-family: var(--flare-typescale-label-medium-font, inherit);
+  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+  font-weight: var(--flare-typescale-label-medium-weight, 400);
+  color: var(--flare-color-on-surface-variant);
+  pointer-events: none;
+}
+
+.flare-timepicker__field {
+  display: flex;
+  align-items: center;
+  background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
+  border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
+  border: var(--flare-input-border, none);
+  border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
+  transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-timepicker__field:focus-within {
+  border: var(--flare-input-focus-border, none);
+  border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--flare-color-primary));
+}
+
+.flare-timepicker__control {
+  flex: 1 1 0;
+  min-width: 0;            /* allow the input to shrink so the icon never overflows the field */
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  color: var(--flare-color-on-surface);
+  color-scheme: light dark;
+}
+
+.flare-timepicker__helper {
+  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-timepicker__helper--error { color: var(--flare-color-error); }
+.flare-timepicker--error .flare-timepicker__field { border-bottom-color: var(--flare-color-error); }
+.flare-timepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+
+/* Hide browser-native clock picker indicator */
+.flare-timepicker__control::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* Normalize webkit datetime edit parts */
+.flare-timepicker__control::-webkit-datetime-edit {
+  color: var(--flare-color-on-surface);
+}
+
+.flare-timepicker__control::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.flare-timepicker__control::-webkit-datetime-edit-hour-field,
+.flare-timepicker__control::-webkit-datetime-edit-minute-field,
+.flare-timepicker__control::-webkit-datetime-edit-ampm-field {
+  color: var(--flare-color-on-surface);
+}
+
+.flare-timepicker__control::-webkit-datetime-edit-hour-field:focus,
+.flare-timepicker__control::-webkit-datetime-edit-minute-field:focus,
+.flare-timepicker__control::-webkit-datetime-edit-ampm-field:focus {
+  background: var(--flare-color-primary);
+  color: var(--flare-color-on-primary);
+  border-radius: 2px;
+  outline: none;
+}

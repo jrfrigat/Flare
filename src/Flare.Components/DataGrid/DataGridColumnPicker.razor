@@ -1,0 +1,62 @@
+@namespace Flare.Components
+@typeparam TItem
+
+<div class="@Css.Classes.DataGrid.ColumnPickerWrap">
+    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle" AriaLabel="@FlareStrings.DataGrid_ToggleColumns">
+        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">view_column</span></LeadingIcon>
+        <ChildContent>@(Label ?? FlareStrings.DataGrid_ColumnsLabel)</ChildContent>
+    </FlareButton>
+    @if (_open)
+    {
+        <div class="@Css.Classes.DataGrid.ColumnPicker @Css.Classes.DataGrid.ColumnPickerOpen" role="menu">
+            @foreach (var col in _columns)
+            {
+                var key = col.Key;
+                <div class="@Css.Classes.DataGrid.ColumnPickerItem">
+                    <FlareCheckbox Value="@(!_hidden.Contains(key))" Label="@col.Title"
+                                   ValueChanged="@(_ => ToggleAsync(key))" />
+                </div>
+            }
+        </div>
+        <div class="@Css.Classes.DataGrid.Backdrop" @onclick="Close" aria-hidden="true"></div>
+    }
+</div>
+
+@code {
+    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
+    // Grid parameter overrides it for standalone placement outside the grid.
+    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
+    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
+    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
+    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
+    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+
+    /// <summary>Label shown on the picker button. Defaults to a localized "Columns".</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Optional explicit pickable columns as (Key, Title) pairs. When null, the bound grid's
+    /// <see cref="FlareDataGrid{TItem}.PickableColumns"/> are used.</summary>
+    [Parameter] public IReadOnlyList<(string Key, string Title)>? Columns { get; set; }
+
+    /// <summary>Optional explicit set of hidden column keys. When null, the bound grid's
+    /// <see cref="FlareDataGrid{TItem}.HiddenColumnKeys"/> are used.</summary>
+    [Parameter] public IReadOnlyCollection<string>? Hidden { get; set; }
+
+    /// <summary>Optional notification raised with a column key when its visibility is toggled. The
+    /// bound grid is updated automatically; use this only to observe the change.</summary>
+    [Parameter] public EventCallback<string> OnToggle { get; set; }
+
+    private bool _open;
+
+    private IReadOnlyList<(string Key, string Title)> _columns => Columns ?? Owner?.PickableColumns ?? [];
+    private IReadOnlyCollection<string> _hidden => Hidden ?? Owner?.HiddenColumnKeys ?? [];
+
+    private async Task ToggleAsync(string key)
+    {
+        if (Owner is not null) await Owner.ToggleColumnAsync(key);
+        if (OnToggle.HasDelegate) await OnToggle.InvokeAsync(key);
+    }
+
+    private void Toggle() => _open = !_open;
+    private void Close() => _open = false;
+}

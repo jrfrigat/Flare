@@ -1,0 +1,19 @@
+<FlareStack Style="max-width:32rem;">
+    <FlareTimeline Connector="ConnectorVariant.Dotted">
+        <FlareTimelineItem Title="Start" Time="Jan 1" Icon="flag" Color="_purple">
+            Project kicked off.
+        </FlareTimelineItem>
+        <FlareTimelineItem Title="Milestone" Time="Mar 15" Icon="star" Color="_orange">
+            First milestone reached.
+        </FlareTimelineItem>
+        <FlareTimelineItem Title="Launch" Time="Jun 30" Icon="rocket_launch" Color="_green">
+            Product shipped to customers.
+        </FlareTimelineItem>
+    </FlareTimeline>
+</FlareStack>
+
+@code {
+    private readonly FlareColor _purple = FlareColor.Custom("#9c27b0");
+    private readonly FlareColor _orange = FlareColor.Custom("#ff9800");
+    private readonly FlareColor _green = FlareColor.Custom("#4caf50");
+}

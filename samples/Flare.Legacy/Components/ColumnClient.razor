@@ -1,0 +1,22 @@
+@namespace Flare.Legacy.Components
+
+@* Reusable client cell: an "open" icon-button on the left plus the client's full name. Opens the
+   client card. Used wherever a grid shows a borrower. *@
+<FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall" Wrap="false">
+    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Primary"
+                 title="@($"Открыть клиента {ClientId}")" OnClick="OnOpen">
+        <FlareIcon Size="0.95rem" Name="person" />
+    </FlareButton>
+    <FlareText Typo="TypographyScale.LabelMedium">@ClientName</FlareText>
+</FlareStack>
+
+@code {
+    /// <summary>Client id (used for the open tooltip/action).</summary>
+    [Parameter] public string ClientId { get; set; } = "";
+
+    /// <summary>Client full name shown next to the open button.</summary>
+    [Parameter] public string ClientName { get; set; } = "";
+
+    /// <summary>Raised when the open button is clicked.</summary>
+    [Parameter] public EventCallback OnOpen { get; set; }
+}
