@@ -473,19 +473,19 @@ internal static class Program
         var map = new SortedDictionary<string, SortedSet<string>>(StringComparer.Ordinal);
         foreach (var cssDir in cssDirs)
         {
-        if (!Directory.Exists(cssDir)) continue;
-        foreach (var path in Directory.EnumerateFiles(cssDir, "*.css", SearchOption.AllDirectories).OrderBy(p => p))
-        {
-            var text = StripCommentsAndStrings(File.ReadAllText(path));
-            // For theme CSS, prefix the file with the theme name (button.css exists in several themes).
-            var tm = Regex.Match(path, @"Flare\.Theme\.([^\\/]+)");
-            var file = tm.Success ? $"{tm.Groups[1].Value}/{Path.GetFileName(path)}" : Path.GetFileName(path);
-            foreach (Match m in ClassRx.Matches(text))
+            if (!Directory.Exists(cssDir)) continue;
+            foreach (var path in Directory.EnumerateFiles(cssDir, "*.css", SearchOption.AllDirectories).OrderBy(p => p))
             {
-                var cls = m.Groups[1].Value;
-                (map.TryGetValue(cls, out var files) ? files : map[cls] = new(StringComparer.Ordinal)).Add(file);
+                var text = StripCommentsAndStrings(File.ReadAllText(path));
+                // For theme CSS, prefix the file with the theme name (button.css exists in several themes).
+                var tm = Regex.Match(path, @"Flare\.Theme\.([^\\/]+)");
+                var file = tm.Success ? $"{tm.Groups[1].Value}/{Path.GetFileName(path)}" : Path.GetFileName(path);
+                foreach (Match m in ClassRx.Matches(text))
+                {
+                    var cls = m.Groups[1].Value;
+                    (map.TryGetValue(cls, out var files) ? files : map[cls] = new(StringComparer.Ordinal)).Add(file);
+                }
             }
-        }
         }
         return map;
     }

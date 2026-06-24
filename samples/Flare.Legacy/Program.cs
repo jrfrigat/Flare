@@ -1,4 +1,3 @@
-using System.Globalization;
 using Flare.Core.Tokens;
 using Flare.Extensions;
 using Flare.Legacy;
@@ -10,6 +9,7 @@ using Flare.Theme.MaterialDesign3Expressive;
 using Flare.Theme.VisualStudio;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System.Globalization;
 
 // Single-language Russian app: pin the culture so Flare's component strings (FlareStrings.ru) and
 // ru-RU number/date formatting are used regardless of the browser/OS language.

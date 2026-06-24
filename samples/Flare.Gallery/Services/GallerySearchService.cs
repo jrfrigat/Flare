@@ -1,7 +1,7 @@
-using System.Globalization;
 using Flare.Gallery.Api;
 using Flare.Gallery.Models;
 using Flare.Gallery.Resources;
+using System.Globalization;
 
 namespace Flare.Gallery.Services;
 

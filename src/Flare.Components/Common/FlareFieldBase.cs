@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using Flare.Core.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Linq.Expressions;
 
 namespace Flare.Components;
 

@@ -56,7 +56,10 @@ public sealed class LegacyTheme : ITheme
             // delineated only by their border, as in the classic 1C look.
             Card = g.Card with
             {
-                PaddingTop = "0.375rem", PaddingRight = "0.375rem", PaddingBottom = "0.375rem", PaddingLeft = "0.375rem",
+                PaddingTop = "0.375rem",
+                PaddingRight = "0.375rem",
+                PaddingBottom = "0.375rem",
+                PaddingLeft = "0.375rem",
                 OutlinedBg = "var(--flare-color-background)",
             },
             Button = g.Button with
