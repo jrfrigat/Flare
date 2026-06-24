@@ -13,6 +13,7 @@ concurrency:
 
 permissions:
   contents: write   # create the GitHub Release
+  id-token: write   # OIDC token for NuGet Trusted Publishing (no long-lived API key)
 
 jobs:
   publish:
@@ -20,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0   # MinVer needs the tag + history
 
@@ -42,6 +43,15 @@ jobs:
       # tests/tools are excluded. Symbols (.snupkg) are produced alongside via IncludeSymbols.
       - name: Pack
         run: dotnet pack Flare.slnx -c Release --no-build -o artifacts
+
+      # Trusted Publishing: exchange the GitHub OIDC token for a short-lived NuGet API key.
+      # Requires a Trusted Publisher policy on nuget.org for this repo + workflow (see below),
+      # and the nuget.org account username in the NUGET_USER repository variable.
+      - name: NuGet login (Trusted Publishing)
+        id: nuget-login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ vars.NUGET_USER }}
 
       - name: Push to NuGet.org
         run: >

@@ -3,8 +3,8 @@
 > **[English version →](README.md)**
 
 [![CI](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml/badge.svg)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
-[![NuGet](https://img.shields.io/nuget/v/Flare.svg)](https://www.nuget.org/packages/Flare/)
-[![Downloads](https://img.shields.io/nuget/dt/Flare.svg)](https://www.nuget.org/packages/Flare/)
+[![NuGet](https://img.shields.io/nuget/v/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
+[![Downloads](https://img.shields.io/nuget/dt/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
 [![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -18,7 +18,7 @@
 
 - **100+ готовых к production компонентов** — ввод данных, макет, навигация, отображение данных, обратная связь, утилиты
 - **Три независимые оси темы** — отдельно переключаются дизайн-система (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026), палитра и режим светлая/тёмная/авто, во время выполнения
-- **Пять дизайн-систем отдельными пакетами** — подключаете только нужные темы; umbrella-пакет `Flare` не содержит собственных тем
+- **Пять дизайн-систем отдельными пакетами** — подключаете только нужные темы; umbrella-пакет `Flare.Blazor` не содержит собственных тем
 - **Доставка class-toggle** — переключение это смена классов на `<html>` (без переинъекции CSS-переменных на каждом переключении); есть запасной `ThemeDelivery.Inject`
 - **Переиспользуемые палитры и генераторы** — встроенные наборы Material/Office/Aero/Liquid Glass/Visual Studio (28 палитр) + `Palette.FromColors(id, name, seed)` для вывода полной палитры light+dark (MD3 тональный / Fluent рампа по активной теме)
 - **Автоматический тёмный режим** — `ThemeMode.Auto` следует за `prefers-color-scheme`; одностроковый бутстрап-скрипт убирает FOUC до первого кадра
@@ -38,7 +38,7 @@
 ## Быстрый старт
 
 ```sh
-dotnet add package Flare
+dotnet add package Flare.Blazor
 ```
 
 Flare не содержит собственных тем — каждая дизайн-система это отдельный пакет
@@ -184,7 +184,7 @@ Flare.Theme.VisualStudio ← дизайн-токены Visual Studio 2026 + па
 Flare (umbrella)        ← DI-расширения AddFlare()/AddFlareTheme(), LocalStorageThemeStorage (зависит только от Flare.Components)
 ```
 
-> Темы поставляются отдельными пакетами — umbrella-пакет `Flare` не ссылается **ни на одну** тему,
+> Темы поставляются отдельными пакетами — umbrella-пакет `Flare.Blazor` не ссылается **ни на одну** тему,
 > поэтому приложение подключает только нужные дизайн-системы. Опциональные семейства компонентов
 > (`Carousel`, `Kanban`, `Transfer`, `QrCode`, `RichTextEditor`, `Media`, `IDE`) — тоже отдельные пакеты.
 

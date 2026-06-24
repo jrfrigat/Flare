@@ -14,7 +14,7 @@
 ## 1. Installation
 
 ```sh
-dotnet add package Flare
+dotnet add package Flare.Blazor
 ```
 
 This pulls in the core:

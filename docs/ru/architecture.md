@@ -32,7 +32,7 @@ tests/Flare.Core.Tests       -> Flare.Core
 tests/Flare.Components.Tests -> Flare.Components
 ```
 
-> **Flare не содержит собственных тем.** Umbrella-пакет `Flare` зависит только от
+> **Flare не содержит собственных тем.** Umbrella-пакет `Flare.Blazor` зависит только от
 > `Flare.Components`. Каждая дизайн-система это отдельный пакет `Flare.Theme.*`, поэтому
 > приложение подключает только нужные.
 
@@ -96,7 +96,7 @@ tests/Flare.Components.Tests -> Flare.Components
 - `LocalStorageThemeStorage` (internal) - реализует `IThemeStorageService` через `localStorage`.
 - Не содержит UI-кода, токенов или собственной темы.
 
-**NuGet:** `Flare` · зависит от `Flare.Components`.
+**NuGet:** `Flare.Blazor` · зависит от `Flare.Components`.
 
 ### samples/Flare.Gallery
 Blazor WebAssembly PWA. Интерактивная галерея с переключением EN/RU, сворачиваемыми примерами кода с
@@ -222,7 +222,7 @@ Palette
 ### Хранение
 
 `IThemeStorageService` (интерфейс в `Flare.Core`, реализация internal `LocalStorageThemeStorage` в
-`Flare`) читает/пишет выбор в `localStorage`, с защитой от SSR/prerender. `FlareThemeProvider`
+`Flare.Blazor`) читает/пишет выбор в `localStorage`, с защитой от SSR/prerender. `FlareThemeProvider`
 восстанавливает сохранённый выбор при первом интерактивном рендере.
 
 ### Как добавить новую тему

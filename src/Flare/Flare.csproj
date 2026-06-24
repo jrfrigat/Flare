@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <PackageId>Flare</PackageId>
+    <PackageId>Flare.Blazor</PackageId>
     <Description>Flare - Blazor component library with runtime theme switching. 67 components, zero third-party CSS dependencies. Themes ship as independent packages (Flare.Theme.*); reference only the ones you want in your release.</Description>
     <PackageTags>blazor;components;theming;material-design;fluent-ui;ui;dotnet;blazor-components</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>

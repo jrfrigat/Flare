@@ -3,8 +3,8 @@
 > **[Русская версия ->](README.ru.md)**
 
 [![CI](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml/badge.svg)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
-[![NuGet](https://img.shields.io/nuget/v/Flare.svg)](https://www.nuget.org/packages/Flare/)
-[![Downloads](https://img.shields.io/nuget/dt/Flare.svg)](https://www.nuget.org/packages/Flare/)
+[![NuGet](https://img.shields.io/nuget/v/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
+[![Downloads](https://img.shields.io/nuget/dt/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
 [![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -18,7 +18,7 @@ A production-ready Blazor component library for **.NET 10** with **runtime theme
 
 - **100+ production-ready components** across inputs, layout, navigation, data display, feedback, and utilities
 - **Three independent theme axes** - swap the design system (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026), the color palette, and light/dark/auto separately, at runtime
-- **Five design systems, shipped as independent packages** - reference only the themes you use; the umbrella `Flare` package ships no themes of its own
+- **Five design systems, shipped as independent packages** - reference only the themes you use; the umbrella `Flare.Blazor` package ships no themes of its own
 - **Class-toggle delivery** - switching is a class swap on `<html>` (no per-switch CSS-var injection); `ThemeDelivery.Inject` available as a fallback
 - **Reusable palettes & generators** - built-in Material/Office/Aero/Liquid Glass/Visual Studio palettes (28 in total), plus `Palette.FromColors(id, name, seed)` to derive a full light+dark palette (MD3 tonal / Fluent ramp per active theme)
 - **Auto dark mode** - `ThemeMode.Auto` tracks `prefers-color-scheme`; a one-line bootstrap script kills the FOUC before first paint
@@ -38,7 +38,7 @@ A production-ready Blazor component library for **.NET 10** with **runtime theme
 ## Quick Start
 
 ```sh
-dotnet add package Flare
+dotnet add package Flare.Blazor
 ```
 
 Flare ships no themes of its own - each design system is an independent `Flare.Theme.*`
@@ -184,7 +184,7 @@ Flare.Theme.VisualStudio ← Visual Studio 2026 design tokens + palettes + ramp 
 Flare (umbrella)        ← AddFlare()/AddFlareTheme() DI extensions, LocalStorageThemeStorage (depends only on Flare.Components)
 ```
 
-> Themes ship as independent packages - the umbrella `Flare` package references **no** theme,
+> Themes ship as independent packages - the umbrella `Flare.Blazor` package references **no** theme,
 > so apps pull in only the design systems they use. The optional component families (`Carousel`,
 > `Kanban`, `Transfer`, `QrCode`, `RichTextEditor`, `Media`, `IDE`) are likewise separate packages.
 
