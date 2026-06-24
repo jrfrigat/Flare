@@ -14,7 +14,7 @@
 ## 1. Установка
 
 ```sh
-dotnet add package Flare
+dotnet add package Flare.Blazor
 ```
 
 Это подключит ядро:

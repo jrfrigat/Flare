@@ -32,7 +32,7 @@ tests/Flare.Core.Tests       → Flare.Core
 tests/Flare.Components.Tests → Flare.Components
 ```
 
-> **Flare ships no themes of its own.** The umbrella `Flare` package depends only on
+> **Flare ships no themes of its own.** The umbrella `Flare.Blazor` package depends only on
 > `Flare.Components`. Each design system is an independent `Flare.Theme.*` package, so an app
 > references only the ones it uses.
 
@@ -97,7 +97,7 @@ Each theme package provides one concrete `ITheme` plus its palettes and static s
 - `LocalStorageThemeStorage` (internal) - implements `IThemeStorageService` via `localStorage`.
 - No UI code, tokens, or theme of its own.
 
-**NuGet:** `Flare` · depends on `Flare.Components`.
+**NuGet:** `Flare.Blazor` · depends on `Flare.Components`.
 
 ### samples/Flare.Gallery
 Blazor WebAssembly PWA. Interactive component gallery with EN/RU language toggle, collapsible
@@ -229,7 +229,7 @@ token CSS, so there is no flash of unstyled content.
 ### Persistence
 
 `IThemeStorageService` (interface in `Flare.Core`, implemented by internal `LocalStorageThemeStorage`
-in `Flare`) reads/writes the selection in `localStorage`, SSR/prerender-guarded. `FlareThemeProvider`
+in `Flare.Blazor`) reads/writes the selection in `localStorage`, SSR/prerender-guarded. `FlareThemeProvider`
 restores the saved selection on first interactive render.
 
 ### Adding a New Theme

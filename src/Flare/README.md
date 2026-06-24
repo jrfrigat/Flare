@@ -1,4 +1,4 @@
-# Flare
+# Flare.Blazor
 
 Blazor component library with runtime theme switching, 67 components and zero third-party CSS
 dependencies. This is the convenience meta-package: it pulls in `Flare.Core` + `Flare.Components`.
@@ -7,7 +7,7 @@ Themes ship as separate `Flare.Theme.*` packages, so your app only carries the o
 ## Install
 
 ```sh
-dotnet add package Flare
+dotnet add package Flare.Blazor
 dotnet add package Flare.Theme.MaterialDesign3Expressive   # pick at least one theme
 ```
 
