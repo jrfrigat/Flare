@@ -100,7 +100,7 @@
         }
     }
 
-    private static string Sanitize(string value) => Flare.Components.Security.CssValidator.StripDangerous(value);
+    private static string Sanitize(string value) => Flare.Components.Security.CssValidator.StripDangerous(value) ?? string.Empty;
 
     // Orientation class: for Auto, JS resolves it from the parent at runtime, so render none here
     // (the base CSS defaults to a horizontal handle until JS confirms or flips it).

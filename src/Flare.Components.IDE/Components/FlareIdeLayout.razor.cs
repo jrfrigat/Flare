@@ -150,7 +150,7 @@ public partial class FlareIdeLayout : FlareComponentBase
     }
 
     /// <inheritdoc />
-    public ValueTask DisposeAsync()
+    public override ValueTask DisposeAsync()
     {
         // The JS service is shared (DI-owned); only release this layout's callback reference.
         _selfRef?.Dispose();

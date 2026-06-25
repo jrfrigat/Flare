@@ -1612,7 +1612,7 @@
     <value>Требования</value>
   </data>
   <data name="GettingStarted_RequirementsDesc" xml:space="preserve">
-    <value>Пакет SDK .NET 10 и проект Blazor WebAssembly или Blazor Server (поддерживаются оба).</value>
+    <value>.NET 10 SDK и проект Blazor WebAssembly или Blazor Server (поддерживаются оба).</value>
   </data>
   <data name="GettingStarted_DiSetup" xml:space="preserve">
     <value>Настройка DI</value>
@@ -2196,7 +2196,7 @@
   <data name="Responsive_Title" xml:space="preserve"><value>Адаптивность и отзывчивость</value></data>
   <data name="Responsive_Subtitle" xml:space="preserve"><value>Измените размер окна, чтобы увидеть адаптацию Flare. Контрольные точки: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920.</value></data>
   <data name="Responsive_GridTitle" xml:space="preserve"><value>Адаптивная сетка (FlareGrid / FlareCol)</value></data>
-  <data name="Responsive_GridDescA" xml:space="preserve"><value>Каждая колонка -</value></data>
+  <data name="Responsive_GridDescA" xml:space="preserve"><value>Каждая колонка</value></data>
   <data name="Responsive_GridDescB" xml:space="preserve"><value>- 1 в ряд на телефонах, 2 на планшетах, 3-4 на десктопе.</value></data>
   <data name="Responsive_Card" xml:space="preserve"><value>Карточка</value></data>
   <data name="Responsive_VisibilityTitle" xml:space="preserve"><value>Условная видимость (FlareHidden)</value></data>
