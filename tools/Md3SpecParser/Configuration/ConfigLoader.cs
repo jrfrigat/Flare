@@ -25,7 +25,10 @@ public static class ConfigLoader
             throw new FileNotFoundException($"Config file not found: {path}");
 
         var json = File.ReadAllText(path);
-        var config = JsonSerializer.Deserialize<SpecConfig>(json, Options)
+        // System.Text.Json deserializes into the closed SpecConfig POCO with no polymorphic
+        // type resolution, and the source is a local config file the developer supplies to the
+        // CLI -- not the gadget-chain insecure-deserialization vector V5611 guards against.
+        var config = JsonSerializer.Deserialize<SpecConfig>(json, Options) //-V5611
                      ?? throw new InvalidDataException($"Config file is empty or invalid: {path}");
 
         if (config.Sources.Count == 0)
