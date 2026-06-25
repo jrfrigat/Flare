@@ -23,7 +23,6 @@ public sealed class ThemeService : IThemeService
     private ThemeMode _mode;
     private bool _systemDark;
     private bool _isRtl;
-    private bool _staticDirty = true;
 
     /// <summary>Initializes a new <see cref="ThemeService"/> with the given injector and default theme/palette/mode.</summary>
     public ThemeService(
@@ -80,7 +79,6 @@ public sealed class ThemeService : IThemeService
             if (_themes.All(t => t.Id != theme.Id))
             {
                 _themes.Add(theme);
-                _staticDirty = true;
             }
         }
     }
@@ -93,7 +91,6 @@ public sealed class ThemeService : IThemeService
             if (_palettes.All(p => p.Id != palette.Id))
             {
                 _palettes.Add(palette);
-                _staticDirty = true;
             }
         }
     }
@@ -168,7 +165,6 @@ public sealed class ThemeService : IThemeService
             _neededPaletteIds.Add(_palette.Id);
             themesCopy = _themes.Where(t => _neededThemeIds.Contains(t.Id)).ToArray();
             palettesCopy = _palettes.Where(p => _neededPaletteIds.Contains(p.Id)).ToArray();
-            _staticDirty = false;
         }
 
         var css = TokensToCss.Bundle(themesCopy, palettesCopy);
