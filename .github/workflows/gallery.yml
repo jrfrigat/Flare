@@ -77,5 +77,8 @@ jobs:
           tags: |
             ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.version }}
             ${{ steps.meta.outputs.image }}:latest
+          # Read layer cache always (free, speeds builds), but only WRITE it on real
+          # releases. PR validation builds with mode=max used to balloon the GHA cache
+          # (10 GB/repo cap) with throwaway per-PR layer blobs, so PRs no longer push cache.
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-to: ${{ steps.meta.outputs.push == 'true' && 'type=gha,mode=max' || '' }}
