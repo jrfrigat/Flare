@@ -197,7 +197,9 @@ public partial class FlareDataGrid<TItem>
 
     private RenderFragment RenderEditActions(TItem item) => builder =>
     {
-        var isEditing = _editingItem is not null && ReferenceEquals(_editingItem, item);
+        // EqualityComparer.Default (not ReferenceEquals) so a struct TItem is not boxed into two
+        // distinct references that never match -- and to stay consistent with selection equality.
+        var isEditing = _editingItem is not null && EqualityComparer<TItem>.Default.Equals(_editingItem, item);
         if (isEditing)
         {
             BuildIconButton(builder, 0, "check", FlareStrings.DataGrid_Save, () => SaveRowAsync(item));
