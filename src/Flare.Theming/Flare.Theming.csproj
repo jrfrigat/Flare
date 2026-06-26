@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <PackageId>Flare.Core</PackageId>
-    <Description>Core abstractions and theme service for the Flare Blazor component library</Description>
-    <PackageTags>blazor;components;theming;material-design;fluent-ui;dotnet</PackageTags>
+    <PackageId>Flare.Theming</PackageId>
+    <Description>Flare theming engine: theme/palette services, palette generation, color math and the design-token to CSS-variable mapping. Depends only on Flare.Abstractions.</Description>
+    <PackageTags>blazor;theming;design-tokens;palette;material-design;fluent-ui;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
@@ -15,12 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.9" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
-    <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
   </ItemGroup>
 
   <ItemGroup>
