@@ -29,31 +29,31 @@ public sealed record ToggleButtonTokens
 
     // --- 4. РАДИУС покоя и выбранного состояния (morph) ---
     /// <summary>Radius token (<c>var(--flare-shape-full)</c>).</summary>
-    [CssVar(ToggleButton.Radius)] public string Radius { get; init; } = "var(--flare-shape-full)";
+    [CssVar(ToggleButton.Radius)] public string Radius { get; init; } = Vars.Var(Shape.Full);
     /// <summary>Radius selected sm token (<c>var(--flare-shape-medium)</c>).</summary>
-    [CssVar(ToggleButton.RadiusSelected.Sm)] public string RadiusSelectedSm { get; init; } = "var(--flare-shape-medium)"; // ~12dp
+    [CssVar(ToggleButton.RadiusSelected.Sm)] public string RadiusSelectedSm { get; init; } = Vars.Var(Shape.Medium); // ~12dp
     /// <summary>Radius selected md token (<c>var(--flare-shape-medium)</c>).</summary>
-    [CssVar(ToggleButton.RadiusSelected.Md)] public string RadiusSelectedMd { get; init; } = "var(--flare-shape-medium)"; // ~12dp
+    [CssVar(ToggleButton.RadiusSelected.Md)] public string RadiusSelectedMd { get; init; } = Vars.Var(Shape.Medium); // ~12dp
     /// <summary>Radius selected lg token (<c>1rem</c>).</summary>
     [CssVar(ToggleButton.RadiusSelected.Lg)] public string RadiusSelectedLg { get; init; } = "1rem";                       // ~16dp
 
     // --- 5. ЦВЕТА покоя / выбора ---
     /// <summary>Rest bg token (<c>var(--flare-color-surface-container-highest)</c>).</summary>
-    [CssVar(ToggleButton.RestBg)] public string RestBg { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(ToggleButton.RestBg)] public string RestBg { get; init; } = Vars.Var(Color.SurfaceContainerHighest);
     /// <summary>Rest color token (<c>var(--flare-color-on-surface-variant)</c>).</summary>
-    [CssVar(ToggleButton.RestColor)] public string RestColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(ToggleButton.RestColor)] public string RestColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
     /// <summary>Selected bg token (<c>var(--flare-color-secondary-container)</c>).</summary>
-    [CssVar(ToggleButton.SelectedBg)] public string SelectedBg { get; init; } = "var(--flare-color-secondary-container)";
+    [CssVar(ToggleButton.SelectedBg)] public string SelectedBg { get; init; } = Vars.Var(Color.SecondaryContainer);
     /// <summary>Selected color token (<c>var(--flare-color-on-secondary-container)</c>).</summary>
-    [CssVar(ToggleButton.SelectedColor)] public string SelectedColor { get; init; } = "var(--flare-color-on-secondary-container)";
+    [CssVar(ToggleButton.SelectedColor)] public string SelectedColor { get; init; } = Vars.Var(Color.OnSecondaryContainer);
 
     // --- 6. ГРУППА (Segmented) ---
     /// <summary>Group border token (<c>1px solid var(--flare-color-outline)</c>).</summary>
     [CssVar(ToggleButton.GroupBorder)] public string GroupBorder { get; init; } = "1px solid var(--flare-color-outline)";
     /// <summary>Group radius token (<c>var(--flare-shape-full)</c>).</summary>
-    [CssVar(ToggleButton.GroupRadius)] public string GroupRadius { get; init; } = "var(--flare-shape-full)";
+    [CssVar(ToggleButton.GroupRadius)] public string GroupRadius { get; init; } = Vars.Var(Shape.Full);
     /// <summary>Group radius vertical token (<c>var(--flare-shape-medium)</c>).</summary>
-    [CssVar(ToggleButton.GroupRadiusVertical)] public string GroupRadiusVertical { get; init; } = "var(--flare-shape-medium)";
+    [CssVar(ToggleButton.GroupRadiusVertical)] public string GroupRadiusVertical { get; init; } = Vars.Var(Shape.Medium);
     /// <summary>Group divider token (<c>var(--flare-color-outline)</c>).</summary>
-    [CssVar(ToggleButton.GroupDivider)] public string GroupDivider { get; init; } = "var(--flare-color-outline)";
+    [CssVar(ToggleButton.GroupDivider)] public string GroupDivider { get; init; } = Vars.Var(Color.Outline);
 }

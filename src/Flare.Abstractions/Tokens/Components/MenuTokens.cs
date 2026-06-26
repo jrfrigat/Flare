@@ -13,9 +13,9 @@ public sealed record MenuTokens
     /// <summary>Panel radius token (<c>var(--flare-popover-radius, var(--flare-shape-small))</c>).</summary>
     [CssVar(MenuPanel.Radius)] public string PanelRadius { get; init; } = "var(--flare-popover-radius, var(--flare-shape-small))";
     /// <summary>Panel bg token (<c>var(--flare-color-surface-container)</c>).</summary>
-    [CssVar(MenuPanel.Bg)] public string PanelBg { get; init; } = "var(--flare-color-surface-container)";
+    [CssVar(MenuPanel.Bg)] public string PanelBg { get; init; } = Vars.Var(Color.SurfaceContainer);
     /// <summary>Panel shadow token (<c>var(--flare-elevation-2)</c>).</summary>
-    [CssVar(MenuPanel.Shadow)] public string PanelShadow { get; init; } = "var(--flare-elevation-2)";
+    [CssVar(MenuPanel.Shadow)] public string PanelShadow { get; init; } = Vars.Var(Elevation.Level2);
     /// <summary>Panel padding block token (<c>0.25rem</c>).</summary>
     [CssVar(MenuPanel.PaddingBlock)] public string PanelPaddingBlock { get; init; } = "0.25rem";
     /// <summary>Panel padding inline token (<c>0.25rem</c>).</summary>
@@ -47,19 +47,19 @@ public sealed record MenuTokens
 
     // --- 3. ПУНКТ (типографика метки) ---
     /// <summary>Item label font token (<c>var(--flare-typescale-body-large-font)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelFont)] public string ItemLabelFont { get; init; } = "var(--flare-typescale-body-large-font)";
+    [CssVar(MenuPanel.ItemLabelFont)] public string ItemLabelFont { get; init; } = Vars.Var(Typography.Font("body-large"));
     /// <summary>Item label weight token (<c>var(--flare-typescale-body-large-weight)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelWeight)] public string ItemLabelWeight { get; init; } = "var(--flare-typescale-body-large-weight)";
+    [CssVar(MenuPanel.ItemLabelWeight)] public string ItemLabelWeight { get; init; } = Vars.Var(Typography.Weight("body-large"));
     /// <summary>Item label size token (<c>var(--flare-typescale-body-large-size)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelSize)] public string ItemLabelSize { get; init; } = "var(--flare-typescale-body-large-size)";
+    [CssVar(MenuPanel.ItemLabelSize)] public string ItemLabelSize { get; init; } = Vars.Var(Typography.Size("body-large"));
     /// <summary>Item label height token (<c>var(--flare-typescale-body-large-height)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelHeight)] public string ItemLabelHeight { get; init; } = "var(--flare-typescale-body-large-height)";
+    [CssVar(MenuPanel.ItemLabelHeight)] public string ItemLabelHeight { get; init; } = Vars.Var(Typography.Height("body-large"));
     /// <summary>Item label spacing token (<c>var(--flare-typescale-body-large-spacing)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelSpacing)] public string ItemLabelSpacing { get; init; } = "var(--flare-typescale-body-large-spacing)";
+    [CssVar(MenuPanel.ItemLabelSpacing)] public string ItemLabelSpacing { get; init; } = Vars.Var(Typography.Spacing("body-large"));
 
     // --- 4. ФОКУС-КОЛЬЦО ---
     /// <summary>Item focus ring color token (<c>var(--flare-color-secondary)</c>).</summary>
-    [CssVar(MenuPanel.ItemFocusRingColor)] public string ItemFocusRingColor { get; init; } = "var(--flare-color-secondary)";
+    [CssVar(MenuPanel.ItemFocusRingColor)] public string ItemFocusRingColor { get; init; } = Vars.Var(Color.Secondary);
     /// <summary>Item focus ring thickness token (<c>3px</c>).</summary>
     [CssVar(MenuPanel.ItemFocusRingThickness)] public string ItemFocusRingThickness { get; init; } = "3px";
     /// <summary>Item focus ring offset token (<c>-3px</c>).</summary>

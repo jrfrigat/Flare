@@ -6,7 +6,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record ChipTokens
 {
     /// <summary>Corner radius. MD3 = 8dp (shape-small).</summary>
-    [CssVar(Chip.Radius)] public string Radius { get; init; } = "var(--flare-shape-small)";
+    [CssVar(Chip.Radius)] public string Radius { get; init; } = Vars.Var(Shape.Small);
 
     /// <summary>Minimum height. MD3 = 32dp.</summary>
     [CssVar(Chip.Height)] public string Height { get; init; } = "2rem";

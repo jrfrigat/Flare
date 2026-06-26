@@ -9,13 +9,13 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record InputTokens
 {
     /// <summary>Background color of the filled variant control.</summary>
-    [CssVar(InputField.FilledBg)] public string FilledBg { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(InputField.FilledBg)] public string FilledBg { get; init; } = Vars.Var(Color.SurfaceContainerHighest);
 
     /// <summary>Border for the outlined variant.</summary>
     [CssVar(InputField.OutlinedBorder)] public string OutlinedBorder { get; init; } = "1px solid var(--flare-color-outline)";
 
     /// <summary>Border radius for the outlined variant.</summary>
-    [CssVar(InputField.OutlinedRadius)] public string OutlinedRadius { get; init; } = "var(--flare-shape-extra-small)";
+    [CssVar(InputField.OutlinedRadius)] public string OutlinedRadius { get; init; } = Vars.Var(Shape.ExtraSmall);
 
     /// <summary>Bottom border for the filled variant.</summary>
     [CssVar(InputField.FilledBorderBottom)] public string FilledBorderBottom { get; init; } = "1px solid var(--flare-color-on-surface-variant)";
@@ -33,25 +33,25 @@ public sealed record InputTokens
     [CssVar(InputField.Padding)] public string Padding { get; init; } = "0.75rem 1rem";
 
     /// <summary>Font family for the input text.</summary>
-    [CssVar(InputField.FontFamily)] public string FontFamily { get; init; } = "var(--flare-typescale-body-large-font)";
+    [CssVar(InputField.FontFamily)] public string FontFamily { get; init; } = Vars.Var(Typography.Font("body-large"));
 
     /// <summary>Font size for the input text.</summary>
-    [CssVar(InputField.FontSize)] public string FontSize { get; init; } = "var(--flare-typescale-body-large-size)";
+    [CssVar(InputField.FontSize)] public string FontSize { get; init; } = Vars.Var(Typography.Size("body-large"));
 
     /// <summary>Color of the input text.</summary>
-    [CssVar(InputField.TextColor)] public string TextColor { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(InputField.TextColor)] public string TextColor { get; init; } = Vars.Var(Color.OnSurface);
 
     /// <summary>Color of the placeholder text.</summary>
-    [CssVar(InputField.PlaceholderColor)] public string PlaceholderColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(InputField.PlaceholderColor)] public string PlaceholderColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
 
     /// <summary>Color of the caret (cursor).</summary>
-    [CssVar(InputField.CaretColor)] public string CaretColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(InputField.CaretColor)] public string CaretColor { get; init; } = Vars.Var(Color.Primary);
 
     /// <summary>Error border color.</summary>
-    [CssVar(InputField.ErrorBorder)] public string ErrorBorder { get; init; } = "var(--flare-color-error)";
+    [CssVar(InputField.ErrorBorder)] public string ErrorBorder { get; init; } = Vars.Var(Color.Error);
 
     /// <summary>Error text color.</summary>
-    [CssVar(InputField.ErrorColor)] public string ErrorColor { get; init; } = "var(--flare-color-error)";
+    [CssVar(InputField.ErrorColor)] public string ErrorColor { get; init; } = Vars.Var(Color.Error);
 
     /// <summary>Disabled background color.</summary>
     [CssVar(InputField.DisabledBg)] public string DisabledBg { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)";
@@ -63,7 +63,7 @@ public sealed record InputTokens
     [CssVar(InputField.HelperFontSize)] public string HelperFontSize { get; init; } = "var(--flare-typescale-body-small-size, 0.75rem)";
 
     /// <summary>Helper text color.</summary>
-    [CssVar(InputField.HelperColor)] public string HelperColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(InputField.HelperColor)] public string HelperColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
 
     /// <summary>Label font family.</summary>
     [CssVar(InputField.LabelFontFamily)] public string LabelFontFamily { get; init; } = "var(--flare-typescale-label-medium-font, var(--flare-typescale-label-large-font))";
@@ -75,5 +75,5 @@ public sealed record InputTokens
     [CssVar(InputField.LabelFontWeight)] public string LabelFontWeight { get; init; } = "var(--flare-typescale-label-medium-weight, 400)";
 
     /// <summary>Label color.</summary>
-    [CssVar(InputField.LabelColor)] public string LabelColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(InputField.LabelColor)] public string LabelColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
 }

@@ -9,7 +9,7 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record DrawerTokens
 {
     /// <summary>Background color of the drawer surface.</summary>
-    [CssVar(DrawerPanel.SurfaceColor)] public string SurfaceColor { get; init; } = "var(--flare-color-surface-container-low)";
+    [CssVar(DrawerPanel.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.SurfaceContainerLow);
 
     /// <summary>Width of the drawer in its default state.</summary>
     [CssVar(DrawerPanel.Width)] public string Width { get; init; } = "360px";
@@ -30,22 +30,22 @@ public sealed record DrawerTokens
     [CssVar(DrawerPanel.BreakpointXlWidth)] public string BreakpointXlWidth { get; init; } = "360px";
 
     /// <summary>Elevation (box-shadow) of the drawer.</summary>
-    [CssVar(DrawerPanel.Elevation)] public string Elevation { get; init; } = "var(--flare-elevation-1)";
+    [CssVar(DrawerPanel.Elevation)] public string Elevation { get; init; } = Vars.Var(Flare.Css.Tokens.Elevation.Level1);
 
     /// <summary>Border radius of the drawer (for top/bottom variants).</summary>
-    [CssVar(DrawerPanel.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-large)";
+    [CssVar(DrawerPanel.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraLarge);
 
     /// <summary>Background color of the scrim (overlay).</summary>
-    [CssVar(DrawerPanel.ScrimColor)] public string ScrimColor { get; init; } = "var(--flare-color-scrim)";
+    [CssVar(DrawerPanel.ScrimColor)] public string ScrimColor { get; init; } = Vars.Var(Color.Scrim);
 
     /// <summary>Opacity of the scrim.</summary>
     [CssVar(DrawerPanel.ScrimOpacity)] public string ScrimOpacity { get; init; } = "0.32";
 
     /// <summary>Transition duration for drawer open/close.</summary>
-    [CssVar(DrawerPanel.TransitionDuration)] public string TransitionDuration { get; init; } = "var(--flare-motion-duration-medium2)";
+    [CssVar(DrawerPanel.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationMedium2);
 
     /// <summary>Transition easing for drawer open/close.</summary>
-    [CssVar(DrawerPanel.TransitionEasing)] public string TransitionEasing { get; init; } = "var(--flare-motion-easing-standard)";
+    [CssVar(DrawerPanel.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
 
     /// <summary>Padding inside the drawer header.</summary>
     [CssVar(DrawerPanel.HeaderPadding)] public string HeaderPadding { get; init; } = "16px";
@@ -54,11 +54,11 @@ public sealed record DrawerTokens
     [CssVar(DrawerPanel.ContentPadding)] public string ContentPadding { get; init; } = "8px 0";
 
     /// <summary>Color of the drawer title text.</summary>
-    [CssVar(DrawerPanel.TitleColor)] public string TitleColor { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(DrawerPanel.TitleColor)] public string TitleColor { get; init; } = Vars.Var(Color.OnSurface);
 
     /// <summary>Font family of the drawer title.</summary>
-    [CssVar(DrawerPanel.TitleFontFamily)] public string TitleFontFamily { get; init; } = "var(--flare-typescale-title-large-font)";
+    [CssVar(DrawerPanel.TitleFontFamily)] public string TitleFontFamily { get; init; } = Vars.Var(Typography.Font("title-large"));
 
     /// <summary>Font size of the drawer title.</summary>
-    [CssVar(DrawerPanel.TitleFontSize)] public string TitleFontSize { get; init; } = "var(--flare-typescale-title-large-size)";
+    [CssVar(DrawerPanel.TitleFontSize)] public string TitleFontSize { get; init; } = Vars.Var(Typography.Size("title-large"));
 }

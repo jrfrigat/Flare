@@ -9,16 +9,16 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record ProgressTokens
 {
     /// <summary>Color of the linear track.</summary>
-    [CssVar(ProgressField.TrackColor)] public string TrackColor { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(ProgressField.TrackColor)] public string TrackColor { get; init; } = Vars.Var(Color.SurfaceContainerHighest);
 
     /// <summary>Color of the linear indicator (determinate).</summary>
-    [CssVar(ProgressField.IndicatorColor)] public string IndicatorColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(ProgressField.IndicatorColor)] public string IndicatorColor { get; init; } = Vars.Var(Color.Primary);
 
     /// <summary>Color of the circular indicator.</summary>
-    [CssVar(ProgressField.CircularColor)] public string CircularColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(ProgressField.CircularColor)] public string CircularColor { get; init; } = Vars.Var(Color.Primary);
 
     /// <summary>Color of the circular track.</summary>
-    [CssVar(ProgressField.CircularTrackColor)] public string CircularTrackColor { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(ProgressField.CircularTrackColor)] public string CircularTrackColor { get; init; } = Vars.Var(Color.SurfaceContainerHighest);
 
     /// <summary>Height of the linear variant (default).</summary>
     [CssVar(ProgressField.LinearHeight)] public string LinearHeight { get; init; } = "4px";
@@ -30,7 +30,7 @@ public sealed record ProgressTokens
     [CssVar(ProgressField.LinearHeightLg)] public string LinearHeightLg { get; init; } = "8px";
 
     /// <summary>Border radius of the linear variant.</summary>
-    [CssVar(ProgressField.LinearRadius)] public string LinearRadius { get; init; } = "var(--flare-shape-full)";
+    [CssVar(ProgressField.LinearRadius)] public string LinearRadius { get; init; } = Vars.Var(Shape.Full);
 
     /// <summary>Size of the circular variant (default).</summary>
     [CssVar(ProgressField.CircularSize)] public string CircularSize { get; init; } = "40px";
@@ -54,7 +54,7 @@ public sealed record ProgressTokens
     [CssVar(ProgressField.IndeterminateDuration)] public string IndeterminateDuration { get; init; } = "2s";
 
     /// <summary>Easing of the indeterminate animation.</summary>
-    [CssVar(ProgressField.IndeterminateEasing)] public string IndeterminateEasing { get; init; } = "var(--flare-motion-easing-standard)";
+    [CssVar(ProgressField.IndeterminateEasing)] public string IndeterminateEasing { get; init; } = Vars.Var(Motion.EasingStandard);
 
     /// <summary>Color of the buffer track.</summary>
     [CssVar(ProgressField.BufferColor)] public string BufferColor { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 32%, var(--flare-color-surface-container-highest))";

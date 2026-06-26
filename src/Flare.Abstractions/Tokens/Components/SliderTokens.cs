@@ -56,10 +56,10 @@ public sealed record SliderTokens
     // ---- Colors / state (defaults render MD3; per-instance Color still overrides the accent) ----
 
     /// <summary>Active (filled) track color. Per-instance <c>Color</c> overrides this via <c>--fc-main</c>.</summary>
-    [CssVar(Slider.ActiveColor)] public string ActiveColor { get; init; } = "var(--flare-color-primary)";
+    [CssVar(Slider.ActiveColor)] public string ActiveColor { get; init; } = Vars.Var(Color.Primary);
 
     /// <summary>Inactive (remaining) track color. MD3 = secondary-container; Fluent = outline-variant.</summary>
-    [CssVar(Slider.InactiveColor)] public string InactiveColor { get; init; } = "var(--flare-color-secondary-container)";
+    [CssVar(Slider.InactiveColor)] public string InactiveColor { get; init; } = Vars.Var(Color.SecondaryContainer);
 
     /// <summary>State-layer diameter around the handle. MD3 = 40dp.</summary>
     [CssVar(Slider.StateLayerSize)] public string StateLayerSize { get; init; } = "40px";
@@ -71,17 +71,17 @@ public sealed record SliderTokens
     [CssVar(Slider.StatePressedOpacity)] public string StatePressedOpacity { get; init; } = "0.10";
 
     /// <summary>Stop-indicator color on the inactive track.</summary>
-    [CssVar(Slider.StopColor)] public string StopColor { get; init; } = "var(--flare-color-on-secondary-container)";
+    [CssVar(Slider.StopColor)] public string StopColor { get; init; } = Vars.Var(Color.OnSecondaryContainer);
 
     /// <summary>Stop-indicator color on the active (filled) track.</summary>
-    [CssVar(Slider.StopColorSelected)] public string StopColorSelected { get; init; } = "var(--flare-color-on-primary)";
+    [CssVar(Slider.StopColorSelected)] public string StopColorSelected { get; init; } = Vars.Var(Color.OnPrimary);
 
     /// <summary>Stop-indicator diameter.</summary>
     [CssVar(Slider.StopSize)] public string StopSize { get; init; } = "4px";
 
     /// <summary>Value-indicator bubble background.</summary>
-    [CssVar(Slider.ValueBg)] public string ValueBg { get; init; } = "var(--flare-color-inverse-surface)";
+    [CssVar(Slider.ValueBg)] public string ValueBg { get; init; } = Vars.Var(Color.InverseSurface);
 
     /// <summary>Value-indicator bubble text color.</summary>
-    [CssVar(Slider.ValueColor)] public string ValueColor { get; init; } = "var(--flare-color-inverse-on-surface)";
+    [CssVar(Slider.ValueColor)] public string ValueColor { get; init; } = Vars.Var(Color.InverseOnSurface);
 }

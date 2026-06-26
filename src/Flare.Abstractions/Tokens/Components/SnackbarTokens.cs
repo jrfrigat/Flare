@@ -9,16 +9,16 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record SnackbarTokens
 {
     /// <summary>Background color of the snackbar.</summary>
-    [CssVar(SnackbarPanel.SurfaceColor)] public string SurfaceColor { get; init; } = "var(--flare-color-inverse-surface)";
+    [CssVar(SnackbarPanel.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.InverseSurface);
 
     /// <summary>Color of the snackbar text.</summary>
-    [CssVar(SnackbarPanel.TextColor)] public string TextColor { get; init; } = "var(--flare-color-inverse-on-surface)";
+    [CssVar(SnackbarPanel.TextColor)] public string TextColor { get; init; } = Vars.Var(Color.InverseOnSurface);
 
     /// <summary>Color of the action button text.</summary>
-    [CssVar(SnackbarPanel.ActionColor)] public string ActionColor { get; init; } = "var(--flare-color-inverse-primary)";
+    [CssVar(SnackbarPanel.ActionColor)] public string ActionColor { get; init; } = Vars.Var(Color.InversePrimary);
 
     /// <summary>Border radius of the snackbar.</summary>
-    [CssVar(SnackbarPanel.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-small)";
+    [CssVar(SnackbarPanel.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraSmall);
 
     /// <summary>Minimum width of the snackbar.</summary>
     [CssVar(SnackbarPanel.MinWidth)] public string MinWidth { get; init; } = "344px";
@@ -39,25 +39,25 @@ public sealed record SnackbarTokens
     [CssVar(SnackbarPanel.Gap)] public string Gap { get; init; } = "8px";
 
     /// <summary>Elevation (box-shadow) of the snackbar.</summary>
-    [CssVar(SnackbarPanel.Elevation)] public string Elevation { get; init; } = "var(--flare-elevation-3)";
+    [CssVar(SnackbarPanel.Elevation)] public string Elevation { get; init; } = Vars.Var(Flare.Css.Tokens.Elevation.Level3);
 
     /// <summary>Font family of the snackbar text.</summary>
-    [CssVar(SnackbarPanel.FontFamily)] public string FontFamily { get; init; } = "var(--flare-typescale-body-medium-font)";
+    [CssVar(SnackbarPanel.FontFamily)] public string FontFamily { get; init; } = Vars.Var(Typography.Font("body-medium"));
 
     /// <summary>Font size of the snackbar text.</summary>
-    [CssVar(SnackbarPanel.FontSize)] public string FontSize { get; init; } = "var(--flare-typescale-body-medium-size)";
+    [CssVar(SnackbarPanel.FontSize)] public string FontSize { get; init; } = Vars.Var(Typography.Size("body-medium"));
 
     /// <summary>Font weight of the action button.</summary>
     [CssVar(SnackbarPanel.ActionFontWeight)] public string ActionFontWeight { get; init; } = "var(--flare-typescale-label-large-weight, 500)";
 
     /// <summary>Font size of the action button.</summary>
-    [CssVar(SnackbarPanel.ActionFontSize)] public string ActionFontSize { get; init; } = "var(--flare-typescale-label-large-size)";
+    [CssVar(SnackbarPanel.ActionFontSize)] public string ActionFontSize { get; init; } = Vars.Var(Typography.Size("label-large"));
 
     /// <summary>Transition duration for snackbar show/hide.</summary>
-    [CssVar(SnackbarPanel.TransitionDuration)] public string TransitionDuration { get; init; } = "var(--flare-motion-duration-short2)";
+    [CssVar(SnackbarPanel.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationShort2);
 
     /// <summary>Transition easing for snackbar show/hide.</summary>
-    [CssVar(SnackbarPanel.TransitionEasing)] public string TransitionEasing { get; init; } = "var(--flare-motion-easing-standard)";
+    [CssVar(SnackbarPanel.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
 
     /// <summary>Delay before auto-dismiss (in milliseconds).</summary>
     [CssVar(SnackbarPanel.AutoHideDelay)] public int AutoHideDelay { get; init; } = 5000;

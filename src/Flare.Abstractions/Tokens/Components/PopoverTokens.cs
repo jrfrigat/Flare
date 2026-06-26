@@ -9,13 +9,13 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record PopoverTokens
 {
     /// <summary>Background color of the popover surface.</summary>
-    [CssVar(PopoverPopup.SurfaceColor)] public string SurfaceColor { get; init; } = "var(--flare-color-surface-container)";
+    [CssVar(PopoverPopup.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.SurfaceContainer);
 
     /// <summary>Border radius of the popover.</summary>
-    [CssVar(PopoverPopup.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-small)";
+    [CssVar(PopoverPopup.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraSmall);
 
     /// <summary>Elevation (box-shadow) of the popover.</summary>
-    [CssVar(PopoverPopup.Elevation)] public string Elevation { get; init; } = "var(--flare-elevation-2)";
+    [CssVar(PopoverPopup.Elevation)] public string Elevation { get; init; } = Vars.Var(Flare.Css.Tokens.Elevation.Level2);
 
     /// <summary>Padding inside the popover.</summary>
     [CssVar(PopoverPopup.Padding)] public string Padding { get; init; } = "8px 0";
@@ -39,8 +39,8 @@ public sealed record PopoverTokens
     [CssVar(PopoverPopup.ScrimColor)] public string ScrimColor { get; init; } = "transparent";
 
     /// <summary>Transition duration for show/hide.</summary>
-    [CssVar(PopoverPopup.TransitionDuration)] public string TransitionDuration { get; init; } = "var(--flare-motion-duration-short2)";
+    [CssVar(PopoverPopup.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationShort2);
 
     /// <summary>Transition easing for show/hide.</summary>
-    [CssVar(PopoverPopup.TransitionEasing)] public string TransitionEasing { get; init; } = "var(--flare-motion-easing-standard)";
+    [CssVar(PopoverPopup.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
 }

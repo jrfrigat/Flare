@@ -10,13 +10,13 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record TableOfContentsTokens
 {
     /// <summary>Active (current section) link text color. MD3 = on-secondary-container (text on the pill).</summary>
-    [CssVar(TableOfContents.ActiveColor)] public string ActiveColor { get; init; } = "var(--flare-color-on-secondary-container)";
+    [CssVar(TableOfContents.ActiveColor)] public string ActiveColor { get; init; } = Vars.Var(Color.OnSecondaryContainer);
 
     /// <summary>Color of inactive links. MD3 = on-surface-variant.</summary>
-    [CssVar(TableOfContents.InactiveColor)] public string InactiveColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(TableOfContents.InactiveColor)] public string InactiveColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
 
     /// <summary>Color of the title ("On this page"). MD3 = on-surface-variant.</summary>
-    [CssVar(TableOfContents.TitleColor)] public string TitleColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(TableOfContents.TitleColor)] public string TitleColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
 
     /// <summary>Color of the vertical rail beside the links. MD3 has no rail (transparent).</summary>
     [CssVar(TableOfContents.RailColor)] public string RailColor { get; init; } = "transparent";
@@ -25,10 +25,10 @@ public sealed record TableOfContentsTokens
     [CssVar(TableOfContents.RailWidth)] public string RailWidth { get; init; } = "0";
 
     /// <summary>Background behind the active link. MD3 = secondary-container (the pill); Fluent = transparent.</summary>
-    [CssVar(TableOfContents.ActiveBg)] public string ActiveBg { get; init; } = "var(--flare-color-secondary-container)";
+    [CssVar(TableOfContents.ActiveBg)] public string ActiveBg { get; init; } = Vars.Var(Color.SecondaryContainer);
 
     /// <summary>Corner radius of the active-link surface. MD3 = full (pill); Fluent = 0.</summary>
-    [CssVar(TableOfContents.ActiveRadius)] public string ActiveRadius { get; init; } = "var(--flare-shape-full)";
+    [CssVar(TableOfContents.ActiveRadius)] public string ActiveRadius { get; init; } = Vars.Var(Shape.Full);
 
     /// <summary>Width of the active-link left marker bar. MD3 = 0 (pill, no bar); Fluent = 3px.</summary>
     [CssVar(TableOfContents.MarkerWidth)] public string MarkerWidth { get; init; } = "0";

@@ -16,11 +16,11 @@ public sealed record FabTokens
 
     // --- 2. РАДИУС под 3 размера (имена совпадают с легаси-переменными CSS) ---
     /// <summary>Radius sm token (<c>var(--flare-shape-medium)</c>).</summary>
-    [CssVar(Fab.Radius.Sm)] public string RadiusSm { get; init; } = "var(--flare-shape-medium)";
+    [CssVar(Fab.Radius.Sm)] public string RadiusSm { get; init; } = Vars.Var(Shape.Medium);
     /// <summary>Radius md token (<c>var(--flare-shape-large)</c>).</summary>
-    [CssVar(Fab.Radius.Md)] public string RadiusMd { get; init; } = "var(--flare-shape-large)";
+    [CssVar(Fab.Radius.Md)] public string RadiusMd { get; init; } = Vars.Var(Shape.Large);
     /// <summary>Radius lg token (<c>var(--flare-shape-extra-large)</c>).</summary>
-    [CssVar(Fab.Radius.Lg)] public string RadiusLg { get; init; } = "var(--flare-shape-extra-large)";
+    [CssVar(Fab.Radius.Lg)] public string RadiusLg { get; init; } = Vars.Var(Shape.ExtraLarge);
 
     // --- 3. ЗАЗОР иконка-метка (extended FAB) ---
     /// <summary>Gap token (<c>0.75rem</c>).</summary>
@@ -28,9 +28,9 @@ public sealed record FabTokens
 
     // --- 4. ТЕНИ (rest / hover) ---
     /// <summary>Shadow token (<c>var(--flare-elevation-3)</c>).</summary>
-    [CssVar(Fab.Shadow)] public string Shadow { get; init; } = "var(--flare-elevation-3)";
+    [CssVar(Fab.Shadow)] public string Shadow { get; init; } = Vars.Var(Elevation.Level3);
     /// <summary>Hover shadow token (<c>var(--flare-elevation-4)</c>).</summary>
-    [CssVar(Fab.HoverShadow)] public string HoverShadow { get; init; } = "var(--flare-elevation-4)";
+    [CssVar(Fab.HoverShadow)] public string HoverShadow { get; init; } = Vars.Var(Elevation.Level4);
 
     // --- 5. ОТСТУП якоря от края экрана ---
     /// <summary>Anchor offset token (<c>1.5rem</c>).</summary>

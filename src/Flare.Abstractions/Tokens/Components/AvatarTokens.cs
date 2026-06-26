@@ -9,19 +9,19 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record AvatarTokens
 {
     /// <summary>Background color of the avatar.</summary>
-    [CssVar(AvatarField.SurfaceColor)] public string SurfaceColor { get; init; } = "var(--flare-color-primary-container)";
+    [CssVar(AvatarField.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.PrimaryContainer);
 
     /// <summary>Color of the avatar text/initials.</summary>
-    [CssVar(AvatarField.TextColor)] public string TextColor { get; init; } = "var(--flare-color-on-primary-container)";
+    [CssVar(AvatarField.TextColor)] public string TextColor { get; init; } = Vars.Var(Color.OnPrimaryContainer);
 
     /// <summary>Color of the avatar icon.</summary>
-    [CssVar(AvatarField.IconColor)] public string IconColor { get; init; } = "var(--flare-color-on-primary-container)";
+    [CssVar(AvatarField.IconColor)] public string IconColor { get; init; } = Vars.Var(Color.OnPrimaryContainer);
 
     /// <summary>Border radius for the rounded shape.</summary>
-    [CssVar(AvatarField.RoundedRadius)] public string RoundedRadius { get; init; } = "var(--flare-shape-full)";
+    [CssVar(AvatarField.RoundedRadius)] public string RoundedRadius { get; init; } = Vars.Var(Shape.Full);
 
     /// <summary>Border radius for the square shape.</summary>
-    [CssVar(AvatarField.SquareRadius)] public string SquareRadius { get; init; } = "var(--flare-shape-small)";
+    [CssVar(AvatarField.SquareRadius)] public string SquareRadius { get; init; } = Vars.Var(Shape.Small);
 
     /// <summary>Size of the xs variant.</summary>
     [CssVar(AvatarField.SizeXs)] public string SizeXs { get; init; } = "24px";
@@ -39,10 +39,10 @@ public sealed record AvatarTokens
     [CssVar(AvatarField.SizeXl)] public string SizeXl { get; init; } = "64px";
 
     /// <summary>Font family of the avatar initials.</summary>
-    [CssVar(AvatarField.FontFamily)] public string FontFamily { get; init; } = "var(--flare-typescale-label-large-font)";
+    [CssVar(AvatarField.FontFamily)] public string FontFamily { get; init; } = Vars.Var(Typography.Font("label-large"));
 
     /// <summary>Font size of the avatar initials.</summary>
-    [CssVar(AvatarField.FontSize)] public string FontSize { get; init; } = "var(--flare-typescale-label-large-size)";
+    [CssVar(AvatarField.FontSize)] public string FontSize { get; init; } = Vars.Var(Typography.Size("label-large"));
 
     /// <summary>Font weight of the avatar initials.</summary>
     [CssVar(AvatarField.FontWeight)] public string FontWeight { get; init; } = "var(--flare-typescale-label-large-weight, 500)";
@@ -51,11 +51,11 @@ public sealed record AvatarTokens
     [CssVar(AvatarField.GroupBorderWidth)] public string GroupBorderWidth { get; init; } = "2px";
 
     /// <summary>Border color of the avatar group overlap.</summary>
-    [CssVar(AvatarField.GroupBorderColor)] public string GroupBorderColor { get; init; } = "var(--flare-color-surface)";
+    [CssVar(AvatarField.GroupBorderColor)] public string GroupBorderColor { get; init; } = Vars.Var(Color.Surface);
 
     /// <summary>Background color of the overflow badge.</summary>
-    [CssVar(AvatarField.GroupOverflowBg)] public string GroupOverflowBg { get; init; } = "var(--flare-color-surface-container-highest)";
+    [CssVar(AvatarField.GroupOverflowBg)] public string GroupOverflowBg { get; init; } = Vars.Var(Color.SurfaceContainerHighest);
 
     /// <summary>Color of the overflow badge text.</summary>
-    [CssVar(AvatarField.GroupOverflowColor)] public string GroupOverflowColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(AvatarField.GroupOverflowColor)] public string GroupOverflowColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
 }
