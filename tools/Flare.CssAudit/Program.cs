@@ -20,7 +20,7 @@ internal static class Program
         }
 
         var cssDir = Path.Combine(root, "src", "Flare.Components", "wwwroot", "css");
-        var cssClassesDir = Path.Combine(root, "src", "Flare.Core", "Css", "Classes");
+        var cssClassesDir = Path.Combine(root, "src", "Flare.Abstractions", "Css", "Classes");
 
         if (!Directory.Exists(cssDir)) { Console.Error.WriteLine($"CSS folder not found: {cssDir}"); return 2; }
         if (!Directory.Exists(cssClassesDir)) { Console.Error.WriteLine($"CssClasses folder not found: {cssClassesDir}"); return 2; }

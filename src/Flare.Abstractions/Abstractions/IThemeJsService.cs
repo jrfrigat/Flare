@@ -23,8 +23,11 @@ public interface IThemeJsService : IAsyncDisposable
     /// <summary>Ensure a stylesheet is loaded.</summary>
     ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default);
 
-    /// <summary>Subscribe to OS color scheme changes.</summary>
-    ValueTask SubscribeColorSchemeAsync(string id, DotNetObjectReference<Components.FlareThemeProvider> dotNetRef, CancellationToken ct = default);
+    /// <summary>
+    /// Subscribe to OS color scheme changes. <typeparamref name="T"/> is the .NET object exposing the
+    /// <c>[JSInvokable]</c> callback (kept generic so this contract does not depend on any UI component).
+    /// </summary>
+    ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class;
 
     /// <summary>Unsubscribe from OS color scheme changes.</summary>
     ValueTask UnsubscribeColorSchemeAsync(string id, CancellationToken ct = default);

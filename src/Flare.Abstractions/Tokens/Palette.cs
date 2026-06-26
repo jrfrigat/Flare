@@ -46,12 +46,4 @@ public sealed record Palette
         ThemeMode.HighContrast => HighContrast ?? Dark,
         _ => Light,
     };
-
-    /// <summary>
-    /// Generates a full palette (light + dark) from one or two colors using the core generator.
-    /// <paramref name="main"/> drives the brand roles; optional <paramref name="background"/>
-    /// tints the surfaces/neutrals.
-    /// </summary>
-    public static Palette FromColors(string id, string name, string main, string? background = null, string? source = null) =>
-        Services.DefaultPaletteGenerator.Instance.Generate(id, name, new Services.PaletteSeed(main, background), source);
 }

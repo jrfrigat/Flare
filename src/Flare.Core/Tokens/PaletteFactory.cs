@@ -10,6 +10,14 @@ namespace Flare.Core.Tokens;
 /// </summary>
 public static class PaletteFactory
 {
+    /// <summary>
+    /// Generates a full palette (light + dark) from one or two colors using the core generator.
+    /// <paramref name="main"/> drives the brand roles; optional <paramref name="background"/>
+    /// tints the surfaces/neutrals.
+    /// </summary>
+    public static Palette FromColors(string id, string name, string main, string? background = null, string? source = null) =>
+        DefaultPaletteGenerator.Instance.Generate(id, name, new PaletteSeed(main, background), source);
+
     /// <summary>Brand.</summary>
     public static Palette Brand(string id, string name, ColorScheme baseLight, ColorScheme baseDark, string seed, string? source = null)
     {

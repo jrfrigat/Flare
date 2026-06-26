@@ -12,6 +12,7 @@
     <Project Path="src/Flare.Components.QrCode/Flare.Components.QrCode.csproj" />
     <Project Path="src/Flare.Components.RichTextEditor/Flare.Components.RichTextEditor.csproj" />
     <Project Path="src/Flare.Components.Transfer/Flare.Components.Transfer.csproj" />
+    <Project Path="src/Flare.Abstractions/Flare.Abstractions.csproj" />
     <Project Path="src/Flare.Components/Flare.Components.csproj" />
     <Project Path="src/Flare.Core/Flare.Core.csproj" />
     <Project Path="src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj" />

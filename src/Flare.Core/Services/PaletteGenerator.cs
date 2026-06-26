@@ -2,15 +2,8 @@ using Flare.Core.Tokens;
 
 namespace Flare.Core.Services;
 
-/// <summary>Inputs for generating a palette: a brand color plus optional hints.</summary>
-public readonly record struct PaletteSeed(string Main, string? Background = null, string? Secondary = null);
-
-/// <summary>Generates a full <see cref="Palette"/> (light + dark) from a small seed.</summary>
-public interface IPaletteGenerator
-{
-    /// <summary>Generates a full light+dark <see cref="Palette"/> from the given seed.</summary>
-    Palette Generate(string id, string name, PaletteSeed seed, string? source = null);
-}
+// PaletteSeed and IPaletteGenerator (the input DTO and the port) now live in Flare.Abstractions;
+// only the default engine implementation remains here.
 
 /// <summary>
 /// Core, design-system-agnostic generator: derives every role from the seed using HSL/contrast

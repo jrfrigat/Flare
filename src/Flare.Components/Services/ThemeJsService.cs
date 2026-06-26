@@ -33,7 +33,7 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
         => InvokeVoidAsync("ensureStylesheet", href);
 
     /// <summary>Subscribes to OS color-scheme (light/dark) change notifications.</summary>
-    public ValueTask SubscribeColorSchemeAsync(string id, DotNetObjectReference<Flare.Core.Components.FlareThemeProvider> dotNetRef, CancellationToken ct = default)
+    public ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class
         => InvokeVoidAsync("subscribeColorScheme", id, dotNetRef);
 
     /// <summary>Removes the OS color-scheme change subscription.</summary>

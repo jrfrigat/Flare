@@ -38,7 +38,7 @@ public interface ITheme
 
     /// <summary>
     /// Optional palette generator that follows this design system's color rules (MD3 tonal,
-    /// Fluent ramp). When null, the core <see cref="DefaultPaletteGenerator"/> is used.
+    /// Fluent ramp). When null, the core default <see cref="IPaletteGenerator"/> implementation is used.
     /// </summary>
     IPaletteGenerator? PaletteGenerator => null;
 }
