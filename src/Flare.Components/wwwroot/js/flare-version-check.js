@@ -45,16 +45,34 @@ export async function check() {
     return await readDeployedVersion();
 }
 
-// Activate the waiting worker (if any) and reload so the page runs the new version. Blazor's default
-// SW does not call clients.claim(), so we reload explicitly rather than rely on 'controllerchange'.
+// Activate the pending worker and reload so the page runs the new version. The update prompt is
+// driven by the server's assets manifest, which flips to the new version the moment it is deployed -
+// usually while the new worker is still downloading its assets into reg.installing. Looking only at
+// reg.waiting would miss that worker and fall back to a plain reload that just re-serves the old
+// cache (the symptom: clicked update, nothing changed, no further prompts until a hard reload). So
+// accept either a waiting or an installing worker and drive it through to activation. Blazor's
+// default SW does not call clients.claim(), so we reload explicitly when the new worker reaches
+// 'activated' rather than relying on 'controllerchange'.
 export async function applyUpdate() {
     const reg = await getRegistration();
-    if (reg) { try { await reg.update(); } catch { /* ignore */ } }
-    const waiting = reg && reg.waiting;
-    if (!waiting) { location.reload(); return; }
-    waiting.addEventListener('statechange', () => {
-        if (waiting.state === 'activated') location.reload();
-    });
-    waiting.postMessage('skipWaiting');
-    setTimeout(() => location.reload(), 3000); // fallback if the statechange event is missed
+    if (!reg) { location.reload(); return; }
+
+    try { await reg.update(); } catch { /* ignore */ }
+
+    const pending = reg.waiting || reg.installing;
+    if (!pending) { location.reload(); return; }
+
+    let reloaded = false;
+    const reloadOnce = () => { if (!reloaded) { reloaded = true; location.reload(); } };
+
+    const pump = () => {
+        // Once installed the worker is 'waiting' - tell it to take over immediately.
+        if (pending.state === 'installed') pending.postMessage('skipWaiting');
+        // Once activated it is the controlling worker; reload to serve the new assets from its cache.
+        if (pending.state === 'activated') reloadOnce();
+    };
+    pending.addEventListener('statechange', pump);
+    pump(); // handle a worker that is already installed/activated when we attach the listener
+
+    setTimeout(reloadOnce, 10000); // guarded safety net if a state transition is missed
 }
