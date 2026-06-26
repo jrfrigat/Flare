@@ -331,6 +331,13 @@ public sealed class FlareOptions
     /// <see cref="ServiceCollectionExtensions.AddFlareTheme"/>, which also forces the theme assembly to
     /// load. Set this to false to opt out of scanning entirely.
     /// </para>
+    /// <para>
+    /// <b>Performance / trimming:</b> auto-discovery walks and force-loads the whole assembly reference
+    /// graph at startup (<c>Assembly.Load</c> + <c>GetTypes()</c> on every assembly), which adds startup
+    /// cost, defeats lazy-loading, and is not trim/AOT-safe. For the smallest, fastest, trim-friendly
+    /// startup, register themes explicitly with <see cref="ServiceCollectionExtensions.AddFlareTheme"/>
+    /// and set this to <c>false</c>.
+    /// </para>
     /// </summary>
     public bool RegisterAllBuiltInThemes { get; set; } = true;
 }

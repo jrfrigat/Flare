@@ -18,6 +18,10 @@ builder.Services.AddFlare(opts =>
 {
     opts.DefaultTheme = new Md3Theme();
     opts.DefaultPalette = Md3Palettes.Violet;
+    // Every theme below is registered explicitly, so skip the reflection-based auto-discovery. That
+    // avoids force-loading the whole assembly graph (Assembly.Load + GetTypes over every referenced
+    // assembly) at startup and keeps the path trim/AOT-friendly.
+    opts.RegisterAllBuiltInThemes = false;
 });
 
 // Themes are independent packages now -- the Gallery showcases all of them, so each is registered
