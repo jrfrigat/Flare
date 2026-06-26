@@ -49,9 +49,11 @@ else
     /// <summary>Callback raised when the menu item is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
 
-    [CascadingParameter(Name = "CloseMenu")] private Func<Task>? CloseMenu { get; set; }
+    // Stable close/register callbacks travel as one context; the focused item stays separate (it changes).
+    [CascadingParameter] private FlareMenuContext? MenuContext { get; set; }
     [CascadingParameter(Name = "MenuFocusedItem")] private FlareMenuItem? MenuFocusedItem { get; set; }
-    [CascadingParameter(Name = "RegisterMenuItem")] private Action<FlareMenuItem>? RegisterMenuItem { get; set; }
+    private Func<Task>? CloseMenu => MenuContext?.Close;
+    private Action<FlareMenuItem>? RegisterMenuItem => MenuContext?.Register;
 
     protected override string ComponentCssClass => Css.Classes.Menu.Item;
 

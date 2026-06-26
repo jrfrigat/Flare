@@ -16,7 +16,8 @@
     /// <summary>Direction the menu expands from the FAB.</summary>
     [Parameter] public FabMenuDirection Direction { get; set; } = FabMenuDirection.Up;
 
-    [CascadingParameter(Name = "FabMenuOpen")] private bool Open { get; set; }
+    [CascadingParameter] private FabMenuContext? FabContext { get; set; }
+    private bool Open => FabContext?.Open == true;
 
     protected override string ComponentCssClass => Css.Classes.FabMenu.List;
 
