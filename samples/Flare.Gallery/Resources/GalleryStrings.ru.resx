@@ -582,6 +582,15 @@
   <data name="Ide_Subtitle" xml:space="preserve">
     <value>Соберите оболочку IDE в стиле десктоп-приложения - лента, строка меню, вкладки документов, закрепляемые панели инструментов, изменяемый разделитель и строка состояния - целиком из компонентов Flare.</value>
   </data>
+  <data name="DataGrid_PersistenceTitle" xml:space="preserve">
+    <value>Сохранение состояния</value>
+  </data>
+  <data name="DataGrid_PersistenceDesc" xml:space="preserve">
+    <value>PersistStateKey сохраняет сортировки, порядок и скрытие колонок, страницу и размер страницы в localStorage и восстанавливает их при пересоздании таблицы.</value>
+  </data>
+  <data name="DataGrid_PersistenceHint" xml:space="preserve">
+    <value>Отсортируйте, переставьте или скройте колонку либо измените размер страницы, затем перезагрузите страницу (F5). Раскладка восстановится из localStorage.</value>
+  </data>
   <data name="DataGrid_Subtitle" xml:space="preserve">
     <value>FlareDataGrid с сортируемыми колонками, пагинацией, группировкой, экспортом CSV, выбором строк, изменением ширины колонок и редактированием в ячейке.</value>
   </data>

@@ -2050,6 +2050,33 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на PersistStateKey saves sorts, column order, hidden columns, page and page size to localStorage and restores them when the grid is recreated..
+        /// </summary>
+        public static string DataGrid_PersistenceDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_PersistenceDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sort, reorder or hide a column, or change the page size - then reload the page (F5). The layout is restored from localStorage..
+        /// </summary>
+        public static string DataGrid_PersistenceHint {
+            get {
+                return ResourceManager.GetString("DataGrid_PersistenceHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на State Persistence.
+        /// </summary>
+        public static string DataGrid_PersistenceTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_PersistenceTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareDataGrid with sortable columns, pagination, grouping, CSV export, row selection, column resize, and inline editing..
         /// </summary>
         public static string DataGrid_Subtitle {

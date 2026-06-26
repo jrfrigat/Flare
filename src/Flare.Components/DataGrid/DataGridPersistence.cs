@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.JSInterop;
 
 namespace Flare.Components;
@@ -6,11 +7,22 @@ namespace Flare.Components;
 /// Persists DataGrid state (sorts, filters, column order, page size, hidden columns)
 /// to browser localStorage. Enables users to return to their preferred view.
 /// </summary>
-public sealed class DataGridPersistence<TItem> : IAsyncDisposable
+/// <remarks>
+/// Uses the built-in <c>localStorage.getItem/setItem/removeItem</c> JS interop directly
+/// (the same approach as the theme storage), so no custom Flare JS module is required.
+/// All calls degrade to a no-op during SSR/prerender or when the circuit is gone.
+/// </remarks>
+public sealed class DataGridPersistence<TItem>
 {
     private readonly IJSRuntime _js;
     private readonly string _storageKey;
-    private IJSObjectReference? _module;
+
+    // CamelCase to match the on-the-wire shape used elsewhere; cached to avoid re-allocating
+    // the options on every save/load.
+    private static readonly JsonSerializerOptions s_jsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+    };
 
     /// <summary>Initializes a new <see cref="DataGridPersistence{TItem}"/> bound to the given storage key.</summary>
     public DataGridPersistence(IJSRuntime js, string storageKey = "flare-datagrid")
@@ -24,18 +36,12 @@ public sealed class DataGridPersistence<TItem> : IAsyncDisposable
     {
         try
         {
-            _module ??= await _js.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js");
-
-            var json = System.Text.Json.JsonSerializer.Serialize(state, new System.Text.Json.JsonSerializerOptions
-            {
-                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
-            });
-
-            await _module.InvokeVoidAsync("setItem", _storageKey, json);
+            var json = JsonSerializer.Serialize(state, s_jsonOptions);
+            await _js.InvokeVoidAsync("localStorage.setItem", _storageKey, json);
         }
-        catch (InvalidOperationException) { }
+        catch (InvalidOperationException) { } // SSR / prerender (no JS runtime)
         catch (JSDisconnectedException) { }
+        catch (JSException) { } // storage blocked/quota (e.g. private mode)
     }
 
     /// <summary>Loads the persisted state from localStorage. Returns null if not found.</summary>
@@ -43,19 +49,15 @@ public sealed class DataGridPersistence<TItem> : IAsyncDisposable
     {
         try
         {
-            _module ??= await _js.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js");
-
-            var json = await _module.InvokeAsync<string?>("getItem", _storageKey);
+            var json = await _js.InvokeAsync<string?>("localStorage.getItem", _storageKey);
             if (string.IsNullOrEmpty(json)) return null;
 
-            return System.Text.Json.JsonSerializer.Deserialize<DataGridPersistedState>(json, new System.Text.Json.JsonSerializerOptions
-            {
-                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
-            });
+            return JsonSerializer.Deserialize<DataGridPersistedState>(json, s_jsonOptions);
         }
-        catch (InvalidOperationException) { }
+        catch (InvalidOperationException) { } // SSR / prerender (no JS runtime)
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (JsonException) { } // corrupt/old payload - ignore and fall back to defaults
         return null;
     }
 
@@ -64,20 +66,11 @@ public sealed class DataGridPersistence<TItem> : IAsyncDisposable
     {
         try
         {
-            _module ??= await _js.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js");
-
-            await _module.InvokeVoidAsync("removeItem", _storageKey);
+            await _js.InvokeVoidAsync("localStorage.removeItem", _storageKey);
         }
-        catch (InvalidOperationException) { }
+        catch (InvalidOperationException) { } // SSR / prerender (no JS runtime)
         catch (JSDisconnectedException) { }
-    }
-
-    /// <summary>Disposes the persistence helper and releases its JS interop module.</summary>
-    public async ValueTask DisposeAsync()
-    {
-        if (_module is not null)
-            await _module.DisposeAsync();
+        catch (JSException) { }
     }
 }
 
