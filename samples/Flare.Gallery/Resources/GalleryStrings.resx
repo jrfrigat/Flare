@@ -582,6 +582,15 @@
   <data name="Ide_Subtitle" xml:space="preserve">
     <value>Compose a desktop-style IDE shell - ribbon, menu bar, document tabs, dockable tool panels, resizable splitter, and status bar - entirely from Flare components.</value>
   </data>
+  <data name="DataGrid_PersistenceTitle" xml:space="preserve">
+    <value>State Persistence</value>
+  </data>
+  <data name="DataGrid_PersistenceDesc" xml:space="preserve">
+    <value>PersistStateKey saves sorts, column order, hidden columns, page and page size to localStorage and restores them when the grid is recreated.</value>
+  </data>
+  <data name="DataGrid_PersistenceHint" xml:space="preserve">
+    <value>Sort, reorder or hide a column, or change the page size - then reload the page (F5). The layout is restored from localStorage.</value>
+  </data>
   <data name="DataGrid_Subtitle" xml:space="preserve">
     <value>FlareDataGrid with sortable columns, pagination, grouping, CSV export, row selection, column resize, and inline editing.</value>
   </data>

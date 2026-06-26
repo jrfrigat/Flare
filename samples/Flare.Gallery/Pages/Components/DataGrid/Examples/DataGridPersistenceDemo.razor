@@ -1,0 +1,19 @@
+@using Flare.Gallery.Resources
+
+@* PersistStateKey saves the grid's sorts, filters, column order, hidden columns, page and page
+   size to browser localStorage under that key, and restores them when the grid is next created.
+   Change a sort, reorder or hide a column, or pick a different page size, then reload (F5) and
+   the layout returns exactly as you left it. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="5" PersistStateKey="gallery-datagrid-state"
+               ReorderableColumns="true" ShowColumnPicker="true"
+               RowsPerPageOptions="@(new[] { 5, 8, 12 })">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+        <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+        <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" />
+        <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" Sortable="true" />
+    </Columns>
+</FlareDataGrid>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    @GalleryStrings.DataGrid_PersistenceHint
+</FlareText>
