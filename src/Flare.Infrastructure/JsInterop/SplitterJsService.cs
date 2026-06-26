@@ -8,7 +8,7 @@ public sealed class SplitterJsService : FlareJsModule, ISplitterJsService
 {
     /// <param name="js">The JS runtime (injected).</param>
     public SplitterJsService(IJSRuntime js)
-        : base(js, "./_content/Flare.Components/js/flare-theme.js") { }
+        : base(js, "./_content/Flare.Components/js/flare-drag.js") { }
 
     /// <inheritdoc />
     public ValueTask RegisterAsync<T>(ElementReference gutter, string axis, string? minSize, string? maxSize,

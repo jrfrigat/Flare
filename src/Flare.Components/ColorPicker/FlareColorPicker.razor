@@ -117,13 +117,19 @@ else
     private ElementReference _triggerEl;
     private ElementReference _panelEl;
     private bool _outsideRegistered;
-    // flareColorPicker is an ES module export (not a window global), so it must be reached
-    // through the imported module reference, not a global JS.InvokeVoidAsync("flareColorPicker...").
+    // The popup behaviours (outside-click, anchored panel) and the eye-dropper live in the theme
+    // module; the saturation/lightness canvas drag lives in the dedicated drag module. Both are ES
+    // module exports (not window globals), reached through their imported module reference.
     private IJSObjectReference? _module;
+    private IJSObjectReference? _dragModule;
 
     private async Task<IJSObjectReference> ModuleAsync() =>
         _module ??= await JS.InvokeAsync<IJSObjectReference>(
             "import", "./_content/Flare.Components/js/flare-theme.js");
+
+    private async Task<IJSObjectReference> DragModuleAsync() =>
+        _dragModule ??= await JS.InvokeAsync<IJSObjectReference>(
+            "import", "./_content/Flare.Components/js/flare-drag.js");
 
     // Current hex (and its validity) cached from the HSL+alpha state -- recomputed only when that
     // state changes (in SyncInputsFromHsl), not on every property access, so a render no longer runs
@@ -226,7 +232,7 @@ else
         _selfRef ??= DotNetObjectReference.Create(this);
         try
         {
-            var module = await ModuleAsync();
+            var module = await DragModuleAsync();
             await module.InvokeVoidAsync("flareColorPicker.init", _canvas, _selfRef, _hue, _saturation, _lightness);
             _canvasInitialized = true;
         }
@@ -244,8 +250,12 @@ else
                     await _module.InvokeVoidAsync("removeOutsideClick", _triggerId);
                     await _module.InvokeVoidAsync("removeAnchoredPanel", _triggerId);
                 }
-                await _module.InvokeVoidAsync("flareColorPicker.destroy", _canvas);
                 await _module.DisposeAsync();
+            }
+            if (_dragModule is not null)
+            {
+                await _dragModule.InvokeVoidAsync("flareColorPicker.destroy", _canvas);
+                await _dragModule.DisposeAsync();
             }
         }
         catch { }
@@ -561,9 +571,9 @@ else
 
     private async Task RefreshCanvas()
     {
-        if (_canvasInitialized && _module is not null)
+        if (_canvasInitialized && _dragModule is not null)
         {
-            try { await _module.InvokeVoidAsync("flareColorPicker.setHue", _canvas, _hue); }
+            try { await _dragModule.InvokeVoidAsync("flareColorPicker.setHue", _canvas, _hue); }
             catch { }
         }
     }

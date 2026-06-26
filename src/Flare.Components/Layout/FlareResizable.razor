@@ -37,7 +37,7 @@
             try
             {
                 _module ??= await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                    "import", "./_content/Flare.Components/js/flare-drag.js");
                 await _module.InvokeVoidAsync("registerResizeHandle",
                     _container, _handle, Edge.ToString().ToLower(),
                     MinSize, MaxSize, _dotNetRef);
