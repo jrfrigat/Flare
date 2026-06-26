@@ -185,8 +185,11 @@ The multi-stage `Dockerfile` produces an `nginx:alpine` image serving the static
 ## Architecture
 
 ```
-Flare.Core              <- ITheme, IThemeService, FlareComponentBase, design tokens, abstractions
+Flare.Abstractions      <- ports (ITheme, I*Service), design-token model, CSS name registry (dependency-free)
+Flare.Theming           <- theme engine: ThemeService, palette generation, ColorMath, token->CSS
+Flare.Infrastructure    <- browser/host adapters: JS interop, storage, dialog/snackbar/messagebox
 Flare.Components        <- core UI components + wwwroot/css (global token-driven bundle)
+Flare.Blazor (Flare)    <- composition root: AddFlare binds ports -> adapters
 Flare.Components.Carousel        <- Carousel
 Flare.Components.Kanban          <- Kanban board
 Flare.Components.Transfer        <- Transfer (dual list)

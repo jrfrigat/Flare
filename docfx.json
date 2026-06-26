@@ -8,7 +8,9 @@
           "src": "src",
           "files": [
             "Flare/bin/Release/net10.0/Flare.dll",
-            "Flare.Core/bin/Release/net10.0/Flare.Core.dll",
+            "Flare.Abstractions/bin/Release/net10.0/Flare.Abstractions.dll",
+            "Flare.Theming/bin/Release/net10.0/Flare.Theming.dll",
+            "Flare.Infrastructure/bin/Release/net10.0/Flare.Infrastructure.dll",
             "Flare.Components/bin/Release/net10.0/Flare.Components.dll",
             "Flare.Components.Carousel/bin/Release/net10.0/Flare.Components.Carousel.dll",
             "Flare.Components.IDE/bin/Release/net10.0/Flare.Components.IDE.dll",

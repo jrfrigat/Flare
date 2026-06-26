@@ -10,62 +10,85 @@
 
 ### Граф зависимостей
 
+Flare построен как **чистая / луковичная (порты и адаптеры)** архитектура. Зависимости направлены строго
+внутрь; слой UI использует **порты** (интерфейсы) и никогда не ссылается на адаптеры хоста. Корень
+композиции (`Flare.Blazor`) - единственный пакет, связывающий порты с их реализациями-адаптерами.
+
 ```
-Flare (umbrella)
-+-- Flare.Components
-    +-- Flare.Core
+            Flare.Abstractions   (Кольцо 0 - контракты)      без внутренних зависимостей
+               ^        ^      ^
+        Flare.Theming   |   Flare.Infrastructure   (Кольцо 1 движок / Кольцо 2 адаптеры)
+        (-> Abstractions)   (-> Abstractions, Theming)
+               ^                    ^
+        Flare.Components   --------/   (Кольцо 3 - UI; -> Abstractions, Theming; НЕ Infrastructure)
+               ^
+        Flare (Flare.Blazor)   (Кольцо 4 - корень композиции; -> Components, Infrastructure)
 
-Пакеты тем (каждый ссылается только на Flare.Core, umbrella не ссылается ни на один):
-  Flare.Theme.MaterialDesign3Expressive  -> Flare.Core
-  Flare.Theme.FluentUI2                   -> Flare.Core
-  Flare.Theme.Aero                        -> Flare.Core
-  Flare.Theme.LiquidGlass                 -> Flare.Core
-  Flare.Theme.VisualStudio                -> Flare.Core
+Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming; umbrella не ссылается ни на один):
+  Flare.Theme.MaterialDesign3Expressive, .FluentUI2, .Aero, .LiquidGlass, .VisualStudio
 
-Опциональные пакеты компонентов (каждый -> Flare.Core, некоторые -> Flare.Components):
-  Flare.Components.Carousel, .Kanban, .Transfer, .QrCode,
-  .RichTextEditor, .Media, .IDE
+Опциональные пакеты компонентов (каждый -> Flare.Components):
+  Flare.Components.Carousel, .Kanban, .Transfer, .QrCode, .RichTextEditor, .Media, .IDE
 
 samples/Flare.Gallery        -> Flare (umbrella) + все пакеты тем
-tests/Flare.Core.Tests       -> Flare.Core
-tests/Flare.Components.Tests -> Flare.Components
+tests/*                      -> Abstractions + Theming + Components + Infrastructure
 ```
 
-> **Flare не содержит собственных тем.** Umbrella-пакет `Flare.Blazor` зависит только от
-> `Flare.Components`. Каждая дизайн-система это отдельный пакет `Flare.Theme.*`, поэтому
-> приложение подключает только нужные.
+> **Flare не содержит собственных тем.** Umbrella-пакет `Flare.Blazor` зависит от
+> `Flare.Components` + `Flare.Infrastructure`. Каждая дизайн-система это отдельный пакет
+> `Flare.Theme.*`, поэтому приложение подключает только нужные.
 
-### Flare.Core
-**Назначение.** Абстракции, токены и сервисы, независимые от тем и компонентов.
-- `Abstractions/` - `ITheme`, `IThemeService`, `IPaletteProvider`, `ICssVariableInjector`,
-  `IThemeStorageService`, `IThemeJsService`, `IThemeValidator`, `ICollisionService`,
-  `ISnackbarService`, `IDialogService`, `IMessageBoxService`.
-- `Tokens/` - неизменяемые `record`-типы: `DesignTokens` (нецветовые дизайн-токены), `ColorScheme`
-  (цветовые роли), `Palette` (light + dark + опц. high-contrast), `TypographyTokens`, `ShapeTokens`,
-  `ElevationTokens`, `MotionTokens`, `StateTokens`, `SpacingTokens`, `TypeStyle`, а также пер-компонентные
-  записи токенов в `Tokens/Components/`. Плюс `ThemeMode`, `ThemeDelivery`, `ThemeSnapshot`, `PaletteFactory`.
-- `Services/` - `ThemeService` (оркестрирует три оси темы), `CssVarMap` (сплющивание токенов),
-  генераторы палитр (`DefaultPaletteGenerator`, `IPaletteGenerator`, `PaletteSeed`), а также
-  хост-независимые `SnackbarService`, `DialogService`, `MessageBoxService`.
-- `Components/` - `FlareComponentBase` (абстрактный базовый класс) и `FlareThemeProvider`.
-- Своих статических веб-ассетов нет - JS ES-модули и CSS-бандл поставляются из `Flare.Components`.
+### Flare.Abstractions  (Кольцо 0 - контракты)
+**Назначение.** Ядро без зависимостей, на котором строятся все остальные пакеты: **порты** плюс модель
+дизайн-системы. Без зависимостей от хоста и JS.
+- `Abstractions/` - порты: `ITheme`, `IThemeService`, `IPaletteProvider`, `IPaletteGenerator`,
+  `ICssVariableInjector`, `IThemeStorageService`, `IThemeJsService`, `IThemeValidator`,
+  `ICollisionService`, `ISnackbarService`, `IDialogService`, `IMessageBoxService`,
+  `IVersionCheckService`, и JS-порты `IFlareClipboard`, `IFlareDownload`, `IFlareColorExtractor`,
+  `ISplitterJsService`, `ITreeJsService`.
+- `Tokens/` - неизменяемые `record`-типы ЗНАЧЕНИЙ токенов: `DesignTokens`, `ColorScheme`, `Palette`,
+  `TypographyTokens`, `ShapeTokens`, `ElevationTokens`, `MotionTokens`, `StateTokens`, `SpacingTokens`,
+  `TypeStyle`, `PaletteSeed`, `ThemeMode`, `ThemeDelivery`, `ThemeSnapshot` + записи в `Tokens/Components/`.
+- `Css/` - реестр ИМЁН CSS-переменных (`Css.Tokens.*`, `Css.Classes.*`, `Vars`) и атрибут `[CssVar]`,
+  связывающий свойство-значение токена с именем `--flare-*`, которое оно заполняет.
+- `JsInterop/` - `FlareJsModule`, общая база для типизированных JS-interop сервисов.
+- `Security/` - чистые утилиты `HtmlSanitizer` / `CssValidator` (internal).
 
-**NuGet:** `Flare.Core` - зависит только от `Microsoft.AspNetCore.Components.Web`.
+**NuGet:** `Flare.Abstractions` - зависит только от `Microsoft.AspNetCore.Components.Web`.
 
-### Flare.Components
-**Назначение.** Основные UI-компоненты. Каждый компонент в своей подпапке/пространстве имён.
-- Каждый компонент наследует `FlareComponentBase`.
+### Flare.Theming  (Кольцо 1 - движок)
+**Назначение.** Движок тем - сервисы приложения, превращающие модель токенов в готовую тему. Зависит
+только от `Flare.Abstractions`.
+- `Services/` - `ThemeService`, `ScopedThemeService`, `TokensToCss`, `CssVarMap`, `FlareBootstrap`.
+- `Palettes/` - `DefaultPaletteGenerator`, `PaletteFactory`. `Color/` - `ColorMath`, `FlareColor`,
+  `FlareColorResolver`. `Builders/`, `Serialization/` - `FlareThemeBuilder`, `ThemeJsonSerializer`.
+
+**NuGet:** `Flare.Theming` - зависит от `Flare.Abstractions`.
+
+### Flare.Infrastructure  (Кольцо 2 - адаптеры)
+**Назначение.** Адаптеры браузера/хоста - конкретные реализации портов. Единственное кольцо, работающее
+с `IJSRuntime`/`localStorage`. Зависит от `Flare.Abstractions` (+ `Flare.Theming`).
+- `JsInterop/` - `CssVariableInjector`, `CollisionService`, `ThemeJsService`, `SplitterJsService`,
+  `TreeJsService`, типизированные `FlareClipboardService`/`FlareDownloadService`/`FlareColorExtractor`.
+- `Storage/` - `LocalStorageThemeStorage`, `NullThemeStorage`. `Feedback/` - `DialogService`,
+  `SnackbarService`, `MessageBoxService`. `VersionCheck/` - `VersionCheckService`.
+
+**NuGet:** `Flare.Infrastructure` - зависит от `Flare.Abstractions`, `Flare.Theming`.
+
+### Flare.Components  (Кольцо 3 - UI)
+**Назначение.** Только UI-компоненты - реализаций сервисов здесь нет. Каждый компонент в своей подпапке;
+базовые компоненты в `Base/`. Зависит от `Flare.Abstractions` + `Flare.Theming` и использует адаптеры
+только через их порты (внедряются через DI). **НЕ ссылается на `Flare.Infrastructure`** - этот инвариант
+делает хост заменяемым.
+- Каждый компонент наследует `FlareComponentBase` (в `Base/`, пространство имён `Flare.Core.Components`).
 - CSS поставляется единым бандлом на токенах в `wwwroot/css/` (агрегируется в `flare-components.css`) -
   не scoped CSS. Все правила используют только токены `var(--flare-*)`.
-- Хранит весь статический JS в `wwwroot/js/` (отдаётся как `_content/Flare.Components/js/`): head-скрипт
-  `flare-bootstrap.js` (анти-FOUC) и лениво импортируемые interop-модули (`flare-theme.js`, коллизии,
-  color-extractor, version-check).
-- Содержит реализации сервисов на JS-interop, регистрируемые `AddFlare` (`CssVariableInjector`,
-  `CollisionService`, `ThemeJsService`, типизированные обёртки clipboard/download/color-extractor).
-- Каждый `[Parameter]` имеет `/// <summary>` XML doc-комментарий (`GenerateDocumentationFile` включён
-  для всего решения).
+- Хранит весь статический JS в `wwwroot/js/` (`_content/Flare.Components/js/`); адаптеры Infrastructure
+  импортируют его по URL (у статических ассетов нет связи на уровне сборок).
+- `Resources/` - локализация EN/RU; `Theme/` - UI-контролы темы (`FlareColorCustomizer`, `FlareColorModeToggle`).
+- Каждый `[Parameter]` имеет `/// <summary>` XML doc-комментарий.
 
-**NuGet:** `Flare.Components` - зависит от `Flare.Core`.
+**NuGet:** `Flare.Components` - зависит от `Flare.Abstractions`, `Flare.Theming`.
 
 ### Flare.Theme.* (пять дизайн-систем)
 Каждый пакет темы предоставляет одну реализацию `ITheme` плюс палитры и статические ассеты:
@@ -86,16 +109,17 @@ tests/Flare.Components.Tests -> Flare.Components
 - `StyleAssets` перечисляет статический CSS темы (шрифты, базовый сброс, сгенерированный CSS токенов),
   чтобы нужные токены присутствовали до первого кадра (анти-FOUC).
 
-**NuGet:** каждый пакет зависит только от `Flare.Core`.
+**NuGet:** каждый пакет зависит от `Flare.Abstractions` + `Flare.Theming`.
 
-### Flare (umbrella)
-**Назначение.** Единая цель установки, связывающая DI.
+### Flare (umbrella / корень композиции)
+**Назначение.** Единая цель установки, связывающая DI - единственное кольцо, знающее об адаптерах
+Infrastructure.
 - `ServiceCollectionExtensions` - `AddFlare(opts)`, `AddFlareTheme(theme)`, `AddFlarePalette(palette)`
-  и `FlareOptions`.
-- `LocalStorageThemeStorage` (internal) - реализует `IThemeStorageService` через `localStorage`.
-- Не содержит UI-кода, токенов или собственной темы.
+  и `FlareOptions`. `AddFlare` связывает каждый порт с его адаптером из `Flare.Infrastructure`.
+- Не содержит UI-кода, токенов или собственной темы. Реализации адаптеров (включая
+  `LocalStorageThemeStorage`) живут в `Flare.Infrastructure`.
 
-**NuGet:** `Flare.Blazor` - зависит от `Flare.Components`.
+**NuGet:** `Flare.Blazor` - зависит от `Flare.Components` + `Flare.Infrastructure`.
 
 ### samples/Flare.Gallery
 Blazor WebAssembly PWA. Интерактивная галерея с переключением EN/RU, сворачиваемыми примерами кода с
@@ -220,13 +244,13 @@ Palette
 
 ### Хранение
 
-`IThemeStorageService` (интерфейс в `Flare.Core`, реализация internal `LocalStorageThemeStorage` в
+`IThemeStorageService` (порт в `Flare.Abstractions`, реализация `LocalStorageThemeStorage` в
 `Flare.Blazor`) читает/пишет выбор в `localStorage`, с защитой от SSR/prerender. `FlareThemeProvider`
 восстанавливает сохранённый выбор при первом интерактивном рендере.
 
 ### Как добавить новую тему
 
-1. Создайте Razor-библиотеку `net10.0` со ссылкой на `Flare.Core`.
+1. Создайте Razor-библиотеку `net10.0` со ссылкой на `Flare.Abstractions` + `Flare.Theming`.
 2. Реализуйте `ITheme` - задайте `Id`, `DisplayName`, `Design` (`DesignTokens`, обычно выведенный из
    reference-темы через `with`), `DefaultPaletteId`, `Palettes` и `StyleAssets`.
 3. Поставьте базовый CSS / CSS токенов, на который ссылается `StyleAssets`, в `wwwroot/`.
