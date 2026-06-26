@@ -22,6 +22,9 @@
       theme (RegisterAllBuiltInThemes), or register them explicitly via AddFlareTheme/AddFlarePalette.
     -->
     <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
+    <!-- Composition root: the only package that references the Infrastructure adapters, binding
+         them to the Flare.Abstractions ports in AddFlare. Presentation never references Infrastructure. -->
+    <ProjectReference Include="..\Flare.Infrastructure\Flare.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
