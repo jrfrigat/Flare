@@ -12,7 +12,10 @@
 </button>
 
 @code {
-    private bool _isDark;
+    // Read the resolved dark state LIVE from the shared theme service, not a cached field: every
+    // FlareComponentBase re-renders when the ThemeSnapshot cascade changes (any axis switch), so all
+    // toggle instances stay in sync when the mode changes anywhere - another toggle or in code.
+    private bool _isDark => ThemeService?.IsDark == true;
 
     /// <summary>Show a text label beside the icon.</summary>
     [Parameter] public bool ShowLabel { get; set; }
@@ -23,17 +26,10 @@
 
     protected override string ComponentCssClass => Css.Classes.Color.ModeToggle;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        _isDark = ThemeService?.IsDark == true;
-    }
-
     private async Task ToggleAsync()
     {
         if (ThemeService == null) return;
-        _isDark = !_isDark;
         // Explicitly pin the mode (leaves Auto only until the user expresses a preference).
-        await ThemeService.SetModeAsync(_isDark ? ThemeMode.Dark : ThemeMode.Light);
+        await ThemeService.SetModeAsync(ThemeService.IsDark ? ThemeMode.Light : ThemeMode.Dark);
     }
 }
