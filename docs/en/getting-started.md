@@ -100,8 +100,8 @@ Automatic dark mode is on by default: `FlareThemeProvider` watches the system
 **`_Imports.razor`:**
 ```razor
 @using Flare.Components
-@using Flare.Core.Abstractions
-@using Flare.Core.Tokens
+@using Flare.Abstractions
+@using Flare.Abstractions.Tokens
 ```
 
 ---

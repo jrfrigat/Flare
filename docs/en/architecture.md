@@ -91,7 +91,7 @@ for the token flattening used by the CSS-variable injector).
 lives in its own sub-namespace folder; the base components are in `Base/`. Depends on
 `Flare.Abstractions` + `Flare.Theming` and consumes adapters only through their ports (injected by DI).
 **It does NOT reference `Flare.Infrastructure`** - that invariant is what makes the host swappable.
-- Every component inherits `FlareComponentBase` (in `Base/`, namespace `Flare.Core.Components`).
+- Every component inherits `FlareComponentBase` (in `Base/`, namespace `Flare.Components`).
 - CSS ships as a global, token-driven bundle in `wwwroot/css/` (aggregated into
   `flare-components.css`) - not scoped CSS. All rules consume `var(--flare-*)` tokens only.
 - Hosts all static JS in `wwwroot/js/` (served at `_content/Flare.Components/js/`): the
@@ -148,7 +148,7 @@ syntax-highlighted code examples, and a live theme switcher (design system x pal
 ### FlareComponentBase Contract
 
 ```csharp
-// Flare.Core.Components.FlareComponentBase
+// Flare.Components.FlareComponentBase
 public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
 {
     [CascadingParameter] protected IThemeService? ThemeService { get; set; } // theme operations

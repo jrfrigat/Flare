@@ -95,8 +95,8 @@ Theme CSS (fonts, base tokens) is wired up automatically by `FlareThemeProvider`
 **c) Imports - `_Imports.razor`:**
 ```razor
 @using Flare.Components
-@using Flare.Core.Abstractions
-@using Flare.Core.Tokens
+@using Flare.Abstractions
+@using Flare.Abstractions.Tokens
 ```
 
 **d) Theme provider - wrap the router in `App.razor`:**

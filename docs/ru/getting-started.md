@@ -100,8 +100,8 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 **`_Imports.razor`:**
 ```razor
 @using Flare.Components
-@using Flare.Core.Abstractions
-@using Flare.Core.Tokens
+@using Flare.Abstractions
+@using Flare.Abstractions.Tokens
 ```
 
 ---

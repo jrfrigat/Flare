@@ -17,7 +17,7 @@
 ### Через FlareThemeBuilder (рекомендуется)
 
 ```csharp
-using Flare.Core.Builders;
+using Flare.Theming;
 
 var myTheme = new FlareThemeBuilder("my-theme", "My Custom Theme")
     .WithTypography(new TypographyTokens
@@ -50,8 +50,8 @@ var myTheme = new FlareThemeBuilder("my-theme", "My Custom Theme")
 ### Прямая реализация ITheme
 
 ```csharp
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 
 public sealed class MyTheme : ITheme
 {

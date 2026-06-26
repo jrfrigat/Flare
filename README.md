@@ -238,7 +238,7 @@ A **palette** is just colors (light + dark). Reuse a design system and only swap
 or generate a whole palette from one brand color - no need to fill 45 roles by hand:
 
 ```csharp
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
 // Override only what you need from the reference scheme:
 var ocean = new Palette

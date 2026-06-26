@@ -238,7 +238,7 @@ dotnet run
 лишь цвета, либо сгенерируйте палитру из одного бренд-цвета - не задавая 45 ролей вручную:
 
 ```csharp
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
 // Переопределить только нужное от reference-схемы:
 var ocean = new Palette
