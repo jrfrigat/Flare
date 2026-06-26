@@ -594,6 +594,186 @@
   <data name="DataGrid_Subtitle" xml:space="preserve">
     <value>FlareDataGrid with sortable columns, pagination, grouping, CSV export, row selection, column resize, and inline editing.</value>
   </data>
+  <data name="DataGrid_BasicTitle" xml:space="preserve">
+    <value>Basic DataGrid</value>
+  </data>
+  <data name="DataGrid_BasicDesc" xml:space="preserve">
+    <value>Minimal DataGrid with sorting and pagination.</value>
+  </data>
+  <data name="DataGrid_AppearanceTitle" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="DataGrid_AppearanceDesc" xml:space="preserve">
+    <value>Striped, hoverable, dense, and bordered modes.</value>
+  </data>
+  <data name="DataGrid_FilteringTitle" xml:space="preserve">
+    <value>Filtering</value>
+  </data>
+  <data name="DataGrid_FilteringDesc" xml:space="preserve">
+    <value>Inline filters + advanced filter builder with FilterMode selector.</value>
+  </data>
+  <data name="DataGrid_QuickFilterTitle" xml:space="preserve">
+    <value>Quick Filter (global search)</value>
+  </data>
+  <data name="DataGrid_QuickFilterDesc" xml:space="preserve">
+    <value>FlareDataGridQuickFilter - a standalone search box bound to the grid that filters across all visible columns.</value>
+  </data>
+  <data name="DataGrid_FilterPresetsTitle" xml:space="preserve">
+    <value>Filter Presets</value>
+  </data>
+  <data name="DataGrid_FilterPresetsDesc" xml:space="preserve">
+    <value>FlareDataGridFilterPresets - a list of named advanced-filter presets; choosing one applies its conditions to the grid.</value>
+  </data>
+  <data name="DataGrid_MultiSortTitle" xml:space="preserve">
+    <value>Multi-Sort</value>
+  </data>
+  <data name="DataGrid_MultiSortDesc" xml:space="preserve">
+    <value>Hold Shift+Click to sort by multiple columns.</value>
+  </data>
+  <data name="DataGrid_RowSelectionTitle" xml:space="preserve">
+    <value>Row Selection</value>
+  </data>
+  <data name="DataGrid_RowSelectionDesc" xml:space="preserve">
+    <value>Single and multiple row selection with checkboxes.</value>
+  </data>
+  <data name="DataGrid_InlineEditingTitle" xml:space="preserve">
+    <value>Inline Editing</value>
+  </data>
+  <data name="DataGrid_InlineEditingDesc" xml:space="preserve">
+    <value>Edit rows inline with EditMode.Inline.</value>
+  </data>
+  <data name="DataGrid_BatchEditingTitle" xml:space="preserve">
+    <value>Batch Editing</value>
+  </data>
+  <data name="DataGrid_BatchEditingDesc" xml:space="preserve">
+    <value>Edit multiple rows and save all at once with EditMode.Batch.</value>
+  </data>
+  <data name="DataGrid_ColumnBandsTitle" xml:space="preserve">
+    <value>Column Bands</value>
+  </data>
+  <data name="DataGrid_ColumnBandsDesc" xml:space="preserve">
+    <value>Group columns under shared headers with FlareColumnBand.</value>
+  </data>
+  <data name="DataGrid_FrozenColumnsTitle" xml:space="preserve">
+    <value>Frozen Columns</value>
+  </data>
+  <data name="DataGrid_FrozenColumnsDesc" xml:space="preserve">
+    <value>Pin columns to the left edge with Frozen or to the right edge with FrozenRight; both stack with cumulative offsets.</value>
+  </data>
+  <data name="DataGrid_ColumnPickerTitle" xml:space="preserve">
+    <value>Column Picker</value>
+  </data>
+  <data name="DataGrid_ColumnPickerDesc" xml:space="preserve">
+    <value>DataGridColumnPicker component for show/hide columns.</value>
+  </data>
+  <data name="DataGrid_ReorderTitle" xml:space="preserve">
+    <value>Reorder Columns &amp; Rows</value>
+  </data>
+  <data name="DataGrid_ReorderDesc" xml:space="preserve">
+    <value>Drag-and-drop reordering with ReorderableColumns and RowReorderable.</value>
+  </data>
+  <data name="DataGrid_MultiLevelTitle" xml:space="preserve">
+    <value>Multi-level Columns</value>
+  </data>
+  <data name="DataGrid_MultiLevelDesc" xml:space="preserve">
+    <value>Banded composite: each record spans several rows with fields aligned across the table (DevExpress banded-view style).</value>
+  </data>
+  <data name="DataGrid_BandedVirtualTitle" xml:space="preserve">
+    <value>Multi-level Columns (virtualized)</value>
+  </data>
+  <data name="DataGrid_BandedVirtualDesc" xml:space="preserve">
+    <value>500 banded records with Virtual=true - each record spans several rows, only the visible ones render.</value>
+  </data>
+  <data name="DataGrid_CompositeCardTitle" xml:space="preserve">
+    <value>Composite Card</value>
+  </data>
+  <data name="DataGrid_CompositeCardDesc" xml:space="preserve">
+    <value>CompositeMode.Card stacks the same fields inside a single cell (a card per record).</value>
+  </data>
+  <data name="DataGrid_PinnedRowsTitle" xml:space="preserve">
+    <value>Pinned Rows</value>
+  </data>
+  <data name="DataGrid_PinnedRowsDesc" xml:space="preserve">
+    <value>PinnedTopRows / PinnedBottomRows stay visible above and below the scrolling data, outside sorting, filtering and paging (e.g. a highlighted row and a totals row).</value>
+  </data>
+  <data name="DataGrid_RowDetailTitle" xml:space="preserve">
+    <value>Row Detail</value>
+  </data>
+  <data name="DataGrid_RowDetailDesc" xml:space="preserve">
+    <value>Expandable detail rows with RowDetailTemplate.</value>
+  </data>
+  <data name="DataGrid_ConditionalFormattingTitle" xml:space="preserve">
+    <value>Conditional Formatting</value>
+  </data>
+  <data name="DataGrid_ConditionalFormattingDesc" xml:space="preserve">
+    <value>Highlight whole rows by value with RowClassFunc / RowStyleFunc.</value>
+  </data>
+  <data name="DataGrid_CellStylingTitle" xml:space="preserve">
+    <value>Cell Styling</value>
+  </data>
+  <data name="DataGrid_CellStylingDesc" xml:space="preserve">
+    <value>Style individual cells with FlareColumn.ClassFunc and StyleFunc.</value>
+  </data>
+  <data name="DataGrid_CellSelectionTitle" xml:space="preserve">
+    <value>Cell Selection (Excel-like)</value>
+  </data>
+  <data name="DataGrid_CellSelectionDesc" xml:space="preserve">
+    <value>Click-drag or Shift+Click to select cells (arrow keys / Shift+Arrow also work), Ctrl+C copies the range as tab-separated text and Ctrl+V pastes it back via OnPaste. Enable with CellSelection.</value>
+  </data>
+  <data name="DataGrid_ColumnTypesTitle" xml:space="preserve">
+    <value>Column Types</value>
+  </data>
+  <data name="DataGrid_ColumnTypesDesc" xml:space="preserve">
+    <value>Type-aware rendering: boolean as a checkbox icon, culture- and format-aware dates and numbers via FlareColumn.Type/Format. Type is auto-detected when not set; filter editors and text alignment (numbers right, booleans centered) follow the column type. Override per column with FlareColumn.Align.</value>
+  </data>
+  <data name="DataGrid_QueryableTitle" xml:space="preserve">
+    <value>Queryable (IQueryable / EF Core)</value>
+  </data>
+  <data name="DataGrid_QueryableDesc" xml:space="preserve">
+    <value>Bind an IQueryable (e.g. an EF Core DbSet) and the grid translates sort/filter/paging into an expression tree that runs in the database - no ItemsProvider code.</value>
+  </data>
+  <data name="DataGrid_VirtualScrollingTitle" xml:space="preserve">
+    <value>Virtual Scrolling</value>
+  </data>
+  <data name="DataGrid_VirtualScrollingDesc" xml:space="preserve">
+    <value>Load data on demand with Virtual=true and ItemsProvider.</value>
+  </data>
+  <data name="DataGrid_InfiniteScrollTitle" xml:space="preserve">
+    <value>Infinite Scroll</value>
+  </data>
+  <data name="DataGrid_InfiniteScrollDesc" xml:space="preserve">
+    <value>Accumulate rows as user scrolls with InfiniteScroll=true.</value>
+  </data>
+  <data name="DataGrid_GroupingTitle" xml:space="preserve">
+    <value>Grouping</value>
+  </data>
+  <data name="DataGrid_GroupingDesc" xml:space="preserve">
+    <value>Group rows by field value with nested DataGridGroup components.</value>
+  </data>
+  <data name="DataGrid_NestedGroupingTitle" xml:space="preserve">
+    <value>Nested Grouping</value>
+  </data>
+  <data name="DataGrid_NestedGroupingDesc" xml:space="preserve">
+    <value>Multiple DataGridGroup levels with per-group aggregates.</value>
+  </data>
+  <data name="DataGrid_TreeGridTitle" xml:space="preserve">
+    <value>Tree Grid</value>
+  </data>
+  <data name="DataGrid_TreeGridDesc" xml:space="preserve">
+    <value>Hierarchical data with expand/collapse using Tree parameter.</value>
+  </data>
+  <data name="DataGrid_ExportTitle" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="DataGrid_ExportDesc" xml:space="preserve">
+    <value>DataGridExport component with CSV, JSON, TSV, Excel exporters.</value>
+  </data>
+  <data name="DataGrid_FooterPagerTitle" xml:space="preserve">
+    <value>Footer &amp; standalone pager</value>
+  </data>
+  <data name="DataGrid_FooterPagerDesc" xml:space="preserve">
+    <value>ShowPager=false plus FooterContent (the toolbar's bottom counterpart): FlareDataGridPager and a quick filter live in the footer, resolving the grid from the cascade so grid controls can be placed anywhere.</value>
+  </data>
   <data name="Dialog_Title" xml:space="preserve">
     <value>Dialog</value>
   </data>

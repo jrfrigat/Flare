@@ -594,6 +594,186 @@
   <data name="DataGrid_Subtitle" xml:space="preserve">
     <value>FlareDataGrid с сортируемыми колонками, пагинацией, группировкой, экспортом CSV, выбором строк, изменением ширины колонок и редактированием в ячейке.</value>
   </data>
+  <data name="DataGrid_BasicTitle" xml:space="preserve">
+    <value>Базовая таблица</value>
+  </data>
+  <data name="DataGrid_BasicDesc" xml:space="preserve">
+    <value>Минимальная таблица с сортировкой и пагинацией.</value>
+  </data>
+  <data name="DataGrid_AppearanceTitle" xml:space="preserve">
+    <value>Внешний вид</value>
+  </data>
+  <data name="DataGrid_AppearanceDesc" xml:space="preserve">
+    <value>Режимы с чередованием строк, подсветкой при наведении, плотный и с границами.</value>
+  </data>
+  <data name="DataGrid_FilteringTitle" xml:space="preserve">
+    <value>Фильтрация</value>
+  </data>
+  <data name="DataGrid_FilteringDesc" xml:space="preserve">
+    <value>Встроенные фильтры и конструктор расширенных фильтров с выбором FilterMode.</value>
+  </data>
+  <data name="DataGrid_QuickFilterTitle" xml:space="preserve">
+    <value>Быстрый фильтр (глобальный поиск)</value>
+  </data>
+  <data name="DataGrid_QuickFilterDesc" xml:space="preserve">
+    <value>FlareDataGridQuickFilter - отдельное поле поиска, привязанное к таблице, которое фильтрует по всем видимым колонкам.</value>
+  </data>
+  <data name="DataGrid_FilterPresetsTitle" xml:space="preserve">
+    <value>Предустановки фильтров</value>
+  </data>
+  <data name="DataGrid_FilterPresetsDesc" xml:space="preserve">
+    <value>FlareDataGridFilterPresets - список именованных предустановок расширенных фильтров; выбор одной применяет её условия к таблице.</value>
+  </data>
+  <data name="DataGrid_MultiSortTitle" xml:space="preserve">
+    <value>Множественная сортировка</value>
+  </data>
+  <data name="DataGrid_MultiSortDesc" xml:space="preserve">
+    <value>Удерживайте Shift+Click для сортировки по нескольким колонкам.</value>
+  </data>
+  <data name="DataGrid_RowSelectionTitle" xml:space="preserve">
+    <value>Выбор строк</value>
+  </data>
+  <data name="DataGrid_RowSelectionDesc" xml:space="preserve">
+    <value>Выбор одной или нескольких строк с помощью флажков.</value>
+  </data>
+  <data name="DataGrid_InlineEditingTitle" xml:space="preserve">
+    <value>Редактирование в строке</value>
+  </data>
+  <data name="DataGrid_InlineEditingDesc" xml:space="preserve">
+    <value>Редактирование строк прямо в таблице с EditMode.Inline.</value>
+  </data>
+  <data name="DataGrid_BatchEditingTitle" xml:space="preserve">
+    <value>Пакетное редактирование</value>
+  </data>
+  <data name="DataGrid_BatchEditingDesc" xml:space="preserve">
+    <value>Редактирование нескольких строк и сохранение всех сразу с EditMode.Batch.</value>
+  </data>
+  <data name="DataGrid_ColumnBandsTitle" xml:space="preserve">
+    <value>Полосы колонок</value>
+  </data>
+  <data name="DataGrid_ColumnBandsDesc" xml:space="preserve">
+    <value>Группировка колонок под общими заголовками с помощью FlareColumnBand.</value>
+  </data>
+  <data name="DataGrid_FrozenColumnsTitle" xml:space="preserve">
+    <value>Закреплённые колонки</value>
+  </data>
+  <data name="DataGrid_FrozenColumnsDesc" xml:space="preserve">
+    <value>Закрепляйте колонки у левого края через Frozen или у правого через FrozenRight; обе стороны складываются с накопительными отступами.</value>
+  </data>
+  <data name="DataGrid_ColumnPickerTitle" xml:space="preserve">
+    <value>Выбор колонок</value>
+  </data>
+  <data name="DataGrid_ColumnPickerDesc" xml:space="preserve">
+    <value>Компонент DataGridColumnPicker для показа и скрытия колонок.</value>
+  </data>
+  <data name="DataGrid_ReorderTitle" xml:space="preserve">
+    <value>Переупорядочивание колонок и строк</value>
+  </data>
+  <data name="DataGrid_ReorderDesc" xml:space="preserve">
+    <value>Перетаскивание для переупорядочивания с ReorderableColumns и RowReorderable.</value>
+  </data>
+  <data name="DataGrid_MultiLevelTitle" xml:space="preserve">
+    <value>Многоуровневые колонки</value>
+  </data>
+  <data name="DataGrid_MultiLevelDesc" xml:space="preserve">
+    <value>Полосатая составная компоновка: каждая запись занимает несколько строк с полями, выровненными по таблице (стиль banded-view от DevExpress).</value>
+  </data>
+  <data name="DataGrid_BandedVirtualTitle" xml:space="preserve">
+    <value>Многоуровневые колонки (виртуализация)</value>
+  </data>
+  <data name="DataGrid_BandedVirtualDesc" xml:space="preserve">
+    <value>500 полосатых записей с Virtual=true - каждая запись занимает несколько строк, отображаются только видимые.</value>
+  </data>
+  <data name="DataGrid_CompositeCardTitle" xml:space="preserve">
+    <value>Составная карточка</value>
+  </data>
+  <data name="DataGrid_CompositeCardDesc" xml:space="preserve">
+    <value>CompositeMode.Card складывает те же поля внутри одной ячейки (карточка на запись).</value>
+  </data>
+  <data name="DataGrid_PinnedRowsTitle" xml:space="preserve">
+    <value>Закреплённые строки</value>
+  </data>
+  <data name="DataGrid_PinnedRowsDesc" xml:space="preserve">
+    <value>PinnedTopRows / PinnedBottomRows остаются видимыми над и под прокручиваемыми данными, вне сортировки, фильтрации и пагинации (например, выделенная строка и строка итогов).</value>
+  </data>
+  <data name="DataGrid_RowDetailTitle" xml:space="preserve">
+    <value>Детали строки</value>
+  </data>
+  <data name="DataGrid_RowDetailDesc" xml:space="preserve">
+    <value>Разворачиваемые строки деталей с RowDetailTemplate.</value>
+  </data>
+  <data name="DataGrid_ConditionalFormattingTitle" xml:space="preserve">
+    <value>Условное форматирование</value>
+  </data>
+  <data name="DataGrid_ConditionalFormattingDesc" xml:space="preserve">
+    <value>Подсветка целых строк по значению с RowClassFunc / RowStyleFunc.</value>
+  </data>
+  <data name="DataGrid_CellStylingTitle" xml:space="preserve">
+    <value>Стилизация ячеек</value>
+  </data>
+  <data name="DataGrid_CellStylingDesc" xml:space="preserve">
+    <value>Стилизация отдельных ячеек с FlareColumn.ClassFunc и StyleFunc.</value>
+  </data>
+  <data name="DataGrid_CellSelectionTitle" xml:space="preserve">
+    <value>Выбор ячеек (как в Excel)</value>
+  </data>
+  <data name="DataGrid_CellSelectionDesc" xml:space="preserve">
+    <value>Перетаскивание мышью или Shift+Click для выбора ячеек (работают также стрелки / Shift+стрелка), Ctrl+C копирует диапазон как текст с табуляцией, а Ctrl+V вставляет его обратно через OnPaste. Включается через CellSelection.</value>
+  </data>
+  <data name="DataGrid_ColumnTypesTitle" xml:space="preserve">
+    <value>Типы колонок</value>
+  </data>
+  <data name="DataGrid_ColumnTypesDesc" xml:space="preserve">
+    <value>Рендеринг с учётом типа: булево значение как значок флажка, даты и числа с учётом культуры и формата через FlareColumn.Type/Format. Тип определяется автоматически, если не задан; редакторы фильтров и выравнивание текста (числа вправо, булевы по центру) следуют типу колонки. Переопределяется для каждой колонки через FlareColumn.Align.</value>
+  </data>
+  <data name="DataGrid_QueryableTitle" xml:space="preserve">
+    <value>Queryable (IQueryable / EF Core)</value>
+  </data>
+  <data name="DataGrid_QueryableDesc" xml:space="preserve">
+    <value>Привяжите IQueryable (например, DbSet из EF Core), и таблица транслирует сортировку, фильтрацию и пагинацию в дерево выражений, выполняемое в базе данных - без кода ItemsProvider.</value>
+  </data>
+  <data name="DataGrid_VirtualScrollingTitle" xml:space="preserve">
+    <value>Виртуальная прокрутка</value>
+  </data>
+  <data name="DataGrid_VirtualScrollingDesc" xml:space="preserve">
+    <value>Загрузка данных по требованию с Virtual=true и ItemsProvider.</value>
+  </data>
+  <data name="DataGrid_InfiniteScrollTitle" xml:space="preserve">
+    <value>Бесконечная прокрутка</value>
+  </data>
+  <data name="DataGrid_InfiniteScrollDesc" xml:space="preserve">
+    <value>Накопление строк по мере прокрутки с InfiniteScroll=true.</value>
+  </data>
+  <data name="DataGrid_GroupingTitle" xml:space="preserve">
+    <value>Группировка</value>
+  </data>
+  <data name="DataGrid_GroupingDesc" xml:space="preserve">
+    <value>Группировка строк по значению поля с вложенными компонентами DataGridGroup.</value>
+  </data>
+  <data name="DataGrid_NestedGroupingTitle" xml:space="preserve">
+    <value>Вложенная группировка</value>
+  </data>
+  <data name="DataGrid_NestedGroupingDesc" xml:space="preserve">
+    <value>Несколько уровней DataGridGroup с агрегатами для каждой группы.</value>
+  </data>
+  <data name="DataGrid_TreeGridTitle" xml:space="preserve">
+    <value>Древовидная таблица</value>
+  </data>
+  <data name="DataGrid_TreeGridDesc" xml:space="preserve">
+    <value>Иерархические данные с разворачиванием и сворачиванием через параметр Tree.</value>
+  </data>
+  <data name="DataGrid_ExportTitle" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="DataGrid_ExportDesc" xml:space="preserve">
+    <value>Компонент DataGridExport с экспортёрами CSV, JSON, TSV, Excel.</value>
+  </data>
+  <data name="DataGrid_FooterPagerTitle" xml:space="preserve">
+    <value>Подвал и отдельный пейджер</value>
+  </data>
+  <data name="DataGrid_FooterPagerDesc" xml:space="preserve">
+    <value>ShowPager=false вместе с FooterContent (нижний аналог панели инструментов): FlareDataGridPager и быстрый фильтр находятся в подвале, получая таблицу из каскада, чтобы элементы управления можно было размещать где угодно.</value>
+  </data>
   <data name="Dialog_Title" xml:space="preserve">
     <value>Диалог</value>
   </data>
