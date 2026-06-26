@@ -1,0 +1,16 @@
+/* Flare docfx overrides (loaded after the modern template). */
+
+/* The package icon is a 192x192 PWA icon; constrain it to a navbar-sized logo. */
+#logo {
+  height: 26px;
+  width: 26px;
+  max-height: 26px;
+  object-fit: contain;
+}
+
+/* Keep the brand text aligned next to the now-smaller logo. */
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}

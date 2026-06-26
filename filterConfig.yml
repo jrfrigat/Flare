@@ -1,0 +1,7 @@
+# Hides Razor-generated noise from the API reference (one _Imports type is emitted
+# per Razor project by the source generator; it is not real public API).
+apiRules:
+  - exclude:
+      uidRegex: '\._Imports$'
+  - exclude:
+      uidRegex: '\.RouteData$'

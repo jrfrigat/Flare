@@ -11,6 +11,8 @@ on:
       - 'src/**'
       - 'docs/**'
       - 'docfx.json'
+      - 'filterConfig.yml'
+      - 'templates/**'
       - 'toc.yml'
       - 'index.md'
       - 'api/index.md'
@@ -44,12 +46,16 @@ jobs:
       - name: Install docfx
         run: dotnet tool update -g docfx
 
-      - name: Build site
-        run: docfx docfx.json
+      # docfx reads the API from the compiled DLLs + XML docs (its bundled Roslyn cannot
+      # run the Blazor Razor source generator), so the libraries must be built first.
+      - name: Build libraries (Release)
+        run: dotnet build Flare.slnx -c Release
         env:
-          # docfx restores and builds each project; keep the SDK from phoning home.
           DOTNET_NOLOGO: 'true'
           DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+
+      - name: Build docs site
+        run: docfx docfx.json
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

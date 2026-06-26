@@ -2,24 +2,33 @@
   "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
   "metadata": [
     {
+      "comment": "Read API from the compiled DLLs + sibling XML docs, NOT from source: docfx's bundled Roslyn cannot run the Blazor Razor source generator, so building .razor from source yields zero API. Run 'dotnet build -c Release' first.",
       "src": [
         {
           "src": "src",
           "files": [
-            "Flare/**/*.csproj",
-            "Flare.Core/**/*.csproj",
-            "Flare.Components/**/*.csproj",
-            "Flare.Components.*/**/*.csproj",
-            "Flare.Icons/**/*.csproj",
-            "Flare.Theme.*/**/*.csproj"
+            "Flare/bin/Release/net10.0/Flare.dll",
+            "Flare.Core/bin/Release/net10.0/Flare.Core.dll",
+            "Flare.Components/bin/Release/net10.0/Flare.Components.dll",
+            "Flare.Components.Carousel/bin/Release/net10.0/Flare.Components.Carousel.dll",
+            "Flare.Components.IDE/bin/Release/net10.0/Flare.Components.IDE.dll",
+            "Flare.Components.Kanban/bin/Release/net10.0/Flare.Components.Kanban.dll",
+            "Flare.Components.Media/bin/Release/net10.0/Flare.Components.Media.dll",
+            "Flare.Components.QrCode/bin/Release/net10.0/Flare.Components.QrCode.dll",
+            "Flare.Components.RichTextEditor/bin/Release/net10.0/Flare.Components.RichTextEditor.dll",
+            "Flare.Components.Transfer/bin/Release/net10.0/Flare.Components.Transfer.dll",
+            "Flare.Icons/bin/Release/net10.0/Flare.Icons.dll",
+            "Flare.Theme.Aero/bin/Release/net10.0/Flare.Theme.Aero.dll",
+            "Flare.Theme.FluentUI2/bin/Release/net10.0/Flare.Theme.FluentUI2.dll",
+            "Flare.Theme.LiquidGlass/bin/Release/net10.0/Flare.Theme.LiquidGlass.dll",
+            "Flare.Theme.MaterialDesign3Expressive/bin/Release/net10.0/Flare.Theme.MaterialDesign3Expressive.dll",
+            "Flare.Theme.VisualStudio/bin/Release/net10.0/Flare.Theme.VisualStudio.dll"
           ]
         }
       ],
       "dest": "api",
       "outputFormat": "mref",
-      "properties": {
-        "TargetFramework": "net10.0"
-      },
+      "filter": "filterConfig.yml",
       "EnumSortOrder": "alphabetic",
       "namespaceLayout": "nested",
       "memberLayout": "separatePages"
@@ -45,7 +54,7 @@
       }
     ],
     "output": "_site",
-    "template": [ "default", "modern" ],
+    "template": [ "default", "modern", "templates/flare" ],
     "globalMetadata": {
       "_appName": "Flare",
       "_appTitle": "Flare - Blazor UI components",
