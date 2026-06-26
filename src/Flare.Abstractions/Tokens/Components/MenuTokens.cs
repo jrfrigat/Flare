@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareMenu</c> / <c>FlareMenuItem</c> (dropdown panel + items).</summary>
 public sealed record MenuTokens

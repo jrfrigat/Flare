@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareToggleButton</c> / <c>FlareToggleGroup</c> (MD3 Segmented Button).
 /// Toggle has 3 sizes (S/M/L). The selected state may morph the corner radius (MD3) or only change

@@ -1,8 +1,8 @@
-using Flare.Core.Abstractions;
+using Flare.Abstractions;
 
-namespace Flare.Core.Services;
+namespace Flare.Infrastructure;
 
-/// <summary>Default <see cref="Flare.Core.Abstractions.IMessageBoxService"/> backed by a host message-box component.</summary>
+/// <summary>Default <see cref="Flare.Abstractions.IMessageBoxService"/> backed by a host message-box component.</summary>
 public sealed class MessageBoxService : IMessageBoxService
 {
     private TaskCompletionSource<string?>? _tcs;

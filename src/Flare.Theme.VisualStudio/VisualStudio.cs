@@ -1,4 +1,4 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
 namespace Flare.Theme.VisualStudio;
 

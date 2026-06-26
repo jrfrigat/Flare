@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
 /// Design tokens for Input, Select, TextArea, and other form field components.

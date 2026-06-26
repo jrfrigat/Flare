@@ -1,9 +1,9 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Services;
+namespace Flare.Theming;
 
-/// <summary>Default <see cref="Flare.Core.Abstractions.IThemeService"/> managing the active theme, palette and light/dark mode.</summary>
+/// <summary>Default <see cref="Flare.Abstractions.IThemeService"/> managing the active theme, palette and light/dark mode.</summary>
 public sealed class ThemeService : IThemeService
 {
     private readonly ICssVariableInjector _injector;

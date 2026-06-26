@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareCheckbox</c> (box, state-layer, focus ring).</summary>
 public sealed record CheckboxTokens

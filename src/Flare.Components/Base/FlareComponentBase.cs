@@ -1,8 +1,8 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 using Microsoft.AspNetCore.Components;
 
-namespace Flare.Core.Components;
+namespace Flare.Components;
 
 /// <summary>
 /// Base class for all Flare components. Provides theme access via cascading parameters

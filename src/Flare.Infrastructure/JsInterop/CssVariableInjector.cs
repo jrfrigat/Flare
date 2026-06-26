@@ -1,11 +1,11 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
 using Microsoft.JSInterop;
 
 namespace Flare.Components.Services;
 
-/// <summary>Default <see cref="Flare.Core.Abstractions.ICssVariableInjector"/> that writes theme CSS variables via JS interop.</summary>
+/// <summary>Default <see cref="Flare.Abstractions.ICssVariableInjector"/> that writes theme CSS variables via JS interop.</summary>
 public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
 {
     private readonly IJSRuntime _js;

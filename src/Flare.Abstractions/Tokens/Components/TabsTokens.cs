@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareTabs</c> / <c>FlareTab</c>.</summary>
 public sealed record TabsTokens

@@ -1,7 +1,6 @@
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// Manages the three theme axes -- design-system theme, color palette and light/dark mode --

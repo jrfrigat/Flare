@@ -1,5 +1,5 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using System.Globalization;
@@ -62,8 +62,8 @@ public sealed class StubThemeService : IThemeService
     public Task SetSystemDarkAsync(bool isDark) => Task.CompletedTask;
     public Task EnsureStaticCssAsync() => Task.CompletedTask;
     public Task RequireThemeAssetsAsync(string? themeId, string? paletteId) => Task.CompletedTask;
-    public Palette GeneratePalette(string id, string name, Flare.Core.Services.PaletteSeed seed, string? source = null) =>
-        Flare.Core.Services.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
+    public Palette GeneratePalette(string id, string name, Flare.Abstractions.PaletteSeed seed, string? source = null) =>
+        Flare.Theming.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
     public void CustomizeColors(Func<ColorScheme, ColorScheme> mutate) { }
     public void CustomizeDesign(Func<DesignTokens, DesignTokens> mutate) { }
     public void SetCustomToken(string tokenName, string value) { }
@@ -104,8 +104,8 @@ public sealed class TokenThemeService : IThemeService
     public Task SetSystemDarkAsync(bool isDark) => Task.CompletedTask;
     public Task EnsureStaticCssAsync() => Task.CompletedTask;
     public Task RequireThemeAssetsAsync(string? themeId, string? paletteId) => Task.CompletedTask;
-    public Palette GeneratePalette(string id, string name, Flare.Core.Services.PaletteSeed seed, string? source = null) =>
-        Flare.Core.Services.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
+    public Palette GeneratePalette(string id, string name, Flare.Abstractions.PaletteSeed seed, string? source = null) =>
+        Flare.Theming.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
     public void CustomizeColors(Func<ColorScheme, ColorScheme> mutate) { }
     public void CustomizeDesign(Func<DesignTokens, DesignTokens> mutate) { }
     public void SetCustomToken(string tokenName, string value) { }

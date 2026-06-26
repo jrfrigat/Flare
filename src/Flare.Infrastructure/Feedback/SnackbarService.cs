@@ -1,8 +1,8 @@
-using Flare.Core.Abstractions;
+using Flare.Abstractions;
 
-namespace Flare.Core.Services;
+namespace Flare.Infrastructure;
 
-/// <summary>Default <see cref="Flare.Core.Abstractions.ISnackbarService"/> that relays notifications to the host snackbar component.</summary>
+/// <summary>Default <see cref="Flare.Abstractions.ISnackbarService"/> that relays notifications to the host snackbar component.</summary>
 public sealed class SnackbarService : ISnackbarService
 {
     /// <summary>Raised when a new snackbar should be displayed.</summary>

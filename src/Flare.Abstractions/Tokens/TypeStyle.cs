@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>One type-scale style: font family, size, weight, line height and letter spacing.</summary>
 public sealed record TypeStyle

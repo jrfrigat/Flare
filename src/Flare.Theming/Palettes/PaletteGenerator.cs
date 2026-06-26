@@ -1,6 +1,7 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Services;
+namespace Flare.Theming;
 
 // PaletteSeed and IPaletteGenerator (the input DTO and the port) now live in Flare.Abstractions;
 // only the default engine implementation remains here.

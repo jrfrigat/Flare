@@ -1,6 +1,6 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>A persisted theme selection across the three axes.</summary>
 public readonly record struct ThemeSelection(string ThemeId, string PaletteId, ThemeMode Mode);

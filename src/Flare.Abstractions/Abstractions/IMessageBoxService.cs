@@ -1,4 +1,4 @@
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// Imperative message-box service for prompt, confirm and alert dialogs, surfaced by a single

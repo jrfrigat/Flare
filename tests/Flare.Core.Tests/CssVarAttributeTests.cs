@@ -1,6 +1,6 @@
 using System.Reflection;
-using Flare.Core.Services;        // FlattenDesign (CssVarMap) extension
-using Flare.Core.Tokens.Components;
+using Flare.Theming;        // FlattenDesign (CssVarMap) extension
+using Flare.Abstractions.Tokens.Components;
 using Flare.Css;
 
 namespace Flare.Core.Tests;

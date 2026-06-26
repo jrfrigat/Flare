@@ -1,8 +1,8 @@
 @page "/theming"
 @inject IThemeService ThemeService
 @inherits LocalizedPage
-@using Flare.Core.Tokens
-@using Flare.Core.Services
+@using Flare.Abstractions.Tokens
+@using Flare.Theming
 
 <PageTitle>@GalleryStrings.Theming_Title - Flare</PageTitle>
 
@@ -213,7 +213,7 @@
 
     private const string _createThemeCode =
         """
-        using Flare.Core.Tokens;
+        using Flare.Abstractions.Tokens;
 
         // A palette is just colors (light + dark) - reuse a built-in design system,
         // only swap the colors. Register it without touching any theme.

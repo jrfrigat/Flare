@@ -1,9 +1,9 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Flare.Core.Services;
+namespace Flare.Theming;
 
 /// <summary>
 /// Serializes themes and palettes to static, class-scoped CSS. This is the single source of

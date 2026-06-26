@@ -1,5 +1,5 @@
-using Flare.Core.Tokens;
-using Flare.Core.Tokens.Components;
+using Flare.Abstractions.Tokens;
+using Flare.Abstractions.Tokens.Components;
 
 namespace Flare.Theme.FluentUI2;
 
@@ -207,7 +207,7 @@ internal class FluentUI2Tokens
 
     // On-this-page - Fluent: рейл-стиль (вертикальная линия + brand-полоса слева у активного),
     // без MD3-пилюли.
-    internal static readonly Flare.Core.Tokens.Components.TableOfContentsTokens TableOfContents = new()
+    internal static readonly Flare.Abstractions.Tokens.Components.TableOfContentsTokens TableOfContents = new()
     {
         ActiveColor = "var(--flare-color-primary)",
         TitleColor = "var(--flare-color-on-surface)",

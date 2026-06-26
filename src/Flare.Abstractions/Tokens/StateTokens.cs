@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>State-layer opacities for hover, focus, pressed, dragged and disabled states.</summary>
 public sealed record StateTokens

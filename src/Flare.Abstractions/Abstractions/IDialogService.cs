@@ -1,4 +1,4 @@
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>An immutable description of a pending confirm/alert dialog request.</summary>
 /// <param name="Title">Dialog title.</param>

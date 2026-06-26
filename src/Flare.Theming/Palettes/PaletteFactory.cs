@@ -1,6 +1,6 @@
-using Flare.Core.Services;
+using Flare.Theming;
 
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>
 /// Builds a branded <see cref="Palette"/> by overlaying a single brand seed onto a base

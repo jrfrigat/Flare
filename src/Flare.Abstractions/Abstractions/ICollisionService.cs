@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// Provides collision detection for popovers, tooltips, and menus.

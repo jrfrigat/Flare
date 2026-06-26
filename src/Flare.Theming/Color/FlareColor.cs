@@ -1,5 +1,6 @@
+using Flare.Abstractions;
 using Flare.Components.Security;
-using Flare.Core.Services;
+using Flare.Theming;
 using System.Globalization;
 
 namespace Flare.Components;

@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>Corner-radius values for the shape scale (none, extra-small .. full).</summary>
 public sealed record ShapeTokens

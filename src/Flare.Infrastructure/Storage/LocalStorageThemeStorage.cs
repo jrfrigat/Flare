@@ -1,8 +1,8 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 using Microsoft.JSInterop;
 
-namespace Flare.Core.Services;
+namespace Flare.Infrastructure;
 
 /// <summary>
 /// <see cref="IThemeStorageService"/> backed by the browser <c>localStorage</c>. Persists the

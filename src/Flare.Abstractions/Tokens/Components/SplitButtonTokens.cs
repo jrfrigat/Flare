@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme geometry and seam tokens for <c>FlareSplitButton</c>.</summary>
 public sealed record SplitButtonTokens

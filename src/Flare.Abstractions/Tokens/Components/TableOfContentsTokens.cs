@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
 /// Per-theme tokens for <c>FlareTableOfContents</c> / <c>FlareOnThisPage</c>. The defaults render the

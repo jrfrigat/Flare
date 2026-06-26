@@ -1,6 +1,6 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Components;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Components;
+using Flare.Abstractions.Tokens;
 using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components.Tests.Component;

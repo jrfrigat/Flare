@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>How theme/palette CSS reaches the document.</summary>
 public enum ThemeDelivery

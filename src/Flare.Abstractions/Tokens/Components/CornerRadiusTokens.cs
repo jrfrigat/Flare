@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
 /// Per-corner border-radius values (as CSS lengths) for a single component shape, used as a nested

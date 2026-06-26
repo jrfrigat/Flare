@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>The full type scale (display, headline, title, body and label styles).</summary>
 public sealed record TypographyTokens

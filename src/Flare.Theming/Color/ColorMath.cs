@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Flare.Core.Services;
+namespace Flare.Theming;
 
 /// <summary>
 /// Small, dependency-free color helpers used to derive palette roles from a brand seed

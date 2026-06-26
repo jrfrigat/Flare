@@ -1,7 +1,7 @@
 @inherits LocalizedPage
 @inject IThemeService ThemeService
-@using Flare.Core.Tokens
-@using Flare.Core.Services
+@using Flare.Abstractions.Tokens
+@using Flare.Theming
 
 <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Text"
              AriaLabel="@GalleryStrings.Theme_Settings" OnClick="@(() => _open = true)">

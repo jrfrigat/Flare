@@ -1,7 +1,7 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Services;
+namespace Flare.Theming;
 
 /// <summary>
 /// A thin <see cref="IThemeService"/> view used by <c>FlareThemeScope</c> to re-theme a subtree.

@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme tokens for <c>FlareFloatingActionButton</c>. Size is currently expressed via
 /// padding around the glyph (S/M/L), with per-size corner radius and elevation tokens.</summary>

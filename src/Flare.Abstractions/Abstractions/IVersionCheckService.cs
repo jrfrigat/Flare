@@ -1,4 +1,4 @@
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// Periodically polls for a newer application version and raises an event when one is found.

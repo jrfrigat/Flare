@@ -1,6 +1,6 @@
-@namespace Flare.Core.Components
+@namespace Flare.Components
 @inject IThemeService ThemeService
-@using Flare.Core.Services
+@using Flare.Theming
 
 @* Anti-FOUC bootstrap for SSR/prerender: emits a synchronous <script> in <head> that sets
    the initial theme/palette/mode classes on <html> from localStorage before paint. For pure
@@ -11,7 +11,7 @@
 </HeadContent>
 
 @code {
-    private string _script => Flare.Core.Services.FlareBootstrap.GenerateScript(
+    private string _script => Flare.Theming.FlareBootstrap.GenerateScript(
         ThemeService.Themes.Select(t => t.Id),
         ThemeService.Palettes.Select(p => p.Id),
         ThemeService.CurrentTheme.Id,

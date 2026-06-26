@@ -1,7 +1,7 @@
 using Flare.Css;
 using Flare.Css.Tokens;
 
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
 /// Per-theme geometry, typography and state tokens for <c>FlareButton</c>. Scalar properties carry a

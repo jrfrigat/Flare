@@ -1,7 +1,7 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Components;
+namespace Flare.Components;
 
 /// <summary>
 /// Base class for components that need direct theme access. Extends <see cref="FlareComponentBase"/>

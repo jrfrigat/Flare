@@ -1,7 +1,6 @@
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// A theme = a design system (non-color <see cref="DesignTokens"/>) plus a default palette

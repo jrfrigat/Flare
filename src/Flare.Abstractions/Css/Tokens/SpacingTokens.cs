@@ -5,7 +5,7 @@ namespace Flare.Css.Tokens;
 /// multiple of the 0.125rem (2px) base unit, so the names map 1:1 to physical sizes:
 /// <c>2</c> = 0.25rem, <c>4</c> = 0.5rem, <c>8</c> = 1rem, etc. The values are theme-overridable
 /// (a denser theme can shrink the whole scale), so consumers should reference these tokens
-/// instead of hard-coding rem/px literals. Defaults live in <see cref="Flare.Core.Tokens.SpacingTokens"/>.
+/// instead of hard-coding rem/px literals. Defaults live in <see cref="Flare.Abstractions.Tokens.SpacingTokens"/>.
 /// </summary>
 public static class Spacing
 {

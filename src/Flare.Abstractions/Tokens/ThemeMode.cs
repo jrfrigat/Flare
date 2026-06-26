@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>
 /// Light/dark selection for a theme. A theme carries both schemes (via its palette);

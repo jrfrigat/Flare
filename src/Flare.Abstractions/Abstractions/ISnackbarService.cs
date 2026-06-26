@@ -1,4 +1,4 @@
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>Severity of a snackbar notification, controlling its accent color and icon.</summary>
 public enum SnackbarSeverity

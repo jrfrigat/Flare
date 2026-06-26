@@ -1,4 +1,4 @@
-using Flare.Core.Abstractions;
+using Flare.Abstractions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 

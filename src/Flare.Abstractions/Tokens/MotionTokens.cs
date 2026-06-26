@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>Animation duration and easing values shared by component transitions.</summary>
 public sealed record MotionTokens

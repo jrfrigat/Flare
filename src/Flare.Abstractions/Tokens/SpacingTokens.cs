@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>
 /// Default values for the spacing scale (padding/margin/gap). The step index is a multiple of the

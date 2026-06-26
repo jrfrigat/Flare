@@ -1,9 +1,9 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Services;
-using Flare.Core.Tokens;
-using Flare.Core.Tokens.Components;
+using Flare.Abstractions;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
+using Flare.Abstractions.Tokens.Components;
 
-namespace Flare.Core.Builders;
+namespace Flare.Theming;
 
 /// <summary>
 /// Fluent API for building custom themes at runtime. Use this to create themes

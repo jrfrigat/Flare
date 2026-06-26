@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>
 /// A named, reusable set of colors with a light, dark, and optional high-contrast <see cref="ColorScheme"/>.

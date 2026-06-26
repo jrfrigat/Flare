@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// Provides JS operations for theme management.

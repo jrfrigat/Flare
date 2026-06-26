@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>
 /// The color half of a theme: ~45 semantic color roles for a single mode (light or dark).

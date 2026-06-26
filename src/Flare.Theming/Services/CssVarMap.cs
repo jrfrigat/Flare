@@ -1,6 +1,6 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Services;
+namespace Flare.Theming;
 
 /// <summary>Flattens theme token records into the CSS-variable name/value map injected at runtime.</summary>
 public static class CssVarMap

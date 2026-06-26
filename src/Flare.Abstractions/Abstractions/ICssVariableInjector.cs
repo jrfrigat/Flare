@@ -1,6 +1,6 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>Injects the active theme's CSS custom properties into the document.</summary>
 public interface ICssVariableInjector

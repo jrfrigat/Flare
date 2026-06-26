@@ -1,9 +1,9 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Flare.Core.Serialization;
+namespace Flare.Theming;
 
 /// <summary>
 /// JSON serialization helpers for themes and palettes.
@@ -38,7 +38,7 @@ public static class ThemeJsonSerializer
         var model = JsonSerializer.Deserialize<ThemeExportModel>(json, s_options)
             ?? throw new InvalidOperationException("Invalid theme JSON.");
 
-        return new Flare.Core.Builders.FlareThemeBuilder(model.Id, model.DisplayName)
+        return new Flare.Theming.FlareThemeBuilder(model.Id, model.DisplayName)
             .WithDesign(model.Design)
             .WithDefaultPalette(model.DefaultPaletteId)
             .WithStyleAssets(model.StyleAssets)

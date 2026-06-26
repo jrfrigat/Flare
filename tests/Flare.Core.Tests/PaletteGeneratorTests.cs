@@ -1,5 +1,5 @@
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
 
 namespace Flare.Core.Tests;
 

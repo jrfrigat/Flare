@@ -1,4 +1,4 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 using Flare.Theme.FluentUI2;
 
 namespace Flare.Legacy;

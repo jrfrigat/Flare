@@ -1,7 +1,7 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Builders;
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Theming;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
 
 namespace Flare.Core.Tests;
 

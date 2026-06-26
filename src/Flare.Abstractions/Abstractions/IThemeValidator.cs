@@ -1,4 +1,4 @@
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// Validates that a theme provides all required tokens. Use to catch missing tokens

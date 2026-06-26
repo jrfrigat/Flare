@@ -1,6 +1,6 @@
-using Flare.Core.Tokens.Components;
+using Flare.Abstractions.Tokens.Components;
 
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>
 /// The non-color half of a theme: typography, shape, motion, state, elevation GEOMETRY,

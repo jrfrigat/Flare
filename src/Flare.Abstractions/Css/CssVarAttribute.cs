@@ -2,7 +2,7 @@ namespace Flare.Css;
 
 /// <summary>
 /// Declares which CSS custom-property NAME a design-token VALUE property populates, linking the
-/// two token systems: the value records under <c>Flare.Core.Tokens(.Components)</c> (per-theme
+/// two token systems: the value records under <c>Flare.Abstractions.Tokens(.Components)</c> (per-theme
 /// settings) and the name constants under <c>Flare.Css.Tokens.*</c> (the <c>--flare-*</c> registry).
 /// <para>
 /// The mapping is otherwise expressed only imperatively in <c>CssVarMap.FlattenDesign</c>; this

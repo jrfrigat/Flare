@@ -1,6 +1,6 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
-namespace Flare.Core.Abstractions;
+namespace Flare.Abstractions;
 
 /// <summary>
 /// Supplies a set of <see cref="Palette"/>s for assembly auto-discovery. Implement this on a class

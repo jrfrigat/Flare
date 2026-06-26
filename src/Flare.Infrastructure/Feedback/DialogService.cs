@@ -1,8 +1,8 @@
-using Flare.Core.Abstractions;
+using Flare.Abstractions;
 
-namespace Flare.Core.Services;
+namespace Flare.Infrastructure;
 
-/// <summary>Default <see cref="Flare.Core.Abstractions.IDialogService"/> backed by a host dialog component.</summary>
+/// <summary>Default <see cref="Flare.Abstractions.IDialogService"/> backed by a host dialog component.</summary>
 public sealed class DialogService : IDialogService
 {
     private TaskCompletionSource<bool?>? _tcs;

@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>Box-shadow values for the elevation scale (levels 0-5).</summary>
 public sealed record ElevationTokens

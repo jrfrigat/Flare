@@ -1,9 +1,9 @@
-@namespace Flare.Core.Components
+@namespace Flare.Components
 @implements IAsyncDisposable
 @inject IThemeService ThemeService
 @inject IThemeStorageService ThemeStorage
 @inject IThemeJsService ThemeJsService
-@using Flare.Core.Tokens
+@using Flare.Abstractions.Tokens
 
 <CascadingValue Value="@_snapshot" IsFixed="false">
     <CascadingValue Value="@ThemeService" IsFixed="false">

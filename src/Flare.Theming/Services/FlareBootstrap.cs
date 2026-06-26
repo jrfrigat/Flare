@@ -1,7 +1,7 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 using System.Text;
 
-namespace Flare.Core.Services;
+namespace Flare.Theming;
 
 /// <summary>
 /// Generates the synchronous anti-FOUC bootstrap script that sets the initial theme/palette/mode

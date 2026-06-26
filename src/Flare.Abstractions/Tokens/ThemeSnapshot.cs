@@ -1,6 +1,6 @@
-using Flare.Core.Abstractions;
+using Flare.Abstractions;
 
-namespace Flare.Core.Tokens;
+namespace Flare.Abstractions.Tokens;
 
 /// <summary>
 /// Immutable snapshot of the current theme state. Cascaded via [CascadingParameter] to

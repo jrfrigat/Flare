@@ -1,6 +1,6 @@
-using Flare.Core.Abstractions;
+using Flare.Abstractions;
 
-namespace Flare.Core.Services;
+namespace Flare.Infrastructure;
 
 internal sealed class NullThemeStorage : IThemeStorageService
 {

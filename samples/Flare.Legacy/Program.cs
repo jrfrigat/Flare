@@ -1,4 +1,4 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 using Flare.Extensions;
 using Flare.Legacy;
 using Flare.Legacy.Services;

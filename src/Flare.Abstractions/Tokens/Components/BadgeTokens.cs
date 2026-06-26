@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>Per-theme token values for <c>FlareBadge</c>.</summary>
 public sealed record BadgeTokens

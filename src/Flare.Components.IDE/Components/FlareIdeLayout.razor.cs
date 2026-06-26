@@ -1,5 +1,5 @@
 using Flare.Components.IDE.Services;
-using Flare.Core.Components;
+using Flare.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;

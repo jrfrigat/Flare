@@ -1,10 +1,8 @@
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
-// NOTE: namespace intentionally kept as Flare.Core.Services during the structural refactor so existing
-// `using Flare.Core.Services;` references (themes, services) keep resolving. The port (IPaletteGenerator)
-// and its input DTO (PaletteSeed) live in Flare.Abstractions; the DefaultPaletteGenerator implementation
-// stays in the theming engine. The namespace is realigned to Flare.Abstractions in the rename phase.
-namespace Flare.Core.Services;
+// The port (IPaletteGenerator) and its input DTO (PaletteSeed) live in Flare.Abstractions; the
+// DefaultPaletteGenerator implementation lives in the theming engine (Flare.Theming).
+namespace Flare.Abstractions;
 
 /// <summary>Inputs for generating a palette: a brand color plus optional hints.</summary>
 public readonly record struct PaletteSeed(string Main, string? Background = null, string? Secondary = null);

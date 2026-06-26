@@ -1,4 +1,4 @@
-namespace Flare.Core.Tokens.Components;
+namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
 /// Per-theme tokens for <c>FlareSlider</c>. Geometry tokens default to the keyword <c>initial</c>,
