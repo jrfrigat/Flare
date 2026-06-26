@@ -49,6 +49,7 @@
         var seg = path.Contains('/') ? path[(path.LastIndexOf('/') + 1)..] : path;
         return seg switch
         {
+            "ide" => "Flare.Components.IDE",
             "carousel" => "Flare.Components.Carousel",
             "kanban" => "Flare.Components.Kanban",
             "qrcode" => "Flare.Components.QrCode",

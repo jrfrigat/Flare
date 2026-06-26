@@ -397,7 +397,7 @@
     <value>Buttons</value>
   </data>
   <data name="Buttons_Subtitle" xml:space="preserve">
-    <value>FlareButton - 5 variants, 3 sizes, icon support.</value>
+    <value>FlareButton - 5 variants, 5 sizes, icon support.</value>
   </data>
   <data name="Buttons_Variants" xml:space="preserve">
     <value>Variants</value>
@@ -1780,7 +1780,7 @@
     <value>Buttons</value>
   </data>
   <data name="Home_Card_Buttons_Desc" xml:space="preserve">
-    <value>5 variants · 3 sizes</value>
+    <value>5 variants · 5 sizes</value>
   </data>
   <data name="Home_Card_Inputs" xml:space="preserve">
     <value>Inputs</value>

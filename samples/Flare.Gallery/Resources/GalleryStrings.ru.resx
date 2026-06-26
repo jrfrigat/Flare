@@ -397,7 +397,7 @@
     <value>Кнопки</value>
   </data>
   <data name="Buttons_Subtitle" xml:space="preserve">
-    <value>FlareButton - 5 вариантов, 3 размера, поддержка иконок.</value>
+    <value>FlareButton - 5 вариантов, 5 размеров, поддержка иконок.</value>
   </data>
   <data name="Buttons_Variants" xml:space="preserve">
     <value>Варианты</value>
@@ -1780,7 +1780,7 @@
     <value>Кнопки</value>
   </data>
   <data name="Home_Card_Buttons_Desc" xml:space="preserve">
-    <value>5 вариантов · 3 размера</value>
+    <value>5 вариантов · 5 размеров</value>
   </data>
   <data name="Home_Card_Inputs" xml:space="preserve">
     <value>Поля ввода</value>

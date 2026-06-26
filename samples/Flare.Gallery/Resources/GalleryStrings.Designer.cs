@@ -1177,7 +1177,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareButton - 5 variants, 3 sizes, icon support..
+        ///   Ищет локализованную строку, похожую на FlareButton - 5 variants, 5 sizes, icon support..
         /// </summary>
         public static string Buttons_Subtitle {
             get {
@@ -3202,7 +3202,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на 5 variants · 3 sizes.
+        ///   Ищет локализованную строку, похожую на 5 variants · 5 sizes.
         /// </summary>
         public static string Home_Card_Buttons_Desc {
             get {
