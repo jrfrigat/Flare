@@ -197,7 +197,7 @@ else
         var sb = new System.Text.StringBuilder();
         for (var i = 0; i <= seg; i++)
         {
-            var t = 2 * Math.PI * i / seg;
+            var t = 2 * Math.PI * i / seg; //-V3064 seg is a fixed positive segment count (120) from the sole caller
             var rr = r + amp * Math.Sin(waves * t + phase);
             var x = cx + rr * Math.Cos(t);
             var y = cy + rr * Math.Sin(t);

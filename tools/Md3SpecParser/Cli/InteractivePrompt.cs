@@ -41,6 +41,7 @@ public static class InteractivePrompt
     private static IReadOnlyList<TypeGroup> AskTypesCheckbox(IReadOnlyList<TypeGroup> candidates, GenerationMode mode)
     {
         var n = candidates.Count;
+        if (n == 0) return candidates; // nothing to choose; also keeps the cursor wrap (% n) below safe
         var chosen = new bool[n];
         // In New mode pre-check only the missing files; in Full pre-check everything.
         for (var i = 0; i < n; i++)

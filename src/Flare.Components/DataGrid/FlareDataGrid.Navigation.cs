@@ -84,7 +84,8 @@ public partial class FlareDataGrid<TItem>
             case "PageUp": await SetPage(_page - 1); break;
             case "Enter" or " ":
                 // Select/deselect focused row
-                if (SelectionMode != SelectionMode.None && _focusRow >= 0 && _focusRow < rows.Count)
+                // _focusRow is >= 0 here: the guard above promotes a negative focus to 0 and returns.
+                if (SelectionMode != SelectionMode.None && _focusRow < rows.Count)
                 {
                     await HandleRowClickAsync(rows[_focusRow]);
                     StateHasChanged();
@@ -92,7 +93,7 @@ public partial class FlareDataGrid<TItem>
                 break;
             case "Delete":
                 // Start editing focused row if editable
-                if (_focusRow >= 0 && _focusRow < rows.Count && _inlineEditEnabled)
+                if (_focusRow < rows.Count && _inlineEditEnabled)
                 {
                     BeginEdit(rows[_focusRow]);
                     StateHasChanged();
