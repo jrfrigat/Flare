@@ -17,7 +17,6 @@ COPY ["src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj",                 
 COPY ["src/Flare.Theme.Aero/Flare.Theme.Aero.csproj",                               "src/Flare.Theme.Aero/"]
 COPY ["src/Flare.Theme.LiquidGlass/Flare.Theme.LiquidGlass.csproj",                 "src/Flare.Theme.LiquidGlass/"]
 COPY ["src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj",               "src/Flare.Theme.VisualStudio/"]
-COPY ["src/Flare.Icons/Flare.Icons.csproj",                                         "src/Flare.Icons/"]
 COPY ["src/Flare/Flare.csproj",                                                     "src/Flare/"]
 COPY ["samples/Flare.Gallery.Generators/Flare.Gallery.Generators.csproj",           "samples/Flare.Gallery.Generators/"]
 COPY ["samples/Flare.Gallery/Flare.Gallery.csproj",                                 "samples/Flare.Gallery/"]

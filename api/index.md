@@ -11,7 +11,6 @@ comments of every public type in the Flare libraries.
 | `Flare.Core` | `Flare.Core.*` | Abstractions, base component, theme/token services. |
 | `Flare.Components` | `Flare.Components` | The 100+ UI components and their parameter enums. |
 | `Flare.Components.*` | `Flare.Components.*` | Opt-in heavy components (Kanban, Media, RichTextEditor, Carousel, Transfer, QrCode, IDE). |
-| `Flare.Icons` | `Flare.Icons` | Icon set helpers. |
 | `Flare.Theme.*` | `Flare.Theme.*` | Design-system theme packages (MD3 Expressive, Fluent UI 2, Aero, Liquid Glass, Visual Studio). |
 
 Browse the namespaces in the table of contents on the left. For task-oriented documentation, start

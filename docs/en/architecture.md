@@ -25,7 +25,6 @@ Theme packages (each references only Flare.Core, none referenced by the umbrella
 Optional component packages (each -> Flare.Core, some -> Flare.Components):
   Flare.Components.Carousel, .Kanban, .Transfer, .QrCode,
   .RichTextEditor, .Media, .IDE
-  Flare.Icons
 
 samples/Flare.Gallery        -> Flare (umbrella) + all theme packages
 tests/Flare.Core.Tests       -> Flare.Core

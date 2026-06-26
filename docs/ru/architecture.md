@@ -25,7 +25,6 @@ Flare (umbrella)
 Опциональные пакеты компонентов (каждый -> Flare.Core, некоторые -> Flare.Components):
   Flare.Components.Carousel, .Kanban, .Transfer, .QrCode,
   .RichTextEditor, .Media, .IDE
-  Flare.Icons
 
 samples/Flare.Gallery        -> Flare (umbrella) + все пакеты тем
 tests/Flare.Core.Tests       -> Flare.Core

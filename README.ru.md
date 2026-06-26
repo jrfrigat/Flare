@@ -194,7 +194,6 @@ Flare.Components.QrCode          <- QR-код
 Flare.Components.RichTextEditor  <- Редактор форматированного текста
 Flare.Components.Media           <- SignaturePad, VideoPlayer, FileUpload
 Flare.Components.IDE             <- IDE-макет: Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar
-Flare.Icons             <- Material Symbols + кастомные path-данные иконок
 Flare.Theme.MaterialDesign3Expressive <- дизайн-токены MD3 + палитры Material + тональный генератор
 Flare.Theme.FluentUI2   <- дизайн-токены Fluent UI 2 + палитры Office + рампа-генератор
 Flare.Theme.Aero        <- дизайн-токены Aero + палитры + рампа-генератор
