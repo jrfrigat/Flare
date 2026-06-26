@@ -194,5 +194,6 @@ public class FlareTestContext : BunitContext
         Services.AddScoped<Flare.Components.Services.IUiJsService, Flare.Components.Services.UiJsService>();
         Services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
         Services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();
+        Services.AddScoped<Flare.Components.Services.IHighlightJsService, Flare.Components.Services.HighlightJsService>();
     }
 }

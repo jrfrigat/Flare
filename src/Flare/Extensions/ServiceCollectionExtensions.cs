@@ -88,6 +88,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<Flare.Components.Services.IUiJsService, Flare.Components.Services.UiJsService>();
         services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
         services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();
+        services.AddScoped<Flare.Components.Services.IHighlightJsService, Flare.Components.Services.HighlightJsService>();
 
         return services;
     }
