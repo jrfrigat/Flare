@@ -188,7 +188,7 @@
         if (_isOpen == _outsideRegistered) return;
         try
         {
-            _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
+            _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-overlay.js");
             if (_isOpen && _listbox is not null)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);

@@ -274,7 +274,7 @@
         {
             try
             {
-                _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
+                _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-overlay.js");
                 if (_open)
                     await _module.InvokeVoidAsync("positionAnchoredPanel", _panelId, _fieldEl, _panelEl, new { });
                 else

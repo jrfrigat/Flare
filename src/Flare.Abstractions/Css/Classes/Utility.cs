@@ -123,7 +123,7 @@ public static class Codeblock
     public const string Textarea = "flare-codeblock__textarea";
 
     /// <summary>
-    /// Syntax-highlight token classes emitted by the built-in tokenizer (flare-theme.js
+    /// Syntax-highlight token classes emitted by the built-in tokenizer (flare-highlight.js
     /// <c>getHighlightedHtml</c>) inside <see cref="Highlight"/> and colored by codeblock.css.
     /// They are a JS-to-CSS contract; these constants exist so the classes are discoverable
     /// and tracked (not referenced from C#).
