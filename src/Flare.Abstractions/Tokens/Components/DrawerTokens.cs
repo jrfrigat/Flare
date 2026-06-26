@@ -1,3 +1,5 @@
+using Flare.Css;
+using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -7,56 +9,56 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record DrawerTokens
 {
     /// <summary>Background color of the drawer surface.</summary>
-    public string SurfaceColor { get; init; } = "var(--flare-color-surface-container-low)";
+    [CssVar(DrawerPanel.SurfaceColor)] public string SurfaceColor { get; init; } = "var(--flare-color-surface-container-low)";
 
     /// <summary>Width of the drawer in its default state.</summary>
-    public string Width { get; init; } = "360px";
+    [CssVar(DrawerPanel.Width)] public string Width { get; init; } = "360px";
 
     /// <summary>Width of the mini variant drawer.</summary>
-    public string MiniWidth { get; init; } = "72px";
+    [CssVar(DrawerPanel.MiniWidth)] public string MiniWidth { get; init; } = "72px";
 
     /// <summary>Width of the drawer when expanded to a specific breakpoint (sm/md/lg/xl).</summary>
-    public string BreakpointSmWidth { get; init; } = "256px";
+    [CssVar(DrawerPanel.BreakpointSmWidth)] public string BreakpointSmWidth { get; init; } = "256px";
 
     /// <summary>Width of the drawer at the md breakpoint.</summary>
-    public string BreakpointMdWidth { get; init; } = "256px";
+    [CssVar(DrawerPanel.BreakpointMdWidth)] public string BreakpointMdWidth { get; init; } = "256px";
 
     /// <summary>Width of the drawer at the lg breakpoint.</summary>
-    public string BreakpointLgWidth { get; init; } = "360px";
+    [CssVar(DrawerPanel.BreakpointLgWidth)] public string BreakpointLgWidth { get; init; } = "360px";
 
     /// <summary>Width of the drawer at the xl breakpoint.</summary>
-    public string BreakpointXlWidth { get; init; } = "360px";
+    [CssVar(DrawerPanel.BreakpointXlWidth)] public string BreakpointXlWidth { get; init; } = "360px";
 
     /// <summary>Elevation (box-shadow) of the drawer.</summary>
-    public string Elevation { get; init; } = "var(--flare-elevation-1)";
+    [CssVar(DrawerPanel.Elevation)] public string Elevation { get; init; } = "var(--flare-elevation-1)";
 
     /// <summary>Border radius of the drawer (for top/bottom variants).</summary>
-    public string Radius { get; init; } = "var(--flare-shape-extra-large)";
+    [CssVar(DrawerPanel.Radius)] public string Radius { get; init; } = "var(--flare-shape-extra-large)";
 
     /// <summary>Background color of the scrim (overlay).</summary>
-    public string ScrimColor { get; init; } = "var(--flare-color-scrim)";
+    [CssVar(DrawerPanel.ScrimColor)] public string ScrimColor { get; init; } = "var(--flare-color-scrim)";
 
     /// <summary>Opacity of the scrim.</summary>
-    public string ScrimOpacity { get; init; } = "0.32";
+    [CssVar(DrawerPanel.ScrimOpacity)] public string ScrimOpacity { get; init; } = "0.32";
 
     /// <summary>Transition duration for drawer open/close.</summary>
-    public string TransitionDuration { get; init; } = "var(--flare-motion-duration-medium2)";
+    [CssVar(DrawerPanel.TransitionDuration)] public string TransitionDuration { get; init; } = "var(--flare-motion-duration-medium2)";
 
     /// <summary>Transition easing for drawer open/close.</summary>
-    public string TransitionEasing { get; init; } = "var(--flare-motion-easing-standard)";
+    [CssVar(DrawerPanel.TransitionEasing)] public string TransitionEasing { get; init; } = "var(--flare-motion-easing-standard)";
 
     /// <summary>Padding inside the drawer header.</summary>
-    public string HeaderPadding { get; init; } = "16px";
+    [CssVar(DrawerPanel.HeaderPadding)] public string HeaderPadding { get; init; } = "16px";
 
     /// <summary>Padding inside the drawer content.</summary>
-    public string ContentPadding { get; init; } = "8px 0";
+    [CssVar(DrawerPanel.ContentPadding)] public string ContentPadding { get; init; } = "8px 0";
 
     /// <summary>Color of the drawer title text.</summary>
-    public string TitleColor { get; init; } = "var(--flare-color-on-surface)";
+    [CssVar(DrawerPanel.TitleColor)] public string TitleColor { get; init; } = "var(--flare-color-on-surface)";
 
     /// <summary>Font family of the drawer title.</summary>
-    public string TitleFontFamily { get; init; } = "var(--flare-typescale-title-large-font)";
+    [CssVar(DrawerPanel.TitleFontFamily)] public string TitleFontFamily { get; init; } = "var(--flare-typescale-title-large-font)";
 
     /// <summary>Font size of the drawer title.</summary>
-    public string TitleFontSize { get; init; } = "var(--flare-typescale-title-large-size)";
+    [CssVar(DrawerPanel.TitleFontSize)] public string TitleFontSize { get; init; } = "var(--flare-typescale-title-large-size)";
 }

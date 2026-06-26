@@ -1,3 +1,5 @@
+using Flare.Css;
+using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
@@ -8,32 +10,32 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record TableOfContentsTokens
 {
     /// <summary>Active (current section) link text color. MD3 = on-secondary-container (text on the pill).</summary>
-    public string ActiveColor { get; init; } = "var(--flare-color-on-secondary-container)";
+    [CssVar(TableOfContents.ActiveColor)] public string ActiveColor { get; init; } = "var(--flare-color-on-secondary-container)";
 
     /// <summary>Color of inactive links. MD3 = on-surface-variant.</summary>
-    public string InactiveColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(TableOfContents.InactiveColor)] public string InactiveColor { get; init; } = "var(--flare-color-on-surface-variant)";
 
     /// <summary>Color of the title ("On this page"). MD3 = on-surface-variant.</summary>
-    public string TitleColor { get; init; } = "var(--flare-color-on-surface-variant)";
+    [CssVar(TableOfContents.TitleColor)] public string TitleColor { get; init; } = "var(--flare-color-on-surface-variant)";
 
     /// <summary>Color of the vertical rail beside the links. MD3 has no rail (transparent).</summary>
-    public string RailColor { get; init; } = "transparent";
+    [CssVar(TableOfContents.RailColor)] public string RailColor { get; init; } = "transparent";
 
     /// <summary>Width of the vertical rail. MD3 = 0 (no rail); Fluent = 1px.</summary>
-    public string RailWidth { get; init; } = "0";
+    [CssVar(TableOfContents.RailWidth)] public string RailWidth { get; init; } = "0";
 
     /// <summary>Background behind the active link. MD3 = secondary-container (the pill); Fluent = transparent.</summary>
-    public string ActiveBg { get; init; } = "var(--flare-color-secondary-container)";
+    [CssVar(TableOfContents.ActiveBg)] public string ActiveBg { get; init; } = "var(--flare-color-secondary-container)";
 
     /// <summary>Corner radius of the active-link surface. MD3 = full (pill); Fluent = 0.</summary>
-    public string ActiveRadius { get; init; } = "var(--flare-shape-full)";
+    [CssVar(TableOfContents.ActiveRadius)] public string ActiveRadius { get; init; } = "var(--flare-shape-full)";
 
     /// <summary>Width of the active-link left marker bar. MD3 = 0 (pill, no bar); Fluent = 3px.</summary>
-    public string MarkerWidth { get; init; } = "0";
+    [CssVar(TableOfContents.MarkerWidth)] public string MarkerWidth { get; init; } = "0";
 
     /// <summary>Horizontal padding inside each link (gives the MD3 pill its width). MD3 = 0.75rem; Fluent = 0.</summary>
-    public string LinkPadX { get; init; } = "0.75rem";
+    [CssVar(TableOfContents.LinkPadX)] public string LinkPadX { get; init; } = "0.75rem";
 
     /// <summary>Indent applied per heading-depth level.</summary>
-    public string Indent { get; init; } = "0.75rem";
+    [CssVar(TableOfContents.Indent)] public string Indent { get; init; } = "0.75rem";
 }

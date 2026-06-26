@@ -1,18 +1,20 @@
+using Flare.Css;
+using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens;
 
 /// <summary>State-layer opacities for hover, focus, pressed, dragged and disabled states.</summary>
 public sealed record StateTokens
 {
     /// <summary>Hover opacity token.</summary>
-    public required string HoverOpacity { get; init; }
+    [CssVar(State.HoverOpacity)] public required string HoverOpacity { get; init; }
     /// <summary>Focus opacity token.</summary>
-    public required string FocusOpacity { get; init; }
+    [CssVar(State.FocusOpacity)] public required string FocusOpacity { get; init; }
     /// <summary>Pressed opacity token.</summary>
-    public required string PressedOpacity { get; init; }
+    [CssVar(State.PressedOpacity)] public required string PressedOpacity { get; init; }
     /// <summary>Dragged opacity token.</summary>
-    public required string DraggedOpacity { get; init; }
+    [CssVar(State.DraggedOpacity)] public required string DraggedOpacity { get; init; }
     /// <summary>Disabled opacity token.</summary>
-    public required string DisabledOpacity { get; init; }
+    [CssVar(State.DisabledOpacity)] public required string DisabledOpacity { get; init; }
     /// <summary>Disabled container opacity token.</summary>
-    public required string DisabledContainerOpacity { get; init; }
+    [CssVar(State.DisabledContainerOpacity)] public required string DisabledContainerOpacity { get; init; }
 }

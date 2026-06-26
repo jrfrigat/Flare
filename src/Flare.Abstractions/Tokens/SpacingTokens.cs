@@ -1,3 +1,5 @@
+using Flare.Css;
+using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens;
 
 /// <summary>
@@ -13,29 +15,29 @@ namespace Flare.Abstractions.Tokens;
 public sealed record SpacingTokens
 {
     /// <summary>0 (no space).</summary>
-    public string S0 { get; init; } = "0";
+    [CssVar(Spacing.S0)] public string S0 { get; init; } = "0";
     /// <summary>0.125rem (2px).</summary>
-    public string S1 { get; init; } = "0.125rem";
+    [CssVar(Spacing.S1)] public string S1 { get; init; } = "0.125rem";
     /// <summary>0.25rem (4px).</summary>
-    public string S2 { get; init; } = "0.25rem";
+    [CssVar(Spacing.S2)] public string S2 { get; init; } = "0.25rem";
     /// <summary>0.375rem (6px).</summary>
-    public string S3 { get; init; } = "0.375rem";
+    [CssVar(Spacing.S3)] public string S3 { get; init; } = "0.375rem";
     /// <summary>0.5rem (8px).</summary>
-    public string S4 { get; init; } = "0.5rem";
+    [CssVar(Spacing.S4)] public string S4 { get; init; } = "0.5rem";
     /// <summary>0.625rem (10px).</summary>
-    public string S5 { get; init; } = "0.625rem";
+    [CssVar(Spacing.S5)] public string S5 { get; init; } = "0.625rem";
     /// <summary>0.75rem (12px).</summary>
-    public string S6 { get; init; } = "0.75rem";
+    [CssVar(Spacing.S6)] public string S6 { get; init; } = "0.75rem";
     /// <summary>1rem (16px).</summary>
-    public string S8 { get; init; } = "1rem";
+    [CssVar(Spacing.S8)] public string S8 { get; init; } = "1rem";
     /// <summary>1.25rem (20px).</summary>
-    public string S10 { get; init; } = "1.25rem";
+    [CssVar(Spacing.S10)] public string S10 { get; init; } = "1.25rem";
     /// <summary>1.5rem (24px).</summary>
-    public string S12 { get; init; } = "1.5rem";
+    [CssVar(Spacing.S12)] public string S12 { get; init; } = "1.5rem";
     /// <summary>2rem (32px).</summary>
-    public string S16 { get; init; } = "2rem";
+    [CssVar(Spacing.S16)] public string S16 { get; init; } = "2rem";
     /// <summary>3rem (48px).</summary>
-    public string S24 { get; init; } = "3rem";
+    [CssVar(Spacing.S24)] public string S24 { get; init; } = "3rem";
     /// <summary>4rem (64px).</summary>
-    public string S32 { get; init; } = "4rem";
+    [CssVar(Spacing.S32)] public string S32 { get; init; } = "4rem";
 }

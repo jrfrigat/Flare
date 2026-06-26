@@ -1,6 +1,5 @@
 using Flare.Abstractions;
 using Flare.Theming;
-using Flare.Theming;
 using Flare.Abstractions.Tokens;
 
 namespace Flare.Core.Tests;
