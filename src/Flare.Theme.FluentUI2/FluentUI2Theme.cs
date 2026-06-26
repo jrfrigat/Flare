@@ -1,13 +1,19 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
 
 namespace Flare.Theme.FluentUI2;
 
 /// <summary>Fluent UI 2 theme (design tokens). Light/dark is a mode; colors come from a palette.</summary>
 public sealed class Fluent2Theme : ITheme
 {
-    public string Id => "fluent2";
+    /// <summary>The stable theme id - use this constant to switch themes without a magic string.</summary>
+
+    public const string ThemeId = "fluent2";
+
+    /// <inheritdoc />
+
+    public string Id => ThemeId;
     public string DisplayName => "Fluent UI 2";
     public DesignTokens Design => FluentUI2Tokens.Design;
     public string DefaultPaletteId => Fluent2Palettes.Blue.Id;
@@ -27,13 +33,28 @@ public sealed class Fluent2Theme : ITheme
 /// <summary>Built-in Fluent UI 2 palettes (Office brand colors).</summary>
 public static class Fluent2Palettes
 {
+    /// <summary>Palette id for <c>Blue</c> (<c>fluent-blue</c>); switch palettes without a magic string.</summary>
+    public const string BlueId = "fluent-blue";
+    /// <summary>Palette id for <c>Word</c> (<c>fluent-word</c>); switch palettes without a magic string.</summary>
+    public const string WordId = "fluent-word";
+    /// <summary>Palette id for <c>Excel</c> (<c>fluent-excel</c>); switch palettes without a magic string.</summary>
+    public const string ExcelId = "fluent-excel";
+    /// <summary>Palette id for <c>PowerPoint</c> (<c>fluent-powerpoint</c>); switch palettes without a magic string.</summary>
+    public const string PowerPointId = "fluent-powerpoint";
+    /// <summary>Palette id for <c>Teams</c> (<c>fluent-teams</c>); switch palettes without a magic string.</summary>
+    public const string TeamsId = "fluent-teams";
+    /// <summary>Palette id for <c>Outlook</c> (<c>fluent-outlook</c>); switch palettes without a magic string.</summary>
+    public const string OutlookId = "fluent-outlook";
+    /// <summary>Palette id for <c>OneNote</c> (<c>fluent-onenote</c>); switch palettes without a magic string.</summary>
+    public const string OneNoteId = "fluent-onenote";
+
     /// <summary>Source label for grouping Fluent palettes in pickers.</summary>
     public const string SourceName = "Fluent UI 2";
 
     /// <summary>The default Fluent (communication blue) palette -- light + dark.</summary>
     public static readonly Palette Blue = new()
     {
-        Id = "fluent-blue",
+        Id = BlueId,
         Name = "Blue",
         Source = SourceName,
         Light = FluentUI2Tokens.LightColors,
@@ -44,17 +65,17 @@ public static class Fluent2Palettes
         PaletteFactory.Brand(id, name, FluentUI2Tokens.LightColors, FluentUI2Tokens.DarkColors, seed, SourceName);
 
     /// <summary>Word blue.</summary>
-    public static readonly Palette Word = Brand("fluent-word", "Word", "#2B579A");
+    public static readonly Palette Word = Brand(WordId, "Word", "#2B579A");
     /// <summary>Excel green.</summary>
-    public static readonly Palette Excel = Brand("fluent-excel", "Excel", "#217346");
+    public static readonly Palette Excel = Brand(ExcelId, "Excel", "#217346");
     /// <summary>PowerPoint orange-red.</summary>
-    public static readonly Palette PowerPoint = Brand("fluent-powerpoint", "PowerPoint", "#C43E1C");
+    public static readonly Palette PowerPoint = Brand(PowerPointId, "PowerPoint", "#C43E1C");
     /// <summary>Teams purple.</summary>
-    public static readonly Palette Teams = Brand("fluent-teams", "Teams", "#5B5FC7");
+    public static readonly Palette Teams = Brand(TeamsId, "Teams", "#5B5FC7");
     /// <summary>Outlook blue.</summary>
-    public static readonly Palette Outlook = Brand("fluent-outlook", "Outlook", "#0078D4");
+    public static readonly Palette Outlook = Brand(OutlookId, "Outlook", "#0078D4");
     /// <summary>OneNote purple.</summary>
-    public static readonly Palette OneNote = Brand("fluent-onenote", "OneNote", "#7719AA");
+    public static readonly Palette OneNote = Brand(OneNoteId, "OneNote", "#7719AA");
 
     /// <summary>All built-in Fluent palettes.</summary>
     public static IReadOnlyList<Palette> All => [Blue, Word, Excel, PowerPoint, Teams, Outlook, OneNote];

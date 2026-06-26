@@ -75,7 +75,6 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Applies a sort command to the grid.</summary>
     public async Task SortByAsync(GridColumn<TItem> column, bool shift = false)
     {
-        _sortStack.Clear();
         if (shift)
         {
             var existing = _sortStack.FindIndex(s => s.Column.Key == column.Key);

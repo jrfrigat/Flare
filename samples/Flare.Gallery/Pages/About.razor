@@ -43,10 +43,22 @@
 
 <section>
     <GallerySectionHeader Icon="new_releases" Title="@GalleryStrings.About_WhatsNew" />
-    <FlareCard Variant="CardVariant.Outlined">
-        <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v@_version - 2026-05-30</FlareText>
+    <FlareCard Variant="CardVariant.Outlined" Style="margin-bottom:1rem;">
+        <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v0.0.2 - 2026-06-27</FlareText>
         <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
-            @foreach (var item in _whatsNew)
+            @foreach (var item in _whatsNewV2)
+            {
+                <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+                    <FlareIcon Size="1rem" Color="FlareColor.Primary" Name="check_circle" Style="margin-top:2px" />
+                    <FlareText Typo="TypographyScale.BodyMedium">@item</FlareText>
+                </FlareStack>
+            }
+        </FlareStack>
+    </FlareCard>
+    <FlareCard Variant="CardVariant.Outlined">
+        <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v0.0.1 - 2026-05-30</FlareText>
+        <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+            @foreach (var item in _whatsNewV1)
             {
                 <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
                     <FlareIcon Size="1rem" Color="FlareColor.Primary" Name="check_circle" Style="margin-top:2px" />
@@ -72,15 +84,25 @@
 </FlareStack>
 
 @code {
-    private readonly string _version = "0.0.1";
+    private readonly string _version = "0.0.2";
 
     private void GoToGitHub() => Nav.NavigateTo("https://github.com/jrfrigat/Flare", forceLoad: true);
 
-    private readonly string[] _whatsNew =
+    private readonly string[] _whatsNewV2 =
+    [
+        "Clean onion / ports-and-adapters architecture: 5 rings (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) with dependencies pointing strictly inward",
+        "Flare.Components is now UI-only - every service implementation (JS interop, storage, dialog/snackbar/message-box) moved to Flare.Infrastructure; the old Flare.Core grab-bag was retired",
+        "AddFlare wires ports to adapters in the Flare.Blazor composition root, so the browser host stays swappable and Flare.Components never depends on Infrastructure",
+        "Declarative [CssVar] linkage on every design token, and typed Vars.Var(Css.Tokens.*) token values instead of magic var(--flare-*) strings",
+        "Compound components standardised on a single typed cascading context (Tree, Menu, FAB)",
+        "1,200+ automated tests, 0 failures; zero build warnings",
+    ];
+
+    private readonly string[] _whatsNewV1 =
     [
         "Theme system v2: three independent axes - design system (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026) x palette x light/dark/auto",
         "Class-toggle delivery: switching is a class swap on <html>, no per-switch CSS-var injection",
-        "Reusable palettes (Office + Material sets) and Palette.FromColors(brand) generation",
+        "Reusable palettes (Office + Material sets) and PaletteFactory.FromColors(brand) generation",
         "Override any token via Md3/Fluent2 reference records; one-line anti-FOUC bootstrap",
         "Full OWASP GS-1..GS-8 security audit - all critical findings fixed",
         "XSS protection: FlareLink, FlareBreadcrumb, FlareNavLink, FlareImage blocked javascript: URIs",
@@ -88,7 +110,6 @@
         "FlareClipboard: eval() removed, replaced with safe JS interop",
         "MarkdownParser: vbscript/data-uri/expression()/dangerous-tag defenses",
         "HtmlSanitizer and CssValidator security utilities",
-        "1,190+ automated tests, 0 failures",
         "Gallery rebuilt entirely on Flare components - no raw divs or magic code",
     ];
 

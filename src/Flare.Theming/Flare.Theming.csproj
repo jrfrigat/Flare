@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Theming</PackageId>
+    <Description>Flare theming engine: theme/palette services, palette generation, color math and the design-token to CSS-variable mapping. Depends only on Flare.Abstractions.</Description>
+    <PackageTags>blazor;theming;design-tokens;palette;material-design;fluent-ui;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.300" />
+    <PackageReference Update="MinVer" Version="7.0.0" />
+  </ItemGroup>
+
+</Project>

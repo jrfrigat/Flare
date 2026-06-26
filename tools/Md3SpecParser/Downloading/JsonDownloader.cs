@@ -56,7 +56,8 @@ public sealed class JsonDownloader : IDisposable
         var total = response.Content.Headers.ContentLength;
         await using var stream = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
 
-        var capacity = total is > 0 and < int.MaxValue ? (int)total.Value : 0;
+        // The relational pattern excludes null, so total.Value is only read when total is non-null.
+        var capacity = total is > 0 and < int.MaxValue ? (int)total.Value : 0; //-V3095
         using var buffer = new MemoryStream(capacity);
         var chunk = new byte[81920];
         long read = 0;

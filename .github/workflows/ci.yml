@@ -26,10 +26,15 @@ jobs:
         with:
           fetch-depth: 0   # MinVer needs full history/tags to compute the version
 
-      - name: Setup .NET 10
+      # The libraries multi-target net8.0/net9.0/net10.0, so all three SDKs (and their targeting
+      # packs/runtimes) are needed to build and run-test every TFM. The latest SDK (10) drives the build.
+      - name: Setup .NET (8 / 9 / 10)
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
 
       - name: Restore
         run: dotnet restore Flare.slnx
@@ -37,7 +42,10 @@ jobs:
       - name: Build (Release)
         run: dotnet build Flare.slnx -c Release --no-restore
 
-      - name: Test
+      # One run over the solution exercises every test project on every TFM it targets:
+      # Flare.Components.Tests multi-targets, so this covers the net8.0/net9.0/net10.0 library builds;
+      # Flare.Core.Tests is net10-only (it references the net10 CssAudit tool).
+      - name: Test (all TFMs)
         run: dotnet test Flare.slnx -c Release --no-build --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload test results

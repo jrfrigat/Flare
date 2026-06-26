@@ -182,7 +182,7 @@
         if (raw.Length == 0) return string.Empty;
         var result = new System.Text.StringBuilder();
         var ri = 0;
-        foreach (var mc in Pattern)
+        foreach (var mc in Pattern) //-V3080 the IsNullOrEmpty(Pattern) guard above ensures Pattern is non-null here
         {
             var isPlaceholder = mc is '#' or 'A' or '*';
             if (isPlaceholder)

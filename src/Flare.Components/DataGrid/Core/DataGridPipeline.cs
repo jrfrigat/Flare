@@ -59,9 +59,12 @@ public static class DataGridPipeline<TItem>
         else
         {
             // No grouping: count efficiently
+            // This IList fast-path is only reached when no operator ran (query is still the source
+            // list); once a sort/filter is applied, query is a deferred iterator, so the OrderBy in
+            // ApplySorts is materialized by the ToList() below -- it is never skipped.
             if (query is IList<TItem> list)
             {
-                totalCount = list.Count;
+                totalCount = list.Count; //-V3220
             }
             else
             {

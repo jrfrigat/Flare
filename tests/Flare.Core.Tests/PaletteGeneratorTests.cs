@@ -1,5 +1,5 @@
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
 
 namespace Flare.Core.Tests;
 
@@ -8,7 +8,7 @@ public class PaletteGeneratorTests
     [Fact]
     public void FromColors_SetsBrandAndIsModeDistinct()
     {
-        var p = Palette.FromColors("brand", "Brand", "#2B579A", source: "Generated");
+        var p = PaletteFactory.FromColors("brand", "Brand", "#2B579A", source: "Generated");
 
         Assert.Equal("brand", p.Id);
         Assert.Equal("Generated", p.Source);
@@ -21,7 +21,7 @@ public class PaletteGeneratorTests
     [Fact]
     public void FromColors_LightSurfacesAreLight_DarkSurfacesAreDark()
     {
-        var p = Palette.FromColors("x", "X", "#1E8E3E");
+        var p = PaletteFactory.FromColors("x", "X", "#1E8E3E");
 
         Assert.True(ColorMath.Luminance(p.Light.Surface) > 0.8, "light surface should be light");
         Assert.True(ColorMath.Luminance(p.Light.OnSurface) < 0.2, "light on-surface should be dark");
@@ -32,14 +32,14 @@ public class PaletteGeneratorTests
     [Fact]
     public void FromColors_BackgroundTintsSurface()
     {
-        var p = Palette.FromColors("y", "Y", "#0B57D0", background: "#FAFAF5");
+        var p = PaletteFactory.FromColors("y", "Y", "#0B57D0", background: "#FAFAF5");
         Assert.Equal("#FAFAF5", p.Light.Surface);
     }
 
     [Fact]
     public void Generated_Palette_Flattens_To_Full_ColorVarSet()
     {
-        var p = Palette.FromColors("z", "Z", "#00897B");
+        var p = PaletteFactory.FromColors("z", "Z", "#00897B");
         var lightVars = p.Light.FlattenColors();
 
         // a representative spread of roles is present and non-empty

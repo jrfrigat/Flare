@@ -997,8 +997,8 @@ public static class ComponentApiRegistry
 
         c[@"FlareComponentBase"] = new ApiComponentInfo(
             @"FlareComponentBase",
-            @"Flare.Core.Components.FlareComponentBase",
-            @"Flare.Core.Components",
+            @"Flare.Components.FlareComponentBase",
+            @"Flare.Components",
             @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
             null,
             new ApiParameterInfo[]
@@ -5921,8 +5921,8 @@ public static class ComponentApiRegistry
 
         e[@"MessageBoxKind"] = new ApiEnumInfo(
             @"MessageBoxKind",
-            @"Flare.Core.Abstractions.MessageBoxKind",
-            @"Flare.Core.Abstractions",
+            @"Flare.Abstractions.MessageBoxKind",
+            @"Flare.Abstractions",
             null,
             null,
             new ApiEnumMember[]
@@ -6118,8 +6118,8 @@ public static class ComponentApiRegistry
 
         e[@"SnackbarPosition"] = new ApiEnumInfo(
             @"SnackbarPosition",
-            @"Flare.Core.Abstractions.SnackbarPosition",
-            @"Flare.Core.Abstractions",
+            @"Flare.Abstractions.SnackbarPosition",
+            @"Flare.Abstractions",
             @"Anchor position of the snackbar stack on screen.",
             null,
             new ApiEnumMember[]
@@ -6138,8 +6138,8 @@ public static class ComponentApiRegistry
 
         e[@"SnackbarSeverity"] = new ApiEnumInfo(
             @"SnackbarSeverity",
-            @"Flare.Core.Abstractions.SnackbarSeverity",
-            @"Flare.Core.Abstractions",
+            @"Flare.Abstractions.SnackbarSeverity",
+            @"Flare.Abstractions",
             null,
             null,
             new ApiEnumMember[]
@@ -6328,8 +6328,8 @@ public static class ComponentApiRegistry
 
         e[@"ThemeDelivery"] = new ApiEnumInfo(
             @"ThemeDelivery",
-            @"Flare.Core.Tokens.ThemeDelivery",
-            @"Flare.Core.Tokens",
+            @"Flare.Abstractions.Tokens.ThemeDelivery",
+            @"Flare.Abstractions.Tokens",
             @"How theme/palette CSS reaches the document.",
             null,
             new ApiEnumMember[]
@@ -6341,8 +6341,8 @@ public static class ComponentApiRegistry
 
         e[@"ThemeMode"] = new ApiEnumInfo(
             @"ThemeMode",
-            @"Flare.Core.Tokens.ThemeMode",
-            @"Flare.Core.Tokens",
+            @"Flare.Abstractions.Tokens.ThemeMode",
+            @"Flare.Abstractions.Tokens",
             @"Light/dark selection for a theme. A theme carries both schemes (via its palette); the mode chooses which one is active. Auto follows the OS preference. HighContrast uses a high-contrast color scheme for accessibility.",
             null,
             new ApiEnumMember[]

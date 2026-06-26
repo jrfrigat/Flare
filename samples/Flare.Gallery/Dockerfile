@@ -3,7 +3,9 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /repo
 
 # Restore dependencies first (layer-cached unless .csproj files change)
-COPY ["src/Flare.Core/Flare.Core.csproj",                                           "src/Flare.Core/"]
+COPY ["src/Flare.Abstractions/Flare.Abstractions.csproj",                           "src/Flare.Abstractions/"]
+COPY ["src/Flare.Theming/Flare.Theming.csproj",                                     "src/Flare.Theming/"]
+COPY ["src/Flare.Infrastructure/Flare.Infrastructure.csproj",                       "src/Flare.Infrastructure/"]
 COPY ["src/Flare.Components/Flare.Components.csproj",                               "src/Flare.Components/"]
 COPY ["src/Flare.Components.IDE/Flare.Components.IDE.csproj",                       "src/Flare.Components.IDE/"]
 COPY ["src/Flare.Components.Media/Flare.Components.Media.csproj",                   "src/Flare.Components.Media/"]
@@ -17,7 +19,6 @@ COPY ["src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj",                 
 COPY ["src/Flare.Theme.Aero/Flare.Theme.Aero.csproj",                               "src/Flare.Theme.Aero/"]
 COPY ["src/Flare.Theme.LiquidGlass/Flare.Theme.LiquidGlass.csproj",                 "src/Flare.Theme.LiquidGlass/"]
 COPY ["src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj",               "src/Flare.Theme.VisualStudio/"]
-COPY ["src/Flare.Icons/Flare.Icons.csproj",                                         "src/Flare.Icons/"]
 COPY ["src/Flare/Flare.csproj",                                                     "src/Flare/"]
 COPY ["samples/Flare.Gallery.Generators/Flare.Gallery.Generators.csproj",           "samples/Flare.Gallery.Generators/"]
 COPY ["samples/Flare.Gallery/Flare.Gallery.csproj",                                 "samples/Flare.Gallery/"]

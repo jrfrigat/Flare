@@ -277,8 +277,8 @@
                 startPct = c;
                 startOuter = false;
             }
-            var fStart = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))";
-            var fRStart = startOuter ? trk : gpr;
+            var fStart = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))"; //-V3022
+            var fRStart = startOuter ? trk : gpr; //-V3022
             yield return (IsActive(startPct, 100), Style(fStart, "0", fRStart, trk));
         }
     }

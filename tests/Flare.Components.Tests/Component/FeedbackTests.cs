@@ -1,5 +1,6 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Services;
+using Flare.Infrastructure;
+using Flare.Abstractions;
+using Flare.Theming;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Flare.Components.Tests.Component;

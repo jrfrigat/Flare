@@ -34,12 +34,19 @@ Flare is a published NuGet library with token-driven theming. All component styl
 
 | What | Where |
 | :-- | :-- |
-| Token values (per-theme) | `src/Flare.Core/Tokens/Components/<Comp>Tokens.cs` |
-| CSS variable names | `src/Flare.Core/Css/Tokens/<Comp>Tokens.cs` (namespace `Flare.Css.Tokens`, holder classes `Css.Tokens.<Comp>.*`; base/helper - `Css.Tokens.Vars`) |
-| Variable emission | `src/Flare.Core/Services/CssVarMap.cs` |
+| Token values (per-theme) | `src/Flare.Abstractions/Tokens/Components/<Comp>Tokens.cs` |
+| CSS variable names | `src/Flare.Abstractions/Css/Tokens/<Comp>Tokens.cs` (namespace `Flare.Css.Tokens`, holder classes `Css.Tokens.<Comp>.*`; base/helper - `Css.Tokens.Vars`) |
+| Variable emission | `src/Flare.Theming/Services/CssVarMap.cs` |
 | MD3 values | `src/Flare.Theme.MaterialDesign3Expressive/MaterialDesignTokens.cs` (+ dark theme) |
 | Fluent values | `src/Flare.Theme.FluentUI2/FluentUI2Tokens.cs` (+ dark theme) |
-| CSS classes | `src/Flare.Core/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder classes `Css.Classes.<Comp>.*`) |
+| CSS classes | `src/Flare.Abstractions/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder classes `Css.Classes.<Comp>.*`) |
+
+> **Two token systems, linked by `[CssVar]`.** `Css/Tokens/*` holds the variable NAME constants; the
+> records under `Tokens/*` hold the per-theme VALUES. Annotate each scalar value property with
+> `[CssVar(Css.Tokens.<Comp>.<Prop>)]` (see `ButtonTokens` for the exemplar) so the value->name link is
+> declarative; the `CssVarAttributeTests` drift test fails if an annotated name is not emitted by
+> `CssVarMap.FlattenDesign`. Compound tokens that expand to several variables (per-corner radii,
+> typography) stay mapped only in the flatten.
 
 ### Token rules
 - Rely on semantic tokens: `--flare-color-*`, `--flare-shape-*`, `--flare-typescale-*`,
@@ -51,7 +58,7 @@ Flare is a published NuGet library with token-driven theming. All component styl
 - When adding a new component, always create `XxxTokens.cs` and the `Css.Tokens.Xxx` holder.
 
 ### Already-implemented token records
-The full set lives in `src/Flare.Core/Tokens/Components/`: Alert, Avatar, Badge, Button, Card,
+The full set lives in `src/Flare.Abstractions/Tokens/Components/`: Alert, Avatar, Badge, Button, Card,
 Checkbox, Chip, DataGrid, Dialog, Drawer, Fab, Input, Menu, Popover, Progress, Radio, Select,
 Slider, Snackbar, SplitButton, Switch, TableOfContents, Tabs, ToggleButton, Tooltip.
 

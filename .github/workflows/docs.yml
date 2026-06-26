@@ -1,0 +1,78 @@
+name: Docs (docfx -> Pages)
+
+# Builds the docfx site (API reference generated from XML docs + the markdown guides)
+# and publishes it to GitHub Pages at https://jrfrigat.github.io/Flare/.
+#
+# One-time setup in the repo: Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'docs/**'
+      - 'docfx.json'
+      - 'filterConfig.yml'
+      - 'templates/**'
+      - 'toc.yml'
+      - 'index.md'
+      - 'api/index.md'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+# Allow the GITHUB_TOKEN to deploy to Pages and mint an OIDC token for deploy-pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two Pages deploys at once; let an in-progress run finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build docfx site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+
+      - name: Install docfx
+        run: dotnet tool update -g docfx
+
+      # docfx reads the API from the compiled DLLs + XML docs (its bundled Roslyn cannot
+      # run the Blazor Razor source generator), so the libraries must be built first.
+      - name: Build libraries (Release)
+        run: dotnet build Flare.slnx -c Release
+        env:
+          DOTNET_NOLOGO: 'true'
+          DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+
+      - name: Build docs site
+        run: docfx docfx.json
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

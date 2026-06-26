@@ -1,5 +1,5 @@
-using Flare.Core.Tokens;
-using Flare.Core.Tokens.Components;
+using Flare.Abstractions.Tokens;
+using Flare.Abstractions.Tokens.Components;
 
 namespace Flare.Theme.LiquidGlass;
 

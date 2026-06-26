@@ -25,7 +25,8 @@
     /// <summary>Callback raised when the action is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
 
-    [CascadingParameter(Name = "CloseFabMenu")] private Action? CloseFabMenu { get; set; }
+    [CascadingParameter] private FabMenuContext? FabContext { get; set; }
+    private Action? CloseFabMenu => FabContext?.Close;
 
     protected override string ComponentCssClass => Css.Classes.FabMenu.Item;
 

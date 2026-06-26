@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IHighlightJsService Highlight
 
 <div class="@_rootClass" style="@(_heightStyle + Style)" @attributes="AdditionalAttributes">
     @if (LineNumbers)
@@ -50,7 +50,9 @@
 
     private string _displayValue => MaxLength > 0 && Value?.Length > MaxLength ? Value[..MaxLength] : Value ?? string.Empty;
 
-    private IJSObjectReference? _module;
+    // Set once the component is interactive (OnAfterRender does not run during prerender), so the
+    // highlighter is only invoked when the JS runtime is actually available.
+    private bool _jsReady;
     private ElementReference _textarea;
     private string _highlightedHtml = string.Empty;
     private string _lineNumbersText = string.Empty;
@@ -75,12 +77,11 @@
         {
             try
             {
-                _module = await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                _jsReady = true;
                 if (SmartEditing && !ReadOnly)
-                    await _module.InvokeVoidAsync("enableCodeEditorKeys", _textarea, IndentSize);
+                    await Highlight.EnableEditorKeysAsync(_textarea, IndentSize);
             }
-            catch { /* JS interop not available (prerender) */ }
+            catch { _jsReady = false; /* JS interop not available (prerender) */ }
         }
 
         var prev = _highlightedHtml;
@@ -112,7 +113,7 @@
     private async Task UpdateHighlightAsync()
     {
         var display = _displayValue;
-        if (_module is null)
+        if (!_jsReady)
         {
             _highlightedHtml = System.Web.HttpUtility.HtmlEncode(display);
             return;
@@ -120,8 +121,7 @@
 
         try
         {
-            var result = await _module.InvokeAsync<string?>(
-                "getHighlightedHtml", display, Language);
+            var result = await Highlight.HighlightAsync(display, Language);
             _highlightedHtml = result ?? System.Web.HttpUtility.HtmlEncode(display);
         }
         catch
@@ -141,12 +141,8 @@
     {
         try
         {
-            if (_module is not null)
-            {
-                if (SmartEditing && !ReadOnly)
-                    await _module.InvokeVoidAsync("disableCodeEditorKeys", _textarea);
-                await _module.DisposeAsync();
-            }
+            if (_jsReady && SmartEditing && !ReadOnly)
+                await Highlight.DisableEditorKeysAsync(_textarea);
         }
         catch { /* ignored */ }
         await base.DisposeAsync();

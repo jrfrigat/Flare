@@ -1,6 +1,7 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Infrastructure;
+using Flare.Abstractions;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -68,6 +69,7 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<IThemeStorageService, LocalStorageThemeStorage>();
+        services.AddScoped<Flare.Components.IBrowserStorage, BrowserStorage>();
         services.AddScoped<ISnackbarService, SnackbarService>();
         services.AddScoped<IDialogService, DialogService>();
         services.AddScoped<IMessageBoxService, MessageBoxService>();
@@ -82,6 +84,16 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IThemeJsService, Flare.Components.Services.ThemeJsService>();
         services.AddScoped<Flare.Components.Services.ISplitterJsService, Flare.Components.Services.SplitterJsService>();
         services.AddScoped<Flare.Components.Services.ITreeJsService, Flare.Components.Services.TreeJsService>();
+        services.AddScoped<Flare.Components.Services.IOverlayJsService, Flare.Components.Services.OverlayJsService>();
+        services.AddScoped<Flare.Components.Services.IUiJsService, Flare.Components.Services.UiJsService>();
+        services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
+        services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();
+        services.AddScoped<Flare.Components.Services.IHighlightJsService, Flare.Components.Services.HighlightJsService>();
+        services.AddScoped<Flare.Components.Services.IElementJsService, Flare.Components.Services.ElementJsService>();
+        services.AddScoped<Flare.Components.Services.ILazyJsService, Flare.Components.Services.LazyJsService>();
+        services.AddScoped<Flare.Components.Services.IInfiniteScrollJsService, Flare.Components.Services.InfiniteScrollJsService>();
+        services.AddScoped<Flare.Components.Services.ITocJsService, Flare.Components.Services.TocJsService>();
+        services.AddScoped<Flare.Components.Services.IDataGridJsService, Flare.Components.Services.DataGridJsService>();
 
         return services;
     }
@@ -330,6 +342,13 @@ public sealed class FlareOptions
     /// The reliable way to register such a theme is the explicit
     /// <see cref="ServiceCollectionExtensions.AddFlareTheme"/>, which also forces the theme assembly to
     /// load. Set this to false to opt out of scanning entirely.
+    /// </para>
+    /// <para>
+    /// <b>Performance / trimming:</b> auto-discovery walks and force-loads the whole assembly reference
+    /// graph at startup (<c>Assembly.Load</c> + <c>GetTypes()</c> on every assembly), which adds startup
+    /// cost, defeats lazy-loading, and is not trim/AOT-safe. For the smallest, fastest, trim-friendly
+    /// startup, register themes explicitly with <see cref="ServiceCollectionExtensions.AddFlareTheme"/>
+    /// and set this to <c>false</c>.
     /// </para>
     /// </summary>
     public bool RegisterAllBuiltInThemes { get; set; } = true;

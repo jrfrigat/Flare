@@ -2,6 +2,7 @@ using Flare.Components.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 
 namespace Flare.Components.Tests.Component;
 
@@ -2582,5 +2583,165 @@ public class C_FlareDataGridPagerTests : FlareTestContext
         var opts = cut.FindAll(".flare-datagrid__footer .flare-pagination option")
             .Select(o => o.TextContent.Trim()).ToList();
         Assert.Equal(["5", "10", "25"], opts);
+    }
+}
+
+// ------------------------------------------------------------------------------
+// DataGridPersistence - round-trips grid state through browser localStorage using
+// the built-in localStorage.* interop (not a custom JS module export, which is the
+// bug this guards against: the old code imported flare-theme.js and called exports
+// that never existed, so persistence silently no-op'd / threw JSException).
+// ------------------------------------------------------------------------------
+
+public class C_DataGridPersistenceTests
+{
+    private record Person(string Name);
+
+    // Minimal IJSRuntime that implements an in-memory localStorage, so SaveAsync/LoadAsync/ClearAsync
+    // exercise the real interop identifiers ("localStorage.setItem" etc.) end to end.
+    private sealed class FakeLocalStorageJsRuntime : IJSRuntime
+    {
+        public readonly Dictionary<string, string> Store = new(StringComparer.Ordinal);
+
+        public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
+            => InvokeAsync<TValue>(identifier, CancellationToken.None, args);
+
+        public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken, object?[]? args)
+        {
+            switch (identifier)
+            {
+                case "localStorage.setItem":
+                    Store[(string)args![0]!] = (string)args![1]!;
+                    return new ValueTask<TValue>(default(TValue)!);
+                case "localStorage.removeItem":
+                    Store.Remove((string)args![0]!);
+                    return new ValueTask<TValue>(default(TValue)!);
+                case "localStorage.getItem":
+                    var value = Store.TryGetValue((string)args![0]!, out var v) ? v : null;
+                    return new ValueTask<TValue>((TValue)(object?)value!);
+                default:
+                    return new ValueTask<TValue>(default(TValue)!);
+            }
+        }
+    }
+
+    [Fact]
+    public async Task SaveThenLoad_RoundTripsState_ThroughLocalStorage()
+    {
+        var js = new FakeLocalStorageJsRuntime();
+        var persistence = new DataGridPersistence<Person>(new Flare.Infrastructure.BrowserStorage(js),"grid-key");
+
+        var state = new DataGridPersistedState
+        {
+            Sorts = [new PersistedSort { Key = "Name", Direction = "Descending" }],
+            Filters = new Dictionary<string, string> { ["Dept"] = "Eng" },
+            ColumnOrder = ["Dept", "Name"],
+            HiddenColumns = ["Score"],
+            Page = 2,
+            PageSize = 25,
+        };
+
+        await persistence.SaveAsync(state);
+
+        // Proves the fix: state is actually written to localStorage under the key
+        // (the old module-export code never reached real localStorage).
+        Assert.True(js.Store.ContainsKey("grid-key"));
+
+        var loaded = await persistence.LoadAsync();
+
+        Assert.NotNull(loaded);
+        Assert.Equal(2, loaded!.Page);
+        Assert.Equal(25, loaded.PageSize);
+        var sort = Assert.Single(loaded.Sorts!);
+        Assert.Equal("Name", sort.Key);
+        Assert.Equal("Descending", sort.Direction);
+        Assert.Equal("Eng", loaded.Filters!["Dept"]);
+        Assert.Equal(["Dept", "Name"], loaded.ColumnOrder);
+        Assert.Equal(["Score"], loaded.HiddenColumns);
+    }
+
+    [Fact]
+    public async Task Load_ReturnsNull_WhenNothingStored()
+    {
+        var js = new FakeLocalStorageJsRuntime();
+        var persistence = new DataGridPersistence<Person>(new Flare.Infrastructure.BrowserStorage(js),"absent");
+
+        Assert.Null(await persistence.LoadAsync());
+    }
+
+    [Fact]
+    public async Task Clear_RemovesStoredState()
+    {
+        var js = new FakeLocalStorageJsRuntime();
+        var persistence = new DataGridPersistence<Person>(new Flare.Infrastructure.BrowserStorage(js),"grid-key");
+        await persistence.SaveAsync(new DataGridPersistedState { PageSize = 10 });
+        Assert.True(js.Store.ContainsKey("grid-key"));
+
+        await persistence.ClearAsync();
+
+        Assert.False(js.Store.ContainsKey("grid-key"));
+    }
+}
+
+// ------------------------------------------------------------------------------
+// FlareDataGrid persistence wiring - a PersistStateKey grid must save the user's
+// FIRST change even when storage starts empty. Regression guard: _persistenceLoaded
+// was only set when prior saved state existed, so a brand-new grid silently dropped
+// every change until something had already been stored.
+// ------------------------------------------------------------------------------
+
+public class C_DataGridPersistenceWiringTests : FlareTestContext
+{
+    private record Row(string Name, int Score);
+
+    private static readonly Row[] _rows =
+    [
+        new("Bob", 2),
+        new("Alice", 1),
+        new("Carol", 3),
+    ];
+
+    private static RenderFragment Columns() => b =>
+    {
+        b.OpenComponent<FlareColumn<Row>>(0);
+        b.AddAttribute(1, "Title", "Name");
+        b.AddAttribute(2, "Field", (Func<Row, object?>)(r => r.Name));
+        b.AddAttribute(3, "Sortable", true);
+        b.CloseComponent();
+    };
+
+    [Fact]
+    public void FreshGrid_PersistsFirstUserChange_EvenWithEmptyStorage()
+    {
+        // Loose JS interop returns null for localStorage.getItem -> storage starts empty.
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, _rows.AsEnumerable())
+            .Add(x => x.PersistStateKey, "wiring-key")
+            .Add(x => x.Columns, Columns()));
+
+        // Sorting is a user change and must be persisted even with nothing previously stored.
+        cut.FindAll("thead th").First(th => th.TextContent.Contains("Name")).Click();
+
+        cut.WaitForAssertion(() => Assert.Contains(
+            JSInterop.Invocations["localStorage.setItem"],
+            i => i.Arguments.Count > 0 && i.Arguments[0] as string == "wiring-key"));
+    }
+
+    [Fact]
+    public void Restore_AppliesSavedPageSize_NotClobberedByDefault()
+    {
+        // LoadAsync reads this saved state (page size 8) back from storage on init.
+        const string json = "{\"sorts\":[],\"filters\":{},\"columnOrder\":[],\"hiddenColumns\":[],\"page\":0,\"pageSize\":8}";
+        JSInterop.Setup<string?>("localStorage.getItem", "restore-key").SetResult(json);
+
+        var cut = Render<FlareDataGrid<Row>>(p => p
+            .Add(x => x.Items, _rows.AsEnumerable())
+            .Add(x => x.PageSize, 5)
+            .Add(x => x.PersistStateKey, "restore-key")
+            .Add(x => x.Columns, Columns()));
+
+        // Regression: OnParametersSet runs after the restore and used to reset _currentPageSize to
+        // PageSize (5), discarding the persisted size. The restored 8 must win.
+        Assert.Equal(8, cut.Instance.EffectivePageSize);
     }
 }

@@ -58,7 +58,7 @@ public static partial class MarkdownParser
             }
 
             // Blockquote
-            if (line.TrimStart().StartsWith("> ") || line.TrimStart() == ">")
+            if (line.TrimStart().StartsWith("> ") || line.TrimStart() == ">") //-V3095 lines is a string[] split from text; elements are never null
             {
                 i = RenderBlockquote(lines, i, sb);
                 continue;

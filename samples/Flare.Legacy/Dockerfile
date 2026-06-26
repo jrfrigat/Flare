@@ -4,8 +4,10 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /repo
 
 # Restore dependencies first (layer-cached unless .csproj files change). Only the Flare.Legacy
-# closure is needed: Flare -> Components -> Core, plus the five built-in themes.
-COPY ["src/Flare.Core/Flare.Core.csproj",                                                       "src/Flare.Core/"]
+# closure is needed: Flare -> Components + Infrastructure -> Abstractions + Theming, plus the themes.
+COPY ["src/Flare.Abstractions/Flare.Abstractions.csproj",                                        "src/Flare.Abstractions/"]
+COPY ["src/Flare.Theming/Flare.Theming.csproj",                                                 "src/Flare.Theming/"]
+COPY ["src/Flare.Infrastructure/Flare.Infrastructure.csproj",                                    "src/Flare.Infrastructure/"]
 COPY ["src/Flare.Components/Flare.Components.csproj",                                            "src/Flare.Components/"]
 COPY ["src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj", "src/Flare.Theme.MaterialDesign3Expressive/"]
 COPY ["src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj",                                  "src/Flare.Theme.FluentUI2/"]

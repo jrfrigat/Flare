@@ -5,9 +5,10 @@
 @attribute [CascadingTypeParameter(nameof(TItem))]
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.AspNetCore.Components.Rendering
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IDataGridJsService Grid
 @inject IFlareDownload Download
 @inject IFlareClipboard Clipboard
+@inject IBrowserStorage Storage
 
 @* Rebuild the projected column set once per render if a structural change marked it dirty. *@
 @{ EnsureColumnsBuilt(); }

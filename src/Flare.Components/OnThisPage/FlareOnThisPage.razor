@@ -2,7 +2,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @implements IAsyncDisposable
-@inject IJSRuntime JS
+@inject Flare.Components.Services.ITocJsService Toc
 @inject NavigationManager Nav
 
 @if (_headings.Count > 0 || ShowWhenEmpty)
@@ -71,7 +71,7 @@
         try
         {
             _objRef = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("FlareToc.init", _handle, _objRef, Root, HeadingSelector, ScrollRoot);
+            await Toc.InitAsync(_handle, _objRef, Root, HeadingSelector, ScrollRoot);
         }
         catch (InvalidOperationException) { }
         catch (JSException) { }
@@ -98,7 +98,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        try { await JS.InvokeVoidAsync("FlareToc.dispose", _handle); }
+        try { await Toc.RemoveAsync(_handle); }
         catch (InvalidOperationException) { }
         catch (JSException) { }
         _objRef?.Dispose();

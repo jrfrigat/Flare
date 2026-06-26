@@ -20,7 +20,7 @@ internal static class Program
         }
 
         var cssDir = Path.Combine(root, "src", "Flare.Components", "wwwroot", "css");
-        var cssClassesDir = Path.Combine(root, "src", "Flare.Core", "Css", "Classes");
+        var cssClassesDir = Path.Combine(root, "src", "Flare.Abstractions", "Css", "Classes");
 
         if (!Directory.Exists(cssDir)) { Console.Error.WriteLine($"CSS folder not found: {cssDir}"); return 2; }
         if (!Directory.Exists(cssClassesDir)) { Console.Error.WriteLine($"CssClasses folder not found: {cssClassesDir}"); return 2; }
@@ -174,7 +174,9 @@ internal static class Program
         return false;
     }
 
-    private static int Generate(SortedDictionary<string, SortedSet<string>> css, ConstSet constants)
+    // Returns an int exit code for symmetry with the other verb handlers; generation has no
+    // failure path of its own, so the code is always 0.
+    private static int Generate(SortedDictionary<string, SortedSet<string>> css, ConstSet constants) //-V3009
     {
         // Classes present in CSS but not yet declared as a constant, grouped by CSS file.
         var missing = css.Where(kv => !constants.Values.Contains(kv.Key)).ToList();

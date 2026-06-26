@@ -1,0 +1,8 @@
+# Controls which APIs appear in the generated reference.
+apiRules:
+  # Razor-generated noise (one _Imports type is emitted per Razor project; RouteData
+  # is a framework re-export) - not real public API.
+  - exclude:
+      uidRegex: '\._Imports$'
+  - exclude:
+      uidRegex: '\.RouteData$'

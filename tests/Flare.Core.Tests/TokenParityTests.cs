@@ -1,6 +1,6 @@
-using Flare.Core.Services;
-using Flare.Core.Tokens;
-using Flare.Core.Tokens.Components;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
+using Flare.Abstractions.Tokens.Components;
 using System.Reflection;
 
 namespace Flare.Core.Tests;
@@ -109,7 +109,7 @@ public class TokenParityTests
 
     #region Helpers
 
-    private static DesignTokens CreateDefaultDesignTokens()
+    internal static DesignTokens CreateDefaultDesignTokens()
     {
         var typeStyle = new TypeStyle
         {

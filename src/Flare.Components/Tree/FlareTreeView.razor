@@ -7,16 +7,8 @@
     style="@Style"
     @attributes="AdditionalAttributes">
     <CascadingValue Value="1" Name="Level" IsFixed="true">
-        <CascadingValue Value="Draggable" Name="TreeDraggable" IsFixed="true">
-            <CascadingValue Value="OnItemDrop" Name="TreeOnItemDrop" IsFixed="true">
-                <CascadingValue Value="OnItemDragStart" Name="TreeOnItemDragStart" IsFixed="true">
-                    <CascadingValue Value="OnItemDragEnd" Name="TreeOnItemDragEnd" IsFixed="true">
-                        <CascadingValue Value="_dragCoordinator" Name="TreeDragCoordinator" IsFixed="true">
-                            @ChildContent
-                        </CascadingValue>
-                    </CascadingValue>
-                </CascadingValue>
-            </CascadingValue>
+        <CascadingValue Value="_treeContext" IsFixed="true">
+            @ChildContent
         </CascadingValue>
     </CascadingValue>
 </ul>
@@ -42,4 +34,21 @@
 
     // Shared with every descendant FlareTreeItem so a drop target can report the dragged source.
     private readonly TreeDragDropCoordinator _dragCoordinator = new();
+
+    // Single cascading context for the whole tree (drag config + callbacks + coordinator). Built once;
+    // [Parameter]s are applied before OnInitialized, and the cascade is fixed, matching the prior behaviour.
+    private FlareTreeContext _treeContext = default!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _treeContext = new FlareTreeContext
+        {
+            Draggable = Draggable,
+            OnItemDrop = OnItemDrop,
+            OnItemDragStart = OnItemDragStart,
+            OnItemDragEnd = OnItemDragEnd,
+            DragCoordinator = _dragCoordinator,
+        };
+    }
 }

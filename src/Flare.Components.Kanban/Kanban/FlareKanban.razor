@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@implements IAsyncDisposable
 @inject IJSRuntime JS
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes" role="group">
@@ -62,6 +63,12 @@
 
     private List<KanbanCard> _cards = [];
     private string? _dragging;
+    private IJSObjectReference? _module;
+
+    // The touch hit-test helper lives in the shared drag module (served from Flare.Components).
+    private async Task<IJSObjectReference> ModuleAsync() =>
+        _module ??= await JS.InvokeAsync<IJSObjectReference>(
+            "import", "./_content/Flare.Components/js/flare-drag.js");
 
     protected override void OnParametersSet() => _cards = Cards?.ToList() ?? [];
 
@@ -81,7 +88,10 @@
             var touch = e.ChangedTouches[0];
             try
             {
-                var colId = await JS.InvokeAsync<string?>(
+                // getKanbanColumnAtPoint is an ES-module export (not a window global), so it must be
+                // reached through the imported module, not an unqualified JS.InvokeAsync.
+                var module = await ModuleAsync();
+                var colId = await module.InvokeAsync<string?>(
                     "getKanbanColumnAtPoint", touch.ClientX, touch.ClientY);
                 if (!string.IsNullOrEmpty(colId))
                 {
@@ -102,5 +112,13 @@
             _cards[idx] = _cards[idx] with { ColumnId = colId };
         _dragging = null;
         await CardsChanged.InvokeAsync(_cards.AsReadOnly());
+    }
+
+    /// <summary>Releases the imported JS module reference.</summary>
+    public override async ValueTask DisposeAsync()
+    {
+        try { if (_module is not null) await _module.DisposeAsync(); }
+        catch { }
+        await base.DisposeAsync();
     }
 }

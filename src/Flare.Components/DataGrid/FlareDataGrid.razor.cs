@@ -436,7 +436,7 @@ public partial class FlareDataGrid<TItem>
         await base.OnInitializedAsync();
         if (!string.IsNullOrEmpty(PersistStateKey))
         {
-            _persistence = new DataGridPersistence<TItem>(JS, PersistStateKey);
+            _persistence = new DataGridPersistence<TItem>(Storage, PersistStateKey);
             var saved = await _persistence.LoadAsync();
             if (saved is not null)
             {
@@ -471,15 +471,23 @@ public partial class FlareDataGrid<TItem>
                     foreach (var k in saved.HiddenColumns)
                         _hiddenColumns.Add(k);
                 }
-                // Restore page size
+                // Restore page size. Mark it initialized so OnParametersSet's default-page-size
+                // step does not clobber the restored value (OnParametersSet runs after this).
                 if (saved.PageSize > 0)
+                {
                     _currentPageSize = saved.PageSize;
+                    _pageSizeInitialized = true;
+                }
                 // Restore page
                 if (saved.Page > 0)
                     _page = saved.Page;
-
-                _persistenceLoaded = true;
             }
+
+            // Mark ready AFTER the initial load completes, regardless of whether saved state existed:
+            // a brand-new grid with empty storage must still begin persisting the user's first change.
+            // (The restore above mutates fields directly and never triggers a save, so enabling it here
+            // does not re-persist the just-loaded state.)
+            _persistenceLoaded = true;
         }
     }
 
@@ -493,13 +501,13 @@ public partial class FlareDataGrid<TItem>
             _lastSyncedLayout = _layoutSignature;
             if (_columns.Any(c => c.Resizable))
             {
-                try { await JS.InvokeVoidAsync("FlareDataGrid.initAllResizeHandles", _tableRef); }
+                try { await Grid.InitResizeHandlesAsync(_tableRef); }
                 catch (InvalidOperationException) { }
                 catch (JSDisconnectedException) { }
             }
             if (_columns.Any(c => c.Frozen || c.FrozenRight))
             {
-                try { await JS.InvokeVoidAsync("FlareDataGrid.updateFrozenOffsets", _tableRef); }
+                try { await Grid.UpdateFrozenOffsetsAsync(_tableRef); }
                 catch (InvalidOperationException) { }
                 catch (JSDisconnectedException) { }
             }
@@ -511,7 +519,7 @@ public partial class FlareDataGrid<TItem>
             _infiniteRef ??= DotNetObjectReference.Create(this);
             try
             {
-                await JS.InvokeVoidAsync("FlareDataGrid.initInfinite", _infiniteSentinel, _wrapperRef, _infiniteRef, "160px");
+                await Grid.InitInfiniteAsync(_infiniteSentinel, _wrapperRef, _infiniteRef, "160px");
                 _infiniteObserverReady = true;
             }
             catch (InvalidOperationException) { }
@@ -525,7 +533,7 @@ public partial class FlareDataGrid<TItem>
 
     private async Task DisposeInfiniteObserverAsync()
     {
-        try { await JS.InvokeVoidAsync("FlareDataGrid.disposeInfinite", _infiniteSentinel); }
+        try { await Grid.DisposeInfiniteAsync(_infiniteSentinel); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         _infiniteObserverReady = false;

@@ -30,7 +30,6 @@
 		<ProjectReference Include="..\..\src\Flare.Components.QrCode\Flare.Components.QrCode.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.RichTextEditor\Flare.Components.RichTextEditor.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Transfer\Flare.Components.Transfer.csproj" />
-		<ProjectReference Include="..\..\src\Flare.Icons\Flare.Icons.csproj" />
 		<ProjectReference Include="..\..\src\Flare\Flare.csproj" />
 		<!--
 			Flare no longer ships themes; reference the theme packages the Gallery showcases directly.
@@ -52,20 +51,6 @@
 		<AdditionalFiles Include="Pages/Components/**/*Demo.json" />
 		
 		<AdditionalFiles Include="Pages/Components/**/Examples/*.razor" />
-	</ItemGroup>
-
-	<!--
-		Flare.Icons exposes its ~10,700 Material SVG paths as `const string` fields. The C# compiler
-		INLINES every `Icons.*` reference into the consuming assembly at compile time, so at runtime
-		nothing actually loads Flare.Icons.wasm. The trimmer cannot drop the data (ILLink does not
-		remove literal/const fields), so left as a normal reference the 6.8 MB assembly would ship in
-		the boot set and sit in the WASM heap on every page for nothing. Marking it lazy-load keeps it
-		out of the startup manifest and the linear heap; because all usage is const-inlined, it is
-		never requested. Apps that genuinely need runtime icon lookup can load it on demand via
-		LazyAssemblyLoader.
-	-->
-	<ItemGroup>
-		<BlazorWebAssemblyLazyLoad Include="Flare.Icons.wasm" />
 	</ItemGroup>
 
 	<ItemGroup>

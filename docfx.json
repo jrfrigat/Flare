@@ -1,0 +1,76 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "comment": "Read API from the compiled DLLs + sibling XML docs, NOT from source: docfx's bundled Roslyn cannot run the Blazor Razor source generator, so building .razor from source yields zero API. Run 'dotnet build -c Release' first.",
+      "src": [
+        {
+          "src": "src",
+          "files": [
+            "Flare/bin/Release/net10.0/Flare.dll",
+            "Flare.Abstractions/bin/Release/net10.0/Flare.Abstractions.dll",
+            "Flare.Theming/bin/Release/net10.0/Flare.Theming.dll",
+            "Flare.Infrastructure/bin/Release/net10.0/Flare.Infrastructure.dll",
+            "Flare.Components/bin/Release/net10.0/Flare.Components.dll",
+            "Flare.Components.Carousel/bin/Release/net10.0/Flare.Components.Carousel.dll",
+            "Flare.Components.IDE/bin/Release/net10.0/Flare.Components.IDE.dll",
+            "Flare.Components.Kanban/bin/Release/net10.0/Flare.Components.Kanban.dll",
+            "Flare.Components.Media/bin/Release/net10.0/Flare.Components.Media.dll",
+            "Flare.Components.QrCode/bin/Release/net10.0/Flare.Components.QrCode.dll",
+            "Flare.Components.RichTextEditor/bin/Release/net10.0/Flare.Components.RichTextEditor.dll",
+            "Flare.Components.Transfer/bin/Release/net10.0/Flare.Components.Transfer.dll",
+            "Flare.Theme.Aero/bin/Release/net10.0/Flare.Theme.Aero.dll",
+            "Flare.Theme.FluentUI2/bin/Release/net10.0/Flare.Theme.FluentUI2.dll",
+            "Flare.Theme.LiquidGlass/bin/Release/net10.0/Flare.Theme.LiquidGlass.dll",
+            "Flare.Theme.MaterialDesign3Expressive/bin/Release/net10.0/Flare.Theme.MaterialDesign3Expressive.dll",
+            "Flare.Theme.VisualStudio/bin/Release/net10.0/Flare.Theme.VisualStudio.dll"
+          ]
+        }
+      ],
+      "dest": "api",
+      "outputFormat": "mref",
+      "filter": "filterConfig.yml",
+      "EnumSortOrder": "alphabetic",
+      "namespaceLayout": "nested",
+      "memberLayout": "separatePages"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [ "api/**.yml", "api/index.md" ]
+      },
+      {
+        "files": [ "index.md", "toc.yml" ]
+      },
+      {
+        "files": [ "**.md", "toc.yml" ],
+        "src": "docs",
+        "dest": "docs"
+      }
+    ],
+    "resource": [
+      {
+        "files": [ "icon.png", "llms.txt" ]
+      }
+    ],
+    "output": "_site",
+    "template": [ "default", "modern", "templates/flare" ],
+    "globalMetadata": {
+      "_appName": "Flare",
+      "_appTitle": "Flare - Blazor UI components",
+      "_appFooter": "Flare - MIT licensed Blazor UI library. Docs built with docfx.",
+      "_enableSearch": true,
+      "_appLogoPath": "icon.png",
+      "_disableContribution": false,
+      "_gitContribute": {
+        "repo": "https://github.com/jrfrigat/Flare",
+        "branch": "main"
+      }
+    },
+    "sitemap": {
+      "baseUrl": "https://jrfrigat.github.io/Flare/"
+    },
+    "postProcessors": [ "ExtractSearchIndex" ]
+  }
+}

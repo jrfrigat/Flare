@@ -6,7 +6,8 @@
 
 ## Требования
 
-- .NET 10 SDK
+- .NET SDK 10 (для сборки). Библиотеки Flare **ориентированы на .NET 10, но мультитаргетятся на
+  net8.0, net9.0 и net10.0**, поэтому работают в приложении на .NET 8, 9 или 10.
 - Blazor WebAssembly **или** Blazor Server (оба поддерживаются)
 
 ---
@@ -18,7 +19,8 @@ dotnet add package Flare.Blazor
 ```
 
 Это подключит ядро:
-- `Flare.Core` - абстракции и базовые сервисы
+- `Flare.Abstractions` - порты + модель дизайн-токенов (без зависимостей)
+- `Flare.Theming` - движок тем; `Flare.Infrastructure` - адаптеры браузера/хоста
 - `Flare.Components` - 100+ UI-компонентов
 
 Flare **не содержит тем** - каждая дизайн-система это отдельный пакет. Подключите нужные:
@@ -99,8 +101,8 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 **`_Imports.razor`:**
 ```razor
 @using Flare.Components
-@using Flare.Core.Abstractions
-@using Flare.Core.Tokens
+@using Flare.Abstractions
+@using Flare.Abstractions.Tokens
 ```
 
 ---
@@ -148,6 +150,14 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
         @theme.DisplayName
     </FlareButton>
 }
+```
+
+Чтобы переключить **конкретную** тему или палитру, не запоминая строку-id, каждый пакет
+экспортирует константы - `<Theme>.ThemeId` и `<Palettes>.<Name>Id`:
+
+```csharp
+await ThemeService.SetThemeAsync(Fluent2Theme.ThemeId);     // "fluent2"
+await ThemeService.SetPaletteAsync(Fluent2Palettes.BlueId); // "fluent-blue"
 ```
 
 ---

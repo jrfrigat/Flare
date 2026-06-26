@@ -3,7 +3,8 @@
 @implements IAsyncDisposable
 @using System.Globalization
 @inject TimeProvider TimeProvider
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IElementJsService Element
+@inject Flare.Components.Services.IUiJsService Ui
 
 <div class="@BuildCssClass(_variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
@@ -131,7 +132,6 @@
     private double _panelMinWidth = 280;
     private bool _is24Hour;
     private string _bp = "Xs";
-    private IJSObjectReference? _bpModule;
     private DotNetObjectReference<FlareDateTimePicker>? _bpRef;
     private readonly string _bpId = $"dtp-{Guid.NewGuid():N}";
     private string _text = string.Empty;
@@ -153,7 +153,6 @@
         $"left:{_panelLeft.ToString("F1", CultureInfo.InvariantCulture)}px;" +
         $"min-width:{_panelMinWidth.ToString("F1", CultureInfo.InvariantCulture)}px";
 
-    private record struct FieldBounds(double Top, double Bottom, double Left, double Width, double ViewportHeight, double ViewportWidth);
 
     // Layout: Auto resolves to Panels on >= md (960px) viewports, Tabs otherwise.
     private DateTimeVariant _effectiveVariant => Mode switch
@@ -341,7 +340,7 @@
         {
             try
             {
-                var b = await JS.InvokeAsync<FieldBounds>("flareGetBounds", _fieldRef);
+                var b = await Element.GetBoundsAsync(_fieldRef);
                 // The clock dial is 256px + panel padding; keep the panel wide enough so it never overflows.
                 var floor = TimeVariant == TimePickerVariant.Dial ? 320 : 280;
                 _panelMinWidth = Math.Max(floor, b.Width);
@@ -405,9 +404,8 @@
         {
             try
             {
-                _bpModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
                 _bpRef = DotNetObjectReference.Create(this);
-                _bp = await _bpModule.InvokeAsync<string>("subscribeBreakpoint", _bpId, _bpRef);
+                _bp = await Ui.SubscribeBreakpointAsync(_bpId, _bpRef);
                 StateHasChanged();
             }
             catch { /* breakpoint sync is best-effort */ }
@@ -424,11 +422,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        if (_bpModule is not null)
-        {
-            try { await _bpModule.InvokeVoidAsync("unsubscribeBreakpoint", _bpId); } catch { }
-            try { await _bpModule.DisposeAsync(); } catch { }
-        }
+        try { await Ui.UnsubscribeBreakpointAsync(_bpId); } catch { }
         _bpRef?.Dispose();
     }
 }

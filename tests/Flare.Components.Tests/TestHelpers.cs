@@ -1,5 +1,5 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using System.Globalization;
@@ -62,8 +62,8 @@ public sealed class StubThemeService : IThemeService
     public Task SetSystemDarkAsync(bool isDark) => Task.CompletedTask;
     public Task EnsureStaticCssAsync() => Task.CompletedTask;
     public Task RequireThemeAssetsAsync(string? themeId, string? paletteId) => Task.CompletedTask;
-    public Palette GeneratePalette(string id, string name, Flare.Core.Services.PaletteSeed seed, string? source = null) =>
-        Flare.Core.Services.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
+    public Palette GeneratePalette(string id, string name, Flare.Abstractions.PaletteSeed seed, string? source = null) =>
+        Flare.Theming.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
     public void CustomizeColors(Func<ColorScheme, ColorScheme> mutate) { }
     public void CustomizeDesign(Func<DesignTokens, DesignTokens> mutate) { }
     public void SetCustomToken(string tokenName, string value) { }
@@ -104,8 +104,8 @@ public sealed class TokenThemeService : IThemeService
     public Task SetSystemDarkAsync(bool isDark) => Task.CompletedTask;
     public Task EnsureStaticCssAsync() => Task.CompletedTask;
     public Task RequireThemeAssetsAsync(string? themeId, string? paletteId) => Task.CompletedTask;
-    public Palette GeneratePalette(string id, string name, Flare.Core.Services.PaletteSeed seed, string? source = null) =>
-        Flare.Core.Services.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
+    public Palette GeneratePalette(string id, string name, Flare.Abstractions.PaletteSeed seed, string? source = null) =>
+        Flare.Theming.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
     public void CustomizeColors(Func<ColorScheme, ColorScheme> mutate) { }
     public void CustomizeDesign(Func<DesignTokens, DesignTokens> mutate) { }
     public void SetCustomToken(string tokenName, string value) { }
@@ -162,7 +162,7 @@ public sealed class StubThemeJsService : IThemeJsService
     public ValueTask SetStaticCssAsync(string css, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default) => ValueTask.CompletedTask;
-    public ValueTask SubscribeColorSchemeAsync(string id, DotNetObjectReference<Core.Components.FlareThemeProvider> dotNetRef, CancellationToken ct = default) => ValueTask.CompletedTask;
+    public ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class => ValueTask.CompletedTask;
     public ValueTask UnsubscribeColorSchemeAsync(string id, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask<bool> PrefersColorSchemeDarkAsync(CancellationToken ct = default) => ValueTask.FromResult(false);
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
@@ -183,11 +183,22 @@ public class FlareTestContext : BunitContext
         // Typed JS-interop services consumed by migrated components (clipboard/download/color extractor).
         Services.AddScoped<IFlareClipboard, FlareClipboardService>();
         Services.AddScoped<IFlareDownload, FlareDownloadService>();
+        Services.AddScoped<Flare.Components.IBrowserStorage, Flare.Infrastructure.BrowserStorage>();
 
         // Collision and Theme JS services.
         Services.AddScoped<ICollisionService, StubCollisionService>();
         Services.AddScoped<IThemeJsService, StubThemeJsService>();
         Services.AddScoped<Flare.Components.Services.ISplitterJsService, Flare.Components.Services.SplitterJsService>();
         Services.AddScoped<Flare.Components.Services.ITreeJsService, Flare.Components.Services.TreeJsService>();
+        Services.AddScoped<Flare.Components.Services.IOverlayJsService, Flare.Components.Services.OverlayJsService>();
+        Services.AddScoped<Flare.Components.Services.IUiJsService, Flare.Components.Services.UiJsService>();
+        Services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
+        Services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();
+        Services.AddScoped<Flare.Components.Services.IHighlightJsService, Flare.Components.Services.HighlightJsService>();
+        Services.AddScoped<Flare.Components.Services.IElementJsService, Flare.Components.Services.ElementJsService>();
+        Services.AddScoped<Flare.Components.Services.ILazyJsService, Flare.Components.Services.LazyJsService>();
+        Services.AddScoped<Flare.Components.Services.IInfiniteScrollJsService, Flare.Components.Services.InfiniteScrollJsService>();
+        Services.AddScoped<Flare.Components.Services.ITocJsService, Flare.Components.Services.TocJsService>();
+        Services.AddScoped<Flare.Components.Services.IDataGridJsService, Flare.Components.Services.DataGridJsService>();
     }
 }

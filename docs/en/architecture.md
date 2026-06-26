@@ -8,66 +8,101 @@ How Flare is structured, how theming works, and the contracts components rely on
 
 ## 1. Module Map
 
+Flare is layered as a **clean / onion (ports & adapters)** stack. Dependencies point strictly inward;
+the UI layer consumes **ports** (interfaces) and never references the host adapters. The composition
+root (`Flare.Blazor`) is the only package that binds ports to their adapter implementations.
+
 ### Dependency Graph
 
 ```
-Flare (umbrella)
-+-- Flare.Components
-    +-- Flare.Core
+            Flare.Abstractions   (Ring 0 - contracts)        no internal dependencies
+               ^        ^      ^
+               |        |      |
+        Flare.Theming   |   Flare.Infrastructure   (Ring 1 engine / Ring 2 adapters)
+        (-> Abstractions)   (-> Abstractions, Theming)
+               ^                    ^
+               |                    |
+        Flare.Components   --------/   (Ring 3 - UI; -> Abstractions, Theming; NOT Infrastructure)
+               ^
+               |
+        Flare (Flare.Blazor)   (Ring 4 - composition root; -> Components, Infrastructure)
 
-Theme packages (each references only Flare.Core, none referenced by the umbrella):
-  Flare.Theme.MaterialDesign3Expressive  -> Flare.Core
-  Flare.Theme.FluentUI2                   -> Flare.Core
-  Flare.Theme.Aero                        -> Flare.Core
-  Flare.Theme.LiquidGlass                 -> Flare.Core
-  Flare.Theme.VisualStudio                -> Flare.Core
+Theme packages (each -> Flare.Abstractions + Flare.Theming; none referenced by the umbrella):
+  Flare.Theme.MaterialDesign3Expressive, .FluentUI2, .Aero, .LiquidGlass, .VisualStudio
 
-Optional component packages (each -> Flare.Core, some -> Flare.Components):
-  Flare.Components.Carousel, .Kanban, .Transfer, .QrCode,
-  .RichTextEditor, .Media, .IDE
-  Flare.Icons
+Optional component packages (each -> Flare.Components):
+  Flare.Components.Carousel, .Kanban, .Transfer, .QrCode, .RichTextEditor, .Media, .IDE
 
 samples/Flare.Gallery        -> Flare (umbrella) + all theme packages
-tests/Flare.Core.Tests       -> Flare.Core
-tests/Flare.Components.Tests -> Flare.Components
+tests/Flare.Core.Tests       -> Abstractions + Theming + Components + Infrastructure
+tests/Flare.Components.Tests -> Abstractions + Theming + Components + Infrastructure
 ```
 
-> **Flare ships no themes of its own.** The umbrella `Flare.Blazor` package depends only on
-> `Flare.Components`. Each design system is an independent `Flare.Theme.*` package, so an app
-> references only the ones it uses.
+> **Flare ships no themes of its own.** The umbrella `Flare.Blazor` package depends on
+> `Flare.Components` + `Flare.Infrastructure`. Each design system is an independent `Flare.Theme.*`
+> package, so an app references only the ones it uses.
 
-### Flare.Core
-**Purpose.** Theme- and component-agnostic abstractions, token records, and services.
-- `Abstractions/` - `ITheme`, `IThemeService`, `IPaletteProvider`, `ICssVariableInjector`,
-  `IThemeStorageService`, `IThemeJsService`, `IThemeValidator`, `ICollisionService`,
-  `ISnackbarService`, `IDialogService`, `IMessageBoxService`.
-- `Tokens/` - immutable `record` types: `DesignTokens` (non-color design tokens), `ColorScheme`
-  (color roles), `Palette` (light + dark + optional high-contrast), `TypographyTokens`,
-  `ShapeTokens`, `ElevationTokens`, `MotionTokens`, `StateTokens`, `SpacingTokens`, `TypeStyle`,
-  plus per-component token records under `Tokens/Components/`. Also `ThemeMode`, `ThemeDelivery`,
-  `ThemeSnapshot`, `PaletteFactory`.
-- `Services/` - `ThemeService` (orchestrates the three theme axes), `CssVarMap` (token flattener),
-  palette generators (`DefaultPaletteGenerator`, `IPaletteGenerator`, `PaletteSeed`), and the
-  host-agnostic `SnackbarService`, `DialogService`, `MessageBoxService`.
-- `Components/` - `FlareComponentBase` (abstract Blazor base class) and `FlareThemeProvider`.
-- No static web assets of its own - the JS ES modules and CSS bundle ship from `Flare.Components`.
+### Flare.Abstractions  (Ring 0 - contracts)
+**Purpose.** The dependency-free core every other package builds on: the **ports** plus the
+design-system model. No host or JS dependency.
+- `Abstractions/` - the ports: `ITheme`, `IThemeService`, `IPaletteProvider`, `IPaletteGenerator`,
+  `ICssVariableInjector`, `IThemeStorageService`, `IThemeJsService`, `IThemeValidator`,
+  `ICollisionService`, `ISnackbarService`, `IDialogService`, `IMessageBoxService`,
+  `IVersionCheckService`, and the JS-interop ports `IFlareClipboard`, `IFlareDownload`,
+  `IFlareColorExtractor`, `ISplitterJsService`, `ITreeJsService`.
+- `Tokens/` - immutable `record` token VALUE types: `DesignTokens`, `ColorScheme`, `Palette`,
+  `TypographyTokens`, `ShapeTokens`, `ElevationTokens`, `MotionTokens`, `StateTokens`, `SpacingTokens`,
+  `TypeStyle`, `PaletteSeed`, `ThemeMode`, `ThemeDelivery`, `ThemeSnapshot`, plus per-component records
+  under `Tokens/Components/`.
+- `Css/` - the CSS custom-property NAME registry (`Css.Tokens.*`, `Css.Classes.*`, `Vars`) and the
+  `[CssVar]` attribute that links a token value property to the `--flare-*` name it populates.
+- `JsInterop/` - `FlareJsModule`, the shared base for typed JS-interop services (used by adapters and
+  add-on packs alike).
+- `Security/` - pure `HtmlSanitizer` / `CssValidator` utilities (internal).
+- No static web assets of its own.
 
-**NuGet:** `Flare.Core` - depends only on `Microsoft.AspNetCore.Components.Web`.
+**NuGet:** `Flare.Abstractions` - depends only on `Microsoft.AspNetCore.Components.Web`.
 
-### Flare.Components
-**Purpose.** The core UI components. Each component lives in its own sub-namespace folder.
-- Every component inherits `FlareComponentBase`.
+### Flare.Theming  (Ring 1 - engine)
+**Purpose.** The theming engine - the application services that turn the token model into a rendered
+theme. Depends only on `Flare.Abstractions`.
+- `Services/` - `ThemeService` (orchestrates the three theme axes), `ScopedThemeService`,
+  `TokensToCss`, `CssVarMap` (the token-to-CSS-variable flattener), `FlareBootstrap` (anti-FOUC script).
+- `Palettes/` - `DefaultPaletteGenerator`, `PaletteFactory`.
+- `Color/` - `ColorMath`, `FlareColor`, `FlareColorResolver`.
+- `Builders/`, `Serialization/` - `FlareThemeBuilder`, `ThemeJsonSerializer`.
+
+**NuGet:** `Flare.Theming` - depends on `Flare.Abstractions`.
+
+### Flare.Infrastructure  (Ring 2 - adapters)
+**Purpose.** The browser/host adapters - the concrete implementations of the ports. This is the only
+ring that talks to `IJSRuntime`/`localStorage`. Depends on `Flare.Abstractions` (+ `Flare.Theming`
+for the token flattening used by the CSS-variable injector).
+- `JsInterop/` - `CssVariableInjector`, `CollisionService`, `ThemeJsService`, `SplitterJsService`,
+  `TreeJsService`, and the typed `FlareClipboardService` / `FlareDownloadService` / `FlareColorExtractor`.
+- `Storage/` - `LocalStorageThemeStorage`, `NullThemeStorage`.
+- `Feedback/` - the UI-state services `DialogService`, `SnackbarService`, `MessageBoxService`.
+- `VersionCheck/` - `VersionCheckService`.
+
+**NuGet:** `Flare.Infrastructure` - depends on `Flare.Abstractions`, `Flare.Theming`.
+
+### Flare.Components  (Ring 3 - UI)
+**Purpose.** The UI components and nothing else - no service implementations live here. Each component
+lives in its own sub-namespace folder; the base components are in `Base/`. Depends on
+`Flare.Abstractions` + `Flare.Theming` and consumes adapters only through their ports (injected by DI).
+**It does NOT reference `Flare.Infrastructure`** - that invariant is what makes the host swappable.
+- Every component inherits `FlareComponentBase` (in `Base/`, namespace `Flare.Components`).
 - CSS ships as a global, token-driven bundle in `wwwroot/css/` (aggregated into
   `flare-components.css`) - not scoped CSS. All rules consume `var(--flare-*)` tokens only.
 - Hosts all static JS in `wwwroot/js/` (served at `_content/Flare.Components/js/`): the
-  `flare-bootstrap.js` anti-FOUC head script and the lazily-imported interop ES modules
-  (`flare-theme.js`, collision, color-extractor, version-check).
-- Hosts the JS-interop-backed service implementations registered by `AddFlare` (`CssVariableInjector`,
-  `CollisionService`, `ThemeJsService`, and the typed clipboard/download/color-extractor wrappers).
+  `flare-bootstrap.js` anti-FOUC head script and the lazily-imported interop ES modules. The
+  Infrastructure adapters import these by URL (static assets have no assembly coupling).
+- `Resources/` holds the EN/RU localization; `Theme/` holds the theme UI controls
+  (`FlareColorCustomizer`, `FlareColorModeToggle`).
 - Every `[Parameter]` carries a `/// <summary>` XML doc comment for IntelliSense on NuGet consumers
   (`GenerateDocumentationFile` is enabled solution-wide).
 
-**NuGet:** `Flare.Components` - depends on `Flare.Core`.
+**NuGet:** `Flare.Components` - depends on `Flare.Abstractions`, `Flare.Theming`.
 
 ### Flare.Theme.* (five design systems)
 Each theme package provides one concrete `ITheme` plus its palettes and static style assets:
@@ -88,16 +123,16 @@ Each theme package provides one concrete `ITheme` plus its palettes and static s
 - `StyleAssets` lists the static CSS the theme needs (fonts, base reset, generated token CSS) so
   the correct tokens are present on first paint (anti-FOUC).
 
-**NuGet:** each package depends only on `Flare.Core`.
+**NuGet:** each package depends on `Flare.Abstractions` + `Flare.Theming`.
 
-### Flare (umbrella)
-**Purpose.** Single install target wiring up DI.
+### Flare (umbrella / composition root)
+**Purpose.** Single install target wiring up DI - the only ring that knows the Infrastructure adapters.
 - `ServiceCollectionExtensions` - `AddFlare(opts)`, `AddFlareTheme(theme)`, `AddFlarePalette(palette)`
-  and `FlareOptions`.
-- `LocalStorageThemeStorage` (internal) - implements `IThemeStorageService` via `localStorage`.
-- No UI code, tokens, or theme of its own.
+  and `FlareOptions`. `AddFlare` binds every port to its `Flare.Infrastructure` adapter.
+- No UI code, tokens, or theme of its own. The adapter implementations (incl.
+  `LocalStorageThemeStorage`) live in `Flare.Infrastructure`.
 
-**NuGet:** `Flare.Blazor` - depends on `Flare.Components`.
+**NuGet:** `Flare.Blazor` - depends on `Flare.Components` + `Flare.Infrastructure`.
 
 ### samples/Flare.Gallery
 Blazor WebAssembly PWA. Interactive component gallery with EN/RU language toggle, collapsible
@@ -113,7 +148,7 @@ syntax-highlighted code examples, and a live theme switcher (design system x pal
 ### FlareComponentBase Contract
 
 ```csharp
-// Flare.Core.Components.FlareComponentBase
+// Flare.Components.FlareComponentBase
 public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
 {
     [CascadingParameter] protected IThemeService? ThemeService { get; set; } // theme operations
@@ -156,16 +191,22 @@ All classes follow a BEM-variant pattern: `flare-[component]__[element]--[modifi
 All CSS rules consume only `var(--flare-*)` custom properties - no hard-coded colors, font sizes, or
 animation timings.
 
-### Compound Component Pattern (Cascading Parent)
+### Compound Component Pattern (Cascading State)
 
-Several components use a `CascadingValue` to pass a parent reference to children without explicit
-binding:
+Parent/child component families share state through a `CascadingValue`. The canonical form is a
+**single typed cascading context object** the parent owns and cascades once; children consume it and
+self-register. Prefer this over stacking several individually-named `CascadingValue`s.
 
-1. **Parent registers children** (`FlareTabs`/`FlareTab`, `FlareDataGrid`/`FlareColumn`,
-   `FlareAccordion`/`FlareAccordionPanel`): children register on mount and unregister on dispose;
-   the parent owns state and re-renders after registration changes.
-2. **Cascaded callback** (`FlarePopover`/`FlareMenu`): passes a close `Func<Task>` downward so a
-   nested item can close its host without knowing the parent type.
+1. **Typed context (preferred)** - `FlareTabs` cascades a `FlareTabsContext` (active tab + register/
+   unregister/select callbacks + lazy flag); `FlareButtonGroup`, `FlareToggleGroup`, `FlareChipGroup`,
+   `FlareRadioGroup` follow the same shape. `FlareTreeView` cascades one `FlareTreeContext` for the
+   tree-wide drag config/callbacks/coordinator (per-row `Level` stays a separate cascade because it
+   changes with depth).
+2. **Parent registers children** - children register on mount and unregister on dispose; the parent
+   owns state and re-renders after registration changes (`FlareTabs`/`FlareTab`,
+   `FlareDataGrid`/`FlareColumn`, `FlareAccordion`/`FlareAccordionPanel`).
+3. **Cascaded callback** - `FlarePopover`/`FlareMenu` pass a close `Func<Task>` downward so a nested
+   item can close its host without knowing the parent type.
 
 ---
 
@@ -228,13 +269,13 @@ token CSS, so there is no flash of unstyled content.
 
 ### Persistence
 
-`IThemeStorageService` (interface in `Flare.Core`, implemented by internal `LocalStorageThemeStorage`
-in `Flare.Blazor`) reads/writes the selection in `localStorage`, SSR/prerender-guarded. `FlareThemeProvider`
-restores the saved selection on first interactive render.
+`IThemeStorageService` (port in `Flare.Abstractions`, implemented by `LocalStorageThemeStorage` in
+`Flare.Infrastructure`) reads/writes the selection in `localStorage`, SSR/prerender-guarded.
+`FlareThemeProvider` restores the saved selection on first interactive render.
 
 ### Adding a New Theme
 
-1. Create a `net10.0` Razor class library referencing `Flare.Core`.
+1. Create a Razor class library (net8.0/net9.0/net10.0) referencing `Flare.Abstractions` + `Flare.Theming`.
 2. Implement `ITheme` - provide `Id`, `DisplayName`, `Design` (a `DesignTokens`, typically derived
    from a reference theme with `with`), `DefaultPaletteId`, `Palettes`, and `StyleAssets`.
 3. Ship the baseline/token CSS referenced by `StyleAssets` under `wwwroot/`.

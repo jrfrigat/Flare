@@ -1,4 +1,4 @@
-using Flare.Core.Components;
+using Flare.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Linq.Expressions;

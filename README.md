@@ -11,11 +11,11 @@
 [![CI](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml/badge.svg)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
 [![Downloads](https://img.shields.io/nuget/dt/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
-[![.NET 10](https://img.shields.io/badge/.NET-10-512BD4)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-8%20%7C%209%20%7C%2010-512BD4)](https://dotnet.microsoft.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://flare.frigat.duckdns.org/)
 
-A production-ready Blazor component library for **.NET 10** with **runtime theme switching** across five design systems - Material Design 3 Expressive, Fluent UI 2, Aero, Liquid Glass, and Visual Studio 2026 - with no page reload and no flash of unstyled content.
+A production-ready Blazor component library - **.NET 10**-first, also targeting **.NET 8 and .NET 9** - with **runtime theme switching** across five design systems (Material Design 3 Expressive, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026), with no page reload and no flash of unstyled content.
 
 **[Live demo / component gallery ->](https://flare.frigat.duckdns.org/)**
 
@@ -185,8 +185,11 @@ The multi-stage `Dockerfile` produces an `nginx:alpine` image serving the static
 ## Architecture
 
 ```
-Flare.Core              <- ITheme, IThemeService, FlareComponentBase, design tokens, abstractions
+Flare.Abstractions      <- ports (ITheme, I*Service), design-token model, CSS name registry (dependency-free)
+Flare.Theming           <- theme engine: ThemeService, palette generation, ColorMath, token->CSS
+Flare.Infrastructure    <- browser/host adapters: JS interop, storage, dialog/snackbar/messagebox
 Flare.Components        <- core UI components + wwwroot/css (global token-driven bundle)
+Flare.Blazor (Flare)    <- composition root: AddFlare binds ports -> adapters
 Flare.Components.Carousel        <- Carousel
 Flare.Components.Kanban          <- Kanban board
 Flare.Components.Transfer        <- Transfer (dual list)
@@ -194,7 +197,6 @@ Flare.Components.QrCode          <- QR code
 Flare.Components.RichTextEditor  <- Rich text editor
 Flare.Components.Media           <- SignaturePad, VideoPlayer, FileUpload
 Flare.Components.IDE             <- IDE layout: Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar
-Flare.Icons             <- Material Symbols + custom icon path data
 Flare.Theme.MaterialDesign3Expressive <- MD3 design tokens + Material palettes + tonal generator
 Flare.Theme.FluentUI2   <- Fluent UI 2 design tokens + Office palettes + ramp generator
 Flare.Theme.Aero        <- Aero design tokens + palettes + ramp generator
@@ -206,30 +208,6 @@ Flare (umbrella)        <- AddFlare()/AddFlareTheme() DI extensions, LocalStorag
 > Themes ship as independent packages - the umbrella `Flare.Blazor` package references **no** theme,
 > so apps pull in only the design systems they use. The optional component families (`Carousel`,
 > `Kanban`, `Transfer`, `QrCode`, `RichTextEditor`, `Media`, `IDE`) are likewise separate packages.
-
-### Trimming the Flare.Icons payload (recommended)
-
-`Flare.Icons` exposes ~10,700 Material SVG paths as `const string` fields
-(`Icons.Material.Filled.Home`, etc.). C# inlines every `const` reference into the
-calling assembly at compile time, so at runtime nothing actually loads
-`Flare.Icons.wasm` -- yet the assembly is ~6.8 MB and IL trimming cannot drop the
-data (the linker does not remove `const`/literal fields). Left as a normal
-reference it ships in the boot set and sits in the WASM linear heap on every page.
-
-For Blazor WebAssembly apps, mark it lazy-load in your app `.csproj` so it stays
-out of the startup manifest and the heap (measured on the Gallery: WASM heap
-66.5 MB -> 55.4 MB, boot download -641 KB Brotli):
-
-```xml
-<ItemGroup>
-  <BlazorWebAssemblyLazyLoad Include="Flare.Icons.wasm" />
-</ItemGroup>
-```
-
-Because all `Icons.*` usage is `const`-inlined, the assembly is never requested
-and you do **not** need to load it yourself. The `Icons.*` and `FlareIcons.*` APIs
-are unchanged. Only if you read icon path data **reflectively** at runtime (rare)
-must you fetch it on demand first via `LazyAssemblyLoader.LoadAssembliesAsync`.
 
 All components inherit `FlareComponentBase` which:
 - Receives the current theme via a cascaded `ThemeSnapshot` and re-renders when it changes
@@ -260,7 +238,7 @@ A **palette** is just colors (light + dark). Reuse a design system and only swap
 or generate a whole palette from one brand color - no need to fill 45 roles by hand:
 
 ```csharp
-using Flare.Core.Tokens;
+using Flare.Abstractions.Tokens;
 
 // Override only what you need from the reference scheme:
 var ocean = new Palette

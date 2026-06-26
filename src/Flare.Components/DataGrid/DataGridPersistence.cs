@@ -1,84 +1,36 @@
-using Microsoft.JSInterop;
-
 namespace Flare.Components;
 
 /// <summary>
-/// Persists DataGrid state (sorts, filters, column order, page size, hidden columns)
-/// to browser localStorage. Enables users to return to their preferred view.
+/// Persists DataGrid state (sorts, filters, column order, page size, hidden columns) to browser
+/// localStorage via <see cref="IBrowserStorage"/>. Enables users to return to their preferred view.
 /// </summary>
-public sealed class DataGridPersistence<TItem> : IAsyncDisposable
+/// <remarks>
+/// State (de)serialization and the SSR/quota/corrupt-payload safety net live in the
+/// <see cref="IBrowserStorage"/> adapter, so this type is a thin, key-bound typed wrapper.
+/// </remarks>
+public sealed class DataGridPersistence<TItem>
 {
-    private readonly IJSRuntime _js;
+    private readonly IBrowserStorage _storage;
     private readonly string _storageKey;
-    private IJSObjectReference? _module;
 
     /// <summary>Initializes a new <see cref="DataGridPersistence{TItem}"/> bound to the given storage key.</summary>
-    public DataGridPersistence(IJSRuntime js, string storageKey = "flare-datagrid")
+    public DataGridPersistence(IBrowserStorage storage, string storageKey = "flare-datagrid")
     {
-        _js = js;
+        _storage = storage;
         _storageKey = storageKey;
     }
 
     /// <summary>Saves the current grid state to localStorage.</summary>
-    public async Task SaveAsync(DataGridPersistedState state)
-    {
-        try
-        {
-            _module ??= await _js.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js");
-
-            var json = System.Text.Json.JsonSerializer.Serialize(state, new System.Text.Json.JsonSerializerOptions
-            {
-                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
-            });
-
-            await _module.InvokeVoidAsync("setItem", _storageKey, json);
-        }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-    }
+    public Task SaveAsync(DataGridPersistedState state) =>
+        _storage.SetAsync(_storageKey, state).AsTask();
 
     /// <summary>Loads the persisted state from localStorage. Returns null if not found.</summary>
-    public async Task<DataGridPersistedState?> LoadAsync()
-    {
-        try
-        {
-            _module ??= await _js.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js");
-
-            var json = await _module.InvokeAsync<string?>("getItem", _storageKey);
-            if (string.IsNullOrEmpty(json)) return null;
-
-            return System.Text.Json.JsonSerializer.Deserialize<DataGridPersistedState>(json, new System.Text.Json.JsonSerializerOptions
-            {
-                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase,
-            });
-        }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        return null;
-    }
+    public Task<DataGridPersistedState?> LoadAsync() =>
+        _storage.GetAsync<DataGridPersistedState>(_storageKey).AsTask();
 
     /// <summary>Clears the persisted state from localStorage.</summary>
-    public async Task ClearAsync()
-    {
-        try
-        {
-            _module ??= await _js.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js");
-
-            await _module.InvokeVoidAsync("removeItem", _storageKey);
-        }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-    }
-
-    /// <summary>Disposes the persistence helper and releases its JS interop module.</summary>
-    public async ValueTask DisposeAsync()
-    {
-        if (_module is not null)
-            await _module.DisposeAsync();
-    }
+    public Task ClearAsync() =>
+        _storage.RemoveAsync(_storageKey).AsTask();
 }
 
 /// <summary>

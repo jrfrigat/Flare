@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <!-- Multi-targeted so the bUnit suite actually runs against the net8.0/net9.0/net10.0 library builds.
+         Clearing the inherited singular TargetFramework (net10.0, from Directory.Build.props) is required:
+         when both that and TargetFrameworks are set the singular wins and only net10.0 builds, so the
+         net8.0/net9.0 outputs never appear. -->
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
@@ -21,8 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Flare.Abstractions\Flare.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Core\Flare.Core.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

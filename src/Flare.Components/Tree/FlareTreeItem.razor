@@ -75,16 +75,17 @@
     /// <summary>Current nesting depth of this item; propagated automatically via CascadingValue.
     /// Level 1 is the top-most level (root items inside FlareTreeView).</summary>
     [CascadingParameter(Name = "Level")] public int Level { get; set; } = 1;
-    /// <summary>Whether drag-and-drop is enabled on the parent tree.</summary>
-    [CascadingParameter(Name = "TreeDraggable")] private bool Draggable { get; set; }
-    /// <summary>Callback for item drop events.</summary>
-    [CascadingParameter(Name = "TreeOnItemDrop")] private EventCallback<TreeDropEventArgs>? OnItemDrop { get; set; }
-    /// <summary>Callback for item drag start events.</summary>
-    [CascadingParameter(Name = "TreeOnItemDragStart")] private EventCallback<TreeDragEventArgs>? OnItemDragStart { get; set; }
-    /// <summary>Callback for item drag end events.</summary>
-    [CascadingParameter(Name = "TreeOnItemDragEnd")] private EventCallback? OnItemDragEnd { get; set; }
-    /// <summary>Tree-wide coordinator tracking the dragged source item.</summary>
-    [CascadingParameter(Name = "TreeDragCoordinator")] private TreeDragDropCoordinator? DragCoordinator { get; set; }
+
+    /// <summary>Group-wide tree state (drag config, callbacks, coordinator) from <see cref="FlareTreeView"/>.</summary>
+    [CascadingParameter] private FlareTreeContext? TreeContext { get; set; }
+
+    // Forwarders preserve the original member names/types so the drag-and-drop handlers below are
+    // unchanged; they now read from the single cascading FlareTreeContext instead of five named cascades.
+    private bool Draggable => TreeContext?.Draggable == true;
+    private EventCallback<TreeDropEventArgs>? OnItemDrop => TreeContext?.OnItemDrop;
+    private EventCallback<TreeDragEventArgs>? OnItemDragStart => TreeContext?.OnItemDragStart;
+    private EventCallback? OnItemDragEnd => TreeContext?.OnItemDragEnd;
+    private TreeDragDropCoordinator? DragCoordinator => TreeContext?.DragCoordinator;
 
     protected override string ComponentCssClass => Css.Classes.TreeView.Item;
 

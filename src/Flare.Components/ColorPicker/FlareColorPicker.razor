@@ -1,6 +1,8 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IOverlayJsService Overlay
+@inject Flare.Components.Services.IUiJsService Ui
+@inject Flare.Components.Services.IColorCanvasJsService Canvas
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
 @implements IAsyncDisposable
@@ -117,13 +119,8 @@ else
     private ElementReference _triggerEl;
     private ElementReference _panelEl;
     private bool _outsideRegistered;
-    // flareColorPicker is an ES module export (not a window global), so it must be reached
-    // through the imported module reference, not a global JS.InvokeVoidAsync("flareColorPicker...").
-    private IJSObjectReference? _module;
-
-    private async Task<IJSObjectReference> ModuleAsync() =>
-        _module ??= await JS.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/Flare.Components/js/flare-theme.js");
+    // All JS interop for this component is via injected services: popup behaviours (IOverlayJsService),
+    // the saturation/lightness canvas (IColorCanvasJsService) and the eye-dropper (IUiJsService).
 
     // Current hex (and its validity) cached from the HSL+alpha state -- recomputed only when that
     // state changes (in SyncInputsFromHsl), not on every property access, so a render no longer runs
@@ -194,18 +191,17 @@ else
     {
         try
         {
-            var module = await ModuleAsync();
             if (_open)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await module.InvokeVoidAsync("registerOutsideClick", _triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
+                await Overlay.RegisterOutsideClickAsync(_triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
                 // Fixed-position the panel under the trigger so a Card's overflow:hidden can't crop it.
-                await module.InvokeVoidAsync("positionAnchoredPanel", _triggerId, _triggerEl, _panelEl, new { });
+                await Overlay.PositionAnchoredPanelAsync(_triggerId, _triggerEl, _panelEl);
             }
             else
             {
-                await module.InvokeVoidAsync("removeOutsideClick", _triggerId);
-                await module.InvokeVoidAsync("removeAnchoredPanel", _triggerId);
+                await Overlay.RemoveOutsideClickAsync(_triggerId);
+                await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
             _outsideRegistered = _open;
         }
@@ -226,8 +222,7 @@ else
         _selfRef ??= DotNetObjectReference.Create(this);
         try
         {
-            var module = await ModuleAsync();
-            await module.InvokeVoidAsync("flareColorPicker.init", _canvas, _selfRef, _hue, _saturation, _lightness);
+            await Canvas.InitAsync(_canvas, _selfRef, _hue, _saturation, _lightness);
             _canvasInitialized = true;
         }
         catch { /* JS not ready yet */ }
@@ -237,16 +232,13 @@ else
     {
         try
         {
-            if (_module is not null)
+            if (_outsideRegistered)
             {
-                if (_outsideRegistered)
-                {
-                    await _module.InvokeVoidAsync("removeOutsideClick", _triggerId);
-                    await _module.InvokeVoidAsync("removeAnchoredPanel", _triggerId);
-                }
-                await _module.InvokeVoidAsync("flareColorPicker.destroy", _canvas);
-                await _module.DisposeAsync();
+                await Overlay.RemoveOutsideClickAsync(_triggerId);
+                await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
+            if (_canvasInitialized)
+                await Canvas.DestroyAsync(_canvas);
         }
         catch { }
         _selfRef?.Dispose();
@@ -366,8 +358,7 @@ else
     {
         try
         {
-            var module = await ModuleAsync();
-            var hex = await module.InvokeAsync<string?>("openEyeDropper");
+            var hex = await Ui.OpenEyeDropperAsync();
             if (!string.IsNullOrEmpty(hex))
             {
                 ParseColorToState(hex);
@@ -561,9 +552,9 @@ else
 
     private async Task RefreshCanvas()
     {
-        if (_canvasInitialized && _module is not null)
+        if (_canvasInitialized)
         {
-            try { await _module.InvokeVoidAsync("flareColorPicker.setHue", _canvas, _hue); }
+            try { await Canvas.SetHueAsync(_canvas, _hue); }
             catch { }
         }
     }

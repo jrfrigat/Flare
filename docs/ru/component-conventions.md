@@ -35,12 +35,18 @@ Flare - это публикуемая NuGet-библиотека с токен-d
 
 | Что | Где |
 | :-- | :-- |
-| Запись токенов (per-theme) | `src/Flare.Core/Tokens/Components/<Comp>Tokens.cs` |
-| Имена CSS-переменных | `src/Flare.Core/Css/Tokens/<Comp>Tokens.cs` (namespace `Flare.Css.Tokens`, holder-классы `Css.Tokens.<Comp>.*`; база/helper - `Css.Tokens.Vars`) |
-| Эмиссия переменных | `src/Flare.Core/Services/CssVarMap.cs` |
+| Запись токенов (per-theme) | `src/Flare.Abstractions/Tokens/Components/<Comp>Tokens.cs` |
+| Имена CSS-переменных | `src/Flare.Abstractions/Css/Tokens/<Comp>Tokens.cs` (namespace `Flare.Css.Tokens`, holder-классы `Css.Tokens.<Comp>.*`; база/helper - `Css.Tokens.Vars`) |
+| Эмиссия переменных | `src/Flare.Theming/Services/CssVarMap.cs` |
 | Значения для MD3 | `src/Flare.Theme.MaterialDesign3Expressive/MaterialDesignTokens.cs` (+ dark theme) |
 | Значения для Fluent | `src/Flare.Theme.FluentUI2/FluentUI2Tokens.cs` (+ dark theme) |
-| CSS-классы | `src/Flare.Core/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder-классы `Css.Classes.<Comp>.*`) |
+| CSS-классы | `src/Flare.Abstractions/Css/Classes/<Comp>.cs` (namespace `Flare.Css.Classes`, holder-классы `Css.Classes.<Comp>.*`) |
+
+> **Две системы токенов, связанные через `[CssVar]`.** `Css/Tokens/*` хранит константы ИМЁН переменных;
+> записи в `Tokens/*` хранят ЗНАЧЕНИЯ под каждую тему. Помечай каждое скалярное свойство-значение
+> атрибутом `[CssVar(Css.Tokens.<Comp>.<Prop>)]` (образец - `ButtonTokens`), чтобы связь значение->имя
+> была декларативной; drift-тест `CssVarAttributeTests` падает, если помеченное имя не эмитится
+> `CssVarMap.FlattenDesign`. Составные токены (поугловые радиусы, типографика) остаются только во flatten.
 
 ### Правила токенов
 - Опирайся на семантические токены: `--flare-color-*`, `--flare-shape-*`, `--flare-typescale-*`,
@@ -52,7 +58,7 @@ Flare - это публикуемая NuGet-библиотека с токен-d
 - При добавлении нового компонента - обязательно создай `XxxTokens.cs` и holder `Css.Tokens.Xxx`.
 
 ### Уже реализованные токен-записи
-Полный набор живёт в `src/Flare.Core/Tokens/Components/`: Alert, Avatar, Badge, Button, Card,
+Полный набор живёт в `src/Flare.Abstractions/Tokens/Components/`: Alert, Avatar, Badge, Button, Card,
 Checkbox, Chip, DataGrid, Dialog, Drawer, Fab, Input, Menu, Popover, Progress, Radio, Select,
 Slider, Snackbar, SplitButton, Switch, TableOfContents, Tabs, ToggleButton, Tooltip.
 

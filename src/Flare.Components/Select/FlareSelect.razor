@@ -5,7 +5,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@BuildCssClass(_stateClass, _openClass, _sizeClass, _variantClass)" style="@Style" @ref="_rootEl" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
@@ -129,16 +129,12 @@
 
     public override async ValueTask DisposeAsync()
     {
-        if (_module is not null)
+        if (_outsideRegistered)
         {
             try
             {
-                if (_outsideRegistered)
-                {
-                    await _module.InvokeVoidAsync("removeOutsideClick", _selectId);
-                    await _module.InvokeVoidAsync("removeAnchoredPanel", _selectId);
-                }
-                await _module.DisposeAsync();
+                await Overlay.RemoveOutsideClickAsync(_selectId);
+                await Overlay.RemoveAnchoredPanelAsync(_selectId);
             }
             catch (JSDisconnectedException) { }
         }
@@ -177,7 +173,6 @@
     private ElementReference _rootEl;
     private ElementReference _controlEl;
     private FlareListbox<TValue>? _listbox;
-    private IJSObjectReference? _module;
     private DotNetObjectReference<FlareSelect<TValue>>? _selfRef;
     private bool _outsideRegistered;
 
@@ -188,19 +183,18 @@
         if (_isOpen == _outsideRegistered) return;
         try
         {
-            _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
             if (_isOpen && _listbox is not null)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await _module.InvokeVoidAsync("registerOutsideClick", _selectId, _rootEl, _selfRef, nameof(CloseFromOutside));
+                await Overlay.RegisterOutsideClickAsync(_selectId, _rootEl, _selfRef, nameof(CloseFromOutside));
                 // Fixed-position the dropdown under the control so a Card's overflow:hidden can't crop it.
-                await _module.InvokeVoidAsync("positionAnchoredPanel", _selectId, _controlEl, _listbox.Element, new { matchWidth = true });
+                await Overlay.PositionAnchoredPanelAsync(_selectId, _controlEl, _listbox.Element, new { matchWidth = true });
                 _outsideRegistered = true;
             }
             else if (!_isOpen)
             {
-                await _module.InvokeVoidAsync("removeOutsideClick", _selectId);
-                await _module.InvokeVoidAsync("removeAnchoredPanel", _selectId);
+                await Overlay.RemoveOutsideClickAsync(_selectId);
+                await Overlay.RemoveAnchoredPanelAsync(_selectId);
                 _outsideRegistered = false;
             }
         }

@@ -44,7 +44,7 @@ public static class CssAudit
                 "Could not locate the repo root (a folder containing src/Flare.Components).");
 
         var cssDir = Path.Combine(root, "src", "Flare.Components", "wwwroot", "css");
-        var cssClassesDir = Path.Combine(root, "src", "Flare.Core", "Css", "Classes");
+        var cssClassesDir = Path.Combine(root, "src", "Flare.Abstractions", "Css", "Classes");
         var themeDirs = Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*")
             .Select(d => Path.Combine(d, "wwwroot", "css"))
             .Where(Directory.Exists)

@@ -1,7 +1,6 @@
-using Flare.Core.Abstractions;
-using Flare.Core.Builders;
-using Flare.Core.Services;
-using Flare.Core.Tokens;
+using Flare.Abstractions;
+using Flare.Theming;
+using Flare.Abstractions.Tokens;
 
 namespace Flare.Core.Tests;
 
@@ -77,7 +76,7 @@ public class ThemeIntegrationTests
     [Fact]
     public void Palette_Should_Have_Light_And_Dark_Schemes()
     {
-        var palette = Palette.FromColors("test-palette", "Test Palette", "#6750A4");
+        var palette = PaletteFactory.FromColors("test-palette", "Test Palette", "#6750A4");
 
         Assert.NotNull(palette.Light);
         Assert.NotNull(palette.Dark);
@@ -94,7 +93,7 @@ public class ThemeIntegrationTests
             .WithStyleAsset("_content/Test/theme2.css")
             .Build();
 
-        var palette = Palette.FromColors("test", "Test", "#6750A4");
+        var palette = PaletteFactory.FromColors("test", "Test", "#6750A4");
         var injector = new FakeCssVariableInjector();
         var service = new ThemeService(injector, theme1, palette);
 
@@ -112,8 +111,8 @@ public class ThemeIntegrationTests
         var theme = new FlareThemeBuilder("test", "Test")
             .WithStyleAsset("_content/Test/test.css")
             .Build();
-        var palette1 = Palette.FromColors("palette1", "Palette 1", "#6750A4");
-        var palette2 = Palette.FromColors("palette2", "Palette 2", "#B3261E");
+        var palette1 = PaletteFactory.FromColors("palette1", "Palette 1", "#6750A4");
+        var palette2 = PaletteFactory.FromColors("palette2", "Palette 2", "#B3261E");
 
         var injector = new FakeCssVariableInjector();
         var service = new ThemeService(injector, theme, palette1);
@@ -132,7 +131,7 @@ public class ThemeIntegrationTests
         var theme = new FlareThemeBuilder("test", "Test")
             .WithStyleAsset("_content/Test/test.css")
             .Build();
-        var palette = Palette.FromColors("test", "Test", "#6750A4");
+        var palette = PaletteFactory.FromColors("test", "Test", "#6750A4");
 
         var injector = new FakeCssVariableInjector();
         var service = new ThemeService(injector, theme, palette);
@@ -157,10 +156,10 @@ public class ThemeIntegrationTests
             .WithStyleAsset("_content/Test/theme2.css")
             .Build();
 
-        var palette1 = Palette.FromColors("palette1", "Palette 1", "#6750A4");
+        var palette1 = PaletteFactory.FromColors("palette1", "Palette 1", "#6750A4");
         palette1 = palette1 with { StyleAsset = "_content/Test/palette1.css" };
 
-        var palette2 = Palette.FromColors("palette2", "Palette 2", "#B3261E");
+        var palette2 = PaletteFactory.FromColors("palette2", "Palette 2", "#B3261E");
         palette2 = palette2 with { StyleAsset = "_content/Test/palette2.css" };
 
         var injector = new FakeCssVariableInjector();

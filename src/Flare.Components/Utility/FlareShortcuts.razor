@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @implements IAsyncDisposable
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IUiJsService Ui
 
 <CascadingValue Value="this" IsFixed="true">
     @ChildContent
@@ -36,7 +36,6 @@
     internal readonly List<FlareShortcutEntry> _entries = new();
 
     private bool _showHelp;
-    private IJSObjectReference? _module;
     private DotNetObjectReference<FlareShortcuts>? _dotNetRef;
 
     internal void Register(FlareShortcutEntry entry) => _entries.Add(entry);
@@ -51,10 +50,8 @@
         {
             try
             {
-                _module ??= await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-theme.js");
                 _dotNetRef = DotNetObjectReference.Create(this);
-                await _module.InvokeVoidAsync("registerShortcutListener", _dotNetRef);
+                await Ui.RegisterShortcutsAsync(_dotNetRef);
             }
             catch (InvalidOperationException) { }
             catch (JSException) { }
@@ -66,13 +63,8 @@
 
     public async ValueTask DisposeAsync()
     {
-        try
-        {
-            if (_module is not null)
-                await _module.InvokeVoidAsync("removeShortcutListener");
-        }
+        try { await Ui.RemoveShortcutsAsync(); }
         catch { }
         _dotNetRef?.Dispose();
-        if (_module is not null) await _module.DisposeAsync();
     }
 }

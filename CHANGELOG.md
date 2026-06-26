@@ -3,6 +3,31 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.2] - 2026-06-27
+
+### Architecture
+- Rebuilt as a clean onion / ports-and-adapters stack with 5 rings - `Flare.Abstractions`
+  (contracts + design-token model + CSS registry), `Flare.Theming` (engine), `Flare.Infrastructure`
+  (JS-interop/storage/feedback adapters), `Flare.Components` (UI only) and `Flare.Blazor` (composition
+  root). Dependencies point strictly inward; `Flare.Components` no longer ships service implementations,
+  and the old `Flare.Core` grab-bag was retired. Namespaces realigned to the rings.
+
+### Added
+- **Multi-targeting**: the libraries are .NET 10-first but now also target **net8.0** and **net9.0**
+  (per-TFM ASP.NET Core versions; no net10 regression - identical code).
+- **`ITheme.Derive(...)`** to tweak a built-in theme by composition instead of subclassing.
+- **Id constants** on every theme (`<Theme>.ThemeId`) and palette set (`<Palettes>.<Name>Id`) for
+  string-free theme/palette switching.
+- **`[CssVar]`** attribute linking every token value to its `--flare-*` name (guarded by a drift test),
+  and typed `Vars.Var(Css.Tokens.*)` token values instead of magic `var(--flare-*)` strings.
+
+### Changed
+- Compound components (Tree, Menu/SubMenu, FAB) standardised on a single typed cascading context.
+
+### Fixed
+- `FlareColorModeToggle` instances now stay in sync: the toggle reflects the live theme mode, so
+  switching the mode anywhere updates every toggle.
+
 ## [0.0.1] - 2026-06-23
 
 Initial public release of Flare - a production-ready Blazor component library for .NET 10.

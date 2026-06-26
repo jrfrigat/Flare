@@ -26,11 +26,9 @@
              @onmouseenter="ShowSubmenu" 
              @onmouseleave="ScheduleHide"
              @onkeydown="HandleSubmenuKeyDown">
-            <CascadingValue Value="@((Func<Task>)CloseAllAsync)" Name="CloseMenu">
+            <CascadingValue Value="_menuContext" IsFixed="true">
                 <CascadingValue Value="@_focusedItem" Name="MenuFocusedItem">
-                    <CascadingValue Value="@((Action<FlareMenuItem>)RegisterItem)" Name="RegisterMenuItem">
-                        @ChildContent
-                    </CascadingValue>
+                    @ChildContent
                 </CascadingValue>
             </CascadingValue>
         </div>
@@ -67,6 +65,14 @@
     private FlareMenuItem? _focusedItem;
     private readonly List<FlareMenuItem> _items = [];
     private readonly string _panelId = "flare-submenu-" + Guid.NewGuid().ToString("N")[..8];
+    // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
+    private FlareMenuContext? _menuContext;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _menuContext = new FlareMenuContext(CloseAllAsync, RegisterItem);
+    }
     private CancellationTokenSource? _hideCts;
 
     private void ShowSubmenu()

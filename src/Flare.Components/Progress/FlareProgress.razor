@@ -197,7 +197,7 @@ else
         var sb = new System.Text.StringBuilder();
         for (var i = 0; i <= seg; i++)
         {
-            var t = 2 * Math.PI * i / seg;
+            var t = 2 * Math.PI * i / seg; //-V3064 seg is a fixed positive segment count (120) from the sole caller
             var rr = r + amp * Math.Sin(waves * t + phase);
             var x = cx + rr * Math.Cos(t);
             var y = cy + rr * Math.Sin(t);
@@ -210,7 +210,7 @@ else
 
     // Active-arc dash for the wavy ring, in pathLength=100 (percent) units, with the same gap as the
     // plain ring (expressed as a fraction of the circle circumference).
-    private double _gapPct => _circumference > 0 ? _circularGap / _circumference * 100 : 0;
+    private double _gapPct => _circumference > 0d ? _circularGap / _circumference * 100d : 0d;
     private string _wavyIndicatorDash => Dash100(_gapPct / 2, Math.Max(0, _clampedValue - _gapPct));
     private static string Dash100(double lead, double len) =>
         string.Create(System.Globalization.CultureInfo.InvariantCulture, $"0 {lead:F2} {len:F2} 100");

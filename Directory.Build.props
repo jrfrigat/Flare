@@ -11,6 +11,13 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!--
+      Flare targets net10.0 primarily but the shipped libraries also support net8.0 and net9.0.
+      Library projects set <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks> (plural) and
+      clear the inherited singular <TargetFramework> below; apps/tools/tests keep the single net10.0
+      default. Each TFM uses its own ASP.NET Core package version (see Flare.Abstractions).
+    -->
+    <FlareLibTargetFrameworks>net8.0;net9.0;net10.0</FlareLibTargetFrameworks>
     <TargetFramework>net10.0</TargetFramework>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

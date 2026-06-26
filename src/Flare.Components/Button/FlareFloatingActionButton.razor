@@ -5,10 +5,8 @@
 {
     @* Speed-dial mode: the FAB is the trigger for a child FlareFloatingActionMenu *@
     <div class="@_menuWrapperClass" style="@(Position == FabPosition.Static ? Style : null)">
-        <CascadingValue Value="_open" Name="FabMenuOpen">
-            <CascadingValue Value="@((Action)Close)" Name="CloseFabMenu">
-                @ChildContent
-            </CascadingValue>
+        <CascadingValue Value="@(new FabMenuContext(_open, Close))">
+            @ChildContent
         </CascadingValue>
         @RenderFab(isTrigger: true)
     </div>

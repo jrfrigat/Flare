@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IOverlayJsService Overlay
 @implements IAsyncDisposable
 
 @if (Visible)
@@ -68,7 +68,6 @@
     private string _contentId => $"flare-dialog-content-{_id}";
     private string? _sizeClass;
     private ElementReference _dialogEl;
-    private IJSObjectReference? _module;
     private DotNetObjectReference<FlareDialog>? _dotNetRef;
     private bool _wasVisible;
 
@@ -94,32 +93,27 @@
             _wasVisible = true;
             try
             {
-                _module ??= await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-theme.js");
                 _dotNetRef ??= DotNetObjectReference.Create(this);
 
-                await _module.InvokeVoidAsync("lockBodyScroll");
+                await Overlay.LockBodyScrollAsync();
 
                 if (CloseOnEsc)
-                    await _module.InvokeVoidAsync("registerDialogEscHandler", _id, _dotNetRef);
+                    await Overlay.RegisterDialogEscAsync(_id, _dotNetRef);
 
-                await _module.InvokeVoidAsync("trapFocus", _id, _dialogEl);
+                await Overlay.TrapFocusAsync(_id, _dialogEl);
             }
             catch { /* SSR or pre-render: JS not available */ }
         }
         else if (!Visible && _wasVisible)
         {
             _wasVisible = false;
-            if (_module is not null)
+            try
             {
-                try
-                {
-                    await _module.InvokeVoidAsync("unlockBodyScroll");
-                    await _module.InvokeVoidAsync("removeDialogEscHandler", _id);
-                    await _module.InvokeVoidAsync("releaseFocusTrap", _id);
-                }
-                catch { }
+                await Overlay.UnlockBodyScrollAsync();
+                await Overlay.RemoveDialogEscAsync(_id);
+                await Overlay.ReleaseFocusTrapAsync(_id);
             }
+            catch { }
         }
     }
 
@@ -138,17 +132,13 @@
 
     public override async ValueTask DisposeAsync()
     {
-        if (_module is not null)
+        // If the dialog is still open when disposed (e.g. page navigation), release locks/handlers.
+        if (_wasVisible)
         {
-            // If the dialog is still open when disposed (e.g. page navigation), release locks.
-            if (_wasVisible)
-            {
-                try { await _module.InvokeVoidAsync("unlockBodyScroll"); } catch { }
-            }
-            try { await _module.InvokeVoidAsync("removeDialogEscHandler", _id); } catch { }
-            try { await _module.InvokeVoidAsync("releaseFocusTrap", _id); } catch { }
-            await _module.DisposeAsync();
+            try { await Overlay.UnlockBodyScrollAsync(); } catch { }
         }
+        try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
+        try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
         _dotNetRef?.Dispose();
         await base.DisposeAsync();
     }
