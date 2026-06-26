@@ -77,7 +77,7 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Aria_CloseTab", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Loading.
         /// </summary>

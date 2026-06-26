@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
     <PackageId>Flare.Components.IDE</PackageId>
     <RootNamespace>Flare.Components.IDE</RootNamespace>
     <Description>IDE layout components for the Flare Blazor component library - ribbon, document tabs, tool panels, splitter, status bar</Description>
