@@ -47,6 +47,36 @@ var myTheme = new FlareThemeBuilder("my-theme", "My Custom Theme")
     .Build();
 ```
 
+### Deriving from a built-in theme
+
+To start from a built-in theme (MD3, Fluent UI 2, Aero, ...) and override only a few parameters, use
+`Derive` - composition, not subclassing (the theme classes are intentionally `sealed`, which keeps the
+theme auto-discovery and `with`-based override model clean):
+
+```csharp
+using Flare.Theming;
+using Flare.Theme.FluentUI2;
+
+var myFluent = new Fluent2Theme().Derive(
+    id: "my-fluent",                 // required: a distinct id
+    displayName: "My Fluent",
+    design: d => d with { Shape = d.Shape with { Medium = "6px" } });
+
+services.AddFlareTheme(myFluent);
+```
+
+`Derive` forwards every member of the base theme (palettes, default palette, style assets, palette
+generator, dark overrides) except the ones you pass; `design` receives the base `DesignTokens` so you
+`with`-override just what you need.
+
+Each theme package also exposes its reference tokens (`Md3`, `Fluent2`, `Aero`, `LiquidGlass`,
+`VisualStudio`) for composing them directly when implementing `ITheme` from scratch:
+
+```csharp
+public DesignTokens Design => Fluent2.DesignReference with { /* overrides */ };
+// palette colors:  Fluent2.LightColors with { Primary = "#0F6CBD" }
+```
+
 ### Implementing ITheme Directly
 
 ```csharp

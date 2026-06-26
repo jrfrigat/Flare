@@ -47,6 +47,36 @@ var myTheme = new FlareThemeBuilder("my-theme", "My Custom Theme")
     .Build();
 ```
 
+### Деривация от встроенной темы
+
+Чтобы взять встроенную тему (MD3, Fluent UI 2, Aero, ...) и переопределить лишь несколько параметров,
+используйте `Derive` - это композиция, а не наследование (классы тем намеренно `sealed`, что сохраняет
+чистыми авто-дискавери тем и модель переопределения через `with`):
+
+```csharp
+using Flare.Theming;
+using Flare.Theme.FluentUI2;
+
+var myFluent = new Fluent2Theme().Derive(
+    id: "my-fluent",                 // обязательно: отдельный id
+    displayName: "My Fluent",
+    design: d => d with { Shape = d.Shape with { Medium = "6px" } });
+
+services.AddFlareTheme(myFluent);
+```
+
+`Derive` форвардит все члены базовой темы (палитры, палитра по умолчанию, style-ассеты, генератор палитр,
+dark-оверрайды), кроме переданных; в `design` приходит базовый `DesignTokens`, так что через `with` вы
+меняете только нужное.
+
+Каждый пакет темы также экспортирует свои reference-токены (`Md3`, `Fluent2`, `Aero`, `LiquidGlass`,
+`VisualStudio`) для прямой композиции при реализации `ITheme` с нуля:
+
+```csharp
+public DesignTokens Design => Fluent2.DesignReference with { /* оверрайды */ };
+// цвета палитры:  Fluent2.LightColors with { Primary = "#0F6CBD" }
+```
+
 ### Прямая реализация ITheme
 
 ```csharp
