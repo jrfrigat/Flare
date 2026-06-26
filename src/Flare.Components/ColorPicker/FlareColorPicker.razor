@@ -1,8 +1,8 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject IJSRuntime JS
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @inject Flare.Components.Services.IUiJsService Ui
+@inject Flare.Components.Services.IColorCanvasJsService Canvas
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
 @implements IAsyncDisposable
@@ -119,14 +119,8 @@ else
     private ElementReference _triggerEl;
     private ElementReference _panelEl;
     private bool _outsideRegistered;
-    // Popup behaviours come from the injected IOverlayJsService and the eye-dropper from IUiJsService.
-    // The saturation/lightness canvas drag is still reached through its own imported ES module (it
-    // moves to an injected service in a later step).
-    private IJSObjectReference? _dragModule;
-
-    private async Task<IJSObjectReference> DragModuleAsync() =>
-        _dragModule ??= await JS.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/Flare.Components/js/flare-drag.js");
+    // All JS interop for this component is via injected services: popup behaviours (IOverlayJsService),
+    // the saturation/lightness canvas (IColorCanvasJsService) and the eye-dropper (IUiJsService).
 
     // Current hex (and its validity) cached from the HSL+alpha state -- recomputed only when that
     // state changes (in SyncInputsFromHsl), not on every property access, so a render no longer runs
@@ -228,8 +222,7 @@ else
         _selfRef ??= DotNetObjectReference.Create(this);
         try
         {
-            var module = await DragModuleAsync();
-            await module.InvokeVoidAsync("flareColorPicker.init", _canvas, _selfRef, _hue, _saturation, _lightness);
+            await Canvas.InitAsync(_canvas, _selfRef, _hue, _saturation, _lightness);
             _canvasInitialized = true;
         }
         catch { /* JS not ready yet */ }
@@ -244,11 +237,8 @@ else
                 await Overlay.RemoveOutsideClickAsync(_triggerId);
                 await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
-            if (_dragModule is not null)
-            {
-                await _dragModule.InvokeVoidAsync("flareColorPicker.destroy", _canvas);
-                await _dragModule.DisposeAsync();
-            }
+            if (_canvasInitialized)
+                await Canvas.DestroyAsync(_canvas);
         }
         catch { }
         _selfRef?.Dispose();
@@ -562,9 +552,9 @@ else
 
     private async Task RefreshCanvas()
     {
-        if (_canvasInitialized && _dragModule is not null)
+        if (_canvasInitialized)
         {
-            try { await _dragModule.InvokeVoidAsync("flareColorPicker.setHue", _canvas, _hue); }
+            try { await Canvas.SetHueAsync(_canvas, _hue); }
             catch { }
         }
     }

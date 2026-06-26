@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @implements IAsyncDisposable
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IResizeJsService Resize
 
 <div class="@BuildCssClass() @Css.Classes.Resizable.Root flare-resizable--@Edge.ToString().ToLower()"
      style="@BuildStyle()"
@@ -26,7 +26,6 @@
 
     private ElementReference _container;
     private ElementReference _handle;
-    private IJSObjectReference? _module;
     private DotNetObjectReference<FlareResizable>? _dotNetRef;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -36,10 +35,7 @@
             _dotNetRef = DotNetObjectReference.Create(this);
             try
             {
-                _module ??= await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-drag.js");
-                await _module.InvokeVoidAsync("registerResizeHandle",
-                    _container, _handle, Edge.ToString().ToLower(),
+                await Resize.RegisterAsync(_container, _handle, Edge.ToString().ToLower(),
                     MinSize, MaxSize, _dotNetRef);
             }
             catch (InvalidOperationException) { }
@@ -72,13 +68,9 @@
 
     public override async ValueTask DisposeAsync()
     {
-        try
-        {
-            if (_module is not null)
-                await _module.InvokeVoidAsync("removeResizeHandle", _container);
-        }
+        try { await Resize.RemoveAsync(_handle); }
         catch { }
         _dotNetRef?.Dispose();
-        if (_module is not null) await _module.DisposeAsync();
+        await base.DisposeAsync();
     }
 }
