@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject IJSRuntime JS
+@inject Flare.Components.Services.IOverlayJsService Overlay
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
 @implements IAsyncDisposable
@@ -117,16 +118,11 @@ else
     private ElementReference _triggerEl;
     private ElementReference _panelEl;
     private bool _outsideRegistered;
-    // This component spans three JS modules: popup behaviours (outside-click, anchored panel) in the
-    // overlay module, the saturation/lightness canvas drag in the drag module, and the eye-dropper in
-    // the ui module. All are ES module exports (not window globals), reached through their refs.
-    private IJSObjectReference? _module;
+    // Popup behaviours (outside-click, anchored panel) come from the injected IOverlayJsService. The
+    // saturation/lightness canvas drag and the eye-dropper are still reached through their own imported
+    // ES modules (these move to injected services in later steps).
     private IJSObjectReference? _dragModule;
     private IJSObjectReference? _uiModule;
-
-    private async Task<IJSObjectReference> ModuleAsync() =>
-        _module ??= await JS.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/Flare.Components/js/flare-overlay.js");
 
     private async Task<IJSObjectReference> DragModuleAsync() =>
         _dragModule ??= await JS.InvokeAsync<IJSObjectReference>(
@@ -205,18 +201,17 @@ else
     {
         try
         {
-            var module = await ModuleAsync();
             if (_open)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await module.InvokeVoidAsync("registerOutsideClick", _triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
+                await Overlay.RegisterOutsideClickAsync(_triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
                 // Fixed-position the panel under the trigger so a Card's overflow:hidden can't crop it.
-                await module.InvokeVoidAsync("positionAnchoredPanel", _triggerId, _triggerEl, _panelEl, new { });
+                await Overlay.PositionAnchoredPanelAsync(_triggerId, _triggerEl, _panelEl);
             }
             else
             {
-                await module.InvokeVoidAsync("removeOutsideClick", _triggerId);
-                await module.InvokeVoidAsync("removeAnchoredPanel", _triggerId);
+                await Overlay.RemoveOutsideClickAsync(_triggerId);
+                await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
             _outsideRegistered = _open;
         }
@@ -248,14 +243,10 @@ else
     {
         try
         {
-            if (_module is not null)
+            if (_outsideRegistered)
             {
-                if (_outsideRegistered)
-                {
-                    await _module.InvokeVoidAsync("removeOutsideClick", _triggerId);
-                    await _module.InvokeVoidAsync("removeAnchoredPanel", _triggerId);
-                }
-                await _module.DisposeAsync();
+                await Overlay.RemoveOutsideClickAsync(_triggerId);
+                await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
             if (_dragModule is not null)
             {

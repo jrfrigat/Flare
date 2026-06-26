@@ -2,7 +2,7 @@
 @inherits FlareFieldBase
 @typeparam TValue
 @using Microsoft.JSInterop
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 <div class="@BuildCssClass(_openClass, _sizeClass, _variantClass)" style="@Style" @attributes="AdditionalAttributes" @ref="_container">
     @if (!string.IsNullOrEmpty(Label))
@@ -112,7 +112,6 @@
     private ElementReference _container;
     private readonly string _controlId = $"flare-multiselect-{Guid.NewGuid():N}";
 
-    private IJSObjectReference? _module;
     private DotNetObjectReference<FlareMultiSelect<TValue>>? _selfRef;
     private bool _outsideRegistered;
 
@@ -123,15 +122,14 @@
         if (_isOpen == _outsideRegistered) return;
         try
         {
-            _module ??= await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-overlay.js");
             if (_isOpen)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await _module.InvokeVoidAsync("registerOutsideClick", _controlId, _container, _selfRef, nameof(CloseFromOutside));
+                await Overlay.RegisterOutsideClickAsync(_controlId, _container, _selfRef, nameof(CloseFromOutside));
             }
             else
             {
-                await _module.InvokeVoidAsync("removeOutsideClick", _controlId);
+                await Overlay.RemoveOutsideClickAsync(_controlId);
             }
             _outsideRegistered = _isOpen;
         }
@@ -151,13 +149,9 @@
 
     public override async ValueTask DisposeAsync()
     {
-        if (_module is not null)
+        if (_outsideRegistered)
         {
-            try
-            {
-                if (_outsideRegistered) await _module.InvokeVoidAsync("removeOutsideClick", _controlId);
-                await _module.DisposeAsync();
-            }
+            try { await Overlay.RemoveOutsideClickAsync(_controlId); }
             catch (JSDisconnectedException) { }
         }
         _selfRef?.Dispose();

@@ -84,6 +84,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IThemeJsService, Flare.Components.Services.ThemeJsService>();
         services.AddScoped<Flare.Components.Services.ISplitterJsService, Flare.Components.Services.SplitterJsService>();
         services.AddScoped<Flare.Components.Services.ITreeJsService, Flare.Components.Services.TreeJsService>();
+        services.AddScoped<Flare.Components.Services.IOverlayJsService, Flare.Components.Services.OverlayJsService>();
 
         return services;
     }

@@ -190,5 +190,6 @@ public class FlareTestContext : BunitContext
         Services.AddScoped<IThemeJsService, StubThemeJsService>();
         Services.AddScoped<Flare.Components.Services.ISplitterJsService, Flare.Components.Services.SplitterJsService>();
         Services.AddScoped<Flare.Components.Services.ITreeJsService, Flare.Components.Services.TreeJsService>();
+        Services.AddScoped<Flare.Components.Services.IOverlayJsService, Flare.Components.Services.OverlayJsService>();
     }
 }
