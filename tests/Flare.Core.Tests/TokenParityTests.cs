@@ -109,7 +109,7 @@ public class TokenParityTests
 
     #region Helpers
 
-    private static DesignTokens CreateDefaultDesignTokens()
+    internal static DesignTokens CreateDefaultDesignTokens()
     {
         var typeStyle = new TypeStyle
         {
