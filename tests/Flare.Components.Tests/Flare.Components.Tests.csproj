@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <!-- Multi-targeted so the bUnit suite actually runs against the net8.0/net9.0/net10.0 library builds. -->
+    <!-- Multi-targeted so the bUnit suite actually runs against the net8.0/net9.0/net10.0 library builds.
+         Clearing the inherited singular TargetFramework (net10.0, from Directory.Build.props) is required:
+         when both that and TargetFrameworks are set the singular wins and only net10.0 builds, so the
+         net8.0/net9.0 outputs never appear. -->
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
