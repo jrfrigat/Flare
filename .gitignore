@@ -86,3 +86,10 @@ CLAUDE.md
 .mcp.json
 ruvector.db
 *.jsonl
+
+## docfx (API docs site) ##
+_site/
+api/**/*.yml
+api/.manifest
+!api/index.md
+docfx.log

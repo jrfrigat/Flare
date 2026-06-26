@@ -1,0 +1,23 @@
+# Flare
+
+> Flare is an MIT-licensed UI component library for .NET 10 Blazor (WebAssembly and Server). It ships 100+ components (all prefixed `Flare*`) and several swappable design systems (Material Design 3 Expressive, Fluent UI 2, Aero, Liquid Glass, Visual Studio) driven by one semantic token-based theming engine. Component variants/sizes are enums; two-way binding uses `@bind-Value`; themes and overlay services are wired through DI (`AddFlare`) and a `<FlareThemeProvider>` wrapper.
+
+Key facts for code generation:
+- Install: `dotnet add package Flare.Blazor` plus one theme package (e.g. `Flare.Theme.MaterialDesign3Expressive`).
+- DI: `builder.Services.AddFlare(opts => { opts.DefaultTheme = new Md3Theme(); opts.DefaultPalette = Md3Palettes.Violet; opts.DefaultMode = ThemeMode.Auto; });`
+- Styles: reference `_content/Flare.Components/js/flare-bootstrap.js` and `_content/Flare.Components/css/flare-components.css` in `<head>`.
+- Wrap the router in `<FlareThemeProvider>`; place `<FlareDialogProvider/>`, `<FlareSnackbarProvider/>`, `<FlareMessageBoxProvider/>` once in the layout.
+- Forms use Blazor `EditForm` + `DataAnnotationsValidator`; Flare fields integrate automatically.
+
+## Docs
+
+- [For AI Agents (full guide)](https://github.com/jrfrigat/Flare/blob/main/docs/en/ai-agents.md): Compact, machine-friendly reference: hard rules, setup, patterns, services, forms, data grid, and the full component catalog with real names.
+- [Getting Started](https://github.com/jrfrigat/Flare/blob/main/docs/en/getting-started.md): Install, DI setup, styles, theme provider, first component, forms, dialogs.
+- [API Reference](https://jrfrigat.github.io/Flare/api/): Generated reference for every public type, parameter, and enum (docfx + XML docs).
+- [Architecture](https://github.com/jrfrigat/Flare/blob/main/docs/en/architecture.md): Module map, component patterns, token system, theming engine, services.
+
+## Optional
+
+- [Theme Creation Guide](https://github.com/jrfrigat/Flare/blob/main/docs/en/theme-creation-guide.md): Design tokens, palettes, building custom themes.
+- [Component Conventions](https://github.com/jrfrigat/Flare/blob/main/docs/en/component-conventions.md): CSS bundle, token system, XML-doc rules for contributors.
+- [Russian docs](https://github.com/jrfrigat/Flare/blob/main/docs/ru/ai-agents.md): Russian-language version of the agent guide and all articles.

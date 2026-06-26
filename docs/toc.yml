@@ -1,0 +1,22 @@
+- name: Getting Started
+  href: en/getting-started.md
+- name: For AI Agents
+  href: en/ai-agents.md
+- name: Architecture
+  href: en/architecture.md
+- name: Theme Creation
+  href: en/theme-creation-guide.md
+- name: Component Conventions
+  href: en/component-conventions.md
+- name: "Russian / Русский"
+  items:
+    - name: Начало работы
+      href: ru/getting-started.md
+    - name: Для ИИ-агентов
+      href: ru/ai-agents.md
+    - name: Архитектура
+      href: ru/architecture.md
+    - name: Создание тем
+      href: ru/theme-creation-guide.md
+    - name: Конвенции кода
+      href: ru/component-conventions.md
