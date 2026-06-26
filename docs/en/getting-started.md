@@ -6,7 +6,8 @@
 
 ## Requirements
 
-- .NET 10 SDK
+- .NET SDK 10 (to build). The Flare libraries are **.NET 10-first but multi-target net8.0, net9.0 and
+  net10.0**, so they run on a .NET 8, 9, or 10 app.
 - Blazor WebAssembly **or** Blazor Server (both are supported)
 
 ---
@@ -149,6 +150,14 @@ Automatic dark mode is on by default: `FlareThemeProvider` watches the system
         @theme.DisplayName
     </FlareButton>
 }
+```
+
+To switch a **specific** theme or palette without remembering its id string, each package exposes
+constants - `<Theme>.ThemeId` and `<Palettes>.<Name>Id`:
+
+```csharp
+await ThemeService.SetThemeAsync(Fluent2Theme.ThemeId);     // "fluent2"
+await ThemeService.SetPaletteAsync(Fluent2Palettes.BlueId); // "fluent-blue"
 ```
 
 ---

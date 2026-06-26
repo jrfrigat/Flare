@@ -1,39 +1,35 @@
-using Flare.Abstractions;
-using Flare.Theming;
 using Flare.Abstractions.Tokens;
+using Flare.Theming;
 using Flare.Theme.FluentUI2;
 
 namespace Flare.Legacy;
 
 /// <summary>
-/// The "Legacy" theme: the flat / square / gray "old desktop (1C / classic Windows)" look. It uses
-/// Fluent UI 2 as its geometry base (so all corner/state geometry comes from Fluent's stylesheet),
-/// then layers the Tahoma typeface, dense spacing and a gray enterprise palette on top. This is the
-/// registered-theme equivalent of the Gallery's "Apply Legacy theme" preset.
+/// The "Legacy" theme: the flat / square / gray "old desktop (1C / classic Windows)" look. It is
+/// <b>derived</b> from Fluent UI 2 (so all corner/state geometry, style assets and palette generator
+/// come from Fluent) and then layers the Tahoma typeface, dense spacing and gray Filled cards on top -
+/// a worked example of <see cref="ThemeDerivation.Derive"/> instead of implementing <c>ITheme</c> by hand.
 /// </summary>
-public sealed class LegacyTheme : ITheme
+public static class LegacyTheme
 {
-    private static readonly Fluent2Theme Fluent = new();
+    /// <summary>The stable theme id - use this constant to select the Legacy theme.</summary>
+    public const string ThemeId = "legacy";
 
-    /// <inheritdoc />
-    public string Id => "legacy";
-    /// <inheritdoc />
-    public string DisplayName => "Legacy";
-    /// <inheritdoc />
-    public DesignTokens Design { get; } = BuildDesign();
-    /// <inheritdoc />
-    public string DefaultPaletteId => LegacyPalettes.Legacy.Id;
-    // Geometry/state CSS comes from the Fluent UI 2 stylesheets.
-    /// <inheritdoc />
-    public IReadOnlyList<string> StyleAssets => Fluent.StyleAssets;
-    /// <inheritdoc />
-    public IPaletteGenerator? PaletteGenerator => Fluent.PaletteGenerator;
+    /// <summary>The Legacy theme, derived from <see cref="Fluent2Theme"/>.</summary>
+    public static readonly Flare.Abstractions.ITheme Instance = new Fluent2Theme().Derive(
+        id: ThemeId,
+        displayName: "Legacy",
+        design: BuildDesign,
+        defaultPaletteId: LegacyPalettes.Legacy.Id,
+        // The Legacy theme ships no palettes of its own (the gray palette is registered separately);
+        // override Fluent's palette list with an empty one rather than inheriting it.
+        palettes: []);
 
-    // Fluent geometry + the classic Tahoma face, dense 1C spacing, and gray Filled cards.
-    private static DesignTokens BuildDesign()
+    // Fluent geometry + the classic Tahoma face, dense 1C spacing, and gray Filled cards. The base
+    // Fluent DesignTokens arrive as the parameter (Derive passes them in).
+    private static DesignTokens BuildDesign(DesignTokens g)
     {
         const string font = "Tahoma, 'Segoe UI', sans-serif";
-        var g = Fluent.Design;
         TypeStyle Tahoma(TypeStyle s) => s with { FontFamily = font };
         // Button labels use their own --flare-btn-label-* tokens, so set the face + a smaller size here.
         TypeStyle BtnLabel(TypeStyle s, string size) => s with { FontFamily = font, FontSize = size };
