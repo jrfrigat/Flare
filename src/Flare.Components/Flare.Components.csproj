@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Flare.Core\Flare.Core.csproj" />
+    <!-- Presentation depends inward on contracts + theming engine only (NOT Infrastructure). -->
+    <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
+    <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
   </ItemGroup>
 
   <ItemGroup>

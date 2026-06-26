@@ -21,8 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Flare.Abstractions\Flare.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Core\Flare.Core.csproj" />
     <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
   </ItemGroup>
 
