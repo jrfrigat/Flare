@@ -2,6 +2,7 @@
 @inherits FlareComponentBase
 @inject IJSRuntime JS
 @inject Flare.Components.Services.IOverlayJsService Overlay
+@inject Flare.Components.Services.IUiJsService Ui
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
 @implements IAsyncDisposable
@@ -118,19 +119,14 @@ else
     private ElementReference _triggerEl;
     private ElementReference _panelEl;
     private bool _outsideRegistered;
-    // Popup behaviours (outside-click, anchored panel) come from the injected IOverlayJsService. The
-    // saturation/lightness canvas drag and the eye-dropper are still reached through their own imported
-    // ES modules (these move to injected services in later steps).
+    // Popup behaviours come from the injected IOverlayJsService and the eye-dropper from IUiJsService.
+    // The saturation/lightness canvas drag is still reached through its own imported ES module (it
+    // moves to an injected service in a later step).
     private IJSObjectReference? _dragModule;
-    private IJSObjectReference? _uiModule;
 
     private async Task<IJSObjectReference> DragModuleAsync() =>
         _dragModule ??= await JS.InvokeAsync<IJSObjectReference>(
             "import", "./_content/Flare.Components/js/flare-drag.js");
-
-    private async Task<IJSObjectReference> UiModuleAsync() =>
-        _uiModule ??= await JS.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/Flare.Components/js/flare-ui.js");
 
     // Current hex (and its validity) cached from the HSL+alpha state -- recomputed only when that
     // state changes (in SyncInputsFromHsl), not on every property access, so a render no longer runs
@@ -253,8 +249,6 @@ else
                 await _dragModule.InvokeVoidAsync("flareColorPicker.destroy", _canvas);
                 await _dragModule.DisposeAsync();
             }
-            if (_uiModule is not null)
-                await _uiModule.DisposeAsync();
         }
         catch { }
         _selfRef?.Dispose();
@@ -374,8 +368,7 @@ else
     {
         try
         {
-            var module = await UiModuleAsync();
-            var hex = await module.InvokeAsync<string?>("openEyeDropper");
+            var hex = await Ui.OpenEyeDropperAsync();
             if (!string.IsNullOrEmpty(hex))
             {
                 ParseColorToState(hex);

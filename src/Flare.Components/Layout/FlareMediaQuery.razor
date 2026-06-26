@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IUiJsService Ui
 @implements IAsyncDisposable
 
 @if (ChildContent is not null)
@@ -31,7 +31,6 @@
 
     private Breakpoint _current;
     private bool _appliedOnce;
-    private IJSObjectReference? _module;
     private DotNetObjectReference<FlareMediaQuery>? _ref;
     private readonly string _id = Guid.NewGuid().ToString("N");
 
@@ -42,10 +41,8 @@
         if (!firstRender) return;
         try
         {
-            _module = await JS.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-ui.js");
             _ref = DotNetObjectReference.Create(this);
-            var bp = await _module.InvokeAsync<string>("subscribeBreakpoint", _id, _ref);
+            var bp = await Ui.SubscribeBreakpointAsync(_id, _ref);
             await ApplyAsync(bp);
         }
         catch (InvalidOperationException) { /* prerender */ }
@@ -69,14 +66,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        try
-        {
-            if (_module is not null)
-            {
-                await _module.InvokeVoidAsync("unsubscribeBreakpoint", _id);
-                await _module.DisposeAsync();
-            }
-        }
+        try { await Ui.UnsubscribeBreakpointAsync(_id); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         _ref?.Dispose();

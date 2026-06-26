@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @implements IAsyncDisposable
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IUiJsService Ui
 
 <div class="@BuildCssClass(_verticalClass, _placementClass, _variantClass, _rotatedClass)" style="@_rootStyle" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Tabs.BarWrap">
@@ -160,7 +160,6 @@
 
     // Overflow scrolling (horizontal only): JS reports overflow + edge state.
     private ElementReference _barRef;
-    private IJSObjectReference? _module;
     private DotNetObjectReference<FlareTabs>? _dotNetRef;
     private bool _overflowing;
     private bool _atStart = true;
@@ -174,9 +173,7 @@
             _dotNetRef = DotNetObjectReference.Create(this);
             try
             {
-                _module ??= await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-ui.js");
-                await _module.InvokeVoidAsync("registerTabScroller", _barRef, _dotNetRef);
+                await Ui.RegisterTabScrollerAsync(_barRef, _dotNetRef);
             }
             catch (InvalidOperationException) { }
             catch (JSException) { }
@@ -192,30 +189,15 @@
         StateHasChanged();
     }
 
-    private async Task ScrollPrev()
-    {
-        if (_module is not null) await _module.InvokeVoidAsync("scrollTabs", _barRef, -1);
-    }
+    private async Task ScrollPrev() => await Ui.ScrollTabsAsync(_barRef, -1);
 
-    private async Task ScrollNext()
-    {
-        if (_module is not null) await _module.InvokeVoidAsync("scrollTabs", _barRef, 1);
-    }
+    private async Task ScrollNext() => await Ui.ScrollTabsAsync(_barRef, 1);
 
     public override async ValueTask DisposeAsync()
     {
-        try
-        {
-            if (_module is not null)
-                await _module.InvokeVoidAsync("removeTabScroller", _barRef);
-        }
+        try { await Ui.RemoveTabScrollerAsync(_barRef); }
         catch { }
         _dotNetRef?.Dispose();
-        if (_module is not null)
-        {
-            try { await _module.DisposeAsync(); }
-            catch { }
-        }
         await base.DisposeAsync();
     }
 
