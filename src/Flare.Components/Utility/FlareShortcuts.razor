@@ -52,7 +52,7 @@
             try
             {
                 _module ??= await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                    "import", "./_content/Flare.Components/js/flare-ui.js");
                 _dotNetRef = DotNetObjectReference.Create(this);
                 await _module.InvokeVoidAsync("registerShortcutListener", _dotNetRef);
             }

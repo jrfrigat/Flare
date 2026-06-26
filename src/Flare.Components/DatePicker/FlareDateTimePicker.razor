@@ -405,7 +405,7 @@
         {
             try
             {
-                _bpModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-theme.js");
+                _bpModule = await JS.InvokeAsync<IJSObjectReference>("import", "./_content/Flare.Components/js/flare-ui.js");
                 _bpRef = DotNetObjectReference.Create(this);
                 _bp = await _bpModule.InvokeAsync<string>("subscribeBreakpoint", _bpId, _bpRef);
                 StateHasChanged();

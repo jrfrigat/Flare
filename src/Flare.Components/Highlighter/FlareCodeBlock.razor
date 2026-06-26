@@ -76,7 +76,7 @@
             try
             {
                 _module = await JS.InvokeAsync<IJSObjectReference>(
-                    "import", "./_content/Flare.Components/js/flare-theme.js");
+                    "import", "./_content/Flare.Components/js/flare-highlight.js");
                 if (SmartEditing && !ReadOnly)
                     await _module.InvokeVoidAsync("enableCodeEditorKeys", _textarea, IndentSize);
             }

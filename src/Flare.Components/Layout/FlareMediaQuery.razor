@@ -43,7 +43,7 @@
         try
         {
             _module = await JS.InvokeAsync<IJSObjectReference>(
-                "import", "./_content/Flare.Components/js/flare-theme.js");
+                "import", "./_content/Flare.Components/js/flare-ui.js");
             _ref = DotNetObjectReference.Create(this);
             var bp = await _module.InvokeAsync<string>("subscribeBreakpoint", _id, _ref);
             await ApplyAsync(bp);
