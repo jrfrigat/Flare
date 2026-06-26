@@ -47,10 +47,14 @@ jobs:
 
       # The component suite also runs on the net8.0 and net9.0 library builds (the solution-level run
       # above covers net10; Core.Tests is net10-only because it references the net10 CssAudit tool).
+      # The suite is xunit.v3 / Microsoft.Testing.Platform: the .NET 10 SDK's
+      # `dotnet test --no-build -f <tfm>` mis-invokes the MTP test app (passes it the .dll path, which
+      # it rejects as "argument invalid"). Exec the per-TFM build output (produced by the Build step)
+      # directly instead -- the xunit.v3 runner runs in-process and returns a proper exit code.
       - name: Test (component suite, net8 + net9)
         run: |
-          dotnet test tests/Flare.Components.Tests/Flare.Components.Tests.csproj -c Release --no-build -f net8.0
-          dotnet test tests/Flare.Components.Tests/Flare.Components.Tests.csproj -c Release --no-build -f net9.0
+          dotnet exec tests/Flare.Components.Tests/bin/Release/net8.0/Flare.Components.Tests.dll
+          dotnet exec tests/Flare.Components.Tests/bin/Release/net9.0/Flare.Components.Tests.dll
 
       - name: Upload test results
         if: always()
