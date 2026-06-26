@@ -89,6 +89,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
         services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();
         services.AddScoped<Flare.Components.Services.IHighlightJsService, Flare.Components.Services.HighlightJsService>();
+        services.AddScoped<Flare.Components.Services.IElementJsService, Flare.Components.Services.ElementJsService>();
+        services.AddScoped<Flare.Components.Services.ILazyJsService, Flare.Components.Services.LazyJsService>();
+        services.AddScoped<Flare.Components.Services.IInfiniteScrollJsService, Flare.Components.Services.InfiniteScrollJsService>();
+        services.AddScoped<Flare.Components.Services.ITocJsService, Flare.Components.Services.TocJsService>();
+        services.AddScoped<Flare.Components.Services.IDataGridJsService, Flare.Components.Services.DataGridJsService>();
 
         return services;
     }

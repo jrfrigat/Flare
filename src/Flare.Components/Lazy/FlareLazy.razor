@@ -15,7 +15,7 @@
 </div>
 
 @code {
-    [Inject] private IJSRuntime JS { get; set; } = default!;
+    [Inject] private Flare.Components.Services.ILazyJsService Lazy { get; set; } = default!;
 
     /// <summary>Content that is only rendered once this element scrolls near the viewport.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -86,7 +86,7 @@
         try
         {
             _objRef = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("FlareLazy.init", _el, _objRef, RootMargin, KeepRendered, Root);
+            await Lazy.InitAsync(_el, _objRef, RootMargin, KeepRendered, Root);
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
@@ -105,7 +105,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        try { await JS.InvokeVoidAsync("FlareLazy.dispose", _el); }
+        try { await Lazy.RemoveAsync(_el); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         _objRef?.Dispose();

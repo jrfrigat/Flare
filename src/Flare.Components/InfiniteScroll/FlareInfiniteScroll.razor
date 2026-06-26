@@ -26,7 +26,7 @@
 </div>
 
 @code {
-    [Inject] private IJSRuntime JS { get; set; } = default!;
+    [Inject] private Flare.Components.Services.IInfiniteScrollJsService InfiniteScroll { get; set; } = default!;
 
     /// <summary>Content rendered inside the scrollable container.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -53,7 +53,7 @@
         try
         {
             _objRef = DotNetObjectReference.Create(this);
-            await JS.InvokeVoidAsync("FlareInfiniteScroll.init", _sentinel, _objRef, RootMargin);
+            await InfiniteScroll.InitAsync(_sentinel, _objRef, RootMargin);
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
@@ -82,7 +82,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        try { await JS.InvokeVoidAsync("FlareInfiniteScroll.dispose", _sentinel); }
+        try { await InfiniteScroll.RemoveAsync(_sentinel); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         _objRef?.Dispose();

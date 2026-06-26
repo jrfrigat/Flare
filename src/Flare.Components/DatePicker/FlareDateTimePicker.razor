@@ -3,7 +3,7 @@
 @implements IAsyncDisposable
 @using System.Globalization
 @inject TimeProvider TimeProvider
-@inject IJSRuntime JS
+@inject Flare.Components.Services.IElementJsService Element
 @inject Flare.Components.Services.IUiJsService Ui
 
 <div class="@BuildCssClass(_variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
@@ -153,7 +153,6 @@
         $"left:{_panelLeft.ToString("F1", CultureInfo.InvariantCulture)}px;" +
         $"min-width:{_panelMinWidth.ToString("F1", CultureInfo.InvariantCulture)}px";
 
-    private record struct FieldBounds(double Top, double Bottom, double Left, double Width, double ViewportHeight, double ViewportWidth);
 
     // Layout: Auto resolves to Panels on >= md (960px) viewports, Tabs otherwise.
     private DateTimeVariant _effectiveVariant => Mode switch
@@ -341,7 +340,7 @@
         {
             try
             {
-                var b = await JS.InvokeAsync<FieldBounds>("flareGetBounds", _fieldRef);
+                var b = await Element.GetBoundsAsync(_fieldRef);
                 // The clock dial is 256px + panel padding; keep the panel wide enough so it never overflows.
                 var floor = TimeVariant == TimePickerVariant.Dial ? 320 : 280;
                 _panelMinWidth = Math.Max(floor, b.Width);

@@ -195,5 +195,10 @@ public class FlareTestContext : BunitContext
         Services.AddScoped<Flare.Components.Services.IResizeJsService, Flare.Components.Services.ResizeJsService>();
         Services.AddScoped<Flare.Components.Services.IColorCanvasJsService, Flare.Components.Services.ColorCanvasJsService>();
         Services.AddScoped<Flare.Components.Services.IHighlightJsService, Flare.Components.Services.HighlightJsService>();
+        Services.AddScoped<Flare.Components.Services.IElementJsService, Flare.Components.Services.ElementJsService>();
+        Services.AddScoped<Flare.Components.Services.ILazyJsService, Flare.Components.Services.LazyJsService>();
+        Services.AddScoped<Flare.Components.Services.IInfiniteScrollJsService, Flare.Components.Services.InfiniteScrollJsService>();
+        Services.AddScoped<Flare.Components.Services.ITocJsService, Flare.Components.Services.TocJsService>();
+        Services.AddScoped<Flare.Components.Services.IDataGridJsService, Flare.Components.Services.DataGridJsService>();
     }
 }

@@ -501,13 +501,13 @@ public partial class FlareDataGrid<TItem>
             _lastSyncedLayout = _layoutSignature;
             if (_columns.Any(c => c.Resizable))
             {
-                try { await JS.InvokeVoidAsync("FlareDataGrid.initAllResizeHandles", _tableRef); }
+                try { await Grid.InitResizeHandlesAsync(_tableRef); }
                 catch (InvalidOperationException) { }
                 catch (JSDisconnectedException) { }
             }
             if (_columns.Any(c => c.Frozen || c.FrozenRight))
             {
-                try { await JS.InvokeVoidAsync("FlareDataGrid.updateFrozenOffsets", _tableRef); }
+                try { await Grid.UpdateFrozenOffsetsAsync(_tableRef); }
                 catch (InvalidOperationException) { }
                 catch (JSDisconnectedException) { }
             }
@@ -519,7 +519,7 @@ public partial class FlareDataGrid<TItem>
             _infiniteRef ??= DotNetObjectReference.Create(this);
             try
             {
-                await JS.InvokeVoidAsync("FlareDataGrid.initInfinite", _infiniteSentinel, _wrapperRef, _infiniteRef, "160px");
+                await Grid.InitInfiniteAsync(_infiniteSentinel, _wrapperRef, _infiniteRef, "160px");
                 _infiniteObserverReady = true;
             }
             catch (InvalidOperationException) { }
@@ -533,7 +533,7 @@ public partial class FlareDataGrid<TItem>
 
     private async Task DisposeInfiniteObserverAsync()
     {
-        try { await JS.InvokeVoidAsync("FlareDataGrid.disposeInfinite", _infiniteSentinel); }
+        try { await Grid.DisposeInfiniteAsync(_infiniteSentinel); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
         _infiniteObserverReady = false;
