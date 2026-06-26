@@ -2629,7 +2629,7 @@ public class C_DataGridPersistenceTests
     public async Task SaveThenLoad_RoundTripsState_ThroughLocalStorage()
     {
         var js = new FakeLocalStorageJsRuntime();
-        var persistence = new DataGridPersistence<Person>(js, "grid-key");
+        var persistence = new DataGridPersistence<Person>(new Flare.Infrastructure.BrowserStorage(js),"grid-key");
 
         var state = new DataGridPersistedState
         {
@@ -2664,7 +2664,7 @@ public class C_DataGridPersistenceTests
     public async Task Load_ReturnsNull_WhenNothingStored()
     {
         var js = new FakeLocalStorageJsRuntime();
-        var persistence = new DataGridPersistence<Person>(js, "absent");
+        var persistence = new DataGridPersistence<Person>(new Flare.Infrastructure.BrowserStorage(js),"absent");
 
         Assert.Null(await persistence.LoadAsync());
     }
@@ -2673,7 +2673,7 @@ public class C_DataGridPersistenceTests
     public async Task Clear_RemovesStoredState()
     {
         var js = new FakeLocalStorageJsRuntime();
-        var persistence = new DataGridPersistence<Person>(js, "grid-key");
+        var persistence = new DataGridPersistence<Person>(new Flare.Infrastructure.BrowserStorage(js),"grid-key");
         await persistence.SaveAsync(new DataGridPersistedState { PageSize = 10 });
         Assert.True(js.Store.ContainsKey("grid-key"));
 

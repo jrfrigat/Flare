@@ -436,7 +436,7 @@ public partial class FlareDataGrid<TItem>
         await base.OnInitializedAsync();
         if (!string.IsNullOrEmpty(PersistStateKey))
         {
-            _persistence = new DataGridPersistence<TItem>(JS, PersistStateKey);
+            _persistence = new DataGridPersistence<TItem>(Storage, PersistStateKey);
             var saved = await _persistence.LoadAsync();
             if (saved is not null)
             {

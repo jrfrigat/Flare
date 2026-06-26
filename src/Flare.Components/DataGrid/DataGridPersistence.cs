@@ -1,77 +1,36 @@
-using System.Text.Json;
-using Microsoft.JSInterop;
-
 namespace Flare.Components;
 
 /// <summary>
-/// Persists DataGrid state (sorts, filters, column order, page size, hidden columns)
-/// to browser localStorage. Enables users to return to their preferred view.
+/// Persists DataGrid state (sorts, filters, column order, page size, hidden columns) to browser
+/// localStorage via <see cref="IBrowserStorage"/>. Enables users to return to their preferred view.
 /// </summary>
 /// <remarks>
-/// Uses the built-in <c>localStorage.getItem/setItem/removeItem</c> JS interop directly
-/// (the same approach as the theme storage), so no custom Flare JS module is required.
-/// All calls degrade to a no-op during SSR/prerender or when the circuit is gone.
+/// State (de)serialization and the SSR/quota/corrupt-payload safety net live in the
+/// <see cref="IBrowserStorage"/> adapter, so this type is a thin, key-bound typed wrapper.
 /// </remarks>
 public sealed class DataGridPersistence<TItem>
 {
-    private readonly IJSRuntime _js;
+    private readonly IBrowserStorage _storage;
     private readonly string _storageKey;
 
-    // CamelCase to match the on-the-wire shape used elsewhere; cached to avoid re-allocating
-    // the options on every save/load.
-    private static readonly JsonSerializerOptions s_jsonOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-    };
-
     /// <summary>Initializes a new <see cref="DataGridPersistence{TItem}"/> bound to the given storage key.</summary>
-    public DataGridPersistence(IJSRuntime js, string storageKey = "flare-datagrid")
+    public DataGridPersistence(IBrowserStorage storage, string storageKey = "flare-datagrid")
     {
-        _js = js;
+        _storage = storage;
         _storageKey = storageKey;
     }
 
     /// <summary>Saves the current grid state to localStorage.</summary>
-    public async Task SaveAsync(DataGridPersistedState state)
-    {
-        try
-        {
-            var json = JsonSerializer.Serialize(state, s_jsonOptions);
-            await _js.InvokeVoidAsync("localStorage.setItem", _storageKey, json);
-        }
-        catch (InvalidOperationException) { } // SSR / prerender (no JS runtime)
-        catch (JSDisconnectedException) { }
-        catch (JSException) { } // storage blocked/quota (e.g. private mode)
-    }
+    public Task SaveAsync(DataGridPersistedState state) =>
+        _storage.SetAsync(_storageKey, state).AsTask();
 
     /// <summary>Loads the persisted state from localStorage. Returns null if not found.</summary>
-    public async Task<DataGridPersistedState?> LoadAsync()
-    {
-        try
-        {
-            var json = await _js.InvokeAsync<string?>("localStorage.getItem", _storageKey);
-            if (string.IsNullOrEmpty(json)) return null;
-
-            return JsonSerializer.Deserialize<DataGridPersistedState>(json, s_jsonOptions);
-        }
-        catch (InvalidOperationException) { } // SSR / prerender (no JS runtime)
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
-        catch (JsonException) { } // corrupt/old payload - ignore and fall back to defaults
-        return null;
-    }
+    public Task<DataGridPersistedState?> LoadAsync() =>
+        _storage.GetAsync<DataGridPersistedState>(_storageKey).AsTask();
 
     /// <summary>Clears the persisted state from localStorage.</summary>
-    public async Task ClearAsync()
-    {
-        try
-        {
-            await _js.InvokeVoidAsync("localStorage.removeItem", _storageKey);
-        }
-        catch (InvalidOperationException) { } // SSR / prerender (no JS runtime)
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
-    }
+    public Task ClearAsync() =>
+        _storage.RemoveAsync(_storageKey).AsTask();
 }
 
 /// <summary>

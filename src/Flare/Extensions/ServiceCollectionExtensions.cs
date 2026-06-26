@@ -69,6 +69,7 @@ public static class ServiceCollectionExtensions
         });
 
         services.AddScoped<IThemeStorageService, LocalStorageThemeStorage>();
+        services.AddScoped<Flare.Components.IBrowserStorage, BrowserStorage>();
         services.AddScoped<ISnackbarService, SnackbarService>();
         services.AddScoped<IDialogService, DialogService>();
         services.AddScoped<IMessageBoxService, MessageBoxService>();

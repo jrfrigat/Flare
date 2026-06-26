@@ -183,6 +183,7 @@ public class FlareTestContext : BunitContext
         // Typed JS-interop services consumed by migrated components (clipboard/download/color extractor).
         Services.AddScoped<IFlareClipboard, FlareClipboardService>();
         Services.AddScoped<IFlareDownload, FlareDownloadService>();
+        Services.AddScoped<Flare.Components.IBrowserStorage, Flare.Infrastructure.BrowserStorage>();
 
         // Collision and Theme JS services.
         Services.AddScoped<ICollisionService, StubCollisionService>();

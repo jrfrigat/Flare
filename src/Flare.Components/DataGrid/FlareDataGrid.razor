@@ -8,6 +8,7 @@
 @inject IJSRuntime JS
 @inject IFlareDownload Download
 @inject IFlareClipboard Clipboard
+@inject IBrowserStorage Storage
 
 @* Rebuild the projected column set once per render if a structural change marked it dirty. *@
 @{ EnsureColumnsBuilt(); }
