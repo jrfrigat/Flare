@@ -275,7 +275,7 @@ token CSS, so there is no flash of unstyled content.
 
 ### Adding a New Theme
 
-1. Create a `net10.0` Razor class library referencing `Flare.Abstractions` + `Flare.Theming`.
+1. Create a Razor class library (net8.0/net9.0/net10.0) referencing `Flare.Abstractions` + `Flare.Theming`.
 2. Implement `ITheme` - provide `Id`, `DisplayName`, `Design` (a `DesignTokens`, typically derived
    from a reference theme with `with`), `DefaultPaletteId`, `Palettes`, and `StyleAssets`.
 3. Ship the baseline/token CSS referenced by `StyleAssets` under `wwwroot/`.

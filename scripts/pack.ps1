@@ -1,10 +1,11 @@
 #!/usr/bin/env pwsh
 # Packs the publishable Flare library packages into ./artifacts.
 #
-# Only the library projects under src/ are published (Flare, Flare.Core, Flare.Components,
-# the Flare.Components.* add-on packages, and the Flare.Theme.* packages). Gallery, Legacy,
-# Flare.Icons, tests and tools are marked <IsPackable>false</IsPackable>, so `dotnet pack`
-# skips them automatically -- this script just packs every src/*.csproj and lets that flag filter.
+# Only the library projects under src/ are published (Flare/Flare.Blazor, Flare.Abstractions,
+# Flare.Theming, Flare.Infrastructure, Flare.Components, the Flare.Components.* add-on packages, and
+# the Flare.Theme.* packages). Gallery, Legacy, tests and tools are marked <IsPackable>false</IsPackable>,
+# so `dotnet pack` skips them automatically -- this script just packs every src/*.csproj and lets that
+# flag filter. The library packages multi-target net8.0/net9.0/net10.0.
 #
 # Versioning is driven by MinVer from the git tag (prefix "v"): tag the commit you publish, e.g.
 #   git tag v0.0.1

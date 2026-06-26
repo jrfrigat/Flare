@@ -133,7 +133,7 @@ public void ConfigureThemeService(IThemeService themeService)
 ### From Seed Colors
 
 ```csharp
-var palette = Palette.FromColors(
+var palette = PaletteFactory.FromColors(
     id: "my-brand",
     name: "My Brand Colors",
     main: "#6750A4",      // brand color

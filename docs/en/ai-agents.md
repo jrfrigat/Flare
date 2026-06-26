@@ -10,7 +10,7 @@ and types of any component, consult the generated [API Reference](../../api/).
 
 ## 1. What Flare is
 
-- A **.NET 10 Blazor** UI library. Works in **both** Blazor WebAssembly and Blazor Server.
+- A **.NET 8 / 9 / 10 Blazor** UI library (net10-first). Works in **both** Blazor WebAssembly and Blazor Server.
 - **100+ components**, all prefixed `Flare*` (e.g. `FlareButton`, `FlareDataGrid`).
 - **Token-based theming.** Multiple design systems (Material Design 3 Expressive, Fluent UI 2, Aero,
   Liquid Glass, Visual Studio) are separate packages, switchable at runtime. You never write theme CSS.
@@ -40,7 +40,7 @@ and types of any component, consult the generated [API Reference](../../api/).
 ## 3. Install
 
 ```sh
-# Core (pulls in Flare.Core + Flare.Components, 100+ components):
+# Core (pulls in Flare.Components (+ the Abstractions/Theming/Infrastructure rings), 100+ components):
 dotnet add package Flare.Blazor
 
 # At least one theme (separate packages):

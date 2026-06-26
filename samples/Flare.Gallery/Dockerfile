@@ -3,7 +3,9 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /repo
 
 # Restore dependencies first (layer-cached unless .csproj files change)
-COPY ["src/Flare.Core/Flare.Core.csproj",                                           "src/Flare.Core/"]
+COPY ["src/Flare.Abstractions/Flare.Abstractions.csproj",                           "src/Flare.Abstractions/"]
+COPY ["src/Flare.Theming/Flare.Theming.csproj",                                     "src/Flare.Theming/"]
+COPY ["src/Flare.Infrastructure/Flare.Infrastructure.csproj",                       "src/Flare.Infrastructure/"]
 COPY ["src/Flare.Components/Flare.Components.csproj",                               "src/Flare.Components/"]
 COPY ["src/Flare.Components.IDE/Flare.Components.IDE.csproj",                       "src/Flare.Components.IDE/"]
 COPY ["src/Flare.Components.Media/Flare.Components.Media.csproj",                   "src/Flare.Components.Media/"]

@@ -250,7 +250,7 @@ Palette
 
 ### Как добавить новую тему
 
-1. Создайте Razor-библиотеку `net10.0` со ссылкой на `Flare.Abstractions` + `Flare.Theming`.
+1. Создайте Razor-библиотеку (net8.0/net9.0/net10.0) со ссылкой на `Flare.Abstractions` + `Flare.Theming`.
 2. Реализуйте `ITheme` - задайте `Id`, `DisplayName`, `Design` (`DesignTokens`, обычно выведенный из
    reference-темы через `with`), `DefaultPaletteId`, `Palettes` и `StyleAssets`.
 3. Поставьте базовый CSS / CSS токенов, на который ссылается `StyleAssets`, в `wwwroot/`.
