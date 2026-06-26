@@ -2084,6 +2084,546 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_Subtitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Basic DataGrid.
+        /// </summary>
+        public static string DataGrid_BasicTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_BasicTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minimal DataGrid with sorting and pagination..
+        /// </summary>
+        public static string DataGrid_BasicDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_BasicDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Appearance.
+        /// </summary>
+        public static string DataGrid_AppearanceTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_AppearanceTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Striped, hoverable, dense, and bordered modes..
+        /// </summary>
+        public static string DataGrid_AppearanceDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_AppearanceDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filtering.
+        /// </summary>
+        public static string DataGrid_FilteringTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FilteringTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline filters + advanced filter builder with FilterMode selector..
+        /// </summary>
+        public static string DataGrid_FilteringDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FilteringDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Quick Filter (global search).
+        /// </summary>
+        public static string DataGrid_QuickFilterTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_QuickFilterTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareDataGridQuickFilter - a standalone search box bound to the grid that filters across all visible columns..
+        /// </summary>
+        public static string DataGrid_QuickFilterDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_QuickFilterDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filter Presets.
+        /// </summary>
+        public static string DataGrid_FilterPresetsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FilterPresetsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareDataGridFilterPresets - a list of named advanced-filter presets; choosing one applies its conditions to the grid..
+        /// </summary>
+        public static string DataGrid_FilterPresetsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FilterPresetsDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multi-Sort.
+        /// </summary>
+        public static string DataGrid_MultiSortTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiSortTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hold Shift+Click to sort by multiple columns..
+        /// </summary>
+        public static string DataGrid_MultiSortDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiSortDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Row Selection.
+        /// </summary>
+        public static string DataGrid_RowSelectionTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_RowSelectionTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Single and multiple row selection with checkboxes..
+        /// </summary>
+        public static string DataGrid_RowSelectionDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_RowSelectionDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline Editing.
+        /// </summary>
+        public static string DataGrid_InlineEditingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_InlineEditingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit rows inline with EditMode.Inline..
+        /// </summary>
+        public static string DataGrid_InlineEditingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_InlineEditingDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Batch Editing.
+        /// </summary>
+        public static string DataGrid_BatchEditingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_BatchEditingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit multiple rows and save all at once with EditMode.Batch..
+        /// </summary>
+        public static string DataGrid_BatchEditingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_BatchEditingDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Column Bands.
+        /// </summary>
+        public static string DataGrid_ColumnBandsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnBandsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Group columns under shared headers with FlareColumnBand..
+        /// </summary>
+        public static string DataGrid_ColumnBandsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnBandsDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Frozen Columns.
+        /// </summary>
+        public static string DataGrid_FrozenColumnsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FrozenColumnsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pin columns to the left edge with Frozen or to the right edge with FrozenRight; both stack with cumulative offsets..
+        /// </summary>
+        public static string DataGrid_FrozenColumnsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FrozenColumnsDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Column Picker.
+        /// </summary>
+        public static string DataGrid_ColumnPickerTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnPickerTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на DataGridColumnPicker component for show/hide columns..
+        /// </summary>
+        public static string DataGrid_ColumnPickerDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnPickerDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reorder Columns &amp; Rows.
+        /// </summary>
+        public static string DataGrid_ReorderTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ReorderTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag-and-drop reordering with ReorderableColumns and RowReorderable..
+        /// </summary>
+        public static string DataGrid_ReorderDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ReorderDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multi-level Columns.
+        /// </summary>
+        public static string DataGrid_MultiLevelTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiLevelTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Banded composite: each record spans several rows with fields aligned across the table (DevExpress banded-view style)..
+        /// </summary>
+        public static string DataGrid_MultiLevelDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiLevelDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multi-level Columns (virtualized).
+        /// </summary>
+        public static string DataGrid_BandedVirtualTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_BandedVirtualTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 500 banded records with Virtual=true - each record spans several rows, only the visible ones render..
+        /// </summary>
+        public static string DataGrid_BandedVirtualDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_BandedVirtualDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Composite Card.
+        /// </summary>
+        public static string DataGrid_CompositeCardTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_CompositeCardTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на CompositeMode.Card stacks the same fields inside a single cell (a card per record)..
+        /// </summary>
+        public static string DataGrid_CompositeCardDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_CompositeCardDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pinned Rows.
+        /// </summary>
+        public static string DataGrid_PinnedRowsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_PinnedRowsTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PinnedTopRows / PinnedBottomRows stay visible above and below the scrolling data, outside sorting, filtering and paging (e.g. a highlighted row and a totals row)..
+        /// </summary>
+        public static string DataGrid_PinnedRowsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_PinnedRowsDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Row Detail.
+        /// </summary>
+        public static string DataGrid_RowDetailTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_RowDetailTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Expandable detail rows with RowDetailTemplate..
+        /// </summary>
+        public static string DataGrid_RowDetailDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_RowDetailDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Conditional Formatting.
+        /// </summary>
+        public static string DataGrid_ConditionalFormattingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ConditionalFormattingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Highlight whole rows by value with RowClassFunc / RowStyleFunc..
+        /// </summary>
+        public static string DataGrid_ConditionalFormattingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ConditionalFormattingDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cell Styling.
+        /// </summary>
+        public static string DataGrid_CellStylingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_CellStylingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Style individual cells with FlareColumn.ClassFunc and StyleFunc..
+        /// </summary>
+        public static string DataGrid_CellStylingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_CellStylingDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cell Selection (Excel-like).
+        /// </summary>
+        public static string DataGrid_CellSelectionTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_CellSelectionTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Click-drag or Shift+Click to select cells (arrow keys / Shift+Arrow also work), Ctrl+C copies the range as tab-separated text and Ctrl+V pastes it back via OnPaste. Enable with CellSelection..
+        /// </summary>
+        public static string DataGrid_CellSelectionDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_CellSelectionDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Column Types.
+        /// </summary>
+        public static string DataGrid_ColumnTypesTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnTypesTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Type-aware rendering: boolean as a checkbox icon, culture- and format-aware dates and numbers via FlareColumn.Type/Format. Type is auto-detected when not set; filter editors and text alignment (numbers right, booleans centered) follow the column type. Override per column with FlareColumn.Align..
+        /// </summary>
+        public static string DataGrid_ColumnTypesDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnTypesDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Queryable (IQueryable / EF Core).
+        /// </summary>
+        public static string DataGrid_QueryableTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_QueryableTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bind an IQueryable (e.g. an EF Core DbSet) and the grid translates sort/filter/paging into an expression tree that runs in the database - no ItemsProvider code..
+        /// </summary>
+        public static string DataGrid_QueryableDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_QueryableDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Virtual Scrolling.
+        /// </summary>
+        public static string DataGrid_VirtualScrollingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_VirtualScrollingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Load data on demand with Virtual=true and ItemsProvider..
+        /// </summary>
+        public static string DataGrid_VirtualScrollingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_VirtualScrollingDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Infinite Scroll.
+        /// </summary>
+        public static string DataGrid_InfiniteScrollTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_InfiniteScrollTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Accumulate rows as user scrolls with InfiniteScroll=true..
+        /// </summary>
+        public static string DataGrid_InfiniteScrollDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_InfiniteScrollDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Grouping.
+        /// </summary>
+        public static string DataGrid_GroupingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_GroupingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Group rows by field value with nested DataGridGroup components..
+        /// </summary>
+        public static string DataGrid_GroupingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_GroupingDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Nested Grouping.
+        /// </summary>
+        public static string DataGrid_NestedGroupingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_NestedGroupingTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multiple DataGridGroup levels with per-group aggregates..
+        /// </summary>
+        public static string DataGrid_NestedGroupingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_NestedGroupingDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tree Grid.
+        /// </summary>
+        public static string DataGrid_TreeGridTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_TreeGridTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hierarchical data with expand/collapse using Tree parameter..
+        /// </summary>
+        public static string DataGrid_TreeGridDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_TreeGridDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Export.
+        /// </summary>
+        public static string DataGrid_ExportTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ExportTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на DataGridExport component with CSV, JSON, TSV, Excel exporters..
+        /// </summary>
+        public static string DataGrid_ExportDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ExportDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Footer &amp; standalone pager.
+        /// </summary>
+        public static string DataGrid_FooterPagerTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FooterPagerTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ShowPager=false plus FooterContent (the toolbar's bottom counterpart): FlareDataGridPager and a quick filter live in the footer, resolving the grid from the cascade so grid controls can be placed anywhere..
+        /// </summary>
+        public static string DataGrid_FooterPagerDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FooterPagerDesc", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Data Grid.
