@@ -1,6 +1,6 @@
 # Flare - Архитектура
 
-> [English version ->](../en/architecture.md) - [README](../../README.ru.md)
+> [English version ->](../en/architecture.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.ru.md)
 
 Как устроен Flare, как работает система тем и на какие контракты опираются компоненты.
 

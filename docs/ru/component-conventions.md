@@ -1,6 +1,6 @@
 # Flare - Конвенции кода компонентов
 
-> [English version ->](../en/component-conventions.md) - [README](../../README.ru.md)
+> [English version ->](../en/component-conventions.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.ru.md)
 
 Единый стиль кода для **всех** компонентов. Канонический образец - **`FlareButton`**.
 При создании или правке любого компонента приводи его архитектуру к этим правилам.

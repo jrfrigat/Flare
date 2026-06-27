@@ -1,6 +1,6 @@
 # Flare - Component Code Conventions
 
-> [Русская версия ->](../ru/component-conventions.md) - [README](../../README.md)
+> [Русская версия ->](../ru/component-conventions.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.md)
 
 A single code style for **all** components. The canonical reference is **`FlareButton`**.
 When creating or changing any component, bring its architecture in line with these rules.
