@@ -1,3 +1,4 @@
+using Flare.Abstractions.Tokens;
 using Flare.Components.IDE;
 using Flare.Extensions;
 using Flare.Gallery;
@@ -19,12 +20,15 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddFlare(opts =>
 {
     opts.DefaultTheme = new Md3Theme();
-    opts.DefaultPalette = Md3Palettes.Violet;
-    // Register the Dynamic Color palette so it is selectable in the palette picker. It derives from
-    // the OS/browser accent color (Windows/macOS accent, Android Material You) via the active theme's
-    // generator; on engines without the CSS AccentColor system color it falls back to this seed.
+    // Open with Material Design 3 Expressive + the Dynamic Color palette by default. The dynamic
+    // palette derives from the OS/browser accent color (Windows/macOS accent, Android Material You)
+    // via the active theme's generator -- this works in browsers that expose the real accent (e.g.
+    // Firefox). Chrome/Edge do NOT expose the genuine OS accent on the open web (they return a fixed
+    // placeholder to mitigate fingerprinting), so there the Dynamic palette uses the fallback below:
+    // the curated MD3 Violet palette, rather than an arbitrary blue.
     opts.UseDynamicPalette = true;
-    opts.DynamicPaletteFallbackSeed = "#6750A4";
+    opts.DynamicFallbackPalette = Md3Palettes.Violet;
+    opts.DefaultPaletteId = Palette.DynamicId;
     // Every theme below is registered explicitly, so skip the reflection-based auto-discovery. That
     // avoids force-loading the whole assembly graph (Assembly.Load + GetTypes over every referenced
     // assembly) at startup and keeps the path trim/AOT-friendly.

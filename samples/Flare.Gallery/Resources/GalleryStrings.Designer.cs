@@ -77,6 +77,42 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("About_Subtitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Flare is an open-source Blazor component library built with .NET 10..
+        /// </summary>
+        public static string About_Intro {
+            get {
+                return ResourceManager.GetString("About_Intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку (список новинок v0.0.3, по одному пункту на строку).
+        /// </summary>
+        public static string About_WhatsNewV3 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV3", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку (список новинок v0.0.2, по одному пункту на строку).
+        /// </summary>
+        public static string About_WhatsNewV2 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV2", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку (список новинок v0.0.1, по одному пункту на строку).
+        /// </summary>
+        public static string About_WhatsNewV1 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV1", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Design systems.
@@ -5972,7 +6008,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_DynamicNowPlaying", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Chrome and Edge do not expose the real OS accent (they return a fixed placeholder to prevent fingerprinting); only Firefox reflects your true Windows/macOS accent. The Dynamic palette therefore falls back to a configured palette (Violet here) on Chromium..
+        /// </summary>
+        public static string Services_DynamicAccentNote {
+            get {
+                return ResourceManager.GetString("Services_DynamicAccentNote", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Extract a seed color from a cover with IFlareColorExtractor, then theme components with FlareColor.Dynamic..
         /// </summary>

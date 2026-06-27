@@ -49,6 +49,8 @@ public sealed class ThemeService : IThemeService
     public bool IsDynamicPalette => _palette.Id == Palette.DynamicId;
     /// <summary>Seed color used for the Dynamic Color palette when the OS accent is unavailable.</summary>
     public string DynamicFallbackSeed { get; set; } = "#6750A4";
+    /// <summary>Palette used for the Dynamic Color palette when the OS accent is unavailable. Takes precedence over <see cref="DynamicFallbackSeed"/>.</summary>
+    public Palette? DynamicFallbackPalette { get; set; }
     /// <summary>The selected mode (Light/Dark/Auto/HighContrast).</summary>
     public ThemeMode Mode => _mode;
     /// <summary>The effective dark state (resolves <see cref="ThemeMode.Auto"/> against the OS preference).</summary>
@@ -159,11 +161,30 @@ public sealed class ThemeService : IThemeService
     public async Task ApplyDynamicPaletteAsync(PaletteSeed seed)
     {
         var generated = GeneratePalette(Palette.DynamicId, "Dynamic", seed, "Dynamic");
+        await UpsertDynamicPaletteAsync(generated);
+    }
+
+    /// <summary>
+    /// Dynamic Color fallback: adopts <paramref name="source"/>'s exact colors under
+    /// <see cref="Palette.DynamicId"/>, makes it active and re-applies. Used when the OS accent is
+    /// unavailable so the Dynamic palette shows a curated fallback rather than a seed approximation.
+    /// </summary>
+    public async Task ApplyDynamicPaletteAsync(Palette source)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        // Re-id the curated palette as the Dynamic palette so it stays selected; drop any static-asset
+        // href since the Dynamic palette is delivered via the injected/static style, not a file.
+        var dynamic = source with { Id = Palette.DynamicId, Name = "Dynamic", Source = "Dynamic", StyleAsset = null };
+        await UpsertDynamicPaletteAsync(dynamic);
+    }
+
+    private async Task UpsertDynamicPaletteAsync(Palette dynamic)
+    {
         lock (_lock)
         {
             _palettes.RemoveAll(p => p.Id == Palette.DynamicId);
-            _palettes.Add(generated);
-            _palette = generated;
+            _palettes.Add(dynamic);
+            _palette = dynamic;
             _neededPaletteIds.Add(Palette.DynamicId);
             _emittedCss = null; // the dynamic palette colors changed -> force a re-emit
         }

@@ -30,7 +30,7 @@
 - **Семь дизайн-систем отдельными пакетами** - подключаете только нужные темы; umbrella-пакет `Flare.Blazor` не содержит собственных тем
 - **Доставка class-toggle** - переключение это смена классов на `<html>` (без переинъекции CSS-переменных на каждом переключении); есть запасной `ThemeDelivery.Inject`
 - **Переиспользуемые палитры и генераторы** - встроенные наборы Material/Office/Aero/Liquid Glass/Visual Studio (34 палитры) + `Palette.FromColors(id, name, seed)` для вывода полной палитры light+dark (MD3 тональный / Fluent рампа по активной теме)
-- **Динамический цвет (Dynamic Color)** - опциональная палитра, выводимая во время выполнения из акцентного цвета ОС/браузера (акцент Windows/macOS, Android Material You через CSS-системный цвет `AccentColor`) генератором активной темы; fallback на seed там, где не поддерживается (`opts.UseDynamicPalette = true`)
+- **Динамический цвет (Dynamic Color)** - опциональная палитра, выводимая во время выполнения из акцентного цвета ОС/браузера (акцент Windows/macOS, Android Material You через CSS-системный цвет `AccentColor`) генератором активной темы; откат на готовую `DynamicFallbackPalette` там, где реальный акцент недоступен - в частности Chrome/Edge, которые отдают фиксированный плейсхолдер, а не подлинный акцент (`opts.UseDynamicPalette = true`)
 - **Автоматический тёмный режим** - `ThemeMode.Auto` следует за `prefers-color-scheme`; одностроковый бутстрап-скрипт убирает FOUC до первого кадра
 - **Единый API цвета** - один параметр `Color` (`FlareColor`) у каждого компонента с цветом: семантическая роль (`FlareColor.Primary`) даёт кэшируемый класс темы, либо любой произвольный цвет (`FlareColor.Custom("#E91E63")`) через инлайн-токены
 - **Expressive-слайдер** - MD3 Expressive + Fluent в одном компоненте: размеры XS-XL, режим диапазона (два бегунка), вертикальная ориентация, индикаторы шагов, пузырёк значения, иконки начала/конца, якорь заполнения (`Init`)
@@ -265,13 +265,19 @@ Android Material You). Палитра строится генератором а
 ```csharp
 builder.Services.AddFlare(opts =>
 {
-    opts.UseDynamicPalette = true;               // регистрирует палитру "dynamic" (и делает её
-    opts.DynamicPaletteFallbackSeed = "#6750A4"; // палитрой по умолчанию, если другая не задана)
+    opts.UseDynamicPalette = true;                  // регистрирует палитру "dynamic" (и делает её
+    opts.DynamicFallbackPalette = Md3Palettes.Violet; // палитрой по умолчанию, если другая не задана)
 });
 // переключайтесь как на обычную палитру или задайте свой seed:
 await themeService.SetPaletteAsync(Palette.DynamicId);
 await themeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 ```
+
+> **Chrome/Edge не отдают реальный акцент ОС** (возвращают фиксированный плейсхолдер ради защиты от
+> фингерпринтинга); подлинный акцент отражает только Firefox. В Chromium динамическая палитра
+> использует `DynamicFallbackPalette` - задайте готовую палитру, чтобы откат был на реальные цвета, а
+> не на произвольный синий.
+
 См. [Создание тем -> Динамический цвет](docs/ru/theme-creation-guide.md#динамический-цвет-палитра-из-акцента-ос).
 
 Переопределить **любой** дизайн-токен через публичные reference-записи:

@@ -106,9 +106,18 @@
         {
             string? accent = null;
             try { accent = await ThemeJsService.GetAccentColorAsync(); } catch (JSDisconnectedException) { }
-            var seed = string.IsNullOrWhiteSpace(accent) ? ThemeService.DynamicFallbackSeed : accent!;
             _dynamicThemeId = ThemeService.CurrentTheme.Id;
-            await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed(seed));
+
+            // A genuine OS accent (e.g. Firefox, or an installed app where the engine exposes it) seeds
+            // the palette via the active theme's generator. When it is unavailable -- notably Chrome/Edge,
+            // which return a placeholder rather than the real accent, so GetAccentColorAsync yields null --
+            // prefer the curated fallback palette (exact colors), falling back to seed generation.
+            if (!string.IsNullOrWhiteSpace(accent))
+                await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed(accent!));
+            else if (ThemeService.DynamicFallbackPalette is { } fallback)
+                await ThemeService.ApplyDynamicPaletteAsync(fallback);
+            else
+                await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed(ThemeService.DynamicFallbackSeed));
         }
         finally { _dynamicBusy = false; }
     }

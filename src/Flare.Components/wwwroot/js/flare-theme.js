@@ -79,9 +79,19 @@ export function prefersColorSchemeDark() {
 
 // --- OS accent color (Dynamic Color) ---
 // Reads the OS/browser accent color exposed via the CSS `AccentColor` system color (Windows accent,
-// macOS accent, Android Material You). Returns a #RRGGBB hex, or null when the browser does not
-// support the AccentColor system color (older engines) -- the caller then falls back to a seed.
+// macOS accent, Android Material You). Returns a #RRGGBB hex, or null when the real OS accent is not
+// available -- the caller then falls back to the configured seed.
+//
+// IMPORTANT: Chromium (Chrome/Edge) deliberately does NOT expose the real OS accent on the open web
+// to mitigate fingerprinting -- it returns a fixed default (#0075FF, rgb(0,117,255), identical in
+// light and dark) for the `AccentColor` keyword regardless of the user's Windows/macOS accent, even
+// in installed PWAs on current versions. Only Firefox returns the true accent broadly. So we treat
+// that Chromium sentinel as "no real accent" and return null, so the Dynamic palette uses the app's
+// configured seed (a deliberate brand color) instead of an arbitrary blue that is the same for every
+// user. Where a browser DOES expose the genuine accent (e.g. Firefox), it flows through unchanged.
 // Gated on CSS.supports so we never mistake an inherited text color for the accent.
+const CHROMIUM_DEFAULT_ACCENT = '#0075FF'; // rgb(0,117,255): Chromium's placeholder, not a real OS accent
+
 export function getAccentColor() {
     try {
         if (typeof CSS === 'undefined' || !CSS.supports || !CSS.supports('color', 'AccentColor')) return null;
@@ -92,7 +102,8 @@ export function getAccentColor() {
         el.remove();
         const m = c && c.match(/[\d.]+/g);
         if (!m || m.length < 3) return null;
-        return '#' + m.slice(0, 3).map(n => Math.round(parseFloat(n)).toString(16).padStart(2, '0')).join('').toUpperCase();
+        const hex = '#' + m.slice(0, 3).map(n => Math.round(parseFloat(n)).toString(16).padStart(2, '0')).join('').toUpperCase();
+        return hex === CHROMIUM_DEFAULT_ACCENT ? null : hex;
     } catch {
         return null;
     }

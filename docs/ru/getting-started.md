@@ -59,8 +59,11 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 > отдельная регистрация не нужна.
 
 > **Динамический цвет (Dynamic Color)** - хотите, чтобы палитра подстраивалась под акцентный цвет
-> ОС/браузера (акцент Windows/macOS, Android Material You)? Добавьте `opts.UseDynamicPalette = true;`.
-> Подробнее: [Создание тем -> Динамический цвет](theme-creation-guide.md#динамический-цвет-палитра-из-акцента-ос).
+> ОС/браузера (акцент Windows/macOS, Android Material You)? Добавьте `opts.UseDynamicPalette = true;` и
+> запасную палитру: `opts.DynamicFallbackPalette = Md3Palettes.Violet;`. Учтите: Chrome/Edge не отдают
+> реальный акцент ОС (возвращают фиксированный плейсхолдер); подлинный акцент работает в Firefox, в
+> остальных случаях используется запасная палитра. Подробнее:
+> [Создание тем -> Динамический цвет](theme-creation-guide.md#динамический-цвет-палитра-из-акцента-ос).
 
 ---
 

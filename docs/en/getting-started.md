@@ -59,7 +59,10 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 > no separate registration is needed.
 
 > **Dynamic Color** - want the palette to follow the OS/browser accent (Windows/macOS accent,
-> Android Material You)? Add `opts.UseDynamicPalette = true;`. See
+> Android Material You)? Add `opts.UseDynamicPalette = true;` and a fallback:
+> `opts.DynamicFallbackPalette = Md3Palettes.Violet;`. Note: Chrome/Edge do not expose the real OS
+> accent (they return a fixed placeholder); the genuine accent works in Firefox, and the fallback
+> palette is used elsewhere. See
 > [Theme creation -> Dynamic Color](theme-creation-guide.md#dynamic-color-palette-from-the-os-accent).
 
 ---
