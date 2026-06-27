@@ -27,6 +27,8 @@ Flare ships **no themes** - each design system is a separate package. Add the on
 
 ```sh
 dotnet add package Flare.Theme.MaterialDesign3Expressive
+dotnet add package Flare.Theme.MaterialDesign3   # baseline Material Design 3 (non-Expressive)
+dotnet add package Flare.Theme.MaterialDesign2
 dotnet add package Flare.Theme.FluentUI2
 # and, if needed: Flare.Theme.Aero, Flare.Theme.LiquidGlass, Flare.Theme.VisualStudio
 ```
@@ -55,6 +57,10 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 
 > `AddFlare` registers `ISnackbarService`, `IDialogService` and `IMessageBoxService` itself -
 > no separate registration is needed.
+
+> **Dynamic Color** - want the palette to follow the OS/browser accent (Windows/macOS accent,
+> Android Material You)? Add `opts.UseDynamicPalette = true;`. See
+> [Theme creation -> Dynamic Color](theme-creation-guide.md#dynamic-color-palette-from-the-os-accent).
 
 ---
 
@@ -158,6 +164,12 @@ constants - `<Theme>.ThemeId` and `<Palettes>.<Name>Id`:
 ```csharp
 await ThemeService.SetThemeAsync(Fluent2Theme.ThemeId);     // "fluent2"
 await ThemeService.SetPaletteAsync(Fluent2Palettes.BlueId); // "fluent-blue"
+```
+
+If you enabled Dynamic Color (`opts.UseDynamicPalette = true`), switch to it like any palette:
+
+```csharp
+await ThemeService.SetPaletteAsync(Palette.DynamicId);      // "dynamic"
 ```
 
 ---

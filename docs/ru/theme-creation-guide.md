@@ -168,6 +168,48 @@ var palette = new Palette
 };
 ```
 
+### Динамический цвет (палитра из акцента ОС)
+
+Flare умеет в рантайме строить полную светлую + тёмную палитру из **акцентного цвета ОС/браузера** -
+акцента Windows/macOS или Android Material You - читая его через CSS-системный цвет `AccentColor`.
+Палитра генерируется генератором **активной темы** (MD3 tonal, Fluent ramp, ...), поэтому
+подстраивается под выбранную тему и пересоздаётся при её смене.
+
+Включается один раз в `AddFlare`:
+
+```csharp
+builder.Services.AddFlare(opts =>
+{
+    opts.DefaultTheme = new Md3Theme();
+    opts.UseDynamicPalette = true;               // регистрирует палитру "dynamic"
+    opts.DynamicPaletteFallbackSeed = "#6750A4"; // seed, если акцент ОС недоступен
+});
+```
+
+Если другая палитра по умолчанию не задана, динамическая становится палитрой по умолчанию. Иначе её
+можно выбрать в рантайме как обычную палитру (например, из переключателя палитр):
+
+```csharp
+await ThemeService.SetPaletteAsync(Palette.DynamicId);   // "dynamic"
+```
+
+`FlareThemeProvider` читает акцент при старте, перечитывает его при возврате фокуса в окно и при смене
+light/dark в ОС, и пересоздаёт палитру новым генератором при смене темы - ничего дополнительно
+подключать не нужно.
+
+**Поддержка браузеров / fallback.** Акцент берётся из CSS-системного цвета `AccentColor`
+(современные Edge/Chrome/Safari/Firefox; в Android Chrome он отражает Material You). Движки, которые
+его не отдают, используют `DynamicPaletteFallbackSeed`. В вебе нет более глубокого API «палитры из
+обоев», поэтому источник акцента - именно `AccentColor`.
+
+**Из своего seed.** Чтобы построить динамическую палитру из любого цвета (например, извлечённого из
+изображения через `IFlareColorExtractor`), примените seed напрямую - он сгенерируется по правилам
+активной темы:
+
+```csharp
+await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
+```
+
 ## Система токенов
 
 ### Доступные token-записи
@@ -192,6 +234,7 @@ var palette = new Palette
 | `AvatarTokens` | Аватары | 17 полей |
 | `ProgressTokens` | Индикаторы прогресса | 18 полей |
 | `SwitchTokens` | Переключатели | 28 полей |
+| `NavTokens` | Элемент навигации + индикатор | 4 поля |
 
 ### Использование токенов в CSS
 
