@@ -18,6 +18,8 @@
     <Project Path="src/Flare.Theming/Flare.Theming.csproj" />
     <Project Path="src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj" />
     <Project Path="src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj" />
+    <Project Path="src/Flare.Theme.MaterialDesign3/Flare.Theme.MaterialDesign3.csproj" />
+    <Project Path="src/Flare.Theme.MaterialDesign2/Flare.Theme.MaterialDesign2.csproj" />
     <Project Path="src/Flare.Theme.Aero/Flare.Theme.Aero.csproj" />
     <Project Path="src/Flare.Theme.LiquidGlass/Flare.Theme.LiquidGlass.csproj" />
     <Project Path="src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj" />

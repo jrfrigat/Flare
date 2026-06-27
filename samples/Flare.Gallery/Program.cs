@@ -5,6 +5,8 @@ using Flare.Gallery.Services;
 using Flare.Theme.Aero;
 using Flare.Theme.FluentUI2;
 using Flare.Theme.LiquidGlass;
+using Flare.Theme.MaterialDesign2;
+using Flare.Theme.MaterialDesign3;
 using Flare.Theme.MaterialDesign3Expressive;
 using Flare.Theme.VisualStudio;
 using Microsoft.AspNetCore.Components.Web;
@@ -27,6 +29,8 @@ builder.Services.AddFlare(opts =>
 // Themes are independent packages now -- the Gallery showcases all of them, so each is registered
 // explicitly (AddFlareTheme also forces the theme assembly to load, which mere references don't in a
 // trimmed/WASM app). Each theme brings its own palettes via ITheme.Palettes.
+builder.Services.AddFlareTheme(new MaterialDesign3Theme());
+builder.Services.AddFlareTheme(new MaterialDesign2Theme());
 builder.Services.AddFlareTheme(new Fluent2Theme());
 builder.Services.AddFlareTheme(new AeroTheme());
 builder.Services.AddFlareTheme(new LiquidGlassTheme());

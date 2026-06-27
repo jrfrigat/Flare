@@ -36,6 +36,8 @@
 			AddFlare auto-discovers them (RegisterAllBuiltInThemes) from the loaded assemblies.
 		-->
 		<ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3\Flare.Theme.MaterialDesign3.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign2\Flare.Theme.MaterialDesign2.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Theme.FluentUI2\Flare.Theme.FluentUI2.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Theme.Aero\Flare.Theme.Aero.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Theme.LiquidGlass\Flare.Theme.LiquidGlass.csproj" />
