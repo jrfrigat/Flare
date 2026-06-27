@@ -378,6 +378,11 @@ public static class CssVarMap
         v[Css.Tokens.MenuPanel.ItemRadiusEnd] = t.Menu.ItemRadiusEnd;
         v[Css.Tokens.MenuPanel.GroupRadius] = t.Menu.GroupRadius;
         v[Css.Tokens.MenuPanel.GroupPadding] = t.Menu.GroupPadding;
+        v[Css.Tokens.MenuPanel.GroupBg] = t.Menu.GroupBg;
+        v[Css.Tokens.MenuPanel.GroupGap] = t.Menu.GroupGap;
+        v[Css.Tokens.MenuPanel.GroupShadow] = t.Menu.GroupShadow;
+        v[Css.Tokens.MenuPanel.GroupedPanelBg] = t.Menu.GroupedPanelBg;
+        v[Css.Tokens.MenuPanel.GroupedPanelShadow] = t.Menu.GroupedPanelShadow;
         v[Css.Tokens.MenuPanel.ItemLabelFont] = t.Menu.ItemLabelFont;
         v[Css.Tokens.MenuPanel.ItemLabelWeight] = t.Menu.ItemLabelWeight;
         v[Css.Tokens.MenuPanel.ItemLabelSize] = t.Menu.ItemLabelSize;
@@ -396,6 +401,8 @@ public static class CssVarMap
         v[Css.Tokens.InputField.FilledRadius] = t.Input.FilledRadius;
         v[Css.Tokens.InputField.FocusBorder] = t.Input.FocusBorder;
         v[Css.Tokens.InputField.FocusBorderBottom] = t.Input.FocusBorderBottom;
+        v[Css.Tokens.InputField.HoverBorderBottom] = t.Input.HoverBorderBottom;
+        v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
         v[Css.Tokens.InputField.Padding] = t.Input.Padding;
         v[Css.Tokens.InputField.FontFamily] = t.Input.FontFamily;
         v[Css.Tokens.InputField.FontSize] = t.Input.FontSize;
@@ -632,6 +639,27 @@ public static class CssVarMap
         v[Css.Tokens.ProgressField.IndeterminateEasing] = t.Progress.IndeterminateEasing;
         v[Css.Tokens.ProgressField.BufferColor] = t.Progress.BufferColor;
         v[Css.Tokens.ProgressField.WavyDuration] = t.Progress.WavyDuration;
+        v[Css.Tokens.ProgressField.TrackRadius] = t.Progress.TrackRadius;
+        v[Css.Tokens.ProgressField.Gap] = t.Progress.Gap;
+        v[Css.Tokens.ProgressField.StopSize] = t.Progress.StopSize;
+        v[Css.Tokens.ProgressField.StopInset] = t.Progress.StopInset;
+        v[Css.Tokens.ProgressField.CircularWidth] = t.Progress.CircularWidth;
+        v[Css.Tokens.ProgressField.CircularCap] = t.Progress.CircularCap;
+        v[Css.Tokens.ProgressField.CircularGap] = t.Progress.CircularGap;
+        v[Css.Tokens.ProgressField.WavyEnabled] = t.Progress.WavyEnabled;
+        v[Css.Tokens.ProgressField.WavyHeight] = t.Progress.WavyHeight;
+        v[Css.Tokens.ProgressField.WaveLength] = t.Progress.WaveLength;
+        v[Css.Tokens.ProgressField.WaveAmplitude] = t.Progress.WaveAmplitude;
+        v[Css.Tokens.ProgressField.WaveSpeed] = t.Progress.WaveSpeed;
+        v[Css.Tokens.ProgressField.RingWaves] = t.Progress.RingWaves;
+        v[Css.Tokens.ProgressField.RingWaveAmplitude] = t.Progress.RingWaveAmplitude;
+        #endregion
+
+        #region NAV
+        v[Css.Tokens.NavField.ItemRadius] = t.Nav.ItemRadius;
+        v[Css.Tokens.NavField.IndicatorRadius] = t.Nav.IndicatorRadius;
+        v[Css.Tokens.NavField.ActiveIndicator] = t.Nav.ActiveIndicator;
+        v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;
         #endregion
 
         #region SWITCH

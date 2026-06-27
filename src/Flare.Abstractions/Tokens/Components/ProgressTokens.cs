@@ -61,4 +61,49 @@ public sealed record ProgressTokens
 
     /// <summary>Duration of the wavy animation.</summary>
     [CssVar(ProgressField.WavyDuration)] public string WavyDuration { get; init; } = "1.5s";
+
+    // ---- MD3 Expressive linear/circular geometry the component reads at runtime. Defaults match
+    // the component's built-in fallbacks so a theme that doesn't set them renders unchanged. ----
+
+    /// <summary>Linear track corner radius. Default = full (rounded track).</summary>
+    [CssVar(ProgressField.TrackRadius)] public string TrackRadius { get; init; } = Vars.Var(Shape.Full);
+
+    /// <summary>Gap between the active indicator and the remaining track. Default 0.</summary>
+    [CssVar(ProgressField.Gap)] public string Gap { get; init; } = "0";
+
+    /// <summary>Trailing stop-indicator dot size. Default 0px (off).</summary>
+    [CssVar(ProgressField.StopSize)] public string StopSize { get; init; } = "0px";
+
+    /// <summary>Trailing stop-indicator inset from the end. Default 0px.</summary>
+    [CssVar(ProgressField.StopInset)] public string StopInset { get; init; } = "0px";
+
+    /// <summary>Circular indicator stroke width. Default 4px.</summary>
+    [CssVar(ProgressField.CircularWidth)] public string CircularWidth { get; init; } = "4px";
+
+    /// <summary>Circular indicator stroke line cap (butt/round). Default butt.</summary>
+    [CssVar(ProgressField.CircularCap)] public string CircularCap { get; init; } = "butt";
+
+    /// <summary>Gap between the circular indicator and its track. Default 0.</summary>
+    [CssVar(ProgressField.CircularGap)] public string CircularGap { get; init; } = "0";
+
+    /// <summary>Wavy-progress enable flag (1 = on). Default 0 (off).</summary>
+    [CssVar(ProgressField.WavyEnabled)] public string WavyEnabled { get; init; } = "0";
+
+    /// <summary>Wavy linear-track height. Default 10px.</summary>
+    [CssVar(ProgressField.WavyHeight)] public string WavyHeight { get; init; } = "10px";
+
+    /// <summary>Wave length of the wavy track. Default 40px.</summary>
+    [CssVar(ProgressField.WaveLength)] public string WaveLength { get; init; } = "40px";
+
+    /// <summary>Wave amplitude of the wavy track. Default 3px.</summary>
+    [CssVar(ProgressField.WaveAmplitude)] public string WaveAmplitude { get; init; } = "3px";
+
+    /// <summary>Wave animation speed. Default 1s.</summary>
+    [CssVar(ProgressField.WaveSpeed)] public string WaveSpeed { get; init; } = "1s";
+
+    /// <summary>Circular wavy ring wave count. Default 8.</summary>
+    [CssVar(ProgressField.RingWaves)] public string RingWaves { get; init; } = "8";
+
+    /// <summary>Circular wavy ring wave amplitude. Default 1.6.</summary>
+    [CssVar(ProgressField.RingWaveAmplitude)] public string RingWaveAmplitude { get; init; } = "1.6";
 }

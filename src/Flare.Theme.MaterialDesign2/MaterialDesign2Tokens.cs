@@ -171,28 +171,9 @@ internal static class MaterialDesign2Tokens
     // MD2 dialogs use a 4dp corner.
     internal static readonly DialogTokens Dialog = new() { Radius = "var(--flare-shape-extra-small)" };
 
-    /// <summary>Theme-specific extras: flat progress, 4dp surfaces and a classic flat menu.</summary>
-    internal static readonly Dictionary<string, string> Extended = new()
-    {
-        ["--flare-dialog-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-popover-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-snackbar-radius"] = "var(--flare-shape-extra-small)",
-        // Flat, non-wavy progress (MD2 had a straight determinate bar).
-        ["--flare-progress-wavy-enabled"] = "0",
-        ["--flare-progress-linear-height"] = "4px",
-        ["--flare-progress-track-radius"] = "9999px",
-        // Classic flat menu (no MD3 Expressive island grouping).
-        ["--flare-menu-panel-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-menu-item-radius"] = "0",
-        ["--flare-menu-item-radius-end"] = "0",
-        ["--flare-menu-group-bg"] = "transparent",
-        ["--flare-menu-group-radius"] = "0",
-        ["--flare-menu-group-shadow"] = "none",
-        ["--flare-menu-grouped-panel-bg"] = "var(--flare-color-surface-container)",
-        ["--flare-menu-grouped-panel-shadow"] = "var(--flare-elevation-2)",
-        // MD2 nav rail used a square-ish hover, not a pill.
-        ["--flare-nav-item-radius"] = "4px",
-    };
+    // Classic flat 4dp menu (no MD3 Expressive 16dp panel or island grouping). The default MenuTokens
+    // is already flat (square items, transparent groups); MD2 only pins the panel to the 4dp shape.
+    internal static readonly MenuTokens Menu = new() { PanelRadius = "var(--flare-shape-extra-small)" };
 
     /// <summary>The complete Material Design 2 design tokens.</summary>
     public static readonly DesignTokens Design = new()
@@ -209,14 +190,14 @@ internal static class MaterialDesign2Tokens
         SplitButton = new(),
         ToggleButton = new(),
         Fab = Fab,
-        Menu = new(),
+        Menu = Menu,
         Checkbox = new(),
         Radio = new(),
         Chip = Chip,
         Tabs = Tabs,
         Slider = Slider,
         Dialog = Dialog,
-        Extended = Extended,
+        // No theme-specific extras: every MD2 token has a typed home (Extended defaults to empty).
     };
 
     // ---- Color schemes: the Material Design 2 baseline palette. ----

@@ -29,6 +29,12 @@ public sealed record InputTokens
     /// <summary>Focus bottom border for filled variant.</summary>
     [CssVar(InputField.FocusBorderBottom)] public string FocusBorderBottom { get; init; } = "2px solid var(--flare-color-primary)";
 
+    /// <summary>Hover bottom border for the filled variant. Defaults to the resting bottom border.</summary>
+    [CssVar(InputField.HoverBorderBottom)] public string HoverBorderBottom { get; init; } = "var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant))";
+
+    /// <summary>Hover state-layer overlay for the filled variant. Default none.</summary>
+    [CssVar(InputField.HoverStateLayer)] public string HoverStateLayer { get; init; } = "none";
+
     /// <summary>Padding inside the control (top, right, bottom, left).</summary>
     [CssVar(InputField.Padding)] public string Padding { get; init; } = "0.75rem 1rem";
 

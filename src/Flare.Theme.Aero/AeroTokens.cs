@@ -239,38 +239,40 @@ internal class AeroTokens
         S32 = "4rem",
     };
 
+    // Input - sunken white field with a 1px border; blue focus is finished in scoped CSS.
+    internal static readonly InputTokens Input = new()
+    {
+        FilledBg = "var(--flare-color-surface)",
+        OutlinedRadius = "var(--flare-shape-extra-small)",
+        OutlinedBorder = "1px solid var(--flare-color-outline)",
+        FilledBorderBottom = "1px solid var(--flare-color-outline)",
+        FocusBorder = "1px solid var(--flare-color-primary)",
+        FocusBorderBottom = "1px solid var(--flare-color-primary)",
+    };
+
+    // Progress - thin classic bar.
+    internal static readonly ProgressTokens Progress = new()
+    {
+        TrackRadius = "var(--flare-shape-extra-small)",
+        LinearHeight = "0.75rem",
+        Gap = "0px",
+        StopSize = "0px",
+    };
+
+    // Nav - left accent bar (Office side-nav), no pill.
+    internal static readonly NavTokens Nav = new()
+    {
+        ItemRadius = "var(--flare-shape-extra-small)",
+        IndicatorRadius = "0",
+        ActiveIndicator = "none",
+        ActiveLeftBar = "3px solid var(--flare-color-primary)",
+    };
+
     /// <summary>Theme-specific extras (geometry/gloss hooks consumed by the scoped CSS).</summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
         // Aero focus glow color used by the scoped button/input CSS.
         ["--flare-aero-glow"] = "rgba(60,127,177,0.55)",
-
-        // Card variant colors/geometry are emitted from the typed CardTokens record (see Design.Card).
-
-        // Dialog / popover / snackbar - small radius + soft shadow.
-        ["--flare-dialog-radius"] = "var(--flare-shape-large)",
-        ["--flare-popover-radius"] = "var(--flare-shape-small)",
-        ["--flare-snackbar-radius"] = "var(--flare-shape-small)",
-
-        // Input - sunken white field with a 1px border; blue focus is finished in scoped CSS.
-        ["--flare-input-bg"] = "var(--flare-color-surface)",
-        ["--flare-input-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-input-border"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-border-bottom"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-focus-border"] = "1px solid var(--flare-color-primary)",
-        ["--flare-input-focus-border-bottom"] = "1px solid var(--flare-color-primary)",
-
-        // Progress - thin classic bar.
-        ["--flare-progress-track-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-progress-linear-height"] = "0.75rem",
-        ["--flare-progress-gap"] = "0px",
-        ["--flare-progress-stop-size"] = "0px",
-
-        // Nav - left accent bar (Office side-nav), no pill.
-        ["--flare-nav-item-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-nav-indicator-radius"] = "0",
-        ["--flare-nav-active-indicator"] = "none",
-        ["--flare-nav-active-left-bar"] = "3px solid var(--flare-color-primary)",
     };
 
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
@@ -314,6 +316,12 @@ internal class AeroTokens
             PaddingBottom = "8px",
             PaddingLeft = "8px",
         },
+        Input = Input,
+        Progress = Progress,
+        Nav = Nav,
+        Dialog = new() { Radius = "var(--flare-shape-large)" },
+        Popover = new() { Radius = "var(--flare-shape-small)" },
+        Snackbar = new() { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };
 

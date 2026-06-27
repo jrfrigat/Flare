@@ -294,6 +294,52 @@ public static class ProgressField
     public const string BufferColor = $"{Prefix}-buffer-color";
     /// <summary>CSS custom-property name for the wavy duration token.</summary>
     public const string WavyDuration = $"{Prefix}-wavy-duration";
+
+    // MD3 Expressive linear/circular geometry the component actually reads (track/stop/wave),
+    // distinct from the legacy linear-radius/circular-stroke-width names above.
+    /// <summary>CSS custom-property name for the linear track radius token.</summary>
+    public const string TrackRadius = $"{Prefix}-track-radius";
+    /// <summary>CSS custom-property name for the gap between track and indicator token.</summary>
+    public const string Gap = $"{Prefix}-gap";
+    /// <summary>CSS custom-property name for the trailing stop-indicator size token.</summary>
+    public const string StopSize = $"{Prefix}-stop-size";
+    /// <summary>CSS custom-property name for the trailing stop-indicator inset token.</summary>
+    public const string StopInset = $"{Prefix}-stop-inset";
+    /// <summary>CSS custom-property name for the circular indicator stroke width token.</summary>
+    public const string CircularWidth = $"{Prefix}-circular-width";
+    /// <summary>CSS custom-property name for the circular indicator line cap token.</summary>
+    public const string CircularCap = $"{Prefix}-circular-cap";
+    /// <summary>CSS custom-property name for the circular indicator/track gap token.</summary>
+    public const string CircularGap = $"{Prefix}-circular-gap";
+    /// <summary>CSS custom-property name for the wavy-progress enable flag token (1 = on).</summary>
+    public const string WavyEnabled = $"{Prefix}-wavy-enabled";
+    /// <summary>CSS custom-property name for the wavy linear-track height token.</summary>
+    public const string WavyHeight = $"{Prefix}-wavy-height";
+    /// <summary>CSS custom-property name for the wave length token.</summary>
+    public const string WaveLength = $"{Prefix}-wave-length";
+    /// <summary>CSS custom-property name for the wave amplitude token.</summary>
+    public const string WaveAmplitude = $"{Prefix}-wave-amplitude";
+    /// <summary>CSS custom-property name for the wave animation speed token.</summary>
+    public const string WaveSpeed = $"{Prefix}-wave-speed";
+    /// <summary>CSS custom-property name for the circular wavy ring wave count token.</summary>
+    public const string RingWaves = $"{Prefix}-ring-waves";
+    /// <summary>CSS custom-property name for the circular wavy ring wave amplitude token.</summary>
+    public const string RingWaveAmplitude = $"{Prefix}-ring-wave-amplitude";
+}
+
+/// <summary>CSS variable tokens for navigation (drawer/rail nav items and the active indicator).</summary>
+public static class NavField
+{
+    private const string Prefix = $"{Vars.Flare}-nav";
+
+    /// <summary>CSS custom-property name for the nav item hover/focus radius token.</summary>
+    public const string ItemRadius = $"{Prefix}-item-radius";
+    /// <summary>CSS custom-property name for the active-indicator radius token.</summary>
+    public const string IndicatorRadius = $"{Prefix}-indicator-radius";
+    /// <summary>CSS custom-property name for the active-indicator background token.</summary>
+    public const string ActiveIndicator = $"{Prefix}-active-indicator";
+    /// <summary>CSS custom-property name for the active item left-bar token (e.g. Fluent rail accent).</summary>
+    public const string ActiveLeftBar = $"{Prefix}-active-left-bar";
 }
 
 /// <summary>CSS variable tokens for switch field.</summary>

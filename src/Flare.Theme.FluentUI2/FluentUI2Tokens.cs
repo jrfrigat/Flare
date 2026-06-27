@@ -245,7 +245,53 @@ internal class FluentUI2Tokens
         StopSize = "2px",
     };
 
-    /// <summary>Theme-specific extras not in the core schema.</summary>
+    // Input - Fluent outlined style (full 1px border, neutral focus box + 2px brand bottom accent).
+    internal static readonly InputTokens Input = new()
+    {
+        FilledBg = "var(--flare-color-surface)",
+        OutlinedRadius = "var(--flare-shape-small)",
+        OutlinedBorder = "1px solid var(--flare-color-outline)",
+        FilledBorderBottom = "1px solid var(--flare-color-outline)",
+        FocusBorder = "1px solid var(--flare-color-outline)",
+        FocusBorderBottom = "2px solid var(--flare-color-primary)",
+    };
+
+    // Progress - Fluent: thin 2px rail, squared corners, no stop dot, 3px butt-cap ring. Wavy is left
+    // off (WavyEnabled stays at the default 0) so FlareProgress renders a plain bar/ring.
+    internal static readonly ProgressTokens Progress = new()
+    {
+        TrackRadius = "var(--flare-shape-extra-small)",
+        LinearHeight = "2px",
+        Gap = "0px",
+        StopSize = "0px",
+        CircularWidth = "3px",
+        CircularCap = "butt",
+        CircularGap = "0px",
+    };
+
+    // Nav - no pill in Fluent; a left accent bar marks the active item.
+    internal static readonly NavTokens Nav = new()
+    {
+        ItemRadius = "var(--flare-shape-extra-small)",
+        IndicatorRadius = "0",
+        ActiveIndicator = "none",
+        ActiveLeftBar = "3px solid var(--flare-color-primary)",
+    };
+
+    // Switch - Fluent's compact track + thin focus offset map to the typed record; the rest of the
+    // Fluent switch visual (white thumb sizing/offsets, double focus ring) has no base-token home and
+    // stays in Extended below.
+    internal static readonly SwitchTokens Switch = new()
+    {
+        TrackWidth = "2.5rem",
+        TrackHeight = "1.25rem",
+        FocusOutlineOffset = "1px",
+    };
+
+    /// <summary>
+    /// Theme-specific extras with no typed home: Fluent stroke/focus tokens and the Fluent-specific
+    /// switch visual the base SwitchTokens does not model.
+    /// </summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
         ["--flare-fluent-stroke-width-thin"] = "1px",
@@ -254,42 +300,7 @@ internal class FluentUI2Tokens
         ["--flare-fluent-focus-stroke-color"] = "#000000",
         ["--flare-fluent-focus-stroke-outer"] = "#FFFFFF",
 
-        // Card variant colors/geometry are emitted from the typed CardTokens record (see Design.Card).
-        // Dialog
-        ["--flare-dialog-radius"] = "var(--flare-shape-large)",
-        // Input - outlined style (full border)
-        ["--flare-input-bg"] = "var(--flare-color-surface)",
-        ["--flare-input-radius"] = "var(--flare-shape-small)",
-        ["--flare-input-border"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-border-bottom"] = "1px solid var(--flare-color-outline)",
-        // Fluent UI 2 focus = neutral box kept, brand 2px bottom accent (NOT a uniform brand ring)
-        ["--flare-input-focus-border"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-focus-border-bottom"] = "2px solid var(--flare-color-primary)",
-        // Progress bar - Fluent: thin 2px rail, squared corners, no stop dot
-        ["--flare-progress-track-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-progress-linear-height"] = "2px",
-        ["--flare-progress-gap"] = "0px",
-        ["--flare-progress-stop-size"] = "0px",
-        ["--flare-progress-circular-width"] = "3px",
-        ["--flare-progress-circular-cap"] = "butt",
-        ["--flare-progress-circular-gap"] = "0px",
-        // Fluent UI 2 has no wavy progress: --flare-progress-wavy-enabled is left unset, so
-        // FlareProgress renders the plain bar/ring even when Wavy="true".
-        // Badge and Alert are now emitted via typed BadgeTokens/AlertTokens in CssVarMap.
-        // Snackbar
-        ["--flare-snackbar-radius"] = "var(--flare-shape-small)",
-        // FAB - теперь через FabTokens (см. internal static FabTokens Fab)
-        // Popover / dropdown panels
-        ["--flare-popover-radius"] = "var(--flare-shape-small)",
-        // Nav item hover/focus radius
-        ["--flare-nav-item-radius"] = "var(--flare-shape-extra-small)",
-        // Nav indicator (no pill in Fluent, use left accent bar)
-        ["--flare-nav-indicator-radius"] = "0",
-        ["--flare-nav-active-indicator"] = "none",
-        ["--flare-nav-active-left-bar"] = "3px solid var(--flare-color-primary)",
-        // Switch - Fluent UI 2: compact track (40x20px), 1px border, white thumb
-        ["--flare-switch-track-width"] = "2.5rem",
-        ["--flare-switch-track-height"] = "1.25rem",
+        // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
         ["--flare-switch-track-off-bg"] = "transparent",
         ["--flare-switch-thumb-off-size"] = "0.625rem",
@@ -313,7 +324,6 @@ internal class FluentUI2Tokens
         ["--flare-switch-track-hover-on-bg"] = "#115EA3",
         // Focus: Fluent double-ring (inner dark + outer light)
         ["--flare-switch-focus-outline"] = "2px solid var(--flare-fluent-focus-stroke-color)",
-        ["--flare-switch-focus-outline-offset"] = "1px",
         ["--flare-switch-focus-shadow"] = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
     };
 
@@ -394,6 +404,13 @@ internal class FluentUI2Tokens
             PaddingBottom = "12px",
             PaddingLeft = "12px",
         },
+        Input = Input,
+        Progress = Progress,
+        Nav = Nav,
+        Switch = Switch,
+        Dialog = new() { Radius = "var(--flare-shape-large)" },
+        Popover = new() { Radius = "var(--flare-shape-small)" },
+        Snackbar = new() { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };
 

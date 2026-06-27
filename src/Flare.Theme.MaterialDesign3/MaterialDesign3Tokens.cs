@@ -31,36 +31,39 @@ internal static class MaterialDesign3Tokens
             LabelXl = label,
         };
 
-        // Baseline MD3 reverts two Expressive-only Extended behaviors (the Extended dictionary is
-        // applied last in CssVarMap.FlattenDesign, so these win over the inherited typed tokens):
+        // Baseline MD3 reverts two Expressive-only behaviors via the typed records:
         //   1. Progress: a flat track (no Expressive wavy/amplitude line).
-        //   2. Menus: a classic single 4dp surface with square items, not the Expressive 16dp
-        //      rounded panel with floating rounded "island" group sections.
-        var extended = new Dictionary<string, string>(reference.Extended)
+        var progress = reference.Progress with
         {
-            // Flat (non-wavy) progress.
-            ["--flare-progress-wavy-enabled"] = "0",
-            ["--flare-progress-wavy-height"] = "4px",
-            ["--flare-progress-wave-amplitude"] = "0px",
+            WavyEnabled = "0",
+            WavyHeight = "4px",
+            WaveAmplitude = "0px",
+        };
 
-            // Classic MD3 menu: 4dp container, square items, no island grouping.
-            ["--flare-menu-panel-radius"] = "var(--flare-shape-extra-small)",
-            ["--flare-menu-item-radius"] = "0",
-            ["--flare-menu-item-radius-end"] = "0",
-            ["--flare-menu-item-gap-between"] = "0",
-            ["--flare-menu-group-bg"] = "transparent",
-            ["--flare-menu-group-radius"] = "0",
-            ["--flare-menu-group-padding"] = "0",
-            ["--flare-menu-group-gap"] = "0",
-            ["--flare-menu-group-shadow"] = "none",
-            ["--flare-menu-grouped-panel-bg"] = "var(--flare-color-surface-container)",
-            ["--flare-menu-grouped-panel-shadow"] = "var(--flare-elevation-2)",
+        //   2. Menus: a classic single 4dp surface with square items, not the Expressive 16dp rounded
+        //      panel with floating rounded "island" group sections.
+        var menu = reference.Menu with
+        {
+            PanelRadius = "var(--flare-shape-extra-small)",
+            ItemRadius = "0",
+            ItemRadiusEnd = "0",
+            ItemGapBetween = "0",
+            GroupBg = "transparent",
+            GroupRadius = "0",
+            GroupPadding = "0",
+            GroupGap = "0",
+            GroupShadow = "none",
+            GroupedPanelBg = "var(--flare-color-surface-container)",
+            GroupedPanelShadow = "var(--flare-elevation-2)",
         };
 
         return reference with
         {
             Button = button,
-            Extended = extended,
+            Progress = progress,
+            Menu = menu,
+            // Extended carries only the inherited theme-specific extras (e.g. datetimepicker gap).
+            Extended = reference.Extended,
         };
     }
 }

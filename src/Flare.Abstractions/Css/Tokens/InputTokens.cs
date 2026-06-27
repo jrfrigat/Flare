@@ -19,6 +19,10 @@ public static class InputField
     public const string FocusBorder = $"{Prefix}-focus-border";
     /// <summary>CSS custom-property name for the focus border bottom token.</summary>
     public const string FocusBorderBottom = $"{Prefix}-focus-border-bottom";
+    /// <summary>CSS custom-property name for the filled hover bottom-border token.</summary>
+    public const string HoverBorderBottom = $"{Prefix}-hover-border-bottom";
+    /// <summary>CSS custom-property name for the filled hover state-layer token.</summary>
+    public const string HoverStateLayer = $"{Prefix}-hover-state-layer";
     /// <summary>CSS custom-property name for the padding token.</summary>
     public const string Padding = $"{Prefix}-padding";
     /// <summary>CSS custom-property name for the font family token.</summary>

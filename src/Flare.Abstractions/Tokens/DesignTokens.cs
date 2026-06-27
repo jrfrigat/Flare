@@ -89,6 +89,9 @@ public sealed record DesignTokens
     /// <summary>Switch tokens.</summary>
     public SwitchTokens Switch { get; init; } = new();
 
+    /// <summary>Navigation (nav item + active indicator) tokens.</summary>
+    public NavTokens Nav { get; init; } = new();
+
     /// <summary>FlareTableOfContents / FlareOnThisPage tokens.</summary>
     public TableOfContentsTokens TableOfContents { get; init; } = new();
 

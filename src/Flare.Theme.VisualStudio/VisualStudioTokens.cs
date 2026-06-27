@@ -256,45 +256,56 @@ internal class VisualStudioTokens
         S32 = "4rem",
     };
 
+    // Card - flat VS panel with a 1px border, no shadow (all variants share the flat look).
+    internal static readonly CardTokens Card = new()
+    {
+        ElevatedBg = "var(--flare-color-surface)",
+        FilledBg = "var(--flare-color-surface)",
+        OutlinedBg = "var(--flare-color-surface)",
+        OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
+        TonalBg = "var(--flare-color-surface-container-high)",
+        Radius = "var(--flare-shape-small)",
+        Elevation = "none",
+        PaddingTop = "8px",
+        PaddingRight = "8px",
+        PaddingBottom = "8px",
+        PaddingLeft = "8px",
+    };
+
+    // Input - flat field with a 1px border; blue focus finished in scoped CSS.
+    internal static readonly InputTokens Input = new()
+    {
+        FilledBg = "var(--flare-color-surface)",
+        OutlinedRadius = "var(--flare-shape-extra-small)",
+        OutlinedBorder = "1px solid var(--flare-color-outline)",
+        FilledBorderBottom = "1px solid var(--flare-color-outline)",
+        FocusBorder = "1px solid var(--flare-color-primary)",
+        FocusBorderBottom = "1px solid var(--flare-color-primary)",
+    };
+
+    // Progress - thin VS bar.
+    internal static readonly ProgressTokens Progress = new()
+    {
+        TrackRadius = "var(--flare-shape-extra-small)",
+        LinearHeight = "0.375rem",
+        Gap = "0px",
+        StopSize = "0px",
+    };
+
+    // Nav - left accent bar (VS solution-explorer style), no pill.
+    internal static readonly NavTokens Nav = new()
+    {
+        ItemRadius = "var(--flare-shape-extra-small)",
+        IndicatorRadius = "0",
+        ActiveIndicator = "none",
+        ActiveLeftBar = "2px solid var(--flare-color-primary)",
+    };
+
     /// <summary>Theme-specific extras (VS chrome hooks consumed by the scoped CSS).</summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
         // VS focus ring color used by the scoped button/input CSS.
         ["--flare-vs-focus"] = "rgba(0,120,212,0.45)",
-
-        // Card - flat VS panel with a 1px border, no shadow (all variants share the flat look).
-        ["--flare-card-elevated-bg"] = "var(--flare-color-surface)",
-        ["--flare-card-filled-bg"] = "var(--flare-color-surface)",
-        ["--flare-card-outlined-bg"] = "var(--flare-color-surface)",
-        ["--flare-card-outlined-border"] = "1px solid var(--flare-color-outline-variant)",
-        ["--flare-card-tonal-bg"] = "var(--flare-color-surface-container-high)",
-        ["--flare-card-radius"] = "var(--flare-shape-small)",
-        ["--flare-card-elevation"] = "none",
-
-        // Dialog / popover / snackbar - tight radius + flat shadow.
-        ["--flare-dialog-radius"] = "var(--flare-shape-large)",
-        ["--flare-popover-radius"] = "var(--flare-shape-small)",
-        ["--flare-snackbar-radius"] = "var(--flare-shape-small)",
-
-        // Input - flat field with a 1px border; blue focus finished in scoped CSS.
-        ["--flare-input-bg"] = "var(--flare-color-surface)",
-        ["--flare-input-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-input-border"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-border-bottom"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-focus-border"] = "1px solid var(--flare-color-primary)",
-        ["--flare-input-focus-border-bottom"] = "1px solid var(--flare-color-primary)",
-
-        // Progress - thin VS bar.
-        ["--flare-progress-track-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-progress-linear-height"] = "0.375rem",
-        ["--flare-progress-gap"] = "0px",
-        ["--flare-progress-stop-size"] = "0px",
-
-        // Nav - left accent bar (VS solution-explorer style), no pill.
-        ["--flare-nav-item-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-nav-indicator-radius"] = "0",
-        ["--flare-nav-active-indicator"] = "none",
-        ["--flare-nav-active-left-bar"] = "2px solid var(--flare-color-primary)",
 
         // Tabs - VS 2026 "flowing" document tabs, consumed by the theme-scoped tabs.css.
         ["--flare-vs-tab-gap"] = "2px",
@@ -330,7 +341,13 @@ internal class VisualStudioTokens
         Chip = Chip,
         Tabs = Tabs,
         Slider = Slider,
-        Card = new() { PaddingTop = "8px", PaddingRight = "8px", PaddingBottom = "8px", PaddingLeft = "8px" },
+        Card = Card,
+        Input = Input,
+        Progress = Progress,
+        Nav = Nav,
+        Dialog = new() { Radius = "var(--flare-shape-large)" },
+        Popover = new() { Radius = "var(--flare-shape-small)" },
+        Snackbar = new() { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };
 
