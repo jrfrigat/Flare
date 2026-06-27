@@ -7,6 +7,26 @@
     <title>Flare - Blazor Component Library</title>
     <base href="/" />
 
+    <!--
+      Icon-font FOUT guard. FlareIcon renders Material Symbols ligatures (`<span class="flare-icon">home</span>`),
+      so until the icon font downloads the raw ligature NAMES ("home", "search", ...) would paint as text on a
+      cold (uncached) load. Hide icons until the font is ready (or a short safety timeout), so they fade in as
+      glyphs instead of flashing their names. visibility:hidden reserves layout, so there is no shift.
+    -->
+    <style>html:not(.flare-icons-ready) .flare-icon{visibility:hidden}</style>
+    <script>
+      (function () {
+        var reveal = function () { document.documentElement.classList.add('flare-icons-ready'); };
+        try {
+          if (document.fonts && document.fonts.load) {
+            document.fonts.load('24px "Material Symbols Rounded"').then(reveal, reveal);
+            document.fonts.ready.then(reveal);
+          } else { reveal(); }
+        } catch (e) { reveal(); }
+        setTimeout(reveal, 3000); // safety: never keep icons hidden if the font fails to load
+      })();
+    </script>
+
     <!-- PWA -->
     <link href="manifest.webmanifest" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />

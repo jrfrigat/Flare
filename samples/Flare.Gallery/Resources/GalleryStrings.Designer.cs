@@ -77,6 +77,42 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("About_Subtitle", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Flare is an open-source Blazor component library built with .NET 10..
+        /// </summary>
+        public static string About_Intro {
+            get {
+                return ResourceManager.GetString("About_Intro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку (список новинок v0.0.3, по одному пункту на строку).
+        /// </summary>
+        public static string About_WhatsNewV3 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV3", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку (список новинок v0.0.2, по одному пункту на строку).
+        /// </summary>
+        public static string About_WhatsNewV2 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV2", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку (список новинок v0.0.1, по одному пункту на строку).
+        /// </summary>
+        public static string About_WhatsNewV1 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV1", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Design systems.

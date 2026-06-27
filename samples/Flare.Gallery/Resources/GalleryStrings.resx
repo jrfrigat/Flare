@@ -2265,6 +2265,38 @@
   <data name="About_Subtitle" xml:space="preserve">
     <value>Blazor UI · .NET 10 · 116+ components</value>
   </data>
+  <data name="About_Intro" xml:space="preserve">
+    <value>Flare is an open-source Blazor component library built with .NET 10.</value>
+  </data>
+  <data name="About_WhatsNewV3" xml:space="preserve">
+    <value>Two new design systems - Material Design 3 (baseline, non-Expressive) and Material Design 2 - so Flare now ships 7 themes
+Dynamic Color palette: derives a full light/dark palette from the OS/browser accent (Windows/macOS accent, Android Material You) via the active theme's generator, with a fallback palette
+MD3 Expressive palette aligned to the updated spec (light on-*-container roles now use tone 30)
+Cleaner token model: common component tokens (nav, input, menu, progress, dialog, snackbar, popover, card) promoted from the Extended bag to typed DesignTokens records
+Fluent UI 2 typography and motion aligned to the official Fluent 2 design tokens
+Visual Studio 2026 connected document tabs - the active tab now takes the editor color</value>
+  </data>
+  <data name="About_WhatsNewV2" xml:space="preserve">
+    <value>Clean onion / ports-and-adapters architecture: 5 rings (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) with dependencies pointing strictly inward
+Flare.Components is now UI-only - every service implementation (JS interop, storage, dialog/snackbar/message-box) moved to Flare.Infrastructure; the old Flare.Core grab-bag was retired
+AddFlare wires ports to adapters in the Flare.Blazor composition root, so the browser host stays swappable and Flare.Components never depends on Infrastructure
+Declarative [CssVar] linkage on every design token, and typed Vars.Var(Css.Tokens.*) token values instead of magic var(--flare-*) strings
+Compound components standardised on a single typed cascading context (Tree, Menu, FAB)
+1,200+ automated tests, 0 failures; zero build warnings</value>
+  </data>
+  <data name="About_WhatsNewV1" xml:space="preserve">
+    <value>Theme system v2: three independent axes - design system (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026) x palette x light/dark/auto
+Class-toggle delivery: switching is a class swap on &lt;html&gt;, no per-switch CSS-var injection
+Reusable palettes (Office + Material sets) and PaletteFactory.FromColors(brand) generation
+Override any token via Md3/Fluent2 reference records; one-line anti-FOUC bootstrap
+Full OWASP GS-1..GS-8 security audit - all critical findings fixed
+XSS protection: FlareLink, FlareBreadcrumb, FlareNavLink, FlareImage blocked javascript: URIs
+CSS injection guards on FlareGrid, FlareStack, FlareResizable, FlareText
+FlareClipboard: eval() removed, replaced with safe JS interop
+MarkdownParser: vbscript/data-uri/expression()/dangerous-tag defenses
+HtmlSanitizer and CssValidator security utilities
+Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
+  </data>
   <data name="About_Components" xml:space="preserve">
     <value>Components</value>
   </data>

@@ -84,7 +84,7 @@
 <section>
     <FlareCard Variant="CardVariant.Outlined" Style="text-align:center;">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
-            Flare is an open-source Blazor component library built with .NET 10.
+            @GalleryStrings.About_Intro
         </FlareText>
         <FlareButton Variant="ButtonVariant.Outlined" OnClick="@GoToGitHub">
             <LeadingIcon><FlareIcon Size="1.1rem" Name="open_in_new" /></LeadingIcon>
@@ -100,39 +100,11 @@
 
     private void GoToGitHub() => Nav.NavigateTo("https://github.com/jrfrigat/Flare", forceLoad: true);
 
-    private readonly string[] _whatsNewV3 =
-    [
-        "Two new design systems - Material Design 3 (baseline, non-Expressive) and Material Design 2 - so Flare now ships 7 themes",
-        "Dynamic Color palette: derives a full light/dark palette from the OS/browser accent (Windows/macOS accent, Android Material You) via the active theme's generator, with a seed fallback",
-        "MD3 Expressive palette aligned to the updated spec (light on-*-container roles now use tone 30)",
-        "Cleaner token model: common component tokens (nav, input, menu, progress, dialog, snackbar, popover, card) promoted from the Extended bag to typed DesignTokens records",
-        "Fluent UI 2 typography and motion aligned to the official Fluent 2 design tokens",
-        "Visual Studio 2026 connected document tabs - the active tab now takes the editor color",
-    ];
+    // Localized changelog: each resource holds one item per line (see GalleryStrings.About_WhatsNew*).
+    private static string[] Lines(string value) =>
+        value.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
-    private readonly string[] _whatsNewV2 =
-    [
-        "Clean onion / ports-and-adapters architecture: 5 rings (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) with dependencies pointing strictly inward",
-        "Flare.Components is now UI-only - every service implementation (JS interop, storage, dialog/snackbar/message-box) moved to Flare.Infrastructure; the old Flare.Core grab-bag was retired",
-        "AddFlare wires ports to adapters in the Flare.Blazor composition root, so the browser host stays swappable and Flare.Components never depends on Infrastructure",
-        "Declarative [CssVar] linkage on every design token, and typed Vars.Var(Css.Tokens.*) token values instead of magic var(--flare-*) strings",
-        "Compound components standardised on a single typed cascading context (Tree, Menu, FAB)",
-        "1,200+ automated tests, 0 failures; zero build warnings",
-    ];
-
-    private readonly string[] _whatsNewV1 =
-    [
-        "Theme system v2: three independent axes - design system (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026) x palette x light/dark/auto",
-        "Class-toggle delivery: switching is a class swap on <html>, no per-switch CSS-var injection",
-        "Reusable palettes (Office + Material sets) and PaletteFactory.FromColors(brand) generation",
-        "Override any token via Md3/Fluent2 reference records; one-line anti-FOUC bootstrap",
-        "Full OWASP GS-1..GS-8 security audit - all critical findings fixed",
-        "XSS protection: FlareLink, FlareBreadcrumb, FlareNavLink, FlareImage blocked javascript: URIs",
-        "CSS injection guards on FlareGrid, FlareStack, FlareResizable, FlareText",
-        "FlareClipboard: eval() removed, replaced with safe JS interop",
-        "MarkdownParser: vbscript/data-uri/expression()/dangerous-tag defenses",
-        "HtmlSanitizer and CssValidator security utilities",
-        "Gallery rebuilt entirely on Flare components - no raw divs or magic code",
-    ];
-
+    private string[] _whatsNewV3 => Lines(GalleryStrings.About_WhatsNewV3);
+    private string[] _whatsNewV2 => Lines(GalleryStrings.About_WhatsNewV2);
+    private string[] _whatsNewV1 => Lines(GalleryStrings.About_WhatsNewV1);
 }

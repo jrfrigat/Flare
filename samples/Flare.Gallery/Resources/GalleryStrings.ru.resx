@@ -2265,6 +2265,38 @@
   <data name="About_Subtitle" xml:space="preserve">
     <value>Blazor UI · .NET 10 · 116+ компонентов</value>
   </data>
+  <data name="About_Intro" xml:space="preserve">
+    <value>Flare - библиотека компонентов Blazor с открытым исходным кодом на .NET 10.</value>
+  </data>
+  <data name="About_WhatsNewV3" xml:space="preserve">
+    <value>Две новые дизайн-системы - Material Design 3 (базовый, не Expressive) и Material Design 2 - теперь Flare поставляет 7 тем
+Палитра Dynamic Color: строит полную светлую/тёмную палитру из акцента ОС/браузера (акцент Windows/macOS, Android Material You) генератором активной темы, с запасной палитрой
+Палитра MD3 Expressive приведена к обновлённой спецификации (роли light on-*-container теперь используют тон 30)
+Чище модель токенов: общие токены компонентов (nav, input, menu, progress, dialog, snackbar, popover, card) вынесены из набора Extended в типизированные записи DesignTokens
+Типографика и анимации Fluent UI 2 приведены к официальным дизайн-токенам Fluent 2
+Связанные вкладки документов Visual Studio 2026 - активная вкладка теперь принимает цвет редактора</value>
+  </data>
+  <data name="About_WhatsNewV2" xml:space="preserve">
+    <value>Чистая луковичная архитектура (порты и адаптеры): 5 колец (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) с зависимостями строго внутрь
+Flare.Components теперь только UI - все реализации сервисов (JS-интероп, хранилище, dialog/snackbar/message-box) перенесены в Flare.Infrastructure; старый сборник Flare.Core упразднён
+AddFlare связывает порты с адаптерами в корне композиции Flare.Blazor, поэтому хост браузера остаётся заменяемым, а Flare.Components никогда не зависит от Infrastructure
+Декларативная привязка [CssVar] к каждому дизайн-токену и типизированные значения Vars.Var(Css.Tokens.*) вместо магических строк var(--flare-*)
+Составные компоненты унифицированы на едином типизированном каскадном контексте (Tree, Menu, FAB)
+1 200+ автотестов, 0 падений; ноль предупреждений сборки</value>
+  </data>
+  <data name="About_WhatsNewV1" xml:space="preserve">
+    <value>Система тем v2: три независимые оси - дизайн-система (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026) x палитра x светлая/тёмная/авто
+Доставка class-toggle: переключение - это смена класса на &lt;html&gt;, без переинъекции CSS-переменных
+Переиспользуемые палитры (наборы Office + Material) и генерация PaletteFactory.FromColors(brand)
+Переопределение любого токена через reference-записи Md3/Fluent2; одностроковый анти-FOUC бутстрап
+Полный аудит безопасности OWASP GS-1..GS-8 - все критические находки исправлены
+Защита от XSS: FlareLink, FlareBreadcrumb, FlareNavLink, FlareImage блокируют javascript: URI
+Защита от CSS-инъекций в FlareGrid, FlareStack, FlareResizable, FlareText
+FlareClipboard: убран eval(), заменён безопасным JS-интеропом
+MarkdownParser: защита от vbscript/data-uri/expression()/опасных тегов
+Утилиты безопасности HtmlSanitizer и CssValidator
+Галерея полностью перестроена на компонентах Flare - без сырых div и магического кода</value>
+  </data>
   <data name="About_Components" xml:space="preserve">
     <value>Компонентов</value>
   </data>
