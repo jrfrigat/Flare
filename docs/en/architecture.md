@@ -269,8 +269,16 @@ expressions from the published reference instances (e.g. `Md3.LightColors with {
 ### Anti-FOUC Bootstrap
 
 A one-line bootstrap script (`_content/Flare.Components/js/flare-bootstrap.js`) applies the saved
-theme/palette/mode classes before first paint, and each theme's `StyleAssets` provide the baseline
-token CSS, so there is no flash of unstyled content.
+theme/palette/mode classes before first paint, and paints a theme-aware full-screen splash so the
+page never shows white or unstyled content while the app boots.
+
+`FlareThemeProvider` then reveals the app automatically (`ManageSplash`, default `true`): on its first
+interactive render it applies the theme classes and static CSS, awaits each theme stylesheet's `load`
+event and the document's web fonts (`document.fonts.ready`), then fades the splash out after the first
+themed frame has painted. So a consumer gets full anti-FOUC behaviour from the single `<script>` line
+plus the provider, with nothing to wire by hand. A safety timeout in the bootstrap reveals the page
+anyway if the provider is absent or boot fails; set `ManageSplash="false"` to drive
+`window.hideFlareSplash()` yourself.
 
 ### Persistence
 

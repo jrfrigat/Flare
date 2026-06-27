@@ -21,16 +21,58 @@ export function setThemeClasses(themeId, paletteId, dark) {
     if (dark) r.classList.add('flare-mode-dark');
 }
 
-// Runtime safety net: make sure a stylesheet <link> is present (for themes/palettes
-// registered after the initial <head> render). No-op if already loaded.
+// Runtime safety net: make sure a stylesheet <link> is present (for themes/palettes registered
+// after the initial <head> render) AND resolve only once it has actually loaded -- so a caller can
+// reveal the UI without flashing unstyled content. Resolves on load, on error, or after a short
+// safety timeout, so a missing/blocked asset can never strand the caller. No-op (resolved) when the
+// sheet is already parsed.
 export function ensureStylesheet(href) {
-    if (!href) return;
-    if (!document.querySelector(`link[rel="stylesheet"][href="${CSS.escape(href)}"]`)) {
+    return new Promise((resolve) => {
+        if (!href) { resolve(); return; }
+        const existing = document.querySelector(`link[rel="stylesheet"][href="${CSS.escape(href)}"]`);
+        if (existing) {
+            if (existing.sheet) { resolve(); return; } // already loaded and parsed
+            existing.addEventListener('load', resolve, { once: true });
+            existing.addEventListener('error', resolve, { once: true });
+            setTimeout(resolve, 5000);
+            return;
+        }
         const l = document.createElement('link');
         l.rel = 'stylesheet';
         l.href = href;
+        l.addEventListener('load', resolve, { once: true });
+        l.addEventListener('error', resolve, { once: true });
         document.head.appendChild(l);
-    }
+        setTimeout(resolve, 5000);
+    });
+}
+
+// Resolves once the document's web fonts have finished loading (text typefaces + icon glyphs), or
+// after a safety timeout so a slow/blocked font CDN can never strand the caller. Used to gate the
+// startup splash so text is first painted in its final face -- no font-swap flash.
+export function whenFontsReady(timeoutMs) {
+    return new Promise((resolve) => {
+        let settled = false;
+        const done = () => { if (!settled) { settled = true; resolve(); } };
+        try {
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(done, done);
+            else done();
+        } catch { done(); }
+        setTimeout(done, timeoutMs > 0 ? timeoutMs : 3000);
+    });
+}
+
+// Fades out the anti-FOUC startup splash created by flare-bootstrap.js, but only after two animation
+// frames so the freshly applied theme classes/CSS have painted first. Safe no-op when there is no
+// splash (e.g. the bootstrap script was not included).
+export function revealApp() {
+    return new Promise((resolve) => {
+        const reveal = () => {
+            try { if (typeof window.hideFlareSplash === 'function') window.hideFlareSplash(); } catch { }
+            resolve();
+        };
+        requestAnimationFrame(() => requestAnimationFrame(reveal));
+    });
 }
 
 // ClassToggle strategy: keep the generated class-scoped theme CSS in a single <style>.

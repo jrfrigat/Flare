@@ -73,7 +73,8 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 
 ```html
 <head>
-    <!-- One line: theme classes + anti-FOUC splash before the first frame -->
+    <!-- One line: theme classes + anti-FOUC splash before the first frame.
+         FlareThemeProvider hides the splash automatically once theme CSS and fonts are ready. -->
     <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
     <!-- All component styles -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />

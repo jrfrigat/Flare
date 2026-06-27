@@ -28,9 +28,17 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
     public ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default)
         => InvokeVoidAsync("setThemeClasses", themeId, paletteId, isDark);
 
-    /// <summary>Ensures the theme stylesheet link is present in the document head.</summary>
+    /// <summary>Ensures the theme stylesheet link is present and has finished loading.</summary>
     public ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default)
         => InvokeVoidAsync("ensureStylesheet", href);
+
+    /// <summary>Completes once web fonts are loaded (or the safety timeout elapses).</summary>
+    public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default)
+        => InvokeVoidAsync("whenFontsReady", timeoutMs);
+
+    /// <summary>Fades out the startup splash once the themed UI has painted.</summary>
+    public ValueTask RevealAppAsync(CancellationToken ct = default)
+        => InvokeVoidAsync("revealApp");
 
     /// <summary>Subscribes to OS color-scheme (light/dark) change notifications.</summary>
     public ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class

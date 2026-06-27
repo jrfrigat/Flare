@@ -73,7 +73,8 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 
 ```html
 <head>
-    <!-- Одна строка: классы темы + анти-FOUC сплэш до первого кадра -->
+    <!-- Одна строка: классы темы + анти-FOUC сплэш до первого кадра.
+         FlareThemeProvider сам уберёт сплэш, когда CSS темы и шрифты загрузятся. -->
     <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
     <!-- Все стили компонентов -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />

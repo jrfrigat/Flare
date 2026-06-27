@@ -16,6 +16,14 @@ All notable changes to Flare are documented here. This project adheres to
   `IThemeJsService.GetAccentColorAsync`.
 
 ### Changed
+- **Anti-FOUC splash is now revealed automatically by `FlareThemeProvider`** (new `ManageSplash`
+  parameter, default `true`). The provider waits for the theme stylesheets (`load` event) and the
+  document's web fonts (`document.fonts.ready`), then fades the bootstrap splash out after the first
+  themed frame - so apps no longer flash unstyled content and no longer need to call
+  `window.hideFlareSplash()` by hand. `IThemeJsService.EnsureStylesheetAsync` now resolves only once
+  the stylesheet has loaded; new `WhenFontsReadyAsync` / `RevealAppAsync`. A safety timeout in
+  `flare-bootstrap.js` (overridable via `data-splash-timeout`) reveals the page even without the
+  provider.
 - **Token model cleanup**: common component tokens that themes set through the `Extended` bag now
   have typed homes - new `NavTokens`, plus added `InputTokens` hover, `MenuTokens` group/island and
   `ProgressTokens` track/stop/wave fields. All themes set these via typed `DesignTokens` records;

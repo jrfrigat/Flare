@@ -14,6 +14,11 @@
     var defMode = cfg.defaultMode || 'auto';
     var splashLight = cfg.splashLight || '#FEF7FF';
     var splashDark = cfg.splashDark || '#141218';
+    // Safety net: how long to keep the splash before revealing anyway, in case the app never reaches
+    // its ready gate (e.g. a consumer that does not wrap its UI in FlareThemeProvider, or a boot
+    // error). FlareThemeProvider normally reveals far sooner, as soon as theme CSS + fonts are ready.
+    var splashTimeout = parseInt(cfg.splashTimeout, 10);
+    if (!(splashTimeout > 0)) splashTimeout = 8000;
 
     var d = document.documentElement, s = localStorage;
     var t = s.getItem('flare-theme') || defTheme;
@@ -34,7 +39,8 @@
         '#flare-splash .flare-splash__spinner{width:44px;height:44px;border-radius:50%;' +
         'border:4px solid rgba(128,128,128,.25);border-top-color:#888;' +
         'animation:flare-splash-spin 1s linear infinite}' +
-        '@keyframes flare-splash-spin{to{transform:rotate(360deg)}}';
+        '@keyframes flare-splash-spin{to{transform:rotate(360deg)}}' +
+        '@media (prefers-reduced-motion:reduce){#flare-splash .flare-splash__spinner{animation-duration:2.4s}}';
     var st = document.createElement('style');
     st.textContent = css;
     (document.head || d).appendChild(st);
@@ -55,4 +61,8 @@
         el.classList.add('flare-splash--hidden');
         setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 300);
     };
+
+    // Safety net: reveal anyway if the app never reaches its ready gate, so the splash can never
+    // strand the page. The normal path (FlareThemeProvider) hides it as soon as the UI is styled.
+    setTimeout(window.hideFlareSplash, splashTimeout);
 })();
