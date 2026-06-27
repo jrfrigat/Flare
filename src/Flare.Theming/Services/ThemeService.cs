@@ -45,6 +45,10 @@ public sealed class ThemeService : IThemeService
     public ITheme CurrentTheme => _theme;
     /// <summary>The active color palette.</summary>
     public Palette CurrentPalette => _palette;
+    /// <summary>Whether the active palette is the runtime-generated Dynamic Color palette.</summary>
+    public bool IsDynamicPalette => _palette.Id == Palette.DynamicId;
+    /// <summary>Seed color used for the Dynamic Color palette when the OS accent is unavailable.</summary>
+    public string DynamicFallbackSeed { get; set; } = "#6750A4";
     /// <summary>The selected mode (Light/Dark/Auto/HighContrast).</summary>
     public ThemeMode Mode => _mode;
     /// <summary>The effective dark state (resolves <see cref="ThemeMode.Auto"/> against the OS preference).</summary>
@@ -147,6 +151,24 @@ public sealed class ThemeService : IThemeService
     /// <summary>Generates a palette from a seed using the active theme's generator. Does not register or apply it.</summary>
     public Palette GeneratePalette(string id, string name, PaletteSeed seed, string? source = null) =>
         (_theme.PaletteGenerator ?? DefaultPaletteGenerator.Instance).Generate(id, name, seed, source);
+
+    /// <summary>
+    /// Dynamic Color: generates a palette from <paramref name="seed"/> via the active theme's generator,
+    /// upserts it under <see cref="Palette.DynamicId"/>, makes it active and re-applies.
+    /// </summary>
+    public async Task ApplyDynamicPaletteAsync(PaletteSeed seed)
+    {
+        var generated = GeneratePalette(Palette.DynamicId, "Dynamic", seed, "Dynamic");
+        lock (_lock)
+        {
+            _palettes.RemoveAll(p => p.Id == Palette.DynamicId);
+            _palettes.Add(generated);
+            _palette = generated;
+            _neededPaletteIds.Add(Palette.DynamicId);
+            _emittedCss = null; // the dynamic palette colors changed -> force a re-emit
+        }
+        await ApplyAsync();
+    }
 
     /// <summary>Ensures the class-scoped static stylesheet is present (ClassToggle delivery; no-op otherwise).</summary>
     public async Task EnsureStaticCssAsync()

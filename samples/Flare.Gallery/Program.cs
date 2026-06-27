@@ -20,6 +20,11 @@ builder.Services.AddFlare(opts =>
 {
     opts.DefaultTheme = new Md3Theme();
     opts.DefaultPalette = Md3Palettes.Violet;
+    // Register the Dynamic Color palette so it is selectable in the palette picker. It derives from
+    // the OS/browser accent color (Windows/macOS accent, Android Material You) via the active theme's
+    // generator; on engines without the CSS AccentColor system color it falls back to this seed.
+    opts.UseDynamicPalette = true;
+    opts.DynamicPaletteFallbackSeed = "#6750A4";
     // Every theme below is registered explicitly, so skip the reflection-based auto-discovery. That
     // avoids force-loading the whole assembly graph (Assembly.Load + GetTypes over every referenced
     // assembly) at startup and keeps the path trim/AOT-friendly.

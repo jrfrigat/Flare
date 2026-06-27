@@ -13,6 +13,10 @@ public interface IThemeService
     ITheme CurrentTheme { get; }
     /// <summary>The active color palette.</summary>
     Palette CurrentPalette { get; }
+    /// <summary>Whether the active palette is the runtime-generated Dynamic Color palette.</summary>
+    bool IsDynamicPalette { get; }
+    /// <summary>Seed color used for the Dynamic Color palette when the OS accent is unavailable.</summary>
+    string DynamicFallbackSeed { get; }
     /// <summary>The selected mode (Light/Dark/Auto).</summary>
     ThemeMode Mode { get; }
     /// <summary>The effective dark state (resolves <see cref="ThemeMode.Auto"/> against the OS preference).</summary>
@@ -66,6 +70,13 @@ public interface IThemeService
     /// Fluent ramp) or the core default. Does not register or apply it.
     /// </summary>
     Palette GeneratePalette(string id, string name, PaletteSeed seed, string? source = null);
+
+    /// <summary>
+    /// Dynamic Color: generates a full palette from <paramref name="seed"/> (typically the OS accent)
+    /// using the active theme's generator, registers it under <see cref="Palette.DynamicId"/> (replacing
+    /// any previous one) and makes it the active palette. Re-call to refresh when the seed or theme changes.
+    /// </summary>
+    Task ApplyDynamicPaletteAsync(PaletteSeed seed);
 
     /// <summary>
     /// Typed override of the color axis. The mutator receives the <see cref="ColorScheme"/>

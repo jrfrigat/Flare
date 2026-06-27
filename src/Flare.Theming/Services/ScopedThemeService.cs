@@ -51,6 +51,10 @@ public sealed class ScopedThemeService : IThemeService
     public bool IsRtl { get; private set; }
 
     // -- Delegated to the outer service -------------------------------------------------------
+    /// <summary>Whether the active palette is the runtime-generated Dynamic Color palette.</summary>
+    public bool IsDynamicPalette => CurrentPalette.Id == Palette.DynamicId;
+    /// <summary>Seed color used for the Dynamic Color palette when the OS accent is unavailable.</summary>
+    public string DynamicFallbackSeed => _inner.DynamicFallbackSeed;
     /// <summary>How theme CSS is delivered (class-toggle static CSS vs CSS-variable injection).</summary>
     public ThemeDelivery Delivery => _inner.Delivery;
     /// <summary>All registered themes.</summary>
@@ -85,6 +89,8 @@ public sealed class ScopedThemeService : IThemeService
     /// <summary>Generates a palette from a seed using the active theme's generator. Does not register or apply it.</summary>
     public Palette GeneratePalette(string id, string name, PaletteSeed seed, string? source = null) =>
         _inner.GeneratePalette(id, name, seed, source);
+    /// <summary>Dynamic Color: delegates to the outer service to generate/apply the dynamic palette.</summary>
+    public Task ApplyDynamicPaletteAsync(PaletteSeed seed) => _inner.ApplyDynamicPaletteAsync(seed);
     /// <summary>Pushes a typed override of the color axis into the custom-token layer.</summary>
     public void CustomizeColors(Func<ColorScheme, ColorScheme> mutate) => _inner.CustomizeColors(mutate);
     /// <summary>Pushes a typed override of the design axis into the custom-token layer.</summary>
