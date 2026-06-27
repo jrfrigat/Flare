@@ -3,6 +3,34 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.3] - 2026-06-27
+
+### Added
+- **Two new design systems**: **Material Design 3** (baseline, non-Expressive) and **Material Design 2**.
+  Flare now ships 7 themes (MD3 Expressive, MD3, MD2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026).
+- **Dynamic Color palette** (`Palette.DynamicId`): an opt-in palette generated at runtime from the
+  OS/browser accent color (Windows/macOS accent, Android Material You via the CSS `AccentColor`
+  system color) through the *active theme's* generator, so it adapts to every theme. Enabled via
+  `FlareOptions.UseDynamicPalette` / `DynamicPaletteFallbackSeed`; falls back to a seed where the
+  accent is unavailable. New `IThemeService.ApplyDynamicPaletteAsync` / `IsDynamicPalette` and
+  `IThemeJsService.GetAccentColorAsync`.
+
+### Changed
+- **Token model cleanup**: common component tokens that themes set through the `Extended` bag now
+  have typed homes - new `NavTokens`, plus added `InputTokens` hover, `MenuTokens` group/island and
+  `ProgressTokens` track/stop/wave fields. All themes set these via typed `DesignTokens` records;
+  `Extended` is reserved for genuinely theme-specific keys.
+- **Fluent UI 2** typography and motion aligned to the official Fluent 2 design tokens (Semibold
+  heading ramp, real `fontSize`/`lineHeight`/duration values; emphasized easing = `curveEasyEase`).
+- Solution folders split into `src/Core` and `src/Themes`.
+
+### Fixed
+- **MD3 Expressive** palette aligned to the updated spec: light-mode `on-*-container` roles now use
+  tone 30 (were tone 10), in both the static palette and the tonal generator.
+- **Visual Studio 2026** connected document tabs - the active tab now takes the editor surface color
+  (was a lighter floating gray in dark mode).
+- Gallery home "design systems" stat is now bound to the registered theme count (was hardcoded).
+
 ## [0.0.2] - 2026-06-27
 
 ### Architecture
