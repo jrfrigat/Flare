@@ -203,9 +203,16 @@ internal class MaterialDesignTokens
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
         ItemGapBetween = "0.125rem",                  // gap между пунктами 2dp
         ItemRadius = "var(--flare-shape-extra-small)",// 4dp
-        ItemRadiusEnd = "var(--flare-shape-medium)",  // первый/последний 12dp
+        ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp
         GroupRadius = "var(--flare-shape-small)",     // группа 8dp
         GroupPadding = "0.125rem",                    // отступ группы 2dp
+        // Expressive "island" group sections: each group is a separate rounded surface tone with its
+        // own elevation, on a transparent backing panel, so adjacent sections read as two cards.
+        GroupBg = "var(--flare-color-surface-container-high)",
+        GroupGap = "0.5rem",
+        GroupShadow = "var(--flare-elevation-3)",
+        GroupedPanelBg = "transparent",
+        GroupedPanelShadow = "none",
         ItemLabelFont = "var(--flare-typescale-label-large-font)",
         ItemLabelWeight = "var(--flare-typescale-label-large-weight)",
         ItemLabelSize = "var(--flare-typescale-label-large-size)",
@@ -213,80 +220,52 @@ internal class MaterialDesignTokens
         ItemLabelSpacing = "var(--flare-typescale-label-large-spacing)",
     };
 
-    /// <summary>Theme-specific extras not in the core schema.</summary>
+    // Input - filled style (md.comp.filled-text-field): surface-container-highest container, 56dp
+    // height (1rem block padding + 24px line), 1dp on-surface-variant active indicator, hover ->
+    // on-surface indicator + 8% state layer, focus -> 3dp primary (Expressive).
+    internal static readonly InputTokens Input = new()
+    {
+        FilledBg = "var(--flare-color-surface-container-highest)",
+        OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
+        Padding = "1rem 1rem",
+        OutlinedBorder = "none",
+        FilledBorderBottom = "1px solid var(--flare-color-on-surface-variant)",
+        HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
+        HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
+        FocusBorder = "none",
+        FocusBorderBottom = "3px solid var(--flare-color-primary)",
+    };
+
+    // Progress - MD3 Expressive: rounded full track, 4px thick, trailing stop-indicator dot, round
+    // circular caps, and the opt-in wavy determinate track (with-wave 10dp, amplitude 3dp, wavelength 40dp).
+    internal static readonly ProgressTokens Progress = new()
+    {
+        TrackRadius = "var(--flare-shape-full)",
+        LinearHeight = "4px",
+        Gap = "4px",
+        StopSize = "4px",
+        StopInset = "0px",
+        CircularWidth = "4px",
+        CircularCap = "round",
+        CircularGap = "4px",
+        WavyEnabled = "1",
+        WavyHeight = "10px",
+        WaveLength = "40px",
+        WaveAmplitude = "3px",
+        WaveSpeed = "1s",
+        RingWaves = "8",
+        RingWaveAmplitude = "1.6",
+    };
+
+    /// <summary>
+    /// Theme-specific extras with no typed home in the core schema. Everything that maps to a typed
+    /// component token (dialog/input/menu/progress/snackbar/popover/nav) now lives on the matching
+    /// record above, not here.
+    /// </summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
-        // Card variant colors/geometry are emitted from the typed CardTokens record (see Design.Card).
-        // Dialog
-        ["--flare-dialog-radius"] = "var(--flare-shape-extra-large)",
-        // DateTimePicker panels (Variant.Panels): MD3 spacing between the calendar and time panes
+        // DateTimePicker panels (Variant.Panels): MD3 spacing between the calendar and time panes.
         ["--flare-datetimepicker-panel-gap"] = "1.5rem",
-        // Menu (md.comp.menus, Expressive): 16dp container, rounded items, and groups rendered as
-        // separate rounded "islands" (group.shape 8dp, group.padding 2dp, gap between groups) on a
-        // distinct surface tone so adjacent sections read as two cards.
-        ["--flare-menu-panel-radius"] = "1rem",                                   // container.shape 16dp
-        ["--flare-menu-panel-shadow"] = "var(--flare-elevation-3)",               // container.elevation 3dp
-        ["--flare-menu-item-height"] = "2.75rem",                                 // menu-item.height 44dp
-        ["--flare-menu-item-radius"] = "0.25rem",                                 // menu-item.shape 4dp
-        ["--flare-menu-item-radius-end"] = "0.25rem",
-        ["--flare-menu-item-gap-between"] = "0.125rem",                           // md.comp.menus.gap 2dp
-        ["--flare-menu-group-bg"] = "var(--flare-color-surface-container-high)",  // island surface
-        ["--flare-menu-group-radius"] = "0.5rem",                                // group.shape 8dp
-        ["--flare-menu-group-padding"] = "0.125rem",                             // group.padding 2dp
-        ["--flare-menu-group-gap"] = "0.5rem",                                   // separation between islands (>spec 2dp for clarity)
-        ["--flare-menu-group-shadow"] = "var(--flare-elevation-3)",              // islands float
-        // When grouped, the panel itself is just a transparent container (the islands carry the
-        // surface + elevation), so there is no backing slab behind the groups.
-        ["--flare-menu-grouped-panel-bg"] = "transparent",
-        ["--flare-menu-grouped-panel-shadow"] = "none",
-        // Menu item label = label-large (Roboto 500, 14sp, 0.1 tracking, 20 line-height) per spec.
-        ["--flare-menu-item-label-font"] = "var(--flare-typescale-label-large-font)",
-        ["--flare-menu-item-label-weight"] = "var(--flare-typescale-label-large-weight)",
-        ["--flare-menu-item-label-size"] = "var(--flare-typescale-label-large-size)",
-        ["--flare-menu-item-label-height"] = "var(--flare-typescale-label-large-height)",
-        ["--flare-menu-item-label-spacing"] = "var(--flare-typescale-label-large-spacing)",
-        // Input - filled style (md.comp.filled-text-field): surface-container-highest container,
-        // 56dp height (1rem block padding + 24px line), 1dp on-surface-variant active indicator,
-        // hover -> on-surface indicator + 8% state layer, focus -> 3dp primary (Expressive).
-        ["--flare-input-bg"] = "var(--flare-color-surface-container-highest)",
-        ["--flare-input-radius"] = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
-        ["--flare-input-padding"] = "1rem 1rem",
-        ["--flare-input-border"] = "none",
-        ["--flare-input-border-bottom"] = "1px solid var(--flare-color-on-surface-variant)",
-        ["--flare-input-hover-border-bottom"] = "1px solid var(--flare-color-on-surface)",
-        ["--flare-input-hover-state-layer"] = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
-        ["--flare-input-focus-border"] = "none",
-        ["--flare-input-focus-border-bottom"] = "3px solid var(--flare-color-primary)",
-        // Progress - MD3 expressive: rounded full track, 4px thick, trailing
-        // stop-indicator dot, round circular caps
-        ["--flare-progress-track-radius"] = "var(--flare-shape-full)",
-        ["--flare-progress-linear-height"] = "4px",
-        ["--flare-progress-gap"] = "4px",
-        ["--flare-progress-stop-size"] = "4px",
-        ["--flare-progress-stop-inset"] = "0px",
-        ["--flare-progress-circular-width"] = "4px",
-        ["--flare-progress-circular-cap"] = "round",
-        ["--flare-progress-circular-gap"] = "4px",
-        // MD3 Expressive wavy progress (spec): with-wave height 10dp, amplitude 3dp, wavelength 40dp
-        ["--flare-progress-wavy-enabled"] = "1",
-        ["--flare-progress-wavy-height"] = "10px",
-        ["--flare-progress-wave-length"] = "40px",
-        ["--flare-progress-wave-amplitude"] = "3px",
-        ["--flare-progress-wave-speed"] = "1s",
-        ["--flare-progress-ring-waves"] = "8",
-        ["--flare-progress-ring-wave-amplitude"] = "1.6",
-        // Badge and Alert are now emitted via typed BadgeTokens/AlertTokens in CssVarMap.
-        // Snackbar
-        ["--flare-snackbar-radius"] = "var(--flare-shape-extra-small)",
-        // FAB - теперь через FabTokens (см. internal static FabTokens Fab)
-        // Popover / dropdown panels
-        ["--flare-popover-radius"] = "var(--flare-shape-medium)",
-        // Nav item hover/focus radius
-        ["--flare-nav-item-radius"] = "var(--flare-shape-extra-small)",
-        // Nav indicator - pill shape (MD3 default)
-        ["--flare-nav-indicator-radius"] = "var(--flare-shape-full)",
-        ["--flare-nav-active-indicator"] = "var(--flare-color-secondary-container)",
-        ["--flare-nav-active-left-bar"] = "none",
     };
 
 
@@ -323,6 +302,10 @@ internal class MaterialDesignTokens
             PaddingBottom = "16px",
             PaddingLeft = "16px",
         },
+        Input = Input,
+        Progress = Progress,
+        // Popover / dropdown panels use the medium shape (Snackbar/Dialog/Nav already match defaults).
+        Popover = new() { Radius = "var(--flare-shape-medium)" },
         Extended = Extended,
     };
 
@@ -331,19 +314,20 @@ internal class MaterialDesignTokens
         Primary = "#6750A4",
         OnPrimary = "#FFFFFF",
         PrimaryContainer = "#EADDFF",
-        OnPrimaryContainer = "#21005D",
+        // Updated MD3 (Expressive) color spec: light on-*-container roles use tone 30 (was tone 10).
+        OnPrimaryContainer = "#4F378B",
         Secondary = "#625B71",
         OnSecondary = "#FFFFFF",
         SecondaryContainer = "#E8DEF8",
-        OnSecondaryContainer = "#1D192B",
+        OnSecondaryContainer = "#4A4458",
         Tertiary = "#7D5260",
         OnTertiary = "#FFFFFF",
         TertiaryContainer = "#FFD8E4",
-        OnTertiaryContainer = "#31111D",
+        OnTertiaryContainer = "#633B48",
         Error = "#B3261E",
         OnError = "#FFFFFF",
         ErrorContainer = "#F9DEDC",
-        OnErrorContainer = "#410E0B",
+        OnErrorContainer = "#8C1D18",
         Success = "#2E6C47",
         OnSuccess = "#FFFFFF",
         SuccessContainer = "#B2F1C5",

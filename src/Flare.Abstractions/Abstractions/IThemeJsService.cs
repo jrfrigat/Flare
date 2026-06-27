@@ -34,4 +34,16 @@ public interface IThemeJsService : IAsyncDisposable
 
     /// <summary>Check if OS prefers dark mode.</summary>
     ValueTask<bool> PrefersColorSchemeDarkAsync(CancellationToken ct = default);
+
+    /// <summary>
+    /// Reads the OS/browser accent color (CSS <c>AccentColor</c> system color) as a <c>#RRGGBB</c> hex,
+    /// or null when the engine does not expose it. Used to seed the Dynamic Color palette.
+    /// </summary>
+    ValueTask<string?> GetAccentColorAsync(CancellationToken ct = default);
+
+    /// <summary>Subscribe to OS accent-color changes (re-read on window focus).</summary>
+    ValueTask SubscribeAccentAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class;
+
+    /// <summary>Unsubscribe from OS accent-color changes.</summary>
+    ValueTask UnsubscribeAccentAsync(string id, CancellationToken ct = default);
 }

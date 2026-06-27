@@ -5,6 +5,8 @@ using Flare.Gallery.Services;
 using Flare.Theme.Aero;
 using Flare.Theme.FluentUI2;
 using Flare.Theme.LiquidGlass;
+using Flare.Theme.MaterialDesign2;
+using Flare.Theme.MaterialDesign3;
 using Flare.Theme.MaterialDesign3Expressive;
 using Flare.Theme.VisualStudio;
 using Microsoft.AspNetCore.Components.Web;
@@ -18,6 +20,11 @@ builder.Services.AddFlare(opts =>
 {
     opts.DefaultTheme = new Md3Theme();
     opts.DefaultPalette = Md3Palettes.Violet;
+    // Register the Dynamic Color palette so it is selectable in the palette picker. It derives from
+    // the OS/browser accent color (Windows/macOS accent, Android Material You) via the active theme's
+    // generator; on engines without the CSS AccentColor system color it falls back to this seed.
+    opts.UseDynamicPalette = true;
+    opts.DynamicPaletteFallbackSeed = "#6750A4";
     // Every theme below is registered explicitly, so skip the reflection-based auto-discovery. That
     // avoids force-loading the whole assembly graph (Assembly.Load + GetTypes over every referenced
     // assembly) at startup and keeps the path trim/AOT-friendly.
@@ -27,6 +34,8 @@ builder.Services.AddFlare(opts =>
 // Themes are independent packages now -- the Gallery showcases all of them, so each is registered
 // explicitly (AddFlareTheme also forces the theme assembly to load, which mere references don't in a
 // trimmed/WASM app). Each theme brings its own palettes via ITheme.Palettes.
+builder.Services.AddFlareTheme(new MaterialDesign3Theme());
+builder.Services.AddFlareTheme(new MaterialDesign2Theme());
 builder.Services.AddFlareTheme(new Fluent2Theme());
 builder.Services.AddFlareTheme(new AeroTheme());
 builder.Services.AddFlareTheme(new LiquidGlassTheme());

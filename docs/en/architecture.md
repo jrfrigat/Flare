@@ -1,6 +1,6 @@
 # Flare - Architecture
 
-> [Русская версия ->](../ru/architecture.md) - [README](../../README.md)
+> [Русская версия ->](../ru/architecture.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.md)
 
 How Flare is structured, how theming works, and the contracts components rely on.
 
@@ -104,16 +104,21 @@ lives in its own sub-namespace folder; the base components are in `Base/`. Depen
 
 **NuGet:** `Flare.Components` - depends on `Flare.Abstractions`, `Flare.Theming`.
 
-### Flare.Theme.* (five design systems)
+### Flare.Theme.* (seven design systems)
 Each theme package provides one concrete `ITheme` plus its palettes and static style assets:
 
 | Package | Theme class | `Id` | Default palette | Palettes |
 |---------|-------------|------|-----------------|----------|
 | `Flare.Theme.MaterialDesign3Expressive` | `Md3Theme` | `md3-expressive` | Violet | 5 |
+| `Flare.Theme.MaterialDesign3` | `MaterialDesign3Theme` | `md3` | Violet | (shares MD3) |
+| `Flare.Theme.MaterialDesign2` | `MaterialDesign2Theme` | `md2` | Purple | 6 |
 | `Flare.Theme.FluentUI2` | `Fluent2Theme` | `fluent2` | Blue | 7 |
 | `Flare.Theme.Aero` | `AeroTheme` | `aero` | Blue | 5 |
 | `Flare.Theme.LiquidGlass` | `LiquidGlassTheme` | `liquid-glass` | Blue | 6 |
 | `Flare.Theme.VisualStudio` | `VisualStudioTheme` | `visualstudio` | Blue | 5 |
+
+A runtime-only **Dynamic Color** palette (`Palette.DynamicId = "dynamic"`) can also be enabled via
+`FlareOptions.UseDynamicPalette`; it is generated from the OS accent through the active theme's generator.
 
 - A theme = a design system (`DesignTokens`) + a `DefaultPaletteId` + `StyleAssets`. Light/dark is a
   **mode**, not a separate theme; colors come from a **palette**.

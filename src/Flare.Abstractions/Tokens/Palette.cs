@@ -9,6 +9,13 @@ namespace Flare.Abstractions.Tokens;
 /// </summary>
 public sealed record Palette
 {
+    /// <summary>
+    /// Reserved id for the Dynamic Color palette: a palette generated at runtime from the OS/browser
+    /// accent color (Windows/macOS accent, Android Material You) via the active theme's generator.
+    /// Select it like any palette; the actual colors are produced by <c>IThemeService.ApplyDynamicPaletteAsync</c>.
+    /// </summary>
+    public const string DynamicId = "dynamic";
+
     /// <summary>Stable unique id; also the CSS class suffix (<c>flare-palette-{Id}</c>).</summary>
     public required string Id { get; init; }
     /// <summary>Human-readable name for pickers.</summary>

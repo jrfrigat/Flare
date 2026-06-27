@@ -43,6 +43,8 @@ public sealed class StubThemeService : IThemeService
 
     public ITheme CurrentTheme => _theme;
     public Palette CurrentPalette => _palette;
+    public bool IsDynamicPalette => false;
+    public string DynamicFallbackSeed => "#6750A4";
     public ThemeMode Mode => ThemeMode.Light;
     public bool IsDark => false;
     public bool IsHighContrast => false;
@@ -64,6 +66,7 @@ public sealed class StubThemeService : IThemeService
     public Task RequireThemeAssetsAsync(string? themeId, string? paletteId) => Task.CompletedTask;
     public Palette GeneratePalette(string id, string name, Flare.Abstractions.PaletteSeed seed, string? source = null) =>
         Flare.Theming.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
+    public Task ApplyDynamicPaletteAsync(Flare.Abstractions.PaletteSeed seed) => Task.CompletedTask;
     public void CustomizeColors(Func<ColorScheme, ColorScheme> mutate) { }
     public void CustomizeDesign(Func<DesignTokens, DesignTokens> mutate) { }
     public void SetCustomToken(string tokenName, string value) { }
@@ -87,6 +90,8 @@ public sealed class TokenThemeService : IThemeService
 
     public ITheme CurrentTheme => _theme;
     public Palette CurrentPalette => _palette;
+    public bool IsDynamicPalette => false;
+    public string DynamicFallbackSeed => "#6750A4";
     public ThemeMode Mode => ThemeMode.Light;
     public bool IsDark => false;
     public bool IsHighContrast => false;
@@ -106,6 +111,7 @@ public sealed class TokenThemeService : IThemeService
     public Task RequireThemeAssetsAsync(string? themeId, string? paletteId) => Task.CompletedTask;
     public Palette GeneratePalette(string id, string name, Flare.Abstractions.PaletteSeed seed, string? source = null) =>
         Flare.Theming.DefaultPaletteGenerator.Instance.Generate(id, name, seed, source);
+    public Task ApplyDynamicPaletteAsync(Flare.Abstractions.PaletteSeed seed) => Task.CompletedTask;
     public void CustomizeColors(Func<ColorScheme, ColorScheme> mutate) { }
     public void CustomizeDesign(Func<DesignTokens, DesignTokens> mutate) { }
     public void SetCustomToken(string tokenName, string value) { }
@@ -165,6 +171,9 @@ public sealed class StubThemeJsService : IThemeJsService
     public ValueTask SubscribeColorSchemeAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class => ValueTask.CompletedTask;
     public ValueTask UnsubscribeColorSchemeAsync(string id, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask<bool> PrefersColorSchemeDarkAsync(CancellationToken ct = default) => ValueTask.FromResult(false);
+    public ValueTask<string?> GetAccentColorAsync(CancellationToken ct = default) => ValueTask.FromResult<string?>(null);
+    public ValueTask SubscribeAccentAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class => ValueTask.CompletedTask;
+    public ValueTask UnsubscribeAccentAsync(string id, CancellationToken ct = default) => ValueTask.CompletedTask;
     public ValueTask DisposeAsync() => ValueTask.CompletedTask;
 }
 

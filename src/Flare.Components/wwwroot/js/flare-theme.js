@@ -77,6 +77,46 @@ export function prefersColorSchemeDark() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
+// --- OS accent color (Dynamic Color) ---
+// Reads the OS/browser accent color exposed via the CSS `AccentColor` system color (Windows accent,
+// macOS accent, Android Material You). Returns a #RRGGBB hex, or null when the browser does not
+// support the AccentColor system color (older engines) -- the caller then falls back to a seed.
+// Gated on CSS.supports so we never mistake an inherited text color for the accent.
+export function getAccentColor() {
+    try {
+        if (typeof CSS === 'undefined' || !CSS.supports || !CSS.supports('color', 'AccentColor')) return null;
+        const el = document.createElement('span');
+        el.style.cssText = 'color:AccentColor;position:absolute;opacity:0;pointer-events:none';
+        document.body.appendChild(el);
+        const c = getComputedStyle(el).color;
+        el.remove();
+        const m = c && c.match(/[\d.]+/g);
+        if (!m || m.length < 3) return null;
+        return '#' + m.slice(0, 3).map(n => Math.round(parseFloat(n)).toString(16).padStart(2, '0')).join('').toUpperCase();
+    } catch {
+        return null;
+    }
+}
+
+// The OS accent has no dedicated change event; re-read on window focus (cheap) so a mid-session
+// accent change is picked up the next time the app regains focus.
+const _accentListeners = new Map();
+
+export function subscribeAccent(id, dotNetRef) {
+    unsubscribeAccent(id);
+    const handler = () => dotNetRef.invokeMethodAsync('OnAccentColorChanged');
+    window.addEventListener('focus', handler);
+    _accentListeners.set(id, handler);
+}
+
+export function unsubscribeAccent(id) {
+    const handler = _accentListeners.get(id);
+    if (handler) {
+        window.removeEventListener('focus', handler);
+        _accentListeners.delete(id);
+    }
+}
+
 // --- System color-scheme live subscription ---
 const _schemeListeners = new Map();
 

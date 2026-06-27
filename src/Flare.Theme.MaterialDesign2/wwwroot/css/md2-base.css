@@ -1,0 +1,41 @@
+/* ==========================================================================
+   MATERIAL DESIGN 2 THEME -- component CSS not expressible through tokens.
+
+   Scoped to the nearest .flare-theme-md2 root and cut off at any nested
+   .flare-root that is NOT md2, so these MD2 rules never leak into a different
+   theme rendered inside an MD2 app (e.g. a FlareThemeScope with another theme).
+   ========================================================================== */
+@scope (.flare-theme-md2) to (.flare-root:not(.flare-theme-md2)) {
+
+    /* MD2 buttons use UPPERCASE labels (the MD2 "Button" type style). */
+    .flare-btn {
+        text-transform: uppercase;
+    }
+
+    /* MD2 contained buttons rest at 2dp and rise to 8dp on hover/focus; text and
+       outlined buttons stay flat. */
+    .flare-btn--filled,
+    .flare-btn--elevated,
+    .flare-btn--tonal {
+        box-shadow: var(--flare-elevation-2);
+    }
+
+    .flare-btn--filled:hover,
+    .flare-btn--elevated:hover,
+    .flare-btn--tonal:hover,
+    .flare-btn--filled:focus-visible,
+    .flare-btn--elevated:focus-visible,
+    .flare-btn--tonal:focus-visible {
+        box-shadow: var(--flare-elevation-4);
+    }
+
+    .flare-btn--text,
+    .flare-btn--outlined {
+        box-shadow: none;
+    }
+
+    /* MD2 tabs use UPPERCASE labels. */
+    .flare-tabs__tab {
+        text-transform: uppercase;
+    }
+}

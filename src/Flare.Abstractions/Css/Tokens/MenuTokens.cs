@@ -41,6 +41,16 @@ public static class MenuPanel
     public const string GroupRadius = $"{FlareMenu}-group-radius";
     /// <summary>CSS custom-property name for the group padding token.</summary>
     public const string GroupPadding = $"{FlareMenu}-group-padding";
+    /// <summary>CSS custom-property name for the group background token (Expressive "island" sections).</summary>
+    public const string GroupBg = $"{FlareMenu}-group-bg";
+    /// <summary>CSS custom-property name for the gap between group "islands" token.</summary>
+    public const string GroupGap = $"{FlareMenu}-group-gap";
+    /// <summary>CSS custom-property name for the group "island" shadow token.</summary>
+    public const string GroupShadow = $"{FlareMenu}-group-shadow";
+    /// <summary>CSS custom-property name for the grouped-panel background token (backing slab when grouped).</summary>
+    public const string GroupedPanelBg = $"{FlareMenu}-grouped-panel-bg";
+    /// <summary>CSS custom-property name for the grouped-panel shadow token (backing slab when grouped).</summary>
+    public const string GroupedPanelShadow = $"{FlareMenu}-grouped-panel-shadow";
 
     /// <summary>CSS custom-property name for the item label font token.</summary>
     public const string ItemLabelFont = $"{FlareMenu}-item-label-font";

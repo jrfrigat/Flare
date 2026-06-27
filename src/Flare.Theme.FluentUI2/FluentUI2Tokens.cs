@@ -5,23 +5,26 @@ namespace Flare.Theme.FluentUI2;
 
 internal class FluentUI2Tokens
 {
+    // Fluent 2 type ramp (Segoe UI): every size/line-height/weight is a real Fluent token
+    // (fontSizeBase/Hero + lineHeightBase/Hero, Semibold 600 headings, Regular 400 body). The MD-style
+    // role names map onto Fluent's named text styles largeTitle..caption2.
     internal static readonly TypographyTokens Typography = new()
     {
-        DisplayLarge = T("Segoe UI", "700", "2.5rem", "3.25rem", "0em"),
-        DisplayMedium = T("Segoe UI", "700", "2rem", "2.75rem", "0em"),
-        DisplaySmall = T("Segoe UI", "700", "1.5rem", "2rem", "0em"),
-        HeadlineLarge = T("Segoe UI", "600", "1.25rem", "1.75rem", "0em"),
-        HeadlineMedium = T("Segoe UI", "600", "1.125rem", "1.625rem", "0em"),
-        HeadlineSmall = T("Segoe UI", "600", "1rem", "1.375rem", "0em"),
-        TitleLarge = T("Segoe UI", "600", "0.875rem", "1.25rem", "0em"),
-        TitleMedium = T("Segoe UI", "600", "0.8125rem", "1.125rem", "0em"),
-        TitleSmall = T("Segoe UI", "600", "0.75rem", "1rem", "0em"),
-        BodyLarge = T("Segoe UI", "400", "0.875rem", "1.25rem", "0em"),
-        BodyMedium = T("Segoe UI", "400", "0.8125rem", "1.125rem", "0em"),
-        BodySmall = T("Segoe UI", "400", "0.75rem", "1rem", "0em"),
-        LabelLarge = T("Segoe UI", "600", "0.875rem", "1.25rem", "0em"),
-        LabelMedium = T("Segoe UI", "400", "0.8125rem", "1.125rem", "0em"),
-        LabelSmall = T("Segoe UI", "400", "0.75rem", "1rem", "0em"),
+        DisplayLarge = T("Segoe UI", "600", "2.5rem", "3.25rem", "0em"),     // largeTitle 40/52
+        DisplayMedium = T("Segoe UI", "600", "2rem", "2.5rem", "0em"),       // title1 32/40
+        DisplaySmall = T("Segoe UI", "600", "1.75rem", "2.25rem", "0em"),    // title2 28/36
+        HeadlineLarge = T("Segoe UI", "600", "1.5rem", "2rem", "0em"),       // title3 24/32
+        HeadlineMedium = T("Segoe UI", "600", "1.25rem", "1.75rem", "0em"),  // subtitle1 20/28
+        HeadlineSmall = T("Segoe UI", "600", "1rem", "1.375rem", "0em"),     // subtitle2 16/22
+        TitleLarge = T("Segoe UI", "600", "1rem", "1.375rem", "0em"),        // subtitle2 16/22
+        TitleMedium = T("Segoe UI", "600", "0.875rem", "1.25rem", "0em"),    // body1Strong 14/20
+        TitleSmall = T("Segoe UI", "600", "0.75rem", "1rem", "0em"),         // caption1Strong 12/16
+        BodyLarge = T("Segoe UI", "400", "1rem", "1.375rem", "0em"),         // body2 16/22
+        BodyMedium = T("Segoe UI", "400", "0.875rem", "1.25rem", "0em"),     // body1 14/20 (default)
+        BodySmall = T("Segoe UI", "400", "0.75rem", "1rem", "0em"),          // caption1 12/16
+        LabelLarge = T("Segoe UI", "600", "0.875rem", "1.25rem", "0em"),     // body1Strong 14/20
+        LabelMedium = T("Segoe UI", "600", "0.75rem", "1rem", "0em"),        // caption1Strong 12/16
+        LabelSmall = T("Segoe UI", "400", "0.625rem", "0.875rem", "0em"),    // caption2 10/14
     };
 
     internal static readonly ShapeTokens Shape = new()
@@ -35,18 +38,20 @@ internal class FluentUI2Tokens
         Full = "9999px",
     };
 
+    // Fluent 2 motion: the durationUltraFast..durationUltraSlow ramp and the named curves
+    // (curveDecelerateMax/Min, curveAccelerateMax, curveEasyEase).
     internal static readonly MotionTokens Motion = new()
     {
-        DurationShort1 = "50ms",
-        DurationShort2 = "83ms",
-        DurationMedium1 = "167ms",
-        DurationMedium2 = "250ms",
-        DurationLong1 = "333ms",
-        DurationLong2 = "500ms",
-        EasingStandard = "cubic-bezier(0.1, 0.9, 0.2, 1)",
-        EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
-        EasingAccelerate = "cubic-bezier(0.9, 0.1, 1, 0.2)",
-        EasingEmphasized = "cubic-bezier(0.1, 0.9, 0.2, 1)",
+        DurationShort1 = "50ms",   // durationUltraFast
+        DurationShort2 = "100ms",  // durationFaster
+        DurationMedium1 = "150ms", // durationFast
+        DurationMedium2 = "200ms", // durationNormal
+        DurationLong1 = "300ms",   // durationSlow
+        DurationLong2 = "500ms",   // durationUltraSlow
+        EasingStandard = "cubic-bezier(0.1, 0.9, 0.2, 1)",   // curveDecelerateMax
+        EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",       // curveDecelerateMid
+        EasingAccelerate = "cubic-bezier(0.9, 0.1, 1, 0.2)", // curveAccelerateMax
+        EasingEmphasized = "cubic-bezier(0.33, 0, 0.67, 1)", // curveEasyEase
     };
 
     internal static readonly StateTokens State = new()
@@ -245,7 +250,53 @@ internal class FluentUI2Tokens
         StopSize = "2px",
     };
 
-    /// <summary>Theme-specific extras not in the core schema.</summary>
+    // Input - Fluent outlined style (full 1px border, neutral focus box + 2px brand bottom accent).
+    internal static readonly InputTokens Input = new()
+    {
+        FilledBg = "var(--flare-color-surface)",
+        OutlinedRadius = "var(--flare-shape-small)",
+        OutlinedBorder = "1px solid var(--flare-color-outline)",
+        FilledBorderBottom = "1px solid var(--flare-color-outline)",
+        FocusBorder = "1px solid var(--flare-color-outline)",
+        FocusBorderBottom = "2px solid var(--flare-color-primary)",
+    };
+
+    // Progress - Fluent: thin 2px rail, squared corners, no stop dot, 3px butt-cap ring. Wavy is left
+    // off (WavyEnabled stays at the default 0) so FlareProgress renders a plain bar/ring.
+    internal static readonly ProgressTokens Progress = new()
+    {
+        TrackRadius = "var(--flare-shape-extra-small)",
+        LinearHeight = "2px",
+        Gap = "0px",
+        StopSize = "0px",
+        CircularWidth = "3px",
+        CircularCap = "butt",
+        CircularGap = "0px",
+    };
+
+    // Nav - no pill in Fluent; a left accent bar marks the active item.
+    internal static readonly NavTokens Nav = new()
+    {
+        ItemRadius = "var(--flare-shape-extra-small)",
+        IndicatorRadius = "0",
+        ActiveIndicator = "none",
+        ActiveLeftBar = "3px solid var(--flare-color-primary)",
+    };
+
+    // Switch - Fluent's compact track + thin focus offset map to the typed record; the rest of the
+    // Fluent switch visual (white thumb sizing/offsets, double focus ring) has no base-token home and
+    // stays in Extended below.
+    internal static readonly SwitchTokens Switch = new()
+    {
+        TrackWidth = "2.5rem",
+        TrackHeight = "1.25rem",
+        FocusOutlineOffset = "1px",
+    };
+
+    /// <summary>
+    /// Theme-specific extras with no typed home: Fluent stroke/focus tokens and the Fluent-specific
+    /// switch visual the base SwitchTokens does not model.
+    /// </summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
         ["--flare-fluent-stroke-width-thin"] = "1px",
@@ -254,42 +305,7 @@ internal class FluentUI2Tokens
         ["--flare-fluent-focus-stroke-color"] = "#000000",
         ["--flare-fluent-focus-stroke-outer"] = "#FFFFFF",
 
-        // Card variant colors/geometry are emitted from the typed CardTokens record (see Design.Card).
-        // Dialog
-        ["--flare-dialog-radius"] = "var(--flare-shape-large)",
-        // Input - outlined style (full border)
-        ["--flare-input-bg"] = "var(--flare-color-surface)",
-        ["--flare-input-radius"] = "var(--flare-shape-small)",
-        ["--flare-input-border"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-border-bottom"] = "1px solid var(--flare-color-outline)",
-        // Fluent UI 2 focus = neutral box kept, brand 2px bottom accent (NOT a uniform brand ring)
-        ["--flare-input-focus-border"] = "1px solid var(--flare-color-outline)",
-        ["--flare-input-focus-border-bottom"] = "2px solid var(--flare-color-primary)",
-        // Progress bar - Fluent: thin 2px rail, squared corners, no stop dot
-        ["--flare-progress-track-radius"] = "var(--flare-shape-extra-small)",
-        ["--flare-progress-linear-height"] = "2px",
-        ["--flare-progress-gap"] = "0px",
-        ["--flare-progress-stop-size"] = "0px",
-        ["--flare-progress-circular-width"] = "3px",
-        ["--flare-progress-circular-cap"] = "butt",
-        ["--flare-progress-circular-gap"] = "0px",
-        // Fluent UI 2 has no wavy progress: --flare-progress-wavy-enabled is left unset, so
-        // FlareProgress renders the plain bar/ring even when Wavy="true".
-        // Badge and Alert are now emitted via typed BadgeTokens/AlertTokens in CssVarMap.
-        // Snackbar
-        ["--flare-snackbar-radius"] = "var(--flare-shape-small)",
-        // FAB - теперь через FabTokens (см. internal static FabTokens Fab)
-        // Popover / dropdown panels
-        ["--flare-popover-radius"] = "var(--flare-shape-small)",
-        // Nav item hover/focus radius
-        ["--flare-nav-item-radius"] = "var(--flare-shape-extra-small)",
-        // Nav indicator (no pill in Fluent, use left accent bar)
-        ["--flare-nav-indicator-radius"] = "0",
-        ["--flare-nav-active-indicator"] = "none",
-        ["--flare-nav-active-left-bar"] = "3px solid var(--flare-color-primary)",
-        // Switch - Fluent UI 2: compact track (40x20px), 1px border, white thumb
-        ["--flare-switch-track-width"] = "2.5rem",
-        ["--flare-switch-track-height"] = "1.25rem",
+        // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
         ["--flare-switch-track-off-bg"] = "transparent",
         ["--flare-switch-thumb-off-size"] = "0.625rem",
@@ -313,7 +329,6 @@ internal class FluentUI2Tokens
         ["--flare-switch-track-hover-on-bg"] = "#115EA3",
         // Focus: Fluent double-ring (inner dark + outer light)
         ["--flare-switch-focus-outline"] = "2px solid var(--flare-fluent-focus-stroke-color)",
-        ["--flare-switch-focus-outline-offset"] = "1px",
         ["--flare-switch-focus-shadow"] = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
     };
 
@@ -394,6 +409,13 @@ internal class FluentUI2Tokens
             PaddingBottom = "12px",
             PaddingLeft = "12px",
         },
+        Input = Input,
+        Progress = Progress,
+        Nav = Nav,
+        Switch = Switch,
+        Dialog = new() { Radius = "var(--flare-shape-large)" },
+        Popover = new() { Radius = "var(--flare-shape-small)" },
+        Snackbar = new() { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };
 

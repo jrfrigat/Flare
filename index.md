@@ -8,7 +8,8 @@ _layout: landing
 with 100+ components and multiple swappable design systems built on a single token-based theming engine.
 
 - **Components** - 100+ accessible Blazor components (forms, data grid, navigation, overlays, charts, media, and more).
-- **Themes** - Material Design 3 Expressive, Fluent UI 2, Aero, Liquid Glass, Visual Studio - each a separate package, switchable at runtime.
+- **Themes** - Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio - each a separate package, switchable at runtime.
+- **Dynamic Color** - opt-in palette derived from the OS/browser accent (Windows/macOS accent, Android Material You) via the active theme's generator.
 - **Tokens** - one semantic token system (`--flare-color/shape/typescale/state/elevation/motion-*`) drives every theme.
 
 ## Start here
@@ -19,7 +20,7 @@ with 100+ components and multiple swappable design systems built on a single tok
 | [For AI Agents](docs/en/ai-agents.md) | A compact, machine-friendly guide for LLM coding agents. |
 | [Architecture](docs/en/architecture.md) | Modules, tokens, services, theming deep-dive. |
 | [Theme Creation](docs/en/theme-creation-guide.md) | Design tokens, palettes, custom themes. |
-| [API Reference](api/) | Full generated API for every public type and parameter. |
+| [API Reference](api/index.md) | Full generated API for every public type and parameter. |
 
 ## Install
 

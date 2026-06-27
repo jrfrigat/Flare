@@ -282,37 +282,44 @@ internal class LiquidGlassTokens
         // Soft floating drop shadow.
         ["--flare-liquid-shadow"] = "0 8px 30px rgba(0,0,0,0.12)",
 
-        // Card = lightly translucent panel (no blur, for performance). All variants share the glass.
+        // Card + input backgrounds are translucent glass tints that differ light/dark (see the
+        // DarkExtended overrides), so they stay mode-specific here rather than on the mode-agnostic
+        // typed Card/Input records. Geometry (radius/border) moves to the typed records below.
         ["--flare-card-elevated-bg"] = "rgba(255,255,255,0.80)",
         ["--flare-card-filled-bg"] = "rgba(255,255,255,0.80)",
         ["--flare-card-outlined-bg"] = "rgba(255,255,255,0.70)",
         ["--flare-card-outlined-border"] = "1px solid rgba(255,255,255,0.55)",
         ["--flare-card-tonal-bg"] = "rgba(255,255,255,0.70)",
-        ["--flare-card-radius"] = "var(--flare-shape-large)",
         ["--flare-card-elevation"] = "0 8px 30px rgba(0,0,0,0.10)",
-
-        // Dialog / popover / snackbar - large continuous radii.
-        ["--flare-dialog-radius"] = "var(--flare-shape-extra-large)",
-        ["--flare-popover-radius"] = "var(--flare-shape-large)",
-        ["--flare-snackbar-radius"] = "var(--flare-shape-large)",
-
-        // Input = iOS translucent gray fill, borderless, rounded; blue glow on focus (scoped CSS).
+        // Input = iOS translucent gray fill (the borderless/rounded geometry is on InputTokens).
         ["--flare-input-bg"] = "rgba(120,120,128,0.12)",
-        ["--flare-input-radius"] = "var(--flare-shape-medium)",
-        ["--flare-input-border"] = "1px solid transparent",
-        ["--flare-input-border-bottom"] = "1px solid transparent",
-        ["--flare-input-focus-border"] = "1px solid var(--flare-color-primary)",
-        ["--flare-input-focus-border-bottom"] = "1px solid var(--flare-color-primary)",
+    };
 
-        // Progress - rounded thin bar.
-        ["--flare-progress-track-radius"] = "var(--flare-shape-full)",
-        ["--flare-progress-linear-height"] = "0.375rem",
-        ["--flare-progress-gap"] = "0px",
-        ["--flare-progress-stop-size"] = "0px",
+    // Input = iOS translucent field: borderless, rounded; blue glow on focus (scoped CSS). The
+    // translucent fill itself is mode-specific and stays in Extended (--flare-input-bg).
+    internal static readonly InputTokens Input = new()
+    {
+        OutlinedRadius = "var(--flare-shape-medium)",
+        OutlinedBorder = "1px solid transparent",
+        FilledBorderBottom = "1px solid transparent",
+        FocusBorder = "1px solid var(--flare-color-primary)",
+        FocusBorderBottom = "1px solid var(--flare-color-primary)",
+    };
 
-        // Nav - pill indicator (iOS tab/segmented look).
-        ["--flare-nav-item-radius"] = "var(--flare-shape-medium)",
-        ["--flare-nav-indicator-radius"] = "var(--flare-shape-full)",
+    // Progress - rounded thin bar.
+    internal static readonly ProgressTokens Progress = new()
+    {
+        TrackRadius = "var(--flare-shape-full)",
+        LinearHeight = "0.375rem",
+        Gap = "0px",
+        StopSize = "0px",
+    };
+
+    // Nav - pill indicator (iOS tab/segmented look).
+    internal static readonly NavTokens Nav = new()
+    {
+        ItemRadius = "var(--flare-shape-medium)",
+        IndicatorRadius = "var(--flare-shape-full)",
     };
 
     /// <summary>The complete Liquid Glass design tokens. Use this as the base for custom themes.</summary>
@@ -338,7 +345,14 @@ internal class LiquidGlassTokens
         Tabs = Tabs,
         Switch = Switch,
         Slider = Slider,
-        Card = new() { PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px" },
+        // Card geometry is typed; the translucent variant fills stay mode-specific in Extended.
+        Card = new() { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px" },
+        Input = Input,
+        Progress = Progress,
+        Nav = Nav,
+        Dialog = new() { Radius = "var(--flare-shape-extra-large)" },
+        Popover = new() { Radius = "var(--flare-shape-large)" },
+        Snackbar = new() { Radius = "var(--flare-shape-large)" },
         Extended = Extended,
     };
 

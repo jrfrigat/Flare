@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Theme.MaterialDesign3</PackageId>
+    <Description>Material Design 3 (baseline, non-Expressive) light and dark themes for the Flare Blazor component library</Description>
+    <PackageTags>blazor;theming;material-design;md3;material-you;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
+    <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
+    <!-- The baseline theme derives from the published MD3 reference tokens (Md3.DesignReference) and
+         reuses the MD3 tonal palettes + generator, so it stays in lockstep with the MD3 color system. -->
+    <ProjectReference Include="..\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.300" />
+    <PackageReference Update="MinVer" Version="7.0.0" />
+  </ItemGroup>
+
+</Project>

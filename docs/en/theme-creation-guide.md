@@ -1,6 +1,6 @@
 # Flare - Theme Creation Guide
 
-> [Русская версия ->](../ru/theme-creation-guide.md) - [README](../../README.md)
+> [Русская версия ->](../ru/theme-creation-guide.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.md)
 
 ## Overview
 
@@ -168,6 +168,47 @@ var palette = new Palette
 };
 ```
 
+### Dynamic Color (palette from the OS accent)
+
+Flare can derive a full light + dark palette at runtime from the **OS/browser accent color** - the
+Windows/macOS accent, or Android Material You - read via the CSS `AccentColor` system color. The
+palette is generated through the **active theme's** generator (MD3 tonal, Fluent ramp, ...), so it
+adapts to whichever theme is selected and is regenerated when you switch themes.
+
+Enable it once in `AddFlare`:
+
+```csharp
+builder.Services.AddFlare(opts =>
+{
+    opts.DefaultTheme = new Md3Theme();
+    opts.UseDynamicPalette = true;               // registers the "dynamic" palette
+    opts.DynamicPaletteFallbackSeed = "#6750A4"; // seed used when the OS accent is unavailable
+});
+```
+
+When no other default palette is set, the dynamic palette becomes the default. Otherwise it is just
+selectable at runtime like any palette (e.g. from a palette picker):
+
+```csharp
+await ThemeService.SetPaletteAsync(Palette.DynamicId);   // "dynamic"
+```
+
+`FlareThemeProvider` reads the accent on startup, re-reads it when the window regains focus or the OS
+light/dark setting changes, and regenerates with the new generator when the theme changes - no extra
+wiring needed.
+
+**Browser support / fallback.** The accent comes from the CSS `AccentColor` system color (modern
+Edge/Chrome/Safari/Firefox; on Android Chrome it reflects Material You). Engines that don't expose it
+fall back to `DynamicPaletteFallbackSeed`. The web exposes no deeper "wallpaper palette" API, so
+`AccentColor` is the accent source.
+
+**From your own seed.** To drive the dynamic palette from any color (e.g. one extracted from an image
+via `IFlareColorExtractor`), apply a seed directly - it is generated with the active theme's rules:
+
+```csharp
+await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
+```
+
 ## Token System
 
 ### Available Token Records
@@ -192,6 +233,7 @@ var palette = new Palette
 | `AvatarTokens` | Avatars | 17 fields |
 | `ProgressTokens` | Progress indicators | 18 fields |
 | `SwitchTokens` | Toggle switches | 28 fields |
+| `NavTokens` | Nav item + active indicator | 4 fields |
 
 ### Using Tokens in CSS
 

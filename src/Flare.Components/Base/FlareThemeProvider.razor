@@ -26,6 +26,11 @@
     private ThemeSnapshot _snapshot = default!;
     private int _version;
 
+    // Dynamic Color: guard against re-entrancy (ApplyDynamicPaletteAsync raises OnThemeChanged) and
+    // track which theme the current dynamic palette was generated for, so we regenerate on theme switch.
+    private bool _dynamicBusy;
+    private string? _dynamicThemeId;
+
     protected override void OnInitialized()
     {
         _snapshot = CreateSnapshot();
@@ -50,13 +55,20 @@
                 await ThemeService.SetModeAsync(sel.Mode);
             }
 
+            _dotNetRef = DotNetObjectReference.Create(this);
+
             if (RespectSystemColorScheme)
             {
-                _dotNetRef = DotNetObjectReference.Create(this);
                 var dark = await ThemeJsService.PrefersColorSchemeDarkAsync();
                 await ThemeService.SetSystemDarkAsync(dark);
                 await ThemeJsService.SubscribeColorSchemeAsync(_id, _dotNetRef);
             }
+
+            // Dynamic Color: seed the active dynamic palette from the OS accent and keep it live
+            // (re-read on window focus). No-op for fixed palettes.
+            if (ThemeService.IsDynamicPalette)
+                await RefreshDynamicPaletteAsync();
+            await ThemeJsService.SubscribeAccentAsync(_id, _dotNetRef);
 
             await ApplyRootClassesAsync();
         }
@@ -68,7 +80,37 @@
     public async Task OnSystemColorSchemeChanged(bool isDark)
     {
         await ThemeService.SetSystemDarkAsync(isDark);
+        // The OS accent often changes together with the light/dark switch -- re-read it.
+        if (ThemeService.IsDynamicPalette)
+            await RefreshDynamicPaletteAsync();
         await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>Invoked from JS when the window regains focus, in case the OS accent color changed.</summary>
+    [JSInvokable]
+    public async Task OnAccentColorChanged()
+    {
+        if (!ThemeService.IsDynamicPalette) return;
+        await RefreshDynamicPaletteAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    // Reads the OS accent color (or the configured fallback) and regenerates the dynamic palette via
+    // the active theme's generator. Re-entrancy-guarded because ApplyDynamicPaletteAsync re-raises
+    // OnThemeChanged.
+    private async Task RefreshDynamicPaletteAsync()
+    {
+        if (_dynamicBusy || ThemeService.CurrentPalette.Id != Palette.DynamicId) return;
+        _dynamicBusy = true;
+        try
+        {
+            string? accent = null;
+            try { accent = await ThemeJsService.GetAccentColorAsync(); } catch (JSDisconnectedException) { }
+            var seed = string.IsNullOrWhiteSpace(accent) ? ThemeService.DynamicFallbackSeed : accent!;
+            _dynamicThemeId = ThemeService.CurrentTheme.Id;
+            await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed(seed));
+        }
+        finally { _dynamicBusy = false; }
     }
 
     private async Task ApplyRootClassesAsync()
@@ -88,6 +130,17 @@
     {
         await ThemeStorage.SaveAsync(new ThemeSelection(
             ThemeService.CurrentTheme.Id, ThemeService.CurrentPalette.Id, ThemeService.Mode));
+
+        // When the dynamic palette is active and the THEME changed, regenerate it with the new
+        // theme's color rules (MD3 tonal vs Fluent ramp etc.). Guarded so the re-applied palette's
+        // own OnThemeChanged does not recurse.
+        if (!_dynamicBusy
+            && ThemeService.CurrentPalette.Id == Palette.DynamicId
+            && _dynamicThemeId != ThemeService.CurrentTheme.Id)
+        {
+            await RefreshDynamicPaletteAsync();
+            return;
+        }
 
         _snapshot = CreateSnapshot();
 
@@ -114,6 +167,7 @@
     {
         ThemeService.OnThemeChanged -= HandleThemeChangedAsync;
         try { await ThemeJsService.UnsubscribeColorSchemeAsync(_id); } catch { }
+        try { await ThemeJsService.UnsubscribeAccentAsync(_id); } catch { }
         _dotNetRef?.Dispose();
     }
 }

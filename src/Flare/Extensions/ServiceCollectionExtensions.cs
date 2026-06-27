@@ -57,10 +57,29 @@ public static class ServiceCollectionExtensions
             foreach (var t in themes.ToList())
                 palettes.AddRange(t.Palettes);
 
+            // Dynamic Color: register a placeholder "dynamic" palette (generated from the fallback
+            // seed) so it is selectable and resolvable as the default before the client reads the real
+            // OS accent. FlareThemeProvider regenerates it from the OS accent (and the active theme's
+            // generator) at startup and on accent/theme changes.
+            Palette? dynamicPalette = null;
+            if (opts.UseDynamicPalette)
+            {
+                var seed = string.IsNullOrWhiteSpace(opts.DynamicPaletteFallbackSeed)
+                    ? "#6750A4" : opts.DynamicPaletteFallbackSeed!;
+                dynamicPalette = DefaultPaletteGenerator.Instance.Generate(
+                    Palette.DynamicId, "Dynamic", new PaletteSeed(seed), "Dynamic");
+                palettes.Add(dynamicPalette);
+            }
+
             var defaultTheme = ResolveDefaultTheme(opts, themes);
             var defaultPalette = ResolveDefaultPalette(opts, defaultTheme, palettes);
+            // When dynamic color is enabled and no explicit default palette was chosen, default to it.
+            if (dynamicPalette is not null && opts.DefaultPalette is null && string.IsNullOrEmpty(opts.DefaultPaletteId))
+                defaultPalette = dynamicPalette;
 
             var service = new ThemeService(injector, defaultTheme, defaultPalette, opts.DefaultMode, opts.Delivery);
+            if (!string.IsNullOrWhiteSpace(opts.DynamicPaletteFallbackSeed))
+                service.DynamicFallbackSeed = opts.DynamicPaletteFallbackSeed!;
 
             foreach (var t in themes) service.RegisterTheme(t);
             foreach (var p in palettes) service.RegisterPalette(p);
@@ -329,6 +348,23 @@ public sealed class FlareOptions
 
     /// <summary>The default light/dark mode. Defaults to <see cref="ThemeMode.Auto"/>.</summary>
     public ThemeMode DefaultMode { get; set; } = ThemeMode.Auto;
+
+    /// <summary>
+    /// Registers the Dynamic Color palette (<see cref="Palette.DynamicId"/>) -- a palette generated at
+    /// runtime from the OS/browser accent color (Windows/macOS accent, Android Material You) via the
+    /// active theme's generator, so it adapts to whichever theme is active. When enabled and no other
+    /// default palette is set, it also becomes the default. Apps that don't want it leave this
+    /// <c>false</c> and pick a fixed palette; the dynamic palette is still selectable at runtime via
+    /// <c>SetPaletteAsync("dynamic")</c> once registered.
+    /// </summary>
+    public bool UseDynamicPalette { get; set; }
+
+    /// <summary>
+    /// Seed color for the Dynamic Color palette when the OS accent is unavailable (e.g. older
+    /// browsers that do not expose the CSS <c>AccentColor</c> system color). Defaults to the MD3
+    /// primary (<c>#6750A4</c>).
+    /// </summary>
+    public string? DynamicPaletteFallbackSeed { get; set; }
 
     /// <summary>How theme CSS is delivered. Defaults to <see cref="ThemeDelivery.ClassToggle"/> (fastest).</summary>
     public ThemeDelivery Delivery { get; set; } = ThemeDelivery.ClassToggle;

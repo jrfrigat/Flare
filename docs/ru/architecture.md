@@ -1,6 +1,6 @@
 # Flare - Архитектура
 
-> [English version ->](../en/architecture.md) - [README](../../README.ru.md)
+> [English version ->](../en/architecture.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.ru.md)
 
 Как устроен Flare, как работает система тем и на какие контракты опираются компоненты.
 
@@ -90,16 +90,21 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 
 **NuGet:** `Flare.Components` - зависит от `Flare.Abstractions`, `Flare.Theming`.
 
-### Flare.Theme.* (пять дизайн-систем)
+### Flare.Theme.* (семь дизайн-систем)
 Каждый пакет темы предоставляет одну реализацию `ITheme` плюс палитры и статические ассеты:
 
 | Пакет | Класс темы | `Id` | Палитра по умолчанию | Палитр |
 |-------|------------|------|----------------------|--------|
 | `Flare.Theme.MaterialDesign3Expressive` | `Md3Theme` | `md3-expressive` | Violet | 5 |
+| `Flare.Theme.MaterialDesign3` | `MaterialDesign3Theme` | `md3` | Violet | (общие с MD3) |
+| `Flare.Theme.MaterialDesign2` | `MaterialDesign2Theme` | `md2` | Purple | 6 |
 | `Flare.Theme.FluentUI2` | `Fluent2Theme` | `fluent2` | Blue | 7 |
 | `Flare.Theme.Aero` | `AeroTheme` | `aero` | Blue | 5 |
 | `Flare.Theme.LiquidGlass` | `LiquidGlassTheme` | `liquid-glass` | Blue | 6 |
 | `Flare.Theme.VisualStudio` | `VisualStudioTheme` | `visualstudio` | Blue | 5 |
+
+Также можно включить рантайм-палитру **Dynamic Color** (`Palette.DynamicId = "dynamic"`) через
+`FlareOptions.UseDynamicPalette`; она строится из акцента ОС генератором активной темы.
 
 - Тема = дизайн-система (`DesignTokens`) + `DefaultPaletteId` + `StyleAssets`. Светлая/тёмная это
   **режим**, а не отдельная тема; цвета приходят из **палитры**.

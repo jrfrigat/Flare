@@ -44,6 +44,16 @@ public sealed record MenuTokens
     [CssVar(MenuPanel.GroupRadius)] public string GroupRadius { get; init; } = "0";          // скругление группы
     /// <summary>Group padding token (<c>0</c>).</summary>
     [CssVar(MenuPanel.GroupPadding)] public string GroupPadding { get; init; } = "0";         // внутренний отступ группы
+    /// <summary>Group "island" background. Default transparent (no island treatment).</summary>
+    [CssVar(MenuPanel.GroupBg)] public string GroupBg { get; init; } = "transparent";
+    /// <summary>Gap between group "islands". Default 0.5rem.</summary>
+    [CssVar(MenuPanel.GroupGap)] public string GroupGap { get; init; } = "0.5rem";
+    /// <summary>Group "island" shadow. Default none.</summary>
+    [CssVar(MenuPanel.GroupShadow)] public string GroupShadow { get; init; } = "none";
+    /// <summary>Grouped-panel backing-slab background. Default = the panel background.</summary>
+    [CssVar(MenuPanel.GroupedPanelBg)] public string GroupedPanelBg { get; init; } = "var(--flare-menu-panel-bg, var(--flare-color-surface-container))";
+    /// <summary>Grouped-panel backing-slab shadow. Default = the panel shadow.</summary>
+    [CssVar(MenuPanel.GroupedPanelShadow)] public string GroupedPanelShadow { get; init; } = "var(--flare-menu-panel-shadow, var(--flare-elevation-2))";
 
     // --- 3. ПУНКТ (типографика метки) ---
     /// <summary>Item label font token (<c>var(--flare-typescale-body-large-font)</c>).</summary>

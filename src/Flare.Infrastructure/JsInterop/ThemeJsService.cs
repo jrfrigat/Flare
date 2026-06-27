@@ -43,4 +43,16 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
     /// <summary>Returns true when the OS currently prefers a dark color scheme.</summary>
     public ValueTask<bool> PrefersColorSchemeDarkAsync(CancellationToken ct = default)
         => InvokeAsync<bool>("prefersColorSchemeDark");
+
+    /// <summary>Reads the OS/browser accent color as a hex string, or null when unavailable.</summary>
+    public ValueTask<string?> GetAccentColorAsync(CancellationToken ct = default)
+        => InvokeAsync<string?>("getAccentColor");
+
+    /// <summary>Subscribes to OS accent-color changes (re-read on window focus).</summary>
+    public ValueTask SubscribeAccentAsync<T>(string id, DotNetObjectReference<T> dotNetRef, CancellationToken ct = default) where T : class
+        => InvokeVoidAsync("subscribeAccent", id, dotNetRef);
+
+    /// <summary>Removes the OS accent-color change subscription.</summary>
+    public ValueTask UnsubscribeAccentAsync(string id, CancellationToken ct = default)
+        => InvokeVoidAsync("unsubscribeAccent", id);
 }
