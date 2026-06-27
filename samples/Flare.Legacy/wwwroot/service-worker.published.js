@@ -13,7 +13,14 @@ self.addEventListener('message', event => {
 const cacheNamePrefix = 'offline-cache-';
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
 const offlineAssetsInclude = [ /\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.json$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/, /\.blat$/, /\.dat$/, /\.webmanifest$/ ];
-const offlineAssetsExclude = [ /^service-worker\.js$/ ];
+// Never cache the worker itself or its assets manifest: the version-check probe reads
+// service-worker-assets.js to learn the deployed version, so it must always hit the network.
+const offlineAssetsExclude = [ /^service-worker\.js$/, /^service-worker-assets\.js$/ ];
+
+// Requests the worker must always serve fresh from the network (the version-check manifest) rather
+// than from the offline cache - otherwise the deployed-version probe reads a stale value and the
+// "update available" prompt never fires.
+const networkOnly = [ /service-worker-assets\.js(\?|$)/ ];
 
 // Replace with your base path if you are hosting on a subfolder. Ensure there is a trailing '/'.
 const base = "/";
@@ -42,18 +49,50 @@ async function onActivate(event) {
 }
 
 async function onFetch(event) {
-    let cachedResponse = null;
-    if (event.request.method === 'GET') {
-        // For all navigation requests, try to serve index.html from cache,
-        // unless that request is for an offline resource.
-        // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
-        const shouldServeIndexHtml = event.request.mode === 'navigate'
-            && !manifestUrlList.some(url => url === event.request.url);
+    // Non-GET (and anything we don't cache) goes straight to the network, guarded so a failed
+    // request never turns into an uncaught "Failed to fetch" rejection out of respondWith.
+    if (event.request.method !== 'GET')
+        return safeFetch(event.request);
 
-        const request = shouldServeIndexHtml ? 'index.html' : event.request;
-        const cache = await caches.open(cacheName);
-        cachedResponse = await cache.match(request);
+    // The version-check manifest must always be read fresh; serve it network-first and only fall
+    // back to any cached copy if the network is unavailable.
+    if (networkOnly.some(pattern => pattern.test(event.request.url))) {
+        try {
+            return await fetch(event.request);
+        } catch {
+            const cache = await caches.open(cacheName);
+            return (await cache.match(event.request)) || Response.error();
+        }
     }
 
-    return cachedResponse || fetch(event.request);
+    // For navigation requests, serve the cached index.html shell (unless the URL is itself a cached
+    // offline asset). If you need some URLs server-rendered, exclude them from this check.
+    const shouldServeIndexHtml = event.request.mode === 'navigate'
+        && !manifestUrlList.some(url => url === event.request.url);
+
+    const request = shouldServeIndexHtml ? 'index.html' : event.request;
+    const cache = await caches.open(cacheName);
+    const cachedResponse = await cache.match(request);
+    if (cachedResponse) return cachedResponse;
+
+    // Not cached: go to the network, but degrade gracefully when offline instead of throwing.
+    try {
+        return await fetch(event.request);
+    } catch (err) {
+        if (shouldServeIndexHtml) {
+            const shell = await cache.match('index.html');
+            if (shell) return shell;
+        }
+        return Response.error();
+    }
+}
+
+// fetch() that resolves to an error Response instead of rejecting, so respondWith never gets a
+// rejected promise (the source of the noisy "Uncaught (in promise) TypeError: Failed to fetch").
+async function safeFetch(request) {
+    try {
+        return await fetch(request);
+    } catch {
+        return Response.error();
+    }
 }
