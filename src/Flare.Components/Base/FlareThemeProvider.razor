@@ -3,6 +3,7 @@
 @inject IThemeService ThemeService
 @inject IThemeStorageService ThemeStorage
 @inject IThemeJsService ThemeJsService
+@inject IJSRuntime JS
 @using Flare.Abstractions.Tokens
 
 <CascadingValue Value="@_snapshot" IsFixed="false">
@@ -20,6 +21,14 @@
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool RespectSystemColorScheme { get; set; } = true;
+
+    /// <summary>
+    /// When true (default), the provider fades out the anti-FOUC startup splash painted by
+    /// <c>flare-bootstrap.js</c> once the theme stylesheets and web fonts have loaded and the first
+    /// themed frame has painted -- so the app is revealed fully styled, with no flash of unstyled
+    /// content. Set to false to manage the splash yourself (call <c>window.hideFlareSplash()</c>).
+    /// </summary>
+    [Parameter] public bool ManageSplash { get; set; } = true;
 
     private readonly string _id = Guid.NewGuid().ToString("N");
     private DotNetObjectReference<FlareThemeProvider>? _dotNetRef;
@@ -71,9 +80,42 @@
             await ThemeJsService.SubscribeAccentAsync(_id, _dotNetRef);
 
             await ApplyRootClassesAsync();
+
+            // Everything that could cause a visible flash has now settled (theme classes + static
+            // CSS applied, theme stylesheets loaded, dynamic palette generated). Reveal the app once
+            // the web fonts are ready, so it appears fully styled instead of flashing unstyled.
+            if (ManageSplash)
+                await RevealWhenReadyAsync();
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+    }
+
+    // Gate the anti-FOUC splash on the last thing that still loads asynchronously after the themed
+    // markup is in place: the web fonts. revealApp then waits two frames so the themed CSS paints
+    // before the splash fades out.
+    private async Task RevealWhenReadyAsync()
+    {
+        try
+        {
+            // Best-effort enhancement: wait for web fonts, then let revealApp do the framed fade.
+            // These live in the theme JS module, which a stale PWA service-worker cache can still be
+            // serving from a previous build (the module loads at a fingerprint-free URL, unlike the
+            // framework files) -- so if they are missing we must not let the JSException break the
+            // render. Fall back to the global splash-hide that flare-bootstrap.js has always defined,
+            // so the app is revealed instead of stranded behind the splash (or worse, crashing).
+            try
+            {
+                await ThemeJsService.WhenFontsReadyAsync();
+                await ThemeJsService.RevealAppAsync();
+                return;
+            }
+            catch (JSException) { }
+
+            await JS.InvokeVoidAsync("hideFlareSplash");
+        }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     [JSInvokable]

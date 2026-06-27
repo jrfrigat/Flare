@@ -20,8 +20,26 @@ public interface IThemeJsService : IAsyncDisposable
     /// <summary>Set theme classes on the root element.</summary>
     ValueTask SetThemeClassesAsync(string themeId, string paletteId, bool isDark, CancellationToken ct = default);
 
-    /// <summary>Ensure a stylesheet is loaded.</summary>
+    /// <summary>
+    /// Ensures a stylesheet link is present and completes only once it has finished loading (or a
+    /// safety timeout elapses), so callers can reveal styled UI without flashing unstyled content.
+    /// </summary>
     ValueTask EnsureStylesheetAsync(string href, CancellationToken ct = default);
+
+    /// <summary>
+    /// Completes once the document's web fonts have loaded (text typefaces and icon glyphs), or after
+    /// the given safety timeout elapses. Used to gate the startup splash so text appears in its final
+    /// typeface without a font-swap flash.
+    /// </summary>
+    /// <param name="timeoutMs">Maximum time to wait before completing anyway, in milliseconds.</param>
+    /// <param name="ct">A cancellation token.</param>
+    ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default);
+
+    /// <summary>
+    /// Fades out the anti-FOUC startup splash painted by <c>flare-bootstrap.js</c>, after the freshly
+    /// applied theme has painted. A safe no-op when no splash is present.
+    /// </summary>
+    ValueTask RevealAppAsync(CancellationToken ct = default);
 
     /// <summary>
     /// Subscribe to OS color scheme changes. <typeparamref name="T"/> is the .NET object exposing the

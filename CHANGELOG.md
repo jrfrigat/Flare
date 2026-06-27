@@ -3,6 +3,29 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.4] - 2026-06-27
+
+### Changed
+- **Anti-FOUC splash is now revealed automatically by `FlareThemeProvider`** (new `ManageSplash`
+  parameter, default `true`). The provider waits for the theme stylesheets (`load` event) and the
+  document's web fonts (`document.fonts.ready`), then fades the bootstrap splash out after the first
+  themed frame - so apps no longer flash unstyled content and no longer need to call
+  `window.hideFlareSplash()` by hand. `IThemeJsService.EnsureStylesheetAsync` now resolves only once
+  the stylesheet has loaded; new `WhenFontsReadyAsync` / `RevealAppAsync`. A safety timeout in
+  `flare-bootstrap.js` (overridable via `data-splash-timeout`) reveals the page even without the
+  provider.
+- The Gallery and Legacy samples drop their hand-written `hideFlareSplash()` wiring; the splash is now
+  revealed by `FlareThemeProvider` out of the box.
+
+### Fixed
+- **A PWA update no longer crashes the render when a stale service-worker cache serves a previous
+  `flare-theme.js`.** Because `_content/.../js` modules load at a fingerprint-free URL (unlike the
+  fingerprinted framework files), an updated build's C# could call `whenFontsReady`/`revealApp` on an
+  older cached module and throw a `JSException` in `OnAfterRenderAsync`. `FlareThemeProvider` now
+  catches it and falls back to the global `window.hideFlareSplash()`, so the app is never crashed or
+  stranded during an update; the full fonts-ready + framed-fade path resumes once the new worker
+  activates.
+
 ## [0.0.3] - 2026-06-27
 
 ### Added

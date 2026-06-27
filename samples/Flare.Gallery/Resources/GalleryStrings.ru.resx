@@ -2268,6 +2268,12 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare - библиотека компонентов Blazor с открытым исходным кодом на .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV4" xml:space="preserve">
+    <value>Стартовый сплэш против FOUC теперь скрывается автоматически в FlareThemeProvider - без вспышки неоформленного контента и без ручной настройки
+Скрытие дожидается события load каждого стиля темы и веб-шрифтов документа (document.fonts.ready), затем плавно исчезает после первого оформленного кадра
+Новый параметр ManageSplash (включён по умолчанию) для самостоятельного управления сплэшем; страховочный таймаут data-splash-timeout живёт в бутстрап-скрипте
+Устойчивость к рассинхрону при обновлении PWA: устаревший кэш flare-theme.js больше не роняет рендер - провайдер откатывается на глобальное скрытие сплэша</value>
+  </data>
   <data name="About_WhatsNewV3" xml:space="preserve">
     <value>Две новые дизайн-системы - Material Design 3 (базовый, не Expressive) и Material Design 2 - теперь Flare поставляет 7 тем
 Палитра Dynamic Color: строит полную светлую/тёмную палитру из акцента ОС/браузера (акцент Windows/macOS, Android Material You) генератором активной темы, с запасной палитрой

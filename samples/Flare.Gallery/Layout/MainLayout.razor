@@ -1,7 +1,5 @@
 @inherits LayoutComponentBase
 @implements IDisposable
-@inject IThemeService ThemeService
-@inject IJSRuntime JS
 @inject NavigationManager NavManager
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
@@ -16,7 +14,7 @@
                         <FlareText Typo="TypographyScale.TitleLarge" Weight="FontWeight.ExtraBold" Style="letter-spacing:-0.5px;">Flare</FlareText>
                     </FlareStack>
                 </FlareLink>
-                <FlareBadge Text="v0.0.3" Standalone="true" Color="FlareColor.Secondary" />
+                <FlareBadge Text="v0.0.4" Standalone="true" Color="FlareColor.Secondary" />
                 <FlareSpacer />
                 <GallerySearch />
                 <FlareSpacer />
@@ -79,18 +77,8 @@
         await VersionCheck.ApplyUpdateAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender) return;
-        try
-        {
-            // Make sure the theme stylesheet is applied (culture is already initialized in
-            // Program.cs before the app runs), then reveal the app -- no unstyled white flash.
-            await ThemeService.EnsureStaticCssAsync();
-            await JS.InvokeVoidAsync("hideFlareSplash");
-        }
-        catch (Microsoft.JSInterop.JSDisconnectedException) { }
-    }
+    // The anti-FOUC startup splash is revealed automatically by FlareThemeProvider once the theme
+    // CSS and web fonts are ready, so the layout no longer needs to hide it by hand.
 
     public void Dispose() => VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
 }
