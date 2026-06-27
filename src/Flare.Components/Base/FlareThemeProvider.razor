@@ -3,6 +3,7 @@
 @inject IThemeService ThemeService
 @inject IThemeStorageService ThemeStorage
 @inject IThemeJsService ThemeJsService
+@inject IJSRuntime JS
 @using Flare.Abstractions.Tokens
 
 <CascadingValue Value="@_snapshot" IsFixed="false">
@@ -97,10 +98,24 @@
     {
         try
         {
-            await ThemeJsService.WhenFontsReadyAsync();
-            await ThemeJsService.RevealAppAsync();
+            // Best-effort enhancement: wait for web fonts, then let revealApp do the framed fade.
+            // These live in the theme JS module, which a stale PWA service-worker cache can still be
+            // serving from a previous build (the module loads at a fingerprint-free URL, unlike the
+            // framework files) -- so if they are missing we must not let the JSException break the
+            // render. Fall back to the global splash-hide that flare-bootstrap.js has always defined,
+            // so the app is revealed instead of stranded behind the splash (or worse, crashing).
+            try
+            {
+                await ThemeJsService.WhenFontsReadyAsync();
+                await ThemeJsService.RevealAppAsync();
+                return;
+            }
+            catch (JSException) { }
+
+            await JS.InvokeVoidAsync("hideFlareSplash");
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     [JSInvokable]

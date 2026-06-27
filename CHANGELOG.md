@@ -23,7 +23,10 @@ All notable changes to Flare are documented here. This project adheres to
   `window.hideFlareSplash()` by hand. `IThemeJsService.EnsureStylesheetAsync` now resolves only once
   the stylesheet has loaded; new `WhenFontsReadyAsync` / `RevealAppAsync`. A safety timeout in
   `flare-bootstrap.js` (overridable via `data-splash-timeout`) reveals the page even without the
-  provider.
+  provider. The reveal degrades gracefully when a stale PWA service-worker cache is still serving a
+  previous `flare-theme.js` that lacks the new helpers: the provider catches the missing-function
+  `JSException` and falls back to the global `window.hideFlareSplash()`, so the app is never crashed
+  or stranded during an update.
 - **Token model cleanup**: common component tokens that themes set through the `Extended` bag now
   have typed homes - new `NavTokens`, plus added `InputTokens` hover, `MenuTokens` group/island and
   `ProgressTokens` track/stop/wave fields. All themes set these via typed `DesignTokens` records;
