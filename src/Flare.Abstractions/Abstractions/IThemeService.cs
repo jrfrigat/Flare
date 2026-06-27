@@ -17,6 +17,12 @@ public interface IThemeService
     bool IsDynamicPalette { get; }
     /// <summary>Seed color used for the Dynamic Color palette when the OS accent is unavailable.</summary>
     string DynamicFallbackSeed { get; }
+    /// <summary>
+    /// Palette used for the Dynamic Color palette when the OS accent is unavailable (e.g. Chrome/Edge,
+    /// which do not expose the real OS accent). Takes precedence over <see cref="DynamicFallbackSeed"/>.
+    /// Null falls back to seed generation.
+    /// </summary>
+    Palette? DynamicFallbackPalette { get; }
     /// <summary>The selected mode (Light/Dark/Auto).</summary>
     ThemeMode Mode { get; }
     /// <summary>The effective dark state (resolves <see cref="ThemeMode.Auto"/> against the OS preference).</summary>
@@ -77,6 +83,14 @@ public interface IThemeService
     /// any previous one) and makes it the active palette. Re-call to refresh when the seed or theme changes.
     /// </summary>
     Task ApplyDynamicPaletteAsync(PaletteSeed seed);
+
+    /// <summary>
+    /// Dynamic Color fallback: adopts <paramref name="source"/>'s exact colors under
+    /// <see cref="Palette.DynamicId"/> (replacing any previous Dynamic palette) and makes it active.
+    /// Used when the OS accent is unavailable, so the Dynamic palette shows a curated fallback palette
+    /// rather than a seed-generated approximation.
+    /// </summary>
+    Task ApplyDynamicPaletteAsync(Palette source);
 
     /// <summary>
     /// Typed override of the color axis. The mutator receives the <see cref="ColorScheme"/>

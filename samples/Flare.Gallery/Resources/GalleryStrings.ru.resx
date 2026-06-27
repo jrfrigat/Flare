@@ -2332,6 +2332,7 @@
   <data name="Services_DynamicLoad" xml:space="preserve"><value>Загрузить</value></data>
   <data name="Services_DynamicHint" xml:space="preserve"><value>Для кросс-доменных ссылок нужен CORS; загруженные файлы работают всегда. Цвет-семя:</value></data>
   <data name="Services_DynamicNowPlaying" xml:space="preserve"><value>Сейчас играет</value></data>
+  <data name="Services_DynamicAccentNote" xml:space="preserve"><value>Chrome и Edge не отдают реальный акцент ОС (возвращают фиксированный плейсхолдер ради защиты от фингерпринтинга); только Firefox отражает ваш настоящий акцент Windows/macOS. Поэтому в Chromium динамическая палитра откатывается на заданную запасную палитру (здесь Violet).</value></data>
   <data name="Services_DynamicTrack" xml:space="preserve"><value>Midnight Drive</value></data>
   <data name="Services_DynamicArtist" xml:space="preserve"><value>The Flares</value></data>
   <data name="Services_ScopeTitle" xml:space="preserve"><value>Локальная тема</value></data>

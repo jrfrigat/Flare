@@ -2332,6 +2332,7 @@
   <data name="Services_DynamicLoad" xml:space="preserve"><value>Load</value></data>
   <data name="Services_DynamicHint" xml:space="preserve"><value>Cross-origin URLs need CORS; uploaded files always work. Seed:</value></data>
   <data name="Services_DynamicNowPlaying" xml:space="preserve"><value>Now playing</value></data>
+  <data name="Services_DynamicAccentNote" xml:space="preserve"><value>Chrome and Edge do not expose the real OS accent (they return a fixed placeholder to prevent fingerprinting); only Firefox reflects your true Windows/macOS accent. The Dynamic palette therefore falls back to a configured palette (Violet here) on Chromium.</value></data>
   <data name="Services_DynamicTrack" xml:space="preserve"><value>Midnight Drive</value></data>
   <data name="Services_DynamicArtist" xml:space="preserve"><value>The Flares</value></data>
   <data name="Services_ScopeTitle" xml:space="preserve"><value>Theme scope</value></data>

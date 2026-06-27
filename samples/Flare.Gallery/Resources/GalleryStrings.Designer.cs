@@ -5972,7 +5972,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_DynamicNowPlaying", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Chrome and Edge do not expose the real OS accent (they return a fixed placeholder to prevent fingerprinting); only Firefox reflects your true Windows/macOS accent. The Dynamic palette therefore falls back to a configured palette (Violet here) on Chromium..
+        /// </summary>
+        public static string Services_DynamicAccentNote {
+            get {
+                return ResourceManager.GetString("Services_DynamicAccentNote", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Extract a seed color from a cover with IFlareColorExtractor, then theme components with FlareColor.Dynamic..
         /// </summary>

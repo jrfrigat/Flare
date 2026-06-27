@@ -22,12 +22,12 @@ builder.Services.AddFlare(opts =>
     opts.DefaultTheme = new Md3Theme();
     // Open with Material Design 3 Expressive + the Dynamic Color palette by default. The dynamic
     // palette derives from the OS/browser accent color (Windows/macOS accent, Android Material You)
-    // via the active theme's generator. Note: regular (non-installed) Chrome/Edge tabs return a fixed
-    // default accent (a blue) for the CSS AccentColor system color to mitigate fingerprinting -- the
-    // real OS accent is only exposed to installed web apps (PWAs) and in Firefox. On engines without
-    // the AccentColor system color the palette falls back to this seed (the MD3 violet).
+    // via the active theme's generator -- this works in browsers that expose the real accent (e.g.
+    // Firefox). Chrome/Edge do NOT expose the genuine OS accent on the open web (they return a fixed
+    // placeholder to mitigate fingerprinting), so there the Dynamic palette uses the fallback below:
+    // the curated MD3 Violet palette, rather than an arbitrary blue.
     opts.UseDynamicPalette = true;
-    opts.DynamicPaletteFallbackSeed = "#6750A4";
+    opts.DynamicFallbackPalette = Md3Palettes.Violet;
     opts.DefaultPaletteId = Palette.DynamicId;
     // Every theme below is registered explicitly, so skip the reflection-based auto-discovery. That
     // avoids force-loading the whole assembly graph (Assembly.Load + GetTypes over every referenced

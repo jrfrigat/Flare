@@ -181,8 +181,8 @@ Enable it once in `AddFlare`:
 builder.Services.AddFlare(opts =>
 {
     opts.DefaultTheme = new Md3Theme();
-    opts.UseDynamicPalette = true;               // registers the "dynamic" palette
-    opts.DynamicPaletteFallbackSeed = "#6750A4"; // seed used when the OS accent is unavailable
+    opts.UseDynamicPalette = true;                  // registers the "dynamic" palette
+    opts.DynamicFallbackPalette = Md3Palettes.Violet; // curated palette when the OS accent is unavailable
 });
 ```
 
@@ -197,10 +197,19 @@ await ThemeService.SetPaletteAsync(Palette.DynamicId);   // "dynamic"
 light/dark setting changes, and regenerates with the new generator when the theme changes - no extra
 wiring needed.
 
-**Browser support / fallback.** The accent comes from the CSS `AccentColor` system color (modern
-Edge/Chrome/Safari/Firefox; on Android Chrome it reflects Material You). Engines that don't expose it
-fall back to `DynamicPaletteFallbackSeed`. The web exposes no deeper "wallpaper palette" API, so
-`AccentColor` is the accent source.
+> **Important - Chromium does not expose the real OS accent.** The accent comes from the CSS
+> `AccentColor` system color. To mitigate fingerprinting, **Chrome and Edge return a fixed placeholder**
+> (`#0075FF`, identical for every user in light and dark, even in installed PWAs) instead of the user's
+> real Windows/macOS accent. Only **Firefox** (and engines that expose the genuine accent) reflect the
+> actual OS color; on Android Chrome the accent reflects Material You. Flare treats that Chromium
+> placeholder as "no accent" and uses the fallback below, so the Dynamic palette never shows an
+> arbitrary blue that is the same for everyone. The web exposes no deeper "wallpaper palette" API.
+
+**Fallback palette.** When the OS accent is unavailable (Chrome/Edge, or older engines without
+`AccentColor`), set `DynamicFallbackPalette` to a curated palette - the Dynamic palette adopts its
+exact colors instead of an approximation. This is the recommended setup. If you prefer a generated
+fallback, set `DynamicPaletteFallbackSeed` (a seed color) instead; the palette is then generated from
+it with the active theme's rules. A genuine accent (Firefox) still overrides either fallback.
 
 **From your own seed.** To drive the dynamic palette from any color (e.g. one extracted from an image
 via `IFlareColorExtractor`), apply a seed directly - it is generated with the active theme's rules:
