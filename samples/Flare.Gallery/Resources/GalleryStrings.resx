@@ -2268,6 +2268,12 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare is an open-source Blazor component library built with .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV4" xml:space="preserve">
+    <value>Anti-FOUC startup splash is now revealed automatically by FlareThemeProvider - no flash of unstyled content and nothing to wire by hand
+The reveal waits for each theme stylesheet's load event and the document's web fonts (document.fonts.ready), then fades out after the first themed frame
+New ManageSplash parameter (on by default) to opt out and manage the splash yourself; a data-splash-timeout safety reveal lives in the bootstrap script
+Resilient to PWA service-worker update skew: a stale cached flare-theme.js can no longer crash the render - the provider falls back to the global splash-hide</value>
+  </data>
   <data name="About_WhatsNewV3" xml:space="preserve">
     <value>Two new design systems - Material Design 3 (baseline, non-Expressive) and Material Design 2 - so Flare now ships 7 themes
 Dynamic Color palette: derives a full light/dark palette from the OS/browser accent (Windows/macOS accent, Android Material You) via the active theme's generator, with a fallback palette

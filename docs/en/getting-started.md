@@ -104,6 +104,25 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 Automatic dark mode is on by default: `FlareThemeProvider` watches the system
 `prefers-color-scheme`. Turn it off with `RespectSystemColorScheme="false"`.
 
+### Loading splash (anti-FOUC)
+
+Out of the box: the bootstrap script paints a theme-colored full-screen splash before the first
+frame, and `FlareThemeProvider` hides it once it has applied the theme classes, awaited the theme
+stylesheets and web fonts (`document.fonts.ready`), and painted the first themed frame. No flash of
+unstyled content, and nothing to wire by hand.
+
+Customize it through `data-*` attributes on the bootstrap tag (all optional):
+
+```html
+<script src="_content/Flare.Components/js/flare-bootstrap.js"
+        data-default-theme="md3-expressive" data-default-palette="md3-violet" data-default-mode="auto"
+        data-splash-light="#FEF7FF" data-splash-dark="#141218" data-splash-timeout="8000"></script>
+```
+
+`data-splash-timeout` (ms) is a safety reveal in case the provider is absent or boot fails. To drive
+the splash yourself, set `ManageSplash="false"` on `FlareThemeProvider` and call
+`window.hideFlareSplash()` when ready.
+
 ---
 
 ## 5. Global imports

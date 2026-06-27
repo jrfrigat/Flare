@@ -104,6 +104,25 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 Автоматический тёмный режим включён по умолчанию: `FlareThemeProvider` следит за системным
 `prefers-color-scheme`. Отключить - параметром `RespectSystemColorScheme="false"`.
 
+### Загрузочный сплэш (анти-FOUC)
+
+Сразу из коробки: бутстрап-скрипт рисует полноэкранный сплэш в цвете темы до первого кадра, а
+`FlareThemeProvider` сам убирает его, когда применит классы темы, дождётся загрузки стилей темы и
+веб-шрифтов (`document.fonts.ready`) и отрисует первый оформленный кадр. Никакого мигания и ничего
+подключать вручную не нужно.
+
+Настройка - через `data-*` атрибуты на теге бутстрапа (все необязательны):
+
+```html
+<script src="_content/Flare.Components/js/flare-bootstrap.js"
+        data-default-theme="md3-expressive" data-default-palette="md3-violet" data-default-mode="auto"
+        data-splash-light="#FEF7FF" data-splash-dark="#141218" data-splash-timeout="8000"></script>
+```
+
+`data-splash-timeout` (мс) - страховочное раскрытие на случай, если провайдера нет или загрузка
+упала. Чтобы управлять сплэшем самостоятельно, задайте `ManageSplash="false"` на `FlareThemeProvider`
+и вызывайте `window.hideFlareSplash()` сами.
+
 ---
 
 ## 5. Глобальные импорты

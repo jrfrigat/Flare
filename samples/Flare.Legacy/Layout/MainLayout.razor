@@ -1,8 +1,6 @@
 @namespace Flare.Legacy.Layout
 @inherits LayoutComponentBase
 @implements IDisposable
-@inject IThemeService ThemeService
-@inject IJSRuntime JS
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
 
@@ -66,16 +64,8 @@
         await VersionCheck.ApplyUpdateAsync();
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (!firstRender) return;
-        try
-        {
-            await ThemeService.EnsureStaticCssAsync();
-            await JS.InvokeVoidAsync("hideFlareSplash");
-        }
-        catch (Microsoft.JSInterop.JSDisconnectedException) { }
-    }
+    // The anti-FOUC startup splash is revealed automatically by FlareThemeProvider once the theme
+    // CSS and web fonts are ready, so the layout no longer needs to hide it by hand.
 
     public void Dispose() => VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
 }
