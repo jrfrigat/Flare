@@ -75,7 +75,24 @@
     </div>
 
     <script src="_content/Flare.Components/js/flare-components.js"></script>
-    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <!--
+        Start Blazor with an explicit applicationCulture so the matching satellite resource assembly
+        (e.g. ru/Flare.Gallery.resources.wasm) is part of the initial boot download and present before
+        first paint - otherwise the runtime picks satellites by navigator.language, and a user whose
+        browser is English but who chose Russian would flash untranslated text on a cold load.
+        Priority mirrors LanguageService: saved choice (localStorage 'blazorCulture') -> browser
+        language -> English. Only en/ru are shipped.
+    -->
+    <script src="_framework/blazor.webassembly#[.{fingerprint}].js" autostart="false"></script>
+    <script>
+        (function () {
+            var stored = null;
+            try { stored = localStorage.getItem('blazorCulture'); } catch (e) { }
+            var lang = (stored || navigator.language || 'en').toLowerCase();
+            var culture = lang.indexOf('ru') === 0 ? 'ru' : 'en';
+            Blazor.start({ applicationCulture: culture });
+        })();
+    </script>
 </body>
 
 </html>
