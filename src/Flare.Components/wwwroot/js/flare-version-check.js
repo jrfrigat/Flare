@@ -25,8 +25,10 @@ async function getRegistration() {
 
 async function readDeployedVersion() {
     try {
-        // no-store so we always hit the server, not the HTTP/SW cache.
-        const res = await fetch('service-worker-assets.js', { cache: 'no-store' });
+        // no-store + a cache-busting query so we always hit the server, never the HTTP cache, the
+        // service-worker cache, or an intermediate proxy/CDN (the symptom of a cached read is that a
+        // freshly deployed version is never seen, so the update prompt never fires).
+        const res = await fetch(`service-worker-assets.js?v=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) return null;
         const text = await res.text();
         const m = text.match(/self\.assetsManifest\s*=\s*\{[\s\S]*?["']version["']\s*:\s*["']([^"']+)["']/);
