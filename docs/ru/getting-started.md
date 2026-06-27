@@ -1,6 +1,6 @@
 # Flare - Руководство по началу работы
 
-> [Главная README](../../README.ru.md) - [Архитектура](architecture.md)
+> [Главная README](https://github.com/jrfrigat/Flare/blob/main/README.ru.md) - [Архитектура](architecture.md)
 
 ---
 
@@ -240,4 +240,4 @@ docker compose up --build
 
 - [Архитектура](architecture.md) - подробно о модулях, токенах и сервисах
 - [Создание тем](theme-creation-guide.md) - дизайн-токены, палитры, кастомные темы
-- [Галерея](../../samples/Flare.Gallery/) - живые примеры всех компонентов
+- [Галерея](https://flare.frigat.duckdns.org/) - живые примеры всех компонентов

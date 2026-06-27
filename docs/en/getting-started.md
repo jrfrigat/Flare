@@ -1,6 +1,6 @@
 # Flare - Getting Started
 
-> [Русская версия ->](../ru/getting-started.md) - [README](../../README.md) - [Architecture](architecture.md)
+> [Русская версия ->](../ru/getting-started.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.md) - [Architecture](architecture.md)
 
 ---
 
@@ -239,4 +239,4 @@ docker compose up --build
 
 - [Architecture](architecture.md) - modules, tokens and services in detail
 - [Theme creation](theme-creation-guide.md) - design tokens, palettes, custom themes
-- [Gallery](../../samples/Flare.Gallery/) - live examples of every component
+- [Gallery](https://flare.frigat.duckdns.org/) - live examples of every component

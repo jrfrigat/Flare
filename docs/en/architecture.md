@@ -1,6 +1,6 @@
 # Flare - Architecture
 
-> [Русская версия ->](../ru/architecture.md) - [README](../../README.md)
+> [Русская версия ->](../ru/architecture.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.md)
 
 How Flare is structured, how theming works, and the contracts components rely on.
 

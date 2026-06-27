@@ -20,7 +20,7 @@ with 100+ components and multiple swappable design systems built on a single tok
 | [For AI Agents](docs/en/ai-agents.md) | A compact, machine-friendly guide for LLM coding agents. |
 | [Architecture](docs/en/architecture.md) | Modules, tokens, services, theming deep-dive. |
 | [Theme Creation](docs/en/theme-creation-guide.md) | Design tokens, palettes, custom themes. |
-| [API Reference](api/) | Full generated API for every public type and parameter. |
+| [API Reference](api/index.md) | Full generated API for every public type and parameter. |
 
 ## Install
 

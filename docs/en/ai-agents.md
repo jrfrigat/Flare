@@ -1,10 +1,10 @@
 # Flare for AI Agents
 
-> [Русская версия ->](../ru/ai-agents.md) - [Getting Started](getting-started.md) - [API Reference](../../api/)
+> [Русская версия ->](../ru/ai-agents.md) - [Getting Started](getting-started.md) - [API Reference](../../api/index.md)
 
 A compact, high-signal reference for LLM coding agents that generate Blazor code with **Flare**.
 Read this once and you can produce correct Flare markup without guessing. For exact parameter names
-and types of any component, consult the generated [API Reference](../../api/).
+and types of any component, consult the generated [API Reference](../../api/index.md).
 
 ---
 
@@ -194,13 +194,13 @@ Validation messages render on the Flare field automatically via the shared `Edit
 ```
 The grid supports sorting, single/multi-column sort, filtering, paging, grouping, inline/batch editing,
 selection, column reorder/resize/visibility, virtualization, and column bands. Check the
-[API Reference](../../api/) for the full `FlareDataGrid` / `FlareColumn` parameter set.
+[API Reference](../../api/index.md) for the full `FlareDataGrid` / `FlareColumn` parameter set.
 
 ---
 
 ## 9. Component catalog
 
-All real component names (consult the [API Reference](../../api/) for each one's parameters):
+All real component names (consult the [API Reference](../../api/index.md) for each one's parameters):
 
 **Inputs & forms:** `FlareTextField`, `FlareTextArea`, `FlareNumericField`, `FlarePasswordField`,
 `FlareMaskedField`, `FlareOtpField`, `FlareTagField`, `FlareSelect`, `FlareMultiSelect`,
@@ -268,7 +268,7 @@ See [Component Conventions](component-conventions.md) and [Architecture](archite
 
 ## 11. Where to look next
 
-- **[API Reference](../../api/)** - every public type, parameter, and enum (generated from XML docs).
+- **[API Reference](../../api/index.md)** - every public type, parameter, and enum (generated from XML docs).
 - **[Getting Started](getting-started.md)** - the same setup with more prose.
 - **[Architecture](architecture.md)** - modules, tokens, services, theming engine.
 - **Gallery** - interactive live examples of every component (in `samples/Flare.Gallery`).

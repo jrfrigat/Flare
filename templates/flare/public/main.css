@@ -1,5 +1,65 @@
 /* Flare docfx overrides (loaded after the modern template). */
 
+/* ------------------------------------------------------------------ *
+ * Brand palette: Material Design 3 (Expressive) "Violet".
+ * The modern template is pure Bootstrap 5.3, so re-pointing the Bootstrap
+ * primary/link variables retints buttons, links, focus rings, the active
+ * table-of-contents entry, badges and pagination in one place. Values are
+ * the canonical MD3 violet tones (see Flare.Theme.MaterialDesign3Expressive
+ * MaterialDesignTokens: Light/Dark colors).
+ * ------------------------------------------------------------------ */
+
+/* Light (default). MD3 baseline violet, light scheme. */
+:root,
+[data-bs-theme="light"] {
+  --bs-primary: #6750A4;            /* primary */
+  --bs-primary-rgb: 103, 80, 164;
+  --bs-link-color: #6750A4;
+  --bs-link-color-rgb: 103, 80, 164;
+  --bs-link-hover-color: #4F378B;   /* on-primary-container */
+  --bs-link-hover-color-rgb: 79, 55, 139;
+  --bs-body-bg: #FEF7FF;            /* surface */
+  --bs-body-bg-rgb: 254, 247, 255;
+  --bs-pagination-active-bg: #6750A4;
+  --bs-pagination-active-border-color: #6750A4;
+}
+
+/* Dark. MD3 baseline violet, dark scheme. */
+[data-bs-theme="dark"] {
+  --bs-primary: #D0BCFF;            /* primary (dark) */
+  --bs-primary-rgb: 208, 188, 255;
+  --bs-link-color: #D0BCFF;
+  --bs-link-color-rgb: 208, 188, 255;
+  --bs-link-hover-color: #EADDFF;   /* on-primary-container (dark) */
+  --bs-link-hover-color-rgb: 234, 221, 255;
+  --bs-body-bg: #141218;           /* surface (dark) */
+  --bs-body-bg-rgb: 20, 18, 24;
+  --bs-pagination-active-bg: #D0BCFF;
+  --bs-pagination-active-border-color: #D0BCFF;
+  --bs-pagination-active-color: #381E72; /* on-primary (dark) */
+}
+
+/* MD3 primary-tinted accents on the header and active TOC entry. */
+.navbar-brand {
+  color: var(--bs-primary) !important;
+  font-weight: 600;
+}
+
+header.bg-body {
+  border-bottom-color: rgba(var(--bs-primary-rgb), 0.18) !important;
+}
+
+/* The sidebar table-of-contents active item picks up the violet accent. */
+#toc .nav-link.active {
+  color: var(--bs-primary);
+  font-weight: 600;
+}
+
+/* Text selection uses the brand violet. */
+::selection {
+  background-color: rgba(var(--bs-primary-rgb), 0.25);
+}
+
 /* The package icon is a 192x192 PWA icon; constrain it to a navbar-sized logo. */
 #logo {
   height: 26px;

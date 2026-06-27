@@ -1,6 +1,6 @@
 # Flare - Theme Creation Guide
 
-> [Русская версия ->](../ru/theme-creation-guide.md) - [README](../../README.md)
+> [Русская версия ->](../ru/theme-creation-guide.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.md)
 
 ## Overview
 

@@ -1,6 +1,6 @@
 # Flare - Руководство по созданию тем
 
-> [English version ->](../en/theme-creation-guide.md) - [README](../../README.ru.md) - [Архитектура](architecture.md)
+> [English version ->](../en/theme-creation-guide.md) - [README](https://github.com/jrfrigat/Flare/blob/main/README.ru.md) - [Архитектура](architecture.md)
 
 ## Обзор
 
