@@ -465,9 +465,10 @@ internal class VisualStudioTokens
         return new Dictionary<string, string>(Extended)
         {
             ["--flare-vs-focus"] = "rgba(55,148,255,0.5)",
-            // Dark: the editor (#1E1E1E) is darker than the strip, so the active tab uses a lighter
-            // selection gray to keep the rounded VS 2026 tab visibly floating above the strip.
-            ["--flare-vs-tab-active-bg"] = "var(--flare-color-surface-container-highest)",
+            // VS 2026: the active document tab takes the editor surface (#1E1E1E) -- darker than the
+            // strip (#2D2D30) -- so the rounded tab reads as connected to the editor below it, rather
+            // than as a lighter floating pill. (Light mode already uses the white editor surface.)
+            ["--flare-vs-tab-active-bg"] = "var(--flare-color-surface)",
         };
     }
 
