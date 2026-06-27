@@ -53,7 +53,7 @@
     ],
     "resource": [
       {
-        "files": [ "icon.png", "llms.txt" ]
+        "files": [ "favicon.svg", "llms.txt" ]
       }
     ],
     "output": "_site",
@@ -63,7 +63,8 @@
       "_appTitle": "Flare - Blazor UI components",
       "_appFooter": "Flare - MIT licensed Blazor UI library. Docs built with docfx.",
       "_enableSearch": true,
-      "_appLogoPath": "icon.png",
+      "_appLogoPath": "favicon.svg",
+      "_appFaviconPath": "favicon.svg",
       "_disableContribution": false,
       "_gitContribute": {
         "repo": "https://github.com/jrfrigat/Flare",
