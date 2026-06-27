@@ -23,6 +23,8 @@
             "Flare.Theme.FluentUI2/bin/Release/net10.0/Flare.Theme.FluentUI2.dll",
             "Flare.Theme.LiquidGlass/bin/Release/net10.0/Flare.Theme.LiquidGlass.dll",
             "Flare.Theme.MaterialDesign3Expressive/bin/Release/net10.0/Flare.Theme.MaterialDesign3Expressive.dll",
+            "Flare.Theme.MaterialDesign3/bin/Release/net10.0/Flare.Theme.MaterialDesign3.dll",
+            "Flare.Theme.MaterialDesign2/bin/Release/net10.0/Flare.Theme.MaterialDesign2.dll",
             "Flare.Theme.VisualStudio/bin/Release/net10.0/Flare.Theme.VisualStudio.dll"
           ]
         }
