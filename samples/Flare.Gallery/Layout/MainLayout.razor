@@ -4,7 +4,7 @@
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
 
-<FlareLayout @bind-DrawerOpen="_navOpen" ContentMaxWidth="ContainerMaxWidth.Full">
+<FlareLayout @bind-DrawerOpen="_navOpen" MiniRail="true" ContentMaxWidth="ContainerMaxWidth.Full">
     <AppBar>
         <FlareLayoutAppBar DrawerToggle="true">
             <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
@@ -18,14 +18,13 @@
                 <FlareSpacer />
                 <GallerySearch />
                 <FlareSpacer />
-                <LanguageToggle />
-                <FlareDivider Vertical="true" />
-                <ThemeSwitcher />
             </FlareStack>
         </FlareLayoutAppBar>
     </AppBar>
     <Drawer>
         <FlareLayoutDrawer>
+            @* NavMenu owns its own pinned footer (Settings entry + build version) via FlareNavMenu's
+               Footer slot, and collapses to an icon rail with the drawer (FlareLayout MiniRail). *@
             <NavMenu />
         </FlareLayoutDrawer>
     </Drawer>

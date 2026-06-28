@@ -1,15 +1,43 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<nav class="@BuildCssClass(_noScrollbarClass, _railClass)" style="@Style"
+<nav class="@BuildCssClass(_noScrollbarClass, _railClass, _framedClass)" style="@Style"
      aria-label="@(string.IsNullOrEmpty(AriaLabel) ? (FlareStrings.Nav_Navigation) : AriaLabel)"
      @attributes="AdditionalAttributes">
-    @ChildContent
+    @if (_framed)
+    {
+        @* Framed layout: Header and Footer stay pinned while the items scroll between them. The pinned
+           regions hold ordinary nav items (FlareNavLink/FlareNavGroup), so they collapse to icons in a
+           mini-rail exactly like the scrolling items. *@
+        @if (Header is not null)
+        {
+            <div class="@Css.Classes.Navigation.NavMenuHeader">@Header</div>
+        }
+        <div class="@Css.Classes.Navigation.NavMenuScroll">@ChildContent</div>
+        @if (Footer is not null)
+        {
+            <div class="@Css.Classes.Navigation.NavMenuFooter">@Footer</div>
+        }
+    }
+    else
+    {
+        @ChildContent
+    }
 </nav>
 
 @code {
     /// <summary>Navigation items rendered inside the menu.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>
+    /// Optional items pinned to the top of the menu, above the scrolling area. Setting either
+    /// <see cref="Header"/> or <see cref="Footer"/> switches the menu to a framed layout that fills its
+    /// container's height: the header and footer stay fixed while <see cref="ChildContent"/> scrolls
+    /// between them. Put ordinary nav items here so they collapse to icons in a mini-rail too.
+    /// </summary>
+    [Parameter] public RenderFragment? Header { get; set; }
+    /// <summary>Optional items pinned to the bottom of the menu, below the scrolling area. See
+    /// <see cref="Header"/> for the framed-layout behavior this enables.</summary>
+    [Parameter] public RenderFragment? Footer { get; set; }
     /// <summary>Accessible label for the navigation landmark, forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>
@@ -32,6 +60,10 @@
 
     private bool _isRail => Rail || (Layout?.RailCollapsed ?? false);
 
+    // Framed layout (pinned header/footer + scrolling middle) turns on as soon as either slot is used.
+    private bool _framed => Header is not null || Footer is not null;
+
     private string _noScrollbarClass => HideScrollbar ? Css.Classes.Navigation.NavMenuNoScrollbar : string.Empty;
     private string _railClass => _isRail ? Css.Classes.Navigation.NavMenuRail : string.Empty;
+    private string _framedClass => _framed ? Css.Classes.Navigation.NavMenuFramed : string.Empty;
 }

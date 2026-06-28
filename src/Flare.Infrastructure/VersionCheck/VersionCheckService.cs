@@ -40,6 +40,9 @@ public sealed class VersionCheckService : IVersionCheckService
     public string? LatestVersion { get; private set; }
 
     /// <inheritdoc />
+    public string? CurrentVersion => _options.UseServiceWorker ? _baseline : _options.CurrentVersion;
+
+    /// <inheritdoc />
     public bool IsRunning => _loop is { IsCompleted: false };
 
     /// <inheritdoc />

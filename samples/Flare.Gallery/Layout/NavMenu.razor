@@ -3,6 +3,16 @@
 @using Flare.Gallery.Models
 
 <FlareNavMenu>
+    @* Pinned below the scrolling items, and rail-aware: the Settings link collapses to its icon when
+       the drawer is in mini-rail mode, while the version caption (flare-nav-menu__meta) hides. *@
+    <Footer>
+        <FlareNavLink Href="/settings" Tooltip="@GalleryStrings.Settings_Title">
+            <Icon><FlareIcon Size="1.1rem" Name="settings" /></Icon>
+            <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
+        </FlareNavLink>
+        <GalleryVersionLabel />
+    </Footer>
+    <ChildContent>
     <FlareNavLink Href="/" Match="NavMatchMode.Exact">
         <Icon><FlareIcon Size="1.1rem" Name="home" /></Icon>
         <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
@@ -68,6 +78,7 @@
             <FlareNavLink Href="@($"/api/{name}")">@name</FlareNavLink>
         }
     </FlareNavGroup>
+    </ChildContent>
 </FlareNavMenu>
 
 @code {

@@ -1,0 +1,155 @@
+@page "/settings"
+@inherits LocalizedPage
+@inject IThemeService ThemeService
+@using Flare.Theming
+
+<PageTitle>@GalleryStrings.Settings_Title - Flare</PageTitle>
+
+@* Dedicated settings page (replaces the cramped drawer dialog): theme axes and language are split
+   across tabs so nothing has to scroll, and the page has room to breathe. Built only from Flare
+   primitives + tokens. *@
+<div style="max-width:56rem;">
+    <FlareStack Gap="FlareSpacing.XSmall" Style="margin-bottom:1.5rem;">
+        <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Settings_Title</FlareText>
+        <FlareText Typo="TypographyScale.BodyLarge" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Settings_Subtitle</FlareText>
+    </FlareStack>
+
+    <FlareTabs Variant="TabsVariant.Primary">
+
+        <FlareTab Label="@GalleryStrings.Settings_TabTheme">
+            <LeadingIcon><FlareIcon Name="contrast" Size="1.1rem" /></LeadingIcon>
+            <ChildContent>
+                <FlareStack Gap="FlareSpacing.Large" Style="padding-top:1.25rem;">
+                    <div>
+                        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;display:block;">@GalleryStrings.Theme_DesignSystem</FlareText>
+                        <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                            @foreach (var t in ThemeService.Themes)
+                            {
+                                var id = t.Id;
+                                <FlareButton Variant="@(ThemeService.CurrentTheme.Id == id ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                                             OnClick="@(() => SetThemeAsync(id))">
+                                    @t.DisplayName
+                                </FlareButton>
+                            }
+                        </FlareStack>
+                    </div>
+
+                    <div>
+                        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;display:block;">@GalleryStrings.Theme_Mode</FlareText>
+                        <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                            <FlareButton Variant="@ModeVariant(ThemeMode.Light)" OnClick="@(() => SetModeAsync(ThemeMode.Light))">
+                                <LeadingIcon><FlareIcon Name="light_mode" /></LeadingIcon>
+                                <ChildContent>@GalleryStrings.Theme_ModeLight</ChildContent>
+                            </FlareButton>
+                            <FlareButton Variant="@ModeVariant(ThemeMode.Dark)" OnClick="@(() => SetModeAsync(ThemeMode.Dark))">
+                                <LeadingIcon><FlareIcon Name="dark_mode" /></LeadingIcon>
+                                <ChildContent>@GalleryStrings.Theme_ModeDark</ChildContent>
+                            </FlareButton>
+                            <FlareButton Variant="@ModeVariant(ThemeMode.Auto)" OnClick="@(() => SetModeAsync(ThemeMode.Auto))">
+                                <LeadingIcon><FlareIcon Name="brightness_auto" /></LeadingIcon>
+                                <ChildContent>@GalleryStrings.Theme_ModeAuto</ChildContent>
+                            </FlareButton>
+                        </FlareStack>
+                    </div>
+                </FlareStack>
+            </ChildContent>
+        </FlareTab>
+
+        <FlareTab Label="@GalleryStrings.Theme_Palette">
+            <LeadingIcon><FlareIcon Name="palette" Size="1.1rem" /></LeadingIcon>
+            <ChildContent>
+                <FlareStack Gap="FlareSpacing.Large" Style="padding-top:1.25rem;">
+                    <div>
+                        @foreach (var group in ThemeService.Palettes.GroupBy(p => p.Source ?? GalleryStrings.Theme_PaletteOther))
+                        {
+                            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin:0.5rem 0 0.5rem;display:block">@group.Key</FlareText>
+                            <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:0.75rem;">
+                                @foreach (var p in group)
+                                {
+                                    var id = p.Id;
+                                    var swatch = ThemeService.IsDark ? p.Dark.Primary : p.Light.Primary;
+                                    <FlareButton Size="ButtonSize.Sm"
+                                                 Variant="@(ThemeService.CurrentPalette.Id == id ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                                                 OnClick="@(() => SetPaletteAsync(id))">
+                                        <LeadingIcon>
+                                            <span style="@($"display:inline-block;width:0.85rem;height:0.85rem;border-radius:50%;background:{swatch};")"></span>
+                                        </LeadingIcon>
+                                        <ChildContent>@p.Name</ChildContent>
+                                    </FlareButton>
+                                }
+                            </FlareStack>
+                        }
+                    </div>
+
+                    <div>
+                        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.5rem;display:block;">@GalleryStrings.Theming_GenerateTitle</FlareText>
+                        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall" Style="margin-bottom:0.75rem;display:block;max-width:36rem;">@GalleryStrings.Theming_GenerateDesc</FlareText>
+                        <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+                            <FlareColorPicker @bind-Value="_seed" Inline="true" />
+                            <FlareButton Variant="ButtonVariant.Tonal" OnClick="GenerateAsync">
+                                <LeadingIcon><FlareIcon Name="auto_awesome" /></LeadingIcon>
+                                <ChildContent>@GalleryStrings.Theming_GenerateBtn</ChildContent>
+                            </FlareButton>
+                        </FlareStack>
+                    </div>
+                </FlareStack>
+            </ChildContent>
+        </FlareTab>
+
+        <FlareTab Label="@GalleryStrings.Settings_Language">
+            <LeadingIcon><FlareIcon Name="translate" Size="1.1rem" /></LeadingIcon>
+            <ChildContent>
+                <FlareStack Gap="FlareSpacing.Medium" Style="padding-top:1.25rem;">
+                    <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Settings_Language</FlareText>
+                    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                        @foreach (var (code, displayName) in LanguageService.SupportedCultures)
+                        {
+                            var c = code;
+                            <FlareButton Variant="@(Lang.CurrentCulture == c ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                                         OnClick="@(() => Lang.SetCultureAsync(c))">
+                                @displayName
+                            </FlareButton>
+                        }
+                    </FlareStack>
+                </FlareStack>
+            </ChildContent>
+        </FlareTab>
+
+    </FlareTabs>
+</div>
+
+@code {
+    private string _seed = "#7B1FA2";
+
+    private async Task GenerateAsync()
+    {
+        var hex = string.IsNullOrWhiteSpace(_seed) ? "#7B1FA2" : _seed.Trim();
+        var id = "gen-" + new string(hex.Where(char.IsLetterOrDigit).ToArray()).ToLowerInvariant();
+        if (ThemeService.Palettes.All(p => p.Id != id))
+            ThemeService.RegisterPalette(ThemeService.GeneratePalette(
+                id, hex, new PaletteSeed(hex), GalleryStrings.Theme_PaletteGenerated));
+        await ThemeService.SetPaletteAsync(id);
+        StateHasChanged();
+    }
+
+    private ButtonVariant ModeVariant(ThemeMode m) =>
+        ThemeService.Mode == m ? ButtonVariant.Filled : ButtonVariant.Outlined;
+
+    private async Task SetThemeAsync(string id)
+    {
+        await ThemeService.SetThemeAsync(id);
+        StateHasChanged();
+    }
+
+    private async Task SetPaletteAsync(string id)
+    {
+        await ThemeService.SetPaletteAsync(id);
+        StateHasChanged();
+    }
+
+    private async Task SetModeAsync(ThemeMode m)
+    {
+        await ThemeService.SetModeAsync(m);
+        StateHasChanged();
+    }
+}
