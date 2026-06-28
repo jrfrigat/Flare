@@ -586,67 +586,67 @@
     <value>Ribbon</value>
   </data>
   <data name="Ide_Ribbon_Desc" xml:space="preserve">
-    <value>FlareRibbon with tabbed command groups, large (icon + label) and small (icon-only) buttons, an in-group separator, and a dropdown gallery. Toggle SizeMode to collapse the ribbon to its tab strip.</value>
+    <value>FlareRibbon - tabbed command groups with large and small buttons, separators, dropdown galleries, and a collapsible SizeMode.</value>
   </data>
   <data name="Ide_DocTabs_Title" xml:space="preserve">
-    <value>Document tabs</value>
+    <value>Document Tabs</value>
   </data>
   <data name="Ide_DocTabs_Desc" xml:space="preserve">
-    <value>Editor-style FlareDocumentTabs driven by a model list - a per-tab icon, a Modified indicator, a pinned (non-closeable) tab, plus add and close handling via OnTabChanged / OnTabClose.</value>
+    <value>FlareDocumentTabs - editor-style tabs with per-tab icons, a modified indicator, closeable and pinned tabs, and overflow handling.</value>
   </data>
   <data name="Ide_ToolPanel_Title" xml:space="preserve">
-    <value>Tool panel</value>
+    <value>Tool Panel</value>
   </data>
   <data name="Ide_ToolPanel_Desc" xml:space="preserve">
-    <value>Standalone FlareToolPanel: a titled, collapsible dockable panel with an optional header toolbar. Collapsing shrinks it to a thin rail. Inside a layout the layout owns collapse and the auto-hide flyout.</value>
+    <value>FlareToolPanel - a titled, collapsible dockable panel with an optional header toolbar.</value>
   </data>
   <data name="Ide_MenuBar_Title" xml:space="preserve">
     <value>Menu Bar</value>
   </data>
   <data name="Ide_MenuBar_Desc" xml:space="preserve">
-    <value>FlareMenuBar: a thin horizontal bar of top-level menus (File / Edit / View). Each menu is a base FlareMenu whose items are FlareMenuItem entries.</value>
+    <value>FlareMenuBar - a thin horizontal bar of top-level menus (File / Edit / View).</value>
   </data>
   <data name="Ide_Toolbar_Title" xml:space="preserve">
     <value>Toolbar</value>
   </data>
   <data name="Ide_Toolbar_Desc" xml:space="preserve">
-    <value>FlareToolbar: a classic icon command bar - a single dense row of buttons and small controls with in-row separators. Toggle Dense to tighten it.</value>
+    <value>FlareToolbar - a classic icon command bar with separators and a dense mode.</value>
   </data>
   <data name="Ide_Qat_Title" xml:space="preserve">
     <value>Quick Access Toolbar</value>
   </data>
   <data name="Ide_Qat_Desc" xml:space="preserve">
-    <value>FlareQuickAccessToolbar: the Office quick-access strip - a compact row of small icon buttons placed above or beside the ribbon.</value>
+    <value>FlareQuickAccessToolbar - the Office quick-access strip of small icon buttons.</value>
   </data>
   <data name="Ide_StatusBar_Title" xml:space="preserve">
-    <value>Status bar</value>
+    <value>Status Bar</value>
   </data>
   <data name="Ide_StatusBar_Desc" xml:space="preserve">
-    <value>FlareStatusBar with three free-form sections (left / center / right) hosting text, icons, or interactive controls. The buttons drive the values live.</value>
+    <value>FlareStatusBar - a three-section bar (left / center / right) for status text, icons, and controls.</value>
   </data>
   <data name="Ide_PropertyGrid_Title" xml:space="preserve">
-    <value>Property grid</value>
+    <value>Property Grid</value>
   </data>
   <data name="Ide_PropertyGrid_Desc" xml:space="preserve">
-    <value>FlarePropertyGrid rows whose values are real Flare inputs (field, select, checkbox, switch, numeric) bound to a model - here the sheet drives the live button preview.</value>
+    <value>FlarePropertyGrid - a name/value property sheet whose values are plain text or any editor.</value>
   </data>
   <data name="Ide_Backstage_Title" xml:space="preserve">
-    <value>Backstage (File menu)</value>
+    <value>Backstage</value>
   </data>
   <data name="Ide_Backstage_Desc" xml:space="preserve">
-    <value>FlareBackstage: a full-surface File overlay with a navigation rail and content area. Open it with File, pick a rail entry to switch content, and use the back arrow to close.</value>
+    <value>FlareBackstage - the Office File menu: a full-surface overlay with a navigation rail and content area.</value>
   </data>
   <data name="Ide_FormulaBar_Title" xml:space="preserve">
-    <value>Formula bar</value>
+    <value>Formula Bar</value>
   </data>
   <data name="Ide_FormulaBar_Desc" xml:space="preserve">
-    <value>FlareFormulaBar (Excel name box + fx + editor), built on FlareField. Click a cell to load it into the bar; edit the formula to write it back to the selected cell.</value>
+    <value>FlareFormulaBar - the Excel name box, fx marker, and formula editor, built on FlareField.</value>
   </data>
   <data name="Ide_SheetTabs_Title" xml:space="preserve">
-    <value>Sheet tabs</value>
+    <value>Sheet Tabs</value>
   </data>
   <data name="Ide_SheetTabs_Desc" xml:space="preserve">
-    <value>FlareSheetTabs - the controlled Excel sheet-tab strip with an add button. Bind Sheets and ActiveIndex and handle OnAddSheet.</value>
+    <value>FlareSheetTabs - the Excel sheet-tab strip with an add button.</value>
   </data>
   <data name="DataGrid_PersistenceTitle" xml:space="preserve">
     <value>State Persistence</value>
