@@ -1797,6 +1797,12 @@
   <data name="Settings_Title" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="Settings_Subtitle" xml:space="preserve">
+    <value>Personalize the gallery: design system, palette, color mode and language.</value>
+  </data>
+  <data name="Settings_TabTheme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Language</value>
   </data>

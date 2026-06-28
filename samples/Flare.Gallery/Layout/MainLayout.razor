@@ -4,7 +4,7 @@
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
 
-<FlareLayout @bind-DrawerOpen="_navOpen" ContentMaxWidth="ContainerMaxWidth.Full">
+<FlareLayout @bind-DrawerOpen="_navOpen" MiniRail="true" ContentMaxWidth="ContainerMaxWidth.Full">
     <AppBar>
         <FlareLayoutAppBar DrawerToggle="true">
             <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
@@ -23,14 +23,9 @@
     </AppBar>
     <Drawer>
         <FlareLayoutDrawer>
-            @* Column shell: the nav scrolls in the growing region while the settings entry point +
-               build version stay pinned to the bottom of the drawer, always reachable. *@
-            <FlareStack Gap="FlareSpacing.None" Style="height:100%;">
-                <div style="flex:1 1 auto;min-height:0;overflow-y:auto;">
-                    <NavMenu />
-                </div>
-                <GallerySettings />
-            </FlareStack>
+            @* NavMenu owns its own pinned footer (Settings entry + build version) via FlareNavMenu's
+               Footer slot, and collapses to an icon rail with the drawer (FlareLayout MiniRail). *@
+            <NavMenu />
         </FlareLayoutDrawer>
     </Drawer>
     <Content>

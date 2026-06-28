@@ -6505,6 +6505,24 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Personalize the gallery: design system, palette, color mode and language.
+        /// </summary>
+        public static string Settings_Subtitle {
+            get {
+                return ResourceManager.GetString("Settings_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Theme.
+        /// </summary>
+        public static string Settings_TabTheme {
+            get {
+                return ResourceManager.GetString("Settings_TabTheme", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Settings.
         /// </summary>
         public static string Settings_Title {

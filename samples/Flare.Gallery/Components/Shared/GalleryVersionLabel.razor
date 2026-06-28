@@ -1,0 +1,63 @@
+@inherits LocalizedPage
+@implements IDisposable
+@inject IVersionCheckService VersionCheck
+
+@* The live service-worker build version, shown as a quiet caption pinned in the nav footer so a
+   deploy / SW swap is visible at a glance. Marked flare-nav-menu__meta so it disappears when the
+   drawer collapses to a mini-rail (where only icons fit). *@
+<div class="@Css.Classes.Navigation.NavMenuMeta">
+    <FlareStack Row Align="FlareAlignItems.Center" Justify="FlareJustifyContent.SpaceBetween" Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.LabelSmall">@GalleryStrings.Settings_Version</FlareText>
+        <FlareText Typo="TypographyScale.LabelSmall" title="@VersionText"
+                   Style="font-family:monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">@VersionText</FlareText>
+    </FlareStack>
+    @if (_updateAvailable)
+    {
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall" Style="margin-top:0.25rem;">
+            <FlareIcon Name="system_update" Size="0.9rem" Color="FlareColor.Warning" />
+            <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.Warning">@GalleryStrings.Settings_UpdateAvailable</FlareText>
+        </FlareStack>
+    }
+</div>
+
+@code {
+    private bool _updateAvailable;
+
+    // The build version reported by the service worker, or a "dev" placeholder when none is active.
+    private string VersionText => VersionCheck.CurrentVersion ?? GalleryStrings.Settings_VersionDev;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized(); // LocalizedPage: subscribe to language changes
+        VersionCheck.NewVersionAvailable += OnNewVersionAsync;
+    }
+
+    // The app-wide service starts in MainLayout and probes immediately; read the resulting baseline
+    // once the first render has happened so the footer shows the running version without interaction.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            await VersionCheck.CheckNowAsync();
+            RefreshUpdateFlag();
+            StateHasChanged();
+        }
+        catch { /* no service worker / JS unavailable (dev): keep the "dev" placeholder */ }
+    }
+
+    private Task OnNewVersionAsync(VersionCheckInfo info) => InvokeAsync(() =>
+    {
+        RefreshUpdateFlag();
+        StateHasChanged();
+    });
+
+    private void RefreshUpdateFlag() =>
+        _updateAvailable = VersionCheck.LatestVersion is { } latest && latest != VersionCheck.CurrentVersion;
+
+    public override void Dispose()
+    {
+        VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+        base.Dispose();
+    }
+}

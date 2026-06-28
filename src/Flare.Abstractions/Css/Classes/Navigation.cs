@@ -9,6 +9,17 @@ public static class Navigation
     public const string NavMenuNoScrollbar = "flare-nav-menu--no-scrollbar";
     /// <summary>The <c>flare-nav-menu--rail</c> CSS class.</summary>
     public const string NavMenuRail = "flare-nav-menu--rail";
+    /// <summary>The <c>flare-nav-menu--framed</c> CSS class (pinned header/footer + scrolling middle).</summary>
+    public const string NavMenuFramed = "flare-nav-menu--framed";
+    /// <summary>The <c>flare-nav-menu__header</c> CSS class (pinned region above the scrolling items).</summary>
+    public const string NavMenuHeader = "flare-nav-menu__header";
+    /// <summary>The <c>flare-nav-menu__scroll</c> CSS class (the scrolling middle region in framed mode).</summary>
+    public const string NavMenuScroll = "flare-nav-menu__scroll";
+    /// <summary>The <c>flare-nav-menu__footer</c> CSS class (pinned region below the scrolling items).</summary>
+    public const string NavMenuFooter = "flare-nav-menu__footer";
+    /// <summary>The <c>flare-nav-menu__meta</c> CSS class: supplementary, non-interactive text in a
+    /// pinned region (e.g. a version line) that is hidden when the menu collapses to a mini-rail.</summary>
+    public const string NavMenuMeta = "flare-nav-menu__meta";
     /// <summary>The <c>flare-nav-link</c> CSS class.</summary>
     public const string NavLink = "flare-nav-link";
     /// <summary>The <c>flare-nav-link--active</c> CSS class.</summary>
