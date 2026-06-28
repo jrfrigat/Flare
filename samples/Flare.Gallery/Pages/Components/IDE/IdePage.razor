@@ -10,42 +10,24 @@
 
 <FlareStack Gap="FlareSpacing.Medium" Style="margin-bottom:1.5rem;">
     <FlareText Typo="TypographyScale.BodyMedium">
-        <strong>Flare.Components.IDE</strong> is an optional package that builds a desktop-IDE shell
-        on top of the core Flare components and design tokens - no custom theming. Compose
-        <code>FlareIdeLayout</code> from these parts:
+        <strong>FlareIdeLayout</strong> is the shell of the optional <strong>Flare.Components.IDE</strong>
+        package - it arranges the chrome (ribbon, menus, dockable panels, document area, status bar)
+        into a desktop-IDE layout, built entirely on the core Flare components and design tokens with no
+        custom theming. Each individual part has its own page in the <strong>IDE</strong> group of the
+        navigation; this page covers the layout itself.
     </FlareText>
 
     <FlareStack Gap="FlareSpacing.Small">
-        <div><strong>FlareIdeLayout</strong> - the shell. Named slots: <code>Ribbon</code>,
-            <code>MenuBar</code>, <code>LeftToolPanel</code>, <code>ChildContent</code> (document area),
-            <code>RightToolPanel</code>, <code>BottomPanel</code>, <code>StatusBar</code>.</div>
-        <div><strong>FlareRibbon</strong> / <strong>FlareRibbonTab</strong> / <strong>FlareRibbonGroup</strong> /
-            <strong>FlareRibbonButton</strong> - tabbed command ribbon with large (icon + label) and small
-            (icon-only) buttons; <code>SizeMode</code> collapses it to tabs only.</div>
-        <div><strong>FlareDocumentTabs</strong> / <strong>FlareDocumentTab</strong> - editor-style tabs with
-            per-tab <code>Icon</code>, <code>Modified</code> indicator, <code>Closeable</code>, overflow
-            handling, and <code>OnTabChanged</code> / <code>OnTabClose</code> callbacks.</div>
-        <div><strong>FlareToolPanel</strong> - collapsible dockable panel (left / right / bottom) with an
-            optional header toolbar. Inside a layout, collapsing frees the docked space (the region
-            shrinks to a thin rail); <code>Mode="IdePanelMode.AutoHide"</code> makes it fly out over the
-            content instead of taking space.</div>
-        <div><strong>Region resizing</strong> - drag the divider between a docked panel and the
-            document (or focus it and arrow) to resize; built into <code>FlareIdeLayout</code> via the
-            <code>*Resizable</code> / <code>MinPanelSize</code> parameters. For arbitrary layouts use the
-            standalone <strong>FlareSplitter</strong> between any two flex siblings.</div>
-        <div><strong>FlareMenuBar</strong> - a thin horizontal bar for top-level menus.</div>
-        <div><strong>FlareStatusBar</strong> - three-section status bar (<code>LeftContent</code>,
-            <code>CenterContent</code>, <code>RightContent</code>).</div>
-        <div><strong>FlareQuickAccessToolbar</strong> / <strong>FlareToolbar</strong> - the Office
-            quick-access strip and a classic icon command bar.</div>
-        <div><strong>FlareRibbonDropdown</strong> / <strong>FlareRibbonSeparator</strong> - ribbon
-            dropdown galleries (built on <code>FlareMenu</code>) and in-group separators.</div>
-        <div><strong>FlareBackstage</strong> / <strong>FlareBackstageItem</strong> - the full-surface
-            "File" menu with a navigation rail and content area.</div>
-        <div><strong>FlarePropertyGrid</strong> / <strong>FlarePropertyGridItem</strong> - a name/value
-            property sheet whose values can be plain text or any editor.</div>
-        <div><strong>FlareFormulaBar</strong> - a spreadsheet formula bar (name box + fx + editor).</div>
-        <div><strong>FlareSheetTabs</strong> - the spreadsheet sheet-tab strip with an add button.</div>
+        <div><strong>Named slots</strong> - <code>Ribbon</code>, <code>MenuBar</code>,
+            <code>LeftToolPanel</code>, <code>ChildContent</code> (the document area),
+            <code>RightToolPanel</code>, <code>BottomPanel</code>, and <code>StatusBar</code>.</div>
+        <div><strong>Region resizing</strong> - drag the divider between a docked panel and the document
+            (or focus it and use the arrow keys); configured via the layout's <code>*Resizable</code> /
+            <code>MinPanelSize</code> parameters. For arbitrary layouts use the standalone
+            <strong>FlareSplitter</strong> between any two flex siblings.</div>
+        <div><strong>Docked panels</strong> - collapsing a docked <code>FlareToolPanel</code> frees its
+            space (the region shrinks to a thin rail); <code>Mode="IdePanelMode.AutoHide"</code> makes it
+            fly out over the content instead of taking space.</div>
     </FlareStack>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
@@ -55,8 +37,7 @@
 </FlareStack>
 
 <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant" Style="margin-bottom:1rem;">
-    Each part above has its own page with a focused, standalone example - see the IDE group in the
-    navigation. The examples below compose them into complete application shells.
+    The examples below compose the parts into complete application shells.
 </FlareText>
 
 <AutoDemoSection Title="Full IDE Layout" DemoType="typeof(Examples.IdeLayoutDemo)"
