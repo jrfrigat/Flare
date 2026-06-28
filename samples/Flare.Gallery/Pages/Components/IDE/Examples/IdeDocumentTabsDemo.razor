@@ -1,0 +1,82 @@
+@using Flare.Components.IDE
+
+@* Editor-style document tabs driven by a model list: per-tab Icon, a Modified indicator, a
+   non-closeable (pinned) tab, plus add and close handling. OnTabChanged / OnTabClose report back so
+   the host owns the open-document list. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="AddDocument">
+            <LeadingIcon><FlareIcon Name="add" /></LeadingIcon>
+            <ChildContent>New file</ChildContent>
+        </FlareButton>
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+            Active: <strong>@(_active ?? "(none)")</strong>
+        </FlareText>
+    </FlareStack>
+
+    <div style="height:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+        <FlareDocumentTabs OnTabChanged="OnChanged" OnTabClose="OnClose">
+            @foreach (var doc in _docs)
+            {
+                <FlareDocumentTab @key="doc.Id" Title="@doc.Title" Icon="@doc.Icon"
+                                  Modified="doc.Modified" Closeable="doc.Closeable">
+                    <div style="padding:0.75rem;display:flex;flex-direction:column;gap:0.35rem;">
+                        <FlareText Typo="TypographyScale.TitleSmall">@doc.Title</FlareText>
+                        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+                            @doc.Description
+                        </FlareText>
+                        @if (doc.Modified)
+                        {
+                            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => Save(doc))">
+                                <LeadingIcon><FlareIcon Name="save" /></LeadingIcon>
+                                <ChildContent>Save (clear modified)</ChildContent>
+                            </FlareButton>
+                        }
+                    </div>
+                </FlareDocumentTab>
+            }
+        </FlareDocumentTabs>
+    </div>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        The pinned <code>App.razor</code> tab has <code>Closeable="false"</code> so it has no close button.
+    </FlareText>
+</FlareStack>
+
+@code {
+    private sealed class Doc
+    {
+        public required int Id { get; init; }
+        public required string Title { get; init; }
+        public required string Icon { get; init; }
+        public required string Description { get; init; }
+        public bool Modified { get; set; }
+        public bool Closeable { get; set; } = true;
+    }
+
+    private int _nextId = 4;
+    private string? _active;
+
+    private readonly List<Doc> _docs =
+    [
+        new() { Id = 1, Title = "Program.cs", Icon = "description", Description = "Application entry point.", Modified = true },
+        new() { Id = 2, Title = "README.md", Icon = "article", Description = "Project overview and docs." },
+        new() { Id = 3, Title = "App.razor", Icon = "code", Description = "Root component (pinned).", Closeable = false },
+    ];
+
+    private void OnChanged(string title) => _active = title;
+
+    private void OnClose(string title)
+    {
+        var doc = _docs.FirstOrDefault(d => d.Title == title);
+        if (doc is not null) _docs.Remove(doc);
+    }
+
+    private void AddDocument()
+    {
+        var id = _nextId++;
+        _docs.Add(new Doc { Id = id, Title = $"Untitled-{id}.cs", Icon = "draft", Description = "A new, unsaved file.", Modified = true });
+    }
+
+    private void Save(Doc doc) => doc.Modified = false;
+}
