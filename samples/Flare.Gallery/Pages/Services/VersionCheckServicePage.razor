@@ -64,6 +64,34 @@
     </FlareStack>
 </FlareCard>
 
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_VersionCheckSetupTitle</FlareText>
+<FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant" Style="max-width:48rem;">@GalleryStrings.Services_VersionCheckSetupIntro</FlareText>
+
+<FlareStack Gap="FlareSpacing.Large" Style="margin-top:1rem;max-width:48rem;">
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Services_VersionCheckSetupStep1Title</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckSetupStep1</FlareText>
+        <FlareCodeBlock Value="@_csproj" Language="xml" ReadOnly="true" />
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Services_VersionCheckSetupStep2Title</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckSetupStep2</FlareText>
+        <FlareCodeBlock Value="@_swClaim" Language="javascript" ReadOnly="true" LineNumbers="true" />
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Services_VersionCheckSetupStep3Title</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckSetupStep3</FlareText>
+        <FlareCodeBlock Value="@_nginx" Language="nginx" ReadOnly="true" />
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Services_VersionCheckSetupStep4Title</FlareText>
+        <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckSetupStep4</FlareText>
+    </FlareStack>
+</FlareStack>
+
 <FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
 <FlareCodeBlock Value="@_usage" Language="csharp" ReadOnly="true" LineNumbers="true" />
 
@@ -162,9 +190,43 @@
         }
     }
 
+    // Step 1: enable Blazor's PWA offline support so the build emits the worker + assets manifest.
+    private const string _csproj = """
+        <!-- Flare.Gallery.csproj: emits service-worker.js + service-worker-assets.js on publish. -->
+        <ItemGroup>
+          <ServiceWorker Include="wwwroot\service-worker.js"
+                         PublishedContent="wwwroot\service-worker.published.js" />
+        </ItemGroup>
+        """;
+
+    // Step 2: the single required tweak to the standard Blazor worker.
+    private const string _swClaim = """
+        // wwwroot/service-worker.published.js - the ONLY change from the stock Blazor worker.
+        // Claim open pages on activate so a skipWaiting update reloads onto the NEW worker
+        // (via controllerchange) instead of re-serving the old cache (the stale "dev" bug).
+        async function onActivate(event) {
+            const keys = await caches.keys();
+            await Promise.all(keys
+                .filter(k => k.startsWith(cacheNamePrefix) && k !== cacheName)
+                .map(k => caches.delete(k)));
+
+            await self.clients.claim();   // <-- add this line
+        }
+        """;
+
+    // Step 3: host/proxy cache headers - the control files must never be cached.
+    private const string _nginx = """
+        # Never cache the PWA control files (host AND any reverse proxy / CDN). Otherwise the
+        # version probe reads a stale service-worker-assets.js and the update never fires.
+        location ~* (service-worker(-assets)?\.js|blazor\.boot\.json|\.webmanifest)$ {
+            add_header Cache-Control "no-cache, no-store, must-revalidate" always;
+        }
+        """;
+
+    // Step 4: register the service and surface the update.
     private const string _usage = """
         // Program.cs - service-worker mode. The service registers the SW (ServiceWorkerPath defaults
-        // to service-worker.js), polls the deployed version, and can apply the update. No app JS needed.
+        // to service-worker.js), polls the deployed version, and applies the update. No app JS needed.
         builder.Services.AddFlareVersionCheck(opts =>
         {
             opts.Interval = TimeSpan.FromSeconds(10);
@@ -184,15 +246,29 @@
         @inject IVersionCheckService VersionCheck
         @inject ISnackbarService Snackbar
 
+        private readonly Guid _toastId = Guid.NewGuid();
+
         protected override void OnInitialized()
         {
             VersionCheck.NewVersionAvailable += OnNewVersion;
             VersionCheck.Start();
         }
 
-        // Persistent, actionable toast: "Update" applies the waiting worker and reloads.
+        // Stop polling once a version is known, then show one actionable toast.
         Task OnNewVersion(VersionCheckInfo info) => InvokeAsync(() =>
-            Snackbar.Show("A new version is available", SnackbarSeverity.Info,
-                durationMs: 0, actionText: "Update", onAction: VersionCheck.ApplyUpdateAsync));
+        {
+            VersionCheck.Stop();
+            Snackbar.Show(new SnackbarMessage(_toastId, "A new version is available",
+                SnackbarSeverity.Info, DurationMs: 0, ActionText: "Update", OnAction: StartUpdate));
+        });
+
+        // Change the SAME toast in place into an "updating" state with a progress bar, then apply:
+        // ApplyUpdateAsync activates the waiting worker and reloads onto the new version.
+        async Task StartUpdate()
+        {
+            Snackbar.Update(new SnackbarMessage(_toastId, "Updating...", SnackbarSeverity.Info,
+                DurationMs: 0, ShowClose: false, ShowProgress: true));
+            await VersionCheck.ApplyUpdateAsync();
+        }
         """;
 }

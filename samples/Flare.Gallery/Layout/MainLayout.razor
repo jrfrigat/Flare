@@ -55,6 +55,10 @@
 @code {
     private bool _navOpen = true;
 
+    // Stable id for the update toast so the "new version" notice and the later "updating" state are the
+    // same snackbar (changed in place), not two separate toasts.
+    private readonly Guid _updateToastId = Guid.NewGuid();
+
     protected override void OnInitialized()
     {
         // The service polls in the background; surface any new version as a toast.
@@ -62,17 +66,22 @@
         VersionCheck.Start();
     }
 
-    // Actionable, persistent toast: "Update" applies the waiting service worker and reloads
-    // (the service owns the service-worker plumbing - the app just calls ApplyUpdateAsync).
+    // Actionable, persistent toast: "Update" applies the waiting service worker and reloads (the service
+    // owns the service-worker plumbing - the app just calls ApplyUpdateAsync). Once a newer version is
+    // known there is nothing more to discover, so stop the background polling.
     private Task OnNewVersionAsync(VersionCheckInfo info) => InvokeAsync(() =>
-        Snackbar.Show(GalleryStrings.Pwa_NewVersion, SnackbarSeverity.Info,
-            durationMs: 0, actionText: GalleryStrings.Pwa_Update, onAction: StartUpdateAsync));
+    {
+        VersionCheck.Stop();
+        Snackbar.Show(new SnackbarMessage(_updateToastId, GalleryStrings.Pwa_NewVersion, SnackbarSeverity.Info,
+            DurationMs: 0, ActionText: GalleryStrings.Pwa_Update, OnAction: StartUpdateAsync));
+    });
 
-    // Confirm the click before the service worker activates and reloads, so the user sees that the
-    // update has started (the reload then replaces the page).
+    // Change the SAME toast in place into an "updating" state with a progress bar (rather than adding a
+    // second toast), so the user sees the update has started; the reload then replaces the page.
     private async Task StartUpdateAsync()
     {
-        Snackbar.Show(GalleryStrings.Pwa_Updating, SnackbarSeverity.Info, durationMs: 0, showClose: false);
+        Snackbar.Update(new SnackbarMessage(_updateToastId, GalleryStrings.Pwa_Updating, SnackbarSeverity.Info,
+            DurationMs: 0, ShowClose: false, ShowProgress: true));
         await VersionCheck.ApplyUpdateAsync();
     }
 

@@ -6422,6 +6422,96 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_VersionCheckSimNote", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Setup: make auto-update work end-to-end.
+        /// </summary>
+        public static string Services_VersionCheckSetupTitle {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на In service-worker mode the service registers the worker and applies the update for you....
+        /// </summary>
+        public static string Services_VersionCheckSetupIntro {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupIntro", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 1. Enable the PWA service worker.
+        /// </summary>
+        public static string Services_VersionCheckSetupStep1Title {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep1Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn on Blazor offline support in the WASM project....
+        /// </summary>
+        public static string Services_VersionCheckSetupStep1 {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep1", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 2. Add clients.claim() to the worker (required).
+        /// </summary>
+        public static string Services_VersionCheckSetupStep2Title {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep2Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This is the only deviation from the stock Blazor worker....
+        /// </summary>
+        public static string Services_VersionCheckSetupStep2 {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep2", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 3. Never cache the control files.
+        /// </summary>
+        public static string Services_VersionCheckSetupStep3Title {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep3Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The host and any reverse proxy or CDN must serve the control files with no-store....
+        /// </summary>
+        public static string Services_VersionCheckSetupStep3 {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep3", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 4. Register and surface it.
+        /// </summary>
+        public static string Services_VersionCheckSetupStep4Title {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep4Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Register with UseServiceWorker = true, then in your layout call Start()....
+        /// </summary>
+        public static string Services_VersionCheckSetupStep4 {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep4", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на IVersionCheckService polls for a newer app version on a configurable interval and raises an event - it renders nothing itself..

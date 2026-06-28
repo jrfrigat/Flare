@@ -2494,6 +2494,16 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
   <data name="Services_VersionCheckUpdating" xml:space="preserve"><value>Updating...</value></data>
   <data name="Services_VersionCheckUpdatedTo" xml:space="preserve"><value>Updated to</value></data>
   <data name="Services_VersionCheckSimNote" xml:space="preserve"><value>Simulated demo: a local probe reports a newer version after a couple of checks, so you can see the full flow (up to date -&gt; new version -&gt; update) without publishing a new build.</value></data>
+  <data name="Services_VersionCheckSetupTitle" xml:space="preserve"><value>Setup: make auto-update work end-to-end</value></data>
+  <data name="Services_VersionCheckSetupIntro" xml:space="preserve"><value>In service-worker mode the service registers the worker and applies the update for you. You only need the PWA service worker itself, one small change to it, and correct cache headers on the host.</value></data>
+  <data name="Services_VersionCheckSetupStep1Title" xml:space="preserve"><value>1. Enable the PWA service worker</value></data>
+  <data name="Services_VersionCheckSetupStep1" xml:space="preserve"><value>Turn on Blazor offline support in the WASM project so the build emits service-worker.js and service-worker-assets.js - the assets manifest whose version hash changes on every publish (that is what the probe reads).</value></data>
+  <data name="Services_VersionCheckSetupStep2Title" xml:space="preserve"><value>2. Add clients.claim() to the worker (required)</value></data>
+  <data name="Services_VersionCheckSetupStep2" xml:space="preserve"><value>This is the only deviation from the stock Blazor worker. Calling self.clients.claim() in the activate handler lets the page reload onto the new worker the moment it activates (via controllerchange). Without it the reload can be served by the old worker, leaving a stale or "dev" version that only Ctrl+Shift+R clears.</value></data>
+  <data name="Services_VersionCheckSetupStep3Title" xml:space="preserve"><value>3. Never cache the control files</value></data>
+  <data name="Services_VersionCheckSetupStep3" xml:space="preserve"><value>The host and any reverse proxy or CDN must serve service-worker.js, service-worker-assets.js, blazor.boot.json and .webmanifest with no-store. Otherwise the version probe reads a stale manifest and never sees the new build.</value></data>
+  <data name="Services_VersionCheckSetupStep4Title" xml:space="preserve"><value>4. Register and surface it</value></data>
+  <data name="Services_VersionCheckSetupStep4" xml:space="preserve"><value>Register with UseServiceWorker = true, then in your layout call Start(), show an actionable toast on NewVersionAvailable and call ApplyUpdateAsync() from its action. Stop() after the first detection to end polling, and optionally change the toast in place with a progress bar (see the code below).</value></data>
   <data name="Api_IndexTitle" xml:space="preserve"><value>API Reference</value></data>
   <data name="Api_IndexSubtitle" xml:space="preserve"><value>Auto-generated parameter, event and method reference for every Flare component.</value></data>
   <data name="Api_FilterPlaceholder" xml:space="preserve"><value>Filter components…</value></data>

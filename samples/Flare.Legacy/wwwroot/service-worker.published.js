@@ -46,6 +46,13 @@ async function onActivate(event) {
     await Promise.all(cacheKeys
         .filter(key => key.startsWith(cacheNamePrefix) && key !== cacheName)
         .map(key => caches.delete(key)));
+
+    // Take control of already-open pages immediately. This is the one deviation from the stock Blazor
+    // worker, and it is what makes the on-demand update deterministic: when the page posts 'skipWaiting'
+    // the new worker activates AND claims this client, firing a single 'controllerchange' that the
+    // version-check script keys its reload on - so the reload is always served by the NEW worker and
+    // never lands back on the old one (the cause of the stale "dev"/old version after an update).
+    await self.clients.claim();
 }
 
 async function onFetch(event) {

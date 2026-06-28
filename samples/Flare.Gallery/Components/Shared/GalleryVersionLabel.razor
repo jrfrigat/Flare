@@ -22,6 +22,7 @@
 
 @code {
     private bool _updateAvailable;
+    private bool _disposed;
 
     // The build version reported by the service worker, or a "dev" placeholder when none is active.
     private string VersionText => VersionCheck.CurrentVersion ?? GalleryStrings.Settings_VersionDev;
@@ -34,16 +35,25 @@
 
     // The app-wide service starts in MainLayout and probes immediately; read the resulting baseline
     // once the first render has happened so the footer shows the running version without interaction.
+    // A single probe can transiently fail (offline blip, JS not ready yet) and the baseline, once the
+    // background loop later establishes it, is set silently - so retry a few times until the running
+    // version is known rather than getting stuck on the "dev" placeholder forever.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
-        try
+        for (var attempt = 0; attempt < 5 && !_disposed && VersionCheck.CurrentVersion is null; attempt++)
         {
-            await VersionCheck.CheckNowAsync();
-            RefreshUpdateFlag();
-            StateHasChanged();
+            try
+            {
+                await VersionCheck.CheckNowAsync();
+                RefreshUpdateFlag();
+                StateHasChanged();
+            }
+            catch { /* no service worker / JS unavailable (dev): keep the "dev" placeholder */ }
+
+            if (VersionCheck.CurrentVersion is not null) break;
+            try { await Task.Delay(2000); } catch { break; }
         }
-        catch { /* no service worker / JS unavailable (dev): keep the "dev" placeholder */ }
     }
 
     private Task OnNewVersionAsync(VersionCheckInfo info) => InvokeAsync(() =>
@@ -57,6 +67,7 @@
 
     public override void Dispose()
     {
+        _disposed = true;
         VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
         base.Dispose();
     }

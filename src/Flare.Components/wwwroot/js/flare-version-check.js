@@ -47,34 +47,46 @@ export async function check() {
     return await readDeployedVersion();
 }
 
-// Activate the pending worker and reload so the page runs the new version. The update prompt is
-// driven by the server's assets manifest, which flips to the new version the moment it is deployed -
-// usually while the new worker is still downloading its assets into reg.installing. Looking only at
-// reg.waiting would miss that worker and fall back to a plain reload that just re-serves the old
-// cache (the symptom: clicked update, nothing changed, no further prompts until a hard reload). So
-// accept either a waiting or an installing worker and drive it through to activation. Blazor's
-// default SW does not call clients.claim(), so we reload explicitly when the new worker reaches
-// 'activated' rather than relying on 'controllerchange'.
+// Activate the updated worker and reload onto it. The update prompt is driven by the server's assets
+// manifest, which flips to the new version the moment it is deployed - usually while the new worker is
+// still downloading its assets into reg.installing, which on a large app / slow link can take much
+// longer than ten seconds. The reliable, race-free signal that the new worker is actually serving this
+// page is 'controllerchange': because the worker's activate handler calls clients.claim(), posting
+// 'skipWaiting' drives install -> activate -> claim, which fires exactly one controllerchange here. We
+// reload only then, so the reload is ALWAYS served by the new worker and never lands back on the old
+// cache (the bug behind the stale "dev"/old version that previously needed a hard reload). There is
+// deliberately NO timed reload: a fixed timer would fire mid-install and re-serve the old worker.
 export async function applyUpdate() {
+    if (!('serviceWorker' in navigator)) { location.reload(); return; }
     const reg = await getRegistration();
     if (!reg) { location.reload(); return; }
 
-    try { await reg.update(); } catch { /* ignore */ }
-
-    const pending = reg.waiting || reg.installing;
-    if (!pending) { location.reload(); return; }
-
     let reloaded = false;
     const reloadOnce = () => { if (!reloaded) { reloaded = true; location.reload(); } };
+    navigator.serviceWorker.addEventListener('controllerchange', reloadOnce);
 
-    const pump = () => {
-        // Once installed the worker is 'waiting' - tell it to take over immediately.
-        if (pending.state === 'installed') pending.postMessage('skipWaiting');
-        // Once activated it is the controlling worker; reload to serve the new assets from its cache.
-        if (pending.state === 'activated') reloadOnce();
+    // Drive a worker to take over the moment it finishes installing. We may be called while it is still
+    // 'installing', so wait for 'installed' rather than acting on a timer. If it somehow reaches
+    // 'activated' without us seeing a controllerchange, reload directly as a fallback.
+    const drive = (worker) => {
+        if (!worker) return false;
+        const onState = () => {
+            if (worker.state === 'installed') worker.postMessage('skipWaiting');
+            else if (worker.state === 'activated') reloadOnce();
+        };
+        worker.addEventListener('statechange', onState);
+        onState(); // handle a worker already installed/activated when we attach
+        return true;
     };
-    pending.addEventListener('statechange', pump);
-    pump(); // handle a worker that is already installed/activated when we attach the listener
 
-    setTimeout(reloadOnce, 10000); // guarded safety net if a state transition is missed
+    try { await reg.update(); } catch { /* best-effort: a failed re-check still lets us drive any pending worker */ }
+
+    // Drive whichever worker is pending now (waiting takes precedence over installing), and any that
+    // appears later (update() can surface the new worker asynchronously via 'updatefound').
+    const hasPending = drive(reg.waiting) || drive(reg.installing);
+    reg.addEventListener('updatefound', () => drive(reg.installing));
+
+    // No updated worker exists and none is downloading: the worker already holds the latest it knows
+    // about, so a plain reload is the correct (and only) action.
+    if (!hasPending && !reg.installing) location.reload();
 }
