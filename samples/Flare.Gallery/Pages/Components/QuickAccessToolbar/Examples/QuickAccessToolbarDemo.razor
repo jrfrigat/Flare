@@ -1,0 +1,36 @@
+@using Flare.Components.IDE
+
+@* FlareQuickAccessToolbar: the Office "Quick Access Toolbar" - a compact strip of small icon
+   buttons, usually placed above or beside the ribbon. Purely structural; drop FlareButton items in. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+        <FlareQuickAccessToolbar>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save" OnClick="@(() => Set("Save"))">
+                <FlareIcon Name="save" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Undo" OnClick="@(() => Set("Undo"))">
+                <FlareIcon Name="undo" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Redo" OnClick="@(() => Set("Redo"))">
+                <FlareIcon Name="redo" />
+            </FlareButton>
+            <FlareRibbonSeparator />
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Print" OnClick="@(() => Set("Print"))">
+                <FlareIcon Name="print" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Email" OnClick="@(() => Set("Email"))">
+                <FlareIcon Name="mail" />
+            </FlareButton>
+        </FlareQuickAccessToolbar>
+    </div>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        Last command: <strong>@_status</strong>
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string _status = "(none)";
+
+    private void Set(string action) => _status = action;
+}

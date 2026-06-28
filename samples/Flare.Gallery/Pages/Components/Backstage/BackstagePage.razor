@@ -1,0 +1,11 @@
+@page "/components/backstage"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Ide_Backstage_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareBackstage" Package="Flare.Components.IDE">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Ide_Backstage_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Ide_Backstage_Desc</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection DemoType="typeof(Examples.BackstageDemo)" />

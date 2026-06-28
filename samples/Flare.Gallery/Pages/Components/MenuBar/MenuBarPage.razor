@@ -1,0 +1,11 @@
+@page "/components/menu-bar"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Ide_MenuBar_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareMenuBar" Package="Flare.Components.IDE">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Ide_MenuBar_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Ide_MenuBar_Desc</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection DemoType="typeof(Examples.MenuBarDemo)" />

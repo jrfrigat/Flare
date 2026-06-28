@@ -1,0 +1,11 @@
+@page "/components/tool-panel"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Ide_ToolPanel_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareToolPanel" Package="Flare.Components.IDE">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Ide_ToolPanel_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Ide_ToolPanel_Desc</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection DemoType="typeof(Examples.ToolPanelDemo)" />

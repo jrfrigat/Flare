@@ -1,24 +1,9 @@
 @using Flare.Components.IDE
 
-@* The three classic command strips, standalone: FlareQuickAccessToolbar (Office mini strip),
-   FlareMenuBar with FlareMenu dropdowns, and a FlareToolbar icon command bar with separators and a
-   small inline field. Toggle Dense to tighten the toolbar. *@
+@* FlareMenuBar: a thin horizontal bar of top-level menus (File / Edit / View). Each menu is a base
+   FlareMenu whose activator is a text button and whose items are FlareMenuItem entries. *@
 <FlareStack Gap="FlareSpacing.Small">
-    <FlareSwitch @bind-Value="_dense" Label="Dense toolbar" />
-
     <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
-        <FlareQuickAccessToolbar>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save" OnClick="@(() => Set("Save"))">
-                <FlareIcon Name="save" />
-            </FlareButton>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Undo" OnClick="@(() => Set("Undo"))">
-                <FlareIcon Name="undo" />
-            </FlareButton>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Redo" OnClick="@(() => Set("Redo"))">
-                <FlareIcon Name="redo" />
-            </FlareButton>
-        </FlareQuickAccessToolbar>
-
         <FlareMenuBar>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="File menu">
                 <Activator>
@@ -50,25 +35,6 @@
                 </ChildContent>
             </FlareMenu>
         </FlareMenuBar>
-
-        <FlareToolbar Dense="_dense">
-            <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
-                <LeadingIcon><FlareIcon Name="play_arrow" /></LeadingIcon>
-                <ChildContent>Start</ChildContent>
-            </FlareButton>
-            <FlareRibbonSeparator />
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
-                <FlareIcon Name="build" />
-            </FlareButton>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
-                <FlareIcon Name="bug_report" />
-            </FlareButton>
-            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
-                <FlareIcon Name="stop" />
-            </FlareButton>
-            <FlareRibbonSeparator />
-            <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" Style="width:180px;" />
-        </FlareToolbar>
     </div>
 
     <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
@@ -77,7 +43,6 @@
 </FlareStack>
 
 @code {
-    private bool _dense = true;
     private string _status = "(none)";
 
     private void Set(string action) => _status = action;

@@ -1,0 +1,11 @@
+@page "/components/ribbon"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Ide_Ribbon_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareRibbon" Package="Flare.Components.IDE">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Ide_Ribbon_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Ide_Ribbon_Desc</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection DemoType="typeof(Examples.RibbonDemo)" />
