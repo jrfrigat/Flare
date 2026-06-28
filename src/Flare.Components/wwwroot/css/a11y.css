@@ -26,6 +26,21 @@
     outline: none;
 }
 
+/* Blazor's FocusOnNavigate moves focus to the page heading after every navigation, adding
+   tabindex="-1" so the heading is programmatically focusable (screen-reader users land on the new
+   title). Chrome's :focus-visible heuristic then paints the focus ring on that heading on load,
+   even though it was not a keyboard interaction. A heading carrying tabindex="-1" is never in the
+   tab order, so suppress its ring; rings on real interactive controls (native-focusable / tabindex
+   0) are untouched. */
+h1[tabindex="-1"]:focus,
+h2[tabindex="-1"]:focus,
+h3[tabindex="-1"]:focus,
+h4[tabindex="-1"]:focus,
+h5[tabindex="-1"]:focus,
+h6[tabindex="-1"]:focus {
+    outline: none;
+}
+
 /* Flare interactive elements - explicit focus ring using theme token */
 .flare-btn:focus-visible,
 .flare-chip:focus-visible,
