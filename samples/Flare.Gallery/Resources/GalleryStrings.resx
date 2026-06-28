@@ -2355,6 +2355,15 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare is an open-source Blazor component library built with .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV5" xml:space="preserve">
+    <value>FlareNavMenu gains Header and Footer slots - a framed layout that pins a header and footer while the items scroll between them, and still collapses to a mini-rail
+Snackbars can update in place and show an indeterminate progress bar, so a "new version available" toast can morph into an "updating..." one
+IVersionCheckService now exposes CurrentVersion (the running build), distinct from the detected LatestVersion
+PWA on-demand update fixed: the reload is now driven by the service worker's controllerchange (clients.claim + skipWaiting), so an update always lands on the new build instead of the stale "dev"/previous version
+No more stray focus ring on the page heading after navigation (Blazor FocusOnNavigate + Chrome :focus-visible)
+Ribbon commands (Flare.Components.IDE) now share one height - icon-only, icon + label and dropdown buttons line up instead of floating at their own sizes
+Gallery: IDE components split into focused per-component pages, plus a new Settings page consolidating the theme switcher and language toggle</value>
+  </data>
   <data name="About_WhatsNewV4" xml:space="preserve">
     <value>Anti-FOUC startup splash is now revealed automatically by FlareThemeProvider - no flash of unstyled content and nothing to wire by hand
 The reveal waits for each theme stylesheet's load event and the document's web fonts (document.fonts.ready), then fades out after the first themed frame

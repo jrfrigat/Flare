@@ -3,6 +3,49 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.5] - 2026-06-28
+
+### Added
+- **`FlareNavMenu` framed layout** with new `Header` / `Footer` slots. Setting either slot pins that
+  region while `ChildContent` scrolls between them, filling the menu's container height; the pinned
+  regions hold ordinary nav items so they still collapse to icons in a mini-rail. New
+  `flare-nav-menu--framed` / `__header` / `__scroll` / `__footer` / `__meta` CSS classes.
+- **`IVersionCheckService.CurrentVersion`** - the version the app is currently running (in
+  service-worker mode the first version read from the deployed assets manifest, otherwise the
+  configured `CurrentVersion`), distinct from `LatestVersion`, which is only set once a newer build
+  is detected.
+- **Snackbar update-in-place**: a new `ISnackbarService.Show(SnackbarMessage)` overload that
+  preserves the message `Id`, an `Update(SnackbarMessage)` method and `OnUpdate` event that replace
+  a shown snackbar in place (keeping its position in the stack), and a `SnackbarMessage.ShowProgress`
+  flag that renders an indeterminate progress bar below the message - e.g. morphing a "new version
+  available" toast into an "updating..." one. New `flare-snackbar--with-progress` / `__progress`
+  classes.
+
+### Changed
+- **Ribbon command heights aligned** (`Flare.Components.IDE`): icon-only, icon + label and dropdown
+  commands now all stretch to the group height instead of floating at their intrinsic sizes; large
+  commands stack the icon over the label via `.flare-btn__label`, and the dropdown caret no longer
+  inherits the large icon size.
+- **Gallery: IDE components split into their own pages** (Backstage, DocumentTabs, FormulaBar,
+  MenuBar, PropertyGrid, QuickAccessToolbar, Ribbon, SheetTabs, StatusBar, ToolPanel, Toolbar) with
+  focused per-component demos, replacing the single combined IDE page.
+- **Gallery: new Settings page** consolidating the design-system / palette / mode theme switcher and
+  the language toggle, reachable from the nav menu, which now also surfaces the running Gallery
+  version.
+
+### Fixed
+- **A PWA on-demand update no longer lands back on the old version.** The service worker now calls
+  `clients.claim()` on activate, and `flare-version-check.js` drives the pending worker through
+  `skipWaiting` and reloads on the single resulting `controllerchange` instead of a fixed 10s timer -
+  so the reload is always served by the new worker and never falls back onto the stale cache (the
+  cause of the "dev"/previous version that previously needed a hard reload). The samples'
+  `service-worker.published.js` adds the matching `clients.claim()`.
+- **No stray focus ring on the page heading after navigation.** Blazor's `FocusOnNavigate` focuses
+  the page heading (`tabindex="-1"`) after every navigation, which Chrome's `:focus-visible`
+  heuristic painted a ring on even though it was not a keyboard interaction; the ring is now
+  suppressed on focused `h1`-`h6[tabindex="-1"]` headings, while real interactive controls keep
+  theirs.
+
 ## [0.0.4] - 2026-06-27
 
 ### Changed

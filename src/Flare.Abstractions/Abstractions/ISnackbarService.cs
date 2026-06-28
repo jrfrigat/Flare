@@ -52,8 +52,9 @@ public sealed record SnackbarMessage(
     bool ShowProgress = false);
 
 /// <summary>
-/// Imperative snackbar/toast service. Inject it and call <see cref="Show"/> to enqueue a
-/// notification rendered by the host snackbar component.
+/// Imperative snackbar/toast service. Inject it and call
+/// <see cref="Show(string, SnackbarSeverity, int, string?, System.Func{System.Threading.Tasks.Task}?, bool)"/>
+/// to enqueue a notification rendered by the host snackbar component.
 /// </summary>
 public interface ISnackbarService
 {
