@@ -88,6 +88,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку (список новинок v0.0.5, по одному пункту на строку).
+        /// </summary>
+        public static string About_WhatsNewV5 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV5", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку (список новинок v0.0.4, по одному пункту на строку).
         /// </summary>
         public static string About_WhatsNewV4 {
