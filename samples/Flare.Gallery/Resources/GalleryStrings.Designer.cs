@@ -4183,24 +4183,6 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Building blocks.
-        /// </summary>
-        public static string Ide_BuildingBlocks {
-            get {
-                return ResourceManager.GetString("Ide_BuildingBlocks", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Full compositions.
-        /// </summary>
-        public static string Ide_FullShells {
-            get {
-                return ResourceManager.GetString("Ide_FullShells", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Ribbon.
         /// </summary>
         public static string Ide_Ribbon_Title {
@@ -4255,20 +4237,56 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Command bars.
+        ///   Ищет локализованную строку, похожую на Menu Bar.
         /// </summary>
-        public static string Ide_CommandBars_Title {
+        public static string Ide_MenuBar_Title {
             get {
-                return ResourceManager.GetString("Ide_CommandBars_Title", resourceCulture);
+                return ResourceManager.GetString("Ide_MenuBar_Title", resourceCulture);
             }
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareQuickAccessToolbar, FlareMenuBar....
+        ///   Ищет локализованную строку, похожую на FlareMenuBar: a thin horizontal bar of top-level menus....
         /// </summary>
-        public static string Ide_CommandBars_Desc {
+        public static string Ide_MenuBar_Desc {
             get {
-                return ResourceManager.GetString("Ide_CommandBars_Desc", resourceCulture);
+                return ResourceManager.GetString("Ide_MenuBar_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Toolbar.
+        /// </summary>
+        public static string Ide_Toolbar_Title {
+            get {
+                return ResourceManager.GetString("Ide_Toolbar_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareToolbar: a classic icon command bar....
+        /// </summary>
+        public static string Ide_Toolbar_Desc {
+            get {
+                return ResourceManager.GetString("Ide_Toolbar_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Quick Access Toolbar.
+        /// </summary>
+        public static string Ide_Qat_Title {
+            get {
+                return ResourceManager.GetString("Ide_Qat_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareQuickAccessToolbar: the Office quick-access strip....
+        /// </summary>
+        public static string Ide_Qat_Desc {
+            get {
+                return ResourceManager.GetString("Ide_Qat_Desc", resourceCulture);
             }
         }
 

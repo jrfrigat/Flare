@@ -582,12 +582,6 @@
   <data name="Ide_Subtitle" xml:space="preserve">
     <value>Соберите оболочку IDE в стиле десктоп-приложения - лента, строка меню, вкладки документов, закрепляемые панели инструментов, изменяемый разделитель и строка состояния - целиком из компонентов Flare.</value>
   </data>
-  <data name="Ide_BuildingBlocks" xml:space="preserve">
-    <value>Строительные блоки</value>
-  </data>
-  <data name="Ide_FullShells" xml:space="preserve">
-    <value>Полные оболочки</value>
-  </data>
   <data name="Ide_Ribbon_Title" xml:space="preserve">
     <value>Лента</value>
   </data>
@@ -606,11 +600,23 @@
   <data name="Ide_ToolPanel_Desc" xml:space="preserve">
     <value>Автономная FlareToolPanel: закрепляемая сворачиваемая панель с заголовком и необязательной панелью инструментов в шапке. При сворачивании она сжимается до тонкой полосы. Внутри макета сворачиванием и всплывающей панелью управляет сам макет.</value>
   </data>
-  <data name="Ide_CommandBars_Title" xml:space="preserve">
-    <value>Командные панели</value>
+  <data name="Ide_MenuBar_Title" xml:space="preserve">
+    <value>Строка меню</value>
   </data>
-  <data name="Ide_CommandBars_Desc" xml:space="preserve">
-    <value>FlareQuickAccessToolbar, FlareMenuBar с выпадающими меню и панель команд FlareToolbar со значками, разделителями и встроенным полем. Переключите Dense, чтобы уплотнить панель.</value>
+  <data name="Ide_MenuBar_Desc" xml:space="preserve">
+    <value>FlareMenuBar: тонкая горизонтальная полоса меню верхнего уровня (Файл / Правка / Вид). Каждое меню - это базовый FlareMenu с пунктами FlareMenuItem.</value>
+  </data>
+  <data name="Ide_Toolbar_Title" xml:space="preserve">
+    <value>Панель команд</value>
+  </data>
+  <data name="Ide_Toolbar_Desc" xml:space="preserve">
+    <value>FlareToolbar: классическая панель команд со значками - один плотный ряд кнопок и небольших элементов с разделителями. Переключите Dense, чтобы уплотнить её.</value>
+  </data>
+  <data name="Ide_Qat_Title" xml:space="preserve">
+    <value>Панель быстрого доступа</value>
+  </data>
+  <data name="Ide_Qat_Desc" xml:space="preserve">
+    <value>FlareQuickAccessToolbar: панель быстрого доступа Office - компактный ряд небольших кнопок-значков над лентой или рядом с ней.</value>
   </data>
   <data name="Ide_StatusBar_Title" xml:space="preserve">
     <value>Строка состояния</value>

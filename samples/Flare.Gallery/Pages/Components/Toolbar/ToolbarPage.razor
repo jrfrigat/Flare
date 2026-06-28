@@ -1,0 +1,11 @@
+@page "/components/toolbar"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Ide_Toolbar_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareToolbar" Package="Flare.Components.IDE">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Ide_Toolbar_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Ide_Toolbar_Desc</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection DemoType="typeof(Examples.ToolbarDemo)" />

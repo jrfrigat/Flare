@@ -1,0 +1,39 @@
+@using Flare.Components.IDE
+
+@* FlareToolbar: a classic icon command bar (Visual Studio / Access). A single dense row of buttons
+   and small controls with in-row separators (FlareRibbonSeparator). Toggle Dense to tighten it. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareSwitch @bind-Value="_dense" Label="Dense" />
+
+    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+        <FlareToolbar Dense="_dense">
+            <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
+                <LeadingIcon><FlareIcon Name="play_arrow" /></LeadingIcon>
+                <ChildContent>Start</ChildContent>
+            </FlareButton>
+            <FlareRibbonSeparator />
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
+                <FlareIcon Name="build" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
+                <FlareIcon Name="bug_report" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
+                <FlareIcon Name="stop" />
+            </FlareButton>
+            <FlareRibbonSeparator />
+            <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" Style="width:180px;" />
+        </FlareToolbar>
+    </div>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        Last command: <strong>@_status</strong>
+    </FlareText>
+</FlareStack>
+
+@code {
+    private bool _dense = true;
+    private string _status = "(none)";
+
+    private void Set(string action) => _status = action;
+}

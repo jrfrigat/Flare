@@ -582,12 +582,6 @@
   <data name="Ide_Subtitle" xml:space="preserve">
     <value>Compose a desktop-style IDE shell - ribbon, menu bar, document tabs, dockable tool panels, resizable splitter, and status bar - entirely from Flare components.</value>
   </data>
-  <data name="Ide_BuildingBlocks" xml:space="preserve">
-    <value>Building blocks</value>
-  </data>
-  <data name="Ide_FullShells" xml:space="preserve">
-    <value>Full compositions</value>
-  </data>
   <data name="Ide_Ribbon_Title" xml:space="preserve">
     <value>Ribbon</value>
   </data>
@@ -606,11 +600,23 @@
   <data name="Ide_ToolPanel_Desc" xml:space="preserve">
     <value>Standalone FlareToolPanel: a titled, collapsible dockable panel with an optional header toolbar. Collapsing shrinks it to a thin rail. Inside a layout the layout owns collapse and the auto-hide flyout.</value>
   </data>
-  <data name="Ide_CommandBars_Title" xml:space="preserve">
-    <value>Command bars</value>
+  <data name="Ide_MenuBar_Title" xml:space="preserve">
+    <value>Menu Bar</value>
   </data>
-  <data name="Ide_CommandBars_Desc" xml:space="preserve">
-    <value>FlareQuickAccessToolbar, FlareMenuBar with dropdown menus, and a FlareToolbar icon command bar with separators and an inline field. Toggle Dense to tighten the toolbar.</value>
+  <data name="Ide_MenuBar_Desc" xml:space="preserve">
+    <value>FlareMenuBar: a thin horizontal bar of top-level menus (File / Edit / View). Each menu is a base FlareMenu whose items are FlareMenuItem entries.</value>
+  </data>
+  <data name="Ide_Toolbar_Title" xml:space="preserve">
+    <value>Toolbar</value>
+  </data>
+  <data name="Ide_Toolbar_Desc" xml:space="preserve">
+    <value>FlareToolbar: a classic icon command bar - a single dense row of buttons and small controls with in-row separators. Toggle Dense to tighten it.</value>
+  </data>
+  <data name="Ide_Qat_Title" xml:space="preserve">
+    <value>Quick Access Toolbar</value>
+  </data>
+  <data name="Ide_Qat_Desc" xml:space="preserve">
+    <value>FlareQuickAccessToolbar: the Office quick-access strip - a compact row of small icon buttons placed above or beside the ribbon.</value>
   </data>
   <data name="Ide_StatusBar_Title" xml:space="preserve">
     <value>Status bar</value>
