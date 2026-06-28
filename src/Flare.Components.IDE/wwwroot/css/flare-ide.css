@@ -263,13 +263,18 @@
 
 /* Each ribbon button is wrapped in a FlareTooltip; that wrapper is the flex item. Center small
    (icon) buttons vertically; let large (icon + label) buttons fill the group height. */
+/* Every command wrapper stretches to the full group height so small (icon-only) and large
+   (icon + label) buttons share one height and never float at different vertical offsets. */
 .flare-ribbon__group-content > .flare-tooltip {
     display: flex;
-    align-self: center;
+    align-self: stretch;
 }
 
-.flare-ribbon__group-content > .flare-tooltip:has(.flare-ribbon__button--large) {
-    align-self: stretch;
+/* Dropdown commands (FlareRibbonDropdown) nest the button inside a FlareMenu activator; carry the
+   full height through those wrappers so a dropdown matches the plain buttons beside it. */
+.flare-ribbon__group-content .flare-menu,
+.flare-ribbon__group-content .flare-menu__activator {
+    height: 100%;
 }
 
 .flare-ribbon__group-label {
@@ -286,12 +291,12 @@
     justify-content: center;
 }
 
-/* Compress the base FlareButton chrome so ribbon commands are icon-sized, not full buttons
-   (the default button padding made them look scattered). */
+/* Compress the base FlareButton chrome and let every command fill the group height, so all
+   buttons share one height instead of floating at their own intrinsic sizes. */
 .flare-ribbon__commands .flare-ribbon__button {
     min-width: 0;
     min-height: 0;
-    height: auto;
+    height: 100%;
     padding: var(--flare-spacing-2, 4px) var(--flare-spacing-3, 6px);
     gap: var(--flare-spacing-1, 2px);
     border-radius: var(--flare-shape-extra-small);
@@ -309,6 +314,22 @@
 
 .flare-ribbon__button--large .material-symbols-rounded {
     font-size: 1.5rem;
+}
+
+/* Large commands stack the icon over the label. FlareButton wraps the icon + label spans in a
+   single .flare-btn__label, so the column direction has to live on that wrapper, not the button. */
+.flare-ribbon__button--large .flare-btn__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The dropdown caret is a small affordance, not a primary icon - keep it from inheriting the large
+   icon size (which would inflate the label line and make a dropdown row taller than its neighbours). */
+.flare-ribbon__button .flare-ribbon__caret,
+.flare-ribbon__button--large .flare-ribbon__caret {
+    font-size: 0.75rem;
 }
 
 .flare-ribbon__button-label {
