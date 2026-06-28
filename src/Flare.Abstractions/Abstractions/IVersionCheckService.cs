@@ -17,6 +17,15 @@ public interface IVersionCheckService : IAsyncDisposable
     /// <summary>The most recently detected version, or null if no check has found one yet.</summary>
     string? LatestVersion { get; }
 
+    /// <summary>
+    /// The version the app is currently running. In service-worker mode this is the first version read
+    /// from the deployed assets manifest (null until that first successful probe); otherwise it is the
+    /// configured <see cref="FlareVersionCheckOptions.CurrentVersion"/>. Useful for surfacing the live
+    /// build in the UI - distinct from <see cref="LatestVersion"/>, which is only set once a newer
+    /// build is detected.
+    /// </summary>
+    string? CurrentVersion { get; }
+
     /// <summary>Whether the periodic polling loop is currently running.</summary>
     bool IsRunning { get; }
 

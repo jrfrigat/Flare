@@ -18,7 +18,7 @@ public abstract class LocalizedPage : ComponentBase, IDisposable
         InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         Lang.LanguageChanged -= OnLanguageChanged;
     }

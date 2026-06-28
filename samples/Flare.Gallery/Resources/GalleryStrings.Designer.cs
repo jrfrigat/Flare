@@ -6494,7 +6494,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_WithAction", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Language.
+        /// </summary>
+        public static string Settings_Language {
+            get {
+                return ResourceManager.GetString("Settings_Language", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Settings.
+        /// </summary>
+        public static string Settings_Title {
+            get {
+                return ResourceManager.GetString("Settings_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Update available.
+        /// </summary>
+        public static string Settings_UpdateAvailable {
+            get {
+                return ResourceManager.GetString("Settings_UpdateAvailable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Version.
+        /// </summary>
+        public static string Settings_Version {
+            get {
+                return ResourceManager.GetString("Settings_Version", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на dev.
+        /// </summary>
+        public static string Settings_VersionDev {
+            get {
+                return ResourceManager.GetString("Settings_VersionDev", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Keys, description &amp; OnActivated.
         /// </summary>

@@ -1,14 +1,39 @@
 @inherits LocalizedPage
+@implements IDisposable
 @inject IThemeService ThemeService
-@using Flare.Abstractions.Tokens
+@inject IVersionCheckService VersionCheck
 @using Flare.Theming
 
-<FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Text"
-             AriaLabel="@GalleryStrings.Theme_Settings" OnClick="@(() => _open = true)">
-    <LeadingIcon><FlareIcon Name="palette" /></LeadingIcon>
-</FlareButton>
+@* Drawer footer: a single "Settings" entry point that replaces the per-control buttons that used to
+   sit on the app bar. The button opens a panel with the theme axes (design system, palette, mode) and
+   the language toggle; beneath it the live service-worker build version is shown so a deploy/SW swap
+   is visible at a glance. Built only from Flare primitives + tokens (no gallery CSS). *@
+<FlareStack Gap="FlareSpacing.Small" Style="padding:0.75rem;">
+    <FlareDivider />
 
-<FlareDialog @bind-Visible="_open" Title="@GalleryStrings.Theme_Settings" Divider="true">
+    <FlareButton FullWidth="true" Size="ButtonSize.Sm" Variant="ButtonVariant.Tonal"
+                 AriaLabel="@GalleryStrings.Settings_Title" OnClick="@(() => _open = true)">
+        <LeadingIcon><FlareIcon Name="settings" /></LeadingIcon>
+        <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
+    </FlareButton>
+
+    @* Live build version (service-worker assets-manifest hash). Falls back to "dev" when no service
+       worker is active (e.g. local dotnet run), where there is no manifest to read. *@
+    <FlareStack Gap="FlareSpacing.XXSmall">
+        <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">@GalleryStrings.Settings_Version</FlareText>
+        <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant"
+                   Style="font-family:monospace;word-break:break-all;">@VersionLabel</FlareText>
+        @if (_updateAvailable)
+        {
+            <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
+                <FlareIcon Name="system_update" Size="0.9rem" Color="FlareColor.Warning" />
+                <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.Warning">@GalleryStrings.Settings_UpdateAvailable</FlareText>
+            </FlareStack>
+        }
+    </FlareStack>
+</FlareStack>
+
+<FlareDialog @bind-Visible="_open" Title="@GalleryStrings.Settings_Title" Divider="true">
     <FlareStack Gap="FlareSpacing.Large" Style="min-width:260px;max-height:70vh;overflow:auto;">
 
         <div>
@@ -77,12 +102,60 @@
             </FlareStack>
         </div>
 
+        <div>
+            <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.5rem;display:block;">@GalleryStrings.Settings_Language</FlareText>
+            <FlareStack Row Wrap Gap="FlareSpacing.Small">
+                @foreach (var (code, displayName) in LanguageService.SupportedCultures)
+                {
+                    var c = code;
+                    <FlareButton Size="ButtonSize.Sm"
+                                 Variant="@(Lang.CurrentCulture == c ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                                 OnClick="@(() => Lang.SetCultureAsync(c))">
+                        @displayName
+                    </FlareButton>
+                }
+            </FlareStack>
+        </div>
+
     </FlareStack>
 </FlareDialog>
 
 @code {
     private bool _open;
     private string _seed = "#7B1FA2";
+    private bool _updateAvailable;
+
+    // The build version reported by the service worker, or a "dev" placeholder when none is active.
+    private string VersionLabel => VersionCheck.CurrentVersion ?? GalleryStrings.Settings_VersionDev;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized(); // LocalizedPage: subscribe to language changes
+        VersionCheck.NewVersionAvailable += OnNewVersionAsync;
+    }
+
+    // The app-wide service starts in MainLayout and probes immediately; read the resulting baseline
+    // once the first render has happened so the footer shows the running version without a manual open.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            await VersionCheck.CheckNowAsync();
+            RefreshUpdateFlag();
+            StateHasChanged();
+        }
+        catch { /* no service worker / JS unavailable (dev): keep the "dev" placeholder */ }
+    }
+
+    private Task OnNewVersionAsync(VersionCheckInfo info) => InvokeAsync(() =>
+    {
+        RefreshUpdateFlag();
+        StateHasChanged();
+    });
+
+    private void RefreshUpdateFlag() =>
+        _updateAvailable = VersionCheck.LatestVersion is { } latest && latest != VersionCheck.CurrentVersion;
 
     private async Task GenerateAsync()
     {
@@ -114,5 +187,11 @@
     {
         await ThemeService.SetModeAsync(m);
         StateHasChanged();
+    }
+
+    public override void Dispose()
+    {
+        VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+        base.Dispose();
     }
 }

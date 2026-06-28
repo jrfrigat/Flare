@@ -1794,6 +1794,21 @@
   <data name="Theme_Settings" xml:space="preserve">
     <value>Настройки темы</value>
   </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Settings_Version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="Settings_VersionDev" xml:space="preserve">
+    <value>dev</value>
+  </data>
+  <data name="Settings_UpdateAvailable" xml:space="preserve">
+    <value>Доступно обновление</value>
+  </data>
   <data name="Theme_DesignSystem" xml:space="preserve">
     <value>Дизайн-система</value>
   </data>

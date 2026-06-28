@@ -18,15 +18,19 @@
                 <FlareSpacer />
                 <GallerySearch />
                 <FlareSpacer />
-                <LanguageToggle />
-                <FlareDivider Vertical="true" />
-                <ThemeSwitcher />
             </FlareStack>
         </FlareLayoutAppBar>
     </AppBar>
     <Drawer>
         <FlareLayoutDrawer>
-            <NavMenu />
+            @* Column shell: the nav scrolls in the growing region while the settings entry point +
+               build version stay pinned to the bottom of the drawer, always reachable. *@
+            <FlareStack Gap="FlareSpacing.None" Style="height:100%;">
+                <div style="flex:1 1 auto;min-height:0;overflow-y:auto;">
+                    <NavMenu />
+                </div>
+                <GallerySettings />
+            </FlareStack>
         </FlareLayoutDrawer>
     </Drawer>
     <Content>
