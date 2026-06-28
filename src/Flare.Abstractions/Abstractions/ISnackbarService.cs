@@ -40,6 +40,7 @@ public enum SnackbarPosition
 /// <param name="ActionText">Optional action-button label; null hides the action.</param>
 /// <param name="OnAction">Optional callback invoked when the action button is pressed.</param>
 /// <param name="ShowClose">Whether a manual close button is shown.</param>
+/// <param name="ShowProgress">When true, an indeterminate progress bar is shown below the message (e.g. for an in-progress action).</param>
 public sealed record SnackbarMessage(
     Guid Id,
     string Text,
@@ -47,7 +48,8 @@ public sealed record SnackbarMessage(
     int DurationMs,
     string? ActionText = null,
     Func<Task>? OnAction = null,
-    bool ShowClose = true);
+    bool ShowClose = true,
+    bool ShowProgress = false);
 
 /// <summary>
 /// Imperative snackbar/toast service. Inject it and call <see cref="Show"/> to enqueue a
@@ -58,6 +60,9 @@ public interface ISnackbarService
     /// <summary>Raised when a new snackbar should be displayed.</summary>
     event Action<SnackbarMessage>? OnShow;
 
+    /// <summary>Raised when an existing snackbar (matched by <see cref="SnackbarMessage.Id"/>) should be replaced in place.</summary>
+    event Action<SnackbarMessage>? OnUpdate;
+
     /// <summary>Enqueues a snackbar notification.</summary>
     void Show(string text,
               SnackbarSeverity severity = SnackbarSeverity.Normal,
@@ -65,4 +70,17 @@ public interface ISnackbarService
               string? actionText = null,
               Func<Task>? onAction = null,
               bool showClose = true);
+
+    /// <summary>
+    /// Enqueues a pre-built snackbar. Use this (rather than the string overload) when you need to keep
+    /// the <see cref="SnackbarMessage.Id"/> so the notification can later be changed in place via
+    /// <see cref="Update"/> - e.g. morphing a "new version available" notice into an "updating" one.
+    /// </summary>
+    void Show(SnackbarMessage message);
+
+    /// <summary>
+    /// Replaces the currently shown snackbar that has the same <see cref="SnackbarMessage.Id"/> in
+    /// place, keeping its position in the stack (no dismiss-and-re-add). No-op if it is not shown.
+    /// </summary>
+    void Update(SnackbarMessage message);
 }

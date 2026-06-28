@@ -21,6 +21,10 @@ public static class Snackbar
     public const string Text = "flare-snackbar__text";
     /// <summary>The <c>flare-snackbar__actions</c> CSS class.</summary>
     public const string Actions = "flare-snackbar__actions";
+    /// <summary>The <c>flare-snackbar--with-progress</c> modifier class (wraps content so a progress bar fills a second row).</summary>
+    public const string WithProgress = "flare-snackbar--with-progress";
+    /// <summary>The <c>flare-snackbar__progress</c> CSS class (full-width progress bar shown below the message).</summary>
+    public const string Progress = "flare-snackbar__progress";
     /// <summary>The <c>flare-snackbar__action-btn</c> CSS class.</summary>
     public const string ActionBtn = "flare-snackbar__action-btn";
     /// <summary>The <c>flare-snackbar__close-btn</c> CSS class.</summary>

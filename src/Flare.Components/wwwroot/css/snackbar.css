@@ -92,6 +92,19 @@
   flex: 1;
 }
 
+/* With a progress bar the row wraps so the bar fills a full-width second line below the message,
+   used by an in-place state change (e.g. "new version" -> "updating..."). */
+.flare-snackbar--with-progress {
+  flex-wrap: wrap;
+}
+
+.flare-snackbar__progress {
+  flex-basis: 100%;
+  width: 100%;
+  /* Drive the indicator with the snackbar's own text color so it contrasts on every surface. */
+  --fc-main: currentColor;
+}
+
 .flare-snackbar__actions {
   display: flex;
   align-items: center;

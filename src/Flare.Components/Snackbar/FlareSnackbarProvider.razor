@@ -6,7 +6,7 @@
     @foreach (var msg in _messages)
     {
         var m = msg;
-        <div class="@Css.Classes.Snackbar.Root flare-snackbar--@m.Severity.ToString().ToLowerInvariant()"
+        <div class="@BuildCssClass(Css.Classes.Snackbar.Root, $"flare-snackbar--{m.Severity.ToString().ToLowerInvariant()}", m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null)"
              role="status">
             <span class="@Css.Classes.Snackbar.Text">@m.Text</span>
             <div class="@Css.Classes.Snackbar.Actions">
@@ -24,6 +24,14 @@
                             @onclick="@(() => Dismiss(m.Id))">✕</button>
                 }
             </div>
+            @if (m.ShowProgress)
+            {
+                @* Indeterminate bar; --fc-main is set to currentColor on the wrapper (snackbar.css) so it
+                   stays legible on every snackbar surface without hard-coding a role color. *@
+                <div class="@Css.Classes.Snackbar.Progress">
+                    <FlareProgress Variant="ProgressVariant.Linear" />
+                </div>
+            }
         </div>
     }
 </div>
@@ -52,6 +60,7 @@
     {
         base.OnInitialized();
         SnackbarService.OnShow += HandleShow;
+        SnackbarService.OnUpdate += HandleUpdate;
     }
 
     private void HandleShow(SnackbarMessage msg)
@@ -72,6 +81,16 @@
         });
     }
 
+    // Replace a shown message in place (same list slot), so e.g. a "new version" notice can morph into
+    // an "updating..." one without the dismiss-and-re-add flicker. No-op if it is no longer shown.
+    private void HandleUpdate(SnackbarMessage msg) => InvokeAsync(() =>
+    {
+        var index = _messages.FindIndex(m => m.Id == msg.Id);
+        if (index < 0) return;
+        _messages[index] = msg;
+        StateHasChanged();
+    });
+
     private void Dismiss(Guid id)
     {
         var msg = _messages.FirstOrDefault(m => m.Id == id);
@@ -85,6 +104,7 @@
     public override async ValueTask DisposeAsync()
     {
         SnackbarService.OnShow -= HandleShow;
+        SnackbarService.OnUpdate -= HandleUpdate;
         await base.DisposeAsync();
     }
 }
