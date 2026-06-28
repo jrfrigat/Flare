@@ -1,0 +1,86 @@
+@using Flare.Components.IDE
+
+@* Standalone FlareRibbon: tabbed command groups with large (icon + label) and small (icon-only)
+   buttons, an in-group separator, and a dropdown gallery. Toggle SizeMode to collapse the whole
+   ribbon to its tab strip. Built only from Flare + Flare.Components.IDE. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareSwitch Value="_collapsed" ValueChanged="OnCollapsedChanged"
+                 Label="Collapse to tabs only (SizeMode)" />
+
+    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+        <FlareRibbon SizeMode="@(_collapsed ? RibbonSizeMode.Collapsed : RibbonSizeMode.Full)"
+                     OnTabChanged="OnTab">
+            <FlareRibbonTab Title="Home">
+                <FlareRibbonGroup Label="Clipboard">
+                    <FlareRibbonButton Icon="content_paste" Label="Paste" Tooltip="Paste" IsLarge="true"
+                                       OnClick="@(() => Set("Paste"))" />
+                    <FlareRibbonButton Icon="content_cut" Tooltip="Cut" OnClick="@(() => Set("Cut"))" />
+                    <FlareRibbonButton Icon="content_copy" Tooltip="Copy" OnClick="@(() => Set("Copy"))" />
+                </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Font">
+                    <FlareRibbonButton Icon="format_bold" Tooltip="Bold" OnClick="@(() => Set("Bold"))" />
+                    <FlareRibbonButton Icon="format_italic" Tooltip="Italic" OnClick="@(() => Set("Italic"))" />
+                    <FlareRibbonButton Icon="format_underlined" Tooltip="Underline" OnClick="@(() => Set("Underline"))" />
+                    <FlareRibbonSeparator />
+                    <FlareRibbonDropdown Icon="format_color_text" Tooltip="Font color">
+                        <MenuContent>
+                            <FlareMenuItem Icon="circle" OnClick="@(() => Set("Color: Red"))">Red</FlareMenuItem>
+                            <FlareMenuItem Icon="circle" OnClick="@(() => Set("Color: Green"))">Green</FlareMenuItem>
+                            <FlareMenuItem Icon="circle" OnClick="@(() => Set("Color: Blue"))">Blue</FlareMenuItem>
+                        </MenuContent>
+                    </FlareRibbonDropdown>
+                </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Styles">
+                    <FlareRibbonDropdown Icon="palette" Label="Cell Styles" Tooltip="Cell styles" IsLarge="true">
+                        <MenuContent>
+                            <FlareMenuItem OnClick="@(() => Set("Style: Normal"))">Normal</FlareMenuItem>
+                            <FlareMenuItem OnClick="@(() => Set("Style: Heading 1"))">Heading 1</FlareMenuItem>
+                            <FlareMenuItem OnClick="@(() => Set("Style: Currency"))">Currency</FlareMenuItem>
+                        </MenuContent>
+                    </FlareRibbonDropdown>
+                </FlareRibbonGroup>
+            </FlareRibbonTab>
+            <FlareRibbonTab Title="Insert">
+                <FlareRibbonGroup Label="Tables">
+                    <FlareRibbonButton Icon="table" Label="Table" Tooltip="Insert table" IsLarge="true"
+                                       OnClick="@(() => Set("Insert table"))" />
+                    <FlareRibbonButton Icon="pivot_table_chart" Label="PivotTable" Tooltip="PivotTable" IsLarge="true"
+                                       OnClick="@(() => Set("Insert PivotTable"))" />
+                </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Charts">
+                    <FlareRibbonButton Icon="bar_chart" Tooltip="Column chart" OnClick="@(() => Set("Column chart"))" />
+                    <FlareRibbonButton Icon="show_chart" Tooltip="Line chart" OnClick="@(() => Set("Line chart"))" />
+                    <FlareRibbonButton Icon="pie_chart" Tooltip="Pie chart" OnClick="@(() => Set("Pie chart"))" />
+                </FlareRibbonGroup>
+            </FlareRibbonTab>
+            <FlareRibbonTab Title="View">
+                <FlareRibbonGroup Label="Zoom">
+                    <FlareRibbonButton Icon="zoom_in" Label="Zoom In" Tooltip="Zoom in" IsLarge="true"
+                                       OnClick="@(() => Set("Zoom in"))" />
+                    <FlareRibbonButton Icon="zoom_out" Label="Zoom Out" Tooltip="Zoom out" IsLarge="true"
+                                       OnClick="@(() => Set("Zoom out"))" />
+                </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Show">
+                    <FlareRibbonButton Icon="grid_on" Tooltip="Grid lines" OnClick="@(() => Set("Toggle grid lines"))" />
+                    <FlareRibbonButton Icon="wrap_text" Tooltip="Word wrap" OnClick="@(() => Set("Toggle word wrap"))" />
+                </FlareRibbonGroup>
+                <FlareRibbonGroup Label="Disabled">
+                    <FlareRibbonButton Icon="lock" Label="Locked" Tooltip="Disabled command" IsLarge="true" Disabled="true" />
+                </FlareRibbonGroup>
+            </FlareRibbonTab>
+        </FlareRibbon>
+    </div>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        Last command: <strong>@_status</strong>
+    </FlareText>
+</FlareStack>
+
+@code {
+    private bool _collapsed;
+    private string _status = "(none)";
+
+    private void OnCollapsedChanged(bool value) => _collapsed = value;
+    private void Set(string action) => _status = action;
+    private void OnTab(string? title) => _status = $"Switched to {title} tab";
+}

@@ -1,0 +1,72 @@
+@using Flare.Components.IDE
+
+@* FlareBackstage / FlareBackstageItem: the Office "File" menu - a full-surface overlay with a left
+   navigation rail and a content area. Open it with the File button; pick a rail entry to switch the
+   content; the back arrow raises OpenChanged(false). The overlay fills the nearest positioned box. *@
+<div style="position:relative;height:340px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;background:var(--flare-color-surface);">
+    <div style="padding:0.75rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--flare-color-outline-variant);">
+        <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="@(() => _open = true)">
+            <LeadingIcon><FlareIcon Name="folder_open" /></LeadingIcon>
+            <ChildContent>File</ChildContent>
+        </FlareButton>
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+            The document surface sits behind the backstage.
+        </FlareText>
+    </div>
+
+    <div style="padding:1rem;">
+        <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+            Document content...
+        </FlareText>
+    </div>
+
+    <FlareBackstage @bind-Open="_open">
+        <NavContent>
+            <FlareBackstageItem Icon="note_add" Label="New" Active="_selected == BackstageNav.New"
+                                OnClick="@(() => _selected = BackstageNav.New)" />
+            <FlareBackstageItem Icon="folder_open" Label="Open" Active="_selected == BackstageNav.Open"
+                                OnClick="@(() => _selected = BackstageNav.Open)" />
+            <FlareBackstageItem Icon="save" Label="Save As" Active="_selected == BackstageNav.Save"
+                                OnClick="@(() => _selected = BackstageNav.Save)" />
+            <FlareBackstageItem Icon="print" Label="Print" Active="_selected == BackstageNav.Print"
+                                OnClick="@(() => _selected = BackstageNav.Print)" />
+            <FlareBackstageItem Icon="settings" Label="Options" Active="_selected == BackstageNav.Options"
+                                OnClick="@(() => _selected = BackstageNav.Options)" />
+        </NavContent>
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.HeadlineSmall">@Heading</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+                    @Body
+                </FlareText>
+            </FlareStack>
+        </ChildContent>
+    </FlareBackstage>
+</div>
+
+@code {
+    private enum BackstageNav { New, Open, Save, Print, Options }
+
+    private bool _open;
+    private BackstageNav _selected = BackstageNav.New;
+
+    private string Heading => _selected switch
+    {
+        BackstageNav.New => "New",
+        BackstageNav.Open => "Open",
+        BackstageNav.Save => "Save As",
+        BackstageNav.Print => "Print",
+        BackstageNav.Options => "Options",
+        _ => "",
+    };
+
+    private string Body => _selected switch
+    {
+        BackstageNav.New => "Choose a template to start a new document.",
+        BackstageNav.Open => "Browse recent files or pick a location.",
+        BackstageNav.Save => "Pick a folder and format to save a copy.",
+        BackstageNav.Print => "Preview the layout and choose a printer.",
+        BackstageNav.Options => "Configure the editor, theme, and shortcuts.",
+        _ => "",
+    };
+}

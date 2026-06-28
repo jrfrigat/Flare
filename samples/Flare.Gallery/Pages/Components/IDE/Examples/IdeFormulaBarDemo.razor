@@ -1,0 +1,86 @@
+@using Flare.Components.IDE
+
+@* FlareFormulaBar: the Excel name box + fx marker + formula editor, built on FlareField. Both the
+   name box (CellRef) and the editor (Value) are two-way bound. Click a cell to select it - the bar
+   loads that cell; edit the formula and it writes back to the selected cell. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+        <FlareFormulaBar CellRef="_cellRef" CellRefChanged="OnCellRefChanged"
+                         Value="_formula" ValueChanged="OnFormulaChanged"
+                         Placeholder="Enter a value or =formula" />
+        <table style="border-collapse:collapse;width:100%;font-size:0.85rem;">
+            <thead>
+                <tr>
+                    <th style="@_headStyle;width:2rem;"></th>
+                    @foreach (var col in _cols)
+                    {
+                        <th style="@_headStyle">@col</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in _rows)
+                {
+                    <tr>
+                        <th style="@_headStyle">@row</th>
+                        @foreach (var col in _cols)
+                        {
+                            var cell = $"{col}{row}";
+                            var selected = cell == _cellRef;
+                            <td style="@CellStyle(selected)" @onclick="@(() => Select(cell))">
+                                @_cells.GetValueOrDefault(cell, "")
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        Selected cell: <strong>@_cellRef</strong>
+    </FlareText>
+</FlareStack>
+
+@code {
+    private readonly string[] _cols = ["A", "B", "C"];
+    private readonly int[] _rows = [1, 2, 3];
+
+    private string? _cellRef = "A1";
+    private string? _formula = "Revenue";
+
+    private readonly Dictionary<string, string> _cells = new()
+    {
+        ["A1"] = "Revenue", ["B1"] = "Cost", ["C1"] = "Profit",
+        ["A2"] = "1200", ["B2"] = "800", ["C2"] = "=A2-B2",
+    };
+
+    private void Select(string cell)
+    {
+        _cellRef = cell;
+        _formula = _cells.GetValueOrDefault(cell, "");
+    }
+
+    private void OnCellRefChanged(string? value)
+    {
+        _cellRef = value;
+        _formula = _cells.GetValueOrDefault(value ?? "", "");
+    }
+
+    private void OnFormulaChanged(string? value)
+    {
+        _formula = value;
+        if (!string.IsNullOrEmpty(_cellRef))
+            _cells[_cellRef] = value ?? "";
+    }
+
+    private const string _headStyle =
+        "background:var(--flare-color-surface-container);color:var(--flare-color-on-surface-variant);" +
+        "border:1px solid var(--flare-color-outline-variant);padding:0.25rem 0.5rem;text-align:center;font-weight:500;";
+
+    private static string CellStyle(bool selected) =>
+        "border:1px solid var(--flare-color-outline-variant);padding:0.25rem 0.5rem;cursor:pointer;" +
+        (selected
+            ? "outline:2px solid var(--flare-color-primary);outline-offset:-2px;background:var(--flare-color-primary-container);"
+            : "");
+}

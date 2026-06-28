@@ -1,0 +1,48 @@
+@using Flare.Components.IDE
+
+@* FlareStatusBar: a three-section bar (LeftContent / CenterContent / RightContent). Each slot is a
+   free render fragment, so it hosts plain text, icons, or interactive controls. Here the buttons
+   drive the values live. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+        <FlareStatusBar>
+            <LeftContent>
+                <span style="display:inline-flex;align-items:center;gap:0.35rem;">
+                    <FlareIcon Name="account_tree" Size="1rem" /> @_branch
+                </span>
+                <span>Ln @_line, Col @_col</span>
+            </LeftContent>
+            <CenterContent>@_message</CenterContent>
+            <RightContent>
+                <span>Spaces: @_indent</span>
+                <span>@_encoding</span>
+                <span>C#</span>
+            </RightContent>
+        </FlareStatusBar>
+    </div>
+
+    <FlareStack Row Gap="FlareSpacing.Small" Wrap>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="MoveCursor">Move cursor</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="@(() => _message = "Build succeeded")">Report build</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="ToggleEncoding">Toggle encoding</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="@(() => _branch = _branch == "main" ? "feature/ide" : "main")">Switch branch</FlareButton>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private string _branch = "main";
+    private int _line = 1;
+    private int _col = 1;
+    private int _indent = 4;
+    private string _encoding = "UTF-8";
+    private string _message = "Ready";
+
+    private void MoveCursor()
+    {
+        _line = Random.Shared.Next(1, 240);
+        _col = Random.Shared.Next(1, 80);
+        _message = $"Moved to line {_line}";
+    }
+
+    private void ToggleEncoding() => _encoding = _encoding == "UTF-8" ? "UTF-16 LE" : "UTF-8";
+}
