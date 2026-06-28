@@ -2494,6 +2494,16 @@ MarkdownParser: защита от vbscript/data-uri/expression()/опасных 
   <data name="Services_VersionCheckUpdating" xml:space="preserve"><value>Обновление...</value></data>
   <data name="Services_VersionCheckUpdatedTo" xml:space="preserve"><value>Обновлено до</value></data>
   <data name="Services_VersionCheckSimNote" xml:space="preserve"><value>Демо-симуляция: локальный пробник сообщает о новой версии через пару проверок, чтобы показать полный цикл (актуально -&gt; новая версия -&gt; обновление) без публикации новой сборки.</value></data>
+  <data name="Services_VersionCheckSetupTitle" xml:space="preserve"><value>Настройка: чтобы автообновление работало полностью</value></data>
+  <data name="Services_VersionCheckSetupIntro" xml:space="preserve"><value>В режиме service worker сервис сам регистрирует worker и применяет обновление. От вас нужны только сам PWA service worker, одна небольшая правка в нём и корректные заголовки кэширования на хосте.</value></data>
+  <data name="Services_VersionCheckSetupStep1Title" xml:space="preserve"><value>1. Включите PWA service worker</value></data>
+  <data name="Services_VersionCheckSetupStep1" xml:space="preserve"><value>Включите офлайн-поддержку Blazor в WASM-проекте, чтобы сборка создавала service-worker.js и service-worker-assets.js - манифест ресурсов, версия-хэш которого меняется при каждой публикации (именно его читает пробник).</value></data>
+  <data name="Services_VersionCheckSetupStep2Title" xml:space="preserve"><value>2. Добавьте clients.claim() в worker (обязательно)</value></data>
+  <data name="Services_VersionCheckSetupStep2" xml:space="preserve"><value>Это единственное отличие от стандартного worker Blazor. Вызов self.clients.claim() в обработчике activate позволяет странице перезагрузиться на новый worker сразу после его активации (через controllerchange). Без этого перезагрузку может обслужить старый worker, и останется устаревшая или «dev» версия, которая лечится только Ctrl+Shift+R.</value></data>
+  <data name="Services_VersionCheckSetupStep3Title" xml:space="preserve"><value>3. Не кэшируйте управляющие файлы</value></data>
+  <data name="Services_VersionCheckSetupStep3" xml:space="preserve"><value>Хост и любой обратный прокси или CDN должны отдавать service-worker.js, service-worker-assets.js, blazor.boot.json и .webmanifest с no-store. Иначе пробник версии читает устаревший манифест и не видит новую сборку.</value></data>
+  <data name="Services_VersionCheckSetupStep4Title" xml:space="preserve"><value>4. Зарегистрируйте и покажите пользователю</value></data>
+  <data name="Services_VersionCheckSetupStep4" xml:space="preserve"><value>Зарегистрируйте с UseServiceWorker = true, затем в layout вызовите Start(), показывайте действенный toast по NewVersionAvailable и вызывайте ApplyUpdateAsync() из его действия. Вызовите Stop() после первого обнаружения, чтобы остановить опрос, и при желании меняйте toast на месте с progress bar (см. код ниже).</value></data>
   <data name="Api_IndexTitle" xml:space="preserve"><value>Справочник API</value></data>
   <data name="Api_IndexSubtitle" xml:space="preserve"><value>Автогенерируемый справочник параметров, событий и методов для всех компонентов Flare.</value></data>
   <data name="Api_FilterPlaceholder" xml:space="preserve"><value>Фильтр компонентов…</value></data>
