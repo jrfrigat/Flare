@@ -4181,7 +4181,187 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Ide_Title", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Building blocks.
+        /// </summary>
+        public static string Ide_BuildingBlocks {
+            get {
+                return ResourceManager.GetString("Ide_BuildingBlocks", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Full compositions.
+        /// </summary>
+        public static string Ide_FullShells {
+            get {
+                return ResourceManager.GetString("Ide_FullShells", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ribbon.
+        /// </summary>
+        public static string Ide_Ribbon_Title {
+            get {
+                return ResourceManager.GetString("Ide_Ribbon_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareRibbon with tabbed command groups....
+        /// </summary>
+        public static string Ide_Ribbon_Desc {
+            get {
+                return ResourceManager.GetString("Ide_Ribbon_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Document tabs.
+        /// </summary>
+        public static string Ide_DocTabs_Title {
+            get {
+                return ResourceManager.GetString("Ide_DocTabs_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Editor-style FlareDocumentTabs....
+        /// </summary>
+        public static string Ide_DocTabs_Desc {
+            get {
+                return ResourceManager.GetString("Ide_DocTabs_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tool panel.
+        /// </summary>
+        public static string Ide_ToolPanel_Title {
+            get {
+                return ResourceManager.GetString("Ide_ToolPanel_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Standalone FlareToolPanel....
+        /// </summary>
+        public static string Ide_ToolPanel_Desc {
+            get {
+                return ResourceManager.GetString("Ide_ToolPanel_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Command bars.
+        /// </summary>
+        public static string Ide_CommandBars_Title {
+            get {
+                return ResourceManager.GetString("Ide_CommandBars_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareQuickAccessToolbar, FlareMenuBar....
+        /// </summary>
+        public static string Ide_CommandBars_Desc {
+            get {
+                return ResourceManager.GetString("Ide_CommandBars_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Status bar.
+        /// </summary>
+        public static string Ide_StatusBar_Title {
+            get {
+                return ResourceManager.GetString("Ide_StatusBar_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareStatusBar with three free-form sections....
+        /// </summary>
+        public static string Ide_StatusBar_Desc {
+            get {
+                return ResourceManager.GetString("Ide_StatusBar_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Property grid.
+        /// </summary>
+        public static string Ide_PropertyGrid_Title {
+            get {
+                return ResourceManager.GetString("Ide_PropertyGrid_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlarePropertyGrid rows....
+        /// </summary>
+        public static string Ide_PropertyGrid_Desc {
+            get {
+                return ResourceManager.GetString("Ide_PropertyGrid_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Backstage (File menu).
+        /// </summary>
+        public static string Ide_Backstage_Title {
+            get {
+                return ResourceManager.GetString("Ide_Backstage_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareBackstage: a full-surface File overlay....
+        /// </summary>
+        public static string Ide_Backstage_Desc {
+            get {
+                return ResourceManager.GetString("Ide_Backstage_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Formula bar.
+        /// </summary>
+        public static string Ide_FormulaBar_Title {
+            get {
+                return ResourceManager.GetString("Ide_FormulaBar_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareFormulaBar (Excel name box + fx + editor)....
+        /// </summary>
+        public static string Ide_FormulaBar_Desc {
+            get {
+                return ResourceManager.GetString("Ide_FormulaBar_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sheet tabs.
+        /// </summary>
+        public static string Ide_SheetTabs_Title {
+            get {
+                return ResourceManager.GetString("Ide_SheetTabs_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareSheetTabs - the controlled Excel sheet-tab strip....
+        /// </summary>
+        public static string Ide_SheetTabs_Desc {
+            get {
+                return ResourceManager.GetString("Ide_SheetTabs_Desc", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Aspect Ratio &amp; Fluid.
         /// </summary>

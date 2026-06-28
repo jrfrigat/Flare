@@ -1,0 +1,58 @@
+@using Flare.Components.IDE
+
+@* Standalone FlareToolPanel (outside a layout): a titled, collapsible dockable panel with an
+   optional header toolbar (ShowToolbar + ToolbarContent). Collapsing shrinks the panel to a thin
+   rail; bind Collapsed to drive it. Inside a FlareIdeLayout the layout owns collapse and the
+   auto-hide flyout instead - see the Full IDE Layout example. *@
+<div style="display:flex;gap:0.75rem;height:280px;align-items:stretch;">
+    <FlareToolPanel Title="Explorer" ShowToolbar="true"
+                    @bind-Collapsed="_explorerCollapsed"
+                    Style="width:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
+        <ToolbarContent>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Refresh">
+                <FlareIcon Name="refresh" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Collapse all">
+                <FlareIcon Name="unfold_less" />
+            </FlareButton>
+        </ToolbarContent>
+        <ChildContent>
+            <FlareTreeView AriaLabel="Explorer">
+                <FlareTreeItem Label="src" Icon="folder" Expanded="true">
+                    <FlareTreeItem Label="Program.cs" Icon="description" />
+                    <FlareTreeItem Label="App.razor" Icon="code" />
+                </FlareTreeItem>
+                <FlareTreeItem Label="wwwroot" Icon="folder" />
+                <FlareTreeItem Label="README.md" Icon="article" />
+            </FlareTreeView>
+        </ChildContent>
+    </FlareToolPanel>
+
+    <FlareToolPanel Title="Outline"
+                    @bind-Collapsed="_outlineCollapsed"
+                    Style="width:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
+        <FlareList TItem="object">
+            <FlareListItem Primary="Main(string[] args)">
+                <Leading><FlareIcon Name="data_object" /></Leading>
+            </FlareListItem>
+            <FlareListItem Primary="ConfigureServices()">
+                <Leading><FlareIcon Name="data_object" /></Leading>
+            </FlareListItem>
+            <FlareListItem Primary="Configure(app)">
+                <Leading><FlareIcon Name="data_object" /></Leading>
+            </FlareListItem>
+        </FlareList>
+    </FlareToolPanel>
+
+    <FlarePaper Elevation="0"
+                Style="flex:1;display:flex;align-items:center;justify-content:center;border:1px dashed var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+            Collapse a panel with its chevron - it frees space and shrinks to a rail.
+        </FlareText>
+    </FlarePaper>
+</div>
+
+@code {
+    private bool _explorerCollapsed;
+    private bool _outlineCollapsed = true;
+}

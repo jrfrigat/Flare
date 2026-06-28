@@ -1,0 +1,84 @@
+@using Flare.Components.IDE
+
+@* The three classic command strips, standalone: FlareQuickAccessToolbar (Office mini strip),
+   FlareMenuBar with FlareMenu dropdowns, and a FlareToolbar icon command bar with separators and a
+   small inline field. Toggle Dense to tighten the toolbar. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareSwitch @bind-Value="_dense" Label="Dense toolbar" />
+
+    <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
+        <FlareQuickAccessToolbar>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save" OnClick="@(() => Set("Save"))">
+                <FlareIcon Name="save" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Undo" OnClick="@(() => Set("Undo"))">
+                <FlareIcon Name="undo" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Redo" OnClick="@(() => Set("Redo"))">
+                <FlareIcon Name="redo" />
+            </FlareButton>
+        </FlareQuickAccessToolbar>
+
+        <FlareMenuBar>
+            <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="File menu">
+                <Activator>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">File</FlareButton>
+                </Activator>
+                <ChildContent>
+                    <FlareMenuItem Icon="note_add" OnClick="@(() => Set("File > New"))">New</FlareMenuItem>
+                    <FlareMenuItem Icon="folder_open" OnClick="@(() => Set("File > Open"))">Open</FlareMenuItem>
+                    <FlareMenuItem Icon="save" OnClick="@(() => Set("File > Save"))">Save</FlareMenuItem>
+                </ChildContent>
+            </FlareMenu>
+            <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="Edit menu">
+                <Activator>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Edit</FlareButton>
+                </Activator>
+                <ChildContent>
+                    <FlareMenuItem Icon="content_cut" OnClick="@(() => Set("Edit > Cut"))">Cut</FlareMenuItem>
+                    <FlareMenuItem Icon="content_copy" OnClick="@(() => Set("Edit > Copy"))">Copy</FlareMenuItem>
+                    <FlareMenuItem Icon="content_paste" OnClick="@(() => Set("Edit > Paste"))">Paste</FlareMenuItem>
+                </ChildContent>
+            </FlareMenu>
+            <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="View menu">
+                <Activator>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">View</FlareButton>
+                </Activator>
+                <ChildContent>
+                    <FlareMenuItem Icon="account_tree" OnClick="@(() => Set("View > Solution Explorer"))">Solution Explorer</FlareMenuItem>
+                    <FlareMenuItem Icon="terminal" OnClick="@(() => Set("View > Terminal"))">Terminal</FlareMenuItem>
+                </ChildContent>
+            </FlareMenu>
+        </FlareMenuBar>
+
+        <FlareToolbar Dense="_dense">
+            <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
+                <LeadingIcon><FlareIcon Name="play_arrow" /></LeadingIcon>
+                <ChildContent>Start</ChildContent>
+            </FlareButton>
+            <FlareRibbonSeparator />
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
+                <FlareIcon Name="build" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
+                <FlareIcon Name="bug_report" />
+            </FlareButton>
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
+                <FlareIcon Name="stop" />
+            </FlareButton>
+            <FlareRibbonSeparator />
+            <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" Style="width:180px;" />
+        </FlareToolbar>
+    </div>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        Last command: <strong>@_status</strong>
+    </FlareText>
+</FlareStack>
+
+@code {
+    private bool _dense = true;
+    private string _status = "(none)";
+
+    private void Set(string action) => _status = action;
+}
