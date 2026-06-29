@@ -203,6 +203,31 @@
 }
 
 /*
+   Labeled rail (NavMenuMode.RailLabeled, MD3 navigation rail): instead of hiding the text, stack a
+   small caption under each icon. These rules sit after the icon-only rail rules above and share their
+   specificity, so the later declarations win for a menu carrying both --rail and --rail-labeled.
+*/
+.flare-nav-menu--rail-labeled .flare-nav-link,
+.flare-nav-menu--rail-labeled .flare-nav-group__header {
+  flex-direction: column;
+  gap: var(--flare-spacing-1, 0.125rem);
+  text-align: center;
+  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-1, 0.125rem);
+}
+.flare-nav-menu--rail-labeled .flare-nav-link__text,
+.flare-nav-menu--rail-labeled .flare-nav-group__title {
+  display: block;
+  flex: none;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--flare-typescale-label-small-font);
+  font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+  line-height: 1.15;
+}
+
+/*
    Rail group flyout (DrawerMode.RailFlyout, MD3 navigation rail): a top-level group collapses to its
    icon and presents its children in a full-height secondary panel docked just past the rail (like the
    Material Design 3 docs navigation). The panel is position:fixed -- spanning from the app bar to the

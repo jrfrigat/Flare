@@ -785,6 +785,15 @@ public class C_FlareNavMenuTests : FlareTestContext
         var cut = Render<FlareNavMenu>(p => p.Add(x => x.Mode, NavMenuMode.Full).Add(x => x.Rail, true));
         Assert.DoesNotContain("flare-nav-menu--rail", cut.Find("nav.flare-nav-menu").ClassName);
     }
+
+    [Fact]
+    public void Mode_RailLabeled_AddsBothRailModifiers()
+    {
+        var cut = Render<FlareNavMenu>(p => p.Add(x => x.Mode, NavMenuMode.RailLabeled));
+        var cls = cut.Find("nav.flare-nav-menu").ClassName;
+        Assert.Contains("flare-nav-menu--rail", cls);
+        Assert.Contains("flare-nav-menu--rail-labeled", cls);
+    }
 }
 
 // DrawerMode state machine: the mode decides what the collapsed drawer looks like (hidden, rail,

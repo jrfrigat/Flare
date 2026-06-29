@@ -15,4 +15,10 @@ public enum NavMenuMode
     /// chevron and link badges are hidden and the icons are centered.
     /// </summary>
     Rail,
+
+    /// <summary>
+    /// Labeled rail (MD3 navigation rail): each item shows its icon with a small caption stacked
+    /// underneath instead of hiding the text. Wider than <see cref="Rail"/> but self-describing.
+    /// </summary>
+    RailLabeled,
 }

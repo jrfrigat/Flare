@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<nav class="@BuildCssClass(_noScrollbarClass, _railClass, _framedClass)" style="@Style"
+<nav class="@BuildCssClass(_noScrollbarClass, _railClass, _railLabeledClass, _framedClass)" style="@Style"
      aria-label="@(string.IsNullOrEmpty(AriaLabel) ? (FlareStrings.Nav_Navigation) : AriaLabel)"
      @attributes="AdditionalAttributes">
     @if (_framed)
@@ -70,15 +70,19 @@
     // An explicit Mode wins; otherwise fall back to the Rail flag or the collapsed layout drawer.
     private bool _isRail => Mode switch
     {
-        NavMenuMode.Rail => true,
+        NavMenuMode.Rail or NavMenuMode.RailLabeled => true,
         NavMenuMode.Full => false,
         _ => Rail || (Layout?.RailIconOnly ?? false),
     };
+
+    // Labeled rail (icon + caption) vs the icon-only rail.
+    private bool _railLabeled => Mode == NavMenuMode.RailLabeled;
 
     // Framed layout (pinned header/footer + scrolling middle) turns on as soon as either slot is used.
     private bool _framed => Header is not null || Footer is not null;
 
     private string _noScrollbarClass => HideScrollbar ? Css.Classes.Navigation.NavMenuNoScrollbar : string.Empty;
     private string _railClass => _isRail ? Css.Classes.Navigation.NavMenuRail : string.Empty;
+    private string _railLabeledClass => _railLabeled ? Css.Classes.Navigation.NavMenuRailLabeled : string.Empty;
     private string _framedClass => _framed ? Css.Classes.Navigation.NavMenuFramed : string.Empty;
 }
