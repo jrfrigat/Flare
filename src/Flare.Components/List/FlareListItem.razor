@@ -8,6 +8,7 @@
     aria-selected="@(Selected ? "true" : null)"
     style="@Style"
     @onclick="HandleClick"
+    @onkeydown="HandleKeyDown"
     @attributes="AdditionalAttributes">
     @if (Leading is not null)
     {
@@ -58,5 +59,14 @@
     {
         if (!Disabled && OnClick.HasDelegate)
             await OnClick.InvokeAsync();
+    }
+
+    // A clickable item exposes role="button" + tabindex=0, so keyboard users must be able to activate
+    // it with Enter or Space (WCAG 2.1.1), matching native button behavior.
+    private async Task HandleKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+    {
+        if (!OnClick.HasDelegate) return;
+        if (e.Key is "Enter" or " " or "Spacebar")
+            await HandleClick();
     }
 }

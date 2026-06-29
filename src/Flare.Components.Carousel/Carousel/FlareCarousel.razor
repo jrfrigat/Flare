@@ -78,19 +78,28 @@
     private int _current;
     private int _count => Items?.Count ?? 0;
     private System.Threading.Timer? _timer;
+    private int _timerInterval;
     private bool _paused;
     private double _dragStartX;
 
     protected override void OnParametersSet()
     {
-        if (AutoPlay && _timer == null && _count > 1)
-            _timer = new System.Threading.Timer(_ => InvokeAsync(() =>
+        // (Re)create the timer when autoplay turns on or the interval changes; tear it down otherwise.
+        if (AutoPlay && _count > 1)
+        {
+            if (_timer == null || _timerInterval != AutoPlayIntervalMs)
             {
-                if (_paused) return;
-                Next();
-                StateHasChanged();
-            }), null, AutoPlayIntervalMs, AutoPlayIntervalMs);
-        else if (!AutoPlay && _timer != null)
+                _timer?.Dispose();
+                _timerInterval = AutoPlayIntervalMs;
+                _timer = new System.Threading.Timer(_ => InvokeAsync(() =>
+                {
+                    if (_paused) return;
+                    Next();
+                    StateHasChanged();
+                }), null, AutoPlayIntervalMs, AutoPlayIntervalMs);
+            }
+        }
+        else if (_timer != null)
         {
             _timer.Dispose();
             _timer = null;
