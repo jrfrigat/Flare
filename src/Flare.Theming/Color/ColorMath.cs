@@ -35,6 +35,27 @@ public static class ColorMath
     /// <summary>A readable foreground (#1A1A1A or #FFFFFF) for text/icons on the given color.</summary>
     public static string OnColor(string hex) => Luminance(hex) > 0.55 ? "#1A1A1A" : "#FFFFFF";
 
+    /// <summary>WCAG 2.x relative luminance (gamma-corrected sRGB), the basis for contrast ratios.</summary>
+    public static double WcagLuminance(string hex)
+    {
+        var (r, g, b) = Parse(hex);
+        static double Channel(int c)
+        {
+            var cs = c / 255.0;
+            return cs <= 0.03928 ? cs / 12.92 : Math.Pow((cs + 0.055) / 1.055, 2.4);
+        }
+        return 0.2126 * Channel(r) + 0.7152 * Channel(g) + 0.0722 * Channel(b);
+    }
+
+    /// <summary>WCAG contrast ratio between two colors, from 1.0 (identical) to 21.0 (black on white).</summary>
+    public static double ContrastRatio(string a, string b)
+    {
+        var la = WcagLuminance(a);
+        var lb = WcagLuminance(b);
+        var (hi, lo) = la >= lb ? (la, lb) : (lb, la);
+        return (hi + 0.05) / (lo + 0.05);
+    }
+
     /// <summary>Mixes two colors; <paramref name="t"/>=0 returns a, 1 returns b.</summary>
     public static string Mix(string a, string b, double t)
     {

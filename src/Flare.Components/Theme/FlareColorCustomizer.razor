@@ -22,6 +22,19 @@
                    @onchange="OnColorChange" />
         </div>
     }
+    @if (ShowContrast && _hexRegex.IsMatch(_currentPrimary))
+    {
+        var onColor = Flare.Theming.ColorMath.OnColor(_currentPrimary);
+        var ratio = Flare.Theming.ColorMath.ContrastRatio(onColor, _currentPrimary);
+        var status = ContrastStatus(ratio);
+        <div class="@Css.Classes.Color.CustomizerContrast">
+            <span class="@Css.Classes.Color.CustomizerContrastSample"
+                  style="@($"background:{_currentPrimary};color:{onColor};")">Aa</span>
+            <span>@ratio.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture):1</span>
+            <span class="@Css.Classes.Color.CustomizerContrastBadge"
+                  style="@($"background:var(--flare-color-{status}-container);color:var(--flare-color-on-{status}-container);")">@ContrastVerdict(ratio)</span>
+        </div>
+    }
     @if (ShowReset)
     {
         <button class="@Css.Classes.Button.Root @Css.Classes.Button.Text" @onclick="Reset">@_resetLabel</button>
@@ -35,7 +48,14 @@
     [Parameter] public string? ResetLabel { get; set; }
     [Parameter] public bool ShowColorPicker { get; set; } = true;
     [Parameter] public bool ShowReset { get; set; } = true;
+    /// <summary>Shows a WCAG contrast preview ("Aa" sample + ratio + AA/AAA/Fail badge) of readable
+    /// text on the selected primary color.</summary>
+    [Parameter] public bool ShowContrast { get; set; } = true;
     [Parameter] public List<ColorPreset> Presets { get; set; } = DefaultPresets;
+
+    // WCAG 2.x thresholds for normal text: AA 4.5, AAA 7; large text AA 3.
+    private static string ContrastVerdict(double r) => r >= 7 ? "AAA" : r >= 4.5 ? "AA" : r >= 3 ? "AA Large" : "Fail";
+    private static string ContrastStatus(double r) => r >= 4.5 ? "success" : r >= 3 ? "warning" : "error";
 
     private string _label      => Label      ?? FlareStrings.ColorCustomizer_Label;
     private string _customLabel => CustomLabel ?? FlareStrings.ColorCustomizer_Custom;

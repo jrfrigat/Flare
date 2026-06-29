@@ -168,6 +168,12 @@ public static class Color
     public const string CustomizerSwatchActive = "flare-color-customizer__swatch--active";
     /// <summary>The <c>flare-color-customizer__swatches</c> CSS class.</summary>
     public const string CustomizerSwatches = "flare-color-customizer__swatches";
+    /// <summary>The <c>flare-color-customizer__contrast</c> CSS class: the WCAG contrast preview row.</summary>
+    public const string CustomizerContrast = "flare-color-customizer__contrast";
+    /// <summary>The <c>flare-color-customizer__contrast-sample</c> CSS class: the "Aa" text-on-color sample.</summary>
+    public const string CustomizerContrastSample = "flare-color-customizer__contrast-sample";
+    /// <summary>The <c>flare-color-customizer__contrast-badge</c> CSS class: the AA/AAA/Fail verdict badge.</summary>
+    public const string CustomizerContrastBadge = "flare-color-customizer__contrast-badge";
     /// <summary>The <c>flare-color-error</c> CSS class.</summary>
     public const string Error = "flare-color-error";
     /// <summary>The <c>flare-color-info</c> CSS class.</summary>

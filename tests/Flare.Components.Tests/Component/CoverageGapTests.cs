@@ -1575,3 +1575,50 @@ public class C_FlareTableDenseTests : FlareTestContext
         Assert.DoesNotContain("flare-table--dense", cut.Find(".flare-table").ClassName);
     }
 }
+
+// WCAG contrast math used by the ColorCustomizer's accessibility preview.
+public class C_ColorMathContrastTests
+{
+    [Fact]
+    public void BlackOnWhite_IsMaxRatio()
+        => Assert.Equal(21.0, Flare.Theming.ColorMath.ContrastRatio("#000000", "#FFFFFF"), 1);
+
+    [Fact]
+    public void SameColor_IsOne()
+        => Assert.Equal(1.0, Flare.Theming.ColorMath.ContrastRatio("#6750A4", "#6750A4"), 2);
+
+    [Fact]
+    public void IsSymmetric()
+        => Assert.Equal(
+            Flare.Theming.ColorMath.ContrastRatio("#6750A4", "#FFFFFF"),
+            Flare.Theming.ColorMath.ContrastRatio("#FFFFFF", "#6750A4"), 4);
+
+    [Fact]
+    public void WhiteOnDarkPrimary_PassesAa()
+        => Assert.True(Flare.Theming.ColorMath.ContrastRatio("#FFFFFF", "#6750A4") >= 4.5);
+}
+
+// FlareColorCustomizer shows a WCAG contrast preview once a primary color is chosen.
+public class C_FlareColorCustomizerTests : FlareTestContext
+{
+    [Fact]
+    public void SelectingPreset_ShowsContrastVerdict()
+    {
+        var cut = Render<FlareColorCustomizer>();
+        Assert.Empty(cut.FindAll(".flare-color-customizer__contrast")); // nothing chosen yet
+
+        cut.Find("button.flare-color-customizer__swatch").Click();      // pick the first preset
+
+        Assert.NotEmpty(cut.FindAll(".flare-color-customizer__contrast"));
+        var verdict = cut.Find(".flare-color-customizer__contrast-badge").TextContent.Trim();
+        Assert.Contains(verdict, new[] { "AAA", "AA", "AA Large", "Fail" });
+    }
+
+    [Fact]
+    public void ShowContrastFalse_HidesPreview()
+    {
+        var cut = Render<FlareColorCustomizer>(p => p.Add(c => c.ShowContrast, false));
+        cut.Find("button.flare-color-customizer__swatch").Click();
+        Assert.Empty(cut.FindAll(".flare-color-customizer__contrast"));
+    }
+}
