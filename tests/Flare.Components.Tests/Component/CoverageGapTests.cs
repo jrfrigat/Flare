@@ -770,6 +770,21 @@ public class C_FlareNavMenuTests : FlareTestContext
         var cut = Render<FlareNavMenu>(p => p.Add(x => x.HideScrollbar, true));
         Assert.Contains("flare-nav-menu--no-scrollbar", cut.Find("nav.flare-nav-menu").ClassName);
     }
+
+    [Fact]
+    public void Mode_Rail_AddsRailModifier()
+    {
+        var cut = Render<FlareNavMenu>(p => p.Add(x => x.Mode, NavMenuMode.Rail));
+        Assert.Contains("flare-nav-menu--rail", cut.Find("nav.flare-nav-menu").ClassName);
+    }
+
+    [Fact]
+    public void Mode_Full_OverridesRailFlag()
+    {
+        // An explicit Full mode wins over the legacy Rail flag.
+        var cut = Render<FlareNavMenu>(p => p.Add(x => x.Mode, NavMenuMode.Full).Add(x => x.Rail, true));
+        Assert.DoesNotContain("flare-nav-menu--rail", cut.Find("nav.flare-nav-menu").ClassName);
+    }
 }
 
 // DrawerMode state machine: the mode decides what the collapsed drawer looks like (hidden, rail,

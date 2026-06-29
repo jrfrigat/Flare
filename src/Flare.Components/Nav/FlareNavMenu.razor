@@ -55,12 +55,25 @@
     /// </summary>
     [Parameter] public bool Rail { get; set; }
 
+    /// <summary>
+    /// Presentation of the menu (<see cref="NavMenuMode.Full"/> or <see cref="NavMenuMode.Rail"/>),
+    /// decoupled from any surrounding layout. When set, it takes precedence over <see cref="Rail"/>
+    /// and the collapsed-drawer auto-rail; leave it unset (null) to keep the legacy behavior.
+    /// </summary>
+    [Parameter] public NavMenuMode? Mode { get; set; }
+
     // Drives the rail automatically when the layout drawer is collapsed into its icon rail.
     [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Navigation.NavMenu;
 
-    private bool _isRail => Rail || (Layout?.RailIconOnly ?? false);
+    // An explicit Mode wins; otherwise fall back to the Rail flag or the collapsed layout drawer.
+    private bool _isRail => Mode switch
+    {
+        NavMenuMode.Rail => true,
+        NavMenuMode.Full => false,
+        _ => Rail || (Layout?.RailIconOnly ?? false),
+    };
 
     // Framed layout (pinned header/footer + scrolling middle) turns on as soon as either slot is used.
     private bool _framed => Header is not null || Footer is not null;
