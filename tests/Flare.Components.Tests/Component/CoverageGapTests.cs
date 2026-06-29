@@ -772,6 +772,62 @@ public class C_FlareNavMenuTests : FlareTestContext
     }
 }
 
+// Rail hover-overlay state machine: when the drawer collapses to a mini-rail, hover/focus expands
+// it into a full-width overlay so nested groups stay reachable (RailIconOnly flips to RailOverlayOpen).
+public class C_FlareLayoutContextRailTests
+{
+    private static FlareLayoutContext Collapsed()
+        => new() { MiniRail = true, DrawerOpen = false };
+
+    [Fact]
+    public void CollapsedRail_IsIconOnly_AndNotOverlaid()
+    {
+        var ctx = Collapsed();
+        Assert.True(ctx.RailCollapsed);
+        Assert.True(ctx.RailIconOnly);
+        Assert.False(ctx.RailOverlayOpen);
+    }
+
+    [Fact]
+    public void HoverExpand_WhileCollapsed_OpensOverlay_AndStopsIconOnly()
+    {
+        var ctx = Collapsed();
+        ctx.RailHoverExpanded = true;
+        Assert.True(ctx.RailOverlayOpen);
+        Assert.False(ctx.RailIconOnly);
+    }
+
+    [Fact]
+    public void HoverExpand_WhenNotCollapsed_HasNoEffect()
+    {
+        var ctx = new FlareLayoutContext { MiniRail = true, DrawerOpen = true };
+        ctx.RailHoverExpanded = true;
+        Assert.False(ctx.RailOverlayOpen);
+        Assert.False(ctx.RailIconOnly);
+    }
+
+    [Fact]
+    public void OpeningDrawer_ClearsPendingHoverOverlay()
+    {
+        var ctx = Collapsed();
+        ctx.RailHoverExpanded = true;
+        ctx.DrawerOpen = true;   // toggle back to the full drawer
+        Assert.False(ctx.RailOverlayOpen);
+        Assert.False(ctx.RailHoverExpanded);
+    }
+
+    [Fact]
+    public void RailHoverExpanded_NotifiesOnlyOnChange()
+    {
+        var ctx = Collapsed();
+        var count = 0;
+        ctx.StateChanged += () => count++;
+        ctx.RailHoverExpanded = true;   // change -> 1 notification
+        ctx.RailHoverExpanded = true;   // no change -> no extra notification
+        Assert.Equal(1, count);
+    }
+}
+
 public class C_FlareMaskedFieldTests : FlareTestContext
 {
     [Fact]

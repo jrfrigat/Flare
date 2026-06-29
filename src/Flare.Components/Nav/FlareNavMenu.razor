@@ -50,6 +50,8 @@
     /// expand chevron and link badges are hidden and the icons are centered. When the menu is
     /// inside a <c>FlareLayout</c> with <c>MiniRail</c>, this turns on automatically while the
     /// drawer is collapsed, so no wiring is needed; set it explicitly to force the rail anywhere.
+    /// Inside a layout the rail also expands into a full-width overlay while hovered or focused,
+    /// so nested groups stay reachable without re-opening the drawer.
     /// </summary>
     [Parameter] public bool Rail { get; set; }
 
@@ -58,7 +60,7 @@
 
     protected override string ComponentCssClass => Css.Classes.Navigation.NavMenu;
 
-    private bool _isRail => Rail || (Layout?.RailCollapsed ?? false);
+    private bool _isRail => Rail || (Layout?.RailIconOnly ?? false);
 
     // Framed layout (pinned header/footer + scrolling middle) turns on as soon as either slot is used.
     private bool _framed => Header is not null || Footer is not null;

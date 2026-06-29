@@ -46,6 +46,25 @@
     width: var(--flare-drawer-mini-width);
 }
 
+/* Hover/focus overlay: while the pointer or keyboard focus is inside the collapsed mini-rail, the
+   inner floats over the content at full drawer width so nested groups become reachable. The grid
+   track stays at the rail width, so the content never reflows -- the panel simply overlays it. The
+   drawer must drop its clip (and gain a stacking context) for the inner to escape the rail. */
+.flare-layout--rail-hover:not(.flare-layout--drawer-open) .flare-layout-drawer {
+    overflow: visible;
+    position: relative;
+    z-index: 150;
+}
+.flare-layout--rail-hover:not(.flare-layout--drawer-open) .flare-layout-drawer__inner {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--flare-drawer-width);
+    background: var(--flare-color-surface-container-low);
+    box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0, 0, 0, .16));
+}
+
 .flare-layout__main {
     overflow: auto;
     min-width: 0;

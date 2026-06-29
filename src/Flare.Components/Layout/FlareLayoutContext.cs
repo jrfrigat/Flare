@@ -8,6 +8,7 @@ public class FlareLayoutContext
 {
     private bool _drawerOpen = true;
     private bool _miniRail;
+    private bool _railHoverExpanded;
 
     /// <summary>Whether the drawer is open. Setting it notifies subscribers.</summary>
     public bool DrawerOpen
@@ -17,6 +18,9 @@ public class FlareLayoutContext
         {
             if (_drawerOpen == value) return;
             _drawerOpen = value;
+            // Opening (or otherwise leaving the collapsed rail) drops any pending hover overlay so
+            // it can never linger over the full-width drawer.
+            if (value) _railHoverExpanded = false;
             StateChanged?.Invoke();
         }
     }
@@ -34,10 +38,43 @@ public class FlareLayoutContext
     }
 
     /// <summary>
-    /// True when the drawer is collapsed into the mini icon rail, so a nested <c>FlareNavMenu</c>
-    /// renders icon-only. Equivalent to <c>MiniRail &amp;&amp; !DrawerOpen</c>.
+    /// True when the drawer is collapsed into the mini icon rail. Equivalent to
+    /// <c>MiniRail &amp;&amp; !DrawerOpen</c>. This is the physical drawer state and ignores any
+    /// temporary hover overlay; use <see cref="RailIconOnly"/> to decide how a nested
+    /// <c>FlareNavMenu</c> should render.
     /// </summary>
     public bool RailCollapsed => _miniRail && !_drawerOpen;
+
+    /// <summary>
+    /// Requests the collapsed mini-rail to temporarily expand into a full-width overlay so its
+    /// nested groups become reachable. <see cref="FlareLayoutDrawer"/> sets this while the pointer
+    /// or keyboard focus is inside the rail. Only takes effect while <see cref="RailCollapsed"/> is
+    /// true. Setting it notifies subscribers.
+    /// </summary>
+    public bool RailHoverExpanded
+    {
+        get => _railHoverExpanded;
+        set
+        {
+            if (_railHoverExpanded == value) return;
+            _railHoverExpanded = value;
+            StateChanged?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// True when the collapsed mini-rail is currently expanded into its hover/focus overlay
+    /// (<see cref="RailCollapsed"/> and <see cref="RailHoverExpanded"/>). The layout uses this to
+    /// float the drawer at full width over the content without reflowing it.
+    /// </summary>
+    public bool RailOverlayOpen => RailCollapsed && _railHoverExpanded;
+
+    /// <summary>
+    /// True when a nested <c>FlareNavMenu</c> should render icon-only: the drawer is collapsed into
+    /// the mini-rail and is not currently expanded by hover or focus. While the overlay is open the
+    /// menu renders in full so its labels and nested groups are usable.
+    /// </summary>
+    public bool RailIconOnly => RailCollapsed && !_railHoverExpanded;
 
     /// <summary>Raised when the drawer or mini-rail state changes.</summary>
     public event Action? StateChanged;

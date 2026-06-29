@@ -23,6 +23,9 @@ public static class Layout
     public const string DrawerOpenMod = "flare-layout-drawer--open";
     /// <summary>The <c>flare-layout--mini-rail</c> CSS class.</summary>
     public const string MiniRail = "flare-layout--mini-rail";
+    /// <summary>The <c>flare-layout--rail-hover</c> CSS class: the collapsed mini-rail is temporarily
+    /// expanded into a full-width overlay by hover or keyboard focus.</summary>
+    public const string RailHoverExpand = "flare-layout--rail-hover";
     /// <summary>The <c>flare-layout-appbar__toggle--open</c> CSS class.</summary>
     public const string AppbarToggleOpen = "flare-layout-appbar__toggle--open";
     /// <summary>The <c>flare-layout-content--lg</c> CSS class.</summary>

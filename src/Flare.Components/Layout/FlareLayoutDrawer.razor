@@ -4,6 +4,10 @@
 <nav class="@BuildCssClass(_openClass)"
      style="@Style"
      aria-hidden="@(_isOpen ? null : "true")"
+     @onmouseenter="OnRailPointerEnter"
+     @onmouseleave="OnRailPointerLeave"
+     @onfocusin="OnRailFocusIn"
+     @onfocusout="OnRailFocusOut"
      @attributes="AdditionalAttributes">
     @* Fixed-width inner that owns the scroll and keeps content from reflowing while the
        drawer collapses; the nav clips it during the open/close animation. *@
@@ -22,4 +26,33 @@
 
     private bool _isOpen => Layout?.DrawerOpen ?? true;
     private string _openClass => _isOpen ? Css.Classes.Layout.DrawerOpenMod : string.Empty;
+
+    // The collapsed mini-rail expands into a full-width overlay while the pointer or keyboard focus
+    // is inside it, so nested groups stay reachable without re-opening the drawer. Either input keeps
+    // it open; the overlay only shows while the drawer is actually collapsed (gated in Sync()).
+    private bool _pointerInside;
+    private bool _focusInside;
+
+    private void OnRailPointerEnter() { _pointerInside = true; Sync(); }
+    private void OnRailPointerLeave() { _pointerInside = false; Sync(); }
+    private void OnRailFocusIn() { _focusInside = true; Sync(); }
+
+    private async Task OnRailFocusOut()
+    {
+        _focusInside = false;
+        // Tabbing between items inside the drawer fires focusout (leaving the old item) immediately
+        // followed by focusin (entering the new one). Defer the collapse so the paired focusin can
+        // set _focusInside back to true first, preventing a one-frame flicker.
+        await Task.Yield();
+        Sync();
+    }
+
+    // Single source of truth: the rail overlay is requested only while collapsed and a pointer or
+    // focus is inside it. The context setter no-ops when the value is unchanged, so hovering an
+    // already-open drawer never triggers a render.
+    private void Sync()
+    {
+        if (Layout is null) return;
+        Layout.RailHoverExpanded = (_pointerInside || _focusInside) && Layout.RailCollapsed;
+    }
 }

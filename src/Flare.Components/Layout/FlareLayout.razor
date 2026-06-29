@@ -5,7 +5,7 @@
 @inject NavigationManager Nav
 
 <CascadingValue Value="_ctx" IsFixed="false">
-    <div class="@BuildCssClass(_drawerClass, _miniRailClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@BuildCssClass(_drawerClass, _miniRailClass, _railHoverClass)" style="@Style" @attributes="AdditionalAttributes">
         @AppBar
         @if (ChildContent is not null)
         {
@@ -74,6 +74,7 @@
     protected override string ComponentCssClass => Css.Classes.Layout.Root;
     private string _drawerClass => _ctx.DrawerOpen ? Css.Classes.Layout.DrawerOpen : string.Empty;
     private string _miniRailClass => MiniRail ? Css.Classes.Layout.MiniRail : string.Empty;
+    private string _railHoverClass => _ctx.RailOverlayOpen ? Css.Classes.Layout.RailHoverExpand : string.Empty;
     private string _contentMaxWidthClass => LayoutContentWidth.ToClass(ContentMaxWidth);
     private string _contentAlignClass => LayoutContentWidth.ToAlignClass(ContentAlignment);
 
