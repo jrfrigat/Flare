@@ -1425,6 +1425,9 @@
   <data name="Autocomplete_Template" xml:space="preserve">
     <value>Шаблон элемента и опции</value>
   </data>
+  <data name="Autocomplete_Fuzzy" xml:space="preserve">
+    <value>Ранжирование нечётким поиском</value>
+  </data>
   <data name="SignaturePad_Title" xml:space="preserve">
     <value>Поле подписи</value>
   </data>

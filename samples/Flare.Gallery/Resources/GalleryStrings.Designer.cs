@@ -779,6 +779,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Fuzzy search ranking.
+        /// </summary>
+        public static string Autocomplete_Fuzzy {
+            get {
+                return ResourceManager.GetString("Autocomplete_Fuzzy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Grouped items.
         /// </summary>
         public static string Autocomplete_Grouped {

@@ -1425,6 +1425,9 @@
   <data name="Autocomplete_Template" xml:space="preserve">
     <value>Item template &amp; options</value>
   </data>
+  <data name="Autocomplete_Fuzzy" xml:space="preserve">
+    <value>Fuzzy search ranking</value>
+  </data>
   <data name="SignaturePad_Title" xml:space="preserve">
     <value>Signature Pad</value>
   </data>
