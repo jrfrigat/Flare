@@ -3,9 +3,12 @@
 @inject NavigationManager NavManager
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
-@inject Flare.Gallery.Services.DrawerModeService NavMode
+@using Flare.Gallery.Models
 
-<FlareLayout @bind-DrawerOpen="_navOpen" Mode="NavMode.CurrentMode" ContentMaxWidth="ContainerMaxWidth.Full">
+<FlareLayout @bind-DrawerOpen="_navOpen" Mode="DrawerMode.Rail"
+             SecondaryDrawerOpen="@(_section != GallerySection.None)"
+             ContentMaxWidth="ContainerMaxWidth.Full"
+             Style="--flare-drawer-mini-width:5.5rem;--flare-secondary-width:17rem;">
     <AppBar>
         <FlareLayoutAppBar DrawerToggle="true">
             <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
@@ -24,11 +27,17 @@
     </AppBar>
     <Drawer>
         <FlareLayoutDrawer>
-            @* NavMenu owns its own pinned footer (Settings entry + build version) via FlareNavMenu's
-               Footer slot, and collapses to an icon rail with the drawer (FlareLayout MiniRail). *@
-            <NavMenu />
+            @* Primary rail: the top-level sections (labeled rail; expands to a full menu when the
+               drawer is opened). Selecting Themes/Components/Services/API opens the secondary column. *@
+            <NavMenu Mode="@(_navOpen ? NavMenuMode.Full : NavMenuMode.RailLabeled)" @bind-Section="_section" />
         </FlareLayoutDrawer>
     </Drawer>
+    <SecondaryDrawer>
+        @if (_section != GallerySection.None)
+        {
+            <SecondaryNav Section="_section" />
+        }
+    </SecondaryDrawer>
     <Content>
         @* Two-column doc layout built from Flare primitives: a flexible content column and a fixed
            "On this page" rail. The rail hides below the md breakpoint (Css.Classes.Hidden.BelowMd) --
@@ -54,7 +63,9 @@
 <FlareMessageBoxProvider />
 
 @code {
-    private bool _navOpen = true;
+    // The primary drawer starts collapsed (a rail); the secondary column is driven by the section.
+    private bool _navOpen;
+    private GallerySection _section = GallerySection.None;
 
     // Stable id for the update toast so the "new version" notice and the later "updating" state are the
     // same snackbar (changed in place), not two separate toasts.
@@ -65,11 +76,7 @@
         // The service polls in the background; surface any new version as a toast.
         VersionCheck.NewVersionAvailable += OnNewVersionAsync;
         VersionCheck.Start();
-        // Re-render when the user changes the navigation drawer mode in Settings (applied live).
-        NavMode.DrawerModeChanged += OnDrawerModeChanged;
     }
-
-    private void OnDrawerModeChanged() => InvokeAsync(StateHasChanged);
 
     // Actionable, persistent toast: "Update" applies the waiting service worker and reloads (the service
     // owns the service-worker plumbing - the app just calls ApplyUpdateAsync). Once a newer version is
@@ -93,9 +100,5 @@
     // The anti-FOUC startup splash is revealed automatically by FlareThemeProvider once the theme
     // CSS and web fonts are ready, so the layout no longer needs to hide it by hand.
 
-    public void Dispose()
-    {
-        VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
-        NavMode.DrawerModeChanged -= OnDrawerModeChanged;
-    }
+    public void Dispose() => VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
 }

@@ -1,87 +1,58 @@
 @inherits LocalizedPage
-@using Flare.Gallery.Api
 @using Flare.Gallery.Models
 
-<FlareNavMenu>
-    @* Pinned below the scrolling items, and rail-aware: the Settings link collapses to its icon when
-       the drawer is in mini-rail mode, while the version caption (flare-nav-menu__meta) hides. *@
+@* Primary navigation rail: the top-level sections. Plain pages (Overview, Getting started) navigate;
+   the section triggers (Themes, Components, Services, API) toggle the secondary drawer instead of
+   navigating, so clicking one reveals that section's pages in the column to the right. *@
+<FlareNavMenu Mode="Mode">
     <Footer>
         <FlareNavLink Href="/settings" Tooltip="@GalleryStrings.Settings_Title">
-            <Icon><FlareIcon Size="1.1rem" Name="settings" /></Icon>
+            <Icon><FlareIcon Size="1.25rem" Name="settings" /></Icon>
             <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
         </FlareNavLink>
-        <GalleryVersionLabel />
+        <FlareNavLink Href="/about" Tooltip="@GalleryStrings.Nav_About">
+            <Icon><FlareIcon Size="1.25rem" Name="info" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_About</ChildContent>
+        </FlareNavLink>
     </Footer>
     <ChildContent>
-    <FlareNavLink Href="/" Match="NavMatchMode.Exact">
-        <Icon><FlareIcon Size="1.1rem" Name="home" /></Icon>
-        <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
-    </FlareNavLink>
-    <FlareNavLink Href="/getting-started">
-        <Icon><FlareIcon Size="1.1rem" Name="rocket_launch" /></Icon>
-        <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
-    </FlareNavLink>
-    <FlareNavLink Href="/theming">
-        <Icon><FlareIcon Size="1.1rem" Name="palette" /></Icon>
-        <ChildContent>@GalleryStrings.Nav_Theming</ChildContent>
-    </FlareNavLink>
-    <FlareNavLink Href="/color">
-        <Icon><FlareIcon Size="1.1rem" Name="format_color_fill" /></Icon>
-        <ChildContent>@GalleryStrings.Nav_Color</ChildContent>
-    </FlareNavLink>
-    <FlareNavLink Href="/custom-theme">
-        <Icon><FlareIcon Size="1.1rem" Name="tune" /></Icon>
-        <ChildContent>Custom Theme</ChildContent>
-    </FlareNavLink>
-    <FlareNavLink Href="/about">
-        <Icon><FlareIcon Size="1.1rem" Name="info" /></Icon>
-        <ChildContent>@GalleryStrings.Nav_About</ChildContent>
-    </FlareNavLink>
+        <FlareNavLink Href="/" Match="NavMatchMode.Exact">
+            <Icon><FlareIcon Size="1.25rem" Name="home" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
+        </FlareNavLink>
+        <FlareNavLink Href="/getting-started">
+            <Icon><FlareIcon Size="1.25rem" Name="rocket_launch" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
+        </FlareNavLink>
 
-    @*
-        Components are grouped into categories from ComponentCatalog -- the single source of truth
-        shared with the global search index, so routes are never duplicated. Category labels and
-        component names are English-only by request. Sub-groups start collapsed; the active page
-        auto-expands its whole group chain.
-    *@
-    <FlareNavGroup Label="@GalleryStrings.Nav_Components" Icon="category" Expanded="true">
-        @foreach (var group in ComponentCatalog.Groups)
-        {
-            <FlareNavGroup Label="@group.Label" Icon="@group.Icon">
-                @foreach (var c in ComponentCatalog.InGroup(group.Group))
-                {
-                    <FlareNavLink Href="@c.Href">@c.Name</FlareNavLink>
-                }
-            </FlareNavGroup>
-        }
-    </FlareNavGroup>
-
-    @* Services: typed C# services + live demos that combine several components. *@
-    <FlareNavGroup Label="@GalleryStrings.Nav_Services" Icon="bolt" Expanded="true">
-        <FlareNavLink Href="/services/dynamic-color">Dynamic Color</FlareNavLink>
-        <FlareNavLink Href="/services/theme-scope">Theme Scope</FlareNavLink>
-        <FlareNavLink Href="/services/clipboard">Clipboard</FlareNavLink>
-        <FlareNavLink Href="/services/snackbar">Snackbar</FlareNavLink>
-        <FlareNavLink Href="/services/download">Download</FlareNavLink>
-        <FlareNavLink Href="/services/messagebox">Message Box</FlareNavLink>
-        <FlareNavLink Href="/services/version-check">Version Check</FlareNavLink>
-    </FlareNavGroup>
-
-    @*
-        API group is data-driven from the generated ComponentApiRegistry, so it always
-        matches the documented component set.
-    *@
-    <FlareNavGroup Label="@GalleryStrings.Nav_Api" Icon="data_object">
-        <FlareNavLink Href="/api" Match="NavMatchMode.Exact">@GalleryStrings.Nav_AllApi</FlareNavLink>
-        @foreach (var name in _apiComponents)
-        {
-            <FlareNavLink Href="@($"/api/{name}")">@name</FlareNavLink>
-        }
-    </FlareNavGroup>
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Themes))" Active="@(Section == GallerySection.Themes)">
+            <Icon><FlareIcon Size="1.25rem" Name="palette" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_Theming</ChildContent>
+        </FlareNavLink>
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Components))" Active="@(Section == GallerySection.Components)">
+            <Icon><FlareIcon Size="1.25rem" Name="category" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_Components</ChildContent>
+        </FlareNavLink>
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Services))" Active="@(Section == GallerySection.Services)">
+            <Icon><FlareIcon Size="1.25rem" Name="bolt" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_Services</ChildContent>
+        </FlareNavLink>
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Api))" Active="@(Section == GallerySection.Api)">
+            <Icon><FlareIcon Size="1.25rem" Name="data_object" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_Api</ChildContent>
+        </FlareNavLink>
     </ChildContent>
 </FlareNavMenu>
 
 @code {
-    private static readonly IReadOnlyList<string> _apiComponents =
-        ComponentApiRegistry.Components.Keys.OrderBy(k => k, StringComparer.Ordinal).ToList();
+    /// <summary>How the primary rail renders (labeled rail when collapsed, full when expanded).</summary>
+    [Parameter] public NavMenuMode Mode { get; set; } = NavMenuMode.RailLabeled;
+    /// <summary>The currently open section. Supports <c>@bind-Section</c>.</summary>
+    [Parameter] public GallerySection Section { get; set; }
+    /// <summary>Raised when a section trigger toggles the open section.</summary>
+    [Parameter] public EventCallback<GallerySection> SectionChanged { get; set; }
+
+    // Clicking the open section closes the secondary drawer; clicking another switches to it.
+    private Task ToggleSection(GallerySection s)
+        => SectionChanged.InvokeAsync(Section == s ? GallerySection.None : s);
 }
