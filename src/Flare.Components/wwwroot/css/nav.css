@@ -204,25 +204,35 @@
 
 /*
    Rail group flyout (DrawerMode.RailFlyout, MD3 navigation rail): a top-level group collapses to its
-   icon and opens its children in a floating panel anchored beside the icon. The panel is positioned
-   position:fixed by the overlay service, so it escapes the drawer's overflow clipping. Styling is
-   fully theme-driven (semantic tokens), matching the menu/popover surfaces.
+   icon and opens its children in a full-height secondary panel docked to the right edge of the rail
+   (like the Material Design 3 docs navigation). It is position:fixed -- spanning from the app bar to
+   the bottom of the viewport, just past the rail -- so it escapes the drawer's overflow clipping and
+   reads as a second navigation column. Styling is fully theme-driven (semantic tokens).
 */
 .flare-nav-group__flyout {
   position: fixed;
+  top: var(--flare-layout-appbar-height, 64px);
+  bottom: 0;
+  left: var(--flare-drawer-mini-width, 3.5rem);
   z-index: 210;
   display: flex;
   flex-direction: column;
-  min-width: 14rem;
-  max-width: 20rem;
-  max-height: min(80vh, 32rem);
+  width: var(--flare-drawer-width, 16rem);
+  max-width: 80vw;
   padding: var(--flare-spacing-4, 0.5rem) 0;
   background: var(--flare-color-surface-container, var(--flare-color-surface));
   color: var(--flare-color-on-surface);
-  border: 1px solid var(--flare-color-outline-variant);
-  border-radius: var(--flare-shape-medium, 0.5rem);
+  border-right: 1px solid var(--flare-color-outline-variant);
   box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0, 0, 0, .16));
   overflow: hidden;
+  animation: flare-nav-flyout-in var(--flare-motion-duration-short3, 150ms)
+             var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
+}
+
+/* Slide/fade in from the rail edge when the panel opens. */
+@keyframes flare-nav-flyout-in {
+  from { opacity: 0; transform: translateX(-0.5rem); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 .flare-nav-group__flyout-header {

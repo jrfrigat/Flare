@@ -49,15 +49,12 @@ public interface IOverlayJsService : IAsyncDisposable
 
     /// <summary>
     /// Positions <paramref name="panel"/> as a fixed popup anchored to <paramref name="anchor"/>,
-    /// flipping when there is not enough room and re-positioning on scroll/resize.
+    /// flipping above when there is not enough room below and re-positioning on scroll/resize.
     /// </summary>
     /// <param name="id">A stable id identifying this anchored panel.</param>
     /// <param name="anchor">The element the panel is positioned against.</param>
     /// <param name="panel">The popup element to position.</param>
-    /// <param name="options">Optional placement options: <c>side</c> (<c>"right"</c>/<c>"left"</c>)
-    /// opens the panel beside the anchor (top edges aligned), flipping to the other side when it does
-    /// not fit; omit <c>side</c> to open below the anchor (flipping above). <c>gap</c> is the spacing
-    /// from the anchor in pixels (default 4). <c>matchWidth</c> sizes the panel to the anchor width.</param>
+    /// <param name="options">Optional placement options (e.g. <c>matchWidth</c>, <c>gap</c>).</param>
     ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel, object? options = null);
 
     /// <summary>Stops positioning and detaches listeners for the anchored panel under <paramref name="id"/>.</summary>

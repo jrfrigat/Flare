@@ -120,15 +120,11 @@ export function removeOutsideClick(id) {
     if (h) { document.removeEventListener('pointerdown', h, true); _outsideClick.delete(id); }
 }
 
-// -- Anchored fixed-position panel (Select / DatePicker / TimePicker / ColorPicker / nav rail flyout) --
-// Positions a popup panel as position:fixed near its anchor element so it escapes any ancestor
-// clipping context -- most notably a Card's or drawer's overflow:hidden, which would otherwise crop
-// the panel. Re-positions on scroll (capture phase, so nested scrollers count) and resize until
-// removeAnchoredPanel(id) is called.
-//   - Default: opens below the anchor (or above when there is no room), left edges aligned.
-//   - opts.side 'right'|'left': opens beside the anchor (top edges aligned), flipping to the other
-//     side when there is not enough room -- used by the navigation rail group flyout.
-//   - opts.matchWidth: size the panel to the anchor width.
+// -- Anchored fixed-position panel (Select / DatePicker / TimePicker / ColorPicker) --
+// Positions a popup panel as position:fixed under (or above) its anchor element so it escapes
+// any ancestor clipping context -- most notably a Card's overflow:hidden, which would otherwise
+// crop the dropdown. Re-positions on scroll (capture phase, so nested scrollers count) and resize
+// until removeAnchoredPanel(id) is called. Pass matchWidth:true to size the panel to the anchor.
 const _anchoredPanels = new Map();
 
 export function positionAnchoredPanel(id, anchor, panel, options) {
@@ -145,22 +141,6 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
         if (opts.matchWidth) panel.style.width = `${a.width}px`;
         const p = panel.getBoundingClientRect();
         const vh = window.innerHeight, vw = window.innerWidth;
-
-        if (opts.side === 'right' || opts.side === 'left') {
-            // Beside the anchor: align panel top to the anchor top, clamped into the viewport.
-            const top = Math.max(margin, Math.min(a.top, vh - p.height - margin));
-            const roomRight = vw - a.right, roomLeft = a.left;
-            const wantRight = opts.side === 'right';
-            // Prefer the requested side; flip to the other when it does not fit and the other has more room.
-            let left = wantRight
-                ? ((roomRight >= p.width + gap || roomRight >= roomLeft) ? a.right + gap : a.left - p.width - gap)
-                : ((roomLeft >= p.width + gap || roomLeft >= roomRight) ? a.left - p.width - gap : a.right + gap);
-            left = Math.max(margin, Math.min(left, vw - p.width - margin));
-            panel.style.top = `${top}px`;
-            panel.style.left = `${left}px`;
-            return;
-        }
-
         const below = vh - a.bottom, above = a.top;
         // Flip above only when there is not enough room below and more room above.
         let top = (below >= p.height + gap || below >= above)

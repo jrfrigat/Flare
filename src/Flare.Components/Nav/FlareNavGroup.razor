@@ -1,6 +1,5 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject NavigationManager Navigation
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
 @if (_isFlyout)
@@ -27,7 +26,7 @@
         </button>
         @if (_flyoutOpen)
         {
-            <div id="@_panelId" class="@Css.Classes.Navigation.NavGroupFlyoutPanel" @ref="_panelRef"
+            <div id="@_panelId" class="@Css.Classes.Navigation.NavGroupFlyoutPanel"
                  role="group" aria-label="@Label"
                  @onmouseenter="ShowFlyout" @onmouseleave="ScheduleHideFlyout">
                 <div class="@Css.Classes.Navigation.NavGroupFlyoutHeader">@Label</div>
@@ -102,11 +101,10 @@ else
     private bool _isFlyout => ParentGroup is null && (Layout?.RailFlyout ?? false);
 
     private bool _flyoutOpen;
-    private bool _flyoutPositioned;
+    private bool _outsideClickRegistered;
     private CancellationTokenSource? _hideCts;
     private ElementReference _rootRef;
     private ElementReference _anchorRef;
-    private ElementReference _panelRef;
     private DotNetObjectReference<FlareNavGroup>? _dotNetRef;
     private readonly string _panelId = "flare-nav-flyout-" + Guid.NewGuid().ToString("N")[..8];
     // True while keyboard focus is anywhere inside the group (trigger or panel); drives focus return
@@ -116,12 +114,6 @@ else
     // flyout. Set just before that programmatic FocusAsync and consumed by the next focusin.
     private bool _suppressNextFocusIn;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        Navigation.LocationChanged += OnLocationChanged;
-    }
-
     protected override void OnParametersSet()
     {
         if (Expanded != _lastParamExpanded)
@@ -130,7 +122,7 @@ else
             _lastParamExpanded = Expanded;
         }
         // Leaving flyout mode (e.g. the drawer re-opened, or the mode changed) closes any open
-        // flyout so OnAfterRenderAsync tears down its JS positioning and outside-click handlers.
+        // flyout so OnAfterRenderAsync tears down its outside-click handler.
         if (!_isFlyout && _flyoutOpen)
         {
             _hideCts?.Cancel();
@@ -248,31 +240,23 @@ else
         return InvokeAsync(StateHasChanged);
     }
 
-    // Selecting a destination navigates; close the flyout so it does not linger over the new page.
-    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
-    {
-        if (!_flyoutOpen) return;
-        InvokeAsync(() =>
-        {
-            _hideCts?.Cancel();
-            _flyoutOpen = false;
-            StateHasChanged();
-        });
-    }
+    // Like the MD3 navigation rail, the panel persists after a destination is selected (it stays
+    // open while the pointer/focus remains inside), so it is NOT closed on navigation. The active
+    // link simply updates; leaving the rail, Escape, an outside click, or opening another group's
+    // flyout dismisses it.
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
 
-        if (_isFlyout && _flyoutOpen && !_flyoutPositioned)
+        // The full-height panel is positioned by CSS (a column beside the rail); only the
+        // outside-click dismissal needs JS interop.
+        if (_isFlyout && _flyoutOpen && !_outsideClickRegistered)
         {
-            _flyoutPositioned = true;
+            _outsideClickRegistered = true;
             _dotNetRef ??= DotNetObjectReference.Create(this);
             try
             {
-                // Fixed-position the panel to the right of the rail icon, flipping to the left when
-                // there is not enough room; this escapes the drawer's overflow:hidden clipping.
-                await Overlay.PositionAnchoredPanelAsync(_panelId, _anchorRef, _panelRef, new { side = "right", gap = 8 });
                 // Dismiss when clicking anywhere outside the group (root contains both icon and panel).
                 await Overlay.RegisterOutsideClickAsync(_panelId, _rootRef, _dotNetRef, nameof(CloseFlyoutFromJs));
             }
@@ -280,14 +264,10 @@ else
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
         }
-        else if (_flyoutPositioned && !_flyoutOpen)
+        else if (_outsideClickRegistered && !_flyoutOpen)
         {
-            _flyoutPositioned = false;
-            try
-            {
-                await Overlay.RemoveAnchoredPanelAsync(_panelId);
-                await Overlay.RemoveOutsideClickAsync(_panelId);
-            }
+            _outsideClickRegistered = false;
+            try { await Overlay.RemoveOutsideClickAsync(_panelId); }
             catch (JSException) { }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
@@ -296,16 +276,11 @@ else
 
     public override async ValueTask DisposeAsync()
     {
-        Navigation.LocationChanged -= OnLocationChanged;
         _hideCts?.Cancel();
         _hideCts?.Dispose();
-        if (_flyoutPositioned)
+        if (_outsideClickRegistered)
         {
-            try
-            {
-                await Overlay.RemoveAnchoredPanelAsync(_panelId);
-                await Overlay.RemoveOutsideClickAsync(_panelId);
-            }
+            try { await Overlay.RemoveOutsideClickAsync(_panelId); }
             catch (JSException) { }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
