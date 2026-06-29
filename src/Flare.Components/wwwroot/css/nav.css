@@ -204,20 +204,21 @@
 
 /*
    Rail group flyout (DrawerMode.RailFlyout, MD3 navigation rail): a top-level group collapses to its
-   icon and opens its children in a full-height secondary panel docked to the right edge of the rail
-   (like the Material Design 3 docs navigation). It is position:fixed -- spanning from the app bar to
-   the bottom of the viewport, just past the rail -- so it escapes the drawer's overflow clipping and
-   reads as a second navigation column. Styling is fully theme-driven (semantic tokens).
+   icon and presents its children in a full-height secondary panel docked just past the rail (like the
+   Material Design 3 docs navigation). The panel is position:fixed -- spanning from the app bar to the
+   bottom of the viewport -- and the layout reserves matching space (the content is pushed aside, not
+   covered). Every group's panel is rendered but hidden; only the displayed group's panel is shown.
+   Styling is fully theme-driven (semantic tokens).
 */
 .flare-nav-group__flyout {
+  display: none;
   position: fixed;
   top: var(--flare-layout-appbar-height, 64px);
   bottom: 0;
   left: var(--flare-drawer-mini-width, 3.5rem);
   z-index: 210;
-  display: flex;
   flex-direction: column;
-  width: var(--flare-drawer-width, 16rem);
+  width: var(--flare-flyout-width, var(--flare-drawer-width, 16rem));
   max-width: 80vw;
   padding: var(--flare-spacing-4, 0.5rem) 0;
   background: var(--flare-color-surface-container, var(--flare-color-surface));
@@ -225,14 +226,19 @@
   border-right: 1px solid var(--flare-color-outline-variant);
   box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0, 0, 0, .16));
   overflow: hidden;
+}
+
+/* Show the panel of the displayed group (the hovered preview, or the active section). */
+.flare-nav-group--flyout-displayed .flare-nav-group__flyout {
+  display: flex;
   animation: flare-nav-flyout-in var(--flare-motion-duration-short3, 150ms)
              var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
 }
 
-/* Slide/fade in from the rail edge when the panel opens. */
+/* Fade in when the panel appears (no transform, so it never rests offset from the rail edge). */
 @keyframes flare-nav-flyout-in {
-  from { opacity: 0; transform: translateX(-0.5rem); }
-  to { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .flare-nav-group__flyout-header {

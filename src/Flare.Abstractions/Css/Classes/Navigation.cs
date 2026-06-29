@@ -45,6 +45,9 @@ public static class Navigation
     /// <summary>The <c>flare-nav-group--flyout</c> CSS class: a top-level group rendered as a
     /// collapsed rail trigger that opens its children in an anchored flyout.</summary>
     public const string NavGroupFlyout = "flare-nav-group--flyout";
+    /// <summary>The <c>flare-nav-group--flyout-displayed</c> CSS class: the flyout group whose
+    /// secondary panel is currently shown (hovered, or the active section).</summary>
+    public const string NavGroupFlyoutDisplayed = "flare-nav-group--flyout-displayed";
     /// <summary>The <c>flare-nav-group__flyout</c> CSS class: the floating panel that holds a
     /// flyout group's children, positioned next to the rail icon.</summary>
     public const string NavGroupFlyoutPanel = "flare-nav-group__flyout";

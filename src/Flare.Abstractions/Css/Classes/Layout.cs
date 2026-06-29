@@ -29,6 +29,9 @@ public static class Layout
     /// <summary>The <c>flare-layout--rail-flyout</c> CSS class: the collapsed mini-rail opens each
     /// group's children in an anchored flyout menu (MD3 navigation rail).</summary>
     public const string RailFlyout = "flare-layout--rail-flyout";
+    /// <summary>The <c>flare-layout--flyout-column</c> CSS class: a flyout group's secondary panel is
+    /// docked as a persistent column, so the content is pushed aside rather than covered.</summary>
+    public const string FlyoutColumn = "flare-layout--flyout-column";
     /// <summary>The <c>flare-layout-appbar__toggle--open</c> CSS class.</summary>
     public const string AppbarToggleOpen = "flare-layout-appbar__toggle--open";
     /// <summary>The <c>flare-layout-content--lg</c> CSS class.</summary>

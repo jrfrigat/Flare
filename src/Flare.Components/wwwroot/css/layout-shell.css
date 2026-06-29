@@ -80,6 +80,18 @@
     padding: var(--flare-layout-content-padding, 1.5rem 2rem);
 }
 
+/* RailFlyout persistent column: reserve a real grid track the width of the docked secondary panel
+   between the rail and the content, so the fixed panel overlays that empty track and the content is
+   pushed aside rather than covered. The high-specificity selector (four classes) beats the mini-rail
+   two-column rule above. */
+.flare-layout--flyout-column.flare-layout--mini-rail:not(.flare-layout--drawer-open) .flare-layout__body {
+    grid-template-columns: var(--flare-drawer-mini-width)
+                           var(--flare-flyout-width, var(--flare-drawer-width, 16rem)) 1fr;
+}
+.flare-layout--flyout-column .flare-layout__main {
+    grid-column: 3;
+}
+
 /* AppBar */
 .flare-layout-appbar {
     display: flex;

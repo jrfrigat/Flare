@@ -825,6 +825,39 @@ public class C_FlareLayoutContextModeTests
     }
 
     [Fact]
+    public void FlyoutColumn_HoverTakesPrecedenceOverActiveSection()
+    {
+        var ctx = Collapsed(DrawerMode.RailFlyout);
+        var active = new object();
+        var hovered = new object();
+
+        Assert.False(ctx.FlyoutColumnOpen);          // nothing displayed yet
+
+        ctx.FlyoutActiveOwner = active;              // on a page -> the section docks persistently
+        Assert.Same(active, ctx.FlyoutDisplayedOwner);
+        Assert.True(ctx.FlyoutColumnOpen);
+
+        ctx.FlyoutHoverOwner = hovered;              // previewing another group wins
+        Assert.Same(hovered, ctx.FlyoutDisplayedOwner);
+
+        ctx.FlyoutHoverOwner = null;                 // leave -> reverts to the active section
+        Assert.Same(active, ctx.FlyoutDisplayedOwner);
+    }
+
+    [Fact]
+    public void FlyoutColumn_ClosedWhenNotCollapsedOrWrongMode()
+    {
+        var open = new FlareLayoutContext { Mode = DrawerMode.RailFlyout, DrawerOpen = true };
+        open.FlyoutActiveOwner = new object();
+        Assert.Null(open.FlyoutDisplayedOwner);      // drawer open -> no column
+        Assert.False(open.FlyoutColumnOpen);
+
+        var rail = Collapsed(DrawerMode.Rail);
+        rail.FlyoutActiveOwner = new object();
+        Assert.Null(rail.FlyoutDisplayedOwner);      // not a flyout mode -> no column
+    }
+
+    [Fact]
     public void Expanded_PinsOpen_AndHidesToggleOnDesktop()
     {
         var ctx = new FlareLayoutContext { Mode = DrawerMode.Expanded };
@@ -866,15 +899,17 @@ public class C_FlareLayoutContextModeTests
     }
 }
 
-// FlareNavGroup rail flyout: in DrawerMode.RailFlyout a collapsed top-level group becomes an icon
-// trigger that opens its children in an anchored panel; other modes keep the inline group markup.
+// FlareNavGroup rail flyout (MD3 persistent column): in DrawerMode.RailFlyout a collapsed top-level
+// group renders an icon trigger plus an always-mounted secondary panel; the panel is shown (via the
+// --flyout-displayed class) only for the displayed group (hovered, or the active section). Other
+// modes keep the inline group markup.
 public class C_FlareNavGroupFlyoutTests : FlareTestContext
 {
     private static FlareLayoutContext FlyoutCollapsed()
         => new() { Mode = DrawerMode.RailFlyout, DrawerOpen = false };
 
     [Fact]
-    public void RailFlyout_RendersTriggerWithPopupSemantics_PanelClosed()
+    public void RailFlyout_RendersTrigger_PanelMountedButNotDisplayed()
     {
         var cut = Render<FlareNavGroup>(p => p
             .Add(g => g.Label, "Components")
@@ -885,22 +920,40 @@ public class C_FlareNavGroupFlyoutTests : FlareTestContext
         var btn = cut.Find("button.flare-nav-group__header");
         Assert.Equal("true", btn.GetAttribute("aria-haspopup"));
         Assert.Equal("false", btn.GetAttribute("aria-expanded"));
-        Assert.Empty(cut.FindAll(".flare-nav-group__flyout"));
+        // The panel is always mounted (so child links report the active section), and contains the
+        // children, but the group is not yet the displayed one.
+        var panel = cut.Find(".flare-nav-group__flyout");
+        Assert.Contains("Buttons", panel.TextContent);
+        Assert.DoesNotContain("flare-nav-group--flyout-displayed", cut.Find(".flare-nav-group--flyout").ClassName);
     }
 
     [Fact]
-    public void RailFlyout_Click_OpensPanelWithChildren()
+    public void RailFlyout_PointerEnter_DisplaysPanel()
     {
         var cut = Render<FlareNavGroup>(p => p
             .Add(g => g.Label, "Components")
             .AddCascadingValue<FlareLayoutContext>(FlyoutCollapsed())
             .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
 
-        cut.Find("button.flare-nav-group__header").Click();
+        cut.Find(".flare-nav-group--flyout").MouseEnter();
 
-        var panel = cut.Find(".flare-nav-group__flyout");
-        Assert.Contains("Buttons", panel.TextContent);
+        Assert.Contains("flare-nav-group--flyout-displayed", cut.Find(".flare-nav-group--flyout").ClassName);
         Assert.Equal("true", cut.Find("button.flare-nav-group__header").GetAttribute("aria-expanded"));
+    }
+
+    [Fact]
+    public void RailFlyout_Escape_RevertsHoverPreview()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(g => g.Label, "Components")
+            .AddCascadingValue<FlareLayoutContext>(FlyoutCollapsed())
+            .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
+
+        cut.Find(".flare-nav-group--flyout").MouseEnter();
+        Assert.Contains("flare-nav-group--flyout-displayed", cut.Find(".flare-nav-group--flyout").ClassName);
+
+        cut.Find(".flare-nav-group--flyout").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "Escape" });
+        Assert.DoesNotContain("flare-nav-group--flyout-displayed", cut.Find(".flare-nav-group--flyout").ClassName);
     }
 
     [Fact]
@@ -913,22 +966,6 @@ public class C_FlareNavGroupFlyoutTests : FlareTestContext
 
         Assert.Empty(cut.FindAll(".flare-nav-group--flyout"));
         Assert.NotEmpty(cut.FindAll(".flare-nav-group__items"));
-    }
-
-    [Fact]
-    public void RailFlyout_Escape_ClosesPanel()
-    {
-        var cut = Render<FlareNavGroup>(p => p
-            .Add(g => g.Label, "Components")
-            .AddCascadingValue<FlareLayoutContext>(FlyoutCollapsed())
-            .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
-
-        cut.Find("button.flare-nav-group__header").Click();
-        Assert.NotEmpty(cut.FindAll(".flare-nav-group__flyout"));
-
-        cut.Find(".flare-nav-group--flyout").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "Escape" });
-        Assert.Empty(cut.FindAll(".flare-nav-group__flyout"));
-        Assert.Equal("false", cut.Find("button.flare-nav-group__header").GetAttribute("aria-expanded"));
     }
 }
 

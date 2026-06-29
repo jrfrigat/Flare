@@ -5,7 +5,7 @@
 @inject NavigationManager Nav
 
 <CascadingValue Value="_ctx" IsFixed="false">
-    <div class="@BuildCssClass(_drawerClass, _miniRailClass, _railHoverClass, _railFlyoutClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@BuildCssClass(_drawerClass, _miniRailClass, _railHoverClass, _railFlyoutClass, _flyoutColumnClass)" style="@Style" @attributes="AdditionalAttributes">
         @AppBar
         @if (ChildContent is not null)
         {
@@ -89,6 +89,7 @@
     private string _miniRailClass => _ctx.MiniRail ? Css.Classes.Layout.MiniRail : string.Empty;
     private string _railHoverClass => _ctx.RailOverlayOpen ? Css.Classes.Layout.RailHoverExpand : string.Empty;
     private string _railFlyoutClass => _ctx.RailFlyout ? Css.Classes.Layout.RailFlyout : string.Empty;
+    private string _flyoutColumnClass => _ctx.FlyoutColumnOpen ? Css.Classes.Layout.FlyoutColumn : string.Empty;
     private string _contentMaxWidthClass => LayoutContentWidth.ToClass(ContentMaxWidth);
     private string _contentAlignClass => LayoutContentWidth.ToAlignClass(ContentAlignment);
 

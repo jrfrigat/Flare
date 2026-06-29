@@ -10,6 +10,8 @@ public class FlareLayoutContext
     private DrawerMode _mode = DrawerMode.Collapsible;
     private bool _railHoverExpanded;
     private bool _isMobile;
+    private object? _flyoutHoverOwner;
+    private object? _flyoutActiveOwner;
 
     /// <summary>Whether the drawer is open. Setting it notifies subscribers.</summary>
     public bool DrawerOpen
@@ -19,9 +21,9 @@ public class FlareLayoutContext
         {
             if (_drawerOpen == value) return;
             _drawerOpen = value;
-            // Opening (or otherwise leaving the collapsed rail) drops any pending hover overlay so
-            // it can never linger over the full-width drawer.
-            if (value) _railHoverExpanded = false;
+            // Opening (or otherwise leaving the collapsed rail) drops any pending hover overlay and
+            // flyout preview so neither lingers over the full-width drawer.
+            if (value) { _railHoverExpanded = false; _flyoutHoverOwner = null; }
             StateChanged?.Invoke();
         }
     }
@@ -115,11 +117,56 @@ public class FlareLayoutContext
     public bool RailIconOnly => RailCollapsed && !RailOverlayOpen;
 
     /// <summary>
-    /// True when collapsed top-level groups should open their children in an anchored flyout
-    /// (<see cref="DrawerMode.RailFlyout"/> while <see cref="RailCollapsed"/>). <c>FlareNavGroup</c>
-    /// reads this to switch a top-level group from inline expansion to a floating menu.
+    /// True when collapsed top-level groups should present their children in a persistent secondary
+    /// column (<see cref="DrawerMode.RailFlyout"/> while <see cref="RailCollapsed"/>), mirroring the
+    /// Material Design 3 navigation rail. <c>FlareNavGroup</c> reads this to switch a top-level group
+    /// from inline expansion to the docked panel.
     /// </summary>
     public bool RailFlyout => _mode == DrawerMode.RailFlyout && RailCollapsed;
+
+    /// <summary>
+    /// The collapsed-rail flyout group the pointer or keyboard focus is currently over (a preview).
+    /// Set by <c>FlareNavGroup</c>; takes precedence over <see cref="FlyoutActiveOwner"/>. Setting it
+    /// notifies subscribers.
+    /// </summary>
+    public object? FlyoutHoverOwner
+    {
+        get => _flyoutHoverOwner;
+        set
+        {
+            if (ReferenceEquals(_flyoutHoverOwner, value)) return;
+            _flyoutHoverOwner = value;
+            StateChanged?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// The top-level flyout group whose section contains the current page; its secondary panel stays
+    /// docked open (MD3-style) even when the pointer leaves. Set by <c>FlareNavLink</c> as the active
+    /// route changes. Setting it notifies subscribers.
+    /// </summary>
+    public object? FlyoutActiveOwner
+    {
+        get => _flyoutActiveOwner;
+        set
+        {
+            if (ReferenceEquals(_flyoutActiveOwner, value)) return;
+            _flyoutActiveOwner = value;
+            StateChanged?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// The flyout group whose secondary panel is currently shown: the hovered group if any, otherwise
+    /// the active section. Only meaningful while <see cref="RailFlyout"/> is true.
+    /// </summary>
+    public object? FlyoutDisplayedOwner => RailFlyout ? (_flyoutHoverOwner ?? _flyoutActiveOwner) : null;
+
+    /// <summary>
+    /// True when the layout should reserve the persistent secondary nav column, so a flyout group's
+    /// panel pushes the content aside instead of overlaying it.
+    /// </summary>
+    public bool FlyoutColumnOpen => FlyoutDisplayedOwner is not null;
 
     /// <summary>Raised when the drawer or mini-rail state changes.</summary>
     public event Action? StateChanged;
