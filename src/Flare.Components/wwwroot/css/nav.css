@@ -210,7 +210,7 @@
    covered). Every group's panel is rendered but hidden; only the displayed group's panel is shown.
    Styling is fully theme-driven (semantic tokens).
 */
-.flare-nav-group__flyout {
+.flare-nav-group--flyout .flare-nav-group__flyout {
   display: none;
   position: fixed;
   top: var(--flare-layout-appbar-height, 64px);
