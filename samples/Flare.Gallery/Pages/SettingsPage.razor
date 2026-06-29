@@ -1,7 +1,7 @@
 @page "/settings"
 @inherits LocalizedPage
 @inject IThemeService ThemeService
-@inject Flare.Gallery.Services.DrawerModeService NavMode
+@inject Flare.Gallery.Services.RailLabelService RailLabels
 @using Flare.Theming
 
 <PageTitle>@GalleryStrings.Settings_Title - Flare</PageTitle>
@@ -106,18 +106,18 @@
                         <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant" Style="display:block;">@GalleryStrings.Nav_Drawer_Desc</FlareText>
                     </div>
                     <FlareStack Gap="FlareSpacing.XSmall">
-                        @foreach (var opt in NavModes)
-                        {
-                            var mode = opt.Mode;
-                            <FlareButton Variant="@(NavMode.CurrentMode == mode ? ButtonVariant.Filled : ButtonVariant.Outlined)"
-                                         OnClick="@(() => SetDrawerModeAsync(mode))"
-                                         Style="justify-content:flex-start;width:100%;">
-                                <LeadingIcon><FlareIcon Name="@opt.Icon" /></LeadingIcon>
-                                <ChildContent>@opt.Label</ChildContent>
-                            </FlareButton>
-                            <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant"
-                                       Style="display:block;margin:0 0 0.5rem 0.75rem;">@opt.Desc</FlareText>
-                        }
+                        <FlareButton Variant="@(RailLabels.ShowLabels ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                                     OnClick="@(() => SetRailLabelsAsync(true))"
+                                     Style="justify-content:flex-start;width:100%;">
+                            <LeadingIcon><FlareIcon Name="view_sidebar" /></LeadingIcon>
+                            <ChildContent>@GalleryStrings.Nav_Rail_Labeled</ChildContent>
+                        </FlareButton>
+                        <FlareButton Variant="@(RailLabels.ShowLabels ? ButtonVariant.Outlined : ButtonVariant.Filled)"
+                                     OnClick="@(() => SetRailLabelsAsync(false))"
+                                     Style="justify-content:flex-start;width:100%;">
+                            <LeadingIcon><FlareIcon Name="dock_to_right" /></LeadingIcon>
+                            <ChildContent>@GalleryStrings.Nav_Rail_IconsOnly</ChildContent>
+                        </FlareButton>
                     </FlareStack>
                 </FlareStack>
             </ChildContent>
@@ -148,21 +148,9 @@
 @code {
     private string _seed = "#7B1FA2";
 
-    // Localized, ordered list of navigation drawer modes shown in the Navigation settings tab.
-    private sealed record NavModeOption(DrawerMode Mode, string Label, string Desc, string Icon);
-
-    private IReadOnlyList<NavModeOption> NavModes =>
-    [
-        new(DrawerMode.Expanded, GalleryStrings.Nav_Mode_Expanded, GalleryStrings.Nav_Mode_Expanded_Desc, "view_sidebar"),
-        new(DrawerMode.Collapsible, GalleryStrings.Nav_Mode_Collapsible, GalleryStrings.Nav_Mode_Collapsible_Desc, "menu"),
-        new(DrawerMode.Rail, GalleryStrings.Nav_Mode_Rail, GalleryStrings.Nav_Mode_Rail_Desc, "dock_to_right"),
-        new(DrawerMode.RailHoverExpand, GalleryStrings.Nav_Mode_RailHoverExpand, GalleryStrings.Nav_Mode_RailHoverExpand_Desc, "chevron_right"),
-        new(DrawerMode.RailFlyout, GalleryStrings.Nav_Mode_RailFlyout, GalleryStrings.Nav_Mode_RailFlyout_Desc, "menu_open"),
-    ];
-
-    private async Task SetDrawerModeAsync(DrawerMode mode)
+    private async Task SetRailLabelsAsync(bool showLabels)
     {
-        await NavMode.SetModeAsync(mode);
+        await RailLabels.SetShowLabelsAsync(showLabels);
         StateHasChanged();
     }
 

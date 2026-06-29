@@ -1810,10 +1810,16 @@
     <value>Navigation</value>
   </data>
   <data name="Nav_Drawer_Title" xml:space="preserve">
-    <value>Drawer behavior</value>
+    <value>Navigation rail</value>
   </data>
   <data name="Nav_Drawer_Desc" xml:space="preserve">
-    <value>Choose how the navigation drawer collapses and how you reach grouped pages.</value>
+    <value>Choose how the collapsed rail looks: a caption under each icon, or icons only.</value>
+  </data>
+  <data name="Nav_Rail_Labeled" xml:space="preserve">
+    <value>With labels</value>
+  </data>
+  <data name="Nav_Rail_IconsOnly" xml:space="preserve">
+    <value>Icons only</value>
   </data>
   <data name="Nav_Mode_Expanded" xml:space="preserve">
     <value>Always expanded</value>

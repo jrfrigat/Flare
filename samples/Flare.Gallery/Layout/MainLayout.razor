@@ -3,6 +3,7 @@
 @inject NavigationManager NavManager
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
+@inject Flare.Gallery.Services.RailLabelService RailLabels
 @using Flare.Gallery.Models
 
 <FlareLayout @bind-DrawerOpen="_navOpen" Mode="DrawerMode.Rail"
@@ -27,9 +28,10 @@
     </AppBar>
     <Drawer>
         <FlareLayoutDrawer>
-            @* Primary rail: the top-level sections (labeled rail; expands to a full menu when the
-               drawer is opened). Selecting Themes/Components/Services/API opens the secondary column. *@
-            <NavMenu Mode="@(_navOpen ? NavMenuMode.Full : NavMenuMode.RailLabeled)" @bind-Section="_section" />
+            @* Primary rail: the top-level sections. Collapsed, it is a rail -- labeled or icon-only per
+               the Settings preference; opening the drawer (toggle) expands it to a full menu.
+               Selecting Themes/Components/Services/API opens the secondary column. *@
+            <NavMenu Mode="@PrimaryNavMode" @bind-Section="_section" />
         </FlareLayoutDrawer>
     </Drawer>
     <SecondaryDrawer>
@@ -67,6 +69,12 @@
     private bool _navOpen;
     private GallerySection _section = GallerySection.None;
 
+    // Opening the drawer expands the rail to a full menu; collapsed, the rail honors the user's
+    // labeled/icon-only preference from Settings.
+    private NavMenuMode PrimaryNavMode => _navOpen
+        ? NavMenuMode.Full
+        : (RailLabels.ShowLabels ? NavMenuMode.RailLabeled : NavMenuMode.Rail);
+
     // Stable id for the update toast so the "new version" notice and the later "updating" state are the
     // same snackbar (changed in place), not two separate toasts.
     private readonly Guid _updateToastId = Guid.NewGuid();
@@ -76,7 +84,11 @@
         // The service polls in the background; surface any new version as a toast.
         VersionCheck.NewVersionAvailable += OnNewVersionAsync;
         VersionCheck.Start();
+        // Re-render the rail when the user changes the labeled/icon-only preference in Settings.
+        RailLabels.Changed += OnRailLabelsChanged;
     }
+
+    private void OnRailLabelsChanged() => InvokeAsync(StateHasChanged);
 
     // Actionable, persistent toast: "Update" applies the waiting service worker and reloads (the service
     // owns the service-worker plumbing - the app just calls ApplyUpdateAsync). Once a newer version is
@@ -100,5 +112,9 @@
     // The anti-FOUC startup splash is revealed automatically by FlareThemeProvider once the theme
     // CSS and web fonts are ready, so the layout no longer needs to hide it by hand.
 
-    public void Dispose() => VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+    public void Dispose()
+    {
+        VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+        RailLabels.Changed -= OnRailLabelsChanged;
+    }
 }

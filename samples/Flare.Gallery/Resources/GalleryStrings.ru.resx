@@ -1810,10 +1810,16 @@
     <value>Навигация</value>
   </data>
   <data name="Nav_Drawer_Title" xml:space="preserve">
-    <value>Поведение боковой панели</value>
+    <value>Панель навигации</value>
   </data>
   <data name="Nav_Drawer_Desc" xml:space="preserve">
-    <value>Выберите, как сворачивается панель навигации и как открывать сгруппированные страницы.</value>
+    <value>Выберите вид свёрнутой панели: подпись под каждой иконкой или только иконки.</value>
+  </data>
+  <data name="Nav_Rail_Labeled" xml:space="preserve">
+    <value>С подписями</value>
+  </data>
+  <data name="Nav_Rail_IconsOnly" xml:space="preserve">
+    <value>Только иконки</value>
   </data>
   <data name="Nav_Mode_Expanded" xml:space="preserve">
     <value>Всегда развёрнута</value>
