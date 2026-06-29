@@ -11,6 +11,7 @@
     <div class="@Css.Classes.Autocomplete.Wrapper">
         <div class="@Css.Classes.Autocomplete.Field @(_open ? Css.Classes.Autocomplete.FieldOpen : "")">
             <input class="@Css.Classes.Autocomplete.Control"
+                   @ref="_inputRef"
                    id="@_inputId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    value="@_searchText"
@@ -131,6 +132,7 @@
     };
 
     private readonly string _inputId = $"flare-autocomplete-{Guid.NewGuid():N}";
+    private ElementReference _inputRef;
 
     private string _stateClass =>
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Autocomplete.Error :
@@ -256,6 +258,8 @@
         _focusedIdx = -1;
         await ValueChanged.InvokeAsync(default);
         NotifyFieldChanged();
+        // Return focus to the input so keyboard users keep their place after clearing.
+        try { await _inputRef.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
     }
 
     private async Task SelectItem(TValue item)

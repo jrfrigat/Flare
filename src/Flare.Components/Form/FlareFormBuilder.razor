@@ -23,8 +23,11 @@
 </div>
 
 @code {
-    /// <summary>Model instance the form is bound to.</summary>
+    /// <summary>Model instance the form is bound to. Supports <c>@bind-Model</c> so a reset propagates
+    /// back to the parent.</summary>
     [Parameter, EditorRequired] public TModel Model { get; set; } = new();
+    /// <summary>Raised when the bound model reference changes (e.g. on reset), for two-way binding.</summary>
+    [Parameter] public EventCallback<TModel> ModelChanged { get; set; }
     /// <summary>Callback raised after the form passes validation.</summary>
     [Parameter] public EventCallback<TModel> OnValidSubmit { get; set; }
     /// <summary>Label text for the form submit button. When null, falls back to the localizer key FormBuilder_Submit.</summary>
@@ -119,9 +122,12 @@
         await OnValidSubmit.InvokeAsync(Model);
     }
 
-    private void ResetForm()
+    private async Task ResetForm()
     {
+        // Replace the model with a fresh instance and notify the parent so a bound field updates too
+        // (otherwise the parent's reference would overwrite the reset on its next render).
         Model = new TModel();
+        await ModelChanged.InvokeAsync(Model);
         // _fields is cached per type - no need to rebuild after reset
     }
 }
