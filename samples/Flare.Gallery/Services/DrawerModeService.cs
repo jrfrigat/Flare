@@ -16,8 +16,8 @@ public sealed class DrawerModeService
 
     public DrawerModeService(IJSRuntime js) => _js = js;
 
-    /// <summary>The active drawer mode. Defaults to the icon rail that expands on hover.</summary>
-    public DrawerMode CurrentMode { get; private set; } = DrawerMode.RailHoverExpand;
+    /// <summary>The active drawer mode. Defaults to the MD3 navigation rail with group flyouts.</summary>
+    public DrawerMode CurrentMode { get; private set; } = DrawerMode.RailFlyout;
 
     /// <summary>Raised after the mode changes so subscribers (the layout) can re-render.</summary>
     public event Action? DrawerModeChanged;
