@@ -101,6 +101,13 @@
     [Parameter] public bool NonLinear { get; set; }
     /// <summary>Callback fired when the active step index changes.</summary>
     [Parameter] public EventCallback<int> OnStepChanged { get; set; }
+    /// <summary>
+    /// Async guard fired BEFORE the active step changes (any navigation: Next/Back/click). Return
+    /// false to block the change -- e.g. validate the current step before advancing. The
+    /// <see cref="StepperChange"/> carries the current and target indices, so a handler that only
+    /// validates forward moves can allow <c>change.To &lt; change.From</c>.
+    /// </summary>
+    [Parameter] public Func<StepperChange, Task<bool>>? OnStepChanging { get; set; }
     /// <summary>Accessible label for the step indicator tab list. Defaults to localised "Progress steps".</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
@@ -146,41 +153,27 @@
     private bool CanGoTo(int idx) =>
         !Linear || NonLinear || idx <= _activeIndex;
 
-    private async Task TryGoTo(int idx)
-    {
-        if (!CanGoTo(idx) || idx == _activeIndex) return;
-        _activeIndex = idx;
-        await OnStepChanged.InvokeAsync(_activeIndex);
-    }
+    private Task TryGoTo(int idx) => CanGoTo(idx) ? ChangeStepAsync(idx) : Task.CompletedTask;
 
-    public async Task Next()
-    {
-        if (!IsLast)
-        {
-            _activeIndex++;
-            await OnStepChanged.InvokeAsync(_activeIndex);
-            StateHasChanged();
-        }
-    }
+    public Task Next() => IsLast ? Task.CompletedTask : ChangeStepAsync(_activeIndex + 1);
 
-    public async Task Back()
-    {
-        if (!IsFirst)
-        {
-            _activeIndex--;
-            await OnStepChanged.InvokeAsync(_activeIndex);
-            StateHasChanged();
-        }
-    }
+    public Task Back() => IsFirst ? Task.CompletedTask : ChangeStepAsync(_activeIndex - 1);
 
-    public async Task GoTo(int index)
+    public Task GoTo(int index)
     {
         index = Math.Clamp(index, 0, _steps.Count - 1);
-        if (index != _activeIndex && CanGoTo(index))
-        {
-            _activeIndex = index;
-            await OnStepChanged.InvokeAsync(_activeIndex);
-            StateHasChanged();
-        }
+        return CanGoTo(index) ? ChangeStepAsync(index) : Task.CompletedTask;
+    }
+
+    // Single navigation path: runs the OnStepChanging guard, then commits the change. No-op when the
+    // target is the current step or the guard vetoes it.
+    private async Task ChangeStepAsync(int to)
+    {
+        if (to == _activeIndex) return;
+        if (OnStepChanging is not null && !await OnStepChanging(new StepperChange(_activeIndex, to)))
+            return;
+        _activeIndex = to;
+        await OnStepChanged.InvokeAsync(_activeIndex);
+        StateHasChanged();
     }
 }

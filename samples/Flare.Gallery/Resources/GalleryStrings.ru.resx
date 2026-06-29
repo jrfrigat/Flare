@@ -1500,6 +1500,9 @@
   <data name="Stepper_Vertical" xml:space="preserve">
     <value>Вертикальный, нелинейный и шаг с ошибкой</value>
   </data>
+  <data name="Stepper_Guard" xml:space="preserve">
+    <value>Асинхронная проверка перед переходом</value>
+  </data>
   <data name="Table_Title" xml:space="preserve">
     <value>Таблица</value>
   </data>

@@ -7086,7 +7086,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Stepper_Vertical", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Async validation guard.
+        /// </summary>
+        public static string Stepper_Guard {
+            get {
+                return ResourceManager.GetString("Stepper_Guard", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на On/off &amp; disabled.
         /// </summary>

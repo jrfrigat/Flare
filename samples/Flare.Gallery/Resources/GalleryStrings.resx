@@ -1500,6 +1500,9 @@
   <data name="Stepper_Vertical" xml:space="preserve">
     <value>Vertical, non-linear &amp; error step</value>
   </data>
+  <data name="Stepper_Guard" xml:space="preserve">
+    <value>Async validation guard</value>
+  </data>
   <data name="Table_Title" xml:space="preserve">
     <value>Table</value>
   </data>
