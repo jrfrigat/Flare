@@ -26,9 +26,6 @@ public static class Layout
     /// <summary>The <c>flare-layout--rail-hover</c> CSS class: the collapsed mini-rail is temporarily
     /// expanded into a full-width overlay by hover or keyboard focus.</summary>
     public const string RailHoverExpand = "flare-layout--rail-hover";
-    /// <summary>The <c>flare-layout--flyout-column</c> CSS class: a flyout group's secondary panel is
-    /// docked as a persistent column, so the content is pushed aside rather than covered.</summary>
-    public const string FlyoutColumn = "flare-layout--flyout-column";
     /// <summary>The <c>flare-layout-secondary</c> CSS class: the optional secondary navigation column
     /// rendered between the drawer and the content.</summary>
     public const string Secondary = "flare-layout-secondary";

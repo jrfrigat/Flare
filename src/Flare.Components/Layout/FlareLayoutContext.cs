@@ -7,11 +7,10 @@ namespace Flare.Components;
 public class FlareLayoutContext
 {
     private bool _drawerOpen = true;
-    private DrawerMode _mode = DrawerMode.Collapsible;
+    private bool _miniRail;
+    private bool _railHoverExpand;
     private bool _railHoverExpanded;
     private bool _isMobile;
-    private object? _flyoutHoverOwner;
-    private object? _flyoutActiveOwner;
 
     /// <summary>Whether the drawer is open. Setting it notifies subscribers.</summary>
     public bool DrawerOpen
@@ -21,34 +20,47 @@ public class FlareLayoutContext
         {
             if (_drawerOpen == value) return;
             _drawerOpen = value;
-            // Opening (or otherwise leaving the collapsed rail) drops any pending hover overlay and
-            // flyout preview so neither lingers over the full-width drawer.
-            if (value) { _railHoverExpanded = false; _flyoutHoverOwner = null; }
+            // Opening (or otherwise leaving the collapsed rail) drops any pending hover overlay so it
+            // never lingers over the full-width drawer.
+            if (value) _railHoverExpanded = false;
             StateChanged?.Invoke();
         }
     }
 
     /// <summary>
-    /// How the drawer behaves, especially in its collapsed state. <see cref="DrawerMode.Expanded"/>
-    /// pins the drawer open. Setting it notifies subscribers.
+    /// Whether collapsing the drawer leaves a narrow icon rail rather than hiding it entirely. Set by
+    /// <see cref="FlareLayout"/> from its <c>MiniRail</c> parameter. Setting it notifies subscribers.
     /// </summary>
-    public DrawerMode Mode
+    public bool MiniRail
     {
-        get => _mode;
+        get => _miniRail;
         set
         {
-            if (_mode == value) return;
-            _mode = value;
-            // Expanded mode keeps the drawer permanently open; never leave it collapsed.
-            if (value == DrawerMode.Expanded) { _drawerOpen = true; _railHoverExpanded = false; }
+            if (_miniRail == value) return;
+            _miniRail = value;
+            StateChanged?.Invoke();
+        }
+    }
+
+    /// <summary>
+    /// Whether the collapsed mini-rail may temporarily expand into a full-width overlay while the
+    /// pointer or keyboard focus is inside it (opt-in). Set by <see cref="FlareLayout"/> from its
+    /// <c>RailHoverExpand</c> parameter. Setting it notifies subscribers.
+    /// </summary>
+    public bool RailHoverExpand
+    {
+        get => _railHoverExpand;
+        set
+        {
+            if (_railHoverExpand == value) return;
+            _railHoverExpand = value;
             StateChanged?.Invoke();
         }
     }
 
     /// <summary>
     /// Whether the layout is currently in its mobile (off-canvas) breakpoint. Set by
-    /// <see cref="FlareLayout"/> from the responsive breakpoint watcher; used so the app-bar toggle
-    /// stays available on mobile even in <see cref="DrawerMode.Expanded"/>. Setting it notifies
+    /// <see cref="FlareLayout"/> from the responsive breakpoint watcher. Setting it notifies
     /// subscribers.
     /// </summary>
     public bool IsMobile
@@ -63,33 +75,18 @@ public class FlareLayoutContext
     }
 
     /// <summary>
-    /// True when the app-bar drawer toggle should be hidden: only in
-    /// <see cref="DrawerMode.Expanded"/> on desktop, where the drawer is permanently pinned open. On
-    /// mobile the toggle is always shown because the drawer is an off-canvas overlay.
-    /// </summary>
-    public bool ToggleHidden => _mode == DrawerMode.Expanded && !_isMobile;
-
-    /// <summary>
-    /// True when the drawer collapses to an icon rail rather than disappearing -- any of
-    /// <see cref="DrawerMode.Rail"/>, <see cref="DrawerMode.RailHoverExpand"/> or
-    /// <see cref="DrawerMode.RailFlyout"/>. Back-compat alias for the former <c>MiniRail</c> flag.
-    /// </summary>
-    public bool MiniRail => _mode is DrawerMode.Rail or DrawerMode.RailHoverExpand or DrawerMode.RailFlyout;
-
-    /// <summary>
     /// True when the drawer is collapsed into the mini icon rail. Equivalent to
     /// <c>MiniRail &amp;&amp; !DrawerOpen</c>. This is the physical drawer state and ignores any
     /// temporary hover overlay; use <see cref="RailIconOnly"/> to decide how a nested
     /// <c>FlareNavMenu</c> should render.
     /// </summary>
-    public bool RailCollapsed => MiniRail && !_drawerOpen;
+    public bool RailCollapsed => _miniRail && !_drawerOpen;
 
     /// <summary>
     /// Requests the collapsed mini-rail to temporarily expand into a full-width overlay so its
     /// nested groups become reachable. <see cref="FlareLayoutDrawer"/> sets this while the pointer
-    /// or keyboard focus is inside the rail. Only takes effect in
-    /// <see cref="DrawerMode.RailHoverExpand"/> while <see cref="RailCollapsed"/> is true. Setting
-    /// it notifies subscribers.
+    /// or keyboard focus is inside the rail. Only takes effect when <see cref="RailHoverExpand"/> is
+    /// enabled and <see cref="RailCollapsed"/> is true. Setting it notifies subscribers.
     /// </summary>
     public bool RailHoverExpanded
     {
@@ -104,10 +101,10 @@ public class FlareLayoutContext
 
     /// <summary>
     /// True when the collapsed mini-rail is currently expanded into its hover/focus overlay
-    /// (<see cref="DrawerMode.RailHoverExpand"/>, collapsed, and hovered/focused). The layout uses
-    /// this to float the drawer at full width over the content without reflowing it.
+    /// (<see cref="RailHoverExpand"/> enabled, collapsed, and hovered/focused). The layout uses this
+    /// to float the drawer at full width over the content without reflowing it.
     /// </summary>
-    public bool RailOverlayOpen => _mode == DrawerMode.RailHoverExpand && RailCollapsed && _railHoverExpanded;
+    public bool RailOverlayOpen => _railHoverExpand && RailCollapsed && _railHoverExpanded;
 
     /// <summary>
     /// True when a nested <c>FlareNavMenu</c> should render icon-only: the drawer is collapsed into
@@ -116,67 +113,9 @@ public class FlareLayoutContext
     /// </summary>
     public bool RailIconOnly => RailCollapsed && !RailOverlayOpen;
 
-    /// <summary>
-    /// True when collapsed top-level groups should present their children in a persistent secondary
-    /// column (<see cref="DrawerMode.RailFlyout"/> while <see cref="RailCollapsed"/>), mirroring the
-    /// Material Design 3 navigation rail. <c>FlareNavGroup</c> reads this to switch a top-level group
-    /// from inline expansion to the docked panel.
-    /// </summary>
-    public bool RailFlyout => _mode == DrawerMode.RailFlyout && RailCollapsed;
-
-    /// <summary>
-    /// The collapsed-rail flyout group the pointer or keyboard focus is currently over (a preview).
-    /// Set by <c>FlareNavGroup</c>; takes precedence over <see cref="FlyoutActiveOwner"/>. Setting it
-    /// notifies subscribers.
-    /// </summary>
-    public object? FlyoutHoverOwner
-    {
-        get => _flyoutHoverOwner;
-        set
-        {
-            if (ReferenceEquals(_flyoutHoverOwner, value)) return;
-            _flyoutHoverOwner = value;
-            StateChanged?.Invoke();
-        }
-    }
-
-    /// <summary>
-    /// The top-level flyout group whose section contains the current page; its secondary panel stays
-    /// docked open (MD3-style) even when the pointer leaves. Set by <c>FlareNavLink</c> as the active
-    /// route changes. Setting it notifies subscribers.
-    /// </summary>
-    public object? FlyoutActiveOwner
-    {
-        get => _flyoutActiveOwner;
-        set
-        {
-            if (ReferenceEquals(_flyoutActiveOwner, value)) return;
-            _flyoutActiveOwner = value;
-            StateChanged?.Invoke();
-        }
-    }
-
-    /// <summary>
-    /// The flyout group whose secondary panel is currently shown: the hovered group if any, otherwise
-    /// the active section. Only meaningful while <see cref="RailFlyout"/> is true.
-    /// </summary>
-    public object? FlyoutDisplayedOwner => RailFlyout ? (_flyoutHoverOwner ?? _flyoutActiveOwner) : null;
-
-    /// <summary>
-    /// True when the layout should reserve the persistent secondary nav column, so a flyout group's
-    /// panel pushes the content aside instead of overlaying it.
-    /// </summary>
-    public bool FlyoutColumnOpen => FlyoutDisplayedOwner is not null;
-
     /// <summary>Raised when the drawer or mini-rail state changes.</summary>
     public event Action? StateChanged;
 
-    /// <summary>Toggles the drawer open/closed and notifies subscribers. No-op while the drawer is
-    /// pinned open (<see cref="DrawerMode.Expanded"/> on desktop); still works on mobile, where even
-    /// an expanded drawer is an off-canvas overlay.</summary>
-    public void ToggleDrawer()
-    {
-        if (ToggleHidden) return;
-        DrawerOpen = !DrawerOpen;
-    }
+    /// <summary>Toggles the drawer open/closed and notifies subscribers.</summary>
+    public void ToggleDrawer() => DrawerOpen = !DrawerOpen;
 }

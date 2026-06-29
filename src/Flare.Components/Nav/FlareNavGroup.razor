@@ -1,69 +1,29 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-@if (_isFlyout)
-{
-    @* Rail flyout mode (MD3 navigation rail): the group collapses to an icon in the rail and its
-       children show in a full-height secondary panel docked beside the rail. The panel for the
-       section that contains the current page stays open (it pushes the content aside, it does not
-       cover it); hovering another group's icon previews that group's panel instead. *@
-    <div class="@BuildCssClass(Css.Classes.Navigation.NavGroupFlyout, _displayedClass)" style="@Style" @ref="_rootRef"
-         @onmouseenter="OnFlyoutPointerEnter" @onmouseleave="OnFlyoutPointerLeave"
-         @onfocusin="OnFlyoutPointerEnter" @onfocusout="OnFlyoutPointerLeave"
-         @onkeydown="HandleFlyoutKeyDown" @attributes="AdditionalAttributes">
-        <button class="@Css.Classes.Navigation.NavGroupHeader" @ref="_anchorRef" title="@Label"
-                @onclick="ToggleFlyout" type="button"
-                aria-haspopup="true" aria-expanded="@_isDisplayed.ToString().ToLowerInvariant()"
-                aria-controls="@_panelId">
-            @if (Icon is not null)
-            {
-                <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
-            }
-            <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
-            <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron" aria-hidden="true">chevron_right</span>
-        </button>
-        @* The panel is always rendered (CSS hides it unless displayed) so descendant links stay
-           mounted and can report the active section even before this group's panel is shown. *@
-        <div id="@_panelId" class="@Css.Classes.Navigation.NavGroupFlyoutPanel" role="group" aria-label="@Label">
-            <div class="@Css.Classes.Navigation.NavGroupFlyoutHeader">@Label</div>
-            <div class="@Css.Classes.Navigation.NavGroupFlyoutItems">
-                @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
-                <CascadingValue Value="this" IsFixed="true">
-                    @ChildContent
-                </CascadingValue>
-            </div>
+<div class="@BuildCssClass(_expandedClass)" style="@Style" @attributes="AdditionalAttributes">
+    <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
+        @if (Icon is not null)
+        {
+            <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
+        }
+        <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
+        <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
+    </button>
+    <div class="@Css.Classes.Nav.GroupItems @(_expanded ? Css.Classes.Nav.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
+        <div class="@Css.Classes.Nav.GroupItemsInner">
+            @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
+            <CascadingValue Value="this" IsFixed="true">
+                @ChildContent
+            </CascadingValue>
         </div>
     </div>
-}
-else
-{
-    <div class="@BuildCssClass(_expandedClass)" style="@Style" @attributes="AdditionalAttributes">
-        <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
-            @if (Icon is not null)
-            {
-                <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
-            }
-            <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
-            <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
-        </button>
-        <div class="@Css.Classes.Nav.GroupItems @(_expanded ? Css.Classes.Nav.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
-            <div class="@Css.Classes.Nav.GroupItemsInner">
-                @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
-                <CascadingValue Value="this" IsFixed="true">
-                    @ChildContent
-                </CascadingValue>
-            </div>
-        </div>
-    </div>
-}
+</div>
 
 @code {
     // Nearest ancestor group (set when this group is nested inside another), so expansion
     // bubbles up the whole chain when a deeply nested link becomes active.
     [CascadingParameter] private FlareNavGroup? ParentGroup { get; set; }
-
-    // Drives the rail flyout automatically when the layout drawer is collapsed in RailFlyout mode.
-    [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
 
     /// <summary>Material Symbols icon name rendered before the label.</summary>
     [Parameter] public string? Icon { get; set; }
@@ -75,11 +35,6 @@ else
     [Parameter] public bool Expanded { get; set; }
     /// <summary>Callback fired when the expanded state changes.</summary>
     [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
-    /// <summary>
-    /// Delay in milliseconds before a hovered flyout panel reverts after the pointer leaves, so the
-    /// user can cross the gap from the icon to the panel without it switching. Only used in flyout mode.
-    /// </summary>
-    [Parameter] public int FlyoutHideDelay { get; set; } = 150;
 
     protected override string ComponentCssClass => Css.Classes.Navigation.NavGroup;
 
@@ -91,21 +46,6 @@ else
 
     private string _expandedClass => _expanded ? Css.Classes.Navigation.NavGroupExpanded : string.Empty;
 
-    // Flyout mode applies only to top-level groups (a nested group inside a flyout panel renders
-    // normally), and only while the drawer is collapsed in RailFlyout mode.
-    private bool _isFlyout => ParentGroup is null && (Layout?.RailFlyout ?? false);
-    // This group's panel is shown when it is the displayed owner (hovered, or the active section).
-    private bool _isDisplayed => _isFlyout && Layout is not null && ReferenceEquals(this, Layout.FlyoutDisplayedOwner);
-    private string _displayedClass => _isDisplayed ? Css.Classes.Navigation.NavGroupFlyoutDisplayed : string.Empty;
-
-    // The top-level group of this chain; a descendant link reports it as the active section.
-    internal FlareNavGroup TopLevelFlyoutGroup => ParentGroup?.TopLevelFlyoutGroup ?? this;
-
-    private CancellationTokenSource? _hoverCts;
-    private ElementReference _rootRef;
-    private ElementReference _anchorRef;
-    private readonly string _panelId = "flare-nav-flyout-" + Guid.NewGuid().ToString("N")[..8];
-
     protected override void OnParametersSet()
     {
         if (Expanded != _lastParamExpanded)
@@ -113,10 +53,6 @@ else
             _expanded = Expanded;
             _lastParamExpanded = Expanded;
         }
-        // Leaving flyout mode (the drawer re-opened, or the mode changed) drops this group's hover
-        // preview so it cannot keep the column reserved.
-        if (!_isFlyout && Layout is not null && ReferenceEquals(Layout.FlyoutHoverOwner, this))
-            Layout.FlyoutHoverOwner = null;
     }
 
     private async Task Toggle()
@@ -141,65 +77,5 @@ else
             await ParentGroup.ExpandFromChild();
         if (changed)
             StateHasChanged();
-    }
-
-    // --- Rail flyout (MD3 navigation rail) ---
-
-    // Pointer or focus entering the group previews its panel (and cancels a pending revert).
-    private void OnFlyoutPointerEnter()
-    {
-        _hoverCts?.Cancel();
-        _hoverCts = null;
-        if (Layout is not null)
-            Layout.FlyoutHoverOwner = this;
-    }
-
-    // Leaving starts a short safe-area delay so the pointer can cross from the icon to the panel; the
-    // preview is cleared only if this group still owns it, reverting to the active section.
-    private void OnFlyoutPointerLeave()
-    {
-        _hoverCts?.Cancel();
-        _hoverCts = new CancellationTokenSource();
-        var ct = _hoverCts.Token;
-        _ = Task.Delay(FlyoutHideDelay, ct).ContinueWith(_ =>
-        {
-            if (ct.IsCancellationRequested) return;
-            InvokeAsync(() =>
-            {
-                if (Layout is not null && ReferenceEquals(Layout.FlyoutHoverOwner, this))
-                    Layout.FlyoutHoverOwner = null;
-            });
-        }, TaskScheduler.Default);
-    }
-
-    // Trigger click toggles this group's preview, so touch and keyboard users can show or dismiss it.
-    // Dismissing reverts to the active section if there is one.
-    private void ToggleFlyout()
-    {
-        if (Layout is null) return;
-        Layout.FlyoutHoverOwner = ReferenceEquals(Layout.FlyoutHoverOwner, this) ? null : this;
-    }
-
-    private async Task HandleFlyoutKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Key != "Escape" || Layout is null) return;
-        _hoverCts?.Cancel();
-        // Escape drops a hover preview (reverting to the active section); the active section's panel
-        // is part of the layout and stays.
-        if (ReferenceEquals(Layout.FlyoutHoverOwner, this))
-            Layout.FlyoutHoverOwner = null;
-        try { await _anchorRef.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
-    }
-
-    public override async ValueTask DisposeAsync()
-    {
-        _hoverCts?.Cancel();
-        _hoverCts?.Dispose();
-        if (Layout is not null)
-        {
-            if (ReferenceEquals(Layout.FlyoutHoverOwner, this)) Layout.FlyoutHoverOwner = null;
-            if (ReferenceEquals(Layout.FlyoutActiveOwner, this)) Layout.FlyoutActiveOwner = null;
-        }
-        await base.DisposeAsync();
     }
 }

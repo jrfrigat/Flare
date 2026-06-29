@@ -5,7 +5,7 @@
 @inject NavigationManager Nav
 
 <CascadingValue Value="_ctx" IsFixed="false">
-    <div class="@BuildCssClass(_drawerClass, _miniRailClass, _railHoverClass, _flyoutColumnClass, _secondaryOpenClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@BuildCssClass(_drawerClass, _miniRailClass, _railHoverClass, _secondaryOpenClass)" style="@Style" @attributes="AdditionalAttributes">
         @AppBar
         @if (ChildContent is not null)
         {
@@ -87,28 +87,22 @@
     /// When true, collapsing the drawer on desktop leaves a narrow icon rail
     /// (<c>--flare-drawer-mini-width</c>) instead of hiding it entirely; the toggle switches
     /// between the rail and the full-width drawer. Has no effect on mobile, where the drawer is
-    /// always a full off-canvas overlay. Legacy flag: when <see cref="Mode"/> is left unset,
-    /// <c>MiniRail=true</c> maps to <see cref="DrawerMode.RailHoverExpand"/> and <c>false</c> to
-    /// <see cref="DrawerMode.Collapsible"/>. Prefer setting <see cref="Mode"/> directly.
+    /// always a full off-canvas overlay.
     /// </summary>
     [Parameter] public bool MiniRail { get; set; }
 
     /// <summary>
-    /// How the drawer behaves and what its collapsed state looks like (full overlay, hidden, icon
-    /// rail, rail with hover overlay, or rail with group flyouts). When set, this supersedes
-    /// <see cref="MiniRail"/>; when left null, the mode is derived from <see cref="MiniRail"/> for
-    /// back-compat. See <see cref="DrawerMode"/>.
+    /// When true (and <see cref="MiniRail"/> is enabled), the collapsed icon rail expands into a
+    /// full-width overlay while the pointer or keyboard focus is inside it, then collapses again on
+    /// leave. The overlay floats over the content without reflowing it, so nested groups stay
+    /// reachable without re-opening the drawer. Has no effect unless the drawer is a collapsed rail.
     /// </summary>
-    [Parameter] public DrawerMode? Mode { get; set; }
-
-    // Resolved mode: an explicit Mode wins; otherwise fall back to the legacy MiniRail flag.
-    private DrawerMode EffectiveMode => Mode ?? (MiniRail ? DrawerMode.RailHoverExpand : DrawerMode.Collapsible);
+    [Parameter] public bool RailHoverExpand { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Layout.Root;
     private string _drawerClass => _ctx.DrawerOpen ? Css.Classes.Layout.DrawerOpen : string.Empty;
     private string _miniRailClass => _ctx.MiniRail ? Css.Classes.Layout.MiniRail : string.Empty;
     private string _railHoverClass => _ctx.RailOverlayOpen ? Css.Classes.Layout.RailHoverExpand : string.Empty;
-    private string _flyoutColumnClass => _ctx.FlyoutColumnOpen ? Css.Classes.Layout.FlyoutColumn : string.Empty;
     private string _secondaryOpenClass => (SecondaryDrawer is not null && SecondaryDrawerOpen) ? Css.Classes.Layout.SecondaryOpen : string.Empty;
     private string _contentMaxWidthClass => LayoutContentWidth.ToClass(ContentMaxWidth);
     private string _contentAlignClass => LayoutContentWidth.ToAlignClass(ContentAlignment);
@@ -120,7 +114,7 @@
 
     protected override void OnInitialized()
     {
-        _ctx.Mode = EffectiveMode;
+        ApplyRailParameters();
         ApplyDrawerOpen();
         _ctx.StateChanged += OnContextStateChanged;
         Nav.LocationChanged += OnLocationChanged;
@@ -128,17 +122,20 @@
 
     protected override void OnParametersSet()
     {
-        _ctx.Mode = EffectiveMode;
+        ApplyRailParameters();
         ApplyDrawerOpen();
     }
 
-    // Syncs the drawer-open state with the bound parameter, except in Expanded mode on desktop where
-    // the drawer is pinned permanently open (the parameter is ignored so a stray false cannot close it).
+    private void ApplyRailParameters()
+    {
+        _ctx.MiniRail = MiniRail;
+        _ctx.RailHoverExpand = RailHoverExpand;
+    }
+
+    // Syncs the drawer-open state with the bound parameter.
     private void ApplyDrawerOpen()
     {
-        if (EffectiveMode == DrawerMode.Expanded && !_isMobile)
-            _ctx.DrawerOpen = true;
-        else if (_ctx.DrawerOpen != DrawerOpen)
+        if (_ctx.DrawerOpen != DrawerOpen)
             _ctx.DrawerOpen = DrawerOpen;
     }
 
@@ -154,8 +151,6 @@
             _ctx.IsMobile = _isMobile;
             if (_isMobile && _ctx.DrawerOpen)
                 _ctx.DrawerOpen = false; // don't cover content on small screens
-            else if (!_isMobile && EffectiveMode == DrawerMode.Expanded)
-                _ctx.DrawerOpen = true; // pin open once we know we're on desktop
 
             await Ui.SubscribeBreakpointAsync(_id, _dotNetRef);
         }
@@ -172,14 +167,8 @@
             _isMobile = mobile;
             _ctx.IsMobile = mobile;
             // Mirror the ApplyDrawerOpen rules so a breakpoint crossing does not override the bound
-            // state: always close on mobile, pin open only in Expanded on desktop, otherwise honor
-            // the bound DrawerOpen.
-            if (mobile)
-                _ctx.DrawerOpen = false;
-            else if (EffectiveMode == DrawerMode.Expanded)
-                _ctx.DrawerOpen = true;
-            else
-                _ctx.DrawerOpen = DrawerOpen;
+            // state: always close on mobile, otherwise honor the bound DrawerOpen.
+            _ctx.DrawerOpen = mobile ? false : DrawerOpen;
             StateHasChanged();
         }
         return Task.CompletedTask;

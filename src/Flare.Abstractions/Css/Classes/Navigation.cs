@@ -45,21 +45,6 @@ public static class Navigation
     public const string NavGroupTitle = "flare-nav-group__title";
     /// <summary>The <c>flare-nav-group__chevron--open</c> CSS class.</summary>
     public const string NavGroupChevron = "flare-nav-group__chevron--open";
-    /// <summary>The <c>flare-nav-group--flyout</c> CSS class: a top-level group rendered as a
-    /// collapsed rail trigger that opens its children in an anchored flyout.</summary>
-    public const string NavGroupFlyout = "flare-nav-group--flyout";
-    /// <summary>The <c>flare-nav-group--flyout-displayed</c> CSS class: the flyout group whose
-    /// secondary panel is currently shown (hovered, or the active section).</summary>
-    public const string NavGroupFlyoutDisplayed = "flare-nav-group--flyout-displayed";
-    /// <summary>The <c>flare-nav-group__flyout</c> CSS class: the floating panel that holds a
-    /// flyout group's children, positioned next to the rail icon.</summary>
-    public const string NavGroupFlyoutPanel = "flare-nav-group__flyout";
-    /// <summary>The <c>flare-nav-group__flyout-header</c> CSS class: the group-label caption pinned
-    /// at the top of the flyout panel.</summary>
-    public const string NavGroupFlyoutHeader = "flare-nav-group__flyout-header";
-    /// <summary>The <c>flare-nav-group__flyout-items</c> CSS class: the scrolling content region of
-    /// the flyout panel that renders the group's child links and nested groups.</summary>
-    public const string NavGroupFlyoutItems = "flare-nav-group__flyout-items";
 }
 
 /// <summary>CSS classes for nav.</summary>

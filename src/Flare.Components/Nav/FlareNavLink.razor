@@ -49,10 +49,6 @@
     // Nearest ancestor nav group, if the link is rendered inside one.
     [CascadingParameter] private FlareNavGroup? NavGroup { get; set; }
 
-    // Layout context, so an active link can report which top-level section the current page is in
-    // (drives the MD3 persistent flyout column).
-    [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
-
     protected override string ComponentCssClass => Css.Classes.Navigation.NavLink;
 
     private bool _wasActive;
@@ -98,10 +94,6 @@
             await OnActiveChanged.InvokeAsync(active);
         if (active && NavGroup is not null)
             await NavGroup.ExpandFromChild();
-        // Report the active section so the RailFlyout column docks the right group's panel. A
-        // top-level link (no group) clears it, hiding the column.
-        if (active && Layout is not null)
-            Layout.FlyoutActiveOwner = NavGroup?.TopLevelFlyoutGroup;
     }
 
     public override async ValueTask DisposeAsync()

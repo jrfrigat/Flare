@@ -1821,36 +1821,6 @@
   <data name="Nav_Rail_IconsOnly" xml:space="preserve">
     <value>Только иконки</value>
   </data>
-  <data name="Nav_Mode_Expanded" xml:space="preserve">
-    <value>Всегда развёрнута</value>
-  </data>
-  <data name="Nav_Mode_Expanded_Desc" xml:space="preserve">
-    <value>Полное меню всегда видно.</value>
-  </data>
-  <data name="Nav_Mode_Collapsible" xml:space="preserve">
-    <value>Скрывать полностью</value>
-  </data>
-  <data name="Nav_Mode_Collapsible_Desc" xml:space="preserve">
-    <value>Переключатель полностью скрывает панель.</value>
-  </data>
-  <data name="Nav_Mode_Rail" xml:space="preserve">
-    <value>Полоса иконок</value>
-  </data>
-  <data name="Nav_Mode_Rail_Desc" xml:space="preserve">
-    <value>Сворачивается до неподвижной полосы иконок.</value>
-  </data>
-  <data name="Nav_Mode_RailHoverExpand" xml:space="preserve">
-    <value>Иконки, разворот при наведении</value>
-  </data>
-  <data name="Nav_Mode_RailHoverExpand_Desc" xml:space="preserve">
-    <value>Полоса иконок, разворачивается в оверлей при наведении.</value>
-  </data>
-  <data name="Nav_Mode_RailFlyout" xml:space="preserve">
-    <value>Иконки, всплывающие группы</value>
-  </data>
-  <data name="Nav_Mode_RailFlyout_Desc" xml:space="preserve">
-    <value>Полоса иконок; каждая группа открывается во всплывающем меню.</value>
-  </data>
   <data name="Settings_Version" xml:space="preserve">
     <value>Версия</value>
   </data>

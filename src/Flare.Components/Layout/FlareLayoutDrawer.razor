@@ -47,15 +47,15 @@
         Sync();
     }
 
-    // Single source of truth: the whole-drawer hover overlay is requested only in RailHoverExpand
-    // mode, while collapsed, and with a pointer or focus inside it. Other modes (Rail, RailFlyout)
-    // never expand the whole drawer this way. The context setter no-ops when the value is unchanged,
-    // so hovering never triggers a redundant render.
+    // Single source of truth: the whole-drawer hover overlay is requested only when RailHoverExpand
+    // is enabled, while collapsed, and with a pointer or focus inside it. A plain mini-rail never
+    // expands the whole drawer this way. The context setter no-ops when the value is unchanged, so
+    // hovering never triggers a redundant render.
     private void Sync()
     {
         if (Layout is null) return;
         Layout.RailHoverExpanded = (_pointerInside || _focusInside)
             && Layout.RailCollapsed
-            && Layout.Mode == DrawerMode.RailHoverExpand;
+            && Layout.RailHoverExpand;
     }
 }

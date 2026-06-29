@@ -6,7 +6,7 @@
 @inject Flare.Gallery.Services.RailLabelService RailLabels
 @using Flare.Gallery.Models
 
-<FlareLayout @bind-DrawerOpen="_navOpen" Mode="DrawerMode.Rail"
+<FlareLayout @bind-DrawerOpen="_navOpen" MiniRail="true"
              SecondaryDrawerOpen="@(_section != GallerySection.None)"
              ContentMaxWidth="ContainerMaxWidth.Full"
              Style="--flare-drawer-mini-width:5.5rem;--flare-secondary-width:17rem;">

@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 
 <header class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
-    @if (DrawerToggle && !(Layout?.ToggleHidden ?? false))
+    @if (DrawerToggle)
     {
         <button class="@Css.Classes.Layout.AppBarToggle @(_isOpen ? Css.Classes.Layout.AppbarToggleOpen : null)"
                 @onclick="ToggleDrawer"
