@@ -772,44 +772,82 @@ public class C_FlareNavMenuTests : FlareTestContext
     }
 }
 
-// Rail hover-overlay state machine: when the drawer collapses to a mini-rail, hover/focus expands
-// it into a full-width overlay so nested groups stay reachable (RailIconOnly flips to RailOverlayOpen).
-public class C_FlareLayoutContextRailTests
+// DrawerMode state machine: the mode decides what the collapsed drawer looks like (hidden, rail,
+// rail+hover overlay, rail+group flyout) and whether the drawer is pinned open (Expanded).
+public class C_FlareLayoutContextModeTests
 {
-    private static FlareLayoutContext Collapsed()
-        => new() { MiniRail = true, DrawerOpen = false };
+    private static FlareLayoutContext Collapsed(DrawerMode mode)
+        => new() { Mode = mode, DrawerOpen = false };
 
-    [Fact]
-    public void CollapsedRail_IsIconOnly_AndNotOverlaid()
+    [Theory]
+    [InlineData(DrawerMode.Rail)]
+    [InlineData(DrawerMode.RailHoverExpand)]
+    [InlineData(DrawerMode.RailFlyout)]
+    public void RailModes_CollapseToIconRail(DrawerMode mode)
     {
-        var ctx = Collapsed();
+        var ctx = Collapsed(mode);
+        Assert.True(ctx.MiniRail);
         Assert.True(ctx.RailCollapsed);
         Assert.True(ctx.RailIconOnly);
-        Assert.False(ctx.RailOverlayOpen);
     }
 
     [Fact]
-    public void HoverExpand_WhileCollapsed_OpensOverlay_AndStopsIconOnly()
+    public void Collapsible_DoesNotKeepARail()
     {
-        var ctx = Collapsed();
-        ctx.RailHoverExpanded = true;
-        Assert.True(ctx.RailOverlayOpen);
+        var ctx = Collapsed(DrawerMode.Collapsible);
+        Assert.False(ctx.MiniRail);
+        Assert.False(ctx.RailCollapsed);
         Assert.False(ctx.RailIconOnly);
     }
 
     [Fact]
-    public void HoverExpand_WhenNotCollapsed_HasNoEffect()
+    public void HoverExpand_OnlyOverlaysInRailHoverExpandMode()
     {
-        var ctx = new FlareLayoutContext { MiniRail = true, DrawerOpen = true };
-        ctx.RailHoverExpanded = true;
-        Assert.False(ctx.RailOverlayOpen);
-        Assert.False(ctx.RailIconOnly);
+        var hover = Collapsed(DrawerMode.RailHoverExpand);
+        hover.RailHoverExpanded = true;
+        Assert.True(hover.RailOverlayOpen);
+        Assert.False(hover.RailIconOnly);
+
+        // The same hover request in flyout (or plain rail) mode never opens the whole-drawer overlay.
+        var flyout = Collapsed(DrawerMode.RailFlyout);
+        flyout.RailHoverExpanded = true;
+        Assert.False(flyout.RailOverlayOpen);
+        Assert.True(flyout.RailIconOnly);
+    }
+
+    [Fact]
+    public void RailFlyout_FlagTracksCollapseState()
+    {
+        var ctx = Collapsed(DrawerMode.RailFlyout);
+        Assert.True(ctx.RailFlyout);
+        ctx.DrawerOpen = true;          // re-opened: groups expand inline again, not as flyouts
+        Assert.False(ctx.RailFlyout);
+    }
+
+    [Fact]
+    public void Expanded_PinsOpen_AndHidesToggleOnDesktop()
+    {
+        var ctx = new FlareLayoutContext { Mode = DrawerMode.Expanded };
+        Assert.True(ctx.DrawerOpen);       // pinned open by the mode setter
+        Assert.True(ctx.ToggleHidden);     // desktop (IsMobile == false)
+        ctx.ToggleDrawer();
+        Assert.True(ctx.DrawerOpen);       // toggle is a no-op while pinned
+    }
+
+    [Fact]
+    public void Expanded_OnMobile_KeepsToggleUsable()
+    {
+        var ctx = new FlareLayoutContext { Mode = DrawerMode.Expanded, IsMobile = true };
+        Assert.False(ctx.ToggleHidden);    // off-canvas on mobile -> toggle must stay available
+        ctx.DrawerOpen = false;
+        ctx.ToggleDrawer();
+        Assert.True(ctx.DrawerOpen);
     }
 
     [Fact]
     public void OpeningDrawer_ClearsPendingHoverOverlay()
     {
-        var ctx = Collapsed();
+        var ctx = Collapsed(DrawerMode.RailHoverExpand);
         ctx.RailHoverExpanded = true;
         ctx.DrawerOpen = true;   // toggle back to the full drawer
         Assert.False(ctx.RailOverlayOpen);
@@ -819,12 +857,78 @@ public class C_FlareLayoutContextRailTests
     [Fact]
     public void RailHoverExpanded_NotifiesOnlyOnChange()
     {
-        var ctx = Collapsed();
+        var ctx = Collapsed(DrawerMode.RailHoverExpand);
         var count = 0;
         ctx.StateChanged += () => count++;
         ctx.RailHoverExpanded = true;   // change -> 1 notification
         ctx.RailHoverExpanded = true;   // no change -> no extra notification
         Assert.Equal(1, count);
+    }
+}
+
+// FlareNavGroup rail flyout: in DrawerMode.RailFlyout a collapsed top-level group becomes an icon
+// trigger that opens its children in an anchored panel; other modes keep the inline group markup.
+public class C_FlareNavGroupFlyoutTests : FlareTestContext
+{
+    private static FlareLayoutContext FlyoutCollapsed()
+        => new() { Mode = DrawerMode.RailFlyout, DrawerOpen = false };
+
+    [Fact]
+    public void RailFlyout_RendersTriggerWithPopupSemantics_PanelClosed()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(g => g.Label, "Components")
+            .Add(g => g.Icon, "category")
+            .AddCascadingValue<FlareLayoutContext>(FlyoutCollapsed())
+            .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
+
+        var btn = cut.Find("button.flare-nav-group__header");
+        Assert.Equal("true", btn.GetAttribute("aria-haspopup"));
+        Assert.Equal("false", btn.GetAttribute("aria-expanded"));
+        Assert.Empty(cut.FindAll(".flare-nav-group__flyout"));
+    }
+
+    [Fact]
+    public void RailFlyout_Click_OpensPanelWithChildren()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(g => g.Label, "Components")
+            .AddCascadingValue<FlareLayoutContext>(FlyoutCollapsed())
+            .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
+
+        cut.Find("button.flare-nav-group__header").Click();
+
+        var panel = cut.Find(".flare-nav-group__flyout");
+        Assert.Contains("Buttons", panel.TextContent);
+        Assert.Equal("true", cut.Find("button.flare-nav-group__header").GetAttribute("aria-expanded"));
+    }
+
+    [Fact]
+    public void NonFlyoutMode_RendersInlineGroup()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(g => g.Label, "Components")
+            .AddCascadingValue<FlareLayoutContext>(new FlareLayoutContext { Mode = DrawerMode.Rail, DrawerOpen = false })
+            .AddChildContent("<a>x</a>"));
+
+        Assert.Empty(cut.FindAll(".flare-nav-group--flyout"));
+        Assert.NotEmpty(cut.FindAll(".flare-nav-group__items"));
+    }
+
+    [Fact]
+    public void RailFlyout_Escape_ClosesPanel()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(g => g.Label, "Components")
+            .AddCascadingValue<FlareLayoutContext>(FlyoutCollapsed())
+            .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
+
+        cut.Find("button.flare-nav-group__header").Click();
+        Assert.NotEmpty(cut.FindAll(".flare-nav-group__flyout"));
+
+        cut.Find(".flare-nav-group--flyout").KeyDown(new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "Escape" });
+        Assert.Empty(cut.FindAll(".flare-nav-group__flyout"));
+        Assert.Equal("false", cut.Find("button.flare-nav-group__header").GetAttribute("aria-expanded"));
     }
 }
 

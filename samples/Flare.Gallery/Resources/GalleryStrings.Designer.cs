@@ -6603,6 +6603,97 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>Looks up a localized string similar to the Navigation settings tab label.</summary>
+        public static string Settings_TabNavigation {
+            get {
+                return ResourceManager.GetString("Settings_TabNavigation", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to the drawer-behavior section title.</summary>
+        public static string Nav_Drawer_Title {
+            get {
+                return ResourceManager.GetString("Nav_Drawer_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to the drawer-behavior section description.</summary>
+        public static string Nav_Drawer_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Drawer_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the Expanded drawer mode label.</summary>
+        public static string Nav_Mode_Expanded {
+            get {
+                return ResourceManager.GetString("Nav_Mode_Expanded", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the Expanded drawer mode description.</summary>
+        public static string Nav_Mode_Expanded_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Mode_Expanded_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the Collapsible drawer mode label.</summary>
+        public static string Nav_Mode_Collapsible {
+            get {
+                return ResourceManager.GetString("Nav_Mode_Collapsible", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the Collapsible drawer mode description.</summary>
+        public static string Nav_Mode_Collapsible_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Mode_Collapsible_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the Rail drawer mode label.</summary>
+        public static string Nav_Mode_Rail {
+            get {
+                return ResourceManager.GetString("Nav_Mode_Rail", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the Rail drawer mode description.</summary>
+        public static string Nav_Mode_Rail_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Mode_Rail_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the RailHoverExpand drawer mode label.</summary>
+        public static string Nav_Mode_RailHoverExpand {
+            get {
+                return ResourceManager.GetString("Nav_Mode_RailHoverExpand", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the RailHoverExpand drawer mode description.</summary>
+        public static string Nav_Mode_RailHoverExpand_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Mode_RailHoverExpand_Desc", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the RailFlyout drawer mode label.</summary>
+        public static string Nav_Mode_RailFlyout {
+            get {
+                return ResourceManager.GetString("Nav_Mode_RailFlyout", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the RailFlyout drawer mode description.</summary>
+        public static string Nav_Mode_RailFlyout_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Mode_RailFlyout_Desc", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Personalize the gallery: design system, palette, color mode and language.
         /// </summary>

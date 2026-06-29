@@ -3,8 +3,9 @@
 @inject NavigationManager NavManager
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
+@inject Flare.Gallery.Services.DrawerModeService NavMode
 
-<FlareLayout @bind-DrawerOpen="_navOpen" MiniRail="true" ContentMaxWidth="ContainerMaxWidth.Full">
+<FlareLayout @bind-DrawerOpen="_navOpen" Mode="NavMode.CurrentMode" ContentMaxWidth="ContainerMaxWidth.Full">
     <AppBar>
         <FlareLayoutAppBar DrawerToggle="true">
             <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
@@ -64,7 +65,11 @@
         // The service polls in the background; surface any new version as a toast.
         VersionCheck.NewVersionAvailable += OnNewVersionAsync;
         VersionCheck.Start();
+        // Re-render when the user changes the navigation drawer mode in Settings (applied live).
+        NavMode.DrawerModeChanged += OnDrawerModeChanged;
     }
+
+    private void OnDrawerModeChanged() => InvokeAsync(StateHasChanged);
 
     // Actionable, persistent toast: "Update" applies the waiting service worker and reloads (the service
     // owns the service-worker plumbing - the app just calls ApplyUpdateAsync). Once a newer version is
@@ -88,5 +93,9 @@
     // The anti-FOUC startup splash is revealed automatically by FlareThemeProvider once the theme
     // CSS and web fonts are ready, so the layout no longer needs to hide it by hand.
 
-    public void Dispose() => VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+    public void Dispose()
+    {
+        VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
+        NavMode.DrawerModeChanged -= OnDrawerModeChanged;
+    }
 }

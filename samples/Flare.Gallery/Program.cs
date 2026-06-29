@@ -60,6 +60,7 @@ builder.Services.AddFlareVersionCheck(opts =>
 builder.Services.AddSingleton<TimeProvider>(TimeProvider.System);
 builder.Services.AddLocalization();
 builder.Services.AddScoped<LanguageService>();
+builder.Services.AddScoped<DrawerModeService>();
 builder.Services.AddSingleton<GallerySearchService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
@@ -68,5 +69,10 @@ var host = builder.Build();
 // КРИТИЧНО ДЛЯ PWA: Считываем сохраненный язык ИЗ LOCALSTORAGE перед стартом UI
 var languageService = host.Services.GetRequiredService<LanguageService>();
 await languageService.InitializeCultureAsync();
+
+// Restore the saved navigation drawer mode before first paint so the layout opens in the user's
+// preferred mode (no flash from the default).
+var drawerModeService = host.Services.GetRequiredService<DrawerModeService>();
+await drawerModeService.InitializeAsync();
 
 await host.RunAsync();

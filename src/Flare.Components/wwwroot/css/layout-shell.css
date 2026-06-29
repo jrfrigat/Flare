@@ -20,7 +20,13 @@
     min-height: 0; /* allow the row to shrink so children can own their scroll */
     overflow: hidden;
     position: relative;
-    /* Animate the drawer collapse/expand on desktop */
+}
+
+/* Animate the collapse/expand only in the rail modes, where the drawer track moves between two
+   non-zero widths (mini <-> full) and interpolates smoothly. The full hide/show (Collapsible /
+   Expanded) toggles the track to/from zero and snaps instead, which guarantees the drawer reaches
+   zero width when hidden rather than stalling on a grid-track transition. */
+.flare-layout--mini-rail .flare-layout__body {
     transition: grid-template-columns var(--flare-motion-duration-medium2, 250ms)
                 var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
 }

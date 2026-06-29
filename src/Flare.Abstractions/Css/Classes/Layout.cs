@@ -26,6 +26,9 @@ public static class Layout
     /// <summary>The <c>flare-layout--rail-hover</c> CSS class: the collapsed mini-rail is temporarily
     /// expanded into a full-width overlay by hover or keyboard focus.</summary>
     public const string RailHoverExpand = "flare-layout--rail-hover";
+    /// <summary>The <c>flare-layout--rail-flyout</c> CSS class: the collapsed mini-rail opens each
+    /// group's children in an anchored flyout menu (MD3 navigation rail).</summary>
+    public const string RailFlyout = "flare-layout--rail-flyout";
     /// <summary>The <c>flare-layout-appbar__toggle--open</c> CSS class.</summary>
     public const string AppbarToggleOpen = "flare-layout-appbar__toggle--open";
     /// <summary>The <c>flare-layout-content--lg</c> CSS class.</summary>

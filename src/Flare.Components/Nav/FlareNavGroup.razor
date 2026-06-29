@@ -1,29 +1,75 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject NavigationManager Navigation
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
-<div class="@BuildCssClass(_expandedClass)" style="@Style" @attributes="AdditionalAttributes">
-    <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
-        @if (Icon is not null)
+@if (_isFlyout)
+{
+    @* Rail flyout mode (MD3 navigation rail): the group is a collapsed icon trigger whose children
+       open in a floating panel anchored next to it, so nested destinations stay reachable without
+       re-opening the drawer. Hover/focus opens it; a safe-area hide delay bridges the gap to the
+       panel; click toggles it for touch/keyboard. The panel is positioned fixed (via the overlay
+       port) so it escapes the drawer's overflow clipping. *@
+    <div class="@BuildCssClass(Css.Classes.Navigation.NavGroupFlyout)" style="@Style" @ref="_rootRef"
+         @onmouseenter="ShowFlyout" @onmouseleave="ScheduleHideFlyout"
+         @onfocusin="OnFlyoutFocusIn" @onfocusout="OnFlyoutFocusOut"
+         @onkeydown="HandleFlyoutKeyDown" @attributes="AdditionalAttributes">
+        <button class="@Css.Classes.Navigation.NavGroupHeader" @ref="_anchorRef" title="@Label"
+                @onclick="ToggleFlyout" type="button"
+                aria-haspopup="true" aria-expanded="@_flyoutOpen.ToString().ToLowerInvariant()"
+                aria-controls="@_panelId">
+            @if (Icon is not null)
+            {
+                <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
+            }
+            <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
+            <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron" aria-hidden="true">chevron_right</span>
+        </button>
+        @if (_flyoutOpen)
         {
-            <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
+            <div id="@_panelId" class="@Css.Classes.Navigation.NavGroupFlyoutPanel" @ref="_panelRef"
+                 role="group" aria-label="@Label"
+                 @onmouseenter="ShowFlyout" @onmouseleave="ScheduleHideFlyout">
+                <div class="@Css.Classes.Navigation.NavGroupFlyoutHeader">@Label</div>
+                <div class="@Css.Classes.Navigation.NavGroupFlyoutItems">
+                    @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
+                    <CascadingValue Value="this" IsFixed="true">
+                        @ChildContent
+                    </CascadingValue>
+                </div>
+            </div>
         }
-        <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
-        <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
-    </button>
-    <div class="@Css.Classes.Nav.GroupItems @(_expanded ? Css.Classes.Nav.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
-        <div class="@Css.Classes.Nav.GroupItemsInner">
-            @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
-            <CascadingValue Value="this" IsFixed="true">
-                @ChildContent
-            </CascadingValue>
+    </div>
+}
+else
+{
+    <div class="@BuildCssClass(_expandedClass)" style="@Style" @attributes="AdditionalAttributes">
+        <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
+            @if (Icon is not null)
+            {
+                <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
+            }
+            <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
+            <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
+        </button>
+        <div class="@Css.Classes.Nav.GroupItems @(_expanded ? Css.Classes.Nav.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
+            <div class="@Css.Classes.Nav.GroupItemsInner">
+                @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
+                <CascadingValue Value="this" IsFixed="true">
+                    @ChildContent
+                </CascadingValue>
+            </div>
         </div>
     </div>
-</div>
+}
 
 @code {
     // Nearest ancestor group (set when this group is nested inside another), so expansion
     // bubbles up the whole chain when a deeply nested link becomes active.
     [CascadingParameter] private FlareNavGroup? ParentGroup { get; set; }
+
+    // Drives the rail flyout automatically when the layout drawer is collapsed in RailFlyout mode.
+    [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
 
     /// <summary>Material Symbols icon name rendered before the label.</summary>
     [Parameter] public string? Icon { get; set; }
@@ -35,6 +81,11 @@
     [Parameter] public bool Expanded { get; set; }
     /// <summary>Callback fired when the expanded state changes.</summary>
     [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
+    /// <summary>
+    /// Delay in milliseconds before the rail flyout hides after the pointer leaves, so the user can
+    /// cross the gap from the icon to the panel without it closing. Only used in flyout mode.
+    /// </summary>
+    [Parameter] public int FlyoutHideDelay { get; set; } = 150;
 
     protected override string ComponentCssClass => Css.Classes.Navigation.NavGroup;
 
@@ -46,12 +97,44 @@
 
     private string _expandedClass => _expanded ? Css.Classes.Navigation.NavGroupExpanded : string.Empty;
 
+    // Flyout mode applies only to top-level groups (a nested group inside a flyout panel renders
+    // normally), and only while the drawer is collapsed in RailFlyout mode.
+    private bool _isFlyout => ParentGroup is null && (Layout?.RailFlyout ?? false);
+
+    private bool _flyoutOpen;
+    private bool _flyoutPositioned;
+    private CancellationTokenSource? _hideCts;
+    private ElementReference _rootRef;
+    private ElementReference _anchorRef;
+    private ElementReference _panelRef;
+    private DotNetObjectReference<FlareNavGroup>? _dotNetRef;
+    private readonly string _panelId = "flare-nav-flyout-" + Guid.NewGuid().ToString("N")[..8];
+    // True while keyboard focus is anywhere inside the group (trigger or panel); drives focus return
+    // when the panel auto-hides. Set by the focusin/out handlers.
+    private bool _focusInside;
+    // One-shot guard: Escape returns focus to the trigger, whose focusin would otherwise re-open the
+    // flyout. Set just before that programmatic FocusAsync and consumed by the next focusin.
+    private bool _suppressNextFocusIn;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
     protected override void OnParametersSet()
     {
         if (Expanded != _lastParamExpanded)
         {
             _expanded = Expanded;
             _lastParamExpanded = Expanded;
+        }
+        // Leaving flyout mode (e.g. the drawer re-opened, or the mode changed) closes any open
+        // flyout so OnAfterRenderAsync tears down its JS positioning and outside-click handlers.
+        if (!_isFlyout && _flyoutOpen)
+        {
+            _hideCts?.Cancel();
+            _flyoutOpen = false;
         }
     }
 
@@ -77,5 +160,157 @@
             await ParentGroup.ExpandFromChild();
         if (changed)
             StateHasChanged();
+    }
+
+    // --- Rail flyout (MD3 navigation rail) ---
+
+    // Opens the flyout and cancels any pending hide (used by hover, focus and click-to-open).
+    private void ShowFlyout()
+    {
+        _hideCts?.Cancel();
+        _hideCts = null;
+        _flyoutOpen = true;
+    }
+
+    // Focus entering the group opens the flyout (keyboard parity with hover), unless this focusin is
+    // the programmatic return-to-trigger after Escape, which must not re-open it.
+    private void OnFlyoutFocusIn()
+    {
+        _focusInside = true;
+        if (_suppressNextFocusIn) { _suppressNextFocusIn = false; return; }
+        ShowFlyout();
+    }
+
+    // Focus leaving the group starts the safe-area hide timer; a following focusin (e.g. tabbing
+    // between panel links) re-enters and cancels it.
+    private void OnFlyoutFocusOut()
+    {
+        _focusInside = false;
+        ScheduleHideFlyout();
+    }
+
+    // Starts the safe-area hide timer; a hover/focus re-entry cancels it before it fires.
+    private void ScheduleHideFlyout()
+    {
+        _hideCts?.Cancel();
+        _hideCts = new CancellationTokenSource();
+        var ct = _hideCts.Token;
+        _ = Task.Delay(FlyoutHideDelay, ct).ContinueWith(_ =>
+        {
+            if (!ct.IsCancellationRequested)
+                InvokeAsync(CloseFromHideTimer);
+        }, TaskScheduler.Default);
+    }
+
+    // Closes the flyout after the hide delay. If keyboard focus was still parked inside the panel
+    // (e.g. the pointer left without the user tabbing out), return focus to the trigger so it is not
+    // dropped to the document body when the panel is removed.
+    private async Task CloseFromHideTimer()
+    {
+        if (!_flyoutOpen) return;
+        var returnFocus = _focusInside;
+        _flyoutOpen = false;
+        StateHasChanged();
+        if (returnFocus)
+        {
+            _suppressNextFocusIn = true;
+            try { await _anchorRef.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
+        }
+    }
+
+    // Header click toggles the flyout (so touch and keyboard users can open and close it).
+    private void ToggleFlyout()
+    {
+        if (_flyoutOpen) { _hideCts?.Cancel(); _flyoutOpen = false; }
+        else ShowFlyout();
+    }
+
+    private async Task HandleFlyoutKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape" && _flyoutOpen)
+        {
+            _hideCts?.Cancel();
+            _flyoutOpen = false;
+            // Returning focus to the trigger fires focusin on the wrapper; suppress that one so the
+            // flyout does not immediately re-open.
+            _suppressNextFocusIn = true;
+            try { await _anchorRef.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
+        }
+    }
+
+    // Closes the flyout when invoked by the document outside-click handler.
+    [JSInvokable]
+    public Task CloseFlyoutFromJs()
+    {
+        if (!_flyoutOpen) return Task.CompletedTask;
+        _hideCts?.Cancel();
+        _flyoutOpen = false;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    // Selecting a destination navigates; close the flyout so it does not linger over the new page.
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        if (!_flyoutOpen) return;
+        InvokeAsync(() =>
+        {
+            _hideCts?.Cancel();
+            _flyoutOpen = false;
+            StateHasChanged();
+        });
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (_isFlyout && _flyoutOpen && !_flyoutPositioned)
+        {
+            _flyoutPositioned = true;
+            _dotNetRef ??= DotNetObjectReference.Create(this);
+            try
+            {
+                // Fixed-position the panel to the right of the rail icon, flipping to the left when
+                // there is not enough room; this escapes the drawer's overflow:hidden clipping.
+                await Overlay.PositionAnchoredPanelAsync(_panelId, _anchorRef, _panelRef, new { side = "right", gap = 8 });
+                // Dismiss when clicking anywhere outside the group (root contains both icon and panel).
+                await Overlay.RegisterOutsideClickAsync(_panelId, _rootRef, _dotNetRef, nameof(CloseFlyoutFromJs));
+            }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+        }
+        else if (_flyoutPositioned && !_flyoutOpen)
+        {
+            _flyoutPositioned = false;
+            try
+            {
+                await Overlay.RemoveAnchoredPanelAsync(_panelId);
+                await Overlay.RemoveOutsideClickAsync(_panelId);
+            }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+        }
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+        _hideCts?.Cancel();
+        _hideCts?.Dispose();
+        if (_flyoutPositioned)
+        {
+            try
+            {
+                await Overlay.RemoveAnchoredPanelAsync(_panelId);
+                await Overlay.RemoveOutsideClickAsync(_panelId);
+            }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+        }
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
     }
 }
