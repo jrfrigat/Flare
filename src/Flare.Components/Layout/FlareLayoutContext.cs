@@ -1,67 +1,24 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Cascading context that connects FlareLayout, FlareLayoutAppBar, and FlareLayoutDrawer
-/// so the drawer can be toggled from the app bar without manual @bind wiring.
+/// Cascading coordinator shared by <see cref="FlareLayout"/> and the components placed inside it
+/// (<see cref="FlareLayoutAppBar"/>, <see cref="FlareLayoutDrawer"/>, <see cref="FlareLayoutContent"/>).
+/// Drawers register themselves here; the layout reads the registry to reserve a grid track for each
+/// in-flow drawer and to drive the app-bar toggle and the mobile scrim. Each drawer owns its own
+/// open state -- this context only aggregates them.
 /// </summary>
-public class FlareLayoutContext
+public sealed class FlareLayoutContext
 {
-    private bool _drawerOpen = true;
-    private bool _miniRail;
-    private bool _railHoverExpand;
-    private bool _railHoverExpanded;
+    private readonly List<FlareLayoutDrawer> _drawers = new();
     private bool _isMobile;
 
-    /// <summary>Whether the drawer is open. Setting it notifies subscribers.</summary>
-    public bool DrawerOpen
-    {
-        get => _drawerOpen;
-        set
-        {
-            if (_drawerOpen == value) return;
-            _drawerOpen = value;
-            // Opening (or otherwise leaving the collapsed rail) drops any pending hover overlay so it
-            // never lingers over the full-width drawer.
-            if (value) _railHoverExpanded = false;
-            StateChanged?.Invoke();
-        }
-    }
+    /// <summary>Raised when the registry, a drawer's state, or the breakpoint changes.</summary>
+    public event Action? StateChanged;
 
     /// <summary>
-    /// Whether collapsing the drawer leaves a narrow icon rail rather than hiding it entirely. Set by
-    /// <see cref="FlareLayout"/> from its <c>MiniRail</c> parameter. Setting it notifies subscribers.
-    /// </summary>
-    public bool MiniRail
-    {
-        get => _miniRail;
-        set
-        {
-            if (_miniRail == value) return;
-            _miniRail = value;
-            StateChanged?.Invoke();
-        }
-    }
-
-    /// <summary>
-    /// Whether the collapsed mini-rail may temporarily expand into a full-width overlay while the
-    /// pointer or keyboard focus is inside it (opt-in). Set by <see cref="FlareLayout"/> from its
-    /// <c>RailHoverExpand</c> parameter. Setting it notifies subscribers.
-    /// </summary>
-    public bool RailHoverExpand
-    {
-        get => _railHoverExpand;
-        set
-        {
-            if (_railHoverExpand == value) return;
-            _railHoverExpand = value;
-            StateChanged?.Invoke();
-        }
-    }
-
-    /// <summary>
-    /// Whether the layout is currently in its mobile (off-canvas) breakpoint. Set by
-    /// <see cref="FlareLayout"/> from the responsive breakpoint watcher. Setting it notifies
-    /// subscribers.
+    /// Whether the layout is below its mobile breakpoint. Push drawers (Rail/Persistent/Responsive)
+    /// become off-canvas overlays while true. Set by <see cref="FlareLayout"/> from the breakpoint
+    /// watcher; setting it notifies subscribers.
     /// </summary>
     public bool IsMobile
     {
@@ -74,48 +31,62 @@ public class FlareLayoutContext
         }
     }
 
-    /// <summary>
-    /// True when the drawer is collapsed into the mini icon rail. Equivalent to
-    /// <c>MiniRail &amp;&amp; !DrawerOpen</c>. This is the physical drawer state and ignores any
-    /// temporary hover overlay; use <see cref="RailIconOnly"/> to decide how a nested
-    /// <c>FlareNavMenu</c> should render.
-    /// </summary>
-    public bool RailCollapsed => _miniRail && !_drawerOpen;
+    /// <summary>Registers a drawer (called on its initialization) so it contributes a layout track.</summary>
+    public void Register(FlareLayoutDrawer drawer)
+    {
+        if (_drawers.Contains(drawer)) return;
+        _drawers.Add(drawer);
+        StateChanged?.Invoke();
+    }
+
+    /// <summary>Removes a drawer from the registry (called on its disposal).</summary>
+    public void Unregister(FlareLayoutDrawer drawer)
+    {
+        if (_drawers.Remove(drawer)) StateChanged?.Invoke();
+    }
+
+    /// <summary>Notifies the layout that a registered drawer changed its open/variant state.</summary>
+    public void NotifyStateChanged() => StateChanged?.Invoke();
 
     /// <summary>
-    /// Requests the collapsed mini-rail to temporarily expand into a full-width overlay so its
-    /// nested groups become reachable. <see cref="FlareLayoutDrawer"/> sets this while the pointer
-    /// or keyboard focus is inside the rail. Only takes effect when <see cref="RailHoverExpand"/> is
-    /// enabled and <see cref="RailCollapsed"/> is true. Setting it notifies subscribers.
+    /// The grid track list for the layout body: one track per in-flow drawer (in markup order),
+    /// with a flexible content track in between the start and end drawers. Overlay/off-canvas drawers
+    /// are out of flow and contribute no track.
     /// </summary>
-    public bool RailHoverExpanded
+    public string GridTemplateColumns
     {
-        get => _railHoverExpanded;
-        set
+        get
         {
-            if (_railHoverExpanded == value) return;
-            _railHoverExpanded = value;
-            StateChanged?.Invoke();
+            var start = _drawers
+                .Where(d => d.Anchor != DrawerAnchor.Right && d.ReservesTrack(_isMobile))
+                .Select(d => d.TrackWidth(_isMobile));
+            var end = _drawers
+                .Where(d => d.Anchor == DrawerAnchor.Right && d.ReservesTrack(_isMobile))
+                .Select(d => d.TrackWidth(_isMobile));
+            return string.Join(" ", start.Append("minmax(0, 1fr)").Concat(end));
         }
     }
 
     /// <summary>
-    /// True when the collapsed mini-rail is currently expanded into its hover/focus overlay
-    /// (<see cref="RailHoverExpand"/> enabled, collapsed, and hovered/focused). The layout uses this
-    /// to float the drawer at full width over the content without reflowing it.
+    /// The drawer the app-bar toggle controls: the first non-temporary start drawer (the primary
+    /// navigation). Null when the layout has no such drawer.
     /// </summary>
-    public bool RailOverlayOpen => _railHoverExpand && RailCollapsed && _railHoverExpanded;
+    public FlareLayoutDrawer? PrimaryDrawer =>
+        _drawers.FirstOrDefault(d => d.Anchor != DrawerAnchor.Right && d.Variant != DrawerVariant.Temporary);
 
-    /// <summary>
-    /// True when a nested <c>FlareNavMenu</c> should render icon-only: the drawer is collapsed into
-    /// the mini-rail and is not currently expanded by hover or focus. While the overlay is open the
-    /// menu renders in full so its labels and nested groups are usable.
-    /// </summary>
-    public bool RailIconOnly => RailCollapsed && !RailOverlayOpen;
+    /// <summary>Whether the primary drawer is currently open (drives the app-bar toggle's pressed state).</summary>
+    public bool PrimaryOpen => PrimaryDrawer?.IsOpen ?? false;
 
-    /// <summary>Raised when the drawer or mini-rail state changes.</summary>
-    public event Action? StateChanged;
+    /// <summary>Toggles the primary drawer open/closed. No-op when there is no primary drawer.</summary>
+    public Task TogglePrimaryAsync() => PrimaryDrawer?.ToggleAsync() ?? Task.CompletedTask;
 
-    /// <summary>Toggles the drawer open/closed and notifies subscribers.</summary>
-    public void ToggleDrawer() => DrawerOpen = !DrawerOpen;
+    /// <summary>True when any drawer is currently shown as a floating overlay (so the scrim is active).</summary>
+    public bool AnyOverlayOpen => _drawers.Any(d => d.IsOverlayOpen(_isMobile));
+
+    /// <summary>Closes every drawer that is currently a floating overlay (e.g. on scrim tap).</summary>
+    public async Task CloseOverlaysAsync()
+    {
+        foreach (var drawer in _drawers.Where(d => d.IsOverlayOpen(_isMobile)).ToList())
+            await drawer.SetOpenAsync(false);
+    }
 }

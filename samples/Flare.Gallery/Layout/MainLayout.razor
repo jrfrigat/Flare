@@ -6,41 +6,39 @@
 @inject Flare.Gallery.Services.RailLabelService RailLabels
 @using Flare.Gallery.Models
 
-<FlareLayout @bind-DrawerOpen="_navOpen" MiniRail="true"
-             SecondaryDrawerOpen="@(_section != GallerySection.None)"
-             ContentMaxWidth="ContainerMaxWidth.Full"
-             Style="--flare-drawer-mini-width:5.5rem;--flare-secondary-width:17rem;">
-    <AppBar>
-        <FlareLayoutAppBar DrawerToggle="true">
-            <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
-                <FlareLink Href="/" Underline="LinkUnderline.None" Color="FlareColor.Default">
-                    <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-                        <FlareIcon Color="FlareColor.Primary" Icon="@FlareIcons.Brands.FlareLogoShort" Size="2.25rem" AriaLabel="Flare" />
-                        <FlareText Typo="TypographyScale.TitleLarge" Weight="FontWeight.ExtraBold" Style="letter-spacing:-0.5px;">Flare</FlareText>
-                    </FlareStack>
-                </FlareLink>
-                <FlareBadge Text="v0.0.5" Standalone="true" Color="FlareColor.Secondary" />
-                <FlareSpacer />
-                <GallerySearch />
-                <FlareSpacer />
-            </FlareStack>
-        </FlareLayoutAppBar>
-    </AppBar>
-    <Drawer>
-        <FlareLayoutDrawer>
-            @* Primary rail: the top-level sections. Collapsed, it is a rail -- labeled or icon-only per
-               the Settings preference; opening the drawer (toggle) expands it to a full menu.
-               Selecting Themes/Components/Services/API opens the secondary column. *@
-            <NavMenu Mode="@PrimaryNavMode" @bind-Section="_section" />
-        </FlareLayoutDrawer>
-    </Drawer>
-    <SecondaryDrawer>
+<FlareLayout>
+    <FlareLayoutAppBar DrawerToggle="true">
+        <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
+            <FlareLink Href="/" Underline="LinkUnderline.None" Color="FlareColor.Default">
+                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                    <FlareIcon Color="FlareColor.Primary" Icon="@FlareIcons.Brands.FlareLogoShort" Size="2.25rem" AriaLabel="Flare" />
+                    <FlareText Typo="TypographyScale.TitleLarge" Weight="FontWeight.ExtraBold" Style="letter-spacing:-0.5px;">Flare</FlareText>
+                </FlareStack>
+            </FlareLink>
+            <FlareBadge Text="v0.0.5" Standalone="true" Color="FlareColor.Secondary" />
+            <FlareSpacer />
+            <GallerySearch />
+            <FlareSpacer />
+        </FlareStack>
+    </FlareLayoutAppBar>
+
+    @* Primary navigation rail (owns its own @bind-Open): a Mini drawer that collapses to a labeled or
+       icon-only rail per the Settings preference, and expands to a full menu when toggled. Selecting
+       Themes/Components/Services/API opens the secondary column. *@
+    <FlareLayoutDrawer @bind-Open="_navOpen" Variant="DrawerVariant.Mini" Width="16rem" RailWidth="5.5rem">
+        <NavMenu Mode="@PrimaryNavMode" @bind-Section="_section" />
+    </FlareLayoutDrawer>
+
+    @* Secondary section column: a separate Persistent drawer, opened by selecting a section. Its open
+       state is its own parameter -- the layout does not own it. *@
+    <FlareLayoutDrawer Open="@(_section != GallerySection.None)" Variant="DrawerVariant.Persistent" Width="17rem">
         @if (_section != GallerySection.None)
         {
             <SecondaryNav Section="_section" />
         }
-    </SecondaryDrawer>
-    <Content>
+    </FlareLayoutDrawer>
+
+    <FlareLayoutContent>
         @* Two-column doc layout built from Flare primitives: a flexible content column and a fixed
            "On this page" rail. The rail hides below the md breakpoint (Css.Classes.Hidden.BelowMd) --
            when it does, the content column simply fills the row. No gallery CSS. *@
@@ -57,7 +55,7 @@
                              Class="@Css.Classes.Hidden.BelowMd"
                              Style="position:sticky;top:1rem;flex:none;width:14rem;max-height:calc(100vh - 6rem);overflow-y:auto;" />
         </FlareStack>
-    </Content>
+    </FlareLayoutContent>
 </FlareLayout>
 
 <FlareDialogProvider />

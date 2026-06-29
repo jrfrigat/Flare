@@ -27,12 +27,13 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Custom menu/hamburger button at the leading edge (slot-based API).</summary>
     [Parameter] public RenderFragment? MenuButton { get; set; }
-    /// <summary>When true, automatically renders a hamburger icon that toggles the drawer via the cascading FlareLayoutContext.</summary>
+    /// <summary>When true, renders a hamburger that toggles the layout's primary drawer (the first
+    /// non-overlay start drawer) via the cascading <see cref="FlareLayoutContext"/>.</summary>
     [Parameter] public bool DrawerToggle { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Layout.AppBar;
 
-    private bool _isOpen => Layout?.DrawerOpen ?? true;
+    private bool _isOpen => Layout?.PrimaryOpen ?? false;
 
-    private void ToggleDrawer() => Layout?.ToggleDrawer();
+    private Task ToggleDrawer() => Layout?.TogglePrimaryAsync() ?? Task.CompletedTask;
 }

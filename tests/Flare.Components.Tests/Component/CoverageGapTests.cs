@@ -796,105 +796,95 @@ public class C_FlareNavMenuTests : FlareTestContext
     }
 }
 
-// FlareLayoutContext rail state: MiniRail makes the collapsed drawer an icon rail; RailHoverExpand
-// (opt-in) lets that collapsed rail expand into a full-width overlay while hovered or focused.
-public class C_FlareLayoutContextModeTests
+// FlareLayoutDrawer owns its own open state and reports a grid track to the layout per variant:
+// Mini collapses to an icon rail, Persistent reserves a zero-width track when closed, Temporary floats.
+public class C_FlareLayoutDrawerTests : FlareTestContext
 {
-    private static FlareLayoutContext Rail(bool hoverExpand = false)
-        => new() { MiniRail = true, RailHoverExpand = hoverExpand, DrawerOpen = false };
+    private IRenderedComponent<FlareLayoutDrawer> RenderDrawer(DrawerVariant variant, bool open)
+        => Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Variant, variant)
+            .Add(d => d.Open, open)
+            .Add(d => d.Width, "16rem")
+            .Add(d => d.RailWidth, "5rem"));
 
     [Fact]
-    public void MiniRail_Collapsed_IsIconRail()
+    public void MiniCollapsed_IsIconRail_ReservesRailTrack()
     {
-        var ctx = Rail();
-        Assert.True(ctx.MiniRail);
-        Assert.True(ctx.RailCollapsed);
-        Assert.True(ctx.RailIconOnly);
+        var d = RenderDrawer(DrawerVariant.Mini, open: false).Instance;
+        Assert.True(d.IsCollapsedRail);
+        Assert.False(d.IsOpen);
+        Assert.True(d.ReservesTrack(false));
+        Assert.Equal("5rem", d.TrackWidth(false));
     }
 
     [Fact]
-    public void NoMiniRail_DoesNotKeepARail()
+    public void MiniOpen_IsFullWidth_NotCollapsed()
     {
-        var ctx = new FlareLayoutContext { MiniRail = false, DrawerOpen = false };
-        Assert.False(ctx.MiniRail);
-        Assert.False(ctx.RailCollapsed);
-        Assert.False(ctx.RailIconOnly);
+        var d = RenderDrawer(DrawerVariant.Mini, open: true).Instance;
+        Assert.False(d.IsCollapsedRail);
+        Assert.Equal("16rem", d.TrackWidth(false));
     }
 
     [Fact]
-    public void HoverExpand_OnlyOverlaysWhenOptedIn()
+    public void PersistentClosed_ReservesZeroWidthTrack()
     {
-        var hover = Rail(hoverExpand: true);
-        hover.RailHoverExpanded = true;
-        Assert.True(hover.RailOverlayOpen);
-        Assert.False(hover.RailIconOnly);
-
-        // Without the opt-in, the same hover request never opens the whole-drawer overlay.
-        var plain = Rail(hoverExpand: false);
-        plain.RailHoverExpanded = true;
-        Assert.False(plain.RailOverlayOpen);
-        Assert.True(plain.RailIconOnly);
+        var d = RenderDrawer(DrawerVariant.Persistent, open: false).Instance;
+        Assert.True(d.ReservesTrack(false));   // keeps its track so the width can animate
+        Assert.Equal("0", d.TrackWidth(false));
     }
 
     [Fact]
-    public void OpeningDrawer_ClearsPendingHoverOverlay()
+    public void PersistentOpen_ReservesFullTrack()
+        => Assert.Equal("16rem", RenderDrawer(DrawerVariant.Persistent, open: true).Instance.TrackWidth(false));
+
+    [Fact]
+    public void Temporary_Floats_NeverReservesTrack()
     {
-        var ctx = Rail(hoverExpand: true);
-        ctx.RailHoverExpanded = true;
-        ctx.DrawerOpen = true;   // toggle back to the full drawer
-        Assert.False(ctx.RailOverlayOpen);
-        Assert.False(ctx.RailHoverExpanded);
+        var d = RenderDrawer(DrawerVariant.Temporary, open: true).Instance;
+        Assert.False(d.ReservesTrack(false));
+        Assert.True(d.IsOverlayOpen(false));
     }
 
     [Fact]
-    public void RailHoverExpanded_NotifiesOnlyOnChange()
+    public void Mobile_PushDrawerGoesOffCanvas()
     {
-        var ctx = Rail(hoverExpand: true);
-        var count = 0;
-        ctx.StateChanged += () => count++;
-        ctx.RailHoverExpanded = true;   // change -> 1 notification
-        ctx.RailHoverExpanded = true;   // no change -> no extra notification
-        Assert.Equal(1, count);
+        var d = RenderDrawer(DrawerVariant.Mini, open: false).Instance;
+        Assert.False(d.ReservesTrack(true));   // off-canvas on mobile
+        Assert.Equal("0", d.TrackWidth(true));
     }
 
     [Fact]
-    public void ToggleDrawer_FlipsOpenState()
+    public async Task Toggle_FlipsOpen_AndRaisesChanged()
     {
-        var ctx = new FlareLayoutContext { DrawerOpen = false };
-        ctx.ToggleDrawer();
-        Assert.True(ctx.DrawerOpen);
-        ctx.ToggleDrawer();
-        Assert.False(ctx.DrawerOpen);
+        var changed = false;
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Variant, DrawerVariant.Persistent)
+            .Add(d => d.Open, false)
+            .Add(d => d.OpenChanged, EventCallback.Factory.Create<bool>(this, v => changed = v)));
+        await cut.InvokeAsync(() => cut.Instance.ToggleAsync());
+        Assert.True(cut.Instance.IsOpen);
+        Assert.True(changed);
     }
 }
 
-// FlareLayout secondary drawer: an in-flow column between the drawer and the content, shown only
-// while SecondaryDrawerOpen (so it pushes the content aside rather than covering it).
-public class C_FlareLayoutSecondaryTests : FlareTestContext
+// FlareLayout reserves a grid track for each registered in-flow drawer and exposes the column template
+// via the --flare-layout-cols custom property, so the content is pushed aside rather than covered.
+public class C_FlareLayoutGridTests : FlareTestContext
 {
     [Fact]
-    public void SecondaryDrawer_Open_RendersColumnAndModifier()
+    public void Layout_ReservesRailTrackForMiniDrawer()
     {
         var cut = Render<FlareLayout>(p => p
-            .Add(x => x.Drawer, "<div>rail</div>")
-            .Add(x => x.SecondaryDrawer, "<div class=\"sec-item\">Badge</div>")
-            .Add(x => x.SecondaryDrawerOpen, true)
-            .Add(x => x.Content, "<div>content</div>"));
+            .Add(x => x.Responsive, false)
+            .AddChildContent<FlareLayoutDrawer>(d => d
+                .Add(x => x.Variant, DrawerVariant.Mini)
+                .Add(x => x.RailWidth, "5rem")
+                .Add(x => x.Open, false)));
 
-        Assert.Contains("flare-layout--secondary-open", cut.Find(".flare-layout").ClassName);
-        Assert.NotEmpty(cut.FindAll("aside.flare-layout-secondary .sec-item"));
-    }
-
-    [Fact]
-    public void SecondaryDrawer_Closed_NoModifier()
-    {
-        var cut = Render<FlareLayout>(p => p
-            .Add(x => x.Drawer, "<div>rail</div>")
-            .Add(x => x.SecondaryDrawer, "<div>Badge</div>")
-            .Add(x => x.SecondaryDrawerOpen, false)
-            .Add(x => x.Content, "<div>content</div>"));
-
-        Assert.DoesNotContain("flare-layout--secondary-open", cut.Find(".flare-layout").ClassName);
+        var style = cut.Find(".flare-layout").GetAttribute("style") ?? string.Empty;
+        Assert.Contains("--flare-layout-cols", style);
+        Assert.Contains("5rem", style);          // the collapsed rail reserves a 5rem track
+        Assert.Contains("minmax(0, 1fr)", style); // the content fills the rest
     }
 }
 
@@ -920,13 +910,12 @@ public class C_FlareNavGroupInlineTests : FlareTestContext
     }
 
     [Fact]
-    public void CollapsedMiniRailLayout_StillRendersInlineGroup()
+    public void RendersInlineGroup_NoFlyoutMarkup()
     {
-        // A collapsed mini-rail no longer changes the group's structure: no flyout panel, just the
-        // inline accordion. (The two-pane secondary column replaced the old per-group flyout.)
+        // The group is always an inline accordion: no flyout panel. (The two-pane secondary column
+        // replaced the old per-group flyout; FlareNavGroup no longer reads the layout context.)
         var cut = Render<FlareNavGroup>(p => p
             .Add(g => g.Label, "Components")
-            .AddCascadingValue<FlareLayoutContext>(new FlareLayoutContext { MiniRail = true, DrawerOpen = false })
             .AddChildContent("<a>x</a>"));
 
         Assert.Empty(cut.FindAll(".flare-nav-group--flyout"));

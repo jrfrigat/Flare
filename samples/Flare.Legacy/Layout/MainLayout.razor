@@ -4,37 +4,33 @@
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
 
-<FlareLayout @bind-DrawerOpen="_navOpen" MiniRail ContentMaxWidth="ContainerMaxWidth.Full">
-    <AppBar>
-        <FlareLayoutAppBar DrawerToggle="true">
-            <FlareText Typo="TypographyScale.TitleMedium" Weight="FontWeight.Bold">Legacy</FlareText>
-        </FlareLayoutAppBar>
-    </AppBar>
-    <Drawer>
-        <FlareLayoutDrawer>
-            <FlareNavMenu AriaLabel="Разделы">
-                <FlareNavLink Href="/" Match="NavMatchMode.Exact" Tooltip="Список займов">
-                    <Icon><FlareIcon Name="format_list_bulleted" /></Icon>
-                    <ChildContent>Список займов</ChildContent>
-                </FlareNavLink>
-                <FlareNavLink Href="/reports" Tooltip="Отчёты">
-                    <Icon><FlareIcon Name="insights" /></Icon>
-                    <ChildContent>Отчёты</ChildContent>
-                </FlareNavLink>
-                <FlareNavLink Href="/schedule" Tooltip="Рабочий график">
-                    <Icon><FlareIcon Name="schedule" /></Icon>
-                    <ChildContent>Рабочий график</ChildContent>
-                </FlareNavLink>
-                <FlareNavLink Href="/settings" Tooltip="Настройки">
-                    <Icon><FlareIcon Name="settings" /></Icon>
-                    <ChildContent>Настройки</ChildContent>
-                </FlareNavLink>
-            </FlareNavMenu>
-        </FlareLayoutDrawer>
-    </Drawer>
-    <Content>
+<FlareLayout>
+    <FlareLayoutAppBar DrawerToggle="true">
+        <FlareText Typo="TypographyScale.TitleMedium" Weight="FontWeight.Bold">Legacy</FlareText>
+    </FlareLayoutAppBar>
+    <FlareLayoutDrawer @bind-Open="_navOpen" Variant="DrawerVariant.Mini">
+        <FlareNavMenu AriaLabel="Разделы">
+            <FlareNavLink Href="/" Match="NavMatchMode.Exact" Tooltip="Список займов">
+                <Icon><FlareIcon Name="format_list_bulleted" /></Icon>
+                <ChildContent>Список займов</ChildContent>
+            </FlareNavLink>
+            <FlareNavLink Href="/reports" Tooltip="Отчёты">
+                <Icon><FlareIcon Name="insights" /></Icon>
+                <ChildContent>Отчёты</ChildContent>
+            </FlareNavLink>
+            <FlareNavLink Href="/schedule" Tooltip="Рабочий график">
+                <Icon><FlareIcon Name="schedule" /></Icon>
+                <ChildContent>Рабочий график</ChildContent>
+            </FlareNavLink>
+            <FlareNavLink Href="/settings" Tooltip="Настройки">
+                <Icon><FlareIcon Name="settings" /></Icon>
+                <ChildContent>Настройки</ChildContent>
+            </FlareNavLink>
+        </FlareNavMenu>
+    </FlareLayoutDrawer>
+    <FlareLayoutContent>
         @Body
-    </Content>
+    </FlareLayoutContent>
 </FlareLayout>
 
 <FlareSnackbarProvider />
