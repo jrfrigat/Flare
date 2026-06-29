@@ -914,6 +914,36 @@ public class C_FlareLayoutContextModeTests
     }
 }
 
+// FlareLayout secondary drawer: an in-flow column between the drawer and the content, shown only
+// while SecondaryDrawerOpen (so it pushes the content aside rather than covering it).
+public class C_FlareLayoutSecondaryTests : FlareTestContext
+{
+    [Fact]
+    public void SecondaryDrawer_Open_RendersColumnAndModifier()
+    {
+        var cut = Render<FlareLayout>(p => p
+            .Add(x => x.Drawer, "<div>rail</div>")
+            .Add(x => x.SecondaryDrawer, "<div class=\"sec-item\">Badge</div>")
+            .Add(x => x.SecondaryDrawerOpen, true)
+            .Add(x => x.Content, "<div>content</div>"));
+
+        Assert.Contains("flare-layout--secondary-open", cut.Find(".flare-layout").ClassName);
+        Assert.NotEmpty(cut.FindAll("aside.flare-layout-secondary .sec-item"));
+    }
+
+    [Fact]
+    public void SecondaryDrawer_Closed_NoModifier()
+    {
+        var cut = Render<FlareLayout>(p => p
+            .Add(x => x.Drawer, "<div>rail</div>")
+            .Add(x => x.SecondaryDrawer, "<div>Badge</div>")
+            .Add(x => x.SecondaryDrawerOpen, false)
+            .Add(x => x.Content, "<div>content</div>"));
+
+        Assert.DoesNotContain("flare-layout--secondary-open", cut.Find(".flare-layout").ClassName);
+    }
+}
+
 // FlareNavGroup rail flyout (MD3 persistent column): in DrawerMode.RailFlyout a collapsed top-level
 // group renders an icon trigger plus an always-mounted secondary panel; the panel is shown (via the
 // --flyout-displayed class) only for the displayed group (hovered, or the active section). Other

@@ -53,6 +53,31 @@
     width: var(--flare-drawer-mini-width);
 }
 
+/* Secondary navigation column (FlareLayout.SecondaryDrawer): an in-flow grid track between the
+   drawer and the content. Hidden until --secondary-open, when it claims its own track and pushes the
+   content aside. The body grid is re-stated per drawer width (closed / mini / full); the high
+   specificity (3-4 classes) beats the two-column rules above. */
+.flare-layout-secondary {
+    display: none;
+    height: 100%;
+    min-width: 0;
+    overflow-y: auto;
+    background: var(--flare-color-surface-container-low);
+    border-right: 1px solid var(--flare-color-outline-variant);
+}
+.flare-layout--secondary-open .flare-layout-secondary {
+    display: block;
+}
+.flare-layout--secondary-open:not(.flare-layout--mini-rail):not(.flare-layout--drawer-open) .flare-layout__body {
+    grid-template-columns: 0 var(--flare-secondary-width, var(--flare-drawer-width, 16rem)) 1fr;
+}
+.flare-layout--secondary-open.flare-layout--mini-rail:not(.flare-layout--drawer-open) .flare-layout__body {
+    grid-template-columns: var(--flare-drawer-mini-width) var(--flare-secondary-width, var(--flare-drawer-width, 16rem)) 1fr;
+}
+.flare-layout--secondary-open.flare-layout--drawer-open .flare-layout__body {
+    grid-template-columns: var(--flare-drawer-width) var(--flare-secondary-width, var(--flare-drawer-width, 16rem)) 1fr;
+}
+
 /* Hover/focus overlay: while the pointer or keyboard focus is inside the collapsed mini-rail, the
    inner floats over the content at full drawer width so nested groups become reachable. The grid
    track stays at the rail width, so the content never reflows -- the panel simply overlays it. The
@@ -200,6 +225,10 @@
 @media (max-width: 959px) {
     .flare-layout__body {
         grid-template-columns: 1fr !important;
+    }
+    /* The secondary column is desktop-only for now; the mobile drill-down nav is a separate step. */
+    .flare-layout-secondary {
+        display: none !important;
     }
     .flare-layout-drawer {
         position: fixed;

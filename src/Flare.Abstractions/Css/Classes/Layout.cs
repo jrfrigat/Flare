@@ -29,6 +29,12 @@ public static class Layout
     /// <summary>The <c>flare-layout--flyout-column</c> CSS class: a flyout group's secondary panel is
     /// docked as a persistent column, so the content is pushed aside rather than covered.</summary>
     public const string FlyoutColumn = "flare-layout--flyout-column";
+    /// <summary>The <c>flare-layout-secondary</c> CSS class: the optional secondary navigation column
+    /// rendered between the drawer and the content.</summary>
+    public const string Secondary = "flare-layout-secondary";
+    /// <summary>The <c>flare-layout--secondary-open</c> CSS class: the secondary navigation column is
+    /// shown, so it occupies a grid track and pushes the content aside.</summary>
+    public const string SecondaryOpen = "flare-layout--secondary-open";
     /// <summary>The <c>flare-layout-appbar__toggle--open</c> CSS class.</summary>
     public const string AppbarToggleOpen = "flare-layout-appbar__toggle--open";
     /// <summary>The <c>flare-layout-content--lg</c> CSS class.</summary>

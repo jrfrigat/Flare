@@ -5,7 +5,7 @@
 @inject NavigationManager Nav
 
 <CascadingValue Value="_ctx" IsFixed="false">
-    <div class="@BuildCssClass(_drawerClass, _miniRailClass, _railHoverClass, _flyoutColumnClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@BuildCssClass(_drawerClass, _miniRailClass, _railHoverClass, _flyoutColumnClass, _secondaryOpenClass)" style="@Style" @attributes="AdditionalAttributes">
         @AppBar
         @if (ChildContent is not null)
         {
@@ -15,6 +15,15 @@
         {
             <div class="@Css.Classes.Layout.Body">
                 @Drawer
+                @if (SecondaryDrawer is not null)
+                {
+                    @* Secondary navigation column (e.g. an MD3 section list). It is an in-flow grid
+                       track between the drawer and the content, so when open it pushes the content
+                       aside rather than covering it; hidden (display:none) while closed. *@
+                    <aside class="@Css.Classes.Layout.Secondary" aria-hidden="@(SecondaryDrawerOpen ? null : "true")">
+                        @SecondaryDrawer
+                    </aside>
+                }
                 <main class="@Css.Classes.Layout.Main @ContentClass" style="@ContentStyle">
                     <div class="@Css.Classes.Layout.ContentFrame @_contentMaxWidthClass @_contentAlignClass">
                         @Content
@@ -34,6 +43,17 @@
     [Parameter] public RenderFragment? AppBar { get; set; }
     /// <summary>Drawer slot (slot-based API).</summary>
     [Parameter] public RenderFragment? Drawer { get; set; }
+    /// <summary>
+    /// Optional secondary navigation column rendered between the drawer and the content (slot-based
+    /// API) -- e.g. an MD3 section list. It shows as an in-flow column that pushes the content aside
+    /// while <see cref="SecondaryDrawerOpen"/> is true, and collapses away when false.
+    /// </summary>
+    [Parameter] public RenderFragment? SecondaryDrawer { get; set; }
+    /// <summary>Whether the <see cref="SecondaryDrawer"/> column is shown. Supports
+    /// <c>@bind-SecondaryDrawerOpen</c>.</summary>
+    [Parameter] public bool SecondaryDrawerOpen { get; set; }
+    /// <summary>Callback fired when <see cref="SecondaryDrawerOpen"/> changes.</summary>
+    [Parameter] public EventCallback<bool> SecondaryDrawerOpenChanged { get; set; }
     /// <summary>Main content slot (slot-based API).</summary>
     [Parameter] public RenderFragment? Content { get; set; }
     /// <summary>Extra CSS class for the main content element (slot-based API), e.g. for a max-width frame.</summary>
@@ -89,6 +109,7 @@
     private string _miniRailClass => _ctx.MiniRail ? Css.Classes.Layout.MiniRail : string.Empty;
     private string _railHoverClass => _ctx.RailOverlayOpen ? Css.Classes.Layout.RailHoverExpand : string.Empty;
     private string _flyoutColumnClass => _ctx.FlyoutColumnOpen ? Css.Classes.Layout.FlyoutColumn : string.Empty;
+    private string _secondaryOpenClass => (SecondaryDrawer is not null && SecondaryDrawerOpen) ? Css.Classes.Layout.SecondaryOpen : string.Empty;
     private string _contentMaxWidthClass => LayoutContentWidth.ToClass(ContentMaxWidth);
     private string _contentAlignClass => LayoutContentWidth.ToAlignClass(ContentAlignment);
 
