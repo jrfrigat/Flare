@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject ICollisionService CollisionService
+@inject Flare.Components.Services.IOverlayJsService Overlay
 @implements IAsyncDisposable
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
@@ -45,6 +46,8 @@
     private ElementReference _floatingRef;
     private string? _floatingStyle;
     private bool _initialized;
+    private bool _wasOpen;
+    private readonly string _id = "flare-popover-" + Guid.NewGuid().ToString("N")[..8];
 
     private string _placementClass => Placement switch
     {
@@ -66,10 +69,24 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender || !Open || !SmartPosition) return;
-
-        await UpdatePositionAsync();
-        _initialized = true;
+        if (Open && !_wasOpen)
+        {
+            _wasOpen = true;
+            if (SmartPosition)
+            {
+                await UpdatePositionAsync();
+                _initialized = true;
+            }
+            // Trap Tab focus inside the modal popover and remember the trigger so it is refocused on
+            // close (the trap helper stashes document.activeElement and restores it on release).
+            try { await Overlay.TrapFocusAsync(_id, _floatingRef); } catch { }
+        }
+        else if (!Open && _wasOpen)
+        {
+            _wasOpen = false;
+            _initialized = false;
+            try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
+        }
     }
 
     protected override async Task OnParametersSetAsync()
@@ -107,6 +124,10 @@
 
     public override async ValueTask DisposeAsync()
     {
+        if (_wasOpen)
+        {
+            try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }
+        }
         await base.DisposeAsync();
     }
 }
