@@ -319,4 +319,33 @@ public class ThemeServiceTests
         Assert.Single(s.Themes);
         Assert.Single(s.Palettes);
     }
+
+    [Fact]
+    public void Themes_And_Palettes_ReturnCachedSnapshot_UntilMembershipChanges()
+    {
+        var s = Make(out _);
+
+        // Repeated reads return the same cached instance (no per-access allocation).
+        var themes1 = s.Themes;
+        var palettes1 = s.Palettes;
+        Assert.Same(themes1, s.Themes);
+        Assert.Same(palettes1, s.Palettes);
+
+        // Registering a new theme invalidates the theme snapshot only.
+        s.RegisterTheme(new FakeTheme("t2"));
+        Assert.NotSame(themes1, s.Themes);
+        Assert.Same(palettes1, s.Palettes);
+        Assert.Equal(2, s.Themes.Count);
+
+        // Registering a new palette invalidates the palette snapshot.
+        var palettes2 = s.Palettes;
+        s.RegisterPalette(Pal("p2"));
+        Assert.NotSame(palettes2, s.Palettes);
+        Assert.Equal(2, s.Palettes.Count);
+
+        // Registering a duplicate id is a no-op and keeps the cached snapshot.
+        var themes2 = s.Themes;
+        s.RegisterTheme(new FakeTheme("t2"));
+        Assert.Same(themes2, s.Themes);
+    }
 }

@@ -39,13 +39,20 @@ public abstract class FlareComponentBase : ComponentBase, IAsyncDisposable
     /// <summary>Combines the root class, the given modifier classes and the user-supplied <see cref="Class"/>.</summary>
     protected string BuildCssClass(params string?[] additionalClasses)
     {
-        var parts = new List<string>(4) { ComponentCssClass };
-        foreach (var c in additionalClasses)
-            if (!string.IsNullOrWhiteSpace(c))
-                parts.Add(c);
-        if (!string.IsNullOrWhiteSpace(Class))
-            parts.Add(Class);
-        return string.Join(' ', parts);
+        // Fast path: no modifiers and no user Class -- the most common per-render case for many
+        // components -- returns the root class directly, avoiding a List allocation and string.Join.
+        bool hasClass = !string.IsNullOrWhiteSpace(Class);
+        if (!hasClass && (additionalClasses is null || additionalClasses.Length == 0))
+            return ComponentCssClass;
+
+        var parts = new List<string>((additionalClasses?.Length ?? 0) + 2) { ComponentCssClass };
+        if (additionalClasses is not null)
+            foreach (var c in additionalClasses)
+                if (!string.IsNullOrWhiteSpace(c))
+                    parts.Add(c);
+        if (hasClass)
+            parts.Add(Class!);
+        return parts.Count == 1 ? ComponentCssClass : string.Join(' ', parts);
     }
 
     /// <summary>Disposes the component; override to release JS interop or subscriptions.</summary>
