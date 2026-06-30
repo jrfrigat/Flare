@@ -118,14 +118,17 @@
     /// render. An out-of-range value is clamped to the registered step count. The getter always
     /// reports the live active step, so reading it after a navigation reflects the current position.
     /// </summary>
+    // BL0007: ActiveIndex deliberately uses a custom getter/setter (not an auto-property). The getter
+    // reports the live active step; the setter only captures the assigned value, which is reconciled
+    // in OnParametersSet so _activeIndex stays authoritative for an uncontrolled (unbound) stepper.
+#pragma warning disable BL0007
     [Parameter]
     public int ActiveIndex
     {
         get => _activeIndex;
-        // The assigned value is captured (not applied directly) and reconciled in OnParametersSet so
-        // the live _activeIndex stays authoritative for an uncontrolled (unbound) stepper.
         set => _paramActiveIndex = value;
     }
+#pragma warning restore BL0007
     /// <summary>
     /// Fired with the new index whenever <see cref="ActiveIndex"/> changes (Next/Back/click or a
     /// programmatic move), enabling <c>@bind-ActiveIndex</c>. For a plain "step changed" notification

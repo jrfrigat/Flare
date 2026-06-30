@@ -3,15 +3,29 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.0.8] - 2026-06-30
+## [0.0.7] - 2026-06-30
 
-This release makes **`FlareStepper` able to drive wizards with bespoke navigation**. The active step
-can now be controlled and observed from outside the component, the built-in Back/Next buttons can be
-replaced wholesale with custom controls, and individual steps can be marked skippable - so a wizard
-that previously had to be hand-rolled in HTML (custom arrow buttons, wheel-scroll navigation) can be
-expressed with `FlareStepper` directly. Existing steppers are unaffected.
+This release adds a **generic component-dialog service** - render any Blazor component as a modal and
+await a typed result, instead of the inline `@bind-Visible` plumbing previously required - and makes
+**`FlareStepper` able to drive wizards with bespoke navigation**: the active step can be controlled
+and observed from outside the component, the built-in Back/Next buttons can be replaced wholesale with
+custom controls, and individual steps can be marked skippable, so a wizard that previously had to be
+hand-rolled in HTML (custom arrow buttons, wheel-scroll navigation) can be expressed with
+`FlareStepper` directly. Existing steppers are unaffected.
 
 ### Added
+- **`IDialogService.ShowAsync<TComponent>` / `Show<TComponent>`** - open any component as a modal
+  dialog body and await its outcome. `ShowAsync` returns a `Task<DialogResult>`; `Show` returns a
+  `DialogReference` whose `Result` can be awaited and which can also close the dialog from the caller
+  side. The body component receives a cascaded `FlareDialogInstance` to close itself
+  (`Dialog.Close(value)` / `Dialog.Cancel()`), and the dialog is rendered through the existing
+  `FlareDialogProvider` (a `DynamicComponent` host) with the same visuals, sizing, scrim, focus-trap
+  and Escape handling as `FlareDialog`.
+- **`DialogParameters`** - a fluent bag (`Add(name, value)`) binding values to the body component's
+  `[Parameter]`s; **`DialogResult`** (`Ok(payload)` / `Cancel()` with `Cancelled` and a typed
+  `GetData<T>()`); and **`DialogOptions`** (`Size`, `CloseOnScrimClick`, `CloseOnEsc`, `Divider`).
+- Gallery: a new **Component dialog** demo on the Dialog page (an edit-profile dialog that receives
+  initial values and returns an edited model).
 - **`FlareStepper.ActiveIndex` two-way binding** (`@bind-ActiveIndex`, backed by the new
   `ActiveIndex` parameter and `ActiveIndexChanged` callback). The component writes the new index out
   on every navigation and adopts an externally assigned value (e.g. from a consumer's own controls)
@@ -32,25 +46,6 @@ expressed with `FlareStepper` directly. Existing steppers are unaffected.
 - Gallery: two new Stepper demos - **Custom navigation & wheel scroll** (arrow icon buttons plus
   mouse-wheel navigation via `ActionContent` and `@bind-ActiveIndex`) and **Bound index & skippable
   step** (external buttons driving the stepper through the binding, with a skippable optional step).
-
-## [0.0.7] - 2026-06-30
-
-This release adds a **generic component-dialog service**: render any Blazor component as a modal and
-await a typed result, instead of the inline `@bind-Visible` plumbing previously required.
-
-### Added
-- **`IDialogService.ShowAsync<TComponent>` / `Show<TComponent>`** - open any component as a modal
-  dialog body and await its outcome. `ShowAsync` returns a `Task<DialogResult>`; `Show` returns a
-  `DialogReference` whose `Result` can be awaited and which can also close the dialog from the caller
-  side. The body component receives a cascaded `FlareDialogInstance` to close itself
-  (`Dialog.Close(value)` / `Dialog.Cancel()`), and the dialog is rendered through the existing
-  `FlareDialogProvider` (a `DynamicComponent` host) with the same visuals, sizing, scrim, focus-trap
-  and Escape handling as `FlareDialog`.
-- **`DialogParameters`** - a fluent bag (`Add(name, value)`) binding values to the body component's
-  `[Parameter]`s; **`DialogResult`** (`Ok(payload)` / `Cancel()` with `Cancelled` and a typed
-  `GetData<T>()`); and **`DialogOptions`** (`Size`, `CloseOnScrimClick`, `CloseOnEsc`, `Divider`).
-- Gallery: a new **Component dialog** demo on the Dialog page (an edit-profile dialog that receives
-  initial values and returns an edited model).
 
 ### Changed
 - **`DialogSize` moved from the `Flare.Components` namespace to `Flare.Abstractions`** (it is now a

@@ -2413,7 +2413,9 @@
     <value>Component dialogs: IDialogService.ShowAsync&lt;TComponent&gt; renders any component as a modal and returns a typed DialogResult - no inline @bind-Visible plumbing
 Pass values in with a DialogParameters bag and close from the body via the cascaded FlareDialogInstance (Dialog.Close(value) / Dialog.Cancel())
 DialogOptions controls the size, scrim/Escape dismissal and the header divider; the existing confirm and alert helpers are unchanged
-Gallery: a new Component dialog demo on the Dialog page</value>
+Gallery: a new Component dialog demo on the Dialog page
+Stepper wizards: FlareStepper gains @bind-ActiveIndex, an ActionContent slot that replaces the built-in Back/Next buttons with your own controls (custom buttons, wheel/keyboard navigation), and a Skippable step
+Gallery: new Stepper demos for custom navigation with wheel scroll and a bound index with a skippable step</value>
   </data>
   <data name="About_WhatsNewV6" xml:space="preserve">
     <value>Layout and navigation redesigned: each FlareLayoutDrawer now owns its own state (@bind-Open) with a Variant, so you can compose multi-drawer (two-pane) layouts, and FlareNavMenu gains Full/Rail/RailLabeled modes (a breaking change to the old slot-based FlareLayout)
