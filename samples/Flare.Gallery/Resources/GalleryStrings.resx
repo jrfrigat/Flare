@@ -1530,6 +1530,12 @@
   <data name="Stepper_Guard" xml:space="preserve">
     <value>Async validation guard</value>
   </data>
+  <data name="Stepper_CustomNav" xml:space="preserve">
+    <value>Custom navigation &amp; wheel scroll</value>
+  </data>
+  <data name="Stepper_Skippable" xml:space="preserve">
+    <value>Bound index &amp; skippable step</value>
+  </data>
   <data name="Table_Title" xml:space="preserve">
     <value>Table</value>
   </data>

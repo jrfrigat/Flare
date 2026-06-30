@@ -3,6 +3,36 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.8] - 2026-06-30
+
+This release makes **`FlareStepper` able to drive wizards with bespoke navigation**. The active step
+can now be controlled and observed from outside the component, the built-in Back/Next buttons can be
+replaced wholesale with custom controls, and individual steps can be marked skippable - so a wizard
+that previously had to be hand-rolled in HTML (custom arrow buttons, wheel-scroll navigation) can be
+expressed with `FlareStepper` directly. Existing steppers are unaffected.
+
+### Added
+- **`FlareStepper.ActiveIndex` two-way binding** (`@bind-ActiveIndex`, backed by the new
+  `ActiveIndex` parameter and `ActiveIndexChanged` callback). The component writes the new index out
+  on every navigation and adopts an externally assigned value (e.g. from a consumer's own controls)
+  on the next render, so the active step can be controlled and observed externally. An out-of-range
+  value is clamped to the registered step count. (`ActiveIndex` was previously a read-only property;
+  reading it still works.)
+- **`FlareStepper.ActionContent`** (`RenderFragment<StepperContext>`) - optional navigation content
+  rendered in place of the built-in Back/Next buttons, letting consumers render bespoke controls
+  (custom icon buttons, wheel/keyboard navigation, ...). The new `StepperContext` exposes the active
+  position (`ActiveIndex`, `Count`, `IsFirst`, `IsLast`, the current `Step`) plus the same navigation
+  operations the built-in controls use (`NextAsync`, `BackAsync`, `GoToAsync`, `CanGoTo`), each of
+  which still runs the `OnStepChanging` guard. When `ActionContent` is not supplied the built-in
+  buttons render exactly as before.
+- **`FlareStep.Skippable`** - allows forward navigation (a step-indicator click or `GoTo`) to jump
+  past the step in a linear stepper without it being completed. In a linear stepper a forward jump is
+  permitted only when every step skipped over is `Skippable`; the immediately next step is always
+  reachable. No effect in a non-linear stepper, where every step is already reachable.
+- Gallery: two new Stepper demos - **Custom navigation & wheel scroll** (arrow icon buttons plus
+  mouse-wheel navigation via `ActionContent` and `@bind-ActiveIndex`) and **Bound index & skippable
+  step** (external buttons driving the stepper through the binding, with a skippable optional step).
+
 ## [0.0.7] - 2026-06-30
 
 This release adds a **generic component-dialog service**: render any Blazor component as a modal and

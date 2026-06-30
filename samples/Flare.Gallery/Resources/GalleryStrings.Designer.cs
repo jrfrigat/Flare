@@ -7178,7 +7178,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Stepper_Basic", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Custom navigation &amp; wheel scroll.
+        /// </summary>
+        public static string Stepper_CustomNav {
+            get {
+                return ResourceManager.GetString("Stepper_CustomNav", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bound index &amp; skippable step.
+        /// </summary>
+        public static string Stepper_Skippable {
+            get {
+                return ResourceManager.GetString("Stepper_Skippable", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Async validation guard.
         /// </summary>

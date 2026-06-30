@@ -1530,6 +1530,12 @@
   <data name="Stepper_Guard" xml:space="preserve">
     <value>Асинхронная проверка перед переходом</value>
   </data>
+  <data name="Stepper_CustomNav" xml:space="preserve">
+    <value>Своя навигация и прокрутка колесом</value>
+  </data>
+  <data name="Stepper_Skippable" xml:space="preserve">
+    <value>Привязка индекса и пропускаемый шаг</value>
+  </data>
   <data name="Table_Title" xml:space="preserve">
     <value>Таблица</value>
   </data>
