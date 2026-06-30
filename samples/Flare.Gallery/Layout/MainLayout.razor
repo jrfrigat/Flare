@@ -89,16 +89,18 @@
         RailLabels.Changed += OnRailLabelsChanged;
         // Highlight the rail trigger for the current route's section, updated on every navigation.
         _routeSection = GallerySections.FromPath(NavManager.ToBaseRelativePath(NavManager.Uri));
+        // Open the matching secondary panel on direct load / reload, not just on a trigger click.
+        _section = _routeSection;
         NavManager.LocationChanged += OnLocationChanged;
     }
 
     private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
     {
         _routeSection = GallerySections.FromPath(NavManager.ToBaseRelativePath(e.Location));
-        // Leaving every section (e.g. Overview / Getting started) closes the secondary so it does not
-        // linger next to an unrelated page.
-        if (_routeSection == GallerySection.None)
-            _section = GallerySection.None;
+        // The secondary column follows the route: navigating into a section opens its panel (so a direct
+        // link or reload lands with the right panel open, not just the highlight), and leaving every
+        // section (Overview / Getting started) closes it. A trigger click can still collapse it in place.
+        _section = _routeSection;
         StateHasChanged();
     }
 
