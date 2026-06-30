@@ -2409,6 +2409,15 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare is an open-source Blazor component library built with .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV8" xml:space="preserve">
+    <value>FlareIconButton: a dedicated icon-only button - a thin wrapper over FlareButton, replacing the verbose FlareButton + LeadingIcon idiom
+FlareCollapse: a standalone expand/collapse container (Expanded flag or built-in header), with its own Gallery page
+FlareChip Variant (Outlined/Filled/Elevated) and a numeric FlareCard Elevation (0-5; 0 == flat)
+FlareAvatar FallbackIcon/FallbackContent; FlareField gains Error/Invalid (state without a message), FullWidth and Margin
+FlareSelect now accepts declarative &lt;option&gt; child content in addition to the Items collection
+FlareMenuItem Target (external links) and IconColor; FlareToggleGroup cascades Size/Color/Disabled to its buttons
+ISnackbarService.Show options overload (per-message styling and CloseAfterNavigation); FlareLink Typo passthrough</value>
+  </data>
   <data name="About_WhatsNewV7" xml:space="preserve">
     <value>Component dialogs: IDialogService.ShowAsync&lt;TComponent&gt; renders any component as a modal and returns a typed DialogResult - no inline @bind-Visible plumbing
 Pass values in with a DialogParameters bag and close from the body via the cascaded FlareDialogInstance (Dialog.Close(value) / Dialog.Cancel())

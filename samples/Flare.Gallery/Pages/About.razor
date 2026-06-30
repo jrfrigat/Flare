@@ -44,6 +44,18 @@
 <section>
     <GallerySectionHeader Icon="new_releases" Title="@GalleryStrings.About_WhatsNew" />
     <FlareCard Variant="CardVariant.Outlined" Style="margin-bottom:1rem;">
+        <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v0.0.8 - 2026-07-01</FlareText>
+        <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+            @foreach (var item in _whatsNewV8)
+            {
+                <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+                    <FlareIcon Size="1rem" Color="FlareColor.Primary" Name="check_circle" Style="margin-top:2px" />
+                    <FlareText Typo="TypographyScale.BodyMedium">@item</FlareText>
+                </FlareStack>
+            }
+        </FlareStack>
+    </FlareCard>
+    <FlareCard Variant="CardVariant.Outlined" Style="margin-bottom:1rem;">
         <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v0.0.7 - 2026-06-30</FlareText>
         <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
             @foreach (var item in _whatsNewV7)
@@ -144,7 +156,7 @@
 </FlareStack>
 
 @code {
-    private readonly string _version = "0.0.7";
+    private readonly string _version = "0.0.8";
 
     private void GoToGitHub() => Nav.NavigateTo("https://github.com/jrfrigat/Flare", forceLoad: true);
 
@@ -152,6 +164,7 @@
     private static string[] Lines(string value) =>
         value.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
+    private string[] _whatsNewV8 => Lines(GalleryStrings.About_WhatsNewV8);
     private string[] _whatsNewV7 => Lines(GalleryStrings.About_WhatsNewV7);
     private string[] _whatsNewV6 => Lines(GalleryStrings.About_WhatsNewV6);
     private string[] _whatsNewV5 => Lines(GalleryStrings.About_WhatsNewV5);
