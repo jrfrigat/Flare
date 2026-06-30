@@ -1740,4 +1740,19 @@ public class C_FlareDateRangeCalendarTests : FlareTestContext
         await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[10].Click());   // earlier second
         Assert.True(cut.Instance.StartDate <= cut.Instance.EndDate);                       // swapped into order
     }
+
+    [Fact]
+    public void DefaultPresets_ArePublic_AndCombineWithCustom()
+    {
+        Assert.NotEmpty(FlareDateRangePicker.DefaultPresets);
+        var combined = new List<DateRangePreset>(FlareDateRangePicker.DefaultPresets)
+        {
+            new("Sprint", t => (t.AddDays(-13), t)),
+        };
+        var cut = Render<FlareDateRangePicker>(p => p
+            .Add(c => c.ShowPresets, true)
+            .Add(c => c.Presets, combined));
+        // every built-in preset plus the custom one renders a chip
+        Assert.Equal(combined.Count, cut.FindAll(".flare-daterangepicker__preset").Count);
+    }
 }

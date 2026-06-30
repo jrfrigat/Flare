@@ -163,7 +163,14 @@
 
     private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresets;
 
-    private static readonly IReadOnlyList<DateRangePreset> DefaultPresets =
+    /// <summary>
+    /// The built-in quick-range presets (Today, Yesterday, Last 7 / 30 days, This / Last month, This
+    /// year). Exposed so callers can keep the standard set AND add their own via the
+    /// <see cref="Presets"/> parameter, e.g.
+    /// <c>Presets="[.. FlareDateRangePicker.DefaultPresets, .. myPresets]"</c>. Built fresh on each
+    /// access so the localized labels follow the current culture.
+    /// </summary>
+    public static IReadOnlyList<DateRangePreset> DefaultPresets =>
     [
         new(FlareStrings.DateRangePicker_Today,      t => (t, t)),
         new(FlareStrings.DateRangePicker_Yesterday,  t => (t.AddDays(-1), t.AddDays(-1))),
