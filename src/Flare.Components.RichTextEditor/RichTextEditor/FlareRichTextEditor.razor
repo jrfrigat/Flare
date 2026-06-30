@@ -132,13 +132,23 @@
 
     private async Task InsertLinkAsync()
     {
-        if (!string.IsNullOrWhiteSpace(_linkUrl))
-        {
-            await ExecAsync("insertLink", _linkUrl);
-            _linkUrl = string.Empty;
-            _showLinkInput = false;
-        }
+        var url = _linkUrl?.Trim();
+        // Only insert safe URL schemes -- blocks javascript:/data:/vbscript: links that would be
+        // stored XSS in the edited HTML. An unsafe or empty URL leaves the input open to be corrected.
+        if (string.IsNullOrEmpty(url) || !IsUrlSafe(url))
+            return;
+        await ExecAsync("insertLink", url);
+        _linkUrl = string.Empty;
+        _showLinkInput = false;
     }
+
+    // Whitelist of safe URL schemes for an inserted link (relative, fragment, http(s), mailto, tel).
+    private static bool IsUrlSafe(string url) =>
+        url.StartsWith('/') || url.StartsWith('#')
+        || url.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+        || url.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+        || url.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase)
+        || url.StartsWith("tel:", StringComparison.OrdinalIgnoreCase);
 
     private async Task HandleLinkKeyDown(KeyboardEventArgs e)
     {

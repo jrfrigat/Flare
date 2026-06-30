@@ -1,0 +1,67 @@
+@inherits LocalizedPage
+@using Flare.Gallery.Api
+@using Flare.Gallery.Models
+
+@* The secondary navigation column: the pages of the currently selected section, as a full menu.
+   The active page auto-highlights and its group auto-expands (FlareNavLink). *@
+<FlareNavMenu Mode="NavMenuMode.Full" HideScrollbar="true" AriaLabel="@_sectionTitle">
+    <Header>
+        <FlareText Typo="TypographyScale.TitleSmall" Weight="FontWeight.SemiBold"
+                   Style="padding:0.5rem 1rem;display:block;">@_sectionTitle</FlareText>
+    </Header>
+    <ChildContent>
+        @if (Section == GallerySection.Themes)
+        {
+            <FlareNavLink Href="/theming" Match="NavMatchMode.Exact">@GalleryStrings.Nav_Theming</FlareNavLink>
+            <FlareNavLink Href="/color">@GalleryStrings.Nav_Color</FlareNavLink>
+            <FlareNavLink Href="/custom-theme">Custom Theme</FlareNavLink>
+        }
+        else if (Section == GallerySection.Components)
+        {
+            @foreach (var group in ComponentCatalog.Groups)
+            {
+                <FlareNavGroup Label="@group.Label" Icon="@group.Icon">
+                    @foreach (var c in ComponentCatalog.InGroup(group.Group))
+                    {
+                        <FlareNavLink Href="@c.Href">@c.Name</FlareNavLink>
+                    }
+                </FlareNavGroup>
+            }
+        }
+        else if (Section == GallerySection.Services)
+        {
+            <FlareNavLink Href="/services/dynamic-color">Dynamic Color</FlareNavLink>
+            <FlareNavLink Href="/services/theme-scope">Theme Scope</FlareNavLink>
+            <FlareNavLink Href="/services/clipboard">Clipboard</FlareNavLink>
+            <FlareNavLink Href="/services/snackbar">Snackbar</FlareNavLink>
+            <FlareNavLink Href="/services/download">Download</FlareNavLink>
+            <FlareNavLink Href="/services/messagebox">Message Box</FlareNavLink>
+            <FlareNavLink Href="/services/version-check">Version Check</FlareNavLink>
+        }
+        else if (Section == GallerySection.Api)
+        {
+            <FlareNavLink Href="/api" Match="NavMatchMode.Exact">@GalleryStrings.Nav_AllApi</FlareNavLink>
+            @foreach (var name in _apiComponents)
+            {
+                <FlareNavLink Href="@($"/api/{name}")">@name</FlareNavLink>
+            }
+        }
+    </ChildContent>
+</FlareNavMenu>
+
+@code {
+    /// <summary>The section whose pages to list.</summary>
+    [Parameter] public GallerySection Section { get; set; }
+
+    private static readonly IReadOnlyList<string> _apiComponents =
+        ComponentApiRegistry.Components.Keys.OrderBy(k => k, StringComparer.Ordinal).ToList();
+
+    private string _sectionTitle => Section switch
+    {
+        GallerySection.Themes => GalleryStrings.Nav_Theming,
+        GallerySection.Components => GalleryStrings.Nav_Components,
+        GallerySection.Services => GalleryStrings.Nav_Services,
+        GallerySection.Api => GalleryStrings.Nav_Api,
+        _ => string.Empty,
+    };
+}

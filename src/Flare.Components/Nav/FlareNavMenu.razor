@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<nav class="@BuildCssClass(_noScrollbarClass, _railClass, _framedClass)" style="@Style"
+<nav class="@BuildCssClass(_noScrollbarClass, _railClass, _railLabeledClass, _framedClass)" style="@Style"
      aria-label="@(string.IsNullOrEmpty(AriaLabel) ? (FlareStrings.Nav_Navigation) : AriaLabel)"
      @attributes="AdditionalAttributes">
     @if (_framed)
@@ -48,22 +48,40 @@
     /// <summary>
     /// Mini-rail mode: collapses every item to its icon only -- link/group text, the group
     /// expand chevron and link badges are hidden and the icons are centered. When the menu is
-    /// inside a <c>FlareLayout</c> with <c>MiniRail</c>, this turns on automatically while the
-    /// drawer is collapsed, so no wiring is needed; set it explicitly to force the rail anywhere.
+    /// inside a <c>FlareLayoutDrawer</c> with <c>Variant="DrawerVariant.Rail"</c>, this turns on
+    /// automatically while that drawer is collapsed, so no wiring is needed; set it explicitly to
+    /// force the rail anywhere.
     /// </summary>
     [Parameter] public bool Rail { get; set; }
 
-    // Drives the rail automatically when the layout drawer is collapsed into its icon rail.
-    [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
+    /// <summary>
+    /// Presentation of the menu (<see cref="NavMenuMode.Full"/> or <see cref="NavMenuMode.Rail"/>),
+    /// decoupled from any surrounding layout. When set, it takes precedence over <see cref="Rail"/>
+    /// and the collapsed-drawer auto-rail; leave it unset (null) to keep the legacy behavior.
+    /// </summary>
+    [Parameter] public NavMenuMode? Mode { get; set; }
+
+    // Drives the rail automatically when the enclosing drawer is a collapsed icon rail.
+    [CascadingParameter] private FlareLayoutDrawer? Drawer { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Navigation.NavMenu;
 
-    private bool _isRail => Rail || (Layout?.RailCollapsed ?? false);
+    // An explicit Mode wins; otherwise fall back to the Rail flag or the collapsed enclosing drawer.
+    private bool _isRail => Mode switch
+    {
+        NavMenuMode.Rail or NavMenuMode.RailLabeled => true,
+        NavMenuMode.Full => false,
+        _ => Rail || (Drawer?.IsCollapsedRail ?? false),
+    };
+
+    // Labeled rail (icon + caption) vs the icon-only rail.
+    private bool _railLabeled => Mode == NavMenuMode.RailLabeled;
 
     // Framed layout (pinned header/footer + scrolling middle) turns on as soon as either slot is used.
     private bool _framed => Header is not null || Footer is not null;
 
     private string _noScrollbarClass => HideScrollbar ? Css.Classes.Navigation.NavMenuNoScrollbar : string.Empty;
     private string _railClass => _isRail ? Css.Classes.Navigation.NavMenuRail : string.Empty;
+    private string _railLabeledClass => _railLabeled ? Css.Classes.Navigation.NavMenuRailLabeled : string.Empty;
     private string _framedClass => _framed ? Css.Classes.Navigation.NavMenuFramed : string.Empty;
 }

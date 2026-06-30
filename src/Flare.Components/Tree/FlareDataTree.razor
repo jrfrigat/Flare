@@ -92,44 +92,50 @@
 
     private async Task ToggleAsync(VirtualTreeNode<TItem> node)
     {
-        if (!node.IsExpanded)
-        {
-            node.IsExpanded = true;
-            if (!node.ChildrenLoaded && ChildrenProvider is not null)
-            {
-                node.IsLoading = true;
-                StateHasChanged();
-
-                var children = (await ChildrenProvider(node.Item)).ToList();
-
-                node.IsLoading = false;
-                node.ChildrenLoaded = true;
-
-                if (children.Count == 0)
-                {
-                    node.HasChildren = false;
-                    node.IsExpanded = false;
-                }
-                else
-                {
-                    var idx = _flat.IndexOf(node) + 1;
-                    foreach (var child in children)
-                    {
-                        bool hasKids = HasChildren is not null ? HasChildren(child) : ChildrenProvider is not null;
-                        _flat.Insert(idx++, new VirtualTreeNode<TItem>
-                        {
-                            Item = child,
-                            Level = node.Level + 1,
-                            HasChildren = hasKids
-                        });
-                    }
-                }
-            }
-        }
-        else
+        if (node.IsExpanded)
         {
             node.IsExpanded = false;
             RemoveDescendants(node);
+            return;
+        }
+
+        node.IsExpanded = true;
+
+        // Load children once (lazily); re-expanding after a collapse reuses the cached list.
+        if (!node.ChildrenLoaded && ChildrenProvider is not null)
+        {
+            node.IsLoading = true;
+            StateHasChanged();
+
+            node.Children = (await ChildrenProvider(node.Item)).ToList();
+            node.IsLoading = false;
+            node.ChildrenLoaded = true;
+
+            if (node.Children.Count == 0)
+            {
+                node.HasChildren = false;
+                node.IsExpanded = false;
+                return;
+            }
+        }
+
+        InsertChildren(node);
+    }
+
+    // Re-inserts a node's (cached) children into the flat list just below it.
+    private void InsertChildren(VirtualTreeNode<TItem> node)
+    {
+        if (node.Children is null) return;
+        var idx = _flat.IndexOf(node) + 1;
+        foreach (var child in node.Children)
+        {
+            bool hasKids = HasChildren is not null ? HasChildren(child) : ChildrenProvider is not null;
+            _flat.Insert(idx++, new VirtualTreeNode<TItem>
+            {
+                Item = child,
+                Level = node.Level + 1,
+                HasChildren = hasKids
+            });
         }
     }
 

@@ -489,17 +489,6 @@
     private async Task HandleGridKeyDown(KeyboardEventArgs e)
     {
         var current = Value ?? Today;
-        DateOnly? next = e.Key switch
-        {
-            "ArrowRight" => current.AddDays(1),
-            "ArrowLeft"  => current.AddDays(-1),
-            "ArrowDown"  => current.AddDays(7),
-            "ArrowUp"    => current.AddDays(-7),
-            "Enter" or " " => current,
-            _ => null
-        };
-
-        if (next is null) return;
 
         if (e.Key is "Enter" or " ")
         {
@@ -508,7 +497,28 @@
             return;
         }
 
-        // Navigate view if needed
+        var step = e.Key switch
+        {
+            "ArrowRight" => 1,
+            "ArrowLeft"  => -1,
+            "ArrowDown"  => 7,
+            "ArrowUp"    => -7,
+            _ => 0
+        };
+        if (step == 0) return;
+
+        // Move in the arrow direction, skipping over disabled dates (Min/Max/IsDateDisabled) so the
+        // cursor never lands on one. Bounded so a fully-disabled range just stops rather than looping.
+        DateOnly? next = null;
+        var candidate = current;
+        for (var i = 0; i < 400; i++)
+        {
+            candidate = candidate.AddDays(step);
+            if (!IsDisabled(candidate)) { next = candidate; break; }
+        }
+        if (next is null) return;
+
+        // Navigate the visible month if the cursor crossed a boundary.
         if (next.Value.Year != _viewYear || next.Value.Month != _viewMonth)
         {
             _viewYear = next.Value.Year;

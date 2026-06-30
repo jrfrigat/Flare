@@ -1302,6 +1302,9 @@
   <data name="DateRangePicker_Presets" xml:space="preserve">
     <value>Быстрые диапазоны</value>
   </data>
+  <data name="DateRangePicker_Calendar" xml:space="preserve">
+    <value>Календарь-диапазон</value>
+  </data>
   <data name="DateTimePicker_Title" xml:space="preserve">
     <value>Выбор даты и времени (Date Time Picker)</value>
   </data>
@@ -1425,6 +1428,9 @@
   <data name="Autocomplete_Template" xml:space="preserve">
     <value>Шаблон элемента и опции</value>
   </data>
+  <data name="Autocomplete_Fuzzy" xml:space="preserve">
+    <value>Ранжирование нечётким поиском</value>
+  </data>
   <data name="SignaturePad_Title" xml:space="preserve">
     <value>Поле подписи</value>
   </data>
@@ -1496,6 +1502,9 @@
   </data>
   <data name="Stepper_Vertical" xml:space="preserve">
     <value>Вертикальный, нелинейный и шаг с ошибкой</value>
+  </data>
+  <data name="Stepper_Guard" xml:space="preserve">
+    <value>Асинхронная проверка перед переходом</value>
   </data>
   <data name="Table_Title" xml:space="preserve">
     <value>Таблица</value>
@@ -1805,6 +1814,21 @@
   </data>
   <data name="Settings_Language" xml:space="preserve">
     <value>Язык</value>
+  </data>
+  <data name="Settings_TabNavigation" xml:space="preserve">
+    <value>Навигация</value>
+  </data>
+  <data name="Nav_Drawer_Title" xml:space="preserve">
+    <value>Панель навигации</value>
+  </data>
+  <data name="Nav_Drawer_Desc" xml:space="preserve">
+    <value>Выберите вид свёрнутой панели: подпись под каждой иконкой или только иконки.</value>
+  </data>
+  <data name="Nav_Rail_Labeled" xml:space="preserve">
+    <value>С подписями</value>
+  </data>
+  <data name="Nav_Rail_IconsOnly" xml:space="preserve">
+    <value>Только иконки</value>
   </data>
   <data name="Settings_Version" xml:space="preserve">
     <value>Версия</value>

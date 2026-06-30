@@ -1,25 +1,183 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@implements IDisposable
 
-<nav class="@BuildCssClass(_openClass)"
-     style="@Style"
-     aria-hidden="@(_isOpen ? null : "true")"
+@* A self-contained navigation drawer. It owns its own open state (@bind-Open) and variant, registers
+   with the parent FlareLayout, and the layout reserves a grid track for it (push variants) or lets it
+   float over the content (overlay / mobile). Compose two drawers for a two-pane navigation. *@
+<nav class="@BuildCssClass(_variantClass, _anchorClass, _floatingClass, _openClass, _hoverClass)"
+     style="@(_styleVars + Style)"
+     aria-hidden="@(_visible ? null : "true")"
+     @onmouseenter="OnPointerEnter" @onmouseleave="OnPointerLeave"
+     @onfocusin="OnFocusIn" @onfocusout="OnFocusOut"
      @attributes="AdditionalAttributes">
-    @* Fixed-width inner that owns the scroll and keeps content from reflowing while the
-       drawer collapses; the nav clips it during the open/close animation. *@
+    @* Fixed-width inner that owns the scroll and keeps content from reflowing while the drawer
+       collapses; the nav clips it during the open/close animation. *@
     <div class="@Css.Classes.Layout.DrawerInner">
-        @ChildContent
+        @* Cascade self so a nested FlareNavMenu can render icon-only while this is a collapsed rail. *@
+        <CascadingValue Value="this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
     </div>
 </nav>
 
 @code {
     [CascadingParameter] private FlareLayoutContext? Layout { get; set; }
 
-    /// <summary>Child content rendered in the layout drawer.</summary>
+    /// <summary>Whether the drawer is open (expanded). Supports <c>@bind-Open</c>.</summary>
+    [Parameter] public bool Open { get; set; }
+    /// <summary>Raised when the open state changes, for two-way binding.</summary>
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    /// <summary>
+    /// How the drawer occupies space and collapses: <see cref="DrawerVariant.Persistent"/> (push,
+    /// hidden when closed), <see cref="DrawerVariant.Mini"/> (collapses to an icon rail),
+    /// <see cref="DrawerVariant.Temporary"/> (floats over content with a scrim),
+    /// <see cref="DrawerVariant.Responsive"/> (push on desktop, temporary on mobile), or
+    /// <see cref="DrawerVariant.Permanent"/> (always visible, never collapses). Defaults to Persistent.
+    /// </summary>
+    [Parameter] public DrawerVariant Variant { get; set; } = DrawerVariant.Persistent;
+    /// <summary>Which side of the layout the drawer attaches to (<see cref="DrawerAnchor.Left"/> or
+    /// <see cref="DrawerAnchor.Right"/>; Top/Bottom are treated as Left). Defaults to Left.</summary>
+    [Parameter] public DrawerAnchor Anchor { get; set; } = DrawerAnchor.Left;
+    /// <summary>Open width (e.g. <c>"16rem"</c>); falls back to the <c>--flare-drawer-width</c> token.</summary>
+    [Parameter] public string? Width { get; set; }
+    /// <summary>Collapsed icon-rail width for the <see cref="DrawerVariant.Mini"/> variant; falls back
+    /// to the <c>--flare-drawer-mini-width</c> token.</summary>
+    [Parameter] public string? RailWidth { get; set; }
+    /// <summary>Mini variant only: while collapsed, expand to full <see cref="Width"/> as a floating
+    /// overlay on pointer/keyboard hover, then collapse again on leave.</summary>
+    [Parameter] public bool HoverExpand { get; set; }
+    /// <summary>Drawer content (typically a <c>FlareNavMenu</c>).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Layout.Drawer;
 
-    private bool _isOpen => Layout?.DrawerOpen ?? true;
-    private string _openClass => _isOpen ? Css.Classes.Layout.DrawerOpenMod : string.Empty;
+    // Effective open state, decoupled from the parameter so a toggle driven through the context is not
+    // reset when the parent re-renders and re-applies the original Open value; the parameter re-seeds
+    // it only when it actually changes.
+    private bool _open;
+    private bool _lastParamOpen;
+    private bool _hovered;
+    private bool _focused;
+    private bool _registered;
+
+    /// <summary>The current effective open state (read by the layout).</summary>
+    public bool IsOpen => _open;
+
+    private bool IsMobileNow => Layout?.IsMobile ?? false;
+    private string OpenWidth => Width ?? "var(--flare-drawer-width, 16rem)";
+    private string RailWidthValue => RailWidth ?? "var(--flare-drawer-mini-width, 3.5rem)";
+
+    // Floating = out of normal flow (position:fixed): the Temporary variant always, and every push
+    // drawer once the layout is mobile (off-canvas).
+    private bool FloatingWhen(bool isMobile) => Variant == DrawerVariant.Temporary || isMobile;
+    private bool Floating => FloatingWhen(IsMobileNow);
+
+    private bool RailCollapsedNow => Variant == DrawerVariant.Mini && !_open && !Floating;
+    private bool HoverExpandedNow => HoverExpand && RailCollapsedNow && (_hovered || _focused);
+
+    /// <summary>True when a nested <c>FlareNavMenu</c> should render icon-only (collapsed rail, not hover-expanded).</summary>
+    public bool IsCollapsedRail => RailCollapsedNow && !HoverExpandedNow;
+
+    // --- Track reservation (read by FlareLayoutContext to build the body grid) ---
+
+    /// <summary>
+    /// Whether the drawer occupies an in-flow grid track (not floating). A push drawer keeps its track
+    /// even when closed -- at zero width -- so the track count stays stable and the width can animate.
+    /// </summary>
+    public bool ReservesTrack(bool isMobile) => !FloatingWhen(isMobile);
+
+    /// <summary>The CSS width of the drawer's reserved grid track ("0" when floating or a closed push drawer).</summary>
+    public string TrackWidth(bool isMobile)
+    {
+        if (!ReservesTrack(isMobile)) return "0";
+        return Variant switch
+        {
+            DrawerVariant.Mini => _open ? OpenWidth : RailWidthValue,
+            DrawerVariant.Permanent => OpenWidth,                  // always full, never collapses
+            _ => _open ? OpenWidth : "0",                          // Persistent / Responsive
+        };
+    }
+
+    /// <summary>True when the drawer is currently a floating overlay that is open (so the scrim shows).</summary>
+    public bool IsOverlayOpen(bool isMobile) => _open && FloatingWhen(isMobile);
+
+    // --- Rendering state ---
+
+    private bool _visible => Floating ? _open : TrackWidth(IsMobileNow) != "0";
+
+    private string _styleVars => $"--fld-w:{OpenWidth};--fld-rail-w:{RailWidthValue};";
+
+    private string _variantClass => Variant switch
+    {
+        DrawerVariant.Mini => Css.Classes.Layout.DrawerMini,
+        DrawerVariant.Temporary => Css.Classes.Layout.DrawerTemporary,
+        DrawerVariant.Responsive => Css.Classes.Layout.DrawerResponsive,
+        DrawerVariant.Permanent => Css.Classes.Layout.DrawerPermanent,
+        _ => Css.Classes.Layout.DrawerPersistent,
+    };
+    private string _anchorClass => Anchor == DrawerAnchor.Right ? Css.Classes.Layout.DrawerEnd : string.Empty;
+    private string _floatingClass => Floating ? Css.Classes.Layout.DrawerFloating : string.Empty;
+    private string _openClass => _open ? Css.Classes.Layout.DrawerOpenMod : string.Empty;
+    private string _hoverClass => HoverExpandedNow ? Css.Classes.Layout.DrawerHoverExpand : string.Empty;
+
+    protected override void OnInitialized()
+    {
+        _open = Open;
+        _lastParamOpen = Open;
+        if (Layout is not null)
+        {
+            Layout.Register(this);
+            _registered = true;
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Open != _lastParamOpen)
+        {
+            _open = Open;
+            _lastParamOpen = Open;
+            Layout?.NotifyStateChanged();
+        }
+    }
+
+    /// <summary>Sets the open state, raises <see cref="OpenChanged"/>, and notifies the layout. No-op when unchanged.</summary>
+    public async Task SetOpenAsync(bool open)
+    {
+        if (_open == open) return;
+        _open = open;
+        _lastParamOpen = open;
+        await OpenChanged.InvokeAsync(_open);
+        Layout?.NotifyStateChanged();
+        StateHasChanged();
+    }
+
+    /// <summary>Toggles the open state.</summary>
+    public Task ToggleAsync() => SetOpenAsync(!_open);
+
+    private void OnPointerEnter() { _hovered = true; HoverChanged(); }
+    private void OnPointerLeave() { _hovered = false; HoverChanged(); }
+    private void OnFocusIn() { _focused = true; HoverChanged(); }
+
+    private async Task OnFocusOut()
+    {
+        _focused = false;
+        // focusout fires before the paired focusin when tabbing between items; defer so a still-inside
+        // focus does not flicker the overlay closed for one frame.
+        await Task.Yield();
+        HoverChanged();
+    }
+
+    private void HoverChanged()
+    {
+        if (!HoverExpand || Variant != DrawerVariant.Mini) return;
+        Layout?.NotifyStateChanged();
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        if (_registered) Layout?.Unregister(this);
+    }
 }

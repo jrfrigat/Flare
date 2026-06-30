@@ -81,7 +81,9 @@
             if (!string.IsNullOrEmpty(AspectRatio)) parts.Add($"aspect-ratio:{AspectRatio}");
             if (!string.IsNullOrEmpty(BorderRadius)) parts.Add($"border-radius:{BorderRadius}");
             if (!string.IsNullOrEmpty(Style)) parts.Add(Style);
-            return string.Join(";", parts);
+            // OWASP GS-3: strip dangerous CSS (expression()/javascript:/url(...) etc.) from the
+            // composed inline style, consistent with the other style-injecting components.
+            return Flare.Components.Security.CssValidator.StripDangerous(string.Join(";", parts));
         }
     }
 

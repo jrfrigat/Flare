@@ -4,78 +4,37 @@
 @inject Flare.Components.Services.IUiJsService Ui
 @inject NavigationManager Nav
 
-<CascadingValue Value="_ctx" IsFixed="false">
-    <div class="@BuildCssClass(_drawerClass, _miniRailClass)" style="@Style" @attributes="AdditionalAttributes">
-        @AppBar
-        @if (ChildContent is not null)
-        {
-            @ChildContent
-        }
-        else
-        {
-            <div class="@Css.Classes.Layout.Body">
-                @Drawer
-                <main class="@Css.Classes.Layout.Main @ContentClass" style="@ContentStyle">
-                    <div class="@Css.Classes.Layout.ContentFrame @_contentMaxWidthClass @_contentAlignClass">
-                        @Content
-                    </div>
-                </main>
-            </div>
-        }
-
-        @* Mobile-only scrim: dims the content and closes the off-canvas drawer on tap.
-           Hidden on desktop and when the drawer is closed (CSS), so it never blocks clicks there. *@
-        <div class="@Css.Classes.Layout.Scrim" @onclick="CloseDrawer" aria-hidden="true"></div>
+@* Application shell. Compose it from a FlareLayoutAppBar, one or more FlareLayoutDrawer (each owning
+   its own @bind-Open), and a FlareLayoutContent. The layout reserves a grid track for every in-flow
+   drawer so the content is pushed aside rather than covered. *@
+<CascadingValue Value="_ctx" IsFixed="true">
+    <div class="@BuildCssClass(_mobileClass, _scrimClass)"
+         style="--flare-layout-cols:@_ctx.GridTemplateColumns;@Style"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+        @* Scrim: dims the content and closes any floating drawer on tap. Hidden by CSS unless a
+           drawer is currently a floating overlay, so it never blocks clicks otherwise. *@
+        <div class="@Css.Classes.Layout.Scrim" @onclick="OnScrimClickAsync" aria-hidden="true"></div>
     </div>
 </CascadingValue>
 
 @code {
-    /// <summary>App bar slot (slot-based API).</summary>
-    [Parameter] public RenderFragment? AppBar { get; set; }
-    /// <summary>Drawer slot (slot-based API).</summary>
-    [Parameter] public RenderFragment? Drawer { get; set; }
-    /// <summary>Main content slot (slot-based API).</summary>
-    [Parameter] public RenderFragment? Content { get; set; }
-    /// <summary>Extra CSS class for the main content element (slot-based API), e.g. for a max-width frame.</summary>
-    [Parameter] public string? ContentClass { get; set; }
-    /// <summary>Inline style for the main content element (slot-based API).</summary>
-    [Parameter] public string? ContentStyle { get; set; }
     /// <summary>
-    /// Optional readable-width cap for the content (slot-based API); the content is centered
-    /// horizontally while the scrollbar stays at the window edge. Defaults to
-    /// <see cref="ContainerMaxWidth.Full"/> (no constraint -- full width with padding).
+    /// The composed layout: a <see cref="FlareLayoutAppBar"/>, one or more <see cref="FlareLayoutDrawer"/>,
+    /// and a <see cref="FlareLayoutContent"/>. Place start drawers before the content and end drawers
+    /// after it (markup order = visual order).
     /// </summary>
-    [Parameter] public ContainerMaxWidth ContentMaxWidth { get; set; } = ContainerMaxWidth.Full;
-    /// <summary>
-    /// Horizontal placement of the content within the main area when <see cref="ContentMaxWidth"/>
-    /// caps it (slot-based API). Defaults to <see cref="LayoutContentAlignment.Center"/>.
-    /// </summary>
-    [Parameter] public LayoutContentAlignment ContentAlignment { get; set; } = LayoutContentAlignment.Center;
-    /// <summary>Free-form children (component-based API: FlareLayoutAppBar + FlareLayoutDrawer + FlareLayoutContent).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Initial drawer open state. Supports @bind-DrawerOpen.</summary>
-    [Parameter] public bool DrawerOpen { get; set; } = true;
-    /// <summary>Callback fired when the drawer state changes.</summary>
-    [Parameter] public EventCallback<bool> DrawerOpenChanged { get; set; }
+
     /// <summary>
-    /// When true (default) the layout is responsive: below the medium breakpoint (960px) the
-    /// drawer becomes an off-canvas overlay, starts closed, and closes on navigation; above it
-    /// the drawer is a permanent sidebar. Set false to manage the drawer entirely yourself.
+    /// When true (default) the layout watches the viewport and turns push drawers into off-canvas
+    /// overlays below the mobile breakpoint (960px); set false to manage drawers entirely yourself.
     /// </summary>
     [Parameter] public bool Responsive { get; set; } = true;
-    /// <summary>
-    /// When true, collapsing the drawer on desktop leaves a narrow icon rail
-    /// (<c>--flare-drawer-mini-width</c>) instead of hiding it entirely; the toggle switches
-    /// between the rail and the full-width drawer. Has no effect on mobile, where the drawer is
-    /// always a full off-canvas overlay.
-    /// </summary>
-    [Parameter] public bool MiniRail { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Layout.Root;
-    private string _drawerClass => _ctx.DrawerOpen ? Css.Classes.Layout.DrawerOpen : string.Empty;
-    private string _miniRailClass => MiniRail ? Css.Classes.Layout.MiniRail : string.Empty;
-    private string _contentMaxWidthClass => LayoutContentWidth.ToClass(ContentMaxWidth);
-    private string _contentAlignClass => LayoutContentWidth.ToAlignClass(ContentAlignment);
+    private string _mobileClass => _isMobile ? Css.Classes.Layout.Mobile : string.Empty;
+    private string _scrimClass => _ctx.AnyOverlayOpen ? Css.Classes.Layout.ScrimOpen : string.Empty;
 
     private readonly FlareLayoutContext _ctx = new();
     private readonly string _id = Guid.NewGuid().ToString("N");
@@ -84,17 +43,8 @@
 
     protected override void OnInitialized()
     {
-        _ctx.DrawerOpen = DrawerOpen;
-        _ctx.MiniRail = MiniRail;
         _ctx.StateChanged += OnContextStateChanged;
         Nav.LocationChanged += OnLocationChanged;
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (_ctx.DrawerOpen != DrawerOpen)
-            _ctx.DrawerOpen = DrawerOpen;
-        _ctx.MiniRail = MiniRail;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -103,12 +53,8 @@
         try
         {
             _dotNetRef = DotNetObjectReference.Create(this);
-
             var bp = await Ui.GetBreakpointAsync();
-            _isMobile = IsMobile(bp);
-            if (_isMobile && _ctx.DrawerOpen)
-                _ctx.DrawerOpen = false; // don't cover content on small screens
-
+            await SetMobileAsync(IsMobile(bp));
             await Ui.SubscribeBreakpointAsync(_id, _dotNetRef);
         }
         catch (InvalidOperationException) { }
@@ -116,33 +62,32 @@
     }
 
     [JSInvokable]
-    public Task OnBreakpointChanged(string breakpoint)
+    public Task OnBreakpointChanged(string breakpoint) => InvokeAsync(() => SetMobileAsync(IsMobile(breakpoint)));
+
+    private async Task SetMobileAsync(bool mobile)
     {
-        var mobile = IsMobile(breakpoint);
-        if (mobile != _isMobile)
-        {
-            _isMobile = mobile;
-            _ctx.DrawerOpen = !mobile; // closed on mobile, open (permanent) on desktop
-            StateHasChanged();
-        }
-        return Task.CompletedTask;
+        var changed = _isMobile != mobile;
+        _isMobile = mobile;
+        _ctx.IsMobile = mobile; // raises StateChanged when it actually changes
+        if (changed) StateHasChanged();
     }
 
     private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
     {
-        if (Responsive && _isMobile && _ctx.DrawerOpen)
-            InvokeAsync(() => { _ctx.DrawerOpen = false; StateHasChanged(); });
+        // On mobile, navigating away closes any floating drawer so it does not linger over the new page.
+        if (Responsive && _isMobile && _ctx.AnyOverlayOpen)
+            InvokeAsync(async () => { await _ctx.CloseOverlaysAsync(); StateHasChanged(); });
     }
 
     private static bool IsMobile(string breakpoint) => breakpoint is "Xs" or "Sm";
 
-    private void OnContextStateChanged()
+    private void OnContextStateChanged() => InvokeAsync(StateHasChanged);
+
+    private async Task OnScrimClickAsync()
     {
-        _ = DrawerOpenChanged.InvokeAsync(_ctx.DrawerOpen);
+        await _ctx.CloseOverlaysAsync();
         StateHasChanged();
     }
-
-    private void CloseDrawer() => _ctx.DrawerOpen = false;
 
     public override async ValueTask DisposeAsync()
     {

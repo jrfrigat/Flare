@@ -1,0 +1,28 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareAutocomplete TValue="string"
+                       @bind-Value="_city"
+                       Label="City"
+                       Placeholder="Type a few letters..."
+                       Items="_cities"
+                       Fuzzy="true"
+                       MinChars="1"
+                       MaxItems="6"
+                       HelperText="Fuzzy ranking: 'lo' puts London above Los Angeles; 'snfr' still finds San Francisco."
+                       Style="max-width:26rem;" />
+
+    @if (_city is not null)
+    {
+        <FlareText Typo="TypographyScale.BodyMedium">Selected: <strong>@_city</strong></FlareText>
+    }
+</FlareStack>
+
+@code {
+    private string? _city;
+
+    // A relevance scorer (FlareSearch.Score) ranks these by best match instead of list order.
+    private static readonly string[] _cities =
+    [
+        "London", "Los Angeles", "San Francisco", "San Diego", "Santiago de Chile",
+        "Paris", "Berlin", "Madrid", "Lisbon", "Tokyo", "Toronto", "Sydney", "Singapore",
+    ];
+}

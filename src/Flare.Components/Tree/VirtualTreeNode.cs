@@ -11,4 +11,7 @@ internal sealed class VirtualTreeNode<TItem>
     public bool HasChildren { get; set; } = true;
     public bool ChildrenLoaded { get; set; }
     public bool IsLoading { get; set; }
+    /// <summary>The loaded child items, cached so re-expanding after a collapse re-inserts them without
+    /// re-querying the provider.</summary>
+    public List<TItem>? Children { get; set; }
 }

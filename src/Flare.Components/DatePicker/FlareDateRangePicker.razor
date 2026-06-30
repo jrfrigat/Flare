@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@using System.Globalization
 @inject TimeProvider TimeProvider
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
@@ -21,26 +22,79 @@
             }
         </div>
     }
-    <div class="@Css.Classes.Daterangepicker.Fields">
-        <FlareDatePicker Value="@StartDate"
-                         ValueChanged="HandleStartChanged"
-                         Label="@(StartLabel ?? FlareStrings.DateRangePicker_StartLabel)"
-                         ErrorText="@ErrorText"
-                         Disabled="@Disabled"
-                         Typo="@Typo"
-                         Variant="@Variant"
-                         Size="@Size"
-                         Max="@EndDate" />
-        <span class="@Css.Classes.Daterangepicker.Sep material-symbols-rounded">arrow_forward</span>
-        <FlareDatePicker Value="@EndDate"
-                         ValueChanged="HandleEndChanged"
-                         Label="@(EndLabel ?? FlareStrings.DateRangePicker_EndLabel)"
-                         Disabled="@Disabled"
-                         Typo="@Typo"
-                         Variant="@Variant"
-                         Size="@Size"
-                         Min="@StartDate" />
-    </div>
+
+    @if (Mode == DateRangePickerMode.Fields)
+    {
+        <div class="@Css.Classes.Daterangepicker.Fields">
+            <FlareDatePicker Value="@StartDate"
+                             ValueChanged="HandleStartChanged"
+                             Label="@(StartLabel ?? FlareStrings.DateRangePicker_StartLabel)"
+                             ErrorText="@ErrorText"
+                             Disabled="@Disabled"
+                             Typo="@Typo"
+                             Variant="@Variant"
+                             Size="@Size"
+                             Min="@Min"
+                             Max="@StartFieldMax"
+                             IsDateDisabled="@IsDateDisabled" />
+            <span class="@Css.Classes.Daterangepicker.Sep material-symbols-rounded">arrow_forward</span>
+            <FlareDatePicker Value="@EndDate"
+                             ValueChanged="HandleEndChanged"
+                             Label="@(EndLabel ?? FlareStrings.DateRangePicker_EndLabel)"
+                             Disabled="@Disabled"
+                             Typo="@Typo"
+                             Variant="@Variant"
+                             Size="@Size"
+                             Min="@EndFieldMin"
+                             Max="@Max"
+                             IsDateDisabled="@IsDateDisabled" />
+        </div>
+    }
+    else
+    {
+        <div class="@Css.Classes.Daterangepicker.Calendar" @onmouseleave="@(() => { _hover = null; })">
+            <div class="@Css.Classes.DatePicker.Header">
+                <span @onclick:stopPropagation>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="@FlareStrings.Calendar_PrevMonth" Disabled="@Disabled">
+                        <LeadingIcon><FlareIcon Name="chevron_left" /></LeadingIcon>
+                    </FlareButton>
+                </span>
+                <span class="@Css.Classes.DatePicker.MonthLabel">@HeaderLabel</span>
+                <span @onclick:stopPropagation>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Calendar_NextMonth" Disabled="@Disabled">
+                        <LeadingIcon><FlareIcon Name="chevron_right" /></LeadingIcon>
+                    </FlareButton>
+                </span>
+            </div>
+            <div class="@Css.Classes.DatePicker.DayHeaders">
+                @foreach (var d in DayHeaders)
+                {
+                    <span>@d</span>
+                }
+            </div>
+            <div class="@Css.Classes.DatePicker.Grid" role="grid" aria-label="@HeaderLabel">
+                @foreach (var day in CalendarDays)
+                {
+                    var date = day.Date;
+                    <button type="button" role="gridcell"
+                            aria-selected="@((date == StartDate || date == EndDate) ? "true" : "false")"
+                            class="@Css.Classes.DatePicker.Day
+                                   @(day.IsCurrentMonth ? "" : Css.Classes.DatePicker.DayOutside)
+                                   @(date == Today ? Css.Classes.DatePicker.DayToday : "")
+                                   @(InRange(date) ? Css.Classes.Daterangepicker.DayInRange : "")
+                                   @(IsRangeStart(date) ? Css.Classes.Daterangepicker.DayStart : "")
+                                   @(IsRangeEnd(date) ? Css.Classes.Daterangepicker.DayEnd : "")
+                                   @(IsDayDisabled(date) ? Css.Classes.DatePicker.DayDisabled : "")"
+                            disabled="@(Disabled || IsDayDisabled(date))"
+                            @onmouseenter="@(() => { _hover = date; })"
+                            @onclick="@(() => PickDayAsync(date))">
+                        @date.Day
+                    </button>
+                }
+            </div>
+        </div>
+    }
+
     @if (!string.IsNullOrEmpty(ErrorText))
     {
         <span class="@Css.Classes.DatePicker.Helper @Css.Classes.DatePicker.HelperError">@ErrorText</span>
@@ -60,23 +114,32 @@
     [Parameter] public DateOnly? EndDate { get; set; }
     /// <summary>Callback invoked when the end date changes.</summary>
     [Parameter] public EventCallback<DateOnly?> EndDateChanged { get; set; }
-    /// <summary>Overall label shown above both date pickers.</summary>
+    /// <summary>How the range is selected: two linked inputs (<see cref="DateRangePickerMode.Fields"/>,
+    /// default) or a single inline range calendar (<see cref="DateRangePickerMode.Calendar"/>).</summary>
+    [Parameter] public DateRangePickerMode Mode { get; set; } = DateRangePickerMode.Fields;
+    /// <summary>Overall label shown above the picker.</summary>
     [Parameter] public string? Label { get; set; }
-    /// <summary>Label for the start date picker. When null, falls back to the localizer key DateRangePicker_StartLabel.</summary>
+    /// <summary>Label for the start date picker (Fields mode). When null, falls back to DateRangePicker_StartLabel.</summary>
     [Parameter] public string? StartLabel { get; set; }
-    /// <summary>Label for the end date picker. When null, falls back to the localizer key DateRangePicker_EndLabel.</summary>
+    /// <summary>Label for the end date picker (Fields mode). When null, falls back to DateRangePicker_EndLabel.</summary>
     [Parameter] public string? EndLabel { get; set; }
     /// <summary>Helper text shown below the range picker.</summary>
     [Parameter] public string? HelperText { get; set; }
     /// <summary>Error message shown below the range picker.</summary>
     [Parameter] public string? ErrorText { get; set; }
-    /// <summary>Disables both date pickers when true.</summary>
+    /// <summary>Earliest selectable date (inclusive).</summary>
+    [Parameter] public DateOnly? Min { get; set; }
+    /// <summary>Latest selectable date (inclusive).</summary>
+    [Parameter] public DateOnly? Max { get; set; }
+    /// <summary>Predicate to disable specific dates.</summary>
+    [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
+    /// <summary>Disables the picker when true.</summary>
     [Parameter] public bool Disabled { get; set; }
-    /// <summary>Optional typography scale for the input text, forwarded to both date fields. Null keeps the default.</summary>
+    /// <summary>Optional typography scale for the input text (Fields mode).</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
-    /// <summary>Visual variant (Filled/Outlined), forwarded to both date fields. Default keeps the theme's field style.</summary>
+    /// <summary>Visual variant (Filled/Outlined) for the input fields (Fields mode).</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
-    /// <summary>Control size (Xs..Xl), forwarded to both date fields. Medium is the default field height.</summary>
+    /// <summary>Control size (Xs..Xl) for the input fields (Fields mode).</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
     /// <summary>Shows a row of quick-range preset chips (Today, Last 7 days, This month, ...).</summary>
     [Parameter] public bool ShowPresets { get; set; }
@@ -86,11 +149,28 @@
     protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
+    private readonly CultureInfo _culture = CultureInfo.CurrentCulture;
+
+    // --- Calendar-mode state ---
+    private int _viewYear;
+    private int _viewMonth;
+    private DateOnly? _hover;
+    private DateOnly? _pendingStart;
+
+    // Effective bounds for the inner pickers so they can never produce start > end.
+    private DateOnly? StartFieldMax => Earlier(EndDate, Max);
+    private DateOnly? EndFieldMin => Later(StartDate, Min);
 
     private IReadOnlyList<DateRangePreset> _effectivePresets => Presets ?? DefaultPresets;
 
-    // Localized default presets. Ranges are computed relative to the supplied "today".
-    private static readonly IReadOnlyList<DateRangePreset> DefaultPresets =
+    /// <summary>
+    /// The built-in quick-range presets (Today, Yesterday, Last 7 / 30 days, This / Last month, This
+    /// year). Exposed so callers can keep the standard set AND add their own via the
+    /// <see cref="Presets"/> parameter, e.g.
+    /// <c>Presets="[.. FlareDateRangePicker.DefaultPresets, .. myPresets]"</c>. Built fresh on each
+    /// access so the localized labels follow the current culture.
+    /// </summary>
+    public static IReadOnlyList<DateRangePreset> DefaultPresets =>
     [
         new(FlareStrings.DateRangePicker_Today,      t => (t, t)),
         new(FlareStrings.DateRangePicker_Yesterday,  t => (t.AddDays(-1), t.AddDays(-1))),
@@ -100,6 +180,91 @@
         new(FlareStrings.DateRangePicker_LastMonth,  t => { var f = new DateOnly(t.Year, t.Month, 1).AddMonths(-1); return (f, f.AddMonths(1).AddDays(-1)); }),
         new(FlareStrings.DateRangePicker_ThisYear,   t => (new DateOnly(t.Year, 1, 1), new DateOnly(t.Year, 12, 31))),
     ];
+
+    protected override void OnParametersSet()
+    {
+        // Anchor the visible month to the range (or today) while not actively picking the end.
+        if (_pendingStart is null)
+        {
+            var anchor = StartDate ?? EndDate ?? Today;
+            _viewYear = anchor.Year;
+            _viewMonth = anchor.Month;
+        }
+    }
+
+    private string HeaderLabel => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture);
+
+    private IEnumerable<string> DayHeaders
+    {
+        get
+        {
+            var names = _culture.DateTimeFormat.AbbreviatedDayNames;
+            var first = (int)_culture.DateTimeFormat.FirstDayOfWeek;
+            for (var i = 0; i < 7; i++) yield return names[(first + i) % 7];
+        }
+    }
+
+    private IEnumerable<CalendarDay> CalendarDays
+    {
+        get
+        {
+            var firstOfMonth = new DateOnly(_viewYear, _viewMonth, 1);
+            var firstDow = (int)_culture.DateTimeFormat.FirstDayOfWeek;
+            var offset = ((int)firstOfMonth.DayOfWeek - firstDow + 7) % 7;
+            var start = firstOfMonth.AddDays(-offset);
+            for (var i = 0; i < 42; i++)
+            {
+                var date = start.AddDays(i);
+                yield return new CalendarDay(date, date.Month == _viewMonth);
+            }
+        }
+    }
+
+    private bool IsDayDisabled(DateOnly d) =>
+        (Min is { } min && d < min) || (Max is { } max && d > max) || (IsDateDisabled?.Invoke(d) ?? false);
+
+    // The range to paint: a committed StartDate..EndDate, or a live preview from the pending start to
+    // the hovered day while choosing the end.
+    private (DateOnly Lo, DateOnly Hi)? PaintedRange
+    {
+        get
+        {
+            if (StartDate is { } s && EndDate is { } e) return (Earliest(s, e), Latest(s, e));
+            if (_pendingStart is { } p && _hover is { } h) return (Earliest(p, h), Latest(p, h));
+            return null;
+        }
+    }
+
+    private bool InRange(DateOnly d) => PaintedRange is { } r && d > r.Lo && d < r.Hi;
+    private bool IsRangeStart(DateOnly d) => PaintedRange is { } r ? d == r.Lo : d == (_pendingStart ?? StartDate);
+    private bool IsRangeEnd(DateOnly d) => PaintedRange is { } r && d == r.Hi && r.Hi != r.Lo;
+
+    private void PrevMonth() { var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(-1); _viewYear = d.Year; _viewMonth = d.Month; }
+    private void NextMonth() { var d = new DateOnly(_viewYear, _viewMonth, 1).AddMonths(1); _viewYear = d.Year; _viewMonth = d.Month; }
+
+    private async Task PickDayAsync(DateOnly date)
+    {
+        if (Disabled || IsDayDisabled(date)) return;
+
+        if (_pendingStart is null)
+        {
+            // First click: start a fresh range.
+            _pendingStart = date;
+            _hover = date;
+            await SetStartAsync(date);
+            await SetEndAsync(null);
+        }
+        else
+        {
+            // Second click: complete it (swap if the end precedes the start).
+            var lo = Earliest(_pendingStart.Value, date);
+            var hi = Latest(_pendingStart.Value, date);
+            _pendingStart = null;
+            _hover = null;
+            await SetStartAsync(lo);
+            await SetEndAsync(hi);
+        }
+    }
 
     private bool IsActivePreset(DateRangePreset preset)
     {
@@ -112,20 +277,38 @@
     {
         if (Disabled) return;
         var (s, e) = preset.Range(Today);
-        await StartDateChanged.InvokeAsync(s);
-        await EndDateChanged.InvokeAsync(e);
+        _pendingStart = null;
+        _hover = null;
+        await SetStartAsync(s);
+        await SetEndAsync(e);
     }
 
     private async Task HandleStartChanged(DateOnly? value)
     {
-        await StartDateChanged.InvokeAsync(value);
+        await SetStartAsync(value);
         // clamp: if start > end, clear end
         if (value.HasValue && EndDate.HasValue && value.Value > EndDate.Value)
-            await EndDateChanged.InvokeAsync(null);
+            await SetEndAsync(null);
     }
 
-    private async Task HandleEndChanged(DateOnly? value)
+    private Task HandleEndChanged(DateOnly? value) => SetEndAsync(value);
+
+    private async Task SetStartAsync(DateOnly? v)
     {
-        await EndDateChanged.InvokeAsync(value);
+        StartDate = v;
+        await StartDateChanged.InvokeAsync(v);
     }
+
+    private async Task SetEndAsync(DateOnly? v)
+    {
+        EndDate = v;
+        await EndDateChanged.InvokeAsync(v);
+    }
+
+    private static DateOnly Earliest(DateOnly a, DateOnly b) => a <= b ? a : b;
+    private static DateOnly Latest(DateOnly a, DateOnly b) => a >= b ? a : b;
+    private static DateOnly? Earlier(DateOnly? a, DateOnly? b) => (a, b) switch { ({ } x, { } y) => Earliest(x, y), ({ } x, null) => x, (null, { } y) => y, _ => null };
+    private static DateOnly? Later(DateOnly? a, DateOnly? b) => (a, b) switch { ({ } x, { } y) => Latest(x, y), ({ } x, null) => x, (null, { } y) => y, _ => null };
+
+    private readonly record struct CalendarDay(DateOnly Date, bool IsCurrentMonth);
 }

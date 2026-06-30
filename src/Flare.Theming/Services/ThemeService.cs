@@ -12,6 +12,12 @@ public sealed class ThemeService : IThemeService
     private readonly List<Palette> _palettes = [];
     private readonly Dictionary<string, string> _customTokens = new();
 
+    // Cached read-only snapshots of the registered theme/palette lists, rebuilt only when membership
+    // changes. Avoids allocating a fresh copy on every Themes/Palettes read -- these are enumerated on
+    // every render by FlareThemeProvider, FlareStyles, FlareBootstrap and the consuming app.
+    private IReadOnlyList<ITheme>? _themesSnapshot;
+    private IReadOnlyList<Palette>? _palettesSnapshot;
+
     // Only the theme/palette combinations actually in use (the active axes plus any requested by
     // a FlareThemeScope) are emitted into the static stylesheet -- not every registered one.
     private readonly HashSet<string> _neededThemeIds = new(StringComparer.Ordinal);
@@ -65,13 +71,13 @@ public sealed class ThemeService : IThemeService
     /// <summary>All registered themes.</summary>
     public IReadOnlyList<ITheme> Themes
     {
-        get { lock (_lock) return _themes.ToList(); }
+        get { lock (_lock) return _themesSnapshot ??= _themes.ToArray(); }
     }
 
     /// <summary>All registered color palettes.</summary>
     public IReadOnlyList<Palette> Palettes
     {
-        get { lock (_lock) return _palettes.ToList(); }
+        get { lock (_lock) return _palettesSnapshot ??= _palettes.ToArray(); }
     }
 
     /// <summary>Raised after any theme axis (theme, palette, mode or RTL) changes.</summary>
@@ -85,6 +91,7 @@ public sealed class ThemeService : IThemeService
             if (_themes.All(t => t.Id != theme.Id))
             {
                 _themes.Add(theme);
+                _themesSnapshot = null;
             }
         }
     }
@@ -97,6 +104,7 @@ public sealed class ThemeService : IThemeService
             if (_palettes.All(p => p.Id != palette.Id))
             {
                 _palettes.Add(palette);
+                _palettesSnapshot = null;
             }
         }
     }
@@ -186,6 +194,7 @@ public sealed class ThemeService : IThemeService
             _palettes.Add(dynamic);
             _palette = dynamic;
             _neededPaletteIds.Add(Palette.DynamicId);
+            _palettesSnapshot = null;
             _emittedCss = null; // the dynamic palette colors changed -> force a re-emit
         }
         await ApplyAsync();

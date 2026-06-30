@@ -1,6 +1,7 @@
 @page "/settings"
 @inherits LocalizedPage
 @inject IThemeService ThemeService
+@inject Flare.Gallery.Services.RailLabelService RailLabels
 @using Flare.Theming
 
 <PageTitle>@GalleryStrings.Settings_Title - Flare</PageTitle>
@@ -96,6 +97,32 @@
             </ChildContent>
         </FlareTab>
 
+        <FlareTab Label="@GalleryStrings.Settings_TabNavigation">
+            <LeadingIcon><FlareIcon Name="dock_to_right" Size="1.1rem" /></LeadingIcon>
+            <ChildContent>
+                <FlareStack Gap="FlareSpacing.Medium" Style="padding-top:1.25rem;max-width:36rem;">
+                    <div>
+                        <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.25rem;display:block;">@GalleryStrings.Nav_Drawer_Title</FlareText>
+                        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant" Style="display:block;">@GalleryStrings.Nav_Drawer_Desc</FlareText>
+                    </div>
+                    <FlareStack Gap="FlareSpacing.XSmall">
+                        <FlareButton Variant="@(RailLabels.ShowLabels ? ButtonVariant.Filled : ButtonVariant.Outlined)"
+                                     OnClick="@(() => SetRailLabelsAsync(true))"
+                                     Style="justify-content:flex-start;width:100%;">
+                            <LeadingIcon><FlareIcon Name="view_sidebar" /></LeadingIcon>
+                            <ChildContent>@GalleryStrings.Nav_Rail_Labeled</ChildContent>
+                        </FlareButton>
+                        <FlareButton Variant="@(RailLabels.ShowLabels ? ButtonVariant.Outlined : ButtonVariant.Filled)"
+                                     OnClick="@(() => SetRailLabelsAsync(false))"
+                                     Style="justify-content:flex-start;width:100%;">
+                            <LeadingIcon><FlareIcon Name="dock_to_right" /></LeadingIcon>
+                            <ChildContent>@GalleryStrings.Nav_Rail_IconsOnly</ChildContent>
+                        </FlareButton>
+                    </FlareStack>
+                </FlareStack>
+            </ChildContent>
+        </FlareTab>
+
         <FlareTab Label="@GalleryStrings.Settings_Language">
             <LeadingIcon><FlareIcon Name="translate" Size="1.1rem" /></LeadingIcon>
             <ChildContent>
@@ -120,6 +147,12 @@
 
 @code {
     private string _seed = "#7B1FA2";
+
+    private async Task SetRailLabelsAsync(bool showLabels)
+    {
+        await RailLabels.SetShowLabelsAsync(showLabels);
+        StateHasChanged();
+    }
 
     private async Task GenerateAsync()
     {

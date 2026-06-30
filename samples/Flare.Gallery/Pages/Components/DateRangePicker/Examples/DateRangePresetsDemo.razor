@@ -9,6 +9,11 @@
     <FlareDateRangePicker @bind-StartDate="_qStart" @bind-EndDate="_qEnd"
                           Label="Custom presets (quarters)" ShowPresets="true"
                           Presets="_quarters" Style="max-width:36rem;" />
+
+    @* Keep the built-in presets and append your own: spread FlareDateRangePicker.DefaultPresets. *@
+    <FlareDateRangePicker @bind-StartDate="_cStart" @bind-EndDate="_cEnd"
+                          Label="Built-in + custom" ShowPresets="true"
+                          Presets="_combined" Style="max-width:36rem;" />
 </FlareStack>
 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
     @if (_start.HasValue || _end.HasValue)
@@ -22,6 +27,11 @@
     private DateOnly? _end;
     private DateOnly? _qStart;
     private DateOnly? _qEnd;
+    private DateOnly? _cStart;
+    private DateOnly? _cEnd;
+
+    // The built-in presets followed by the custom quarter ranges.
+    private IReadOnlyList<DateRangePreset> _combined => [.. FlareDateRangePicker.DefaultPresets, .. _quarters];
 
     private readonly List<DateRangePreset> _quarters =
     [

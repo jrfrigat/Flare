@@ -186,6 +186,12 @@
     [Parameter] public Func<TValue, string>? GroupBy { get; set; }
     /// <summary>Shows a search input at the top of the dropdown to filter options.</summary>
     [Parameter] public bool Searchable { get; set; }
+    /// <summary>Ranks the filtered options by relevance (best match first) instead of insertion order,
+    /// using <see cref="FlareSearch"/>. Has no effect without a search query.</summary>
+    [Parameter] public bool Fuzzy { get; set; }
+    /// <summary>Custom relevance scorer <c>(item, query) =&gt; score</c>; only positive scores are kept,
+    /// ordered best-first. Overrides <see cref="Fuzzy"/>.</summary>
+    [Parameter] public Func<TValue, string, double>? RankFunc { get; set; }
     /// <summary>Shows a select-all checkbox at the top of the dropdown.</summary>
     [Parameter] public bool ShowSelectAll { get; set; }
     /// <summary>When the filtered item count exceeds this threshold, the dropdown switches to virtualized rendering. Default: 50.</summary>
@@ -213,10 +219,19 @@
     // Reuses FlareField's variant tokens (--flare-input-*), which the control reads.
     private string? _variantClass => VariantClass(Variant);
 
-    private IEnumerable<TValue> FilteredItems =>
-        Items is null ? Enumerable.Empty<TValue>() :
-        string.IsNullOrWhiteSpace(_search) ? Items :
-        Items.Where(i => GetLabel(i).Contains(_search, StringComparison.OrdinalIgnoreCase));
+    private IEnumerable<TValue> FilteredItems
+    {
+        get
+        {
+            if (Items is null) return Enumerable.Empty<TValue>();
+            if (string.IsNullOrWhiteSpace(_search)) return Items;
+            if (RankFunc is not null)
+                return FlareSearch.Rank(Items, i => RankFunc(i, _search));
+            if (Fuzzy)
+                return FlareSearch.Rank(Items, i => FlareSearch.Score(GetLabel(i), _search));
+            return Items.Where(i => GetLabel(i).Contains(_search, StringComparison.OrdinalIgnoreCase));
+        }
+    }
 
     // Options in final display order (grouped contiguous when GroupBy is set) so the shared
     // FlareListbox renders group headers correctly and keyboard active index stays aligned.

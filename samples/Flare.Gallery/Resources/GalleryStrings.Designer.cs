@@ -70,15 +70,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Blazor UI · .NET 10 · 116+ components.
-        /// </summary>
-        public static string About_Subtitle {
-            get {
-                return ResourceManager.GetString("About_Subtitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Flare is an open-source Blazor component library built with .NET 10..
         /// </summary>
         public static string About_Intro {
@@ -86,49 +77,13 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("About_Intro", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку (список новинок v0.0.5, по одному пункту на строку).
+        ///   Ищет локализованную строку, похожую на Blazor UI · .NET 10 · 116+ components.
         /// </summary>
-        public static string About_WhatsNewV5 {
+        public static string About_Subtitle {
             get {
-                return ResourceManager.GetString("About_WhatsNewV5", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку (список новинок v0.0.4, по одному пункту на строку).
-        /// </summary>
-        public static string About_WhatsNewV4 {
-            get {
-                return ResourceManager.GetString("About_WhatsNewV4", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку (список новинок v0.0.3, по одному пункту на строку).
-        /// </summary>
-        public static string About_WhatsNewV3 {
-            get {
-                return ResourceManager.GetString("About_WhatsNewV3", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку (список новинок v0.0.2, по одному пункту на строку).
-        /// </summary>
-        public static string About_WhatsNewV2 {
-            get {
-                return ResourceManager.GetString("About_WhatsNewV2", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку (список новинок v0.0.1, по одному пункту на строку).
-        /// </summary>
-        public static string About_WhatsNewV1 {
-            get {
-                return ResourceManager.GetString("About_WhatsNewV1", resourceCulture);
+                return ResourceManager.GetString("About_Subtitle", resourceCulture);
             }
         }
         
@@ -174,6 +129,67 @@ namespace Flare.Gallery.Resources {
         public static string About_WhatsNew {
             get {
                 return ResourceManager.GetString("About_WhatsNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Theme system v2: three independent axes - design system (MD3 Expressive / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026) x palette x light/dark/auto
+        ///Class-toggle delivery: switching is a class swap on &lt;html&gt;, no per-switch CSS-var injection
+        ///Reusable palettes (Office + Material sets) and PaletteFactory.FromColors(brand) generation
+        ///Override any token via Md3/Fluent2 reference records; one-line anti-FOUC bootstrap
+        ///Full OWASP GS-1..GS-8 security audit - all critical findings fixed
+        ///XSS protection:  [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV1 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Clean onion / ports-and-adapters architecture: 5 rings (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) with dependencies pointing strictly inward
+        ///Flare.Components is now UI-only - every service implementation (JS interop, storage, dialog/snackbar/message-box) moved to Flare.Infrastructure; the old Flare.Core grab-bag was retired
+        ///AddFlare wires ports to adapters in the Flare.Blazor composition root, so the browser host stays swappable and Flare.Components never dep [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV2 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Two new design systems - Material Design 3 (baseline, non-Expressive) and Material Design 2 - so Flare now ships 7 themes
+        ///Dynamic Color palette: derives a full light/dark palette from the OS/browser accent (Windows/macOS accent, Android Material You) via the active theme&apos;s generator, with a fallback palette
+        ///MD3 Expressive palette aligned to the updated spec (light on-*-container roles now use tone 30)
+        ///Cleaner token model: common component tokens (nav, input, menu, progress, dialog, snackbar, popover, car [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV3 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Anti-FOUC startup splash is now revealed automatically by FlareThemeProvider - no flash of unstyled content and nothing to wire by hand
+        ///The reveal waits for each theme stylesheet&apos;s load event and the document&apos;s web fonts (document.fonts.ready), then fades out after the first themed frame
+        ///New ManageSplash parameter (on by default) to opt out and manage the splash yourself; a data-splash-timeout safety reveal lives in the bootstrap script
+        ///Resilient to PWA service-worker update skew: a stale cached flare-th [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV4 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareNavMenu gains Header and Footer slots - a framed layout that pins a header and footer while the items scroll between them, and still collapses to a mini-rail
+        ///Snackbars can update in place and show an indeterminate progress bar, so a &quot;new version available&quot; toast can morph into an &quot;updating...&quot; one
+        ///IVersionCheckService now exposes CurrentVersion (the running build), distinct from the detected LatestVersion
+        ///PWA on-demand update fixed: the reload is now driven by the service worker&apos;s controllerchange ( [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV5 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV5", resourceCulture);
             }
         }
         
@@ -759,6 +775,15 @@ namespace Flare.Gallery.Resources {
         public static string Autocomplete_Basic {
             get {
                 return ResourceManager.GetString("Autocomplete_Basic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Fuzzy search ranking.
+        /// </summary>
+        public static string Autocomplete_Fuzzy {
+            get {
+                return ResourceManager.GetString("Autocomplete_Fuzzy", resourceCulture);
             }
         }
         
@@ -2104,59 +2129,14 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на PersistStateKey saves sorts, column order, hidden columns, page and page size to localStorage and restores them when the grid is recreated..
+        ///   Ищет локализованную строку, похожую на Striped, hoverable, dense, and bordered modes..
         /// </summary>
-        public static string DataGrid_PersistenceDesc {
+        public static string DataGrid_AppearanceDesc {
             get {
-                return ResourceManager.GetString("DataGrid_PersistenceDesc", resourceCulture);
+                return ResourceManager.GetString("DataGrid_AppearanceDesc", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Sort, reorder or hide a column, or change the page size - then reload the page (F5). The layout is restored from localStorage..
-        /// </summary>
-        public static string DataGrid_PersistenceHint {
-            get {
-                return ResourceManager.GetString("DataGrid_PersistenceHint", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на State Persistence.
-        /// </summary>
-        public static string DataGrid_PersistenceTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_PersistenceTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareDataGrid with sortable columns, pagination, grouping, CSV export, row selection, column resize, and inline editing..
-        /// </summary>
-        public static string DataGrid_Subtitle {
-            get {
-                return ResourceManager.GetString("DataGrid_Subtitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Basic DataGrid.
-        /// </summary>
-        public static string DataGrid_BasicTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_BasicTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Minimal DataGrid with sorting and pagination..
-        /// </summary>
-        public static string DataGrid_BasicDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_BasicDesc", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Appearance.
         /// </summary>
@@ -2165,241 +2145,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_AppearanceTitle", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Striped, hoverable, dense, and bordered modes..
-        /// </summary>
-        public static string DataGrid_AppearanceDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_AppearanceDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Filtering.
-        /// </summary>
-        public static string DataGrid_FilteringTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_FilteringTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Inline filters + advanced filter builder with FilterMode selector..
-        /// </summary>
-        public static string DataGrid_FilteringDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_FilteringDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Quick Filter (global search).
-        /// </summary>
-        public static string DataGrid_QuickFilterTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_QuickFilterTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareDataGridQuickFilter - a standalone search box bound to the grid that filters across all visible columns..
-        /// </summary>
-        public static string DataGrid_QuickFilterDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_QuickFilterDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Filter Presets.
-        /// </summary>
-        public static string DataGrid_FilterPresetsTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_FilterPresetsTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareDataGridFilterPresets - a list of named advanced-filter presets; choosing one applies its conditions to the grid..
-        /// </summary>
-        public static string DataGrid_FilterPresetsDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_FilterPresetsDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Multi-Sort.
-        /// </summary>
-        public static string DataGrid_MultiSortTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_MultiSortTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Hold Shift+Click to sort by multiple columns..
-        /// </summary>
-        public static string DataGrid_MultiSortDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_MultiSortDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Row Selection.
-        /// </summary>
-        public static string DataGrid_RowSelectionTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_RowSelectionTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Single and multiple row selection with checkboxes..
-        /// </summary>
-        public static string DataGrid_RowSelectionDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_RowSelectionDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Inline Editing.
-        /// </summary>
-        public static string DataGrid_InlineEditingTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_InlineEditingTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Edit rows inline with EditMode.Inline..
-        /// </summary>
-        public static string DataGrid_InlineEditingDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_InlineEditingDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Batch Editing.
-        /// </summary>
-        public static string DataGrid_BatchEditingTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_BatchEditingTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Edit multiple rows and save all at once with EditMode.Batch..
-        /// </summary>
-        public static string DataGrid_BatchEditingDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_BatchEditingDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Column Bands.
-        /// </summary>
-        public static string DataGrid_ColumnBandsTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_ColumnBandsTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Group columns under shared headers with FlareColumnBand..
-        /// </summary>
-        public static string DataGrid_ColumnBandsDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_ColumnBandsDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Frozen Columns.
-        /// </summary>
-        public static string DataGrid_FrozenColumnsTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_FrozenColumnsTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Pin columns to the left edge with Frozen or to the right edge with FrozenRight; both stack with cumulative offsets..
-        /// </summary>
-        public static string DataGrid_FrozenColumnsDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_FrozenColumnsDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Column Picker.
-        /// </summary>
-        public static string DataGrid_ColumnPickerTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_ColumnPickerTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на DataGridColumnPicker component for show/hide columns..
-        /// </summary>
-        public static string DataGrid_ColumnPickerDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_ColumnPickerDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Reorder Columns &amp; Rows.
-        /// </summary>
-        public static string DataGrid_ReorderTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_ReorderTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Drag-and-drop reordering with ReorderableColumns and RowReorderable..
-        /// </summary>
-        public static string DataGrid_ReorderDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_ReorderDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Multi-level Columns.
-        /// </summary>
-        public static string DataGrid_MultiLevelTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_MultiLevelTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Banded composite: each record spans several rows with fields aligned across the table (DevExpress banded-view style)..
-        /// </summary>
-        public static string DataGrid_MultiLevelDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_MultiLevelDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Multi-level Columns (virtualized).
-        /// </summary>
-        public static string DataGrid_BandedVirtualTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_BandedVirtualTitle", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на 500 banded records with Virtual=true - each record spans several rows, only the visible ones render..
         /// </summary>
@@ -2408,106 +2154,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_BandedVirtualDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Composite Card.
+        ///   Ищет локализованную строку, похожую на Multi-level Columns (virtualized).
         /// </summary>
-        public static string DataGrid_CompositeCardTitle {
+        public static string DataGrid_BandedVirtualTitle {
             get {
-                return ResourceManager.GetString("DataGrid_CompositeCardTitle", resourceCulture);
+                return ResourceManager.GetString("DataGrid_BandedVirtualTitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на CompositeMode.Card stacks the same fields inside a single cell (a card per record)..
+        ///   Ищет локализованную строку, похожую на Minimal DataGrid with sorting and pagination..
         /// </summary>
-        public static string DataGrid_CompositeCardDesc {
+        public static string DataGrid_BasicDesc {
             get {
-                return ResourceManager.GetString("DataGrid_CompositeCardDesc", resourceCulture);
+                return ResourceManager.GetString("DataGrid_BasicDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Pinned Rows.
+        ///   Ищет локализованную строку, похожую на Basic DataGrid.
         /// </summary>
-        public static string DataGrid_PinnedRowsTitle {
+        public static string DataGrid_BasicTitle {
             get {
-                return ResourceManager.GetString("DataGrid_PinnedRowsTitle", resourceCulture);
+                return ResourceManager.GetString("DataGrid_BasicTitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на PinnedTopRows / PinnedBottomRows stay visible above and below the scrolling data, outside sorting, filtering and paging (e.g. a highlighted row and a totals row)..
+        ///   Ищет локализованную строку, похожую на Edit multiple rows and save all at once with EditMode.Batch..
         /// </summary>
-        public static string DataGrid_PinnedRowsDesc {
+        public static string DataGrid_BatchEditingDesc {
             get {
-                return ResourceManager.GetString("DataGrid_PinnedRowsDesc", resourceCulture);
+                return ResourceManager.GetString("DataGrid_BatchEditingDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Row Detail.
+        ///   Ищет локализованную строку, похожую на Batch Editing.
         /// </summary>
-        public static string DataGrid_RowDetailTitle {
+        public static string DataGrid_BatchEditingTitle {
             get {
-                return ResourceManager.GetString("DataGrid_RowDetailTitle", resourceCulture);
+                return ResourceManager.GetString("DataGrid_BatchEditingTitle", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Expandable detail rows with RowDetailTemplate..
-        /// </summary>
-        public static string DataGrid_RowDetailDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_RowDetailDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Conditional Formatting.
-        /// </summary>
-        public static string DataGrid_ConditionalFormattingTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_ConditionalFormattingTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Highlight whole rows by value with RowClassFunc / RowStyleFunc..
-        /// </summary>
-        public static string DataGrid_ConditionalFormattingDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_ConditionalFormattingDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Cell Styling.
-        /// </summary>
-        public static string DataGrid_CellStylingTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_CellStylingTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Style individual cells with FlareColumn.ClassFunc and StyleFunc..
-        /// </summary>
-        public static string DataGrid_CellStylingDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_CellStylingDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Cell Selection (Excel-like).
-        /// </summary>
-        public static string DataGrid_CellSelectionTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_CellSelectionTitle", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Click-drag or Shift+Click to select cells (arrow keys / Shift+Arrow also work), Ctrl+C copies the range as tab-separated text and Ctrl+V pastes it back via OnPaste. Enable with CellSelection..
         /// </summary>
@@ -2516,16 +2208,70 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_CellSelectionDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Column Types.
+        ///   Ищет локализованную строку, похожую на Cell Selection (Excel-like).
         /// </summary>
-        public static string DataGrid_ColumnTypesTitle {
+        public static string DataGrid_CellSelectionTitle {
             get {
-                return ResourceManager.GetString("DataGrid_ColumnTypesTitle", resourceCulture);
+                return ResourceManager.GetString("DataGrid_CellSelectionTitle", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Style individual cells with FlareColumn.ClassFunc and StyleFunc..
+        /// </summary>
+        public static string DataGrid_CellStylingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_CellStylingDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cell Styling.
+        /// </summary>
+        public static string DataGrid_CellStylingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_CellStylingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Group columns under shared headers with FlareColumnBand..
+        /// </summary>
+        public static string DataGrid_ColumnBandsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnBandsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Column Bands.
+        /// </summary>
+        public static string DataGrid_ColumnBandsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnBandsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на DataGridColumnPicker component for show/hide columns..
+        /// </summary>
+        public static string DataGrid_ColumnPickerDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnPickerDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Column Picker.
+        /// </summary>
+        public static string DataGrid_ColumnPickerTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnPickerTitle", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Type-aware rendering: boolean as a checkbox icon, culture- and format-aware dates and numbers via FlareColumn.Type/Format. Type is auto-detected when not set; filter editors and text alignment (numbers right, booleans centered) follow the column type. Override per column with FlareColumn.Align..
         /// </summary>
@@ -2534,124 +2280,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_ColumnTypesDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Queryable (IQueryable / EF Core).
+        ///   Ищет локализованную строку, похожую на Column Types.
         /// </summary>
-        public static string DataGrid_QueryableTitle {
+        public static string DataGrid_ColumnTypesTitle {
             get {
-                return ResourceManager.GetString("DataGrid_QueryableTitle", resourceCulture);
+                return ResourceManager.GetString("DataGrid_ColumnTypesTitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Bind an IQueryable (e.g. an EF Core DbSet) and the grid translates sort/filter/paging into an expression tree that runs in the database - no ItemsProvider code..
+        ///   Ищет локализованную строку, похожую на CompositeMode.Card stacks the same fields inside a single cell (a card per record)..
         /// </summary>
-        public static string DataGrid_QueryableDesc {
+        public static string DataGrid_CompositeCardDesc {
             get {
-                return ResourceManager.GetString("DataGrid_QueryableDesc", resourceCulture);
+                return ResourceManager.GetString("DataGrid_CompositeCardDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Virtual Scrolling.
+        ///   Ищет локализованную строку, похожую на Composite Card.
         /// </summary>
-        public static string DataGrid_VirtualScrollingTitle {
+        public static string DataGrid_CompositeCardTitle {
             get {
-                return ResourceManager.GetString("DataGrid_VirtualScrollingTitle", resourceCulture);
+                return ResourceManager.GetString("DataGrid_CompositeCardTitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Load data on demand with Virtual=true and ItemsProvider..
+        ///   Ищет локализованную строку, похожую на Highlight whole rows by value with RowClassFunc / RowStyleFunc..
         /// </summary>
-        public static string DataGrid_VirtualScrollingDesc {
+        public static string DataGrid_ConditionalFormattingDesc {
             get {
-                return ResourceManager.GetString("DataGrid_VirtualScrollingDesc", resourceCulture);
+                return ResourceManager.GetString("DataGrid_ConditionalFormattingDesc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Infinite Scroll.
+        ///   Ищет локализованную строку, похожую на Conditional Formatting.
         /// </summary>
-        public static string DataGrid_InfiniteScrollTitle {
+        public static string DataGrid_ConditionalFormattingTitle {
             get {
-                return ResourceManager.GetString("DataGrid_InfiniteScrollTitle", resourceCulture);
+                return ResourceManager.GetString("DataGrid_ConditionalFormattingTitle", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Accumulate rows as user scrolls with InfiniteScroll=true..
-        /// </summary>
-        public static string DataGrid_InfiniteScrollDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_InfiniteScrollDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Grouping.
-        /// </summary>
-        public static string DataGrid_GroupingTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_GroupingTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Group rows by field value with nested DataGridGroup components..
-        /// </summary>
-        public static string DataGrid_GroupingDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_GroupingDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Nested Grouping.
-        /// </summary>
-        public static string DataGrid_NestedGroupingTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_NestedGroupingTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Multiple DataGridGroup levels with per-group aggregates..
-        /// </summary>
-        public static string DataGrid_NestedGroupingDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_NestedGroupingDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Tree Grid.
-        /// </summary>
-        public static string DataGrid_TreeGridTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_TreeGridTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Hierarchical data with expand/collapse using Tree parameter..
-        /// </summary>
-        public static string DataGrid_TreeGridDesc {
-            get {
-                return ResourceManager.GetString("DataGrid_TreeGridDesc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Export.
-        /// </summary>
-        public static string DataGrid_ExportTitle {
-            get {
-                return ResourceManager.GetString("DataGrid_ExportTitle", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на DataGridExport component with CSV, JSON, TSV, Excel exporters..
         /// </summary>
@@ -2660,7 +2334,61 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_ExportDesc", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Export.
+        /// </summary>
+        public static string DataGrid_ExportTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ExportTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline filters + advanced filter builder with FilterMode selector..
+        /// </summary>
+        public static string DataGrid_FilteringDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FilteringDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filtering.
+        /// </summary>
+        public static string DataGrid_FilteringTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FilteringTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareDataGridFilterPresets - a list of named advanced-filter presets; choosing one applies its conditions to the grid..
+        /// </summary>
+        public static string DataGrid_FilterPresetsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FilterPresetsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filter Presets.
+        /// </summary>
+        public static string DataGrid_FilterPresetsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FilterPresetsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ShowPager=false plus FooterContent (the toolbar&apos;s bottom counterpart): FlareDataGridPager and a quick filter live in the footer, resolving the grid from the cascade so grid controls can be placed anywhere..
+        /// </summary>
+        public static string DataGrid_FooterPagerDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FooterPagerDesc", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Footer &amp; standalone pager.
         /// </summary>
@@ -2669,13 +2397,274 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DataGrid_FooterPagerTitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на ShowPager=false plus FooterContent (the toolbar's bottom counterpart): FlareDataGridPager and a quick filter live in the footer, resolving the grid from the cascade so grid controls can be placed anywhere..
+        ///   Ищет локализованную строку, похожую на Pin columns to the left edge with Frozen or to the right edge with FrozenRight; both stack with cumulative offsets..
         /// </summary>
-        public static string DataGrid_FooterPagerDesc {
+        public static string DataGrid_FrozenColumnsDesc {
             get {
-                return ResourceManager.GetString("DataGrid_FooterPagerDesc", resourceCulture);
+                return ResourceManager.GetString("DataGrid_FrozenColumnsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Frozen Columns.
+        /// </summary>
+        public static string DataGrid_FrozenColumnsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FrozenColumnsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Group rows by field value with nested DataGridGroup components..
+        /// </summary>
+        public static string DataGrid_GroupingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_GroupingDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Grouping.
+        /// </summary>
+        public static string DataGrid_GroupingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_GroupingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Accumulate rows as user scrolls with InfiniteScroll=true..
+        /// </summary>
+        public static string DataGrid_InfiniteScrollDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_InfiniteScrollDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Infinite Scroll.
+        /// </summary>
+        public static string DataGrid_InfiniteScrollTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_InfiniteScrollTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit rows inline with EditMode.Inline..
+        /// </summary>
+        public static string DataGrid_InlineEditingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_InlineEditingDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline Editing.
+        /// </summary>
+        public static string DataGrid_InlineEditingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_InlineEditingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Banded composite: each record spans several rows with fields aligned across the table (DevExpress banded-view style)..
+        /// </summary>
+        public static string DataGrid_MultiLevelDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiLevelDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multi-level Columns.
+        /// </summary>
+        public static string DataGrid_MultiLevelTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiLevelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hold Shift+Click to sort by multiple columns..
+        /// </summary>
+        public static string DataGrid_MultiSortDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiSortDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multi-Sort.
+        /// </summary>
+        public static string DataGrid_MultiSortTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiSortTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multiple DataGridGroup levels with per-group aggregates..
+        /// </summary>
+        public static string DataGrid_NestedGroupingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_NestedGroupingDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Nested Grouping.
+        /// </summary>
+        public static string DataGrid_NestedGroupingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_NestedGroupingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PersistStateKey saves sorts, column order, hidden columns, page and page size to localStorage and restores them when the grid is recreated..
+        /// </summary>
+        public static string DataGrid_PersistenceDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_PersistenceDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sort, reorder or hide a column, or change the page size - then reload the page (F5). The layout is restored from localStorage..
+        /// </summary>
+        public static string DataGrid_PersistenceHint {
+            get {
+                return ResourceManager.GetString("DataGrid_PersistenceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на State Persistence.
+        /// </summary>
+        public static string DataGrid_PersistenceTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_PersistenceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на PinnedTopRows / PinnedBottomRows stay visible above and below the scrolling data, outside sorting, filtering and paging (e.g. a highlighted row and a totals row)..
+        /// </summary>
+        public static string DataGrid_PinnedRowsDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_PinnedRowsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pinned Rows.
+        /// </summary>
+        public static string DataGrid_PinnedRowsTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_PinnedRowsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bind an IQueryable (e.g. an EF Core DbSet) and the grid translates sort/filter/paging into an expression tree that runs in the database - no ItemsProvider code..
+        /// </summary>
+        public static string DataGrid_QueryableDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_QueryableDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Queryable (IQueryable / EF Core).
+        /// </summary>
+        public static string DataGrid_QueryableTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_QueryableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareDataGridQuickFilter - a standalone search box bound to the grid that filters across all visible columns..
+        /// </summary>
+        public static string DataGrid_QuickFilterDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_QuickFilterDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Quick Filter (global search).
+        /// </summary>
+        public static string DataGrid_QuickFilterTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_QuickFilterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag-and-drop reordering with ReorderableColumns and RowReorderable..
+        /// </summary>
+        public static string DataGrid_ReorderDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ReorderDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reorder Columns &amp; Rows.
+        /// </summary>
+        public static string DataGrid_ReorderTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ReorderTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Expandable detail rows with RowDetailTemplate..
+        /// </summary>
+        public static string DataGrid_RowDetailDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_RowDetailDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Row Detail.
+        /// </summary>
+        public static string DataGrid_RowDetailTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_RowDetailTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Single and multiple row selection with checkboxes..
+        /// </summary>
+        public static string DataGrid_RowSelectionDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_RowSelectionDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Row Selection.
+        /// </summary>
+        public static string DataGrid_RowSelectionTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_RowSelectionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareDataGrid with sortable columns, pagination, grouping, CSV export, row selection, column resize, and inline editing..
+        /// </summary>
+        public static string DataGrid_Subtitle {
+            get {
+                return ResourceManager.GetString("DataGrid_Subtitle", resourceCulture);
             }
         }
         
@@ -2685,6 +2674,42 @@ namespace Flare.Gallery.Resources {
         public static string DataGrid_Title {
             get {
                 return ResourceManager.GetString("DataGrid_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hierarchical data with expand/collapse using Tree parameter..
+        /// </summary>
+        public static string DataGrid_TreeGridDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_TreeGridDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tree Grid.
+        /// </summary>
+        public static string DataGrid_TreeGridTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_TreeGridTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Load data on demand with Virtual=true and ItemsProvider..
+        /// </summary>
+        public static string DataGrid_VirtualScrollingDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_VirtualScrollingDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Virtual Scrolling.
+        /// </summary>
+        public static string DataGrid_VirtualScrollingTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_VirtualScrollingTitle", resourceCulture);
             }
         }
         
@@ -2766,6 +2791,15 @@ namespace Flare.Gallery.Resources {
         public static string DateRangePicker_Basic {
             get {
                 return ResourceManager.GetString("DateRangePicker_Basic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline range calendar.
+        /// </summary>
+        public static string DateRangePicker_Calendar {
+            get {
+                return ResourceManager.GetString("DateRangePicker_Calendar", resourceCulture);
             }
         }
         
@@ -4174,6 +4208,168 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareBackstage - the Office File menu: a full-surface overlay with a navigation rail and content area..
+        /// </summary>
+        public static string Ide_Backstage_Desc {
+            get {
+                return ResourceManager.GetString("Ide_Backstage_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Backstage.
+        /// </summary>
+        public static string Ide_Backstage_Title {
+            get {
+                return ResourceManager.GetString("Ide_Backstage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareDocumentTabs - editor-style tabs with per-tab icons, a modified indicator, closeable and pinned tabs, and overflow handling..
+        /// </summary>
+        public static string Ide_DocTabs_Desc {
+            get {
+                return ResourceManager.GetString("Ide_DocTabs_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Document Tabs.
+        /// </summary>
+        public static string Ide_DocTabs_Title {
+            get {
+                return ResourceManager.GetString("Ide_DocTabs_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareFormulaBar - the Excel name box, fx marker, and formula editor, built on FlareField..
+        /// </summary>
+        public static string Ide_FormulaBar_Desc {
+            get {
+                return ResourceManager.GetString("Ide_FormulaBar_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Formula Bar.
+        /// </summary>
+        public static string Ide_FormulaBar_Title {
+            get {
+                return ResourceManager.GetString("Ide_FormulaBar_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareMenuBar - a thin horizontal bar of top-level menus (File / Edit / View)..
+        /// </summary>
+        public static string Ide_MenuBar_Desc {
+            get {
+                return ResourceManager.GetString("Ide_MenuBar_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Menu Bar.
+        /// </summary>
+        public static string Ide_MenuBar_Title {
+            get {
+                return ResourceManager.GetString("Ide_MenuBar_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlarePropertyGrid - a name/value property sheet whose values are plain text or any editor..
+        /// </summary>
+        public static string Ide_PropertyGrid_Desc {
+            get {
+                return ResourceManager.GetString("Ide_PropertyGrid_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Property Grid.
+        /// </summary>
+        public static string Ide_PropertyGrid_Title {
+            get {
+                return ResourceManager.GetString("Ide_PropertyGrid_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareQuickAccessToolbar - the Office quick-access strip of small icon buttons..
+        /// </summary>
+        public static string Ide_Qat_Desc {
+            get {
+                return ResourceManager.GetString("Ide_Qat_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Quick Access Toolbar.
+        /// </summary>
+        public static string Ide_Qat_Title {
+            get {
+                return ResourceManager.GetString("Ide_Qat_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareRibbon - tabbed command groups with large and small buttons, separators, dropdown galleries, and a collapsible SizeMode..
+        /// </summary>
+        public static string Ide_Ribbon_Desc {
+            get {
+                return ResourceManager.GetString("Ide_Ribbon_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ribbon.
+        /// </summary>
+        public static string Ide_Ribbon_Title {
+            get {
+                return ResourceManager.GetString("Ide_Ribbon_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareSheetTabs - the Excel sheet-tab strip with an add button..
+        /// </summary>
+        public static string Ide_SheetTabs_Desc {
+            get {
+                return ResourceManager.GetString("Ide_SheetTabs_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sheet Tabs.
+        /// </summary>
+        public static string Ide_SheetTabs_Title {
+            get {
+                return ResourceManager.GetString("Ide_SheetTabs_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareStatusBar - a three-section bar (left / center / right) for status text, icons, and controls..
+        /// </summary>
+        public static string Ide_StatusBar_Desc {
+            get {
+                return ResourceManager.GetString("Ide_StatusBar_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Status Bar.
+        /// </summary>
+        public static string Ide_StatusBar_Title {
+            get {
+                return ResourceManager.GetString("Ide_StatusBar_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Compose a desktop-style IDE shell - ribbon, menu bar, document tabs, dockable tool panels, resizable splitter, and status bar - entirely from Flare components..
         /// </summary>
         public static string Ide_Subtitle {
@@ -4190,79 +4386,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Ide_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ribbon.
+        ///   Ищет локализованную строку, похожую на FlareToolbar - a classic icon command bar with separators and a dense mode..
         /// </summary>
-        public static string Ide_Ribbon_Title {
+        public static string Ide_Toolbar_Desc {
             get {
-                return ResourceManager.GetString("Ide_Ribbon_Title", resourceCulture);
+                return ResourceManager.GetString("Ide_Toolbar_Desc", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareRibbon with tabbed command groups....
-        /// </summary>
-        public static string Ide_Ribbon_Desc {
-            get {
-                return ResourceManager.GetString("Ide_Ribbon_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Document tabs.
-        /// </summary>
-        public static string Ide_DocTabs_Title {
-            get {
-                return ResourceManager.GetString("Ide_DocTabs_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Editor-style FlareDocumentTabs....
-        /// </summary>
-        public static string Ide_DocTabs_Desc {
-            get {
-                return ResourceManager.GetString("Ide_DocTabs_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Tool panel.
-        /// </summary>
-        public static string Ide_ToolPanel_Title {
-            get {
-                return ResourceManager.GetString("Ide_ToolPanel_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Standalone FlareToolPanel....
-        /// </summary>
-        public static string Ide_ToolPanel_Desc {
-            get {
-                return ResourceManager.GetString("Ide_ToolPanel_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Menu Bar.
-        /// </summary>
-        public static string Ide_MenuBar_Title {
-            get {
-                return ResourceManager.GetString("Ide_MenuBar_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareMenuBar: a thin horizontal bar of top-level menus....
-        /// </summary>
-        public static string Ide_MenuBar_Desc {
-            get {
-                return ResourceManager.GetString("Ide_MenuBar_Desc", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Toolbar.
         /// </summary>
@@ -4271,124 +4404,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Ide_Toolbar_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareToolbar: a classic icon command bar....
+        ///   Ищет локализованную строку, похожую на FlareToolPanel - a titled, collapsible dockable panel with an optional header toolbar..
         /// </summary>
-        public static string Ide_Toolbar_Desc {
+        public static string Ide_ToolPanel_Desc {
             get {
-                return ResourceManager.GetString("Ide_Toolbar_Desc", resourceCulture);
+                return ResourceManager.GetString("Ide_ToolPanel_Desc", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Quick Access Toolbar.
+        ///   Ищет локализованную строку, похожую на Tool Panel.
         /// </summary>
-        public static string Ide_Qat_Title {
+        public static string Ide_ToolPanel_Title {
             get {
-                return ResourceManager.GetString("Ide_Qat_Title", resourceCulture);
+                return ResourceManager.GetString("Ide_ToolPanel_Title", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareQuickAccessToolbar: the Office quick-access strip....
-        /// </summary>
-        public static string Ide_Qat_Desc {
-            get {
-                return ResourceManager.GetString("Ide_Qat_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Status bar.
-        /// </summary>
-        public static string Ide_StatusBar_Title {
-            get {
-                return ResourceManager.GetString("Ide_StatusBar_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareStatusBar with three free-form sections....
-        /// </summary>
-        public static string Ide_StatusBar_Desc {
-            get {
-                return ResourceManager.GetString("Ide_StatusBar_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Property grid.
-        /// </summary>
-        public static string Ide_PropertyGrid_Title {
-            get {
-                return ResourceManager.GetString("Ide_PropertyGrid_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlarePropertyGrid rows....
-        /// </summary>
-        public static string Ide_PropertyGrid_Desc {
-            get {
-                return ResourceManager.GetString("Ide_PropertyGrid_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Backstage (File menu).
-        /// </summary>
-        public static string Ide_Backstage_Title {
-            get {
-                return ResourceManager.GetString("Ide_Backstage_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareBackstage: a full-surface File overlay....
-        /// </summary>
-        public static string Ide_Backstage_Desc {
-            get {
-                return ResourceManager.GetString("Ide_Backstage_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Formula bar.
-        /// </summary>
-        public static string Ide_FormulaBar_Title {
-            get {
-                return ResourceManager.GetString("Ide_FormulaBar_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareFormulaBar (Excel name box + fx + editor)....
-        /// </summary>
-        public static string Ide_FormulaBar_Desc {
-            get {
-                return ResourceManager.GetString("Ide_FormulaBar_Desc", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Sheet tabs.
-        /// </summary>
-        public static string Ide_SheetTabs_Title {
-            get {
-                return ResourceManager.GetString("Ide_SheetTabs_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareSheetTabs - the controlled Excel sheet-tab strip....
-        /// </summary>
-        public static string Ide_SheetTabs_Desc {
-            get {
-                return ResourceManager.GetString("Ide_SheetTabs_Desc", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Aspect Ratio &amp; Fluid.
         /// </summary>
@@ -5074,6 +5108,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Choose how the collapsed rail looks: a caption under each icon, or icons only..
+        /// </summary>
+        public static string Nav_Drawer_Desc {
+            get {
+                return ResourceManager.GetString("Nav_Drawer_Desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Navigation rail.
+        /// </summary>
+        public static string Nav_Drawer_Title {
+            get {
+                return ResourceManager.GetString("Nav_Drawer_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Getting Started.
         /// </summary>
         public static string Nav_GettingStarted {
@@ -5088,6 +5140,24 @@ namespace Flare.Gallery.Resources {
         public static string Nav_Overview {
             get {
                 return ResourceManager.GetString("Nav_Overview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Icons only.
+        /// </summary>
+        public static string Nav_Rail_IconsOnly {
+            get {
+                return ResourceManager.GetString("Nav_Rail_IconsOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на With labels.
+        /// </summary>
+        public static string Nav_Rail_Labeled {
+            get {
+                return ResourceManager.GetString("Nav_Rail_Labeled", resourceCulture);
             }
         }
         
@@ -6190,6 +6260,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Chrome and Edge do not expose the real OS accent (they return a fixed placeholder to prevent fingerprinting); only Firefox reflects your true Windows/macOS accent. The Dynamic palette therefore falls back to a configured palette (Violet here) on Chromium..
+        /// </summary>
+        public static string Services_DynamicAccentNote {
+            get {
+                return ResourceManager.GetString("Services_DynamicAccentNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на The Flares.
         /// </summary>
         public static string Services_DynamicArtist {
@@ -6224,16 +6303,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_DynamicNowPlaying", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Chrome and Edge do not expose the real OS accent (they return a fixed placeholder to prevent fingerprinting); only Firefox reflects your true Windows/macOS accent. The Dynamic palette therefore falls back to a configured palette (Violet here) on Chromium..
-        /// </summary>
-        public static string Services_DynamicAccentNote {
-            get {
-                return ResourceManager.GetString("Services_DynamicAccentNote", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Extract a seed color from a cover with IFlareColorExtractor, then theme components with FlareColor.Dynamic..
         /// </summary>
@@ -6424,32 +6494,23 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Simulated demo: a local probe reports a newer version after a couple of checks, so you can see the full flow (up to date -&gt; new version -&gt; update) without publishing a new build..
-        /// </summary>
-        public static string Services_VersionCheckSimNote {
-            get {
-                return ResourceManager.GetString("Services_VersionCheckSimNote", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Setup: make auto-update work end-to-end.
-        /// </summary>
-        public static string Services_VersionCheckSetupTitle {
-            get {
-                return ResourceManager.GetString("Services_VersionCheckSetupTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на In service-worker mode the service registers the worker and applies the update for you....
+        ///   Ищет локализованную строку, похожую на In service-worker mode the service registers the worker and applies the update for you. You only need the PWA service worker itself, one small change to it, and correct cache headers on the host..
         /// </summary>
         public static string Services_VersionCheckSetupIntro {
             get {
                 return ResourceManager.GetString("Services_VersionCheckSetupIntro", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turn on Blazor offline support in the WASM project so the build emits service-worker.js and service-worker-assets.js - the assets manifest whose version hash changes on every publish (that is what the probe reads)..
+        /// </summary>
+        public static string Services_VersionCheckSetupStep1 {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSetupStep1", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на 1. Enable the PWA service worker.
         /// </summary>
@@ -6458,16 +6519,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_VersionCheckSetupStep1Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Turn on Blazor offline support in the WASM project....
+        ///   Ищет локализованную строку, похожую на This is the only deviation from the stock Blazor worker. Calling self.clients.claim() in the activate handler lets the page reload onto the new worker the moment it activates (via controllerchange). Without it the reload can be served by the old worker, leaving a stale or &quot;dev&quot; version that only Ctrl+Shift+R clears..
         /// </summary>
-        public static string Services_VersionCheckSetupStep1 {
+        public static string Services_VersionCheckSetupStep2 {
             get {
-                return ResourceManager.GetString("Services_VersionCheckSetupStep1", resourceCulture);
+                return ResourceManager.GetString("Services_VersionCheckSetupStep2", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на 2. Add clients.claim() to the worker (required).
         /// </summary>
@@ -6476,16 +6537,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_VersionCheckSetupStep2Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на This is the only deviation from the stock Blazor worker....
+        ///   Ищет локализованную строку, похожую на The host and any reverse proxy or CDN must serve service-worker.js, service-worker-assets.js, blazor.boot.json and .webmanifest with no-store. Otherwise the version probe reads a stale manifest and never sees the new build..
         /// </summary>
-        public static string Services_VersionCheckSetupStep2 {
+        public static string Services_VersionCheckSetupStep3 {
             get {
-                return ResourceManager.GetString("Services_VersionCheckSetupStep2", resourceCulture);
+                return ResourceManager.GetString("Services_VersionCheckSetupStep3", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на 3. Never cache the control files.
         /// </summary>
@@ -6494,16 +6555,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_VersionCheckSetupStep3Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The host and any reverse proxy or CDN must serve the control files with no-store....
+        ///   Ищет локализованную строку, похожую на Register with UseServiceWorker = true, then in your layout call Start(), show an actionable toast on NewVersionAvailable and call ApplyUpdateAsync() from its action. Stop() after the first detection to end polling, and optionally change the toast in place with a progress bar (see the code below)..
         /// </summary>
-        public static string Services_VersionCheckSetupStep3 {
+        public static string Services_VersionCheckSetupStep4 {
             get {
-                return ResourceManager.GetString("Services_VersionCheckSetupStep3", resourceCulture);
+                return ResourceManager.GetString("Services_VersionCheckSetupStep4", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на 4. Register and surface it.
         /// </summary>
@@ -6512,13 +6573,22 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_VersionCheckSetupStep4Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Register with UseServiceWorker = true, then in your layout call Start()....
+        ///   Ищет локализованную строку, похожую на Setup: make auto-update work end-to-end.
         /// </summary>
-        public static string Services_VersionCheckSetupStep4 {
+        public static string Services_VersionCheckSetupTitle {
             get {
-                return ResourceManager.GetString("Services_VersionCheckSetupStep4", resourceCulture);
+                return ResourceManager.GetString("Services_VersionCheckSetupTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulated demo: a local probe reports a newer version after a couple of checks, so you can see the full flow (up to date -&gt; new version -&gt; update) without publishing a new build..
+        /// </summary>
+        public static string Services_VersionCheckSimNote {
+            get {
+                return ResourceManager.GetString("Services_VersionCheckSimNote", resourceCulture);
             }
         }
         
@@ -6593,7 +6663,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_WithAction", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Language.
         /// </summary>
@@ -6602,16 +6672,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Settings_Language", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Personalize the gallery: design system, palette, color mode and language.
+        ///   Ищет локализованную строку, похожую на Personalize the gallery: design system, palette, color mode and language..
         /// </summary>
         public static string Settings_Subtitle {
             get {
                 return ResourceManager.GetString("Settings_Subtitle", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Navigation.
+        /// </summary>
+        public static string Settings_TabNavigation {
+            get {
+                return ResourceManager.GetString("Settings_TabNavigation", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Theme.
         /// </summary>
@@ -6620,7 +6699,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Settings_TabTheme", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Settings.
         /// </summary>
@@ -6629,7 +6708,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Settings_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Update available.
         /// </summary>
@@ -6638,7 +6717,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Settings_UpdateAvailable", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Version.
         /// </summary>
@@ -6647,7 +6726,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Settings_Version", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на dev.
         /// </summary>
@@ -6656,7 +6735,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Settings_VersionDev", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Keys, description &amp; OnActivated.
         /// </summary>
@@ -6987,6 +7066,15 @@ namespace Flare.Gallery.Resources {
         public static string Stepper_Basic {
             get {
                 return ResourceManager.GetString("Stepper_Basic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Async validation guard.
+        /// </summary>
+        public static string Stepper_Guard {
+            get {
+                return ResourceManager.GetString("Stepper_Guard", resourceCulture);
             }
         }
         

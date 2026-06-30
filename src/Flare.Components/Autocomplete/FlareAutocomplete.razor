@@ -11,6 +11,7 @@
     <div class="@Css.Classes.Autocomplete.Wrapper">
         <div class="@Css.Classes.Autocomplete.Field @(_open ? Css.Classes.Autocomplete.FieldOpen : "")">
             <input class="@Css.Classes.Autocomplete.Control"
+                   @ref="_inputRef"
                    id="@_inputId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    value="@_searchText"
@@ -81,6 +82,13 @@
     [Parameter] public IEnumerable<TValue>? Items { get; set; }
     /// <summary>Async search callback invoked with the current query; returns the matching items.</summary>
     [Parameter] public Func<string, Task<IEnumerable<TValue>>>? SearchFunc { get; set; }
+    /// <summary>Ranks the local <see cref="Items"/> by relevance (best match first) instead of
+    /// insertion order, using <see cref="FlareSearch"/>. Ignored when <see cref="SearchFunc"/> is set
+    /// (that callback owns ordering).</summary>
+    [Parameter] public bool Fuzzy { get; set; }
+    /// <summary>Custom relevance scorer <c>(item, query) =&gt; score</c> for the local <see cref="Items"/>;
+    /// only positive scores are kept, ordered best-first. Overrides <see cref="Fuzzy"/>.</summary>
+    [Parameter] public Func<TValue, string, double>? RankFunc { get; set; }
     /// <summary>Returns the display text for an item.</summary>
     [Parameter] public Func<TValue, string> GetLabel { get; set; } = v => v?.ToString() ?? "";
     /// <summary>Custom render template for a dropdown option. Overrides the <see cref="GetLabel"/> text.</summary>
@@ -131,6 +139,7 @@
     };
 
     private readonly string _inputId = $"flare-autocomplete-{Guid.NewGuid():N}";
+    private ElementReference _inputRef;
 
     private string _stateClass =>
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Autocomplete.Error :
@@ -189,8 +198,14 @@
             if (SearchFunc is not null)
                 results = await SearchFunc(_searchText);
             else
-                results = (Items ?? Enumerable.Empty<TValue>())
-                    .Where(x => GetLabel(x).Contains(_searchText, StringComparison.OrdinalIgnoreCase));
+            {
+                var src = Items ?? Enumerable.Empty<TValue>();
+                results = RankFunc is not null
+                    ? FlareSearch.Rank(src, x => RankFunc(x, _searchText))
+                    : Fuzzy
+                        ? FlareSearch.Rank(src, x => FlareSearch.Score(GetLabel(x), _searchText))
+                        : src.Where(x => GetLabel(x).Contains(_searchText, StringComparison.OrdinalIgnoreCase));
+            }
 
             if (!token.IsCancellationRequested)
             {
@@ -256,6 +271,8 @@
         _focusedIdx = -1;
         await ValueChanged.InvokeAsync(default);
         NotifyFieldChanged();
+        // Return focus to the input so keyboard users keep their place after clearing.
+        try { await _inputRef.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
     }
 
     private async Task SelectItem(TValue item)

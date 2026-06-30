@@ -770,6 +770,157 @@ public class C_FlareNavMenuTests : FlareTestContext
         var cut = Render<FlareNavMenu>(p => p.Add(x => x.HideScrollbar, true));
         Assert.Contains("flare-nav-menu--no-scrollbar", cut.Find("nav.flare-nav-menu").ClassName);
     }
+
+    [Fact]
+    public void Mode_Rail_AddsRailModifier()
+    {
+        var cut = Render<FlareNavMenu>(p => p.Add(x => x.Mode, NavMenuMode.Rail));
+        Assert.Contains("flare-nav-menu--rail", cut.Find("nav.flare-nav-menu").ClassName);
+    }
+
+    [Fact]
+    public void Mode_Full_OverridesRailFlag()
+    {
+        // An explicit Full mode wins over the legacy Rail flag.
+        var cut = Render<FlareNavMenu>(p => p.Add(x => x.Mode, NavMenuMode.Full).Add(x => x.Rail, true));
+        Assert.DoesNotContain("flare-nav-menu--rail", cut.Find("nav.flare-nav-menu").ClassName);
+    }
+
+    [Fact]
+    public void Mode_RailLabeled_AddsBothRailModifiers()
+    {
+        var cut = Render<FlareNavMenu>(p => p.Add(x => x.Mode, NavMenuMode.RailLabeled));
+        var cls = cut.Find("nav.flare-nav-menu").ClassName;
+        Assert.Contains("flare-nav-menu--rail", cls);
+        Assert.Contains("flare-nav-menu--rail-labeled", cls);
+    }
+}
+
+// FlareLayoutDrawer owns its own open state and reports a grid track to the layout per variant:
+// Mini collapses to an icon rail, Persistent reserves a zero-width track when closed, Temporary floats.
+public class C_FlareLayoutDrawerTests : FlareTestContext
+{
+    private IRenderedComponent<FlareLayoutDrawer> RenderDrawer(DrawerVariant variant, bool open)
+        => Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Variant, variant)
+            .Add(d => d.Open, open)
+            .Add(d => d.Width, "16rem")
+            .Add(d => d.RailWidth, "5rem"));
+
+    [Fact]
+    public void MiniCollapsed_IsIconRail_ReservesRailTrack()
+    {
+        var d = RenderDrawer(DrawerVariant.Mini, open: false).Instance;
+        Assert.True(d.IsCollapsedRail);
+        Assert.False(d.IsOpen);
+        Assert.True(d.ReservesTrack(false));
+        Assert.Equal("5rem", d.TrackWidth(false));
+    }
+
+    [Fact]
+    public void MiniOpen_IsFullWidth_NotCollapsed()
+    {
+        var d = RenderDrawer(DrawerVariant.Mini, open: true).Instance;
+        Assert.False(d.IsCollapsedRail);
+        Assert.Equal("16rem", d.TrackWidth(false));
+    }
+
+    [Fact]
+    public void PersistentClosed_ReservesZeroWidthTrack()
+    {
+        var d = RenderDrawer(DrawerVariant.Persistent, open: false).Instance;
+        Assert.True(d.ReservesTrack(false));   // keeps its track so the width can animate
+        Assert.Equal("0", d.TrackWidth(false));
+    }
+
+    [Fact]
+    public void PersistentOpen_ReservesFullTrack()
+        => Assert.Equal("16rem", RenderDrawer(DrawerVariant.Persistent, open: true).Instance.TrackWidth(false));
+
+    [Fact]
+    public void Temporary_Floats_NeverReservesTrack()
+    {
+        var d = RenderDrawer(DrawerVariant.Temporary, open: true).Instance;
+        Assert.False(d.ReservesTrack(false));
+        Assert.True(d.IsOverlayOpen(false));
+    }
+
+    [Fact]
+    public void Mobile_PushDrawerGoesOffCanvas()
+    {
+        var d = RenderDrawer(DrawerVariant.Mini, open: false).Instance;
+        Assert.False(d.ReservesTrack(true));   // off-canvas on mobile
+        Assert.Equal("0", d.TrackWidth(true));
+    }
+
+    [Fact]
+    public async Task Toggle_FlipsOpen_AndRaisesChanged()
+    {
+        var changed = false;
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Variant, DrawerVariant.Persistent)
+            .Add(d => d.Open, false)
+            .Add(d => d.OpenChanged, EventCallback.Factory.Create<bool>(this, v => changed = v)));
+        await cut.InvokeAsync(() => cut.Instance.ToggleAsync());
+        Assert.True(cut.Instance.IsOpen);
+        Assert.True(changed);
+    }
+}
+
+// FlareLayout reserves a grid track for each registered in-flow drawer and exposes the column template
+// via the --flare-layout-cols custom property, so the content is pushed aside rather than covered.
+public class C_FlareLayoutGridTests : FlareTestContext
+{
+    [Fact]
+    public void Layout_ReservesRailTrackForMiniDrawer()
+    {
+        var cut = Render<FlareLayout>(p => p
+            .Add(x => x.Responsive, false)
+            .AddChildContent<FlareLayoutDrawer>(d => d
+                .Add(x => x.Variant, DrawerVariant.Mini)
+                .Add(x => x.RailWidth, "5rem")
+                .Add(x => x.Open, false)));
+
+        var style = cut.Find(".flare-layout").GetAttribute("style") ?? string.Empty;
+        Assert.Contains("--flare-layout-cols", style);
+        Assert.Contains("5rem", style);          // the collapsed rail reserves a 5rem track
+        Assert.Contains("minmax(0, 1fr)", style); // the content fills the rest
+    }
+}
+
+// FlareNavGroup renders an inline accordion: a header button that toggles a child-items region.
+// It stays an inline accordion regardless of the layout's collapsed/mini-rail state.
+public class C_FlareNavGroupInlineTests : FlareTestContext
+{
+    [Fact]
+    public void RendersInlineGroup_HeaderTogglesItems()
+    {
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(g => g.Label, "Components")
+            .Add(g => g.Icon, "category")
+            .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
+
+        Assert.NotEmpty(cut.FindAll(".flare-nav-group__items"));
+        var header = cut.Find("button.flare-nav-group__header");
+        Assert.Equal("false", header.GetAttribute("aria-expanded"));
+        Assert.Contains("Buttons", cut.Find(".flare-nav-group__items").TextContent);
+
+        header.Click();
+        Assert.Equal("true", cut.Find("button.flare-nav-group__header").GetAttribute("aria-expanded"));
+    }
+
+    [Fact]
+    public void RendersInlineGroup_NoFlyoutMarkup()
+    {
+        // The group is always an inline accordion: no flyout panel. (The two-pane secondary column
+        // replaced the old per-group flyout; FlareNavGroup no longer reads the layout context.)
+        var cut = Render<FlareNavGroup>(p => p
+            .Add(g => g.Label, "Components")
+            .AddChildContent("<a>x</a>"));
+
+        Assert.Empty(cut.FindAll(".flare-nav-group--flyout"));
+        Assert.NotEmpty(cut.FindAll(".flare-nav-group__items"));
+    }
 }
 
 public class C_FlareMaskedFieldTests : FlareTestContext
@@ -1422,5 +1573,281 @@ public class C_FlareTableDenseTests : FlareTestContext
     {
         var cut = Render<FlareTable<int>>();
         Assert.DoesNotContain("flare-table--dense", cut.Find(".flare-table").ClassName);
+    }
+}
+
+// WCAG contrast math used by the ColorCustomizer's accessibility preview.
+public class C_ColorMathContrastTests
+{
+    [Fact]
+    public void BlackOnWhite_IsMaxRatio()
+        => Assert.Equal(21.0, Flare.Theming.ColorMath.ContrastRatio("#000000", "#FFFFFF"), 1);
+
+    [Fact]
+    public void SameColor_IsOne()
+        => Assert.Equal(1.0, Flare.Theming.ColorMath.ContrastRatio("#6750A4", "#6750A4"), 2);
+
+    [Fact]
+    public void IsSymmetric()
+        => Assert.Equal(
+            Flare.Theming.ColorMath.ContrastRatio("#6750A4", "#FFFFFF"),
+            Flare.Theming.ColorMath.ContrastRatio("#FFFFFF", "#6750A4"), 4);
+
+    [Fact]
+    public void WhiteOnDarkPrimary_PassesAa()
+        => Assert.True(Flare.Theming.ColorMath.ContrastRatio("#FFFFFF", "#6750A4") >= 4.5);
+}
+
+// FlareColorCustomizer shows a WCAG contrast preview once a primary color is chosen.
+public class C_FlareColorCustomizerTests : FlareTestContext
+{
+    [Fact]
+    public void SelectingPreset_ShowsContrastVerdict()
+    {
+        var cut = Render<FlareColorCustomizer>();
+        Assert.Empty(cut.FindAll(".flare-color-customizer__contrast")); // nothing chosen yet
+
+        cut.Find("button.flare-color-customizer__swatch").Click();      // pick the first preset
+
+        Assert.NotEmpty(cut.FindAll(".flare-color-customizer__contrast"));
+        var verdict = cut.Find(".flare-color-customizer__contrast-badge").TextContent.Trim();
+        Assert.Contains(verdict, new[] { "AAA", "AA", "AA Large", "Fail" });
+    }
+
+    [Fact]
+    public void ShowContrastFalse_HidesPreview()
+    {
+        var cut = Render<FlareColorCustomizer>(p => p.Add(c => c.ShowContrast, false));
+        cut.Find("button.flare-color-customizer__swatch").Click();
+        Assert.Empty(cut.FindAll(".flare-color-customizer__contrast"));
+    }
+}
+
+// Relevance scoring used by the Fuzzy search option on Autocomplete / MultiSelect.
+public class C_FlareSearchTests
+{
+    [Fact]
+    public void Exact_BeatsPrefix()
+        => Assert.True(FlareSearch.Score("lo", "lo") > FlareSearch.Score("london", "lo"));
+
+    [Fact]
+    public void Prefix_BeatsContains()
+        => Assert.True(FlareSearch.Score("london", "lon") > FlareSearch.Score("clone", "lon"));
+
+    [Fact]
+    public void ShorterPrefix_RanksHigher()
+        => Assert.True(FlareSearch.Score("London", "lo") > FlareSearch.Score("Los Angeles", "lo"));
+
+    [Fact]
+    public void Subsequence_Matches_ButRanksBelowSubstring()
+    {
+        Assert.True(FlareSearch.Score("a-b-c", "abc") > 0);               // subsequence (not contiguous)
+        Assert.True(FlareSearch.Score("xabcy", "abc") > FlareSearch.Score("a-b-c", "abc")); // substring wins
+    }
+
+    [Fact]
+    public void NoMatch_IsZero() => Assert.Equal(0, FlareSearch.Score("apple", "xyz"));
+
+    [Fact]
+    public void EmptyQuery_MatchesAll() => Assert.Equal(1, FlareSearch.Score("anything", ""));
+
+    [Fact]
+    public void Rank_FiltersOutNonMatches_AndOrdersBestFirst()
+    {
+        var ranked = FlareSearch.Rank(
+            new[] { "Los Angeles", "London", "Paris" },
+            s => FlareSearch.Score(s, "lo")).ToList();
+        Assert.Equal(new[] { "London", "Los Angeles" }, ranked);          // Paris dropped, London first
+    }
+}
+
+// FlareStepper.OnStepChanging is an async guard that can veto a step change (e.g. validate first).
+public class C_FlareStepperGuardTests : FlareTestContext
+{
+    private static RenderFragment ThreeSteps() => b =>
+    {
+        for (var i = 0; i < 3; i++)
+        {
+            b.OpenComponent<FlareStep>(i * 2);
+            b.AddAttribute(i * 2 + 1, nameof(FlareStep.Label), (object)$"Step {i}");
+            b.CloseComponent();
+        }
+    };
+
+    [Fact]
+    public async Task OnStepChanging_ReturningFalse_BlocksAdvance()
+    {
+        var cut = Render<FlareStepper>(p => p
+            .Add(s => s.OnStepChanging, _ => Task.FromResult(false))
+            .AddChildContent(ThreeSteps()));
+        await cut.InvokeAsync(() => cut.Instance.Next());
+        Assert.Equal(0, cut.Instance.ActiveIndex);
+    }
+
+    [Fact]
+    public async Task OnStepChanging_ReturningTrue_Advances()
+    {
+        var cut = Render<FlareStepper>(p => p
+            .Add(s => s.OnStepChanging, _ => Task.FromResult(true))
+            .AddChildContent(ThreeSteps()));
+        await cut.InvokeAsync(() => cut.Instance.Next());
+        Assert.Equal(1, cut.Instance.ActiveIndex);
+    }
+
+    [Fact]
+    public async Task OnStepChanging_ReceivesFromAndTo()
+    {
+        StepperChange seen = default;
+        var cut = Render<FlareStepper>(p => p
+            .Add(s => s.OnStepChanging, c => { seen = c; return Task.FromResult(true); })
+            .AddChildContent(ThreeSteps()));
+        await cut.InvokeAsync(() => cut.Instance.Next());
+        Assert.Equal(0, seen.From);
+        Assert.Equal(1, seen.To);
+    }
+}
+
+// FlareDateRangePicker Calendar mode: click a start day then an end day to select a range (swapping
+// when the second click precedes the first). Fields mode (default) renders the two-input layout.
+public class C_FlareDateRangeCalendarTests : FlareTestContext
+{
+    [Fact]
+    public void Default_IsFieldsMode_NoInlineCalendar()
+    {
+        var cut = Render<FlareDateRangePicker>();
+        Assert.Empty(cut.FindAll(".flare-daterangepicker__calendar"));
+        Assert.NotEmpty(cut.FindAll(".flare-daterangepicker__fields"));
+    }
+
+    [Fact]
+    public async Task Calendar_TwoClicks_SelectOrderedRange()
+    {
+        var cut = Render<FlareDateRangePicker>(p => p.Add(c => c.Mode, DateRangePickerMode.Calendar));
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[10].Click());
+        Assert.NotNull(cut.Instance.StartDate);
+        Assert.Null(cut.Instance.EndDate);                       // first click sets only the start
+
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[24].Click());
+        Assert.NotNull(cut.Instance.EndDate);
+        Assert.True(cut.Instance.StartDate <= cut.Instance.EndDate);
+    }
+
+    [Fact]
+    public async Task Calendar_SecondClickEarlier_Swaps()
+    {
+        var cut = Render<FlareDateRangePicker>(p => p.Add(c => c.Mode, DateRangePickerMode.Calendar));
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[24].Click());   // later day first
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[10].Click());   // earlier second
+        Assert.True(cut.Instance.StartDate <= cut.Instance.EndDate);                       // swapped into order
+    }
+
+    [Fact]
+    public void DefaultPresets_ArePublic_AndCombineWithCustom()
+    {
+        Assert.NotEmpty(FlareDateRangePicker.DefaultPresets);
+        var combined = new List<DateRangePreset>(FlareDateRangePicker.DefaultPresets)
+        {
+            new("Sprint", t => (t.AddDays(-13), t)),
+        };
+        var cut = Render<FlareDateRangePicker>(p => p
+            .Add(c => c.ShowPresets, true)
+            .Add(c => c.Presets, combined));
+        // every built-in preset plus the custom one renders a chip
+        Assert.Equal(combined.Count, cut.FindAll(".flare-daterangepicker__preset").Count);
+    }
+}
+
+// FlareAccordion: auto-collapsing a sibling now notifies (two-way bind stays in sync), and a panel's
+// OnBeforeToggle can veto a toggle.
+public class C_FlareAccordionToggleTests : FlareTestContext
+{
+    [Fact]
+    public async Task SingleExpand_AutoCollapsesSibling_AndNotifies()
+    {
+        var p0States = new List<bool>();
+        var cut = Render<FlareAccordion>(p => p.AddChildContent(b =>
+        {
+            b.OpenComponent<FlareAccordionPanel>(0);
+            b.AddAttribute(1, nameof(FlareAccordionPanel.Header), (object)"P0");
+            b.AddAttribute(2, nameof(FlareAccordionPanel.ExpandedChanged),
+                EventCallback.Factory.Create<bool>(this, v => p0States.Add(v)));
+            b.CloseComponent();
+            b.OpenComponent<FlareAccordionPanel>(3);
+            b.AddAttribute(4, nameof(FlareAccordionPanel.Header), (object)"P1");
+            b.CloseComponent();
+        }));
+
+        await cut.InvokeAsync(() => cut.FindAll("button[aria-expanded]")[0].Click()); // expand P0
+        await cut.InvokeAsync(() => cut.FindAll("button[aria-expanded]")[1].Click()); // expand P1 -> P0 collapses
+
+        Assert.Contains(true, p0States);
+        Assert.Contains(false, p0States);  // the auto-collapse fired ExpandedChanged(false) -- the bug fix
+    }
+
+    [Fact]
+    public async Task OnBeforeToggle_ReturningFalse_BlocksExpand()
+    {
+        var cut = Render<FlareAccordionPanel>(p => p
+            .Add(x => x.Header, "P")
+            .Add(x => x.OnBeforeToggle, _ => Task.FromResult(false)));
+        await cut.InvokeAsync(() => cut.Find("button[aria-expanded]").Click());
+        Assert.Equal("false", cut.Find("button[aria-expanded]").GetAttribute("aria-expanded"));
+    }
+}
+
+// FlareMenu keyboard a11y: opening sets aria-activedescendant to the first item and arrow keys move it.
+public class C_FlareMenuKeyboardTests : FlareTestContext
+{
+    private static RenderFragment ThreeItems() => b =>
+    {
+        for (var i = 0; i < 3; i++)
+        {
+            b.OpenComponent<FlareMenuItem>(i * 2);
+            b.AddAttribute(i * 2 + 1, nameof(FlareMenuItem.ChildContent),
+                (RenderFragment)(cb => cb.AddContent(0, $"Item {i}")));
+            b.CloseComponent();
+        }
+    };
+
+    [Fact]
+    public async Task Open_SetsActiveDescendant_AndArrowMovesIt()
+    {
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, "<span>open</span>")
+            .Add(m => m.ChildContent, ThreeItems()));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click());   // open -> focuses first item
+
+        var ad1 = cut.Find("[role=menu]").GetAttribute("aria-activedescendant");
+        Assert.False(string.IsNullOrEmpty(ad1));                                  // points at the first item
+
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(
+            new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "ArrowDown" }));
+        var ad2 = cut.Find("[role=menu]").GetAttribute("aria-activedescendant");
+        Assert.NotEqual(ad1, ad2);                                               // moved to the next item
+    }
+}
+
+// FlarePopover Trigger="Click" toggles open from the anchor without external wiring.
+public class C_FlarePopoverTriggerTests : FlareTestContext
+{
+    [Fact]
+    public async Task ClickTrigger_TogglesOpenFromAnchor()
+    {
+        var states = new List<bool>();
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Click)
+            .Add(x => x.AnchorContent, "<button>open</button>")
+            .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
+
+        await cut.InvokeAsync(() => cut.Find("span[style*=cursor]").Click());
+        Assert.Equal(new[] { true }, states);   // anchor click requested open
+    }
+
+    [Fact]
+    public void ManualTrigger_DoesNotWrapAnchor()
+    {
+        var cut = Render<FlarePopover>(p => p.Add(x => x.AnchorContent, "<button>x</button>"));
+        Assert.Empty(cut.FindAll("span[style*=cursor]"));   // default Manual: no built-in handler
     }
 }
