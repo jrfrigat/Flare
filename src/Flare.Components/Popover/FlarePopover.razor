@@ -5,7 +5,14 @@
 @implements IAsyncDisposable
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
-    @AnchorContent
+    @if (Trigger == PopoverTrigger.Click)
+    {
+        <span style="display:inline-flex;cursor:pointer" @onclick="ToggleAsync">@AnchorContent</span>
+    }
+    else
+    {
+        @AnchorContent
+    }
     @if (Open)
     {
         <div class="@Css.Classes.Popover.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
@@ -28,6 +35,9 @@
     [Parameter] public bool                 Open          { get; set; }
     /// <summary>Callback raised when the open state should change.</summary>
     [Parameter] public EventCallback<bool>  OpenChanged   { get; set; }
+    /// <summary>How the popover opens. <see cref="PopoverTrigger.Click"/> toggles it from the anchor
+    /// with no extra wiring; <see cref="PopoverTrigger.Manual"/> (default) leaves it fully controlled.</summary>
+    [Parameter] public PopoverTrigger       Trigger       { get; set; } = PopoverTrigger.Manual;
     /// <summary>Position of the panel relative to the anchor element.</summary>
     [Parameter] public PopoverPlacement     Placement     { get; set; } = PopoverPlacement.BottomStart;
     /// <summary>CSS max-width applied to the popover panel.</summary>
@@ -121,6 +131,9 @@
     }
 
     private async Task CloseAsync() => await OpenChanged.InvokeAsync(false);
+
+    // Built-in anchor handler for Trigger="Click".
+    private async Task ToggleAsync() => await OpenChanged.InvokeAsync(!Open);
 
     public override async ValueTask DisposeAsync()
     {

@@ -1827,3 +1827,27 @@ public class C_FlareMenuKeyboardTests : FlareTestContext
         Assert.NotEqual(ad1, ad2);                                               // moved to the next item
     }
 }
+
+// FlarePopover Trigger="Click" toggles open from the anchor without external wiring.
+public class C_FlarePopoverTriggerTests : FlareTestContext
+{
+    [Fact]
+    public async Task ClickTrigger_TogglesOpenFromAnchor()
+    {
+        var states = new List<bool>();
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Click)
+            .Add(x => x.AnchorContent, "<button>open</button>")
+            .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
+
+        await cut.InvokeAsync(() => cut.Find("span[style*=cursor]").Click());
+        Assert.Equal(new[] { true }, states);   // anchor click requested open
+    }
+
+    [Fact]
+    public void ManualTrigger_DoesNotWrapAnchor()
+    {
+        var cut = Render<FlarePopover>(p => p.Add(x => x.AnchorContent, "<button>x</button>"));
+        Assert.Empty(cut.FindAll("span[style*=cursor]"));   // default Manual: no built-in handler
+    }
+}
