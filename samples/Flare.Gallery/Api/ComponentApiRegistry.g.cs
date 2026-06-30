@@ -5396,9 +5396,9 @@ public static class ComponentApiRegistry
 
         e[@"DialogSize"] = new ApiEnumInfo(
             @"DialogSize",
-            @"Flare.Components.DialogSize",
-            @"Flare.Components",
-            @"Maximum-width size presets for FlareDialog.",
+            @"Flare.Abstractions.DialogSize",
+            @"Flare.Abstractions",
+            @"Maximum-width size presets for a Flare dialog (FlareDialog / a component dialog).",
             null,
             new ApiEnumMember[]
             {

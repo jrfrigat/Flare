@@ -247,6 +247,39 @@ Flare полностью интегрируется со стандартным 
 }
 ```
 
+Нужно больше, чем confirm/alert? `ShowAsync<TComponent>` показывает **любой** компонент как
+модальное окно и возвращает типизированный результат - без встроенного `@bind-Visible`:
+
+```razor
+@inject IDialogService Dialog
+
+@code {
+    private async Task Edit(Person person)
+    {
+        var parameters = new DialogParameters()
+            .Add(nameof(PersonEditDialog.Person), person);
+
+        var result = await Dialog.ShowAsync<PersonEditDialog>(
+            "Изменить профиль", parameters, new DialogOptions { Size = DialogSize.Sm });
+
+        if (!result.Cancelled && result.GetData<Person>() is { } edited)
+            Apply(edited);
+    }
+}
+```
+
+Тело диалога закрывает себя через каскадный `FlareDialogInstance`:
+
+```razor
+@code {
+    [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
+    [Parameter] public Person Person { get; set; } = default!;
+
+    private void Save()   => Dialog.Close(_edited); // подтвердить с типизированным результатом
+    private void Cancel() => Dialog.Cancel();        // отклонить
+}
+```
+
 ---
 
 ## 10. Docker

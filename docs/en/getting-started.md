@@ -246,6 +246,39 @@ Flare integrates fully with Blazor's standard `EditContext`:
 }
 ```
 
+Need more than confirm/alert? `ShowAsync<TComponent>` renders **any** component as a modal and
+returns a typed result - no inline `@bind-Visible` plumbing:
+
+```razor
+@inject IDialogService Dialog
+
+@code {
+    private async Task Edit(Person person)
+    {
+        var parameters = new DialogParameters()
+            .Add(nameof(PersonEditDialog.Person), person);
+
+        var result = await Dialog.ShowAsync<PersonEditDialog>(
+            "Edit profile", parameters, new DialogOptions { Size = DialogSize.Sm });
+
+        if (!result.Cancelled && result.GetData<Person>() is { } edited)
+            Apply(edited);
+    }
+}
+```
+
+The dialog body closes itself through a cascaded `FlareDialogInstance`:
+
+```razor
+@code {
+    [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
+    [Parameter] public Person Person { get; set; } = default!;
+
+    private void Save()   => Dialog.Close(_edited); // confirm with a typed payload
+    private void Cancel() => Dialog.Cancel();        // dismiss
+}
+```
+
 ---
 
 ## 10. Docker
