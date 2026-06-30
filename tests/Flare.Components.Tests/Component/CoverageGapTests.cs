@@ -1756,3 +1756,41 @@ public class C_FlareDateRangeCalendarTests : FlareTestContext
         Assert.Equal(combined.Count, cut.FindAll(".flare-daterangepicker__preset").Count);
     }
 }
+
+// FlareAccordion: auto-collapsing a sibling now notifies (two-way bind stays in sync), and a panel's
+// OnBeforeToggle can veto a toggle.
+public class C_FlareAccordionToggleTests : FlareTestContext
+{
+    [Fact]
+    public async Task SingleExpand_AutoCollapsesSibling_AndNotifies()
+    {
+        var p0States = new List<bool>();
+        var cut = Render<FlareAccordion>(p => p.AddChildContent(b =>
+        {
+            b.OpenComponent<FlareAccordionPanel>(0);
+            b.AddAttribute(1, nameof(FlareAccordionPanel.Header), (object)"P0");
+            b.AddAttribute(2, nameof(FlareAccordionPanel.ExpandedChanged),
+                EventCallback.Factory.Create<bool>(this, v => p0States.Add(v)));
+            b.CloseComponent();
+            b.OpenComponent<FlareAccordionPanel>(3);
+            b.AddAttribute(4, nameof(FlareAccordionPanel.Header), (object)"P1");
+            b.CloseComponent();
+        }));
+
+        await cut.InvokeAsync(() => cut.FindAll("button[aria-expanded]")[0].Click()); // expand P0
+        await cut.InvokeAsync(() => cut.FindAll("button[aria-expanded]")[1].Click()); // expand P1 -> P0 collapses
+
+        Assert.Contains(true, p0States);
+        Assert.Contains(false, p0States);  // the auto-collapse fired ExpandedChanged(false) -- the bug fix
+    }
+
+    [Fact]
+    public async Task OnBeforeToggle_ReturningFalse_BlocksExpand()
+    {
+        var cut = Render<FlareAccordionPanel>(p => p
+            .Add(x => x.Header, "P")
+            .Add(x => x.OnBeforeToggle, _ => Task.FromResult(false)));
+        await cut.InvokeAsync(() => cut.Find("button[aria-expanded]").Click());
+        Assert.Equal("false", cut.Find("button[aria-expanded]").GetAttribute("aria-expanded"));
+    }
+}

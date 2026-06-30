@@ -43,6 +43,9 @@
     [Parameter] public bool Expanded { get; set; }
     /// <summary>Callback fired when the expanded state changes.</summary>
     [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
+    /// <summary>Async guard fired before the panel toggles (the argument is the proposed expanded
+    /// state); return false to block it -- e.g. confirm before collapsing a panel with unsaved edits.</summary>
+    [Parameter] public Func<bool, Task<bool>>? OnBeforeToggle { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Accordion.Panel;
 
@@ -66,17 +69,26 @@
 
     private async Task Toggle()
     {
-        _expanded = !_expanded;
+        var next = !_expanded;
+        // Run the guard before committing; a false result vetoes the toggle.
+        if (OnBeforeToggle is not null && !await OnBeforeToggle(next))
+            return;
+
+        _expanded = next;
         if (_expanded)
-            Accordion?.PanelExpanded(this);
+            await (Accordion?.PanelExpandedAsync(this) ?? Task.CompletedTask);
         else
             Accordion?.PanelCollapsed(this);
         await ExpandedChanged.InvokeAsync(_expanded);
     }
 
-    internal void Collapse()
+    // Called by the accordion to auto-collapse this panel when a sibling opens (single-expand mode).
+    // Fires ExpandedChanged so a two-way bound parent stays in sync.
+    internal async Task CollapseAsync()
     {
+        if (!_expanded) return;
         _expanded = false;
+        await ExpandedChanged.InvokeAsync(false);
         StateHasChanged();
     }
 }

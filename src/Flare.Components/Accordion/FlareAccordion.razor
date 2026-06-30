@@ -17,11 +17,11 @@
 
     private FlareAccordionPanel? _expandedPanel;
 
-    internal void PanelExpanded(FlareAccordionPanel panel)
+    internal async Task PanelExpandedAsync(FlareAccordionPanel panel)
     {
-        if (AllowMultiple) return;
+        if (AllowMultiple) { _expandedPanel = panel; return; }
         if (_expandedPanel is not null && _expandedPanel != panel)
-            _expandedPanel.Collapse();
+            await _expandedPanel.CollapseAsync();
         _expandedPanel = panel;
     }
 
