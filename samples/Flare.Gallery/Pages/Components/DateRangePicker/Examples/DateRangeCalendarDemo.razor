@@ -1,0 +1,17 @@
+@* Mode="Calendar" shows a single inline calendar: click a start day, then an end day; the days
+   between are highlighted and a live preview follows the pointer while you choose the end. Presets
+   work in this mode too. *@
+<FlareStack Gap="FlareSpacing.Small">
+    <FlareDateRangePicker @bind-StartDate="_start" @bind-EndDate="_end"
+                          Mode="DateRangePickerMode.Calendar"
+                          ShowPresets="true"
+                          Style="max-width:22rem;" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        @($"{_start?.ToString("dd MMM yyyy") ?? "-"} -> {_end?.ToString("dd MMM yyyy") ?? "-"}")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private DateOnly? _start;
+    private DateOnly? _end;
+}

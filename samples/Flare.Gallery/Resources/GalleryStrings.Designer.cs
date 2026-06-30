@@ -2795,6 +2795,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline range calendar.
+        /// </summary>
+        public static string DateRangePicker_Calendar {
+            get {
+                return ResourceManager.GetString("DateRangePicker_Calendar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Quick-range presets.
         /// </summary>
         public static string DateRangePicker_Presets {
@@ -7061,6 +7070,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Async validation guard.
+        /// </summary>
+        public static string Stepper_Guard {
+            get {
+                return ResourceManager.GetString("Stepper_Guard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareStepper with multi-step wizard flow..
         /// </summary>
         public static string Stepper_Subtitle {
@@ -7086,16 +7104,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Stepper_Vertical", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Async validation guard.
-        /// </summary>
-        public static string Stepper_Guard {
-            get {
-                return ResourceManager.GetString("Stepper_Guard", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на On/off &amp; disabled.
         /// </summary>

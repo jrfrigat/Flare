@@ -246,6 +246,26 @@
   cursor: default;
 }
 
+/* Calendar mode: an inline range calendar. Reuses the datepicker grid/day styles and adds the range
+   highlight (start/end caps + the days between). */
+.flare-daterangepicker__calendar {
+  max-width: 20rem;
+  padding-top: var(--flare-spacing-4, 0.5rem);
+}
+.flare-datepicker__day.flare-daterangepicker__day--in-range {
+  background: var(--flare-color-secondary-container);
+  color: var(--flare-color-on-secondary-container);
+  border-radius: 0;
+}
+.flare-datepicker__day.flare-daterangepicker__day--start,
+.flare-datepicker__day.flare-daterangepicker__day--end {
+  background: var(--flare-color-primary);
+  color: var(--flare-color-on-primary);
+}
+.flare-datepicker__day.flare-daterangepicker__day--start { border-radius: var(--flare-shape-full, 999px) 0 0 var(--flare-shape-full, 999px); }
+.flare-datepicker__day.flare-daterangepicker__day--end { border-radius: 0 var(--flare-shape-full, 999px) var(--flare-shape-full, 999px) 0; }
+.flare-datepicker__day.flare-daterangepicker__day--start.flare-daterangepicker__day--end { border-radius: var(--flare-shape-full, 999px); }
+
 /* Month grid */
 .flare-datepicker__month-grid {
   display: grid;

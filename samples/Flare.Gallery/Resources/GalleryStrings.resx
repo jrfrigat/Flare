@@ -1302,6 +1302,9 @@
   <data name="DateRangePicker_Presets" xml:space="preserve">
     <value>Quick-range presets</value>
   </data>
+  <data name="DateRangePicker_Calendar" xml:space="preserve">
+    <value>Inline range calendar</value>
+  </data>
   <data name="DateTimePicker_Title" xml:space="preserve">
     <value>Date Time Picker</value>
   </data>

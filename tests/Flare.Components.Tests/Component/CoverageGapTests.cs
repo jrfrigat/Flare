@@ -1706,3 +1706,38 @@ public class C_FlareStepperGuardTests : FlareTestContext
         Assert.Equal(1, seen.To);
     }
 }
+
+// FlareDateRangePicker Calendar mode: click a start day then an end day to select a range (swapping
+// when the second click precedes the first). Fields mode (default) renders the two-input layout.
+public class C_FlareDateRangeCalendarTests : FlareTestContext
+{
+    [Fact]
+    public void Default_IsFieldsMode_NoInlineCalendar()
+    {
+        var cut = Render<FlareDateRangePicker>();
+        Assert.Empty(cut.FindAll(".flare-daterangepicker__calendar"));
+        Assert.NotEmpty(cut.FindAll(".flare-daterangepicker__fields"));
+    }
+
+    [Fact]
+    public async Task Calendar_TwoClicks_SelectOrderedRange()
+    {
+        var cut = Render<FlareDateRangePicker>(p => p.Add(c => c.Mode, DateRangePickerMode.Calendar));
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[10].Click());
+        Assert.NotNull(cut.Instance.StartDate);
+        Assert.Null(cut.Instance.EndDate);                       // first click sets only the start
+
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[24].Click());
+        Assert.NotNull(cut.Instance.EndDate);
+        Assert.True(cut.Instance.StartDate <= cut.Instance.EndDate);
+    }
+
+    [Fact]
+    public async Task Calendar_SecondClickEarlier_Swaps()
+    {
+        var cut = Render<FlareDateRangePicker>(p => p.Add(c => c.Mode, DateRangePickerMode.Calendar));
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[24].Click());   // later day first
+        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[10].Click());   // earlier second
+        Assert.True(cut.Instance.StartDate <= cut.Instance.EndDate);                       // swapped into order
+    }
+}
