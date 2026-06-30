@@ -194,6 +194,17 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Layout and navigation redesigned: each FlareLayoutDrawer now owns its own state (@bind-Open) with a Variant, so you can compose multi-drawer (two-pane) layouts, and FlareNavMenu gains Full/Rail/RailLabeled modes (a breaking change to the old slot-based FlareLayout)
+        ///FlareDateRangePicker gains an inline range-calendar mode, Min/Max/IsDateDisabled constraints, and public DefaultPresets you can extend
+        ///Accessibility: FlareMenu keyboard navigation now works (panel focus + aria-activedescendant), FlarePopover tr [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV6 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Basic (single expand).
         /// </summary>
         public static string Accordion_Basic {

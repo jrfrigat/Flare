@@ -3,6 +3,119 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.6] - 2026-06-30
+
+This release reworks the **layout and navigation API** - a breaking change - and adds a large batch
+of component features and accessibility improvements. The single-drawer `FlareLayout` is replaced by
+a composition model where each `FlareLayoutDrawer` owns its own state, enabling multi-drawer
+(two-pane) layouts.
+
+### Added
+- **`FlareLayoutDrawer` - a self-owned, composable layout drawer.** Each drawer owns its open state
+  via `@bind-Open` and registers a grid track with the parent `FlareLayout`. New parameters: `Variant`
+  (`Persistent` / `Mini` / `Temporary` / `Responsive` / `Permanent`), `Anchor` (`Left` / `Right`),
+  `Width`, `RailWidth`, `HoverExpand`; plus `IsOpen`, `IsCollapsedRail`, `SetOpenAsync`, `ToggleAsync`.
+  Compose two drawers for a two-pane (rail + section) layout. A collapsed `Mini` rail can hover- or
+  focus-expand to full width as a floating overlay without reflowing the content. New
+  `flare-layout-drawer--{persistent,mini,temporary,responsive,permanent,end,floating,hover-expand}`
+  classes and a `--flare-layout-appbar-height` (64px) token.
+- **`FlareNavMenu.Mode`** (new `NavMenuMode` enum: `Full`, `Rail`, `RailLabeled`). `RailLabeled`
+  renders an MD3 navigation rail (icon with a stacked caption); `Mode` takes precedence over the
+  `Rail` flag and the drawer-driven auto-rail. New `flare-nav-menu--rail-labeled` class.
+- **`FlareDateRangePicker` inline calendar mode and date constraints.** A new `Mode`
+  (`DateRangePickerMode.Fields`, default / `Calendar`): Calendar mode is a single inline range
+  calendar - click the start day then the end day, with the days between highlighted and a live hover
+  preview while choosing the end. New `Min` / `Max` / `IsDateDisabled` constraints apply in both modes.
+  New `flare-daterangepicker__calendar` / `__day--start` / `__day--end` / `__day--in-range` classes.
+- **`FlarePopover.Trigger`** (new `PopoverTrigger` enum: `Manual`, default / `Click`). `Click` toggles
+  the popover from its anchor with no extra wiring. While open, the popover now traps `Tab` focus
+  inside the panel and restores focus to the trigger on close.
+- **`FlareStepper.OnStepChanging`** - an async navigation guard (`Func<StepperChange, Task<bool>>`)
+  run before the active step changes on any Next/Back/click; return `false` to veto the move (e.g.
+  per-step validation). The new `StepperChange` readonly record struct carries the `From`/`To` indices,
+  so a handler can allow backward moves while validating forward ones.
+- **`FlareAccordionPanel.OnBeforeToggle`** - an async guard (`Func<bool, Task<bool>>`) run with the
+  proposed expanded state before a panel toggles; return `false` to block it (e.g. confirm before
+  collapsing a panel with unsaved edits).
+- **Relevance-ranked filtering on `FlareAutocomplete` and `FlareMultiSelect`** - new `Fuzzy` and
+  `RankFunc` parameters. `Fuzzy=true` ranks matches best-first via the new scorer (so typing "lo"
+  surfaces "London" above "Los Angeles"); `RankFunc((item, query) => score)` supplies a custom scorer
+  (positive scores only, best-first). Both apply only when a query is present (and are ignored when a
+  `SearchFunc` owns the ordering).
+- **`FlareSearch`** - a new public static relevance-scoring utility. `Score(text, query)` returns a
+  banded `0..1000` score (exact > prefix > word-start > substring > subsequence), and
+  `Rank(items, score)` keeps positive scores ordered best-first - usable to build custom `RankFunc`
+  delegates.
+- **`FlareFormBuilder` two-way model binding** - a new `ModelChanged` callback enables `@bind-Model`,
+  so resetting the form (which swaps in a fresh model instance) updates a bound parent field instead
+  of being overwritten by a stale reference on the next render.
+- **WCAG contrast tooling.** `FlareColorCustomizer` shows a live contrast preview for the selected
+  primary color (an "Aa" sample of the auto on-color, the numeric ratio, and an AA/AAA/AA-Large/Fail
+  badge), gated by the new `ShowContrast` parameter (default `true`). New
+  `Flare.Theming.ColorMath.WcagLuminance(hex)` and `ColorMath.ContrastRatio(a, b)` helpers.
+- **Gallery:** a Settings -> Navigation tab to choose a labeled vs icon-only collapsed rail (persisted
+  via a new `RailLabelService`, restored before first paint); new demos for Autocomplete fuzzy ranking,
+  the DateRangePicker inline calendar and built-in-plus-custom presets, the Stepper async guard, and
+  the `FlareColorCustomizer` on the Color page. All new strings localized (EN + RU).
+
+### Changed
+- **Layout / navigation API redesigned (breaking).** `FlareLayout` is now a composition-only shell:
+  place a `FlareLayoutAppBar`, one or more `FlareLayoutDrawer`, and a `FlareLayoutContent` as
+  `ChildContent` instead of the old `<AppBar>` / `<Drawer>` / `<Content>` slots, and the layout no
+  longer owns drawer state. `FlareLayoutContext` (now `sealed`) is rewritten from a single-drawer
+  holder into a multi-drawer registry/coordinator (`Register`/`Unregister`, `GridTemplateColumns`,
+  `PrimaryDrawer`, `TogglePrimaryAsync`, `AnyOverlayOpen`, `CloseOverlaysAsync`); the shell is one CSS
+  grid driven by a published `--flare-layout-cols` variable. `FlareLayoutAppBar.DrawerToggle` now
+  toggles the layout's primary drawer (the first non-temporary start drawer). See **Removed** for the
+  dropped members; the Gallery and both samples were migrated to the new API.
+- **`FlareMenu` keyboard focus and screen-reader support.** An open menu now focuses its panel (so the
+  arrow / Home / End / Tab handler actually receives keys), starts the active item on the first enabled
+  item, and exposes it via `aria-activedescendant` (each item now has a stable id). Previously the
+  panel was never focused, so keyboard navigation did not start at all.
+- **`FlareDateRangePicker.DefaultPresets`** is now a public static property (was a private field), so
+  callers can keep the built-in quick-ranges and append their own:
+  `Presets="[.. FlareDateRangePicker.DefaultPresets, .. myPresets]"`. It is rebuilt on each access so
+  the localized labels follow the current culture.
+- **Performance.** `IThemeService.Themes` / `Palettes` now return cached read-only snapshots (rebuilt
+  only on registration or a dynamic-palette change) instead of allocating a fresh list per read, and
+  `FlareComponentBase.BuildCssClass` has a fast path that returns the root class directly when there
+  are no modifier classes and no user `Class` - cutting per-render allocations.
+
+### Fixed
+- **`FlareAccordion` two-way binding stays in sync** when a sibling auto-collapses in single-expand
+  mode: the collapsed panel now raises `ExpandedChanged(false)` (and auto-collapse is skipped when it
+  is already collapsed), so a parent bound via `@bind-Expanded` no longer desyncs.
+- **`FlareListItem` clickable items are keyboard-operable** - a clickable item (`role="button"`,
+  `tabindex="0"`) now activates on Enter and Space, satisfying WCAG 2.1.1.
+- **`FlareDatePicker` arrow-key navigation skips disabled dates** (`Min` / `Max` / `IsDateDisabled`)
+  instead of landing on them, and stops rather than looping when an entire range is disabled.
+- **`FlareDateRangePicker` (Fields mode) can no longer produce a start later than the end** - the inner
+  pickers' bounds are clamped to the linked value.
+- **`FlareCarousel` autoplay honors a changed `AutoPlayIntervalMs`** at runtime (the timer is recreated
+  when autoplay turns on or the interval changes).
+- **`FlareDataTree` caches lazily loaded children** across collapse/expand, avoiding a redundant
+  `ChildrenProvider` call on every re-expand.
+- **`FlareAutocomplete` returns focus to the input** after the clear button is used.
+
+### Security
+- **`FlareRichTextEditor` restricts inserted link URLs to a safe scheme allowlist** (relative,
+  fragment, `http(s)`, `mailto`, `tel`), blocking `javascript:` / `data:` / `vbscript:` links that
+  would otherwise be stored XSS in the edited HTML; an unsafe or empty URL leaves the link input open
+  for correction instead of inserting.
+- **`FlareImage` sanitizes its composed inline style** (`AspectRatio` / `BorderRadius` / `Style`)
+  through `CssValidator.StripDangerous`, consistent with the other style-injecting components.
+
+### Removed
+- **Breaking - `FlareLayout` slot and single-drawer API.** Removed the `AppBar`, `Drawer`, `Content`,
+  `ContentClass`, `ContentStyle`, `ContentMaxWidth` and `ContentAlignment` slot parameters,
+  `DrawerOpen` / `DrawerOpenChanged`, and `MiniRail`; and `FlareLayoutContext.DrawerOpen` / `MiniRail`
+  / `RailCollapsed` / `ToggleDrawer`. Migrate to the composition API (`FlareLayoutDrawer` with
+  `@bind-Open` + `Variant`).
+- **Breaking - old layout CSS classes.** Removed `flare-layout--drawer-open`, `flare-layout__body`,
+  `flare-layout__main`, `flare-layout--mini-rail` and the matching `Css.Classes.Layout.DrawerOpen` /
+  `Body` / `Main` / `MiniRail` constants; the shell now uses `flare-layout--mobile` / `--scrim-open`
+  and the `flare-layout-drawer--*` variant classes.
+
 ## [0.0.5] - 2026-06-28
 
 ### Added
