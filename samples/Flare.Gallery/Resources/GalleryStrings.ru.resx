@@ -2409,6 +2409,15 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare - библиотека компонентов Blazor с открытым исходным кодом на .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV8" xml:space="preserve">
+    <value>FlareIconButton: отдельная кнопка только с иконкой - тонкая обёртка над FlareButton вместо громоздкой связки FlareButton + LeadingIcon
+FlareCollapse: отдельный контейнер сворачивания (флаг Expanded или встроенный заголовок) с собственной страницей в галерее
+FlareChip Variant (Outlined/Filled/Elevated) и числовой FlareCard Elevation (0-5; 0 - без тени)
+FlareAvatar FallbackIcon/FallbackContent; у FlareField появились Error/Invalid (состояние без сообщения), FullWidth и Margin
+FlareSelect теперь принимает декларативные &lt;option&gt; в дополнение к коллекции Items
+FlareMenuItem Target (внешние ссылки) и IconColor; FlareToggleGroup каскадирует Size/Color/Disabled на свои кнопки
+Перегрузка ISnackbarService.Show с опциями (стилизация сообщения и CloseAfterNavigation); проброс FlareLink Typo</value>
+  </data>
   <data name="About_WhatsNewV7" xml:space="preserve">
     <value>Компонентные диалоги: IDialogService.ShowAsync&lt;TComponent&gt; показывает любой компонент как модальное окно и возвращает типизированный DialogResult - без встроенного @bind-Visible
 Передавайте значения через набор DialogParameters и закрывайте диалог из тела через каскадный FlareDialogInstance (Dialog.Close(value) / Dialog.Cancel())

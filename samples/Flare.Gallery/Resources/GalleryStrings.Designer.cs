@@ -204,6 +204,13 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>Looks up a localized string with the v0.0.8 release highlights (one per line).</summary>
+        public static string About_WhatsNewV8 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV8", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Component dialogs: IDialogService.ShowAsync&lt;TComponent&gt; renders any component as a modal and returns a typed DialogResult.
         /// </summary>
