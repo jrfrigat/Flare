@@ -2379,6 +2379,15 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare is an open-source Blazor component library built with .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV6" xml:space="preserve">
+    <value>Layout and navigation redesigned: each FlareLayoutDrawer now owns its own state (@bind-Open) with a Variant, so you can compose multi-drawer (two-pane) layouts, and FlareNavMenu gains Full/Rail/RailLabeled modes (a breaking change to the old slot-based FlareLayout)
+FlareDateRangePicker gains an inline range-calendar mode, Min/Max/IsDateDisabled constraints, and public DefaultPresets you can extend
+Accessibility: FlareMenu keyboard navigation now works (panel focus + aria-activedescendant), FlarePopover traps focus and adds a click trigger, and clickable list items respond to Enter/Space
+New async guards: FlareStepper.OnStepChanging and FlareAccordionPanel.OnBeforeToggle can veto a navigation or toggle for per-step validation
+Relevance-ranked search: FlareAutocomplete and FlareMultiSelect gain Fuzzy and RankFunc, powered by the new public FlareSearch scorer
+Security: the rich text editor blocks javascript: and data: links, and FlareImage sanitizes its inline style
+Gallery: a new Navigation tab in Settings for the collapsed rail, a WCAG contrast preview on the Color page, and new demos for the calendar range picker, fuzzy search and the stepper guard</value>
+  </data>
   <data name="About_WhatsNewV5" xml:space="preserve">
     <value>FlareNavMenu gains Header and Footer slots - a framed layout that pins a header and footer while the items scroll between them, and still collapses to a mini-rail
 Snackbars can update in place and show an indeterminate progress bar, so a "new version available" toast can morph into an "updating..." one
