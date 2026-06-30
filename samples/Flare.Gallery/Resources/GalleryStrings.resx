@@ -2618,4 +2618,19 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
   <data name="Responsive_DesktopLayout" xml:space="preserve"><value>🖥️ Desktop layout - full multi-column experience.</value></data>
   <data name="Responsive_LastChange" xml:space="preserve"><value>Last change reported to C#:</value></data>
   <data name="Responsive_NoneYet" xml:space="preserve"><value>(none yet)</value></data>
+  <data name="Responsive_ShownMd" xml:space="preserve"><value>Shown only on md (Only + Invert).</value></data>
+  <data name="Chip_Variants" xml:space="preserve"><value>Variants</value></data>
+  <data name="Avatar_Fallback" xml:space="preserve"><value>Fallback icon</value></data>
+  <data name="Field_ErrorState" xml:space="preserve"><value>Error state (no message)</value></data>
+  <data name="Field_FullWidthMargin" xml:space="preserve"><value>Width &amp; margin</value></data>
+  <data name="Collapse_Title" xml:space="preserve"><value>Collapse</value></data>
+  <data name="Collapse_Subtitle" xml:space="preserve"><value>A standalone expand/collapse container for a single region - driven by an Expanded flag or its own optional header.</value></data>
+  <data name="Collapse_Standalone" xml:space="preserve"><value>Externally controlled</value></data>
+  <data name="Collapse_Header" xml:space="preserve"><value>With header</value></data>
+  <data name="Layout_StackStretch" xml:space="preserve"><value>Stretch items</value></data>
+  <data name="Menu_IconColor" xml:space="preserve"><value>Icon color &amp; external links</value></data>
+  <data name="ToggleButton_GroupCascade" xml:space="preserve"><value>Group cascade</value></data>
+  <data name="Cards_Elevation" xml:space="preserve"><value>Elevation</value></data>
+  <data name="Link_Typo" xml:space="preserve"><value>Typography</value></data>
+  <data name="Snackbar_Options" xml:space="preserve"><value>Options overload</value></data>
 </root>

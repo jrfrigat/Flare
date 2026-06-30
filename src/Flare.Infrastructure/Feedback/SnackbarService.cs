@@ -20,6 +20,16 @@ public sealed class SnackbarService : ISnackbarService
                      bool showClose = true)
         => OnShow?.Invoke(new SnackbarMessage(Guid.NewGuid(), text, severity, durationMs, actionText, onAction, showClose));
 
+    /// <summary>Enqueues a snackbar notification configured by a <see cref="SnackbarOptions"/> bag.</summary>
+    public void Show(string text, SnackbarOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+        OnShow?.Invoke(new SnackbarMessage(
+            Guid.NewGuid(), text, options.Severity, options.DurationMs,
+            options.ActionText, options.OnAction, options.ShowClose, options.ShowProgress,
+            options.CssClass, options.CloseAfterNavigation));
+    }
+
     /// <summary>Enqueues a pre-built snackbar (the caller owns its <see cref="SnackbarMessage.Id"/>).</summary>
     public void Show(SnackbarMessage message)
     {

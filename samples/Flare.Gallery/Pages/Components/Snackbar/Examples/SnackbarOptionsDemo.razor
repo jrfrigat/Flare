@@ -1,0 +1,24 @@
+@inject ISnackbarService Snackbar
+
+@* The options overload (SnackbarOptions) carries severity, a progress bar, per-message CssClass and
+   the CloseAfterNavigation flag in one bag. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareButton OnClick="ShowProgress">Severity + progress</FlareButton>
+    <FlareButton Variant="ButtonVariant.Tonal" OnClick="ShowCloseOnNav">Close after navigation</FlareButton>
+</FlareStack>
+
+@code {
+    private void ShowProgress() => Snackbar.Show("Uploading project files...", new SnackbarOptions
+    {
+        Severity = SnackbarSeverity.Info,
+        DurationMs = 6000,
+        ShowProgress = true,
+    });
+
+    private void ShowCloseOnNav() => Snackbar.Show("Dismissed when you navigate away", new SnackbarOptions
+    {
+        Severity = SnackbarSeverity.Warning,
+        DurationMs = 0,
+        CloseAfterNavigation = true,
+    });
+}

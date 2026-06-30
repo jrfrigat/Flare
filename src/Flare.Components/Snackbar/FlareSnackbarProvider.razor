@@ -1,12 +1,13 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject ISnackbarService SnackbarService
+@inject NavigationManager Navigation
 
 <div class="@Css.Classes.Snackbar.Provider @_positionClass" aria-live="polite" aria-atomic="false">
     @foreach (var msg in _messages)
     {
         var m = msg;
-        <div class="@BuildCssClass(Css.Classes.Snackbar.Root, $"flare-snackbar--{m.Severity.ToString().ToLowerInvariant()}", m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null)"
+        <div class="@BuildCssClass(Css.Classes.Snackbar.Root, $"flare-snackbar--{m.Severity.ToString().ToLowerInvariant()}", m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null, m.CssClass)"
              role="status">
             <span class="@Css.Classes.Snackbar.Text">@m.Text</span>
             <div class="@Css.Classes.Snackbar.Actions">
@@ -61,7 +62,16 @@
         base.OnInitialized();
         SnackbarService.OnShow += HandleShow;
         SnackbarService.OnUpdate += HandleUpdate;
+        Navigation.LocationChanged += HandleLocationChanged;
     }
+
+    // Dismiss any message flagged CloseAfterNavigation when the route changes.
+    private void HandleLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        => InvokeAsync(() =>
+        {
+            if (_messages.RemoveAll(m => m.CloseAfterNavigation) > 0)
+                StateHasChanged();
+        });
 
     private void HandleShow(SnackbarMessage msg)
     {
@@ -105,6 +115,7 @@
     {
         SnackbarService.OnShow -= HandleShow;
         SnackbarService.OnUpdate -= HandleUpdate;
+        Navigation.LocationChanged -= HandleLocationChanged;
         await base.DisposeAsync();
     }
 }

@@ -73,7 +73,8 @@
 
 .flare-menu-item__icon {
     font-size: var(--flare-menu-item-icon-size, 1.25rem);
-    color: var(--flare-color-on-surface-variant);
+    /* IconColor (role class or inline) sets --fc-main; default stays the neutral icon color. */
+    color: var(--fc-main, var(--flare-color-on-surface-variant));
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     flex-shrink: 0;
 }

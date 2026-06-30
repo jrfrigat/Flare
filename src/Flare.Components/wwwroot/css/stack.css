@@ -23,6 +23,12 @@
 
 .flare-stack--wrap { flex-wrap: wrap; }
 
+/* Stretch: every direct child shares the main-axis space equally. min-width/height:0
+   lets children shrink below their content size so long content does not overflow. */
+.flare-stack--stretch > * { flex: 1 1 0; min-width: 0; min-height: 0; }
+/* Stretch-first: only the first child grows to fill the remaining space. */
+.flare-stack--stretch-first > :first-child { flex: 1 1 auto; min-width: 0; min-height: 0; }
+
 /* Gap modifiers */
 .flare-stack--gap-none     { gap: 0; }
 .flare-stack--gap-xxsmall  { gap: var(--flare-spacing-2, 0.25rem); }

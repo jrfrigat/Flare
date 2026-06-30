@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_resolvedSelectedClass, _sizeClass, _elevatedClass, _colorClass)" style="@_chipStyle" @attributes="AdditionalAttributes" role="button" tabindex="0" @onclick="HandleClick" @onkeydown="HandleKeyDown">
+<div class="@BuildCssClass(_resolvedSelectedClass, _sizeClass, _variantClass, _colorClass)" style="@_chipStyle" @attributes="AdditionalAttributes" role="button" tabindex="0" @onclick="HandleClick" @onkeydown="HandleKeyDown">
     @if (Avatar is not null)
     {
         <span class="@Css.Classes.Chip.Avatar">@Avatar</span>
@@ -44,7 +44,13 @@
     [Parameter] public EventCallback OnClick { get; set; }
     /// <summary>Color of the chip. Role -> shared color class; custom -> inline tokens. Default = theme default.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
-    /// <summary>Renders the chip as an elevated chip (filled surface with a shadow, no border).</summary>
+    /// <summary>Visual style of the chip: <see cref="ChipVariant.Outlined"/> (default, bordered),
+    /// <see cref="ChipVariant.Filled"/> (solid surface fill) or <see cref="ChipVariant.Elevated"/>
+    /// (filled with a shadow). Setting <see cref="Elevated"/> is equivalent to
+    /// <see cref="ChipVariant.Elevated"/> and takes precedence over this parameter when true.</summary>
+    [Parameter] public ChipVariant Variant { get; set; } = ChipVariant.Outlined;
+    /// <summary>Renders the chip as an elevated chip (filled surface with a shadow, no border). Convenience
+    /// shorthand for <c>Variant="ChipVariant.Elevated"</c>; when true it overrides <see cref="Variant"/>.</summary>
     [Parameter] public bool Elevated { get; set; }
 
     /// <summary>Parent chip group context providing selection state management.</summary>
@@ -57,7 +63,14 @@
         : Selected;
 
     private string _resolvedSelectedClass => _isSelected ? Css.Classes.Chip.Selected : string.Empty;
-    private string _elevatedClass => Elevated ? Css.Classes.Chip.Elevated : string.Empty;
+    // Elevated bool is a back-compat shorthand for Variant=Elevated and wins when set.
+    private ChipVariant _effectiveVariant => Elevated ? ChipVariant.Elevated : Variant;
+    private string _variantClass => _effectiveVariant switch
+    {
+        ChipVariant.Filled   => Css.Classes.Chip.Filled,
+        ChipVariant.Elevated => Css.Classes.Chip.Elevated,
+        _                    => string.Empty, // Outlined is the base style
+    };
     private string _colorClass => Color.CssClass ?? string.Empty;
 
     // Custom/dynamic -> inline --fc-main (fg/border/selected-bg) + --fc-on (selected text).

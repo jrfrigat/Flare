@@ -1,0 +1,70 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* A dedicated icon-only button. Thin wrapper over FlareButton that renders the icon as the button's
+   LeadingIcon with no label, so FlareButton's square icon-only treatment applies automatically. Use
+   instead of the verbose <FlareButton><LeadingIcon><FlareIcon/></LeadingIcon></FlareButton> idiom. *@
+<FlareButton Variant="Variant"
+             Size="Size"
+             Color="Color"
+             Shape="Shape"
+             Disabled="Disabled"
+             Loading="Loading"
+             PressMorph="PressMorph"
+             Type="Type"
+             AriaPressed="AriaPressed"
+             AriaLabel="@AriaLabel"
+             Href="@Href"
+             Target="@Target"
+             OnClick="OnClick"
+             Class="@Class"
+             Style="@Style"
+             @attributes="AdditionalAttributes">
+    <LeadingIcon>
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else if (!string.IsNullOrEmpty(Icon))
+        {
+            <FlareIcon Name="@Icon" />
+        }
+    </LeadingIcon>
+</FlareButton>
+
+@code {
+    /// <summary>Material Symbols icon name rendered inside the button (e.g. <c>settings</c>). Ignored when
+    /// <see cref="ChildContent"/> is supplied.</summary>
+    [Parameter] public string? Icon { get; set; }
+    /// <summary>Custom icon content, used in place of <see cref="Icon"/> (e.g. a configured <c>FlareIcon</c> or SVG).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Visual style variant. Defaults to <see cref="ButtonVariant.Text"/> (the MD3 "standard" icon button).</summary>
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Text;
+    /// <summary>Size of the button.</summary>
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    /// <summary>Color of the button. Role -> shared class; custom -> inline tokens. Default keeps the theme default.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons).</summary>
+    [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
+    /// <summary>Opt-in MD3 Expressive press morph: the corner radius animates while the button is pressed.</summary>
+    [Parameter] public bool PressMorph { get; set; }
+    /// <summary>Disables the button when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Shows a spinner and disables the button when true.</summary>
+    [Parameter] public bool Loading { get; set; }
+    /// <summary>HTML type attribute of the button element (Button, Submit, or Reset).</summary>
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.Button;
+    /// <summary>Indicates pressed state for toggle icon buttons, forwarded as aria-pressed.</summary>
+    [Parameter] public bool AriaPressed { get; set; }
+    /// <summary>Accessible label for the button, forwarded as aria-label. Strongly recommended for icon-only buttons.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>When set, the button renders as a link (&lt;a&gt;) to this URL. Disabled/Loading removes the href.</summary>
+    [Parameter] public string? Href { get; set; }
+    /// <summary>Target for the link button (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>
+    [Parameter] public string? Target { get; set; }
+    /// <summary>Callback invoked when the button is clicked.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    // This component only composes FlareButton; it has no root element of its own.
+    protected override string ComponentCssClass => string.Empty;
+}

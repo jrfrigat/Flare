@@ -1,0 +1,86 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* Standalone expand/collapse container. Unlike FlareAccordion (a panel group), this wraps a single
+   region whose visibility is driven by the Expanded parameter - controlled externally (@bind-Expanded
+   or any toggle) or via the optional built-in header. The region animates its height open/closed. *@
+<div class="@BuildCssClass(_expanded ? Css.Classes.Collapse.Expanded : null, Disabled ? Css.Classes.Collapse.Disabled : null)"
+     style="@Style"
+     @attributes="AdditionalAttributes">
+    @if (_hasHeader)
+    {
+        <button class="@Css.Classes.Collapse.Header"
+                type="button"
+                id="@_headerId"
+                disabled="@Disabled"
+                aria-expanded="@_expanded.ToString().ToLowerInvariant()"
+                aria-controls="@_regionId"
+                @onclick="Toggle">
+            <span class="@Css.Classes.Collapse.HeaderText">
+                @if (HeaderContent is not null)
+                {
+                    @HeaderContent
+                }
+                else
+                {
+                    @Header
+                }
+            </span>
+            <FlareIcon Name="@(_expanded ? "expand_less" : "expand_more")" Class="@Css.Classes.Collapse.Icon" />
+        </button>
+    }
+    <div class="@Css.Classes.Collapse.Region"
+         id="@_regionId"
+         role="region"
+         aria-labelledby="@(_hasHeader ? _headerId : null)">
+        <div class="@Css.Classes.Collapse.Inner">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+    /// <summary>Content revealed when the collapse is expanded.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Optional header text. When set (or <see cref="HeaderContent"/>) a clickable toggle header
+    /// is rendered; otherwise the collapse is headerless and driven only by <see cref="Expanded"/>.</summary>
+    [Parameter] public string? Header { get; set; }
+    /// <summary>Rich header content (icons, badges, custom markup); overrides <see cref="Header"/> when set
+    /// and renders a clickable toggle header.</summary>
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
+    /// <summary>Whether the content region is expanded. Supports two-way binding (<c>@bind-Expanded</c>).</summary>
+    [Parameter] public bool Expanded { get; set; }
+    /// <summary>Fired when the expanded state changes (enables <c>@bind-Expanded</c>).</summary>
+    [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
+    /// <summary>Disables the built-in header toggle. A headerless collapse is unaffected (it is controlled
+    /// only through <see cref="Expanded"/>).</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Collapse.Root;
+
+    private bool _expanded;
+    private bool _lastExpanded;
+    private readonly string _id = Guid.NewGuid().ToString("N")[..8];
+    private string _headerId => $"flare-collapse-hdr-{_id}";
+    private string _regionId => $"flare-collapse-rgn-{_id}";
+    private bool _hasHeader => HeaderContent is not null || !string.IsNullOrEmpty(Header);
+
+    protected override void OnParametersSet()
+    {
+        // Adopt the Expanded parameter only when it actually changes externally; otherwise keep the
+        // local toggle state so an unbound header collapse is not reset by parent re-renders.
+        if (Expanded != _lastExpanded)
+        {
+            _expanded = Expanded;
+            _lastExpanded = Expanded;
+        }
+    }
+
+    private async Task Toggle()
+    {
+        if (Disabled) return;
+        _expanded = !_expanded;
+        _lastExpanded = _expanded;
+        await ExpandedChanged.InvokeAsync(_expanded);
+    }
+}

@@ -23,6 +23,12 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>"horizontal" (default) or "vertical".</summary>
     [Parameter] public string Orientation { get; set; } = "horizontal";
+    /// <summary>Size cascaded to every child <c>FlareToggleButton</c>. When null (default) each button keeps its own <c>Size</c>.</summary>
+    [Parameter] public ButtonSize? Size { get; set; }
+    /// <summary>Color cascaded to every child <c>FlareToggleButton</c> (tints the selected state). When null (default) each button keeps its own <c>Color</c>.</summary>
+    [Parameter] public FlareColor? Color { get; set; }
+    /// <summary>When true, disables every child <c>FlareToggleButton</c> in the group.</summary>
+    [Parameter] public bool Disabled { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.ToggleGroup.Root;
 
@@ -31,6 +37,8 @@
 
     private HashSet<object?> _selected = new();
     private FlareToggleGroupContext _context = null!;
+    // Tracks the last cascaded settings so the context is rebuilt when they change (not only on selection change).
+    private (ButtonSize? Size, FlareColor? Color, bool Disabled) _lastCascade;
 
     protected override void OnParametersSet()
     {
@@ -38,14 +46,19 @@
             ? new HashSet<object?>(Values?.Cast<object?>() ?? Enumerable.Empty<object?>())
             : Value is not null ? new HashSet<object?> { Value } : new HashSet<object?>();
 
-        // Only rebuild context when the selection set actually changed to avoid
-        // forcing a full subtree re-render on every parent parameter set.
-        if (_context is null || !newSelected.SetEquals(_selected))
+        var cascade = (Size, Color, Disabled);
+        // Rebuild the context when the selection set OR a cascaded setting changed, to avoid
+        // forcing a full subtree re-render on every unrelated parent parameter set.
+        if (_context is null || !newSelected.SetEquals(_selected) || cascade != _lastCascade)
         {
             _selected = newSelected;
-            _context = new FlareToggleGroupContext(_selected, MultiSelect, HandleToggle);
+            _lastCascade = cascade;
+            _context = BuildContext(_selected);
         }
     }
+
+    private FlareToggleGroupContext BuildContext(IEnumerable<object?> selected)
+        => new(new HashSet<object?>(selected), MultiSelect, HandleToggle, Size, Color, Disabled);
 
     private async Task HandleToggle(object? value)
     {
@@ -54,14 +67,14 @@
             if (!_selected.Add(value))
                 _selected.Remove(value);
 
-            _context = new FlareToggleGroupContext(new HashSet<object?>(_selected), MultiSelect, HandleToggle);
+            _context = BuildContext(_selected);
             await ValuesChanged.InvokeAsync(_selected.Cast<TValue?>().ToList());
         }
         else
         {
             var next = _selected.Contains(value) ? default : (TValue?)value;
             _selected = next is not null ? new HashSet<object?> { next } : new HashSet<object?>();
-            _context = new FlareToggleGroupContext(new HashSet<object?>(_selected), MultiSelect, HandleToggle);
+            _context = BuildContext(_selected);
             await ValueChanged.InvokeAsync(next);
         }
 

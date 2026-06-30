@@ -7,6 +7,8 @@
        id="@ItemId"
        role="menuitem"
        href="@_safeHref"
+       target="@Target"
+       rel="@_rel"
        tabindex="@_tabIndex"
        aria-disabled="@Disabled.ToString().ToLowerInvariant()"
        style="@Style"
@@ -15,7 +17,7 @@
        @attributes="AdditionalAttributes">
         @if (!string.IsNullOrEmpty(Icon))
         {
-            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded" aria-hidden="true">@Icon</span>
+            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded @_iconColorClass" style="@_iconColorStyle" aria-hidden="true">@Icon</span>
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
     </a>
@@ -33,7 +35,7 @@ else
             @attributes="AdditionalAttributes">
         @if (!string.IsNullOrEmpty(Icon))
         {
-            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded" aria-hidden="true">@Icon</span>
+            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded @_iconColorClass" style="@_iconColorStyle" aria-hidden="true">@Icon</span>
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
     </button>
@@ -48,6 +50,15 @@ else
     [Parameter] public bool Disabled { get; set; }
     /// <summary>URL the menu item navigates to. When set renders an anchor element instead of a button.</summary>
     [Parameter] public string? Href { get; set; }
+    /// <summary>HTML <c>target</c> for the anchor when <see cref="Href"/> is set (e.g. <c>_blank</c> to open
+    /// an external link in a new tab). A <c>_blank</c> target automatically adds <c>rel="noopener noreferrer"</c>.
+    /// Ignored when the item renders as a button (no <see cref="Href"/>).</summary>
+    [Parameter] public string? Target { get; set; }
+    /// <summary>Color of the leading <see cref="Icon"/>. Role -> shared color class; custom -> inline token.
+    /// Default keeps the theme's neutral icon color.</summary>
+    [Parameter] public FlareColor IconColor { get; set; } = FlareColor.Default;
+    /// <summary>Alias for <see cref="IconColor"/>; when set (non-default) it overrides <see cref="IconColor"/>.</summary>
+    [Parameter] public FlareColor LeadingIconColor { get; set; } = FlareColor.Default;
     /// <summary>Callback raised when the menu item is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
 
@@ -82,6 +93,17 @@ else
         href.StartsWith("tel:", StringComparison.OrdinalIgnoreCase);
 
     private string _safeHref => IsHrefSafe(Href) ? Href! : "about:blank";
+
+    // A _blank target needs rel=noopener noreferrer to prevent reverse-tabnabbing.
+    private string? _rel => Target == "_blank" ? "noopener noreferrer" : null;
+
+    // LeadingIconColor (alias) overrides IconColor when set to a non-default color.
+    private FlareColor _effectiveIconColor => LeadingIconColor != FlareColor.Default ? LeadingIconColor : IconColor;
+    private string _iconColorClass => _effectiveIconColor.CssClass ?? string.Empty;
+    // Custom color -> inline --fc-main on the icon span; the icon CSS reads var(--fc-main, fallback).
+    private string? _iconColorStyle => _effectiveIconColor.IsCustom
+        ? $"{Css.Tokens.LocalColor.Main}:{_effectiveIconColor.Value};"
+        : null;
 
     /// <summary>Registers this item with the parent <see cref="FlareMenu"/> for keyboard navigation.</summary>
     protected override void OnInitialized()

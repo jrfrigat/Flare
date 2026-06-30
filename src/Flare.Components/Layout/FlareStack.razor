@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_dirClass, _wrapClass, _gapClass, _alignClass, _justifyClass)"
+<div class="@BuildCssClass(_dirClass, _wrapClass, _stretchClass, _gapClass, _alignClass, _justifyClass)"
      style="@_resolvedStyle"
      @attributes="AdditionalAttributes">
     @ChildContent
@@ -20,6 +20,13 @@
     [Parameter] public string? GapValue { get; set; }
     /// <summary>Allows children to wrap onto multiple lines.</summary>
     [Parameter] public bool Wrap { get; set; }
+    /// <summary>When true, every direct child grows to share the available space equally along the main
+    /// axis (each child gets <c>flex: 1 1 0</c>). Use it to make items fill a row/column evenly.</summary>
+    [Parameter] public bool StretchItems { get; set; }
+    /// <summary>When true, only the first direct child grows to fill the remaining main-axis space
+    /// (<c>flex: 1 1 auto</c>) while the others keep their natural size - e.g. a title that expands to
+    /// push trailing actions to the edge. Ignored when <see cref="StretchItems"/> is set.</summary>
+    [Parameter] public bool StretchFirst { get; set; }
     /// <summary>Cross-axis alignment of children.</summary>
     [Parameter] public FlareAlignItems Align { get; set; } = FlareAlignItems.Default;
     /// <summary>Main-axis justification of children.</summary>
@@ -32,6 +39,11 @@
     : (Reverse ? Css.Classes.Stack.ColumnReverse : Css.Classes.Stack.Column);
 
     private string _wrapClass => Wrap ? Css.Classes.Stack.Wrap : string.Empty;
+
+    // StretchItems (all children grow equally) wins over StretchFirst (only the first grows).
+    private string _stretchClass => StretchItems ? Css.Classes.Stack.Stretch
+        : StretchFirst ? Css.Classes.Stack.StretchFirst
+        : string.Empty;
 
     private string? _gapClass;
     private string? _alignClass;

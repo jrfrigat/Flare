@@ -5,6 +5,13 @@
     position: relative;
 }
 
+/* FullWidth=false: size to content instead of filling the container. */
+.flare-input--auto { display: inline-flex; width: auto; }
+
+/* Margin presets: vertical (block) spacing around the field. */
+.flare-input--margin-dense  { margin-block: var(--flare-spacing-2, 0.25rem); }
+.flare-input--margin-normal { margin-block: var(--flare-spacing-4, 0.5rem); }
+
 /* Per-field variant override (independent of theme) - drives the shared --flare-input-* tokens.
    Applied to FlareInput / FlareNumericField / FlareTextArea roots. Default = theme decides. */
 .flare-input-variant--filled {

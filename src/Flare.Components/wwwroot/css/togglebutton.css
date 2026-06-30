@@ -47,8 +47,9 @@
 /* Pressed/active (selected) - морфинг формы (round -> squircle) задаётся токеном размера.
    Локальная переменная --_toggle-radius-selected переключается размерными классами ниже. */
 .flare-toggle-btn--pressed {
-    background: var(--flare-toggle-btn-selected-bg, var(--flare-color-secondary-container));
-    color: var(--flare-toggle-btn-selected-color, var(--flare-color-on-secondary-container));
+    /* Color (role class / inline) sets --fc-container/--fc-on-container; default keeps the theme token. */
+    background: var(--fc-container, var(--flare-toggle-btn-selected-bg, var(--flare-color-secondary-container)));
+    color: var(--fc-on-container, var(--flare-toggle-btn-selected-color, var(--flare-color-on-secondary-container)));
     border-radius: var(--_toggle-radius-selected, var(--flare-toggle-btn-radius-selected-md, var(--flare-shape-medium, 0.75rem)));
 }
 
@@ -161,8 +162,8 @@
     border-radius: 0 0 var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium, 0.75rem)) var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium, 0.75rem));
 }
 
-/* Pressed state in group - show filled indicator */
+/* Pressed state in group - show filled indicator (color via --fc-container when a Color is set) */
 .flare-togglegroup > .flare-toggle-btn--pressed {
-    background: var(--flare-toggle-btn-selected-bg, var(--flare-color-secondary-container));
-    color: var(--flare-toggle-btn-selected-color, var(--flare-color-on-secondary-container));
+    background: var(--fc-container, var(--flare-toggle-btn-selected-bg, var(--flare-color-secondary-container)));
+    color: var(--fc-on-container, var(--flare-toggle-btn-selected-color, var(--flare-color-on-secondary-container)));
 }

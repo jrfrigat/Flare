@@ -58,6 +58,10 @@ public static class Stack
     public const string ColumnReverse = "flare-stack--column-reverse";
     /// <summary>The <c>flare-stack--wrap</c> CSS class.</summary>
     public const string Wrap = "flare-stack--wrap";
+    /// <summary>The <c>flare-stack--stretch</c> CSS class: every direct child grows to share the space equally.</summary>
+    public const string Stretch = "flare-stack--stretch";
+    /// <summary>The <c>flare-stack--stretch-first</c> CSS class: the first direct child grows to fill the remaining space.</summary>
+    public const string StretchFirst = "flare-stack--stretch-first";
     /// <summary>The <c>flare-stack--gap-none</c> CSS class.</summary>
     public const string GapNone = "flare-stack--gap-none";
     /// <summary>The <c>flare-stack--gap-xxsmall</c> CSS class.</summary>

@@ -3,7 +3,7 @@
 
 @if (!string.IsNullOrEmpty(Href) && !Disabled)
 {
-    <a class="@BuildCssClass(_colorClass, _underlineClass)"
+    <a class="@BuildCssClass(_colorClass, _underlineClass, _typoClass)"
        href="@_safeHref"
        target="@Target"
        rel="@(Target == "_blank" ? "noopener noreferrer" : null)"
@@ -13,7 +13,7 @@
 }
 else
 {
-    <span class="@BuildCssClass(_colorClass, _underlineClass, Disabled ? Css.Classes.Link.Disabled : null)"
+    <span class="@BuildCssClass(_colorClass, _underlineClass, _typoClass, Disabled ? Css.Classes.Link.Disabled : null)"
           role="link"
           aria-disabled="@Disabled.ToString().ToLower()"
           style="@_inlineStyle"
@@ -31,6 +31,9 @@ else
     [Parameter] public FlareColor       Color        { get; set; } = FlareColor.Primary;
     /// <summary>Underline behavior: Always, Hover, or None.</summary>
     [Parameter] public LinkUnderline    Underline    { get; set; } = LinkUnderline.Hover;
+    /// <summary>Optional type-scale applied to the link text (font family/size/weight/line-height).
+    /// When <c>null</c> (default) the link inherits the surrounding text's typography.</summary>
+    [Parameter] public TypographyScale? Typo         { get; set; }
     /// <summary>Renders the link as a non-interactive disabled span.</summary>
     [Parameter] public bool             Disabled     { get; set; }
     /// <summary>Tooltip text rendered as the HTML title attribute for accessibility.</summary>
@@ -53,5 +56,26 @@ else
         LinkUnderline.Always => Css.Classes.Link.UnderlineAlways,
         LinkUnderline.None   => Css.Classes.Link.UnderlineNone,
         _                    => Css.Classes.Link.UnderlineHover,
+    };
+
+    // Optional type-scale override via the shared flare-text--* utility classes (null -> inherit).
+    private string? _typoClass => Typo switch
+    {
+        TypographyScale.DisplayLarge   => Css.Classes.Text.DisplayLarge,
+        TypographyScale.DisplayMedium  => Css.Classes.Text.DisplayMedium,
+        TypographyScale.DisplaySmall   => Css.Classes.Text.DisplaySmall,
+        TypographyScale.HeadlineLarge  => Css.Classes.Text.HeadlineLarge,
+        TypographyScale.HeadlineMedium => Css.Classes.Text.HeadlineMedium,
+        TypographyScale.HeadlineSmall  => Css.Classes.Text.HeadlineSmall,
+        TypographyScale.TitleLarge     => Css.Classes.Text.TitleLarge,
+        TypographyScale.TitleMedium    => Css.Classes.Text.TitleMedium,
+        TypographyScale.TitleSmall     => Css.Classes.Text.TitleSmall,
+        TypographyScale.BodyLarge      => Css.Classes.Text.BodyLarge,
+        TypographyScale.BodyMedium     => Css.Classes.Text.BodyMedium,
+        TypographyScale.BodySmall      => Css.Classes.Text.BodySmall,
+        TypographyScale.LabelLarge     => Css.Classes.Text.LabelLarge,
+        TypographyScale.LabelMedium    => Css.Classes.Text.LabelMedium,
+        TypographyScale.LabelSmall     => Css.Classes.Text.LabelSmall,
+        _                              => null,
     };
 }

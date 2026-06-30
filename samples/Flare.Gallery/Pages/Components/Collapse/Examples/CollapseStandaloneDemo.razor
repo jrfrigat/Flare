@@ -1,0 +1,19 @@
+@* Headerless collapse: any external control drives the Expanded flag (@bind-Expanded). *@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => _open = !_open)">
+        @(_open ? "Hide details" : "Show details")
+    </FlareButton>
+
+    <FlareCollapse @bind-Expanded="_open">
+        <FlarePaper Elevation="1" Style="padding:1rem;max-width:28rem;">
+            <FlareText Typo="TypographyScale.BodyMedium">
+                This region expands and collapses with a smooth height animation. It is driven entirely
+                by the Expanded flag, so any button, switch or keyboard shortcut can control it.
+            </FlareText>
+        </FlarePaper>
+    </FlareCollapse>
+</FlareStack>
+
+@code {
+    private bool _open;
+}
