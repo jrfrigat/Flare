@@ -1,6 +1,6 @@
-namespace Flare.Components;
+namespace Flare.Abstractions;
 
-/// <summary>Maximum-width size presets for <see cref="FlareDialog"/>.</summary>
+/// <summary>Maximum-width size presets for a Flare dialog (<c>FlareDialog</c> / a component dialog).</summary>
 public enum DialogSize
 {
     /// <summary>Extra-small dialog (max 20 rem).</summary>

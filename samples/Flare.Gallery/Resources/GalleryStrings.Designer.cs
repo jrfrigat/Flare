@@ -203,7 +203,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("About_WhatsNewV6", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Component dialogs: IDialogService.ShowAsync&lt;TComponent&gt; renders any component as a modal and returns a typed DialogResult.
+        /// </summary>
+        public static string About_WhatsNewV7 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV7", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basic (single expand).
         /// </summary>
@@ -2876,7 +2885,34 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Alert", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        public static string Dialog_BodyCancel {
+            get {
+                return ResourceManager.GetString("Dialog_BodyCancel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancelled.
+        /// </summary>
+        public static string Dialog_Cancelled {
+            get {
+                return ResourceManager.GetString("Dialog_Cancelled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Component dialog.
+        /// </summary>
+        public static string Dialog_Component {
+            get {
+                return ResourceManager.GetString("Dialog_Component", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm.
         /// </summary>
@@ -2885,7 +2921,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Confirm", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Edit profile.
+        /// </summary>
+        public static string Dialog_EditProfile {
+            get {
+                return ResourceManager.GetString("Dialog_EditProfile", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Email.
+        /// </summary>
+        public static string Dialog_Email {
+            get {
+                return ResourceManager.GetString("Dialog_Email", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Hero icon &amp; divider.
         /// </summary>
@@ -2903,7 +2957,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Inline", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name.
+        /// </summary>
+        public static string Dialog_Name {
+            get {
+                return ResourceManager.GetString("Dialog_Name", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Profile saved: {0}.
+        /// </summary>
+        public static string Dialog_ProfileSaved {
+            get {
+                return ResourceManager.GetString("Dialog_ProfileSaved", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Prompt.
         /// </summary>
@@ -2912,7 +2984,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Prompt", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Save.
+        /// </summary>
+        public static string Dialog_Save {
+            get {
+                return ResourceManager.GetString("Dialog_Save", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Show alert dialog.
         /// </summary>
@@ -6368,7 +6449,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_MsgBoxSubtitle", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dialog service.
+        /// </summary>
+        public static string Services_DialogTitle {
+            get {
+                return ResourceManager.GetString("Services_DialogTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на IDialogService - render any component as a modal and await a typed result, plus awaitable Confirm / Alert.
+        /// </summary>
+        public static string Services_DialogSubtitle {
+            get {
+                return ResourceManager.GetString("Services_DialogSubtitle", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Message box service.
         /// </summary>

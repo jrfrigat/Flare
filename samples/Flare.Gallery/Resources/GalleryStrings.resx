@@ -844,7 +844,31 @@
     <value>Dialog</value>
   </data>
   <data name="Dialog_Subtitle" xml:space="preserve">
-    <value>Inline @bind-Visible dialog, service-based confirm and alert.</value>
+    <value>Render any component as a modal via the dialog service, plus inline @bind-Visible, confirm and alert.</value>
+  </data>
+  <data name="Dialog_Component" xml:space="preserve">
+    <value>Component dialog</value>
+  </data>
+  <data name="Dialog_EditProfile" xml:space="preserve">
+    <value>Edit profile</value>
+  </data>
+  <data name="Dialog_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Dialog_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Dialog_BodyCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog_Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Dialog_ProfileSaved" xml:space="preserve">
+    <value>Profile saved: {0}</value>
   </data>
   <data name="Dialog_Inline" xml:space="preserve">
     <value>Inline</value>
@@ -2379,6 +2403,12 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare is an open-source Blazor component library built with .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV7" xml:space="preserve">
+    <value>Component dialogs: IDialogService.ShowAsync&lt;TComponent&gt; renders any component as a modal and returns a typed DialogResult - no inline @bind-Visible plumbing
+Pass values in with a DialogParameters bag and close from the body via the cascaded FlareDialogInstance (Dialog.Close(value) / Dialog.Cancel())
+DialogOptions controls the size, scrim/Escape dismissal and the header divider; the existing confirm and alert helpers are unchanged
+Gallery: a new Component dialog demo on the Dialog page</value>
+  </data>
   <data name="About_WhatsNewV6" xml:space="preserve">
     <value>Layout and navigation redesigned: each FlareLayoutDrawer now owns its own state (@bind-Open) with a Variant, so you can compose multi-drawer (two-pane) layouts, and FlareNavMenu gains Full/Rail/RailLabeled modes (a breaking change to the old slot-based FlareLayout)
 FlareDateRangePicker gains an inline range-calendar mode, Min/Max/IsDateDisabled constraints, and public DefaultPresets you can extend
@@ -2512,6 +2542,8 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
   <data name="Services_DownloadSubtitle" xml:space="preserve"><value>IFlareDownload triggers a client-side file download from in-memory content (text, CSV with BOM, etc.).</value></data>
   <data name="Services_MsgBoxTitle" xml:space="preserve"><value>Message box service</value></data>
   <data name="Services_MsgBoxSubtitle" xml:space="preserve"><value>IMessageBoxService - awaitable Confirm / Alert / Prompt dialogs from C#, no markup required.</value></data>
+  <data name="Services_DialogTitle" xml:space="preserve"><value>Dialog service</value></data>
+  <data name="Services_DialogSubtitle" xml:space="preserve"><value>IDialogService - render any component as a modal and await a typed result, plus awaitable Confirm / Alert.</value></data>
   <data name="Services_Copy" xml:space="preserve"><value>Copy</value></data>
   <data name="Services_Read" xml:space="preserve"><value>Read</value></data>
   <data name="Services_WithAction" xml:space="preserve"><value>With action</value></data>

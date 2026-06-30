@@ -1,0 +1,45 @@
+@inject IDialogService DialogService
+@inject ISnackbarService Snackbar
+@inherits LocalizedPage
+
+@* Opens an arbitrary component (PersonEditDialog) as a modal and awaits a typed result, with no
+   inline @bind-Visible markup on this page - the dialog body owns its own lifecycle. *@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
+        @_name (@_email)
+    </FlareText>
+    <FlareButton Variant="ButtonVariant.Filled" OnClick="EditProfile">
+        <LeadingIcon><FlareIcon Name="edit" /></LeadingIcon>
+        <ChildContent>@GalleryStrings.Dialog_EditProfile</ChildContent>
+    </FlareButton>
+</FlareStack>
+
+@code {
+    private string _name = "Ada Lovelace";
+    private string _email = "ada@example.com";
+
+    private async Task EditProfile()
+    {
+        var parameters = new DialogParameters()
+            .Add(nameof(PersonEditDialog.Name), _name)
+            .Add(nameof(PersonEditDialog.Email), _email);
+
+        var result = await DialogService.ShowAsync<PersonEditDialog>(
+            GalleryStrings.Dialog_EditProfile,
+            parameters,
+            new DialogOptions { Size = DialogSize.Sm });
+
+        if (result.Cancelled)
+        {
+            Snackbar.Show(GalleryStrings.Dialog_Cancelled, SnackbarSeverity.Normal);
+            return;
+        }
+
+        if (result.GetData<PersonEditDialog.Profile>() is { } profile)
+        {
+            _name = profile.Name;
+            _email = profile.Email;
+            Snackbar.Show(string.Format(GalleryStrings.Dialog_ProfileSaved, profile.Name), SnackbarSeverity.Success);
+        }
+    }
+}

@@ -2,6 +2,7 @@
 @inherits FlareComponentBase
 @inject IDialogService DialogService
 
+@* Imperative confirm/alert request (the ConfirmAsync / AlertAsync path). *@
 @if (DialogService.Current is not null)
 {
     var req = DialogService.Current;
@@ -26,6 +27,27 @@
     </FlareDialog>
 }
 
+@* Component dialogs opened via ShowAsync<TComponent> / Show<TComponent>: the body component is
+   hosted dynamically and receives the FlareDialogInstance as a cascading value so it can close
+   itself with a typed result. *@
+@foreach (var dialog in DialogService.OpenDialogs)
+{
+    <FlareDialog @key="dialog.Id"
+                 Visible="true"
+                 Title="@dialog.Title"
+                 Size="dialog.Options.Size"
+                 Divider="dialog.Options.Divider"
+                 CloseOnScrimClick="dialog.Options.CloseOnScrimClick"
+                 CloseOnEsc="dialog.Options.CloseOnEsc"
+                 VisibleChanged="@(visible => HandleDialogVisibleChanged(dialog, visible))">
+        <ChildContent>
+            <CascadingValue Value="dialog" IsFixed="true">
+                <DynamicComponent Type="dialog.ContentType" Parameters="dialog.ComponentParameters" />
+            </CascadingValue>
+        </ChildContent>
+    </FlareDialog>
+}
+
 @code {
     protected override string ComponentCssClass => string.Empty;
 
@@ -36,6 +58,14 @@
     }
 
     private void HandleStateChanged() => InvokeAsync(StateHasChanged);
+
+    // FlareDialog raises VisibleChanged(false) on a scrim click or Escape (when enabled by options);
+    // treat that dismissal as a cancellation of the component dialog.
+    private void HandleDialogVisibleChanged(FlareDialogInstance dialog, bool visible)
+    {
+        if (!visible)
+            dialog.Cancel();
+    }
 
     public override async ValueTask DisposeAsync()
     {

@@ -1,0 +1,45 @@
+@inherits LocalizedPage
+
+@* A reusable dialog body. It receives its initial values as [Parameter]s and closes itself with a
+   typed result through the cascaded FlareDialogInstance - no @bind-Visible plumbing on the caller. *@
+<FlareStack Gap="FlareSpacing.Medium" Style="min-width:18rem;">
+    <FlareTextField @bind-Value="_name" Label="@GalleryStrings.Dialog_Name" Variant="InputVariant.Outlined" />
+    <FlareTextField @bind-Value="_email" Label="@GalleryStrings.Dialog_Email" Variant="InputVariant.Outlined" />
+    <FlareStack Row Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">
+        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => Dialog.Cancel())">
+            @GalleryStrings.Dialog_BodyCancel
+        </FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="Save">
+            @GalleryStrings.Dialog_Save
+        </FlareButton>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    /// <summary>The live dialog handle, cascaded by FlareDialogProvider. Used to close with a result.</summary>
+    [CascadingParameter] public FlareDialogInstance Dialog { get; set; } = default!;
+
+    /// <summary>Initial name shown in the editor.</summary>
+    [Parameter] public string Name { get; set; } = "";
+
+    /// <summary>Initial email shown in the editor.</summary>
+    [Parameter] public string Email { get; set; } = "";
+
+    private string _name = "";
+    private string _email = "";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // Edit working copies so a cancel leaves the caller's values untouched.
+        _name = Name;
+        _email = Email;
+    }
+
+    private void Save() => Dialog.Close(new Profile(_name, _email));
+
+    /// <summary>The typed payload this dialog returns via DialogResult on save.</summary>
+    /// <param name="Name">The edited name.</param>
+    /// <param name="Email">The edited email.</param>
+    public record Profile(string Name, string Email);
+}

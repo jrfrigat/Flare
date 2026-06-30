@@ -22,9 +22,12 @@
 
   <ItemGroup>
     <!-- Pure security utilities (HtmlSanitizer/CssValidator) stay internal; the presentation and
-         theming layers consume them directly without widening the public API surface. -->
+         theming layers consume them directly without widening the public API surface.
+         Flare.Infrastructure builds the component-dialog handles (internal ctors on
+         FlareDialogInstance / DialogReference) when implementing IDialogService. -->
     <InternalsVisibleTo Include="Flare.Components" />
     <InternalsVisibleTo Include="Flare.Theming" />
+    <InternalsVisibleTo Include="Flare.Infrastructure" />
   </ItemGroup>
 
   <ItemGroup>

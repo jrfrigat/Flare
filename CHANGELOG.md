@@ -3,6 +3,31 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.7] - 2026-06-30
+
+This release adds a **generic component-dialog service**: render any Blazor component as a modal and
+await a typed result, instead of the inline `@bind-Visible` plumbing previously required.
+
+### Added
+- **`IDialogService.ShowAsync<TComponent>` / `Show<TComponent>`** - open any component as a modal
+  dialog body and await its outcome. `ShowAsync` returns a `Task<DialogResult>`; `Show` returns a
+  `DialogReference` whose `Result` can be awaited and which can also close the dialog from the caller
+  side. The body component receives a cascaded `FlareDialogInstance` to close itself
+  (`Dialog.Close(value)` / `Dialog.Cancel()`), and the dialog is rendered through the existing
+  `FlareDialogProvider` (a `DynamicComponent` host) with the same visuals, sizing, scrim, focus-trap
+  and Escape handling as `FlareDialog`.
+- **`DialogParameters`** - a fluent bag (`Add(name, value)`) binding values to the body component's
+  `[Parameter]`s; **`DialogResult`** (`Ok(payload)` / `Cancel()` with `Cancelled` and a typed
+  `GetData<T>()`); and **`DialogOptions`** (`Size`, `CloseOnScrimClick`, `CloseOnEsc`, `Divider`).
+- Gallery: a new **Component dialog** demo on the Dialog page (an edit-profile dialog that receives
+  initial values and returns an edited model).
+
+### Changed
+- **`DialogSize` moved from the `Flare.Components` namespace to `Flare.Abstractions`** (it is now a
+  shared dialog contract used by `DialogOptions`). Code that imports both namespaces (the usual setup)
+  is unaffected; code that referenced `Flare.Components.DialogSize` by its full name should update the
+  namespace. The existing `ConfirmAsync` / `AlertAsync` helpers are unchanged.
+
 ## [0.0.6] - 2026-06-30
 
 This release reworks the **layout and navigation API** - a breaking change - and adds a large batch

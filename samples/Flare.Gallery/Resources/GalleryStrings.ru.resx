@@ -844,7 +844,31 @@
     <value>Диалог</value>
   </data>
   <data name="Dialog_Subtitle" xml:space="preserve">
-    <value>Встроенный диалог @bind-Visible, диалоги через сервис.</value>
+    <value>Показ любого компонента как модального окна через сервис диалогов, плюс встроенный @bind-Visible, подтверждение и оповещение.</value>
+  </data>
+  <data name="Dialog_Component" xml:space="preserve">
+    <value>Компонентный диалог</value>
+  </data>
+  <data name="Dialog_EditProfile" xml:space="preserve">
+    <value>Редактировать профиль</value>
+  </data>
+  <data name="Dialog_Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Dialog_Email" xml:space="preserve">
+    <value>Эл. почта</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Dialog_BodyCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Dialog_Cancelled" xml:space="preserve">
+    <value>Отменено</value>
+  </data>
+  <data name="Dialog_ProfileSaved" xml:space="preserve">
+    <value>Профиль сохранён: {0}</value>
   </data>
   <data name="Dialog_Inline" xml:space="preserve">
     <value>Встроенный</value>
@@ -2379,6 +2403,12 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare - библиотека компонентов Blazor с открытым исходным кодом на .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV7" xml:space="preserve">
+    <value>Компонентные диалоги: IDialogService.ShowAsync&lt;TComponent&gt; показывает любой компонент как модальное окно и возвращает типизированный DialogResult - без встроенного @bind-Visible
+Передавайте значения через набор DialogParameters и закрывайте диалог из тела через каскадный FlareDialogInstance (Dialog.Close(value) / Dialog.Cancel())
+DialogOptions управляет размером, закрытием по фону/Escape и разделителем заголовка; прежние помощники подтверждения и оповещения не изменились
+Галерея: новое демо компонентного диалога на странице Диалог</value>
+  </data>
   <data name="About_WhatsNewV6" xml:space="preserve">
     <value>Переработаны макет и навигация: каждый FlareLayoutDrawer теперь сам владеет своим состоянием (@bind-Open) и имеет Variant, поэтому можно собирать макеты с несколькими панелями (две колонки), а FlareNavMenu получает режимы Full/Rail/RailLabeled (ломающее изменение прежнего слотового FlareLayout)
 FlareDateRangePicker получает встроенный режим календаря диапазона, ограничения Min/Max/IsDateDisabled и публичные DefaultPresets, которые можно дополнять
@@ -2512,6 +2542,8 @@ MarkdownParser: защита от vbscript/data-uri/expression()/опасных 
   <data name="Services_DownloadSubtitle" xml:space="preserve"><value>IFlareDownload скачивает файл на клиенте из данных в памяти (текст, CSV с BOM и т.д.).</value></data>
   <data name="Services_MsgBoxTitle" xml:space="preserve"><value>Сервис диалогов</value></data>
   <data name="Services_MsgBoxSubtitle" xml:space="preserve"><value>IMessageBoxService - ожидаемые из C# диалоги Confirm / Alert / Prompt без разметки.</value></data>
+  <data name="Services_DialogTitle" xml:space="preserve"><value>Сервис диалоговых окон</value></data>
+  <data name="Services_DialogSubtitle" xml:space="preserve"><value>IDialogService - показ любого компонента как модального окна с типизированным результатом, плюс ожидаемые Confirm / Alert.</value></data>
   <data name="Services_Copy" xml:space="preserve"><value>Копировать</value></data>
   <data name="Services_Read" xml:space="preserve"><value>Прочитать</value></data>
   <data name="Services_WithAction" xml:space="preserve"><value>С действием</value></data>
