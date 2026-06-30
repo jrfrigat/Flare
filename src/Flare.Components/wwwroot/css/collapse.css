@@ -1,0 +1,63 @@
+/* Standalone expand/collapse container. The region animates its height via the grid-rows
+   0fr -> 1fr technique, which handles arbitrary content height without a magic max-height cap. */
+.flare-collapse {
+    display: block;
+}
+
+.flare-collapse__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+    background: transparent;
+    color: var(--flare-color-on-surface);
+    font-family: var(--flare-typescale-title-small-font);
+    font-size: var(--flare-typescale-title-small-size);
+    font-weight: var(--flare-typescale-title-small-weight);
+    border: none;
+    border-radius: var(--flare-shape-small);
+    cursor: pointer;
+    text-align: left;
+    transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-collapse__header:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+}
+
+.flare-collapse--disabled .flare-collapse__header {
+    cursor: not-allowed;
+    opacity: var(--flare-state-disabled-opacity, 0.38);
+}
+
+.flare-collapse__header-text {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-4, 0.5rem);
+    flex: 1;
+    min-width: 0;
+}
+
+.flare-collapse__icon {
+    flex-shrink: 0;
+    color: var(--flare-color-on-surface-variant);
+    transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-collapse__region {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+}
+
+.flare-collapse--expanded > .flare-collapse__region {
+    grid-template-rows: 1fr;
+}
+
+/* Clip the content while the grid row collapses to 0fr. min-height:0 lets the grid track shrink. */
+.flare-collapse__inner {
+    overflow: hidden;
+    min-height: 0;
+}

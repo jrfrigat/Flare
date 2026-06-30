@@ -19,9 +19,13 @@
         {
             <span class="@Css.Classes.Avatar.Initials" aria-label="@Text">@_initials</span>
         }
+        else if (FallbackContent is not null)
+        {
+            @FallbackContent
+        }
         else
         {
-            <span class="@Css.Classes.Avatar.Icon material-symbols-rounded" aria-hidden="true">person</span>
+            <span class="@Css.Classes.Avatar.Icon material-symbols-rounded" aria-hidden="true">@FallbackIcon</span>
         }
     </div>
 }
@@ -39,6 +43,12 @@
     [Parameter] public AvatarSize Size { get; set; } = AvatarSize.Md;
     /// <summary>Shape of the avatar: Circle, Square, or Rounded.</summary>
     [Parameter] public AvatarShape Shape { get; set; } = AvatarShape.Circle;
+    /// <summary>Material Symbols icon name shown when the avatar has no image and no text. Defaults to
+    /// <c>person</c>. Ignored when <see cref="FallbackContent"/> is set.</summary>
+    [Parameter] public string FallbackIcon { get; set; } = "person";
+    /// <summary>Custom content rendered when the avatar has no image and no text, in place of the
+    /// default <see cref="FallbackIcon"/> (e.g. a custom <c>FlareIcon</c>, an emoji, or an SVG).</summary>
+    [Parameter] public RenderFragment? FallbackContent { get; set; }
 
     /// <summary>Parent avatar group that manages max-visible and overflow counting.</summary>
     [CascadingParameter] public FlareAvatarGroup? Group { get; set; }
@@ -50,7 +60,7 @@
     private string? _lastContent;
     protected override bool ShouldRender()
     {
-        var current = $"{Src}:{Text}:{Alt}:{Color}:{Size}:{Shape}";
+        var current = $"{Src}:{Text}:{Alt}:{Color}:{Size}:{Shape}:{FallbackIcon}";
         if (current == _lastContent) return false;
         _lastContent = current;
         return true;

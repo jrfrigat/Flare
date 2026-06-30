@@ -1,10 +1,10 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<button class="@BuildCssClass(_pressedClass, _sizeClass, _iconOnlyClass)"
-        style="@Style"
+<button class="@BuildCssClass(_pressedClass, _sizeClass, _iconOnlyClass, _colorClass)"
+        style="@_btnStyle"
         type="button"
-        disabled="@Disabled"
+        disabled="@_effectiveDisabled"
         aria-label="@AriaLabel"
         aria-pressed="@(_pressed ? "true" : "false")"
         @onclick="HandleClick"
@@ -31,9 +31,12 @@
     [Parameter] public bool Toggled { get; set; }
     /// <summary>Callback raised when the pressed state changes.</summary>
     [Parameter] public EventCallback<bool> ToggledChanged { get; set; }
-    /// <summary>Size of the toggle button.</summary>
+    /// <summary>Size of the toggle button. Overridden by the parent <c>FlareToggleGroup.Size</c> when that is set.</summary>
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
-    /// <summary>Disables the button when true.</summary>
+    /// <summary>Color tinting the selected state. Role -> shared color class; custom -> inline tokens.
+    /// Overridden by the parent <c>FlareToggleGroup.Color</c> when that is set. Default = theme's secondary container.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Disables the button when true. Also disabled when the parent <c>FlareToggleGroup.Disabled</c> is true.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Accessible label forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }
@@ -51,7 +54,16 @@
 
     private string _pressedClass => _pressed ? Css.Classes.ToggleButton.Pressed : string.Empty;
 
-    private string _sizeClass => Size switch
+    // Group settings cascade: a group value overrides the button's own (Size/Color), or forces Disabled.
+    private ButtonSize _effectiveSize => Group?.Size ?? Size;
+    private FlareColor _effectiveColor => Group?.Color ?? Color;
+    private bool _effectiveDisabled => Disabled || (Group?.Disabled ?? false);
+
+    // Role -> shared color class (sets --fc-container/--fc-on-container); custom -> inline those tokens.
+    private string _colorClass => _effectiveColor.CssClass ?? string.Empty;
+    private string? _btnStyle => _effectiveColor.StyleContainerSolid() is { } tokens ? tokens + Style : Style;
+
+    private string _sizeClass => _effectiveSize switch
     {
         ButtonSize.Xs => Css.Classes.ToggleButton.Xs,
         ButtonSize.Sm => Css.Classes.ToggleButton.Sm,
@@ -86,7 +98,7 @@
 
     private async Task HandleClick()
     {
-        if (Disabled) return;
+        if (_effectiveDisabled) return;
         if (Group is not null)
         {
             await Group.Toggle(Value);

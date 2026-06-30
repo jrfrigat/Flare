@@ -2618,4 +2618,19 @@ MarkdownParser: защита от vbscript/data-uri/expression()/опасных 
   <data name="Responsive_DesktopLayout" xml:space="preserve"><value>🖥️ Десктопный макет - полноценная многоколоночная раскладка.</value></data>
   <data name="Responsive_LastChange" xml:space="preserve"><value>Последнее изменение в C#:</value></data>
   <data name="Responsive_NoneYet" xml:space="preserve"><value>(пока нет)</value></data>
+  <data name="Responsive_ShownMd" xml:space="preserve"><value>Видно только на md (Only + Invert).</value></data>
+  <data name="Chip_Variants" xml:space="preserve"><value>Варианты</value></data>
+  <data name="Avatar_Fallback" xml:space="preserve"><value>Запасная иконка</value></data>
+  <data name="Field_ErrorState" xml:space="preserve"><value>Состояние ошибки (без сообщения)</value></data>
+  <data name="Field_FullWidthMargin" xml:space="preserve"><value>Ширина и отступы</value></data>
+  <data name="Collapse_Title" xml:space="preserve"><value>Сворачивание</value></data>
+  <data name="Collapse_Subtitle" xml:space="preserve"><value>Отдельный контейнер сворачивания одной области - управляется флагом Expanded или собственным заголовком.</value></data>
+  <data name="Collapse_Standalone" xml:space="preserve"><value>Внешнее управление</value></data>
+  <data name="Collapse_Header" xml:space="preserve"><value>С заголовком</value></data>
+  <data name="Layout_StackStretch" xml:space="preserve"><value>Растягивание элементов</value></data>
+  <data name="Menu_IconColor" xml:space="preserve"><value>Цвет иконок и внешние ссылки</value></data>
+  <data name="ToggleButton_GroupCascade" xml:space="preserve"><value>Каскад настроек группы</value></data>
+  <data name="Cards_Elevation" xml:space="preserve"><value>Высота тени (elevation)</value></data>
+  <data name="Link_Typo" xml:space="preserve"><value>Типографика</value></data>
+  <data name="Snackbar_Options" xml:space="preserve"><value>Перегрузка с опциями</value></data>
 </root>

@@ -41,6 +41,8 @@ public enum SnackbarPosition
 /// <param name="OnAction">Optional callback invoked when the action button is pressed.</param>
 /// <param name="ShowClose">Whether a manual close button is shown.</param>
 /// <param name="ShowProgress">When true, an indeterminate progress bar is shown below the message (e.g. for an in-progress action).</param>
+/// <param name="CssClass">Optional extra CSS class(es) applied to this snackbar's root element for per-message styling.</param>
+/// <param name="CloseAfterNavigation">When true, this snackbar is dismissed automatically on the next route change.</param>
 public sealed record SnackbarMessage(
     Guid Id,
     string Text,
@@ -49,7 +51,33 @@ public sealed record SnackbarMessage(
     string? ActionText = null,
     Func<Task>? OnAction = null,
     bool ShowClose = true,
-    bool ShowProgress = false);
+    bool ShowProgress = false,
+    string? CssClass = null,
+    bool CloseAfterNavigation = false);
+
+/// <summary>
+/// Per-message options for <see cref="ISnackbarService.Show(string, SnackbarOptions)"/>: severity, timing,
+/// action button, progress bar, custom styling and navigation behavior - set once and reused or built inline.
+/// </summary>
+public sealed class SnackbarOptions
+{
+    /// <summary>Severity accent (color/icon). Default <see cref="SnackbarSeverity.Normal"/>.</summary>
+    public SnackbarSeverity Severity { get; set; } = SnackbarSeverity.Normal;
+    /// <summary>Auto-dismiss delay in milliseconds. <c>0</c> or less keeps it until dismissed. Default 4000.</summary>
+    public int DurationMs { get; set; } = 4000;
+    /// <summary>Optional action-button label; null hides the action.</summary>
+    public string? ActionText { get; set; }
+    /// <summary>Optional callback invoked when the action button is pressed.</summary>
+    public Func<Task>? OnAction { get; set; }
+    /// <summary>Whether a manual close button is shown. Default true.</summary>
+    public bool ShowClose { get; set; } = true;
+    /// <summary>When true, an indeterminate progress bar is shown below the message.</summary>
+    public bool ShowProgress { get; set; }
+    /// <summary>Optional extra CSS class(es) applied to the snackbar's root element for per-message styling.</summary>
+    public string? CssClass { get; set; }
+    /// <summary>When true, the snackbar is dismissed automatically on the next route change.</summary>
+    public bool CloseAfterNavigation { get; set; }
+}
 
 /// <summary>
 /// Imperative snackbar/toast service. Inject it and call
@@ -71,6 +99,15 @@ public interface ISnackbarService
               string? actionText = null,
               Func<Task>? onAction = null,
               bool showClose = true);
+
+    /// <summary>
+    /// Enqueues a snackbar notification configured by a <see cref="SnackbarOptions"/> bag - use this when
+    /// you need per-message styling (<see cref="SnackbarOptions.CssClass"/>), a progress bar, or the
+    /// <see cref="SnackbarOptions.CloseAfterNavigation"/> behavior that the simple overload does not expose.
+    /// </summary>
+    /// <param name="text">The message text.</param>
+    /// <param name="options">Per-message options (severity, timing, action, styling, navigation behavior).</param>
+    void Show(string text, SnackbarOptions options);
 
     /// <summary>
     /// Enqueues a pre-built snackbar. Use this (rather than the string overload) when you need to keep

@@ -48,6 +48,19 @@
 }
 .flare-chip--elevated:hover { box-shadow: var(--flare-elevation-2); }
 
+/* Filled chip: solid surface fill, no border, no shadow. A Color role tints the
+   foreground (label/icon) via --fc-main while the fill stays a neutral surface tone. */
+.flare-chip--filled {
+    background-color: var(--flare-color-surface-container-high);
+    border-color: transparent;
+}
+
+/* Outlined chip is the base style; the explicit modifier exists for parity/overrides. */
+.flare-chip--outlined {
+    background-color: transparent;
+    border: 1px solid var(--fc-main, var(--flare-color-outline));
+}
+
 .flare-chip--xs { padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2, 0.25rem); }
 .flare-chip--xs .flare-chip__avatar { width: 1rem; height: 1rem; }
 .flare-chip--sm { padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-5, 0.625rem); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3, 0.375rem); }

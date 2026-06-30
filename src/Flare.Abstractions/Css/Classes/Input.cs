@@ -57,4 +57,10 @@ public static class Input
     public const string IconTrailing = "flare-input__icon--trailing";
     /// <summary>The <c>flare-input__label--floating</c> CSS class.</summary>
     public const string LabelFloating = "flare-input__label--floating";
+    /// <summary>The <c>flare-input--auto</c> CSS class: the field sizes to its content instead of filling its container.</summary>
+    public const string Auto = "flare-input--auto";
+    /// <summary>The <c>flare-input--margin-dense</c> CSS class: a small vertical margin around the field.</summary>
+    public const string MarginDense = "flare-input--margin-dense";
+    /// <summary>The <c>flare-input--margin-normal</c> CSS class: a normal vertical margin around the field.</summary>
+    public const string MarginNormal = "flare-input--margin-normal";
 }

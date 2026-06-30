@@ -3,6 +3,58 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.8] - 2026-07-01
+
+Migrating a real application (PlaylistShared) from MudBlazor to Flare surfaced a batch of small,
+generally-useful API gaps in existing components. This release closes them. Every addition is purely
+additive and backward-compatible.
+
+### Added
+- **`FlareIconButton`** - a dedicated icon-only button. A thin wrapper over `FlareButton` that renders
+  an `Icon` (or custom `ChildContent`) as the button's leading icon with no label, so the square
+  icon-only treatment applies automatically. Replaces the verbose
+  `<FlareButton><LeadingIcon><FlareIcon/></LeadingIcon></FlareButton>` idiom. Defaults to the
+  `Text` ("standard") variant and forwards `Variant`/`Size`/`Color`/`Shape`/`Disabled`/`Loading`/
+  `Href`/`Target`/`AriaLabel`/`OnClick`.
+- **`FlareCollapse`** - a standalone expand/collapse container for a single region (unlike
+  `FlareAccordion`, which is a panel group). Driven by `@bind-Expanded`, or by an optional built-in
+  toggle `Header` / `HeaderContent`. The region animates its height open/closed. New
+  `flare-collapse*` classes and a Gallery page.
+- **`FlareChip.Variant`** (new `ChipVariant`: `Outlined` (default) / `Filled` / `Elevated`). The
+  existing `Elevated` boolean is now shorthand for `Variant="ChipVariant.Elevated"`. New
+  `flare-chip--filled` / `flare-chip--outlined` classes.
+- **`FlareAvatar.FallbackIcon`** (Material Symbols name, default `person`) and **`FallbackContent`**
+  (`RenderFragment`) for the no-image/no-text case, replacing the previously hard-coded icon.
+- **`FlareField.Error` / `FlareField.Invalid`** - force the invalid visual state (and `aria-invalid`)
+  without requiring an `ErrorText` message. Inherited by `FlareTextField`.
+- **`FlareField.FullWidth`** (default `true`; `false` sizes the field to its content) and
+  **`FlareField.Margin`** (new `FieldMargin`: `None` / `Dense` / `Normal`), inherited by `FlareTextField`.
+- **`FlareStack.StretchItems`** (every child shares the main axis equally) and **`StretchFirst`**
+  (only the first child grows to fill the remaining space).
+- **`FlareMenuItem.Target`** (for an external `Href`; `_blank` adds `rel="noopener noreferrer"`) and
+  **`IconColor` / `LeadingIconColor`** to tint the leading icon.
+- **`FlareToggleGroup.Size` / `Color` / `Disabled`** cascade to every child `FlareToggleButton`
+  (set once on the group). `FlareToggleButton` gains a `Color` parameter that tints its selected state.
+- **`FlareCard.Elevation`** (nullable `int`, 0-5 on the MD3 elevation scale, clamped) overrides the
+  variant's shadow; `Elevation="0"` is flat.
+- **`FlareSelect` declarative options** - populate a select with native
+  `<option value="..">Label</option>` child markup as an alternative to the `Items` collection.
+- **`ISnackbarService.Show(string, SnackbarOptions)`** - an options overload carrying per-message
+  severity/timing/action plus a per-message `CssClass` and a `CloseAfterNavigation` flag (the snackbar
+  is dismissed automatically on the next route change). New `SnackbarOptions` type; `SnackbarMessage`
+  gains `CssClass` and `CloseAfterNavigation`.
+- **`FlareLink.Typo`** - apply a `TypographyScale` to the link text (otherwise it inherits the
+  surrounding typography).
+- Gallery: new demos for each of the above (Chip variants, Avatar fallback, Card elevation, Stack
+  stretch, Menu icon color & external links, Toggle group cascade, Field error state, Field width &
+  margin, Link typography, Snackbar options, a "shown only in a band" `FlareHidden` example), a new
+  Collapse page, and the Icon Button demos rebuilt on `FlareIconButton`.
+
+### Notes
+- `FlareHidden` already supported showing an element only within a breakpoint band via
+  `Only` + `Invert`; this is now demonstrated on the Responsive page. `FlareSlider` already exposes a
+  `Vertical` parameter, so no separate vertical-bar component was added.
+
 ## [0.0.7] - 2026-06-30
 
 This release adds a **generic component-dialog service** - render any Blazor component as a modal and

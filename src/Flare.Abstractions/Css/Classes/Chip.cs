@@ -15,6 +15,10 @@ public static class Chip
     public const string Close = "flare-chip__close";
     /// <summary>The <c>flare-chip--elevated</c> CSS class.</summary>
     public const string Elevated = "flare-chip--elevated";
+    /// <summary>The <c>flare-chip--filled</c> CSS class.</summary>
+    public const string Filled = "flare-chip--filled";
+    /// <summary>The <c>flare-chip--outlined</c> CSS class.</summary>
+    public const string Outlined = "flare-chip--outlined";
     /// <summary>The <c>flare-chip--xs</c> CSS class.</summary>
     public const string SizeXs = "flare-chip--xs";
     /// <summary>The <c>flare-chip--sm</c> CSS class.</summary>

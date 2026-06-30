@@ -124,6 +124,7 @@ public static class ComponentCatalog
         // -- Layout & Surfaces ----------------------------------------------------
         new ComponentEntry("/components/accordion",         "Accordion",               "Accordion_Title",       ComponentGroup.Layout),
         new ComponentEntry("/components/cards",             "Card",                    "Cards_Title",           ComponentGroup.Layout),
+        new ComponentEntry("/components/collapse",          "Collapse",                "Collapse_Title",        ComponentGroup.Layout),
         new ComponentEntry("/components/container",         "Container",               "Container_Title",       ComponentGroup.Layout),
         new ComponentEntry("/components/divider",           "Divider",                 "Divider_Title",         ComponentGroup.Layout),
         new ComponentEntry("/components/grid",              "Grid",                    "Grid_Title",            ComponentGroup.Layout),

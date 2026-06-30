@@ -8321,5 +8321,110 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("VirtualList_VirtualList", resourceCulture);
             }
         }
+
+        /// <summary>Looks up a localized string similar to Variants.</summary>
+        public static string Chip_Variants {
+            get {
+                return ResourceManager.GetString("Chip_Variants", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Fallback icon.</summary>
+        public static string Avatar_Fallback {
+            get {
+                return ResourceManager.GetString("Avatar_Fallback", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Error state (no message).</summary>
+        public static string Field_ErrorState {
+            get {
+                return ResourceManager.GetString("Field_ErrorState", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Width and margin.</summary>
+        public static string Field_FullWidthMargin {
+            get {
+                return ResourceManager.GetString("Field_FullWidthMargin", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Collapse.</summary>
+        public static string Collapse_Title {
+            get {
+                return ResourceManager.GetString("Collapse_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string for the Collapse page subtitle.</summary>
+        public static string Collapse_Subtitle {
+            get {
+                return ResourceManager.GetString("Collapse_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Externally controlled.</summary>
+        public static string Collapse_Standalone {
+            get {
+                return ResourceManager.GetString("Collapse_Standalone", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to With header.</summary>
+        public static string Collapse_Header {
+            get {
+                return ResourceManager.GetString("Collapse_Header", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Stretch items.</summary>
+        public static string Layout_StackStretch {
+            get {
+                return ResourceManager.GetString("Layout_StackStretch", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Icon color and external links.</summary>
+        public static string Menu_IconColor {
+            get {
+                return ResourceManager.GetString("Menu_IconColor", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Group cascade.</summary>
+        public static string ToggleButton_GroupCascade {
+            get {
+                return ResourceManager.GetString("ToggleButton_GroupCascade", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Elevation.</summary>
+        public static string Cards_Elevation {
+            get {
+                return ResourceManager.GetString("Cards_Elevation", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Typography.</summary>
+        public static string Link_Typo {
+            get {
+                return ResourceManager.GetString("Link_Typo", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Options overload.</summary>
+        public static string Snackbar_Options {
+            get {
+                return ResourceManager.GetString("Snackbar_Options", resourceCulture);
+            }
+        }
+
+        /// <summary>Looks up a localized string similar to Shown only on md (Only + Invert).</summary>
+        public static string Responsive_ShownMd {
+            get {
+                return ResourceManager.GetString("Responsive_ShownMd", resourceCulture);
+            }
+        }
     }
 }

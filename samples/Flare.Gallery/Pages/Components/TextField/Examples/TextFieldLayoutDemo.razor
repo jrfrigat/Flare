@@ -1,0 +1,16 @@
+@* Fields are full-width (block) by default. FullWidth="false" sizes to content; Margin adds
+   vertical spacing (Dense / Normal). *@
+<FlareStack Gap="FlareSpacing.Large">
+    <div style="border:1px dashed var(--flare-color-outline-variant);padding:0.5rem;">
+        <FlareTextField Label="Full width (default)" Placeholder="Fills the container" />
+    </div>
+
+    <div style="border:1px dashed var(--flare-color-outline-variant);padding:0.5rem;">
+        <FlareTextField Label="Sized to content" Placeholder="FullWidth=false" FullWidth="false" />
+    </div>
+
+    <div style="border:1px dashed var(--flare-color-outline-variant);padding:0.5rem;">
+        <FlareTextField Label="Dense margin" Margin="FieldMargin.Dense" />
+        <FlareTextField Label="Dense margin" Margin="FieldMargin.Dense" />
+    </div>
+</FlareStack>

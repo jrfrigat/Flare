@@ -4,14 +4,14 @@
 
 @if (Href is not null)
 {
-    <a class="@CssClass" style="@Style"
+    <a class="@CssClass" style="@_cardStyle"
        href="@Href" target="@Target" @attributes="AdditionalAttributes">
         @ChildContent
     </a>
 }
 else
 {
-    <div class="@CssClass" style="@Style"
+    <div class="@CssClass" style="@_cardStyle"
          role="@Role" tabindex="@(_interactive ? "0" : null)"
          aria-checked="@AriaChecked"
          @onclick="HandleClick" @onkeydown="HandleKeyDown" @attributes="AdditionalAttributes">
@@ -28,6 +28,15 @@ else
 
     /// <summary>Overall size - controls corner radius and inner gap. Default Md.</summary>
     [Parameter] public CardSize Size { get; set; } = CardSize.Md;
+
+    /// <summary>
+    /// Overrides the card's drop shadow with an explicit elevation level (0-5 on the MD3 elevation scale,
+    /// clamped). <c>Elevation="0"</c> is flat (no shadow); higher values lift the card further. When
+    /// <c>null</c> (default) each <see cref="Variant"/> keeps its own elevation - <see cref="CardVariant.Elevated"/>
+    /// is level 1, while <see cref="CardVariant.Filled"/>/<see cref="CardVariant.Outlined"/>/<see cref="CardVariant.Tonal"/>/<see cref="CardVariant.Text"/>
+    /// are flat. Because it sets the shadow inline, an explicit elevation also fixes the hover shadow of a clickable card.
+    /// </summary>
+    [Parameter] public int? Elevation { get; set; }
 
     /// <summary>When true, lays the card out horizontally (media on the leading side, content beside it), like FluentUI 2 horizontal orientation. Default false (vertical).</summary>
     [Parameter] public bool Compact { get; set; }
@@ -57,6 +66,17 @@ else
 
     private bool _clickable => Href is not null || OnClick.HasDelegate;
     private bool _interactive => _clickable || Selectable;
+
+    // Explicit Elevation -> inline box-shadow from the elevation token scale (wins over the variant class).
+    private string? _cardStyle
+    {
+        get
+        {
+            if (Elevation is not { } level) return Style;
+            var shadow = $"box-shadow:var(--flare-elevation-{Math.Clamp(level, 0, 5)});";
+            return string.IsNullOrEmpty(Style) ? shadow : shadow + Style;
+        }
+    }
 
     private string CssClass => BuildCssClass(
         _variantClass, _sizeClass,

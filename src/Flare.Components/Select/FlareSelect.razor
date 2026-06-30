@@ -1,8 +1,12 @@
 @namespace Flare.Components
 @inherits FlareFieldBase
 @typeparam TValue
+@using System.ComponentModel
 @using System.Linq.Expressions
+@using System.Text
 @using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.RenderTree
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IOverlayJsService Overlay
@@ -28,9 +32,9 @@
          @onkeydown="HandleKeyDown">
         <span class="@Css.Classes.Select.Value">
             @{ var selIdx = _ordered.FindIndex(i => EqualityComparer<TValue>.Default.Equals(i, Value)); }
-            @if (selIdx >= 0 && (ItemTemplate is not null || !string.IsNullOrEmpty(LabelOf(_ordered[selIdx]))))
+            @if (selIdx >= 0 && (_effectiveItemTemplate is not null || !string.IsNullOrEmpty(LabelOf(_ordered[selIdx]))))
             {
-                @if (ItemTemplate is not null) { @ItemTemplate(_ordered[selIdx]) }
+                @if (_effectiveItemTemplate is not null) { @_effectiveItemTemplate(_ordered[selIdx]) }
                 else { @LabelOf(_ordered[selIdx]) }
             }
             else
@@ -46,7 +50,7 @@
                       @ref="_listbox"
                       Items="_ordered"
                       GroupBy="GroupBy"
-                      ItemTemplate="ItemTemplate"
+                      ItemTemplate="_effectiveItemTemplate"
                       ItemLabel="LabelOf"
                       Selected="@(i => EqualityComparer<TValue>.Default.Equals(i, Value))"
                       ShowCheck="true"
@@ -80,8 +84,13 @@
     [Parameter] public string? HelperText { get; set; }
     /// <summary>Overrides validation with a custom error message.</summary>
     [Parameter] public string? ErrorText { get; set; }
-    /// <summary>Collection of items to populate the dropdown.</summary>
+    /// <summary>Collection of items to populate the dropdown. An alternative to declaring
+    /// <c>FlareSelectItem</c> children via <see cref="ChildContent"/>.</summary>
     [Parameter] public IEnumerable<TValue>? Items { get; set; }
+    /// <summary>Declarative options as native <c>&lt;option value=".."&gt;Label&lt;/option&gt;</c> child markup.
+    /// Each option's <c>value</c> attribute is converted to <c>TValue</c> and its inner text is the label.
+    /// Used instead of (and taking precedence over) the <see cref="Items"/> collection when supplied.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Function that returns the display text for an item.</summary>
     [Parameter] public Func<TValue, string>? ItemLabel { get; set; }
     /// <summary>Custom render template for an item (control + dropdown). Overrides <see cref="ItemLabel"/> text.</summary>
@@ -110,22 +119,150 @@
     private string _errorId  => $"{_selectId}-err";
     private string _helperId => $"{_selectId}-help";
 
+    // Declarative <option> values/labels parsed from ChildContent (in declaration order).
+    private bool _declarative => ChildContent is not null;
+    private List<TValue> _declaredValues = new();
+    private readonly Dictionary<TValue, string> _declaredLabels = new();
+
     // The options flattened in display order (groups kept contiguous) for keyboard nav + index alignment
-    // with the shared FlareListbox, which renders group headers at group boundaries.
+    // with the shared FlareListbox, which renders group headers at group boundaries. Declarative
+    // <option> children take precedence over the Items collection.
     private List<TValue> _ordered
     {
         get
         {
-            var src = GroupBy is null
-                ? (Items ?? Enumerable.Empty<TValue>())
-                : (Items ?? Enumerable.Empty<TValue>()).GroupBy(GroupBy).SelectMany(g => g);
-            return src.ToList();
+            var values = _declarative ? _declaredValues : (Items ?? Enumerable.Empty<TValue>());
+            return (GroupBy is null ? values : values.GroupBy(GroupBy).SelectMany(g => g)).ToList();
         }
     }
 
-    private string LabelOf(TValue item) => ItemLabel?.Invoke(item) ?? item?.ToString() ?? string.Empty;
+    // ItemTemplate (explicit) wins; declarative <option> labels render as plain text via LabelOf.
+    private RenderFragment<TValue>? _effectiveItemTemplate => ItemTemplate;
 
-    protected override void OnParametersSet() => UpdateFieldIdentifier(For);
+    private string LabelOf(TValue item)
+    {
+        if (ItemLabel is not null) return ItemLabel(item);
+        if (_declarative && item is not null && _declaredLabels.TryGetValue(item, out var text)) return text;
+        return item?.ToString() ?? string.Empty;
+    }
+
+    protected override void OnParametersSet()
+    {
+        UpdateFieldIdentifier(For);
+        ParseDeclaredOptions();
+    }
+
+    // Collects declarative <option value="..">Label</option> entries from ChildContent. Static option
+    // markup is compiled by Razor into a single Markup frame (a raw HTML string), while options carrying
+    // a binding/dynamic attribute become Element frames - so both shapes are handled. The option's value
+    // attribute is converted to TValue (TypeConverter); its inner text is the label.
+    private void ParseDeclaredOptions()
+    {
+        if (ChildContent is null)
+        {
+            if (_declaredValues.Count > 0) { _declaredValues = new(); _declaredLabels.Clear(); }
+            return;
+        }
+
+        var values = new List<TValue>();
+        _declaredLabels.Clear();
+
+        void AddOption(string? rawValue, string labelText)
+        {
+            var converted = ConvertRaw(rawValue ?? labelText);
+            if (converted is null) return;
+            values.Add(converted);
+            _declaredLabels[converted] = labelText;
+        }
+
+        var builder = new RenderTreeBuilder();
+        try
+        {
+            ChildContent(builder);
+            var range = builder.GetFrames();
+            var frames = range.Array;
+            for (var i = 0; i < range.Count; i++)
+            {
+                ref readonly var frame = ref frames[i];
+
+                // Static option markup -> one Markup frame holding the raw HTML string.
+                if (frame.FrameType == RenderTreeFrameType.Markup)
+                {
+                    ParseOptionsFromHtml(frame.MarkupContent, AddOption);
+                    continue;
+                }
+
+                // Dynamic option -> an <option> Element frame with its attributes/text as child frames.
+                if (frame.FrameType != RenderTreeFrameType.Element ||
+                    !string.Equals(frame.ElementName, "option", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                string? optionValue = null;
+                var label = new StringBuilder();
+                var end = i + frame.ElementSubtreeLength;
+                for (var j = i + 1; j < end; j++)
+                {
+                    ref readonly var child = ref frames[j];
+                    if (child.FrameType == RenderTreeFrameType.Attribute)
+                    {
+                        if (string.Equals(child.AttributeName, "value", StringComparison.OrdinalIgnoreCase))
+                            optionValue = child.AttributeValue?.ToString();
+                    }
+                    else if (child.FrameType is RenderTreeFrameType.Text or RenderTreeFrameType.Markup)
+                    {
+                        label.Append(child.TextContent);
+                    }
+                }
+                i = end - 1; // skip the option's subtree
+
+                AddOption(optionValue, label.ToString().Trim());
+            }
+        }
+        finally
+        {
+            ((IDisposable)builder).Dispose();
+        }
+
+        _declaredValues = values;
+    }
+
+    // Extracts <option value="..">label</option> entries from a raw HTML string (static markup case).
+    private static readonly System.Text.RegularExpressions.Regex _optionRegex = new(
+        "<option\\b([^>]*)>(.*?)</option>",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+    private static readonly System.Text.RegularExpressions.Regex _valueAttrRegex = new(
+        "value\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)')",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    private static readonly System.Text.RegularExpressions.Regex _tagRegex = new("<[^>]+>");
+
+    private static void ParseOptionsFromHtml(string? html, Action<string?, string> add)
+    {
+        if (string.IsNullOrEmpty(html) || html.IndexOf("<option", StringComparison.OrdinalIgnoreCase) < 0)
+            return;
+        foreach (System.Text.RegularExpressions.Match m in _optionRegex.Matches(html))
+        {
+            var attrs = m.Groups[1].Value;
+            var vm = _valueAttrRegex.Match(attrs);
+            string? value = vm.Success ? (vm.Groups[1].Success ? vm.Groups[1].Value : vm.Groups[2].Value) : null;
+            var label = System.Net.WebUtility.HtmlDecode(_tagRegex.Replace(m.Groups[2].Value, string.Empty)).Trim();
+            add(value, label);
+        }
+    }
+
+    // Converts an <option> string value to TValue (identity for string; TypeConverter otherwise).
+    private static TValue? ConvertRaw(string raw)
+    {
+        if (typeof(TValue) == typeof(string)) return (TValue)(object)raw;
+        var target = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+        try
+        {
+            var converter = TypeDescriptor.GetConverter(target);
+            if (converter.CanConvertFrom(typeof(string)))
+                return (TValue?)converter.ConvertFromInvariantString(raw);
+        }
+        catch { }
+        return default;
+    }
 
     public override async ValueTask DisposeAsync()
     {

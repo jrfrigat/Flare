@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
 
-<div class="@BuildCssClass(_stateClass, FloatingLabel ? Css.Classes.Input.Floating : null, AdornmentStart is not null ? Css.Classes.Input.HasAdornmentStart : null, AdornmentEnd is not null ? Css.Classes.Input.HasAdornmentEnd : null, _colorClass, _variantClass, _sizeClass)" style="@_inlineStyle">
+<div class="@BuildCssClass(_stateClass, FloatingLabel ? Css.Classes.Input.Floating : null, AdornmentStart is not null ? Css.Classes.Input.HasAdornmentStart : null, AdornmentEnd is not null ? Css.Classes.Input.HasAdornmentEnd : null, _colorClass, _variantClass, _sizeClass, _fullWidthClass, _marginClass)" style="@_inlineStyle">
     @if (!FloatingLabel && !string.IsNullOrEmpty(Label))
     {
         <label class="@Css.Classes.Input.Label" for="@_inputId">@Label</label>
@@ -30,7 +30,7 @@
                type="@Type"
                maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
                aria-label="@AriaLabel"
-               aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+               aria-invalid="@(_hasError ? "true" : null)"
                aria-describedby="@_computedDescribedBy"
                @onchange="HandleChange"
                @oninput="HandleInput"
@@ -92,6 +92,14 @@
     [Parameter] public string? HelperText { get; set; }
     /// <summary>Overrides validation with a custom error message.</summary>
     [Parameter] public string? ErrorText { get; set; }
+    /// <summary>Forces the field into the error (invalid) visual state - red active indicator and
+    /// <c>aria-invalid</c> - without requiring an <see cref="ErrorText"/> message. Useful when the error
+    /// is surfaced elsewhere (a form-level summary) or when only the state, not a message, is wanted.
+    /// The error state is also shown automatically whenever <see cref="ErrorText"/> or a bound validation
+    /// message is present.</summary>
+    [Parameter] public bool Error { get; set; }
+    /// <summary>Alias for <see cref="Error"/>: forces the invalid visual state without a message.</summary>
+    [Parameter] public bool Invalid { get; set; }
     /// <summary>Icon rendered inside the leading edge of the input.</summary>
     [Parameter] public RenderFragment? LeadingIcon { get; set; }
     /// <summary>Icon rendered inside the trailing edge of the input.</summary>
@@ -127,6 +135,13 @@
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
     /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    /// <summary>When true (the default), the field is block-level and fills the width of its container.
+    /// Set to false to size the field to its content (inline) instead.</summary>
+    [Parameter] public bool FullWidth { get; set; } = true;
+    /// <summary>Vertical (block) margin around the field. <see cref="FieldMargin.None"/> (default) leaves
+    /// spacing to the surrounding layout; <see cref="FieldMargin.Dense"/> / <see cref="FieldMargin.Normal"/>
+    /// add a compact / comfortable margin above and below.</summary>
+    [Parameter] public FieldMargin Margin { get; set; } = FieldMargin.None;
     /// <summary>Optional typography scale for the input text. Overrides the size-derived font.
     /// Null keeps the size default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
@@ -170,8 +185,11 @@
 
     private string? _displayedError => DisplayedError(ErrorText);
 
+    // The error state is on when explicitly toggled (Error/Invalid) or when a message is displayed.
+    private bool _hasError => Error || Invalid || !string.IsNullOrEmpty(_displayedError);
+
     private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        _hasError ? Css.Classes.Input.Error :
         Disabled ? Css.Classes.Input.Disabled : string.Empty;
 
     // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main token.
@@ -184,6 +202,14 @@
         FieldSize.Lg => Css.Classes.Input.SizeLg,
         FieldSize.Xl => Css.Classes.Input.SizeXl,
         _ => string.Empty,
+    };
+    // Full width is the default (no class); false -> shrink-to-content.
+    private string? _fullWidthClass => FullWidth ? null : Css.Classes.Input.Auto;
+    private string? _marginClass => Margin switch
+    {
+        FieldMargin.Dense  => Css.Classes.Input.MarginDense,
+        FieldMargin.Normal => Css.Classes.Input.MarginNormal,
+        _                  => null,
     };
     private string? _inlineStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};{Style}" : Style;
     // Typo wins over the size-derived font via an inline style (the size-grid selectors out-specify a class).

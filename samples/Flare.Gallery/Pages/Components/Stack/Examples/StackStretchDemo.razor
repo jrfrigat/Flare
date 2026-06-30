@@ -1,0 +1,13 @@
+@* StretchItems: every child shares the row equally. StretchFirst: only the first child grows. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row StretchItems Gap="FlareSpacing.Small">
+        <FlarePaper Elevation="1" Style="padding:0.75rem;text-align:center;">A</FlarePaper>
+        <FlarePaper Elevation="1" Style="padding:0.75rem;text-align:center;">B</FlarePaper>
+        <FlarePaper Elevation="1" Style="padding:0.75rem;text-align:center;">C</FlarePaper>
+    </FlareStack>
+
+    <FlareStack Row StretchFirst Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareTextField Placeholder="Grows to fill the row" />
+        <FlareButton Variant="ButtonVariant.Filled">Send</FlareButton>
+    </FlareStack>
+</FlareStack>

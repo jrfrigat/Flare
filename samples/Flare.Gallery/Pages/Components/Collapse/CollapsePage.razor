@@ -1,0 +1,12 @@
+@page "/components/collapse"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Collapse_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareCollapse">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Collapse_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Collapse_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Collapse_Standalone" DemoType="typeof(Examples.CollapseStandaloneDemo)" />
+<AutoDemoSection Title="@GalleryStrings.Collapse_Header" DemoType="typeof(Examples.CollapseHeaderDemo)" />

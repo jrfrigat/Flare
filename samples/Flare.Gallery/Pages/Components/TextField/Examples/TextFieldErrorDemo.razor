@@ -1,0 +1,12 @@
+@* Error/Invalid forces the error visual state with no message. ErrorText shows the message too. *@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:24rem;">
+    <FlareTextField Label="Invalid (state only)" Value="@("bad value")" Error />
+    <FlareTextField Label="With message" Value="@("bad value")" ErrorText="Value is not allowed" />
+    <FlareSwitch @bind-Value="_invalid" Label="Toggle error state" />
+    <FlareTextField Label="Bound to switch" @bind-Value="_text" Invalid="_invalid" />
+</FlareStack>
+
+@code {
+    private bool _invalid = true;
+    private string? _text = "Edit me";
+}
