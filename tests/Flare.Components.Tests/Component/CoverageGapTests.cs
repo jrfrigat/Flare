@@ -1794,3 +1794,36 @@ public class C_FlareAccordionToggleTests : FlareTestContext
         Assert.Equal("false", cut.Find("button[aria-expanded]").GetAttribute("aria-expanded"));
     }
 }
+
+// FlareMenu keyboard a11y: opening sets aria-activedescendant to the first item and arrow keys move it.
+public class C_FlareMenuKeyboardTests : FlareTestContext
+{
+    private static RenderFragment ThreeItems() => b =>
+    {
+        for (var i = 0; i < 3; i++)
+        {
+            b.OpenComponent<FlareMenuItem>(i * 2);
+            b.AddAttribute(i * 2 + 1, nameof(FlareMenuItem.ChildContent),
+                (RenderFragment)(cb => cb.AddContent(0, $"Item {i}")));
+            b.CloseComponent();
+        }
+    };
+
+    [Fact]
+    public async Task Open_SetsActiveDescendant_AndArrowMovesIt()
+    {
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, "<span>open</span>")
+            .Add(m => m.ChildContent, ThreeItems()));
+
+        await cut.InvokeAsync(() => cut.Find("[aria-haspopup=menu]").Click());   // open -> focuses first item
+
+        var ad1 = cut.Find("[role=menu]").GetAttribute("aria-activedescendant");
+        Assert.False(string.IsNullOrEmpty(ad1));                                  // points at the first item
+
+        await cut.InvokeAsync(() => cut.Find("[role=menu]").KeyDown(
+            new Microsoft.AspNetCore.Components.Web.KeyboardEventArgs { Key = "ArrowDown" }));
+        var ad2 = cut.Find("[role=menu]").GetAttribute("aria-activedescendant");
+        Assert.NotEqual(ad1, ad2);                                               // moved to the next item
+    }
+}

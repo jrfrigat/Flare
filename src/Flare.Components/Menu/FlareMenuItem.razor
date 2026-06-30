@@ -4,6 +4,7 @@
 @if (Href is not null)
 {
     <a class="@BuildCssClass(_disabledClass)"
+       id="@ItemId"
        role="menuitem"
        href="@_safeHref"
        tabindex="@_tabIndex"
@@ -22,6 +23,7 @@
 else
 {
     <button class="@BuildCssClass(_disabledClass)"
+            id="@ItemId"
             role="menuitem"
             type="button"
             disabled="@Disabled"
@@ -56,6 +58,9 @@ else
     private Action<FlareMenuItem>? RegisterMenuItem => MenuContext?.Register;
 
     protected override string ComponentCssClass => Css.Classes.Menu.Item;
+
+    /// <summary>Stable element id, referenced by the menu's <c>aria-activedescendant</c> when focused.</summary>
+    internal string ItemId { get; } = "flare-mi-" + Guid.NewGuid().ToString("N")[..8];
 
     private string _disabledClass => Disabled
         ? Css.Classes.Menu.ItemDisabled

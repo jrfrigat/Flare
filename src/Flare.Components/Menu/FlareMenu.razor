@@ -8,7 +8,9 @@
     @if (_open)
     {
         <div class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
-        <div id="@_panelId" class="@Css.Classes.Menu.Panel @_anchorClass" role="menu" tabindex="-1" aria-label="@AriaLabel" @onkeydown="HandleMenuKeyDown">
+        <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass" role="menu" tabindex="-1"
+             aria-label="@AriaLabel" aria-activedescendant="@_focusedItem?.ItemId"
+             @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="true">
             <CascadingValue Value="_menuContext" IsFixed="true">
                 <CascadingValue Value="@_focusedItem" Name="MenuFocusedItem">
                     @ChildContent
@@ -37,6 +39,8 @@
     private string? _denseClass => Dense ? Css.Classes.Menu.Dense : null;
 
     private bool _open;
+    private bool _wasOpen;
+    private ElementReference _panelEl;
     private FlareMenuItem? _focusedItem;
     private readonly List<FlareMenuItem> _items = [];
     private readonly string _panelId = "flare-menu-" + Guid.NewGuid().ToString("N")[..8];
@@ -47,6 +51,23 @@
     {
         base.OnInitialized();
         _menuContext = new FlareMenuContext(CloseAsync, RegisterItem);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_open && !_wasOpen)
+        {
+            _wasOpen = true;
+            // Focus the panel so its keydown handler receives arrow/Home/End/Tab keys, and start the
+            // active item on the first enabled one (announced to screen readers via aria-activedescendant).
+            _focusedItem ??= _items.FirstOrDefault(i => !i.Disabled);
+            try { await _panelEl.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
+            StateHasChanged();
+        }
+        else if (!_open && _wasOpen)
+        {
+            _wasOpen = false;
+        }
     }
 
     private string _anchorClass => Anchor switch
