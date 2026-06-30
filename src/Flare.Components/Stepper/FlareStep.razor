@@ -21,6 +21,12 @@
     [Parameter] public bool Optional { get; set; }
     /// <summary>Caption shown for an optional step. Default "Optional".</summary>
     [Parameter] public string OptionalText { get; set; } = "Optional";
+    /// <summary>
+    /// Allows jumping past this step in a linear stepper. When true, forward navigation (a
+    /// step-indicator click or <c>GoTo</c>) may move beyond this step without it being completed.
+    /// Has no effect in a non-linear stepper, where every step is already reachable.
+    /// </summary>
+    [Parameter] public bool Skippable { get; set; }
 
     protected override void OnInitialized() => Parent?.RegisterStep(this);
 

@@ -71,22 +71,34 @@
     @* Content area *@
     @{
         var activeStep = _steps.ElementAtOrDefault(_activeIndex);
-        if (activeStep?.ChildContent is not null)
+    }
+    @if (ActionContent is not null)
+    {
+        @* Custom navigation replaces the built-in Back/Next buttons. Rendered whenever steps exist so
+           a consumer's controls are always available, even for steps without inline content. *@
+        @if (_steps.Count > 0)
         {
             <div class="@Css.Classes.Stepper.Content" role="tabpanel" aria-labelledby="flare-step-@_activeIndex">
-                @activeStep.ChildContent
-                <div class="@Css.Classes.Stepper.Nav">
-                    @if (!IsFirst)
-                    {
-                        <button class="@Css.Classes.Stepper.NavBtn" @onclick="Back">@(FlareStrings.Stepper_Back)</button>
-                    }
-                    @if (!IsLast)
-                    {
-                        <button class="@Css.Classes.Stepper.NavBtn @Css.Classes.Stepper.NavBtnPrimary" @onclick="Next">@(FlareStrings.Stepper_Next)</button>
-                    }
-                </div>
+                @activeStep?.ChildContent
+                @ActionContent(new StepperContext(this, _activeIndex, _steps.Count, activeStep))
             </div>
         }
+    }
+    else if (activeStep?.ChildContent is not null)
+    {
+        <div class="@Css.Classes.Stepper.Content" role="tabpanel" aria-labelledby="flare-step-@_activeIndex">
+            @activeStep.ChildContent
+            <div class="@Css.Classes.Stepper.Nav">
+                @if (!IsFirst)
+                {
+                    <button class="@Css.Classes.Stepper.NavBtn" @onclick="Back">@(FlareStrings.Stepper_Back)</button>
+                }
+                @if (!IsLast)
+                {
+                    <button class="@Css.Classes.Stepper.NavBtn @Css.Classes.Stepper.NavBtnPrimary" @onclick="Next">@(FlareStrings.Stepper_Next)</button>
+                }
+            </div>
+        </div>
     }
 </div>
 
@@ -99,6 +111,37 @@
     [Parameter] public bool Linear { get; set; } = true;
     /// <summary>Allows clicking any step regardless of completion when true.</summary>
     [Parameter] public bool NonLinear { get; set; }
+    /// <summary>
+    /// Zero-based index of the active step. Supports two-way binding (<c>@bind-ActiveIndex</c>): the
+    /// component writes the new index out via <see cref="ActiveIndexChanged"/> on every navigation,
+    /// and adopts an externally assigned value (e.g. from a consumer's custom controls) on the next
+    /// render. An out-of-range value is clamped to the registered step count. The getter always
+    /// reports the live active step, so reading it after a navigation reflects the current position.
+    /// </summary>
+    // BL0007: ActiveIndex deliberately uses a custom getter/setter (not an auto-property). The getter
+    // reports the live active step; the setter only captures the assigned value, which is reconciled
+    // in OnParametersSet so _activeIndex stays authoritative for an uncontrolled (unbound) stepper.
+#pragma warning disable BL0007
+    [Parameter]
+    public int ActiveIndex
+    {
+        get => _activeIndex;
+        set => _paramActiveIndex = value;
+    }
+#pragma warning restore BL0007
+    /// <summary>
+    /// Fired with the new index whenever <see cref="ActiveIndex"/> changes (Next/Back/click or a
+    /// programmatic move), enabling <c>@bind-ActiveIndex</c>. For a plain "step changed" notification
+    /// without binding, use <see cref="OnStepChanged"/> instead (both fire).
+    /// </summary>
+    [Parameter] public EventCallback<int> ActiveIndexChanged { get; set; }
+    /// <summary>
+    /// Optional navigation content rendered in place of the built-in Back/Next buttons. Receives a
+    /// <see cref="StepperContext"/> with the active position and the navigation operations, so a
+    /// consumer can render bespoke controls (custom icon buttons, wheel/keyboard navigation, ...).
+    /// When <c>null</c> (the default) the component renders its built-in Back/Next buttons.
+    /// </summary>
+    [Parameter] public RenderFragment<StepperContext>? ActionContent { get; set; }
     /// <summary>Callback fired when the active step index changes.</summary>
     [Parameter] public EventCallback<int> OnStepChanged { get; set; }
     /// <summary>
@@ -119,10 +162,46 @@
 
     private readonly List<FlareStep> _steps = [];
     private int _activeIndex;
+    // Value most recently assigned to the ActiveIndex parameter by Blazor (the bound field, or its
+    // default when unbound), captured by the setter.
+    private int _paramActiveIndex;
+    // Last parameter value we reconciled. Lets OnParametersSet tell a real parent-driven change apart
+    // from a stale default that arrives when the parameter is not bound: internal navigation updates
+    // _activeIndex but deliberately leaves this untouched, so an unbound (uncontrolled) stepper is
+    // never reset to 0 by an unrelated parent re-render.
+    private int _previousParamActiveIndex;
 
-    public int ActiveIndex => _activeIndex;
+    /// <summary>Whether the active step is the first one.</summary>
     public bool IsFirst => _activeIndex == 0;
+    /// <summary>Whether the active step is the last one.</summary>
     public bool IsLast => _activeIndex >= _steps.Count - 1;
+
+    // Adopt an externally assigned ActiveIndex (two-way binding or a direct set). Internal navigation
+    // pushes its value out through ActiveIndexChanged, so once a bound parameter comes back it already
+    // equals _previousParamActiveIndex and this is a no-op (no re-entrancy, no guard).
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_paramActiveIndex == _previousParamActiveIndex) return;
+        _previousParamActiveIndex = _paramActiveIndex;
+        var clamped = ClampIndex(_paramActiveIndex);
+        _activeIndex = clamped;
+        // Correct an out-of-range value so a bound field stays in sync (no-op when unbound).
+        if (clamped != _paramActiveIndex && _steps.Count > 0)
+            await ActiveIndexChanged.InvokeAsync(clamped);
+    }
+
+    // Steps register during their first render, after the parent's OnParametersSet has run. Once they
+    // are all known, clamp an out-of-range starting index down to a valid step and sync the binding.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender || _steps.Count == 0) return;
+        var clamped = ClampIndex(_activeIndex);
+        if (clamped == _activeIndex) return;
+        _activeIndex = clamped;
+        _previousParamActiveIndex = _paramActiveIndex; // don't re-adopt the stale out-of-range value
+        await ActiveIndexChanged.InvokeAsync(clamped);
+        StateHasChanged();
+    }
 
     internal void RegisterStep(FlareStep step)
     {
@@ -138,6 +217,9 @@
         StateHasChanged();
     }
 
+    private int ClampIndex(int idx) =>
+        _steps.Count == 0 ? Math.Max(0, idx) : Math.Clamp(idx, 0, _steps.Count - 1);
+
     private StepState GetState(int idx) =>
         idx < _activeIndex ? StepState.Completed :
         idx == _activeIndex ? StepState.Active :
@@ -150,30 +232,51 @@
         _                   => Css.Classes.Stepper.StepUpcoming
     };
 
-    private bool CanGoTo(int idx) =>
-        !Linear || NonLinear || idx <= _activeIndex;
+    // Step-indicator click / GoTo permission. In linear mode you may move to a completed or the
+    // current step, advance to the immediately next step, or jump further forward only when every
+    // step skipped over (strictly between the current and target step) is Skippable. A non-linear
+    // stepper allows any step.
+    internal bool CanGoTo(int idx)
+    {
+        if (idx < 0 || idx >= _steps.Count) return false;
+        if (!Linear || NonLinear) return true;
+        if (idx <= _activeIndex) return true;
+        for (var i = _activeIndex + 1; i < idx; i++)
+            if (!_steps[i].Skippable) return false;
+        return true;
+    }
 
     private Task TryGoTo(int idx) => CanGoTo(idx) ? ChangeStepAsync(idx) : Task.CompletedTask;
 
+    /// <summary>Advances to the next step. No-op on the last step. Runs the <see cref="OnStepChanging"/> guard.</summary>
     public Task Next() => IsLast ? Task.CompletedTask : ChangeStepAsync(_activeIndex + 1);
 
+    /// <summary>Returns to the previous step. No-op on the first step. Runs the <see cref="OnStepChanging"/> guard.</summary>
     public Task Back() => IsFirst ? Task.CompletedTask : ChangeStepAsync(_activeIndex - 1);
 
+    /// <summary>
+    /// Navigates to <paramref name="index"/> (clamped to range) when allowed by the linear/skippable
+    /// rules. Runs the <see cref="OnStepChanging"/> guard.
+    /// </summary>
+    /// <param name="index">Zero-based target step index.</param>
     public Task GoTo(int index)
     {
         index = Math.Clamp(index, 0, _steps.Count - 1);
         return CanGoTo(index) ? ChangeStepAsync(index) : Task.CompletedTask;
     }
 
-    // Single navigation path: runs the OnStepChanging guard, then commits the change. No-op when the
-    // target is the current step or the guard vetoes it.
+    // Single navigation path: runs the OnStepChanging guard, commits the change, then notifies via
+    // ActiveIndexChanged (binding) and OnStepChanged. No-op when target == current or the guard vetoes.
+    // _previousParamActiveIndex is intentionally left untouched so an uncontrolled stepper survives an
+    // unrelated parent re-render (see the field comment).
     private async Task ChangeStepAsync(int to)
     {
         if (to == _activeIndex) return;
         if (OnStepChanging is not null && !await OnStepChanging(new StepperChange(_activeIndex, to)))
             return;
         _activeIndex = to;
-        await OnStepChanged.InvokeAsync(_activeIndex);
+        await ActiveIndexChanged.InvokeAsync(to);
+        await OnStepChanged.InvokeAsync(to);
         StateHasChanged();
     }
 }

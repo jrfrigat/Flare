@@ -1,0 +1,60 @@
+@* Bespoke wizard navigation: ActionContent replaces the built-in Back/Next buttons with custom
+   arrow icon buttons, the mouse wheel scrolls between steps, and @bind-ActiveIndex observes the
+   active step. (Modelled on a real two-step token wizard that previously had to be hand-rolled.) *@
+<div @onwheel="OnWheel" @onwheel:preventDefault="true"
+     style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);padding:var(--flare-spacing-12,1.5rem);">
+    <FlareStepper @ref="_stepper" @bind-ActiveIndex="_index">
+        <ChildContent>
+            <FlareStep Label="Scope">
+                <Icon><FlareIcon Name="key" /></Icon>
+                <ChildContent>
+                    <FlareText Typo="TypographyScale.BodyMedium">Pick the permissions the token should grant.</FlareText>
+                </ChildContent>
+            </FlareStep>
+            <FlareStep Label="Confirm">
+                <Icon><FlareIcon Name="check_circle" /></Icon>
+                <ChildContent>
+                    <FlareText Typo="TypographyScale.BodyMedium">
+                        Review and generate the token. Use the arrows or scroll the mouse wheel to move.
+                    </FlareText>
+                </ChildContent>
+            </FlareStep>
+        </ChildContent>
+        <ActionContent Context="ctx">
+            <FlareStack Row Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center"
+                        Gap="FlareSpacing.Medium" Style="margin-top:var(--flare-spacing-12,1.5rem);">
+                <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Circular"
+                             Disabled="ctx.IsFirst" AriaLabel="Previous step"
+                             OnClick="@(() => ctx.BackAsync())">
+                    <LeadingIcon><FlareIcon Name="arrow_back" /></LeadingIcon>
+                </FlareButton>
+                <FlareText Typo="TypographyScale.LabelLarge">@(ctx.ActiveIndex + 1) / @ctx.Count</FlareText>
+                <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Circular"
+                             Disabled="ctx.IsLast" AriaLabel="Next step"
+                             OnClick="@(() => ctx.NextAsync())">
+                    <LeadingIcon><FlareIcon Name="arrow_forward" /></LeadingIcon>
+                </FlareButton>
+            </FlareStack>
+        </ActionContent>
+    </FlareStepper>
+</div>
+<FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">
+    Active step index (bound): @_index
+</FlareText>
+
+@code {
+    private FlareStepper? _stepper;
+    private int _index;
+
+    // Wheel down advances, wheel up goes back. Delta is accumulated so one notch is about one step
+    // rather than rushing to the end on a single scroll.
+    private double _wheelAccum;
+
+    private async Task OnWheel(WheelEventArgs e)
+    {
+        if (_stepper is null) return;
+        _wheelAccum += e.DeltaY;
+        if (_wheelAccum >= 50) { _wheelAccum = 0; await _stepper.Next(); }
+        else if (_wheelAccum <= -50) { _wheelAccum = 0; await _stepper.Back(); }
+    }
+}
