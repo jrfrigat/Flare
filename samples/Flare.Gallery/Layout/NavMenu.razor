@@ -25,19 +25,19 @@
             <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
         </FlareNavLink>
 
-        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Themes))" Active="@(Section == GallerySection.Themes)">
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Themes))" Active="@(RouteSection == GallerySection.Themes)">
             <Icon><FlareIcon Size="1.25rem" Name="palette" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Theming</ChildContent>
         </FlareNavLink>
-        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Components))" Active="@(Section == GallerySection.Components)">
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Components))" Active="@(RouteSection == GallerySection.Components)">
             <Icon><FlareIcon Size="1.25rem" Name="category" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Components</ChildContent>
         </FlareNavLink>
-        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Services))" Active="@(Section == GallerySection.Services)">
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Services))" Active="@(RouteSection == GallerySection.Services)">
             <Icon><FlareIcon Size="1.25rem" Name="bolt" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Services</ChildContent>
         </FlareNavLink>
-        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Api))" Active="@(Section == GallerySection.Api)">
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Api))" Active="@(RouteSection == GallerySection.Api)">
             <Icon><FlareIcon Size="1.25rem" Name="data_object" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Api</ChildContent>
         </FlareNavLink>
@@ -47,10 +47,12 @@
 @code {
     /// <summary>How the primary rail renders (labeled rail when collapsed, full when expanded).</summary>
     [Parameter] public NavMenuMode Mode { get; set; } = NavMenuMode.RailLabeled;
-    /// <summary>The currently open section. Supports <c>@bind-Section</c>.</summary>
+    /// <summary>The currently open section (drives the secondary drawer). Supports <c>@bind-Section</c>.</summary>
     [Parameter] public GallerySection Section { get; set; }
     /// <summary>Raised when a section trigger toggles the open section.</summary>
     [Parameter] public EventCallback<GallerySection> SectionChanged { get; set; }
+    /// <summary>The section of the current route -- highlights its trigger so the rail shows where you are.</summary>
+    [Parameter] public GallerySection RouteSection { get; set; }
 
     // Clicking the open section closes the secondary drawer; clicking another switches to it.
     private Task ToggleSection(GallerySection s)

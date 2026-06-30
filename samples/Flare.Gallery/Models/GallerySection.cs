@@ -17,3 +17,18 @@ public enum GallerySection
     /// <summary>API reference pages.</summary>
     Api,
 }
+
+/// <summary>Maps a route to the navigation section it belongs to, so the primary rail can highlight
+/// the section of the current page.</summary>
+public static class GallerySections
+{
+    /// <summary>The section a path belongs to (<see cref="GallerySection.None"/> for top-level pages).</summary>
+    public static GallerySection FromPath(string? path)
+    {
+        var p = "/" + (path ?? string.Empty).Trim('/').ToLowerInvariant();
+        if (p.StartsWith("/components")) return GallerySection.Components;
+        if (p.StartsWith("/services")) return GallerySection.Services;
+        if (p == "/api" || p.StartsWith("/api/")) return GallerySection.Api;
+        return p is "/theming" or "/color" or "/custom-theme" ? GallerySection.Themes : GallerySection.None;
+    }
+}
