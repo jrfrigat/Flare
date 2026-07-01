@@ -204,6 +204,13 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>Looks up a localized string with the v0.0.9 release highlights (one per line).</summary>
+        public static string About_WhatsNewV9 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV9", resourceCulture);
+            }
+        }
+
         /// <summary>Looks up a localized string with the v0.0.8 release highlights (one per line).</summary>
         public static string About_WhatsNewV8 {
             get {
@@ -5628,7 +5635,34 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("PasswordInput_Disabled", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Live two-way binding.
+        /// </summary>
+        public static string PasswordInput_LiveBinding {
+            get {
+                return ResourceManager.GetString("PasswordInput_LiveBinding", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bound value:.
+        /// </summary>
+        public static string PasswordInput_LiveValue {
+            get {
+                return ResourceManager.GetString("PasswordInput_LiveValue", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на (empty).
+        /// </summary>
+        public static string PasswordInput_LiveValueEmpty {
+            get {
+                return ResourceManager.GetString("PasswordInput_LiveValueEmpty", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Error State.
         /// </summary>

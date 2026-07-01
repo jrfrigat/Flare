@@ -3,6 +3,28 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.9] - 2026-07-01
+
+A bug-fix release. `FlarePasswordField` never propagated the typed value to a consumer's
+`@bind-Value`, so it silently broke every login/registration form bound to it; this is fixed, and the
+component now exposes the `FlareField` parameters most forms need.
+
+### Fixed
+- **`FlarePasswordField` two-way binding now works.** The inner field was bound with
+  `@bind-Value="Value"`, which only assigned the component's local `Value` field and never invoked
+  `FlarePasswordField`'s own `ValueChanged` - so a consumer's `<FlarePasswordField @bind-Value="model.Password" />`
+  never received the typed value and `model.Password` stayed at its initial value. The inner change is
+  now propagated to the component's `ValueChanged`, so `@bind-Value` behaves as expected.
+
+### Added
+- **`FlarePasswordField` typed pass-through parameters.** In addition to the existing ones, the
+  component now surfaces `Immediate` (commit on every keystroke) and `DebounceInterval`, `Variant`
+  (Filled/Outlined), `FullWidth`, `Margin`, and `For` (validation accessor), forwarded to the inner
+  `FlareField` so a password field behaves like a text field. `Required` now emits the native
+  `required` attribute on the input.
+- Gallery: a **Live two-way binding** demo on the Password Field page that binds a `FlarePasswordField`
+  to a field and echoes the bound value on every keystroke (the case that would have caught the bug).
+
 ## [0.0.8] - 2026-07-01
 
 Migrating a real application (PlaylistShared) from MudBlazor to Flare surfaced a batch of small,
