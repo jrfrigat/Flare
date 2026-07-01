@@ -60,6 +60,90 @@ public class C_FlarePasswordFieldTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll(".flare-input__helper--error"));
     }
+
+    [Fact]
+    public void ValueChanged_FiresOnChange()
+    {
+        // Regression: the inner @bind-Value used to only assign the local Value field and never
+        // invoked the component's own ValueChanged, so a consumer's @bind-Value stayed empty forever.
+        string? captured = null;
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.Value, "")
+            .Add(x => x.ValueChanged, v => { captured = v; }));
+
+        cut.Find("input").Change("s3cret");
+
+        Assert.Equal("s3cret", captured);
+    }
+
+    [Fact]
+    public void Immediate_CommitsValueOnKeystroke()
+    {
+        string? captured = null;
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.Immediate, true)
+            .Add(x => x.ValueChanged, v => { captured = v; }));
+
+        cut.Find("input").Input("typing");
+
+        Assert.Equal("typing", captured);
+    }
+
+    [Fact]
+    public void NotImmediate_DoesNotCommitOnKeystroke()
+    {
+        string? captured = null;
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.ValueChanged, v => { captured = v; }));
+
+        cut.Find("input").Input("typing"); // oninput is gated behind Immediate
+
+        Assert.Null(captured);
+    }
+
+    [Fact]
+    public void Required_EmitsRequiredAttribute()
+    {
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.Required, true));
+
+        Assert.True(cut.Find("input").HasAttribute("required"));
+    }
+
+    [Fact]
+    public void NotRequired_NoRequiredAttribute()
+    {
+        var cut = Render<FlarePasswordField>();
+
+        Assert.False(cut.Find("input").HasAttribute("required"));
+    }
+
+    [Fact]
+    public void Variant_Outlined_ForwardsToField()
+    {
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.Variant, InputVariant.Outlined));
+
+        Assert.Contains("flare-input-variant--outlined", cut.Find(".flare-input").ClassName);
+    }
+
+    [Fact]
+    public void FullWidth_False_ForwardsAutoClass()
+    {
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.FullWidth, false));
+
+        Assert.Contains("flare-input--auto", cut.Find(".flare-input").ClassName);
+    }
+
+    [Fact]
+    public void Margin_Dense_ForwardsToField()
+    {
+        var cut = Render<FlarePasswordField>(p => p
+            .Add(x => x.Margin, FieldMargin.Dense));
+
+        Assert.Contains("flare-input--margin-dense", cut.Find(".flare-input").ClassName);
+    }
 }
 
 // ------------------------------------------------------------------------------

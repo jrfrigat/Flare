@@ -1293,6 +1293,15 @@
   <data name="PasswordInput_Disabled" xml:space="preserve">
     <value>Недоступно</value>
   </data>
+  <data name="PasswordInput_LiveBinding" xml:space="preserve">
+    <value>Живая двусторонняя привязка</value>
+  </data>
+  <data name="PasswordInput_LiveValue" xml:space="preserve">
+    <value>Привязанное значение:</value>
+  </data>
+  <data name="PasswordInput_LiveValueEmpty" xml:space="preserve">
+    <value>(пусто)</value>
+  </data>
   <data name="DatePicker_Title" xml:space="preserve">
     <value>Выбор даты (Date Picker)</value>
   </data>
@@ -2408,6 +2417,11 @@
   </data>
   <data name="About_Intro" xml:space="preserve">
     <value>Flare - библиотека компонентов Blazor с открытым исходным кодом на .NET 10.</value>
+  </data>
+  <data name="About_WhatsNewV9" xml:space="preserve">
+    <value>Исправлено: двусторонняя привязка FlarePasswordField теперь работает - раньше поле не передавало введённое значение, поэтому @bind-Value у потребителя не обновлялся (что незаметно ломало формы входа и регистрации)
+FlarePasswordField теперь предоставляет нужные формам параметры FlareField: Immediate (фиксация по нажатию клавиши) и DebounceInterval, Variant, FullWidth, Margin и For; Required теперь выводит нативный атрибут required
+Галерея: новое демо "Живая двусторонняя привязка" на странице поля пароля, которое отображает привязанное значение по мере ввода</value>
   </data>
   <data name="About_WhatsNewV8" xml:space="preserve">
     <value>FlareIconButton: отдельная кнопка только с иконкой - тонкая обёртка над FlareButton вместо громоздкой связки FlareButton + LeadingIcon

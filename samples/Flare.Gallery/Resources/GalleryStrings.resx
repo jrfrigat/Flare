@@ -1293,6 +1293,15 @@
   <data name="PasswordInput_Disabled" xml:space="preserve">
     <value>Disabled</value>
   </data>
+  <data name="PasswordInput_LiveBinding" xml:space="preserve">
+    <value>Live two-way binding</value>
+  </data>
+  <data name="PasswordInput_LiveValue" xml:space="preserve">
+    <value>Bound value:</value>
+  </data>
+  <data name="PasswordInput_LiveValueEmpty" xml:space="preserve">
+    <value>(empty)</value>
+  </data>
   <data name="DatePicker_Title" xml:space="preserve">
     <value>Date Picker</value>
   </data>
@@ -2408,6 +2417,11 @@
   </data>
   <data name="About_Intro" xml:space="preserve">
     <value>Flare is an open-source Blazor component library built with .NET 10.</value>
+  </data>
+  <data name="About_WhatsNewV9" xml:space="preserve">
+    <value>Fixed: FlarePasswordField two-way binding now works - it used to swallow the typed value, so a consumer's @bind-Value never updated (silently breaking login and registration forms)
+FlarePasswordField now surfaces the FlareField parameters forms need: Immediate (commit on keystroke) and DebounceInterval, Variant, FullWidth, Margin, and For; Required now emits the native required attribute
+Gallery: a new Live two-way binding demo on the Password Field page that echoes the bound value as you type</value>
   </data>
   <data name="About_WhatsNewV8" xml:space="preserve">
     <value>FlareIconButton: a dedicated icon-only button - a thin wrapper over FlareButton, replacing the verbose FlareButton + LeadingIcon idiom
