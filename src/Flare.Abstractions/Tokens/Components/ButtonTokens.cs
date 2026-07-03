@@ -25,16 +25,21 @@ public sealed record ButtonTokens
 
     // --- 2. ПОУГЛОВЫЕ РАДИУСЫ ПОД КАЖДЫЙ ИЗ 5 РАЗМЕРОВ ---
     // (compound: each expands to 4 per-corner --flare-btn-radius-* vars in CssVarMap.FlattenDesign)
+    // All 5 sizes are fully-rounded pills (radius == half of the fixed container height for every
+    // size), so they reference the Shape.Full scale token - like every other component that follows
+    // the shape scale - instead of a hardcoded half-height rem literal. This preserves the pill visual
+    // (border-radius: 9999px renders identically to an explicit half-height on these fixed heights)
+    // while giving theme authors the standard Shape.Full override hook for button rounding.
     /// <summary>Radius xs token.</summary>
-    public CornerRadiusTokens RadiusXs { get; init; } = CornerRadiusTokens.All("1rem");     // 32px / 2 = 16px
+    public CornerRadiusTokens RadiusXs { get; init; } = CornerRadiusTokens.All(Vars.Var(Shape.Full));
     /// <summary>Radius sm token.</summary>
-    public CornerRadiusTokens RadiusSm { get; init; } = CornerRadiusTokens.All("1.25rem");  // 40px / 2 = 20px
+    public CornerRadiusTokens RadiusSm { get; init; } = CornerRadiusTokens.All(Vars.Var(Shape.Full));
     /// <summary>Radius md token.</summary>
-    public CornerRadiusTokens RadiusMd { get; init; } = CornerRadiusTokens.All("1.5rem");   // 48px / 2 = 24px
+    public CornerRadiusTokens RadiusMd { get; init; } = CornerRadiusTokens.All(Vars.Var(Shape.Full));
     /// <summary>Radius lg token.</summary>
-    public CornerRadiusTokens RadiusLg { get; init; } = CornerRadiusTokens.All("1.75rem");  // 56px / 2 = 28px
+    public CornerRadiusTokens RadiusLg { get; init; } = CornerRadiusTokens.All(Vars.Var(Shape.Full));
     /// <summary>Radius xl token.</summary>
-    public CornerRadiusTokens RadiusXl { get; init; } = CornerRadiusTokens.All("2rem");     // 64px / 2 = 32px
+    public CornerRadiusTokens RadiusXl { get; init; } = CornerRadiusTokens.All(Vars.Var(Shape.Full));
 
     // --- 3. ВЫСОТА КОНТЕЙНЕРОВ (Container Heights) ---
     /// <summary>Height xs token (<c>2rem</c>).</summary>
