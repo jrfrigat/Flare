@@ -1000,7 +1000,43 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Badge_Title", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Basic bottom navigation.
+        /// </summary>
+        public static string BottomNav_Basic {
+            get {
+                return ResourceManager.GetString("BottomNav_Basic", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled item &amp; custom aria-label.
+        /// </summary>
+        public static string BottomNav_Disabled {
+            get {
+                return ResourceManager.GetString("BottomNav_Disabled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareBottomNav, FlareBottomNavItem - mobile bottom navigation bar..
+        /// </summary>
+        public static string BottomNav_Subtitle {
+            get {
+                return ResourceManager.GetString("BottomNav_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bottom Nav.
+        /// </summary>
+        public static string BottomNav_Title {
+            get {
+                return ResourceManager.GetString("BottomNav_Title", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Items.
         /// </summary>

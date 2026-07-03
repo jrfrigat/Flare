@@ -662,6 +662,21 @@ public static class CssVarMap
         v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;
         #endregion
 
+        #region BOTTOM NAV
+        v[Css.Tokens.BottomNavField.BarHeight] = t.BottomNav.BarHeight;
+        v[Css.Tokens.BottomNavField.BarBg] = t.BottomNav.BarBg;
+        v[Css.Tokens.BottomNavField.BorderColor] = t.BottomNav.BorderColor;
+        v[Css.Tokens.BottomNavField.SafeAreaPadding] = t.BottomNav.SafeAreaPadding;
+        v[Css.Tokens.BottomNavField.InactiveColor] = t.BottomNav.InactiveColor;
+        v[Css.Tokens.BottomNavField.ActiveColor] = t.BottomNav.ActiveColor;
+        v[Css.Tokens.BottomNavField.IconSize] = t.BottomNav.IconSize;
+        v[Css.Tokens.BottomNavField.LabelFontSize] = t.BottomNav.LabelFontSize;
+        v[Css.Tokens.BottomNavField.LabelFontWeight] = t.BottomNav.LabelFontWeight;
+        v[Css.Tokens.BottomNavField.LabelFontWeightActive] = t.BottomNav.LabelFontWeightActive;
+        v[Css.Tokens.BottomNavField.IndicatorBg] = t.BottomNav.IndicatorBg;
+        v[Css.Tokens.BottomNavField.IndicatorRadius] = t.BottomNav.IndicatorRadius;
+        #endregion
+
         #region SWITCH
         v[Css.Tokens.SwitchField.TrackWidth] = t.Switch.TrackWidth;
         v[Css.Tokens.SwitchField.TrackHeight] = t.Switch.TrackHeight;

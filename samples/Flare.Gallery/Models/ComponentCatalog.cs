@@ -136,6 +136,7 @@ public static class ComponentCatalog
         new ComponentEntry("/components/stack",             "Stack",                   "Stack_Title",           ComponentGroup.Layout),
 
         // -- Navigation -----------------------------------------------------------
+        new ComponentEntry("/components/bottomnav",         "Bottom Nav",              "BottomNav_Title",       ComponentGroup.Navigation),
         new ComponentEntry("/components/breadcrumb",        "Breadcrumb",              "Breadcrumb_Title",      ComponentGroup.Navigation),
         new ComponentEntry("/components/drawer",            "Drawer",                  "Drawer_Title",          ComponentGroup.Navigation),
         new ComponentEntry("/components/link",              "Link",                    "Link_Title",            ComponentGroup.Navigation),
