@@ -977,7 +977,16 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Nav_BackToTop", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bottom navigation.
+        /// </summary>
+        public static string Nav_BottomNavigation {
+            get {
+                return ResourceManager.GetString("Nav_BottomNavigation", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Breadcrumb.
         /// </summary>

@@ -1,0 +1,82 @@
+/*
+   Mobile bottom-navigation bar (FlareBottomNav / FlareBottomNavItem). The component itself does
+   NOT set position:fixed -- it renders a plain horizontal bar with sensible height/background/
+   border/safe-area padding so the consumer can position it (fixed, sticky, or in-flow) from their
+   own layout.
+*/
+.flare-bottom-nav {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: var(--flare-bottom-nav-bar-height, 5rem);
+  padding-bottom: var(--flare-bottom-nav-safe-area-padding, env(safe-area-inset-bottom, 0px));
+  background: var(--flare-bottom-nav-bar-bg, var(--flare-color-surface-container));
+  border-top: 1px solid var(--flare-bottom-nav-border-color, var(--flare-color-surface-variant));
+  box-sizing: border-box;
+}
+
+/* Each item shares the bar equally. */
+.flare-bottom-nav-item {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-1, 0.125rem);
+  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-1, 0.125rem);
+  text-decoration: none;
+  color: var(--flare-bottom-nav-inactive-color, var(--flare-color-on-surface-variant));
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-bottom-nav-item:hover {
+  color: var(--flare-bottom-nav-active-color, var(--flare-color-on-secondary-container));
+}
+
+/* Pill-shaped indicator drawn behind the icon; transparent and unsized until the item is active. */
+.flare-bottom-nav-item__indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--flare-bottom-nav-indicator-radius, var(--flare-shape-full));
+  padding-inline: var(--flare-spacing-6, 0.75rem);
+  height: 2rem;
+  background: transparent;
+  transition: background-color var(--flare-motion-duration-short1, 100ms);
+}
+
+.flare-bottom-nav-item__icon {
+  display: inline-flex;
+  font-size: var(--flare-bottom-nav-icon-size, 1.5rem);
+  line-height: 1;
+}
+
+.flare-bottom-nav-item__label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-bottom-nav-label-font-size, var(--flare-typescale-label-medium-size));
+  font-weight: var(--flare-bottom-nav-label-font-weight, 500);
+  line-height: 1.15;
+}
+
+.flare-bottom-nav-item--active {
+  color: var(--flare-bottom-nav-active-color, var(--flare-color-on-secondary-container));
+}
+
+.flare-bottom-nav-item--active .flare-bottom-nav-item__indicator {
+  background: var(--flare-bottom-nav-indicator-bg, var(--flare-color-secondary-container));
+}
+
+.flare-bottom-nav-item--active .flare-bottom-nav-item__label {
+  font-weight: var(--flare-bottom-nav-label-font-weight-active, 700);
+}
+
+.flare-bottom-nav-item--disabled {
+  opacity: var(--flare-state-disabled-opacity, 0.38);
+  pointer-events: none;
+}

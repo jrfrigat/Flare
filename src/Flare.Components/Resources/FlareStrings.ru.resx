@@ -138,6 +138,7 @@
 
   <!-- Navigation -->
   <data name="Nav_Navigation" xml:space="preserve"><value>Навигация</value></data>
+  <data name="Nav_BottomNavigation" xml:space="preserve"><value>Нижняя навигация</value></data>
   <data name="Nav_Breadcrumb" xml:space="preserve"><value>Хлебные крошки</value></data>
   <data name="Breadcrumb_Expand" xml:space="preserve"><value>Показать скрытые крошки</value></data>
   <data name="Nav_Pagination" xml:space="preserve"><value>Пагинация</value></data>

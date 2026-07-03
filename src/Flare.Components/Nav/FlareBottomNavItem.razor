@@ -1,0 +1,120 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@inject NavigationManager Navigation
+
+<a class="@BuildCssClass(_activeClass, _disabledClass)"
+   href="@_safeHref"
+   style="@Style"
+   title="@Tooltip"
+   aria-current="@(_isActive ? "page" : null)"
+   @onclick="HandleClick"
+   @onclick:preventDefault="@(OnClick.HasDelegate)"
+   @attributes="AdditionalAttributes">
+    <span class="@Css.Classes.BottomNav.ItemIndicator">
+        <span class="@Css.Classes.BottomNav.ItemIcon">@Icon</span>
+    </span>
+    <span class="@Css.Classes.BottomNav.ItemLabel">@ChildContent</span>
+</a>
+
+@code {
+    /// <summary>URL the item navigates to.</summary>
+    [Parameter] public string? Href { get; set; }
+    /// <summary>Label content rendered under the icon.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Icon rendered above the label.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>Optional native tooltip (<c>title</c>).</summary>
+    [Parameter] public string? Tooltip { get; set; }
+    /// <summary>Route matching strategy - prefix or exact.</summary>
+    [Parameter] public NavMatchMode Match { get; set; } = NavMatchMode.Prefix;
+    /// <summary>Forces the active state regardless of current route.</summary>
+    [Parameter] public bool Active { get; set; }
+    /// <summary>Prevents navigation and interaction when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Callback fired when the item is clicked.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+    /// <summary>Callback fired when the item's active state changes (true when it becomes active).</summary>
+    [Parameter] public EventCallback<bool> OnActiveChanged { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.BottomNav.Item;
+
+    private bool _wasActive;
+
+    private static bool IsHrefSafe(string? href) =>
+        href is null || href.StartsWith('/') || href.StartsWith('#') ||
+        href.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+        href.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+        href.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase) ||
+        href.StartsWith("tel:", StringComparison.OrdinalIgnoreCase);
+
+    private string _safeHref => IsHrefSafe(Href) ? (Href ?? string.Empty) : "about:blank";
+
+    private bool _isActive => Active || (Href is not null && IsHrefActive());
+    private string _activeClass => _isActive ? Css.Classes.BottomNav.ItemActive : string.Empty;
+    private string _disabledClass => Disabled ? Css.Classes.BottomNav.ItemDisabled : string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    // Runs on first render and on every parameter change (e.g. Active toggled) so the initial
+    // active state is captured even when the page deep-links straight into this item.
+    protected override Task OnParametersSetAsync() => SyncActiveAsync();
+
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        => InvokeAsync(async () =>
+        {
+            await SyncActiveAsync();
+            StateHasChanged();
+        });
+
+    private async Task SyncActiveAsync()
+    {
+        var active = _isActive;
+        if (active == _wasActive) return;
+        _wasActive = active;
+        if (OnActiveChanged.HasDelegate)
+            await OnActiveChanged.InvokeAsync(active);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+        await base.DisposeAsync();
+    }
+
+    private bool IsHrefActive()
+    {
+        if (Href is null) return false;
+
+        var current = Navigation.ToAbsoluteUri(Navigation.Uri).AbsoluteUri;
+        var absolute = Navigation.ToAbsoluteUri(Href).AbsoluteUri;
+
+        // 1. Exact match (NavMatchMode.Exact)
+        if (Match == NavMatchMode.Exact || current.Equals(absolute, StringComparison.OrdinalIgnoreCase))
+        {
+            return current.Equals(absolute, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // 2. Prefix match (NavMatchMode.Prefix) respecting URL segments
+        if (current.StartsWith(absolute, StringComparison.OrdinalIgnoreCase))
+        {
+            // Ensure the match ends on a segment boundary (next char is '/' or end of string),
+            // to avoid a false positive of "/avatar" matching "/avatar-group"
+            if (current.Length == absolute.Length || current[absolute.Length] == '/')
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private async Task HandleClick()
+    {
+        if (!Disabled && OnClick.HasDelegate)
+            await OnClick.InvokeAsync();
+    }
+}

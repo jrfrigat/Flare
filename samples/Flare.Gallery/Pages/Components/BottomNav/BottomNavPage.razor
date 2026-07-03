@@ -1,0 +1,12 @@
+@page "/components/bottomnav"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.BottomNav_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareBottomNav">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.BottomNav_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.BottomNav_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.BottomNav_Basic" DemoType="typeof(Examples.BottomNavBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.BottomNav_Disabled" DemoType="typeof(Examples.BottomNavDisabledDemo)" />

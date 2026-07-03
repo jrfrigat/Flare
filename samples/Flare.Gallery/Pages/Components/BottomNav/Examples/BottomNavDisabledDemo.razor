@@ -1,0 +1,23 @@
+@* Disabled items stay in place (equal flex distribution is preserved) but ignore clicks and dim to
+   the theme's disabled-state opacity. AriaLabel overrides the default "Bottom navigation" landmark
+   label. *@
+<FlareCard Variant="CardVariant.Filled" Style="max-width:360px;padding:0;overflow:hidden;border-radius:var(--flare-shape-medium);">
+    <FlareBottomNav AriaLabel="Store sections">
+        <FlareBottomNavItem Href="/" Match="NavMatchMode.Exact">
+            <Icon><FlareIcon Name="storefront" /></Icon>
+            <ChildContent>Shop</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#cart" Active="true">
+            <Icon><FlareIcon Name="shopping_cart" /></Icon>
+            <ChildContent>Cart</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#offers" Disabled="true" Tooltip="Coming soon">
+            <Icon><FlareIcon Name="local_offer" /></Icon>
+            <ChildContent>Offers</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#account">
+            <Icon><FlareIcon Name="account_circle" /></Icon>
+            <ChildContent>Account</ChildContent>
+        </FlareBottomNavItem>
+    </FlareBottomNav>
+</FlareCard>

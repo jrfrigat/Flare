@@ -138,6 +138,7 @@
 
   <!-- Navigation -->
   <data name="Nav_Navigation" xml:space="preserve"><value>Navigation</value></data>
+  <data name="Nav_BottomNavigation" xml:space="preserve"><value>Bottom navigation</value></data>
   <data name="Nav_Breadcrumb" xml:space="preserve"><value>Breadcrumb</value></data>
   <data name="Breadcrumb_Expand" xml:space="preserve"><value>Show hidden breadcrumbs</value></data>
   <data name="Nav_Pagination" xml:space="preserve"><value>Pagination</value></data>

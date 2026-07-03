@@ -92,6 +92,9 @@ public sealed record DesignTokens
     /// <summary>Navigation (nav item + active indicator) tokens.</summary>
     public NavTokens Nav { get; init; } = new();
 
+    /// <summary>Mobile bottom-navigation bar tokens.</summary>
+    public BottomNavTokens BottomNav { get; init; } = new();
+
     /// <summary>FlareTableOfContents / FlareOnThisPage tokens.</summary>
     public TableOfContentsTokens TableOfContents { get; init; } = new();
 

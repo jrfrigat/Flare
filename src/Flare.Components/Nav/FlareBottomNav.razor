@@ -1,0 +1,17 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<nav class="@BuildCssClass()" style="@Style" aria-label="@(string.IsNullOrEmpty(AriaLabel) ? FlareStrings.Nav_BottomNavigation : AriaLabel)" @attributes="AdditionalAttributes">
+    @ChildContent
+</nav>
+
+@code {
+    /// <summary>The <c>FlareBottomNavItem</c> entries rendered inside the bar, laid out with equal
+    /// flex distribution across the available width.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Accessible label for the navigation landmark, forwarded as <c>aria-label</c>.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.BottomNav.Root;
+}

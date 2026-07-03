@@ -318,6 +318,18 @@
   <data name="Chip_SizeColor" xml:space="preserve">
     <value>Размеры, цвета и клик</value>
   </data>
+  <data name="BottomNav_Title" xml:space="preserve">
+    <value>Нижняя навигация</value>
+  </data>
+  <data name="BottomNav_Subtitle" xml:space="preserve">
+    <value>FlareBottomNav, FlareBottomNavItem - панель нижней навигации для мобильных интерфейсов.</value>
+  </data>
+  <data name="BottomNav_Basic" xml:space="preserve">
+    <value>Базовая нижняя навигация</value>
+  </data>
+  <data name="BottomNav_Disabled" xml:space="preserve">
+    <value>Отключённый элемент и своя aria-label</value>
+  </data>
   <data name="Breadcrumb_Title" xml:space="preserve">
     <value>Хлебные крошки</value>
   </data>
