@@ -2430,6 +2430,12 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare - библиотека компонентов Blazor с открытым исходным кодом на .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV10" xml:space="preserve">
+    <value>Исправлено: FlareBottomNav больше не показывает Material-пилюлю под темой Fluent, а отключённые пункты нижней навигации и вкладки-ссылки теперь безопасны для клавиатуры (не фокусируются, aria-disabled)
+Исправлено: FlareLinkTabs теперь навигационный ориентир (landmark) вместо некорректного tablist, а диалоги без заголовка больше не оставляют висячий aria-labelledby
+Исправлено: временный drawer макета теперь полноценно модальный (перехват фокуса, Escape, aria-modal); плюс мелкие исправления hover-тени Card, ре-рендера Avatar и стилизации поля пароля
+Изменено: слой токенов тем очищен - зашитые Material-значения переведены на общие шкалы shape/elevation, а из CSS удалено ~900 мёртвых литеральных fallback-ов</value>
+  </data>
   <data name="About_WhatsNewV9" xml:space="preserve">
     <value>Исправлено: двусторонняя привязка FlarePasswordField теперь работает - раньше поле не передавало введённое значение, поэтому @bind-Value у потребителя не обновлялся (что незаметно ломало формы входа и регистрации)
 FlarePasswordField теперь предоставляет нужные формам параметры FlareField: Immediate (фиксация по нажатию клавиши) и DebounceInterval, Variant, FullWidth, Margin и For; Required теперь выводит нативный атрибут required

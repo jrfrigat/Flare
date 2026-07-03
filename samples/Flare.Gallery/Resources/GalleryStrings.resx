@@ -2430,6 +2430,12 @@
   <data name="About_Intro" xml:space="preserve">
     <value>Flare is an open-source Blazor component library built with .NET 10.</value>
   </data>
+  <data name="About_WhatsNewV10" xml:space="preserve">
+    <value>Fixed: FlareBottomNav no longer shows a Material pill under the Fluent theme, and disabled bottom-nav / link-tab items are now keyboard-safe (not focusable, aria-disabled)
+Fixed: FlareLinkTabs is now a navigation landmark instead of an invalid tablist, and header-less dialogs no longer leave a dangling aria-labelledby
+Fixed: the temporary layout drawer is now a proper modal (focus trap, Escape, aria-modal), plus small correctness fixes to Card hover elevation, Avatar re-render and Password field styling
+Changed: the theme token layer was cleaned up - baked Material values moved onto the shared shape/elevation scales and ~900 dead literal fallbacks were stripped from the component CSS</value>
+  </data>
   <data name="About_WhatsNewV9" xml:space="preserve">
     <value>Fixed: FlarePasswordField two-way binding now works - it used to swallow the typed value, so a consumer's @bind-Value never updated (silently breaking login and registration forms)
 FlarePasswordField now surfaces the FlareField parameters forms need: Immediate (commit on keystroke) and DebounceInterval, Variant, FullWidth, Margin, and For; Required now emits the native required attribute

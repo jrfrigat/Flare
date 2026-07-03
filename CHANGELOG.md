@@ -3,6 +3,56 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.0.10] - 2026-07-04
+
+A quality and hardening release driven by a full component review against Flare's
+theme-agnostic token mandate (Flare exposes tokens; themes own the values). It fixes a
+batch of confirmed accessibility and cross-theme bugs and begins removing Material Design
+opinion that had leaked into the core.
+
+### Fixed
+- **`FlareBottomNav` no longer renders a Material pill under FluentUI2.** The active-item
+  indicator baked its own MD3 tokens with no theme override, so the bottom bar showed an
+  MD3 pill even under Fluent (which flattens the shared nav indicator). Its indicator now
+  defaults to the shared `--flare-nav-*` tokens, so a theme's nav override reaches it too.
+- **Disabled items are keyboard-safe.** A disabled `FlareBottomNavItem` / `FlareLinkTab`
+  kept a live `href`, stayed in the tab order and was activatable by keyboard. They now
+  suppress the `href` and emit `aria-disabled="true"` + `tabindex="-1"`.
+- **`FlareLinkTabs` is a navigation landmark, not a `role="tablist"`.** A tablist owning
+  plain `<a>` links (no `role="tab"`, no keyboard contract) is invalid ARIA that a screen
+  reader cannot map. It now renders a `<nav>` (with an optional `AriaLabel`) and relies on
+  the anchors' existing `aria-current="page"`.
+- **Header-less dialogs have an accessible name.** `FlareDialog` only rendered its title
+  `<h2>` when `Title` was set but always pointed `aria-labelledby` at it, leaving a dangling
+  reference (now a common case via the component-dialog API). `aria-labelledby` is emitted
+  only when there is a title; a new `AriaLabel` parameter (surfaced through
+  `DialogOptions.AriaLabel`) names header-less dialogs.
+- **The temporary layout drawer is a proper modal.** An open `Temporary`/mobile-overlay
+  `FlareLayoutDrawer` gained a focus trap, Escape-to-close, `role="dialog"` + `aria-modal`
+  and body-scroll lock; a closed push drawer is now `inert` so its collapsed links leave the
+  tab order instead of sitting focusable under `aria-hidden`.
+- **`FlareCard` explicit `Elevation` no longer defeats the hover lift.** It set an inline
+  `box-shadow` that outranked the `:hover` rule; the level is now applied through the
+  `--flare-card-elevation` variable so a clickable card still lifts on hover.
+- **`FlareAvatar` re-renders when only `FallbackContent` changes**, and
+  **`FlarePasswordField` forwards `Class`/`Style`** to its inner field.
+
+### Changed
+- **The layout drawer no longer collides with the standalone `FlareDrawer` over
+  `--flare-drawer-width`.** Its geometry tokens were renamed to `--flare-layout-drawer-width`
+  / `--flare-layout-drawer-rail-width`.
+- **`FlareColorPicker` chrome uses semantic color tokens** (`outline-variant` / `surface` /
+  `outline`) instead of the mode-blind `#ccc` / `#fff` / `rgba(...)` literals, so it adapts
+  to the active theme and light/dark mode.
+- **Token records stop shipping hard theme literals where a scale exists:** Alert/Badge
+  radius now reference the shape scale and the `Switch` thumb shadow references
+  `--flare-elevation-1` (the same MD3 shadow, via the theme's elevation + shadow-color
+  tokens). No visual change under the shipped themes.
+- **~900 dead literal fallbacks were stripped from the component CSS** (e.g.
+  `var(--flare-spacing-4, 0.5rem)` -> `var(--flare-spacing-4)`). Those scale tokens are
+  always emitted, so the fallbacks were dead code that re-baked the Material values a second
+  time; removing them has no visual effect.
+
 ## [0.0.9] - 2026-07-01
 
 A bug-fix release. `FlarePasswordField` never propagated the typed value to a consumer's

@@ -204,6 +204,13 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>Looks up a localized string with the v0.0.10 release highlights (one per line).</summary>
+        public static string About_WhatsNewV10 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV10", resourceCulture);
+            }
+        }
+
         /// <summary>Looks up a localized string with the v0.0.9 release highlights (one per line).</summary>
         public static string About_WhatsNewV9 {
             get {
