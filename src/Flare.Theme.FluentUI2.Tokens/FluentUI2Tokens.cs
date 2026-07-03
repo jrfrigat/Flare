@@ -1,9 +1,15 @@
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
 
-namespace Flare.Theme.FluentUI2;
+namespace Flare.Theme.FluentUI2.Tokens;
 
-internal class FluentUI2Tokens
+/// <summary>
+/// Fluent UI 2 baseline design-token values: the reference <see cref="DesignTokens"/> plus the
+/// light/dark <c>ColorScheme</c>s and dark-mode Extended overrides. This is the shared source of
+/// truth the Fluent-lineage themes build from via <c>with</c>. Fluent diverges sharply from Material,
+/// so it carries its own complete baseline rather than deriving from the Material tokens.
+/// </summary>
+public class FluentUI2Tokens
 {
     // Fluent 2 type ramp (Segoe UI): every size/line-height/weight is a real Fluent token
     // (fontSizeBase/Hero + lineHeightBase/Hero, Semibold 600 headings, Regular 400 body). The MD-style
@@ -419,7 +425,7 @@ internal class FluentUI2Tokens
         Extended = Extended,
     };
 
-    internal static readonly ColorScheme LightColors = new()
+    public static readonly ColorScheme LightColors = new()
     {
         Primary = "#0F6CBD",
         OnPrimary = "#FFFFFF",
@@ -470,7 +476,7 @@ internal class FluentUI2Tokens
         ShadowPenumbra = "rgba(0,0,0,0.12)",
     };
 
-    internal static readonly ColorScheme DarkColors = new()
+    public static readonly ColorScheme DarkColors = new()
     {
         Primary = "#479EF5",
         OnPrimary = "#00224A",
@@ -522,7 +528,7 @@ internal class FluentUI2Tokens
     };
 
     /// <summary>Dark-mode overrides of the 4 mode-specific Extended keys (focus stroke, switch hover).</summary>
-    internal static readonly IReadOnlyDictionary<string, string> DarkExtended = BuildDarkExtended();
+    public static readonly IReadOnlyDictionary<string, string> DarkExtended = BuildDarkExtended();
 
     private static IReadOnlyDictionary<string, string> BuildDarkExtended()
     {

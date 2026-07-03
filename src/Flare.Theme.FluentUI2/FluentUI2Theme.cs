@@ -1,6 +1,7 @@
 using Flare.Abstractions;
 using Flare.Theming;
 using Flare.Abstractions.Tokens;
+using Flare.Theme.FluentUI2.Tokens;
 
 namespace Flare.Theme.FluentUI2;
 

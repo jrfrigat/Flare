@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
     <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
+    <ProjectReference Include="..\Flare.Theme.FluentUI2.Tokens\Flare.Theme.FluentUI2.Tokens.csproj" />
   </ItemGroup>
 
   <ItemGroup>
