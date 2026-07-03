@@ -58,11 +58,15 @@
     private bool _visible = true;
 
     private string? _lastContent;
+    private RenderFragment? _lastFallback;
     protected override bool ShouldRender()
     {
         var current = $"{Src}:{Text}:{Alt}:{Color}:{Size}:{Shape}:{FallbackIcon}";
-        if (current == _lastContent) return false;
+        // FallbackContent is a RenderFragment and cannot be content-hashed; re-render when its
+        // reference changes so swapping only the fallback fragment is not suppressed.
+        if (current == _lastContent && ReferenceEquals(FallbackContent, _lastFallback)) return false;
         _lastContent = current;
+        _lastFallback = FallbackContent;
         return true;
     }
 
