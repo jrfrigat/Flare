@@ -117,12 +117,13 @@ internal class MaterialDesignTokens
         PaddingInlineLg = "2rem",
         PaddingInlineXl = "2.5rem",
 
-        // Поугловые радиусы (высота контейнера / 2) для создания идеальных капсул
-        RadiusXs = CornerRadiusTokens.All("1rem"),
-        RadiusSm = CornerRadiusTokens.All("1.25rem"),
-        RadiusMd = CornerRadiusTokens.All("1.5rem"),
-        RadiusLg = CornerRadiusTokens.All("1.75rem"),
-        RadiusXl = CornerRadiusTokens.All("2rem"),
+        // Поугловые радиусы: полностью скруглённая капсула на всех 5 размерах, поэтому ссылаемся
+        // на шкалу Shape.Full (как и остальные компоненты), а не на захардкоженный half-height rem.
+        RadiusXs = CornerRadiusTokens.All("var(--flare-shape-full)"),
+        RadiusSm = CornerRadiusTokens.All("var(--flare-shape-full)"),
+        RadiusMd = CornerRadiusTokens.All("var(--flare-shape-full)"),
+        RadiusLg = CornerRadiusTokens.All("var(--flare-shape-full)"),
+        RadiusXl = CornerRadiusTokens.All("var(--flare-shape-full)"),
 
         // Настройки обводки фокуса и теней
         FocusOutline = "3px solid var(--flare-color-primary)",
