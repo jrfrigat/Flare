@@ -35,27 +35,27 @@
 
 .flare-card--filled {
     background-color: var(--flare-card-filled-bg, var(--flare-color-surface-container-highest));
-    box-shadow: var(--flare-elevation-0);
+    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
     border: var(--flare-card-filled-border, none);
 }
 
 .flare-card--outlined {
     background-color: var(--flare-card-outlined-bg, var(--flare-color-surface));
     border: var(--flare-card-outlined-border, 1px solid var(--flare-color-outline-variant));
-    box-shadow: var(--flare-elevation-0);
+    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
 }
 
 .flare-card--tonal {
     background-color: var(--flare-card-tonal-bg, var(--flare-color-secondary-container));
     color: var(--flare-card-tonal-color, var(--flare-color-on-secondary-container));
-    box-shadow: var(--flare-elevation-0);
+    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
     border: none;
 }
 
 .flare-card--text {
     background-color: transparent;
     color: var(--flare-card-text-color, var(--flare-color-on-surface));
-    box-shadow: var(--flare-elevation-0);
+    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
     border: none;
 }
 

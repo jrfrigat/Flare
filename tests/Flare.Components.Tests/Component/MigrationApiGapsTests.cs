@@ -180,11 +180,13 @@ public class C_FlareFieldErrorLayoutTests : FlareTestContext
 public class C_FlareCardElevationTests : FlareTestContext
 {
     [Fact]
-    public void Elevation_EmitsInlineBoxShadow()
+    public void Elevation_EmitsInlineElevationVariable()
     {
         var cut = Render<FlareCard>(p => p.Add(x => x.Elevation, 3));
 
-        Assert.Contains("box-shadow:var(--flare-elevation-3)", cut.Find(".flare-card").GetAttribute("style"));
+        // Driven through the --flare-card-elevation variable (not the final box-shadow) so the
+        // clickable :hover lift rule can still override the resting shadow.
+        Assert.Contains("--flare-card-elevation:var(--flare-elevation-3)", cut.Find(".flare-card").GetAttribute("style"));
     }
 
     [Fact]
@@ -192,7 +194,7 @@ public class C_FlareCardElevationTests : FlareTestContext
     {
         var cut = Render<FlareCard>(p => p.Add(x => x.Elevation, 0));
 
-        Assert.Contains("box-shadow:var(--flare-elevation-0)", cut.Find(".flare-card").GetAttribute("style"));
+        Assert.Contains("--flare-card-elevation:var(--flare-elevation-0)", cut.Find(".flare-card").GetAttribute("style"));
     }
 
     [Fact]
@@ -200,7 +202,7 @@ public class C_FlareCardElevationTests : FlareTestContext
     {
         var cut = Render<FlareCard>(p => p.Add(x => x.Elevation, 99));
 
-        Assert.Contains("box-shadow:var(--flare-elevation-5)", cut.Find(".flare-card").GetAttribute("style"));
+        Assert.Contains("--flare-card-elevation:var(--flare-elevation-5)", cut.Find(".flare-card").GetAttribute("style"));
     }
 }
 

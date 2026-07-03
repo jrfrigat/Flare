@@ -34,7 +34,8 @@ else
     /// clamped). <c>Elevation="0"</c> is flat (no shadow); higher values lift the card further. When
     /// <c>null</c> (default) each <see cref="Variant"/> keeps its own elevation - <see cref="CardVariant.Elevated"/>
     /// is level 1, while <see cref="CardVariant.Filled"/>/<see cref="CardVariant.Outlined"/>/<see cref="CardVariant.Tonal"/>/<see cref="CardVariant.Text"/>
-    /// are flat. Because it sets the shadow inline, an explicit elevation also fixes the hover shadow of a clickable card.
+    /// are flat. The level is applied through the <c>--flare-card-elevation</c> variable rather than the
+    /// final <c>box-shadow</c>, so a clickable elevated card still lifts on hover.
     /// </summary>
     [Parameter] public int? Elevation { get; set; }
 
@@ -67,13 +68,14 @@ else
     private bool _clickable => Href is not null || OnClick.HasDelegate;
     private bool _interactive => _clickable || Selectable;
 
-    // Explicit Elevation -> inline box-shadow from the elevation token scale (wins over the variant class).
+    // Explicit Elevation -> set the --flare-card-elevation variable inline (the variant rules read it for
+    // the resting shadow) rather than the final box-shadow, so the :hover lift rule can still override it.
     private string? _cardStyle
     {
         get
         {
             if (Elevation is not { } level) return Style;
-            var shadow = $"box-shadow:var(--flare-elevation-{Math.Clamp(level, 0, 5)});";
+            var shadow = $"--flare-card-elevation:var(--flare-elevation-{Math.Clamp(level, 0, 5)});";
             return string.IsNullOrEmpty(Style) ? shadow : shadow + Style;
         }
     }
