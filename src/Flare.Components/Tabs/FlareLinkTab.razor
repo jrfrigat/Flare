@@ -1,0 +1,111 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IDisposable
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.Routing
+
+<a class="@BuildCssClass(_activeClass, _disabledClass)"
+   href="@_safeHref"
+   style="@Style"
+   title="@Tooltip"
+   aria-current="@(_isActive ? "page" : null)"
+   @onclick="HandleClick"
+   @onclick:preventDefault="@(Disabled || OnClick.HasDelegate)"
+   @attributes="AdditionalAttributes">
+    @if (LeadingIcon is not null)
+    {
+        <span class="@Css.Classes.LinkTabs.TabIcon">@LeadingIcon</span>
+    }
+    <span class="@Css.Classes.LinkTabs.TabLabel">@Label</span>
+</a>
+
+@code {
+    /// <summary>Link label shown in the tab.</summary>
+    [Parameter] public string Label { get; set; } = "";
+    /// <summary>URL this tab navigates to. Matched against the current route to derive the active state.</summary>
+    [Parameter] public string? Href { get; set; }
+    /// <summary>Route matching strategy used to derive the active state - prefix or exact. Default <see cref="NavMatchMode.Prefix"/>.</summary>
+    [Parameter] public NavMatchMode Match { get; set; } = NavMatchMode.Prefix;
+    /// <summary>Icon rendered before the label.</summary>
+    [Parameter] public RenderFragment? LeadingIcon { get; set; }
+    /// <summary>Tooltip text shown on hover/focus of the tab (native <c>title</c>).</summary>
+    [Parameter] public string? Tooltip { get; set; }
+    /// <summary>Prevents navigation and interaction when true.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Invoked when the tab is clicked, before navigation would occur. When set, the default
+    /// navigation is suppressed (mirrors <see cref="FlareNavLink.OnClick"/>) so the handler can decide
+    /// whether/how to navigate.</summary>
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.LinkTabs.Tab;
+
+    private bool _isActive;
+
+    private string _safeHref => Flare.Components.Security.CssValidator.IsHrefSafe(Href) ? (Href ?? string.Empty) : "about:blank";
+
+    private string _activeClass => _isActive ? Css.Classes.LinkTabs.TabActive : string.Empty;
+    private string _disabledClass => Disabled ? Css.Classes.LinkTabs.TabDisabled : string.Empty;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Navigation.LocationChanged += OnLocationChanged;
+        _isActive = ComputeIsActive();
+    }
+
+    // Re-evaluates the active state on every parameter change too (e.g. Href swapped at runtime),
+    // not just navigation events.
+    protected override void OnParametersSet()
+    {
+        _isActive = ComputeIsActive();
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+        => InvokeAsync(() =>
+        {
+            _isActive = ComputeIsActive();
+            StateHasChanged();
+        });
+
+    private bool ComputeIsActive()
+    {
+        if (Href is null) return false;
+
+        var current = Navigation.ToAbsoluteUri(Navigation.Uri).AbsoluteUri;
+        var absolute = Navigation.ToAbsoluteUri(Href).AbsoluteUri;
+
+        // 1. Exact match (NavMatchMode.Exact)
+        if (Match == NavMatchMode.Exact)
+        {
+            return current.Equals(absolute, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // 2. Prefix match (NavMatchMode.Prefix) respecting URL segments
+        if (current.Equals(absolute, StringComparison.OrdinalIgnoreCase))
+        {
+            return true;
+        }
+        if (current.StartsWith(absolute, StringComparison.OrdinalIgnoreCase))
+        {
+            // Ensure the match ends on a segment boundary (next char is '/' or end of string),
+            // to avoid a false positive of "/avatar" matching "/avatar-group"
+            if (current.Length == absolute.Length || current[absolute.Length] == '/')
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private async Task HandleClick()
+    {
+        if (Disabled) return;
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync();
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+}

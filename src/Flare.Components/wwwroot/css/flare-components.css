@@ -21,6 +21,7 @@
 /* Content */
 @import 'tab.css';
 @import 'tabs.css';
+@import 'linktabs.css';
 /* Surfaces */
 @import 'card.css';
 @import 'input.css';
