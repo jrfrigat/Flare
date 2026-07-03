@@ -55,11 +55,26 @@ public class FlareLinkTabsTests : FlareTestContext
     }
 
     [Fact]
-    public void RootElement_HasRoleTablist()
+    public void RootElement_IsNavigationLandmark_NotTablist()
     {
         var cut = Render(TwoLinkTabs());
 
-        Assert.NotNull(cut.Find("[role='tablist']"));
+        // Cross-route links are a navigation landmark, not an in-page tablist: a tablist owning
+        // plain <a> children (no role=tab) is an invalid ARIA relationship.
+        Assert.NotEmpty(cut.FindAll("nav.flare-link-tabs"));
+        Assert.Empty(cut.FindAll("[role='tablist']"));
+    }
+
+    [Fact]
+    public void AriaLabel_AppliedToNavLandmark()
+    {
+        var cut = Render<FlareLinkTabs>(p => p
+            .Add(x => x.AriaLabel, "Account sections")
+            .AddChildContent<FlareLinkTab>(t => t
+                .Add(x => x.Label, "One")
+                .Add(x => x.Href, "/one")));
+
+        Assert.Equal("Account sections", cut.Find("nav.flare-link-tabs").GetAttribute("aria-label"));
     }
 
     // ------------------------------------------------------------------
@@ -202,6 +217,21 @@ public class FlareLinkTabsTests : FlareTestContext
                 .Add(x => x.Disabled, true)));
 
         Assert.Contains("flare-link-tab--disabled", cut.Find("a.flare-link-tab").ClassName);
+    }
+
+    [Fact]
+    public void Disabled_True_IsNotFocusableAndSuppressesHref()
+    {
+        var cut = Render<FlareLinkTabs>(p => p
+            .AddChildContent<FlareLinkTab>(t => t
+                .Add(x => x.Label, "One")
+                .Add(x => x.Href, "/one")
+                .Add(x => x.Disabled, true)));
+
+        var a = cut.Find("a.flare-link-tab");
+        Assert.False(a.HasAttribute("href"));
+        Assert.Equal("true", a.GetAttribute("aria-disabled"));
+        Assert.Equal("-1", a.GetAttribute("tabindex"));
     }
 
     [Fact]

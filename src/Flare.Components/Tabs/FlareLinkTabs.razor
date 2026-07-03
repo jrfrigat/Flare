@@ -1,11 +1,14 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_variantClass)" role="tablist" style="@Style" @attributes="AdditionalAttributes">
+<nav class="@BuildCssClass(_variantClass)" aria-label="@AriaLabel" style="@Style" @attributes="AdditionalAttributes">
     @ChildContent
-</div>
+</nav>
 
 @code {
+    /// <summary>Accessible label for the navigation landmark, rendered as <c>aria-label</c> on the
+    /// <c>&lt;nav&gt;</c>. Recommended when a page has more than one navigation region.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
     /// <summary>FlareLinkTab items rendered in the bar. Each renders its own <c>&lt;a&gt;</c> and
     /// determines its active state independently by comparing its <c>Href</c> against the current
     /// route - there is no parent-managed active index, since each tab is a real page navigation

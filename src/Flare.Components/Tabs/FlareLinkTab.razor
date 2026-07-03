@@ -5,10 +5,12 @@
 @using Microsoft.AspNetCore.Components.Routing
 
 <a class="@BuildCssClass(_activeClass, _disabledClass)"
-   href="@_safeHref"
+   href="@(Disabled ? null : _safeHref)"
    style="@Style"
    title="@Tooltip"
    aria-current="@(_isActive ? "page" : null)"
+   aria-disabled="@(Disabled ? "true" : null)"
+   tabindex="@(Disabled ? "-1" : null)"
    @onclick="HandleClick"
    @onclick:preventDefault="@(Disabled || OnClick.HasDelegate)"
    @attributes="AdditionalAttributes">
