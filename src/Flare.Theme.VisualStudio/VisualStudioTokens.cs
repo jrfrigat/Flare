@@ -1,5 +1,6 @@
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
+using Flare.Theme.FluentUI2.Tokens;
 
 namespace Flare.Theme.VisualStudio;
 
@@ -320,7 +321,7 @@ internal class VisualStudioTokens
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Visual Studio 2026 design tokens. Use this as the base for custom themes.</summary>
-    public static readonly DesignTokens Design = new()
+    public static readonly DesignTokens Design = FluentUI2Tokens.Design with
     {
         FocusRing = "1px solid var(--flare-color-primary)",
         Typography = Typography,

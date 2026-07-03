@@ -1,5 +1,6 @@
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 namespace Flare.Theme.LiquidGlass;
 
@@ -323,7 +324,7 @@ internal class LiquidGlassTokens
     };
 
     /// <summary>The complete Liquid Glass design tokens. Use this as the base for custom themes.</summary>
-    public static readonly DesignTokens Design = new()
+    public static readonly DesignTokens Design = MaterialDesignTokens.Design with
     {
         FocusRing = "0 0 0 4px var(--flare-liquid-glow, rgba(0,122,255,0.35))",
         Typography = Typography,

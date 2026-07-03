@@ -1,5 +1,6 @@
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 namespace Flare.Theme.MaterialDesign2;
 
@@ -175,8 +176,8 @@ internal static class MaterialDesign2Tokens
     // is already flat (square items, transparent groups); MD2 only pins the panel to the 4dp shape.
     internal static readonly MenuTokens Menu = new() { PanelRadius = "var(--flare-shape-extra-small)" };
 
-    /// <summary>The complete Material Design 2 design tokens.</summary>
-    public static readonly DesignTokens Design = new()
+    /// <summary>The complete Material Design 2 design tokens, derived from the shared Material baseline.</summary>
+    public static readonly DesignTokens Design = MaterialDesignTokens.Design with
     {
         FocusRing = "2px solid var(--flare-color-primary)",
         Typography = Typography,

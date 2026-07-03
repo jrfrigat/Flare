@@ -1,5 +1,6 @@
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 namespace Flare.Theme.Aero;
 
@@ -278,7 +279,7 @@ internal class AeroTokens
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Aero design tokens. Use this as the base for custom themes.</summary>
-    public static readonly DesignTokens Design = new()
+    public static readonly DesignTokens Design = MaterialDesignTokens.Design with
     {
         FocusRing = "1px dotted var(--flare-color-on-surface)",
         Typography = Typography,
