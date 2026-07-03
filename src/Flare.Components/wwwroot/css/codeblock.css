@@ -18,7 +18,7 @@
     caret-color: var(--flare-color-on-surface);
     resize: none;
     border: none;
-    padding: var(--flare-spacing-8, 1rem);
+    padding: var(--flare-spacing-8);
     box-sizing: border-box;
     font: inherit;
     outline: none;
@@ -27,7 +27,7 @@
 }
 
 .flare-codeblock__highlight {
-    padding: var(--flare-spacing-8, 1rem);
+    padding: var(--flare-spacing-8);
     min-height: 100%;
     white-space: pre;
     overflow: auto;
@@ -65,7 +65,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-8) var(--flare-spacing-4);
     text-align: right;
     color: var(--flare-color-on-surface-variant);
     user-select: none;

@@ -1,7 +1,7 @@
 .flare-checkbox {
     display: inline-flex;
     align-items: center;
-    gap: var(--flare-spacing-6, 0.75rem);
+    gap: var(--flare-spacing-6);
     cursor: pointer;
     user-select: none;
     /* Single source for the box dimension; size classes below override --_cb-size. */
@@ -25,7 +25,7 @@
     inset: -0.6875rem;
     border-radius: 50%;
     background: transparent;
-    transition: background var(--flare-motion-duration-short1, 100ms) ease;
+    transition: background var(--flare-motion-duration-short1) ease;
     pointer-events: none;
 }
 
@@ -62,8 +62,8 @@
     border: var(--flare-checkbox-border-width, 2px) solid var(--flare-color-outline);
     background-color: transparent;
     transition:
-        background-color var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease),
-        border-color var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease);
+        background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+        border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
 /* Checked state - filled with the accent (--fc-main, default primary) + checkmark */
@@ -118,16 +118,16 @@
 }
 
 .flare-checkbox__error {
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-size: var(--flare-typescale-body-small-size);
     color: var(--flare-color-error);
 }
 
-.flare-checkbox--disabled { opacity: var(--flare-state-disabled-opacity, 0.38); pointer-events: none; }
+.flare-checkbox--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
 
 /* Size grid (Xs..Xl): scales the box via --_cb-size; the label font tracks the size. */
-.flare-checkbox--xs { --_cb-size: 0.875rem; gap: var(--flare-spacing-4, 0.5rem); }
+.flare-checkbox--xs { --_cb-size: 0.875rem; gap: var(--flare-spacing-4); }
 .flare-checkbox--xs .flare-checkbox__label { font-size: var(--flare-typescale-body-small-size); }
-.flare-checkbox--sm { --_cb-size: 1rem; gap: var(--flare-spacing-5, 0.625rem); }
+.flare-checkbox--sm { --_cb-size: 1rem; gap: var(--flare-spacing-5); }
 .flare-checkbox--sm .flare-checkbox__label { font-size: var(--flare-typescale-body-medium-size); }
 .flare-checkbox--lg { --_cb-size: 1.375rem; }
 .flare-checkbox--lg .flare-checkbox__label { font-size: var(--flare-typescale-title-medium-size); }

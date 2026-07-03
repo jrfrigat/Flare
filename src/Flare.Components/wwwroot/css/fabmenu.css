@@ -9,7 +9,7 @@
 
 /* Trigger icon morphs (+ -> x) while the menu is open */
 .flare-fab .flare-fab__icon {
-    transition: transform var(--flare-motion-duration-short3, 200ms) var(--flare-motion-easing-standard, ease);
+    transition: transform var(--flare-motion-duration-short3) var(--flare-motion-easing-standard);
 }
 .flare-fab--menu-open .flare-fab__icon {
     transform: rotate(45deg);
@@ -19,7 +19,7 @@
 .flare-fab-menu__list {
     position: absolute;
     display: flex;
-    gap: var(--flare-spacing-6, 0.75rem);
+    gap: var(--flare-spacing-6);
     margin: 0;
 }
 .flare-fab-menu__list--up    { bottom: calc(100% + 0.75rem); left: 50%; transform: translateX(-50%); flex-direction: column-reverse; align-items: center; }
@@ -31,12 +31,12 @@
 .flare-fab-menu__item {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-4);
     opacity: 0;
     transform: scale(0.4);
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2, 150ms),
-                transform var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-decelerate, ease-out);
+    transition: opacity var(--flare-motion-duration-short2),
+                transform var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
 }
 .flare-fab-menu__list--open .flare-fab-menu__item {
     opacity: 1;
@@ -53,7 +53,7 @@
     font-size: var(--flare-typescale-label-large-size);
     background: var(--flare-color-inverse-surface);
     color: var(--flare-color-inverse-on-surface);
-    padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-5, 0.625rem);
+    padding: var(--flare-spacing-2) var(--flare-spacing-5);
     border-radius: var(--flare-shape-extra-small);
     white-space: nowrap;
     box-shadow: var(--flare-elevation-1);

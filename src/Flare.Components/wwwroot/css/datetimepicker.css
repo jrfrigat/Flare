@@ -2,13 +2,13 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
 }
 
 .flare-datetimepicker__label {
-  font-family: var(--flare-typescale-label-medium-font, inherit);
-  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
-  font-weight: var(--flare-typescale-label-medium-weight, 400);
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-typescale-label-medium-size);
+  font-weight: var(--flare-typescale-label-medium-weight);
   color: var(--flare-color-on-surface-variant);
   pointer-events: none;
 }
@@ -35,7 +35,7 @@
   background: transparent;
   border: none;
   outline: none;
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-6) var(--flare-spacing-8);
   font-family: var(--flare-typescale-body-large-font);
   font-size: var(--flare-typescale-body-large-size);
   color: var(--flare-color-on-surface);
@@ -50,18 +50,18 @@
   border: none;
   cursor: pointer;
   color: var(--flare-color-on-surface-variant);
-  border-radius: var(--flare-shape-full, 9999px);
+  border-radius: var(--flare-shape-full);
 }
 .flare-datetimepicker__toggle:hover { color: var(--flare-color-on-surface); }
 .flare-datetimepicker__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
 
 .flare-datetimepicker__helper {
-  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  font-size: var(--flare-typescale-body-small-size);
   color: var(--flare-color-on-surface-variant);
 }
 
 .flare-datetimepicker__helper--error {
-  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  font-size: var(--flare-typescale-body-small-size);
   color: var(--flare-color-error);
 }
 
@@ -81,7 +81,7 @@
   background: var(--flare-color-surface-container-high);
   border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
   box-shadow: var(--flare-elevation-3);
-  padding: var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-6);
   min-width: 280px;
   /* top, left, min-width - set via inline style from JS bounds */
 }
@@ -89,20 +89,20 @@
 /* Tabs */
 .flare-datetimepicker__tabs {
   display: flex;
-  gap: var(--flare-spacing-4, 0.5rem);
-  margin-bottom: var(--flare-spacing-6, 0.75rem);
+  gap: var(--flare-spacing-4);
+  margin-bottom: var(--flare-spacing-6);
   border-bottom: 1px solid var(--flare-color-outline-variant);
 }
 
 .flare-datetimepicker__tab {
   background: none;
   border: none;
-  padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-4) var(--flare-spacing-8);
   cursor: pointer;
   color: var(--flare-color-on-surface-variant);
   border-bottom: 2px solid transparent;
-  font-family: var(--flare-typescale-label-large-font, inherit);
-  font-size: var(--flare-typescale-body-medium-size, 0.875rem);
+  font-family: var(--flare-typescale-label-large-font);
+  font-size: var(--flare-typescale-body-medium-size);
   margin-bottom: -1px;
   transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
@@ -117,12 +117,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--flare-spacing-4, 0.5rem);
+  margin-bottom: var(--flare-spacing-4);
 }
 
 .flare-datetimepicker__nav-label {
   font-weight: 500;
-  font-size: var(--flare-typescale-body-large-size, 1rem);
+  font-size: var(--flare-typescale-body-large-size);
   color: var(--flare-color-on-surface);
 }
 
@@ -132,13 +132,13 @@
   text-align: center;
   font-size: 0.75rem;
   color: var(--flare-color-on-surface-variant);
-  margin-bottom: var(--flare-spacing-2, 0.25rem);
+  margin-bottom: var(--flare-spacing-2);
 }
 
 .flare-datetimepicker__grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: var(--flare-spacing-1, 2px);
+  gap: var(--flare-spacing-1);
 }
 
 .flare-datetimepicker__day {
@@ -188,9 +188,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  padding: var(--flare-spacing-12, 1.5rem) 0;
-  font-size: var(--flare-typescale-headline-small-size, 1.5rem);
+  gap: var(--flare-spacing-4);
+  padding: var(--flare-spacing-12) 0;
+  font-size: var(--flare-typescale-headline-small-size);
   color: var(--flare-color-on-surface);
 }
 
@@ -199,8 +199,8 @@
   text-align: center;
   border: 1px solid var(--flare-color-outline);
   border-radius: var(--flare-shape-small);
-  padding: var(--flare-spacing-2, 0.25rem);
-  font-size: var(--flare-typescale-headline-small-size, 1.5rem);
+  padding: var(--flare-spacing-2);
+  font-size: var(--flare-typescale-headline-small-size);
   background: var(--flare-color-surface-container-highest);
   color: var(--flare-color-on-surface);
   outline: none;
@@ -216,10 +216,10 @@
 .flare-datetimepicker__footer {
   display: flex;
   justify-content: flex-end;
-  gap: var(--flare-spacing-4, 0.5rem);
-  margin-top: var(--flare-spacing-6, 0.75rem);
+  gap: var(--flare-spacing-4);
+  margin-top: var(--flare-spacing-6);
   border-top: 1px solid var(--flare-color-outline-variant);
-  padding-top: var(--flare-spacing-4, 0.5rem);
+  padding-top: var(--flare-spacing-4);
 }
 
 /* Panels layout: calendar + time as TWO SEPARATE elevated cards with a gap between
@@ -243,7 +243,7 @@
   background: var(--flare-color-surface-container-high);
   border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
   box-shadow: var(--flare-elevation-3);
-  padding: var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-6);
 }
 /* The clock dial is a fixed 256px - its pane must not shrink below it. */
 .flare-datetimepicker__panel--split .flare-datetimepicker__pane:has(.flare-clock-dial) {

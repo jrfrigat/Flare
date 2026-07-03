@@ -23,12 +23,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--flare-spacing-1, 0.125rem);
-  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-1, 0.125rem);
+  gap: var(--flare-spacing-1);
+  padding: var(--flare-spacing-3) var(--flare-spacing-1);
   text-decoration: none;
   color: var(--flare-bottom-nav-inactive-color, var(--flare-color-on-surface-variant));
   -webkit-tap-highlight-color: transparent;
-  transition: color var(--flare-motion-duration-short1, 100ms);
+  transition: color var(--flare-motion-duration-short1);
 }
 
 .flare-bottom-nav-item:hover {
@@ -41,10 +41,10 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--flare-bottom-nav-indicator-radius, var(--flare-shape-full));
-  padding-inline: var(--flare-spacing-6, 0.75rem);
+  padding-inline: var(--flare-spacing-6);
   height: var(--flare-bottom-nav-indicator-size, 2rem);
   background: transparent;
-  transition: background-color var(--flare-motion-duration-short1, 100ms);
+  transition: background-color var(--flare-motion-duration-short1);
 }
 
 .flare-bottom-nav-item__icon {
@@ -77,6 +77,6 @@
 }
 
 .flare-bottom-nav-item--disabled {
-  opacity: var(--flare-state-disabled-opacity, 0.38);
+  opacity: var(--flare-state-disabled-opacity);
   pointer-events: none;
 }

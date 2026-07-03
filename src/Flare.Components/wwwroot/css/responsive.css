@@ -42,18 +42,18 @@
 .flare-justify-between { justify-content: space-between; }
 .flare-justify-center  { justify-content: center; }
 .flare-justify-end     { justify-content: flex-end; }
-.flare-gap-sm   { gap: var(--flare-spacing-4, 0.5rem); }
-.flare-gap-md   { gap: var(--flare-spacing-8, 1rem); }
-.flare-gap-lg   { gap: var(--flare-spacing-12, 1.5rem); }
+.flare-gap-sm   { gap: var(--flare-spacing-4); }
+.flare-gap-md   { gap: var(--flare-spacing-8); }
+.flare-gap-lg   { gap: var(--flare-spacing-12); }
 
 /* --- Simple 12-column grid --- */
 .flare-row {
     display: flex;
     flex-wrap: wrap;
-    margin: calc(-1 * var(--flare-spacing-4, 0.5rem));
+    margin: calc(-1 * var(--flare-spacing-4));
 }
 .flare-row > [class*="flare-col-"] {
-    padding: var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-4);
     box-sizing: border-box;
 }
 
@@ -121,18 +121,18 @@
 
 /* --- Spacing utilities --- */
 .flare-p-0  { padding: 0 !important; }
-.flare-p-sm { padding: var(--flare-spacing-4, 0.5rem) !important; }
-.flare-p-md { padding: var(--flare-spacing-8, 1rem) !important; }
-.flare-p-lg { padding: var(--flare-spacing-12, 1.5rem) !important; }
+.flare-p-sm { padding: var(--flare-spacing-4) !important; }
+.flare-p-md { padding: var(--flare-spacing-8) !important; }
+.flare-p-lg { padding: var(--flare-spacing-12) !important; }
 .flare-m-0  { margin: 0 !important; }
 .flare-m-auto { margin: auto !important; }
 .flare-mx-auto { margin-left: auto !important; margin-right: auto !important; }
-.flare-mt-sm { margin-top: var(--flare-spacing-4, 0.5rem) !important; }
-.flare-mt-md { margin-top: var(--flare-spacing-8, 1rem) !important; }
-.flare-mt-lg { margin-top: var(--flare-spacing-12, 1.5rem) !important; }
-.flare-mb-sm { margin-bottom: var(--flare-spacing-4, 0.5rem) !important; }
-.flare-mb-md { margin-bottom: var(--flare-spacing-8, 1rem) !important; }
-.flare-mb-lg { margin-bottom: var(--flare-spacing-12, 1.5rem) !important; }
+.flare-mt-sm { margin-top: var(--flare-spacing-4) !important; }
+.flare-mt-md { margin-top: var(--flare-spacing-8) !important; }
+.flare-mt-lg { margin-top: var(--flare-spacing-12) !important; }
+.flare-mb-sm { margin-bottom: var(--flare-spacing-4) !important; }
+.flare-mb-md { margin-bottom: var(--flare-spacing-8) !important; }
+.flare-mb-lg { margin-bottom: var(--flare-spacing-12) !important; }
 
 /* Component-specific responsive overrides live with their component:
    DataGrid -> datagrid.css, Dialog -> dialog.css. Container size modifiers

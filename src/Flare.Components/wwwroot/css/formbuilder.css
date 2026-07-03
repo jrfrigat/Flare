@@ -6,29 +6,29 @@
 .flare-form {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-8, 1rem);
+    gap: var(--flare-spacing-8);
 }
 
 .flare-formbuilder__field {
-    margin-bottom: var(--flare-spacing-8, 1rem);
+    margin-bottom: var(--flare-spacing-8);
 }
 
 .flare-formbuilder__actions {
     display: flex;
-    gap: var(--flare-spacing-4, 0.5rem);
-    margin-top: var(--flare-spacing-12, 1.5rem);
+    gap: var(--flare-spacing-4);
+    margin-top: var(--flare-spacing-12);
 }
 
 /* FlareForm layout variants */
 .flare-form--horizontal { display: grid; grid-template-columns: var(--flare-form-horizontal-columns, auto 1fr); align-items: start; }
 .flare-form--inline { flex-direction: row; flex-wrap: wrap; align-items: flex-end; }
-.flare-form--dense { gap: var(--flare-spacing-4, 0.5rem); }
+.flare-form--dense { gap: var(--flare-spacing-4); }
 
 /* FlareField */
-.flare-field { display: flex; flex-direction: column; gap: var(--flare-spacing-2, 0.25rem); }
+.flare-field { display: flex; flex-direction: column; gap: var(--flare-spacing-2); }
 .flare-field__label {
-    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
-    font-weight: var(--flare-typescale-label-medium-weight, 500);
+    font-size: var(--flare-typescale-label-medium-size);
+    font-weight: var(--flare-typescale-label-medium-weight);
     color: var(--flare-color-on-surface-variant);
 }
 .flare-field--required .flare-field__label::after {
@@ -36,6 +36,6 @@
     color: var(--flare-color-error);
 }
 .flare-field__helper {
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-size: var(--flare-typescale-body-small-size);
     color: var(--flare-color-on-surface-variant);
 }

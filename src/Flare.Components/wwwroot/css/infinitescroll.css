@@ -11,15 +11,15 @@
 .flare-infinite-scroll__loading {
     display: flex;
     justify-content: center;
-    padding: var(--flare-spacing-12, 1.5rem);
+    padding: var(--flare-spacing-12);
 }
 
 .flare-infinite-scroll__end {
     display: flex;
     justify-content: center;
-    padding: var(--flare-spacing-8, 1rem);
+    padding: var(--flare-spacing-8);
     color: var(--flare-color-on-surface-variant);
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-size: var(--flare-typescale-body-small-size);
 }
 
 .flare-virtual-list {

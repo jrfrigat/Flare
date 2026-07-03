@@ -1,7 +1,7 @@
 .flare-pagination {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
   flex-wrap: wrap;
 }
 
@@ -18,7 +18,7 @@
   justify-content: center;
   min-width: 2.25rem;
   height: 2.25rem;
-  padding: 0 var(--flare-spacing-4, 0.5rem);
+  padding: 0 var(--flare-spacing-4);
   border: 1px solid var(--flare-color-outline-variant);
   border-radius: var(--flare-shape-extra-small);
   background: transparent;
@@ -48,7 +48,7 @@
 }
 
 .flare-pagination__btn--nav {
-  font-size: var(--flare-typescale-title-medium-size, 1.25rem);
+  font-size: var(--flare-typescale-title-medium-size);
   line-height: 1;
 }
 
@@ -64,15 +64,15 @@
   align-items: center;
   justify-content: center;
   color: var(--flare-color-on-surface-variant);
-  font-size: var(--flare-typescale-body-large-size, 1.125rem);
+  font-size: var(--flare-typescale-body-large-size);
 }
 
 /* Rows-per-page selector */
 .flare-pagination__rows {
   display: inline-flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  margin-right: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
+  margin-right: var(--flare-spacing-4);
   color: var(--flare-color-on-surface-variant);
   font-size: var(--flare-typescale-body-medium-size);
 }
@@ -81,7 +81,7 @@
 }
 .flare-pagination__rows-select {
   height: 2.25rem;
-  padding: 0 var(--flare-spacing-4, 0.5rem);
+  padding: 0 var(--flare-spacing-4);
   border: 1px solid var(--flare-color-outline-variant);
   border-radius: var(--flare-shape-extra-small);
   background: var(--flare-color-surface);

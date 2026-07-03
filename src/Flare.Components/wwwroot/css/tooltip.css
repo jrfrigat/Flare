@@ -6,7 +6,7 @@
 .flare-tooltip__content {
   position: absolute;
   z-index: 1000;
-  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-3) var(--flare-spacing-6);
   background: var(--flare-color-inverse-surface);
   color: var(--flare-color-inverse-on-surface);
   font-family: var(--flare-typescale-body-small-font);
@@ -29,7 +29,7 @@
   box-shadow: var(--flare-elevation-3);
   white-space: normal;
   max-width: 18rem;
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-6) var(--flare-spacing-8);
 }
 
 .flare-tooltip:hover .flare-tooltip__content,

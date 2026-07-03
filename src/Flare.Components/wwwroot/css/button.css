@@ -20,10 +20,10 @@
     /* Адаптивный зазор по умолчанию привязан к Medium */
     gap: var(--flare-btn-gap-md, 0.5rem);
     /* БАЗОВАЯ ПОУГЛОВАЯ СИСТЕМА: слушает C# константы углов */
-    border-top-left-radius: var(--flare-btn-radius-md-top-left, var(--flare-shape-full, 9999px));
-    border-top-right-radius: var(--flare-btn-radius-md-top-right, var(--flare-shape-full, 9999px));
-    border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right, var(--flare-shape-full, 9999px));
-    border-bottom-left-radius: var(--flare-btn-radius-md-bottom-left, var(--flare-shape-full, 9999px));
+    border-top-left-radius: var(--flare-btn-radius-md-top-left, var(--flare-shape-full));
+    border-top-right-radius: var(--flare-btn-radius-md-top-right, var(--flare-shape-full));
+    border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right, var(--flare-shape-full));
+    border-bottom-left-radius: var(--flare-btn-radius-md-bottom-left, var(--flare-shape-full));
     /* Шрифты по умолчанию (Medium - задаёт тема через --flare-btn-label-md-*) */
     font-family: var(--flare-btn-label-md-font, var(--flare-typescale-title-medium-font));
     font-weight: var(--flare-btn-label-md-weight, var(--flare-typescale-title-medium-weight));
@@ -35,7 +35,7 @@
        tokens, so animating them would morph every button's geometry on a theme switch (the
        leftover "MD3 shape" effect). Keep only colour/shadow/outline transitions. A press-time
        shape morph, if wanted, should be a scoped :active transition - not a global one. */
-    transition: box-shadow var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard), outline-color var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-decelerate, ease-out);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), outline-color var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
     /* Резервируем 1px под рамку для всех кнопок (метод Fluent UI 2 & MD3) */
     border: 1px solid transparent;
 }
@@ -53,21 +53,21 @@
         border-radius: inherit;
         background-color: currentColor;
         opacity: 0;
-        transition: opacity var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard);
+        transition: opacity var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
         pointer-events: none;
     }
 
     .flare-btn:hover::before {
-        opacity: var(--flare-state-hover-opacity, 0.08);
+        opacity: var(--flare-state-hover-opacity);
     }
 
     .flare-btn:focus-visible::before {
-        opacity: var(--flare-state-focus-opacity, 0.12);
+        opacity: var(--flare-state-focus-opacity);
     }
 
     .flare-btn:active::before {
-        opacity: var(--flare-state-pressed-opacity, 0.12);
-        transition: opacity var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
+        opacity: var(--flare-state-pressed-opacity);
+        transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
     }
 
     .flare-btn:focus-visible {
@@ -82,11 +82,11 @@
 .flare-btn--filled {
     background-color: var(--fc-main, var(--flare-color-primary));
     color: var(--fc-on, var(--flare-color-on-primary));
-    box-shadow: var(--flare-elevation-0, none);
+    box-shadow: var(--flare-elevation-0);
 }
 
     .flare-btn--filled:hover {
-        box-shadow: var(--flare-btn-filled-hover-shadow, var(--flare-elevation-1, none));
+        box-shadow: var(--flare-btn-filled-hover-shadow, var(--flare-elevation-1));
     }
 
 .flare-btn--outlined {
@@ -115,13 +115,13 @@
 .flare-btn--tonal {
     background-color: var(--fc-container, var(--flare-color-secondary-container));
     color: var(--fc-on-container, var(--flare-color-on-secondary-container));
-    box-shadow: var(--flare-elevation-0, none);
+    box-shadow: var(--flare-elevation-0);
 }
 
 .flare-btn:disabled, .flare-btn[disabled] {
     pointer-events: none;
-    opacity: var(--flare-state-disabled-opacity, 0.38);
-    box-shadow: var(--flare-elevation-0, none) !important;
+    opacity: var(--flare-state-disabled-opacity);
+    box-shadow: var(--flare-elevation-0) !important;
 }
 
 /* ==========================================================================
@@ -225,9 +225,9 @@
 .flare-btn--rounded.flare-btn--lg,
 .flare-btn--rounded.flare-btn--xl { border-radius: var(--flare-shape-extra-large); }
 
-.flare-btn--circular { border-radius: var(--flare-shape-full, 9999px); }
+.flare-btn--circular { border-radius: var(--flare-shape-full); }
 
-.flare-btn--square { border-radius: var(--flare-shape-none, 0); }
+.flare-btn--square { border-radius: var(--flare-shape-none); }
 
 /* ==========================================================================
    PRESS MORPH (MD3 Expressive, opt-in via .flare-btn--morph): the corner radius
@@ -236,18 +236,18 @@
    The full base transition list is re-declared here (not appended) plus border-radius.
    ========================================================================== */
 .flare-btn--morph {
-    transition: box-shadow var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
-                background-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
-                border-color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
-                color var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard),
-                outline-color var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-decelerate, ease-out),
-                border-radius var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-standard);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                outline-color var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate),
+                border-radius var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 /* Default/Circular press toward a rounded rectangle; Rounded presses to a tighter
    corner; Square stays sharp (no geometry morph for the hard-edged shape). */
 .flare-btn--morph:active { border-radius: var(--flare-shape-large); }
 .flare-btn--morph.flare-btn--rounded:active { border-radius: var(--flare-shape-small); }
-.flare-btn--morph.flare-btn--square:active { border-radius: var(--flare-shape-none, 0); }
+.flare-btn--morph.flare-btn--square:active { border-radius: var(--flare-shape-none); }
 
 @media (prefers-reduced-motion: reduce) {
     .flare-btn--morph { transition-duration: 0s; }
@@ -270,10 +270,10 @@
 /* Optically tuck each icon toward the button edge on its side (MD3 gives the icon side
    slightly less padding than the label side). */
 .flare-btn__icon--leading {
-    margin-inline-start: calc(-1 * var(--flare-spacing-2, 0.25rem));
+    margin-inline-start: calc(-1 * var(--flare-spacing-2));
 }
 .flare-btn__icon--trailing {
-    margin-inline-end: calc(-1 * var(--flare-spacing-2, 0.25rem));
+    margin-inline-end: calc(-1 * var(--flare-spacing-2));
 }
 
 /* ==========================================================================

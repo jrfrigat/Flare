@@ -99,7 +99,7 @@
 .flare-alert__title {
   font-weight: var(--flare-typescale-label-large-weight);
   font-size: var(--flare-typescale-label-large-size);
-  margin-bottom: var(--flare-spacing-2, 0.25rem);
+  margin-bottom: var(--flare-spacing-2);
 }
 
 .flare-alert__body { opacity: 0.9; }
@@ -108,7 +108,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-1) var(--flare-spacing-2);
   border-radius: var(--flare-shape-extra-small);
   opacity: 0.7;
   font-size: 1rem;

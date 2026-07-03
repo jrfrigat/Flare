@@ -1,19 +1,19 @@
 .flare-markdown { line-height: 1.6; color: var(--flare-color-on-surface); }
-.flare-markdown h1,.flare-markdown h2,.flare-markdown h3,.flare-markdown h4 { margin: var(--flare-spacing-8, 1rem) 0 var(--flare-spacing-4, 0.5rem); font-weight: 600; }
+.flare-markdown h1,.flare-markdown h2,.flare-markdown h3,.flare-markdown h4 { margin: var(--flare-spacing-8) 0 var(--flare-spacing-4); font-weight: 600; }
 .flare-markdown h1 { font-size: 2em; }
-.flare-markdown h2 { font-size: 1.5em; border-bottom: 1px solid var(--flare-color-outline-variant); padding-bottom: var(--flare-spacing-2, 0.25rem); }
+.flare-markdown h2 { font-size: 1.5em; border-bottom: 1px solid var(--flare-color-outline-variant); padding-bottom: var(--flare-spacing-2); }
 .flare-markdown h3 { font-size: 1.25em; }
-.flare-markdown p { margin: var(--flare-spacing-6, 0.75rem) 0; }
+.flare-markdown p { margin: var(--flare-spacing-6) 0; }
 .flare-markdown code { background: var(--flare-color-surface-container); padding: 0.1em 0.3em; border-radius: var(--flare-shape-extra-small); font-family: monospace; font-size: 0.875em; }
-.flare-markdown pre { background: var(--flare-color-surface-container-high); padding: var(--flare-spacing-8, 1rem); border-radius: var(--flare-shape-small); overflow-x: auto; margin: var(--flare-spacing-6, 0.75rem) 0; }
+.flare-markdown pre { background: var(--flare-color-surface-container-high); padding: var(--flare-spacing-8); border-radius: var(--flare-shape-small); overflow-x: auto; margin: var(--flare-spacing-6) 0; }
 .flare-markdown pre code { background: none; padding: 0; }
-.flare-markdown ul,.flare-markdown ol { padding-left: var(--flare-spacing-12, 1.5rem); margin: var(--flare-spacing-4, 0.5rem) 0; }
-.flare-markdown li { margin: var(--flare-spacing-2, 0.25rem) 0; }
-.flare-markdown blockquote { border-left: 4px solid var(--flare-color-primary); margin: var(--flare-spacing-6, 0.75rem) 0; padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-8, 1rem); background: var(--flare-color-surface-container); }
-.flare-markdown hr { border: none; border-top: 1px solid var(--flare-color-outline-variant); margin: var(--flare-spacing-8, 1rem) 0; }
+.flare-markdown ul,.flare-markdown ol { padding-left: var(--flare-spacing-12); margin: var(--flare-spacing-4) 0; }
+.flare-markdown li { margin: var(--flare-spacing-2) 0; }
+.flare-markdown blockquote { border-left: 4px solid var(--flare-color-primary); margin: var(--flare-spacing-6) 0; padding: var(--flare-spacing-4) var(--flare-spacing-8); background: var(--flare-color-surface-container); }
+.flare-markdown hr { border: none; border-top: 1px solid var(--flare-color-outline-variant); margin: var(--flare-spacing-8) 0; }
 .flare-markdown a { color: var(--flare-color-primary); text-decoration: none; }
 .flare-markdown a:hover { text-decoration: underline; }
-.flare-markdown table { border-collapse: collapse; width: 100%; margin: var(--flare-spacing-6, 0.75rem) 0; }
-.flare-markdown th,.flare-markdown td { border: 1px solid var(--flare-color-outline-variant); padding: 0.4rem var(--flare-spacing-6, 0.75rem); }
+.flare-markdown table { border-collapse: collapse; width: 100%; margin: var(--flare-spacing-6) 0; }
+.flare-markdown th,.flare-markdown td { border: 1px solid var(--flare-color-outline-variant); padding: 0.4rem var(--flare-spacing-6); }
 .flare-markdown th { background: var(--flare-color-surface-container); font-weight: 600; }
 .flare-markdown img { max-width: 100%; }

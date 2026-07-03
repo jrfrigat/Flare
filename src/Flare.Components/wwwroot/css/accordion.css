@@ -13,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-12, 1.5rem);
+  padding: var(--flare-spacing-8) var(--flare-spacing-12);
   background: var(--flare-color-surface);
   color: var(--flare-color-on-surface);
   font-family: var(--flare-typescale-title-small-font);
@@ -33,7 +33,7 @@
 .flare-accordion-panel__header-text {
   display: inline-flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   flex: 1;
   min-width: 0;
 }
@@ -41,7 +41,7 @@
 /* Disabled panel */
 .flare-accordion-panel--disabled .flare-accordion-panel__header {
   cursor: not-allowed;
-  opacity: var(--flare-state-disabled-opacity, 0.38);
+  opacity: var(--flare-state-disabled-opacity);
 }
 
 .flare-accordion-panel__icon {
@@ -66,6 +66,6 @@
 }
 
 .flare-accordion-panel__body {
-  padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-12, 1.5rem);
+  padding: var(--flare-spacing-8) var(--flare-spacing-12);
   color: var(--flare-color-on-surface-variant);
 }

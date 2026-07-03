@@ -20,7 +20,7 @@
 .flare-avatar--xl { width: 4rem;   height: 4rem;   font-size: 1.5rem;  }
 
 .flare-avatar--square  { border-radius: 0; }
-.flare-avatar--rounded { border-radius: var(--flare-shape-small, 0.5rem); }
+.flare-avatar--rounded { border-radius: var(--flare-shape-small); }
 
 .flare-avatar__img {
     width: 100%;

@@ -69,22 +69,22 @@
 /* Input - reverse adornment positions */
 [dir="rtl"] .flare-input__adornment--start {
   padding-left: 0;
-  padding-right: var(--flare-spacing-6, 0.75rem);
+  padding-right: var(--flare-spacing-6);
 }
 
 [dir="rtl"] .flare-input__adornment--end {
   padding-right: 0;
-  padding-left: var(--flare-spacing-6, 0.75rem);
+  padding-left: var(--flare-spacing-6);
 }
 
 [dir="rtl"] .flare-input__icon--leading {
   margin-left: 0;
-  margin-right: var(--flare-spacing-4, 0.5rem);
+  margin-right: var(--flare-spacing-4);
 }
 
 [dir="rtl"] .flare-input__icon--trailing {
   margin-right: 0;
-  margin-left: var(--flare-spacing-4, 0.5rem);
+  margin-left: var(--flare-spacing-4);
 }
 
 /* Select - reverse arrow */

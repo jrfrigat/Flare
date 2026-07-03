@@ -1,12 +1,12 @@
 .flare-select {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-2, 0.25rem);
+    gap: var(--flare-spacing-2);
     position: relative;
 }
 
 .flare-select__label {
-    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    font-size: var(--flare-typescale-label-medium-size);
     color: var(--flare-color-on-surface-variant);
 }
 
@@ -16,12 +16,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-4);
     background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
     border: var(--flare-input-border, none);
     border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
     border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
-    padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+    padding: var(--flare-spacing-6) var(--flare-spacing-8);
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);
@@ -57,5 +57,5 @@
 .flare-select--error .flare-select__control { border-bottom-color: var(--flare-color-error); }
 .flare-select--error .flare-select__control:focus-visible { border-bottom-color: var(--flare-color-error); }
 
-.flare-select__helper { font-size: var(--flare-typescale-body-small-size, 0.75rem); color: var(--flare-color-on-surface-variant); }
+.flare-select__helper { font-size: var(--flare-typescale-body-small-size); color: var(--flare-color-on-surface-variant); }
 .flare-select__helper--error { color: var(--flare-color-error); }

@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -15,7 +15,7 @@
 .flare-breadcrumb__item {
   display: inline-flex;
   align-items: center;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
 }
 
 .flare-breadcrumb__link {
@@ -45,16 +45,16 @@
   justify-content: center;
   min-width: 1.75rem;
   height: 1.5rem;
-  padding: 0 var(--flare-spacing-3, 0.375rem);
+  padding: 0 var(--flare-spacing-3);
   border: none;
-  border-radius: var(--flare-shape-small, 0.5rem);
+  border-radius: var(--flare-shape-small);
   background: var(--flare-color-surface-container-high, var(--flare-color-surface-variant));
   color: var(--flare-color-on-surface-variant);
   font: inherit;
   line-height: 1;
   letter-spacing: 0.1em;
   cursor: pointer;
-  transition: background var(--flare-motion-duration-short1, 100ms);
+  transition: background var(--flare-motion-duration-short1);
 }
 
 .flare-breadcrumb__expander:hover {

@@ -1,8 +1,8 @@
 .flare-nav-menu {
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-1, 0.125rem);
-  padding: var(--flare-spacing-4, 0.5rem) 0;
+  gap: var(--flare-spacing-1);
+  padding: var(--flare-spacing-4) 0;
 }
 
 /* Scroll the overflow but hide the scrollbar (HideScrollbar). Scrolling still works. */
@@ -28,8 +28,8 @@
 .flare-nav-menu__scroll {
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-1, 0.125rem);
-  padding: var(--flare-spacing-4, 0.5rem) 0;
+  gap: var(--flare-spacing-1);
+  padding: var(--flare-spacing-4) 0;
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
@@ -38,9 +38,9 @@
 .flare-nav-menu__footer {
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-1, 0.125rem);
+  gap: var(--flare-spacing-1);
   flex: none;
-  padding: var(--flare-spacing-3, 0.375rem) 0;
+  padding: var(--flare-spacing-3) 0;
 }
 .flare-nav-menu__header { border-bottom: 1px solid var(--flare-color-outline-variant); }
 .flare-nav-menu__footer { border-top: 1px solid var(--flare-color-outline-variant); }
@@ -58,7 +58,7 @@
    a quiet caption and is hidden when the menu collapses to a mini-rail, where only icons fit.
 */
 .flare-nav-menu__meta {
-  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-3) var(--flare-spacing-8);
   color: var(--flare-color-on-surface-variant);
 }
 .flare-nav-menu--rail .flare-nav-menu__meta { display: none; }
@@ -69,8 +69,8 @@
 .flare-nav-group__header {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-6, 0.75rem);
-  padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-8, 1rem);
+  gap: var(--flare-spacing-6);
+  padding: var(--flare-spacing-5) var(--flare-spacing-8);
   border: none;
   background: transparent;
   color: var(--flare-color-on-surface-variant);
@@ -93,7 +93,7 @@
 
 .flare-nav-group__chevron {
   font-size: 1rem;
-  transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-emphasized, ease-in-out);
+  transition: transform var(--flare-motion-duration-medium2) var(--flare-motion-easing-emphasized);
   display: inline-block;
   margin-left: auto;
   transform: rotate(0deg);
@@ -109,7 +109,7 @@
 .flare-nav-group__items {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-emphasized, ease-in-out);
+  transition: grid-template-rows var(--flare-motion-duration-medium2) var(--flare-motion-easing-emphasized);
 }
 
 .flare-nav-group__items--open { grid-template-rows: 1fr; }
@@ -117,8 +117,8 @@
 .flare-nav-group__items-inner {
   display: flex;
   flex-direction: column;
-  padding-left: var(--flare-spacing-8, 1rem);
-  gap: var(--flare-spacing-1, 0.125rem);
+  padding-left: var(--flare-spacing-8);
+  gap: var(--flare-spacing-1);
   overflow: hidden;
   min-height: 0;
 }
@@ -127,8 +127,8 @@
 .flare-nav-link {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-6, 0.75rem);
-  padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-8, 1rem);
+  gap: var(--flare-spacing-6);
+  padding: var(--flare-spacing-5) var(--flare-spacing-8);
   border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
   text-decoration: none;
   color: var(--flare-color-on-surface-variant);
@@ -165,10 +165,10 @@
 .flare-nav-link__badge {
   background: var(--flare-color-error);
   color: var(--flare-color-on-error);
-  border-radius: var(--flare-shape-full, 9999px);
+  border-radius: var(--flare-shape-full);
   font-size: 0.75rem;
   font-weight: 600;
-  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-1) var(--flare-spacing-4);
   min-width: 1.25rem;
   text-align: center;
 }
@@ -189,7 +189,7 @@
 .flare-nav-menu--rail .flare-nav-group__header {
   justify-content: center;
   gap: 0;
-  padding-inline: var(--flare-spacing-2, 0.25rem);
+  padding-inline: var(--flare-spacing-2);
 }
 
 .flare-nav-menu--rail .flare-nav-link__icon,
@@ -210,9 +210,9 @@
 .flare-nav-menu--rail-labeled .flare-nav-link,
 .flare-nav-menu--rail-labeled .flare-nav-group__header {
   flex-direction: column;
-  gap: var(--flare-spacing-1, 0.125rem);
+  gap: var(--flare-spacing-1);
   text-align: center;
-  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-1, 0.125rem);
+  padding: var(--flare-spacing-3) var(--flare-spacing-1);
 }
 .flare-nav-menu--rail-labeled .flare-nav-link__text,
 .flare-nav-menu--rail-labeled .flare-nav-group__title {
@@ -223,7 +223,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: var(--flare-typescale-label-small-font);
-  font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+  font-size: var(--flare-typescale-label-small-size);
   line-height: 1.15;
 }
 

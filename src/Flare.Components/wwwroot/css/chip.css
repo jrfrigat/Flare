@@ -1,8 +1,8 @@
 .flare-chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--flare-spacing-4, 0.5rem);
-    padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-8, 1rem);
+    gap: var(--flare-spacing-4);
+    padding: var(--flare-spacing-3) var(--flare-spacing-8);
     box-sizing: border-box;
     min-height: var(--flare-chip-height, 2rem); /* MD3 chip height 32dp */
     border-radius: var(--flare-chip-radius, var(--flare-shape-small));
@@ -61,13 +61,13 @@
     border: 1px solid var(--fc-main, var(--flare-color-outline));
 }
 
-.flare-chip--xs { padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2, 0.25rem); }
+.flare-chip--xs { padding: var(--flare-spacing-1) var(--flare-spacing-4); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-2); }
 .flare-chip--xs .flare-chip__avatar { width: 1rem; height: 1rem; }
-.flare-chip--sm { padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-5, 0.625rem); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3, 0.375rem); }
+.flare-chip--sm { padding: var(--flare-spacing-2) var(--flare-spacing-5); font-size: var(--flare-typescale-label-small-size); gap: var(--flare-spacing-3); }
 .flare-chip--sm .flare-chip__avatar { width: 1.125rem; height: 1.125rem; }
-.flare-chip--lg { padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-10, 1.25rem); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5, 0.625rem); }
+.flare-chip--lg { padding: var(--flare-spacing-4) var(--flare-spacing-10); font-size: var(--flare-typescale-title-small-size); gap: var(--flare-spacing-5); }
 .flare-chip--lg .flare-chip__avatar { width: 1.875rem; height: 1.875rem; }
-.flare-chip--xl { padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-12, 1.5rem); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6, 0.75rem); }
+.flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-spacing-12); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6); }
 .flare-chip--xl .flare-chip__avatar { width: 2.25rem; height: 2.25rem; }
 
 .flare-chip::before {
@@ -97,7 +97,7 @@
     justify-content: center;
     width: 1.1em;
     height: 1.1em;
-    margin-left: var(--flare-spacing-2, 0.25rem);
+    margin-left: var(--flare-spacing-2);
     border: none;
     background: none;
     cursor: pointer;

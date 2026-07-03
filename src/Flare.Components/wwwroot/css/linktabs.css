@@ -14,8 +14,8 @@
 .flare-link-tab {
   display: inline-flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-10, 1.25rem);
+  gap: var(--flare-spacing-4);
+  padding: var(--flare-spacing-6) var(--flare-spacing-10);
   border: none;
   /* MD3: active-indicator height 3dp; inactive label = on-surface */
   border-bottom: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
@@ -64,8 +64,8 @@
 .flare-link-tabs--tonal,
 .flare-link-tabs--filled {
   border-bottom: none;
-  gap: var(--flare-spacing-2, 0.25rem);
-  padding: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
+  padding: var(--flare-spacing-2);
   background: var(--flare-tabs-track-bg, transparent);
   border-radius: var(--flare-tabs-pill-radius, var(--flare-shape-full));
   width: fit-content;

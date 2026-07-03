@@ -3,12 +3,12 @@
    with a left marker bar on the active link). Themes flip the look via --flare-toc-* tokens. */
 .flare-toc {
   font-family: var(--flare-typescale-body-medium-font);
-  font-size: var(--flare-typescale-body-small-size, 0.8125rem);
+  font-size: var(--flare-typescale-body-small-size);
   line-height: 1.4;
 }
 
 .flare-toc__title {
-  margin-bottom: var(--flare-spacing-4, 0.5rem);
+  margin-bottom: var(--flare-spacing-4);
   color: var(--flare-toc-title-color, var(--flare-color-on-surface-variant));
   font-size: var(--flare-typescale-label-large-size);
   font-weight: 600;
@@ -36,7 +36,7 @@
 .flare-toc__link {
   display: block;
   position: relative;
-  padding-block: var(--flare-spacing-2, 0.25rem);
+  padding-block: var(--flare-spacing-2);
   padding-inline: var(--flare-toc-link-pad-x, 0.75rem);
   /* Left marker bar (Fluent); pulled over the rail line. 0-width in MD3. */
   margin-inline-start: calc(-1 * var(--flare-toc-marker-width, 0));
@@ -44,9 +44,9 @@
   border-radius: var(--flare-toc-active-radius, var(--flare-shape-full));
   color: var(--flare-toc-inactive-color, var(--flare-color-on-surface-variant));
   text-decoration: none;
-  transition: color var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-standard, ease),
-              background var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-standard, ease),
-              border-color var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-standard, ease);
+  transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+              background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+              border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
 .flare-toc__link:hover {

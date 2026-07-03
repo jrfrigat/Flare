@@ -5,7 +5,7 @@
 
 .flare-timeline-item {
     display: flex;
-    gap: var(--flare-spacing-8, 1rem);
+    gap: var(--flare-spacing-8);
     position: relative;
     /* Drives the dot border (currentColor). Role class sets --fc-main; custom inlines it. */
     color: var(--fc-main, var(--flare-color-primary));
@@ -43,29 +43,29 @@
     width: 2px;
     background: var(--flare-color-outline-variant);
     min-height: 1rem;
-    margin-top: var(--flare-spacing-2, 0.25rem);
+    margin-top: var(--flare-spacing-2);
 }
 
 .flare-timeline-item:last-child .flare-timeline-item__line { display: none; }
 
 .flare-timeline-item__body {
     flex: 1;
-    padding-bottom: var(--flare-spacing-12, 1.5rem);
+    padding-bottom: var(--flare-spacing-12);
     min-width: 0;
 }
 
 .flare-timeline-item__time {
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-size: var(--flare-typescale-body-small-size);
     color: var(--flare-color-on-surface-variant);
     display: block;
-    margin-bottom: var(--flare-spacing-2, 0.25rem);
+    margin-bottom: var(--flare-spacing-2);
 }
 
 .flare-timeline-item__title {
-    margin: 0 0 var(--flare-spacing-3, 0.375rem);
+    margin: 0 0 var(--flare-spacing-3);
     font-family: var(--flare-typescale-title-small-font);
-    font-size: var(--flare-typescale-title-small-size, 0.875rem);
-    font-weight: var(--flare-typescale-title-small-weight, 500);
+    font-size: var(--flare-typescale-title-small-size);
+    font-weight: var(--flare-typescale-title-small-weight);
     color: var(--flare-color-on-surface);
 }
 

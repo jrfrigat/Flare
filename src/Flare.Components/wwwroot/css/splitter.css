@@ -11,7 +11,7 @@
     justify-content: center;
     background: var(--flare-splitter-color, var(--flare-color-surface-variant));
     touch-action: none;
-    transition: background var(--flare-motion-duration-short1, 100ms);
+    transition: background var(--flare-motion-duration-short1);
     /* Horizontal handle (vertical separator) is the default; --vertical flips it. The orientation is
        auto-detected from the parent flex direction, so usually no class is needed up front. */
     width: var(--flare-splitter-gutter-size, 0.5rem);
@@ -55,7 +55,7 @@
 /* Grip bar: short rounded line centered in the handle (horizontal default). */
 .flare-splitter__gutter-bar {
     background: var(--flare-color-outline, var(--flare-color-on-surface-variant));
-    border-radius: var(--flare-shape-full, 9999px);
+    border-radius: var(--flare-shape-full);
     pointer-events: none;
     width: 2px;
     height: 1.75rem;

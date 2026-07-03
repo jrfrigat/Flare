@@ -8,10 +8,10 @@
 .flare-vtree__node {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-2, 0.25rem);
-    padding-top: var(--flare-spacing-2, 0.25rem);
-    padding-bottom: var(--flare-spacing-2, 0.25rem);
-    padding-right: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-2);
+    padding-top: var(--flare-spacing-2);
+    padding-bottom: var(--flare-spacing-2);
+    padding-right: var(--flare-spacing-4);
     /* Depth indentation supplied per-node as a CSS variable. */
     padding-left: var(--flare-vtree-indent, 0);
     cursor: pointer;
@@ -40,7 +40,7 @@
 
 .flare-vtree__expand-btn .material-symbols-rounded {
     font-size: 1rem;
-    transition: transform var(--flare-motion-duration-short2, 100ms) ease;
+    transition: transform var(--flare-motion-duration-short2) ease;
 }
 
 .flare-vtree__node[aria-expanded="true"] .flare-vtree__expand-btn .material-symbols-rounded {

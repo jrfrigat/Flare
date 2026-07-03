@@ -6,5 +6,5 @@
     background: var(--flare-color-tertiary-container, #ffd740);
     color: var(--flare-color-on-tertiary-container, #000);
     border-radius: 2px;
-    padding: 0 var(--flare-spacing-1, 2px);
+    padding: 0 var(--flare-spacing-1);
 }

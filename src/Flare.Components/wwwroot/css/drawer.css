@@ -27,7 +27,7 @@
 .flare-drawer--open  { transform: translate(0, 0) !important; }
 
 .flare-drawer__header {
-  padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-12, 1.5rem);
+  padding: var(--flare-spacing-8) var(--flare-spacing-12);
   border-bottom: 1px solid var(--flare-color-outline-variant);
   font-family: var(--flare-typescale-title-medium-font);
   font-size: var(--flare-typescale-title-medium-size);
@@ -39,7 +39,7 @@
 .flare-drawer__content {
   flex: 1;
   overflow-y: auto;
-  padding: var(--flare-spacing-4, 0.5rem) 0;
+  padding: var(--flare-spacing-4) 0;
 }
 
 @keyframes flare-scrim-in {
@@ -67,7 +67,7 @@
   border-right: 1px solid var(--flare-color-outline-variant);
   width: var(--flare-drawer-mini-width, 3.5rem);
   z-index: auto;
-  transition: width var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard, ease);
+  transition: width var(--flare-motion-duration-medium2) var(--flare-motion-easing-standard);
 }
 
 .flare-drawer--mini:hover {

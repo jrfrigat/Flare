@@ -24,11 +24,11 @@
     justify-content: center;
     color: var(--flare-color-secondary);
     font-size: 1.5rem;
-    padding: var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem) 0;
+    padding: var(--flare-spacing-12) var(--flare-spacing-12) 0;
 }
 
 .flare-dialog__header {
-    padding: var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem) var(--flare-spacing-8, 1rem);
+    padding: var(--flare-spacing-12) var(--flare-spacing-12) var(--flare-spacing-8);
 }
 
 .flare-dialog__header--centered { text-align: center; }
@@ -36,7 +36,7 @@
 .flare-dialog__divider {
     height: 1px;
     background: var(--flare-color-outline);
-    margin: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-8, 1rem);
+    margin: 0 var(--flare-spacing-12) var(--flare-spacing-8);
 }
 
 .flare-dialog__title {
@@ -48,7 +48,7 @@
 }
 
 .flare-dialog__content {
-    padding: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem);
+    padding: 0 var(--flare-spacing-12) var(--flare-spacing-12);
     font-family: var(--flare-typescale-body-medium-font);
     font-size: var(--flare-typescale-body-medium-size);
     color: var(--flare-color-on-surface-variant);
@@ -57,8 +57,8 @@
 .flare-dialog__actions {
     display: flex;
     justify-content: flex-end;
-    gap: var(--flare-spacing-4, 0.5rem);
-    padding: 0 var(--flare-spacing-12, 1.5rem) var(--flare-spacing-12, 1.5rem);
+    gap: var(--flare-spacing-4);
+    padding: 0 var(--flare-spacing-12) var(--flare-spacing-12);
 }
 
 /* DialogProvider message text */

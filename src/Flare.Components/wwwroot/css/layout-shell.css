@@ -21,7 +21,7 @@
     color: var(--flare-color-on-background);
     /* Animate track WIDTH changes (rail collapse/expand, push open/close). A change in track COUNT
        (a drawer mounting/unmounting, or the mobile switch) snaps -- which is what we want. */
-    transition: grid-template-columns var(--flare-motion-duration-medium2, 250ms)
+    transition: grid-template-columns var(--flare-motion-duration-medium2)
                 var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
 }
 
@@ -31,8 +31,8 @@
     grid-column: 1 / -1;
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-6, 0.75rem);
-    padding: 0 var(--flare-spacing-8, 1rem);
+    gap: var(--flare-spacing-6);
+    padding: 0 var(--flare-spacing-8);
     height: var(--flare-layout-appbar-height, 64px);
     background: var(--flare-color-surface);
     border-bottom: 1px solid var(--flare-color-outline-variant);
@@ -80,7 +80,7 @@
    collapsed, so only the centered icons remain. */
 .flare-layout-drawer--mini .flare-layout-drawer__inner {
     width: 100%;
-    transition: width var(--flare-motion-duration-medium2, 250ms)
+    transition: width var(--flare-motion-duration-medium2)
                 var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
 }
 
@@ -95,7 +95,7 @@
     width: var(--fld-w, var(--flare-layout-drawer-width));
     z-index: 200;
     transform: translateX(-100%);
-    transition: transform var(--flare-motion-duration-medium1, 200ms) ease;
+    transition: transform var(--flare-motion-duration-medium1) ease;
     box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0, 0, 0, .16));
 }
 .flare-layout-drawer--floating.flare-layout-drawer--end,
@@ -169,10 +169,10 @@
     flex-shrink: 0;
     background: transparent;
     border: none;
-    border-radius: var(--flare-shape-full, 50%);
+    border-radius: var(--flare-shape-full);
     color: inherit;
     cursor: pointer;
-    transition: background var(--flare-motion-duration-short2, 100ms);
+    transition: background var(--flare-motion-duration-short2);
 }
 .flare-layout-appbar__toggle:hover {
     background: var(--flare-color-surface-container-highest, rgba(0, 0, 0, .08));
@@ -192,9 +192,9 @@
     height: 2px;
     border-radius: 1px;
     background: currentColor;
-    transition: top var(--flare-motion-duration-short4, 200ms) ease,
-                transform var(--flare-motion-duration-short4, 200ms) ease,
-                opacity var(--flare-motion-duration-short2, 100ms) ease;
+    transition: top var(--flare-motion-duration-short4) ease,
+                transform var(--flare-motion-duration-short4) ease,
+                opacity var(--flare-motion-duration-short2) ease;
 }
 .flare-burger__bar:nth-child(1) { top: 0; }
 .flare-burger__bar:nth-child(2) { top: 6px; }

@@ -3,8 +3,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--flare-spacing-8, 1rem);
-    padding: var(--flare-spacing-24, 3rem) var(--flare-spacing-16, 2rem);
+    gap: var(--flare-spacing-8);
+    padding: var(--flare-spacing-24) var(--flare-spacing-16);
     text-align: center;
     color: var(--flare-color-on-surface-variant);
 }
@@ -28,10 +28,10 @@
     max-width: 32rem;
     margin: 0;
 }
-.flare-empty-state__action { margin-top: var(--flare-spacing-4, 0.5rem); }
+.flare-empty-state__action { margin-top: var(--flare-spacing-4); }
 
 /* Compact: inline empty states inside cards/lists - tighter padding, smaller icon/title. */
-.flare-empty-state--compact { padding: var(--flare-spacing-12, 1.5rem) var(--flare-spacing-8, 1rem); gap: var(--flare-spacing-4, 0.5rem); }
+.flare-empty-state--compact { padding: var(--flare-spacing-12) var(--flare-spacing-8); gap: var(--flare-spacing-4); }
 .flare-empty-state--compact .flare-empty-state__icon { font-size: 2rem; }
 .flare-empty-state--compact .flare-empty-state__title { font-size: var(--flare-typescale-title-medium-size); }
 .flare-empty-state--compact .flare-empty-state__description { font-size: var(--flare-typescale-body-small-size); }

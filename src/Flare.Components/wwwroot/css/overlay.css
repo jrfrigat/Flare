@@ -4,7 +4,7 @@
     /* Background uses the scrim token at full opacity;
        the rendered opacity is controlled by the component's inline style (Opacity param). */
     background: var(--flare-color-scrim);
-    transition: opacity var(--flare-motion-duration-short3, 200ms);
+    transition: opacity var(--flare-motion-duration-short3);
 }
 
 .flare-overlay--absolute {

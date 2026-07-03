@@ -8,23 +8,23 @@
     justify-content: center;
     gap: var(--flare-toggle-btn-gap, 0.375rem);
     border: none;
-    border-radius: var(--flare-toggle-btn-radius, var(--flare-shape-full, 9999px));
+    border-radius: var(--flare-toggle-btn-radius, var(--flare-shape-full));
     cursor: pointer;
     position: relative;
     overflow: hidden;
     outline: none;
     user-select: none;
     font-family: var(--flare-typescale-label-large-font);
-    font-size: var(--flare-typescale-label-large-size, 0.875rem);
-    font-weight: var(--flare-typescale-label-large-weight, 500);
-    line-height: var(--flare-typescale-label-large-height, 1.25rem);
-    letter-spacing: var(--flare-typescale-label-large-spacing, 0.00625em);
+    font-size: var(--flare-typescale-label-large-size);
+    font-weight: var(--flare-typescale-label-large-weight);
+    line-height: var(--flare-typescale-label-large-height);
+    letter-spacing: var(--flare-typescale-label-large-spacing);
     background: var(--flare-toggle-btn-rest-bg, var(--flare-color-surface-container-highest));
     color: var(--flare-toggle-btn-rest-color, var(--flare-color-on-surface-variant));
     transition:
-        background-color var(--flare-motion-duration-short1, 100ms) var(--flare-motion-easing-standard, ease),
-        color var(--flare-motion-duration-short1, 100ms) var(--flare-motion-easing-standard, ease),
-        border-radius var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard, ease);
+        background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
+        color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
+        border-radius var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
 }
 
 /* MD3 state layer */
@@ -36,13 +36,13 @@
     background-color: currentColor;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short1, 100ms) var(--flare-motion-easing-standard, ease);
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-toggle-btn:hover::before  { opacity: var(--flare-state-hover-opacity, 0.08); }
+.flare-toggle-btn:hover::before  { opacity: var(--flare-state-hover-opacity); }
 .flare-toggle-btn:focus-visible  { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
-.flare-toggle-btn:focus-visible::before  { opacity: var(--flare-state-focus-opacity, 0.12); }
-.flare-toggle-btn:active::before { opacity: var(--flare-state-pressed-opacity, 0.12); }
+.flare-toggle-btn:focus-visible::before  { opacity: var(--flare-state-focus-opacity); }
+.flare-toggle-btn:active::before { opacity: var(--flare-state-pressed-opacity); }
 
 /* Pressed/active (selected) - морфинг формы (round -> squircle) задаётся токеном размера.
    Локальная переменная --_toggle-radius-selected переключается размерными классами ниже. */
@@ -50,13 +50,13 @@
     /* Color (role class / inline) sets --fc-container/--fc-on-container; default keeps the theme token. */
     background: var(--fc-container, var(--flare-toggle-btn-selected-bg, var(--flare-color-secondary-container)));
     color: var(--fc-on-container, var(--flare-toggle-btn-selected-color, var(--flare-color-on-secondary-container)));
-    border-radius: var(--_toggle-radius-selected, var(--flare-toggle-btn-radius-selected-md, var(--flare-shape-medium, 0.75rem)));
+    border-radius: var(--_toggle-radius-selected, var(--flare-toggle-btn-radius-selected-md, var(--flare-shape-medium)));
 }
 
 /* Disabled */
 .flare-toggle-btn:disabled,
 .flare-toggle-btn[disabled] {
-    opacity: var(--flare-state-disabled-opacity, 0.38);
+    opacity: var(--flare-state-disabled-opacity);
     cursor: not-allowed;
     pointer-events: none;
 }
@@ -66,12 +66,12 @@
     height: var(--flare-toggle-btn-height-sm, 2rem);
     padding: 0 var(--flare-toggle-btn-padding-sm, 0.75rem);
     font-size: 0.8125rem;
-    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-sm, var(--flare-shape-medium, 0.75rem));
+    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-sm, var(--flare-shape-medium));
 }
 .flare-toggle-btn--md {
     height: var(--flare-toggle-btn-height-md, 2.5rem);
     padding: 0 var(--flare-toggle-btn-padding-md, 1rem);
-    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-md, var(--flare-shape-medium, 0.75rem));
+    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-md, var(--flare-shape-medium));
 }
 .flare-toggle-btn--lg {
     height: var(--flare-toggle-btn-height-lg, 3rem);
@@ -114,13 +114,13 @@
 .flare-togglegroup {
     display: inline-flex;
     border: var(--flare-togglegroup-border, 1px solid var(--flare-color-outline));
-    border-radius: var(--flare-togglegroup-radius, var(--flare-shape-full, 9999px));
+    border-radius: var(--flare-togglegroup-radius, var(--flare-shape-full));
     overflow: hidden;
 }
 
 .flare-togglegroup--vertical {
     flex-direction: column;
-    border-radius: var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium, 0.75rem));
+    border-radius: var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium));
 }
 
 /* Items inside a group share borders via outline on the group itself */
@@ -146,20 +146,20 @@
 
 /* Restore rounded corners on first/last items of group */
 .flare-togglegroup > .flare-toggle-btn:first-child {
-    border-radius: var(--flare-togglegroup-radius, var(--flare-shape-full, 9999px)) 0 0 var(--flare-togglegroup-radius, var(--flare-shape-full, 9999px));
+    border-radius: var(--flare-togglegroup-radius, var(--flare-shape-full)) 0 0 var(--flare-togglegroup-radius, var(--flare-shape-full));
 }
 .flare-togglegroup > .flare-toggle-btn:last-child {
-    border-radius: 0 var(--flare-togglegroup-radius, var(--flare-shape-full, 9999px)) var(--flare-togglegroup-radius, var(--flare-shape-full, 9999px)) 0;
+    border-radius: 0 var(--flare-togglegroup-radius, var(--flare-shape-full)) var(--flare-togglegroup-radius, var(--flare-shape-full)) 0;
 }
 .flare-togglegroup > .flare-toggle-btn:only-child {
-    border-radius: var(--flare-togglegroup-radius, var(--flare-shape-full, 9999px));
+    border-radius: var(--flare-togglegroup-radius, var(--flare-shape-full));
 }
 
 .flare-togglegroup--vertical > .flare-toggle-btn:first-child {
-    border-radius: var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium, 0.75rem)) var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium, 0.75rem)) 0 0;
+    border-radius: var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium)) var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium)) 0 0;
 }
 .flare-togglegroup--vertical > .flare-toggle-btn:last-child {
-    border-radius: 0 0 var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium, 0.75rem)) var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium, 0.75rem));
+    border-radius: 0 0 var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium)) var(--flare-togglegroup-radius-vertical, var(--flare-shape-medium));
 }
 
 /* Pressed state in group - show filled indicator (color via --fc-container when a Color is set) */

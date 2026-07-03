@@ -62,7 +62,7 @@
 /* ----- Size: corner radius + actions gap (from the theme shape scale) ----- */
 .flare-card--sm {
     --_card-radius: var(--flare-shape-small);
-    --_card-actions-gap: var(--flare-spacing-2, 0.25rem);
+    --_card-actions-gap: var(--flare-spacing-2);
 }
 .flare-card--md {
     --_card-radius: var(--flare-card-radius, var(--flare-shape-medium));
@@ -70,7 +70,7 @@
 }
 .flare-card--lg {
     --_card-radius: var(--flare-shape-large);
-    --_card-actions-gap: var(--flare-spacing-6, 0.75rem);
+    --_card-actions-gap: var(--flare-spacing-6);
 }
 
 /* ----- Interactive (clickable / link / selectable): pointer, state layer, focus ring ----- */
@@ -130,7 +130,7 @@
 .flare-card__header {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-8, 1rem);
+    gap: var(--flare-spacing-8);
     padding: var(--flare-card-header-padding, 16px 16px 0 16px);
 }
 .flare-card__header-avatar { display: inline-flex; flex-shrink: 0; }
@@ -138,13 +138,13 @@
 .flare-card__header-action { display: inline-flex; flex-shrink: 0; }
 .flare-card__title {
     font-family: var(--flare-card-title-font-family, var(--flare-typescale-title-medium-font));
-    font-size: var(--flare-card-title-font-size, var(--flare-typescale-title-medium-size, 1rem));
-    font-weight: var(--flare-typescale-title-medium-weight, 500);
+    font-size: var(--flare-card-title-font-size, var(--flare-typescale-title-medium-size));
+    font-weight: var(--flare-typescale-title-medium-weight);
     color: var(--flare-card-title-color, var(--flare-color-on-surface));
 }
 .flare-card__subtitle {
     font-family: var(--flare-card-subtitle-font-family, var(--flare-typescale-body-medium-font));
-    font-size: var(--flare-card-subtitle-font-size, var(--flare-typescale-body-medium-size, 0.875rem));
+    font-size: var(--flare-card-subtitle-font-size, var(--flare-typescale-body-medium-size));
     color: var(--flare-card-subtitle-color, var(--flare-color-on-surface-variant));
 }
 .flare-card__content { padding: var(--flare-card-content-padding, 16px); }

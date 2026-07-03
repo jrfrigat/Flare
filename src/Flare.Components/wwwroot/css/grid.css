@@ -2,11 +2,11 @@
     width: 100%;
     max-width: 1280px;
     margin-inline: auto;
-    padding-inline: var(--flare-spacing-8, 1rem);
+    padding-inline: var(--flare-spacing-8);
 }
 
-@media (min-width: 640px)  { .flare-container { padding-inline: var(--flare-spacing-12, 1.5rem); } }
-@media (min-width: 1024px) { .flare-container { padding-inline: var(--flare-spacing-16, 2rem); } }
+@media (min-width: 640px)  { .flare-container { padding-inline: var(--flare-spacing-12); } }
+@media (min-width: 1024px) { .flare-container { padding-inline: var(--flare-spacing-16); } }
 
 .flare-container--fluid { max-width: none; }
 .flare-container--xs    { max-width: 480px; }
@@ -37,12 +37,12 @@
 
 /* Gap modifiers */
 .flare-grid--gap-none     { gap: 0; }
-.flare-grid--gap-xxsmall  { gap: var(--flare-spacing-2, 0.25rem); }
-.flare-grid--gap-xsmall   { gap: var(--flare-spacing-4, 0.5rem); }
-.flare-grid--gap-small    { gap: var(--flare-spacing-6, 0.75rem); }
-.flare-grid--gap-medium   { gap: var(--flare-spacing-8, 1rem); }
-.flare-grid--gap-large    { gap: var(--flare-spacing-12, 1.5rem); }
-.flare-grid--gap-xlarge   { gap: var(--flare-spacing-16, 2rem); }
+.flare-grid--gap-xxsmall  { gap: var(--flare-spacing-2); }
+.flare-grid--gap-xsmall   { gap: var(--flare-spacing-4); }
+.flare-grid--gap-small    { gap: var(--flare-spacing-6); }
+.flare-grid--gap-medium   { gap: var(--flare-spacing-8); }
+.flare-grid--gap-large    { gap: var(--flare-spacing-12); }
+.flare-grid--gap-xlarge   { gap: var(--flare-spacing-16); }
 
 /* Column span + start are driven by CSS custom properties set inline by FlareCol, so any span value
    works (it tracks the parent grid's column count, not a fixed 1-12 scale). Defaults: start auto,

@@ -1,7 +1,7 @@
 .flare-switch {
     display: inline-flex;
     align-items: center;
-    gap: var(--flare-spacing-6, 0.75rem);
+    gap: var(--flare-spacing-6);
     cursor: pointer;
     user-select: none;
 }
@@ -28,13 +28,13 @@
     display: block;
     width: var(--flare-switch-track-width, 3.25rem);
     height: var(--flare-switch-track-height, 2rem);
-    border-radius: var(--flare-shape-full, 9999px);
+    border-radius: var(--flare-shape-full);
     border: var(--flare-switch-track-border, 2px solid var(--flare-color-outline));
     background: var(--flare-switch-track-off-bg, var(--flare-color-surface-container-highest));
     position: relative;
     transition:
-        background var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease),
-        border-color var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease);
+        background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+        border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
 /* The circular handle - a real element so it can hold an optional icon (MD3 with-icon). */
@@ -53,11 +53,11 @@
     /* Unselected icon color (MD3: surface-container-highest on the outline handle). */
     color: var(--flare-switch-icon-off-color, var(--flare-color-surface-container-highest));
     transition:
-        left var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease),
-        width var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease),
-        height var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease),
-        background var(--flare-motion-duration-short2, 200ms) var(--flare-motion-easing-standard, ease),
-        box-shadow var(--flare-motion-duration-short1, 100ms) ease;
+        left var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+        width var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+        height var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+        background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+        box-shadow var(--flare-motion-duration-short1) ease;
 }
 
 /* Handle icon: MD3 = 16dp. */
@@ -164,7 +164,7 @@
 }
 
 .flare-switch__error {
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-size: var(--flare-typescale-body-small-size);
     color: var(--flare-color-error);
 }
 
@@ -232,5 +232,5 @@
         color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent));
 }
 .flare-switch--disabled .flare-switch__label {
-    opacity: var(--flare-state-disabled-opacity, 0.38);
+    opacity: var(--flare-state-disabled-opacity);
 }

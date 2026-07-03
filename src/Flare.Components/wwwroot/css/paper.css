@@ -1,9 +1,9 @@
 .flare-paper {
     background: var(--flare-color-surface);
     color: var(--flare-color-on-surface);
-    border-radius: var(--flare-shape-medium, 0.75rem);
+    border-radius: var(--flare-shape-medium);
     position: relative;
-    transition: box-shadow var(--flare-motion-duration-medium1, 200ms) var(--flare-motion-easing-standard, ease);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
 }
 
 .flare-paper--square { border-radius: 0; }
@@ -11,12 +11,12 @@
 
 /* Padding modifiers */
 .flare-paper--padding-none    { padding: 0; }
-.flare-paper--padding-xxsmall { padding: var(--flare-spacing-2, 0.25rem); }
-.flare-paper--padding-xsmall  { padding: var(--flare-spacing-4, 0.5rem); }
-.flare-paper--padding-small   { padding: var(--flare-spacing-6, 0.75rem); }
-.flare-paper--padding-medium  { padding: var(--flare-spacing-8, 1rem); }
-.flare-paper--padding-large   { padding: var(--flare-spacing-12, 1.5rem); }
-.flare-paper--padding-xlarge  { padding: var(--flare-spacing-16, 2rem); }
+.flare-paper--padding-xxsmall { padding: var(--flare-spacing-2); }
+.flare-paper--padding-xsmall  { padding: var(--flare-spacing-4); }
+.flare-paper--padding-small   { padding: var(--flare-spacing-6); }
+.flare-paper--padding-medium  { padding: var(--flare-spacing-8); }
+.flare-paper--padding-large   { padding: var(--flare-spacing-12); }
+.flare-paper--padding-xlarge  { padding: var(--flare-spacing-16); }
 
 /* MD3-style surface tones via box-shadow elevation */
 .flare-paper--elevation-0 { box-shadow: none; background: var(--flare-color-surface); }

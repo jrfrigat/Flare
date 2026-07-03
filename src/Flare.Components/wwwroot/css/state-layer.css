@@ -22,16 +22,16 @@
     transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-state-layer-hover:hover::before { opacity: var(--flare-state-hover-opacity, 0.08); }
-.flare-state-layer-focus:focus-visible::before { opacity: var(--flare-state-focus-opacity, 0.12); }
-.flare-state-layer-pressed:active::before { opacity: var(--flare-state-pressed-opacity, 0.12); }
-.flare-state-layer-dragged[aria-grabbed="true"]::before { opacity: var(--flare-state-dragged-opacity, 0.16); }
+.flare-state-layer-hover:hover::before { opacity: var(--flare-state-hover-opacity); }
+.flare-state-layer-focus:focus-visible::before { opacity: var(--flare-state-focus-opacity); }
+.flare-state-layer-pressed:active::before { opacity: var(--flare-state-pressed-opacity); }
+.flare-state-layer-dragged[aria-grabbed="true"]::before { opacity: var(--flare-state-dragged-opacity); }
 
 /* Disabled helpers: dim the element (and a lower-emphasis container variant). */
 .flare-state-disabled {
-    opacity: var(--flare-state-disabled-opacity, 0.38);
+    opacity: var(--flare-state-disabled-opacity);
     pointer-events: none;
     cursor: not-allowed;
 }
 
-.flare-state-disabled-container { opacity: var(--flare-state-disabled-container-opacity, 0.12); }
+.flare-state-disabled-container { opacity: var(--flare-state-disabled-container-opacity); }

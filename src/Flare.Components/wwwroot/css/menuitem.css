@@ -48,20 +48,20 @@
     background-color: currentColor;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short1, 100ms) var(--flare-motion-easing-standard, ease);
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
 .flare-menu-item:hover:not(:disabled)::before {
-    opacity: var(--flare-state-hover-opacity, 0.08);
+    opacity: var(--flare-state-hover-opacity);
 }
 
 .flare-menu-item:focus-visible:not(:disabled)::before,
 .flare-menu-item--focused:not(:disabled)::before {
-    opacity: var(--flare-state-focus-opacity, 0.10);
+    opacity: var(--flare-state-focus-opacity);
 }
 
 .flare-menu-item:active:not(:disabled)::before {
-    opacity: var(--flare-state-pressed-opacity, 0.10);
+    opacity: var(--flare-state-pressed-opacity);
 }
 
 /* Focus ring (индикатор фокуса) */
@@ -85,6 +85,6 @@
 
 .flare-menu-item--disabled,
 .flare-menu-item:disabled {
-    opacity: var(--flare-state-disabled-opacity, 0.38);
+    opacity: var(--flare-state-disabled-opacity);
     cursor: not-allowed;
 }

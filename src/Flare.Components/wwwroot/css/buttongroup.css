@@ -68,56 +68,56 @@
 
 /* 2. ГОРИЗОНТАЛЬ - первая кнопка: округляем ЛЕВЫЕ углы по форме темы */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
-    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-sm-top-left: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-md-top-left: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-md-bottom-left: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-lg-top-left: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-xl-top-left: var(--flare-shape-large, 2rem) !important;
-    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-sm-top-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-top-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-bottom-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-lg-top-left: var(--flare-shape-medium) !important;
+    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium) !important;
+    --flare-btn-radius-xl-top-left: var(--flare-shape-large) !important;
+    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large) !important;
 }
 
 /* ГОРИЗОНТАЛЬ - последняя кнопка: округляем ПРАВЫЕ углы */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
-    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-sm-top-right: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-md-top-right: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-md-bottom-right: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-lg-top-right: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-xl-top-right: var(--flare-shape-large, 2rem) !important;
-    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-sm-top-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-top-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-bottom-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-lg-top-right: var(--flare-shape-medium) !important;
+    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium) !important;
+    --flare-btn-radius-xl-top-right: var(--flare-shape-large) !important;
+    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large) !important;
 }
 
 /* 3. ВЕРТИКАЛЬ - первая кнопка: округляем ВЕРХНИЕ углы */
 .flare-btn-group--vertical .flare-btn:first-child {
-    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-sm-top-left: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-sm-top-right: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-md-top-left: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-md-top-right: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-lg-top-left: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-lg-top-right: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-xl-top-left: var(--flare-shape-large, 2rem) !important;
-    --flare-btn-radius-xl-top-right: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-sm-top-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-sm-top-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-top-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-top-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-lg-top-left: var(--flare-shape-medium) !important;
+    --flare-btn-radius-lg-top-right: var(--flare-shape-medium) !important;
+    --flare-btn-radius-xl-top-left: var(--flare-shape-large) !important;
+    --flare-btn-radius-xl-top-right: var(--flare-shape-large) !important;
 }
 
 /* ВЕРТИКАЛЬ - последняя кнопка: округляем НИЖНИЕ углы */
 .flare-btn-group--vertical .flare-btn:last-child {
-    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small, 1rem) !important;
-    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small, 1.25rem) !important;
-    --flare-btn-radius-md-bottom-left: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-md-bottom-right: var(--flare-shape-small, 1.5rem) !important;
-    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium, 1.75rem) !important;
-    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large, 2rem) !important;
-    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large, 2rem) !important;
+    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small) !important;
+    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-bottom-left: var(--flare-shape-small) !important;
+    --flare-btn-radius-md-bottom-right: var(--flare-shape-small) !important;
+    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium) !important;
+    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium) !important;
+    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large) !important;
+    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large) !important;
 }

@@ -11,14 +11,14 @@
     background-color: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
     border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-medium, 12px);
+    border-radius: var(--flare-shape-medium);
     box-shadow: var(--flare-elevation-2);
     max-height: 16rem;
     overflow-y: auto;
     /* Keep wheel/touch scrolling inside the list -- don't chain to the page at the ends. */
     overscroll-behavior: contain;
-    padding: var(--flare-spacing-2, 0.25rem);
-    animation: flare-listbox-in var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-standard, ease);
+    padding: var(--flare-spacing-2);
+    animation: flare-listbox-in var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
 @keyframes flare-listbox-in {
@@ -29,14 +29,14 @@
 .flare-listbox__option {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-4, 0.5rem);
-    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem);
-    border-radius: var(--flare-shape-small, 8px);
+    gap: var(--flare-spacing-4);
+    padding: var(--flare-spacing-4) var(--flare-spacing-6);
+    border-radius: var(--flare-shape-small);
     color: var(--flare-color-on-surface);
-    font-size: var(--flare-typescale-body-medium-size, 0.8125rem);
+    font-size: var(--flare-typescale-body-medium-size);
     cursor: pointer;
     user-select: none;
-    transition: background-color var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard, ease);
+    transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
 .flare-listbox__option:hover { background-color: color-mix(in srgb, var(--flare-color-primary) 8%, transparent); }
@@ -47,8 +47,8 @@
 .flare-listbox__check { margin-left: auto; color: var(--flare-color-primary); font-size: 1.15em; }
 
 .flare-listbox__group-header {
-    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-6, 0.75rem) var(--flare-spacing-2, 0.25rem);
-    font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+    padding: var(--flare-spacing-4) var(--flare-spacing-6) var(--flare-spacing-2);
+    font-size: var(--flare-typescale-label-small-size);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;

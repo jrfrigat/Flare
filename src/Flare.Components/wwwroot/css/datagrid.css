@@ -21,7 +21,7 @@
 }
 
 .flare-datagrid__th {
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-6) var(--flare-spacing-8);
   text-align: left;
   font-family: var(--flare-typescale-label-large-font);
   font-size: var(--flare-typescale-label-large-size);
@@ -43,7 +43,7 @@
 }
 
 .flare-datagrid__sort-icon {
-  margin-left: var(--flare-spacing-3, 0.375rem);
+  margin-left: var(--flare-spacing-3);
   color: var(--flare-color-primary);
   font-size: 1.125rem;
   vertical-align: middle;
@@ -60,12 +60,12 @@
 
 .flare-datagrid--dense .flare-datagrid__th,
 .flare-datagrid--dense .flare-datagrid__td {
-  padding-top: var(--flare-spacing-2, 0.25rem);
-  padding-bottom: var(--flare-spacing-2, 0.25rem);
+  padding-top: var(--flare-spacing-2);
+  padding-bottom: var(--flare-spacing-2);
 }
 
 .flare-datagrid__td {
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-6) var(--flare-spacing-8);
   border-bottom: 1px solid var(--flare-color-outline-variant);
   vertical-align: middle;
 }
@@ -88,7 +88,7 @@
 }
 
 .flare-datagrid__empty {
-  padding: var(--flare-spacing-16, 2rem);
+  padding: var(--flare-spacing-16);
   text-align: center;
   color: var(--flare-color-on-surface-variant);
 }
@@ -97,8 +97,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--flare-spacing-2, 0.25rem);
-  padding: var(--flare-spacing-6, 0.75rem) 0;
+  gap: var(--flare-spacing-2);
+  padding: var(--flare-spacing-6) 0;
 }
 
 .flare-datagrid__wrapper--virtual {
@@ -125,8 +125,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  gap: var(--flare-spacing-4);
+  font-size: var(--flare-typescale-body-small-size);
   color: var(--flare-color-on-surface-variant);
   background: color-mix(in srgb, var(--flare-color-surface) 55%, transparent);
   backdrop-filter: blur(0.5px);
@@ -139,7 +139,7 @@
 
 /* Skeleton placeholder rows (virtual not-yet-loaded rows / skeleton loading mode). */
 .flare-datagrid__placeholder-row td {
-  padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-4) var(--flare-spacing-8);
 }
 
 /* "Loading more" row at the bottom of an infinite-scroll grid. */
@@ -147,10 +147,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  gap: var(--flare-spacing-4);
+  padding: var(--flare-spacing-6) var(--flare-spacing-8);
   color: var(--flare-color-on-surface-variant);
-  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  font-size: var(--flare-typescale-body-small-size);
 }
 
 /* Thin indeterminate progress line pinned to the top edge of the table. */
@@ -173,16 +173,16 @@
 .flare-datagrid__toolbar {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  padding: var(--flare-spacing-4, 0.5rem) 0;
+  gap: var(--flare-spacing-4);
+  padding: var(--flare-spacing-4) 0;
   justify-content: flex-end;
 }
 
 .flare-datagrid__footer {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  padding: var(--flare-spacing-4, 0.5rem) 0;
+  gap: var(--flare-spacing-4);
+  padding: var(--flare-spacing-4) 0;
   justify-content: flex-end;
 }
 
@@ -190,7 +190,7 @@
   font-size: 0.625rem;
   vertical-align: super;
   color: var(--flare-color-on-surface-variant);
-  margin-left: var(--flare-spacing-1, 0.125rem);
+  margin-left: var(--flare-spacing-1);
 }
 
 .flare-datagrid__th {
@@ -226,7 +226,7 @@
 .flare-datagrid__group-toggle {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   width: 100%;
   /* 1.5rem indent per nesting level (var set inline as a unitless multiplier). */
   padding: 0.5rem 1rem 0.5rem calc(1rem + var(--_group-indent, 0) * 1.5rem);
@@ -266,7 +266,7 @@
   justify-content: center;
   min-width: 1.5rem;
   height: 1.25rem;
-  padding: 0 var(--flare-spacing-3, 0.375rem);
+  padding: 0 var(--flare-spacing-3);
   border-radius: 0.625rem;
   background: var(--flare-color-secondary-container);
   color: var(--flare-color-on-secondary-container);
@@ -286,7 +286,7 @@
 }
 
 .flare-datagrid__group-aggregate + .flare-datagrid__group-aggregate {
-  margin-left: var(--flare-spacing-8, 1rem);
+  margin-left: var(--flare-spacing-8);
 }
 
 /* Keyboard navigation focus (ring only for keyboard focus, not mouse clicks). Uses the per-theme
@@ -303,7 +303,7 @@
 
 /* Filter row */
 .flare-datagrid__filter-row th {
-  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-2) var(--flare-spacing-6);
   background: var(--flare-color-surface-container-low);
   border-bottom: 1px solid var(--flare-color-outline-variant);
 }
@@ -332,12 +332,12 @@
   justify-content: center;
   min-width: 1.125rem;
   height: 1.125rem;
-  margin-left: var(--flare-spacing-2, 0.25rem);
-  padding: 0 var(--flare-spacing-2, 0.25rem);
+  margin-left: var(--flare-spacing-2);
+  padding: 0 var(--flare-spacing-2);
   border-radius: 0.5625rem;
   background: var(--flare-color-primary);
   color: var(--flare-color-on-primary);
-  font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+  font-size: var(--flare-typescale-label-small-size);
   font-weight: 600;
 }
 
@@ -348,14 +348,14 @@
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   min-width: 34rem;
   max-width: 90vw;
-  padding: var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-6);
   background: var(--flare-color-surface-container-high);
   color: var(--flare-color-on-surface);
   border: 1px solid var(--flare-color-outline-variant);
-  border-radius: var(--flare-shape-medium, 0.75rem);
+  border-radius: var(--flare-shape-medium);
   box-shadow: var(--flare-elevation-3, 0 4px 8px 3px rgba(0, 0, 0, 0.15));
 }
 
@@ -370,31 +370,31 @@
 .flare-datagrid__filter-builder-group {
   border: 1px solid var(--flare-color-outline-variant);
   border-left: 3px solid var(--flare-color-primary);
-  border-radius: var(--flare-shape-small, 0.5rem);
+  border-radius: var(--flare-shape-small);
   background: var(--flare-color-surface-container);
-  padding: var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-4);
 }
 
 .flare-datagrid__filter-builder-group-head {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
   flex-wrap: wrap;
 }
 
 .flare-datagrid__filter-builder-group-body {
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-3, 0.375rem);
-  padding-top: var(--flare-spacing-3, 0.375rem);
+  gap: var(--flare-spacing-3);
+  padding-top: var(--flare-spacing-3);
 }
 
 /* AND/OR connector chip toggled by clicking. */
 .flare-datagrid__filter-builder-connector {
   min-width: 3rem;
-  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-5, 0.625rem);
+  padding: var(--flare-spacing-1) var(--flare-spacing-5);
   border: 1px solid var(--flare-color-primary);
-  border-radius: var(--flare-shape-full, 1rem);
+  border-radius: var(--flare-shape-full);
   background: var(--flare-color-primary-container);
   color: var(--flare-color-on-primary-container);
   font-size: var(--flare-typescale-label-medium-size);
@@ -407,7 +407,7 @@
 .flare-datagrid__filter-builder-row {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-3, 0.375rem);
+  gap: var(--flare-spacing-3);
 }
 
 .flare-datagrid__filter-builder-range-sep {
@@ -423,8 +423,8 @@
 .flare-datagrid__filter-builder-actions {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  padding-top: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-4);
+  padding-top: var(--flare-spacing-2);
 }
 
 /* Reorderable column headers (drag-and-drop) */
@@ -436,7 +436,7 @@
 /* Composite cell: stacked fields laid out as a CSS grid inside one cell */
 .flare-datagrid__composite {
     display: grid;
-    gap: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-6, 0.75rem);
+    gap: var(--flare-spacing-1) var(--flare-spacing-6);
     align-items: baseline;
     width: 100%;
 }
@@ -472,7 +472,7 @@
 /* Pinned rows (PinnedTopRows / PinnedBottomRows): always visible, tinted to stand apart from data. */
 .flare-datagrid__row--pinned > .flare-datagrid__td {
   background: var(--flare-color-surface-container);
-  font-weight: var(--flare-typescale-label-large-weight, 500);
+  font-weight: var(--flare-typescale-label-large-weight);
 }
 thead .flare-datagrid__row--pinned > .flare-datagrid__td {
   border-bottom: 1px solid var(--flare-color-outline-variant);
@@ -526,7 +526,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 /* Per-field inline filter inside a composite sub-header */
 .flare-datagrid__composite-filter {
-    margin-top: var(--flare-spacing-2, 4px);
+    margin-top: var(--flare-spacing-2);
     font-weight: 400;
     cursor: auto;
 }
@@ -585,7 +585,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 .flare-datagrid__detail-toggle {
   width: 3rem;
   text-align: center;
-  padding: var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-2);
 }
 
 .flare-datagrid__detail-btn {
@@ -593,7 +593,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   border: none;
   cursor: pointer;
   color: var(--flare-color-on-surface-variant);
-  padding: var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-2);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -612,14 +612,14 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 /* Batch-edit selection count in the toolbar. */
 .flare-datagrid__batch-count {
   color: var(--flare-color-on-surface-variant);
-  font-size: var(--flare-typescale-body-small-size, 0.875rem);
+  font-size: var(--flare-typescale-body-small-size);
 }
 
 /* Tree-mode expand/collapse toggle in the first cell. */
 .flare-datagrid__tree-toggle {
   font-size: 1.25rem;
   cursor: pointer;
-  margin-right: var(--flare-spacing-2, 4px);
+  margin-right: var(--flare-spacing-2);
   vertical-align: middle;
 }
 
@@ -661,7 +661,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 
 .flare-datagrid__detail-cell {
-  padding: var(--flare-spacing-8, 1rem) var(--flare-spacing-12, 1.5rem);
+  padding: var(--flare-spacing-8) var(--flare-spacing-12);
 }
 
 /* Inline edit */
@@ -677,7 +677,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 
 .flare-datagrid__cell--edit {
-  padding: var(--flare-spacing-3, 0.375rem) var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-3) var(--flare-spacing-4);
 }
 
 /* Column picker */
@@ -685,7 +685,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
 }
 
 .flare-datagrid__column-picker-wrap {
@@ -699,7 +699,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   background: var(--flare-color-surface);
   border: 1px solid var(--flare-color-outline);
   border-radius: var(--flare-shape-small);
-  padding: var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-4);
   min-width: 160px;
   z-index: 10;
   display: none;
@@ -713,11 +713,11 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 .flare-datagrid__column-picker-item {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
-  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
   cursor: pointer;
   border-radius: var(--flare-shape-extra-small);
-  font-size: var(--flare-typescale-body-small-size, 0.875rem);
+  font-size: var(--flare-typescale-body-small-size);
   color: var(--flare-color-on-surface);
   user-select: none;
 }
@@ -733,10 +733,10 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
-  margin-inline-start: var(--flare-spacing-2, 0.25rem);
+  margin-inline-start: var(--flare-spacing-2);
   padding: 0;
   border: none;
-  border-radius: var(--flare-shape-full, 9999px);
+  border-radius: var(--flare-shape-full);
   background: transparent;
   color: var(--flare-color-on-surface-variant);
   cursor: pointer;
@@ -763,9 +763,9 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   z-index: 10;
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   min-width: 13rem;
-  padding: var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-6);
   background: var(--flare-color-surface-container);
   border: 1px solid var(--flare-color-outline-variant);
   border-radius: var(--flare-shape-small);
@@ -773,14 +773,14 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   text-align: start;
   white-space: normal;
   cursor: default;
-  font-weight: var(--flare-typescale-body-medium-weight, 400);
+  font-weight: var(--flare-typescale-body-medium-weight);
   color: var(--flare-color-on-surface);
 }
 
 .flare-datagrid__filter-menu-label {
   font-family: var(--flare-typescale-label-small-font);
-  font-size: var(--flare-typescale-label-small-size, 0.6875rem);
-  font-weight: var(--flare-typescale-label-large-weight, 500);
+  font-size: var(--flare-typescale-label-small-size);
+  font-weight: var(--flare-typescale-label-large-weight);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--flare-color-on-surface-variant);
@@ -792,16 +792,16 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 .flare-datagrid__filter-menu-list {
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-1, 0.125rem);
+  gap: var(--flare-spacing-1);
   max-height: 11rem;
   overflow-y: auto;
-  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-1, 0.125rem);
+  padding: var(--flare-spacing-1) var(--flare-spacing-1);
   border: 1px solid var(--flare-color-outline-variant);
   border-radius: var(--flare-shape-extra-small);
 }
 
 .flare-datagrid__filter-menu-list > .flare-checkbox {
-  padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-1) var(--flare-spacing-2);
   border-radius: var(--flare-shape-extra-small);
 }
 
@@ -812,14 +812,14 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 .flare-datagrid__filter-menu-divider {
   height: 1px;
   background: var(--flare-color-outline-variant);
-  margin: var(--flare-spacing-1, 0.125rem) 0;
+  margin: var(--flare-spacing-1) 0;
 }
 
 .flare-datagrid__filter-menu-actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--flare-spacing-4, 0.5rem);
-  margin-top: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-4);
+  margin-top: var(--flare-spacing-2);
 }
 
 /* Selection checkbox column - narrow and centered. */
@@ -827,8 +827,8 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 .flare-datagrid__td--select {
   width: 2.75rem;
   text-align: center;
-  padding-left: var(--flare-spacing-4, 0.5rem);
-  padding-right: var(--flare-spacing-4, 0.5rem);
+  padding-left: var(--flare-spacing-4);
+  padding-right: var(--flare-spacing-4);
 }
 
 /* Aggregate footer row. */

@@ -13,7 +13,7 @@
     background: var(--flare-color-surface-container-high);
     border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
     box-shadow: var(--flare-elevation-3);
-    padding: var(--flare-spacing-12, 1.5rem);
+    padding: var(--flare-spacing-12);
     min-width: 320px;
     max-width: 480px;
     width: 90%;
@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: var(--flare-spacing-8, 1rem);
+    margin-bottom: var(--flare-spacing-8);
 }
 
 .flare-shortcuts-help__title {
@@ -39,15 +39,15 @@
 .flare-shortcuts-help__list {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-4);
 }
 
 .flare-shortcuts-help__row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--flare-spacing-8, 1rem);
-    padding: var(--flare-spacing-3, 0.375rem) 0;
+    gap: var(--flare-spacing-8);
+    padding: var(--flare-spacing-3) 0;
     border-bottom: 1px solid var(--flare-color-outline-variant);
 }
 
@@ -55,12 +55,12 @@
 
 .flare-shortcuts-help__kbd {
     font-family: var(--flare-typescale-label-large-font);
-    font-size: var(--flare-typescale-label-small-size, 0.75rem);
+    font-size: var(--flare-typescale-label-small-size);
     color: var(--flare-color-on-surface);
     background: var(--flare-color-surface-container-highest);
     border: 1px solid var(--flare-color-outline-variant);
     border-radius: var(--flare-shape-extra-small);
-    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
+    padding: var(--flare-spacing-1) var(--flare-spacing-4);
     white-space: nowrap;
 }
 

@@ -117,7 +117,7 @@
     line-height: 1;
     vertical-align: baseline;
     opacity: 0;
-    transition: opacity var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-standard, ease);
+    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 .flare-text:hover > .flare-text__anchor,
 .flare-text__anchor:focus-visible { opacity: 0.7; }

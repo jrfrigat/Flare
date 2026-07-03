@@ -24,7 +24,7 @@
     border-radius: var(--flare-menu-panel-radius, var(--flare-popover-radius, var(--flare-shape-small)));
     box-shadow: var(--flare-menu-panel-shadow, var(--flare-elevation-2));
     padding: var(--flare-menu-panel-padding-block, 0.25rem) var(--flare-menu-panel-padding-inline, 0);
-    animation: var(--flare-menu-panel-enter-animation, flare-menu-in) var(--flare-motion-duration-short2, 150ms) var(--flare-motion-easing-decelerate, ease-out);
+    animation: var(--flare-menu-panel-enter-animation, flare-menu-in) var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
 }
 
 /* MD3 Expressive: when the menu is split into groups, the panel becomes a transparent
@@ -64,7 +64,7 @@
 .flare-submenu__activator {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-4);
     width: 100%;
 }
 

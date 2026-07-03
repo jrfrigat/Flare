@@ -14,12 +14,12 @@
 .flare-tree-item__row {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-2, 0.25rem);
-    padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-2);
+    padding: var(--flare-spacing-2) var(--flare-spacing-4);
     border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
     cursor: pointer;
     user-select: none;
-    transition: background var(--flare-motion-duration-short1, 100ms);
+    transition: background var(--flare-motion-duration-short1);
 }
 
 .flare-tree-item__row:hover {
@@ -44,7 +44,7 @@
     color: inherit;
     flex-shrink: 0;
     padding: 0;
-    transition: background var(--flare-motion-duration-short1, 100ms);
+    transition: background var(--flare-motion-duration-short1);
 }
 
 .flare-tree-item__toggle:hover {
@@ -54,7 +54,7 @@
 .flare-tree-item__toggle .material-symbols-rounded {
     font-size: 1.25rem;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    transition: transform var(--flare-motion-duration-short2, 100ms) ease;
+    transition: transform var(--flare-motion-duration-short2) ease;
 }
 
 .flare-tree-item[aria-expanded="true"] > .flare-tree-item__row > .flare-tree-item__toggle .material-symbols-rounded {
@@ -88,7 +88,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    padding-left: var(--flare-spacing-12, 1.5rem);
+    padding-left: var(--flare-spacing-12);
 }
 
 /* Drag handle */

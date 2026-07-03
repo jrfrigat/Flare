@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   min-height: 10rem;
-  padding: var(--flare-spacing-16, 2rem) var(--flare-spacing-12, 1.5rem);
+  padding: var(--flare-spacing-16) var(--flare-spacing-12);
   border: 2px dashed var(--flare-color-outline);
   border-radius: var(--flare-card-radius, var(--flare-shape-medium));
   background: var(--flare-color-surface-container-low);
@@ -44,7 +44,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   pointer-events: none;
   text-align: center;
 }

@@ -28,11 +28,11 @@
         color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent),
         transparent
     );
-    animation: flare-wave var(--flare-motion-duration-long1, 1.6s) linear 0.5s infinite;
+    animation: flare-wave var(--flare-motion-duration-long1) linear 0.5s infinite;
 }
 
 .flare-skeleton--pulse {
-    animation: flare-pulse var(--flare-motion-duration-long1, 1.5s) ease-in-out 0.5s infinite;
+    animation: flare-pulse var(--flare-motion-duration-long1) ease-in-out 0.5s infinite;
 }
 
 .flare-skeleton--text {

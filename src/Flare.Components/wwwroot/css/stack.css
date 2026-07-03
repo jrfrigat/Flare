@@ -31,12 +31,12 @@
 
 /* Gap modifiers */
 .flare-stack--gap-none     { gap: 0; }
-.flare-stack--gap-xxsmall  { gap: var(--flare-spacing-2, 0.25rem); }
-.flare-stack--gap-xsmall   { gap: var(--flare-spacing-4, 0.5rem); }
-.flare-stack--gap-small    { gap: var(--flare-spacing-6, 0.75rem); }
-.flare-stack--gap-medium   { gap: var(--flare-spacing-8, 1rem); }
-.flare-stack--gap-large    { gap: var(--flare-spacing-12, 1.5rem); }
-.flare-stack--gap-xlarge   { gap: var(--flare-spacing-16, 2rem); }
+.flare-stack--gap-xxsmall  { gap: var(--flare-spacing-2); }
+.flare-stack--gap-xsmall   { gap: var(--flare-spacing-4); }
+.flare-stack--gap-small    { gap: var(--flare-spacing-6); }
+.flare-stack--gap-medium   { gap: var(--flare-spacing-8); }
+.flare-stack--gap-large    { gap: var(--flare-spacing-12); }
+.flare-stack--gap-xlarge   { gap: var(--flare-spacing-16); }
 
 /* Align-items modifiers */
 .flare-stack--align-stretch  { align-items: stretch; }

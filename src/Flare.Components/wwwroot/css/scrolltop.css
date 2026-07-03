@@ -17,9 +17,9 @@
     opacity: 0;
     pointer-events: none;
     transform: translateY(0.75rem);
-    transition: opacity var(--flare-motion-duration-short3, 200ms),
-                transform var(--flare-motion-duration-short3, 200ms) var(--flare-motion-easing-decelerate, ease-out),
-                background var(--flare-motion-duration-short1, 100ms);
+    transition: opacity var(--flare-motion-duration-short3),
+                transform var(--flare-motion-duration-short3) var(--flare-motion-easing-decelerate),
+                background var(--flare-motion-duration-short1);
 }
 
 .flare-scroll-top--visible {

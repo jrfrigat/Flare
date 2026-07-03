@@ -11,7 +11,7 @@
 .flare-slider {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-2, 0.25rem);
+    gap: var(--flare-spacing-2);
 }
 
 /* ---- Size geometry (MD3 Expressive spec "## Размеры", dp -> rem) ----
@@ -31,7 +31,7 @@
     --_hnd-height:  var(--flare-slider-handle-height, var(--_hnd-h, 44px));
     --_hnd-width:   var(--flare-slider-handle-width, 4px);
     --_hnd-width-pressed: var(--flare-slider-handle-pressed-width, 2px);
-    --_hnd-radius:  var(--flare-slider-handle-radius, var(--flare-shape-full, 9999px));
+    --_hnd-radius:  var(--flare-slider-handle-radius, var(--flare-shape-full));
     --_hnd-clip:    var(--flare-slider-handle-clip, none);
     --_hnd-border-w: var(--flare-slider-handle-border-width, 0px);
     /* accent: per-instance Color (--fc-main) wins, then theme token, then default */
@@ -55,13 +55,13 @@
 
 .flare-slider__label {
     font-family: var(--flare-typescale-label-medium-font);
-    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    font-size: var(--flare-typescale-label-medium-size);
     color: var(--flare-color-on-surface-variant);
 }
 
 .flare-slider__value {
     font-family: var(--flare-typescale-label-medium-font);
-    font-size: var(--flare-typescale-label-medium-size, 0.75rem);
+    font-size: var(--flare-typescale-label-medium-size);
     font-weight: 500;
     color: var(--_active);
 }
@@ -70,7 +70,7 @@
 .flare-slider__row {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-4, 0.5rem);
+    gap: var(--flare-spacing-4);
 }
 
 .flare-slider__icon {
@@ -162,8 +162,8 @@
     background: var(--_hnd-color);
     border: var(--_hnd-border-w) solid var(--_active);
     box-shadow: 0 0 0 0 transparent;
-    transition: width var(--flare-motion-duration-short2, 150ms),
-                box-shadow var(--flare-motion-duration-short2, 150ms);
+    transition: width var(--flare-motion-duration-short2),
+                box-shadow var(--flare-motion-duration-short2);
 }
 
 .flare-slider__input::-moz-range-thumb {
@@ -174,8 +174,8 @@
     clip-path: var(--_hnd-clip);
     background: var(--_hnd-color);
     border: var(--_hnd-border-w) solid var(--_active);
-    transition: width var(--flare-motion-duration-short2, 150ms),
-                box-shadow var(--flare-motion-duration-short2, 150ms);
+    transition: width var(--flare-motion-duration-short2),
+                box-shadow var(--flare-motion-duration-short2);
 }
 
 /* State layer (hover/focus) - translucent halo around the handle */
@@ -226,7 +226,7 @@
 /* ---- Labeled marks (Marks) ----
    A layer just below the track; each mark is centred on its value's percent. The host
    reserves space via --with-marks so labels do not overlap the helper text. */
-.flare-slider--with-marks .flare-slider__track-area { margin-bottom: var(--flare-spacing-12, 1.5rem); }
+.flare-slider--with-marks .flare-slider__track-area { margin-bottom: var(--flare-spacing-12); }
 .flare-slider__marks {
     position: absolute;
     left: 0;
@@ -241,7 +241,7 @@
     transform: translateX(-50%);
     white-space: nowrap;
     font-family: var(--flare-typescale-label-small-font);
-    font-size: var(--flare-typescale-label-small-size, 0.6875rem);
+    font-size: var(--flare-typescale-label-small-size);
     color: var(--flare-color-on-surface-variant);
 }
 .flare-slider__mark--active {
@@ -279,19 +279,19 @@
     transform-origin: bottom center;
     min-width: 3rem;
     box-sizing: border-box;
-    padding: var(--flare-spacing-1, 0.125rem) var(--flare-spacing-4, 0.5rem);
-    border-radius: var(--flare-shape-small, 0.5rem);
+    padding: var(--flare-spacing-1) var(--flare-spacing-4);
+    border-radius: var(--flare-shape-small);
     background: var(--_value-bg);
     color: var(--_value-color);
     font-family: var(--flare-typescale-label-large-font);
-    font-size: var(--flare-typescale-label-large-size, 0.875rem);
+    font-size: var(--flare-typescale-label-large-size);
     line-height: 1.25rem;
     text-align: center;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short2, 150ms),
-                transform var(--flare-motion-duration-short2, 150ms);
+    transition: opacity var(--flare-motion-duration-short2),
+                transform var(--flare-motion-duration-short2);
 }
 .flare-slider__track-wrap:hover .flare-slider__bubble,
 .flare-slider__track-wrap:focus-within .flare-slider__bubble {
@@ -300,7 +300,7 @@
 }
 
 .flare-slider__helper {
-    font-size: var(--flare-typescale-body-small-size, 0.75rem);
+    font-size: var(--flare-typescale-body-small-size);
     color: var(--flare-color-on-surface-variant);
 }
 .flare-slider__helper--error { color: var(--flare-color-error); }
@@ -432,7 +432,7 @@
 .flare-slider--disabled .flare-slider__label,
 .flare-slider--disabled .flare-slider__value,
 .flare-slider--disabled .flare-slider__icon {
-    opacity: var(--flare-state-disabled-opacity, 0.38);
+    opacity: var(--flare-state-disabled-opacity);
 }
 
 /* Forced-colors (Windows High Contrast) - keep the handle focus ring visible */

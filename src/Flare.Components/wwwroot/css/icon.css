@@ -4,7 +4,7 @@
     justify-content: center;
     color: var(--fc-main, inherit);
     /* Use title-large token as icon size baseline (~ 1.375rem / 22px MD3, 1rem Fluent2) */
-    font-size: var(--flare-typescale-title-large-size, 1.5rem);
+    font-size: var(--flare-typescale-title-large-size);
     width: 1em;
     height: 1em;
     flex-shrink: 0;

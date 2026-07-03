@@ -16,7 +16,7 @@
 .flare-divider--text {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-6, 0.75rem);
+  gap: var(--flare-spacing-6);
   border: none;
   color: var(--flare-color-on-surface-variant);
 }
@@ -34,17 +34,17 @@
 
 /* Inset divider (MD3) - indents from the leading edge */
 .flare-divider--inset {
-  margin-inline-start: var(--flare-spacing-32, 4rem);
+  margin-inline-start: var(--flare-spacing-32);
 }
 
 /* Middle-inset divider (MD3) - indents from both edges */
 .flare-divider--middle-inset {
-  margin-inline-start: var(--flare-spacing-32, 4rem);
-  margin-inline-end: var(--flare-spacing-32, 4rem);
+  margin-inline-start: var(--flare-spacing-32);
+  margin-inline-end: var(--flare-spacing-32);
 }
 
 .flare-divider__text {
-  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  font-size: var(--flare-typescale-body-small-size);
   color: var(--flare-color-on-surface-variant);
   white-space: nowrap;
 }

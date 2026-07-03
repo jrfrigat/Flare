@@ -1,5 +1,5 @@
 .flare-validation-summary {
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-6) var(--flare-spacing-8);
   border-radius: var(--flare-shape-small);
   background: var(--flare-color-error-container);
   color: var(--flare-color-on-error-container);
@@ -9,10 +9,10 @@
 
 .flare-validation-summary__list {
   margin: 0;
-  padding: 0 0 0 var(--flare-spacing-10, 1.25rem);
+  padding: 0 0 0 var(--flare-spacing-10);
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
 }
 
 .flare-validation-summary__item { line-height: 1.4; }

@@ -1,14 +1,14 @@
 .flare-datepicker {
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
   position: relative;
 }
 
 .flare-datepicker__label {
-  font-family: var(--flare-typescale-label-medium-font, inherit);
-  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
-  font-weight: var(--flare-typescale-label-medium-weight, 400);
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-typescale-label-medium-size);
+  font-weight: var(--flare-typescale-label-medium-weight);
   color: var(--flare-color-on-surface-variant);
   pointer-events: none;
 }
@@ -33,7 +33,7 @@
   background: transparent;
   border: none;
   outline: none;
-  padding: var(--flare-spacing-6, 0.75rem) var(--flare-spacing-8, 1rem);
+  padding: var(--flare-spacing-6) var(--flare-spacing-8);
   font-family: var(--flare-typescale-body-large-font);
   font-size: var(--flare-typescale-body-large-size);
   color: var(--flare-color-on-surface);
@@ -48,13 +48,13 @@
   border: none;
   cursor: pointer;
   color: var(--flare-color-on-surface-variant);
-  border-radius: var(--flare-shape-full, 9999px);
+  border-radius: var(--flare-shape-full);
 }
 .flare-datepicker__toggle:hover { color: var(--flare-color-on-surface); }
 .flare-datepicker__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
 
 .flare-datepicker__helper {
-  font-size: var(--flare-typescale-body-small-size, 0.75rem);
+  font-size: var(--flare-typescale-body-small-size);
   color: var(--flare-color-on-surface-variant);
 }
 
@@ -80,7 +80,7 @@
   background: var(--flare-color-surface-container-high);
   border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
   box-shadow: var(--flare-elevation-3);
-  padding: var(--flare-spacing-6, 0.75rem);
+  padding: var(--flare-spacing-6);
   min-width: 18rem;
 }
 
@@ -88,7 +88,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--flare-spacing-4, 0.5rem);
+  margin-bottom: var(--flare-spacing-4);
 }
 
 .flare-datepicker__month-label {
@@ -99,10 +99,10 @@
   color: var(--flare-color-on-surface);
   flex: 1;
   text-align: center;
-  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
   border-radius: var(--flare-shape-small);
-  font-family: var(--flare-typescale-body-large-font, inherit);
-  font-size: var(--flare-typescale-body-large-size, 1rem);
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
 }
 
 .flare-datepicker__month-label--clickable {
@@ -120,13 +120,13 @@
   text-align: center;
   font-size: 0.75rem;
   color: var(--flare-color-on-surface-variant);
-  margin-bottom: var(--flare-spacing-2, 0.25rem);
+  margin-bottom: var(--flare-spacing-2);
 }
 
 .flare-datepicker__grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: var(--flare-spacing-1, 2px);
+  gap: var(--flare-spacing-1);
 }
 
 .flare-datepicker__day {
@@ -174,30 +174,30 @@
 .flare-datepicker__footer {
   display: flex;
   justify-content: flex-end;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   border-top: 1px solid var(--flare-color-outline-variant);
-  margin-top: var(--flare-spacing-4, 0.5rem);
-  padding-top: var(--flare-spacing-4, 0.5rem);
+  margin-top: var(--flare-spacing-4);
+  padding-top: var(--flare-spacing-4);
 }
 
 /* Date Range Picker */
 .flare-daterangepicker {
   display: flex;
   flex-direction: column;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
 }
 
 .flare-daterangepicker__label {
-  font-family: var(--flare-typescale-label-medium-font, inherit);
-  font-size: var(--flare-typescale-label-medium-size, 0.75rem);
-  font-weight: var(--flare-typescale-label-medium-weight, 400);
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-typescale-label-medium-size);
+  font-weight: var(--flare-typescale-label-medium-weight);
   color: var(--flare-color-on-surface-variant);
 }
 
 .flare-daterangepicker__fields {
   display: flex;
   align-items: flex-end;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
 }
 
 .flare-daterangepicker__fields > .flare-datepicker { flex: 1; }
@@ -205,7 +205,7 @@
 .flare-daterangepicker__sep {
   font-size: 1.25rem;
   color: var(--flare-color-on-surface-variant);
-  padding-bottom: var(--flare-spacing-5, 0.625rem);
+  padding-bottom: var(--flare-spacing-5);
   flex-shrink: 0;
 }
 
@@ -213,22 +213,22 @@
 .flare-daterangepicker__presets {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--flare-spacing-3, 0.375rem);
-  margin-bottom: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-3);
+  margin-bottom: var(--flare-spacing-2);
 }
 
 .flare-daterangepicker__preset {
   border: 1px solid var(--flare-color-outline-variant, var(--flare-color-outline));
   background: transparent;
   color: var(--flare-color-on-surface-variant);
-  border-radius: var(--flare-shape-full, 9999px);
-  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-6, 0.75rem);
-  font-family: var(--flare-typescale-label-large-font, inherit);
-  font-size: var(--flare-typescale-label-large-size, 0.875rem);
+  border-radius: var(--flare-shape-full);
+  padding: var(--flare-spacing-2) var(--flare-spacing-6);
+  font-family: var(--flare-typescale-label-large-font);
+  font-size: var(--flare-typescale-label-large-size);
   cursor: pointer;
-  transition: background var(--flare-motion-duration-short1, 100ms),
-              color var(--flare-motion-duration-short1, 100ms),
-              border-color var(--flare-motion-duration-short1, 100ms);
+  transition: background var(--flare-motion-duration-short1),
+              color var(--flare-motion-duration-short1),
+              border-color var(--flare-motion-duration-short1);
 }
 
 .flare-daterangepicker__preset:hover:not(:disabled) {
@@ -242,7 +242,7 @@
 }
 
 .flare-daterangepicker__preset:disabled {
-  opacity: var(--flare-state-disabled-opacity, 0.38);
+  opacity: var(--flare-state-disabled-opacity);
   cursor: default;
 }
 
@@ -250,7 +250,7 @@
    highlight (start/end caps + the days between). */
 .flare-daterangepicker__calendar {
   max-width: 20rem;
-  padding-top: var(--flare-spacing-4, 0.5rem);
+  padding-top: var(--flare-spacing-4);
 }
 .flare-datepicker__day.flare-daterangepicker__day--in-range {
   background: var(--flare-color-secondary-container);
@@ -262,23 +262,23 @@
   background: var(--flare-color-primary);
   color: var(--flare-color-on-primary);
 }
-.flare-datepicker__day.flare-daterangepicker__day--start { border-radius: var(--flare-shape-full, 999px) 0 0 var(--flare-shape-full, 999px); }
-.flare-datepicker__day.flare-daterangepicker__day--end { border-radius: 0 var(--flare-shape-full, 999px) var(--flare-shape-full, 999px) 0; }
-.flare-datepicker__day.flare-daterangepicker__day--start.flare-daterangepicker__day--end { border-radius: var(--flare-shape-full, 999px); }
+.flare-datepicker__day.flare-daterangepicker__day--start { border-radius: var(--flare-shape-full) 0 0 var(--flare-shape-full); }
+.flare-datepicker__day.flare-daterangepicker__day--end { border-radius: 0 var(--flare-shape-full) var(--flare-shape-full) 0; }
+.flare-datepicker__day.flare-daterangepicker__day--start.flare-daterangepicker__day--end { border-radius: var(--flare-shape-full); }
 
 /* Month grid */
 .flare-datepicker__month-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--flare-spacing-2, 4px);
-  padding: var(--flare-spacing-2, 0.25rem) 0;
+  gap: var(--flare-spacing-2);
+  padding: var(--flare-spacing-2) 0;
 }
 
 .flare-datepicker__month-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-5) var(--flare-spacing-2);
   border-radius: var(--flare-shape-small);
   font-size: 0.875rem;
   color: var(--flare-color-on-surface);
@@ -305,15 +305,15 @@
 .flare-datepicker__year-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--flare-spacing-2, 4px);
-  padding: var(--flare-spacing-2, 0.25rem) 0;
+  gap: var(--flare-spacing-2);
+  padding: var(--flare-spacing-2) 0;
 }
 
 .flare-datepicker__year-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: var(--flare-spacing-5, 0.625rem) var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-5) var(--flare-spacing-2);
   border-radius: var(--flare-shape-small);
   font-size: 0.875rem;
   color: var(--flare-color-on-surface);

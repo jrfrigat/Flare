@@ -3,7 +3,7 @@
   position: fixed;
   display: flex;
   flex-direction: column-reverse;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   z-index: 9000;
   pointer-events: none;
   align-items: center;
@@ -67,12 +67,12 @@
 .flare-snackbar {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-4, 0.5rem);
+  gap: var(--flare-spacing-4);
   min-width: 20rem;
   max-width: 36rem;
   /* MD3: single-line 48dp, two-line grows to ~68dp via wrapping content */
   min-height: var(--flare-snackbar-min-height, 3rem);
-  padding: 0.875rem var(--flare-spacing-10, 1.25rem);
+  padding: 0.875rem var(--flare-spacing-10);
   border-radius: var(--flare-snackbar-radius, var(--flare-shape-extra-small));
   background: var(--flare-color-inverse-surface);
   color: var(--flare-color-inverse-on-surface);
@@ -108,7 +108,7 @@
 .flare-snackbar__actions {
   display: flex;
   align-items: center;
-  gap: var(--flare-spacing-2, 0.25rem);
+  gap: var(--flare-spacing-2);
   flex-shrink: 0;
 }
 
@@ -120,7 +120,7 @@
   font-size: var(--flare-typescale-label-large-size);
   font-weight: var(--flare-typescale-label-large-weight);
   cursor: pointer;
-  padding: var(--flare-spacing-2, 0.25rem) var(--flare-spacing-4, 0.5rem);
+  padding: var(--flare-spacing-2) var(--flare-spacing-4);
   border-radius: var(--flare-shape-extra-small);
 }
 
@@ -133,7 +133,7 @@
   border: none;
   color: var(--_snackbar-btn-color, var(--flare-color-inverse-on-surface));
   cursor: pointer;
-  padding: var(--flare-spacing-2, 0.25rem);
+  padding: var(--flare-spacing-2);
   border-radius: var(--flare-shape-full);
   line-height: 1;
   opacity: 0.75;
