@@ -709,6 +709,12 @@ public static class CssVarMap
         v[Css.Tokens.SwitchField.DisabledOpacity] = t.Switch.DisabledOpacity;
         #endregion
 
+        #region COLOR PICKER
+        v[Css.Tokens.ColorPickerField.CheckerColor] = t.ColorPicker.CheckerColor;
+        v[Css.Tokens.ColorPickerField.ThumbBg] = t.ColorPicker.ThumbBg;
+        v[Css.Tokens.ColorPickerField.ThumbBorderColor] = t.ColorPicker.ThumbBorderColor;
+        #endregion
+
         // Extended (Глубоко кастомные оверрайды)
         foreach (var (k, val) in t.Extended)
             v[k] = val;
