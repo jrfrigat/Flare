@@ -1,9 +1,14 @@
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
 
-namespace Flare.Theme.MaterialDesign3Expressive;
+namespace Flare.Theme.MaterialDesign3.Tokens;
 
-internal class MaterialDesignTokens
+/// <summary>
+/// Material Design 3 baseline design-token values: the reference <see cref="DesignTokens"/> plus the
+/// light/dark <c>ColorScheme</c>s. This is the shared source of truth the Material-lineage themes
+/// (MD3 Expressive, MD3, MD2, and any custom Material theme) build from via <c>with</c>.
+/// </summary>
+public class MaterialDesignTokens
 {
     internal static readonly TypographyTokens Typography = new()
     {
@@ -310,7 +315,7 @@ internal class MaterialDesignTokens
         Extended = Extended,
     };
 
-    internal static readonly ColorScheme LightColors = new()
+    public static readonly ColorScheme LightColors = new()
     {
         Primary = "#6750A4",
         OnPrimary = "#FFFFFF",
@@ -362,7 +367,7 @@ internal class MaterialDesignTokens
         ShadowPenumbra = "rgba(0,0,0,0.15)",
     };
 
-    internal static readonly ColorScheme DarkColors = new()
+    public static readonly ColorScheme DarkColors = new()
     {
         Primary = "#D0BCFF",
         OnPrimary = "#381E72",

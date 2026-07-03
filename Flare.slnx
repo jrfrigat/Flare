@@ -19,6 +19,7 @@
     <Project Path="src/Flare/Flare.csproj" />
   </Folder>
   <Folder Name="/src/Themes/">
+    <Project Path="src/Flare.Theme.MaterialDesign3.Tokens/Flare.Theme.MaterialDesign3.Tokens.csproj" />
     <Project Path="src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj" />
     <Project Path="src/Flare.Theme.MaterialDesign3/Flare.Theme.MaterialDesign3.csproj" />
     <Project Path="src/Flare.Theme.MaterialDesign2/Flare.Theme.MaterialDesign2.csproj" />

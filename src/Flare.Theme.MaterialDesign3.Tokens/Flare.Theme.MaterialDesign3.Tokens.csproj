@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Theme.MaterialDesign3.Tokens</PackageId>
+    <Description>Material Design 3 baseline design-token values (the reference DesignTokens and light/dark ColorSchemes) for the Flare Blazor component library. Derive custom Material themes from these via `with`. Pure data - no CSS, JS or theme registration.</Description>
+    <PackageTags>blazor;theming;design-tokens;material-design;md3;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.300" />
+    <PackageReference Update="MinVer" Version="7.0.0" />
+  </ItemGroup>
+
+</Project>
