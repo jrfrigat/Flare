@@ -98,6 +98,9 @@ public sealed record DesignTokens
     /// <summary>FlareTableOfContents / FlareOnThisPage tokens.</summary>
     public TableOfContentsTokens TableOfContents { get; init; } = new();
 
+    /// <summary>FlareColorPicker checkerboard + native range-thumb tokens.</summary>
+    public ColorPickerTokens ColorPicker { get; init; } = new();
+
     /// <summary>Theme-specific extras not in the core schema (e.g. Fluent focus ring vars).</summary>
     public IReadOnlyDictionary<string, string> Extended { get; init; }
         = new Dictionary<string, string>();

@@ -48,10 +48,10 @@
     border: 2px solid var(--flare-color-outline-variant);
     flex-shrink: 0;
     background-image:
-        linear-gradient(45deg, #ccc 25%, transparent 25%),
-        linear-gradient(-45deg, #ccc 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #ccc 75%),
-        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+        linear-gradient(45deg, var(--flare-colorpicker-checker-color, #ccc) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--flare-colorpicker-checker-color, #ccc) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--flare-colorpicker-checker-color, #ccc) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--flare-colorpicker-checker-color, #ccc) 75%);
     background-size: 8px 8px;
     background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
     position: relative;
@@ -131,10 +131,10 @@
     border: 2px solid var(--flare-color-outline-variant);
     flex-shrink: 0;
     background-image:
-        linear-gradient(45deg, #ccc 25%, transparent 25%),
-        linear-gradient(-45deg, #ccc 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #ccc 75%),
-        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+        linear-gradient(45deg, var(--flare-colorpicker-checker-color, #ccc) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--flare-colorpicker-checker-color, #ccc) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--flare-colorpicker-checker-color, #ccc) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--flare-colorpicker-checker-color, #ccc) 75%);
     background-size: 8px 8px;
     background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
     position: relative;
@@ -153,7 +153,7 @@
 .flare-colorpicker__slider-alpha {
     flex: 1;
     position: relative;
-    border-radius: 9999px;
+    border-radius: var(--flare-shape-full, 9999px);
     height: 12px;
     display: flex;
     align-items: center;
@@ -167,7 +167,7 @@
     height: 12px;
     background: transparent;
     cursor: pointer;
-    border-radius: 9999px;
+    border-radius: var(--flare-shape-full, 9999px);
     outline: none;
     position: relative;
     z-index: 1;
@@ -185,10 +185,10 @@
 }
 .flare-colorpicker__slider--alpha {
     background-image:
-        linear-gradient(45deg, #ccc 25%, transparent 25%),
-        linear-gradient(-45deg, #ccc 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #ccc 75%),
-        linear-gradient(-45deg, transparent 75%, #ccc 75%),
+        linear-gradient(45deg, var(--flare-colorpicker-checker-color, #ccc) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--flare-colorpicker-checker-color, #ccc) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--flare-colorpicker-checker-color, #ccc) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--flare-colorpicker-checker-color, #ccc) 75%),
         linear-gradient(to right, transparent, var(--_alpha-color, #000));
     background-size: 8px 8px, 8px 8px, 8px 8px, 8px 8px, 100% 100%;
     background-position: 0 0, 0 4px, 4px -4px, -4px 0, 0 0;
@@ -199,8 +199,8 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #fff;
-    border: 2px solid rgba(0,0,0,0.3);
+    background: var(--flare-colorpicker-thumb-bg, #fff);
+    border: 2px solid var(--flare-colorpicker-thumb-border-color, rgba(0,0,0,0.3));
     box-shadow: var(--flare-elevation-1);
     cursor: pointer;
     transition: box-shadow var(--flare-motion-duration-short1, 100ms);
@@ -210,8 +210,8 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: #fff;
-    border: 2px solid rgba(0,0,0,0.3);
+    background: var(--flare-colorpicker-thumb-bg, #fff);
+    border: 2px solid var(--flare-colorpicker-thumb-border-color, rgba(0,0,0,0.3));
     box-shadow: var(--flare-elevation-1);
     cursor: pointer;
 }
