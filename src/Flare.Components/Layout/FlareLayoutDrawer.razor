@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@implements IDisposable
+@inject Flare.Components.Services.IOverlayJsService Overlay
 
 @* A self-contained navigation drawer. It owns its own open state (@bind-Open) and variant, registers
    with the parent FlareLayout, and the layout reserves a grid track for it (push variants) or lets it
@@ -8,6 +8,11 @@
 <nav class="@BuildCssClass(_variantClass, _anchorClass, _floatingClass, _openClass, _hoverClass)"
      style="@(_styleVars + Style)"
      aria-hidden="@(_visible ? null : "true")"
+     inert="@(!_visible)"
+     role="@(_isModalOverlay ? "dialog" : null)"
+     aria-modal="@(_isModalOverlay ? "true" : null)"
+     aria-label="@(_isModalOverlay ? AriaLabel : null)"
+     @ref="_navEl"
      @onmouseenter="OnPointerEnter" @onmouseleave="OnPointerLeave"
      @onfocusin="OnFocusIn" @onfocusout="OnFocusOut"
      @attributes="AdditionalAttributes">
@@ -47,6 +52,10 @@
     /// <summary>Mini variant only: while collapsed, expand to full <see cref="Width"/> as a floating
     /// overlay on pointer/keyboard hover, then collapse again on leave.</summary>
     [Parameter] public bool HoverExpand { get; set; }
+    /// <summary>Accessible name applied (as <c>aria-label</c>) while the drawer is an open modal overlay
+    /// (the <see cref="DrawerVariant.Temporary"/> variant, or any drawer on mobile). Recommended so the
+    /// modal navigation surface has an accessible name.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Drawer content (typically a <c>FlareNavMenu</c>).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -60,6 +69,11 @@
     private bool _hovered;
     private bool _focused;
     private bool _registered;
+
+    private ElementReference _navEl;
+    private DotNetObjectReference<FlareLayoutDrawer>? _dotNetRef;
+    private readonly string _overlayId = Guid.NewGuid().ToString("N")[..8];
+    private bool _wasModalOverlay;
 
     /// <summary>The current effective open state (read by the layout).</summary>
     public bool IsOpen => _open;
@@ -105,6 +119,11 @@
     // --- Rendering state ---
 
     private bool _visible => Floating ? _open : TrackWidth(IsMobileNow) != "0";
+
+    // A modal overlay: floating (Temporary variant or a mobile off-canvas push drawer) AND open.
+    // While in this state the drawer traps focus and closes on Escape; a push/permanent drawer that
+    // reserves a track is non-modal and needs none of that.
+    private bool _isModalOverlay => Floating && _open;
 
     private string _styleVars => $"--fld-w:{OpenWidth};--fld-rail-w:{RailWidthValue};";
 
@@ -176,8 +195,49 @@
         StateHasChanged();
     }
 
-    public void Dispose()
+    // When the drawer becomes an open modal overlay, trap focus + wire Escape + lock body scroll (as a
+    // dialog would); release all three when it stops being one. Best-effort: JS is absent under SSR.
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_isModalOverlay && !_wasModalOverlay)
+        {
+            _wasModalOverlay = true;
+            try
+            {
+                _dotNetRef ??= DotNetObjectReference.Create(this);
+                await Overlay.LockBodyScrollAsync();
+                await Overlay.RegisterDialogEscAsync(_overlayId, _dotNetRef);
+                await Overlay.TrapFocusAsync(_overlayId, _navEl);
+            }
+            catch { /* SSR or pre-render: JS not available */ }
+        }
+        else if (!_isModalOverlay && _wasModalOverlay)
+        {
+            _wasModalOverlay = false;
+            try
+            {
+                await Overlay.UnlockBodyScrollAsync();
+                await Overlay.RemoveDialogEscAsync(_overlayId);
+                await Overlay.ReleaseFocusTrapAsync(_overlayId);
+            }
+            catch { }
+        }
+    }
+
+    /// <summary>Invoked by the shared Escape handler while the drawer is an open modal overlay; closes it.</summary>
+    [JSInvokable]
+    public Task CloseFromEsc() => _isModalOverlay ? SetOpenAsync(false) : Task.CompletedTask;
+
+    public override async ValueTask DisposeAsync()
     {
         if (_registered) Layout?.Unregister(this);
+        if (_wasModalOverlay)
+        {
+            try { await Overlay.UnlockBodyScrollAsync(); } catch { }
+        }
+        try { await Overlay.RemoveDialogEscAsync(_overlayId); } catch { }
+        try { await Overlay.ReleaseFocusTrapAsync(_overlayId); } catch { }
+        _dotNetRef?.Dispose();
+        await base.DisposeAsync();
     }
 }

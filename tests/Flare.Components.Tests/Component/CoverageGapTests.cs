@@ -846,6 +846,47 @@ public class C_FlareLayoutDrawerTests : FlareTestContext
     }
 
     [Fact]
+    public void TemporaryOpen_IsModalDialog_WithAriaLabel()
+    {
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Variant, DrawerVariant.Temporary)
+            .Add(d => d.Open, true)
+            .Add(d => d.AriaLabel, "Navigation"));
+
+        var nav = cut.Find("nav");
+        Assert.Equal("dialog", nav.GetAttribute("role"));
+        Assert.Equal("true", nav.GetAttribute("aria-modal"));
+        Assert.Equal("Navigation", nav.GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void PersistentOpen_IsNotModal_AndNotInert()
+    {
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Variant, DrawerVariant.Persistent)
+            .Add(d => d.Open, true)
+            .Add(d => d.Width, "16rem"));
+
+        var nav = cut.Find("nav");
+        Assert.False(nav.HasAttribute("role"));
+        Assert.False(nav.HasAttribute("aria-modal"));
+        Assert.False(nav.HasAttribute("inert"));
+    }
+
+    [Fact]
+    public void ClosedPushDrawer_IsInert_NotKeyboardReachable()
+    {
+        var cut = Render<FlareLayoutDrawer>(p => p
+            .Add(d => d.Variant, DrawerVariant.Persistent)
+            .Add(d => d.Open, false)
+            .Add(d => d.Width, "16rem"));
+
+        // A closed push drawer collapses to a 0-width track but keeps its links in the DOM; inert
+        // removes them from the tab order + a11y tree instead of leaving focusable links under aria-hidden.
+        Assert.True(cut.Find("nav").HasAttribute("inert"));
+    }
+
+    [Fact]
     public void Mobile_PushDrawerGoesOffCanvas()
     {
         var d = RenderDrawer(DrawerVariant.Mini, open: false).Instance;
