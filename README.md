@@ -6,7 +6,7 @@
 
 # Flare - Blazor Component Library
 
-> **[Русская версия ->](README.ru.md)**
+<p align="center">🌐 <b>English</b> · <a href="README.ru.md">Русский</a></p>
 
 [![CI](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml/badge.svg)](https://github.com/jrfrigat/Flare/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/v/Flare.Blazor.svg)](https://www.nuget.org/packages/Flare.Blazor/)
