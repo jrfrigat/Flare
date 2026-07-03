@@ -1,0 +1,27 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<div class="@BuildCssClass(_variantClass)" role="tablist" style="@Style" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    /// <summary>FlareLinkTab items rendered in the bar. Each renders its own <c>&lt;a&gt;</c> and
+    /// determines its active state independently by comparing its <c>Href</c> against the current
+    /// route - there is no parent-managed active index, since each tab is a real page navigation
+    /// rather than an in-page panel switch.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Visual variant of the tab bar (theme-independent). Mirrors <see cref="TabsVariant"/>'s
+    /// pill styles so a set of route links can look like the same segmented control as an in-page
+    /// <see cref="FlareTabs"/>. Default keeps a simple underline-only style.</summary>
+    [Parameter] public LinkTabsVariant Variant { get; set; } = LinkTabsVariant.Default;
+
+    protected override string ComponentCssClass => Css.Classes.LinkTabs.Root;
+
+    private string? _variantClass => Variant switch
+    {
+        LinkTabsVariant.Tonal => Css.Classes.LinkTabs.Tonal,
+        LinkTabsVariant.Filled => Css.Classes.LinkTabs.Filled,
+        _ => null,
+    };
+}
