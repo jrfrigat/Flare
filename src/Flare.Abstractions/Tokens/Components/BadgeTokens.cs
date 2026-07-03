@@ -5,8 +5,9 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme token values for <c>FlareBadge</c>.</summary>
 public sealed record BadgeTokens
 {
-    /// <summary>Border radius of the badge indicator pill.</summary>
-    [CssVar(Badge.Radius)] public string Radius { get; init; } = "9999px";
+    /// <summary>Border radius of the badge indicator pill. Defaults to the shared full shape token
+    /// (the pill vocabulary used by Chip/Nav/Tabs) instead of a hardcoded pill radius.</summary>
+    [CssVar(Badge.Radius)] public string Radius { get; init; } = Vars.Var(Shape.Full);
 
     /// <summary>Minimum width of a count / text indicator (not dot).</summary>
     [CssVar(Badge.MinWidth)] public string MinWidth { get; init; } = "1rem";

@@ -65,8 +65,9 @@ public sealed record SwitchTokens
     /// <summary>Color of the thumb icon (checked).</summary>
     [CssVar(SwitchField.ThumbIconColorSelected)] public string ThumbIconColorSelected { get; init; } = Vars.Var(Color.Primary);
 
-    /// <summary>Shadow of the thumb.</summary>
-    [CssVar(SwitchField.ThumbShadow)] public string ThumbShadow { get; init; } = "0 1px 3px 1px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.3)";
+    /// <summary>Shadow of the thumb. Defaults to the shared level-1 elevation token rather than a
+    /// hardcoded shadow, so the thumb lift follows the theme's elevation scale (and shadow color tokens).</summary>
+    [CssVar(SwitchField.ThumbShadow)] public string ThumbShadow { get; init; } = Vars.Var(Elevation.Level1);
 
     /// <summary>Width of the focus outline.</summary>
     [CssVar(SwitchField.FocusOutlineWidth)] public string FocusOutlineWidth { get; init; } = "2px";
