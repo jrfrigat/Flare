@@ -10,6 +10,12 @@ public sealed class DialogOptions
     public DialogSize Size { get; set; } = DialogSize.Md;
 
     /// <summary>
+    /// Accessible name applied (as <c>aria-label</c>) when the dialog has no title. Set this for
+    /// header-less component dialogs so the modal is not left without an accessible name.
+    /// </summary>
+    public string? AriaLabel { get; set; }
+
+    /// <summary>
     /// Dismisses the dialog (resolving as <see cref="DialogResult.Cancel"/>) when the scrim backdrop
     /// is clicked. Default <see langword="true"/>.
     /// </summary>

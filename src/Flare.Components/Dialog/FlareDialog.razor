@@ -9,7 +9,8 @@
         <div class="@BuildCssClass(_sizeClass)" style="@Style" @onclick:stopPropagation="true"
              @attributes="AdditionalAttributes"
              role="dialog" aria-modal="true"
-             aria-labelledby="@_titleId"
+             aria-labelledby="@(string.IsNullOrEmpty(Title) ? null : _titleId)"
+             aria-label="@(string.IsNullOrEmpty(Title) ? AriaLabel : null)"
              aria-describedby="@_contentId"
              @ref="_dialogEl">
             @if (Icon is not null)
@@ -46,6 +47,9 @@
     [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
     /// <summary>Title text displayed in the dialog header.</summary>
     [Parameter] public string? Title { get; set; }
+    /// <summary>Accessible name for a header-less dialog (rendered as <c>aria-label</c> when
+    /// <see cref="Title"/> is empty). Ignored when a title is present, since the title labels the dialog.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Optional hero icon shown centered above the title (MD3: secondary color).</summary>
     [Parameter] public RenderFragment? Icon { get; set; }
     /// <summary>Shows a divider between the header and the content (MD3 scroll divider).</summary>
