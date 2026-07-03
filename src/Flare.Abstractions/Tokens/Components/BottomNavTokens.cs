@@ -42,11 +42,14 @@ public sealed record BottomNavTokens
     /// <summary>Active label font weight (slightly heavier to reinforce the selected state).</summary>
     [CssVar(BottomNavField.LabelFontWeightActive)] public string LabelFontWeightActive { get; init; } = "700";
 
-    /// <summary>Background of the pill drawn behind the active item's icon. MD3 = secondary-container.</summary>
-    [CssVar(BottomNavField.IndicatorBg)] public string IndicatorBg { get; init; } = Vars.Var(Color.SecondaryContainer);
+    /// <summary>Background of the pill drawn behind the active item's icon. Defaults to the shared nav
+    /// active-indicator token so a theme that flattens the drawer indicator (e.g. Fluent sets it to
+    /// <c>none</c>) flattens the bottom bar too; override this token to restyle only the bottom bar.</summary>
+    [CssVar(BottomNavField.IndicatorBg)] public string IndicatorBg { get; init; } = Vars.Var(NavField.ActiveIndicator);
 
-    /// <summary>Corner radius of the active-item indicator pill. MD3 = full.</summary>
-    [CssVar(BottomNavField.IndicatorRadius)] public string IndicatorRadius { get; init; } = Vars.Var(Shape.Full);
+    /// <summary>Corner radius of the active-item indicator pill. Defaults to the shared nav
+    /// indicator-radius token (a full pill in MD3, square in Fluent); override to restyle only the bottom bar.</summary>
+    [CssVar(BottomNavField.IndicatorRadius)] public string IndicatorRadius { get; init; } = Vars.Var(NavField.IndicatorRadius);
 
     /// <summary>Fixed height of the active-item indicator pill.</summary>
     [CssVar(BottomNavField.IndicatorSize)] public string IndicatorSize { get; init; } = "2rem";

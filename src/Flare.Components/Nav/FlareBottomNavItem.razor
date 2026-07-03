@@ -3,12 +3,14 @@
 @inject NavigationManager Navigation
 
 <a class="@BuildCssClass(_activeClass, _disabledClass)"
-   href="@_safeHref"
+   href="@(Disabled ? null : _safeHref)"
    style="@Style"
    title="@Tooltip"
    aria-current="@(_isActive ? "page" : null)"
+   aria-disabled="@(Disabled ? "true" : null)"
+   tabindex="@(Disabled ? "-1" : null)"
    @onclick="HandleClick"
-   @onclick:preventDefault="@(OnClick.HasDelegate)"
+   @onclick:preventDefault="@(OnClick.HasDelegate || Disabled)"
    @attributes="AdditionalAttributes">
     <span class="@Css.Classes.BottomNav.ItemIndicator">
         <span class="@Css.Classes.BottomNav.ItemIcon">@Icon</span>

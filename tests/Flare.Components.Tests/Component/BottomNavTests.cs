@@ -150,6 +150,20 @@ public class C_FlareBottomNavItemTests : FlareTestContext
     }
 
     [Fact]
+    public void Disabled_True_IsNotFocusableAndSuppressesHref()
+    {
+        var cut = Render<FlareBottomNavItem>(p => p
+            .Add(x => x.Href, "/locked")
+            .Add(x => x.Disabled, true)
+            .AddChildContent("Locked"));
+
+        var a = cut.Find("a");
+        Assert.False(a.HasAttribute("href"));
+        Assert.Equal("true", a.GetAttribute("aria-disabled"));
+        Assert.Equal("-1", a.GetAttribute("tabindex"));
+    }
+
+    [Fact]
     public void Click_InvokesOnClick()
     {
         var clicked = false;
