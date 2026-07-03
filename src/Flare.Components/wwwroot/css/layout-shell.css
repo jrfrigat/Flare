@@ -1,6 +1,8 @@
 :root {
-    --flare-drawer-width: 260px;
-    --flare-drawer-mini-width: 3.5rem;
+    /* Layout-drawer geometry, namespaced so it does not collide with the standalone FlareDrawer's
+       theme tokens (--flare-drawer-width / --flare-drawer-mini-width, owned by DrawerTokens). */
+    --flare-layout-drawer-width: 260px;
+    --flare-layout-drawer-rail-width: 3.5rem;
     --flare-layout-appbar-height: 64px;
 }
 
@@ -53,7 +55,7 @@
     min-width: 0;
 }
 .flare-layout-drawer__inner {
-    width: var(--fld-w, var(--flare-drawer-width));
+    width: var(--fld-w, var(--flare-layout-drawer-width));
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -71,7 +73,7 @@
 .flare-layout-drawer--persistent .flare-layout-drawer__inner,
 .flare-layout-drawer--responsive .flare-layout-drawer__inner,
 .flare-layout-drawer--permanent .flare-layout-drawer__inner {
-    width: var(--fld-w, var(--flare-drawer-width));
+    width: var(--fld-w, var(--flare-layout-drawer-width));
 }
 
 /* Mini: the inner follows the animating track width; a nested FlareNavMenu renders icon-only while
@@ -90,7 +92,7 @@
     top: var(--flare-layout-appbar-height, 64px);
     bottom: 0;
     left: 0;
-    width: var(--fld-w, var(--flare-drawer-width));
+    width: var(--fld-w, var(--flare-layout-drawer-width));
     z-index: 200;
     transform: translateX(-100%);
     transition: transform var(--flare-motion-duration-medium1, 200ms) ease;
@@ -124,7 +126,7 @@
     top: 0;
     bottom: 0;
     left: 0;
-    width: var(--fld-w, var(--flare-drawer-width));
+    width: var(--fld-w, var(--flare-layout-drawer-width));
     background: var(--flare-color-surface-container-low);
     box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0, 0, 0, .16));
 }

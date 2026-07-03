@@ -39,10 +39,10 @@
     /// <summary>Which side of the layout the drawer attaches to (<see cref="DrawerAnchor.Left"/> or
     /// <see cref="DrawerAnchor.Right"/>; Top/Bottom are treated as Left). Defaults to Left.</summary>
     [Parameter] public DrawerAnchor Anchor { get; set; } = DrawerAnchor.Left;
-    /// <summary>Open width (e.g. <c>"16rem"</c>); falls back to the <c>--flare-drawer-width</c> token.</summary>
+    /// <summary>Open width (e.g. <c>"16rem"</c>); falls back to the <c>--flare-layout-drawer-width</c> token.</summary>
     [Parameter] public string? Width { get; set; }
     /// <summary>Collapsed icon-rail width for the <see cref="DrawerVariant.Mini"/> variant; falls back
-    /// to the <c>--flare-drawer-mini-width</c> token.</summary>
+    /// to the <c>--flare-layout-drawer-rail-width</c> token.</summary>
     [Parameter] public string? RailWidth { get; set; }
     /// <summary>Mini variant only: while collapsed, expand to full <see cref="Width"/> as a floating
     /// overlay on pointer/keyboard hover, then collapse again on leave.</summary>
@@ -65,8 +65,8 @@
     public bool IsOpen => _open;
 
     private bool IsMobileNow => Layout?.IsMobile ?? false;
-    private string OpenWidth => Width ?? "var(--flare-drawer-width, 16rem)";
-    private string RailWidthValue => RailWidth ?? "var(--flare-drawer-mini-width, 3.5rem)";
+    private string OpenWidth => Width ?? "var(--flare-layout-drawer-width, 16rem)";
+    private string RailWidthValue => RailWidth ?? "var(--flare-layout-drawer-rail-width, 3.5rem)";
 
     // Floating = out of normal flow (position:fixed): the Temporary variant always, and every push
     // drawer once the layout is mobile (off-canvas).
