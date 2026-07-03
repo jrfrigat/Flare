@@ -47,4 +47,7 @@ public sealed record BottomNavTokens
 
     /// <summary>Corner radius of the active-item indicator pill. MD3 = full.</summary>
     [CssVar(BottomNavField.IndicatorRadius)] public string IndicatorRadius { get; init; } = Vars.Var(Shape.Full);
+
+    /// <summary>Fixed height of the active-item indicator pill.</summary>
+    [CssVar(BottomNavField.IndicatorSize)] public string IndicatorSize { get; init; } = "2rem";
 }

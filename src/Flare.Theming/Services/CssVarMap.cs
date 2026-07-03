@@ -675,6 +675,7 @@ public static class CssVarMap
         v[Css.Tokens.BottomNavField.LabelFontWeightActive] = t.BottomNav.LabelFontWeightActive;
         v[Css.Tokens.BottomNavField.IndicatorBg] = t.BottomNav.IndicatorBg;
         v[Css.Tokens.BottomNavField.IndicatorRadius] = t.BottomNav.IndicatorRadius;
+        v[Css.Tokens.BottomNavField.IndicatorSize] = t.BottomNav.IndicatorSize;
         #endregion
 
         #region SWITCH

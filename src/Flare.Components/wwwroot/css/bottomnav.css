@@ -42,7 +42,7 @@
   justify-content: center;
   border-radius: var(--flare-bottom-nav-indicator-radius, var(--flare-shape-full));
   padding-inline: var(--flare-spacing-6, 0.75rem);
-  height: 2rem;
+  height: var(--flare-bottom-nav-indicator-size, 2rem);
   background: transparent;
   transition: background-color var(--flare-motion-duration-short1, 100ms);
 }

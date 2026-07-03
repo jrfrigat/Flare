@@ -29,4 +29,6 @@ public static class BottomNavField
     public const string IndicatorBg = $"{Prefix}-indicator-bg";
     /// <summary>CSS custom-property name for the active-item indicator pill corner-radius token.</summary>
     public const string IndicatorRadius = $"{Prefix}-indicator-radius";
+    /// <summary>CSS custom-property name for the active-item indicator pill height token.</summary>
+    public const string IndicatorSize = $"{Prefix}-indicator-size";
 }
