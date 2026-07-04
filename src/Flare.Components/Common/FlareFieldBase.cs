@@ -10,8 +10,9 @@ namespace Flare.Components;
 /// Centralizes the shared field-chrome plumbing so it is not re-implemented per component:
 /// the EditContext validation wiring (subscription, bound-field identifier, validation-message
 /// lookup and change notification) and the theme-independent visual-variant mapping.
-/// Each field component keeps its own markup and CSS class prefixes; this base only removes
-/// the duplicated C# logic.
+/// It also carries the shared field parameters (label, placeholder, helper/error text, disabled,
+/// read-only, required); the keyboard-input fields additionally share the <c>flare-input__*</c>
+/// chrome CSS (label/field/helper/counter) rather than re-declaring per-component copies.
 /// </summary>
 public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 {
