@@ -83,32 +83,14 @@
     position: relative;
 }
 
+/* Positioning only; the popup surface + option rows come from the shared .flare-listbox
+   (FlareListbox), so the suggestion dropdown matches Autocomplete/Select/MultiSelect. */
 .flare-tag-input__dropdown {
     position: absolute;
     top: calc(100% + 0.25rem);
     left: 0;
     right: 0;
     z-index: 20;
-    max-height: 16rem;
-    overflow-y: auto;
-    background: var(--flare-color-surface-container, var(--flare-color-surface));
-    border-radius: var(--flare-shape-extra-small);
-    box-shadow: var(--flare-elevation-2);
-    padding: var(--flare-spacing-2) 0;
-}
-
-.flare-tag-input__option {
-    padding: var(--flare-spacing-4) var(--flare-spacing-6);
-    cursor: pointer;
-    font-family: var(--flare-typescale-body-large-font);
-    font-size: var(--flare-typescale-body-large-size);
-    color: var(--flare-color-on-surface);
-    transition: background var(--flare-motion-duration-short1);
-}
-
-.flare-tag-input__option:hover,
-.flare-tag-input__option--active {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
 }
 
 .flare-tag-input__empty {

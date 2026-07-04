@@ -29,12 +29,8 @@ public static class TagInput
     public const string Remove = "flare-tag-input__remove";
     /// <summary>The <c>flare-tag-input__wrapper</c> CSS class.</summary>
     public const string Wrapper = "flare-tag-input__wrapper";
-    /// <summary>The <c>flare-tag-input__dropdown</c> CSS class.</summary>
+    /// <summary>The <c>flare-tag-input__dropdown</c> CSS class (positions the shared <see cref="Listbox.Root"/> popup).</summary>
     public const string Dropdown = "flare-tag-input__dropdown";
-    /// <summary>The <c>flare-tag-input__option</c> CSS class.</summary>
-    public const string Option = "flare-tag-input__option";
-    /// <summary>The <c>flare-tag-input__option--active</c> CSS class.</summary>
-    public const string OptionActive = "flare-tag-input__option--active";
     /// <summary>The <c>flare-tag-input__empty</c> CSS class.</summary>
     public const string Empty = "flare-tag-input__empty";
 }

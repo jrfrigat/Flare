@@ -51,26 +51,20 @@
         </div>
         @if (_open && _hasSuggestionsApi)
         {
-            <div class="@Css.Classes.TagInput.Dropdown" role="listbox" @onmousedown:preventDefault>
-                @if (_options.Count > 0)
-                {
-                    @for (var i = 0; i < _options.Count; i++)
+            <FlareListbox TItem="string"
+                          Items="_options"
+                          ItemLabel="@(s => s)"
+                          ActiveIndex="_activeIdx"
+                          OnSelect="SelectSuggestionAsync"
+                          DropdownClass="@Css.Classes.TagInput.Dropdown"
+                          PreventMouseDownDefault="true">
+                <EmptyContent>
+                    @if (!_loading)
                     {
-                        var opt = _options[i];
-                        var idx = i;
-                        <div class="@Css.Classes.TagInput.Option @(_activeIdx == idx ? Css.Classes.TagInput.OptionActive : "")"
-                             role="option"
-                             aria-selected="@(_activeIdx == idx)"
-                             @onclick="@(() => SelectSuggestionAsync(opt))">
-                            @opt
-                        </div>
+                        <div class="@Css.Classes.TagInput.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
                     }
-                }
-                else if (!_loading)
-                {
-                    <div class="@Css.Classes.TagInput.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
-                }
-            </div>
+                </EmptyContent>
+            </FlareListbox>
         }
     </div>
     @if (!string.IsNullOrEmpty(_displayedError))

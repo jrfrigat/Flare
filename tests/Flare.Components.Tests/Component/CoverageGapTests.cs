@@ -1472,10 +1472,10 @@ public class C_FlareTagFieldSuggestionsTests : FlareTestContext
             .Add(x => x.MinChars, 1));
 
         cut.Find(".flare-tag-input__input").Input("ap");
-        var options = cut.FindAll(".flare-tag-input__option");
+        var options = cut.FindAll(".flare-listbox__option");
         Assert.Equal(2, options.Count);
-        Assert.Contains(options, o => o.TextContent == "apple");
-        Assert.Contains(options, o => o.TextContent == "apricot");
+        Assert.Contains(options, o => o.TextContent.Trim() == "apple");
+        Assert.Contains(options, o => o.TextContent.Trim() == "apricot");
     }
 
     [Fact]
@@ -1487,7 +1487,7 @@ public class C_FlareTagFieldSuggestionsTests : FlareTestContext
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
         cut.Find(".flare-tag-input__input").Input("ap");
-        cut.FindAll(".flare-tag-input__option")[0].Click();
+        cut.FindAll(".flare-listbox__option")[0].Click();
         Assert.Contains("apple", tags);
     }
 
@@ -1499,9 +1499,9 @@ public class C_FlareTagFieldSuggestionsTests : FlareTestContext
             .Add(x => x.Suggestions, new[] { "apple", "apricot" }));
 
         cut.Find(".flare-tag-input__input").Input("ap");
-        var options = cut.FindAll(".flare-tag-input__option");
+        var options = cut.FindAll(".flare-listbox__option");
         Assert.Single(options);
-        Assert.Equal("apricot", options[0].TextContent);
+        Assert.Equal("apricot", options[0].TextContent.Trim());
     }
 }
 
