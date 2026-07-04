@@ -62,7 +62,7 @@
                           DropdownClass="@Css.Classes.Autocomplete.Dropdown"
                           PreventMouseDownDefault="true">
                 <EmptyContent>
-                    <div class="@Css.Classes.Autocomplete.Empty" role="status">@NoResultsText</div>
+                    <div class="@Css.Classes.Autocomplete.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
                 </EmptyContent>
             </FlareListbox>
         }
@@ -105,8 +105,8 @@
     [Parameter] public int MaxItems { get; set; } = 10;
     /// <summary>Milliseconds to wait after user input before triggering search. Default: 300ms.</summary>
     [Parameter] public int DebounceMs { get; set; } = 300;
-    /// <summary>Text shown in the dropdown when a search returns no matches.</summary>
-    [Parameter] public string NoResultsText { get; set; } = "No results";
+    /// <summary>Text shown in the dropdown when a search returns no matches. When null, falls back to the localized default.</summary>
+    [Parameter] public string? NoResultsText { get; set; }
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TValue?>>? For { get; set; }
     /// <summary>Returns the group label for an item. When non-null, dropdown items are grouped.</summary>

@@ -45,7 +45,7 @@
         <div class="@Css.Classes.DatePicker.Panel" @ref="_panelEl">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="Previous">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous">
                         <LeadingIcon><FlareIcon Name="chevron_left" /></LeadingIcon>
                     </FlareButton>
                 </span>
@@ -54,7 +54,7 @@
                     @HeaderLabel
                 </button>
                 <span @onclick:stopPropagation @onclick="() => { }">
-                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="Next">
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="@FlareStrings.Picker_Next">
                         <LeadingIcon><FlareIcon Name="chevron_right" /></LeadingIcon>
                     </FlareButton>
                 </span>

@@ -68,7 +68,7 @@
                 }
                 else if (!_loading)
                 {
-                    <div class="@Css.Classes.TagInput.Empty" role="status">@NoResultsText</div>
+                    <div class="@Css.Classes.TagInput.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
                 }
             </div>
         }
@@ -113,8 +113,8 @@
     [Parameter] public int MinChars { get; set; } = 1;
     /// <summary>Debounce in milliseconds before querying <see cref="SearchFunc"/>.</summary>
     [Parameter] public int DebounceMs { get; set; } = 200;
-    /// <summary>Text shown in the dropdown when a query returns no suggestions.</summary>
-    [Parameter] public string NoResultsText { get; set; } = "No results";
+    /// <summary>Text shown in the dropdown when a query returns no suggestions. When null, falls back to the localized default.</summary>
+    [Parameter] public string? NoResultsText { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.TagInput.Root;
 

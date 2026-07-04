@@ -26,13 +26,13 @@
                readonly="@ReadOnly"
                required="@Required"
                aria-required="@(Required ? "true" : null)"
-               aria-label="@(Label ?? "Time")"
+               aria-label="@(Label ?? FlareStrings.TimePicker_FieldLabel)"
                @oninput="HandleInput"
                @onchange="HandleCommitText"
                @attributes="AdditionalAttributes" />
         <button type="button" class="@Css.Classes.TimePicker.Toggle flare-input__icon flare-input__icon--trailing"
                 disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
-                aria-label="Open time picker" @onclick="Toggle">
+                aria-label="@FlareStrings.TimePicker_Open" @onclick="Toggle">
             <FlareIcon Name="schedule" Style="font-size:1.25rem;" />
         </button>
     </div>
@@ -41,8 +41,8 @@
     {
         <div class="@Css.Classes.TimePicker.Scrim" @onclick="Close" aria-hidden="true"></div>
         <div class="@($"{Css.Classes.TimePicker.Panel} {Css.Classes.TimePicker.Panel}--{PopupVariant.ToString().ToLowerInvariant()}")"
-             @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@Headline">
-            <div class="@Css.Classes.TimePicker.PanelHeadline">@Headline</div>
+             @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@_headline">
+            <div class="@Css.Classes.TimePicker.PanelHeadline">@_headline</div>
 
             @if (PopupVariant == TimePickerVariant.Dial)
             {
@@ -58,7 +58,7 @@
                     <span class="@Css.Classes.TimePicker.DisplayPart @(_dropActive == 1 ? Css.Classes.TimePicker.DisplayPartActive : "")">@_tempMinute.ToString("00")</span>
                 </div>
                 <div class="@Css.Classes.TimePicker.Columns" tabindex="0" @ref="_dropRef" @onkeydown="OnDropKey">
-                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="Hours">
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Hours">
                         @for (var h = 0; h < 24; h++)
                         {
                             var hour = h;
@@ -69,7 +69,7 @@
                         }
                     </div>
                     <div class="@Css.Classes.TimePicker.ColumnsSep">:</div>
-                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="Minutes">
+                    <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Minutes">
                         @for (var m = 0; m < 60; m += MinuteStep)
                         {
                             var min = m;
@@ -83,8 +83,8 @@
             }
 
             <div class="@Css.Classes.TimePicker.Actions">
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Close">@CancelText</FlareButton>
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm">@OkText</FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Close">@(CancelText ?? FlareStrings.Picker_Cancel)</FlareButton>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm">@(OkText ?? FlareStrings.Picker_Ok)</FlareButton>
             </div>
         </div>
     }
@@ -119,12 +119,12 @@
     [Parameter] public bool? Use24Hour { get; set; }
     /// <summary>Minute increment shown in the Dropdown column. Default 1.</summary>
     [Parameter] public int MinuteStep { get; set; } = 1;
-    /// <summary>Headline shown at the top of the picker popup.</summary>
-    [Parameter] public string Headline { get; set; } = "Select time";
-    /// <summary>Confirm button text. Default "OK".</summary>
-    [Parameter] public string OkText { get; set; } = "OK";
-    /// <summary>Cancel button text. Default "Cancel".</summary>
-    [Parameter] public string CancelText { get; set; } = "Cancel";
+    /// <summary>Headline shown at the top of the picker popup. When null, falls back to the localized default.</summary>
+    [Parameter] public string? Headline { get; set; }
+    /// <summary>Confirm button text. When null, falls back to the localized "OK".</summary>
+    [Parameter] public string? OkText { get; set; }
+    /// <summary>Cancel button text. When null, falls back to the localized "Cancel".</summary>
+    [Parameter] public string? CancelText { get; set; }
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TimeOnly?>>? For { get; set; }
 
@@ -163,6 +163,8 @@
     }
 
     private string? _displayedError => DisplayedError(ErrorText);
+
+    private string _headline => Headline ?? FlareStrings.TimePicker_Headline;
 
     private string _stateClass =>
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.TimePicker.Error :
