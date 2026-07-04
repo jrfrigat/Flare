@@ -27,12 +27,6 @@ public static class TagInput
     public const string Chip = "flare-tag-input__chip";
     /// <summary>The <c>flare-tag-input__remove</c> CSS class.</summary>
     public const string Remove = "flare-tag-input__remove";
-    /// <summary>The <c>flare-tag-input__label</c> CSS class.</summary>
-    public const string Label = "flare-tag-input__label";
-    /// <summary>The <c>flare-tag-input__helper</c> CSS class.</summary>
-    public const string Helper = "flare-tag-input__helper";
-    /// <summary>The <c>flare-tag-input__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-tag-input__helper--error";
     /// <summary>The <c>flare-tag-input__wrapper</c> CSS class.</summary>
     public const string Wrapper = "flare-tag-input__wrapper";
     /// <summary>The <c>flare-tag-input__dropdown</c> CSS class.</summary>

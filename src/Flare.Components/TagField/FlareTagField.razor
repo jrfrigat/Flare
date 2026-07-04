@@ -1,5 +1,6 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareFieldBase
+@implements IFlareMultiField<string>
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
 
@@ -9,7 +10,7 @@
      @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.TagInput.Label">@Label</label>
+        <label class="@Css.Classes.Input.Label">@Label</label>
     }
     <div class="@Css.Classes.TagInput.Wrapper">
         <div class="@Css.Classes.TagInput.Field">
@@ -41,6 +42,7 @@
                        role="@(_hasSuggestionsApi ? "combobox" : null)"
                        aria-expanded="@(_hasSuggestionsApi ? _open.ToString().ToLowerInvariant() : null)"
                        aria-autocomplete="@(_hasSuggestionsApi ? "list" : null)"
+                       aria-required="@(Required ? "true" : null)"
                        @oninput="HandleInputAsync"
                        @onfocus="HandleFocusAsync"
                        @onblur="HandleBlurAsync"
@@ -73,11 +75,11 @@
     </div>
     @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@Css.Classes.TagInput.Helper @Css.Classes.TagInput.HelperError">@_displayedError</span>
+        <span class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError">@_displayedError</span>
     }
     else if (!string.IsNullOrEmpty(HelperText))
     {
-        <span class="@Css.Classes.TagInput.Helper">@HelperText</span>
+        <span class="@Css.Classes.Input.Helper">@HelperText</span>
     }
 </div>
 
@@ -86,18 +88,9 @@
     [Parameter] public IReadOnlyList<string> Values { get; set; } = [];
     /// <summary>Callback invoked when the tag list changes.</summary>
     [Parameter] public EventCallback<IReadOnlyList<string>> ValuesChanged { get; set; }
-    /// <summary>Label text displayed above the tag input.</summary>
-    [Parameter] public string? Label { get; set; }
-    /// <summary>Placeholder shown when no tags have been entered.</summary>
-    [Parameter] public string? Placeholder { get; set; }
-    /// <summary>Helper text shown below the tag input.</summary>
-    [Parameter] public string? HelperText { get; set; }
-    /// <summary>Overrides validation with a custom error message.</summary>
-    [Parameter] public string? ErrorText { get; set; }
-    /// <summary>Disables the tag input when true.</summary>
-    [Parameter] public bool Disabled { get; set; }
-    /// <summary>Prevents adding or removing tags when true.</summary>
-    [Parameter] public bool ReadOnly { get; set; }
+    // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
+    // FlareFieldBase (IFlareField). ReadOnly prevents adding/removing tags; Required marks the field
+    // (at least one tag expected) via aria-required on the editing input.
     /// <summary>Allows adding duplicate tags when true.</summary>
     [Parameter] public bool AllowDuplicates { get; set; }
     /// <summary>Adds the current input as a tag when focus leaves.</summary>
@@ -123,19 +116,12 @@
     /// <summary>Text shown in the dropdown when a query returns no suggestions.</summary>
     [Parameter] public string NoResultsText { get; set; } = "No results";
 
-    [CascadingParameter] private EditContext? EditContext { get; set; }
-
     protected override string ComponentCssClass => Css.Classes.TagInput.Root;
 
     /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
     /// Default keeps the theme's field style (MD3 filled / Fluent outlined).</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
-    private string? _variantClass => Variant switch
-    {
-        InputVariant.Filled => Css.Classes.Input.VariantFilled,
-        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
-        _ => null,
-    };
+    private string? _variantClass => VariantClass(Variant);
 
     /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
@@ -157,7 +143,6 @@
     private bool _focused;
     private List<string> _tags = [];
     private IReadOnlyList<string>? _prevValues;
-    private FieldIdentifier _fieldId;
 
     // Suggestion dropdown state
     private bool _open;
@@ -172,17 +157,11 @@
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.TagInput.Error :
         Disabled ? Css.Classes.TagInput.Disabled : string.Empty;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged += OnValidationChanged;
-    }
-
+    // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
+    // FlareFieldBase; here we only feed it the For accessor, sync the tag list and surface the error.
     protected override void OnParametersSet()
     {
-        if (EditContext is not null && For is not null)
-            _fieldId = FieldIdentifier.Create(For);
+        UpdateFieldIdentifier(For);
 
         if (!ReferenceEquals(Values, _prevValues))
         {
@@ -191,23 +170,13 @@
         }
     }
 
-    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
-        => InvokeAsync(StateHasChanged);
-
     public override async ValueTask DisposeAsync()
     {
         _searchCts?.Cancel();
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged -= OnValidationChanged;
         await base.DisposeAsync();
     }
 
-    private string? _validationError =>
-        EditContext is not null && For is not null
-            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
-            : null;
-
-    private string? _displayedError => ErrorText ?? _validationError;
+    private string? _displayedError => DisplayedError(ErrorText);
 
     private async Task FocusInputAsync()
     {
@@ -226,16 +195,14 @@
 
         _tags.Add(tag);
         await ValuesChanged.InvokeAsync(_tags.AsReadOnly());
-        if (EditContext is not null && For is not null)
-            EditContext.NotifyFieldChanged(_fieldId);
+        NotifyFieldChanged();
     }
 
     private async Task RemoveTagAsync(string tag)
     {
         _tags.Remove(tag);
         await ValuesChanged.InvokeAsync(_tags.AsReadOnly());
-        if (EditContext is not null && For is not null)
-            EditContext.NotifyFieldChanged(_fieldId);
+        NotifyFieldChanged();
     }
 
     private async Task HandleKeyDownAsync(KeyboardEventArgs e)
