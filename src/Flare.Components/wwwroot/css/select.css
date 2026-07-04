@@ -9,16 +9,12 @@
    classes (see input.css); the select only styles its combobox trigger and dropdown below. */
 
 /* The control is a custom combobox trigger (not a native <select>), so the dropdown
-   (.flare-select__dropdown / .flare-listbox) can be fully styled. */
+   (.flare-select__dropdown / .flare-listbox) can be fully styled. It carries the shared
+   flare-input__field well (box-model, border, transition, :hover + :focus-within ring, and the
+   shared flare-input--disabled/--error state), and only adds the trigger-specific layout below. */
 .flare-select__control {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
     gap: var(--flare-spacing-4);
-    background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
-    border: var(--flare-input-border, none);
-    border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
-    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
     padding: var(--flare-spacing-6) var(--flare-spacing-8);
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
@@ -26,22 +22,13 @@
     outline: none;
     cursor: pointer;
     user-select: none;
-    transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
-}
-
-.flare-select__control:focus-visible {
-    border-color: var(--fc-main, var(--flare-color-primary));
-    box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
 }
 
 .flare-select--open .flare-select__control { border-bottom-color: var(--flare-color-primary); }
 
 .flare-select__value { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .flare-select__placeholder { color: var(--flare-color-on-surface-variant); }
-.flare-select__arrow { color: var(--flare-color-on-surface-variant); flex: none; }
 
-/* Dropdown anchors to the control; the .flare-listbox class supplies the surface design.
-   Positioned as fixed via JS (positionAnchoredPanel) so it escapes a Card's overflow:hidden. */
 /* JS-anchored (PositionAnchoredPanel) so the popup escapes a Card's overflow:hidden; the surface
    and z-index come from .flare-listbox. Select uses fixed positioning instead of the shared
    .flare-listbox__dropdown absolute anchoring. */
@@ -51,22 +38,11 @@
 
 /* Size grid (Xs..Xl) lives in input.css as the single source for the whole input family. */
 
-/* Disabled + error use the shared flare-input--disabled / flare-input--error root modifiers: the
-   shared rules dim the flare-input__label/__helper and set pointer-events:none; only the fused
-   combobox trigger (flare-select__control) needs component descendant rules (MD3 4%/38% + error). */
-.flare-input--disabled .flare-select__control {
-    background-color: var(--flare-input-disabled-bg,
-        color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent));
-    border-bottom-color: var(--flare-input-disabled-indicator,
-        color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent));
-}
+/* Disabled + error: the trigger carries flare-input__field, so the shared
+   flare-input--disabled/--error .flare-input__field rules (MD3 4%/38% surface + error border) and
+   the shared label/helper/arrow treatment apply automatically. Only the value/placeholder text
+   (not a flare-input__* element) needs the disabled dim here. */
 .flare-input--disabled .flare-select__value,
-.flare-input--disabled .flare-select__placeholder,
-.flare-input--disabled .flare-select__arrow {
+.flare-input--disabled .flare-select__placeholder {
     opacity: var(--flare-state-disabled-opacity);
 }
-.flare-input--error .flare-select__control {
-    border-color: var(--flare-color-error);
-    border-bottom-color: var(--flare-color-error);
-}
-.flare-input--error .flare-select__arrow { color: var(--flare-color-error); }

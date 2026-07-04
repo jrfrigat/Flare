@@ -7,8 +7,7 @@ public static class Multiselect
     public const string Root = "flare-multiselect";
     /// <summary>The <c>flare-multiselect--open</c> CSS class.</summary>
     public const string Open = "flare-multiselect--open";
-    /// <summary>The <c>flare-multiselect__arrow</c> CSS class.</summary>
-    public const string Arrow = "flare-multiselect__arrow";
+    // The trailing chevron uses the shared Css.Classes.Input.Arrow (flare-input__arrow).
     /// <summary>The <c>flare-multiselect__chip</c> CSS class.</summary>
     public const string Chip = "flare-multiselect__chip";
     /// <summary>The <c>flare-multiselect__chip-remove</c> CSS class.</summary>

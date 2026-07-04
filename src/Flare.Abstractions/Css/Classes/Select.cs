@@ -15,8 +15,7 @@ public static class Select
     public const string Value = "flare-select__value";
     /// <summary>The <c>flare-select__placeholder</c> CSS class.</summary>
     public const string Placeholder = "flare-select__placeholder";
-    /// <summary>The <c>flare-select__arrow</c> CSS class.</summary>
-    public const string Arrow = "flare-select__arrow";
+    // The trailing chevron uses the shared Css.Classes.Input.Arrow (flare-input__arrow).
     /// <summary>The <c>flare-select__dropdown</c> CSS class.</summary>
     public const string Dropdown = "flare-select__dropdown";
     /// <summary>The <c>flare-select__option</c> CSS class (option row; visuals come from the shared <see cref="Listbox.Option"/>).</summary>

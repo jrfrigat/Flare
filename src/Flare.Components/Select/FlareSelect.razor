@@ -16,7 +16,7 @@
     {
         <label class="@Css.Classes.Input.Label" id="@_labelId">@Label</label>
     }
-    <div class="@Css.Classes.Select.Control"
+    <div class="@Css.Classes.Input.Field @Css.Classes.Select.Control"
          id="@_selectId"
          @ref="_controlEl"
          style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
@@ -44,7 +44,7 @@
                 <span class="@Css.Classes.Select.Placeholder">@Placeholder</span>
             }
         </span>
-        <FlareIcon Name="@(_isOpen ? "expand_less" : "expand_more")" Class="@Css.Classes.Select.Arrow" />
+        <FlareIcon Name="@(_isOpen ? "expand_less" : "expand_more")" Class="@Css.Classes.Input.Arrow" />
     </div>
     @if (_isOpen)
     {

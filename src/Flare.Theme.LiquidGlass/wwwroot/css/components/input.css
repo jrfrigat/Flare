@@ -8,10 +8,9 @@
    ========================================================================== */
 @scope (.flare-theme-liquid-glass) to (.flare-root:not(.flare-theme-liquid-glass)) {
 
-    /* Every field well now carries the shared flare-input__field; only Select's fused
-       trigger and the TagField root need naming separately. */
+    /* Every field well now carries the shared flare-input__field (including Select/MultiSelect's
+       fused triggers); only the TagField root needs naming separately. */
     .flare-input__field,
-    .flare-select__control,
     .flare-tag-input {
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
         transition: box-shadow 150ms ease, border-color 150ms ease;
@@ -19,7 +18,6 @@
 
     /* Wide iOS blue focus glow + accent border. */
     .flare-input__field:focus-within,
-    .flare-select__control:focus,
     .flare-tag-input:focus-within {
         border-color: var(--flare-color-primary);
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05), 0 0 0 4px var(--flare-liquid-glow);

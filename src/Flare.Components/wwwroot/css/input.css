@@ -117,6 +117,9 @@
 .flare-input__icon--leading  { order: -1; }
 .flare-input__icon--trailing { order: 1; }
 
+/* Trailing expand/collapse chevron shared by the combobox-style triggers (Select/MultiSelect). */
+.flare-input__arrow { color: var(--flare-color-on-surface-variant); flex: none; }
+
 /* Shared button reset for a picker expand/open toggle (DatePicker/TimePicker/DateTimePicker). */
 .flare-input__toggle {
     display: inline-flex;
@@ -220,7 +223,8 @@
 .flare-input--disabled .flare-input__label--floating,
 .flare-input--disabled .flare-input__helper,
 .flare-input--disabled .flare-input__adornment,
-.flare-input--disabled .flare-input__icon {
+.flare-input--disabled .flare-input__icon,
+.flare-input--disabled .flare-input__arrow {
     opacity: var(--flare-state-disabled-opacity);
 }
 
@@ -303,4 +307,5 @@
     color: var(--flare-color-error);
 }
 .flare-input--error .flare-input__control { caret-color: var(--flare-color-error); }
-.flare-input--error .flare-input__icon--trailing { color: var(--flare-color-error); }
+.flare-input--error .flare-input__icon--trailing,
+.flare-input--error .flare-input__arrow { color: var(--flare-color-error); }

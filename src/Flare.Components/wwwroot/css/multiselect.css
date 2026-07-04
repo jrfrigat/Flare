@@ -1,13 +1,10 @@
 .flare-multiselect { display: flex; flex-direction: column; gap: var(--flare-spacing-2); position: relative; }
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
+/* The trigger carries the shared flare-input__field well (box-model, border, transition, :hover +
+   :focus-within ring, and the shared flare-input--disabled/--error state); only the trigger-specific
+   layout is added here. Parity with FlareSelect's combobox trigger. */
 .flare-multiselect__control {
-    display: flex;
-    align-items: center;
     justify-content: space-between;
-    background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
-    border: var(--flare-input-border, none);
-    border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
-    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
     padding: var(--flare-spacing-6) var(--flare-spacing-8);
     cursor: pointer;
     user-select: none;
@@ -16,25 +13,12 @@
 .flare-multiselect__value { flex: 1; color: var(--flare-color-on-surface); font-size: var(--flare-typescale-body-large-size); }
 .flare-multiselect__placeholder { color: var(--flare-color-on-surface-variant); }
 
-/* Disabled + error use the shared flare-input--disabled / flare-input--error root modifiers (parity
-   with FlareSelect): the shared rules dim flare-input__label/__helper + set pointer-events:none; the
-   fused trigger (flare-multiselect__control) gets the MD3 4%/38% + error descendant rules here. */
-.flare-input--disabled .flare-multiselect__control {
-    background-color: var(--flare-input-disabled-bg,
-        color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent));
-    border-bottom-color: var(--flare-input-disabled-indicator,
-        color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent));
-}
+/* Disabled/error surface + border + arrow come from the shared flare-input__field / flare-input__arrow
+   rules (the trigger carries flare-input__field); only the value/placeholder text needs dimming. */
 .flare-input--disabled .flare-multiselect__value,
-.flare-input--disabled .flare-multiselect__placeholder,
-.flare-input--disabled .flare-multiselect__arrow {
+.flare-input--disabled .flare-multiselect__placeholder {
     opacity: var(--flare-state-disabled-opacity);
 }
-.flare-input--error .flare-multiselect__control {
-    border-color: var(--flare-color-error);
-    border-bottom-color: var(--flare-color-error);
-}
-.flare-input--error .flare-multiselect__arrow { color: var(--flare-color-error); }
 
 /* Size grid (Xs..Xl): control padding sets height, value font-size scales the text. */
 .flare-input--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4); }
@@ -74,8 +58,8 @@
     border-radius: var(--flare-shape-full);
 }
 .flare-multiselect__chip-remove:hover { background: color-mix(in srgb, var(--flare-color-on-secondary-container) 12%, transparent); }
-/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css). */
-.flare-multiselect__arrow { color: var(--flare-color-on-surface-variant); }
+/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css).
+   The trailing chevron uses the shared flare-input__arrow (input.css). */
 
 /* In-dropdown search box. */
 .flare-multiselect__search-wrap {
