@@ -21,6 +21,9 @@
     --flare-input-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
     --flare-input-focus-border: none;
     --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
+    /* Focus emphasis = an inset box-shadow (layout-neutral), so the field never grows / "jumps"
+       when focused. The 1px border stays; the shadow adds the second accent pixel at the bottom. */
+    --flare-input-focus-ring: inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary));
 }
 .flare-input-variant--outlined {
     --flare-input-bg: transparent;
@@ -29,6 +32,8 @@
     --flare-input-radius: var(--flare-shape-extra-small);
     --flare-input-focus-border: 2px solid var(--flare-color-primary);
     --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
+    /* Inset ring on all four sides -> reads as a 2px accent border without a layout shift. */
+    --flare-input-focus-ring: inset 0 0 0 1px var(--fc-main, var(--flare-color-primary));
 }
 
 .flare-input__label {
@@ -48,6 +53,7 @@
     border: var(--flare-input-border, none);
     border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
     transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+                box-shadow var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
                 background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
@@ -60,9 +66,12 @@
 
 /* Focus comes after hover so the focus indicator wins when the field is focused (the hover
    state layer may still show while hovering a focused field, per MD3). */
+/* Layout-neutral focus: keep the rest border WIDTH (so the field never resizes), recolour it to the
+   accent, and add the extra accent thickness as an inset box-shadow. Reserving the emphasis this way
+   stops the field "jumping" on focus (the border-width change did). */
 .flare-input__field:focus-within {
-    border: var(--flare-input-focus-border, none);
-    border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--fc-main, var(--flare-color-primary)));
+    border-color: var(--fc-main, var(--flare-color-primary));
+    box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
 }
 
 .flare-input__control {

@@ -27,8 +27,8 @@
 }
 
 .flare-tag-input--focused .flare-tag-input__field {
-    border: var(--flare-input-focus-border, none);
-    border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--flare-color-primary));
+    border-color: var(--fc-main, var(--flare-color-primary));
+    box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
 }
 
 .flare-tag-input--error .flare-tag-input__field {

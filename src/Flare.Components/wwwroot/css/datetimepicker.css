@@ -26,8 +26,8 @@
 
 .flare-datetimepicker__field:focus-within,
 .flare-datetimepicker__field:hover {
-  border: var(--flare-input-focus-border, none);
-  border-bottom: var(--flare-input-focus-border-bottom, 2px solid var(--flare-color-primary));
+  border-color: var(--fc-main, var(--flare-color-primary));
+  box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
 }
 
 .flare-datetimepicker__control {
