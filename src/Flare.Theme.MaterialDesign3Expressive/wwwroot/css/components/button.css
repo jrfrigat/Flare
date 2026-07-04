@@ -1,48 +1,48 @@
 /* ==========================================================================
-   EXPRESSIVE ЭФФЕКТЫ ДЛЯ ОДИНОЧНОЙ КНОПКИ (MD3 EXPRESSIVE ТЕМА) [specs]
-   Используется один файл для Light и Dark тем
+   EXPRESSIVE EFFECTS FOR THE SINGLE BUTTON (MD3 EXPRESSIVE THEME) [specs]
+   One file is used for both Light and Dark themes.
 
-   Обёрнуто в @scope: эти MD3-эффекты применяются ТОЛЬКО внутри ближайшего корня
-   .flare-theme-md3-expressive и не протекают в вложенный scope чужой темы
-   (например FlareThemeScope c Fluent внутри MD3-приложения). Нижняя граница
-   обрывает каскад на любом вложенном .flare-root, который НЕ md3-expressive;
-   вложенный md3-scope границей не является (он открывает свой scope), поэтому
-   вложенность той же темы работает. Близость scope (proximity) даёт этим правилам
-   победу над базовым (unscoped) button.css при равной специфичности, поэтому
-   снятие старого префикса .flare-theme-* сохраняет поведение каскада.
+   Wrapped in @scope: these MD3 effects apply ONLY inside the nearest
+   .flare-theme-md3-expressive root and do not leak into a nested scope of a
+   foreign theme (for example FlareThemeScope with Fluent inside an MD3 app).
+   The lower boundary stops the cascade at any nested .flare-root that is NOT
+   md3-expressive; a nested md3-scope is not a boundary (it opens its own scope),
+   so nesting the same theme works. Scope proximity gives these rules a win over
+   the base (unscoped) button.css at equal specificity, so removing the old
+   .flare-theme-* prefix preserves the cascade behavior.
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* 0. Тайминг слоя состояния по спецификации MD3: hover/focus overlay fade 150ms [specs]
-       (pressed/ripple переопределяется ниже на short1 50ms через :active) */
+    /* 0. State-layer timing per MD3 spec: hover/focus overlay fade 150ms [specs]
+       (pressed/ripple is overridden below to short1 50ms via :active) */
     .flare-btn::before {
         transition: opacity 150ms var(--flare-motion-easing-standard) !important;
     }
 
-    /* 1. Наведение на Outlined: Google требует полупрозрачный подкрас фона [specs] */
+    /* 1. Outlined hover: Google requires a semi-transparent background tint [specs] */
     .flare-btn--outlined:hover {
         background-color: color-mix(in srgb, currentColor 8%, transparent);
     }
 
-    /* 2. Наведение на Tonal: Google требует приподнимание Tonal кнопки на ховере (Elevation 1) [specs] */
+    /* 2. Tonal hover: Google requires raising the Tonal button on hover (Elevation 1) [specs] */
     .flare-btn--tonal:hover {
         box-shadow: var(--flare-btn-filled-hover-shadow, var(--flare-elevation-1));
     }
 
-    /* 3. Имитация Expressive Ripple (Пульсация из центра) при клике [specs] */
+    /* 3. Emulate the Expressive Ripple (pulse from center) on click [specs] */
     .flare-btn:active::before {
         transform: scale(2) !important;
         transition: opacity var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard), transform var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard) !important;
     }
 
     /* ======================================================================
-       DYNAMIC SHAPE MORPHING (УМНЫЙ ПОУГЛОВОЙ МОРФИНГ ФОРМЫ) [specs]
-       Радиус морфинга считается от ФАКТИЧЕСКОЙ высоты кнопки: размерные классы
-       (.flare-btn--xs/sm/md/lg/xl) выставляют локальную --_flare-btn-height,
-       поэтому одно правило корректно работает для всех 5 размеров (fallback - Medium).
+       DYNAMIC SHAPE MORPHING (SMART PER-CORNER SHAPE MORPH) [specs]
+       The morph radius is computed from the ACTUAL button height: the size
+       classes (.flare-btn--xs/sm/md/lg/xl) set a local --_flare-btn-height,
+       so one rule works correctly for all 5 sizes (fallback - Medium).
        ====================================================================== */
 
-    /* Наведение (Hover): радиус сжимается до 33% от высоты (мягкий прямоугольник) [specs] */
+    /* Hover: radius shrinks to 33% of the height (soft rectangle) [specs] */
     .flare-btn:hover {
         --_shape-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 3);
         border-top-left-radius: var(--_shape-radius);
@@ -51,7 +51,7 @@
         border-bottom-left-radius: var(--_shape-radius);
     }
 
-    /* Нажатие (Pressed): радиус скругления углов по спецификации MD3 - поразмерно
+    /* Pressed: corner radius per MD3 spec - per size
        (XS/S = 8dp, M = 12dp, L/XL = 16dp). */
     .flare-btn--xs:active { border-radius: 0.5rem; }   /* 8dp */
     .flare-btn--sm:active { border-radius: 0.5rem; }   /* 8dp */

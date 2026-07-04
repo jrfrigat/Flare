@@ -1,23 +1,23 @@
 /* ==========================================================================
-   MD3 EXPRESSIVE button group: РАЗДЕЛЁННЫЕ сегменты с зазором (как split button)
-   - между кнопками зазор (gap), а не нахлёст;
-   - внутренние углы скруглены (shape-small ~ 8dp), внешние торцы - капсула;
-   - на ховере/нажатии сегмент выдавливается в полную капсулу.
-   Fluent остаётся "связным" (connected) - этот файл только для темы MD3.
+   MD3 EXPRESSIVE button group: SEPARATED segments with a gap (like split button)
+   - a gap between buttons, not an overlap;
+   - inner corners rounded (shape-small ~ 8dp), outer ends - capsule;
+   - on hover/press the segment morphs into a full capsule.
+   Fluent stays "connected" - this file is for the MD3 theme only.
 
-   Обёрнуто в @scope, чтобы MD3-геометрия группы не протекала в вложенный scope
-   чужой темы (Fluent через FlareThemeScope внутри MD3-приложения): нижняя граница
-   обрывает каскад на любом вложенном .flare-root, который НЕ md3-expressive.
-   В чужом scope группа возвращается к базовому connected-стилю (buttongroup.css).
+   Wrapped in @scope so the group's MD3 geometry does not leak into a nested scope
+   of another theme (Fluent via FlareThemeScope inside an MD3 app): the lower bound
+   cuts the cascade at any nested .flare-root that is NOT md3-expressive.
+   In a foreign scope the group falls back to the base connected style (buttongroup.css).
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* 1. Зазор между сегментами (2dp, как у split button) */
+    /* 1. Gap between segments (2dp, like split button) */
     .flare-btn-group {
         gap: var(--flare-btn-group-gap, 0.125rem);
     }
 
-    /* 2. Снимаем нахлёст -1px и шовную границу connected-режима */
+    /* 2. Remove the -1px overlap and the seam border of connected mode */
     .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
         margin-left: 0;
         border-left-color: transparent;
@@ -28,7 +28,7 @@
         border-top-color: transparent;
     }
 
-    /* Outlined сохраняет собственную рамку на стыке (идёт после общего сброса) */
+    /* Outlined keeps its own border at the joint (comes after the common reset) */
     .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn--outlined:not(:first-child) {
         border-left-color: var(--flare-color-outline);
     }
@@ -37,7 +37,7 @@
         border-top-color: var(--flare-color-outline);
     }
 
-    /* 3. Внутренние углы ВСЕХ сегментов - небольшое скругление (вместо плоских 0) */
+    /* 3. Inner corners of ALL segments - small rounding (instead of flat 0) */
     .flare-btn-group .flare-btn {
         --flare-btn-radius-xs-top-left: var(--flare-shape-small, 0.5rem) !important;
         --flare-btn-radius-xs-top-right: var(--flare-shape-small, 0.5rem) !important;
@@ -62,12 +62,12 @@
     }
 
     /* ======================================================================
-       ВНЕШНИЕ ТОРЦЫ - полная "капсула" (height / 2)
-       Кнопка читает токены только своего размера, поэтому одно правило задаёт все 5.
-       Горизонталь и вертикаль разделены через :not(), чтобы не конфликтовать.
+       OUTER ENDS - full "capsule" (height / 2)
+       A button reads tokens for its own size only, so one rule sets all 5.
+       Horizontal and vertical are split via :not() so they do not conflict.
        ====================================================================== */
 
-    /* ГОРИЗОНТАЛЬ - первая кнопка: левые торцы в капсулу */
+    /* HORIZONTAL - first button: left ends to capsule */
     .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
         --flare-btn-radius-xs-top-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
         --flare-btn-radius-xs-bottom-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
@@ -81,7 +81,7 @@
         --flare-btn-radius-xl-bottom-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
     }
 
-    /* ГОРИЗОНТАЛЬ - последняя кнопка: правые торцы в капсулу */
+    /* HORIZONTAL - last button: right ends to capsule */
     .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
         --flare-btn-radius-xs-top-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
         --flare-btn-radius-xs-bottom-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
@@ -95,7 +95,7 @@
         --flare-btn-radius-xl-bottom-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
     }
 
-    /* ВЕРТИКАЛЬ - первая кнопка: верхние торцы в капсулу */
+    /* VERTICAL - first button: top ends to capsule */
     .flare-btn-group--vertical .flare-btn:first-child {
         --flare-btn-radius-xs-top-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
         --flare-btn-radius-xs-top-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
@@ -109,7 +109,7 @@
         --flare-btn-radius-xl-top-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
     }
 
-    /* ВЕРТИКАЛЬ - последняя кнопка: нижние торцы в капсулу */
+    /* VERTICAL - last button: bottom ends to capsule */
     .flare-btn-group--vertical .flare-btn:last-child {
         --flare-btn-radius-xs-bottom-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
         --flare-btn-radius-xs-bottom-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
@@ -124,16 +124,16 @@
     }
 
     /* ======================================================================
-       EXPRESSIVE: сегмент выдавливается в круглую капсулу при взаимодействии [specs]
-       Радиус берём от ФАКТИЧЕСКОЙ высоты (--_flare-btn-height задаёт размерный класс),
-       поэтому одно правило покрывает все размеры. border-radius (0,4,0) перебивает
-       и морфинг одиночной кнопки (0,3,0), и scoped (0,2,0) - !important не нужен.
+       EXPRESSIVE: segment morphs into a round capsule on interaction [specs]
+       Radius is taken from the ACTUAL height (--_flare-btn-height sets the size class),
+       so one rule covers all sizes. border-radius (0,4,0) overrides both
+       the single-button morph (0,3,0) and scoped (0,2,0) - no !important needed.
        ====================================================================== */
     .flare-btn-group .flare-btn:hover,
     .flare-btn-group .flare-btn:focus-visible,
     .flare-btn-group .flare-btn:active {
         border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2);
-        /* z-index держим через !important: специфичность РАВНА scoped z-index:1 (тай), решает порядок загрузки */
+        /* keep z-index via !important: specificity EQUALS scoped z-index:1 (tie), load order decides */
         z-index: 2 !important;
     }
 }

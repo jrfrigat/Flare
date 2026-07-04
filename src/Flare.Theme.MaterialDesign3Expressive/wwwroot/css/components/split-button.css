@@ -1,37 +1,37 @@
 /* ==========================================================================
-   ИНТЕРАКТИВНЫЕ СОСТОЯНИЯ ПРИ ОТКРЫТОМ МЕНЮ (СПЛИТ-КНОПКА)
-   Базовые (не тематические) правила - применяются в любой теме.
+   INTERACTIVE STATES WHEN MENU IS OPEN (SPLIT BUTTON)
+   Base (non-theme) rules - apply in any theme.
    ========================================================================== */
 
-/* Плавный разворот стрелочки (enter ~300ms по спеке MD3) */
+/* Smooth caret rotation (enter ~300ms per MD3 spec) */
 .flare-split-btn .flare-split-btn__caret {
     transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard);
 }
 
-/* Задаем триггеру базовый transition для радиусов, чтобы оверрайд из темы сработал плавно */
+/* Give the trigger a base radius transition so the theme override animates smoothly */
 .flare-split-btn .flare-split-btn__trigger.flare-btn {
     transition: border-radius var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
 }
 
 /* ==========================================================================
-   EXPRESSIVE ЭФФЕКТЫ ДЛЯ SPLIT BUTTON (ТОЛЬКО В ТЕМЕ MD3)
-   Обёрнуто в @scope, чтобы не протекать в вложенный scope чужой темы: нижняя
-   граница обрывает каскад на любом вложенном .flare-root, который НЕ md3-expressive.
+   EXPRESSIVE EFFECTS FOR SPLIT BUTTON (MD3 THEME ONLY)
+   Wrapped in @scope so it does not leak into a nested scope of another theme: the
+   lower boundary cuts the cascade at any nested .flare-root that is NOT md3-expressive.
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* При открытом меню триггер становится полностью круглым: ВСЕ 4 угла = высота / 2,
-       поэтому слева скругление такое же, как справа. Радиус берём от ФАКТИЧЕСКОЙ высоты
-       (--_flare-btn-height задаёт размерный класс кнопки), значит одно правило корректно
-       работает для всех размеров (xs...xl). */
+    /* When the menu is open the trigger becomes fully round: ALL 4 corners = height / 2,
+       so the left rounding matches the right. Radius is taken from the ACTUAL height
+       (--_flare-btn-height is set by the button size class), so one rule works correctly
+       for all sizes (xs..xl). */
     .flare-split-btn--open .flare-split-btn__trigger.flare-btn {
         border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
     /* ======================================================================
-       МОРФИНГ ВНУТРЕННИХ (СТЫКОВЫХ) УГЛОВ НА HOVER/PRESSED [specs раздел 2]
-       Внутренний угол активной половины РАСТЁТ при наведении/нажатии (поразмерно).
-       Значение задаётся на контейнере (--_split-inner-hover) и наследуется половинам.
+       MORPHING OF THE INNER (SEAM) CORNERS ON HOVER/PRESSED [specs section 2]
+       The inner corner of the active half GROWS on hover/press (per size).
+       The value is set on the container (--_split-inner-hover) and inherited by the halves.
        ====================================================================== */
     .flare-split-btn--xs { --_split-inner-hover: 0.5rem; }   /* 8dp */
     .flare-split-btn--sm { --_split-inner-hover: 0.75rem; }  /* 12dp */
@@ -39,14 +39,14 @@
     .flare-split-btn--lg { --_split-inner-hover: 1.25rem; }  /* 20dp */
     .flare-split-btn--xl { --_split-inner-hover: 1.25rem; }  /* 20dp */
 
-    /* Main: внутренние ПРАВЫЕ углы (стык) растут. (0,5,0) перебивает scoped-радиус (0,4,0). */
+    /* Main: inner RIGHT corners (seam) grow. (0,5,0) beats the scoped radius (0,4,0). */
     .flare-split-btn .flare-split-btn__main.flare-btn:hover,
     .flare-split-btn .flare-split-btn__main.flare-btn:active {
         border-top-right-radius: var(--_split-inner-hover, 0.75rem) !important;
         border-bottom-right-radius: var(--_split-inner-hover, 0.75rem) !important;
     }
 
-    /* Trigger: внутренние ЛЕВЫЕ углы растут (кроме открытого состояния - там полный круг). */
+    /* Trigger: inner LEFT corners grow (except the open state - full circle there). */
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:hover,
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:active {
         border-top-left-radius: var(--_split-inner-hover, 0.75rem) !important;
