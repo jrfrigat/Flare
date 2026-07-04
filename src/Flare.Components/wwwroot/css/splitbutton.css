@@ -65,7 +65,7 @@
    ========================================================================== */
 
 /* Extra Small */
-.flare-split-btn--xs { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-xs); --_caret-size: var(--flare-split-btn-caret-size-xs); }
+.flare-split-btn--xs { --_caret-size: var(--flare-split-btn-caret-size-xs); }
 .flare-split-btn--xs .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-xs-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-xs-top-right) !important;
@@ -80,7 +80,7 @@
 }
 
 /* Small */
-.flare-split-btn--sm { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-sm); --_caret-size: var(--flare-split-btn-caret-size-sm); }
+.flare-split-btn--sm { --_caret-size: var(--flare-split-btn-caret-size-sm); }
 .flare-split-btn--sm .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-sm-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-sm-top-right) !important;
@@ -95,10 +95,10 @@
 }
 
 /* Medium */
-.flare-split-btn--md { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-md); --_caret-size: var(--flare-split-btn-caret-size-md); }
+.flare-split-btn--md { --_caret-size: var(--flare-split-btn-caret-size-md); }
 
 /* Large */
-.flare-split-btn--lg { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-lg); --_caret-size: var(--flare-split-btn-caret-size-lg); }
+.flare-split-btn--lg { --_caret-size: var(--flare-split-btn-caret-size-lg); }
 .flare-split-btn--lg .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-lg-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-lg-top-right) !important;
@@ -113,7 +113,7 @@
 }
 
 /* Extra Large */
-.flare-split-btn--xl { --_trigger-padding-inline: var(--flare-split-btn-trigger-padding-inline-xl); --_caret-size: var(--flare-split-btn-caret-size-xl); }
+.flare-split-btn--xl { --_caret-size: var(--flare-split-btn-caret-size-xl); }
 .flare-split-btn--xl .flare-split-btn__main.flare-btn {
     border-top-left-radius: var(--flare-split-btn-main-radius-xl-top-left) !important;
     border-top-right-radius: var(--flare-split-btn-main-radius-xl-top-right) !important;
