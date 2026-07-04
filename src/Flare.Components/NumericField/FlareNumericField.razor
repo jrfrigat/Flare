@@ -119,8 +119,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        _debounceCts?.Cancel();
-        _debounceCts?.Dispose();
+        _debounceCts.Dispose();
         await base.DisposeAsync();
     }
 
@@ -214,7 +213,7 @@
         NotifyFieldChanged();
     }
 
-    private CancellationTokenSource? _debounceCts;
+    private readonly CancelScope _debounceCts = new();
 
     private void HandleFocus()
     {
@@ -245,9 +244,7 @@
         if (!Immediate) return;
         // While typing, do not clamp (lets the user pass through intermediate values like "-").
         if (DebounceInterval <= 0) { await Commit(raw, clamp: false); return; }
-        _debounceCts?.Cancel();
-        _debounceCts = new CancellationTokenSource();
-        var token = _debounceCts.Token;
+        var token = _debounceCts.Next();
         try
         {
             await Task.Delay(DebounceInterval, token);

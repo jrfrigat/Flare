@@ -73,20 +73,17 @@
         base.OnInitialized();
         _menuContext = new FlareMenuContext(CloseAllAsync, RegisterItem);
     }
-    private CancellationTokenSource? _hideCts;
+    private readonly CancelScope _hideCts = new();
 
     private void ShowSubmenu()
     {
-        _hideCts?.Cancel();
-        _hideCts = null;
+        _hideCts.Cancel();
         _open = true;
     }
 
     private void ScheduleHide()
     {
-        _hideCts?.Cancel();
-        _hideCts = new CancellationTokenSource();
-        var ct = _hideCts.Token;
+        var ct = _hideCts.Next();
         _ = Task.Delay(HideDelay, ct).ContinueWith(_ =>
         {
             if (!ct.IsCancellationRequested)
@@ -140,8 +137,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        _hideCts?.Cancel();
-        _hideCts?.Dispose();
+        _hideCts.Dispose();
         await base.DisposeAsync();
     }
 }

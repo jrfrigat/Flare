@@ -169,8 +169,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        _debounceCts?.Cancel();
-        _debounceCts?.Dispose();
+        _debounceCts.Dispose();
         await base.DisposeAsync();
     }
 
@@ -223,7 +222,7 @@
         NotifyFieldChanged();
     }
 
-    private CancellationTokenSource? _debounceCts;
+    private readonly CancelScope _debounceCts = new();
 
     private Task HandleChange(ChangeEventArgs e) => EmitValue(e.Value?.ToString());
 
@@ -236,9 +235,7 @@
             await EmitValue(raw);
             return;
         }
-        _debounceCts?.Cancel();
-        _debounceCts = new CancellationTokenSource();
-        var token = _debounceCts.Token;
+        var token = _debounceCts.Next();
         try
         {
             await Task.Delay(DebounceInterval, token);
