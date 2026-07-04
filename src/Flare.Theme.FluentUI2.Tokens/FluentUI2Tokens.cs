@@ -514,6 +514,19 @@ public class FluentUI2Tokens
         HoverScale = "1.15",
     };
 
+    // Stepper: same neutral baseline (32dp circle, 2px connector, primary when complete).
+    internal static readonly StepperTokens Stepper = new()
+    {
+        CircleSize = "2rem",
+        CircleBorderWidth = "2px",
+        CircleIconSize = "1.125rem",
+        ConnectorThickness = "2px",
+        ConnectorMinLength = "1.5rem",
+        ConnectorColor = "var(--flare-color-outline-variant)",
+        ConnectorActiveColor = "var(--flare-color-primary)",
+        StepMinWidth = "5rem",
+    };
+
     // Timeline: same neutral baseline (20dp surface dot, 2px accent ring, 2px outline-variant line).
     internal static readonly TimelineTokens Timeline = new()
     {
@@ -835,6 +848,7 @@ public class FluentUI2Tokens
         Rating = Rating,
         Pagination = Pagination,
         Timeline = Timeline,
+        Stepper = Stepper,
         Popover = Popover,
         Extended = Extended,
     };

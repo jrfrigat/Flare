@@ -379,6 +379,15 @@ public static class CssVarMap
         v[Css.Tokens.Timeline.LineColor] = t.Timeline.LineColor;
         v[Css.Tokens.Timeline.ConnectorWidth] = t.Timeline.ConnectorWidth;
 
+        v[Css.Tokens.Stepper.CircleSize] = t.Stepper.CircleSize;
+        v[Css.Tokens.Stepper.CircleBorderWidth] = t.Stepper.CircleBorderWidth;
+        v[Css.Tokens.Stepper.CircleIconSize] = t.Stepper.CircleIconSize;
+        v[Css.Tokens.Stepper.ConnectorThickness] = t.Stepper.ConnectorThickness;
+        v[Css.Tokens.Stepper.ConnectorMinLength] = t.Stepper.ConnectorMinLength;
+        v[Css.Tokens.Stepper.ConnectorColor] = t.Stepper.ConnectorColor;
+        v[Css.Tokens.Stepper.ConnectorActiveColor] = t.Stepper.ConnectorActiveColor;
+        v[Css.Tokens.Stepper.StepMinWidth] = t.Stepper.StepMinWidth;
+
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;

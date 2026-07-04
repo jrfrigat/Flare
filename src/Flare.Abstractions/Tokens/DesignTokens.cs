@@ -95,6 +95,9 @@ public sealed record DesignTokens
     /// <summary>Timeline tokens.</summary>
     public required TimelineTokens Timeline { get; init; }
 
+    /// <summary>Stepper tokens.</summary>
+    public required StepperTokens Stepper { get; init; }
+
     /// <summary>Switch tokens.</summary>
     public required SwitchTokens Switch { get; init; }
 

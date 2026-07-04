@@ -638,6 +638,20 @@ public class MaterialDesignTokens
         HoverScale = "1.15",
     };
 
+    // Stepper: 32dp indicator circle (2px border, 18dp icon), 2px connector (outline-variant, primary
+    // when complete) at least 24dp long, 80dp per-step min width.
+    internal static readonly StepperTokens Stepper = new()
+    {
+        CircleSize = "2rem",
+        CircleBorderWidth = "2px",
+        CircleIconSize = "1.125rem",
+        ConnectorThickness = "2px",
+        ConnectorMinLength = "1.5rem",
+        ConnectorColor = "var(--flare-color-outline-variant)",
+        ConnectorActiveColor = "var(--flare-color-primary)",
+        StepMinWidth = "5rem",
+    };
+
     // Timeline: 20dp surface dot with a 2px accent ring, 2px outline-variant connector line in a 2rem column.
     internal static readonly TimelineTokens Timeline = new()
     {
@@ -724,6 +738,7 @@ public class MaterialDesignTokens
         Rating = Rating,
         Pagination = Pagination,
         Timeline = Timeline,
+        Stepper = Stepper,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,

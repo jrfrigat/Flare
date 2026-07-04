@@ -30,15 +30,15 @@
   align-items: center;
   gap: var(--flare-spacing-3);
   cursor: pointer;
-  min-width: 5rem;
+  min-width: var(--flare-stepper-step-min-width, 5rem);
   text-align: center;
 }
 
 .flare-stepper__step:focus-visible { outline: 2px solid var(--flare-color-primary); border-radius: var(--flare-shape-extra-small); }
 
 .flare-stepper__circle {
-  width: 2rem;
-  height: 2rem;
+  width: var(--flare-stepper-circle-size, 2rem);
+  height: var(--flare-stepper-circle-size, 2rem);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -52,7 +52,7 @@
 }
 
 .flare-stepper__step--upcoming .flare-stepper__circle {
-  border: 2px solid var(--flare-color-outline);
+  border: var(--flare-stepper-circle-border-width, 2px) solid var(--flare-color-outline);
   color: var(--flare-color-on-surface-variant);
   background: transparent;
 }
@@ -71,7 +71,7 @@
 .flare-stepper__circle--error {
   background: var(--flare-color-error-container);
   color: var(--flare-color-on-error-container);
-  border: 2px solid var(--flare-color-error);
+  border: var(--flare-stepper-circle-border-width, 2px) solid var(--flare-color-error);
 }
 
 .flare-stepper__error-text {
@@ -114,7 +114,7 @@
 /* Custom step icon sizing inside the indicator circle */
 .flare-stepper__circle .flare-icon,
 .flare-stepper__circle .material-symbols-rounded {
-  font-size: 1.125rem;
+  font-size: var(--flare-stepper-circle-icon-size, 1.125rem);
   width: 1em;
   height: 1em;
 }
@@ -122,15 +122,15 @@
 /* Connector between steps */
 .flare-stepper__connector {
   flex: 1;
-  height: 2px;
-  background: var(--flare-color-outline-variant);
+  height: var(--flare-stepper-connector-thickness, 2px);
+  background: var(--flare-stepper-connector-color, var(--flare-color-outline-variant));
   align-self: flex-start;
   margin-top: var(--flare-spacing-8);
-  min-width: 1.5rem;
+  min-width: var(--flare-stepper-connector-min-length, 1.5rem);
   transition: background var(--flare-motion-duration-short2);
 }
 
-.flare-stepper__connector--completed { background: var(--flare-color-primary); }
+.flare-stepper__connector--completed { background: var(--flare-stepper-connector-active-color, var(--flare-color-primary)); }
 
 /* Content area */
 .flare-stepper__content {
@@ -161,7 +161,7 @@
 }
 
 .flare-stepper__nav-btn:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-state-hover-opacity, 8%), transparent);
 }
 
 .flare-stepper__nav-btn--primary {
@@ -186,8 +186,8 @@
 }
 
 .flare-stepper--vertical .flare-stepper__connector {
-  width: 2px;
-  height: 1.5rem;
+  width: var(--flare-stepper-connector-thickness, 2px);
+  height: var(--flare-stepper-connector-min-length, 1.5rem);
   flex: none;
   margin: 0 0 0 calc(1rem - 1px);
   align-self: auto;
