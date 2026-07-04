@@ -1,7 +1,8 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
-@implements IAsyncDisposable
+@inherits FlareFieldBase
+@implements IFlareField<DateTimeOffset?>
 @using System.Globalization
+@using System.Linq.Expressions
 @inject TimeProvider TimeProvider
 @inject Flare.Components.Services.IElementJsService Element
 @inject Flare.Components.Services.IUiJsService Ui
@@ -16,7 +17,9 @@
                style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                type="text"
                disabled="@Disabled"
-               readonly="@(!AllowInput)"
+               readonly="@(!AllowInput || ReadOnly)"
+               required="@Required"
+               aria-required="@(Required ? "true" : null)"
                placeholder="@(Placeholder ?? _numericPattern)"
                aria-label="@(Label ?? Placeholder)"
                value="@_text"
@@ -27,8 +30,8 @@
         @if (AllowPicker)
         {
             <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
-                    disabled="@Disabled" aria-haspopup="dialog" aria-expanded="@_open"
-                    aria-label="Open date-time picker" @onclick="TogglePanel">
+                    disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
+                    aria-label="@FlareStrings.DateTimePicker_Open" @onclick="TogglePanel">
                 <FlareIcon Name="calendar_clock" Style="font-size:1.25rem;" />
             </button>
         }
@@ -60,9 +63,9 @@
             </div>
         </div>
     }
-    @if (!string.IsNullOrEmpty(ErrorText))
+    @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@($"{Css.Classes.Input.Helper} {Css.Classes.Input.HelperError}")" role="alert">@ErrorText</span>
+        <span class="@($"{Css.Classes.Input.Helper} {Css.Classes.Input.HelperError}")" role="alert">@_displayedError</span>
     }
     else if (!string.IsNullOrEmpty(HelperText))
     {
@@ -78,11 +81,10 @@
     [Parameter] public DateTimeOffset? Max { get; set; }
     /// <summary>Display/parse format. Null (default) uses the culture short date + time pattern.</summary>
     [Parameter] public string? DateTimeFormat { get; set; }
-    [Parameter] public string? Label { get; set; }
-    [Parameter] public string? Placeholder { get; set; }
-    [Parameter] public string? HelperText { get; set; }
-    [Parameter] public string? ErrorText { get; set; }
-    [Parameter] public bool Disabled { get; set; }
+    // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
+    // FlareFieldBase (IFlareField). ReadOnly blocks typing (with AllowInput) and opening the popup.
+    /// <summary>Expression used to bind and validate the field inside an <c>EditForm</c>.</summary>
+    [Parameter] public Expression<Func<DateTimeOffset?>>? For { get; set; }
     /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Allows typing the value directly into the field (with auto-separators). Default true.</summary>
@@ -105,12 +107,8 @@
 
     protected override string ComponentCssClass => Css.Classes.DateTimePicker.Root;
 
-    private string _variantClass => Variant switch
-    {
-        InputVariant.Filled => Css.Classes.Input.VariantFilled,
-        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
-        _ => string.Empty,
-    };
+    private string? _variantClass => VariantClass(Variant);
+    private string? _displayedError => DisplayedError(ErrorText);
     private string _sizeClass => Size switch
     {
         FieldSize.Xs => Css.Classes.Input.SizeXs,
@@ -167,13 +165,13 @@
     private RenderFragment _calendar => @<text>
         <div class="@Css.Classes.DateTimePicker.Nav">
             <span @onclick:stopPropagation @onclick="() => { }">
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="Previous">
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="@FlareStrings.Picker_Previous">
                     <LeadingIcon><FlareIcon Name="chevron_left" /></LeadingIcon>
                 </FlareButton>
             </span>
             <span class="@Css.Classes.DateTimePicker.NavLabel">@_viewDate.ToString("MMMM yyyy", _culture)</span>
             <span @onclick:stopPropagation @onclick="() => { }">
-                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="Next">
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Picker_Next">
                     <LeadingIcon><FlareIcon Name="chevron_right" /></LeadingIcon>
                 </FlareButton>
             </span>
@@ -246,6 +244,7 @@
 
     protected override void OnParametersSet()
     {
+        UpdateFieldIdentifier(For);
         _is24Hour = Use24Hour ?? !_culture.DateTimeFormat.ShortTimePattern.Contains('h');
         if (Value.HasValue)
         {
@@ -330,11 +329,12 @@
         }
         _syncedValue = dt;
         await ValueChanged.InvokeAsync(dt);
+        NotifyFieldChanged();
     }
 
     private async Task TogglePanel()
     {
-        if (Disabled) return;
+        if (Disabled || ReadOnly) return;
         _open = !_open;
         if (_open)
         {
@@ -424,5 +424,6 @@
     {
         try { await Ui.UnsubscribeBreakpointAsync(_bpId); } catch { }
         _bpRef?.Dispose();
+        await base.DisposeAsync();
     }
 }

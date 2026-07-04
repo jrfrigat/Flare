@@ -89,6 +89,7 @@
   <data name="Picker_Next" xml:space="preserve"><value>Следующий</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Выберите время</value></data>
   <data name="TimePicker_Open" xml:space="preserve"><value>Открыть выбор времени</value></data>
+  <data name="DateTimePicker_Open" xml:space="preserve"><value>Открыть выбор даты и времени</value></data>
   <data name="TimePicker_FieldLabel" xml:space="preserve"><value>Время</value></data>
   <data name="TimePicker_Hours" xml:space="preserve"><value>Часы</value></data>
   <data name="TimePicker_Minutes" xml:space="preserve"><value>Минуты</value></data>

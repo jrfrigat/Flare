@@ -89,6 +89,7 @@
   <data name="Picker_Next" xml:space="preserve"><value>Next</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Select time</value></data>
   <data name="TimePicker_Open" xml:space="preserve"><value>Open time picker</value></data>
+  <data name="DateTimePicker_Open" xml:space="preserve"><value>Open date and time picker</value></data>
   <data name="TimePicker_FieldLabel" xml:space="preserve"><value>Time</value></data>
   <data name="TimePicker_Hours" xml:space="preserve"><value>Hours</value></data>
   <data name="TimePicker_Minutes" xml:space="preserve"><value>Minutes</value></data>

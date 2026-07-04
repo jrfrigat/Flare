@@ -817,6 +817,15 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Open date and time picker.
+        /// </summary>
+        public static string DateTimePicker_Open {
+            get {
+                return ResourceManager.GetString("DateTimePicker_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Time.
         /// </summary>
         public static string DateTimePicker_TimeTab {
@@ -907,6 +916,15 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на No results.
+        /// </summary>
+        public static string Field_NoResults {
+            get {
+                return ResourceManager.GetString("Field_NoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Accepted:.
         /// </summary>
         public static string FileUpload_Accepted {
@@ -977,7 +995,7 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Nav_BackToTop", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Bottom navigation.
         /// </summary>
@@ -986,7 +1004,7 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Nav_BottomNavigation", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Breadcrumb.
         /// </summary>
@@ -1132,6 +1150,15 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Next.
+        /// </summary>
+        public static string Picker_Next {
+            get {
+                return ResourceManager.GetString("Picker_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на OK.
         /// </summary>
         public static string Picker_Ok {
@@ -1139,79 +1166,16 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Picker_Ok", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Previous.
+        ///   Ищет локализованную строку, похожую на Previous.
         /// </summary>
         public static string Picker_Previous {
             get {
                 return ResourceManager.GetString("Picker_Previous", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Next.
-        /// </summary>
-        public static string Picker_Next {
-            get {
-                return ResourceManager.GetString("Picker_Next", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Select time.
-        /// </summary>
-        public static string TimePicker_Headline {
-            get {
-                return ResourceManager.GetString("TimePicker_Headline", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Open time picker.
-        /// </summary>
-        public static string TimePicker_Open {
-            get {
-                return ResourceManager.GetString("TimePicker_Open", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Time.
-        /// </summary>
-        public static string TimePicker_FieldLabel {
-            get {
-                return ResourceManager.GetString("TimePicker_FieldLabel", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Hours.
-        /// </summary>
-        public static string TimePicker_Hours {
-            get {
-                return ResourceManager.GetString("TimePicker_Hours", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Minutes.
-        /// </summary>
-        public static string TimePicker_Minutes {
-            get {
-                return ResourceManager.GetString("TimePicker_Minutes", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to No results.
-        /// </summary>
-        public static string Field_NoResults {
-            get {
-                return ResourceManager.GetString("Field_NoResults", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Rating.
         /// </summary>
@@ -1371,6 +1335,51 @@ namespace Flare.Components.Resources {
         public static string Theme_ToggleLight {
             get {
                 return ResourceManager.GetString("Theme_ToggleLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Time.
+        /// </summary>
+        public static string TimePicker_FieldLabel {
+            get {
+                return ResourceManager.GetString("TimePicker_FieldLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Select time.
+        /// </summary>
+        public static string TimePicker_Headline {
+            get {
+                return ResourceManager.GetString("TimePicker_Headline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hours.
+        /// </summary>
+        public static string TimePicker_Hours {
+            get {
+                return ResourceManager.GetString("TimePicker_Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minutes.
+        /// </summary>
+        public static string TimePicker_Minutes {
+            get {
+                return ResourceManager.GetString("TimePicker_Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Open time picker.
+        /// </summary>
+        public static string TimePicker_Open {
+            get {
+                return ResourceManager.GetString("TimePicker_Open", resourceCulture);
             }
         }
         
