@@ -24,20 +24,6 @@ public static class DatePicker
     public const string MonthLabel = "flare-datepicker__month-label";
     /// <summary>The <c>flare-datepicker__month-label--clickable</c> CSS class.</summary>
     public const string MonthLabelClickable = "flare-datepicker__month-label--clickable";
-    /// <summary>The <c>flare-datepicker__day-headers</c> CSS class.</summary>
-    public const string DayHeaders = "flare-datepicker__day-headers";
-    /// <summary>The <c>flare-datepicker__grid</c> CSS class.</summary>
-    public const string Grid = "flare-datepicker__grid";
-    /// <summary>The <c>flare-datepicker__day</c> CSS class.</summary>
-    public const string Day = "flare-datepicker__day";
-    /// <summary>The <c>flare-datepicker__day--today</c> CSS class.</summary>
-    public const string DayToday = "flare-datepicker__day--today";
-    /// <summary>The <c>flare-datepicker__day--selected</c> CSS class.</summary>
-    public const string DaySelected = "flare-datepicker__day--selected";
-    /// <summary>The <c>flare-datepicker__day--outside</c> CSS class.</summary>
-    public const string DayOutside = "flare-datepicker__day--outside";
-    /// <summary>The <c>flare-datepicker__day--disabled</c> CSS class.</summary>
-    public const string DayDisabled = "flare-datepicker__day--disabled";
     /// <summary>The <c>flare-datepicker__month-grid</c> CSS class.</summary>
     public const string MonthGrid = "flare-datepicker__month-grid";
     /// <summary>The <c>flare-datepicker__month-btn</c> CSS class.</summary>
@@ -156,18 +142,6 @@ public static class DateTimePicker
     public const string Nav = "flare-datetimepicker__nav";
     /// <summary>The <c>flare-datetimepicker__nav-label</c> CSS class.</summary>
     public const string NavLabel = "flare-datetimepicker__nav-label";
-    /// <summary>The <c>flare-datetimepicker__day-headers</c> CSS class.</summary>
-    public const string DayHeaders = "flare-datetimepicker__day-headers";
-    /// <summary>The <c>flare-datetimepicker__grid</c> CSS class.</summary>
-    public const string Grid = "flare-datetimepicker__grid";
-    /// <summary>The <c>flare-datetimepicker__day</c> CSS class.</summary>
-    public const string Day = "flare-datetimepicker__day";
-    /// <summary>The <c>flare-datetimepicker__day--other</c> CSS class.</summary>
-    public const string DayOther = "flare-datetimepicker__day--other";
-    /// <summary>The <c>flare-datetimepicker__day--selected</c> CSS class.</summary>
-    public const string DaySelected = "flare-datetimepicker__day--selected";
-    /// <summary>The <c>flare-datetimepicker__day--today</c> CSS class.</summary>
-    public const string DayToday = "flare-datetimepicker__day--today";
     /// <summary>The <c>flare-datetimepicker__time</c> CSS class.</summary>
     public const string Time = "flare-datetimepicker__time";
     /// <summary>The <c>flare-datetimepicker__time-input</c> CSS class.</summary>

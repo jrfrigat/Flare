@@ -72,62 +72,8 @@
   color: var(--flare-color-on-surface);
 }
 
-.flare-datetimepicker__day-headers {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--flare-color-on-surface-variant);
-  margin-bottom: var(--flare-spacing-2);
-}
-
-.flare-datetimepicker__grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: var(--flare-spacing-1);
-}
-
-.flare-datetimepicker__day {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 0.8125rem;
-  color: var(--flare-color-on-surface);
-  font-family: inherit;
-  transition: background-color var(--flare-motion-duration-short2);
-}
-
-.flare-datetimepicker__day:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
-}
-
-.flare-datetimepicker__day--other {
-  color: var(--flare-color-on-surface-variant);
-  opacity: 0.4;
-}
-
-.flare-datetimepicker__day--selected {
-  background: var(--flare-color-primary);
-  color: var(--flare-color-on-primary);
-}
-
-.flare-datetimepicker__day--selected:hover {
-  background: var(--flare-color-primary);
-}
-
-.flare-datetimepicker__day--today {
-  font-weight: 700;
-  color: var(--flare-color-primary);
-}
-
-.flare-datetimepicker__day--today.flare-datetimepicker__day--selected {
-  color: var(--flare-color-on-primary);
-}
+/* The day-headers / grid / day cells + states come from the shared flare-picker__* month grid
+   (picker.css); the DateTimePicker calendar renders those classes directly. */
 
 /* Time panel */
 .flare-datetimepicker__time {

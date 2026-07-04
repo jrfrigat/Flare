@@ -1764,11 +1764,11 @@ public class C_FlareDateRangeCalendarTests : FlareTestContext
     public async Task Calendar_TwoClicks_SelectOrderedRange()
     {
         var cut = Render<FlareDateRangePicker>(p => p.Add(c => c.Mode, DateRangePickerMode.Calendar));
-        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[10].Click());
+        await cut.InvokeAsync(() => cut.FindAll(".flare-picker__day")[10].Click());
         Assert.NotNull(cut.Instance.StartDate);
         Assert.Null(cut.Instance.EndDate);                       // first click sets only the start
 
-        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[24].Click());
+        await cut.InvokeAsync(() => cut.FindAll(".flare-picker__day")[24].Click());
         Assert.NotNull(cut.Instance.EndDate);
         Assert.True(cut.Instance.StartDate <= cut.Instance.EndDate);
     }
@@ -1777,8 +1777,8 @@ public class C_FlareDateRangeCalendarTests : FlareTestContext
     public async Task Calendar_SecondClickEarlier_Swaps()
     {
         var cut = Render<FlareDateRangePicker>(p => p.Add(c => c.Mode, DateRangePickerMode.Calendar));
-        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[24].Click());   // later day first
-        await cut.InvokeAsync(() => cut.FindAll(".flare-datepicker__day")[10].Click());   // earlier second
+        await cut.InvokeAsync(() => cut.FindAll(".flare-picker__day")[24].Click());   // later day first
+        await cut.InvokeAsync(() => cut.FindAll(".flare-picker__day")[10].Click());   // earlier second
         Assert.True(cut.Instance.StartDate <= cut.Instance.EndDate);                       // swapped into order
     }
 

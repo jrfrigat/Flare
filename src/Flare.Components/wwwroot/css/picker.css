@@ -16,3 +16,56 @@
     box-shadow: var(--flare-elevation-3);
     padding: var(--flare-spacing-6);
 }
+
+/* Compact month-calendar day grid, shared by DatePicker / DateTimePicker / DateRangePicker
+   (distinct from the event FlareCalendar's flare-calendar__* grid). */
+.flare-picker__day-headers {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--flare-color-on-surface-variant);
+    margin-bottom: var(--flare-spacing-2);
+}
+.flare-picker__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--flare-spacing-1);
+}
+.flare-picker__day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--flare-color-on-surface);
+    font-family: inherit;
+    transition: background-color var(--flare-motion-duration-short2);
+}
+.flare-picker__day:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
+}
+.flare-picker__day--outside {
+    color: var(--flare-color-on-surface-variant);
+    opacity: 0.4;
+}
+/* --today before --selected so a today-and-selected day reads as selected (on-primary). */
+.flare-picker__day--today {
+    font-weight: 700;
+    color: var(--flare-color-primary);
+}
+.flare-picker__day--selected {
+    background: var(--flare-color-primary);
+    color: var(--flare-color-on-primary);
+}
+.flare-picker__day--selected:hover {
+    background: var(--flare-color-primary);
+}
+.flare-picker__day--disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}

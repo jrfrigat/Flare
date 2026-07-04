@@ -62,24 +62,24 @@
 
             @if (_calView == CalendarView.Day)
             {
-                <div class="@Css.Classes.DatePicker.DayHeaders">
+                <div class="@Css.Classes.Picker.DayHeaders">
                     @foreach (var d in DayHeaders)
                     {
                         <span>@d</span>
                     }
                 </div>
-                <div class="@Css.Classes.DatePicker.Grid" role="grid" aria-label="@HeaderLabel" @onkeydown="HandleGridKeyDown" @onkeydown:stopPropagation>
+                <div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@HeaderLabel" @onkeydown="HandleGridKeyDown" @onkeydown:stopPropagation>
                     @foreach (var day in CalendarDays)
                     {
                         <button type="button"
                                 role="gridcell"
                                 aria-selected="@(day.Date == Value ? "true" : "false")"
                                 aria-current="@(day.Date == Today ? "date" : null)"
-                                class="@Css.Classes.DatePicker.Day
-                                       @(day.IsCurrentMonth ? "" : Css.Classes.DatePicker.DayOutside)
-                                       @(day.Date == Value ? Css.Classes.DatePicker.DaySelected : "")
-                                       @(day.Date == Today ? Css.Classes.DatePicker.DayToday : "")
-                                       @(IsDisabled(day.Date) ? Css.Classes.DatePicker.DayDisabled : "")"
+                                class="@Css.Classes.Picker.Day
+                                       @(day.IsCurrentMonth ? "" : Css.Classes.Picker.DayOutside)
+                                       @(day.Date == Value ? Css.Classes.Picker.DaySelected : "")
+                                       @(day.Date == Today ? Css.Classes.Picker.DayToday : "")
+                                       @(IsDisabled(day.Date) ? Css.Classes.Picker.DayDisabled : "")"
                                 disabled="@IsDisabled(day.Date)"
                                 @onclick="@(() => SelectDay(day.Date))"
                                 @onclick:stopPropagation>

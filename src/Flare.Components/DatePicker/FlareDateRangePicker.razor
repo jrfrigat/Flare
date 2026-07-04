@@ -66,25 +66,25 @@
                     </FlareButton>
                 </span>
             </div>
-            <div class="@Css.Classes.DatePicker.DayHeaders">
+            <div class="@Css.Classes.Picker.DayHeaders">
                 @foreach (var d in DayHeaders)
                 {
                     <span>@d</span>
                 }
             </div>
-            <div class="@Css.Classes.DatePicker.Grid" role="grid" aria-label="@HeaderLabel">
+            <div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@HeaderLabel">
                 @foreach (var day in CalendarDays)
                 {
                     var date = day.Date;
                     <button type="button" role="gridcell"
                             aria-selected="@((date == StartDate || date == EndDate) ? "true" : "false")"
-                            class="@Css.Classes.DatePicker.Day
-                                   @(day.IsCurrentMonth ? "" : Css.Classes.DatePicker.DayOutside)
-                                   @(date == Today ? Css.Classes.DatePicker.DayToday : "")
+                            class="@Css.Classes.Picker.Day
+                                   @(day.IsCurrentMonth ? "" : Css.Classes.Picker.DayOutside)
+                                   @(date == Today ? Css.Classes.Picker.DayToday : "")
                                    @(InRange(date) ? Css.Classes.Daterangepicker.DayInRange : "")
                                    @(IsRangeStart(date) ? Css.Classes.Daterangepicker.DayStart : "")
                                    @(IsRangeEnd(date) ? Css.Classes.Daterangepicker.DayEnd : "")
-                                   @(IsDayDisabled(date) ? Css.Classes.DatePicker.DayDisabled : "")"
+                                   @(IsDayDisabled(date) ? Css.Classes.Picker.DayDisabled : "")"
                             disabled="@(Disabled || IsDayDisabled(date))"
                             @onmouseenter="@(() => { _hover = date; })"
                             @onclick="@(() => PickDayAsync(date))">

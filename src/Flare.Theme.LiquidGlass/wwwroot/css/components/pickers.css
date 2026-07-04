@@ -25,7 +25,7 @@
     }
 
     /* ---- Selected day / cell: glossy accent orb (text stays on-primary -> dark-safe) ---- */
-    .flare-datepicker__day--selected,
+    .flare-picker__day--selected,
     .flare-calendar__cell--selected,
     .flare-timepicker__cell--selected,
     .flare-timepicker__period-btn--selected,
@@ -37,7 +37,7 @@
             inset 0 1px 0.5px rgba(255, 255, 255, 0.5),
             0 1px 4px color-mix(in srgb, var(--flare-color-primary) 32%, transparent);
     }
-    .flare-datepicker__day:hover:not(.flare-datepicker__day--selected):not(.flare-datepicker__day--disabled),
+    .flare-picker__day:hover:not(.flare-picker__day--selected):not(.flare-picker__day--disabled),
     .flare-calendar__cell:hover:not(.flare-calendar__cell--selected) {
         background-color: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
     }

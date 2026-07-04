@@ -176,13 +176,13 @@
                 </FlareButton>
             </span>
         </div>
-        <div class="@Css.Classes.DateTimePicker.DayHeaders">
+        <div class="@Css.Classes.Picker.DayHeaders">
             @foreach (var d in DayHeaders)
             {
                 <span>@d</span>
             }
         </div>
-        <div class="@Css.Classes.DateTimePicker.Grid" role="grid" aria-label="@_viewDate.ToString("MMMM yyyy", _culture)">
+        <div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@_viewDate.ToString("MMMM yyyy", _culture)">
             @foreach (var day in GetCalendarDays())
             {
                 var d = day;
@@ -190,10 +190,10 @@
                         role="gridcell"
                         aria-selected="@(d == _selectedDate ? "true" : "false")"
                         aria-current="@(d == Today ? "date" : null)"
-                        class="@Css.Classes.DateTimePicker.Day
-                               @(d.Month != _viewDate.Month ? Css.Classes.DateTimePicker.DayOther : "")
-                               @(d == _selectedDate ? Css.Classes.DateTimePicker.DaySelected : "")
-                               @(d == Today ? Css.Classes.DateTimePicker.DayToday : "")"
+                        class="@Css.Classes.Picker.Day
+                               @(d.Month != _viewDate.Month ? Css.Classes.Picker.DayOutside : "")
+                               @(d == _selectedDate ? Css.Classes.Picker.DaySelected : "")
+                               @(d == Today ? Css.Classes.Picker.DayToday : "")"
                         @onclick="() => SelectDate(d)"
                         @onclick:stopPropagation>@d.Day</button>
             }
