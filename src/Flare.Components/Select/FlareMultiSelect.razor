@@ -118,11 +118,30 @@
     // dedups the several reads per render without ever handing out a stale filtered list.
     private List<TValue>? _visibleMemo;
 
+    // value -> label lookup, rebuilt only when Items/GetValue/GetLabel change (OnParametersSet), so the
+    // control summary and each selected chip resolve a label in O(1) instead of scanning Items per call.
+    private readonly Dictionary<TValue, string> _labelByValue = new();
+
     /// <summary>Clears the per-render <c>_visibleItems</c> memo at the start of each render pass.</summary>
     protected override bool ShouldRender()
     {
         _visibleMemo = null;
         return true;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _labelByValue.Clear();
+        if (Items is not null)
+            foreach (var item in Items)
+            {
+                var value = GetValue(item);
+                // First label wins (mirrors the previous FirstOrDefault); null values are not keyable.
+                if (value is not null && !_labelByValue.ContainsKey(value))
+                    _labelByValue[value] = GetLabel(item);
+            }
     }
 
     private DotNetObjectReference<FlareMultiSelect<TValue>>? _selfRef;
@@ -263,9 +282,8 @@
 
     private string LabelFor(TValue v)
     {
-        if (Items is null) return v?.ToString() ?? "";
-        var match = Items.FirstOrDefault(i => EqualityComparer<TValue>.Default.Equals(GetValue(i), v));
-        return match is not null ? GetLabel(match) : v?.ToString() ?? "";
+        if (v is not null && _labelByValue.TryGetValue(v, out var label)) return label;
+        return v?.ToString() ?? "";
     }
 
     private string BuildSelectedLabel()
