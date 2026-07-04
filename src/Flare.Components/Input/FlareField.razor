@@ -28,6 +28,7 @@
                placeholder="@Placeholder"
                disabled="@Disabled"
                readonly="@ReadOnly"
+               required="@Required"
                type="@Type"
                maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
                aria-label="@AriaLabel"
@@ -84,7 +85,7 @@
     /// <summary>Current value of the input.</summary>
     [Parameter] public TValue? Value { get; set; }
     /// <summary>Callback invoked when the value changes.</summary>
-    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
     // Label, HelperText, ErrorText and Disabled are inherited from FlareFieldBase (IFlareField).
     /// <summary>Forces the field into the error (invalid) visual state - red active indicator and
     /// <c>aria-invalid</c> - without requiring an <see cref="ErrorText"/> message. Useful when the error
@@ -101,7 +102,7 @@
     /// <summary>Content rendered before the input field as a leading adornment (e.g. currency symbol, prefix text, or button).</summary>
     [Parameter] public RenderFragment? AdornmentStart { get; set; }
     /// <summary>Content rendered after the input field as a trailing adornment (e.g. unit label, suffix text, or button).</summary>
-    [Parameter] public RenderFragment? AdornmentEnd { get; set; }
+    [Parameter] public RenderFragment? AdornmentEnd { get; set; }
     /// <summary>HTML type attribute of the underlying input element.</summary>
     [Parameter] public string Type { get; set; } = "text";
     /// <summary>Expression used to bind and validate the field.</summary>
