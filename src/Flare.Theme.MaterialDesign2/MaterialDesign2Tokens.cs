@@ -185,8 +185,6 @@ internal static class MaterialDesign2Tokens
         Elevation = Elevation,
         Motion = Motion,
         State = State,
-        Badge = new(),
-        Alert = new(),
         Button = Button,
         SplitButton = new(),
         ToggleButton = new(),

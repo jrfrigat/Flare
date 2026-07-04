@@ -5,25 +5,24 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme token values for <c>FlareBadge</c>.</summary>
 public sealed record BadgeTokens
 {
-    /// <summary>Border radius of the badge indicator pill. Defaults to the shared full shape token
-    /// (the pill vocabulary used by Chip/Nav/Tabs) instead of a hardcoded pill radius.</summary>
-    [CssVar(Badge.Radius)] public string Radius { get; init; } = Vars.Var(Shape.Full);
+    /// <summary>Border radius of the badge indicator pill (typically the theme's full/pill shape).</summary>
+    [CssVar(Badge.Radius)] public required string Radius { get; init; }
 
     /// <summary>Minimum width of a count / text indicator (not dot).</summary>
-    [CssVar(Badge.MinWidth)] public string MinWidth { get; init; } = "1rem";
+    [CssVar(Badge.MinWidth)] public required string MinWidth { get; init; }
 
     /// <summary>Height of a count / text indicator (not dot).</summary>
-    [CssVar(Badge.Height)] public string Height { get; init; } = "1rem";
+    [CssVar(Badge.Height)] public required string Height { get; init; }
 
     /// <summary>Diameter of the dot variant.</summary>
-    [CssVar(Badge.DotSize)] public string DotSize { get; init; } = "0.375rem";
+    [CssVar(Badge.DotSize)] public required string DotSize { get; init; }
 
     /// <summary>Horizontal padding inside a count / text indicator.</summary>
-    [CssVar(Badge.PaddingX)] public string PaddingX { get; init; } = "0.25rem";
+    [CssVar(Badge.PaddingX)] public required string PaddingX { get; init; }
 
     /// <summary>Offset of the indicator from the anchor edge (count/text variant).</summary>
-    [CssVar(Badge.Offset)] public string Offset { get; init; } = "0.375rem";
+    [CssVar(Badge.Offset)] public required string Offset { get; init; }
 
     /// <summary>Offset of the indicator from the anchor edge (dot variant - tighter).</summary>
-    [CssVar(Badge.DotOffset)] public string DotOffset { get; init; } = "0";
+    [CssVar(Badge.DotOffset)] public required string DotOffset { get; init; }
 }
