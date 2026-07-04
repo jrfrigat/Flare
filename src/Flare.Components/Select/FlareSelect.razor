@@ -127,13 +127,15 @@
     // The options flattened in display order (groups kept contiguous) for keyboard nav + index alignment
     // with the shared FlareListbox, which renders group headers at group boundaries. Declarative
     // <option> children take precedence over the Items collection.
-    private List<TValue> _ordered
+    // Options in final display order. Recomputed only in OnParametersSet - its inputs (Items, GroupBy
+    // and the declarative <option> set) change nowhere else - so the several reads per render (and the
+    // reads from keyboard/selection handlers between renders) reuse one list instead of re-running the
+    // GroupBy/SelectMany/ToList each time.
+    private List<TValue> _ordered = [];
+    private List<TValue> BuildOrdered()
     {
-        get
-        {
-            var values = _declarative ? _declaredValues : (Items ?? Enumerable.Empty<TValue>());
-            return (GroupBy is null ? values : values.GroupBy(GroupBy).SelectMany(g => g)).ToList();
-        }
+        var values = _declarative ? _declaredValues : (Items ?? Enumerable.Empty<TValue>());
+        return (GroupBy is null ? values : values.GroupBy(GroupBy).SelectMany(g => g)).ToList();
     }
 
     // ItemTemplate (explicit) wins; declarative <option> labels render as plain text via LabelOf.
@@ -150,6 +152,7 @@
     {
         UpdateFieldIdentifier(For);
         ParseDeclaredOptions();
+        _ordered = BuildOrdered();
     }
 
     // Collects declarative <option value="..">Label</option> entries from ChildContent. Static option

@@ -112,6 +112,19 @@
     private ElementReference _container;
     private readonly string _controlId = $"flare-multiselect-{Guid.NewGuid():N}";
 
+    // Per-render memo for _visibleItems (search-filtered + ordered). It depends on _search, which changes
+    // on internal input (not just OnParametersSet), so it is memoized only for the duration of one render
+    // pass and cleared at both render-cycle boundaries (ShouldRender start, OnAfterRenderAsync end). This
+    // dedups the several reads per render without ever handing out a stale filtered list.
+    private List<TValue>? _visibleMemo;
+
+    /// <summary>Clears the per-render <c>_visibleItems</c> memo at the start of each render pass.</summary>
+    protected override bool ShouldRender()
+    {
+        _visibleMemo = null;
+        return true;
+    }
+
     private DotNetObjectReference<FlareMultiSelect<TValue>>? _selfRef;
     private bool _outsideRegistered;
 
@@ -119,6 +132,9 @@
     // so the page still scrolls freely while the dropdown is open.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // Drop the per-render memo once the render has committed, so any read from an event handler
+        // between renders recomputes against the current search text.
+        _visibleMemo = null;
         if (_isOpen == _outsideRegistered) return;
         try
         {
@@ -239,8 +255,9 @@
     {
         get
         {
+            if (_visibleMemo is not null) return _visibleMemo;
             var src = GroupBy is null ? FilteredItems : FilteredItems.GroupBy(GroupBy).SelectMany(g => g);
-            return src.ToList();
+            return _visibleMemo = src.ToList();
         }
     }
 
