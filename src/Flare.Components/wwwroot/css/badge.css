@@ -24,7 +24,7 @@
     /* Role class sets --fc-main/--fc-on; custom inlines them; default falls back to error. */
     background-color: var(--fc-main, var(--flare-color-error));
     color: var(--fc-on, var(--flare-color-on-error));
-    /* Типографика - label-small (Roboto 500 / 11 / 16 / 0.5pt) через токены */
+    /* Typography - label-small (Roboto 500 / 11 / 16 / 0.5pt) via tokens */
     font-family: var(--flare-typescale-label-small-font);
     font-size: var(--flare-typescale-label-small-size);
     font-weight: var(--flare-typescale-label-small-weight);

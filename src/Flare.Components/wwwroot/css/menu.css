@@ -38,19 +38,19 @@
 /* Each group can carry its own elevation so the islands visibly float. */
 .flare-menu-group { box-shadow: var(--flare-menu-group-shadow, none); }
 
-/* MD3: scale + fade (раскрытие из угла якоря) */
+/* MD3: scale + fade (expand from the anchor corner) */
 @keyframes flare-menu-in {
     from { opacity: 0; transform: scale(0.95) translateY(-0.25rem); }
     to   { opacity: 1; transform: scale(1)    translateY(0);         }
 }
 
-/* Fluent: только fade + лёгкий сдвиг, без scale */
+/* Fluent: fade + slight shift only, no scale */
 @keyframes flare-menu-in-fluent {
     from { opacity: 0; transform: translateY(-0.25rem); }
     to   { opacity: 1; transform: translateY(0);         }
 }
 
-/* Origin анимации зависит от якоря (раскрытие "из" угла активатора) */
+/* Animation origin depends on the anchor (expand "from" the activator corner) */
 .flare-menu__panel--bottom-left  { top: calc(100% + 0.25rem); left: 0;  transform-origin: top left; }
 .flare-menu__panel--bottom-right { top: calc(100% + 0.25rem); right: 0; transform-origin: top right; }
 .flare-menu__panel--top-left     { bottom: calc(100% + 0.25rem); left: 0;  transform-origin: bottom left; }

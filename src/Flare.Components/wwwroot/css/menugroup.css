@@ -8,7 +8,7 @@
     background: var(--flare-menu-group-bg, transparent);
 }
 
-/* Заголовок секции: типографика title-small, цвет on-surface-variant */
+/* Section header: title-small typography, on-surface-variant color */
 .flare-menu-group__label {
     padding: var(--flare-menu-item-padding-block, 0.5rem) var(--flare-menu-item-padding-inline, 1rem);
     font-family: var(--flare-typescale-title-small-font);
@@ -26,7 +26,7 @@
     border-top: var(--flare-menu-group-divider, none);
 }
 
-/* Внутри группы пункты не повторяют форму контейнера панели (крайние углы = обычные) */
+/* Inside a group, items do not repeat the panel container shape (outer corners = normal) */
 .flare-menu-group .flare-menu-item:first-child,
 .flare-menu-group .flare-menu-item:last-child {
     border-radius: var(--flare-menu-item-radius, 0);

@@ -6,8 +6,8 @@
     box-sizing: border-box;
     min-height: var(--flare-chip-height, 2rem); /* MD3 chip height 32dp */
     border-radius: var(--flare-chip-radius, var(--flare-shape-small));
-    /* Цвет через общие токены роли (--fc-*); дефолт - нейтральный.
-       Роль -> класс flare-color-*; кастом -> инлайн --fc-main/--fc-on. */
+    /* Color via shared role tokens (--fc-*); default is neutral.
+       Role -> flare-color-* class; custom -> inline --fc-main/--fc-on. */
     border: 1px solid var(--fc-main, var(--flare-color-outline));
     background-color: transparent;
     color: var(--fc-main, var(--flare-color-on-surface-variant));
@@ -113,5 +113,5 @@
     background: color-mix(in srgb, currentColor 15%, transparent);
 }
 
-/* Цвет задаётся параметром Color (string) -> заполняет --_chip-fg/-border/-sel-bg/-sel-fg
-   инлайном. Отдельных per-color классов нет. */
+/* Color is set via the Color parameter (string) -> fills --_chip-fg/-border/-sel-bg/-sel-fg
+   inline. There are no separate per-color classes. */

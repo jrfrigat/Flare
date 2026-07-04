@@ -14,7 +14,7 @@
     gap: var(--flare-spacing-2);
 }
 
-/* ---- Size geometry (MD3 Expressive spec "## Размеры", dp -> rem) ----
+/* ---- Size geometry (MD3 Expressive spec "## Sizes", dp -> rem) ----
    track 16/24/40/56/96dp - handle 44/44/52/68/108dp - track-shape 8/8/12/16/28dp */
 .flare-slider--xs { --_trk-h: 1rem;   --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 20px; }
 .flare-slider--sm { --_trk-h: 1.5rem; --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 22px; }

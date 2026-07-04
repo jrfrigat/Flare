@@ -1,4 +1,4 @@
-﻿/* The FAB carries the shared .flare-btn chrome: box-model, the reserved focus ring + ::before state
+/* The FAB carries the shared .flare-btn chrome: box-model, the reserved focus ring + ::before state
    layer (hover/focus-visible/active), the disabled treatment and the colour/shadow transition all
    come from button.css. Only the FAB shape, resting elevation, tonal colour and padding-based sizing
    are FAB-specific here. height:auto overrides .flare-btn's fixed height so the FAB sizes to its

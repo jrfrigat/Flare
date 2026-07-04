@@ -1,13 +1,13 @@
 /* ==========================================================================
-   ОБЩИЕ КЛАССЫ РОЛЕЙ ЦВЕТА
-   Единый набор классов для ВСЕХ компонентов. Каждый класс выставляет 4 локальных
-   токена роли; компонент читает нужное подмножество через var(--fc-*, fallback):
-     --fc-main         основной акцент
-     --fc-on           контраст на main (текст на заливке)
-     --fc-container    мягкий тональный фон
-     --fc-on-container текст на тональном фоне
-   Это статичный кэшируемый CSS (быстрый путь для семантических цветов). Произвольный
-   цвет (FlareColor.Custom) инлайнит эти же токены на элементе.
+   SHARED COLOR-ROLE CLASSES
+   One class set for ALL components. Each class sets 4 local role tokens;
+   a component reads the subset it needs via var(--fc-*, fallback):
+     --fc-main         primary accent
+     --fc-on           contrast on main (text on the fill)
+     --fc-container    soft tonal background
+     --fc-on-container text on the tonal background
+   This is static, cacheable CSS (fast path for semantic colors). A custom
+   color (FlareColor.Custom) inlines these same tokens on the element.
    ========================================================================== */
 
 /* Expose the active light/dark mode to CSS color-scheme so that light-dark() values

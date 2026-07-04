@@ -29,7 +29,7 @@
     cursor: pointer;
 }
 
-/* Крайние пункты повторяют форму контейнера (внешние углы крупнее) */
+/* End items mirror the container shape (outer corners are larger) */
 .flare-menu-item:first-child {
     border-top-left-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
     border-top-right-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
@@ -40,7 +40,7 @@
     border-bottom-right-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
 }
 
-/* Слой состояния (MD3 state-layer): hover 8% / focus 10% / pressed 10% */
+/* State layer (MD3 state-layer): hover 8% / focus 10% / pressed 10% */
 .flare-menu-item::before {
     content: '';
     position: absolute;
@@ -64,7 +64,7 @@
     opacity: var(--flare-state-pressed-opacity);
 }
 
-/* Focus ring (индикатор фокуса) */
+/* Focus ring (focus indicator) */
 .flare-menu-item:focus-visible,
 .flare-menu-item--focused {
     outline: var(--flare-menu-item-focus-ring-thickness, 3px) solid var(--flare-menu-item-focus-ring-color, var(--flare-color-secondary));
