@@ -75,7 +75,7 @@ public sealed record DesignTokens
     public required PopoverTokens Popover { get; init; }
 
     /// <summary>DataGrid tokens.</summary>
-    public DataGridTokens DataGrid { get; init; } = new();
+    public required DataGridTokens DataGrid { get; init; }
 
     /// <summary>Card tokens.</summary>
     public required CardTokens Card { get; init; }

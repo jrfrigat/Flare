@@ -589,6 +589,45 @@ public class MaterialDesignTokens
         SizeFullWidth = "100%",
     };
 
+    // DataGrid baseline geometry/colors. No theme customizes the grid, so both references carry the
+    // same neutral baseline explicitly now that the core record ships no defaults.
+    internal static readonly DataGridTokens DataGrid = new()
+    {
+        SurfaceColor = "var(--flare-color-surface)",
+        HeaderBg = "var(--flare-color-surface-container)",
+        HeaderColor = "var(--flare-color-on-surface)",
+        HeaderFontFamily = "var(--flare-typescale-label-medium-font)",
+        HeaderFontSize = "var(--flare-typescale-label-medium-size)",
+        HeaderFontWeight = "var(--flare-typescale-label-medium-weight, 500)",
+        HeaderHeight = "56px",
+        HeaderPadding = "0 16px",
+        RowHeight = "52px",
+        RowHeightDense = "40px",
+        CellPadding = "0 16px",
+        CellColor = "var(--flare-color-on-surface)",
+        CellFontFamily = "var(--flare-typescale-body-medium-font)",
+        CellFontSize = "var(--flare-typescale-body-medium-size)",
+        SelectedRowBg = "var(--flare-color-primary-container)",
+        SelectedRowColor = "var(--flare-color-on-primary-container)",
+        HoverRowBg = "color-mix(in srgb, var(--flare-color-on-surface) var(--flare-state-hover-opacity, 8%), transparent)",
+        SortIconColor = "var(--flare-color-on-surface-variant)",
+        SortIconActiveColor = "var(--flare-color-primary)",
+        BorderColor = "var(--flare-color-outline-variant)",
+        BorderWidth = "1px",
+        FilterRowBg = "var(--flare-color-surface-container-low)",
+        GroupHeaderBg = "var(--flare-color-surface-container)",
+        GroupHeaderColor = "var(--flare-color-on-surface)",
+        ToolbarBg = "var(--flare-color-surface)",
+        ToolbarHeight = "56px",
+        ToolbarPadding = "0 16px",
+        EmptyStateBg = "transparent",
+        EmptyStateColor = "var(--flare-color-on-surface-variant)",
+        ResizeHandleWidth = "4px",
+        ResizeHandleColor = "var(--flare-color-outline)",
+        ColumnPickerBg = "var(--flare-color-surface-container)",
+        ColumnPickerElevation = "var(--flare-elevation-2)",
+    };
+
     // Switch (MD3 baseline geometry: 52x32 track, 24 thumb, elevation-1 lift). Carried explicitly
     // now that the core record ships no defaults.
     internal static readonly SwitchTokens Switch = new()
@@ -649,6 +688,7 @@ public class MaterialDesignTokens
     {
         Spacing = Spacing,
         Switch = Switch,
+        DataGrid = DataGrid,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,

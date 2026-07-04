@@ -9,101 +9,101 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record DataGridTokens
 {
     /// <summary>Background color of the grid surface.</summary>
-    [CssVar(DataGridField.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.Surface);
+    [CssVar(DataGridField.SurfaceColor)] public required string SurfaceColor { get; init; }
 
     /// <summary>Background color of the header row.</summary>
-    [CssVar(DataGridField.HeaderBg)] public string HeaderBg { get; init; } = Vars.Var(Color.SurfaceContainer);
+    [CssVar(DataGridField.HeaderBg)] public required string HeaderBg { get; init; }
 
     /// <summary>Color of the header text.</summary>
-    [CssVar(DataGridField.HeaderColor)] public string HeaderColor { get; init; } = Vars.Var(Color.OnSurface);
+    [CssVar(DataGridField.HeaderColor)] public required string HeaderColor { get; init; }
 
     /// <summary>Font family of the header text.</summary>
-    [CssVar(DataGridField.HeaderFontFamily)] public string HeaderFontFamily { get; init; } = Vars.Var(Typography.Font("label-medium"));
+    [CssVar(DataGridField.HeaderFontFamily)] public required string HeaderFontFamily { get; init; }
 
     /// <summary>Font size of the header text.</summary>
-    [CssVar(DataGridField.HeaderFontSize)] public string HeaderFontSize { get; init; } = Vars.Var(Typography.Size("label-medium"));
+    [CssVar(DataGridField.HeaderFontSize)] public required string HeaderFontSize { get; init; }
 
     /// <summary>Font weight of the header text.</summary>
-    [CssVar(DataGridField.HeaderFontWeight)] public string HeaderFontWeight { get; init; } = "var(--flare-typescale-label-medium-weight, 500)";
+    [CssVar(DataGridField.HeaderFontWeight)] public required string HeaderFontWeight { get; init; }
 
     /// <summary>Height of the header row.</summary>
-    [CssVar(DataGridField.HeaderHeight)] public string HeaderHeight { get; init; } = "56px";
+    [CssVar(DataGridField.HeaderHeight)] public required string HeaderHeight { get; init; }
 
     /// <summary>Padding inside header cells.</summary>
-    [CssVar(DataGridField.HeaderPadding)] public string HeaderPadding { get; init; } = "0 16px";
+    [CssVar(DataGridField.HeaderPadding)] public required string HeaderPadding { get; init; }
 
     /// <summary>Height of each data row.</summary>
-    [CssVar(DataGridField.RowHeight)] public string RowHeight { get; init; } = "52px";
+    [CssVar(DataGridField.RowHeight)] public required string RowHeight { get; init; }
 
     /// <summary>Dense row height (compact mode).</summary>
-    [CssVar(DataGridField.RowHeightDense)] public string RowHeightDense { get; init; } = "40px";
+    [CssVar(DataGridField.RowHeightDense)] public required string RowHeightDense { get; init; }
 
     /// <summary>Padding inside data cells.</summary>
-    [CssVar(DataGridField.CellPadding)] public string CellPadding { get; init; } = "0 16px";
+    [CssVar(DataGridField.CellPadding)] public required string CellPadding { get; init; }
 
     /// <summary>Color of the data cell text.</summary>
-    [CssVar(DataGridField.CellColor)] public string CellColor { get; init; } = Vars.Var(Color.OnSurface);
+    [CssVar(DataGridField.CellColor)] public required string CellColor { get; init; }
 
     /// <summary>Font family of the data cell text.</summary>
-    [CssVar(DataGridField.CellFontFamily)] public string CellFontFamily { get; init; } = Vars.Var(Typography.Font("body-medium"));
+    [CssVar(DataGridField.CellFontFamily)] public required string CellFontFamily { get; init; }
 
     /// <summary>Font size of the data cell text.</summary>
-    [CssVar(DataGridField.CellFontSize)] public string CellFontSize { get; init; } = Vars.Var(Typography.Size("body-medium"));
+    [CssVar(DataGridField.CellFontSize)] public required string CellFontSize { get; init; }
 
     /// <summary>Background color of the selected row.</summary>
-    [CssVar(DataGridField.SelectedRowBg)] public string SelectedRowBg { get; init; } = Vars.Var(Color.PrimaryContainer);
+    [CssVar(DataGridField.SelectedRowBg)] public required string SelectedRowBg { get; init; }
 
     /// <summary>Color of the selected row text.</summary>
-    [CssVar(DataGridField.SelectedRowColor)] public string SelectedRowColor { get; init; } = Vars.Var(Color.OnPrimaryContainer);
+    [CssVar(DataGridField.SelectedRowColor)] public required string SelectedRowColor { get; init; }
 
     /// <summary>Background color of the hovered row.</summary>
-    [CssVar(DataGridField.HoverRowBg)] public string HoverRowBg { get; init; } = "color-mix(in srgb, var(--flare-color-on-surface) var(--flare-state-hover-opacity, 8%), transparent)";
+    [CssVar(DataGridField.HoverRowBg)] public required string HoverRowBg { get; init; }
 
     /// <summary>Color of the sort icon.</summary>
-    [CssVar(DataGridField.SortIconColor)] public string SortIconColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
+    [CssVar(DataGridField.SortIconColor)] public required string SortIconColor { get; init; }
 
     /// <summary>Color of the active sort icon.</summary>
-    [CssVar(DataGridField.SortIconActiveColor)] public string SortIconActiveColor { get; init; } = Vars.Var(Color.Primary);
+    [CssVar(DataGridField.SortIconActiveColor)] public required string SortIconActiveColor { get; init; }
 
     /// <summary>Color of the grid lines/borders.</summary>
-    [CssVar(DataGridField.BorderColor)] public string BorderColor { get; init; } = Vars.Var(Color.OutlineVariant);
+    [CssVar(DataGridField.BorderColor)] public required string BorderColor { get; init; }
 
     /// <summary>Width of the grid lines/borders.</summary>
-    [CssVar(DataGridField.BorderWidth)] public string BorderWidth { get; init; } = "1px";
+    [CssVar(DataGridField.BorderWidth)] public required string BorderWidth { get; init; }
 
     /// <summary>Background color of the filter row.</summary>
-    [CssVar(DataGridField.FilterRowBg)] public string FilterRowBg { get; init; } = Vars.Var(Color.SurfaceContainerLow);
+    [CssVar(DataGridField.FilterRowBg)] public required string FilterRowBg { get; init; }
 
     /// <summary>Background color of the group header.</summary>
-    [CssVar(DataGridField.GroupHeaderBg)] public string GroupHeaderBg { get; init; } = Vars.Var(Color.SurfaceContainer);
+    [CssVar(DataGridField.GroupHeaderBg)] public required string GroupHeaderBg { get; init; }
 
     /// <summary>Color of the group header text.</summary>
-    [CssVar(DataGridField.GroupHeaderColor)] public string GroupHeaderColor { get; init; } = Vars.Var(Color.OnSurface);
+    [CssVar(DataGridField.GroupHeaderColor)] public required string GroupHeaderColor { get; init; }
 
     /// <summary>Background color of the toolbar.</summary>
-    [CssVar(DataGridField.ToolbarBg)] public string ToolbarBg { get; init; } = Vars.Var(Color.Surface);
+    [CssVar(DataGridField.ToolbarBg)] public required string ToolbarBg { get; init; }
 
     /// <summary>Height of the toolbar.</summary>
-    [CssVar(DataGridField.ToolbarHeight)] public string ToolbarHeight { get; init; } = "56px";
+    [CssVar(DataGridField.ToolbarHeight)] public required string ToolbarHeight { get; init; }
 
     /// <summary>Padding inside the toolbar.</summary>
-    [CssVar(DataGridField.ToolbarPadding)] public string ToolbarPadding { get; init; } = "0 16px";
+    [CssVar(DataGridField.ToolbarPadding)] public required string ToolbarPadding { get; init; }
 
     /// <summary>Background color of the empty state.</summary>
-    [CssVar(DataGridField.EmptyStateBg)] public string EmptyStateBg { get; init; } = "transparent";
+    [CssVar(DataGridField.EmptyStateBg)] public required string EmptyStateBg { get; init; }
 
     /// <summary>Color of the empty state text.</summary>
-    [CssVar(DataGridField.EmptyStateColor)] public string EmptyStateColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
+    [CssVar(DataGridField.EmptyStateColor)] public required string EmptyStateColor { get; init; }
 
     /// <summary>Width of the column resize handle.</summary>
-    [CssVar(DataGridField.ResizeHandleWidth)] public string ResizeHandleWidth { get; init; } = "4px";
+    [CssVar(DataGridField.ResizeHandleWidth)] public required string ResizeHandleWidth { get; init; }
 
     /// <summary>Color of the column resize handle.</summary>
-    [CssVar(DataGridField.ResizeHandleColor)] public string ResizeHandleColor { get; init; } = Vars.Var(Color.Outline);
+    [CssVar(DataGridField.ResizeHandleColor)] public required string ResizeHandleColor { get; init; }
 
     /// <summary>Background color of the column picker dropdown.</summary>
-    [CssVar(DataGridField.ColumnPickerBg)] public string ColumnPickerBg { get; init; } = Vars.Var(Color.SurfaceContainer);
+    [CssVar(DataGridField.ColumnPickerBg)] public required string ColumnPickerBg { get; init; }
 
     /// <summary>Elevation (box-shadow) of the column picker dropdown.</summary>
-    [CssVar(DataGridField.ColumnPickerElevation)] public string ColumnPickerElevation { get; init; } = Vars.Var(Elevation.Level2);
+    [CssVar(DataGridField.ColumnPickerElevation)] public required string ColumnPickerElevation { get; init; }
 }
