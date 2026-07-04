@@ -92,7 +92,7 @@
 }
 
 .flare-msgbox__btn--cancel:hover {
-    background: color-mix(in srgb, var(--flare-color-primary) 8%, transparent);
+    background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-msgbox__btn--confirm {

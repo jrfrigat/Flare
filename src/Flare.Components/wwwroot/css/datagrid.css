@@ -602,7 +602,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 
 .flare-datagrid__detail-btn:hover {
-  background-color: color-mix(in srgb, currentColor 8%, transparent);
+  background-color: color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-datagrid__detail-btn > .material-symbols-rounded {

@@ -47,7 +47,7 @@
 }
 
 .flare-tabs__scroll:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
   color: var(--flare-color-on-surface);
 }
 

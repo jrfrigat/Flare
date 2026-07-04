@@ -51,7 +51,7 @@
     transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-listbox__option:hover { background-color: color-mix(in srgb, var(--flare-color-primary) 8%, transparent); }
+.flare-listbox__option:hover { background-color: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent); }
 .flare-listbox__option--active { background-color: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent); }
 .flare-listbox__option--selected { color: var(--flare-color-primary); font-weight: 600; }
 

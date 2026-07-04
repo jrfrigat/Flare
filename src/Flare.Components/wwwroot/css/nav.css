@@ -85,7 +85,7 @@
 }
 
 .flare-nav-group__header:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-nav-group__icon { display: inline-flex; font-size: 1.25rem; flex-shrink: 0; }
@@ -139,7 +139,7 @@
 }
 
 .flare-nav-link:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
   color: var(--flare-color-on-surface);
 }
 

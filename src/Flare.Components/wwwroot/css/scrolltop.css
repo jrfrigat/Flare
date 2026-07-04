@@ -29,7 +29,7 @@
 }
 
 .flare-scroll-top:hover {
-    background: color-mix(in srgb, var(--flare-color-on-primary) 8%, var(--flare-color-primary));
+    background: color-mix(in srgb, var(--flare-color-on-primary) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-primary));
 }
 
 .flare-scroll-top .material-symbols-rounded {

@@ -20,7 +20,7 @@
 }
 
 .flare-vtree__node:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-vtree__expand-btn {
@@ -35,7 +35,7 @@
 }
 
 .flare-vtree__expand-btn:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-vtree__expand-btn .material-symbols-rounded {

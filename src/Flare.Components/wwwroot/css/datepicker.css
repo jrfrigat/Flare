@@ -51,7 +51,7 @@
 }
 
 .flare-datepicker__month-label--clickable:hover {
-  background: color-mix(in srgb, var(--flare-color-primary) 8%, transparent);
+  background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 /* The day-headers / grid / day cells + states come from the shared flare-picker__* month grid
@@ -113,7 +113,7 @@
 }
 
 .flare-daterangepicker__preset:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-daterangepicker__preset--active {

@@ -67,7 +67,7 @@
   transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 .flare-timepicker__cell:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 .flare-timepicker__cell--selected {
   background: var(--flare-color-primary-container);
