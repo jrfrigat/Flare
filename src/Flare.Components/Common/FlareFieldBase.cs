@@ -18,6 +18,9 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
     /// <summary>Label text shown for the field.</summary>
     [Parameter] public string? Label { get; set; }
 
+    /// <summary>Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).</summary>
+    [Parameter] public string? Placeholder { get; set; }
+
     /// <summary>Helper text shown below the field.</summary>
     [Parameter] public string? HelperText { get; set; }
 
@@ -26,6 +29,12 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 
     /// <summary>Disables the field (no input, dimmed).</summary>
     [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Makes the field read-only (value shown but not editable). Not every field renders it.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>Marks the field as required (visual indicator + native <c>required</c> where applicable).</summary>
+    [Parameter] public bool Required { get; set; }
 
     /// <summary>The cascaded edit context used for validation when the field is bound with a <c>For</c> accessor.</summary>
     [CascadingParameter] protected EditContext? EditContext { get; set; }

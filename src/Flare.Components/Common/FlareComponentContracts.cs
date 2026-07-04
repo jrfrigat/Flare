@@ -14,12 +14,18 @@ public interface IFlareField
 {
     /// <summary>Label text shown for the field.</summary>
     string? Label { get; set; }
+    /// <summary>Placeholder text shown when the field is empty. (Not meaningful for every field, e.g. toggles.)</summary>
+    string? Placeholder { get; set; }
     /// <summary>Helper text shown below the field.</summary>
     string? HelperText { get; set; }
     /// <summary>Error text; when set it overrides <see cref="HelperText"/> and marks the field invalid.</summary>
     string? ErrorText { get; set; }
     /// <summary>Disables the field (no input, dimmed).</summary>
     bool Disabled { get; set; }
+    /// <summary>Makes the field read-only (value shown but not editable). (Not meaningful for every field.)</summary>
+    bool ReadOnly { get; set; }
+    /// <summary>Marks the field as required (visual indicator + native <c>required</c> where applicable).</summary>
+    bool Required { get; set; }
 }
 
 /// <summary>A single-value Flare field: its bound value and the change callback for <c>@bind-Value</c>.</summary>

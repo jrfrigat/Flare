@@ -75,9 +75,7 @@
     /// <summary>Currently selected item value.</summary>
     [Parameter] public TValue? Value { get; set; }
     /// <summary>Callback invoked when the selection changes.</summary>
-    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
-    /// <summary>Placeholder text shown in the control when no item is selected.</summary>
-    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
     /// <summary>Collection of items to populate the dropdown. An alternative to declaring
     /// <c>FlareSelectItem</c> children via <see cref="ChildContent"/>.</summary>
     [Parameter] public IEnumerable<TValue>? Items { get; set; }

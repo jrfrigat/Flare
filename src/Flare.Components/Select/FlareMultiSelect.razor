@@ -204,9 +204,7 @@
     /// <summary>The currently selected values.</summary>
     [Parameter] public IReadOnlyCollection<TValue>? SelectedValues { get; set; }
     /// <summary>Fires when the selection changes.</summary>
-    [Parameter] public EventCallback<IReadOnlyCollection<TValue>> SelectedValuesChanged { get; set; }
-    /// <summary>Placeholder text shown when nothing is selected.</summary>
-    [Parameter] public string? Placeholder { get; set; } = "Select...";
+    [Parameter] public EventCallback<IReadOnlyCollection<TValue>> SelectedValuesChanged { get; set; }
     /// <summary>Renders the selected values as removable chips in the control (instead of a comma list).</summary>
     [Parameter] public bool Chips { get; set; }
     /// <summary>Returns the group label for an item. When non-null, dropdown options are grouped under headers.</summary>
