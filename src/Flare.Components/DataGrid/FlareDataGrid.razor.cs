@@ -491,9 +491,25 @@ public partial class FlareDataGrid<TItem>
         }
     }
 
+    /// <summary>Always renders; also drops the per-render <c>SortedUnpaged()</c> memo before the
+    /// render so each render recomputes a fresh list for the client Virtualize.</summary>
+    // ShouldRender fires before every render bar the first (where the field starts null); this is the
+    // "start" render-cycle boundary that clears the memo (the "end" boundary is OnAfterRenderAsync),
+    // so it never survives into the next render or an event handler (see SortedUnpaged in State.cs).
+    protected override bool ShouldRender()
+    {
+        _unpagedMemo = null;
+        return true;
+    }
+
     /// <summary>Wires up JS interop (sticky headers, observers) after the first render.</summary>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        // "End" boundary for the per-render SortedUnpaged() memo: drop it as soon as the render
+        // completes so any event handler that runs before the next render (CurrentResultCount,
+        // _totalPages, export) recomputes against current data rather than a stale snapshot.
+        _unpagedMemo = null;
+
         // Resize handles and frozen-column offsets only change with the column layout (set, order,
         // visibility, width), so sync them when the layout signature changes - not on every render.
         if (_layoutSignature != _lastSyncedLayout)
