@@ -1,5 +1,7 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Flare.Abstractions;
+using Flare.Abstractions.Tokens;
 using Flare.Components;
 
 namespace Flare.Core.Tests;
@@ -43,4 +45,39 @@ public sealed class ThemeIndependenceTests
     // "Flare.Theme." (with the trailing dot) so this doesn't false-match "Flare.Theming" itself.
     private static bool IsThemePackage(AssemblyName name) =>
         name.Name is not null && name.Name.StartsWith("Flare.Theme.", StringComparison.Ordinal);
+
+    /// <summary>
+    /// Token-default guard: no token record in Flare.Abstractions may ship a literal default value.
+    /// Flare is theme-agnostic - it works ONLY with a loaded theme and must not bake any theme's
+    /// concrete CSS literal into the core. Every <c>string</c>-typed token member (the leaf that would
+    /// otherwise carry a "16px"/"var(--...)"/"#RRGGBB" literal) must therefore be <c>required</c>, so
+    /// a theme (or reference package) is forced to supply every value. A newly-added token that forgets
+    /// <c>required</c> and ships a default fails here, keeping the "no core defaults" mandate enforced.
+    /// </summary>
+    [Fact]
+    public void AbstractionsTokenRecords_ShipNoLiteralDefaults()
+    {
+        var nullability = new NullabilityInfoContext();
+        var offenders = typeof(DesignTokens).Assembly.GetTypes()
+            .Where(t => t is { IsClass: true, IsPublic: true, Namespace: not null }
+                        && t.Namespace.StartsWith("Flare.Abstractions.Tokens", StringComparison.Ordinal))
+            .SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                // Only the leaf, NON-NULLABLE string members can carry a baked CSS literal: a
+                // non-required, non-nullable string must have a non-null initializer to compile clean,
+                // which is exactly the theme literal the mandate forbids in the core. Nullable metadata
+                // (string? Source/StyleAsset) defaults to null (absent, not a literal) and is allowed;
+                // nested records are covered by their own members; non-string members (the Extended
+                // extras map) are not theme literals.
+                .Where(p => p.PropertyType == typeof(string) && p.CanWrite)
+                .Where(p => nullability.Create(p).WriteState != NullabilityState.Nullable)
+                .Where(p => p.GetCustomAttribute<RequiredMemberAttribute>() is null)
+                .Select(p => $"{t.Name}.{p.Name}"))
+            .OrderBy(n => n, StringComparer.Ordinal)
+            .ToArray();
+
+        Assert.True(offenders.Length == 0,
+            "Flare.Abstractions token member(s) ship a default instead of being 'required' - the core " +
+            "must not bake theme literals; make them 'required' and move the value to the theme/reference " +
+            "package: " + string.Join(", ", offenders));
+    }
 }
