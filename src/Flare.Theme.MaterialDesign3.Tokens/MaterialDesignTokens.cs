@@ -159,11 +159,6 @@ public class MaterialDesignTokens
 
         // Trigger is square: width = Button height (forwarded), no inline padding needed
         TriggerWidth = "var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))",
-        TriggerPaddingXs = "0px",
-        TriggerPaddingSm = "0px",
-        TriggerPaddingMd = "0px",
-        TriggerPaddingLg = "0px",
-        TriggerPaddingXl = "0px",
 
         // Caret icon = Button icon size at the same size (token forwarded)
         CaretSizeXs = "var(--flare-btn-icon-size-xs)",

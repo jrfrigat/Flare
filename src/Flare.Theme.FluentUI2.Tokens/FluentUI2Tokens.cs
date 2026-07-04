@@ -150,11 +150,6 @@ public class FluentUI2Tokens
 
         // Fluent: fixed-width trigger 24dp (not square), no inline padding needed
         TriggerWidth = "1.5rem", // 24dp
-        TriggerPaddingXs = "0px",
-        TriggerPaddingSm = "0px",
-        TriggerPaddingMd = "0px",
-        TriggerPaddingLg = "0px",
-        TriggerPaddingXl = "0px",
 
         // Fluent: fixed 12dp chevron at every size
         CaretSizeXs = "0.75rem",

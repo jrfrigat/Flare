@@ -112,22 +112,6 @@ public static class SplitButton
         public const string XlBottomLeft = $"{Prefix}-{Size.Xl}-{Side.BL}";
     }
 
-    /// <summary>Trigger horizontal padding across the 5 sizes.</summary>
-    public static class TriggerPaddingInline
-    {
-        private const string Prefix = $"{FlareSplit}-trigger-padding-inline";
-        /// <summary>CSS custom-property name for the xs token.</summary>
-        public const string Xs = $"{Prefix}-{Size.Xs}";
-        /// <summary>CSS custom-property name for the sm token.</summary>
-        public const string Sm = $"{Prefix}-{Size.Sm}";
-        /// <summary>CSS custom-property name for the md token.</summary>
-        public const string Md = $"{Prefix}-{Size.Md}";
-        /// <summary>CSS custom-property name for the lg token.</summary>
-        public const string Lg = $"{Prefix}-{Size.Lg}";
-        /// <summary>CSS custom-property name for the xl token.</summary>
-        public const string Xl = $"{Prefix}-{Size.Xl}";
-    }
-
     /// <summary>Arrow icon size across the 5 sizes.</summary>
     public static class CaretSize
     {

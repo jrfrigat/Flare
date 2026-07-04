@@ -193,13 +193,6 @@ public static class CssVarMap
         v[Css.Tokens.SplitButton.Gap] = t.SplitButton.Gap;
         v[Css.Tokens.SplitButton.TriggerWidth] = t.SplitButton.TriggerWidth;
 
-        // Trigger inline padding for all 5 sizes
-        v[Css.Tokens.SplitButton.TriggerPaddingInline.Xs] = t.SplitButton.TriggerPaddingXs;
-        v[Css.Tokens.SplitButton.TriggerPaddingInline.Sm] = t.SplitButton.TriggerPaddingSm;
-        v[Css.Tokens.SplitButton.TriggerPaddingInline.Md] = t.SplitButton.TriggerPaddingMd;
-        v[Css.Tokens.SplitButton.TriggerPaddingInline.Lg] = t.SplitButton.TriggerPaddingLg;
-        v[Css.Tokens.SplitButton.TriggerPaddingInline.Xl] = t.SplitButton.TriggerPaddingXl;
-
         // Chevron caret sizes for all 5 sizes
         v[Css.Tokens.SplitButton.CaretSize.Xs] = t.SplitButton.CaretSizeXs;
         v[Css.Tokens.SplitButton.CaretSize.Sm] = t.SplitButton.CaretSizeSm;

@@ -140,11 +140,6 @@ internal class LiquidGlassTokens
     {
         Gap = "2px",
         TriggerWidth = "2rem",
-        TriggerPaddingXs = "0px",
-        TriggerPaddingSm = "0px",
-        TriggerPaddingMd = "0px",
-        TriggerPaddingLg = "0px",
-        TriggerPaddingXl = "0px",
         CaretSizeXs = "0.875rem",
         CaretSizeSm = "0.875rem",
         CaretSizeMd = "1rem",

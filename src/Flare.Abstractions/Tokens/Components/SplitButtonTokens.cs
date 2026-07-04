@@ -13,17 +13,8 @@ public sealed record SplitButtonTokens
     /// <summary>Trigger width token (<c>var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))</c>).</summary>
     [CssVar(SplitButton.TriggerWidth)] public required string TriggerWidth { get; init; }
 
-    // --- 2. TRIGGER SIDE PADDING (dropdown-menu carets) ---
-    /// <summary>Trigger padding xs token (<c>0.375rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Xs)] public required string TriggerPaddingXs { get; init; }
-    /// <summary>Trigger padding sm token (<c>0.5rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Sm)] public required string TriggerPaddingSm { get; init; }
-    /// <summary>Trigger padding md token (<c>1rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Md)] public required string TriggerPaddingMd { get; init; }
-    /// <summary>Trigger padding lg token (<c>1.25rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Lg)] public required string TriggerPaddingLg { get; init; }
-    /// <summary>Trigger padding xl token (<c>1.5rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Xl)] public required string TriggerPaddingXl { get; init; }
+    // (Trigger side padding tokens removed: the trigger is a fixed icon-only square with
+    //  padding-inline:0 in splitbutton.css, so these had no CSS reader.)
 
     // --- 3. CARET ICON SIZES (Caret Sizes) ---
     /// <summary>Caret size xs token (<c>0.875rem</c>).</summary>

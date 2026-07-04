@@ -139,11 +139,6 @@ internal class AeroTokens
     {
         Gap = "1px",
         TriggerWidth = "1.25rem",
-        TriggerPaddingXs = "0px",
-        TriggerPaddingSm = "0px",
-        TriggerPaddingMd = "0px",
-        TriggerPaddingLg = "0px",
-        TriggerPaddingXl = "0px",
         CaretSizeXs = "0.75rem",
         CaretSizeSm = "0.75rem",
         CaretSizeMd = "0.75rem",
