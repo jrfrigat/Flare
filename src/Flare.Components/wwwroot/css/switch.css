@@ -119,12 +119,12 @@
 /* Hover - state layer around thumb ball (MD3 only; Fluent sets these vars to none) */
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__thumb .flare-switch__handle {
     box-shadow: var(--flare-switch-hover-shadow-off,
-        0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent));
+        0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent));
 }
 
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle {
     box-shadow: var(--flare-switch-hover-shadow-on,
-        0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) 8%, transparent));
+        0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent));
 }
 
 /* Focus-visible ring. MD3: 3dp secondary indicator, 2dp offset. */

@@ -13,6 +13,6 @@
     transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 .flare-color-mode-toggle:hover {
-    background-color: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+    background-color: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 .flare-color-mode-toggle__label { pointer-events: none; }

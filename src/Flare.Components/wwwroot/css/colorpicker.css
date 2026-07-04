@@ -388,5 +388,5 @@
 }
 
 .flare-colorpicker__eyedropper-btn:hover {
-    background: color-mix(in srgb, var(--flare-color-primary) 8%, var(--flare-color-surface-container-highest));
+    background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface-container-highest));
 }

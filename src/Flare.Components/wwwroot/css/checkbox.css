@@ -32,13 +32,13 @@
 /* State layer is an MD3 trait - Fluent sets these tokens to transparent (no halo) */
 .flare-checkbox:not(.flare-checkbox--disabled):hover .flare-checkbox__container::before {
     background: var(--flare-checkbox-state-layer-hover,
-        color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent));
+        color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent));
 }
 
 /* When checked - use primary tint for the state layer */
 .flare-checkbox:not(.flare-checkbox--disabled):has(.flare-checkbox__input:checked):hover .flare-checkbox__container::before {
     background: var(--flare-checkbox-state-layer-hover-checked,
-        color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 8%, transparent));
+        color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) calc(var(--flare-state-hover-opacity) * 100%), transparent));
 }
 
 .flare-checkbox__input {
