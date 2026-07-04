@@ -89,6 +89,9 @@ public sealed record DesignTokens
     /// <summary>Rating (star) tokens.</summary>
     public required RatingTokens Rating { get; init; }
 
+    /// <summary>Pagination tokens.</summary>
+    public required PaginationTokens Pagination { get; init; }
+
     /// <summary>Switch tokens.</summary>
     public required SwitchTokens Switch { get; init; }
 

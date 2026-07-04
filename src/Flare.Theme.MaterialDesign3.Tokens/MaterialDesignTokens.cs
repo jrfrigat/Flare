@@ -638,6 +638,16 @@ public class MaterialDesignTokens
         HoverScale = "1.15",
     };
 
+    // Pagination: Size = initial defers to the size classes; extra-small radius, outline-variant
+    // border, primary active fill (the Color parameter overrides via --fc-main).
+    internal static readonly PaginationTokens Pagination = new()
+    {
+        Size = "initial",
+        Radius = "var(--flare-shape-extra-small)",
+        BorderColor = "var(--flare-color-outline-variant)",
+        ActiveColor = "var(--flare-color-primary)",
+    };
+
     // Switch (MD3 baseline geometry: 52x32 track, 24 thumb, elevation-1 lift). Carried explicitly
     // now that the core record ships no defaults.
     internal static readonly SwitchTokens Switch = new()
@@ -700,6 +710,7 @@ public class MaterialDesignTokens
         Switch = Switch,
         DataGrid = DataGrid,
         Rating = Rating,
+        Pagination = Pagination,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,

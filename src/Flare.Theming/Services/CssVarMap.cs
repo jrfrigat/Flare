@@ -366,6 +366,11 @@ public static class CssVarMap
         v[Css.Tokens.Rating.FilledColor] = t.Rating.FilledColor;
         v[Css.Tokens.Rating.HoverScale] = t.Rating.HoverScale;
 
+        v[Css.Tokens.Pagination.Size] = t.Pagination.Size;
+        v[Css.Tokens.Pagination.Radius] = t.Pagination.Radius;
+        v[Css.Tokens.Pagination.BorderColor] = t.Pagination.BorderColor;
+        v[Css.Tokens.Pagination.ActiveColor] = t.Pagination.ActiveColor;
+
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;

@@ -514,6 +514,15 @@ public class FluentUI2Tokens
         HoverScale = "1.15",
     };
 
+    // Pagination: same neutral baseline (Size defers to the size classes; primary active fill).
+    internal static readonly PaginationTokens Pagination = new()
+    {
+        Size = "initial",
+        Radius = "var(--flare-shape-extra-small)",
+        BorderColor = "var(--flare-color-outline-variant)",
+        ActiveColor = "var(--flare-color-primary)",
+    };
+
     // DataGrid baseline geometry/colors. Fluent does not customize the grid, so it carries the same
     // neutral baseline explicitly (self-contained, independent of the MD3 reference).
     internal static readonly DataGridTokens DataGrid = new()
@@ -812,6 +821,7 @@ public class FluentUI2Tokens
         Switch = Switch,
         DataGrid = DataGrid,
         Rating = Rating,
+        Pagination = Pagination,
         Popover = Popover,
         Extended = Extended,
     };
