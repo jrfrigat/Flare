@@ -188,17 +188,19 @@ public class FluentUI2Tokens
         PaddingMd = "1rem",
         PaddingLg = "1.5rem",
         Gap = "0.375rem",
-        Radius = "var(--flare-shape-full)",
-        RadiusSelectedSm = "var(--flare-shape-medium)",
-        RadiusSelectedMd = "var(--flare-shape-medium)",
-        RadiusSelectedLg = "1rem",
+        // Fluent segmented control: subtle rounded rectangle, and the selected state changes colour
+        // only (no MD3 Expressive pill->squircle shape morph, so RadiusSelected* == Radius).
+        Radius = "var(--flare-shape-small)",
+        RadiusSelectedSm = "var(--flare-shape-small)",
+        RadiusSelectedMd = "var(--flare-shape-small)",
+        RadiusSelectedLg = "var(--flare-shape-small)",
         RestBg = "var(--flare-color-surface-container-highest)",
         RestColor = "var(--flare-color-on-surface-variant)",
         SelectedBg = "var(--flare-color-secondary-container)",
         SelectedColor = "var(--flare-color-on-secondary-container)",
         GroupBorder = "1px solid var(--flare-color-outline)",
-        GroupRadius = "var(--flare-shape-full)",
-        GroupRadiusVertical = "var(--flare-shape-medium)",
+        GroupRadius = "var(--flare-shape-small)",
+        GroupRadiusVertical = "var(--flare-shape-small)",
         GroupDivider = "var(--flare-color-outline)",
     };
 

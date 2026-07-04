@@ -7,7 +7,9 @@
     box-sizing: border-box;
     position: relative;
     overflow: hidden;
-    /* Резервируем focus-ring прозрачным, чтобы появление анимировалось по цвету (MD3 ~100ms ease-out) */
+    /* Резервируем focus-ring прозрачным (без layout-сдвига). Цвет НЕ анимируем: transition на
+       outline-color растягивал бы кратковременный focus-visible-флип (после re-render по клику мышью)
+       в видимое "моргание". Кольцо появляется мгновенно и только по :focus-visible (клавиатура/Tab). */
     outline: 3px solid transparent;
     outline-offset: var(--flare-btn-focus-outline-offset, 2px);
     cursor: pointer;
@@ -35,7 +37,7 @@
        tokens, so animating them would morph every button's geometry on a theme switch (the
        leftover "MD3 shape" effect). Keep only colour/shadow/outline transitions. A press-time
        shape morph, if wanted, should be a scoped :active transition - not a global one. */
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), outline-color var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
     /* Резервируем 1px под рамку для всех кнопок (метод Fluent UI 2 & MD3) */
     border: 1px solid transparent;
 }

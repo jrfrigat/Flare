@@ -209,7 +209,13 @@
 
     private string? _displayedError => ErrorText ?? _validationError;
 
-    private async Task FocusInputAsync() => await _inputRef.FocusAsync();
+    private async Task FocusInputAsync()
+    {
+        // The text input is only rendered when editable; clicking the field while Disabled/ReadOnly
+        // must not try to focus a non-existent element (default ElementReference -> JS error).
+        if (Disabled || ReadOnly) return;
+        await _inputRef.FocusAsync();
+    }
 
     private async Task AddTagAsync(string tag)
     {
