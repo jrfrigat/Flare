@@ -142,7 +142,7 @@
     private bool _loading;
     private int _activeIdx = -1;
     private List<string> _options = [];
-    private CancellationTokenSource? _searchCts;
+    private readonly CancelScope _searchCts = new();
     private bool _hasSuggestionsApi => Suggestions is not null || SearchFunc is not null;
 
     // Focus ring is pure :focus-within on the shared flare-input__field; error/disabled use the shared
@@ -166,7 +166,7 @@
 
     public override async ValueTask DisposeAsync()
     {
-        _searchCts?.Cancel();
+        _searchCts.Dispose();
         await base.DisposeAsync();
     }
 
@@ -271,9 +271,7 @@
             return;
         }
 
-        _searchCts?.Cancel();
-        _searchCts = new CancellationTokenSource();
-        var token = _searchCts.Token;
+        var token = _searchCts.Next();
 
         IEnumerable<string> results;
         if (SearchFunc is not null)
