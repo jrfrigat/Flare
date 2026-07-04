@@ -322,7 +322,7 @@ internal class AeroTokens
         Nav = Nav,
         Dialog = new() { Radius = "var(--flare-shape-large)" },
         Popover = MaterialDesignTokens.Design.Popover with { Radius = "var(--flare-shape-small)" },
-        Snackbar = new() { Radius = "var(--flare-shape-small)" },
+        Snackbar = MaterialDesignTokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };
 

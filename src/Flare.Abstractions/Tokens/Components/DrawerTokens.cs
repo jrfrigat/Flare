@@ -9,56 +9,56 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record DrawerTokens
 {
     /// <summary>Background color of the drawer surface.</summary>
-    [CssVar(DrawerPanel.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.SurfaceContainerLow);
+    [CssVar(DrawerPanel.SurfaceColor)] public required string SurfaceColor { get; init; }
 
     /// <summary>Width of the drawer in its default state.</summary>
-    [CssVar(DrawerPanel.Width)] public string Width { get; init; } = "360px";
+    [CssVar(DrawerPanel.Width)] public required string Width { get; init; }
 
     /// <summary>Width of the mini variant drawer.</summary>
-    [CssVar(DrawerPanel.MiniWidth)] public string MiniWidth { get; init; } = "72px";
+    [CssVar(DrawerPanel.MiniWidth)] public required string MiniWidth { get; init; }
 
     /// <summary>Width of the drawer when expanded to a specific breakpoint (sm/md/lg/xl).</summary>
-    [CssVar(DrawerPanel.BreakpointSmWidth)] public string BreakpointSmWidth { get; init; } = "256px";
+    [CssVar(DrawerPanel.BreakpointSmWidth)] public required string BreakpointSmWidth { get; init; }
 
     /// <summary>Width of the drawer at the md breakpoint.</summary>
-    [CssVar(DrawerPanel.BreakpointMdWidth)] public string BreakpointMdWidth { get; init; } = "256px";
+    [CssVar(DrawerPanel.BreakpointMdWidth)] public required string BreakpointMdWidth { get; init; }
 
     /// <summary>Width of the drawer at the lg breakpoint.</summary>
-    [CssVar(DrawerPanel.BreakpointLgWidth)] public string BreakpointLgWidth { get; init; } = "360px";
+    [CssVar(DrawerPanel.BreakpointLgWidth)] public required string BreakpointLgWidth { get; init; }
 
     /// <summary>Width of the drawer at the xl breakpoint.</summary>
-    [CssVar(DrawerPanel.BreakpointXlWidth)] public string BreakpointXlWidth { get; init; } = "360px";
+    [CssVar(DrawerPanel.BreakpointXlWidth)] public required string BreakpointXlWidth { get; init; }
 
     /// <summary>Elevation (box-shadow) of the drawer.</summary>
-    [CssVar(DrawerPanel.Elevation)] public string Elevation { get; init; } = Vars.Var(Flare.Css.Tokens.Elevation.Level1);
+    [CssVar(DrawerPanel.Elevation)] public required string Elevation { get; init; }
 
     /// <summary>Border radius of the drawer (for top/bottom variants).</summary>
-    [CssVar(DrawerPanel.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraLarge);
+    [CssVar(DrawerPanel.Radius)] public required string Radius { get; init; }
 
     /// <summary>Background color of the scrim (overlay).</summary>
-    [CssVar(DrawerPanel.ScrimColor)] public string ScrimColor { get; init; } = Vars.Var(Color.Scrim);
+    [CssVar(DrawerPanel.ScrimColor)] public required string ScrimColor { get; init; }
 
     /// <summary>Opacity of the scrim.</summary>
-    [CssVar(DrawerPanel.ScrimOpacity)] public string ScrimOpacity { get; init; } = "0.32";
+    [CssVar(DrawerPanel.ScrimOpacity)] public required string ScrimOpacity { get; init; }
 
     /// <summary>Transition duration for drawer open/close.</summary>
-    [CssVar(DrawerPanel.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationMedium2);
+    [CssVar(DrawerPanel.TransitionDuration)] public required string TransitionDuration { get; init; }
 
     /// <summary>Transition easing for drawer open/close.</summary>
-    [CssVar(DrawerPanel.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
+    [CssVar(DrawerPanel.TransitionEasing)] public required string TransitionEasing { get; init; }
 
     /// <summary>Padding inside the drawer header.</summary>
-    [CssVar(DrawerPanel.HeaderPadding)] public string HeaderPadding { get; init; } = "16px";
+    [CssVar(DrawerPanel.HeaderPadding)] public required string HeaderPadding { get; init; }
 
     /// <summary>Padding inside the drawer content.</summary>
-    [CssVar(DrawerPanel.ContentPadding)] public string ContentPadding { get; init; } = "8px 0";
+    [CssVar(DrawerPanel.ContentPadding)] public required string ContentPadding { get; init; }
 
     /// <summary>Color of the drawer title text.</summary>
-    [CssVar(DrawerPanel.TitleColor)] public string TitleColor { get; init; } = Vars.Var(Color.OnSurface);
+    [CssVar(DrawerPanel.TitleColor)] public required string TitleColor { get; init; }
 
     /// <summary>Font family of the drawer title.</summary>
-    [CssVar(DrawerPanel.TitleFontFamily)] public string TitleFontFamily { get; init; } = Vars.Var(Typography.Font("title-large"));
+    [CssVar(DrawerPanel.TitleFontFamily)] public required string TitleFontFamily { get; init; }
 
     /// <summary>Font size of the drawer title.</summary>
-    [CssVar(DrawerPanel.TitleFontSize)] public string TitleFontSize { get; init; } = Vars.Var(Typography.Size("title-large"));
+    [CssVar(DrawerPanel.TitleFontSize)] public required string TitleFontSize { get; init; }
 }

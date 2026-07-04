@@ -9,68 +9,68 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record SnackbarTokens
 {
     /// <summary>Background color of the snackbar.</summary>
-    [CssVar(SnackbarPanel.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.InverseSurface);
+    [CssVar(SnackbarPanel.SurfaceColor)] public required string SurfaceColor { get; init; }
 
     /// <summary>Color of the snackbar text.</summary>
-    [CssVar(SnackbarPanel.TextColor)] public string TextColor { get; init; } = Vars.Var(Color.InverseOnSurface);
+    [CssVar(SnackbarPanel.TextColor)] public required string TextColor { get; init; }
 
     /// <summary>Color of the action button text.</summary>
-    [CssVar(SnackbarPanel.ActionColor)] public string ActionColor { get; init; } = Vars.Var(Color.InversePrimary);
+    [CssVar(SnackbarPanel.ActionColor)] public required string ActionColor { get; init; }
 
     /// <summary>Border radius of the snackbar.</summary>
-    [CssVar(SnackbarPanel.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraSmall);
+    [CssVar(SnackbarPanel.Radius)] public required string Radius { get; init; }
 
     /// <summary>Minimum width of the snackbar.</summary>
-    [CssVar(SnackbarPanel.MinWidth)] public string MinWidth { get; init; } = "344px";
+    [CssVar(SnackbarPanel.MinWidth)] public required string MinWidth { get; init; }
 
     /// <summary>Maximum width of the snackbar.</summary>
-    [CssVar(SnackbarPanel.MaxWidth)] public string MaxWidth { get; init; } = "560px";
+    [CssVar(SnackbarPanel.MaxWidth)] public required string MaxWidth { get; init; }
 
     /// <summary>Height of the single-line snackbar.</summary>
-    [CssVar(SnackbarPanel.Height)] public string Height { get; init; } = "48px";
+    [CssVar(SnackbarPanel.Height)] public required string Height { get; init; }
 
     /// <summary>Height of the multi-line snackbar.</summary>
-    [CssVar(SnackbarPanel.HeightMultiLine)] public string HeightMultiLine { get; init; } = "68px";
+    [CssVar(SnackbarPanel.HeightMultiLine)] public required string HeightMultiLine { get; init; }
 
     /// <summary>Padding inside the snackbar.</summary>
-    [CssVar(SnackbarPanel.Padding)] public string Padding { get; init; } = "0 16px";
+    [CssVar(SnackbarPanel.Padding)] public required string Padding { get; init; }
 
     /// <summary>Gap between text and action button.</summary>
-    [CssVar(SnackbarPanel.Gap)] public string Gap { get; init; } = "8px";
+    [CssVar(SnackbarPanel.Gap)] public required string Gap { get; init; }
 
     /// <summary>Elevation (box-shadow) of the snackbar.</summary>
-    [CssVar(SnackbarPanel.Elevation)] public string Elevation { get; init; } = Vars.Var(Flare.Css.Tokens.Elevation.Level3);
+    [CssVar(SnackbarPanel.Elevation)] public required string Elevation { get; init; }
 
     /// <summary>Font family of the snackbar text.</summary>
-    [CssVar(SnackbarPanel.FontFamily)] public string FontFamily { get; init; } = Vars.Var(Typography.Font("body-medium"));
+    [CssVar(SnackbarPanel.FontFamily)] public required string FontFamily { get; init; }
 
     /// <summary>Font size of the snackbar text.</summary>
-    [CssVar(SnackbarPanel.FontSize)] public string FontSize { get; init; } = Vars.Var(Typography.Size("body-medium"));
+    [CssVar(SnackbarPanel.FontSize)] public required string FontSize { get; init; }
 
     /// <summary>Font weight of the action button.</summary>
-    [CssVar(SnackbarPanel.ActionFontWeight)] public string ActionFontWeight { get; init; } = "var(--flare-typescale-label-large-weight, 500)";
+    [CssVar(SnackbarPanel.ActionFontWeight)] public required string ActionFontWeight { get; init; }
 
     /// <summary>Font size of the action button.</summary>
-    [CssVar(SnackbarPanel.ActionFontSize)] public string ActionFontSize { get; init; } = Vars.Var(Typography.Size("label-large"));
+    [CssVar(SnackbarPanel.ActionFontSize)] public required string ActionFontSize { get; init; }
 
     /// <summary>Transition duration for snackbar show/hide.</summary>
-    [CssVar(SnackbarPanel.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationShort2);
+    [CssVar(SnackbarPanel.TransitionDuration)] public required string TransitionDuration { get; init; }
 
     /// <summary>Transition easing for snackbar show/hide.</summary>
-    [CssVar(SnackbarPanel.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
+    [CssVar(SnackbarPanel.TransitionEasing)] public required string TransitionEasing { get; init; }
 
     /// <summary>Delay before auto-dismiss (in milliseconds).</summary>
-    [CssVar(SnackbarPanel.AutoHideDelay)] public int AutoHideDelay { get; init; } = 5000;
+    [CssVar(SnackbarPanel.AutoHideDelay)] public required int AutoHideDelay { get; init; }
 
     /// <summary>Distance from the bottom edge of the viewport.</summary>
-    [CssVar(SnackbarPanel.BottomOffset)] public string BottomOffset { get; init; } = "16px";
+    [CssVar(SnackbarPanel.BottomOffset)] public required string BottomOffset { get; init; }
 
     /// <summary>Distance from the left edge of the viewport.</summary>
-    [CssVar(SnackbarPanel.LeftOffset)] public string LeftOffset { get; init; } = "16px";
+    [CssVar(SnackbarPanel.LeftOffset)] public required string LeftOffset { get; init; }
 
     /// <summary>Distance from the right edge of the viewport.</summary>
-    [CssVar(SnackbarPanel.RightOffset)] public string RightOffset { get; init; } = "16px";
+    [CssVar(SnackbarPanel.RightOffset)] public required string RightOffset { get; init; }
 
     /// <summary>Gap between stacked snackbars.</summary>
-    [CssVar(SnackbarPanel.StackGap)] public string StackGap { get; init; } = "8px";
+    [CssVar(SnackbarPanel.StackGap)] public required string StackGap { get; init; }
 }

@@ -353,7 +353,7 @@ internal class LiquidGlassTokens
         Nav = Nav,
         Dialog = new() { Radius = "var(--flare-shape-extra-large)" },
         Popover = MaterialDesignTokens.Design.Popover with { Radius = "var(--flare-shape-large)" },
-        Snackbar = new() { Radius = "var(--flare-shape-large)" },
+        Snackbar = MaterialDesignTokens.Design.Snackbar with { Radius = "var(--flare-shape-large)" },
         Extended = Extended,
     };
 

@@ -63,10 +63,10 @@ public sealed record DesignTokens
     public DialogTokens Dialog { get; init; } = new();
 
     /// <summary>Drawer navigation tokens.</summary>
-    public DrawerTokens Drawer { get; init; } = new();
+    public required DrawerTokens Drawer { get; init; }
 
     /// <summary>Snackbar notification tokens.</summary>
-    public SnackbarTokens Snackbar { get; init; } = new();
+    public required SnackbarTokens Snackbar { get; init; }
 
     /// <summary>Tooltip tokens.</summary>
     public required TooltipTokens Tooltip { get; init; }

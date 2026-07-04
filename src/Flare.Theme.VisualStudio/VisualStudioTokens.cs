@@ -348,7 +348,7 @@ internal class VisualStudioTokens
         Nav = Nav,
         Dialog = new() { Radius = "var(--flare-shape-large)" },
         Popover = FluentUI2Tokens.Design.Popover with { Radius = "var(--flare-shape-small)" },
-        Snackbar = new() { Radius = "var(--flare-shape-small)" },
+        Snackbar = FluentUI2Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };
 

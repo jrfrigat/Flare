@@ -440,11 +440,61 @@ public class MaterialDesignTokens
         GroupOverflowColor = "var(--flare-color-on-surface-variant)",
     };
 
+    internal static readonly DrawerTokens Drawer = new()
+    {
+        SurfaceColor = "var(--flare-color-surface-container-low)",
+        Width = "360px",
+        MiniWidth = "72px",
+        BreakpointSmWidth = "256px",
+        BreakpointMdWidth = "256px",
+        BreakpointLgWidth = "360px",
+        BreakpointXlWidth = "360px",
+        Elevation = "var(--flare-elevation-1)",
+        Radius = "var(--flare-shape-extra-large)",
+        ScrimColor = "var(--flare-color-scrim)",
+        ScrimOpacity = "0.32",
+        TransitionDuration = "var(--flare-motion-duration-medium2)",
+        TransitionEasing = "var(--flare-motion-easing-standard)",
+        HeaderPadding = "16px",
+        ContentPadding = "8px 0",
+        TitleColor = "var(--flare-color-on-surface)",
+        TitleFontFamily = "var(--flare-typescale-title-large-font)",
+        TitleFontSize = "var(--flare-typescale-title-large-size)",
+    };
+
+    internal static readonly SnackbarTokens Snackbar = new()
+    {
+        SurfaceColor = "var(--flare-color-inverse-surface)",
+        TextColor = "var(--flare-color-inverse-on-surface)",
+        ActionColor = "var(--flare-color-inverse-primary)",
+        Radius = "var(--flare-shape-extra-small)",
+        MinWidth = "344px",
+        MaxWidth = "560px",
+        Height = "48px",
+        HeightMultiLine = "68px",
+        Padding = "0 16px",
+        Gap = "8px",
+        Elevation = "var(--flare-elevation-3)",
+        FontFamily = "var(--flare-typescale-body-medium-font)",
+        FontSize = "var(--flare-typescale-body-medium-size)",
+        ActionFontWeight = "var(--flare-typescale-label-large-weight, 500)",
+        ActionFontSize = "var(--flare-typescale-label-large-size)",
+        TransitionDuration = "var(--flare-motion-duration-short2)",
+        TransitionEasing = "var(--flare-motion-easing-standard)",
+        AutoHideDelay = 5000,
+        BottomOffset = "16px",
+        LeftOffset = "16px",
+        RightOffset = "16px",
+        StackGap = "8px",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
+        Drawer = Drawer,
+        Snackbar = Snackbar,
         Nav = Nav,
         BottomNav = BottomNav,
         TableOfContents = TableOfContents,
