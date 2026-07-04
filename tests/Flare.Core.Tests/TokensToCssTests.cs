@@ -1,6 +1,7 @@
 using Flare.Abstractions;
 using Flare.Theming;
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 namespace Flare.Core.Tests;
 
@@ -9,7 +10,7 @@ public class TokensToCssTests
     // Reuse the builders from ThemeServiceTests via small local copies.
     private static TypeStyle TS() => new() { FontFamily = "Test", FontWeight = "400", FontSize = "1rem", LineHeight = "1.5rem", LetterSpacing = "0" };
 
-    private static DesignTokens Design(IReadOnlyDictionary<string, string>? extended = null) => new()
+    private static DesignTokens Design(IReadOnlyDictionary<string, string>? extended = null) => MaterialDesignTokens.Design with
     {
         FocusRing = "2px solid #000",
         Typography = new()
@@ -34,17 +35,6 @@ public class TokensToCssTests
         Elevation = new() { Level0 = "none", Level1 = "0 1px 2px var(--flare-shadow-umbra)", Level2 = "x", Level3 = "x", Level4 = "x", Level5 = "x" },
         Motion = new() { DurationShort1 = "50ms", DurationShort2 = "100ms", DurationMedium1 = "200ms", DurationMedium2 = "300ms", DurationLong1 = "450ms", DurationLong2 = "600ms", EasingStandard = "ease", EasingDecelerate = "ease-out", EasingAccelerate = "ease-in", EasingEmphasized = "ease" },
         State = new() { HoverOpacity = "0.08", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12" },
-        Badge = new(),
-        Alert = new(),
-        Button = new(),
-        SplitButton = new(),
-        ToggleButton = new(),
-        Fab = new(),
-        Menu = new(),
-        Checkbox = new(),
-        Radio = new(),
-        Chip = new(),
-        Tabs = new(),
         Extended = extended ?? new Dictionary<string, string> { ["--x"] = "1" },
     };
 

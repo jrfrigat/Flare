@@ -1,11 +1,14 @@
 using Flare.Theming;
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 namespace Flare.Core.Tests;
 
 public class ThemeCompositionTests
 {
-    private static DesignTokens MakeDesign() => new()
+    // Build on the published MD3 reference (the core ships no token defaults) and override only the
+    // scale tokens with controlled test values; component tokens come from the reference.
+    private static DesignTokens MakeDesign() => MaterialDesignTokens.Design with
     {
         FocusRing = "2px solid #000",
         Typography = new()
@@ -38,17 +41,6 @@ public class ThemeCompositionTests
         },
         Motion = new() { DurationShort1 = "50ms", DurationShort2 = "100ms", DurationMedium1 = "200ms", DurationMedium2 = "300ms", DurationLong1 = "450ms", DurationLong2 = "600ms", EasingStandard = "ease", EasingDecelerate = "ease-out", EasingAccelerate = "ease-in", EasingEmphasized = "ease" },
         State = new() { HoverOpacity = "0.08", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12" },
-        Badge = new(),
-        Alert = new(),
-        Button = new(),
-        SplitButton = new(),
-        ToggleButton = new(),
-        Fab = new(),
-        Menu = new(),
-        Checkbox = new(),
-        Radio = new(),
-        Chip = new(),
-        Tabs = new(),
     };
 
     private static TypeStyle T() => new() { FontFamily = "Test", FontWeight = "400", FontSize = "1rem", LineHeight = "1.5rem", LetterSpacing = "0" };

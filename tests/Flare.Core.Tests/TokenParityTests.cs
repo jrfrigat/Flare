@@ -1,6 +1,7 @@
 using Flare.Theming;
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
+using Flare.Theme.MaterialDesign3.Tokens;
 using System.Reflection;
 
 namespace Flare.Core.Tests;
@@ -120,7 +121,7 @@ public class TokenParityTests
             LetterSpacing = "0em"
         };
 
-        return new DesignTokens
+        return MaterialDesignTokens.Design with
         {
             FocusRing = "2px solid blue",
             Typography = new TypographyTokens
@@ -182,18 +183,6 @@ public class TokenParityTests
                 DisabledOpacity = "0.38",
                 DisabledContainerOpacity = "0.12"
             },
-            Badge = new BadgeTokens(),
-            Alert = new AlertTokens(),
-            Button = new ButtonTokens(),
-            SplitButton = new SplitButtonTokens(),
-            ToggleButton = new ToggleButtonTokens(),
-            Fab = new FabTokens(),
-            Menu = new MenuTokens(),
-            Checkbox = new CheckboxTokens(),
-            Radio = new RadioTokens(),
-            Chip = new ChipTokens(),
-            Tabs = new TabsTokens(),
-            Slider = new SliderTokens()
         };
     }
 
