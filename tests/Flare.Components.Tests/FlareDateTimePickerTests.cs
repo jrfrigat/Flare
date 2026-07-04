@@ -39,7 +39,7 @@ public class FlareDateTimePickerTests : FlareTestContext
         var cut = Render<FlareDateTimePicker>(p => p
             .Add(x => x.Placeholder, "yyyy-MM-dd HH:mm"));
 
-        Assert.Equal("yyyy-MM-dd HH:mm", cut.Find(".flare-datetimepicker__control").GetAttribute("placeholder"));
+        Assert.Equal("yyyy-MM-dd HH:mm", cut.Find(".flare-datetimepicker .flare-input__control").GetAttribute("placeholder"));
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class FlareDateTimePickerTests : FlareTestContext
         var cut = Render<FlareDateTimePicker>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.True(cut.Find(".flare-datetimepicker__control").HasAttribute("disabled"));
+        Assert.True(cut.Find(".flare-datetimepicker .flare-input__control").HasAttribute("disabled"));
     }
 
     [Fact]

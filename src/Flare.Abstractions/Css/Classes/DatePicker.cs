@@ -7,9 +7,8 @@ public static class DatePicker
     public const string Root = "flare-datepicker";
     // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled
     // (flare-input--error / --disabled); the field/control carry the shared flare-input__* classes.
-    // The trigger field's click-to-open cursor uses the shared Css.Classes.Picker.Field (flare-picker__field).
-    /// <summary>The <c>flare-datepicker__control</c> CSS class.</summary>
-    public const string Control = "flare-datepicker__control";
+    // The trigger field's click-to-open cursor uses the shared Css.Classes.Picker.Field (flare-picker__field);
+    // the input itself is the pure shared Css.Classes.Input.Control (no datepicker-specific control class).
     // The calendar toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
     /// <summary>The <c>flare-datepicker__panel</c> CSS class.</summary>
     public const string Panel = "flare-datepicker__panel";
@@ -40,10 +39,9 @@ public static class TimePicker
 {
     /// <summary>The <c>flare-timepicker</c> CSS class.</summary>
     public const string Root = "flare-timepicker";
-    // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled.
-    // The field well is now the shared flare-input__field (no timepicker-specific delta remains).
-    /// <summary>The <c>flare-timepicker__control</c> CSS class.</summary>
-    public const string Control = "flare-timepicker__control";
+    // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled. The field well is
+    // the shared flare-input__field and the input is the pure shared Css.Classes.Input.Control (no
+    // timepicker-specific field/control delta remains).
     // The clock toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
     /// <summary>The <c>flare-timepicker__panel</c> CSS class.</summary>
     public const string Panel = "flare-timepicker__panel";
@@ -111,10 +109,8 @@ public static class DateTimePicker
 {
     /// <summary>The <c>flare-datetimepicker</c> CSS class.</summary>
     public const string Root = "flare-datetimepicker";
-    /// <summary>The <c>flare-datetimepicker__field</c> CSS class.</summary>
-    public const string Field = "flare-datetimepicker__field";
-    /// <summary>The <c>flare-datetimepicker__control</c> CSS class.</summary>
-    public const string Control = "flare-datetimepicker__control";
+    // The field well is the shared flare-input__field + flare-picker__field (click-to-open cursor) and
+    // the input is the pure shared Css.Classes.Input.Control - identical to DatePicker, no delta class.
     // The picker toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle);
     // label/helper/error text use the shared Css.Classes.Input.Label/Helper/HelperError.
     /// <summary>The <c>flare-datetimepicker__panel</c> CSS class.</summary>

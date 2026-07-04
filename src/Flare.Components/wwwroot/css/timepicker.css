@@ -174,15 +174,6 @@
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
-/* The field-well box-model + focus ring come from the shared flare-input__field (input.css);
-   only the error/disabled state below is timepicker-specific. */
-
-/* Base chrome inherited from .flare-input__control; only the extras below differ. */
-.flare-timepicker__control {
-  min-width: 0;            /* allow the input to shrink so the icon never overflows the field */
-  width: 100%;
-  box-sizing: border-box;
-  color-scheme: light dark;
-}
-
-/* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css). */
+/* The field-well box-model + focus ring come from the shared flare-input__field, the input is the
+   pure shared flare-input__control, and error/disabled from flare-input--error/--disabled (all
+   input.css). Nothing timepicker-specific remains on the field/control. */

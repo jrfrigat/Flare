@@ -7,19 +7,10 @@
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
-/* The field-well box-model + focus ring come from the shared flare-input__field (input.css); the
-   click-to-open pointer cursor comes from the shared flare-picker__field (picker.css). Only the
-   deliberate accent ring on :hover (the whole read-through field is a click target) is
-   datetimepicker-specific. */
-.flare-datetimepicker__field:hover {
-  border-color: var(--fc-main, var(--flare-color-primary));
-  box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
-}
-
-/* Base chrome inherited from .flare-input__control; only the extras below differ. */
-.flare-datetimepicker__control {
-  cursor: pointer;
-}
+/* The field-well (box-model + border + hover + focus ring) comes entirely from the shared
+   flare-input__field (input.css); the click-to-open cursor from the shared flare-picker__field
+   (picker.css). The input is the pure shared flare-input__control. So DateTimePicker's field + control
+   are IDENTICAL to DatePicker's - nothing datetimepicker-specific remains on them. */
 
 /* The picker toggle button uses the shared flare-input__toggle reset (input.css). */
 

@@ -12,8 +12,8 @@
     {
         <label class="@Css.Classes.Input.Label">@Label</label>
     }
-    <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field @Css.Classes.DateTimePicker.Field" @ref="_fieldRef">
-        <input class="@Css.Classes.Input.Control @Css.Classes.DateTimePicker.Control"
+    <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldRef">
+        <input class="@Css.Classes.Input.Control"
                style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                type="text"
                disabled="@Disabled"

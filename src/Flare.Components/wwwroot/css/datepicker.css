@@ -10,10 +10,7 @@
 /* The field-well box-model + focus ring come from the shared flare-input__field (input.css);
    only the pointer cursor + error/disabled state below are datepicker-specific. */
 
-/* Base chrome inherited from .flare-input__control; only the extras below differ. */
-.flare-datepicker__control {
-  color-scheme: light dark;
-}
+/* The input is the pure shared flare-input__control (input.css); nothing datepicker-specific. */
 
 /* The calendar toggle button uses the shared flare-input__toggle reset (input.css). */
 
