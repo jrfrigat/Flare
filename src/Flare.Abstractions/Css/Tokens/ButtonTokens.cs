@@ -128,7 +128,7 @@ public static class Button
     /// <summary>Prefix for the label typography CSS variables: --flare-btn-label-{size}-{font|weight|size|height|spacing}.</summary>
     public const string LabelPrefix = $"{FlareBtn}-label";
 
-    // Фокусное кольцо и поведение теней
+    // Focus ring and shadow behavior
     /// <summary>CSS custom-property name for the focus outline token.</summary>
     public const string FocusOutline = $"{FlareBtn}-focus-outline";
     /// <summary>CSS custom-property name for the focus outline offset token.</summary>

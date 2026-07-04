@@ -66,7 +66,7 @@ public class FluentUI2Tokens
     {
         HoverOpacity = "0.1",
         FocusOpacity = "0.1",
-        PressedOpacity = "0.12", // F2: pressed - самый тёмный (тёмнее hover 0.10)
+        PressedOpacity = "0.12", // F2: pressed - the darkest (darker than hover 0.10)
         DraggedOpacity = "0.1",
         DisabledOpacity = "0.4",
         DisabledContainerOpacity = "0.1",
@@ -95,48 +95,48 @@ public class FluentUI2Tokens
 
     internal static readonly ButtonTokens Button = new()
     {
-        // Компактные зазоры (Gap) между текстом и иконкой Microsoft
+        // Compact gaps (Gap) between text and the Microsoft icon
         GapXs = "0.125rem",        // 2px
         GapSm = "0.25rem",         // 4px
-        GapMd = "0.375rem",        // 6px (Стандарт по гайдлайнам)
+        GapMd = "0.375rem",        // 6px (guideline standard)
         GapLg = "0.5rem",          // 8px
         GapXl = "0.5rem",          // 8px
 
-        // Высоты контейнеров по спецификации Fluent UI 2
+        // Container heights per the Fluent UI 2 spec
         HeightXs = "1.25rem",   // 20px
         HeightSm = "1.5rem",     // 24px
-        HeightMd = "2rem",      // 32px (Стандартная кнопка)
+        HeightMd = "2rem",      // 32px (standard button)
         HeightLg = "2.5rem",     // 40px
         HeightXl = "3rem",      // 48px
 
-        // Строгие боковые паддинги (внутренние отступы)
+        // Strict inline padding (inner spacing)
         PaddingInlineXs = "0.375rem", // 6px
         PaddingInlineSm = "0.5rem",    // 8px
         PaddingInlineMd = "0.75rem",   // 12px
         PaddingInlineLg = "1rem",      // 16px
         PaddingInlineXl = "1.25rem",  // 20px
 
-        // Поугловые радиусы пропорционально габаритам (строгие углы Windows 11)
+        // Corner radii proportional to size (strict Windows 11 corners)
         RadiusXs = CornerRadiusTokens.All("var(--flare-shape-extra-small)"), // 2px
         RadiusSm = CornerRadiusTokens.All("var(--flare-shape-small)"),       // 4px
         RadiusMd = CornerRadiusTokens.All("var(--flare-shape-small)"),       // 4px
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-medium)"),      // 6px
         RadiusXl = CornerRadiusTokens.All("var(--flare-shape-large)"),       // 8px
 
-        // Поведение двойного фокусного кольца (внутреннее + внешнее) и плоские тени
+        // Double focus-ring behavior (inner + outer) and flat shadows
         FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color, #000000)",
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF)",
         FilledHoverShadow = "none",
 
-        // Компактные иконки Fluent (без MD3-гигантизма на L/XL)
+        // Compact Fluent icons (no MD3 gigantism at L/XL)
         IconSizeXs = "1rem",     // 16px
         IconSizeSm = "1rem",     // 16px
         IconSizeMd = "1.25rem",  // 20px
         IconSizeLg = "1.25rem",  // 20px
         IconSizeXl = "1.5rem",   // 24px
 
-        // Типографика метки: компактная шкала Fluent (текст почти не растёт)
+        // Label typography: compact Fluent scale (text barely grows)
         LabelXs = Typography.LabelLarge,
         LabelSm = Typography.LabelLarge,
         LabelMd = Typography.LabelLarge,
@@ -146,9 +146,9 @@ public class FluentUI2Tokens
 
     internal static readonly SplitButtonTokens SplitButton = new()
     {
-        Gap = "1px", // Тонкий стыковой шов Microsoft в 1px
+        Gap = "1px", // Thin 1px Microsoft seam between the two parts
 
-        // Fluent: триггер фиксированной ширины 24dp (не квадрат), боковые паддинги не нужны
+        // Fluent: fixed-width trigger 24dp (not square), no inline padding needed
         TriggerWidth = "1.5rem", // 24dp
         TriggerPaddingXs = "0px",
         TriggerPaddingSm = "0px",
@@ -156,21 +156,21 @@ public class FluentUI2Tokens
         TriggerPaddingLg = "0px",
         TriggerPaddingXl = "0px",
 
-        // Fluent: шеврон фиксированный 12dp на всех размерах
+        // Fluent: fixed 12dp chevron at every size
         CaretSizeXs = "0.75rem",
         CaretSizeSm = "0.75rem",
         CaretSizeMd = "0.75rem",
         CaretSizeLg = "0.75rem",
         CaretSizeXl = "0.75rem",
 
-        // Main: внешние ЛЕВЫЕ края = радиус Button (проброс), внутренние стыки - острый 0 (Fluent)
+        // Main: outer LEFT edges = Button radius (passthrough), inner joints - sharp 0 (Fluent)
         MainRadiusXs = new() { TopLeft = "var(--flare-btn-radius-xs-top-left)", BottomLeft = "var(--flare-btn-radius-xs-bottom-left)", TopRight = "0px", BottomRight = "0px" },
         MainRadiusSm = new() { TopLeft = "var(--flare-btn-radius-sm-top-left)", BottomLeft = "var(--flare-btn-radius-sm-bottom-left)", TopRight = "0px", BottomRight = "0px" },
         MainRadiusMd = new() { TopLeft = "var(--flare-btn-radius-md-top-left)", BottomLeft = "var(--flare-btn-radius-md-bottom-left)", TopRight = "0px", BottomRight = "0px" },
         MainRadiusLg = new() { TopLeft = "var(--flare-btn-radius-lg-top-left)", BottomLeft = "var(--flare-btn-radius-lg-bottom-left)", TopRight = "0px", BottomRight = "0px" },
         MainRadiusXl = new() { TopLeft = "var(--flare-btn-radius-xl-top-left)", BottomLeft = "var(--flare-btn-radius-xl-bottom-left)", TopRight = "0px", BottomRight = "0px" },
 
-        // Trigger: внутренние стыки - острый 0, внешние ПРАВЫЕ края = радиус Button (проброс)
+        // Trigger: inner joints - sharp 0, outer RIGHT edges = Button radius (passthrough)
         TriggerRadiusXs = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-xs-top-right)", BottomRight = "var(--flare-btn-radius-xs-bottom-right)" },
         TriggerRadiusSm = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-sm-top-right)", BottomRight = "var(--flare-btn-radius-sm-bottom-right)" },
         TriggerRadiusMd = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-md-top-right)", BottomRight = "var(--flare-btn-radius-md-bottom-right)" },
@@ -178,7 +178,7 @@ public class FluentUI2Tokens
         TriggerRadiusXl = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    // Toggle: пока = дефолты MD3 (Fluent-специфичные размеры/форма - открытое решение в спеке).
+    // Toggle: currently = MD3 defaults (Fluent-specific sizes/shape - an open decision in the spec).
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
         HeightSm = "2rem",
@@ -204,7 +204,7 @@ public class FluentUI2Tokens
         GroupDivider = "var(--flare-color-outline)",
     };
 
-    // FAB: более плоское скругление Fluent (4-8dp).
+    // FAB: flatter Fluent rounding (4-8dp).
     internal static readonly FabTokens Fab = new()
     {
         RadiusSm = "var(--flare-shape-small)",
@@ -219,8 +219,8 @@ public class FluentUI2Tokens
         AnchorOffset = "1.5rem",
     };
 
-    // Menu: neutral baseline geometry, но появление панели - fade/slide без scale (Fluent motion).
-    // Все члены заданы явно теперь, когда core-record не несёт значений по умолчанию.
+    // Menu: neutral baseline geometry, but the panel appears via fade/slide without scale (Fluent motion).
+    // All members are now set explicitly, since the core record carries no default values.
     internal static readonly MenuTokens Menu = new()
     {
         PanelMinWidth = "10rem",
@@ -255,7 +255,7 @@ public class FluentUI2Tokens
         ItemFocusRingOffset = "-3px",
     };
 
-    // Checkbox - Fluent: 1px рамка, 4dp угол, без MD3 halo, двойное фокусное кольцо.
+    // Checkbox - Fluent: 1px border, 4dp corner, no MD3 halo, double focus ring.
     internal static readonly CheckboxTokens Checkbox = new()
     {
         BorderWidth = "1px",
@@ -267,14 +267,14 @@ public class FluentUI2Tokens
         FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
     };
 
-    // Radio - Fluent: без MD3 state-layer halo.
+    // Radio - Fluent: no MD3 state-layer halo.
     internal static readonly RadioTokens Radio = new()
     {
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
     };
 
-    // Chip - Fluent: те же значения (8dp/32dp).
+    // Chip - Fluent: the same values (8dp/32dp).
     internal static readonly ChipTokens Chip = new()
     {
         Radius = "var(--flare-shape-small)",
@@ -294,8 +294,8 @@ public class FluentUI2Tokens
         PillRadius = "var(--flare-shape-full)",
     };
 
-    // On-this-page - Fluent: рейл-стиль (вертикальная линия + brand-полоса слева у активного),
-    // без MD3-пилюли.
+    // On-this-page - Fluent: rail style (vertical line + brand bar on the left of the active item),
+    // without the MD3 pill.
     internal static readonly Flare.Abstractions.Tokens.Components.TableOfContentsTokens TableOfContents = new()
     {
         ActiveColor = "var(--flare-color-primary)",
@@ -311,9 +311,9 @@ public class FluentUI2Tokens
         Indent = "0.75rem",
     };
 
-    // Slider - Fluent: тонкий рельс 4px, круглый белый thumb (20px) с brand-обводкой 2px,
-    // active = brand, inactive = neutralStroke; без MD3 Expressive-планки/выреза.
-    // Геометрия задаётся обычными токенами-константами (без зависимости от размера).
+    // Slider - Fluent: thin 4px rail, round white thumb (20px) with a 2px brand ring,
+    // active = brand, inactive = neutralStroke; without the MD3 Expressive bar/notch.
+    // Geometry is set via plain constant tokens (no dependency on size).
     internal static readonly SliderTokens Slider = new()
     {
         TrackHeight = "4px",

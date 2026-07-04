@@ -53,7 +53,7 @@ public static class ToggleButton
     /// <summary>CSS custom-property name for the selected color token.</summary>
     public const string SelectedColor = $"{FlareToggleBtn}-selected-color";
 
-    // Группа (Segmented)
+    // Group (Segmented)
     private const string FlareToggleGroup = $"{Vars.Flare}-togglegroup";
     /// <summary>CSS custom-property name for the group border token.</summary>
     public const string GroupBorder = $"{FlareToggleGroup}-border";

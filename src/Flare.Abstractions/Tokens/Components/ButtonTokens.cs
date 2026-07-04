@@ -11,7 +11,7 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record ButtonTokens
 {
-    // --- 1. СТРОГО ТИПИЗИРОВАННЫЕ ЗАЗОРЫ (Gaps между иконкой и текстом) ---
+    // --- 1. STRONGLY-TYPED GAPS (gaps between icon and text) ---
     /// <summary>Gap xs token (<c>0.25rem</c>).</summary>
     [CssVar(Button.Gap.Xs)] public required string GapXs { get; init; }
     /// <summary>Gap sm token (<c>0.375rem</c>).</summary>
@@ -23,7 +23,7 @@ public sealed record ButtonTokens
     /// <summary>Gap xl token (<c>0.75rem</c>).</summary>
     [CssVar(Button.Gap.Xl)] public required string GapXl { get; init; }
 
-    // --- 2. ПОУГЛОВЫЕ РАДИУСЫ ПОД КАЖДЫЙ ИЗ 5 РАЗМЕРОВ ---
+    // --- 2. PER-CORNER RADII FOR EACH OF THE 5 SIZES ---
     // (compound: each expands to 4 per-corner --flare-btn-radius-* vars in CssVarMap.FlattenDesign)
     // All 5 sizes are fully-rounded pills (radius == half of the fixed container height for every
     // size), so they reference the Shape.Full scale token - like every other component that follows
@@ -41,7 +41,7 @@ public sealed record ButtonTokens
     /// <summary>Radius xl token.</summary>
     public required CornerRadiusTokens RadiusXl { get; init; }
 
-    // --- 3. ВЫСОТА КОНТЕЙНЕРОВ (Container Heights) ---
+    // --- 3. CONTAINER HEIGHTS ---
     /// <summary>Height xs token (<c>2rem</c>).</summary>
     [CssVar(Button.Height.Xs)] public required string HeightXs { get; init; }
     /// <summary>Height sm token (<c>2.5rem</c>).</summary>
@@ -53,7 +53,7 @@ public sealed record ButtonTokens
     /// <summary>Height xl token (<c>4rem</c>).</summary>
     [CssVar(Button.Height.Xl)] public required string HeightXl { get; init; }
 
-    // --- 4. БОКОВЫЕ ОТСТУПЫ (Padding Inline) ---
+    // --- 4. INLINE PADDING (side padding) ---
     /// <summary>Padding inline xs token (<c>0.75rem</c>).</summary>
     [CssVar(Button.PaddingInline.Xs)] public required string PaddingInlineXs { get; init; }
     /// <summary>Padding inline sm token (<c>1rem</c>).</summary>
@@ -65,7 +65,7 @@ public sealed record ButtonTokens
     /// <summary>Padding inline xl token (<c>2.5rem</c>).</summary>
     [CssVar(Button.PaddingInline.Xl)] public required string PaddingInlineXl { get; init; }
 
-    // --- 5. ФОКУСЫ И ПОВЕДЕНИЕ ---
+    // --- 5. FOCUS AND BEHAVIOR ---
     /// <summary>Focus outline token (<c>2px solid transparent</c>).</summary>
     [CssVar(Button.FocusOutline)] public required string FocusOutline { get; init; }
     /// <summary>Focus outline offset token (<c>0px</c>).</summary>
@@ -75,7 +75,7 @@ public sealed record ButtonTokens
     /// <summary>Filled hover shadow token (<c>none</c>).</summary>
     [CssVar(Button.FilledHoverShadow)] public required string FilledHoverShadow { get; init; }
 
-    // --- 6. РАЗМЕР ИКОНКИ (Icon size) под 5 размеров ---
+    // --- 6. ICON SIZE for the 5 sizes ---
     /// <summary>Icon size xs token (<c>1.25rem</c>).</summary>
     [CssVar(Button.IconSize.Xs)] public required string IconSizeXs { get; init; }
     /// <summary>Icon size sm token (<c>1.25rem</c>).</summary>
@@ -87,8 +87,8 @@ public sealed record ButtonTokens
     /// <summary>Icon size xl token (<c>2.5rem</c>).</summary>
     [CssVar(Button.IconSize.Xl)] public required string IconSizeXl { get; init; }
 
-    // --- 7. ТИПОГРАФИКА МЕТКИ (Label) под 5 размеров ---
-    // Каждая тема задаёт свою шкалу (напр. MD3: label-large -> title-medium -> headline-*).
+    // --- 7. LABEL TYPOGRAPHY for the 5 sizes ---
+    // Each theme defines its own scale (e.g. MD3: label-large -> title-medium -> headline-*).
     // (compound: each TypeStyle expands to several --flare-btn-label-* vars in CssVarMap.FlattenDesign)
     /// <summary>Label xs token.</summary>
     public required TypeStyle LabelXs { get; init; }

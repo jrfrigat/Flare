@@ -115,28 +115,28 @@ public static class CssVarMap
         #endregion
 
         #region BUTTON
-        // Зазоры (Gaps)
+        // Gaps
         v[Css.Tokens.Button.Gap.Xs] = t.Button.GapXs;
         v[Css.Tokens.Button.Gap.Sm] = t.Button.GapSm;
         v[Css.Tokens.Button.Gap.Md] = t.Button.GapMd;
         v[Css.Tokens.Button.Gap.Lg] = t.Button.GapLg;
         v[Css.Tokens.Button.Gap.Xl] = t.Button.GapXl;
 
-        // Фиксированные высоты контейнеров (Heights)
+        // Fixed container heights (Heights)
         v[Css.Tokens.Button.Height.Xs] = t.Button.HeightXs;
         v[Css.Tokens.Button.Height.Sm] = t.Button.HeightSm;
         v[Css.Tokens.Button.Height.Md] = t.Button.HeightMd;
         v[Css.Tokens.Button.Height.Lg] = t.Button.HeightLg;
         v[Css.Tokens.Button.Height.Xl] = t.Button.HeightXl;
 
-        // Боковые отступы (Padding Inline)
+        // Inline padding (Padding Inline)
         v[Css.Tokens.Button.PaddingInline.Xs] = t.Button.PaddingInlineXs;
         v[Css.Tokens.Button.PaddingInline.Sm] = t.Button.PaddingInlineSm;
         v[Css.Tokens.Button.PaddingInline.Md] = t.Button.PaddingInlineMd;
         v[Css.Tokens.Button.PaddingInline.Lg] = t.Button.PaddingInlineLg;
         v[Css.Tokens.Button.PaddingInline.Xl] = t.Button.PaddingInlineXl;
 
-        // Поугловые радиусы скругления (Corner Radii) под все 5 размеров
+        // Per-corner radii (Corner Radii) for all 5 sizes
         // Extra Small (XS)
         v[Css.Tokens.Button.Radius.XsTopLeft] = t.Button.RadiusXs.TopLeft;
         v[Css.Tokens.Button.Radius.XsTopRight] = t.Button.RadiusXs.TopRight;
@@ -167,20 +167,20 @@ public static class CssVarMap
         v[Css.Tokens.Button.Radius.XlBottomRight] = t.Button.RadiusXl.BottomRight;
         v[Css.Tokens.Button.Radius.XlBottomLeft] = t.Button.RadiusXl.BottomLeft;
 
-        // Поведение фокуса и теней
+        // Focus and shadow behavior
         v[Css.Tokens.Button.FocusOutline] = t.Button.FocusOutline;
         v[Css.Tokens.Button.FocusOutlineOffset] = t.Button.FocusOutlineOffset;
         v[Css.Tokens.Button.FocusShadow] = t.Button.FocusShadow;
         v[Css.Tokens.Button.FilledHoverShadow] = t.Button.FilledHoverShadow;
 
-        // Размер иконки
+        // Icon size
         v[Css.Tokens.Button.IconSize.Xs] = t.Button.IconSizeXs;
         v[Css.Tokens.Button.IconSize.Sm] = t.Button.IconSizeSm;
         v[Css.Tokens.Button.IconSize.Md] = t.Button.IconSizeMd;
         v[Css.Tokens.Button.IconSize.Lg] = t.Button.IconSizeLg;
         v[Css.Tokens.Button.IconSize.Xl] = t.Button.IconSizeXl;
 
-        // Типографика метки (по 5 размеров)
+        // Label typography (across 5 sizes)
         FlattenBtnLabel(v, "xs", t.Button.LabelXs);
         FlattenBtnLabel(v, "sm", t.Button.LabelSm);
         FlattenBtnLabel(v, "md", t.Button.LabelMd);
@@ -189,25 +189,25 @@ public static class CssVarMap
         #endregion
 
         #region SPLIT BUTTON
-        // Базовый зазор шва
+        // Base seam gap
         v[Css.Tokens.SplitButton.Gap] = t.SplitButton.Gap;
         v[Css.Tokens.SplitButton.TriggerWidth] = t.SplitButton.TriggerWidth;
 
-        // Боковые отступы триггера под все 5 размеров
+        // Trigger inline padding for all 5 sizes
         v[Css.Tokens.SplitButton.TriggerPaddingInline.Xs] = t.SplitButton.TriggerPaddingXs;
         v[Css.Tokens.SplitButton.TriggerPaddingInline.Sm] = t.SplitButton.TriggerPaddingSm;
         v[Css.Tokens.SplitButton.TriggerPaddingInline.Md] = t.SplitButton.TriggerPaddingMd;
         v[Css.Tokens.SplitButton.TriggerPaddingInline.Lg] = t.SplitButton.TriggerPaddingLg;
         v[Css.Tokens.SplitButton.TriggerPaddingInline.Xl] = t.SplitButton.TriggerPaddingXl;
 
-        // Размеры стрелки шеврона под все 5 размеров
+        // Chevron caret sizes for all 5 sizes
         v[Css.Tokens.SplitButton.CaretSize.Xs] = t.SplitButton.CaretSizeXs;
         v[Css.Tokens.SplitButton.CaretSize.Sm] = t.SplitButton.CaretSizeSm;
         v[Css.Tokens.SplitButton.CaretSize.Md] = t.SplitButton.CaretSizeMd;
         v[Css.Tokens.SplitButton.CaretSize.Lg] = t.SplitButton.CaretSizeLg;
         v[Css.Tokens.SplitButton.CaretSize.Xl] = t.SplitButton.CaretSizeXl;
 
-        // Поугловые радиусы Главной кнопки (Main Radius) под все 5 размеров
+        // Per-corner radii of the Main button (Main Radius) for all 5 sizes
         // XS
         v[Css.Tokens.SplitButton.MainRadius.XsTopLeft] = t.SplitButton.MainRadiusXs.TopLeft;
         v[Css.Tokens.SplitButton.MainRadius.XsTopRight] = t.SplitButton.MainRadiusXs.TopRight;
@@ -234,7 +234,7 @@ public static class CssVarMap
         v[Css.Tokens.SplitButton.MainRadius.XlBottomRight] = t.SplitButton.MainRadiusXl.BottomRight;
         v[Css.Tokens.SplitButton.MainRadius.XlBottomLeft] = t.SplitButton.MainRadiusXl.BottomLeft;
 
-        // Поугловые радиусы Кнопки-триггера (Trigger Radius) под все 5 размеров
+        // Per-corner radii of the Trigger button (Trigger Radius) for all 5 sizes
         // XS
         v[Css.Tokens.SplitButton.TriggerRadius.XsTopLeft] = t.SplitButton.TriggerRadiusXs.TopLeft;
         v[Css.Tokens.SplitButton.TriggerRadius.XsTopRight] = t.SplitButton.TriggerRadiusXs.TopRight;
@@ -759,7 +759,7 @@ public static class CssVarMap
         v[Css.Tokens.ColorPickerField.ThumbBorderColor] = t.ColorPicker.ThumbBorderColor;
         #endregion
 
-        // Extended (Глубоко кастомные оверрайды)
+        // Extended (deeply custom overrides)
         foreach (var (k, val) in t.Extended)
             v[k] = val;
 

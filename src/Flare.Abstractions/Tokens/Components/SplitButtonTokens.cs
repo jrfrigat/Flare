@@ -5,15 +5,15 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme geometry and seam tokens for <c>FlareSplitButton</c>.</summary>
 public sealed record SplitButtonTokens
 {
-    // --- 1. ШОВ / ЗАЗОР МЕЖДУ КНОПКАМИ ---
+    // --- 1. SEAM / GAP BETWEEN BUTTONS ---
     /// <summary>Gap token (<c>0.125rem</c>).</summary>
     [CssVar(SplitButton.Gap)] public required string Gap { get; init; }
 
-    // Ширина кнопки-триггера. По умолчанию (MD3) = высоте (квадрат); Fluent задаёт фикс. 24dp.
+    // Trigger button width. Default (MD3) = height (square); Fluent sets a fixed 24dp.
     /// <summary>Trigger width token (<c>var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))</c>).</summary>
     [CssVar(SplitButton.TriggerWidth)] public required string TriggerWidth { get; init; }
 
-    // --- 2. БОКОВЫЕ ОТСТУПЫ ТРИГГЕРА (Стрелочки выпадающего меню) ---
+    // --- 2. TRIGGER SIDE PADDING (dropdown-menu carets) ---
     /// <summary>Trigger padding xs token (<c>0.375rem</c>).</summary>
     [CssVar(SplitButton.TriggerPaddingInline.Xs)] public required string TriggerPaddingXs { get; init; }
     /// <summary>Trigger padding sm token (<c>0.5rem</c>).</summary>
@@ -25,7 +25,7 @@ public sealed record SplitButtonTokens
     /// <summary>Trigger padding xl token (<c>1.5rem</c>).</summary>
     [CssVar(SplitButton.TriggerPaddingInline.Xl)] public required string TriggerPaddingXl { get; init; }
 
-    // --- 3. РАЗМЕРЫ ИКОНКИ СТРЕЛКИ (Caret Sizes) ---
+    // --- 3. CARET ICON SIZES (Caret Sizes) ---
     /// <summary>Caret size xs token (<c>0.875rem</c>).</summary>
     [CssVar(SplitButton.CaretSize.Xs)] public required string CaretSizeXs { get; init; }
     /// <summary>Caret size sm token (<c>1rem</c>).</summary>
@@ -37,7 +37,7 @@ public sealed record SplitButtonTokens
     /// <summary>Caret size xl token (<c>1.75rem</c>).</summary>
     [CssVar(SplitButton.CaretSize.Xl)] public required string CaretSizeXl { get; init; }
 
-    // --- 4. ПОУГЛОВЫЕ РАДИУСЫ ДЛЯ ГЛАВНОЙ КНОПКИ (Main Button) ---
+    // --- 4. PER-CORNER RADII FOR THE MAIN BUTTON (Main Button) ---
     /// <summary>Main radius xs token (<c>1rem</c>).</summary>
     public required CornerRadiusTokens MainRadiusXs { get; init; }
     /// <summary>Main radius sm token (<c>1.25rem</c>).</summary>
@@ -49,7 +49,7 @@ public sealed record SplitButtonTokens
     /// <summary>Main radius xl token (<c>2rem</c>).</summary>
     public required CornerRadiusTokens MainRadiusXl { get; init; }
 
-    // --- 5. ПОУГЛОВЫЕ РАДИУСЫ ДЛЯ КНОПКИ-ТРИГГЕРА (Trigger Button) ---
+    // --- 5. PER-CORNER RADII FOR THE TRIGGER BUTTON (Trigger Button) ---
     /// <summary>Trigger radius xs token (<c>8px</c>).</summary>
     public required CornerRadiusTokens TriggerRadiusXs { get; init; }
     /// <summary>Trigger radius sm token (<c>8px</c>).</summary>

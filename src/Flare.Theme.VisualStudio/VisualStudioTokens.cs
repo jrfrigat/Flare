@@ -300,7 +300,7 @@ internal class VisualStudioTokens
         // Tabs - VS 2026 "flowing" document tabs, consumed by the theme-scoped tabs.css.
         ["--flare-vs-tab-gap"] = "2px",
         ["--flare-vs-tab-strip-bg"] = "var(--flare-color-surface-container)",
-        // Rounded top corners so the strip flows around the active/hovered tab ("обтекание").
+        // Rounded top corners so the strip flows around the active/hovered tab (wrap-around).
         ["--flare-vs-tab-radius"] = "var(--flare-shape-large)",
         // Active tab fill: in light it is the white editor surface; the dark override lifts it to a
         // lighter selection gray so the rounded tab still reads as "floating" above the strip.

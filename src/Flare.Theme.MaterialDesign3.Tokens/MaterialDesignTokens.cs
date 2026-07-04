@@ -101,51 +101,51 @@ public class MaterialDesignTokens
 
     internal static readonly ButtonTokens Button = new()
     {
-        // 5 Размеров зазоров (Gap) между текстом и иконкой
-        // XS/S - высота совпадает со спекой MD3 -> gap = спека (8dp);
-        // M=8 совпадает; L/XL - адаптировано под уменьшённую высоту.
-        GapXs = "0.5rem",  // 8dp (спека)
-        GapSm = "0.5rem",  // 8dp (спека)
-        GapMd = "0.5rem",  // 8dp (= спека)
-        GapLg = "0.5rem",  // адаптировано (спека 12dp при height 96)
-        GapXl = "0.75rem", // адаптировано (спека 16dp при height 136)
+        // 5 gap sizes (Gap) between text and icon
+        // XS/S - height matches the MD3 spec -> gap = spec (8dp);
+        // M=8 matches; L/XL - adapted to the reduced height.
+        GapXs = "0.5rem",  // 8dp (spec)
+        GapSm = "0.5rem",  // 8dp (spec)
+        GapMd = "0.5rem",  // 8dp (= spec)
+        GapLg = "0.5rem",  // adapted (spec 12dp at height 96)
+        GapXl = "0.75rem", // adapted (spec 16dp at height 136)
 
-        // 5 Высот контейнеров
+        // 5 container heights
         HeightXs = "2rem",       // 32dp
         HeightSm = "2.5rem",      // 40dp
         HeightMd = "3rem",       // 48dp
         HeightLg = "3.5rem",      // 56dp
         HeightXl = "4rem",       // 64dp
 
-        // 5 Боковых отступов
+        // 5 inline paddings
         PaddingInlineXs = "0.75rem",
         PaddingInlineSm = "1rem",
         PaddingInlineMd = "1.5rem",
         PaddingInlineLg = "2rem",
         PaddingInlineXl = "2.5rem",
 
-        // Поугловые радиусы: полностью скруглённая капсула на всех 5 размерах, поэтому ссылаемся
-        // на шкалу Shape.Full (как и остальные компоненты), а не на захардкоженный half-height rem.
+        // Per-corner radii: a fully rounded capsule at all 5 sizes, so we reference
+        // the Shape.Full scale (like the other components) rather than a hardcoded half-height rem.
         RadiusXs = CornerRadiusTokens.All("var(--flare-shape-full)"),
         RadiusSm = CornerRadiusTokens.All("var(--flare-shape-full)"),
         RadiusMd = CornerRadiusTokens.All("var(--flare-shape-full)"),
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-full)"),
         RadiusXl = CornerRadiusTokens.All("var(--flare-shape-full)"),
 
-        // Настройки обводки фокуса и теней
+        // Focus outline and shadow settings
         FocusOutline = "3px solid var(--flare-color-primary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
         FilledHoverShadow = "var(--flare-elevation-1)",
 
-        // Размер иконки по спецификации MD3 Expressive
+        // Icon size per the MD3 Expressive spec
         IconSizeXs = "1.25rem", // 20dp
         IconSizeSm = "1.25rem", // 20dp
         IconSizeMd = "1.5rem",  // 24dp
         IconSizeLg = "2rem",    // 32dp
         IconSizeXl = "2.5rem",  // 40dp
 
-        // Типографика метки: label-large -> title-medium -> headline-small -> headline-large
+        // Label typography: label-large -> title-medium -> headline-small -> headline-large
         LabelXs = Typography.LabelLarge,
         LabelSm = Typography.LabelLarge,
         LabelMd = Typography.TitleMedium,
@@ -157,7 +157,7 @@ public class MaterialDesignTokens
     {
         Gap = "0.125rem", // 2dp (between space)
 
-        // Триггер квадратный: ширина = высоте Button (проброс), боковые паддинги не нужны
+        // Trigger is square: width = Button height (forwarded), no inline padding needed
         TriggerWidth = "var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))",
         TriggerPaddingXs = "0px",
         TriggerPaddingSm = "0px",
@@ -165,21 +165,21 @@ public class MaterialDesignTokens
         TriggerPaddingLg = "0px",
         TriggerPaddingXl = "0px",
 
-        // Иконка-стрелка = размер иконки Button того же размера (ПРОБРОС токена)
+        // Caret icon = Button icon size at the same size (token forwarded)
         CaretSizeXs = "var(--flare-btn-icon-size-xs)",
         CaretSizeSm = "var(--flare-btn-icon-size-sm)",
         CaretSizeMd = "var(--flare-btn-icon-size-md)",
         CaretSizeLg = "var(--flare-btn-icon-size-lg)",
         CaretSizeXl = "var(--flare-btn-icon-size-xl)",
 
-        // Main: внешние ЛЕВЫЕ углы = радиус Button (проброс), внутренние ПРАВЫЕ = inner corner (spec 4/4/4/8/12dp)
+        // Main: outer LEFT corners = Button radius (forwarded), inner RIGHT = inner corner (spec 4/4/4/8/12dp)
         MainRadiusXs = new() { TopLeft = "var(--flare-btn-radius-xs-top-left)", BottomLeft = "var(--flare-btn-radius-xs-bottom-left)", TopRight = "0.25rem", BottomRight = "0.25rem" },
         MainRadiusSm = new() { TopLeft = "var(--flare-btn-radius-sm-top-left)", BottomLeft = "var(--flare-btn-radius-sm-bottom-left)", TopRight = "0.25rem", BottomRight = "0.25rem" },
         MainRadiusMd = new() { TopLeft = "var(--flare-btn-radius-md-top-left)", BottomLeft = "var(--flare-btn-radius-md-bottom-left)", TopRight = "0.25rem", BottomRight = "0.25rem" },
         MainRadiusLg = new() { TopLeft = "var(--flare-btn-radius-lg-top-left)", BottomLeft = "var(--flare-btn-radius-lg-bottom-left)", TopRight = "0.5rem", BottomRight = "0.5rem" },
         MainRadiusXl = new() { TopLeft = "var(--flare-btn-radius-xl-top-left)", BottomLeft = "var(--flare-btn-radius-xl-bottom-left)", TopRight = "0.75rem", BottomRight = "0.75rem" },
 
-        // Trigger: внутренние ЛЕВЫЕ = inner corner, внешние ПРАВЫЕ = радиус Button (проброс)
+        // Trigger: inner LEFT = inner corner, outer RIGHT = Button radius (forwarded)
         TriggerRadiusXs = new() { TopLeft = "0.25rem", BottomLeft = "0.25rem", TopRight = "var(--flare-btn-radius-xs-top-right)", BottomRight = "var(--flare-btn-radius-xs-bottom-right)" },
         TriggerRadiusSm = new() { TopLeft = "0.25rem", BottomLeft = "0.25rem", TopRight = "var(--flare-btn-radius-sm-top-right)", BottomRight = "var(--flare-btn-radius-sm-bottom-right)" },
         TriggerRadiusMd = new() { TopLeft = "0.25rem", BottomLeft = "0.25rem", TopRight = "var(--flare-btn-radius-md-top-right)", BottomRight = "var(--flare-btn-radius-md-bottom-right)" },
@@ -187,7 +187,7 @@ public class MaterialDesignTokens
         TriggerRadiusXl = new() { TopLeft = "0.75rem", BottomLeft = "0.75rem", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    // MD3: круглая форма покоя, морфинг в squircle при выборе (значения = дефолты записи).
+    // MD3: round rest shape, morphs into a squircle on selection (values = record defaults).
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
         HeightSm = "2rem",
@@ -211,7 +211,7 @@ public class MaterialDesignTokens
         GroupDivider = "var(--flare-color-outline)",
     };
 
-    // FAB: padding-based габарит, скругление large/medium/extra-large.
+    // FAB: padding-based sizing, large/medium/extra-large rounding.
     internal static readonly FabTokens Fab = new()
     {
         PaddingSm = "0.5rem",
@@ -260,8 +260,8 @@ public class MaterialDesignTokens
         PillRadius = "var(--flare-shape-full)",
     };
 
-    // Menu (MD3 Expressive "Menus"): контейнер 16dp (shape-large), elevation 3,
-    // пункт 4dp (крайние 12dp), текст label-large, vertical 8dp, gap 2dp, focus-ring secondary.
+    // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,
+    // item 4dp (end items 12dp), label-large text, vertical 8dp, gap 2dp, focus-ring secondary.
     internal static readonly MenuTokens Menu = new()
     {
         PanelRadius = "var(--flare-shape-large)",     // 16dp
@@ -269,13 +269,13 @@ public class MaterialDesignTokens
         PanelShadow = "var(--flare-elevation-3)",     // elevation 3
         PanelPaddingInline = "0.125rem",              // group padding 2dp
         PanelPaddingBlock = "0.125rem",               // 2dp
-        ItemHeight = "2.75rem",                       // высота пункта 44dp
+        ItemHeight = "2.75rem",                       // item height 44dp
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
-        ItemGapBetween = "0.125rem",                  // gap между пунктами 2dp
+        ItemGapBetween = "0.125rem",                  // gap between items 2dp
         ItemRadius = "var(--flare-shape-extra-small)",// 4dp
         ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp
-        GroupRadius = "var(--flare-shape-small)",     // группа 8dp
-        GroupPadding = "0.125rem",                    // отступ группы 2dp
+        GroupRadius = "var(--flare-shape-small)",     // group 8dp
+        GroupPadding = "0.125rem",                    // group padding 2dp
         // Expressive "island" group sections: each group is a separate rounded surface tone with its
         // own elevation, on a transparent backing panel, so adjacent sections read as two cards.
         GroupBg = "var(--flare-color-surface-container-high)",
