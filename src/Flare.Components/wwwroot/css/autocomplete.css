@@ -4,13 +4,7 @@
   gap: var(--flare-spacing-2);
 }
 
-.flare-autocomplete__label {
-  font-family: var(--flare-typescale-label-medium-font);
-  font-size: var(--flare-typescale-label-medium-size);
-  font-weight: var(--flare-typescale-label-medium-weight);
-  color: var(--flare-color-on-surface-variant);
-  pointer-events: none;
-}
+/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 .flare-autocomplete__wrapper {
   position: relative;
@@ -81,12 +75,6 @@
   font-style: italic;
 }
 
-.flare-autocomplete__helper {
-  font-size: var(--flare-typescale-body-small-size);
-  color: var(--flare-color-on-surface-variant);
-}
-
-.flare-autocomplete__helper--error { color: var(--flare-color-error); }
 .flare-autocomplete--error .flare-autocomplete__field { border-color: var(--flare-color-error); }
 .flare-autocomplete--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
 

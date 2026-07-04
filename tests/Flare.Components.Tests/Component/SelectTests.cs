@@ -120,7 +120,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
             .Add(x => x.Label, "City")
             .Add(x => x.Items, _cities));
 
-        Assert.Equal("City", cut.Find("label.flare-autocomplete__label").TextContent);
+        Assert.Equal("City", cut.Find("label.flare-input__label").TextContent);
     }
 
     [Fact]
@@ -150,7 +150,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
             .Add(x => x.Items, _cities)
             .Add(x => x.HelperText, "Start typing to search"));
 
-        Assert.Contains("Start typing to search", cut.Find(".flare-autocomplete__helper").TextContent);
+        Assert.Contains("Start typing to search", cut.Find(".flare-input__helper").TextContent);
     }
 
     [Fact]
@@ -160,7 +160,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
             .Add(x => x.Items, _cities)
             .Add(x => x.ErrorText, "City required"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-autocomplete__helper--error"));
+        Assert.NotEmpty(cut.FindAll(".flare-input__helper--error"));
     }
 
     [Fact]

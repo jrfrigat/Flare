@@ -50,6 +50,6 @@ public class FlareAutocompleteGroupByTests : FlareTestContext
         var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Label, "Search items"));
 
-        Assert.Contains("Search items", cut.Find(".flare-autocomplete__label").TextContent);
+        Assert.Contains("Search items", cut.Find(".flare-input__label").TextContent);
     }
 }

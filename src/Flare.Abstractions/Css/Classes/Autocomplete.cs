@@ -19,14 +19,10 @@ public static class Autocomplete
     public const string SizeXl = "flare-autocomplete--xl";
     /// <summary>The <c>flare-autocomplete__control</c> CSS class.</summary>
     public const string Control = "flare-autocomplete__control";
-    /// <summary>The <c>flare-autocomplete__label</c> CSS class.</summary>
-    public const string Label = "flare-autocomplete__label";
     /// <summary>The <c>flare-autocomplete__field--open</c> CSS class.</summary>
     public const string FieldOpen = "flare-autocomplete__field--open";
     /// <summary>The <c>flare-autocomplete__icon</c> CSS class.</summary>
     public const string Icon = "flare-autocomplete__icon";
-    /// <summary>The <c>flare-autocomplete__helper</c> CSS class.</summary>
-    public const string Helper = "flare-autocomplete__helper";
     /// <summary>The <c>flare-autocomplete__dropdown</c> CSS class (anchors the shared <see cref="Listbox.Root"/> popup).</summary>
     public const string Dropdown = "flare-autocomplete__dropdown";
     /// <summary>The <c>flare-autocomplete__empty</c> CSS class.</summary>
@@ -37,8 +33,6 @@ public static class Autocomplete
     public const string Clear = "flare-autocomplete__clear";
     /// <summary>The <c>flare-autocomplete__field</c> CSS class.</summary>
     public const string Field = "flare-autocomplete__field";
-    /// <summary>The <c>flare-autocomplete__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-autocomplete__helper--error";
     /// <summary>The <c>flare-autocomplete__spinner</c> CSS class.</summary>
     public const string Spinner = "flare-autocomplete__spinner";
 }
