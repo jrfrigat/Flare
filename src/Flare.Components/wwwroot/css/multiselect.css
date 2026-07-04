@@ -1,16 +1,22 @@
 .flare-multiselect { display: flex; flex-direction: column; gap: var(--flare-spacing-2); position: relative; }
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 /* The trigger carries the shared flare-input__field well (box-model, border, transition, :hover +
-   :focus-within ring, and the shared flare-input--disabled/--error state); only the trigger-specific
-   layout is added here. Parity with FlareSelect's combobox trigger. */
+   :focus-within ring, and the shared flare-input--disabled/--error state); the trigger-layout block
+   below is BYTE-IDENTICAL to FlareSelect's .flare-select__control (font/color/outline match the shared
+   flare-input__control model, so the value/placeholder inherit like a text input). */
 .flare-multiselect__control {
     justify-content: space-between;
+    gap: var(--flare-spacing-4);
     padding: var(--flare-spacing-6) var(--flare-spacing-8);
+    font-family: var(--flare-typescale-body-large-font);
+    font-size: var(--flare-typescale-body-large-size);
+    color: var(--flare-color-on-surface);
+    outline: none;
     cursor: pointer;
     user-select: none;
 }
 .flare-multiselect--open .flare-multiselect__control { border-bottom-color: var(--flare-color-primary); }
-.flare-multiselect__value { flex: 1; color: var(--flare-color-on-surface); font-size: var(--flare-typescale-body-large-size); }
+.flare-multiselect__value { flex: 1; }
 .flare-multiselect__placeholder { color: var(--flare-color-on-surface-variant); }
 
 /* Disabled/error surface + border + arrow come from the shared flare-input__field / flare-input__arrow
@@ -20,12 +26,9 @@
     opacity: var(--flare-state-disabled-opacity);
 }
 
-/* Size grid (Xs..Xl): the trigger padding comes from the shared grid in input.css (multiselect__control
-   is listed there alongside select__control); only the value-text font-size is scaled here. */
-.flare-input--xs .flare-multiselect__value { font-size: var(--flare-typescale-label-medium-size); }
-.flare-input--sm .flare-multiselect__value { font-size: var(--flare-typescale-body-medium-size); }
-.flare-input--lg .flare-multiselect__value { font-size: var(--flare-typescale-title-medium-size); }
-.flare-input--xl .flare-multiselect__value { font-size: var(--flare-typescale-title-large-size); }
+/* Size grid (Xs..Xl) comes entirely from the shared grid in input.css: multiselect__control is listed
+   there alongside select__control (padding + font-size), and the value/placeholder inherit the control
+   font-size - identical to how FlareSelect scales. */
 
 /* Chips display mode */
 .flare-multiselect__chips { display: flex; flex-wrap: wrap; gap: var(--flare-spacing-2); }
