@@ -126,6 +126,7 @@ internal static class MaterialDesign2Tokens
         FilledHoverShadow = "var(--flare-elevation-4)",
         FocusOutline = "2px solid var(--flare-color-primary)",
         FocusOutlineOffset = "2px",
+        FocusShadow = "none",
 
         // MD2 "Button" type style for every size (uppercased in CSS).
         LabelXs = Typography.LabelLarge,
@@ -186,7 +187,7 @@ internal static class MaterialDesign2Tokens
         Motion = Motion,
         State = State,
         Button = Button,
-        SplitButton = new(),
+        SplitButton = MaterialDesignTokens.Design.SplitButton,
         Fab = Fab,
         Menu = Menu,
         Chip = Chip,

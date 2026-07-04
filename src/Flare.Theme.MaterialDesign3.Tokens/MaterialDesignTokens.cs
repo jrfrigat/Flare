@@ -157,7 +157,8 @@ public class MaterialDesignTokens
     {
         Gap = "0.125rem", // 2dp (between space)
 
-        // Триггер квадратный (ширина = высоте Button), боковые паддинги не нужны
+        // Триггер квадратный: ширина = высоте Button (проброс), боковые паддинги не нужны
+        TriggerWidth = "var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))",
         TriggerPaddingXs = "0px",
         TriggerPaddingSm = "0px",
         TriggerPaddingMd = "0px",

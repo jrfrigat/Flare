@@ -7,57 +7,57 @@ public sealed record SplitButtonTokens
 {
     // --- 1. ШОВ / ЗАЗОР МЕЖДУ КНОПКАМИ ---
     /// <summary>Gap token (<c>0.125rem</c>).</summary>
-    [CssVar(SplitButton.Gap)] public string Gap { get; init; } = "0.125rem"; // 2dp
+    [CssVar(SplitButton.Gap)] public required string Gap { get; init; }
 
     // Ширина кнопки-триггера. По умолчанию (MD3) = высоте (квадрат); Fluent задаёт фикс. 24dp.
     /// <summary>Trigger width token (<c>var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))</c>).</summary>
-    [CssVar(SplitButton.TriggerWidth)] public string TriggerWidth { get; init; } = "var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))";
+    [CssVar(SplitButton.TriggerWidth)] public required string TriggerWidth { get; init; }
 
     // --- 2. БОКОВЫЕ ОТСТУПЫ ТРИГГЕРА (Стрелочки выпадающего меню) ---
     /// <summary>Trigger padding xs token (<c>0.375rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Xs)] public string TriggerPaddingXs { get; init; } = "0.375rem";
+    [CssVar(SplitButton.TriggerPaddingInline.Xs)] public required string TriggerPaddingXs { get; init; }
     /// <summary>Trigger padding sm token (<c>0.5rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Sm)] public string TriggerPaddingSm { get; init; } = "0.5rem";
+    [CssVar(SplitButton.TriggerPaddingInline.Sm)] public required string TriggerPaddingSm { get; init; }
     /// <summary>Trigger padding md token (<c>1rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Md)] public string TriggerPaddingMd { get; init; } = "1rem";
+    [CssVar(SplitButton.TriggerPaddingInline.Md)] public required string TriggerPaddingMd { get; init; }
     /// <summary>Trigger padding lg token (<c>1.25rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Lg)] public string TriggerPaddingLg { get; init; } = "1.25rem";
+    [CssVar(SplitButton.TriggerPaddingInline.Lg)] public required string TriggerPaddingLg { get; init; }
     /// <summary>Trigger padding xl token (<c>1.5rem</c>).</summary>
-    [CssVar(SplitButton.TriggerPaddingInline.Xl)] public string TriggerPaddingXl { get; init; } = "1.5rem";
+    [CssVar(SplitButton.TriggerPaddingInline.Xl)] public required string TriggerPaddingXl { get; init; }
 
     // --- 3. РАЗМЕРЫ ИКОНКИ СТРЕЛКИ (Caret Sizes) ---
     /// <summary>Caret size xs token (<c>0.875rem</c>).</summary>
-    [CssVar(SplitButton.CaretSize.Xs)] public string CaretSizeXs { get; init; } = "0.875rem";
+    [CssVar(SplitButton.CaretSize.Xs)] public required string CaretSizeXs { get; init; }
     /// <summary>Caret size sm token (<c>1rem</c>).</summary>
-    [CssVar(SplitButton.CaretSize.Sm)] public string CaretSizeSm { get; init; } = "1rem";
+    [CssVar(SplitButton.CaretSize.Sm)] public required string CaretSizeSm { get; init; }
     /// <summary>Caret size md token (<c>1.25rem</c>).</summary>
-    [CssVar(SplitButton.CaretSize.Md)] public string CaretSizeMd { get; init; } = "1.25rem";
+    [CssVar(SplitButton.CaretSize.Md)] public required string CaretSizeMd { get; init; }
     /// <summary>Caret size lg token (<c>1.5rem</c>).</summary>
-    [CssVar(SplitButton.CaretSize.Lg)] public string CaretSizeLg { get; init; } = "1.5rem";
+    [CssVar(SplitButton.CaretSize.Lg)] public required string CaretSizeLg { get; init; }
     /// <summary>Caret size xl token (<c>1.75rem</c>).</summary>
-    [CssVar(SplitButton.CaretSize.Xl)] public string CaretSizeXl { get; init; } = "1.75rem";
+    [CssVar(SplitButton.CaretSize.Xl)] public required string CaretSizeXl { get; init; }
 
     // --- 4. ПОУГЛОВЫЕ РАДИУСЫ ДЛЯ ГЛАВНОЙ КНОПКИ (Main Button) ---
     /// <summary>Main radius xs token (<c>1rem</c>).</summary>
-    public CornerRadiusTokens MainRadiusXs { get; init; } = new() { TopLeft = "1rem", BottomLeft = "1rem", TopRight = "8px", BottomRight = "8px" };
+    public required CornerRadiusTokens MainRadiusXs { get; init; }
     /// <summary>Main radius sm token (<c>1.25rem</c>).</summary>
-    public CornerRadiusTokens MainRadiusSm { get; init; } = new() { TopLeft = "1.25rem", BottomLeft = "1.25rem", TopRight = "8px", BottomRight = "8px" };
+    public required CornerRadiusTokens MainRadiusSm { get; init; }
     /// <summary>Main radius md token (<c>1.5rem</c>).</summary>
-    public CornerRadiusTokens MainRadiusMd { get; init; } = new() { TopLeft = "1.5rem", BottomLeft = "1.5rem", TopRight = "8px", BottomRight = "8px" };
+    public required CornerRadiusTokens MainRadiusMd { get; init; }
     /// <summary>Main radius lg token (<c>1.75rem</c>).</summary>
-    public CornerRadiusTokens MainRadiusLg { get; init; } = new() { TopLeft = "1.75rem", BottomLeft = "1.75rem", TopRight = "8px", BottomRight = "8px" };
+    public required CornerRadiusTokens MainRadiusLg { get; init; }
     /// <summary>Main radius xl token (<c>2rem</c>).</summary>
-    public CornerRadiusTokens MainRadiusXl { get; init; } = new() { TopLeft = "2rem", BottomLeft = "2rem", TopRight = "8px", BottomRight = "8px" };
+    public required CornerRadiusTokens MainRadiusXl { get; init; }
 
     // --- 5. ПОУГЛОВЫЕ РАДИУСЫ ДЛЯ КНОПКИ-ТРИГГЕРА (Trigger Button) ---
     /// <summary>Trigger radius xs token (<c>8px</c>).</summary>
-    public CornerRadiusTokens TriggerRadiusXs { get; init; } = new() { TopLeft = "8px", BottomLeft = "8px", TopRight = "1rem", BottomRight = "1rem" };
+    public required CornerRadiusTokens TriggerRadiusXs { get; init; }
     /// <summary>Trigger radius sm token (<c>8px</c>).</summary>
-    public CornerRadiusTokens TriggerRadiusSm { get; init; } = new() { TopLeft = "8px", BottomLeft = "8px", TopRight = "1.25rem", BottomRight = "1.25rem" };
+    public required CornerRadiusTokens TriggerRadiusSm { get; init; }
     /// <summary>Trigger radius md token (<c>8px</c>).</summary>
-    public CornerRadiusTokens TriggerRadiusMd { get; init; } = new() { TopLeft = "8px", BottomLeft = "8px", TopRight = "1.5rem", BottomRight = "1.5rem" };
+    public required CornerRadiusTokens TriggerRadiusMd { get; init; }
     /// <summary>Trigger radius lg token (<c>8px</c>).</summary>
-    public CornerRadiusTokens TriggerRadiusLg { get; init; } = new() { TopLeft = "8px", BottomLeft = "8px", TopRight = "1.75rem", BottomRight = "1.75rem" };
+    public required CornerRadiusTokens TriggerRadiusLg { get; init; }
     /// <summary>Trigger radius xl token (<c>8px</c>).</summary>
-    public CornerRadiusTokens TriggerRadiusXl { get; init; } = new() { TopLeft = "8px", BottomLeft = "8px", TopRight = "2rem", BottomRight = "2rem" };
+    public required CornerRadiusTokens TriggerRadiusXl { get; init; }
 }
