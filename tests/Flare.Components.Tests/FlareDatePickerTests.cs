@@ -95,7 +95,7 @@ public class FlareDatePickerTests : FlareTestContext
     {
         var cut = Render<FlareDatePicker>();
 
-        cut.Find(".flare-datepicker__toggle").Click();
+        cut.Find(".flare-input__toggle").Click();
 
         Assert.NotEmpty(cut.FindAll(".flare-datepicker__panel"));
     }

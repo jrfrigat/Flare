@@ -35,18 +35,7 @@
   cursor: pointer;
 }
 
-.flare-datetimepicker__toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--flare-color-on-surface-variant);
-  border-radius: var(--flare-shape-full);
-}
-.flare-datetimepicker__toggle:hover { color: var(--flare-color-on-surface); }
-.flare-datetimepicker__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
+/* The picker toggle button uses the shared flare-input__toggle reset (input.css). */
 
 .flare-datetimepicker__helper {
   font-size: var(--flare-typescale-body-small-size);
@@ -70,7 +59,7 @@
 
 .flare-datetimepicker__panel {
   position: fixed;
-  z-index: 1000;
+  z-index: var(--flare-z-dropdown, 1000);
   background: var(--flare-color-surface-container-high);
   border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
   box-shadow: var(--flare-elevation-3);

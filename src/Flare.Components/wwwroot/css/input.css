@@ -117,6 +117,21 @@
 .flare-input__icon--leading  { order: -1; }
 .flare-input__icon--trailing { order: 1; }
 
+/* Shared button reset for a picker expand/open toggle (DatePicker/TimePicker/DateTimePicker). */
+.flare-input__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--flare-color-on-surface-variant);
+    border-radius: var(--flare-shape-full);
+}
+.flare-input__toggle:hover { color: var(--flare-color-on-surface); }
+.flare-input__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
+
 .flare-input__adornment {
     display: inline-flex;
     align-items: center;

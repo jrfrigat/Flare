@@ -13,8 +13,7 @@ public static class DatePicker
     public const string Field = "flare-datepicker__field";
     /// <summary>The <c>flare-datepicker__control</c> CSS class.</summary>
     public const string Control = "flare-datepicker__control";
-    /// <summary>The <c>flare-datepicker__toggle</c> CSS class.</summary>
-    public const string Toggle = "flare-datepicker__toggle";
+    // The calendar toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
     /// <summary>The <c>flare-datepicker__panel</c> CSS class.</summary>
     public const string Panel = "flare-datepicker__panel";
     /// <summary>The <c>flare-datepicker__scrim</c> CSS class.</summary>
@@ -68,8 +67,7 @@ public static class TimePicker
     public const string Field = "flare-timepicker__field";
     /// <summary>The <c>flare-timepicker__control</c> CSS class.</summary>
     public const string Control = "flare-timepicker__control";
-    /// <summary>The <c>flare-timepicker__toggle</c> CSS class.</summary>
-    public const string Toggle = "flare-timepicker__toggle";
+    // The clock toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
     /// <summary>The <c>flare-timepicker__scrim</c> CSS class.</summary>
     public const string Scrim = "flare-timepicker__scrim";
     /// <summary>The <c>flare-timepicker__panel</c> CSS class.</summary>
@@ -142,8 +140,7 @@ public static class DateTimePicker
     public const string Field = "flare-datetimepicker__field";
     /// <summary>The <c>flare-datetimepicker__control</c> CSS class.</summary>
     public const string Control = "flare-datetimepicker__control";
-    /// <summary>The <c>flare-datetimepicker__toggle</c> CSS class.</summary>
-    public const string Toggle = "flare-datetimepicker__toggle";
+    // The picker toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
     /// <summary>The <c>flare-datetimepicker__label</c> CSS class.</summary>
     public const string Label = "flare-datetimepicker__label";
     /// <summary>The <c>flare-datetimepicker__helper</c> CSS class.</summary>

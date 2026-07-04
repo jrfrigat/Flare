@@ -5,19 +5,7 @@
   position: relative;
 }
 
-.flare-timepicker__toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--flare-color-on-surface-variant);
-  border-radius: var(--flare-shape-full);
-}
-.flare-timepicker__toggle:hover { color: var(--flare-color-on-surface); }
-.flare-timepicker__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
+/* The clock toggle button uses the shared flare-input__toggle reset (input.css). */
 
 /* Picker popup (MD3: 28dp container, elevation 6, surface-container-high). */
 .flare-timepicker__scrim { position: fixed; inset: 0; z-index: 20; }

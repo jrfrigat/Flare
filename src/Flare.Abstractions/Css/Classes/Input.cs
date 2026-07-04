@@ -55,6 +55,8 @@ public static class Input
     public const string IconLeading = "flare-input__icon--leading";
     /// <summary>The <c>flare-input__icon--trailing</c> CSS class.</summary>
     public const string IconTrailing = "flare-input__icon--trailing";
+    /// <summary>The <c>flare-input__toggle</c> CSS class: shared button reset for a picker expand/open toggle.</summary>
+    public const string Toggle = "flare-input__toggle";
     /// <summary>The <c>flare-input__label--floating</c> CSS class.</summary>
     public const string LabelFloating = "flare-input__label--floating";
     /// <summary>The <c>flare-input--auto</c> CSS class: the field sizes to its content instead of filling its container.</summary>
