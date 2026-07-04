@@ -6,14 +6,14 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record CornerRadiusTokens
 {
-    /// <summary>Top-left corner radius as a CSS length (e.g. "1rem"). Defaults to "0px".</summary>
-    public string TopLeft { get; init; } = "0px";
-    /// <summary>Top-right corner radius as a CSS length (e.g. "1rem"). Defaults to "0px".</summary>
-    public string TopRight { get; init; } = "0px";
-    /// <summary>Bottom-right corner radius as a CSS length (e.g. "1rem"). Defaults to "0px".</summary>
-    public string BottomRight { get; init; } = "0px";
-    /// <summary>Bottom-left corner radius as a CSS length (e.g. "1rem"). Defaults to "0px".</summary>
-    public string BottomLeft { get; init; } = "0px";
+    /// <summary>Top-left corner radius as a CSS length (e.g. "1rem").</summary>
+    public required string TopLeft { get; init; }
+    /// <summary>Top-right corner radius as a CSS length (e.g. "1rem").</summary>
+    public required string TopRight { get; init; }
+    /// <summary>Bottom-right corner radius as a CSS length (e.g. "1rem").</summary>
+    public required string BottomRight { get; init; }
+    /// <summary>Bottom-left corner radius as a CSS length (e.g. "1rem").</summary>
+    public required string BottomLeft { get; init; }
 
     /// <summary>Creates a <see cref="CornerRadiusTokens"/> with all four corners set to the same value.</summary>
     /// <param name="value">The CSS length applied to every corner.</param>

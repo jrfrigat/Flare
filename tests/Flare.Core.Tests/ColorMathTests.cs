@@ -93,5 +93,7 @@ public class ColorMathTests
         InversePrimary = "#FFF",
         Scrim = "#000",
         Shadow = "#000",
+        ShadowUmbra = "rgba(0,0,0,0.3)",
+        ShadowPenumbra = "rgba(0,0,0,0.15)",
     };
 }

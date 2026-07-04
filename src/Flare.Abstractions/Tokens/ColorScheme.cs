@@ -100,7 +100,7 @@ public sealed record ColorScheme
     public required string Shadow { get; init; }
 
     /// <summary>Dark core of a block shadow (Elevation geometry references it via var()).</summary>
-    public string ShadowUmbra { get; init; } = "rgba(0,0,0,0.3)";
+    public required string ShadowUmbra { get; init; }
     /// <summary>Soft outer falloff of a block shadow (Elevation geometry references it via var()).</summary>
-    public string ShadowPenumbra { get; init; } = "rgba(0,0,0,0.15)";
+    public required string ShadowPenumbra { get; init; }
 }

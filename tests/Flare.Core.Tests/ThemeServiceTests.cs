@@ -83,6 +83,8 @@ public class ThemeServiceTests
         InversePrimary = "#FFF",
         Scrim = "#000",
         Shadow = "#000",
+        ShadowUmbra = "rgba(0,0,0,0.3)",
+        ShadowPenumbra = "rgba(0,0,0,0.15)",
     };
 
     private static Palette Pal(string id, string light = "#111111", string dark = "#EEEEEE") =>
