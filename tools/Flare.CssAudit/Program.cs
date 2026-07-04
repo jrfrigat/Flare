@@ -42,7 +42,7 @@ internal static class Program
         var cmd = args.Length > 0 ? args[0].Trim().ToLowerInvariant().TrimStart('-') : null;
         return cmd switch
         {
-            "check" => Check(css, constants, themeCss, cssThemeDirs) ? 0 : 1,
+            "check" => Check(css, constants, themeCss, cssThemeDirs, cssDir) ? 0 : 1,
             "generate" or "gen" => Generate(css, constants),
             "merge" => Merge(css, cssClassesDir),
             null => Menu(css, constants, cssDir, cssClassesDir, themeCss, cssThemeDirs),
@@ -93,7 +93,7 @@ internal static class Program
             Console.Write("> ");
             switch (Console.ReadLine()?.Trim())
             {
-                case "1": Check(css, constants, themeCss); break;
+                case "1": Check(css, constants, themeCss, themeDirs, cssDir); break;
                 case "2": Generate(css, constants); break;
                 case "3":
                     Merge(css, cssClassesDir);
@@ -128,9 +128,13 @@ internal static class Program
     }
 
     private static bool Check(SortedDictionary<string, SortedSet<string>> css, ConstSet constants,
-        SortedDictionary<string, SortedSet<string>>? themeCss = null, string[]? themeDirs = null)
+        SortedDictionary<string, SortedSet<string>>? themeCss = null, string[]? themeDirs = null,
+        string? cssDir = null)
     {
         var (missingInConstants, missingInCss, inThemeNotBase) = Compare(css, constants, themeCss);
+        var literalFallbacks = cssDir is not null
+            ? CssAudit.ScanLiteralTokenFallbacks(cssDir)
+            : (IReadOnlyList<string>)Array.Empty<string>();
 
         Console.WriteLine();
         Console.WriteLine($"Flare.Components CSS classes: {css.Count}");
@@ -139,11 +143,21 @@ internal static class Program
             Console.WriteLine($"Theme CSS classes:           {themeCss.Count}  (themes: {ThemeNames(themeDirs)})");
         Console.WriteLine();
 
-        var clean = missingInConstants.Count == 0 && missingInCss.Count == 0 && inThemeNotBase.Count == 0;
+        var clean = missingInConstants.Count == 0 && missingInCss.Count == 0
+            && inThemeNotBase.Count == 0 && literalFallbacks.Count == 0;
         if (clean)
         {
             Console.WriteLine("OK - CssClasses, Flare.Components CSS and themes are fully in sync.");
             return true;
+        }
+
+        if (literalFallbacks.Count > 0)
+        {
+            Console.WriteLine($"--- {literalFallbacks.Count} dead literal token fallback(s) on always-emitted semantic tokens ---");
+            foreach (var finding in literalFallbacks)
+                Console.WriteLine($"  {finding}");
+            Console.WriteLine("      (semantic tokens are always emitted post-Phase-4; use var(--flare-*) with no literal fallback)");
+            Console.WriteLine();
         }
 
         if (missingInConstants.Count > 0)

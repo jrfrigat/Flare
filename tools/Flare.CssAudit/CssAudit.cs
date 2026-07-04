@@ -90,7 +90,7 @@ public static class CssAudit
     /// literal CSS fallbacks" mandate enforced and prevents regressions like a decimal opacity token
     /// being pasted into a percentage context via its literal fallback.
     /// </summary>
-    private static IReadOnlyList<string> ScanLiteralTokenFallbacks(string cssDir)
+    internal static IReadOnlyList<string> ScanLiteralTokenFallbacks(string cssDir)
     {
         var findings = new List<string>();
         if (!Directory.Exists(cssDir)) return findings;
