@@ -5,10 +5,8 @@
     position: relative;
 }
 
-.flare-select__label {
-    font-size: var(--flare-typescale-label-medium-size);
-    color: var(--flare-color-on-surface-variant);
-}
+/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error
+   classes (see input.css); the select only styles its combobox trigger and dropdown below. */
 
 /* The control is a custom combobox trigger (not a native <select>), so the dropdown
    (.flare-select__dropdown / .flare-listbox) can be fully styled. */
@@ -56,6 +54,3 @@
 /* Error state: the active indicator turns error-colored (matches FlareInput). */
 .flare-select--error .flare-select__control { border-bottom-color: var(--flare-color-error); }
 .flare-select--error .flare-select__control:focus-visible { border-bottom-color: var(--flare-color-error); }
-
-.flare-select__helper { font-size: var(--flare-typescale-body-small-size); color: var(--flare-color-on-surface-variant); }
-.flare-select__helper--error { color: var(--flare-color-error); }

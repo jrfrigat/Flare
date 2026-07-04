@@ -23,7 +23,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Label, "My Label"));
 
-        Assert.Contains("My Label", cut.Find(".flare-select__label").TextContent);
+        Assert.Contains("My Label", cut.Find(".flare-input__label").TextContent);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.HelperText, "Hint text"));
 
-        Assert.Contains("Hint text", cut.Find(".flare-select__helper").TextContent);
+        Assert.Contains("Hint text", cut.Find(".flare-input__helper").TextContent);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class C_FlareSelectTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.ErrorText, "Required"));
 
-        Assert.Contains("Required", cut.Find(".flare-select__helper--error").TextContent);
+        Assert.Contains("Required", cut.Find(".flare-input__helper--error").TextContent);
     }
 
     [Fact]

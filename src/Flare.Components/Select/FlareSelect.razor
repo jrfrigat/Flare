@@ -14,7 +14,7 @@
 <div class="@BuildCssClass(_stateClass, _openClass, _sizeClass, _variantClass)" style="@Style" @ref="_rootEl" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.Select.Label" id="@_labelId">@Label</label>
+        <label class="@Css.Classes.Input.Label" id="@_labelId">@Label</label>
     }
     <div class="@Css.Classes.Select.Control"
          id="@_selectId"
@@ -27,6 +27,8 @@
          aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
          aria-describedby="@(!string.IsNullOrEmpty(_displayedError) ? _errorId : !string.IsNullOrEmpty(HelperText) ? _helperId : null)"
          aria-disabled="@(Disabled ? "true" : null)"
+         aria-readonly="@(ReadOnly ? "true" : null)"
+         aria-required="@(Required ? "true" : null)"
          tabindex="@(Disabled ? -1 : 0)"
          @onclick="ToggleDropdown"
          @onkeydown="HandleKeyDown">
@@ -63,11 +65,11 @@
     }
     @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span id="@_errorId" class="@Css.Classes.Select.Helper @Css.Classes.Select.HelperError" role="alert">@_displayedError</span>
+        <span id="@_errorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@_displayedError</span>
     }
     else if (!string.IsNullOrEmpty(HelperText))
     {
-        <span id="@_helperId" class="@Css.Classes.Select.Helper">@HelperText</span>
+        <span id="@_helperId" class="@Css.Classes.Input.Helper">@HelperText</span>
     }
 </div>
 
@@ -75,7 +77,7 @@
     /// <summary>Currently selected item value.</summary>
     [Parameter] public TValue? Value { get; set; }
     /// <summary>Callback invoked when the selection changes.</summary>
-    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
     /// <summary>Collection of items to populate the dropdown. An alternative to declaring
     /// <c>FlareSelectItem</c> children via <see cref="ChildContent"/>.</summary>
     [Parameter] public IEnumerable<TValue>? Items { get; set; }
@@ -86,7 +88,7 @@
     /// <summary>Function that returns the display text for an item.</summary>
     [Parameter] public Func<TValue, string>? ItemLabel { get; set; }
     /// <summary>Custom render template for an item (control + dropdown). Overrides <see cref="ItemLabel"/> text.</summary>
-    [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
+    [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TValue>>? For { get; set; }
     /// <summary>Returns the group label for an item. When non-null, options are grouped under headers.</summary>
@@ -294,7 +296,8 @@
 
     private void ToggleDropdown()
     {
-        if (Disabled) return;
+        // ReadOnly stays focusable (unlike Disabled) but must not open the listbox.
+        if (Disabled || ReadOnly) return;
         _isOpen = !_isOpen;
         if (_isOpen)
             _activeIndex = _ordered.FindIndex(e => EqualityComparer<TValue>.Default.Equals(e, Value));
@@ -352,7 +355,7 @@
 
     private async Task HandleKeyDown(KeyboardEventArgs e)
     {
-        if (Disabled) return;
+        if (Disabled || ReadOnly) return;
         var list = _ordered;
 
         switch (e.Key)

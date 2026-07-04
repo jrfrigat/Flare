@@ -66,7 +66,7 @@ public class C_FlareFieldValidationTests : FlareTestContext
         store.Add(ctx.Field(nameof(Model.Name)), "Pick a value");
         ctx.NotifyValidationStateChanged();
 
-        Assert.Contains("Pick a value", cut.Find(".flare-select__helper--error").TextContent);
+        Assert.Contains("Pick a value", cut.Find(".flare-input__helper--error").TextContent);
     }
 
     [Fact]

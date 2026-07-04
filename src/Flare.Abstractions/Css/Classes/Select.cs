@@ -11,8 +11,6 @@ public static class Select
     public const string Disabled = "flare-select--disabled";
     /// <summary>The <c>flare-select--error</c> CSS class.</summary>
     public const string Error = "flare-select--error";
-    /// <summary>The <c>flare-select__label</c> CSS class.</summary>
-    public const string Label = "flare-select__label";
     /// <summary>The <c>flare-select__control</c> CSS class.</summary>
     public const string Control = "flare-select__control";
     /// <summary>The <c>flare-select__value</c> CSS class.</summary>
@@ -25,10 +23,6 @@ public static class Select
     public const string Dropdown = "flare-select__dropdown";
     /// <summary>The <c>flare-select__option</c> CSS class (option row; visuals come from the shared <see cref="Listbox.Option"/>).</summary>
     public const string Option = "flare-select__option";
-    /// <summary>The <c>flare-select__helper</c> CSS class.</summary>
-    public const string Helper = "flare-select__helper";
-    /// <summary>The <c>flare-select__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-select__helper--error";
     /// <summary>The <c>flare-select--xs</c> CSS class.</summary>
     public const string SizeXs = "flare-select--xs";
     /// <summary>The <c>flare-select--sm</c> CSS class.</summary>

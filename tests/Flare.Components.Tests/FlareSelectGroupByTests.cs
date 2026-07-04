@@ -54,6 +54,6 @@ public class FlareSelectGroupByTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Label, "Choose option"));
 
-        Assert.Contains("Choose option", cut.Find(".flare-select__label").TextContent);
+        Assert.Contains("Choose option", cut.Find(".flare-input__label").TextContent);
     }
 }
