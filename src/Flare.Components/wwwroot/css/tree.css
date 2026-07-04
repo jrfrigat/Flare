@@ -48,7 +48,8 @@
 }
 
 .flare-tree-item__toggle:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent);
+    background: var(--flare-tree-toggle-hover-bg,
+        color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent));
 }
 
 .flare-tree-item__toggle .material-symbols-rounded {
@@ -126,5 +127,6 @@
 }
 
 .flare-tree-item--drop-inside {
-    background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
+    background: var(--flare-tree-drop-inside-bg,
+        color-mix(in srgb, var(--flare-color-primary) 12%, transparent));
 }
