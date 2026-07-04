@@ -7,6 +7,8 @@ namespace Flare.Css.Classes;
 /// </summary>
 public static class Picker
 {
+    /// <summary>The <c>flare-picker__field</c> CSS class: click-to-open cursor for a calendar picker's trigger field (over the shared flare-input__field).</summary>
+    public const string Field = "flare-picker__field";
     /// <summary>The <c>flare-picker__scrim</c> CSS class: the full-screen click-catcher behind a picker popup.</summary>
     public const string Scrim = "flare-picker__scrim";
     /// <summary>The <c>flare-picker__panel</c> CSS class: the fixed, elevated picker popup surface.</summary>

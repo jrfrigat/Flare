@@ -7,8 +7,7 @@ public static class DatePicker
     public const string Root = "flare-datepicker";
     // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled
     // (flare-input--error / --disabled); the field/control carry the shared flare-input__* classes.
-    /// <summary>The <c>flare-datepicker__field</c> CSS class.</summary>
-    public const string Field = "flare-datepicker__field";
+    // The trigger field's click-to-open cursor uses the shared Css.Classes.Picker.Field (flare-picker__field).
     /// <summary>The <c>flare-datepicker__control</c> CSS class.</summary>
     public const string Control = "flare-datepicker__control";
     // The calendar toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).

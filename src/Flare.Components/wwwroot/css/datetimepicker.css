@@ -7,10 +7,10 @@
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
-/* The field-well box-model + focus ring come from the shared flare-input__field (input.css);
-   the pointer cursor + the deliberate accent ring on :hover (whole read-through field is a
-   click target) are datetimepicker-specific. */
-.flare-datetimepicker__field { cursor: pointer; }
+/* The field-well box-model + focus ring come from the shared flare-input__field (input.css); the
+   click-to-open pointer cursor comes from the shared flare-picker__field (picker.css). Only the
+   deliberate accent ring on :hover (the whole read-through field is a click target) is
+   datetimepicker-specific. */
 .flare-datetimepicker__field:hover {
   border-color: var(--fc-main, var(--flare-color-primary));
   box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));

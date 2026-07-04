@@ -2,6 +2,13 @@
    Used by DatePicker / TimePicker / DateTimePicker; each component adds only its size/shape deltas
    (min-width, and TimePicker's larger MD3 radius/padding). Both sit at the shared dropdown layer;
    the scrim is DOM-ordered before the panel so the panel still paints on top at equal z-index. */
+
+/* Click-to-open trigger cursor for the calendar-based pickers (DatePicker/DateTimePicker), layered
+   over the shared flare-input__field well. NOT on flare-input__field itself: that well is shared by
+   the text-entry fields (Field/Numeric/Masked/TextArea/Autocomplete/TimePicker) which want a text
+   caret, not a pointer. TimePicker is type-to-edit, so it does not carry this. */
+.flare-picker__field { cursor: pointer; }
+
 .flare-picker__scrim {
     position: fixed;
     inset: 0;

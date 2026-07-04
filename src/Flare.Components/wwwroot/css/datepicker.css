@@ -21,10 +21,7 @@
    (input.css); the root emits those modifiers and the field/control carry flare-input__field
    / flare-input__control, so the MD3 state treatment applies uniformly. */
 
-/* Calendar popup panel */
-.flare-datepicker__field {
-  cursor: pointer;
-}
+/* The trigger field's click-to-open cursor comes from the shared flare-picker__field (picker.css). */
 
 /* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);
    the calendar panel is JS-positioned (positionAnchoredPanel) to escape a Card's overflow:hidden. */
