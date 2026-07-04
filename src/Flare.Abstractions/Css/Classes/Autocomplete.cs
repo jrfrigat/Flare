@@ -9,14 +9,6 @@ public static class Autocomplete
     public const string Disabled = "flare-autocomplete--disabled";
     /// <summary>The <c>flare-autocomplete--error</c> CSS class.</summary>
     public const string Error = "flare-autocomplete--error";
-    /// <summary>The <c>flare-autocomplete--xs</c> CSS class.</summary>
-    public const string SizeXs = "flare-autocomplete--xs";
-    /// <summary>The <c>flare-autocomplete--sm</c> CSS class.</summary>
-    public const string SizeSm = "flare-autocomplete--sm";
-    /// <summary>The <c>flare-autocomplete--lg</c> CSS class.</summary>
-    public const string SizeLg = "flare-autocomplete--lg";
-    /// <summary>The <c>flare-autocomplete--xl</c> CSS class.</summary>
-    public const string SizeXl = "flare-autocomplete--xl";
     /// <summary>The <c>flare-autocomplete__control</c> CSS class.</summary>
     public const string Control = "flare-autocomplete__control";
     /// <summary>The <c>flare-autocomplete__field--open</c> CSS class.</summary>

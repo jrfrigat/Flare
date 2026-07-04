@@ -17,14 +17,14 @@
 .flare-multiselect__placeholder { color: var(--flare-color-on-surface-variant); }
 
 /* Size grid (Xs..Xl): control padding sets height, value font-size scales the text. */
-.flare-multiselect--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4); }
-.flare-multiselect--xs .flare-multiselect__value { font-size: var(--flare-typescale-label-medium-size); }
-.flare-multiselect--sm .flare-multiselect__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); }
-.flare-multiselect--sm .flare-multiselect__value { font-size: var(--flare-typescale-body-medium-size); }
-.flare-multiselect--lg .flare-multiselect__control { padding: 0.875rem 1.125rem; }
-.flare-multiselect--lg .flare-multiselect__value { font-size: var(--flare-typescale-title-medium-size); }
-.flare-multiselect--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10); }
-.flare-multiselect--xl .flare-multiselect__value { font-size: var(--flare-typescale-title-large-size); }
+.flare-input--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4); }
+.flare-input--xs .flare-multiselect__value { font-size: var(--flare-typescale-label-medium-size); }
+.flare-input--sm .flare-multiselect__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); }
+.flare-input--sm .flare-multiselect__value { font-size: var(--flare-typescale-body-medium-size); }
+.flare-input--lg .flare-multiselect__control { padding: 0.875rem 1.125rem; }
+.flare-input--lg .flare-multiselect__value { font-size: var(--flare-typescale-title-medium-size); }
+.flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10); }
+.flare-input--xl .flare-multiselect__value { font-size: var(--flare-typescale-title-large-size); }
 
 /* GroupBy header */
 .flare-multiselect__group-header {

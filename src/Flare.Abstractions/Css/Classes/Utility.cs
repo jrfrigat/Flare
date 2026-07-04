@@ -626,14 +626,6 @@ public static class Multiselect
     public const string Root = "flare-multiselect";
     /// <summary>The <c>flare-multiselect--open</c> CSS class.</summary>
     public const string Open = "flare-multiselect--open";
-    /// <summary>The <c>flare-multiselect--xs</c> CSS class.</summary>
-    public const string SizeXs = "flare-multiselect--xs";
-    /// <summary>The <c>flare-multiselect--sm</c> CSS class.</summary>
-    public const string SizeSm = "flare-multiselect--sm";
-    /// <summary>The <c>flare-multiselect--lg</c> CSS class.</summary>
-    public const string SizeLg = "flare-multiselect--lg";
-    /// <summary>The <c>flare-multiselect--xl</c> CSS class.</summary>
-    public const string SizeXl = "flare-multiselect--xl";
     /// <summary>The <c>flare-multiselect__arrow</c> CSS class.</summary>
     public const string Arrow = "flare-multiselect__arrow";
     /// <summary>The <c>flare-multiselect__chip</c> CSS class.</summary>

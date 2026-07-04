@@ -93,33 +93,33 @@
    (flare-input__control), Autocomplete, TagField, Select and the Date/DateTime/Time pickers --
    so the field size scale lives in one place. */
 .flare-input--xs .flare-input__control,
-.flare-autocomplete--xs .flare-autocomplete__control,
-.flare-tag-input--xs .flare-tag-input__input,
-.flare-select--xs .flare-select__control,
-.flare-datepicker--xs .flare-datepicker__control,
-.flare-datetimepicker--xs .flare-datetimepicker__control,
-.flare-timepicker--xs .flare-timepicker__control { padding: 0.1875rem var(--flare-spacing-4);  font-size: var(--flare-typescale-label-medium-size); }
+.flare-input--xs .flare-autocomplete__control,
+.flare-input--xs .flare-tag-input__input,
+.flare-input--xs .flare-select__control,
+.flare-input--xs .flare-datepicker__control,
+.flare-input--xs .flare-datetimepicker__control,
+.flare-input--xs .flare-timepicker__control { padding: 0.1875rem var(--flare-spacing-4);  font-size: var(--flare-typescale-label-medium-size); }
 .flare-input--sm .flare-input__control,
-.flare-autocomplete--sm .flare-autocomplete__control,
-.flare-tag-input--sm .flare-tag-input__input,
-.flare-select--sm .flare-select__control,
-.flare-datepicker--sm .flare-datepicker__control,
-.flare-datetimepicker--sm .flare-datetimepicker__control,
-.flare-timepicker--sm .flare-timepicker__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); font-size: var(--flare-typescale-body-medium-size); }
+.flare-input--sm .flare-autocomplete__control,
+.flare-input--sm .flare-tag-input__input,
+.flare-input--sm .flare-select__control,
+.flare-input--sm .flare-datepicker__control,
+.flare-input--sm .flare-datetimepicker__control,
+.flare-input--sm .flare-timepicker__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); font-size: var(--flare-typescale-body-medium-size); }
 .flare-input--lg .flare-input__control,
-.flare-autocomplete--lg .flare-autocomplete__control,
-.flare-tag-input--lg .flare-tag-input__input,
-.flare-select--lg .flare-select__control,
-.flare-datepicker--lg .flare-datepicker__control,
-.flare-datetimepicker--lg .flare-datetimepicker__control,
-.flare-timepicker--lg .flare-timepicker__control { padding: 0.875rem 1.125rem; font-size: var(--flare-typescale-title-medium-size); }
+.flare-input--lg .flare-autocomplete__control,
+.flare-input--lg .flare-tag-input__input,
+.flare-input--lg .flare-select__control,
+.flare-input--lg .flare-datepicker__control,
+.flare-input--lg .flare-datetimepicker__control,
+.flare-input--lg .flare-timepicker__control { padding: 0.875rem 1.125rem; font-size: var(--flare-typescale-title-medium-size); }
 .flare-input--xl .flare-input__control,
-.flare-autocomplete--xl .flare-autocomplete__control,
-.flare-tag-input--xl .flare-tag-input__input,
-.flare-select--xl .flare-select__control,
-.flare-datepicker--xl .flare-datepicker__control,
-.flare-datetimepicker--xl .flare-datetimepicker__control,
-.flare-timepicker--xl .flare-timepicker__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
+.flare-input--xl .flare-autocomplete__control,
+.flare-input--xl .flare-tag-input__input,
+.flare-input--xl .flare-select__control,
+.flare-input--xl .flare-datepicker__control,
+.flare-input--xl .flare-datetimepicker__control,
+.flare-input--xl .flare-timepicker__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
 
 /* Placeholder text is muted (MD3: on-surface-variant). */
 .flare-input__control::placeholder {

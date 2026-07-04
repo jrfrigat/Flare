@@ -1350,8 +1350,8 @@ public class C_FlareCheckboxRadioSizeTests : FlareTestContext
 public class C_FlareFormFieldSizeParityTests : FlareTestContext
 {
     [Theory]
-    [InlineData(FieldSize.Xs, "flare-autocomplete--xs")]
-    [InlineData(FieldSize.Lg, "flare-autocomplete--lg")]
+    [InlineData(FieldSize.Xs, "flare-input--xs")]
+    [InlineData(FieldSize.Lg, "flare-input--lg")]
     public void Autocomplete_Size_AppliesModifier(FieldSize size, string expected)
     {
         var cut = Render<FlareAutocomplete<string>>(p => p.Add(x => x.Size, size));
@@ -1359,8 +1359,8 @@ public class C_FlareFormFieldSizeParityTests : FlareTestContext
     }
 
     [Theory]
-    [InlineData(FieldSize.Xs, "flare-tag-input--xs")]
-    [InlineData(FieldSize.Lg, "flare-tag-input--lg")]
+    [InlineData(FieldSize.Xs, "flare-input--xs")]
+    [InlineData(FieldSize.Lg, "flare-input--lg")]
     public void TagInput_Size_AppliesModifier(FieldSize size, string expected)
     {
         var cut = Render<FlareTagField>(p => p.Add(x => x.Size, size));

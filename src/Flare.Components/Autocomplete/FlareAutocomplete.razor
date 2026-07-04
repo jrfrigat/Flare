@@ -125,10 +125,10 @@
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
     private string? _sizeClass => Size switch
     {
-        FieldSize.Xs => Css.Classes.Autocomplete.SizeXs,
-        FieldSize.Sm => Css.Classes.Autocomplete.SizeSm,
-        FieldSize.Lg => Css.Classes.Autocomplete.SizeLg,
-        FieldSize.Xl => Css.Classes.Autocomplete.SizeXl,
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
         _ => null,
     };
 

@@ -5,14 +5,6 @@ public static class DatePicker
 {
     /// <summary>The <c>flare-datepicker</c> CSS class.</summary>
     public const string Root = "flare-datepicker";
-    /// <summary>The <c>flare-datepicker--xs</c> CSS class.</summary>
-    public const string SizeXs = "flare-datepicker--xs";
-    /// <summary>The <c>flare-datepicker--sm</c> CSS class.</summary>
-    public const string SizeSm = "flare-datepicker--sm";
-    /// <summary>The <c>flare-datepicker--lg</c> CSS class.</summary>
-    public const string SizeLg = "flare-datepicker--lg";
-    /// <summary>The <c>flare-datepicker--xl</c> CSS class.</summary>
-    public const string SizeXl = "flare-datepicker--xl";
     /// <summary>The <c>flare-datepicker--disabled</c> CSS class.</summary>
     public const string Disabled = "flare-datepicker--disabled";
     /// <summary>The <c>flare-datepicker--error</c> CSS class.</summary>
@@ -68,14 +60,6 @@ public static class TimePicker
 {
     /// <summary>The <c>flare-timepicker</c> CSS class.</summary>
     public const string Root = "flare-timepicker";
-    /// <summary>The <c>flare-timepicker--xs</c> CSS class.</summary>
-    public const string SizeXs = "flare-timepicker--xs";
-    /// <summary>The <c>flare-timepicker--sm</c> CSS class.</summary>
-    public const string SizeSm = "flare-timepicker--sm";
-    /// <summary>The <c>flare-timepicker--lg</c> CSS class.</summary>
-    public const string SizeLg = "flare-timepicker--lg";
-    /// <summary>The <c>flare-timepicker--xl</c> CSS class.</summary>
-    public const string SizeXl = "flare-timepicker--xl";
     /// <summary>The <c>flare-timepicker--disabled</c> CSS class.</summary>
     public const string Disabled = "flare-timepicker--disabled";
     /// <summary>The <c>flare-timepicker--error</c> CSS class.</summary>
@@ -154,14 +138,6 @@ public static class DateTimePicker
 {
     /// <summary>The <c>flare-datetimepicker</c> CSS class.</summary>
     public const string Root = "flare-datetimepicker";
-    /// <summary>The <c>flare-datetimepicker--xs</c> CSS class.</summary>
-    public const string SizeXs = "flare-datetimepicker--xs";
-    /// <summary>The <c>flare-datetimepicker--sm</c> CSS class.</summary>
-    public const string SizeSm = "flare-datetimepicker--sm";
-    /// <summary>The <c>flare-datetimepicker--lg</c> CSS class.</summary>
-    public const string SizeLg = "flare-datetimepicker--lg";
-    /// <summary>The <c>flare-datetimepicker--xl</c> CSS class.</summary>
-    public const string SizeXl = "flare-datetimepicker--xl";
     /// <summary>The <c>flare-datetimepicker__field</c> CSS class.</summary>
     public const string Field = "flare-datetimepicker__field";
     /// <summary>The <c>flare-datetimepicker__control</c> CSS class.</summary>

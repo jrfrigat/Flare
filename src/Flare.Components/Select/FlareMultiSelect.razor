@@ -237,10 +237,10 @@
 
     private string? _sizeClass => Size switch
     {
-        FieldSize.Xs => Css.Classes.Multiselect.SizeXs,
-        FieldSize.Sm => Css.Classes.Multiselect.SizeSm,
-        FieldSize.Lg => Css.Classes.Multiselect.SizeLg,
-        FieldSize.Xl => Css.Classes.Multiselect.SizeXl,
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
         _ => null,
     };
     // Reuses FlareField's variant tokens (--flare-input-*), which the control reads.

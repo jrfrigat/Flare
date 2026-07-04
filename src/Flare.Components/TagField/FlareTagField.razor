@@ -123,10 +123,10 @@
     [Parameter] public TypographyScale? Typo { get; set; }
     private string? _sizeClass => Size switch
     {
-        FieldSize.Xs => Css.Classes.TagInput.SizeXs,
-        FieldSize.Sm => Css.Classes.TagInput.SizeSm,
-        FieldSize.Lg => Css.Classes.TagInput.SizeLg,
-        FieldSize.Xl => Css.Classes.TagInput.SizeXl,
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
         _ => null,
     };
 

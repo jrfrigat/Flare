@@ -23,14 +23,6 @@ public static class Select
     public const string Dropdown = "flare-select__dropdown";
     /// <summary>The <c>flare-select__option</c> CSS class (option row; visuals come from the shared <see cref="Listbox.Option"/>).</summary>
     public const string Option = "flare-select__option";
-    /// <summary>The <c>flare-select--xs</c> CSS class.</summary>
-    public const string SizeXs = "flare-select--xs";
-    /// <summary>The <c>flare-select--sm</c> CSS class.</summary>
-    public const string SizeSm = "flare-select--sm";
-    /// <summary>The <c>flare-select--lg</c> CSS class.</summary>
-    public const string SizeLg = "flare-select--lg";
-    /// <summary>The <c>flare-select--xl</c> CSS class.</summary>
-    public const string SizeXl = "flare-select--xl";
 }
 
 /// <summary>

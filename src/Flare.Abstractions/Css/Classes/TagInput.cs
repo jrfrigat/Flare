@@ -11,14 +11,6 @@ public static class TagInput
     public const string Disabled = "flare-tag-input--disabled";
     /// <summary>The <c>flare-tag-input--error</c> CSS class.</summary>
     public const string Error = "flare-tag-input--error";
-    /// <summary>The <c>flare-tag-input--xs</c> CSS class.</summary>
-    public const string SizeXs = "flare-tag-input--xs";
-    /// <summary>The <c>flare-tag-input--sm</c> CSS class.</summary>
-    public const string SizeSm = "flare-tag-input--sm";
-    /// <summary>The <c>flare-tag-input--lg</c> CSS class.</summary>
-    public const string SizeLg = "flare-tag-input--lg";
-    /// <summary>The <c>flare-tag-input--xl</c> CSS class.</summary>
-    public const string SizeXl = "flare-tag-input--xl";
     /// <summary>The <c>flare-tag-input__field</c> CSS class.</summary>
     public const string Field = "flare-tag-input__field";
     /// <summary>The <c>flare-tag-input__input</c> CSS class.</summary>
