@@ -178,7 +178,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
         var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities));
 
-        Assert.NotNull(cut.Find("input.flare-autocomplete__control"));
+        Assert.NotNull(cut.Find("input.flare-input__control"));
     }
 }
 

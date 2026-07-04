@@ -9,8 +9,8 @@ public static class Autocomplete
     public const string Disabled = "flare-autocomplete--disabled";
     /// <summary>The <c>flare-autocomplete--error</c> CSS class.</summary>
     public const string Error = "flare-autocomplete--error";
-    /// <summary>The <c>flare-autocomplete__control</c> CSS class.</summary>
-    public const string Control = "flare-autocomplete__control";
+    // The editable input renders the shared flare-input__control (input.css); no component-specific
+    // control class is needed.
     /// <summary>The <c>flare-autocomplete__field--open</c> CSS class.</summary>
     public const string FieldOpen = "flare-autocomplete__field--open";
     /// <summary>The <c>flare-autocomplete__icon</c> CSS class.</summary>

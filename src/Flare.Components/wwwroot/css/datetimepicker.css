@@ -30,15 +30,8 @@
   box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
 }
 
+/* Base chrome inherited from .flare-input__control; only the extras below differ. */
 .flare-datetimepicker__control {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  padding: var(--flare-spacing-6) var(--flare-spacing-8);
-  font-family: var(--flare-typescale-body-large-font);
-  font-size: var(--flare-typescale-body-large-size);
-  color: var(--flare-color-on-surface);
   cursor: pointer;
 }
 

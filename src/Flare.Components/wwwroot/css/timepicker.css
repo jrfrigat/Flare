@@ -205,18 +205,11 @@
   box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
 }
 
+/* Base chrome inherited from .flare-input__control; only the extras below differ. */
 .flare-timepicker__control {
-  flex: 1 1 0;
   min-width: 0;            /* allow the input to shrink so the icon never overflows the field */
   width: 100%;
   box-sizing: border-box;
-  background: transparent;
-  border: none;
-  outline: none;
-  padding: var(--flare-spacing-6) var(--flare-spacing-8);
-  font-family: var(--flare-typescale-body-large-font);
-  font-size: var(--flare-typescale-body-large-size);
-  color: var(--flare-color-on-surface);
   color-scheme: light dark;
 }
 

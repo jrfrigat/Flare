@@ -32,7 +32,7 @@ public class FlareAutocompleteGroupByTests : FlareTestContext
     {
         var cut = Render<FlareAutocomplete<string>>();
 
-        Assert.NotEmpty(cut.FindAll("input.flare-autocomplete__control"));
+        Assert.NotEmpty(cut.FindAll("input.flare-input__control"));
     }
 
     [Fact]

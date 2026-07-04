@@ -14,7 +14,7 @@
         <label class="@Css.Classes.Input.Label">@Label</label>
     }
     <div class="@Css.Classes.DatePicker.Field @(HasError ? Css.Classes.DatePicker.Error : "")" @ref="_fieldEl">
-        <input class="@Css.Classes.DatePicker.Control"
+        <input class="@Css.Classes.Input.Control @Css.Classes.DatePicker.Control"
                style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                type="text"
                value="@_text"
