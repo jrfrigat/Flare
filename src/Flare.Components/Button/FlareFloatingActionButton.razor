@@ -41,6 +41,9 @@ else
     /// <summary>Positioning mode (BottomRight, BottomLeft, or Static for inline flow).</summary>
     [Parameter] public FabPosition Position { get; set; } = FabPosition.BottomRight;
 
+    /// <summary>Disables the FAB (blocks activation and dims it via the shared button disabled state).</summary>
+    [Parameter] public bool Disabled { get; set; }
+
     /// <summary>Callback invoked when the FAB is clicked (ignored in speed-dial mode - the FAB toggles the menu instead).</summary>
     [Parameter] public EventCallback OnClick { get; set; }
 
@@ -103,11 +106,12 @@ else
 
     private RenderFragment RenderFab(bool isTrigger) => __builder =>
     {
-        <button class="@BuildCssClass(_sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
+        <button class="@BuildCssClass(Css.Classes.Button.Root, _sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
                 style="@CombineStyle(isTrigger ? null : Style)"
                 aria-label="@AriaLabel"
                 aria-expanded="@(isTrigger ? _open.ToString().ToLowerInvariant() : null)"
                 type="button"
+                disabled="@Disabled"
                 @onclick="HandleClick"
                 @attributes="AdditionalAttributes">
             @if (Icon is not null)

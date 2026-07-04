@@ -1,53 +1,27 @@
-﻿.flare-fab {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+﻿/* The FAB carries the shared .flare-btn chrome: box-model, the reserved focus ring + ::before state
+   layer (hover/focus-visible/active), the disabled treatment and the colour/shadow transition all
+   come from button.css. Only the FAB shape, resting elevation, tonal colour and padding-based sizing
+   are FAB-specific here. height:auto overrides .flare-btn's fixed height so the FAB sizes to its
+   padded glyph (a circle/rounded-square), not the button height grid. */
+.flare-fab {
+    height: auto;
     gap: var(--flare-fab-gap, 0.75rem);
     padding: var(--flare-fab-padding-md, 1rem);
     border: none;
     border-radius: var(--flare-fab-radius, var(--flare-shape-large));
-    /* Тональный цвет через общие токены роли (--fc-*); дефолт - primary-container.
-       Роль -> класс flare-color-*; кастом -> инлайн --fc-container/--fc-on-container. */
+    /* Tonal colour via the shared role tokens (--fc-*); default primary-container.
+       Role -> flare-color-* class; custom -> inline --fc-container/--fc-on-container. */
     background-color: var(--fc-container, var(--flare-color-primary-container));
     color: var(--fc-on-container, var(--flare-color-on-primary-container));
     box-shadow: var(--flare-fab-shadow, var(--flare-elevation-3));
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    outline: none;
     font-family: var(--flare-typescale-label-large-font);
     font-size: var(--flare-typescale-label-large-size);
     font-weight: var(--flare-typescale-label-large-weight);
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
 }
 
-    .flare-fab::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background-color: currentColor;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
-    }
-
-    .flare-fab:hover::before {
-        opacity: var(--flare-state-hover-opacity);
-    }
-
+    /* Elevation lift on hover (FAB-specific; the hover state layer + transition come from .flare-btn). */
     .flare-fab:hover {
         box-shadow: var(--flare-fab-hover-shadow, var(--flare-elevation-4));
-    }
-
-    .flare-fab:active::before {
-        opacity: var(--flare-state-pressed-opacity);
-    }
-
-    .flare-fab:focus-visible {
-        outline: var(--flare-btn-focus-outline, 2px solid var(--flare-color-primary));
-        outline-offset: var(--flare-btn-focus-outline-offset, 2px);
-        box-shadow: var(--flare-btn-focus-shadow, none);
     }
 
 .flare-fab--sm {
@@ -66,8 +40,8 @@
     color: var(--flare-color-primary);
 }
 
-/* Цвет задаётся параметром Color (FlareColor) -> заполняет --_fab-bg/--_fab-on инлайном.
-   Отдельных per-color классов нет. */
+/* Colour is set via the Color (FlareColor) parameter, which fills --fc-container/--fc-on-container
+   inline; there are no per-colour classes. */
 
 .flare-fab__icon {
     display: inline-flex;
@@ -78,7 +52,7 @@
     white-space: nowrap;
 }
 
-/* Позиционирование */
+/* Positioning */
 .flare-fab-anchor {
     position: fixed;
     z-index: 900;
