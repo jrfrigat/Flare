@@ -27,16 +27,16 @@
 }
 
 .flare-tree-item__row--selected {
-    background: color-mix(in srgb, var(--flare-color-primary) 16%, transparent);
-    color: var(--flare-color-primary);
+    background: var(--flare-tree-selected-bg, color-mix(in srgb, var(--flare-color-primary) 16%, transparent));
+    color: var(--flare-tree-selected-color, var(--flare-color-primary));
 }
 
 .flare-tree-item__toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--flare-tree-toggle-size, 1.5rem);
+    height: var(--flare-tree-toggle-size, 1.5rem);
     border: none;
     background: transparent;
     cursor: pointer;
@@ -52,7 +52,7 @@
 }
 
 .flare-tree-item__toggle .material-symbols-rounded {
-    font-size: 1.25rem;
+    font-size: var(--flare-tree-icon-size, 1.25rem);
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     transition: transform var(--flare-motion-duration-short2) ease;
 }
@@ -63,19 +63,19 @@
 
 .flare-tree-item__toggle-placeholder {
     display: inline-flex;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--flare-tree-toggle-size, 1.5rem);
+    height: var(--flare-tree-toggle-size, 1.5rem);
     flex-shrink: 0;
 }
 
 .flare-tree-item__icon {
-    font-size: 1.25rem;
+    font-size: var(--flare-tree-icon-size, 1.25rem);
     flex-shrink: 0;
     color: var(--flare-color-on-surface-variant);
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-.flare-tree-item__row--selected .flare-tree-item__icon { color: var(--flare-color-primary); }
+.flare-tree-item__row--selected .flare-tree-item__icon { color: var(--flare-tree-selected-color, var(--flare-color-primary)); }
 
 .flare-tree-item__label { flex: 1; }
 
@@ -88,7 +88,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    padding-left: var(--flare-spacing-12);
+    padding-left: var(--flare-tree-indent, var(--flare-spacing-12));
 }
 
 /* Drag handle */
@@ -96,8 +96,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--flare-tree-toggle-size, 1.5rem);
+    height: var(--flare-tree-toggle-size, 1.5rem);
     cursor: grab;
     color: var(--flare-color-on-surface-variant);
     opacity: 0;
@@ -118,11 +118,11 @@
 }
 
 .flare-tree-item--drop-before {
-    border-top: 2px solid var(--flare-color-primary);
+    border-top: 2px solid var(--flare-tree-drop-indicator-color, var(--flare-color-primary));
 }
 
 .flare-tree-item--drop-after {
-    border-bottom: 2px solid var(--flare-color-primary);
+    border-bottom: 2px solid var(--flare-tree-drop-indicator-color, var(--flare-color-primary));
 }
 
 .flare-tree-item--drop-inside {

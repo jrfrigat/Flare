@@ -638,6 +638,17 @@ public class MaterialDesignTokens
         HoverScale = "1.15",
     };
 
+    // Tree: 24dp indent per level, 24dp expander/handle, 20dp icons, primary-tinted selection.
+    internal static readonly TreeTokens Tree = new()
+    {
+        Indent = "var(--flare-spacing-12)",
+        ToggleSize = "1.5rem",
+        IconSize = "1.25rem",
+        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
+        SelectedColor = "var(--flare-color-primary)",
+        DropIndicatorColor = "var(--flare-color-primary)",
+    };
+
     // Stepper: 32dp indicator circle (2px border, 18dp icon), 2px connector (outline-variant, primary
     // when complete) at least 24dp long, 80dp per-step min width.
     internal static readonly StepperTokens Stepper = new()
@@ -739,6 +750,7 @@ public class MaterialDesignTokens
         Pagination = Pagination,
         Timeline = Timeline,
         Stepper = Stepper,
+        Tree = Tree,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,

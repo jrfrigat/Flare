@@ -388,6 +388,13 @@ public static class CssVarMap
         v[Css.Tokens.Stepper.ConnectorActiveColor] = t.Stepper.ConnectorActiveColor;
         v[Css.Tokens.Stepper.StepMinWidth] = t.Stepper.StepMinWidth;
 
+        v[Css.Tokens.Tree.Indent] = t.Tree.Indent;
+        v[Css.Tokens.Tree.ToggleSize] = t.Tree.ToggleSize;
+        v[Css.Tokens.Tree.IconSize] = t.Tree.IconSize;
+        v[Css.Tokens.Tree.SelectedBg] = t.Tree.SelectedBg;
+        v[Css.Tokens.Tree.SelectedColor] = t.Tree.SelectedColor;
+        v[Css.Tokens.Tree.DropIndicatorColor] = t.Tree.DropIndicatorColor;
+
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;

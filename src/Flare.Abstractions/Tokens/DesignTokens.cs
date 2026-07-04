@@ -98,6 +98,9 @@ public sealed record DesignTokens
     /// <summary>Stepper tokens.</summary>
     public required StepperTokens Stepper { get; init; }
 
+    /// <summary>Tree (TreeView) tokens.</summary>
+    public required TreeTokens Tree { get; init; }
+
     /// <summary>Switch tokens.</summary>
     public required SwitchTokens Switch { get; init; }
 

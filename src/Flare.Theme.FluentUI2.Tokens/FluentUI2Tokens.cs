@@ -514,6 +514,17 @@ public class FluentUI2Tokens
         HoverScale = "1.15",
     };
 
+    // Tree: same neutral baseline (24dp indent/handle, 20dp icons, primary-tinted selection).
+    internal static readonly TreeTokens Tree = new()
+    {
+        Indent = "var(--flare-spacing-12)",
+        ToggleSize = "1.5rem",
+        IconSize = "1.25rem",
+        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
+        SelectedColor = "var(--flare-color-primary)",
+        DropIndicatorColor = "var(--flare-color-primary)",
+    };
+
     // Stepper: same neutral baseline (32dp circle, 2px connector, primary when complete).
     internal static readonly StepperTokens Stepper = new()
     {
@@ -849,6 +860,7 @@ public class FluentUI2Tokens
         Pagination = Pagination,
         Timeline = Timeline,
         Stepper = Stepper,
+        Tree = Tree,
         Popover = Popover,
         Extended = Extended,
     };
