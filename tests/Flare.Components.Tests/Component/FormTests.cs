@@ -293,7 +293,7 @@ public class C_FlareFormFieldTests : FlareTestContext
     public void RendersRootElement()
     {
         var cut = Render<FlareFormField>();
-        Assert.NotEmpty(cut.FindAll(".flare-field"));
+        Assert.NotEmpty(cut.FindAll(".flare-input"));
     }
 
     [Fact]
@@ -327,14 +327,14 @@ public class C_FlareFormFieldTests : FlareTestContext
             p.Add(x => x.Label, "Name");
             p.Add(x => x.Required, true);
         });
-        Assert.Contains("flare-field--required", cut.Find(".flare-field").ClassName);
+        Assert.Contains("flare-input--required", cut.Find(".flare-input").ClassName);
     }
 
     [Fact]
     public void NotRequiredByDefault()
     {
         var cut = Render<FlareFormField>(p => p.Add(x => x.Label, "Name"));
-        Assert.DoesNotContain("flare-field--required", cut.Find(".flare-field").ClassName);
+        Assert.DoesNotContain("flare-input--required", cut.Find(".flare-input").ClassName);
     }
 
     [Fact]
@@ -358,14 +358,14 @@ public class C_FlareFormFieldTests : FlareTestContext
                 b.AddAttribute(1, "id", "test-input");
                 b.CloseElement();
             })));
-        Assert.NotEmpty(cut.FindAll(".flare-field__control input"));
+        Assert.NotEmpty(cut.FindAll(".flare-input__control-slot input"));
     }
 
     [Fact]
     public void ControlDivAlwaysPresent()
     {
         var cut = Render<FlareFormField>();
-        Assert.NotEmpty(cut.FindAll(".flare-field__control"));
+        Assert.NotEmpty(cut.FindAll(".flare-input__control-slot"));
     }
 }
 

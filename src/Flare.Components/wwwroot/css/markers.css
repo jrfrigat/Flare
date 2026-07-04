@@ -30,6 +30,5 @@
 .flare-media-query {}                 /* logic-only wrapper; renders children by breakpoint */
 .flare-password-input {}              /* wraps the field; styled via the input classes */
 .flare-snackbar-provider-host {}      /* portal host for snackbars */
-.flare-field__control {}              /* form-field control slot */
 .flare-datagrid__filter-th {}         /* empty filter-row header cell (spacer) */
 .flare-datagrid__loading-text {}      /* loading label; inherits text styles */

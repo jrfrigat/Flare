@@ -67,4 +67,8 @@ public static class Input
     public const string MarginDense = "flare-input--margin-dense";
     /// <summary>The <c>flare-input--margin-normal</c> CSS class: a normal vertical margin around the field.</summary>
     public const string MarginNormal = "flare-input--margin-normal";
+    /// <summary>The <c>flare-input--required</c> CSS class: marks the field required (adds an asterisk after the label).</summary>
+    public const string Required = "flare-input--required";
+    /// <summary>The <c>flare-input__control-slot</c> CSS class: an unstyled wrapper that holds a form-field's control content.</summary>
+    public const string ControlSlot = "flare-input__control-slot";
 }

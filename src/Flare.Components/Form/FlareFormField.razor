@@ -1,12 +1,12 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(Required ? Css.Classes.Field.Required : null)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(Required ? Css.Classes.Input.Required : null)" style="@Style" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="@Css.Classes.Input.Label" for="@For">@Label</label>
     }
-    <div class="@Css.Classes.Field.Control">
+    <div class="@Css.Classes.Input.ControlSlot">
         @ChildContent
     </div>
     @if (!string.IsNullOrEmpty(HelperText))
@@ -27,5 +27,7 @@
     /// <summary>Field content (input, select, etc.).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
-    protected override string ComponentCssClass => Css.Classes.Field.Root;
+    // The form-field wrapper reuses the shared flare-input root (label + control slot + helper stack);
+    // the required-asterisk (flare-input--required) and the control slot are shared input-family classes.
+    protected override string ComponentCssClass => Css.Classes.Input.Root;
 }

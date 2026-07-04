@@ -24,11 +24,6 @@
 .flare-form--inline { flex-direction: row; flex-wrap: wrap; align-items: flex-end; }
 .flare-form--dense { gap: var(--flare-spacing-4); }
 
-/* FlareField */
-.flare-field { display: flex; flex-direction: column; gap: var(--flare-spacing-2); }
-/* Label + helper reuse the shared flare-input__label / __helper (input.css); only the
-   required-asterisk indicator is FormBuilder-specific. */
-.flare-field--required .flare-input__label::after {
-    content: ' *';
-    color: var(--flare-color-error);
-}
+/* FlareFormField reuses the shared flare-input family entirely (flare-input root + flare-input__label
+   + flare-input__helper + flare-input--required + flare-input__control-slot); all its rules live in
+   input.css. Nothing FormField-specific remains here. */

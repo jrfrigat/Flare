@@ -44,6 +44,16 @@
     pointer-events: none;
 }
 
+/* Required-field indicator: an asterisk after the label. Child combinator so a form-field wrapper
+   (FlareFormField) marks only its OWN label, never a nested field's label. */
+.flare-input--required > .flare-input__label::after {
+    content: ' *';
+    color: var(--flare-color-error);
+}
+
+/* Unstyled slot that holds a form-field's control content (FlareFormField); marker for tests/hooks. */
+.flare-input__control-slot {}
+
 .flare-input__field {
     display: flex;
     align-items: center;
