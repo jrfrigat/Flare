@@ -258,8 +258,8 @@ public partial class FlareDataGrid<TItem>
     private string? TypedFilterValue(string key) => _typedFilters.TryGetValue(key, out var f) ? f.Value : null;
     private string? TextFilterValue(string key) => _filters.TryGetValue(key, out var v) ? v : null;
 
-    // Currently-selected values for a Select (multi) filter.
-    private IReadOnlyCollection<string> SelectedFilterValues(string key)
+    // Currently-selected values for a Select (multi) filter (FlareMultiSelect binds IReadOnlyList).
+    private IReadOnlyList<string> SelectedFilterValues(string key)
         => _typedFilters.TryGetValue(key, out var f) && f.Values is not null ? [.. f.Values] : [];
 
     // A Select filter selects one or more values -> stored as an In filter.

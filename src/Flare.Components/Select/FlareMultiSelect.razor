@@ -1,6 +1,8 @@
 @namespace Flare.Components
 @inherits FlareFieldBase
+@implements IFlareMultiField<TValue>
 @typeparam TValue
+@using System.Linq.Expressions
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
@@ -19,15 +21,17 @@
          aria-disabled="@(Disabled ? "true" : null)"
          aria-readonly="@(ReadOnly ? "true" : null)"
          aria-required="@(Required ? "true" : null)"
+         aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+         aria-describedby="@(!string.IsNullOrEmpty(_displayedError) ? _errorId : !string.IsNullOrEmpty(HelperText) ? _helperId : null)"
          tabindex="@(Disabled ? -1 : 0)"
          @onkeydown="HandleKeyDown">
         <span class="@Css.Classes.Multiselect.Value">
-            @if (SelectedValues?.Any() == true)
+            @if (Values.Any())
             {
                 @if (Chips)
                 {
                     <span class="@Css.Classes.Multiselect.Chips">
-                        @foreach (var v in SelectedValues)
+                        @foreach (var v in Values)
                         {
                             <span class="@Css.Classes.Multiselect.Chip">
                                 <span>@LabelFor(v)</span>
@@ -60,7 +64,7 @@
                       GroupBy="GroupBy"
                       ItemTemplate="ItemTemplate"
                       ItemLabel="GetLabel"
-                      Selected="@(item => SelectedValues?.Contains(GetValue(item)) == true)"
+                      Selected="@(item => Values.Contains(GetValue(item)))"
                       Multiple="true"
                       Virtualizable="true"
                       VirtualizeThreshold="VirtualizeThreshold"
@@ -86,8 +90,8 @@
                 @if (ShowSelectAll && Items != null)
                 {
                     var filteredAll = _visibleItems;
-                    var allSelected = filteredAll.Count > 0 && filteredAll.All(i => SelectedValues?.Contains(GetValue(i)) == true);
-                    var someSelected = !allSelected && filteredAll.Any(i => SelectedValues?.Contains(GetValue(i)) == true);
+                    var allSelected = filteredAll.Count > 0 && filteredAll.All(i => Values.Contains(GetValue(i)));
+                    var someSelected = !allSelected && filteredAll.Any(i => Values.Contains(GetValue(i)));
                     <div class="@Css.Classes.Multiselect.Option @Css.Classes.Listbox.Option @Css.Classes.Multiselect.OptionSelectAll"
                          role="option"
                          aria-selected="@allSelected"
@@ -100,11 +104,13 @@
             </Header>
         </FlareListbox>
     }
-    @if (!string.IsNullOrEmpty(ErrorText) || !string.IsNullOrEmpty(HelperText))
+    @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@Css.Classes.Input.Helper @(!string.IsNullOrEmpty(ErrorText) ? Css.Classes.Input.HelperError : "")">
-            @(ErrorText ?? HelperText)
-        </span>
+        <span id="@_errorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@_displayedError</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span id="@_helperId" class="@Css.Classes.Input.Helper">@HelperText</span>
     }
 </div>
 
@@ -135,6 +141,7 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+        UpdateFieldIdentifier(For);
         _labelByValue.Clear();
         if (Items is not null)
             foreach (var item in Items)
@@ -203,10 +210,12 @@
     [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
     /// <summary>Function to get the value key from an item.</summary>
     [Parameter] public Func<TValue, TValue> GetValue { get; set; } = v => v;
-    /// <summary>The currently selected values.</summary>
-    [Parameter] public IReadOnlyCollection<TValue>? SelectedValues { get; set; }
-    /// <summary>Fires when the selection changes.</summary>
-    [Parameter] public EventCallback<IReadOnlyCollection<TValue>> SelectedValuesChanged { get; set; }
+    /// <summary>The bound collection of selected values (see <see cref="IFlareMultiField{TValue}"/>).</summary>
+    [Parameter] public IReadOnlyList<TValue> Values { get; set; } = System.Array.Empty<TValue>();
+    /// <summary>Fires when the selection changes, enabling <c>@bind-Values</c>.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<TValue>> ValuesChanged { get; set; }
+    /// <summary>Expression used to bind and validate the field (EditContext).</summary>
+    [Parameter] public Expression<Func<IReadOnlyList<TValue>>>? For { get; set; }
     /// <summary>Renders the selected values as removable chips in the control (instead of a comma list).</summary>
     [Parameter] public bool Chips { get; set; }
     /// <summary>Returns the group label for an item. When non-null, dropdown options are grouped under headers.</summary>
@@ -239,7 +248,12 @@
     // off flare-input--disabled/--error, and the shared flare-input__label/__helper dimming applies.
     private string? _stateClass =>
         Disabled ? Css.Classes.Input.Disabled :
-        !string.IsNullOrEmpty(ErrorText) ? Css.Classes.Input.Error : null;
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error : null;
+
+    // Explicit ErrorText or the bound EditContext validation message (parity with FlareSelect).
+    private string? _displayedError => DisplayedError(ErrorText);
+    private string _errorId  => $"{_controlId}-err";
+    private string _helperId => $"{_controlId}-help";
 
     private string? _sizeClass => Size switch
     {
@@ -286,8 +300,8 @@
 
     private string BuildSelectedLabel()
     {
-        if (SelectedValues is null || Items is null) return "";
-        return string.Join(", ", SelectedValues.Select(LabelFor));
+        if (Items is null) return "";
+        return string.Join(", ", Values.Select(LabelFor));
     }
 
     private void ToggleDropdown()
@@ -302,21 +316,23 @@
 
     private async Task ToggleItem(TValue value)
     {
-        var current = new HashSet<TValue>(SelectedValues ?? Enumerable.Empty<TValue>());
+        var current = new HashSet<TValue>(Values);
         if (!current.Remove(value)) current.Add(value);
-        await SelectedValuesChanged.InvokeAsync(current.ToArray());
+        await ValuesChanged.InvokeAsync(current.ToArray());
+        NotifyFieldChanged();
     }
 
     private async Task ToggleSelectAll()
     {
         var filtered = _visibleItems;
-        var current = new HashSet<TValue>(SelectedValues ?? Enumerable.Empty<TValue>());
+        var current = new HashSet<TValue>(Values);
         var allSelected = filtered.Count > 0 && filtered.All(i => current.Contains(GetValue(i)));
         if (allSelected)
             foreach (var item in filtered) current.Remove(GetValue(item));
         else
             foreach (var item in filtered) current.Add(GetValue(item));
-        await SelectedValuesChanged.InvokeAsync(current.ToArray());
+        await ValuesChanged.InvokeAsync(current.ToArray());
+        NotifyFieldChanged();
     }
 
     private int _activeIndex = -1;

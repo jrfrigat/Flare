@@ -239,10 +239,10 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void SelectItem_AddsToSelectedValues()
     {
-        IReadOnlyCollection<string>? captured = null;
+        IReadOnlyList<string>? captured = null;
         var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
-            .Add(x => x.SelectedValuesChanged, v => captured = v));
+            .Add(x => x.ValuesChanged, v => captured = v));
 
         cut.Find(".flare-multiselect__control").Click();
         cut.FindAll(".flare-multiselect__option")[0].Click();
@@ -254,11 +254,11 @@ public class C_FlareMultiSelectTests : FlareTestContext
     [Fact]
     public void DeselectItem_RemovesFromSelectedValues()
     {
-        IReadOnlyCollection<string>? captured = null;
+        IReadOnlyList<string>? captured = null;
         var cut = Render<FlareMultiSelect<string>>(p => p
             .Add(x => x.Items, _fruits)
-            .Add(x => x.SelectedValues, new[] { "Apple" })
-            .Add(x => x.SelectedValuesChanged, v => captured = v));
+            .Add(x => x.Values, new[] { "Apple" })
+            .Add(x => x.ValuesChanged, v => captured = v));
 
         cut.Find(".flare-multiselect__control").Click();
         cut.FindAll(".flare-multiselect__option")[0].Click();

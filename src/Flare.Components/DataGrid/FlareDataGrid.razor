@@ -492,8 +492,8 @@
         {
             <FlareMultiSelect TValue="string" Size="FieldSize.Sm"
                               Items="@(ctx.Options ?? DistinctValues(ctx.Key))"
-                              SelectedValues="@SelectedFilterValues(ctx.Key)"
-                              SelectedValuesChanged="@(v => OnSelectFilterChanged(ctx.Key, v))"
+                              Values="@SelectedFilterValues(ctx.Key)"
+                              ValuesChanged="@(v => OnSelectFilterChanged(ctx.Key, v))"
                               Placeholder="@(FilterPlaceholder ?? FlareStrings.DataGrid_FilterPlaceholder)"
                               Chips="true" Searchable="true" />
         }
