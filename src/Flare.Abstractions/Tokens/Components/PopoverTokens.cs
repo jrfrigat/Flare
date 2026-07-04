@@ -9,38 +9,38 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record PopoverTokens
 {
     /// <summary>Background color of the popover surface.</summary>
-    [CssVar(PopoverPopup.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.SurfaceContainer);
+    [CssVar(PopoverPopup.SurfaceColor)] public required string SurfaceColor { get; init; }
 
     /// <summary>Border radius of the popover.</summary>
-    [CssVar(PopoverPopup.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraSmall);
+    [CssVar(PopoverPopup.Radius)] public required string Radius { get; init; }
 
     /// <summary>Elevation (box-shadow) of the popover.</summary>
-    [CssVar(PopoverPopup.Elevation)] public string Elevation { get; init; } = Vars.Var(Flare.Css.Tokens.Elevation.Level2);
+    [CssVar(PopoverPopup.Elevation)] public required string Elevation { get; init; }
 
     /// <summary>Padding inside the popover.</summary>
-    [CssVar(PopoverPopup.Padding)] public string Padding { get; init; } = "8px 0";
+    [CssVar(PopoverPopup.Padding)] public required string Padding { get; init; }
 
     /// <summary>Minimum width of the popover.</summary>
-    [CssVar(PopoverPopup.MinWidth)] public string MinWidth { get; init; } = "112px";
+    [CssVar(PopoverPopup.MinWidth)] public required string MinWidth { get; init; }
 
     /// <summary>Maximum width of the popover.</summary>
-    [CssVar(PopoverPopup.MaxWidth)] public string MaxWidth { get; init; } = "calc(100vw - 32px)";
+    [CssVar(PopoverPopup.MaxWidth)] public required string MaxWidth { get; init; }
 
     /// <summary>Maximum height of the popover before scrolling.</summary>
-    [CssVar(PopoverPopup.MaxHeight)] public string MaxHeight { get; init; } = "calc(100vh - 32px)";
+    [CssVar(PopoverPopup.MaxHeight)] public required string MaxHeight { get; init; }
 
     /// <summary>Distance from the anchor element.</summary>
-    [CssVar(PopoverPopup.Offset)] public string Offset { get; init; } = "4px";
+    [CssVar(PopoverPopup.Offset)] public required string Offset { get; init; }
 
     /// <summary>Arrow size (width/height).</summary>
-    [CssVar(PopoverPopup.ArrowSize)] public string ArrowSize { get; init; } = "12px";
+    [CssVar(PopoverPopup.ArrowSize)] public required string ArrowSize { get; init; }
 
     /// <summary>Background color of the scrim (backdrop).</summary>
-    [CssVar(PopoverPopup.ScrimColor)] public string ScrimColor { get; init; } = "transparent";
+    [CssVar(PopoverPopup.ScrimColor)] public required string ScrimColor { get; init; }
 
     /// <summary>Transition duration for show/hide.</summary>
-    [CssVar(PopoverPopup.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationShort2);
+    [CssVar(PopoverPopup.TransitionDuration)] public required string TransitionDuration { get; init; }
 
     /// <summary>Transition easing for show/hide.</summary>
-    [CssVar(PopoverPopup.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
+    [CssVar(PopoverPopup.TransitionEasing)] public required string TransitionEasing { get; init; }
 }

@@ -1,5 +1,7 @@
 using Flare.Abstractions.Tokens;
 using Flare.Abstractions.Tokens.Components;
+using Flare.Css;
+using Flare.Css.Tokens;
 
 namespace Flare.Theme.FluentUI2.Tokens;
 
@@ -443,6 +445,63 @@ public class FluentUI2Tokens
         ThumbBorderColor = "var(--flare-color-outline)",
     };
 
+    // Tooltip / Avatar - Fluent uses the same neutral baseline as Material.
+    internal static readonly TooltipTokens Tooltip = new()
+    {
+        SurfaceColor = "var(--flare-color-inverse-surface)",
+        TextColor = "var(--flare-color-inverse-on-surface)",
+        Radius = "var(--flare-shape-extra-small)",
+        Padding = "6px 8px",
+        MaxWidth = "300px",
+        FontFamily = "var(--flare-typescale-body-small-font)",
+        FontSize = "var(--flare-typescale-body-small-size)",
+        FontWeight = "var(--flare-typescale-body-small-weight, 400)",
+        LineHeight = "var(--flare-typescale-body-small-height)",
+        Offset = "8px",
+        ArrowSize = "8px",
+        TransitionDuration = "var(--flare-motion-duration-short1)",
+        TransitionEasing = "var(--flare-motion-easing-standard)",
+        ShowDelay = 100,
+        HideDelay = 0,
+    };
+
+    internal static readonly PopoverTokens Popover = new()
+    {
+        SurfaceColor = "var(--flare-color-surface-container)",
+        Radius = "var(--flare-shape-small)",
+        Elevation = "var(--flare-elevation-2)",
+        Padding = "8px 0",
+        MinWidth = "112px",
+        MaxWidth = "calc(100vw - 32px)",
+        MaxHeight = "calc(100vh - 32px)",
+        Offset = "4px",
+        ArrowSize = "12px",
+        ScrimColor = "transparent",
+        TransitionDuration = "var(--flare-motion-duration-short2)",
+        TransitionEasing = "var(--flare-motion-easing-standard)",
+    };
+
+    internal static readonly AvatarTokens Avatar = new()
+    {
+        SurfaceColor = "var(--flare-color-primary-container)",
+        TextColor = "var(--flare-color-on-primary-container)",
+        IconColor = "var(--flare-color-on-primary-container)",
+        RoundedRadius = "var(--flare-shape-full)",
+        SquareRadius = "var(--flare-shape-small)",
+        SizeXs = "24px",
+        SizeSm = "32px",
+        SizeMd = "40px",
+        SizeLg = "48px",
+        SizeXl = "64px",
+        FontFamily = "var(--flare-typescale-label-large-font)",
+        FontSize = "var(--flare-typescale-label-large-size)",
+        FontWeight = "var(--flare-typescale-label-large-weight, 500)",
+        GroupBorderWidth = "2px",
+        GroupBorderColor = "var(--flare-color-surface)",
+        GroupOverflowBg = "var(--flare-color-surface-container-highest)",
+        GroupOverflowColor = "var(--flare-color-on-surface-variant)",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Fluent UI 2 design tokens. Use this as the base for custom themes.</summary>
@@ -450,6 +509,8 @@ public class FluentUI2Tokens
     {
         BottomNav = BottomNav,
         ColorPicker = ColorPicker,
+        Tooltip = Tooltip,
+        Avatar = Avatar,
         FocusRing = "2px solid var(--flare-color-primary)",
         Typography = Typography,
         Shape = Shape,
@@ -493,7 +554,7 @@ public class FluentUI2Tokens
         Nav = Nav,
         Switch = Switch,
         Dialog = new() { Radius = "var(--flare-shape-large)" },
-        Popover = new() { Radius = "var(--flare-shape-small)" },
+        Popover = Popover,
         Snackbar = new() { Radius = "var(--flare-shape-small)" },
         Extended = Extended,
     };

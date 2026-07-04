@@ -69,10 +69,10 @@ public sealed record DesignTokens
     public SnackbarTokens Snackbar { get; init; } = new();
 
     /// <summary>Tooltip tokens.</summary>
-    public TooltipTokens Tooltip { get; init; } = new();
+    public required TooltipTokens Tooltip { get; init; }
 
     /// <summary>Popover tokens.</summary>
-    public PopoverTokens Popover { get; init; } = new();
+    public required PopoverTokens Popover { get; init; }
 
     /// <summary>DataGrid tokens.</summary>
     public DataGridTokens DataGrid { get; init; } = new();
@@ -81,7 +81,7 @@ public sealed record DesignTokens
     public CardTokens Card { get; init; } = new();
 
     /// <summary>Avatar tokens.</summary>
-    public AvatarTokens Avatar { get; init; } = new();
+    public required AvatarTokens Avatar { get; init; }
 
     /// <summary>Progress tokens.</summary>
     public ProgressTokens Progress { get; init; } = new();

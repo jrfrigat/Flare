@@ -9,47 +9,47 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record TooltipTokens
 {
     /// <summary>Background color of the tooltip.</summary>
-    [CssVar(TooltipPopup.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.InverseSurface);
+    [CssVar(TooltipPopup.SurfaceColor)] public required string SurfaceColor { get; init; }
 
     /// <summary>Color of the tooltip text.</summary>
-    [CssVar(TooltipPopup.TextColor)] public string TextColor { get; init; } = Vars.Var(Color.InverseOnSurface);
+    [CssVar(TooltipPopup.TextColor)] public required string TextColor { get; init; }
 
     /// <summary>Border radius of the tooltip.</summary>
-    [CssVar(TooltipPopup.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraSmall);
+    [CssVar(TooltipPopup.Radius)] public required string Radius { get; init; }
 
     /// <summary>Padding inside the tooltip.</summary>
-    [CssVar(TooltipPopup.Padding)] public string Padding { get; init; } = "6px 8px";
+    [CssVar(TooltipPopup.Padding)] public required string Padding { get; init; }
 
     /// <summary>Maximum width of the tooltip.</summary>
-    [CssVar(TooltipPopup.MaxWidth)] public string MaxWidth { get; init; } = "300px";
+    [CssVar(TooltipPopup.MaxWidth)] public required string MaxWidth { get; init; }
 
     /// <summary>Font family of the tooltip text.</summary>
-    [CssVar(TooltipPopup.FontFamily)] public string FontFamily { get; init; } = Vars.Var(Typography.Font("body-small"));
+    [CssVar(TooltipPopup.FontFamily)] public required string FontFamily { get; init; }
 
     /// <summary>Font size of the tooltip text.</summary>
-    [CssVar(TooltipPopup.FontSize)] public string FontSize { get; init; } = Vars.Var(Typography.Size("body-small"));
+    [CssVar(TooltipPopup.FontSize)] public required string FontSize { get; init; }
 
     /// <summary>Font weight of the tooltip text.</summary>
-    [CssVar(TooltipPopup.FontWeight)] public string FontWeight { get; init; } = "var(--flare-typescale-body-small-weight, 400)";
+    [CssVar(TooltipPopup.FontWeight)] public required string FontWeight { get; init; }
 
     /// <summary>Line height of the tooltip text.</summary>
-    [CssVar(TooltipPopup.LineHeight)] public string LineHeight { get; init; } = Vars.Var(Typography.Height("body-small"));
+    [CssVar(TooltipPopup.LineHeight)] public required string LineHeight { get; init; }
 
     /// <summary>Distance from the anchor element.</summary>
-    [CssVar(TooltipPopup.Offset)] public string Offset { get; init; } = "8px";
+    [CssVar(TooltipPopup.Offset)] public required string Offset { get; init; }
 
     /// <summary>Arrow size (width/height).</summary>
-    [CssVar(TooltipPopup.ArrowSize)] public string ArrowSize { get; init; } = "8px";
+    [CssVar(TooltipPopup.ArrowSize)] public required string ArrowSize { get; init; }
 
     /// <summary>Transition duration for show/hide.</summary>
-    [CssVar(TooltipPopup.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationShort1);
+    [CssVar(TooltipPopup.TransitionDuration)] public required string TransitionDuration { get; init; }
 
     /// <summary>Transition easing for show/hide.</summary>
-    [CssVar(TooltipPopup.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
+    [CssVar(TooltipPopup.TransitionEasing)] public required string TransitionEasing { get; init; }
 
     /// <summary>Delay before showing (in milliseconds).</summary>
-    [CssVar(TooltipPopup.ShowDelay)] public int ShowDelay { get; init; } = 100;
+    [CssVar(TooltipPopup.ShowDelay)] public required int ShowDelay { get; init; }
 
     /// <summary>Delay before hiding (in milliseconds).</summary>
-    [CssVar(TooltipPopup.HideDelay)] public int HideDelay { get; init; } = 0;
+    [CssVar(TooltipPopup.HideDelay)] public required int HideDelay { get; init; }
 }
