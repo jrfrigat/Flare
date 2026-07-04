@@ -57,13 +57,13 @@
     background: var(--flare-color-outline, var(--flare-color-on-surface-variant));
     border-radius: var(--flare-shape-full);
     pointer-events: none;
-    width: 2px;
-    height: 1.75rem;
+    width: var(--flare-splitter-grip-thickness,2px);
+    height: var(--flare-splitter-grip-length,1.75rem);
 }
 
 .flare-splitter--vertical .flare-splitter__gutter-bar {
-    width: 1.75rem;
-    height: 2px;
+    width: var(--flare-splitter-grip-length,1.75rem);
+    height: var(--flare-splitter-grip-thickness,2px);
 }
 
 @media (forced-colors: active) {

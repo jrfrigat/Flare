@@ -12,14 +12,14 @@
 /* Default: bottom-center */
 .flare-snackbar-provider,
 .flare-snackbar-provider--bottom-center {
-  bottom: 1.5rem;
+  bottom: var(--flare-snackbar-provider-inset,1.5rem);
   left: 50%;
   transform: translateX(-50%);
   align-items: center;
 }
 
 .flare-snackbar-provider--top-center {
-  top: 1.5rem;
+  top: var(--flare-snackbar-provider-inset,1.5rem);
   bottom: auto;
   left: 50%;
   transform: translateX(-50%);
@@ -28,25 +28,25 @@
 }
 
 .flare-snackbar-provider--bottom-left {
-  bottom: 1.5rem;
-  left: 1.5rem;
+  bottom: var(--flare-snackbar-provider-inset,1.5rem);
+  left: var(--flare-snackbar-provider-inset,1.5rem);
   right: auto;
   transform: none;
   align-items: flex-start;
 }
 
 .flare-snackbar-provider--bottom-right {
-  bottom: 1.5rem;
-  right: 1.5rem;
+  bottom: var(--flare-snackbar-provider-inset,1.5rem);
+  right: var(--flare-snackbar-provider-inset,1.5rem);
   left: auto;
   transform: none;
   align-items: flex-end;
 }
 
 .flare-snackbar-provider--top-left {
-  top: 1.5rem;
+  top: var(--flare-snackbar-provider-inset,1.5rem);
   bottom: auto;
-  left: 1.5rem;
+  left: var(--flare-snackbar-provider-inset,1.5rem);
   right: auto;
   transform: none;
   flex-direction: column;
@@ -54,9 +54,9 @@
 }
 
 .flare-snackbar-provider--top-right {
-  top: 1.5rem;
+  top: var(--flare-snackbar-provider-inset,1.5rem);
   bottom: auto;
-  right: 1.5rem;
+  right: var(--flare-snackbar-provider-inset,1.5rem);
   left: auto;
   transform: none;
   flex-direction: column;
@@ -72,7 +72,7 @@
   max-width: 36rem;
   /* MD3: single-line 48dp, two-line grows to ~68dp via wrapping content */
   min-height: var(--flare-snackbar-min-height, 3rem);
-  padding: 0.875rem var(--flare-spacing-10);
+  padding: var(--flare-snackbar-padding-block,0.875rem) var(--flare-spacing-10);
   border-radius: var(--flare-snackbar-radius, var(--flare-shape-extra-small));
   background: var(--flare-color-inverse-surface);
   color: var(--flare-color-inverse-on-surface);
@@ -136,7 +136,7 @@
   padding: var(--flare-spacing-2);
   border-radius: var(--flare-shape-full);
   line-height: 1;
-  opacity: 0.75;
+  opacity: var(--flare-snackbar-close-opacity,0.75);
 }
 
 .flare-snackbar__close-btn:hover {

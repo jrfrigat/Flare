@@ -1,9 +1,9 @@
 .flare-scroll-top {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 2.75rem;
-    height: 2.75rem;
+    bottom: var(--flare-scroll-top-inset,1.5rem);
+    right: var(--flare-scroll-top-inset,1.5rem);
+    width: var(--flare-scroll-top-size,2.75rem);
+    height: var(--flare-scroll-top-size,2.75rem);
     border-radius: 50%;
     background: var(--flare-color-primary);
     color: var(--flare-color-on-primary);

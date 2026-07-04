@@ -102,7 +102,7 @@
   margin-bottom: var(--flare-spacing-2);
 }
 
-.flare-alert__body { opacity: 0.9; }
+.flare-alert__body { opacity: var(--flare-alert-body-opacity,0.9); }
 
 .flare-alert__close {
   background: none;
@@ -110,7 +110,7 @@
   cursor: pointer;
   padding: var(--flare-spacing-1) var(--flare-spacing-2);
   border-radius: var(--flare-shape-extra-small);
-  opacity: 0.7;
+  opacity: var(--flare-alert-close-opacity,0.7);
   font-size: 1rem;
   line-height: 1;
   color: inherit;

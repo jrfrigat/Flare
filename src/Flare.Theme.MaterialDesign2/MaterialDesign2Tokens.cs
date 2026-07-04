@@ -80,6 +80,7 @@ internal static class MaterialDesign2Tokens
     internal static readonly StateTokens State = new()
     {
         HoverOpacity = "0.04",
+        SelectedOpacity = "0.12",
         FocusOpacity = "0.12",
         PressedOpacity = "0.10",
         DraggedOpacity = "0.08",

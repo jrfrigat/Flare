@@ -65,6 +65,7 @@ public class FluentUI2Tokens
     internal static readonly StateTokens State = new()
     {
         HoverOpacity = "0.1",
+        SelectedOpacity = "0.12",
         FocusOpacity = "0.1",
         PressedOpacity = "0.12", // F2: pressed - the darkest (darker than hover 0.10)
         DraggedOpacity = "0.1",

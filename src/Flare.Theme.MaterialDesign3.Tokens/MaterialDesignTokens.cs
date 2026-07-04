@@ -71,6 +71,7 @@ public class MaterialDesignTokens
     internal static readonly StateTokens State = new()
     {
         HoverOpacity = "0.08",
+        SelectedOpacity = "0.12",
         FocusOpacity = "0.10",   // MD3 state layer: focus = 10%
         PressedOpacity = "0.10", // MD3 state layer: pressed = 10%
         DraggedOpacity = "0.16",

@@ -148,7 +148,7 @@
   border-radius: var(--flare-nav-indicator-radius, var(--flare-shape-full));
   border-left: var(--flare-nav-active-left-bar, none);
   color: var(--flare-color-on-secondary-container);
-  font-weight: 600;
+  font-weight: var(--flare-nav-active-weight, 600);
 }
 
 .flare-nav-link--active:hover {
@@ -167,7 +167,7 @@
   color: var(--flare-color-on-error);
   border-radius: var(--flare-shape-full);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--flare-nav-badge-weight, 600);
   padding: var(--flare-spacing-1) var(--flare-spacing-4);
   min-width: 1.25rem;
   text-align: center;
@@ -224,6 +224,6 @@
   white-space: nowrap;
   font-family: var(--flare-typescale-label-small-font);
   font-size: var(--flare-typescale-label-small-size);
-  line-height: 1.15;
+  line-height: var(--flare-nav-rail-label-line-height, 1.15);
 }
 

@@ -34,7 +34,7 @@ public class TokensToCssTests
         Shape = new() { None = "0", ExtraSmall = "4px", Small = "8px", Medium = "12px", Large = "16px", ExtraLarge = "28px", Full = "9999px" },
         Elevation = new() { Level0 = "none", Level1 = "0 1px 2px var(--flare-shadow-umbra)", Level2 = "x", Level3 = "x", Level4 = "x", Level5 = "x" },
         Motion = new() { DurationShort1 = "50ms", DurationShort2 = "100ms", DurationMedium1 = "200ms", DurationMedium2 = "300ms", DurationLong1 = "450ms", DurationLong2 = "600ms", EasingStandard = "ease", EasingDecelerate = "ease-out", EasingAccelerate = "ease-in", EasingEmphasized = "ease" },
-        State = new() { HoverOpacity = "0.08", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12" },
+        State = new() { HoverOpacity = "0.08", SelectedOpacity = "0.12", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12" },
         Extended = extended ?? new Dictionary<string, string> { ["--x"] = "1" },
     };
 

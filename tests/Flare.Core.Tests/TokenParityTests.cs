@@ -177,6 +177,7 @@ public class TokenParityTests
             State = new StateTokens
             {
                 HoverOpacity = "0.08",
+                SelectedOpacity = "0.12",
                 FocusOpacity = "0.12",
                 PressedOpacity = "0.12",
                 DraggedOpacity = "0.16",

@@ -64,6 +64,7 @@ internal class LiquidGlassTokens
     internal static readonly StateTokens State = new()
     {
         HoverOpacity = "0.06",
+        SelectedOpacity = "0.12",
         FocusOpacity = "0.10",
         PressedOpacity = "0.12",
         DraggedOpacity = "0.10",

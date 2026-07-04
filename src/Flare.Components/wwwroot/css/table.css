@@ -56,7 +56,7 @@
 }
 
 .flare-table--striped tbody tr:nth-child(even) td {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 4%, var(--flare-color-surface));
+    background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-table-stripe-opacity, 4%), var(--flare-color-surface));
 }
 
 .flare-table--bordered thead th,

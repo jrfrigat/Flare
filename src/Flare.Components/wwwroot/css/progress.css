@@ -139,8 +139,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: var(--flare-progress-circular-size,40px);
+  height: var(--flare-progress-circular-size,40px);
 }
 
 .flare-progress__svg { width: 100%; height: 100%; }
@@ -174,7 +174,7 @@
 .flare-progress--buffer .flare-progress__track { background: transparent; }
 .flare-progress__buffer-fill {
     position: absolute; left: 0; top: 0; height: 100%;
-    background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 30%, transparent);
+    background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) var(--flare-progress-buffer-opacity,30%), transparent);
     transition: width 0.3s ease;
 }
 

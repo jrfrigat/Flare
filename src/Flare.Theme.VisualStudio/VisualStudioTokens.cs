@@ -64,6 +64,7 @@ internal class VisualStudioTokens
     internal static readonly StateTokens State = new()
     {
         HoverOpacity = "0.08",
+        SelectedOpacity = "0.12",
         FocusOpacity = "0.10",
         PressedOpacity = "0.14",
         DraggedOpacity = "0.10",

@@ -15,7 +15,7 @@
 .flare-link--underline-hover:hover { text-decoration: underline; }
 .flare-link--underline-none { text-decoration: none; }
 
-.flare-link:hover:not(.flare-link--disabled) { opacity: 0.8; }
+.flare-link:hover:not(.flare-link--disabled) { opacity: var(--flare-link-hover-opacity,0.8); }
 
 .flare-link--disabled {
     opacity: var(--flare-state-disabled-opacity);
@@ -24,7 +24,7 @@
 }
 
 .flare-link:focus-visible {
-    outline: 2px solid var(--flare-color-primary);
+    outline: var(--flare-link-focus-ring-width,2px) solid var(--flare-color-primary);
     outline-offset: 2px;
     border-radius: var(--flare-shape-extra-small);
 }

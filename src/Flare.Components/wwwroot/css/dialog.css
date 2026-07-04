@@ -23,7 +23,7 @@
     display: flex;
     justify-content: center;
     color: var(--flare-color-secondary);
-    font-size: 1.5rem;
+    font-size: var(--flare-dialog-icon-size,1.5rem);
     padding: var(--flare-spacing-12) var(--flare-spacing-12) 0;
 }
 

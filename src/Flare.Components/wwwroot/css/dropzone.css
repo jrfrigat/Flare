@@ -5,7 +5,7 @@
   justify-content: center;
   min-height: 10rem;
   padding: var(--flare-spacing-16) var(--flare-spacing-12);
-  border: 2px dashed var(--flare-color-outline);
+  border: var(--flare-dropzone-border-width,2px) dashed var(--flare-color-outline);
   border-radius: var(--flare-card-radius, var(--flare-shape-medium));
   background: var(--flare-color-surface-container-low);
   cursor: pointer;
@@ -16,13 +16,13 @@
 
 .flare-dropzone:hover:not(.flare-dropzone--disabled) {
   border-color: var(--flare-color-primary);
-  background: color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface));
+  background: var(--flare-dropzone-hover-bg, color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface)));
 }
 
 .flare-dropzone--dragging {
   border-color: var(--flare-color-primary);
-  background: color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface));
-  box-shadow: inset 0 0 0 2px var(--flare-color-primary);
+  background: var(--flare-dropzone-dragging-bg, color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface)));
+  box-shadow: inset 0 0 0 var(--flare-dropzone-dragging-ring-width,2px) var(--flare-color-primary);
 }
 
 .flare-dropzone--disabled {
@@ -50,7 +50,7 @@
 }
 
 .flare-dropzone__icon {
-  font-size: 2.5rem;
+  font-size: var(--flare-dropzone-icon-size,2.5rem);
   color: var(--flare-color-primary);
   transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }

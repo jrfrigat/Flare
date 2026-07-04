@@ -126,7 +126,7 @@
     color: var(--fc-on-container, var(--flare-color-on-primary-container));
     border-radius: var(--flare-shape-extra-small);
     font-size: var(--flare-typescale-label-small-size);
-    padding: 0.0625rem var(--flare-spacing-2);
+    padding: var(--flare-calendar-event-pad-y,0.0625rem) var(--flare-spacing-2);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

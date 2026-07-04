@@ -63,10 +63,10 @@
 /* Directional scroll buttons: a soft edge shadow cast over the adjacent tabs hints that more
    tabs scroll beneath the arrow. Shown only while the button is enabled (there is overflow that way). */
 .flare-tabs__scroll--prev:not(:disabled) {
-  box-shadow: 4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) 35%, transparent);
+  box-shadow: 4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) var(--flare-tabs-scroll-shadow-opacity,35%), transparent);
 }
 .flare-tabs__scroll--next:not(:disabled) {
-  box-shadow: -4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) 35%, transparent);
+  box-shadow: -4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) var(--flare-tabs-scroll-shadow-opacity,35%), transparent);
 }
 
 /* The vertical bar keeps its own layout; arrows are horizontal-only. Header zones stack
@@ -135,7 +135,7 @@
 /* Text: no persistent indicator - active tab is colour + weight, hover is a subtle wash. */
 .flare-tabs--text .flare-tabs__bar-wrap { border-bottom: none; }
 .flare-tabs--text .flare-tabs__tab { border-bottom-color: transparent; }
-.flare-tabs--text .flare-tabs__tab--active { border-bottom-color: transparent; font-weight: 700; }
+.flare-tabs--text .flare-tabs__tab--active { border-bottom-color: transparent; font-weight: var(--flare-tabs-active-weight,700); }
 .flare-tabs--text .flare-tabs__tab--active::after { display: none; }
 
 /* Tonal / Filled: rounded pill tabs in an optional track (segmented control), no divider. */
@@ -227,14 +227,14 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: var(--flare-tabs-close-opacity,0.6);
   transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
               background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
 .flare-tabs__tab-close:hover {
   opacity: 1;
-  background: color-mix(in srgb, currentColor calc(var(--flare-state-selected-opacity, 0.12) * 100%), transparent);
+  background: color-mix(in srgb, currentColor calc(var(--flare-state-selected-opacity) * 100%), transparent);
 }
 
 .flare-tabs__tab-close > .material-symbols-rounded {

@@ -91,6 +91,7 @@ public static class CssVarMap
 
         // State layers
         v[Css.Tokens.State.HoverOpacity] = t.State.HoverOpacity;
+        v[Css.Tokens.State.SelectedOpacity] = t.State.SelectedOpacity;
         v[Css.Tokens.State.FocusOpacity] = t.State.FocusOpacity;
         v[Css.Tokens.State.PressedOpacity] = t.State.PressedOpacity;
         v[Css.Tokens.State.DraggedOpacity] = t.State.DraggedOpacity;

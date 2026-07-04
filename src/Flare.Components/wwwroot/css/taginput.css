@@ -49,7 +49,7 @@
 }
 
 .flare-tag-input__remove:hover {
-    background: color-mix(in srgb, var(--flare-color-on-secondary-container) 20%, transparent);
+    background: var(--flare-tag-input-remove-hover-bg, color-mix(in srgb, var(--flare-color-on-secondary-container) 20%, transparent));
 }
 
 /* The inline entry field carries the shared flare-input__control (flex/transparent/border/outline/

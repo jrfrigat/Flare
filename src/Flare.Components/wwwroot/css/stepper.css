@@ -34,7 +34,7 @@
   text-align: center;
 }
 
-.flare-stepper__step:focus-visible { outline: 2px solid var(--flare-color-primary); border-radius: var(--flare-shape-extra-small); }
+.flare-stepper__step:focus-visible { outline: var(--flare-stepper-focus-ring-thickness,2px) solid var(--flare-stepper-focus-ring-color, var(--flare-color-primary)); border-radius: var(--flare-shape-extra-small); }
 
 .flare-stepper__circle {
   width: var(--flare-stepper-circle-size, 2rem);

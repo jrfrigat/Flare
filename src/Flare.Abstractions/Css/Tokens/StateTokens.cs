@@ -7,6 +7,8 @@ public static class State
 
     /// <summary>CSS custom-property name for the hover opacity token.</summary>
     public const string HoverOpacity = $"{Prefix}-hover-opacity";
+    /// <summary>CSS custom-property name for the selected/active-container opacity token.</summary>
+    public const string SelectedOpacity = $"{Prefix}-selected-opacity";
     /// <summary>CSS custom-property name for the focus opacity token.</summary>
     public const string FocusOpacity = $"{Prefix}-focus-opacity";
     /// <summary>CSS custom-property name for the pressed opacity token.</summary>

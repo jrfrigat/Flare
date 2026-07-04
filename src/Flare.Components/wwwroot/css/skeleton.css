@@ -6,7 +6,7 @@
 
 @keyframes flare-pulse {
     0%, 100% { opacity: 1;   }
-    50%       { opacity: 0.4; }
+    50%       { opacity: var(--flare-skeleton-pulse-min-opacity,0.4); }
 }
 
 .flare-skeleton {
@@ -25,7 +25,7 @@
     background: linear-gradient(
         90deg,
         transparent,
-        color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent),
+        color-mix(in srgb, var(--flare-color-on-surface) var(--flare-skeleton-wave-opacity, 12%), transparent),
         transparent
     );
     animation: flare-wave var(--flare-motion-duration-long1) linear 0.5s infinite;

@@ -4,16 +4,16 @@
 .flare-toc {
   font-family: var(--flare-typescale-body-medium-font);
   font-size: var(--flare-typescale-body-small-size);
-  line-height: 1.4;
+  line-height: var(--flare-toc-line-height,1.4);
 }
 
 .flare-toc__title {
   margin-bottom: var(--flare-spacing-4);
   color: var(--flare-toc-title-color, var(--flare-color-on-surface-variant));
   font-size: var(--flare-typescale-label-large-size);
-  font-weight: 600;
+  font-weight: var(--flare-toc-title-weight,600);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--flare-toc-title-tracking,0.05em);
 }
 
 .flare-toc__list {
@@ -51,12 +51,12 @@
 
 .flare-toc__link:hover {
   color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
-  background: color-mix(in srgb, var(--flare-toc-active-bg, var(--flare-color-secondary-container)) 40%, transparent);
+  background: color-mix(in srgb, var(--flare-toc-active-bg, var(--flare-color-secondary-container)) var(--flare-toc-hover-bg-opacity,40%), transparent);
 }
 
 .flare-toc__link--active {
   color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
   background: var(--flare-toc-active-bg, var(--flare-color-secondary-container));
   border-inline-start-color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
-  font-weight: 600;
+  font-weight: var(--flare-toc-active-weight,600);
 }

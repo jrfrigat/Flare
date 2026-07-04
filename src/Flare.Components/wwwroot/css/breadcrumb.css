@@ -24,7 +24,7 @@
   transition: opacity var(--flare-motion-duration-short1);
 }
 
-.flare-breadcrumb__link:hover { opacity: 0.8; text-decoration: underline; }
+.flare-breadcrumb__link:hover { opacity: var(--flare-breadcrumb-link-hover-opacity,0.8); text-decoration: underline; }
 
 .flare-breadcrumb__text { color: var(--flare-color-on-surface-variant); }
 
@@ -35,7 +35,7 @@
 
 .flare-breadcrumb__separator {
   color: var(--flare-color-on-surface-variant);
-  opacity: 0.5;
+  opacity: var(--flare-breadcrumb-separator-opacity,0.5);
   user-select: none;
 }
 
@@ -58,5 +58,5 @@
 }
 
 .flare-breadcrumb__expander:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-selected-opacity, 0.12) * 100%), transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-selected-opacity) * 100%), transparent);
 }

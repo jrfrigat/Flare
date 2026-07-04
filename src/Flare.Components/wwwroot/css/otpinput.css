@@ -5,13 +5,13 @@
 }
 
 .flare-otp__cell {
-    width: 2.75rem;
-    height: 3rem;
+    width: var(--flare-otp-cell-width,2.75rem);
+    height: var(--flare-otp-cell-height,3rem);
     text-align: center;
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: var(--flare-otp-font-size,1.25rem);
+    font-weight: var(--flare-otp-font-weight,600);
     letter-spacing: 0;
-    border: 2px solid var(--flare-color-outline);
+    border: var(--flare-otp-border-width,2px) solid var(--flare-color-outline);
     border-radius: var(--flare-shape-small);
     background: var(--flare-color-surface);
     color: var(--flare-color-on-surface);
@@ -25,7 +25,7 @@
 .flare-otp__cell:focus,
 .flare-otp__cell--focused {
     border-color: var(--flare-color-primary);
-    box-shadow: 0 0 0 2px var(--flare-color-primary-container);
+    box-shadow: 0 0 0 var(--flare-otp-focus-ring-width,2px) var(--flare-color-primary-container);
 }
 
 .flare-otp__cell--error {
@@ -33,7 +33,7 @@
 }
 
 .flare-otp__cell--error:focus {
-    box-shadow: 0 0 0 2px var(--flare-color-error-container);
+    box-shadow: 0 0 0 var(--flare-otp-focus-ring-width,2px) var(--flare-color-error-container);
 }
 
 .flare-otp--disabled .flare-otp__cell {
