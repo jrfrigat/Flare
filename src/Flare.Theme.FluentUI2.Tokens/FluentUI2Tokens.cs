@@ -514,6 +514,20 @@ public class FluentUI2Tokens
         HoverScale = "1.15",
     };
 
+    // Calendar: same neutral baseline (400px cap, 32dp nav, 48dp cells, primary today/selection).
+    internal static readonly CalendarTokens Calendar = new()
+    {
+        MaxWidth = "400px",
+        MonthMinWidth = "16rem",
+        NavBtnSize = "2rem",
+        CellMinHeight = "3rem",
+        DayNumSize = "1.5rem",
+        TodayBg = "var(--flare-color-primary)",
+        TodayColor = "var(--flare-color-on-primary)",
+        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface))",
+        OtherMonthOpacity = "0.3",
+    };
+
     // Tree: same neutral baseline (24dp indent/handle, 20dp icons, primary-tinted selection).
     internal static readonly TreeTokens Tree = new()
     {
@@ -861,6 +875,7 @@ public class FluentUI2Tokens
         Timeline = Timeline,
         Stepper = Stepper,
         Tree = Tree,
+        Calendar = Calendar,
         Popover = Popover,
         Extended = Extended,
     };

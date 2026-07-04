@@ -395,6 +395,16 @@ public static class CssVarMap
         v[Css.Tokens.Tree.SelectedColor] = t.Tree.SelectedColor;
         v[Css.Tokens.Tree.DropIndicatorColor] = t.Tree.DropIndicatorColor;
 
+        v[Css.Tokens.Calendar.MaxWidth] = t.Calendar.MaxWidth;
+        v[Css.Tokens.Calendar.MonthMinWidth] = t.Calendar.MonthMinWidth;
+        v[Css.Tokens.Calendar.NavBtnSize] = t.Calendar.NavBtnSize;
+        v[Css.Tokens.Calendar.CellMinHeight] = t.Calendar.CellMinHeight;
+        v[Css.Tokens.Calendar.DayNumSize] = t.Calendar.DayNumSize;
+        v[Css.Tokens.Calendar.TodayBg] = t.Calendar.TodayBg;
+        v[Css.Tokens.Calendar.TodayColor] = t.Calendar.TodayColor;
+        v[Css.Tokens.Calendar.SelectedBg] = t.Calendar.SelectedBg;
+        v[Css.Tokens.Calendar.OtherMonthOpacity] = t.Calendar.OtherMonthOpacity;
+
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;

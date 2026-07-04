@@ -101,6 +101,9 @@ public sealed record DesignTokens
     /// <summary>Tree (TreeView) tokens.</summary>
     public required TreeTokens Tree { get; init; }
 
+    /// <summary>Calendar tokens.</summary>
+    public required CalendarTokens Calendar { get; init; }
+
     /// <summary>Switch tokens.</summary>
     public required SwitchTokens Switch { get; init; }
 

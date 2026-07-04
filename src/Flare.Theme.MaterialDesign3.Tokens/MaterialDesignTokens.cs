@@ -638,6 +638,21 @@ public class MaterialDesignTokens
         HoverScale = "1.15",
     };
 
+    // Calendar: 400px single-month cap, 16rem month min, 32dp nav buttons, 48dp cells, 24dp day
+    // circles, primary "today" marker, primary-tinted selection, 30% dimmed adjacent-month days.
+    internal static readonly CalendarTokens Calendar = new()
+    {
+        MaxWidth = "400px",
+        MonthMinWidth = "16rem",
+        NavBtnSize = "2rem",
+        CellMinHeight = "3rem",
+        DayNumSize = "1.5rem",
+        TodayBg = "var(--flare-color-primary)",
+        TodayColor = "var(--flare-color-on-primary)",
+        SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface))",
+        OtherMonthOpacity = "0.3",
+    };
+
     // Tree: 24dp indent per level, 24dp expander/handle, 20dp icons, primary-tinted selection.
     internal static readonly TreeTokens Tree = new()
     {
@@ -751,6 +766,7 @@ public class MaterialDesignTokens
         Timeline = Timeline,
         Stepper = Stepper,
         Tree = Tree,
+        Calendar = Calendar,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,
