@@ -7,10 +7,8 @@ public static class Select
     public const string Root = "flare-select";
     /// <summary>The <c>flare-select--open</c> CSS class.</summary>
     public const string Open = "flare-select--open";
-    /// <summary>The <c>flare-select--disabled</c> CSS class.</summary>
-    public const string Disabled = "flare-select--disabled";
-    /// <summary>The <c>flare-select--error</c> CSS class.</summary>
-    public const string Error = "flare-select--error";
+    // Disabled + error use the shared Css.Classes.Input.Disabled / Input.Error (flare-input--*);
+    // the fused trigger's descendant rules key off those in select.css.
     /// <summary>The <c>flare-select__control</c> CSS class.</summary>
     public const string Control = "flare-select__control";
     /// <summary>The <c>flare-select__value</c> CSS class.</summary>

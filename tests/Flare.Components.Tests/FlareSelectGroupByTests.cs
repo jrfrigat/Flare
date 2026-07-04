@@ -45,7 +45,7 @@ public class FlareSelectGroupByTests : FlareTestContext
         var cut = Render<FlareSelect<string>>(p => p
             .Add(x => x.Disabled, true));
 
-        Assert.Contains("flare-select--disabled", cut.Find(".flare-select").ClassName);
+        Assert.Contains("flare-input--disabled", cut.Find(".flare-select").ClassName);
     }
 
     [Fact]

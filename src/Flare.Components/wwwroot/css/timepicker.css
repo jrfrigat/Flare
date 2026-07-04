@@ -186,32 +186,3 @@
 }
 
 /* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css). */
-
-/* Hide browser-native clock picker indicator */
-.flare-timepicker__control::-webkit-calendar-picker-indicator {
-  display: none;
-}
-
-/* Normalize webkit datetime edit parts */
-.flare-timepicker__control::-webkit-datetime-edit {
-  color: var(--flare-color-on-surface);
-}
-
-.flare-timepicker__control::-webkit-datetime-edit-fields-wrapper {
-  padding: 0;
-}
-
-.flare-timepicker__control::-webkit-datetime-edit-hour-field,
-.flare-timepicker__control::-webkit-datetime-edit-minute-field,
-.flare-timepicker__control::-webkit-datetime-edit-ampm-field {
-  color: var(--flare-color-on-surface);
-}
-
-.flare-timepicker__control::-webkit-datetime-edit-hour-field:focus,
-.flare-timepicker__control::-webkit-datetime-edit-minute-field:focus,
-.flare-timepicker__control::-webkit-datetime-edit-ampm-field:focus {
-  background: var(--flare-color-primary);
-  color: var(--flare-color-on-primary);
-  border-radius: 2px;
-  outline: none;
-}

@@ -278,9 +278,12 @@
 
     private string? _openClass => _isOpen ? Css.Classes.Select.Open : null;
 
+    // Shared state modifiers: the fused trigger's disabled/error rules (below in select.css) key off
+    // flare-input--disabled/--error, and the shared label/helper/pointer-events treatment applies since
+    // the label/helper are flare-input__*.
     private string _stateClass =>
-        Disabled ? Css.Classes.Select.Disabled :
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Select.Error : string.Empty;
+        Disabled ? Css.Classes.Input.Disabled :
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error : string.Empty;
 
     private string _sizeClass => Size switch
     {

@@ -16,6 +16,26 @@
 .flare-multiselect__value { flex: 1; color: var(--flare-color-on-surface); font-size: var(--flare-typescale-body-large-size); }
 .flare-multiselect__placeholder { color: var(--flare-color-on-surface-variant); }
 
+/* Disabled + error use the shared flare-input--disabled / flare-input--error root modifiers (parity
+   with FlareSelect): the shared rules dim flare-input__label/__helper + set pointer-events:none; the
+   fused trigger (flare-multiselect__control) gets the MD3 4%/38% + error descendant rules here. */
+.flare-input--disabled .flare-multiselect__control {
+    background-color: var(--flare-input-disabled-bg,
+        color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent));
+    border-bottom-color: var(--flare-input-disabled-indicator,
+        color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent));
+}
+.flare-input--disabled .flare-multiselect__value,
+.flare-input--disabled .flare-multiselect__placeholder,
+.flare-input--disabled .flare-multiselect__arrow {
+    opacity: var(--flare-state-disabled-opacity);
+}
+.flare-input--error .flare-multiselect__control {
+    border-color: var(--flare-color-error);
+    border-bottom-color: var(--flare-color-error);
+}
+.flare-input--error .flare-multiselect__arrow { color: var(--flare-color-error); }
+
 /* Size grid (Xs..Xl): control padding sets height, value font-size scales the text. */
 .flare-input--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4); }
 .flare-input--xs .flare-multiselect__value { font-size: var(--flare-typescale-label-medium-size); }

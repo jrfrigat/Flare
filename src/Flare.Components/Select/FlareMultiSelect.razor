@@ -4,7 +4,7 @@
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
-<div class="@BuildCssClass(_openClass, _sizeClass, _variantClass)" style="@Style" @attributes="AdditionalAttributes" @ref="_container">
+<div class="@BuildCssClass(_stateClass, _openClass, _sizeClass, _variantClass)" style="@Style" @attributes="AdditionalAttributes" @ref="_container">
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="@Css.Classes.Input.Label" for="@_controlId">@Label</label>
@@ -234,6 +234,12 @@
     protected override string ComponentCssClass => Css.Classes.Multiselect.Root;
 
     private string? _openClass => _isOpen ? Css.Classes.Multiselect.Open : null;
+
+    // Shared state modifiers (parity with FlareSelect): the fused trigger's disabled/error rules key
+    // off flare-input--disabled/--error, and the shared flare-input__label/__helper dimming applies.
+    private string? _stateClass =>
+        Disabled ? Css.Classes.Input.Disabled :
+        !string.IsNullOrEmpty(ErrorText) ? Css.Classes.Input.Error : null;
 
     private string? _sizeClass => Size switch
     {
