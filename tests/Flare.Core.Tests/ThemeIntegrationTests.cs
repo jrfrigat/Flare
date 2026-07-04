@@ -1,6 +1,7 @@
 using Flare.Abstractions;
 using Flare.Theming;
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;
 
 namespace Flare.Core.Tests;
 
@@ -12,7 +13,7 @@ public class ThemeIntegrationTests
     [Fact]
     public void FlareThemeBuilder_Should_Build_Valid_Theme()
     {
-        var theme = new FlareThemeBuilder("test-theme", "Test Theme")
+        var theme = new FlareThemeBuilder("test-theme", "Test Theme", MaterialDesignTokens.Design)
             .WithDefaultPalette("test-palette")
             .WithStyleAsset("_content/Test/css/test.css")
             .Build();
@@ -26,7 +27,7 @@ public class ThemeIntegrationTests
     public void FlareThemeBuilder_Should_Throw_On_Invalid_Theme()
     {
         Assert.Throws<InvalidOperationException>(() =>
-            new FlareThemeBuilder("", "Empty ID")
+            new FlareThemeBuilder("", "Empty ID", MaterialDesignTokens.Design)
                 .Build());
     }
 
@@ -52,7 +53,7 @@ public class ThemeIntegrationTests
             LabelSmall = new TypeStyle { FontFamily = "Inter", FontWeight = "500", FontSize = "0.6875rem", LineHeight = "1rem", LetterSpacing = "0em" },
         };
 
-        var theme = new FlareThemeBuilder("custom-theme", "Custom Theme")
+        var theme = new FlareThemeBuilder("custom-theme", "Custom Theme", MaterialDesignTokens.Design)
             .WithTypography(customTypography)
             .WithStyleAsset("_content/Custom/css/custom.css")
             .Build();
@@ -65,7 +66,7 @@ public class ThemeIntegrationTests
     public void ThemeValidator_Should_Catch_Missing_Typography()
     {
         var validator = new ThemeValidator();
-        var theme = new FlareThemeBuilder("test", "Test")
+        var theme = new FlareThemeBuilder("test", "Test", MaterialDesignTokens.Design)
             .WithStyleAsset("_content/Test/test.css")
             .Build();
 
@@ -86,10 +87,10 @@ public class ThemeIntegrationTests
     [Fact]
     public async Task ThemeService_Should_Switch_Themes()
     {
-        var theme1 = new FlareThemeBuilder("theme1", "Theme 1")
+        var theme1 = new FlareThemeBuilder("theme1", "Theme 1", MaterialDesignTokens.Design)
             .WithStyleAsset("_content/Test/theme1.css")
             .Build();
-        var theme2 = new FlareThemeBuilder("theme2", "Theme 2")
+        var theme2 = new FlareThemeBuilder("theme2", "Theme 2", MaterialDesignTokens.Design)
             .WithStyleAsset("_content/Test/theme2.css")
             .Build();
 
@@ -108,7 +109,7 @@ public class ThemeIntegrationTests
     [Fact]
     public async Task ThemeService_Should_Switch_Palettes()
     {
-        var theme = new FlareThemeBuilder("test", "Test")
+        var theme = new FlareThemeBuilder("test", "Test", MaterialDesignTokens.Design)
             .WithStyleAsset("_content/Test/test.css")
             .Build();
         var palette1 = PaletteFactory.FromColors("palette1", "Palette 1", "#6750A4");
@@ -128,7 +129,7 @@ public class ThemeIntegrationTests
     [Fact]
     public async Task ThemeService_Should_Switch_Mode()
     {
-        var theme = new FlareThemeBuilder("test", "Test")
+        var theme = new FlareThemeBuilder("test", "Test", MaterialDesignTokens.Design)
             .WithStyleAsset("_content/Test/test.css")
             .Build();
         var palette = PaletteFactory.FromColors("test", "Test", "#6750A4");
@@ -149,10 +150,10 @@ public class ThemeIntegrationTests
     [Fact]
     public void FlareStyles_ActiveOnly_Should_Filter_Assets()
     {
-        var theme1 = new FlareThemeBuilder("theme1", "Theme 1")
+        var theme1 = new FlareThemeBuilder("theme1", "Theme 1", MaterialDesignTokens.Design)
             .WithStyleAsset("_content/Test/theme1.css")
             .Build();
-        var theme2 = new FlareThemeBuilder("theme2", "Theme 2")
+        var theme2 = new FlareThemeBuilder("theme2", "Theme 2", MaterialDesignTokens.Design)
             .WithStyleAsset("_content/Test/theme2.css")
             .Build();
 

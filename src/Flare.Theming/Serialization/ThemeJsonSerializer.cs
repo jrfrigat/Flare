@@ -38,8 +38,7 @@ public static class ThemeJsonSerializer
         var model = JsonSerializer.Deserialize<ThemeExportModel>(json, s_options)
             ?? throw new InvalidOperationException("Invalid theme JSON.");
 
-        return new Flare.Theming.FlareThemeBuilder(model.Id, model.DisplayName)
-            .WithDesign(model.Design)
+        return new Flare.Theming.FlareThemeBuilder(model.Id, model.DisplayName, model.Design)
             .WithDefaultPalette(model.DefaultPaletteId)
             .WithStyleAssets(model.StyleAssets)
             .BuildUnsafe();
