@@ -187,11 +187,31 @@ public class MaterialDesignTokens
     // MD3: круглая форма покоя, морфинг в squircle при выборе (значения = дефолты записи).
     internal static readonly ToggleButtonTokens ToggleButton = new();
 
-    // FAB: padding-based габарит, скругление large/medium/extra-large (значения = дефолты записи).
-    internal static readonly FabTokens Fab = new();
+    // FAB: padding-based габарит, скругление large/medium/extra-large.
+    internal static readonly FabTokens Fab = new()
+    {
+        PaddingSm = "0.5rem",
+        PaddingMd = "1rem",
+        PaddingLg = "1.75rem",
+        RadiusSm = "var(--flare-shape-medium)",
+        RadiusMd = "var(--flare-shape-large)",
+        RadiusLg = "var(--flare-shape-extra-large)",
+        Gap = "0.75rem",
+        Shadow = "var(--flare-elevation-3)",
+        HoverShadow = "var(--flare-elevation-4)",
+        AnchorOffset = "1.5rem",
+    };
 
-    // Checkbox / Radio / Chip: значения MD3 = дефолты записей.
-    internal static readonly CheckboxTokens Checkbox = new();
+    internal static readonly CheckboxTokens Checkbox = new()
+    {
+        BorderWidth = "2px",
+        Radius = "2px",
+        StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
+        StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
+        FocusOutline = "3px solid var(--flare-color-secondary)",
+        FocusOutlineOffset = "2px",
+        FocusShadow = "none",
+    };
     internal static readonly RadioTokens Radio = new()
     {
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
@@ -202,7 +222,19 @@ public class MaterialDesignTokens
         Radius = "var(--flare-shape-small)",  // MD3 = 8dp
         Height = "2rem",                       // MD3 = 32dp
     };
-    internal static readonly TabsTokens Tabs = new();
+    internal static readonly TabsTokens Tabs = new()
+    {
+        IndicatorThickness = "3px",
+        ActiveColor = "var(--flare-color-primary)",
+        InactiveColor = "var(--flare-color-on-surface)",
+        DividerColor = "var(--flare-color-surface-variant)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedFg = "var(--flare-color-on-secondary-container)",
+        FilledBg = "var(--flare-color-primary)",
+        FilledFg = "var(--flare-color-on-primary)",
+        TrackBg = "transparent",
+        PillRadius = "var(--flare-shape-full)",
+    };
 
     // Menu (MD3 Expressive "Menus"): контейнер 16dp (shape-large), elevation 3,
     // пункт 4dp (крайние 12dp), текст label-large, vertical 8dp, gap 2dp, focus-ring secondary.

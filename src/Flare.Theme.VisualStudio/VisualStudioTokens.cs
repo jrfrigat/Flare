@@ -164,7 +164,7 @@ internal class VisualStudioTokens
 
     internal static readonly ToggleButtonTokens ToggleButton = new();
 
-    internal static readonly FabTokens Fab = new()
+    internal static readonly FabTokens Fab = FluentUI2Tokens.Design.Fab with
     {
         RadiusSm = "var(--flare-shape-small)",
         RadiusMd = "var(--flare-shape-medium)",
@@ -174,7 +174,7 @@ internal class VisualStudioTokens
     internal static readonly MenuTokens Menu = new();
 
     // Checkbox/Radio - VS: 1px border, tight corner, no MD3 halo.
-    internal static readonly CheckboxTokens Checkbox = new()
+    internal static readonly CheckboxTokens Checkbox = FluentUI2Tokens.Design.Checkbox with
     {
         BorderWidth = "1px",
         Radius = "var(--flare-shape-extra-small)",

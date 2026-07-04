@@ -139,10 +139,10 @@ internal static class MaterialDesign2Tokens
     internal static readonly ChipTokens Chip = new() { Radius = "9999px", Height = "2rem" };
 
     // MD2 tabs: 2dp active indicator, uppercase labels (uppercased in CSS).
-    internal static readonly TabsTokens Tabs = new() { IndicatorThickness = "2px" };
+    internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs with { IndicatorThickness = "2px" };
 
     // MD2 FABs are circular; resting 6dp, pressed 12dp.
-    internal static readonly FabTokens Fab = new()
+    internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with
     {
         RadiusSm = "9999px",
         RadiusMd = "9999px",
@@ -190,7 +190,6 @@ internal static class MaterialDesign2Tokens
         ToggleButton = new(),
         Fab = Fab,
         Menu = Menu,
-        Checkbox = new(),
         Chip = Chip,
         Tabs = Tabs,
         Slider = Slider,

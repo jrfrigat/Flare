@@ -8,31 +8,31 @@ public sealed record FabTokens
 {
     // --- 1. PADDING вокруг глифа (задаёт габарит) под 3 размера ---
     /// <summary>Padding sm token (<c>0.5rem</c>).</summary>
-    [CssVar(Fab.Padding.Sm)] public string PaddingSm { get; init; } = "0.5rem";
+    [CssVar(Fab.Padding.Sm)] public required string PaddingSm { get; init; }
     /// <summary>Padding md token (<c>1rem</c>).</summary>
-    [CssVar(Fab.Padding.Md)] public string PaddingMd { get; init; } = "1rem";
+    [CssVar(Fab.Padding.Md)] public required string PaddingMd { get; init; }
     /// <summary>Padding lg token (<c>1.75rem</c>).</summary>
-    [CssVar(Fab.Padding.Lg)] public string PaddingLg { get; init; } = "1.75rem";
+    [CssVar(Fab.Padding.Lg)] public required string PaddingLg { get; init; }
 
     // --- 2. РАДИУС под 3 размера (имена совпадают с легаси-переменными CSS) ---
     /// <summary>Radius sm token (<c>var(--flare-shape-medium)</c>).</summary>
-    [CssVar(Fab.Radius.Sm)] public string RadiusSm { get; init; } = Vars.Var(Shape.Medium);
+    [CssVar(Fab.Radius.Sm)] public required string RadiusSm { get; init; }
     /// <summary>Radius md token (<c>var(--flare-shape-large)</c>).</summary>
-    [CssVar(Fab.Radius.Md)] public string RadiusMd { get; init; } = Vars.Var(Shape.Large);
+    [CssVar(Fab.Radius.Md)] public required string RadiusMd { get; init; }
     /// <summary>Radius lg token (<c>var(--flare-shape-extra-large)</c>).</summary>
-    [CssVar(Fab.Radius.Lg)] public string RadiusLg { get; init; } = Vars.Var(Shape.ExtraLarge);
+    [CssVar(Fab.Radius.Lg)] public required string RadiusLg { get; init; }
 
     // --- 3. ЗАЗОР иконка-метка (extended FAB) ---
     /// <summary>Gap token (<c>0.75rem</c>).</summary>
-    [CssVar(Fab.Gap)] public string Gap { get; init; } = "0.75rem";
+    [CssVar(Fab.Gap)] public required string Gap { get; init; }
 
     // --- 4. ТЕНИ (rest / hover) ---
     /// <summary>Shadow token (<c>var(--flare-elevation-3)</c>).</summary>
-    [CssVar(Fab.Shadow)] public string Shadow { get; init; } = Vars.Var(Elevation.Level3);
+    [CssVar(Fab.Shadow)] public required string Shadow { get; init; }
     /// <summary>Hover shadow token (<c>var(--flare-elevation-4)</c>).</summary>
-    [CssVar(Fab.HoverShadow)] public string HoverShadow { get; init; } = Vars.Var(Elevation.Level4);
+    [CssVar(Fab.HoverShadow)] public required string HoverShadow { get; init; }
 
     // --- 5. ОТСТУП якоря от края экрана ---
     /// <summary>Anchor offset token (<c>1.5rem</c>).</summary>
-    [CssVar(Fab.AnchorOffset)] public string AnchorOffset { get; init; } = "1.5rem";
+    [CssVar(Fab.AnchorOffset)] public required string AnchorOffset { get; init; }
 }

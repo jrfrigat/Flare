@@ -185,6 +185,13 @@ public class FluentUI2Tokens
         RadiusSm = "var(--flare-shape-small)",
         RadiusMd = "var(--flare-shape-medium)",
         RadiusLg = "var(--flare-shape-large)",
+        PaddingSm = "0.5rem",
+        PaddingMd = "1rem",
+        PaddingLg = "1.75rem",
+        Gap = "0.75rem",
+        Shadow = "var(--flare-elevation-3)",
+        HoverShadow = "var(--flare-elevation-4)",
+        AnchorOffset = "1.5rem",
     };
 
     // Menu: дефолты MD3, но появление панели - fade/slide без scale (Fluent motion).
@@ -218,7 +225,19 @@ public class FluentUI2Tokens
         Radius = "var(--flare-shape-small)",
         Height = "2rem",
     };
-    internal static readonly TabsTokens Tabs = new();
+    internal static readonly TabsTokens Tabs = new()
+    {
+        IndicatorThickness = "3px",
+        ActiveColor = "var(--flare-color-primary)",
+        InactiveColor = "var(--flare-color-on-surface)",
+        DividerColor = "var(--flare-color-surface-variant)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedFg = "var(--flare-color-on-secondary-container)",
+        FilledBg = "var(--flare-color-primary)",
+        FilledFg = "var(--flare-color-on-primary)",
+        TrackBg = "transparent",
+        PillRadius = "var(--flare-shape-full)",
+    };
 
     // On-this-page - Fluent: рейл-стиль (вертикальная линия + brand-полоса слева у активного),
     // без MD3-пилюли.

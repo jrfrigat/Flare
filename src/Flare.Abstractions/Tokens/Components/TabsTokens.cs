@@ -6,32 +6,32 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record TabsTokens
 {
     /// <summary>Active-indicator thickness. MD3 = 3dp.</summary>
-    [CssVar(Tabs.IndicatorThickness)] public string IndicatorThickness { get; init; } = "3px";
+    [CssVar(Tabs.IndicatorThickness)] public required string IndicatorThickness { get; init; }
 
     /// <summary>Active-indicator + active tab color. MD3 = primary.</summary>
-    [CssVar(Tabs.ActiveColor)] public string ActiveColor { get; init; } = Vars.Var(Color.Primary);
+    [CssVar(Tabs.ActiveColor)] public required string ActiveColor { get; init; }
 
     /// <summary>Inactive tab text color. MD3 = on-surface.</summary>
-    [CssVar(Tabs.InactiveColor)] public string InactiveColor { get; init; } = Vars.Var(Color.OnSurface);
+    [CssVar(Tabs.InactiveColor)] public required string InactiveColor { get; init; }
 
     /// <summary>Bar divider color. MD3 = surface-variant.</summary>
-    [CssVar(Tabs.DividerColor)] public string DividerColor { get; init; } = Vars.Var(Color.SurfaceVariant);
+    [CssVar(Tabs.DividerColor)] public required string DividerColor { get; init; }
 
     /// <summary>Selected-tab background for the <c>Tonal</c> variant. MD3 = secondary-container.</summary>
-    [CssVar(Tabs.SelectedBg)] public string SelectedBg { get; init; } = Vars.Var(Color.SecondaryContainer);
+    [CssVar(Tabs.SelectedBg)] public required string SelectedBg { get; init; }
 
     /// <summary>Selected-tab text/icon color for the <c>Tonal</c> variant. MD3 = on-secondary-container.</summary>
-    [CssVar(Tabs.SelectedFg)] public string SelectedFg { get; init; } = Vars.Var(Color.OnSecondaryContainer);
+    [CssVar(Tabs.SelectedFg)] public required string SelectedFg { get; init; }
 
     /// <summary>Selected-tab background for the <c>Filled</c> variant. MD3 = primary.</summary>
-    [CssVar(Tabs.FilledBg)] public string FilledBg { get; init; } = Vars.Var(Color.Primary);
+    [CssVar(Tabs.FilledBg)] public required string FilledBg { get; init; }
 
     /// <summary>Selected-tab text/icon color for the <c>Filled</c> variant. MD3 = on-primary.</summary>
-    [CssVar(Tabs.FilledFg)] public string FilledFg { get; init; } = Vars.Var(Color.OnPrimary);
+    [CssVar(Tabs.FilledFg)] public required string FilledFg { get; init; }
 
     /// <summary>Track background behind the bar for <c>Tonal</c>/<c>Filled</c> (segmented look). Default none.</summary>
-    [CssVar(Tabs.TrackBg)] public string TrackBg { get; init; } = "transparent";
+    [CssVar(Tabs.TrackBg)] public required string TrackBg { get; init; }
 
     /// <summary>Corner radius of the selected pill for <c>Tonal</c>/<c>Filled</c>. MD3 = full.</summary>
-    [CssVar(Tabs.PillRadius)] public string PillRadius { get; init; } = Vars.Var(Shape.Full);
+    [CssVar(Tabs.PillRadius)] public required string PillRadius { get; init; }
 }

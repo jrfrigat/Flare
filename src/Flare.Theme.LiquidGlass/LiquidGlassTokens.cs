@@ -165,7 +165,7 @@ internal class LiquidGlassTokens
     internal static readonly ToggleButtonTokens ToggleButton = new();
 
     // FAB - fully round / pill.
-    internal static readonly FabTokens Fab = new()
+    internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with
     {
         RadiusSm = "var(--flare-shape-large)",
         RadiusMd = "var(--flare-shape-large)",
@@ -174,7 +174,7 @@ internal class LiquidGlassTokens
 
     internal static readonly MenuTokens Menu = new();
 
-    internal static readonly CheckboxTokens Checkbox = new()
+    internal static readonly CheckboxTokens Checkbox = MaterialDesignTokens.Design.Checkbox with
     {
         BorderWidth = "1.5px",
         Radius = "var(--flare-shape-small)",
@@ -189,7 +189,7 @@ internal class LiquidGlassTokens
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
-    internal static readonly TabsTokens Tabs = new();
+    internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
 
     // The iconic green iOS switch: gray off track, green on track, white circular thumb.
     internal static readonly SwitchTokens Switch = new()

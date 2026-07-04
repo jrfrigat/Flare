@@ -163,7 +163,7 @@ internal class AeroTokens
 
     internal static readonly ToggleButtonTokens ToggleButton = new();
 
-    internal static readonly FabTokens Fab = new()
+    internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with
     {
         RadiusSm = "var(--flare-shape-small)",
         RadiusMd = "var(--flare-shape-medium)",
@@ -173,7 +173,7 @@ internal class AeroTokens
     internal static readonly MenuTokens Menu = new();
 
     // Checkbox/Radio - Aero: 1px border, gentle corner, no MD3 halo.
-    internal static readonly CheckboxTokens Checkbox = new()
+    internal static readonly CheckboxTokens Checkbox = MaterialDesignTokens.Design.Checkbox with
     {
         BorderWidth = "1px",
         Radius = "var(--flare-shape-extra-small)",
@@ -188,7 +188,7 @@ internal class AeroTokens
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
-    internal static readonly TabsTokens Tabs = new();
+    internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
 
     internal static readonly SliderTokens Slider = new()
     {
