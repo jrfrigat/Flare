@@ -226,7 +226,7 @@ internal class AeroTokens
     internal static readonly SpacingTokens Spacing = MaterialDesignTokens.Design.Spacing;
 
     // Input - sunken white field with a 1px border; blue focus is finished in scoped CSS.
-    internal static readonly InputTokens Input = new()
+    internal static readonly InputTokens Input = MaterialDesignTokens.Design.Input with
     {
         FilledBg = "var(--flare-color-surface)",
         OutlinedRadius = "var(--flare-shape-extra-small)",

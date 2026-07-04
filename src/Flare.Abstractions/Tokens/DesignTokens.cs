@@ -57,7 +57,7 @@ public sealed record DesignTokens
     public required SliderTokens Slider { get; init; }
 
     /// <summary>Input/Select/TextArea form field tokens.</summary>
-    public InputTokens Input { get; init; } = new();
+    public required InputTokens Input { get; init; }
 
     /// <summary>Dialog modal tokens.</summary>
     public required DialogTokens Dialog { get; init; }

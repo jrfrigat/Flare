@@ -283,7 +283,7 @@ internal class LiquidGlassTokens
 
     // Input = iOS translucent field: borderless, rounded; blue glow on focus (scoped CSS). The
     // translucent fill itself is mode-specific and stays in Extended (--flare-input-bg).
-    internal static readonly InputTokens Input = new()
+    internal static readonly InputTokens Input = MaterialDesignTokens.Design.Input with
     {
         OutlinedRadius = "var(--flare-shape-medium)",
         OutlinedBorder = "1px solid transparent",

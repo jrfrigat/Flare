@@ -259,7 +259,7 @@ internal class VisualStudioTokens
     };
 
     // Input - flat field with a 1px border; blue focus finished in scoped CSS.
-    internal static readonly InputTokens Input = new()
+    internal static readonly InputTokens Input = FluentUI2Tokens.Design.Input with
     {
         FilledBg = "var(--flare-color-surface)",
         OutlinedRadius = "var(--flare-shape-extra-small)",
