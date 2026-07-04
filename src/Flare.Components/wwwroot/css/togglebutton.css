@@ -1,6 +1,11 @@
-/* ToggleButton - MD3 Segmented Button / standalone toggle.
-   Все размеры/цвета/формы вынесены в токены темы (--flare-toggle-btn-*, --flare-togglegroup-*),
-   поэтому файл остаётся theme-agnostic: тема подставляет свои значения. */
+/* ToggleButton - MD3 segmented button / standalone toggle. A DISTINCT MD3 control, not a variant of
+   .flare-btn: it deliberately uses its own compact size scale (one step shorter than .flare-btn - md
+   is 2.5rem vs the button's 3rem), a label-large font, a filled rest colour
+   (surface-container-highest), a snappier short1 state layer, and a round->squircle selection morph.
+   Adopting .flare-btn would regress its timing (medium1) and sizing, so it keeps its own chrome. All
+   values are theme tokens (--flare-toggle-btn-* / --flare-togglegroup-*) so the file stays
+   theme-agnostic; the focus ring reads the shared --flare-btn-focus-* tokens so a theme customises
+   button focus for the whole family in one place. */
 
 .flare-toggle-btn {
     display: inline-flex;
@@ -40,12 +45,18 @@
 }
 
 .flare-toggle-btn:hover::before  { opacity: var(--flare-state-hover-opacity); }
-.flare-toggle-btn:focus-visible  { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
+/* Focus ring reads the shared button focus tokens (consistency with .flare-btn) - themes tune the
+   whole button family's focus in one place; the literals stay as fallbacks. */
+.flare-toggle-btn:focus-visible  {
+    outline: var(--flare-btn-focus-outline, 2px solid var(--flare-color-primary));
+    outline-offset: var(--flare-btn-focus-outline-offset, 2px);
+    box-shadow: var(--flare-btn-focus-shadow, none);
+}
 .flare-toggle-btn:focus-visible::before  { opacity: var(--flare-state-focus-opacity); }
 .flare-toggle-btn:active::before { opacity: var(--flare-state-pressed-opacity); }
 
-/* Pressed/active (selected) - морфинг формы (round -> squircle) задаётся токеном размера.
-   Локальная переменная --_toggle-radius-selected переключается размерными классами ниже. */
+/* Pressed/active (selected) - the round -> squircle shape morph is driven by a size token. The local
+   --_toggle-radius-selected var is switched by the size classes below. */
 .flare-toggle-btn--pressed {
     /* Color (role class / inline) sets --fc-container/--fc-on-container; default keeps the theme token. */
     background: var(--fc-container, var(--flare-toggle-btn-selected-bg, var(--flare-color-secondary-container)));
