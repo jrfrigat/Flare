@@ -352,6 +352,24 @@ public class MaterialDesignTokens
         WaveSpeed = "1s",
         RingWaves = "8",
         RingWaveAmplitude = "1.6",
+        // Neutral baseline members (formerly the record defaults), carried explicitly.
+        TrackColor = "var(--flare-color-surface-container-highest)",
+        IndicatorColor = "var(--flare-color-primary)",
+        CircularColor = "var(--flare-color-primary)",
+        CircularTrackColor = "var(--flare-color-surface-container-highest)",
+        LinearHeightSm = "2px",
+        LinearHeightLg = "8px",
+        LinearRadius = "var(--flare-shape-full)",
+        CircularSize = "40px",
+        CircularSizeSm = "24px",
+        CircularSizeLg = "56px",
+        CircularStrokeWidth = "4px",
+        CircularStrokeWidthSm = "3px",
+        CircularStrokeWidthLg = "5px",
+        IndeterminateDuration = "2s",
+        IndeterminateEasing = "var(--flare-motion-easing-standard)",
+        BufferColor = "color-mix(in srgb, var(--flare-color-primary) 32%, var(--flare-color-surface-container-highest))",
+        WavyDuration = "1.5s",
     };
 
     /// <summary>

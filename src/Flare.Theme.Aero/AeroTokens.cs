@@ -236,13 +236,16 @@ internal class AeroTokens
         FocusBorderBottom = "1px solid var(--flare-color-primary)",
     };
 
-    // Progress - thin classic bar.
-    internal static readonly ProgressTokens Progress = new()
+    // Progress - thin classic bar; flat (no MD3 Expressive wavy/round-cap indicator).
+    internal static readonly ProgressTokens Progress = MaterialDesignTokens.Design.Progress with
     {
         TrackRadius = "var(--flare-shape-extra-small)",
         LinearHeight = "0.75rem",
         Gap = "0px",
         StopSize = "0px",
+        CircularCap = "butt",
+        CircularGap = "0",
+        WavyEnabled = "0",
     };
 
     // Nav - left accent bar (Office side-nav), no pill.

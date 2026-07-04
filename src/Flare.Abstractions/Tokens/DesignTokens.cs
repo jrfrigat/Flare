@@ -84,7 +84,7 @@ public sealed record DesignTokens
     public required AvatarTokens Avatar { get; init; }
 
     /// <summary>Progress tokens.</summary>
-    public ProgressTokens Progress { get; init; } = new();
+    public required ProgressTokens Progress { get; init; }
 
     /// <summary>Switch tokens.</summary>
     public SwitchTokens Switch { get; init; } = new();

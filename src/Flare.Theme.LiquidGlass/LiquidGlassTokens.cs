@@ -292,13 +292,16 @@ internal class LiquidGlassTokens
         FocusBorderBottom = "1px solid var(--flare-color-primary)",
     };
 
-    // Progress - rounded thin bar.
-    internal static readonly ProgressTokens Progress = new()
+    // Progress - rounded thin bar; flat (no MD3 Expressive wavy/round-cap indicator).
+    internal static readonly ProgressTokens Progress = MaterialDesignTokens.Design.Progress with
     {
         TrackRadius = "var(--flare-shape-full)",
         LinearHeight = "0.375rem",
         Gap = "0px",
         StopSize = "0px",
+        CircularCap = "butt",
+        CircularGap = "0",
+        WavyEnabled = "0",
     };
 
     // Nav - pill indicator (iOS tab/segmented look).

@@ -269,13 +269,14 @@ internal class VisualStudioTokens
         FocusBorderBottom = "1px solid var(--flare-color-primary)",
     };
 
-    // Progress - thin VS bar.
-    internal static readonly ProgressTokens Progress = new()
+    // Progress - thin VS bar (derives Fluent's already-flat progress).
+    internal static readonly ProgressTokens Progress = FluentUI2Tokens.Design.Progress with
     {
         TrackRadius = "var(--flare-shape-extra-small)",
         LinearHeight = "0.375rem",
         Gap = "0px",
         StopSize = "0px",
+        CircularWidth = "4px",
     };
 
     // Nav - left accent bar (VS solution-explorer style), no pill.

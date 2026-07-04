@@ -9,101 +9,101 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record ProgressTokens
 {
     /// <summary>Color of the linear track.</summary>
-    [CssVar(ProgressField.TrackColor)] public string TrackColor { get; init; } = Vars.Var(Color.SurfaceContainerHighest);
+    [CssVar(ProgressField.TrackColor)] public required string TrackColor { get; init; }
 
     /// <summary>Color of the linear indicator (determinate).</summary>
-    [CssVar(ProgressField.IndicatorColor)] public string IndicatorColor { get; init; } = Vars.Var(Color.Primary);
+    [CssVar(ProgressField.IndicatorColor)] public required string IndicatorColor { get; init; }
 
     /// <summary>Color of the circular indicator.</summary>
-    [CssVar(ProgressField.CircularColor)] public string CircularColor { get; init; } = Vars.Var(Color.Primary);
+    [CssVar(ProgressField.CircularColor)] public required string CircularColor { get; init; }
 
     /// <summary>Color of the circular track.</summary>
-    [CssVar(ProgressField.CircularTrackColor)] public string CircularTrackColor { get; init; } = Vars.Var(Color.SurfaceContainerHighest);
+    [CssVar(ProgressField.CircularTrackColor)] public required string CircularTrackColor { get; init; }
 
     /// <summary>Height of the linear variant (default).</summary>
-    [CssVar(ProgressField.LinearHeight)] public string LinearHeight { get; init; } = "4px";
+    [CssVar(ProgressField.LinearHeight)] public required string LinearHeight { get; init; }
 
     /// <summary>Height of the linear variant (small).</summary>
-    [CssVar(ProgressField.LinearHeightSm)] public string LinearHeightSm { get; init; } = "2px";
+    [CssVar(ProgressField.LinearHeightSm)] public required string LinearHeightSm { get; init; }
 
     /// <summary>Height of the linear variant (large).</summary>
-    [CssVar(ProgressField.LinearHeightLg)] public string LinearHeightLg { get; init; } = "8px";
+    [CssVar(ProgressField.LinearHeightLg)] public required string LinearHeightLg { get; init; }
 
     /// <summary>Border radius of the linear variant.</summary>
-    [CssVar(ProgressField.LinearRadius)] public string LinearRadius { get; init; } = Vars.Var(Shape.Full);
+    [CssVar(ProgressField.LinearRadius)] public required string LinearRadius { get; init; }
 
     /// <summary>Size of the circular variant (default).</summary>
-    [CssVar(ProgressField.CircularSize)] public string CircularSize { get; init; } = "40px";
+    [CssVar(ProgressField.CircularSize)] public required string CircularSize { get; init; }
 
     /// <summary>Size of the circular variant (small).</summary>
-    [CssVar(ProgressField.CircularSizeSm)] public string CircularSizeSm { get; init; } = "24px";
+    [CssVar(ProgressField.CircularSizeSm)] public required string CircularSizeSm { get; init; }
 
     /// <summary>Size of the circular variant (large).</summary>
-    [CssVar(ProgressField.CircularSizeLg)] public string CircularSizeLg { get; init; } = "56px";
+    [CssVar(ProgressField.CircularSizeLg)] public required string CircularSizeLg { get; init; }
 
     /// <summary>Stroke width of the circular variant (default).</summary>
-    [CssVar(ProgressField.CircularStrokeWidth)] public string CircularStrokeWidth { get; init; } = "4px";
+    [CssVar(ProgressField.CircularStrokeWidth)] public required string CircularStrokeWidth { get; init; }
 
     /// <summary>Stroke width of the circular variant (small).</summary>
-    [CssVar(ProgressField.CircularStrokeWidthSm)] public string CircularStrokeWidthSm { get; init; } = "3px";
+    [CssVar(ProgressField.CircularStrokeWidthSm)] public required string CircularStrokeWidthSm { get; init; }
 
     /// <summary>Stroke width of the circular variant (large).</summary>
-    [CssVar(ProgressField.CircularStrokeWidthLg)] public string CircularStrokeWidthLg { get; init; } = "5px";
+    [CssVar(ProgressField.CircularStrokeWidthLg)] public required string CircularStrokeWidthLg { get; init; }
 
     /// <summary>Duration of the indeterminate animation.</summary>
-    [CssVar(ProgressField.IndeterminateDuration)] public string IndeterminateDuration { get; init; } = "2s";
+    [CssVar(ProgressField.IndeterminateDuration)] public required string IndeterminateDuration { get; init; }
 
     /// <summary>Easing of the indeterminate animation.</summary>
-    [CssVar(ProgressField.IndeterminateEasing)] public string IndeterminateEasing { get; init; } = Vars.Var(Motion.EasingStandard);
+    [CssVar(ProgressField.IndeterminateEasing)] public required string IndeterminateEasing { get; init; }
 
     /// <summary>Color of the buffer track.</summary>
-    [CssVar(ProgressField.BufferColor)] public string BufferColor { get; init; } = "color-mix(in srgb, var(--flare-color-primary) 32%, var(--flare-color-surface-container-highest))";
+    [CssVar(ProgressField.BufferColor)] public required string BufferColor { get; init; }
 
     /// <summary>Duration of the wavy animation.</summary>
-    [CssVar(ProgressField.WavyDuration)] public string WavyDuration { get; init; } = "1.5s";
+    [CssVar(ProgressField.WavyDuration)] public required string WavyDuration { get; init; }
 
     // ---- MD3 Expressive linear/circular geometry the component reads at runtime. Defaults match
     // the component's built-in fallbacks so a theme that doesn't set them renders unchanged. ----
 
     /// <summary>Linear track corner radius. Default = full (rounded track).</summary>
-    [CssVar(ProgressField.TrackRadius)] public string TrackRadius { get; init; } = Vars.Var(Shape.Full);
+    [CssVar(ProgressField.TrackRadius)] public required string TrackRadius { get; init; }
 
     /// <summary>Gap between the active indicator and the remaining track. Default 0.</summary>
-    [CssVar(ProgressField.Gap)] public string Gap { get; init; } = "0";
+    [CssVar(ProgressField.Gap)] public required string Gap { get; init; }
 
     /// <summary>Trailing stop-indicator dot size. Default 0px (off).</summary>
-    [CssVar(ProgressField.StopSize)] public string StopSize { get; init; } = "0px";
+    [CssVar(ProgressField.StopSize)] public required string StopSize { get; init; }
 
     /// <summary>Trailing stop-indicator inset from the end. Default 0px.</summary>
-    [CssVar(ProgressField.StopInset)] public string StopInset { get; init; } = "0px";
+    [CssVar(ProgressField.StopInset)] public required string StopInset { get; init; }
 
     /// <summary>Circular indicator stroke width. Default 4px.</summary>
-    [CssVar(ProgressField.CircularWidth)] public string CircularWidth { get; init; } = "4px";
+    [CssVar(ProgressField.CircularWidth)] public required string CircularWidth { get; init; }
 
     /// <summary>Circular indicator stroke line cap (butt/round). Default butt.</summary>
-    [CssVar(ProgressField.CircularCap)] public string CircularCap { get; init; } = "butt";
+    [CssVar(ProgressField.CircularCap)] public required string CircularCap { get; init; }
 
     /// <summary>Gap between the circular indicator and its track. Default 0.</summary>
-    [CssVar(ProgressField.CircularGap)] public string CircularGap { get; init; } = "0";
+    [CssVar(ProgressField.CircularGap)] public required string CircularGap { get; init; }
 
     /// <summary>Wavy-progress enable flag (1 = on). Default 0 (off).</summary>
-    [CssVar(ProgressField.WavyEnabled)] public string WavyEnabled { get; init; } = "0";
+    [CssVar(ProgressField.WavyEnabled)] public required string WavyEnabled { get; init; }
 
     /// <summary>Wavy linear-track height. Default 10px.</summary>
-    [CssVar(ProgressField.WavyHeight)] public string WavyHeight { get; init; } = "10px";
+    [CssVar(ProgressField.WavyHeight)] public required string WavyHeight { get; init; }
 
     /// <summary>Wave length of the wavy track. Default 40px.</summary>
-    [CssVar(ProgressField.WaveLength)] public string WaveLength { get; init; } = "40px";
+    [CssVar(ProgressField.WaveLength)] public required string WaveLength { get; init; }
 
     /// <summary>Wave amplitude of the wavy track. Default 3px.</summary>
-    [CssVar(ProgressField.WaveAmplitude)] public string WaveAmplitude { get; init; } = "3px";
+    [CssVar(ProgressField.WaveAmplitude)] public required string WaveAmplitude { get; init; }
 
     /// <summary>Wave animation speed. Default 1s.</summary>
-    [CssVar(ProgressField.WaveSpeed)] public string WaveSpeed { get; init; } = "1s";
+    [CssVar(ProgressField.WaveSpeed)] public required string WaveSpeed { get; init; }
 
     /// <summary>Circular wavy ring wave count. Default 8.</summary>
-    [CssVar(ProgressField.RingWaves)] public string RingWaves { get; init; } = "8";
+    [CssVar(ProgressField.RingWaves)] public required string RingWaves { get; init; }
 
     /// <summary>Circular wavy ring wave amplitude. Default 1.6.</summary>
-    [CssVar(ProgressField.RingWaveAmplitude)] public string RingWaveAmplitude { get; init; } = "1.6";
+    [CssVar(ProgressField.RingWaveAmplitude)] public required string RingWaveAmplitude { get; init; }
 }
