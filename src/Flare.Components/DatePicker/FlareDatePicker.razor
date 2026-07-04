@@ -207,17 +207,7 @@
 
     private DayOfWeek _firstDayOfWeek => _culture.DateTimeFormat.FirstDayOfWeek;
 
-    private IReadOnlyList<string> DayHeaders
-    {
-        get
-        {
-            var first = (int)_firstDayOfWeek;
-            var fmt = _culture.DateTimeFormat;
-            return Enumerable.Range(0, 7)
-                .Select(i => fmt.GetShortestDayName((DayOfWeek)((first + i) % 7)))
-                .ToArray();
-        }
-    }
+    private IReadOnlyList<string> DayHeaders => CalendarMath.DayHeaders(_culture);
 
     // Effective display/parse format (culture short pattern when not set).
     private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
@@ -304,24 +294,9 @@
     }
 
     private IReadOnlyList<CalendarDay> CalendarDays
-    {
-        get
-        {
-            var first = new DateOnly(_viewYear, _viewMonth, 1);
-            int dow = (int)first.DayOfWeek;
-            int firstDay = (int)_firstDayOfWeek;
-            int offset = (dow - firstDay + 7) % 7;
-            var start = first.AddDays(-offset);
-
-            var days = new CalendarDay[42];
-            for (int i = 0; i < 42; i++)
-            {
-                var d = start.AddDays(i);
-                days[i] = new CalendarDay(d, d.Month == _viewMonth);
-            }
-            return days;
-        }
-    }
+        => CalendarMath.MonthGrid(_viewYear, _viewMonth, _firstDayOfWeek)
+            .Select(d => new CalendarDay(d, d.Month == _viewMonth))
+            .ToArray();
 
     private bool IsDisabled(DateOnly d) =>
         (Min.HasValue && d < Min.Value) || (Max.HasValue && d > Max.Value) ||

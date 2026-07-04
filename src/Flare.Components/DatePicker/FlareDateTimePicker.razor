@@ -227,17 +227,7 @@
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
 
-    private IReadOnlyList<string> DayHeaders
-    {
-        get
-        {
-            var first = (int)_culture.DateTimeFormat.FirstDayOfWeek;
-            var fmt = _culture.DateTimeFormat;
-            return Enumerable.Range(0, 7)
-                .Select(i => fmt.GetShortestDayName((DayOfWeek)((first + i) % 7)))
-                .ToArray();
-        }
-    }
+    private IReadOnlyList<string> DayHeaders => CalendarMath.DayHeaders(_culture);
 
     private string FormattedValue => Value.HasValue ? Value.Value.ToString(_format, _culture) : string.Empty;
 
@@ -394,14 +384,7 @@
     }
 
     private IEnumerable<DateOnly> GetCalendarDays()
-    {
-        var first = new DateOnly(_viewDate.Year, _viewDate.Month, 1);
-        int firstDayOfWeek = (int)_culture.DateTimeFormat.FirstDayOfWeek;
-        int offset = ((int)first.DayOfWeek - firstDayOfWeek + 7) % 7;
-        var start = first.AddDays(-offset);
-        for (int i = 0; i < 42; i++)
-            yield return start.AddDays(i);
-    }
+        => CalendarMath.MonthGrid(_viewDate.Year, _viewDate.Month, _culture.DateTimeFormat.FirstDayOfWeek);
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
