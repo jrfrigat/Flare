@@ -54,6 +54,13 @@
 .flare-carousel__arrow--prev { left: 0.5rem; }
 .flare-carousel__arrow--next { right: 0.5rem; }
 
+/* Keyboard focus ring (owned here since Carousel is its own package). */
+.flare-carousel__arrow:focus-visible,
+.flare-carousel__dot:focus-visible {
+    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline-offset: 2px;
+}
+
 /* Dot indicators */
 .flare-carousel__dots {
     position: absolute;

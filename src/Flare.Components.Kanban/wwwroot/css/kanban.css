@@ -64,6 +64,12 @@
     box-shadow: var(--flare-elevation-2, 0 2px 6px rgba(0,0,0,.12));
 }
 
+/* Keyboard focus ring (owned here since Kanban is its own package). */
+.flare-kanban__card:focus-visible {
+    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline-offset: 2px;
+}
+
 .flare-kanban__card--dragging {
     opacity: 0.4;
     cursor: grabbing;
