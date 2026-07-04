@@ -287,6 +287,16 @@ public class MaterialDesignTokens
         ItemLabelSize = "var(--flare-typescale-label-large-size)",
         ItemLabelHeight = "var(--flare-typescale-label-large-height)",
         ItemLabelSpacing = "var(--flare-typescale-label-large-spacing)",
+        // Neutral baseline members (formerly the record defaults) - carried explicitly now that
+        // the core record no longer ships defaults.
+        EnterAnimation = "flare-menu-in",
+        PanelBg = "var(--flare-color-surface-container)",
+        ItemPaddingInline = "1rem",
+        ItemGap = "0.75rem",
+        ItemIconSize = "1.25rem",
+        ItemFocusRingColor = "var(--flare-color-secondary)",
+        ItemFocusRingThickness = "3px",
+        ItemFocusRingOffset = "-3px",
     };
 
     // Input - filled style (md.comp.filled-text-field): surface-container-highest container, 56dp

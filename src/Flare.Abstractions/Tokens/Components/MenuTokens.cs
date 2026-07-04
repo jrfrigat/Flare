@@ -7,71 +7,71 @@ public sealed record MenuTokens
 {
     // --- 1. ПАНЕЛЬ ---
     /// <summary>Panel min width token (<c>10rem</c>).</summary>
-    [CssVar(MenuPanel.MinWidth)] public string PanelMinWidth { get; init; } = "10rem";
+    [CssVar(MenuPanel.MinWidth)] public required string PanelMinWidth { get; init; }
     /// <summary>Name of the panel entrance @keyframes animation (MD3 = scale+fade; Fluent = fade/slide without scale).</summary>
-    [CssVar(MenuPanel.EnterAnimation)] public string EnterAnimation { get; init; } = "flare-menu-in";
+    [CssVar(MenuPanel.EnterAnimation)] public required string EnterAnimation { get; init; }
     /// <summary>Panel radius token (<c>var(--flare-popover-radius, var(--flare-shape-small))</c>).</summary>
-    [CssVar(MenuPanel.Radius)] public string PanelRadius { get; init; } = "var(--flare-popover-radius, var(--flare-shape-small))";
+    [CssVar(MenuPanel.Radius)] public required string PanelRadius { get; init; }
     /// <summary>Panel bg token (<c>var(--flare-color-surface-container)</c>).</summary>
-    [CssVar(MenuPanel.Bg)] public string PanelBg { get; init; } = Vars.Var(Color.SurfaceContainer);
+    [CssVar(MenuPanel.Bg)] public required string PanelBg { get; init; }
     /// <summary>Panel shadow token (<c>var(--flare-elevation-2)</c>).</summary>
-    [CssVar(MenuPanel.Shadow)] public string PanelShadow { get; init; } = Vars.Var(Elevation.Level2);
+    [CssVar(MenuPanel.Shadow)] public required string PanelShadow { get; init; }
     /// <summary>Panel padding block token (<c>0.25rem</c>).</summary>
-    [CssVar(MenuPanel.PaddingBlock)] public string PanelPaddingBlock { get; init; } = "0.25rem";
+    [CssVar(MenuPanel.PaddingBlock)] public required string PanelPaddingBlock { get; init; }
     /// <summary>Panel padding inline token (<c>0.25rem</c>).</summary>
-    [CssVar(MenuPanel.PaddingInline)] public string PanelPaddingInline { get; init; } = "0.25rem";
+    [CssVar(MenuPanel.PaddingInline)] public required string PanelPaddingInline { get; init; }
 
     // --- 2. ПУНКТ (геометрия) ---
     /// <summary>Item height token (<c>0</c>).</summary>
-    [CssVar(MenuPanel.ItemHeight)] public string ItemHeight { get; init; } = "0";           // min-height пункта (0 = авто)
+    [CssVar(MenuPanel.ItemHeight)] public required string ItemHeight { get; init; }
     /// <summary>Item padding block token (<c>0.625rem</c>).</summary>
-    [CssVar(MenuPanel.ItemPaddingBlock)] public string ItemPaddingBlock { get; init; } = "0.625rem";
+    [CssVar(MenuPanel.ItemPaddingBlock)] public required string ItemPaddingBlock { get; init; }
     /// <summary>Item padding inline token (<c>1rem</c>).</summary>
-    [CssVar(MenuPanel.ItemPaddingInline)] public string ItemPaddingInline { get; init; } = "1rem";
+    [CssVar(MenuPanel.ItemPaddingInline)] public required string ItemPaddingInline { get; init; }
     /// <summary>Item gap token (<c>0.75rem</c>).</summary>
-    [CssVar(MenuPanel.ItemGap)] public string ItemGap { get; init; } = "0.75rem";        // зазор иконка<->текст
+    [CssVar(MenuPanel.ItemGap)] public required string ItemGap { get; init; }
     /// <summary>Item gap between token (<c>0rem</c>).</summary>
-    [CssVar(MenuPanel.ItemGapBetween)] public string ItemGapBetween { get; init; } = "0rem";    // зазор МЕЖДУ пунктами
+    [CssVar(MenuPanel.ItemGapBetween)] public required string ItemGapBetween { get; init; }
     /// <summary>Item icon size token (<c>1.25rem</c>).</summary>
-    [CssVar(MenuPanel.ItemIconSize)] public string ItemIconSize { get; init; } = "1.25rem";
+    [CssVar(MenuPanel.ItemIconSize)] public required string ItemIconSize { get; init; }
     /// <summary>Item radius token (<c>0</c>).</summary>
-    [CssVar(MenuPanel.ItemRadius)] public string ItemRadius { get; init; } = "0";           // скругление пункта
+    [CssVar(MenuPanel.ItemRadius)] public required string ItemRadius { get; init; }
     /// <summary>Item radius end token (<c>0</c>).</summary>
-    [CssVar(MenuPanel.ItemRadiusEnd)] public string ItemRadiusEnd { get; init; } = "0";        // внешние углы первого/последнего
+    [CssVar(MenuPanel.ItemRadiusEnd)] public required string ItemRadiusEnd { get; init; }
 
     // --- 2b. ГРУППА (секция) ---
     /// <summary>Group radius token (<c>0</c>).</summary>
-    [CssVar(MenuPanel.GroupRadius)] public string GroupRadius { get; init; } = "0";          // скругление группы
+    [CssVar(MenuPanel.GroupRadius)] public required string GroupRadius { get; init; }
     /// <summary>Group padding token (<c>0</c>).</summary>
-    [CssVar(MenuPanel.GroupPadding)] public string GroupPadding { get; init; } = "0";         // внутренний отступ группы
+    [CssVar(MenuPanel.GroupPadding)] public required string GroupPadding { get; init; }
     /// <summary>Group "island" background. Default transparent (no island treatment).</summary>
-    [CssVar(MenuPanel.GroupBg)] public string GroupBg { get; init; } = "transparent";
+    [CssVar(MenuPanel.GroupBg)] public required string GroupBg { get; init; }
     /// <summary>Gap between group "islands". Default 0.5rem.</summary>
-    [CssVar(MenuPanel.GroupGap)] public string GroupGap { get; init; } = "0.5rem";
+    [CssVar(MenuPanel.GroupGap)] public required string GroupGap { get; init; }
     /// <summary>Group "island" shadow. Default none.</summary>
-    [CssVar(MenuPanel.GroupShadow)] public string GroupShadow { get; init; } = "none";
+    [CssVar(MenuPanel.GroupShadow)] public required string GroupShadow { get; init; }
     /// <summary>Grouped-panel backing-slab background. Default = the panel background.</summary>
-    [CssVar(MenuPanel.GroupedPanelBg)] public string GroupedPanelBg { get; init; } = "var(--flare-menu-panel-bg, var(--flare-color-surface-container))";
+    [CssVar(MenuPanel.GroupedPanelBg)] public required string GroupedPanelBg { get; init; }
     /// <summary>Grouped-panel backing-slab shadow. Default = the panel shadow.</summary>
-    [CssVar(MenuPanel.GroupedPanelShadow)] public string GroupedPanelShadow { get; init; } = "var(--flare-menu-panel-shadow, var(--flare-elevation-2))";
+    [CssVar(MenuPanel.GroupedPanelShadow)] public required string GroupedPanelShadow { get; init; }
 
     // --- 3. ПУНКТ (типографика метки) ---
     /// <summary>Item label font token (<c>var(--flare-typescale-body-large-font)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelFont)] public string ItemLabelFont { get; init; } = Vars.Var(Typography.Font("body-large"));
+    [CssVar(MenuPanel.ItemLabelFont)] public required string ItemLabelFont { get; init; }
     /// <summary>Item label weight token (<c>var(--flare-typescale-body-large-weight)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelWeight)] public string ItemLabelWeight { get; init; } = Vars.Var(Typography.Weight("body-large"));
+    [CssVar(MenuPanel.ItemLabelWeight)] public required string ItemLabelWeight { get; init; }
     /// <summary>Item label size token (<c>var(--flare-typescale-body-large-size)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelSize)] public string ItemLabelSize { get; init; } = Vars.Var(Typography.Size("body-large"));
+    [CssVar(MenuPanel.ItemLabelSize)] public required string ItemLabelSize { get; init; }
     /// <summary>Item label height token (<c>var(--flare-typescale-body-large-height)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelHeight)] public string ItemLabelHeight { get; init; } = Vars.Var(Typography.Height("body-large"));
+    [CssVar(MenuPanel.ItemLabelHeight)] public required string ItemLabelHeight { get; init; }
     /// <summary>Item label spacing token (<c>var(--flare-typescale-body-large-spacing)</c>).</summary>
-    [CssVar(MenuPanel.ItemLabelSpacing)] public string ItemLabelSpacing { get; init; } = Vars.Var(Typography.Spacing("body-large"));
+    [CssVar(MenuPanel.ItemLabelSpacing)] public required string ItemLabelSpacing { get; init; }
 
     // --- 4. ФОКУС-КОЛЬЦО ---
     /// <summary>Item focus ring color token (<c>var(--flare-color-secondary)</c>).</summary>
-    [CssVar(MenuPanel.ItemFocusRingColor)] public string ItemFocusRingColor { get; init; } = Vars.Var(Color.Secondary);
+    [CssVar(MenuPanel.ItemFocusRingColor)] public required string ItemFocusRingColor { get; init; }
     /// <summary>Item focus ring thickness token (<c>3px</c>).</summary>
-    [CssVar(MenuPanel.ItemFocusRingThickness)] public string ItemFocusRingThickness { get; init; } = "3px";
+    [CssVar(MenuPanel.ItemFocusRingThickness)] public required string ItemFocusRingThickness { get; init; }
     /// <summary>Item focus ring offset token (<c>-3px</c>).</summary>
-    [CssVar(MenuPanel.ItemFocusRingOffset)] public string ItemFocusRingOffset { get; init; } = "-3px";
+    [CssVar(MenuPanel.ItemFocusRingOffset)] public required string ItemFocusRingOffset { get; init; }
 }

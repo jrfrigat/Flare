@@ -170,7 +170,7 @@ internal class AeroTokens
         RadiusLg = "var(--flare-shape-large)",
     };
 
-    internal static readonly MenuTokens Menu = new();
+    internal static readonly MenuTokens Menu = MaterialDesignTokens.Design.Menu;
 
     // Checkbox/Radio - Aero: 1px border, gentle corner, no MD3 halo.
     internal static readonly CheckboxTokens Checkbox = MaterialDesignTokens.Design.Checkbox with

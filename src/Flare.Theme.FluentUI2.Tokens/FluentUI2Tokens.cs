@@ -217,10 +217,40 @@ public class FluentUI2Tokens
         AnchorOffset = "1.5rem",
     };
 
-    // Menu: дефолты MD3, но появление панели - fade/slide без scale (Fluent motion).
+    // Menu: neutral baseline geometry, но появление панели - fade/slide без scale (Fluent motion).
+    // Все члены заданы явно теперь, когда core-record не несёт значений по умолчанию.
     internal static readonly MenuTokens Menu = new()
     {
+        PanelMinWidth = "10rem",
         EnterAnimation = "flare-menu-in-fluent",
+        PanelRadius = "var(--flare-popover-radius, var(--flare-shape-small))",
+        PanelBg = "var(--flare-color-surface-container)",
+        PanelShadow = "var(--flare-elevation-2)",
+        PanelPaddingBlock = "0.25rem",
+        PanelPaddingInline = "0.25rem",
+        ItemHeight = "0",
+        ItemPaddingBlock = "0.625rem",
+        ItemPaddingInline = "1rem",
+        ItemGap = "0.75rem",
+        ItemGapBetween = "0rem",
+        ItemIconSize = "1.25rem",
+        ItemRadius = "0",
+        ItemRadiusEnd = "0",
+        GroupRadius = "0",
+        GroupPadding = "0",
+        GroupBg = "transparent",
+        GroupGap = "0.5rem",
+        GroupShadow = "none",
+        GroupedPanelBg = "var(--flare-menu-panel-bg, var(--flare-color-surface-container))",
+        GroupedPanelShadow = "var(--flare-menu-panel-shadow, var(--flare-elevation-2))",
+        ItemLabelFont = "var(--flare-typescale-body-large-font)",
+        ItemLabelWeight = "var(--flare-typescale-body-large-weight)",
+        ItemLabelSize = "var(--flare-typescale-body-large-size)",
+        ItemLabelHeight = "var(--flare-typescale-body-large-height)",
+        ItemLabelSpacing = "var(--flare-typescale-body-large-spacing)",
+        ItemFocusRingColor = "var(--flare-color-secondary)",
+        ItemFocusRingThickness = "3px",
+        ItemFocusRingOffset = "-3px",
     };
 
     // Checkbox - Fluent: 1px рамка, 4dp угол, без MD3 halo, двойное фокусное кольцо.

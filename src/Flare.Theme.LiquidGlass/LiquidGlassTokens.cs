@@ -172,7 +172,7 @@ internal class LiquidGlassTokens
         RadiusLg = "var(--flare-shape-extra-large)",
     };
 
-    internal static readonly MenuTokens Menu = new();
+    internal static readonly MenuTokens Menu = MaterialDesignTokens.Design.Menu;
 
     internal static readonly CheckboxTokens Checkbox = MaterialDesignTokens.Design.Checkbox with
     {

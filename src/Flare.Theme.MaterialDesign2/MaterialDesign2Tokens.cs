@@ -174,7 +174,7 @@ internal static class MaterialDesign2Tokens
 
     // Classic flat 4dp menu (no MD3 Expressive 16dp panel or island grouping). The default MenuTokens
     // is already flat (square items, transparent groups); MD2 only pins the panel to the 4dp shape.
-    internal static readonly MenuTokens Menu = new() { PanelRadius = "var(--flare-shape-extra-small)" };
+    internal static readonly MenuTokens Menu = MaterialDesignTokens.Design.Menu with { PanelRadius = "var(--flare-shape-extra-small)" };
 
     /// <summary>The complete Material Design 2 design tokens, derived from the shared Material baseline.</summary>
     public static readonly DesignTokens Design = MaterialDesignTokens.Design with

@@ -171,7 +171,7 @@ internal class VisualStudioTokens
         RadiusLg = "var(--flare-shape-large)",
     };
 
-    internal static readonly MenuTokens Menu = new();
+    internal static readonly MenuTokens Menu = FluentUI2Tokens.Design.Menu;
 
     // Checkbox/Radio - VS: 1px border, tight corner, no MD3 halo.
     internal static readonly CheckboxTokens Checkbox = FluentUI2Tokens.Design.Checkbox with
