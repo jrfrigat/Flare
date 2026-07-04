@@ -193,7 +193,6 @@ internal static class MaterialDesign2Tokens
         Fab = Fab,
         Menu = Menu,
         Checkbox = new(),
-        Radio = new(),
         Chip = Chip,
         Tabs = Tabs,
         Slider = Slider,

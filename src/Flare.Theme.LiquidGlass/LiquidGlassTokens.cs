@@ -188,7 +188,7 @@ internal class LiquidGlassTokens
         StateLayerHoverChecked = "transparent",
     };
 
-    internal static readonly ChipTokens Chip = new();
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
     internal static readonly TabsTokens Tabs = new();
 
     // The iconic green iOS switch: gray off track, green on track, white circular thumb.

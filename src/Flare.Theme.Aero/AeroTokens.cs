@@ -187,7 +187,7 @@ internal class AeroTokens
         StateLayerHoverChecked = "transparent",
     };
 
-    internal static readonly ChipTokens Chip = new();
+    internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
     internal static readonly TabsTokens Tabs = new();
 
     internal static readonly SliderTokens Slider = new()

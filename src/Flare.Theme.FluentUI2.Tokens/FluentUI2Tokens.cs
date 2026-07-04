@@ -212,8 +212,12 @@ public class FluentUI2Tokens
         StateLayerHoverChecked = "transparent",
     };
 
-    // Chip - Fluent: те же дефолты (8dp/32dp).
-    internal static readonly ChipTokens Chip = new();
+    // Chip - Fluent: те же значения (8dp/32dp).
+    internal static readonly ChipTokens Chip = new()
+    {
+        Radius = "var(--flare-shape-small)",
+        Height = "2rem",
+    };
     internal static readonly TabsTokens Tabs = new();
 
     // On-this-page - Fluent: рейл-стиль (вертикальная линия + brand-полоса слева у активного),

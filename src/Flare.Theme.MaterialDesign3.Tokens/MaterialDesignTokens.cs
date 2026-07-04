@@ -192,8 +192,16 @@ public class MaterialDesignTokens
 
     // Checkbox / Radio / Chip: значения MD3 = дефолты записей.
     internal static readonly CheckboxTokens Checkbox = new();
-    internal static readonly RadioTokens Radio = new();
-    internal static readonly ChipTokens Chip = new();
+    internal static readonly RadioTokens Radio = new()
+    {
+        StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
+        StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
+    };
+    internal static readonly ChipTokens Chip = new()
+    {
+        Radius = "var(--flare-shape-small)",  // MD3 = 8dp
+        Height = "2rem",                       // MD3 = 32dp
+    };
     internal static readonly TabsTokens Tabs = new();
 
     // Menu (MD3 Expressive "Menus"): контейнер 16dp (shape-large), elevation 3,
