@@ -5,13 +5,7 @@
   position: relative;
 }
 
-.flare-datepicker__label {
-  font-family: var(--flare-typescale-label-medium-font);
-  font-size: var(--flare-typescale-label-medium-size);
-  font-weight: var(--flare-typescale-label-medium-weight);
-  color: var(--flare-color-on-surface-variant);
-  pointer-events: none;
-}
+/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 .flare-datepicker__field {
   display: flex;
@@ -53,12 +47,6 @@
 .flare-datepicker__toggle:hover { color: var(--flare-color-on-surface); }
 .flare-datepicker__toggle:focus-visible { outline: 2px solid var(--flare-color-primary); outline-offset: 2px; }
 
-.flare-datepicker__helper {
-  font-size: var(--flare-typescale-body-small-size);
-  color: var(--flare-color-on-surface-variant);
-}
-
-.flare-datepicker__helper--error { color: var(--flare-color-error); }
 .flare-datepicker--error .flare-datepicker__field { border-bottom-color: var(--flare-color-error); }
 .flare-datepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
 

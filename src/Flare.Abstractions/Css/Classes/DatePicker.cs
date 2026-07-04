@@ -21,12 +21,6 @@ public static class DatePicker
     public const string Field = "flare-datepicker__field";
     /// <summary>The <c>flare-datepicker__control</c> CSS class.</summary>
     public const string Control = "flare-datepicker__control";
-    /// <summary>The <c>flare-datepicker__label</c> CSS class.</summary>
-    public const string Label = "flare-datepicker__label";
-    /// <summary>The <c>flare-datepicker__helper</c> CSS class.</summary>
-    public const string Helper = "flare-datepicker__helper";
-    /// <summary>The <c>flare-datepicker__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-datepicker__helper--error";
     /// <summary>The <c>flare-datepicker__toggle</c> CSS class.</summary>
     public const string Toggle = "flare-datepicker__toggle";
     /// <summary>The <c>flare-datepicker__panel</c> CSS class.</summary>
@@ -92,12 +86,6 @@ public static class TimePicker
     public const string Control = "flare-timepicker__control";
     /// <summary>The <c>flare-timepicker__toggle</c> CSS class.</summary>
     public const string Toggle = "flare-timepicker__toggle";
-    /// <summary>The <c>flare-timepicker__label</c> CSS class.</summary>
-    public const string Label = "flare-timepicker__label";
-    /// <summary>The <c>flare-timepicker__helper</c> CSS class.</summary>
-    public const string Helper = "flare-timepicker__helper";
-    /// <summary>The <c>flare-timepicker__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-timepicker__helper--error";
     /// <summary>The <c>flare-timepicker__scrim</c> CSS class.</summary>
     public const string Scrim = "flare-timepicker__scrim";
     /// <summary>The <c>flare-timepicker__panel</c> CSS class.</summary>

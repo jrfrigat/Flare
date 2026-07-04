@@ -88,9 +88,9 @@
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
     // Label, HelperText, ErrorText and Disabled are inherited from FlareFieldBase (IFlareField).
     /// <summary>Forces the field into the error (invalid) visual state - red active indicator and
-    /// <c>aria-invalid</c> - without requiring an <see cref="ErrorText"/> message. Useful when the error
+    /// <c>aria-invalid</c> - without requiring an <see cref="FlareFieldBase.ErrorText"/> message. Useful when the error
     /// is surfaced elsewhere (a form-level summary) or when only the state, not a message, is wanted.
-    /// The error state is also shown automatically whenever <see cref="ErrorText"/> or a bound validation
+    /// The error state is also shown automatically whenever <see cref="FlareFieldBase.ErrorText"/> or a bound validation
     /// message is present.</summary>
     [Parameter] public bool Error { get; set; }
     /// <summary>Alias for <see cref="Error"/>: forces the invalid visual state without a message.</summary>

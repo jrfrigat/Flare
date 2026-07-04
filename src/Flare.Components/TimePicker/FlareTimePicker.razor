@@ -1,5 +1,6 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareFieldBase
+@implements IFlareField<TimeOnly?>
 @using System
 @using System.Globalization
 @using System.Linq.Expressions
@@ -11,7 +12,7 @@
 <div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.TimePicker.Label">@Label</label>
+        <label class="@Css.Classes.Input.Label">@Label</label>
     }
     <div class="@Css.Classes.TimePicker.Field" @ref="_fieldEl">
         <input class="@Css.Classes.TimePicker.Control"
@@ -22,12 +23,15 @@
                value="@_text"
                placeholder="@(Placeholder ?? "HH:mm")"
                disabled="@Disabled"
+               readonly="@ReadOnly"
+               required="@Required"
+               aria-required="@(Required ? "true" : null)"
                aria-label="@(Label ?? "Time")"
                @oninput="HandleInput"
                @onchange="HandleCommitText"
                @attributes="AdditionalAttributes" />
         <button type="button" class="@Css.Classes.TimePicker.Toggle flare-input__icon flare-input__icon--trailing"
-                disabled="@Disabled" aria-haspopup="dialog" aria-expanded="@_open"
+                disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
                 aria-label="Open time picker" @onclick="Toggle">
             <FlareIcon Name="schedule" Style="font-size:1.25rem;" />
         </button>
@@ -87,11 +91,11 @@
 
     @if (!string.IsNullOrEmpty(_displayedError))
     {
-        <span class="@($"{Css.Classes.TimePicker.Helper} {Css.Classes.TimePicker.HelperError}")">@_displayedError</span>
+        <span class="@($"{Css.Classes.Input.Helper} {Css.Classes.Input.HelperError}")">@_displayedError</span>
     }
     else if (!string.IsNullOrEmpty(HelperText))
     {
-        <span class="@Css.Classes.TimePicker.Helper">@HelperText</span>
+        <span class="@Css.Classes.Input.Helper">@HelperText</span>
     }
 </div>
 
@@ -100,16 +104,8 @@
     [Parameter] public TimeOnly? Value { get; set; }
     /// <summary>Callback invoked when the selected time changes.</summary>
     [Parameter] public EventCallback<TimeOnly?> ValueChanged { get; set; }
-    /// <summary>Label text displayed above the time picker.</summary>
-    [Parameter] public string? Label { get; set; }
-    /// <summary>Placeholder shown when empty. Default "HH:mm".</summary>
-    [Parameter] public string? Placeholder { get; set; }
-    /// <summary>Helper text shown below the time picker.</summary>
-    [Parameter] public string? HelperText { get; set; }
-    /// <summary>Overrides validation with a custom error message.</summary>
-    [Parameter] public string? ErrorText { get; set; }
-    /// <summary>Disables the time picker when true.</summary>
-    [Parameter] public bool Disabled { get; set; }
+    // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
+    // FlareFieldBase (IFlareField). ReadOnly keeps the trigger focusable but blocks typing and the popup.
     /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Popup style: MD3 clock <see cref="TimePickerVariant.Dial"/> (default) or <see cref="TimePickerVariant.Dropdown"/> columns.</summary>
@@ -132,11 +128,8 @@
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TimeOnly?>>? For { get; set; }
 
-    [CascadingParameter] private EditContext? EditContext { get; set; }
-
     protected override string ComponentCssClass => Css.Classes.TimePicker.Root;
 
-    private FieldIdentifier _fieldId;
     private bool _open;
     private int _tempHour;
     private int _tempMinute;
@@ -149,19 +142,11 @@
     private bool _panelPositioned;
     private readonly string _panelId = $"flare-timepicker-{Guid.NewGuid():N}";
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged += OnValidationChanged;
-    }
-
     protected override void OnParametersSet()
     {
         if (MinuteStep < 1) MinuteStep = 1;
         _is24Hour = Use24Hour ?? !CultureInfo.CurrentUICulture.DateTimeFormat.ShortTimePattern.Contains('h');
-        if (EditContext is not null && For is not null)
-            _fieldId = FieldIdentifier.Create(For);
+        UpdateFieldIdentifier(For);
 
         if (!Equals(Value, _syncedValue))
         {
@@ -170,35 +155,20 @@
         }
     }
 
-    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
-        => InvokeAsync(StateHasChanged);
-
     public override async ValueTask DisposeAsync()
     {
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged -= OnValidationChanged;
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }
         await base.DisposeAsync();
     }
 
-    private string? _validationError =>
-        EditContext is not null && For is not null
-            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
-            : null;
-
-    private string? _displayedError => ErrorText ?? _validationError;
+    private string? _displayedError => DisplayedError(ErrorText);
 
     private string _stateClass =>
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.TimePicker.Error :
         Disabled ? Css.Classes.TimePicker.Disabled : string.Empty;
 
-    private string _variantClass => Variant switch
-    {
-        InputVariant.Filled => Css.Classes.Input.VariantFilled,
-        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
-        _ => string.Empty,
-    };
+    private string? _variantClass => VariantClass(Variant);
     private string _sizeClass => Size switch
     {
         FieldSize.Xs => Css.Classes.TimePicker.SizeXs,
@@ -246,7 +216,7 @@
 
     private void Toggle()
     {
-        if (Disabled) return;
+        if (Disabled || ReadOnly) return;
         if (!_open)
         {
             _tempHour = Value?.Hour ?? 0;
@@ -318,7 +288,6 @@
         _syncedValue = value;
         _text = value?.ToString("HH:mm") ?? string.Empty;
         await ValueChanged.InvokeAsync(value);
-        if (EditContext is not null && For is not null)
-            EditContext.NotifyFieldChanged(_fieldId);
+        NotifyFieldChanged();
     }
 }

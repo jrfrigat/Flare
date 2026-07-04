@@ -22,7 +22,7 @@ public class FlareDatePickerTests : FlareTestContext
         var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.Label, "Select date"));
 
-        var label = cut.Find("label.flare-datepicker__label");
+        var label = cut.Find("label.flare-input__label");
         Assert.Equal("Select date", label.TextContent);
     }
 
@@ -67,7 +67,7 @@ public class FlareDatePickerTests : FlareTestContext
         var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.ErrorText, "Date is required"));
 
-        Assert.Contains("Date is required", cut.Find(".flare-datepicker__helper--error").TextContent);
+        Assert.Contains("Date is required", cut.Find(".flare-input__helper--error").TextContent);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class FlareDatePickerTests : FlareTestContext
         var cut = Render<FlareDatePicker>(p => p
             .Add(x => x.HelperText, "Pick any date"));
 
-        Assert.Contains("Pick any date", cut.Find(".flare-datepicker__helper").TextContent);
+        Assert.Contains("Pick any date", cut.Find(".flare-input__helper").TextContent);
     }
 
     [Fact]
