@@ -63,10 +63,10 @@
 /* Directional scroll buttons: a soft edge shadow cast over the adjacent tabs hints that more
    tabs scroll beneath the arrow. Shown only while the button is enabled (there is overflow that way). */
 .flare-tabs__scroll--prev:not(:disabled) {
-  box-shadow: 4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow, #000) 35%, transparent);
+  box-shadow: 4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) 35%, transparent);
 }
 .flare-tabs__scroll--next:not(:disabled) {
-  box-shadow: -4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow, #000) 35%, transparent);
+  box-shadow: -4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) 35%, transparent);
 }
 
 /* The vertical bar keeps its own layout; arrows are horizontal-only. Header zones stack
@@ -200,8 +200,8 @@
   padding: 0 var(--flare-spacing-3);
   border-radius: var(--flare-shape-full);
   /* Role class sets --fc-main/--fc-on; custom inlines them; default falls back to error. */
-  background: var(--fc-main, var(--flare-color-error, #b3261e));
-  color: var(--fc-on, var(--flare-color-on-error, #fff));
+  background: var(--fc-main, var(--flare-color-error));
+  color: var(--fc-on, var(--flare-color-on-error));
   font-size: var(--flare-typescale-label-small-size);
   font-weight: 600;
   line-height: 1;

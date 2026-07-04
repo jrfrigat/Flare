@@ -22,7 +22,7 @@
     /* Animate track WIDTH changes (rail collapse/expand, push open/close). A change in track COUNT
        (a drawer mounting/unmounting, or the mobile switch) snaps -- which is what we want. */
     transition: grid-template-columns var(--flare-motion-duration-medium2)
-                var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
+                var(--flare-motion-easing-emphasized);
 }
 
 /* AppBar spans the full width in row 1. */
@@ -81,7 +81,7 @@
 .flare-layout-drawer--mini .flare-layout-drawer__inner {
     width: 100%;
     transition: width var(--flare-motion-duration-medium2)
-                var(--flare-motion-easing-emphasized, cubic-bezier(0.2, 0, 0, 1));
+                var(--flare-motion-easing-emphasized);
 }
 
 /* --- Floating drawers: the Temporary variant always, and any push drawer once the layout is mobile.
@@ -96,7 +96,7 @@
     z-index: 200;
     transform: translateX(-100%);
     transition: transform var(--flare-motion-duration-medium1) ease;
-    box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0, 0, 0, .16));
+    box-shadow: var(--flare-elevation-3);
 }
 .flare-layout-drawer--floating.flare-layout-drawer--end,
 .flare-layout-drawer--temporary.flare-layout-drawer--end {
@@ -128,7 +128,7 @@
     left: 0;
     width: var(--fld-w, var(--flare-layout-drawer-width));
     background: var(--flare-color-surface-container-low);
-    box-shadow: var(--flare-elevation-3, 0 4px 12px rgba(0, 0, 0, .16));
+    box-shadow: var(--flare-elevation-3);
 }
 .flare-layout-drawer--hover-expand.flare-layout-drawer--end .flare-layout-drawer__inner {
     left: auto;
@@ -175,7 +175,7 @@
     transition: background var(--flare-motion-duration-short2);
 }
 .flare-layout-appbar__toggle:hover {
-    background: var(--flare-color-surface-container-highest, rgba(0, 0, 0, .08));
+    background: var(--flare-color-surface-container-highest);
 }
 
 /* Animated hamburger that morphs into an X when the primary drawer is open */
@@ -210,6 +210,6 @@
     position: fixed;
     inset: var(--flare-layout-appbar-height, 64px) 0 0 0;
     z-index: 180;
-    background: var(--flare-color-scrim, #000);
+    background: var(--flare-color-scrim);
     opacity: 0.45;
 }

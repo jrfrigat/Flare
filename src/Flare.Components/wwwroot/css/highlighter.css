@@ -3,8 +3,8 @@
 }
 
 .flare-highlighter__mark {
-    background: var(--flare-color-tertiary-container, #ffd740);
-    color: var(--flare-color-on-tertiary-container, #000);
+    background: var(--flare-color-tertiary-container);
+    color: var(--flare-color-on-tertiary-container);
     border-radius: 2px;
     padding: 0 var(--flare-spacing-1);
 }

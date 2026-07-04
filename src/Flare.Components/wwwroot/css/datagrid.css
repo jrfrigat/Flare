@@ -356,7 +356,7 @@
   color: var(--flare-color-on-surface);
   border: 1px solid var(--flare-color-outline-variant);
   border-radius: var(--flare-shape-medium);
-  box-shadow: var(--flare-elevation-3, 0 4px 8px 3px rgba(0, 0, 0, 0.15));
+  box-shadow: var(--flare-elevation-3);
 }
 
 .flare-datagrid__filter-builder-tree {
