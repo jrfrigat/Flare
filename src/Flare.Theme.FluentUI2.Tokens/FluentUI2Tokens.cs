@@ -514,6 +514,18 @@ public class FluentUI2Tokens
         HoverScale = "1.15",
     };
 
+    // Timeline: same neutral baseline (20dp surface dot, 2px accent ring, 2px outline-variant line).
+    internal static readonly TimelineTokens Timeline = new()
+    {
+        DotSize = "1.25rem",
+        DotBg = "var(--flare-color-surface)",
+        DotBorderWidth = "2px",
+        DotIconSize = "0.75rem",
+        LineWidth = "2px",
+        LineColor = "var(--flare-color-outline-variant)",
+        ConnectorWidth = "2rem",
+    };
+
     // Pagination: same neutral baseline (Size defers to the size classes; primary active fill).
     internal static readonly PaginationTokens Pagination = new()
     {
@@ -822,6 +834,7 @@ public class FluentUI2Tokens
         DataGrid = DataGrid,
         Rating = Rating,
         Pagination = Pagination,
+        Timeline = Timeline,
         Popover = Popover,
         Extended = Extended,
     };

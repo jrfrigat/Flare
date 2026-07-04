@@ -638,6 +638,18 @@ public class MaterialDesignTokens
         HoverScale = "1.15",
     };
 
+    // Timeline: 20dp surface dot with a 2px accent ring, 2px outline-variant connector line in a 2rem column.
+    internal static readonly TimelineTokens Timeline = new()
+    {
+        DotSize = "1.25rem",
+        DotBg = "var(--flare-color-surface)",
+        DotBorderWidth = "2px",
+        DotIconSize = "0.75rem",
+        LineWidth = "2px",
+        LineColor = "var(--flare-color-outline-variant)",
+        ConnectorWidth = "2rem",
+    };
+
     // Pagination: Size = initial defers to the size classes; extra-small radius, outline-variant
     // border, primary active fill (the Color parameter overrides via --fc-main).
     internal static readonly PaginationTokens Pagination = new()
@@ -711,6 +723,7 @@ public class MaterialDesignTokens
         DataGrid = DataGrid,
         Rating = Rating,
         Pagination = Pagination,
+        Timeline = Timeline,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,

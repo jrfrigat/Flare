@@ -92,6 +92,9 @@ public sealed record DesignTokens
     /// <summary>Pagination tokens.</summary>
     public required PaginationTokens Pagination { get; init; }
 
+    /// <summary>Timeline tokens.</summary>
+    public required TimelineTokens Timeline { get; init; }
+
     /// <summary>Switch tokens.</summary>
     public required SwitchTokens Switch { get; init; }
 

@@ -371,6 +371,14 @@ public static class CssVarMap
         v[Css.Tokens.Pagination.BorderColor] = t.Pagination.BorderColor;
         v[Css.Tokens.Pagination.ActiveColor] = t.Pagination.ActiveColor;
 
+        v[Css.Tokens.Timeline.DotSize] = t.Timeline.DotSize;
+        v[Css.Tokens.Timeline.DotBg] = t.Timeline.DotBg;
+        v[Css.Tokens.Timeline.DotBorderWidth] = t.Timeline.DotBorderWidth;
+        v[Css.Tokens.Timeline.DotIconSize] = t.Timeline.DotIconSize;
+        v[Css.Tokens.Timeline.LineWidth] = t.Timeline.LineWidth;
+        v[Css.Tokens.Timeline.LineColor] = t.Timeline.LineColor;
+        v[Css.Tokens.Timeline.ConnectorWidth] = t.Timeline.ConnectorWidth;
+
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;

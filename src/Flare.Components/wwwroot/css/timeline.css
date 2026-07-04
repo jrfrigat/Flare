@@ -16,15 +16,15 @@
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
-    width: 2rem;
+    width: var(--flare-timeline-connector-width, 2rem);
 }
 
 .flare-timeline-item__dot {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: var(--flare-timeline-dot-size, 1.25rem);
+    height: var(--flare-timeline-dot-size, 1.25rem);
     border-radius: 50%;
-    background: var(--flare-color-surface);
-    border: 2px solid currentColor;
+    background: var(--flare-timeline-dot-bg, var(--flare-color-surface));
+    border: var(--flare-timeline-dot-border-width, 2px) solid currentColor;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -33,15 +33,15 @@
 }
 
 .flare-timeline-item__dot .material-symbols-rounded {
-    font-size: 0.75rem;
+    font-size: var(--flare-timeline-dot-icon-size, 0.75rem);
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
     color: currentColor;
 }
 
 .flare-timeline-item__line {
     flex: 1;
-    width: 2px;
-    background: var(--flare-color-outline-variant);
+    width: var(--flare-timeline-line-width, 2px);
+    background: var(--flare-timeline-line-color, var(--flare-color-outline-variant));
     min-height: 1rem;
     margin-top: var(--flare-spacing-2);
 }
@@ -78,13 +78,13 @@
 /* Connector variants */
 .flare-timeline--dashed .flare-timeline-item__line {
     background: none;
-    border-left: 2px dashed var(--flare-color-outline-variant);
+    border-left: var(--flare-timeline-line-width, 2px) dashed var(--flare-timeline-line-color, var(--flare-color-outline-variant));
     width: 0;
 }
 
 .flare-timeline--dotted .flare-timeline-item__line {
     background: none;
-    border-left: 2px dotted var(--flare-color-outline-variant);
+    border-left: var(--flare-timeline-line-width, 2px) dotted var(--flare-timeline-line-color, var(--flare-color-outline-variant));
     width: 0;
 }
 
