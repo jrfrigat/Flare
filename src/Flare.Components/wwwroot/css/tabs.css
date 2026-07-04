@@ -39,7 +39,7 @@
   justify-content: center;
   width: 2.25rem;
   border: none;
-  background: var(--flare-color-surface, transparent);
+  background: var(--flare-color-surface);
   color: var(--flare-color-on-surface-variant);
   cursor: pointer;
   transition: background var(--flare-motion-duration-short1),
