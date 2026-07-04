@@ -9,7 +9,7 @@
 <div class="@BuildCssClass(_variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.DateTimePicker.Label">@Label</label>
+        <label class="@Css.Classes.Input.Label">@Label</label>
     }
     <div class="@Css.Classes.DateTimePicker.Field" @ref="_fieldRef">
         <input class="@Css.Classes.Input.Control @Css.Classes.DateTimePicker.Control"
@@ -62,11 +62,11 @@
     }
     @if (!string.IsNullOrEmpty(ErrorText))
     {
-        <span class="@($"{Css.Classes.DateTimePicker.Helper} {Css.Classes.DateTimePicker.HelperError}")" role="alert">@ErrorText</span>
+        <span class="@($"{Css.Classes.Input.Helper} {Css.Classes.Input.HelperError}")" role="alert">@ErrorText</span>
     }
     else if (!string.IsNullOrEmpty(HelperText))
     {
-        <span class="@Css.Classes.DateTimePicker.Helper">@HelperText</span>
+        <span class="@Css.Classes.Input.Helper">@HelperText</span>
     }
 </div>
 

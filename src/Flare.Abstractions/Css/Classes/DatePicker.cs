@@ -140,13 +140,8 @@ public static class DateTimePicker
     public const string Field = "flare-datetimepicker__field";
     /// <summary>The <c>flare-datetimepicker__control</c> CSS class.</summary>
     public const string Control = "flare-datetimepicker__control";
-    // The picker toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
-    /// <summary>The <c>flare-datetimepicker__label</c> CSS class.</summary>
-    public const string Label = "flare-datetimepicker__label";
-    /// <summary>The <c>flare-datetimepicker__helper</c> CSS class.</summary>
-    public const string Helper = "flare-datetimepicker__helper";
-    /// <summary>The <c>flare-datetimepicker__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-datetimepicker__helper--error";
+    // The picker toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle);
+    // label/helper/error text use the shared Css.Classes.Input.Label/Helper/HelperError.
     /// <summary>The <c>flare-datetimepicker__scrim</c> CSS class.</summary>
     public const string Scrim = "flare-datetimepicker__scrim";
     /// <summary>The <c>flare-datetimepicker__panel</c> CSS class.</summary>

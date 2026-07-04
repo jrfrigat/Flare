@@ -26,16 +26,9 @@
 
 /* FlareField */
 .flare-field { display: flex; flex-direction: column; gap: var(--flare-spacing-2); }
-.flare-field__label {
-    font-size: var(--flare-typescale-label-medium-size);
-    font-weight: var(--flare-typescale-label-medium-weight);
-    color: var(--flare-color-on-surface-variant);
-}
-.flare-field--required .flare-field__label::after {
+/* Label + helper reuse the shared flare-input__label / __helper (input.css); only the
+   required-asterisk indicator is FormBuilder-specific. */
+.flare-field--required .flare-input__label::after {
     content: ' *';
     color: var(--flare-color-error);
-}
-.flare-field__helper {
-    font-size: var(--flare-typescale-body-small-size);
-    color: var(--flare-color-on-surface-variant);
 }

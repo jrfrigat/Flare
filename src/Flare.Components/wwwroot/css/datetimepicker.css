@@ -5,13 +5,7 @@
   gap: var(--flare-spacing-2);
 }
 
-.flare-datetimepicker__label {
-  font-family: var(--flare-typescale-label-medium-font);
-  font-size: var(--flare-typescale-label-medium-size);
-  font-weight: var(--flare-typescale-label-medium-weight);
-  color: var(--flare-color-on-surface-variant);
-  pointer-events: none;
-}
+/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
 .flare-datetimepicker__field {
   display: flex;
@@ -37,15 +31,6 @@
 
 /* The picker toggle button uses the shared flare-input__toggle reset (input.css). */
 
-.flare-datetimepicker__helper {
-  font-size: var(--flare-typescale-body-small-size);
-  color: var(--flare-color-on-surface-variant);
-}
-
-.flare-datetimepicker__helper--error {
-  font-size: var(--flare-typescale-body-small-size);
-  color: var(--flare-color-error);
-}
 
 .flare-datetimepicker--error .flare-datetimepicker__field { border-bottom-color: var(--flare-color-error); }
 .flare-datetimepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }

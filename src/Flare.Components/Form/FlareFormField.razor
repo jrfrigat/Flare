@@ -4,14 +4,14 @@
 <div class="@BuildCssClass(Required ? Css.Classes.Field.Required : null)" style="@Style" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.Field.Label" for="@For">@Label</label>
+        <label class="@Css.Classes.Input.Label" for="@For">@Label</label>
     }
     <div class="@Css.Classes.Field.Control">
         @ChildContent
     </div>
     @if (!string.IsNullOrEmpty(HelperText))
     {
-        <span class="@Css.Classes.Field.Helper">@HelperText</span>
+        <span class="@Css.Classes.Input.Helper">@HelperText</span>
     }
 </div>
 

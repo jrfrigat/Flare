@@ -300,7 +300,7 @@ public class C_FlareFormFieldTests : FlareTestContext
     public void LabelRenderedWhenSet()
     {
         var cut = Render<FlareFormField>(p => p.Add(x => x.Label, "Email"));
-        Assert.NotEmpty(cut.FindAll("label.flare-field__label"));
+        Assert.NotEmpty(cut.FindAll("label.flare-input__label"));
         Assert.Contains("Email", cut.Markup);
     }
 
@@ -315,7 +315,7 @@ public class C_FlareFormFieldTests : FlareTestContext
     public void HelperTextRendered()
     {
         var cut = Render<FlareFormField>(p => p.Add(x => x.HelperText, "Enter your email"));
-        Assert.NotEmpty(cut.FindAll(".flare-field__helper"));
+        Assert.NotEmpty(cut.FindAll(".flare-input__helper"));
         Assert.Contains("Enter your email", cut.Markup);
     }
 
