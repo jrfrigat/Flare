@@ -161,7 +161,7 @@ internal class AeroTokens
         TriggerRadiusXl = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    internal static readonly ToggleButtonTokens ToggleButton = new();
+    internal static readonly ToggleButtonTokens ToggleButton = MaterialDesignTokens.Design.ToggleButton;
 
     internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with
     {

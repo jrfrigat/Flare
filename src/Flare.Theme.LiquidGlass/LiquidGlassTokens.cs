@@ -162,7 +162,7 @@ internal class LiquidGlassTokens
         TriggerRadiusXl = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    internal static readonly ToggleButtonTokens ToggleButton = new();
+    internal static readonly ToggleButtonTokens ToggleButton = MaterialDesignTokens.Design.ToggleButton;
 
     // FAB - fully round / pill.
     internal static readonly FabTokens Fab = MaterialDesignTokens.Design.Fab with

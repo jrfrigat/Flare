@@ -187,7 +187,6 @@ internal static class MaterialDesign2Tokens
         State = State,
         Button = Button,
         SplitButton = new(),
-        ToggleButton = new(),
         Fab = Fab,
         Menu = Menu,
         Chip = Chip,

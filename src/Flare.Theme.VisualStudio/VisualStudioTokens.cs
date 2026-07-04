@@ -162,7 +162,7 @@ internal class VisualStudioTokens
         TriggerRadiusXl = new() { TopLeft = "0px", BottomLeft = "0px", TopRight = "var(--flare-btn-radius-xl-top-right)", BottomRight = "var(--flare-btn-radius-xl-bottom-right)" },
     };
 
-    internal static readonly ToggleButtonTokens ToggleButton = new();
+    internal static readonly ToggleButtonTokens ToggleButton = FluentUI2Tokens.Design.ToggleButton;
 
     internal static readonly FabTokens Fab = FluentUI2Tokens.Design.Fab with
     {

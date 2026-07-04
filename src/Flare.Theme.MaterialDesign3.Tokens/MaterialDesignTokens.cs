@@ -185,7 +185,28 @@ public class MaterialDesignTokens
     };
 
     // MD3: круглая форма покоя, морфинг в squircle при выборе (значения = дефолты записи).
-    internal static readonly ToggleButtonTokens ToggleButton = new();
+    internal static readonly ToggleButtonTokens ToggleButton = new()
+    {
+        HeightSm = "2rem",
+        HeightMd = "2.5rem",
+        HeightLg = "3rem",
+        PaddingSm = "0.75rem",
+        PaddingMd = "1rem",
+        PaddingLg = "1.5rem",
+        Gap = "0.375rem",
+        Radius = "var(--flare-shape-full)",
+        RadiusSelectedSm = "var(--flare-shape-medium)",
+        RadiusSelectedMd = "var(--flare-shape-medium)",
+        RadiusSelectedLg = "1rem",
+        RestBg = "var(--flare-color-surface-container-highest)",
+        RestColor = "var(--flare-color-on-surface-variant)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+        GroupBorder = "1px solid var(--flare-color-outline)",
+        GroupRadius = "var(--flare-shape-full)",
+        GroupRadiusVertical = "var(--flare-shape-medium)",
+        GroupDivider = "var(--flare-color-outline)",
+    };
 
     // FAB: padding-based габарит, скругление large/medium/extra-large.
     internal static readonly FabTokens Fab = new()
