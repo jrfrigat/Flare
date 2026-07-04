@@ -14,6 +14,8 @@ COPY ["src/Flare.Components.Kanban/Flare.Components.Kanban.csproj",             
 COPY ["src/Flare.Components.QrCode/Flare.Components.QrCode.csproj",                 "src/Flare.Components.QrCode/"]
 COPY ["src/Flare.Components.RichTextEditor/Flare.Components.RichTextEditor.csproj", "src/Flare.Components.RichTextEditor/"]
 COPY ["src/Flare.Components.Transfer/Flare.Components.Transfer.csproj",             "src/Flare.Components.Transfer/"]
+COPY ["src/Flare.Theme.MaterialDesign3.Tokens/Flare.Theme.MaterialDesign3.Tokens.csproj", "src/Flare.Theme.MaterialDesign3.Tokens/"]
+COPY ["src/Flare.Theme.FluentUI2.Tokens/Flare.Theme.FluentUI2.Tokens.csproj",       "src/Flare.Theme.FluentUI2.Tokens/"]
 COPY ["src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj", "src/Flare.Theme.MaterialDesign3Expressive/"]
 COPY ["src/Flare.Theme.MaterialDesign3/Flare.Theme.MaterialDesign3.csproj",         "src/Flare.Theme.MaterialDesign3/"]
 COPY ["src/Flare.Theme.MaterialDesign2/Flare.Theme.MaterialDesign2.csproj",         "src/Flare.Theme.MaterialDesign2/"]

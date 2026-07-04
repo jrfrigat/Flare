@@ -9,6 +9,8 @@ COPY ["src/Flare.Abstractions/Flare.Abstractions.csproj",                       
 COPY ["src/Flare.Theming/Flare.Theming.csproj",                                                 "src/Flare.Theming/"]
 COPY ["src/Flare.Infrastructure/Flare.Infrastructure.csproj",                                    "src/Flare.Infrastructure/"]
 COPY ["src/Flare.Components/Flare.Components.csproj",                                            "src/Flare.Components/"]
+COPY ["src/Flare.Theme.MaterialDesign3.Tokens/Flare.Theme.MaterialDesign3.Tokens.csproj",        "src/Flare.Theme.MaterialDesign3.Tokens/"]
+COPY ["src/Flare.Theme.FluentUI2.Tokens/Flare.Theme.FluentUI2.Tokens.csproj",                    "src/Flare.Theme.FluentUI2.Tokens/"]
 COPY ["src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj", "src/Flare.Theme.MaterialDesign3Expressive/"]
 COPY ["src/Flare.Theme.FluentUI2/Flare.Theme.FluentUI2.csproj",                                  "src/Flare.Theme.FluentUI2/"]
 COPY ["src/Flare.Theme.Aero/Flare.Theme.Aero.csproj",                                            "src/Flare.Theme.Aero/"]
