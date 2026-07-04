@@ -5,13 +5,13 @@
     <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
         @if (Icon is not null)
         {
-            <span class="material-symbols-rounded @Css.Classes.Nav.GroupIcon">@Icon</span>
+            <span class="material-symbols-rounded @Css.Classes.Navigation.GroupIcon">@Icon</span>
         }
         <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
-        <span class="material-symbols-rounded @Css.Classes.Nav.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
+        <span class="material-symbols-rounded @Css.Classes.Navigation.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
     </button>
-    <div class="@Css.Classes.Nav.GroupItems @(_expanded ? Css.Classes.Nav.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
-        <div class="@Css.Classes.Nav.GroupItemsInner">
+    <div class="@Css.Classes.Navigation.GroupItems @(_expanded ? Css.Classes.Navigation.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
+        <div class="@Css.Classes.Navigation.GroupItemsInner">
             @* Cascade self so descendant links (and nested groups) can auto-expand this group. *@
             <CascadingValue Value="this" IsFixed="true">
                 @ChildContent

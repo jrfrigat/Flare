@@ -45,11 +45,6 @@ public static class Navigation
     public const string NavGroupTitle = "flare-nav-group__title";
     /// <summary>The <c>flare-nav-group__chevron--open</c> CSS class.</summary>
     public const string NavGroupChevron = "flare-nav-group__chevron--open";
-}
-
-/// <summary>CSS classes for nav.</summary>
-public static class Nav
-{
     /// <summary>The <c>flare-nav-group__chevron</c> CSS class.</summary>
     public const string GroupChevron = "flare-nav-group__chevron";
     /// <summary>The <c>flare-nav-group__icon</c> CSS class.</summary>
