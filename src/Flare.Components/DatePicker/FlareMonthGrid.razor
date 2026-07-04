@@ -1,0 +1,62 @@
+@namespace Flare.Components
+@using System.Globalization
+@using Microsoft.AspNetCore.Components.Web
+
+@* Shared month calendar grid used by FlareDatePicker, FlareDateTimePicker and FlareDateRangePicker:
+   the weekday header row and the 6x7 day-button grid. Selection/range decoration is supplied by the
+   host through DayClass; disabled/keyboard/hover are optional hooks so each picker keeps its own
+   behaviour while the markup + date generation (CalendarMath) live here once. *@
+
+<div class="@Css.Classes.Picker.DayHeaders">
+    @foreach (var h in CalendarMath.DayHeaders(_culture))
+    {
+        <span>@h</span>
+    }
+</div>
+<div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@AriaLabel"
+     @onkeydown="OnKeyDown" @onkeydown:stopPropagation>
+    @foreach (var date in CalendarMath.MonthGrid(ViewYear, ViewMonth, _culture.DateTimeFormat.FirstDayOfWeek))
+    {
+        var day = date;
+        var outside = day.Month != ViewMonth;
+        var disabled = Disabled?.Invoke(day) ?? false;
+        <button type="button"
+                role="gridcell"
+                aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
+                aria-current="@(day == Today ? "date" : null)"
+                class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
+                disabled="@disabled"
+                @onclick="@(() => OnDayClick.InvokeAsync(day))"
+                @onclick:stopPropagation
+                @onmouseenter="@(() => OnDayHover.InvokeAsync(day))">
+            @day.Day
+        </button>
+    }
+</div>
+
+@code {
+    /// <summary>The year of the displayed month.</summary>
+    [Parameter, EditorRequired] public int ViewYear { get; set; }
+    /// <summary>The 1-12 month displayed.</summary>
+    [Parameter, EditorRequired] public int ViewMonth { get; set; }
+    /// <summary>Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture.</summary>
+    [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>Today's date, marked with the today indicator.</summary>
+    [Parameter] public DateOnly Today { get; set; }
+    /// <summary>Predicate marking a day <c>aria-selected</c>; the visible selection style is supplied via <see cref="DayClass"/>.</summary>
+    [Parameter] public Func<DateOnly, bool>? Selected { get; set; }
+    /// <summary>Predicate disabling a day (sets the <c>disabled</c> attribute and the disabled day class).</summary>
+    [Parameter] public Func<DateOnly, bool>? Disabled { get; set; }
+    /// <summary>Extra CSS class(es) per day for component-specific selection or range-highlight decoration.</summary>
+    [Parameter] public Func<DateOnly, string>? DayClass { get; set; }
+    /// <summary>Accessible label for the grid (usually the displayed month and year).</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Raised when a day cell is clicked.</summary>
+    [Parameter] public EventCallback<DateOnly> OnDayClick { get; set; }
+    /// <summary>Raised when the pointer enters a day cell (for range hover preview).</summary>
+    [Parameter] public EventCallback<DateOnly> OnDayHover { get; set; }
+    /// <summary>Raised on keydown over the grid, so the host can own roving keyboard navigation.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+
+    private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+}

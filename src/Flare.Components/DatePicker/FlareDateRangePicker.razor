@@ -66,32 +66,13 @@
                     </FlareButton>
                 </span>
             </div>
-            <div class="@Css.Classes.Picker.DayHeaders">
-                @foreach (var d in DayHeaders)
-                {
-                    <span>@d</span>
-                }
-            </div>
-            <div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@HeaderLabel">
-                @foreach (var day in CalendarDays)
-                {
-                    var date = day.Date;
-                    <button type="button" role="gridcell"
-                            aria-selected="@((date == StartDate || date == EndDate) ? "true" : "false")"
-                            class="@Css.Classes.Picker.Day
-                                   @(day.IsCurrentMonth ? "" : Css.Classes.Picker.DayOutside)
-                                   @(date == Today ? Css.Classes.Picker.DayToday : "")
-                                   @(InRange(date) ? Css.Classes.Daterangepicker.DayInRange : "")
-                                   @(IsRangeStart(date) ? Css.Classes.Daterangepicker.DayStart : "")
-                                   @(IsRangeEnd(date) ? Css.Classes.Daterangepicker.DayEnd : "")
-                                   @(IsDayDisabled(date) ? Css.Classes.Picker.DayDisabled : "")"
-                            disabled="@(Disabled || IsDayDisabled(date))"
-                            @onmouseenter="@(() => { _hover = date; })"
-                            @onclick="@(() => PickDayAsync(date))">
-                        @date.Day
-                    </button>
-                }
-            </div>
+            <FlareMonthGrid ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
+                            AriaLabel="@HeaderLabel"
+                            Selected="@(d => d == StartDate || d == EndDate)"
+                            Disabled="@(d => Disabled || IsDayDisabled(d))"
+                            DayClass="RangeDayClass"
+                            OnDayClick="PickDayAsync"
+                            OnDayHover="@(d => { _hover = d; })" />
         </div>
     }
 
@@ -194,31 +175,14 @@
 
     private string HeaderLabel => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture);
 
-    private IEnumerable<string> DayHeaders
+    // Day headers + the 6x7 grid are rendered by the shared FlareMonthGrid (CalendarMath); the
+    // start/end/in-range highlight is supplied per day here.
+    private string RangeDayClass(DateOnly d) => string.Join(' ', new[]
     {
-        get
-        {
-            var names = _culture.DateTimeFormat.AbbreviatedDayNames;
-            var first = (int)_culture.DateTimeFormat.FirstDayOfWeek;
-            for (var i = 0; i < 7; i++) yield return names[(first + i) % 7];
-        }
-    }
-
-    private IEnumerable<CalendarDay> CalendarDays
-    {
-        get
-        {
-            var firstOfMonth = new DateOnly(_viewYear, _viewMonth, 1);
-            var firstDow = (int)_culture.DateTimeFormat.FirstDayOfWeek;
-            var offset = ((int)firstOfMonth.DayOfWeek - firstDow + 7) % 7;
-            var start = firstOfMonth.AddDays(-offset);
-            for (var i = 0; i < 42; i++)
-            {
-                var date = start.AddDays(i);
-                yield return new CalendarDay(date, date.Month == _viewMonth);
-            }
-        }
-    }
+        InRange(d)      ? Css.Classes.Daterangepicker.DayInRange : null,
+        IsRangeStart(d) ? Css.Classes.Daterangepicker.DayStart   : null,
+        IsRangeEnd(d)   ? Css.Classes.Daterangepicker.DayEnd     : null,
+    }.Where(c => c is not null));
 
     private bool IsDayDisabled(DateOnly d) =>
         (Min is { } min && d < min) || (Max is { } max && d > max) || (IsDateDisabled?.Invoke(d) ?? false);
@@ -310,5 +274,4 @@
     private static DateOnly? Earlier(DateOnly? a, DateOnly? b) => (a, b) switch { ({ } x, { } y) => Earliest(x, y), ({ } x, null) => x, (null, { } y) => y, _ => null };
     private static DateOnly? Later(DateOnly? a, DateOnly? b) => (a, b) switch { ({ } x, { } y) => Latest(x, y), ({ } x, null) => x, (null, { } y) => y, _ => null };
 
-    private readonly record struct CalendarDay(DateOnly Date, bool IsCurrentMonth);
 }

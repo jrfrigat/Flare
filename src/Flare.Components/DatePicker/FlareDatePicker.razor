@@ -62,31 +62,13 @@
 
             @if (_calView == CalendarView.Day)
             {
-                <div class="@Css.Classes.Picker.DayHeaders">
-                    @foreach (var d in DayHeaders)
-                    {
-                        <span>@d</span>
-                    }
-                </div>
-                <div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@HeaderLabel" @onkeydown="HandleGridKeyDown" @onkeydown:stopPropagation>
-                    @foreach (var day in CalendarDays)
-                    {
-                        <button type="button"
-                                role="gridcell"
-                                aria-selected="@(day.Date == Value ? "true" : "false")"
-                                aria-current="@(day.Date == Today ? "date" : null)"
-                                class="@Css.Classes.Picker.Day
-                                       @(day.IsCurrentMonth ? "" : Css.Classes.Picker.DayOutside)
-                                       @(day.Date == Value ? Css.Classes.Picker.DaySelected : "")
-                                       @(day.Date == Today ? Css.Classes.Picker.DayToday : "")
-                                       @(IsDisabled(day.Date) ? Css.Classes.Picker.DayDisabled : "")"
-                                disabled="@IsDisabled(day.Date)"
-                                @onclick="@(() => SelectDay(day.Date))"
-                                @onclick:stopPropagation>
-                            @day.Date.Day
-                        </button>
-                    }
-                </div>
+                <FlareMonthGrid ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
+                                AriaLabel="@HeaderLabel"
+                                Selected="@(d => d == Value)"
+                                Disabled="IsDisabled"
+                                DayClass="@(d => d == Value ? Css.Classes.Picker.DaySelected : string.Empty)"
+                                OnDayClick="SelectDay"
+                                OnKeyDown="HandleGridKeyDown" />
             }
             else if (_calView == CalendarView.Month)
             {
@@ -207,7 +189,7 @@
 
     private DayOfWeek _firstDayOfWeek => _culture.DateTimeFormat.FirstDayOfWeek;
 
-    private IReadOnlyList<string> DayHeaders => CalendarMath.DayHeaders(_culture);
+    // Day headers + the 6x7 grid are rendered by the shared FlareMonthGrid (CalendarMath).
 
     // Effective display/parse format (culture short pattern when not set).
     private string _format => string.IsNullOrEmpty(DateFormat) ? _culture.DateTimeFormat.ShortDatePattern : DateFormat;
@@ -293,10 +275,6 @@
         await base.DisposeAsync();
     }
 
-    private IReadOnlyList<CalendarDay> CalendarDays
-        => CalendarMath.MonthGrid(_viewYear, _viewMonth, _firstDayOfWeek)
-            .Select(d => new CalendarDay(d, d.Month == _viewMonth))
-            .ToArray();
 
     private bool IsDisabled(DateOnly d) =>
         (Min.HasValue && d < Min.Value) || (Max.HasValue && d > Max.Value) ||
@@ -481,5 +459,4 @@
         NotifyFieldChanged();
     }
 
-    private record CalendarDay(DateOnly Date, bool IsCurrentMonth);
 }

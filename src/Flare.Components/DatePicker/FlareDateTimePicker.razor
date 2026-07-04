@@ -181,28 +181,11 @@
                 </FlareButton>
             </span>
         </div>
-        <div class="@Css.Classes.Picker.DayHeaders">
-            @foreach (var d in DayHeaders)
-            {
-                <span>@d</span>
-            }
-        </div>
-        <div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@_viewDate.ToString("MMMM yyyy", _culture)">
-            @foreach (var day in GetCalendarDays())
-            {
-                var d = day;
-                <button type="button"
-                        role="gridcell"
-                        aria-selected="@(d == _selectedDate ? "true" : "false")"
-                        aria-current="@(d == Today ? "date" : null)"
-                        class="@Css.Classes.Picker.Day
-                               @(d.Month != _viewDate.Month ? Css.Classes.Picker.DayOutside : "")
-                               @(d == _selectedDate ? Css.Classes.Picker.DaySelected : "")
-                               @(d == Today ? Css.Classes.Picker.DayToday : "")"
-                        @onclick="() => SelectDate(d)"
-                        @onclick:stopPropagation>@d.Day</button>
-            }
-        </div>
+        <FlareMonthGrid ViewYear="_viewDate.Year" ViewMonth="_viewDate.Month" Culture="_culture" Today="Today"
+                        AriaLabel="@_viewDate.ToString("MMMM yyyy", _culture)"
+                        Selected="@(d => d == _selectedDate)"
+                        DayClass="@(d => d == _selectedDate ? Css.Classes.Picker.DaySelected : string.Empty)"
+                        OnDayClick="SelectDate" />
     </text>;
 
     // Time pane (clock dial or number inputs) - reused by Tabs and Panels.
@@ -227,7 +210,7 @@
 
     private DateOnly Today => DateOnly.FromDateTime(TimeProvider.GetLocalNow().DateTime);
 
-    private IReadOnlyList<string> DayHeaders => CalendarMath.DayHeaders(_culture);
+    // Day headers + the 6x7 grid are rendered by the shared FlareMonthGrid (CalendarMath).
 
     private string FormattedValue => Value.HasValue ? Value.Value.ToString(_format, _culture) : string.Empty;
 
@@ -383,8 +366,6 @@
         _open = false;
     }
 
-    private IEnumerable<DateOnly> GetCalendarDays()
-        => CalendarMath.MonthGrid(_viewDate.Year, _viewDate.Month, _culture.DateTimeFormat.FirstDayOfWeek);
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
