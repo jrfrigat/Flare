@@ -70,7 +70,6 @@
 .flare-autocomplete--error .flare-autocomplete__field { border-color: var(--flare-color-error); }
 .flare-autocomplete--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
 
-@keyframes flare-spin { to { transform: rotate(360deg); } }
 
 .flare-autocomplete__spinner {
     font-size: 1rem;

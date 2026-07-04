@@ -130,12 +130,7 @@
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
         Disabled ? Css.Classes.Input.Disabled : string.Empty;
 
-    private string _variantClass => Variant switch
-    {
-        InputVariant.Filled => Css.Classes.Input.VariantFilled,
-        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
-        _ => string.Empty,
-    };
+    private string? _variantClass => VariantClass(Variant);
 
     // Reuses the shared flare-input size grid (NumericField renders flare-input__field/__control).
     private string _sizeClass => Size switch

@@ -168,12 +168,7 @@
   gap: var(--flare-spacing-2);
 }
 
-.flare-daterangepicker__label {
-  font-family: var(--flare-typescale-label-medium-font);
-  font-size: var(--flare-typescale-label-medium-size);
-  font-weight: var(--flare-typescale-label-medium-weight);
-  color: var(--flare-color-on-surface-variant);
-}
+/* Label reuses the shared flare-input__label (input.css). */
 
 .flare-daterangepicker__fields {
   display: flex;

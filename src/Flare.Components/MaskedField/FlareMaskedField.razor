@@ -60,12 +60,7 @@
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<string?>>? For { get; set; }
 
-    private string _variantClass => Variant switch
-    {
-        InputVariant.Filled => Css.Classes.Input.VariantFilled,
-        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
-        _ => string.Empty,
-    };
+    private string? _variantClass => VariantClass(Variant);
     private string _sizeClass => Size switch
     {
         FieldSize.Xs => Css.Classes.Input.SizeXs,

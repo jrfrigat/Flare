@@ -26,16 +26,6 @@
 .flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10); }
 .flare-input--xl .flare-multiselect__value { font-size: var(--flare-typescale-title-large-size); }
 
-/* GroupBy header */
-.flare-multiselect__group-header {
-    padding: var(--flare-spacing-4) var(--flare-spacing-6) var(--flare-spacing-2);
-    font-size: var(--flare-typescale-label-small-size);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--flare-color-on-surface-variant);
-}
-
 /* Chips display mode */
 .flare-multiselect__chips { display: flex; flex-wrap: wrap; gap: var(--flare-spacing-2); }
 .flare-multiselect__chip {
