@@ -106,16 +106,20 @@
    Select/MultiSelect) -- carry their own control element. */
 .flare-input--xs .flare-input__control,
 .flare-input--xs .flare-tag-input__input,
-.flare-input--xs .flare-select__control { padding: 0.1875rem var(--flare-spacing-4);  font-size: var(--flare-typescale-label-medium-size); }
+.flare-input--xs .flare-select__control,
+.flare-input--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4);  font-size: var(--flare-typescale-label-medium-size); }
 .flare-input--sm .flare-input__control,
 .flare-input--sm .flare-tag-input__input,
-.flare-input--sm .flare-select__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); font-size: var(--flare-typescale-body-medium-size); }
+.flare-input--sm .flare-select__control,
+.flare-input--sm .flare-multiselect__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); font-size: var(--flare-typescale-body-medium-size); }
 .flare-input--lg .flare-input__control,
 .flare-input--lg .flare-tag-input__input,
-.flare-input--lg .flare-select__control { padding: 0.875rem 1.125rem; font-size: var(--flare-typescale-title-medium-size); }
+.flare-input--lg .flare-select__control,
+.flare-input--lg .flare-multiselect__control { padding: 0.875rem 1.125rem; font-size: var(--flare-typescale-title-medium-size); }
 .flare-input--xl .flare-input__control,
 .flare-input--xl .flare-tag-input__input,
-.flare-input--xl .flare-select__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
+.flare-input--xl .flare-select__control,
+.flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
 
 /* Placeholder text is muted (MD3: on-surface-variant). */
 .flare-input__control::placeholder {
@@ -238,47 +242,8 @@
     opacity: var(--flare-state-disabled-opacity);
 }
 
-.flare-numericfield__prefix,
-.flare-numericfield__suffix {
-    display: inline-flex;
-    align-items: center;
-    padding: 0 var(--flare-spacing-4);
-    color: var(--flare-color-on-surface-variant);
-    font-size: var(--flare-typescale-body-large-size);
-    white-space: nowrap;
-    user-select: none;
-}
-
-.flare-numericfield__prefix { padding-left: var(--flare-spacing-8); padding-right: var(--flare-spacing-2); }
-.flare-numericfield__suffix { padding-left: var(--flare-spacing-2); padding-right: var(--flare-spacing-8); }
-
-.flare-numericfield__stepper {
-    display: inline-flex;
-    flex-direction: column;
-    border-left: 1px solid var(--flare-color-outline-variant);
-    align-self: stretch;
-}
-.flare-numericfield__step {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.75rem;
-    padding: 0 var(--flare-spacing-2);
-    border: none;
-    background: transparent;
-    color: var(--flare-color-on-surface-variant);
-    font-size: 0.6rem;
-    line-height: 1;
-    cursor: pointer;
-    transition: background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
-}
-.flare-numericfield__step:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
-    color: var(--flare-color-on-surface);
-}
-.flare-numericfield__step:disabled { opacity: var(--flare-state-disabled-opacity); cursor: not-allowed; }
-.flare-numericfield__step--up { border-bottom: 1px solid var(--flare-color-outline-variant); }
+/* FlareNumericField's prefix/suffix + stepper extras live in numericfield.css (not baked into the
+   shared Field). */
 
 /* Floating label */
 .flare-input--floating .flare-input__field { position: relative; }

@@ -10,10 +10,11 @@
   position: relative;
 }
 
-/* The field-well box-model + focus ring come from the shared flare-input__field (input.css);
-   only the open-popup focus alias below is autocomplete-specific. */
-
-.flare-autocomplete__field:focus-within,
+/* The field-well box-model + focus ring (incl. :focus-within) come entirely from the shared
+   flare-input__field (input.css); the base class is just the BEM anchor for the --open modifier. */
+.flare-autocomplete__field {}
+/* Open-popup alias: keeps the focus ring while the popup is open even though focus may have moved
+   into the listbox. */
 .flare-autocomplete__field--open {
   border-color: var(--fc-main, var(--flare-color-primary));
   box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));

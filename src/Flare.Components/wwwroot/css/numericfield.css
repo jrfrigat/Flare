@@ -1,0 +1,45 @@
+/* FlareNumericField component-specific extras: prefix/suffix adornments and the up/down stepper.
+   The field well + input control come from the shared flare-input__field / flare-input__control
+   (input.css); only these numeric-only parts live here. */
+
+.flare-numericfield__prefix,
+.flare-numericfield__suffix {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--flare-spacing-4);
+    color: var(--flare-color-on-surface-variant);
+    font-size: var(--flare-typescale-body-large-size);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.flare-numericfield__prefix { padding-left: var(--flare-spacing-8); padding-right: var(--flare-spacing-2); }
+.flare-numericfield__suffix { padding-left: var(--flare-spacing-2); padding-right: var(--flare-spacing-8); }
+
+.flare-numericfield__stepper {
+    display: inline-flex;
+    flex-direction: column;
+    border-left: 1px solid var(--flare-color-outline-variant);
+    align-self: stretch;
+}
+.flare-numericfield__step {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    padding: 0 var(--flare-spacing-2);
+    border: none;
+    background: transparent;
+    color: var(--flare-color-on-surface-variant);
+    font-size: 0.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+.flare-numericfield__step:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+    color: var(--flare-color-on-surface);
+}
+.flare-numericfield__step:disabled { opacity: var(--flare-state-disabled-opacity); cursor: not-allowed; }
+.flare-numericfield__step--up { border-bottom: 1px solid var(--flare-color-outline-variant); }

@@ -25,6 +25,7 @@
 /* Surfaces */
 @import 'card.css';
 @import 'input.css';
+@import 'numericfield.css';
 @import 'select.css';
 @import 'dialog.css';
 @import 'appbar.css';

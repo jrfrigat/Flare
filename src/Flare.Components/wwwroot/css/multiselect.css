@@ -20,14 +20,11 @@
     opacity: var(--flare-state-disabled-opacity);
 }
 
-/* Size grid (Xs..Xl): control padding sets height, value font-size scales the text. */
-.flare-input--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4); }
+/* Size grid (Xs..Xl): the trigger padding comes from the shared grid in input.css (multiselect__control
+   is listed there alongside select__control); only the value-text font-size is scaled here. */
 .flare-input--xs .flare-multiselect__value { font-size: var(--flare-typescale-label-medium-size); }
-.flare-input--sm .flare-multiselect__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); }
 .flare-input--sm .flare-multiselect__value { font-size: var(--flare-typescale-body-medium-size); }
-.flare-input--lg .flare-multiselect__control { padding: 0.875rem 1.125rem; }
 .flare-input--lg .flare-multiselect__value { font-size: var(--flare-typescale-title-medium-size); }
-.flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10); }
 .flare-input--xl .flare-multiselect__value { font-size: var(--flare-typescale-title-large-size); }
 
 /* Chips display mode */
