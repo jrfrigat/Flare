@@ -81,7 +81,7 @@
 
 /* Selected row: tinted with the primary state layer. */
 .flare-datagrid__row--selected .flare-datagrid__td {
-  background: color-mix(in srgb, var(--flare-color-primary) 12%, var(--flare-color-surface));
+  background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity, 0.12) * 100%), var(--flare-color-surface));
 }
 .flare-datagrid__row--selected:hover .flare-datagrid__td {
   background: color-mix(in srgb, var(--flare-color-primary) 18%, var(--flare-color-surface));

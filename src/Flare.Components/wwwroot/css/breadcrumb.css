@@ -58,5 +58,5 @@
 }
 
 .flare-breadcrumb__expander:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-selected-opacity, 0.12) * 100%), transparent);
 }

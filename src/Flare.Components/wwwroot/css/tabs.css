@@ -234,7 +234,7 @@
 
 .flare-tabs__tab-close:hover {
   opacity: 1;
-  background: color-mix(in srgb, currentColor 12%, transparent);
+  background: color-mix(in srgb, currentColor calc(var(--flare-state-selected-opacity, 0.12) * 100%), transparent);
 }
 
 .flare-tabs__tab-close > .material-symbols-rounded {

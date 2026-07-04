@@ -1,7 +1,7 @@
 .flare-dialog-scrim {
     position: fixed;
     inset: 0;
-    background-color: color-mix(in srgb, var(--flare-color-scrim) 32%, transparent);
+    background-color: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity, 0.32) * 100%), transparent);
     display: flex;
     align-items: center;
     justify-content: center;
