@@ -349,10 +349,22 @@ public partial class FlareDataGrid<TItem>
     }
 
     // Full sorted/filtered list with NO paging. Client-side virtualization renders its own window,
-    // so paging here would hide every record past the first page. Cache-free (the paged _sortedCache
-    // serves the non-virtual paths). Used by the banded-composite virtual path.
+    // so paging here would hide every record past the first page. Used by the banded-composite
+    // virtual path, _pageItems, _totalPages, CurrentResultCount and BuildGroupedLines - 2-4 reads per
+    // render, each otherwise re-running the full O(N log N) filter+sort.
+    //
+    // Memoized PER RENDER only: _unpagedMemo is cleared at both render-cycle boundaries (ShouldRender
+    // before, OnAfterRenderAsync after - see FlareDataGrid.razor.cs), so every render still computes a
+    // FRESH list, identical to the previous compute-each-call behaviour. That freshness is load-bearing:
+    // the client Virtualize (`Items="@SortedUnpaged()"`) needs a new list reference each render, and a
+    // stable cross-render reference makes the banded-composite mutation path spin. The memo captures
+    // only the within-render duplicate reads; it never survives into the next render or an event handler.
+    private List<TItem>? _unpagedMemo;
+
     private List<TItem> SortedUnpaged()
     {
+        if (_unpagedMemo is not null) return _unpagedMemo;
+
         var src = Items ?? [];
         if (_treeMode && Tree is not null)
             src = FlattenTree(src).Select(n => n.Item).ToList();
@@ -369,7 +381,7 @@ public partial class FlareDataGrid<TItem>
         var result = DataGridPipeline<TItem>.Execute(
             srcList, sorts, filters, _advancedTree, _effectiveQuickFilter,
             null, null, 0, int.MaxValue, BuildColumnStrategies());
-        return result.Items.ToList();
+        return _unpagedMemo = result.Items.ToList();
     }
 
     private int _effectivePageSize => _currentPageSize > 0 ? _currentPageSize : (PageSize > 0 ? PageSize : 10);
