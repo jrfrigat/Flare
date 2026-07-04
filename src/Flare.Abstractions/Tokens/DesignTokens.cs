@@ -26,9 +26,9 @@ public sealed record DesignTokens
     /// <summary>State token.</summary>
     public required StateTokens State { get; init; }
 
-    /// <summary>Spacing scale (padding/margin/gap). Defaults to a 2px-base rem scale; a theme may
-    /// override it to make the whole UI denser or roomier.</summary>
-    public SpacingTokens Spacing { get; init; } = new();
+    /// <summary>Spacing scale (padding/margin/gap). A theme may tighten or loosen the whole scale
+    /// via <c>with</c> to make the UI denser or roomier.</summary>
+    public required SpacingTokens Spacing { get; init; }
 
     /// <summary>Badge token.</summary>
     public required BadgeTokens Badge { get; init; }

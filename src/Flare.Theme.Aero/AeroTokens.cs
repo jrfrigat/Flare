@@ -223,22 +223,7 @@ internal class AeroTokens
         Level5 = "0 18px 38px var(--flare-shadow-umbra), 0 4px 8px var(--flare-shadow-penumbra)",
     };
 
-    internal static readonly SpacingTokens Spacing = new()
-    {
-        S0 = "0",
-        S1 = "0.125rem",
-        S2 = "0.25rem",
-        S3 = "0.375rem",
-        S4 = "0.5rem",
-        S5 = "0.625rem",
-        S6 = "0.75rem",
-        S8 = "1rem",
-        S10 = "1.25rem",
-        S12 = "1.5rem",
-        S16 = "2rem",
-        S24 = "3rem",
-        S32 = "4rem",
-    };
+    internal static readonly SpacingTokens Spacing = MaterialDesignTokens.Design.Spacing;
 
     // Input - sunken white field with a 1px border; blue focus is finished in scoped CSS.
     internal static readonly InputTokens Input = new()

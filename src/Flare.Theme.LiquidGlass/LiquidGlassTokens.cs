@@ -242,22 +242,7 @@ internal class LiquidGlassTokens
         Level5 = "0 32px 72px var(--flare-shadow-umbra), 0 8px 16px var(--flare-shadow-penumbra)",
     };
 
-    internal static readonly SpacingTokens Spacing = new()
-    {
-        S0 = "0",
-        S1 = "0.125rem",
-        S2 = "0.25rem",
-        S3 = "0.375rem",
-        S4 = "0.5rem",
-        S5 = "0.625rem",
-        S6 = "0.75rem",
-        S8 = "1rem",
-        S10 = "1.25rem",
-        S12 = "1.5rem",
-        S16 = "2rem",
-        S24 = "3rem",
-        S32 = "4rem",
-    };
+    internal static readonly SpacingTokens Spacing = MaterialDesignTokens.Design.Spacing;
 
     /// <summary>Theme-specific extras: translucent fills + blur hooks consumed by the scoped glass CSS.</summary>
     public static readonly Dictionary<string, string> Extended = new()

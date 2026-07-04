@@ -15,29 +15,29 @@ namespace Flare.Abstractions.Tokens;
 public sealed record SpacingTokens
 {
     /// <summary>0 (no space).</summary>
-    [CssVar(Spacing.S0)] public string S0 { get; init; } = "0";
+    [CssVar(Spacing.S0)] public required string S0 { get; init; }
     /// <summary>0.125rem (2px).</summary>
-    [CssVar(Spacing.S1)] public string S1 { get; init; } = "0.125rem";
+    [CssVar(Spacing.S1)] public required string S1 { get; init; }
     /// <summary>0.25rem (4px).</summary>
-    [CssVar(Spacing.S2)] public string S2 { get; init; } = "0.25rem";
+    [CssVar(Spacing.S2)] public required string S2 { get; init; }
     /// <summary>0.375rem (6px).</summary>
-    [CssVar(Spacing.S3)] public string S3 { get; init; } = "0.375rem";
+    [CssVar(Spacing.S3)] public required string S3 { get; init; }
     /// <summary>0.5rem (8px).</summary>
-    [CssVar(Spacing.S4)] public string S4 { get; init; } = "0.5rem";
+    [CssVar(Spacing.S4)] public required string S4 { get; init; }
     /// <summary>0.625rem (10px).</summary>
-    [CssVar(Spacing.S5)] public string S5 { get; init; } = "0.625rem";
+    [CssVar(Spacing.S5)] public required string S5 { get; init; }
     /// <summary>0.75rem (12px).</summary>
-    [CssVar(Spacing.S6)] public string S6 { get; init; } = "0.75rem";
+    [CssVar(Spacing.S6)] public required string S6 { get; init; }
     /// <summary>1rem (16px).</summary>
-    [CssVar(Spacing.S8)] public string S8 { get; init; } = "1rem";
+    [CssVar(Spacing.S8)] public required string S8 { get; init; }
     /// <summary>1.25rem (20px).</summary>
-    [CssVar(Spacing.S10)] public string S10 { get; init; } = "1.25rem";
+    [CssVar(Spacing.S10)] public required string S10 { get; init; }
     /// <summary>1.5rem (24px).</summary>
-    [CssVar(Spacing.S12)] public string S12 { get; init; } = "1.5rem";
+    [CssVar(Spacing.S12)] public required string S12 { get; init; }
     /// <summary>2rem (32px).</summary>
-    [CssVar(Spacing.S16)] public string S16 { get; init; } = "2rem";
+    [CssVar(Spacing.S16)] public required string S16 { get; init; }
     /// <summary>3rem (48px).</summary>
-    [CssVar(Spacing.S24)] public string S24 { get; init; } = "3rem";
+    [CssVar(Spacing.S24)] public required string S24 { get; init; }
     /// <summary>4rem (64px).</summary>
-    [CssVar(Spacing.S32)] public string S32 { get; init; } = "4rem";
+    [CssVar(Spacing.S32)] public required string S32 { get; init; }
 }

@@ -554,11 +554,31 @@ public class MaterialDesignTokens
         SizeFullWidth = "100%",
     };
 
+    // Spacing scale: the 2px-base ramp (0/2/4/6/8/10/12/16/20/24/32/48/64px). Superset of the MD3 4dp
+    // grid; carried explicitly now that the core record ships no defaults.
+    internal static readonly SpacingTokens Spacing = new()
+    {
+        S0 = "0",
+        S1 = "0.125rem",
+        S2 = "0.25rem",
+        S3 = "0.375rem",
+        S4 = "0.5rem",
+        S5 = "0.625rem",
+        S6 = "0.75rem",
+        S8 = "1rem",
+        S10 = "1.25rem",
+        S12 = "1.5rem",
+        S16 = "2rem",
+        S24 = "3rem",
+        S32 = "4rem",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
+        Spacing = Spacing,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,
