@@ -1,5 +1,6 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareFieldBase
+@implements IFlareField<TValue>
 @typeparam TValue
 @using System.ComponentModel
 @using System.Linq.Expressions
@@ -25,6 +26,7 @@
                placeholder="@Placeholder"
                disabled="@Disabled"
                readonly="@ReadOnly"
+               required="@Required"
                min="@(_useTextMode ? null : _minStr)"
                max="@(_useTextMode ? null : _maxStr)"
                step="@(_useTextMode ? null : _stepStr)"
@@ -68,14 +70,6 @@
     [Parameter] public TValue? Value { get; set; }
     /// <summary>Callback invoked when the numeric value changes.</summary>
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
-    /// <summary>Label text displayed above the field.</summary>
-    [Parameter] public string? Label { get; set; }
-    /// <summary>Placeholder text shown when the field is empty.</summary>
-    [Parameter] public string? Placeholder { get; set; }
-    /// <summary>Helper text shown below the field.</summary>
-    [Parameter] public string? HelperText { get; set; }
-    /// <summary>Overrides validation with a custom error message.</summary>
-    [Parameter] public string? ErrorText { get; set; }
     /// <summary>Minimum allowed value.</summary>
     [Parameter] public double? Min { get; set; }
     /// <summary>Maximum allowed value.</summary>
@@ -91,10 +85,6 @@
     [Parameter] public string? Format { get; set; }
     /// <summary>Culture used to render and parse <see cref="Format"/>. Defaults to the current UI culture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
-    /// <summary>Disables the field when true.</summary>
-    [Parameter] public bool Disabled { get; set; }
-    /// <summary>Makes the field read-only when true.</summary>
-    [Parameter] public bool ReadOnly { get; set; }
     /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Non-editable text rendered before the input (e.g. currency symbol).</summary>
@@ -114,8 +104,6 @@
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TValue>>? For { get; set; }
 
-    [CascadingParameter] private EditContext? EditContext { get; set; }
-
     protected override string ComponentCssClass => Css.Classes.Input.Root;
 
     private readonly string _inputId = $"flare-numeric-{Guid.NewGuid():N}";
@@ -125,39 +113,18 @@
         !string.IsNullOrEmpty(_displayedError) ? _errorId :
         !string.IsNullOrEmpty(HelperText) ? _helperId : null;
 
-    private FieldIdentifier _fieldId;
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged += OnValidationChanged;
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (EditContext is not null && For is not null)
-            _fieldId = FieldIdentifier.Create(For);
-    }
-
-    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
-        => InvokeAsync(StateHasChanged);
+    // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
+    // FlareFieldBase; here we only feed it the For accessor and surface the resolved error.
+    protected override void OnParametersSet() => UpdateFieldIdentifier(For);
 
     public override async ValueTask DisposeAsync()
     {
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged -= OnValidationChanged;
         _debounceCts?.Cancel();
         _debounceCts?.Dispose();
         await base.DisposeAsync();
     }
 
-    private string? _validationError =>
-        EditContext is not null && For is not null
-            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
-            : null;
-
-    private string? _displayedError => ErrorText ?? _validationError;
+    private string? _displayedError => DisplayedError(ErrorText);
 
     private string _stateClass =>
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
@@ -249,8 +216,7 @@
 
         await ValueChanged.InvokeAsync(converted);
 
-        if (EditContext is not null && For is not null)
-            EditContext.NotifyFieldChanged(_fieldId);
+        NotifyFieldChanged();
     }
 
     private CancellationTokenSource? _debounceCts;
@@ -318,8 +284,7 @@
 
         await ValueChanged.InvokeAsync(converted);
 
-        if (EditContext is not null && For is not null)
-            EditContext.NotifyFieldChanged(_fieldId);
+        NotifyFieldChanged();
     }
 
     // Tolerant parse: try the culture (currency/thousands), then a stripped fallback (e.g. percent).
