@@ -12,7 +12,7 @@
     {
         <label class="@Css.Classes.Input.Label">@Label</label>
     }
-    <div class="@Css.Classes.DateTimePicker.Field" @ref="_fieldRef">
+    <div class="@Css.Classes.Input.Field @Css.Classes.DateTimePicker.Field" @ref="_fieldRef">
         <input class="@Css.Classes.Input.Control @Css.Classes.DateTimePicker.Control"
                style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                type="text"

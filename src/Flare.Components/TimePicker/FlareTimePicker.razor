@@ -14,7 +14,7 @@
     {
         <label class="@Css.Classes.Input.Label">@Label</label>
     }
-    <div class="@Css.Classes.TimePicker.Field" @ref="_fieldEl">
+    <div class="@Css.Classes.Input.Field @Css.Classes.TimePicker.Field" @ref="_fieldEl">
         <input class="@Css.Classes.Input.Control @Css.Classes.TimePicker.Control"
                style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                type="text"

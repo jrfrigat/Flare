@@ -178,20 +178,8 @@
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
-.flare-timepicker__field {
-  display: flex;
-  align-items: center;
-  background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
-  border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
-  border: var(--flare-input-border, none);
-  border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
-  transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
-}
-
-.flare-timepicker__field:focus-within {
-  border-color: var(--fc-main, var(--flare-color-primary));
-  box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
-}
+/* The field-well box-model + focus ring come from the shared flare-input__field (input.css);
+   only the error/disabled state below is timepicker-specific. */
 
 /* Base chrome inherited from .flare-input__control; only the extras below differ. */
 .flare-timepicker__control {

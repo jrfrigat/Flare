@@ -10,7 +10,7 @@
         <label class="@Css.Classes.Input.Label" for="@_inputId">@Label</label>
     }
     <div class="@Css.Classes.Autocomplete.Wrapper">
-        <div class="@Css.Classes.Autocomplete.Field @(_open ? Css.Classes.Autocomplete.FieldOpen : "")">
+        <div class="@Css.Classes.Input.Field @Css.Classes.Autocomplete.Field @(_open ? Css.Classes.Autocomplete.FieldOpen : "")">
             <input class="@Css.Classes.Input.Control"
                    @ref="_inputRef"
                    id="@_inputId"
