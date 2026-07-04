@@ -13,8 +13,7 @@ public static class Select
     public const string Control = "flare-select__control";
     /// <summary>The <c>flare-select__value</c> CSS class.</summary>
     public const string Value = "flare-select__value";
-    /// <summary>The <c>flare-select__placeholder</c> CSS class.</summary>
-    public const string Placeholder = "flare-select__placeholder";
+    // The placeholder span uses the shared Css.Classes.Input.Placeholder (flare-input__placeholder).
     // The trailing chevron uses the shared Css.Classes.Input.Arrow (flare-input__arrow).
     /// <summary>The <c>flare-select__dropdown</c> CSS class.</summary>
     public const string Dropdown = "flare-select__dropdown";

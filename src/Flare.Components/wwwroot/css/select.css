@@ -27,7 +27,7 @@
 .flare-select--open .flare-select__control { border-bottom-color: var(--flare-color-primary); }
 
 .flare-select__value { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.flare-select__placeholder { color: var(--flare-color-on-surface-variant); }
+/* The placeholder span uses the shared flare-input__placeholder (input.css). */
 
 /* JS-anchored (PositionAnchoredPanel) so the popup escapes a Card's overflow:hidden; the surface
    and z-index come from .flare-listbox. Select uses fixed positioning instead of the shared
@@ -40,9 +40,8 @@
 
 /* Disabled + error: the trigger carries flare-input__field, so the shared
    flare-input--disabled/--error .flare-input__field rules (MD3 4%/38% surface + error border) and
-   the shared label/helper/arrow treatment apply automatically. Only the value/placeholder text
-   (not a flare-input__* element) needs the disabled dim here. */
-.flare-input--disabled .flare-select__value,
-.flare-input--disabled .flare-select__placeholder {
+   the shared label/helper/arrow/placeholder treatment apply automatically. Only the single-value text
+   (a select-specific span) needs the disabled dim here. */
+.flare-input--disabled .flare-select__value {
     opacity: var(--flare-state-disabled-opacity);
 }

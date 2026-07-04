@@ -17,12 +17,11 @@
 }
 .flare-multiselect--open .flare-multiselect__control { border-bottom-color: var(--flare-color-primary); }
 .flare-multiselect__value { flex: 1; }
-.flare-multiselect__placeholder { color: var(--flare-color-on-surface-variant); }
+/* The placeholder span uses the shared flare-input__placeholder (input.css). */
 
-/* Disabled/error surface + border + arrow come from the shared flare-input__field / flare-input__arrow
-   rules (the trigger carries flare-input__field); only the value/placeholder text needs dimming. */
-.flare-input--disabled .flare-multiselect__value,
-.flare-input--disabled .flare-multiselect__placeholder {
+/* Disabled/error surface + border + arrow + placeholder come from the shared flare-input__field /
+   flare-input__arrow / flare-input__placeholder rules; only the value span needs dimming here. */
+.flare-input--disabled .flare-multiselect__value {
     opacity: var(--flare-state-disabled-opacity);
 }
 

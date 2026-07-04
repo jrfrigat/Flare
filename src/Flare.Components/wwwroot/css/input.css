@@ -121,11 +121,14 @@
 .flare-input--xl .flare-select__control,
 .flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
 
-/* Placeholder text is muted (MD3: on-surface-variant). */
+/* Placeholder text is muted (MD3: on-surface-variant). The ::placeholder pseudo styles real <input>s;
+   the .flare-input__placeholder class is the equivalent <span> for the combobox triggers (Select/
+   MultiSelect), which have no native input. */
 .flare-input__control::placeholder {
     color: var(--flare-input-placeholder-color, var(--flare-color-on-surface-variant));
     opacity: 1;
 }
+.flare-input__placeholder { color: var(--flare-color-on-surface-variant); }
 
 .flare-input__icon { display: inline-flex; align-items: center; padding: 0 var(--flare-spacing-4); color: var(--flare-color-on-surface-variant); }
 .flare-input__icon--leading  { order: -1; }
@@ -238,7 +241,8 @@
 .flare-input--disabled .flare-input__helper,
 .flare-input--disabled .flare-input__adornment,
 .flare-input--disabled .flare-input__icon,
-.flare-input--disabled .flare-input__arrow {
+.flare-input--disabled .flare-input__arrow,
+.flare-input--disabled .flare-input__placeholder {
     opacity: var(--flare-state-disabled-opacity);
 }
 

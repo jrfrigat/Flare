@@ -25,8 +25,7 @@ public static class Multiselect
     public const string Search = "flare-multiselect__search";
     /// <summary>The <c>flare-multiselect__search-wrap</c> CSS class.</summary>
     public const string SearchWrap = "flare-multiselect__search-wrap";
-    /// <summary>The <c>flare-multiselect__placeholder</c> CSS class.</summary>
-    public const string Placeholder = "flare-multiselect__placeholder";
+    // The placeholder span uses the shared Css.Classes.Input.Placeholder (flare-input__placeholder).
     /// <summary>The <c>flare-multiselect__value</c> CSS class.</summary>
     public const string Value = "flare-multiselect__value";
 }

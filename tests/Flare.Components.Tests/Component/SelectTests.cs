@@ -208,7 +208,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.Placeholder, "Pick fruit"));
 
-        Assert.Contains("Pick fruit", cut.Find(".flare-multiselect__placeholder").TextContent);
+        Assert.Contains("Pick fruit", cut.Find(".flare-input__placeholder").TextContent);
     }
 
     [Fact]
