@@ -190,7 +190,7 @@ internal class AeroTokens
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
     internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
 
-    internal static readonly SliderTokens Slider = new()
+    internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
     {
         TrackHeight = "4px",
         TrackRadius = "var(--flare-shape-full, 9999px)",
@@ -320,7 +320,7 @@ internal class AeroTokens
         Input = Input,
         Progress = Progress,
         Nav = Nav,
-        Dialog = new() { Radius = "var(--flare-shape-large)" },
+        Dialog = MaterialDesignTokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
         Popover = MaterialDesignTokens.Design.Popover with { Radius = "var(--flare-shape-small)" },
         Snackbar = MaterialDesignTokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         Extended = Extended,

@@ -207,7 +207,7 @@ internal class VisualStudioTokens
         PillRadius = "var(--flare-shape-small)",
     };
 
-    internal static readonly SliderTokens Slider = new()
+    internal static readonly SliderTokens Slider = FluentUI2Tokens.Design.Slider with
     {
         TrackHeight = "4px",
         TrackRadius = "var(--flare-shape-full, 9999px)",
@@ -346,7 +346,7 @@ internal class VisualStudioTokens
         Input = Input,
         Progress = Progress,
         Nav = Nav,
-        Dialog = new() { Radius = "var(--flare-shape-large)" },
+        Dialog = FluentUI2Tokens.Design.Dialog with { Radius = "var(--flare-shape-large)" },
         Popover = FluentUI2Tokens.Design.Popover with { Radius = "var(--flare-shape-small)" },
         Snackbar = FluentUI2Tokens.Design.Snackbar with { Radius = "var(--flare-shape-small)" },
         Extended = Extended,

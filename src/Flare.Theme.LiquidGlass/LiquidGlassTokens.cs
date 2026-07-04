@@ -209,7 +209,7 @@ internal class LiquidGlassTokens
         FocusOutlineColor = "var(--flare-color-primary)",
     };
 
-    internal static readonly SliderTokens Slider = new()
+    internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
     {
         TrackHeight = "4px",
         TrackRadius = "var(--flare-shape-full, 9999px)",
@@ -351,7 +351,7 @@ internal class LiquidGlassTokens
         Input = Input,
         Progress = Progress,
         Nav = Nav,
-        Dialog = new() { Radius = "var(--flare-shape-extra-large)" },
+        Dialog = MaterialDesignTokens.Design.Dialog with { Radius = "var(--flare-shape-extra-large)" },
         Popover = MaterialDesignTokens.Design.Popover with { Radius = "var(--flare-shape-large)" },
         Snackbar = MaterialDesignTokens.Design.Snackbar with { Radius = "var(--flare-shape-large)" },
         Extended = Extended,

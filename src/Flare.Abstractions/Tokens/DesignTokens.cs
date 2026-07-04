@@ -54,13 +54,13 @@ public sealed record DesignTokens
     public required TabsTokens Tabs { get; init; }
 
     /// <summary>Slider geometry/colors. Defaults to MD3 Expressive; Fluent overrides to a thin rail.</summary>
-    public SliderTokens Slider { get; init; } = new();
+    public required SliderTokens Slider { get; init; }
 
     /// <summary>Input/Select/TextArea form field tokens.</summary>
     public InputTokens Input { get; init; } = new();
 
     /// <summary>Dialog modal tokens.</summary>
-    public DialogTokens Dialog { get; init; } = new();
+    public required DialogTokens Dialog { get; init; }
 
     /// <summary>Drawer navigation tokens.</summary>
     public required DrawerTokens Drawer { get; init; }

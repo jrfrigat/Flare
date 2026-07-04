@@ -9,80 +9,80 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record DialogTokens
 {
     /// <summary>Background color of the dialog surface.</summary>
-    [CssVar(DialogPanel.SurfaceColor)] public string SurfaceColor { get; init; } = Vars.Var(Color.SurfaceContainerHigh);
+    [CssVar(DialogPanel.SurfaceColor)] public required string SurfaceColor { get; init; }
 
     /// <summary>Border radius of the dialog.</summary>
-    [CssVar(DialogPanel.Radius)] public string Radius { get; init; } = Vars.Var(Shape.ExtraLarge);
+    [CssVar(DialogPanel.Radius)] public required string Radius { get; init; }
 
     /// <summary>Maximum width of the dialog.</summary>
-    [CssVar(DialogPanel.MaxWidth)] public string MaxWidth { get; init; } = "560px";
+    [CssVar(DialogPanel.MaxWidth)] public required string MaxWidth { get; init; }
 
     /// <summary>Minimum width of the dialog.</summary>
-    [CssVar(DialogPanel.MinWidth)] public string MinWidth { get; init; } = "280px";
+    [CssVar(DialogPanel.MinWidth)] public required string MinWidth { get; init; }
 
     /// <summary>Padding inside the dialog.</summary>
-    [CssVar(DialogPanel.Padding)] public string Padding { get; init; } = "24px";
+    [CssVar(DialogPanel.Padding)] public required string Padding { get; init; }
 
     /// <summary>Padding between header and content.</summary>
-    [CssVar(DialogPanel.HeaderPadding)] public string HeaderPadding { get; init; } = "24px 24px 0 24px";
+    [CssVar(DialogPanel.HeaderPadding)] public required string HeaderPadding { get; init; }
 
     /// <summary>Padding between content and actions.</summary>
-    [CssVar(DialogPanel.ActionsPadding)] public string ActionsPadding { get; init; } = "0 24px 24px 24px";
+    [CssVar(DialogPanel.ActionsPadding)] public required string ActionsPadding { get; init; }
 
     /// <summary>Gap between action buttons.</summary>
-    [CssVar(DialogPanel.ActionsGap)] public string ActionsGap { get; init; } = "8px";
+    [CssVar(DialogPanel.ActionsGap)] public required string ActionsGap { get; init; }
 
     /// <summary>Background color of the scrim (overlay).</summary>
-    [CssVar(DialogPanel.ScrimColor)] public string ScrimColor { get; init; } = Vars.Var(Color.Scrim);
+    [CssVar(DialogPanel.ScrimColor)] public required string ScrimColor { get; init; }
 
     /// <summary>Opacity of the scrim.</summary>
-    [CssVar(DialogPanel.ScrimOpacity)] public string ScrimOpacity { get; init; } = "0.32";
+    [CssVar(DialogPanel.ScrimOpacity)] public required string ScrimOpacity { get; init; }
 
     /// <summary>Elevation (box-shadow) of the dialog.</summary>
-    [CssVar(DialogPanel.Elevation)] public string Elevation { get; init; } = Vars.Var(Flare.Css.Tokens.Elevation.Level3);
+    [CssVar(DialogPanel.Elevation)] public required string Elevation { get; init; }
 
     /// <summary>Color of the dialog title text.</summary>
-    [CssVar(DialogPanel.TitleColor)] public string TitleColor { get; init; } = Vars.Var(Color.OnSurface);
+    [CssVar(DialogPanel.TitleColor)] public required string TitleColor { get; init; }
 
     /// <summary>Font family of the dialog title.</summary>
-    [CssVar(DialogPanel.TitleFontFamily)] public string TitleFontFamily { get; init; } = Vars.Var(Typography.Font("headline-small"));
+    [CssVar(DialogPanel.TitleFontFamily)] public required string TitleFontFamily { get; init; }
 
     /// <summary>Font size of the dialog title.</summary>
-    [CssVar(DialogPanel.TitleFontSize)] public string TitleFontSize { get; init; } = Vars.Var(Typography.Size("headline-small"));
+    [CssVar(DialogPanel.TitleFontSize)] public required string TitleFontSize { get; init; }
 
     /// <summary>Font weight of the dialog title.</summary>
-    [CssVar(DialogPanel.TitleFontWeight)] public string TitleFontWeight { get; init; } = Vars.Var(Typography.Weight("headline-small"));
+    [CssVar(DialogPanel.TitleFontWeight)] public required string TitleFontWeight { get; init; }
 
     /// <summary>Color of the dialog content text.</summary>
-    [CssVar(DialogPanel.ContentColor)] public string ContentColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
+    [CssVar(DialogPanel.ContentColor)] public required string ContentColor { get; init; }
 
     /// <summary>Font family of the dialog content.</summary>
-    [CssVar(DialogPanel.ContentFontFamily)] public string ContentFontFamily { get; init; } = Vars.Var(Typography.Font("body-medium"));
+    [CssVar(DialogPanel.ContentFontFamily)] public required string ContentFontFamily { get; init; }
 
     /// <summary>Font size of the dialog content.</summary>
-    [CssVar(DialogPanel.ContentFontSize)] public string ContentFontSize { get; init; } = Vars.Var(Typography.Size("body-medium"));
+    [CssVar(DialogPanel.ContentFontSize)] public required string ContentFontSize { get; init; }
 
     /// <summary>Transition duration for dialog open/close.</summary>
-    [CssVar(DialogPanel.TransitionDuration)] public string TransitionDuration { get; init; } = Vars.Var(Motion.DurationMedium2);
+    [CssVar(DialogPanel.TransitionDuration)] public required string TransitionDuration { get; init; }
 
     /// <summary>Transition easing for dialog open/close.</summary>
-    [CssVar(DialogPanel.TransitionEasing)] public string TransitionEasing { get; init; } = Vars.Var(Motion.EasingStandard);
+    [CssVar(DialogPanel.TransitionEasing)] public required string TransitionEasing { get; init; }
 
     /// <summary>Width for the xs size variant.</summary>
-    [CssVar(DialogPanel.SizeXsWidth)] public string SizeXsWidth { get; init; } = "320px";
+    [CssVar(DialogPanel.SizeXsWidth)] public required string SizeXsWidth { get; init; }
 
     /// <summary>Width for the sm size variant.</summary>
-    [CssVar(DialogPanel.SizeSmWidth)] public string SizeSmWidth { get; init; } = "400px";
+    [CssVar(DialogPanel.SizeSmWidth)] public required string SizeSmWidth { get; init; }
 
     /// <summary>Width for the md size variant (default).</summary>
-    [CssVar(DialogPanel.SizeMdWidth)] public string SizeMdWidth { get; init; } = "560px";
+    [CssVar(DialogPanel.SizeMdWidth)] public required string SizeMdWidth { get; init; }
 
     /// <summary>Width for the lg size variant.</summary>
-    [CssVar(DialogPanel.SizeLgWidth)] public string SizeLgWidth { get; init; } = "720px";
+    [CssVar(DialogPanel.SizeLgWidth)] public required string SizeLgWidth { get; init; }
 
     /// <summary>Width for the xl size variant.</summary>
-    [CssVar(DialogPanel.SizeXlWidth)] public string SizeXlWidth { get; init; } = "880px";
+    [CssVar(DialogPanel.SizeXlWidth)] public required string SizeXlWidth { get; init; }
 
     /// <summary>Width for the full size variant.</summary>
-    [CssVar(DialogPanel.SizeFullWidth)] public string SizeFullWidth { get; init; } = "100%";
+    [CssVar(DialogPanel.SizeFullWidth)] public required string SizeFullWidth { get; init; }
 }

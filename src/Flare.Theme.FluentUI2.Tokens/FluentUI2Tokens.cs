@@ -302,6 +302,9 @@ public class FluentUI2Tokens
         StopColor = "var(--flare-color-outline)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",
+        HandleClipPath = "initial",
+        ValueBg = "var(--flare-color-inverse-surface)",
+        ValueColor = "var(--flare-color-inverse-on-surface)",
     };
 
     // Input - Fluent outlined style (full 1px border, neutral focus box + 2px brand bottom accent).
@@ -551,11 +554,43 @@ public class FluentUI2Tokens
         StackGap = "8px",
     };
 
+    // Dialog - Fluent: large radius; the rest is the shared Material baseline.
+    internal static readonly DialogTokens Dialog = new()
+    {
+        SurfaceColor = "var(--flare-color-surface-container-high)",
+        Radius = "var(--flare-shape-large)",
+        MaxWidth = "560px",
+        MinWidth = "280px",
+        Padding = "24px",
+        HeaderPadding = "24px 24px 0 24px",
+        ActionsPadding = "0 24px 24px 24px",
+        ActionsGap = "8px",
+        ScrimColor = "var(--flare-color-scrim)",
+        ScrimOpacity = "0.32",
+        Elevation = "var(--flare-elevation-3)",
+        TitleColor = "var(--flare-color-on-surface)",
+        TitleFontFamily = "var(--flare-typescale-headline-small-font)",
+        TitleFontSize = "var(--flare-typescale-headline-small-size)",
+        TitleFontWeight = "var(--flare-typescale-headline-small-weight)",
+        ContentColor = "var(--flare-color-on-surface-variant)",
+        ContentFontFamily = "var(--flare-typescale-body-medium-font)",
+        ContentFontSize = "var(--flare-typescale-body-medium-size)",
+        TransitionDuration = "var(--flare-motion-duration-medium2)",
+        TransitionEasing = "var(--flare-motion-easing-standard)",
+        SizeXsWidth = "320px",
+        SizeSmWidth = "400px",
+        SizeMdWidth = "560px",
+        SizeLgWidth = "720px",
+        SizeXlWidth = "880px",
+        SizeFullWidth = "100%",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Fluent UI 2 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
+        Dialog = Dialog,
         Drawer = Drawer,
         Snackbar = Snackbar,
         BottomNav = BottomNav,
@@ -604,7 +639,6 @@ public class FluentUI2Tokens
         Progress = Progress,
         Nav = Nav,
         Switch = Switch,
-        Dialog = new() { Radius = "var(--flare-shape-large)" },
         Popover = Popover,
         Extended = Extended,
     };

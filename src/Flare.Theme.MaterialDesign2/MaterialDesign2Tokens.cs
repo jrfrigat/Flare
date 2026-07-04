@@ -152,7 +152,7 @@ internal static class MaterialDesign2Tokens
     };
 
     // MD2 slider: thin 4px rail with a round 20dp thumb (no MD3 Expressive bar handle).
-    internal static readonly SliderTokens Slider = new()
+    internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
     {
         TrackHeight = "4px",
         TrackRadius = "9999px",
@@ -170,7 +170,7 @@ internal static class MaterialDesign2Tokens
     };
 
     // MD2 dialogs use a 4dp corner.
-    internal static readonly DialogTokens Dialog = new() { Radius = "var(--flare-shape-extra-small)" };
+    internal static readonly DialogTokens Dialog = MaterialDesignTokens.Design.Dialog with { Radius = "var(--flare-shape-extra-small)" };
 
     // Classic flat 4dp menu (no MD3 Expressive 16dp panel or island grouping). The default MenuTokens
     // is already flat (square items, transparent groups); MD2 only pins the panel to the 4dp shape.
