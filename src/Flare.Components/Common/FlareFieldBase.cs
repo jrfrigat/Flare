@@ -13,8 +13,20 @@ namespace Flare.Components;
 /// Each field component keeps its own markup and CSS class prefixes; this base only removes
 /// the duplicated C# logic.
 /// </summary>
-public abstract class FlareFieldBase : FlareComponentBase
+public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 {
+    /// <summary>Label text shown for the field.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Helper text shown below the field.</summary>
+    [Parameter] public string? HelperText { get; set; }
+
+    /// <summary>Error text; when set it overrides <see cref="HelperText"/> and marks the field invalid.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+
+    /// <summary>Disables the field (no input, dimmed).</summary>
+    [Parameter] public bool Disabled { get; set; }
+
     /// <summary>The cascaded edit context used for validation when the field is bound with a <c>For</c> accessor.</summary>
     [CascadingParameter] protected EditContext? EditContext { get; set; }
 

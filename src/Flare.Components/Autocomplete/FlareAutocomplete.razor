@@ -92,17 +92,9 @@
     /// <summary>Returns the display text for an item.</summary>
     [Parameter] public Func<TValue, string> GetLabel { get; set; } = v => v?.ToString() ?? "";
     /// <summary>Custom render template for a dropdown option. Overrides the <see cref="GetLabel"/> text.</summary>
-    [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
-    /// <summary>Label text displayed above the input.</summary>
-    [Parameter] public string? Label { get; set; }
+    [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
     /// <summary>Placeholder text shown when the input is empty.</summary>
-    [Parameter] public string? Placeholder { get; set; }
-    /// <summary>Helper text shown below the input.</summary>
-    [Parameter] public string? HelperText { get; set; }
-    /// <summary>Overrides validation with a custom error message.</summary>
-    [Parameter] public string? ErrorText { get; set; }
-    /// <summary>Disables the input when true.</summary>
-    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
     /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Minimum number of typed characters before a search runs. Default: 1.</summary>

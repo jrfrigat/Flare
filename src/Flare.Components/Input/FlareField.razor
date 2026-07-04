@@ -85,14 +85,9 @@
     [Parameter] public TValue? Value { get; set; }
     /// <summary>Callback invoked when the value changes.</summary>
     [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
-    /// <summary>Label text displayed above the input.</summary>
-    [Parameter] public string? Label { get; set; }
     /// <summary>Placeholder text shown when the input is empty.</summary>
     [Parameter] public string? Placeholder { get; set; }
-    /// <summary>Helper text shown below the input.</summary>
-    [Parameter] public string? HelperText { get; set; }
-    /// <summary>Overrides validation with a custom error message.</summary>
-    [Parameter] public string? ErrorText { get; set; }
+    // Label, HelperText, ErrorText and Disabled are inherited from FlareFieldBase (IFlareField).
     /// <summary>Forces the field into the error (invalid) visual state - red active indicator and
     /// <c>aria-invalid</c> - without requiring an <see cref="ErrorText"/> message. Useful when the error
     /// is surfaced elsewhere (a form-level summary) or when only the state, not a message, is wanted.
@@ -109,8 +104,6 @@
     [Parameter] public RenderFragment? AdornmentStart { get; set; }
     /// <summary>Content rendered after the input field as a trailing adornment (e.g. unit label, suffix text, or button).</summary>
     [Parameter] public RenderFragment? AdornmentEnd { get; set; }
-    /// <summary>Disables the input when true.</summary>
-    [Parameter] public bool Disabled { get; set; }
     /// <summary>Makes the input read-only when true.</summary>
     [Parameter] public bool ReadOnly { get; set; }
     /// <summary>HTML type attribute of the underlying input element.</summary>
