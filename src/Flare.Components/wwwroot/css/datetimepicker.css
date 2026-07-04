@@ -24,8 +24,7 @@
 /* The picker toggle button uses the shared flare-input__toggle reset (input.css). */
 
 
-.flare-datetimepicker--error .flare-datetimepicker__field { border-bottom-color: var(--flare-color-error); }
-.flare-datetimepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+/* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css). */
 
 /* Panel */
 /* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);

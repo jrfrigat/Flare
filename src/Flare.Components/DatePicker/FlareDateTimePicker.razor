@@ -7,7 +7,7 @@
 @inject Flare.Components.Services.IElementJsService Element
 @inject Flare.Components.Services.IUiJsService Ui
 
-<div class="@BuildCssClass(_variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="@Css.Classes.Input.Label">@Label</label>
@@ -109,6 +109,11 @@
 
     private string? _variantClass => VariantClass(Variant);
     private string? _displayedError => DisplayedError(ErrorText);
+    // Error/disabled state via the shared flare-input--error / --disabled (the field/control carry
+    // the shared flare-input__field / __control). Error-first matches the sibling picker convention.
+    private string? _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : null;
     private string _sizeClass => Size switch
     {
         FieldSize.Xs => Css.Classes.Input.SizeXs,

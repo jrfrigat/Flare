@@ -55,8 +55,10 @@
   font-style: italic;
 }
 
-.flare-autocomplete--error .flare-autocomplete__field { border-color: var(--flare-color-error); }
-.flare-autocomplete--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+/* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css).
+   The shared disabled content-opacity rule targets flare-input__icon, so dim the autocomplete's own
+   chevron wrapper explicitly. */
+.flare-input--disabled .flare-autocomplete__icon { opacity: var(--flare-state-disabled-opacity); }
 
 
 .flare-autocomplete__spinner {

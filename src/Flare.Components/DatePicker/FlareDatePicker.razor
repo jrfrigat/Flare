@@ -13,7 +13,7 @@
     {
         <label class="@Css.Classes.Input.Label">@Label</label>
     }
-    <div class="@Css.Classes.Input.Field @Css.Classes.DatePicker.Field @(HasError ? Css.Classes.DatePicker.Error : "")" @ref="_fieldEl">
+    <div class="@Css.Classes.Input.Field @Css.Classes.DatePicker.Field" @ref="_fieldEl">
         <input class="@Css.Classes.Input.Control @Css.Classes.DatePicker.Control"
                style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                type="text"
@@ -253,8 +253,8 @@
     private string? _displayedError => DisplayedError(ErrorText);
 
     private string _stateClass =>
-        HasError || !string.IsNullOrEmpty(_displayedError) ? Css.Classes.DatePicker.Error :
-        Disabled ? Css.Classes.DatePicker.Disabled : string.Empty;
+        HasError || !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
 
     protected override void OnInitialized()
     {

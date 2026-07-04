@@ -5,10 +5,8 @@ public static class DatePicker
 {
     /// <summary>The <c>flare-datepicker</c> CSS class.</summary>
     public const string Root = "flare-datepicker";
-    /// <summary>The <c>flare-datepicker--disabled</c> CSS class.</summary>
-    public const string Disabled = "flare-datepicker--disabled";
-    /// <summary>The <c>flare-datepicker--error</c> CSS class.</summary>
-    public const string Error = "flare-datepicker--error";
+    // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled
+    // (flare-input--error / --disabled); the field/control carry the shared flare-input__* classes.
     /// <summary>The <c>flare-datepicker__field</c> CSS class.</summary>
     public const string Field = "flare-datepicker__field";
     /// <summary>The <c>flare-datepicker__control</c> CSS class.</summary>
@@ -43,12 +41,8 @@ public static class TimePicker
 {
     /// <summary>The <c>flare-timepicker</c> CSS class.</summary>
     public const string Root = "flare-timepicker";
-    /// <summary>The <c>flare-timepicker--disabled</c> CSS class.</summary>
-    public const string Disabled = "flare-timepicker--disabled";
-    /// <summary>The <c>flare-timepicker--error</c> CSS class.</summary>
-    public const string Error = "flare-timepicker--error";
-    /// <summary>The <c>flare-timepicker__field</c> CSS class.</summary>
-    public const string Field = "flare-timepicker__field";
+    // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled.
+    // The field well is now the shared flare-input__field (no timepicker-specific delta remains).
     /// <summary>The <c>flare-timepicker__control</c> CSS class.</summary>
     public const string Control = "flare-timepicker__control";
     // The clock toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
@@ -148,8 +142,5 @@ public static class DateTimePicker
     public const string TimeInput = "flare-datetimepicker__time-input";
     /// <summary>The <c>flare-datetimepicker__footer</c> CSS class.</summary>
     public const string Footer = "flare-datetimepicker__footer";
-    /// <summary>The <c>flare-datetimepicker--disabled</c> CSS class.</summary>
-    public const string Disabled = "flare-datetimepicker--disabled";
-    /// <summary>The <c>flare-datetimepicker--error</c> CSS class.</summary>
-    public const string Error = "flare-datetimepicker--error";
+    // Error + disabled state use the shared Css.Classes.Input.Error / Input.Disabled.
 }

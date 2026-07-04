@@ -17,8 +17,9 @@
 
 /* The calendar toggle button uses the shared flare-input__toggle reset (input.css). */
 
-.flare-datepicker--error .flare-datepicker__field { border-bottom-color: var(--flare-color-error); }
-.flare-datepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+/* Error + disabled state come from the shared flare-input--error / flare-input--disabled
+   (input.css); the root emits those modifiers and the field/control carry flare-input__field
+   / flare-input__control, so the MD3 state treatment applies uniformly. */
 
 /* Calendar popup panel */
 .flare-datepicker__field {

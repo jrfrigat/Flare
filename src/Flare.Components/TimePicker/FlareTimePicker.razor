@@ -14,7 +14,7 @@
     {
         <label class="@Css.Classes.Input.Label">@Label</label>
     }
-    <div class="@Css.Classes.Input.Field @Css.Classes.TimePicker.Field" @ref="_fieldEl">
+    <div class="@Css.Classes.Input.Field" @ref="_fieldEl">
         <input class="@Css.Classes.Input.Control @Css.Classes.TimePicker.Control"
                style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                type="text"
@@ -167,8 +167,8 @@
     private string _headline => Headline ?? FlareStrings.TimePicker_Headline;
 
     private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.TimePicker.Error :
-        Disabled ? Css.Classes.TimePicker.Disabled : string.Empty;
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
 
     private string? _variantClass => VariantClass(Variant);
     private string _sizeClass => Size switch

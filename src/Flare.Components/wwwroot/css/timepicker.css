@@ -185,8 +185,7 @@
   color-scheme: light dark;
 }
 
-.flare-timepicker--error .flare-timepicker__field { border-bottom-color: var(--flare-color-error); }
-.flare-timepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+/* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css). */
 
 /* Hide browser-native clock picker indicator */
 .flare-timepicker__control::-webkit-calendar-picker-indicator {

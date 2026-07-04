@@ -6,12 +6,10 @@
    ========================================================================== */
 @scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
 
+    /* Every field well now carries the shared flare-input__field; only Select's fused
+       trigger and the TagField root need naming separately. */
     .flare-input__field,
     .flare-select__control,
-    .flare-autocomplete__field,
-    .flare-datepicker__field,
-    .flare-datetimepicker__field,
-    .flare-timepicker__field,
     .flare-tag-input {
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06);
         transition: box-shadow var(--flare-motion-duration-short2, 90ms) ease,
@@ -21,10 +19,6 @@
     /* Light-blue Aero glow + blue border on focus. */
     .flare-input__field:focus-within,
     .flare-select__control:focus,
-    .flare-autocomplete__field:focus-within,
-    .flare-datepicker__field:focus-within,
-    .flare-datetimepicker__field:focus-within,
-    .flare-timepicker__field:focus-within,
     .flare-tag-input:focus-within {
         border-color: var(--flare-color-primary);
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 2px var(--flare-aero-glow);

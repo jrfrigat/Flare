@@ -136,8 +136,8 @@
     private ElementReference _inputRef;
 
     private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Autocomplete.Error :
-        Disabled ? Css.Classes.Autocomplete.Disabled : string.Empty;
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
 
     private string _searchText = string.Empty;
     private List<TValue> _suggestions = new();
