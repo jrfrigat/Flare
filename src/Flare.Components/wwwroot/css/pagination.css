@@ -32,7 +32,7 @@
 }
 
 .flare-pagination__btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-state-hover-opacity, 8%), transparent);
+  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
   border-color: var(--flare-color-outline);
 }
 

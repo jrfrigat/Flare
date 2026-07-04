@@ -85,7 +85,7 @@
 }
 
 .flare-calendar__cell:hover:not(.flare-calendar__cell--other) {
-    background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-state-hover-opacity, 8%), transparent);
+    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-calendar__cell--other {
