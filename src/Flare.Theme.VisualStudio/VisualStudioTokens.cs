@@ -243,7 +243,7 @@ internal class VisualStudioTokens
     internal static readonly SpacingTokens Spacing = FluentUI2Tokens.Design.Spacing;
 
     // Card - flat VS panel with a 1px border, no shadow (all variants share the flat look).
-    internal static readonly CardTokens Card = new()
+    internal static readonly CardTokens Card = FluentUI2Tokens.Design.Card with
     {
         ElevatedBg = "var(--flare-color-surface)",
         FilledBg = "var(--flare-color-surface)",
@@ -256,6 +256,9 @@ internal class VisualStudioTokens
         PaddingRight = "8px",
         PaddingBottom = "8px",
         PaddingLeft = "8px",
+        // Keep the neutral baseline for the two members the Fluent card overrides.
+        ElevationHover = "var(--flare-elevation-2)",
+        TonalColor = "var(--flare-color-on-secondary-container)",
     };
 
     // Input - flat field with a 1px border; blue focus finished in scoped CSS.

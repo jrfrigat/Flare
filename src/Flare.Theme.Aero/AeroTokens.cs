@@ -289,7 +289,7 @@ internal class AeroTokens
         Tabs = Tabs,
         Slider = Slider,
         // Aero cards: flat glass panels with a 1px border, small radius, no drop shadow.
-        Card = new()
+        Card = MaterialDesignTokens.Design.Card with
         {
             ElevatedBg = "var(--flare-color-surface)",
             Elevation = "none",

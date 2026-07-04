@@ -78,7 +78,7 @@ public sealed record DesignTokens
     public DataGridTokens DataGrid { get; init; } = new();
 
     /// <summary>Card tokens.</summary>
-    public CardTokens Card { get; init; } = new();
+    public required CardTokens Card { get; init; }
 
     /// <summary>Avatar tokens.</summary>
     public required AvatarTokens Avatar { get; init; }

@@ -335,7 +335,7 @@ internal class LiquidGlassTokens
         Switch = Switch,
         Slider = Slider,
         // Card geometry is typed; the translucent variant fills stay mode-specific in Extended.
-        Card = new() { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px" },
+        Card = MaterialDesignTokens.Design.Card with { Radius = "var(--flare-shape-large)", PaddingTop = "16px", PaddingRight = "16px", PaddingBottom = "16px", PaddingLeft = "16px", ElevationHover = "var(--flare-elevation-2)", OutlinedBorder = "1px solid var(--flare-color-outline-variant)" },
         Input = Input,
         Progress = Progress,
         Nav = Nav,
