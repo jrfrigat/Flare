@@ -38,8 +38,8 @@
     </div>
     @if (_open)
     {
-        <div class="@Css.Classes.DateTimePicker.Scrim" @onclick="() => _open = false" aria-hidden="true"></div>
-        <div class="@Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" style="@_panelStyle">
+        <div class="@Css.Classes.Picker.Scrim" @onclick="() => _open = false" aria-hidden="true"></div>
+        <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" style="@_panelStyle">
             @if (_panels)
             {
                 <div class="@Css.Classes.DateTimePicker.Panes">

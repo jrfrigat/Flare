@@ -39,8 +39,8 @@
 
     @if (_open)
     {
-        <div class="@Css.Classes.TimePicker.Scrim" @onclick="Close" aria-hidden="true"></div>
-        <div class="@($"{Css.Classes.TimePicker.Panel} {Css.Classes.TimePicker.Panel}--{PopupVariant.ToString().ToLowerInvariant()}")"
+        <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+        <div class="@($"{Css.Classes.Picker.Panel} {Css.Classes.TimePicker.Panel} {Css.Classes.TimePicker.Panel}--{PopupVariant.ToString().ToLowerInvariant()}")"
              @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@_headline">
             <div class="@Css.Classes.TimePicker.PanelHeadline">@_headline</div>
 

@@ -41,8 +41,8 @@
 
     @if (_open)
     {
-        <div class="@Css.Classes.DatePicker.Scrim" @onclick="Close" aria-hidden="true"></div>
-        <div class="@Css.Classes.DatePicker.Panel" @ref="_panelEl">
+        <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+        <div class="@Css.Classes.Picker.Panel @Css.Classes.DatePicker.Panel" @ref="_panelEl">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous">

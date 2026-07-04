@@ -7,18 +7,14 @@
 
 /* The clock toggle button uses the shared flare-input__toggle reset (input.css). */
 
-/* Picker popup (MD3: 28dp container, elevation 6, surface-container-high). */
-.flare-timepicker__scrim { position: fixed; inset: 0; z-index: 20; }
+/* Scrim + panel base (fixed/elevated surface) come from the shared flare-picker__scrim /
+   flare-picker__panel (picker.css). The MD3 time-picker keeps its larger container:
+   a wider radius + more padding (28dp). */
 .flare-timepicker__panel {
-  /* Fixed + JS-positioned (positionAnchoredPanel) so the popup escapes a Card's overflow:hidden. */
-  position: fixed;
-  z-index: 21;
   min-width: 17rem;
   padding: var(--flare-spacing-8);
-  background: var(--flare-color-surface-container-high, var(--flare-color-surface-container-highest));
   color: var(--flare-color-on-surface);
   border-radius: var(--flare-timepicker-panel-radius, var(--flare-shape-extra-large));
-  box-shadow: var(--flare-elevation-3);
 }
 .flare-timepicker__panel-headline {
   font-size: var(--flare-typescale-label-medium-size);

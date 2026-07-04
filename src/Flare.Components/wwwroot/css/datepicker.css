@@ -25,22 +25,9 @@
   cursor: pointer;
 }
 
-.flare-datepicker__scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-}
-
-.flare-datepicker__panel {
-  /* Fixed + JS-positioned (positionAnchoredPanel) so the calendar escapes a Card's overflow:hidden. */
-  position: fixed;
-  z-index: var(--flare-z-dropdown, 1000);
-  background: var(--flare-color-surface-container-high);
-  border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
-  box-shadow: var(--flare-elevation-3);
-  padding: var(--flare-spacing-6);
-  min-width: 18rem;
-}
+/* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);
+   the calendar panel is JS-positioned (positionAnchoredPanel) to escape a Card's overflow:hidden. */
+.flare-datepicker__panel { min-width: 18rem; }
 
 .flare-datepicker__header {
   display: flex;

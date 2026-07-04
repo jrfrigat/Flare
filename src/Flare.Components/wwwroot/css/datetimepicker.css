@@ -28,22 +28,9 @@
 .flare-datetimepicker--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
 
 /* Panel */
-.flare-datetimepicker__scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-}
-
-.flare-datetimepicker__panel {
-  position: fixed;
-  z-index: var(--flare-z-dropdown, 1000);
-  background: var(--flare-color-surface-container-high);
-  border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
-  box-shadow: var(--flare-elevation-3);
-  padding: var(--flare-spacing-6);
-  min-width: 280px;
-  /* top, left, min-width - set via inline style from JS bounds */
-}
+/* Scrim + panel surface come from the shared flare-picker__scrim / flare-picker__panel (picker.css);
+   top/left/min-width are set via inline style from JS bounds. */
+.flare-datetimepicker__panel { min-width: 280px; }
 
 /* Tabs */
 .flare-datetimepicker__tabs {

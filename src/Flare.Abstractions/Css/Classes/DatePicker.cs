@@ -16,8 +16,6 @@ public static class DatePicker
     // The calendar toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
     /// <summary>The <c>flare-datepicker__panel</c> CSS class.</summary>
     public const string Panel = "flare-datepicker__panel";
-    /// <summary>The <c>flare-datepicker__scrim</c> CSS class.</summary>
-    public const string Scrim = "flare-datepicker__scrim";
     /// <summary>The <c>flare-datepicker__header</c> CSS class.</summary>
     public const string Header = "flare-datepicker__header";
     /// <summary>The <c>flare-datepicker__footer</c> CSS class.</summary>
@@ -68,8 +66,6 @@ public static class TimePicker
     /// <summary>The <c>flare-timepicker__control</c> CSS class.</summary>
     public const string Control = "flare-timepicker__control";
     // The clock toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle).
-    /// <summary>The <c>flare-timepicker__scrim</c> CSS class.</summary>
-    public const string Scrim = "flare-timepicker__scrim";
     /// <summary>The <c>flare-timepicker__panel</c> CSS class.</summary>
     public const string Panel = "flare-timepicker__panel";
     /// <summary>The <c>flare-timepicker__panel-headline</c> CSS class.</summary>
@@ -142,8 +138,6 @@ public static class DateTimePicker
     public const string Control = "flare-datetimepicker__control";
     // The picker toggle button uses the shared Css.Classes.Input.Toggle (flare-input__toggle);
     // label/helper/error text use the shared Css.Classes.Input.Label/Helper/HelperError.
-    /// <summary>The <c>flare-datetimepicker__scrim</c> CSS class.</summary>
-    public const string Scrim = "flare-datetimepicker__scrim";
     /// <summary>The <c>flare-datetimepicker__panel</c> CSS class.</summary>
     public const string Panel = "flare-datetimepicker__panel";
     /// <summary>The <c>flare-datetimepicker__panel--split</c> CSS class.</summary>

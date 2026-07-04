@@ -1,0 +1,18 @@
+/* Shared date/time picker popup: a fixed, elevated panel over a full-screen click-catching scrim.
+   Used by DatePicker / TimePicker / DateTimePicker; each component adds only its size/shape deltas
+   (min-width, and TimePicker's larger MD3 radius/padding). Both sit at the shared dropdown layer;
+   the scrim is DOM-ordered before the panel so the panel still paints on top at equal z-index. */
+.flare-picker__scrim {
+    position: fixed;
+    inset: 0;
+    z-index: var(--flare-z-dropdown, 1000);
+}
+
+.flare-picker__panel {
+    position: fixed;
+    z-index: var(--flare-z-dropdown, 1000);
+    background: var(--flare-color-surface-container-high);
+    border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
+    box-shadow: var(--flare-elevation-3);
+    padding: var(--flare-spacing-6);
+}
