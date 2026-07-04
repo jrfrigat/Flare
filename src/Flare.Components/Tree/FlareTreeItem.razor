@@ -93,6 +93,11 @@
     private bool _expandedInitialized;
     private bool _isDragOver;
     private bool _dragging;
+    // Coalesces the continuous dragover stream: while one drop-zone measurement round-trip is in flight
+    // we skip further events instead of queuing an interop call per event. Each executed call still
+    // measures fresh (scroll-safe - no cached rect), and dragover fires again immediately so the zone
+    // stays current up to the drop.
+    private bool _dragOverBusy;
     private TreeDropPosition _dropPosition = TreeDropPosition.Inside;
     private string? _dragClass;
     private ElementReference _rowElement;
@@ -184,22 +189,33 @@
         if (!Draggable) return;
         _isDragOver = true;
 
-        // DragEventArgs gives the cursor's clientY but not the row's bounds, so ask JS which
-        // third of the row the cursor is over: top -> Before, bottom -> After, middle -> Inside.
-        var zone = await TreeJs.GetDropZoneAsync(_rowElement, e.ClientY);
-        var newPosition = zone switch
+        // Skip while a previous measurement is still resolving (dragover fires many times a second);
+        // the next event re-measures, so the indicator stays current without a per-event interop backlog.
+        if (_dragOverBusy) return;
+        _dragOverBusy = true;
+        try
         {
-            "before" => TreeDropPosition.Before,
-            "after" => TreeDropPosition.After,
-            _ => TreeDropPosition.Inside,
-        };
+            // DragEventArgs gives the cursor's clientY but not the row's bounds, so ask JS which
+            // third of the row the cursor is over: top -> Before, bottom -> After, middle -> Inside.
+            var zone = await TreeJs.GetDropZoneAsync(_rowElement, e.ClientY);
+            var newPosition = zone switch
+            {
+                "before" => TreeDropPosition.Before,
+                "after" => TreeDropPosition.After,
+                _ => TreeDropPosition.Inside,
+            };
 
-        // Only re-render when the indicator actually changes (dragover fires continuously).
-        if (newPosition != _dropPosition || _dragClass is null)
+            // Only re-render when the indicator actually changes (dragover fires continuously).
+            if (newPosition != _dropPosition || _dragClass is null)
+            {
+                _dropPosition = newPosition;
+                UpdateDragClass();
+                StateHasChanged();
+            }
+        }
+        finally
         {
-            _dropPosition = newPosition;
-            UpdateDragClass();
-            StateHasChanged();
+            _dragOverBusy = false;
         }
     }
 
