@@ -122,29 +122,15 @@ public static class Text
     public const string SmCenter = "flare-text-sm-center";
 }
 
-/// <summary>CSS classes for textarea.</summary>
+/// <summary>
+/// CSS classes for the textarea. The chrome (root, field, label, supporting text, helper/error and
+/// counter) is shared with the input family via <see cref="Input"/>; only the multi-line control
+/// keeps its own classes.
+/// </summary>
 public static class Textarea
 {
-    /// <summary>The <c>flare-textarea</c> CSS class.</summary>
-    public const string Root = "flare-textarea";
-    /// <summary>The <c>flare-textarea--disabled</c> CSS class.</summary>
-    public const string Disabled = "flare-textarea--disabled";
-    /// <summary>The <c>flare-textarea--error</c> CSS class.</summary>
-    public const string Error = "flare-textarea--error";
-    /// <summary>The <c>flare-textarea__control</c> CSS class.</summary>
+    /// <summary>The <c>flare-textarea__control</c> CSS class: the multi-line control (resize/auto-grow).</summary>
     public const string Control = "flare-textarea__control";
-    /// <summary>The <c>flare-textarea__field</c> CSS class.</summary>
-    public const string Field = "flare-textarea__field";
-    /// <summary>The <c>flare-textarea__label</c> CSS class.</summary>
-    public const string Label = "flare-textarea__label";
-    /// <summary>The <c>flare-textarea__helper</c> CSS class.</summary>
-    public const string Helper = "flare-textarea__helper";
-    /// <summary>The <c>flare-textarea__support</c> CSS class.</summary>
-    public const string Support = "flare-textarea__support";
-    /// <summary>The <c>flare-textarea__counter</c> CSS class.</summary>
-    public const string Counter = "flare-textarea__counter";
-    /// <summary>The <c>flare-textarea--autogrow</c> CSS class.</summary>
+    /// <summary>The <c>flare-textarea--autogrow</c> CSS class: auto-resizes the control to its content.</summary>
     public const string Autogrow = "flare-textarea--autogrow";
-    /// <summary>The <c>flare-textarea__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-textarea__helper--error";
 }

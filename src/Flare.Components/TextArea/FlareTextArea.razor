@@ -1,20 +1,21 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareFieldBase
+@implements IFlareField<string>
 @using System.Linq.Expressions
-@using Microsoft.AspNetCore.Components.Forms
 
-<div class="@BuildCssClass(_stateClass, AutoGrow ? Css.Classes.Textarea.Autogrow : null, _variantClass)" style="@Style">
+<div class="@BuildCssClass(_stateClass, AutoGrow ? Css.Classes.Textarea.Autogrow : null, VariantClass(Variant))" style="@Style">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.Textarea.Label" for="@_textareaId">@Label</label>
+        <label class="@Css.Classes.Input.Label" for="@_textareaId">@Label</label>
     }
-    <div class="@Css.Classes.Textarea.Field">
-        <textarea class="@Css.Classes.Textarea.Control"
+    <div class="@Css.Classes.Input.Field">
+        <textarea class="@Css.Classes.Input.Control @Css.Classes.Textarea.Control"
                   id="@_textareaId"
                   style="@_controlStyle"
                   placeholder="@Placeholder"
                   disabled="@Disabled"
                   readonly="@ReadOnly"
+                  required="@Required"
                   rows="@Rows"
                   maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
                   aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
@@ -25,18 +26,18 @@
     </div>
     @if (!string.IsNullOrEmpty(_displayedError) || !string.IsNullOrEmpty(HelperText) || _showCounter)
     {
-        <div class="@Css.Classes.Textarea.Support">
+        <div class="@Css.Classes.Input.Support">
             @if (!string.IsNullOrEmpty(_displayedError))
             {
-                <span id="@_errorId" class="@Css.Classes.Textarea.Helper @Css.Classes.Textarea.HelperError" role="alert">@_displayedError</span>
+                <span id="@_errorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@_displayedError</span>
             }
             else if (!string.IsNullOrEmpty(HelperText))
             {
-                <span id="@_helperId" class="@Css.Classes.Textarea.Helper">@HelperText</span>
+                <span id="@_helperId" class="@Css.Classes.Input.Helper">@HelperText</span>
             }
             @if (_showCounter)
             {
-                <span class="@Css.Classes.Textarea.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
+                <span class="@Css.Classes.Input.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
             }
         </div>
     }
@@ -47,18 +48,8 @@
     [Parameter] public string? Value { get; set; }
     /// <summary>Callback invoked when the text changes.</summary>
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
-    /// <summary>Label text displayed above the textarea.</summary>
-    [Parameter] public string? Label { get; set; }
-    /// <summary>Placeholder text shown when the textarea is empty.</summary>
-    [Parameter] public string? Placeholder { get; set; }
-    /// <summary>Helper text shown below the textarea.</summary>
-    [Parameter] public string? HelperText { get; set; }
-    /// <summary>Overrides validation with a custom error message.</summary>
-    [Parameter] public string? ErrorText { get; set; }
-    /// <summary>Disables the textarea when true.</summary>
-    [Parameter] public bool Disabled { get; set; }
-    /// <summary>Makes the textarea read-only when true.</summary>
-    [Parameter] public bool ReadOnly { get; set; }
+    // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
+    // FlareFieldBase (IFlareField).
     /// <summary>Optional typography scale for the textarea text. Overrides the default body font.
     /// Null keeps the component default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
@@ -81,9 +72,7 @@
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<string?>>? For { get; set; }
 
-    [CascadingParameter] private EditContext? EditContext { get; set; }
-
-    protected override string ComponentCssClass => Css.Classes.Textarea.Root;
+    protected override string ComponentCssClass => Css.Classes.Input.Root;
 
     private readonly string _textareaId = $"flare-textarea-{Guid.NewGuid():N}";
     private string _helperId => $"{_textareaId}-help";
@@ -92,50 +81,15 @@
         !string.IsNullOrEmpty(_displayedError) ? _errorId :
         !string.IsNullOrEmpty(HelperText) ? _helperId : null;
 
-    private FieldIdentifier _fieldId;
+    // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
+    // FlareFieldBase; here we only feed it the For accessor and surface the resolved error.
+    protected override void OnParametersSet() => UpdateFieldIdentifier(For);
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged += OnValidationChanged;
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (EditContext is not null && For is not null)
-            _fieldId = FieldIdentifier.Create(For);
-    }
-
-    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
-        => InvokeAsync(StateHasChanged);
-
-    public override async ValueTask DisposeAsync()
-    {
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged -= OnValidationChanged;
-        _debounceCts?.Cancel();
-        _debounceCts?.Dispose();
-        await base.DisposeAsync();
-    }
-
-    private string? _validationError =>
-        EditContext is not null && For is not null
-            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
-            : null;
-
-    private string? _displayedError => ErrorText ?? _validationError;
+    private string? _displayedError => DisplayedError(ErrorText);
 
     private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Textarea.Error :
-        Disabled ? Css.Classes.Textarea.Disabled : string.Empty;
-
-    private string _variantClass => Variant switch
-    {
-        InputVariant.Filled => Css.Classes.Input.VariantFilled,
-        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
-        _ => string.Empty,
-    };
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
 
     private bool _showCounter => ShowCharacterCount || MaxLength > 0;
 
@@ -176,7 +130,14 @@
     private async Task EmitValue(string? val)
     {
         await ValueChanged.InvokeAsync(val);
-        if (EditContext is not null && For is not null)
-            EditContext.NotifyFieldChanged(_fieldId);
+        NotifyFieldChanged();
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        _debounceCts?.Cancel();
+        _debounceCts?.Dispose();
+        await base.DisposeAsync();
     }
 }

@@ -157,7 +157,9 @@ public class C_FlareTextAreaTests : FlareTestContext
     {
         var cut = Render<FlareTextArea>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-textarea"));
+        // TextArea now renders the shared flare-input chrome; only the control keeps a textarea class.
+        Assert.NotEmpty(cut.FindAll(".flare-input"));
+        Assert.NotEmpty(cut.FindAll(".flare-textarea__control"));
     }
 
     [Fact]
@@ -174,7 +176,7 @@ public class C_FlareTextAreaTests : FlareTestContext
         var cut = Render<FlareTextArea>(p => p
             .Add(x => x.Label, "Comments"));
 
-        Assert.Contains("Comments", cut.Find(".flare-textarea__label").TextContent);
+        Assert.Contains("Comments", cut.Find(".flare-input__label").TextContent);
     }
 
     [Fact]
@@ -201,7 +203,7 @@ public class C_FlareTextAreaTests : FlareTestContext
         var cut = Render<FlareTextArea>(p => p
             .Add(x => x.HelperText, "Max 500 chars"));
 
-        Assert.Contains("Max 500 chars", cut.Find(".flare-textarea__helper").TextContent);
+        Assert.Contains("Max 500 chars", cut.Find(".flare-input__helper").TextContent);
     }
 
     [Fact]
@@ -210,7 +212,7 @@ public class C_FlareTextAreaTests : FlareTestContext
         var cut = Render<FlareTextArea>(p => p
             .Add(x => x.ErrorText, "Field is required"));
 
-        Assert.Contains("Field is required", cut.Find(".flare-textarea__helper--error").TextContent);
+        Assert.Contains("Field is required", cut.Find(".flare-input__helper--error").TextContent);
     }
 
     [Fact]
