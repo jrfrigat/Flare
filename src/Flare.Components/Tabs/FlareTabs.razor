@@ -155,7 +155,10 @@
           + $"--flare-tabs-label-weight:var(--flare-typescale-{FlareTypography.Slug(t)}-weight)"
         : null;
 
-    private string _rootStyle =>
+    // Cached in OnParametersSet - depends only on parameters (LabelRotation, Typo, Style), so it need
+    // not be re-joined on every render (runtime state like overflow/active-tab does not affect it).
+    private string _rootStyle = "";
+    private string BuildRootStyle() =>
         string.Join(";", new[] { $"--flare-tab-label-rotation:{_rotationDeg}deg", _typoVars, Style }.Where(s => !string.IsNullOrEmpty(s)));
 
     // Overflow scrolling (horizontal only): JS reports overflow + edge state.
@@ -212,6 +215,7 @@
     // ActiveIndex on ANY unrelated parent re-render after the user clicked a different tab.
     protected override void OnParametersSet()
     {
+        _rootStyle = BuildRootStyle();
         if (ActiveIndex == _lastBoundIndex) return;
         _lastBoundIndex = ActiveIndex;
         if (ActiveIndex >= 0 && ActiveIndex < _tabs.Count)
