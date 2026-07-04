@@ -1,5 +1,6 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareFieldBase
+@implements IFlareField<string>
 @using System.Linq.Expressions
 @using System.Text.RegularExpressions
 @using Microsoft.AspNetCore.Components.Forms
@@ -17,6 +18,7 @@
                placeholder="@(_placeholder ?? Placeholder)"
                disabled="@Disabled"
                readonly="@ReadOnly"
+               required="@Required"
                maxlength="@Pattern?.Length"
                @oninput="HandleInput"
                @attributes="AdditionalAttributes" />
@@ -46,18 +48,8 @@
     /// to disable auto-formatting and let the user type the value freely.
     /// </summary>
     [Parameter] public bool AutoApply { get; set; } = true;
-    /// <summary>Label text displayed above the input.</summary>
-    [Parameter] public string? Label { get; set; }
-    /// <summary>Placeholder text shown when the input is empty.</summary>
-    [Parameter] public string? Placeholder { get; set; }
-    /// <summary>Helper text shown below the input.</summary>
-    [Parameter] public string? HelperText { get; set; }
-    /// <summary>Overrides validation with a custom error message.</summary>
-    [Parameter] public string? ErrorText { get; set; }
-    /// <summary>Disables the input when true.</summary>
-    [Parameter] public bool Disabled { get; set; }
-    /// <summary>Makes the input read-only when true.</summary>
-    [Parameter] public bool ReadOnly { get; set; }
+    // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
+    // FlareFieldBase (IFlareField).
     /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
@@ -83,11 +75,8 @@
         _ => string.Empty,
     };
 
-    [CascadingParameter] private EditContext? EditContext { get; set; }
-
     protected override string ComponentCssClass => Css.Classes.Input.Root;
 
-    private FieldIdentifier _fieldId;
     private string _display = string.Empty;
 
     // Effective mask: explicit Mask wins, else the selected preset.
@@ -109,34 +98,15 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged += OnValidationChanged;
         if (!string.IsNullOrEmpty(Value))
             _display = AutoApply ? ApplyMask(Value) : Value;
     }
 
-    protected override void OnParametersSet()
-    {
-        if (EditContext is not null && For is not null)
-            _fieldId = FieldIdentifier.Create(For);
-    }
+    // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
+    // FlareFieldBase; here we only feed it the For accessor and surface the resolved error.
+    protected override void OnParametersSet() => UpdateFieldIdentifier(For);
 
-    private void OnValidationChanged(object? sender, ValidationStateChangedEventArgs e)
-        => InvokeAsync(StateHasChanged);
-
-    public override async ValueTask DisposeAsync()
-    {
-        if (EditContext is not null)
-            EditContext.OnValidationStateChanged -= OnValidationChanged;
-        await base.DisposeAsync();
-    }
-
-    private string? _validationError =>
-        EditContext is not null && For is not null
-            ? EditContext.GetValidationMessages(_fieldId).FirstOrDefault()
-            : null;
-
-    private string? _displayedError => ErrorText ?? _validationError;
+    private string? _displayedError => DisplayedError(ErrorText);
 
     private string _stateClass =>
         !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
@@ -169,8 +139,7 @@
             _display = raw;
             await ValueChanged.InvokeAsync(raw.Length > 0 ? raw : null);
         }
-        if (EditContext is not null && For is not null)
-            EditContext.NotifyFieldChanged(_fieldId);
+        NotifyFieldChanged();
     }
 
     // Apply mask: '#'=digit, 'A'=letter, '*'=alphanumeric, others=literals
