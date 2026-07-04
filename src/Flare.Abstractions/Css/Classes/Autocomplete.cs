@@ -15,8 +15,7 @@ public static class Autocomplete
     public const string FieldOpen = "flare-autocomplete__field--open";
     /// <summary>The <c>flare-autocomplete__icon</c> CSS class.</summary>
     public const string Icon = "flare-autocomplete__icon";
-    /// <summary>The <c>flare-autocomplete__dropdown</c> CSS class (anchors the shared <see cref="Listbox.Root"/> popup).</summary>
-    public const string Dropdown = "flare-autocomplete__dropdown";
+    // The popup uses the shared Listbox.Dropdown (flare-listbox__dropdown) for anchoring.
     /// <summary>The <c>flare-autocomplete__empty</c> CSS class.</summary>
     public const string Empty = "flare-autocomplete__empty";
     /// <summary>The <c>flare-autocomplete__wrapper</c> CSS class.</summary>

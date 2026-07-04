@@ -83,15 +83,8 @@
     position: relative;
 }
 
-/* Positioning only; the popup surface + option rows come from the shared .flare-listbox
-   (FlareListbox), so the suggestion dropdown matches Autocomplete/Select/MultiSelect. */
-.flare-tag-input__dropdown {
-    position: absolute;
-    top: calc(100% + 0.25rem);
-    left: 0;
-    right: 0;
-    z-index: 20;
-}
+/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css),
+   so the suggestion dropdown matches Autocomplete/Select/MultiSelect. */
 
 .flare-tag-input__empty {
     padding: var(--flare-spacing-4) var(--flare-spacing-6);

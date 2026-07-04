@@ -1,9 +1,11 @@
 /* ==========================================================================
-   Shared dropdown listbox - used by FlareSelect and FlareMultiSelect.
+   Shared dropdown listbox - used by the field-family popups (FlareSelect,
+   FlareMultiSelect, FlareAutocomplete, FlareTagField).
 
-   This is the visual surface of the popup (rounded card, elevation, option
-   rows, group headers). Anchoring/positioning stays in each component's own
-   CSS (it carries the component __dropdown class alongside .flare-listbox).
+   .flare-listbox is the visual surface of the popup (rounded card, elevation,
+   option rows, group headers). .flare-listbox__dropdown adds the common
+   absolute anchoring under the field (Select instead positions its popup with
+   JS to escape a Card's overflow:hidden, so it keeps its own class).
    Token driven so every theme + light/dark read correctly.
    ========================================================================== */
 .flare-listbox {
@@ -19,6 +21,16 @@
     overscroll-behavior: contain;
     padding: var(--flare-spacing-2);
     animation: flare-listbox-in var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+/* Shared anchoring: absolutely position the popup just under the field. Carried alongside
+   .flare-listbox by Autocomplete/MultiSelect/TagField (via DropdownClass). */
+.flare-listbox__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--flare-spacing-2);
 }
 
 @keyframes flare-listbox-in {

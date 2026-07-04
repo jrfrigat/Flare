@@ -42,9 +42,11 @@
 
 /* Dropdown anchors to the control; the .flare-listbox class supplies the surface design.
    Positioned as fixed via JS (positionAnchoredPanel) so it escapes a Card's overflow:hidden. */
+/* JS-anchored (PositionAnchoredPanel) so the popup escapes a Card's overflow:hidden; the surface
+   and z-index come from .flare-listbox. Select uses fixed positioning instead of the shared
+   .flare-listbox__dropdown absolute anchoring. */
 .flare-select__dropdown {
     position: fixed;
-    z-index: 1000;
 }
 
 /* Size grid (Xs..Xl) lives in input.css as the single source for the whole input family. */

@@ -54,15 +54,7 @@
     border-radius: var(--flare-shape-full);
 }
 .flare-multiselect__chip-remove:hover { background: color-mix(in srgb, var(--flare-color-on-secondary-container) 12%, transparent); }
-/* Surface + option visuals come from the shared .flare-listbox (listbox.css); only the
-   anchoring lives here. */
-.flare-multiselect__dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    margin-top: var(--flare-spacing-2);
-}
+/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css). */
 .flare-multiselect__arrow { color: var(--flare-color-on-surface-variant); }
 
 /* In-dropdown search box. */

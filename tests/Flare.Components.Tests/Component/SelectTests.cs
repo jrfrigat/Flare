@@ -169,7 +169,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
         var cut = Render<FlareAutocomplete<string>>(p => p
             .Add(x => x.Items, _cities));
 
-        Assert.Empty(cut.FindAll(".flare-autocomplete__dropdown"));
+        Assert.Empty(cut.FindAll(".flare-listbox__dropdown"));
     }
 
     [Fact]
@@ -219,7 +219,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
 
         cut.Find(".flare-multiselect__control").Click();
 
-        Assert.NotEmpty(cut.FindAll(".flare-multiselect__dropdown"));
+        Assert.NotEmpty(cut.FindAll(".flare-listbox__dropdown"));
     }
 
     [Fact]
@@ -229,11 +229,11 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits));
 
         cut.Find(".flare-multiselect__control").Click();
-        Assert.NotEmpty(cut.FindAll(".flare-multiselect__dropdown"));
+        Assert.NotEmpty(cut.FindAll(".flare-listbox__dropdown"));
 
         cut.Find(".flare-multiselect__control").KeyDown(new KeyboardEventArgs { Key = "Escape" });
 
-        Assert.Empty(cut.FindAll(".flare-multiselect__dropdown"));
+        Assert.Empty(cut.FindAll(".flare-listbox__dropdown"));
     }
 
     [Fact]
@@ -296,7 +296,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
 
         cut.Find(".flare-multiselect__control").Click();
 
-        Assert.Empty(cut.FindAll(".flare-multiselect__dropdown"));
+        Assert.Empty(cut.FindAll(".flare-listbox__dropdown"));
     }
 
     [Fact]

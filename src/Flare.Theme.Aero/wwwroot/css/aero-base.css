@@ -15,10 +15,10 @@
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
     }
 
-    /* Menus, popovers and dialogs get the soft Aero drop shadow. */
+    /* Menus, popovers, dialogs and the field-family listbox popups get the soft Aero drop shadow. */
     .flare-menu__panel,
     .flare-popover__paper,
-    .flare-select__dropdown {
+    .flare-listbox {
         box-shadow: var(--flare-elevation-3);
     }
 }

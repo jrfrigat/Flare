@@ -52,12 +52,7 @@
 
 /* Anchors the shared .flare-listbox popup under the field; the listbox supplies the
    surface (background, radius, elevation, scrolling). Only positioning lives here. */
-.flare-autocomplete__dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-}
+/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css). */
 
 .flare-autocomplete__empty {
   padding: var(--flare-spacing-6) var(--flare-spacing-8);

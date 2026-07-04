@@ -634,8 +634,7 @@ public static class Multiselect
     public const string Chips = "flare-multiselect__chips";
     /// <summary>The <c>flare-multiselect__control</c> CSS class.</summary>
     public const string Control = "flare-multiselect__control";
-    /// <summary>The <c>flare-multiselect__dropdown</c> CSS class.</summary>
-    public const string Dropdown = "flare-multiselect__dropdown";
+    // The popup uses the shared Listbox.Dropdown (flare-listbox__dropdown) for anchoring.
     /// <summary>The <c>flare-multiselect__option</c> CSS class (option row; scopes the checkbox, visuals from the shared <see cref="Listbox.Option"/>).</summary>
     public const string Option = "flare-multiselect__option";
     /// <summary>The <c>flare-multiselect__option--select-all</c> CSS class.</summary>

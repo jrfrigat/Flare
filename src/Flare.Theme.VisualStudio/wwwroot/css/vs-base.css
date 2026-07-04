@@ -5,10 +5,10 @@
 /* Scoped chrome touches that apply to the whole VS surface. */
 @scope (.flare-theme-visualstudio) to (.flare-root:not(.flare-theme-visualstudio)) {
 
-    /* Menus, popovers and dialogs get the flat VS drop shadow. */
+    /* Menus, popovers, dialogs and the field-family listbox popups get the flat VS drop shadow. */
     .flare-menu__panel,
     .flare-popover__paper,
-    .flare-select__dropdown {
+    .flare-listbox {
         box-shadow: var(--flare-elevation-3);
     }
 }

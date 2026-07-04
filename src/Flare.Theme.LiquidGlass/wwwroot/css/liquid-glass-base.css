@@ -54,8 +54,7 @@
        while keeping the Liquid Glass look. */
     .flare-menu__panel,
     .flare-popover__paper,
-    .flare-select__dropdown,
-    .flare-autocomplete__dropdown,
+    .flare-listbox,
     .flare-dialog,
     .flare-drawer {
         background-color: var(--flare-liquid-content-tint);

@@ -26,13 +26,17 @@ public static class Select
 }
 
 /// <summary>
-/// Shared dropdown listbox classes used by both <c>FlareSelect</c> and <c>FlareMultiSelect</c>
-/// so the popup (rounded surface, elevation, option rows, group headers) is styled once.
+/// Shared dropdown listbox classes used by the field-family popups (FlareSelect, FlareMultiSelect,
+/// FlareAutocomplete, FlareTagField) so the popup (rounded surface, elevation, option rows, group
+/// headers and the anchored positioning) is styled once.
 /// </summary>
 public static class Listbox
 {
     /// <summary>The <c>flare-listbox</c> CSS class.</summary>
     public const string Root = "flare-listbox";
+    /// <summary>The <c>flare-listbox__dropdown</c> CSS class: anchors the popup absolutely under the
+    /// field (shared by Autocomplete/MultiSelect/TagField; Select positions its popup with JS instead).</summary>
+    public const string Dropdown = "flare-listbox__dropdown";
     /// <summary>The <c>flare-listbox__option</c> CSS class.</summary>
     public const string Option = "flare-listbox__option";
     /// <summary>The <c>flare-listbox__option--active</c> CSS class.</summary>

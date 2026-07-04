@@ -21,8 +21,7 @@ public static class TagInput
     public const string Remove = "flare-tag-input__remove";
     /// <summary>The <c>flare-tag-input__wrapper</c> CSS class.</summary>
     public const string Wrapper = "flare-tag-input__wrapper";
-    /// <summary>The <c>flare-tag-input__dropdown</c> CSS class (positions the shared <see cref="Listbox.Root"/> popup).</summary>
-    public const string Dropdown = "flare-tag-input__dropdown";
+    // The suggestion popup uses the shared Listbox.Dropdown (flare-listbox__dropdown) for anchoring.
     /// <summary>The <c>flare-tag-input__empty</c> CSS class.</summary>
     public const string Empty = "flare-tag-input__empty";
 }
