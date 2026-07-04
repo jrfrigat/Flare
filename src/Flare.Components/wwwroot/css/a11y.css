@@ -65,12 +65,11 @@ h6[tabindex="-1"]:focus {
    click/focus doesn't draw a full ring around the field. Must come after the rules above so
    it wins at equal specificity (and beats the global :focus-visible). */
 /* The inner-input fields all render .flare-input__control (covers FlareField/Numeric/Masked/
-   TextArea/Autocomplete/Date/DateTime/Time pickers); only the combobox triggers and the tag
-   input carry their own control element. */
+   TextArea/Autocomplete/TagField/Date/DateTime/Time pickers); only the combobox triggers
+   (Select/MultiSelect) carry their own focusable control element. */
 .flare-input__control:focus-visible,
 .flare-select__control:focus-visible,
-.flare-multiselect__control:focus-visible,
-.flare-tag-input__input:focus-visible {
+.flare-multiselect__control:focus-visible {
     outline: none;
 }
 

@@ -5,12 +5,8 @@ public static class TagInput
 {
     /// <summary>The <c>flare-tag-input</c> CSS class.</summary>
     public const string Root = "flare-tag-input";
-    /// <summary>The <c>flare-tag-input--focused</c> CSS class.</summary>
-    public const string Focused = "flare-tag-input--focused";
-    /// <summary>The <c>flare-tag-input--disabled</c> CSS class.</summary>
-    public const string Disabled = "flare-tag-input--disabled";
-    /// <summary>The <c>flare-tag-input--error</c> CSS class.</summary>
-    public const string Error = "flare-tag-input--error";
+    // Focus ring is pure :focus-within on the shared flare-input__field; error/disabled use the shared
+    // Css.Classes.Input.Error / Input.Disabled (flare-input--error/--disabled) - no tag-specific modifiers.
     /// <summary>The <c>flare-tag-input__field</c> CSS class.</summary>
     public const string Field = "flare-tag-input__field";
     /// <summary>The <c>flare-tag-input__input</c> CSS class.</summary>

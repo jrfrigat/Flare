@@ -4,7 +4,7 @@
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="@BuildCssClass(_focusClass, _stateClass, _variantClass, _sizeClass)"
+<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)"
      style="@Style"
      @onclick="FocusInputAsync"
      @attributes="AdditionalAttributes">
@@ -13,7 +13,7 @@
         <label class="@Css.Classes.Input.Label">@Label</label>
     }
     <div class="@Css.Classes.TagInput.Wrapper">
-        <div class="@Css.Classes.TagInput.Field">
+        <div class="@Css.Classes.Input.Field @Css.Classes.TagInput.Field">
             @foreach (var tag in _tags)
             {
                 var t = tag;
@@ -34,7 +34,7 @@
             @if (!Disabled && !ReadOnly && (MaxTags <= 0 || _tags.Count < MaxTags))
             {
                 <input @ref="_inputRef"
-                       class="@Css.Classes.TagInput.Input"
+                       class="@Css.Classes.Input.Control @Css.Classes.TagInput.Input"
                        style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                        value="@_inputValue"
                        placeholder="@(_tags.Count == 0 ? Placeholder : null)"
@@ -134,7 +134,6 @@
 
     private ElementReference _inputRef;
     private string _inputValue = string.Empty;
-    private bool _focused;
     private List<string> _tags = [];
     private IReadOnlyList<string>? _prevValues;
 
@@ -146,10 +145,11 @@
     private CancellationTokenSource? _searchCts;
     private bool _hasSuggestionsApi => Suggestions is not null || SearchFunc is not null;
 
-    private string _focusClass => _focused ? Css.Classes.TagInput.Focused : string.Empty;
+    // Focus ring is pure :focus-within on the shared flare-input__field; error/disabled use the shared
+    // flare-input--error / --disabled modifiers (same as every other field).
     private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.TagInput.Error :
-        Disabled ? Css.Classes.TagInput.Disabled : string.Empty;
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : string.Empty;
 
     // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
     // FlareFieldBase; here we only feed it the For accessor, sync the tag list and surface the error.
@@ -239,7 +239,6 @@
 
     private async Task HandleBlurAsync(FocusEventArgs e)
     {
-        _focused = false;
         // Let an option @onclick land before the dropdown closes.
         if (_hasSuggestionsApi) await Task.Delay(150);
         if (AddOnBlur && !string.IsNullOrWhiteSpace(_inputValue))
@@ -253,7 +252,6 @@
 
     private async Task HandleFocusAsync()
     {
-        _focused = true;
         if (_hasSuggestionsApi) await RefreshOptionsAsync();
     }
 

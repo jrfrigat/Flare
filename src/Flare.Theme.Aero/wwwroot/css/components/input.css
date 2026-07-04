@@ -6,18 +6,16 @@
    ========================================================================== */
 @scope (.flare-theme-aero) to (.flare-root:not(.flare-theme-aero)) {
 
-    /* Every field well now carries the shared flare-input__field (including Select/MultiSelect's
-       fused triggers); only the TagField root needs naming separately. */
-    .flare-input__field,
-    .flare-tag-input {
+    /* Every field well now carries the shared flare-input__field (Select/MultiSelect's fused triggers
+       AND TagField's chip well), so one selector covers them all. */
+    .flare-input__field {
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06);
         transition: box-shadow var(--flare-motion-duration-short2, 90ms) ease,
                     border-color var(--flare-motion-duration-short2, 90ms) ease;
     }
 
     /* Light-blue Aero glow + blue border on focus. */
-    .flare-input__field:focus-within,
-    .flare-tag-input:focus-within {
+    .flare-input__field:focus-within {
         border-color: var(--flare-color-primary);
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 2px var(--flare-aero-glow);
     }

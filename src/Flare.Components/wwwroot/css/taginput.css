@@ -7,27 +7,15 @@
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
+/* The chip well carries the shared flare-input__field (input.css): the box-model, border, transition,
+   :hover + :focus-within ring, and the shared flare-input--error/--disabled surface all come from
+   there (display:flex + align-items:center too). Only the multi-row chip-wrap layout is
+   TagField-specific. Focus ring is now pure :focus-within (no --focused modifier). */
 .flare-tag-input__field {
-    display: flex;
     flex-wrap: wrap;
-    align-items: center;
     gap: var(--flare-spacing-3);
     padding: var(--flare-spacing-4) var(--flare-spacing-6);
     min-height: 2.75rem;
-    background: var(--flare-input-bg, var(--flare-color-surface-container-highest));
-    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
-    border: var(--flare-input-border, none);
-    border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
-    transition: border-color var(--flare-motion-duration-short2);
-}
-
-.flare-tag-input--focused .flare-tag-input__field {
-    border-color: var(--fc-main, var(--flare-color-primary));
-    box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
-}
-
-.flare-tag-input--error .flare-tag-input__field {
-    border-color: var(--flare-color-error);
 }
 
 .flare-tag-input__chip {
@@ -64,19 +52,16 @@
     background: color-mix(in srgb, var(--flare-color-on-secondary-container) 20%, transparent);
 }
 
+/* The inline entry field carries the shared flare-input__control (flex/transparent/border/outline/
+   font/color/caret + the size grid); only its compact inline padding + a min-width are TagField's. */
 .flare-tag-input__input {
-    flex: 1;
     min-width: 8rem;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: var(--flare-typescale-body-large-font);
-    font-size: var(--flare-typescale-body-large-size);
-    color: var(--flare-color-on-surface);
     padding: var(--flare-spacing-1) 0;
 }
 
-.flare-tag-input--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+/* Disabled: pointer-events + the well surface + the input/label/helper dim come from the shared
+   flare-input--disabled (input.css); only the chips need a component-specific dim. */
+.flare-input--disabled .flare-tag-input__chip { opacity: var(--flare-state-disabled-opacity); }
 
 /* ---- Suggestions dropdown ---- */
 .flare-tag-input__wrapper {

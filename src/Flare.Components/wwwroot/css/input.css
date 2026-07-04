@@ -105,19 +105,15 @@
    two structurally different controls -- TagField's chip input and the combobox trigger (shared by
    Select/MultiSelect) -- carry their own control element. */
 .flare-input--xs .flare-input__control,
-.flare-input--xs .flare-tag-input__input,
 .flare-input--xs .flare-select__control,
 .flare-input--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4);  font-size: var(--flare-typescale-label-medium-size); }
 .flare-input--sm .flare-input__control,
-.flare-input--sm .flare-tag-input__input,
 .flare-input--sm .flare-select__control,
 .flare-input--sm .flare-multiselect__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); font-size: var(--flare-typescale-body-medium-size); }
 .flare-input--lg .flare-input__control,
-.flare-input--lg .flare-tag-input__input,
 .flare-input--lg .flare-select__control,
 .flare-input--lg .flare-multiselect__control { padding: 0.875rem 1.125rem; font-size: var(--flare-typescale-title-medium-size); }
 .flare-input--xl .flare-input__control,
-.flare-input--xl .flare-tag-input__input,
 .flare-input--xl .flare-select__control,
 .flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
 
