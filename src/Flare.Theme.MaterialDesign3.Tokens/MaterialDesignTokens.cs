@@ -628,6 +628,16 @@ public class MaterialDesignTokens
         ColumnPickerElevation = "var(--flare-elevation-2)",
     };
 
+    // Rating: Size = initial defers to the component size classes; empty star = outline-variant,
+    // filled default = primary (the Color parameter overrides via --fc-main), hover scale 1.15.
+    internal static readonly RatingTokens Rating = new()
+    {
+        Size = "initial",
+        EmptyColor = "var(--flare-color-outline-variant)",
+        FilledColor = "var(--flare-color-primary)",
+        HoverScale = "1.15",
+    };
+
     // Switch (MD3 baseline geometry: 52x32 track, 24 thumb, elevation-1 lift). Carried explicitly
     // now that the core record ships no defaults.
     internal static readonly SwitchTokens Switch = new()
@@ -689,6 +699,7 @@ public class MaterialDesignTokens
         Spacing = Spacing,
         Switch = Switch,
         DataGrid = DataGrid,
+        Rating = Rating,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,

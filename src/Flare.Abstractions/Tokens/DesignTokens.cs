@@ -86,6 +86,9 @@ public sealed record DesignTokens
     /// <summary>Progress tokens.</summary>
     public required ProgressTokens Progress { get; init; }
 
+    /// <summary>Rating (star) tokens.</summary>
+    public required RatingTokens Rating { get; init; }
+
     /// <summary>Switch tokens.</summary>
     public required SwitchTokens Switch { get; init; }
 

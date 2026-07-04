@@ -505,6 +505,15 @@ public class FluentUI2Tokens
         Level5 = "0 16px 32px var(--flare-shadow-umbra), 0 2px 4px var(--flare-shadow-penumbra)",
     };
 
+    // Rating: same neutral baseline (Size defers to the size classes; filled = primary via --fc-main).
+    internal static readonly RatingTokens Rating = new()
+    {
+        Size = "initial",
+        EmptyColor = "var(--flare-color-outline-variant)",
+        FilledColor = "var(--flare-color-primary)",
+        HoverScale = "1.15",
+    };
+
     // DataGrid baseline geometry/colors. Fluent does not customize the grid, so it carries the same
     // neutral baseline explicitly (self-contained, independent of the MD3 reference).
     internal static readonly DataGridTokens DataGrid = new()
@@ -802,6 +811,7 @@ public class FluentUI2Tokens
         Nav = Nav,
         Switch = Switch,
         DataGrid = DataGrid,
+        Rating = Rating,
         Popover = Popover,
         Extended = Extended,
     };

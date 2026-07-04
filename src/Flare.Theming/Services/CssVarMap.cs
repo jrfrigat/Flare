@@ -361,6 +361,11 @@ public static class CssVarMap
         v[Css.Tokens.Slider.ValueBg] = t.Slider.ValueBg;
         v[Css.Tokens.Slider.ValueColor] = t.Slider.ValueColor;
 
+        v[Css.Tokens.Rating.Size] = t.Rating.Size;
+        v[Css.Tokens.Rating.EmptyColor] = t.Rating.EmptyColor;
+        v[Css.Tokens.Rating.FilledColor] = t.Rating.FilledColor;
+        v[Css.Tokens.Rating.HoverScale] = t.Rating.HoverScale;
+
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;
