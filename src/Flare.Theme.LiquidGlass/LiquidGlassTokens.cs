@@ -192,7 +192,7 @@ internal class LiquidGlassTokens
     internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
 
     // The iconic green iOS switch: gray off track, green on track, white circular thumb.
-    internal static readonly SwitchTokens Switch = new()
+    internal static readonly SwitchTokens Switch = MaterialDesignTokens.Design.Switch with
     {
         TrackWidth = "51px",
         TrackHeight = "31px",

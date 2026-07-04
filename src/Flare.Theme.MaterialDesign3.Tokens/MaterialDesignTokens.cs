@@ -589,6 +589,40 @@ public class MaterialDesignTokens
         SizeFullWidth = "100%",
     };
 
+    // Switch (MD3 baseline geometry: 52x32 track, 24 thumb, elevation-1 lift). Carried explicitly
+    // now that the core record ships no defaults.
+    internal static readonly SwitchTokens Switch = new()
+    {
+        TrackWidth = "52px",
+        TrackHeight = "32px",
+        TrackWidthSm = "40px",
+        TrackHeightSm = "24px",
+        TrackWidthLg = "64px",
+        TrackHeightLg = "40px",
+        TrackRadius = "var(--flare-shape-full)",
+        TrackColor = "var(--flare-color-surface-container-highest)",
+        TrackBorderColor = "var(--flare-color-outline)",
+        TrackBorderWidth = "2px",
+        TrackColorSelected = "var(--flare-color-primary)",
+        TrackBorderColorSelected = "var(--flare-color-primary)",
+        ThumbSize = "24px",
+        ThumbSizeSm = "16px",
+        ThumbSizeLg = "32px",
+        ThumbColor = "var(--flare-color-outline)",
+        ThumbColorSelected = "var(--flare-color-on-primary)",
+        ThumbIconColor = "var(--flare-color-surface-container-highest)",
+        ThumbIconColorSelected = "var(--flare-color-primary)",
+        ThumbShadow = "var(--flare-elevation-1)",
+        FocusOutlineWidth = "2px",
+        FocusOutlineColor = "var(--flare-color-primary)",
+        FocusOutlineOffset = "2px",
+        TransitionDuration = "var(--flare-motion-duration-short2)",
+        TransitionEasing = "var(--flare-motion-easing-standard)",
+        PressedLayerColor = "var(--flare-color-primary)",
+        PressedLayerOpacity = "var(--flare-state-pressed-opacity)",
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
+    };
+
     // Spacing scale: the 2px-base ramp (0/2/4/6/8/10/12/16/20/24/32/48/64px). Superset of the MD3 4dp
     // grid; carried explicitly now that the core record ships no defaults.
     internal static readonly SpacingTokens Spacing = new()
@@ -614,6 +648,7 @@ public class MaterialDesignTokens
     public static readonly DesignTokens Design = new()
     {
         Spacing = Spacing,
+        Switch = Switch,
         Slider = Slider,
         Dialog = Dialog,
         Drawer = Drawer,

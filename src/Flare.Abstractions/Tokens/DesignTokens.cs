@@ -87,7 +87,7 @@ public sealed record DesignTokens
     public required ProgressTokens Progress { get; init; }
 
     /// <summary>Switch tokens.</summary>
-    public SwitchTokens Switch { get; init; } = new();
+    public required SwitchTokens Switch { get; init; }
 
     /// <summary>Navigation (nav item + active indicator) tokens.</summary>
     public required NavTokens Nav { get; init; }
