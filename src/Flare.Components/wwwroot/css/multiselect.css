@@ -1,5 +1,5 @@
 .flare-multiselect { display: flex; flex-direction: column; gap: var(--flare-spacing-2); position: relative; }
-.flare-multiselect__label { font-size: var(--flare-typescale-label-medium-size); color: var(--flare-color-on-surface-variant); }
+/* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 .flare-multiselect__control {
     display: flex;
     align-items: center;
@@ -73,8 +73,6 @@
     right: 0;
     margin-top: var(--flare-spacing-2);
 }
-.flare-multiselect__helper { font-size: var(--flare-typescale-body-small-size); color: var(--flare-color-on-surface-variant); }
-.flare-multiselect__helper--error { color: var(--flare-color-error); }
 .flare-multiselect__arrow { color: var(--flare-color-on-surface-variant); }
 
 /* In-dropdown search box. */

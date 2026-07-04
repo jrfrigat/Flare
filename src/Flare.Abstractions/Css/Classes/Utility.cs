@@ -648,12 +648,6 @@ public static class Multiselect
     public const string Dropdown = "flare-multiselect__dropdown";
     /// <summary>The <c>flare-multiselect__group-header</c> CSS class.</summary>
     public const string GroupHeader = "flare-multiselect__group-header";
-    /// <summary>The <c>flare-multiselect__helper</c> CSS class.</summary>
-    public const string Helper = "flare-multiselect__helper";
-    /// <summary>The <c>flare-multiselect__helper--error</c> CSS class.</summary>
-    public const string HelperError = "flare-multiselect__helper--error";
-    /// <summary>The <c>flare-multiselect__label</c> CSS class.</summary>
-    public const string Label = "flare-multiselect__label";
     /// <summary>The <c>flare-multiselect__option</c> CSS class (option row; scopes the checkbox, visuals from the shared <see cref="Listbox.Option"/>).</summary>
     public const string Option = "flare-multiselect__option";
     /// <summary>The <c>flare-multiselect__option--select-all</c> CSS class.</summary>

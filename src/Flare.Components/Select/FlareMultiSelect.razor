@@ -7,7 +7,7 @@
 <div class="@BuildCssClass(_openClass, _sizeClass, _variantClass)" style="@Style" @attributes="AdditionalAttributes" @ref="_container">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Css.Classes.Multiselect.Label" for="@_controlId">@Label</label>
+        <label class="@Css.Classes.Input.Label" for="@_controlId">@Label</label>
     }
     <div class="@Css.Classes.Multiselect.Control"
          id="@_controlId"
@@ -17,6 +17,8 @@
          aria-haspopup="listbox"
          aria-label="@(Label ?? Placeholder)"
          aria-disabled="@(Disabled ? "true" : null)"
+         aria-readonly="@(ReadOnly ? "true" : null)"
+         aria-required="@(Required ? "true" : null)"
          tabindex="@(Disabled ? -1 : 0)"
          @onkeydown="HandleKeyDown">
         <span class="@Css.Classes.Multiselect.Value">
@@ -29,7 +31,7 @@
                         {
                             <span class="@Css.Classes.Multiselect.Chip">
                                 <span>@LabelFor(v)</span>
-                                @if (!Disabled)
+                                @if (!Disabled && !ReadOnly)
                                 {
                                     <button type="button" class="@Css.Classes.Multiselect.ChipRemove"
                                             tabindex="-1" aria-label="@(FlareStrings.Input_Clear)"
@@ -100,7 +102,7 @@
     }
     @if (!string.IsNullOrEmpty(ErrorText) || !string.IsNullOrEmpty(HelperText))
     {
-        <span class="@Css.Classes.Multiselect.Helper @(!string.IsNullOrEmpty(ErrorText) ? Css.Classes.Multiselect.HelperError : "")">
+        <span class="@Css.Classes.Input.Helper @(!string.IsNullOrEmpty(ErrorText) ? Css.Classes.Input.HelperError : "")">
             @(ErrorText ?? HelperText)
         </span>
     }
@@ -284,7 +286,8 @@
 
     private void ToggleDropdown()
     {
-        if (!Disabled)
+        // ReadOnly stays focusable (unlike Disabled) but must not open the listbox.
+        if (!Disabled && !ReadOnly)
         {
             _isOpen = !_isOpen;
             if (!_isOpen) _search = string.Empty;
@@ -314,7 +317,7 @@
 
     private async Task HandleKeyDown(KeyboardEventArgs e)
     {
-        if (Disabled) return;
+        if (Disabled || ReadOnly) return;
 
         switch (e.Key)
         {

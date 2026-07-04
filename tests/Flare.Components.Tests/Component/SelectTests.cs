@@ -197,7 +197,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Label, "Fruits")
             .Add(x => x.Items, _fruits));
 
-        var label = cut.Find("label.flare-multiselect__label");
+        var label = cut.Find("label.flare-input__label");
         Assert.Equal("Fruits", label.TextContent);
     }
 
@@ -274,7 +274,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.HelperText, "Choose one or more"));
 
-        Assert.Contains("Choose one or more", cut.Find(".flare-multiselect__helper").TextContent);
+        Assert.Contains("Choose one or more", cut.Find(".flare-input__helper").TextContent);
     }
 
     [Fact]
@@ -284,7 +284,7 @@ public class C_FlareMultiSelectTests : FlareTestContext
             .Add(x => x.Items, _fruits)
             .Add(x => x.ErrorText, "Selection required"));
 
-        Assert.NotEmpty(cut.FindAll(".flare-multiselect__helper--error"));
+        Assert.NotEmpty(cut.FindAll(".flare-input__helper--error"));
     }
 
     [Fact]
