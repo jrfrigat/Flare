@@ -27,8 +27,16 @@ root (`Flare.Blazor`) is the only package that binds ports to their adapter impl
                |
         Flare (Flare.Blazor)   (Ring 4 - composition root; -> Components, Infrastructure)
 
-Theme packages (each -> Flare.Abstractions + Flare.Theming; none referenced by the umbrella):
-  Flare.Theme.MaterialDesign3Expressive, .FluentUI2, .Aero, .LiquidGlass, .VisualStudio
+Reference token packages (-> Flare.Abstractions only): hold the fully-populated baseline
+DesignTokens each lineage derives from (the core itself ships no default token values):
+  Flare.Theme.MaterialDesign3.Tokens (MaterialDesignTokens.Design),
+  Flare.Theme.FluentUI2.Tokens (FluentUI2Tokens.Design)
+
+Theme packages (each -> Flare.Abstractions + Flare.Theming + its lineage's *.Tokens package;
+none referenced by the umbrella): the seven shipped design systems -
+  Material lineage (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .MaterialDesign3,
+    .MaterialDesign2, .Aero, .LiquidGlass
+  Fluent lineage (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
 
 Optional component packages (each -> Flare.Components):
   Flare.Components.Carousel, .Kanban, .Transfer, .QrCode, .RichTextEditor, .Media, .IDE
@@ -128,7 +136,10 @@ A runtime-only **Dynamic Color** palette (`Palette.DynamicId = "dynamic"`) can a
 - `StyleAssets` lists the static CSS the theme needs (fonts, base reset, generated token CSS) so
   the correct tokens are present on first paint (anti-FOUC).
 
-**NuGet:** each package depends on `Flare.Abstractions` + `Flare.Theming`.
+**NuGet:** each theme package depends on `Flare.Abstractions` + `Flare.Theming` + its lineage's
+reference token package (`Flare.Theme.MaterialDesign3.Tokens` or `Flare.Theme.FluentUI2.Tokens`),
+from whose `Design` baseline it `with`-derives. The core stays default-free; the concrete values live
+only in those two reference packages.
 
 ### Flare (umbrella / composition root)
 **Purpose.** Single install target wiring up DI - the only ring that knows the Infrastructure adapters.

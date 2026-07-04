@@ -79,35 +79,44 @@ public DesignTokens Design => Fluent2.DesignReference with { /* overrides */ };
 
 ### Implementing ITheme Directly
 
+Flare's core (`Flare.Abstractions`) ships **no default token values** - every group on `DesignTokens`
+and every member of every `*Tokens` record is `required`, so the core carries no baked-in design
+opinion (guarded by `ThemeIndependenceTests`). A bare `new DesignTokens { ... }` therefore has to set
+*every* token, which is impractical. Instead, **derive from a published reference package** and
+`with`-override only what differs - this is exactly what the built-in themes do:
+
+- `Flare.Theme.MaterialDesign3.Tokens` -> `MaterialDesignTokens.Design` (Material lineage baseline)
+- `Flare.Theme.FluentUI2.Tokens` -> `FluentUI2Tokens.Design` (Fluent lineage baseline)
+
 ```csharp
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;   // or Flare.Theme.FluentUI2.Tokens
 
 public sealed class MyTheme : ITheme
 {
     public string Id => "my-theme";
     public string DisplayName => "My Custom Theme";
-    
-    public DesignTokens Design => new()
+
+    // Start from a fully-populated reference; override only the tokens you care about.
+    public DesignTokens Design => MaterialDesignTokens.Design with
     {
         FocusRing = "2px solid var(--flare-color-primary)",
-        Typography = MyTypography.Tokens,
-        Shape = MyShape.Tokens,
-        Elevation = MyElevation.Tokens,
-        Motion = MyMotion.Tokens,
-        State = MyState.Tokens,
-        Button = MyButton.Tokens,
-        Input = MyInput.Tokens,
-        Dialog = MyDialog.Tokens,
-        // ... all component tokens
+        Shape = MaterialDesignTokens.Design.Shape with { Medium = "6px" },
+        Button = MaterialDesignTokens.Design.Button with { HeightMd = "2.5rem" },
+        // ... only the tokens that differ from the base
     };
-    
+
     public string DefaultPaletteId => "my-brand";
     public IReadOnlyList<string> StyleAssets => [
         "_content/MyApp/css/my-theme.css"
     ];
 }
 ```
+
+If you genuinely want a from-scratch design system with no Material/Fluent ancestry, construct a full
+`DesignTokens` yourself (setting every `required` group) - the compiler (CS9035) will list any token
+you miss.
 
 ## Registering a Theme
 
@@ -243,6 +252,16 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 | `ProgressTokens` | Progress indicators | 18 fields |
 | `SwitchTokens` | Toggle switches | 28 fields |
 | `NavTokens` | Nav item + active indicator | 4 fields |
+| `RatingTokens` | Star rating | 4 fields |
+| `PaginationTokens` | Pagination controls | 4 fields |
+| `TimelineTokens` | Timeline dot + connector | 7 fields |
+| `StepperTokens` | Stepper circle + connector | 8 fields |
+| `TreeTokens` | Tree view rows | 6 fields |
+| `CalendarTokens` | Calendar month/day grid | 9 fields |
+
+This is a representative subset; the full set of component token records lives in
+`Flare.Abstractions/Tokens/Components/`. Every record's members are `required`, so the compiler
+lists any you miss when you build a `DesignTokens` from scratch.
 
 ### Using Tokens in CSS
 

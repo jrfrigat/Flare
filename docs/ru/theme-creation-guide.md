@@ -79,27 +79,32 @@ public DesignTokens Design => Fluent2.DesignReference with { /* оверрайд
 
 ### Прямая реализация ITheme
 
+Core Flare (`Flare.Abstractions`) **не несёт значений токенов по умолчанию** - каждая группа в
+`DesignTokens` и каждый член каждой записи `*Tokens` объявлены `required`, поэтому core не содержит
+"зашитого" дизайн-мнения (охраняется `ThemeIndependenceTests`). Голый `new DesignTokens { ... }`
+поэтому обязан задать *все* токены, что непрактично. Вместо этого **производите от опубликованного
+reference-пакета** и `with`-переопределяйте только отличия - именно так сделаны встроенные темы:
+
+- `Flare.Theme.MaterialDesign3.Tokens` -> `MaterialDesignTokens.Design` (база линейки Material)
+- `Flare.Theme.FluentUI2.Tokens` -> `FluentUI2Tokens.Design` (база линейки Fluent)
+
 ```csharp
 using Flare.Abstractions;
 using Flare.Abstractions.Tokens;
+using Flare.Theme.MaterialDesign3.Tokens;   // или Flare.Theme.FluentUI2.Tokens
 
 public sealed class MyTheme : ITheme
 {
     public string Id => "my-theme";
     public string DisplayName => "My Custom Theme";
 
-    public DesignTokens Design => new()
+    // Стартуем от полностью заполненного reference; переопределяем только нужные токены.
+    public DesignTokens Design => MaterialDesignTokens.Design with
     {
         FocusRing = "2px solid var(--flare-color-primary)",
-        Typography = MyTypography.Tokens,
-        Shape = MyShape.Tokens,
-        Elevation = MyElevation.Tokens,
-        Motion = MyMotion.Tokens,
-        State = MyState.Tokens,
-        Button = MyButton.Tokens,
-        Input = MyInput.Tokens,
-        Dialog = MyDialog.Tokens,
-        // ... все токены компонентов
+        Shape = MaterialDesignTokens.Design.Shape with { Medium = "6px" },
+        Button = MaterialDesignTokens.Design.Button with { HeightMd = "2.5rem" },
+        // ... только токены, отличающиеся от базы
     };
 
     public string DefaultPaletteId => "my-brand";
@@ -108,6 +113,10 @@ public sealed class MyTheme : ITheme
     ];
 }
 ```
+
+Если вам действительно нужна дизайн-система с нуля, без наследования от Material/Fluent, соберите
+полный `DesignTokens` сами (задав каждую `required`-группу) - компилятор (CS9035) перечислит все
+пропущенные токены.
 
 ## Регистрация темы
 
@@ -244,6 +253,16 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 | `ProgressTokens` | Индикаторы прогресса | 18 полей |
 | `SwitchTokens` | Переключатели | 28 полей |
 | `NavTokens` | Элемент навигации + индикатор | 4 поля |
+| `RatingTokens` | Рейтинг (звёзды) | 4 поля |
+| `PaginationTokens` | Пагинация | 4 поля |
+| `TimelineTokens` | Точка + коннектор таймлайна | 7 полей |
+| `StepperTokens` | Круг + коннектор степпера | 8 полей |
+| `TreeTokens` | Строки дерева | 6 полей |
+| `CalendarTokens` | Сетка месяца/дней календаря | 9 полей |
+
+Это репрезентативная выборка; полный набор записей токенов компонентов лежит в
+`Flare.Abstractions/Tokens/Components/`. Все члены каждой записи объявлены `required`, поэтому
+компилятор перечислит все пропущенные, если вы собираете `DesignTokens` с нуля.
 
 ### Использование токенов в CSS
 

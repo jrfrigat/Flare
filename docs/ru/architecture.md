@@ -24,8 +24,16 @@ Flare построен как **чистая / луковичная (порты 
                ^
         Flare (Flare.Blazor)   (Кольцо 4 - корень композиции; -> Components, Infrastructure)
 
-Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming; umbrella не ссылается ни на один):
-  Flare.Theme.MaterialDesign3Expressive, .FluentUI2, .Aero, .LiquidGlass, .VisualStudio
+Reference-пакеты токенов (-> только Flare.Abstractions): содержат полностью заполненный базовый
+DesignTokens, от которого производится каждая линейка тем (сам core не несёт значений по умолчанию):
+  Flare.Theme.MaterialDesign3.Tokens (MaterialDesignTokens.Design),
+  Flare.Theme.FluentUI2.Tokens (FluentUI2Tokens.Design)
+
+Пакеты тем (каждый -> Flare.Abstractions + Flare.Theming + reference-пакет своей линейки;
+umbrella не ссылается ни на один): семь поставляемых дизайн-систем -
+  Линейка Material (-> MaterialDesign3.Tokens): .MaterialDesign3Expressive, .MaterialDesign3,
+    .MaterialDesign2, .Aero, .LiquidGlass
+  Линейка Fluent (-> FluentUI2.Tokens): .FluentUI2, .VisualStudio
 
 Опциональные пакеты компонентов (каждый -> Flare.Components):
   Flare.Components.Carousel, .Kanban, .Transfer, .QrCode, .RichTextEditor, .Media, .IDE
@@ -114,7 +122,10 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 - `StyleAssets` перечисляет статический CSS темы (шрифты, базовый сброс, сгенерированный CSS токенов),
   чтобы нужные токены присутствовали до первого кадра (анти-FOUC).
 
-**NuGet:** каждый пакет зависит от `Flare.Abstractions` + `Flare.Theming`.
+**NuGet:** каждый пакет темы зависит от `Flare.Abstractions` + `Flare.Theming` + reference-пакета
+своей линейки (`Flare.Theme.MaterialDesign3.Tokens` или `Flare.Theme.FluentUI2.Tokens`), от базового
+`Design` которого он `with`-производит свои токены. Core остаётся без значений по умолчанию;
+конкретные значения живут только в этих двух reference-пакетах.
 
 ### Flare (umbrella / корень композиции)
 **Назначение.** Единая цель установки, связывающая DI - единственное кольцо, знающее об адаптерах
