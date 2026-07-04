@@ -14,11 +14,11 @@ public sealed record ColorPickerTokens
 {
     /// <summary>Color of the squares in the transparency checkerboard (preview swatch and alpha track).
     /// A subtle neutral that adapts to light/dark mode.</summary>
-    [CssVar(ColorPickerField.CheckerColor)] public string CheckerColor { get; init; } = Vars.Var(Color.OutlineVariant);
+    [CssVar(ColorPickerField.CheckerColor)] public required string CheckerColor { get; init; }
 
     /// <summary>Background of the hue/alpha slider's native thumb - a surface-toned floating knob.</summary>
-    [CssVar(ColorPickerField.ThumbBg)] public string ThumbBg { get; init; } = Vars.Var(Color.Surface);
+    [CssVar(ColorPickerField.ThumbBg)] public required string ThumbBg { get; init; }
 
     /// <summary>Border color of the hue/alpha slider's native thumb.</summary>
-    [CssVar(ColorPickerField.ThumbBorderColor)] public string ThumbBorderColor { get; init; } = Vars.Var(Color.Outline);
+    [CssVar(ColorPickerField.ThumbBorderColor)] public required string ThumbBorderColor { get; init; }
 }

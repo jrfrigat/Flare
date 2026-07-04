@@ -317,7 +317,7 @@ internal class LiquidGlassTokens
     };
 
     // Nav - pill indicator (iOS tab/segmented look).
-    internal static readonly NavTokens Nav = new()
+    internal static readonly NavTokens Nav = MaterialDesignTokens.Design.Nav with
     {
         ItemRadius = "var(--flare-shape-medium)",
         IndicatorRadius = "var(--flare-shape-full)",

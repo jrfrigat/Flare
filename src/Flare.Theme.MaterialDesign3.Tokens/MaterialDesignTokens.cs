@@ -336,11 +336,61 @@ public class MaterialDesignTokens
     };
 
 
+    internal static readonly NavTokens Nav = new()
+    {
+        ItemRadius = "var(--flare-shape-extra-small)",
+        IndicatorRadius = "var(--flare-shape-full)",
+        ActiveIndicator = "var(--flare-color-secondary-container)",
+        ActiveLeftBar = "none",
+    };
+
+    internal static readonly BottomNavTokens BottomNav = new()
+    {
+        BarHeight = "5rem",
+        BarBg = "var(--flare-color-surface-container)",
+        BorderColor = "var(--flare-color-surface-variant)",
+        SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
+        InactiveColor = "var(--flare-color-on-surface-variant)",
+        ActiveColor = "var(--flare-color-on-secondary-container)",
+        IconSize = "1.5rem",
+        LabelFontSize = "var(--flare-typescale-label-medium-size)",
+        LabelFontWeight = "500",
+        LabelFontWeightActive = "700",
+        IndicatorBg = "var(--flare-nav-active-indicator)",
+        IndicatorRadius = "var(--flare-nav-indicator-radius)",
+        IndicatorSize = "2rem",
+    };
+
+    internal static readonly TableOfContentsTokens TableOfContents = new()
+    {
+        ActiveColor = "var(--flare-color-on-secondary-container)",
+        InactiveColor = "var(--flare-color-on-surface-variant)",
+        TitleColor = "var(--flare-color-on-surface-variant)",
+        RailColor = "transparent",
+        RailWidth = "0",
+        ActiveBg = "var(--flare-color-secondary-container)",
+        ActiveRadius = "var(--flare-shape-full)",
+        MarkerWidth = "0",
+        LinkPadX = "0.75rem",
+        Indent = "0.75rem",
+    };
+
+    internal static readonly ColorPickerTokens ColorPicker = new()
+    {
+        CheckerColor = "var(--flare-color-outline-variant)",
+        ThumbBg = "var(--flare-color-surface)",
+        ThumbBorderColor = "var(--flare-color-outline)",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
+        Nav = Nav,
+        BottomNav = BottomNav,
+        TableOfContents = TableOfContents,
+        ColorPicker = ColorPicker,
         FocusRing = "3px solid var(--flare-color-primary)",
         Typography = Typography,
         Shape = Shape,

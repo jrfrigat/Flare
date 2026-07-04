@@ -10,14 +10,14 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record NavTokens
 {
     /// <summary>Hover/focus corner radius of a nav item. MD3 = extra-small.</summary>
-    [CssVar(NavField.ItemRadius)] public string ItemRadius { get; init; } = Vars.Var(Shape.ExtraSmall);
+    [CssVar(NavField.ItemRadius)] public required string ItemRadius { get; init; }
 
     /// <summary>Corner radius of the active indicator. MD3 = full (pill).</summary>
-    [CssVar(NavField.IndicatorRadius)] public string IndicatorRadius { get; init; } = Vars.Var(Shape.Full);
+    [CssVar(NavField.IndicatorRadius)] public required string IndicatorRadius { get; init; }
 
     /// <summary>Background of the active indicator. MD3 = secondary-container.</summary>
-    [CssVar(NavField.ActiveIndicator)] public string ActiveIndicator { get; init; } = Vars.Var(Color.SecondaryContainer);
+    [CssVar(NavField.ActiveIndicator)] public required string ActiveIndicator { get; init; }
 
     /// <summary>Left accent bar drawn on the active item (e.g. Fluent rail). MD3 = none.</summary>
-    [CssVar(NavField.ActiveLeftBar)] public string ActiveLeftBar { get; init; } = "none";
+    [CssVar(NavField.ActiveLeftBar)] public required string ActiveLeftBar { get; init; }
 }

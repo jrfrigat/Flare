@@ -10,47 +10,47 @@ namespace Flare.Abstractions.Tokens.Components;
 public sealed record BottomNavTokens
 {
     /// <summary>Fixed height of the bar (excluding safe-area padding). MD3 = 80dp.</summary>
-    [CssVar(BottomNavField.BarHeight)] public string BarHeight { get; init; } = "5rem";
+    [CssVar(BottomNavField.BarHeight)] public required string BarHeight { get; init; }
 
     /// <summary>Bar background. MD3 = surface-container.</summary>
-    [CssVar(BottomNavField.BarBg)] public string BarBg { get; init; } = Vars.Var(Color.SurfaceContainer);
+    [CssVar(BottomNavField.BarBg)] public required string BarBg { get; init; }
 
     /// <summary>Top border color separating the bar from page content. MD3 = surface-variant.</summary>
-    [CssVar(BottomNavField.BorderColor)] public string BorderColor { get; init; } = Vars.Var(Color.SurfaceVariant);
+    [CssVar(BottomNavField.BorderColor)] public required string BorderColor { get; init; }
 
     /// <summary>
     /// Extra bottom padding reserved for the device safe area (iOS home indicator, gesture bar),
     /// stacked on top of <see cref="BarHeight"/> via <c>env(safe-area-inset-bottom)</c>.
     /// </summary>
-    [CssVar(BottomNavField.SafeAreaPadding)] public string SafeAreaPadding { get; init; } = "env(safe-area-inset-bottom, 0px)";
+    [CssVar(BottomNavField.SafeAreaPadding)] public required string SafeAreaPadding { get; init; }
 
     /// <summary>Icon + label color for an inactive item. MD3 = on-surface-variant.</summary>
-    [CssVar(BottomNavField.InactiveColor)] public string InactiveColor { get; init; } = Vars.Var(Color.OnSurfaceVariant);
+    [CssVar(BottomNavField.InactiveColor)] public required string InactiveColor { get; init; }
 
     /// <summary>Icon + label color for the active item. MD3 = on-secondary-container (sits atop the pill).</summary>
-    [CssVar(BottomNavField.ActiveColor)] public string ActiveColor { get; init; } = Vars.Var(Color.OnSecondaryContainer);
+    [CssVar(BottomNavField.ActiveColor)] public required string ActiveColor { get; init; }
 
     /// <summary>Icon glyph size.</summary>
-    [CssVar(BottomNavField.IconSize)] public string IconSize { get; init; } = "1.5rem";
+    [CssVar(BottomNavField.IconSize)] public required string IconSize { get; init; }
 
     /// <summary>Label font size. MD3 = label-medium.</summary>
-    [CssVar(BottomNavField.LabelFontSize)] public string LabelFontSize { get; init; } = Vars.Var(Typography.Size("label-medium"));
+    [CssVar(BottomNavField.LabelFontSize)] public required string LabelFontSize { get; init; }
 
     /// <summary>Inactive label font weight.</summary>
-    [CssVar(BottomNavField.LabelFontWeight)] public string LabelFontWeight { get; init; } = "500";
+    [CssVar(BottomNavField.LabelFontWeight)] public required string LabelFontWeight { get; init; }
 
     /// <summary>Active label font weight (slightly heavier to reinforce the selected state).</summary>
-    [CssVar(BottomNavField.LabelFontWeightActive)] public string LabelFontWeightActive { get; init; } = "700";
+    [CssVar(BottomNavField.LabelFontWeightActive)] public required string LabelFontWeightActive { get; init; }
 
     /// <summary>Background of the pill drawn behind the active item's icon. Defaults to the shared nav
     /// active-indicator token so a theme that flattens the drawer indicator (e.g. Fluent sets it to
     /// <c>none</c>) flattens the bottom bar too; override this token to restyle only the bottom bar.</summary>
-    [CssVar(BottomNavField.IndicatorBg)] public string IndicatorBg { get; init; } = Vars.Var(NavField.ActiveIndicator);
+    [CssVar(BottomNavField.IndicatorBg)] public required string IndicatorBg { get; init; }
 
     /// <summary>Corner radius of the active-item indicator pill. Defaults to the shared nav
     /// indicator-radius token (a full pill in MD3, square in Fluent); override to restyle only the bottom bar.</summary>
-    [CssVar(BottomNavField.IndicatorRadius)] public string IndicatorRadius { get; init; } = Vars.Var(NavField.IndicatorRadius);
+    [CssVar(BottomNavField.IndicatorRadius)] public required string IndicatorRadius { get; init; }
 
     /// <summary>Fixed height of the active-item indicator pill.</summary>
-    [CssVar(BottomNavField.IndicatorSize)] public string IndicatorSize { get; init; } = "2rem";
+    [CssVar(BottomNavField.IndicatorSize)] public required string IndicatorSize { get; init; }
 }

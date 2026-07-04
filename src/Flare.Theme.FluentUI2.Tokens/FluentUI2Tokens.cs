@@ -265,6 +265,7 @@ public class FluentUI2Tokens
     internal static readonly Flare.Abstractions.Tokens.Components.TableOfContentsTokens TableOfContents = new()
     {
         ActiveColor = "var(--flare-color-primary)",
+        InactiveColor = "var(--flare-color-on-surface-variant)",
         TitleColor = "var(--flare-color-on-surface)",
         RailColor = "var(--flare-color-outline-variant)",
         RailWidth = "1px",
@@ -273,6 +274,7 @@ public class FluentUI2Tokens
         MarkerWidth = "3px",
         // Gap between the rail/marker and the link text.
         LinkPadX = "0.625rem",
+        Indent = "0.75rem",
     };
 
     // Slider - Fluent: тонкий рельс 4px, круглый белый thumb (20px) с brand-обводкой 2px,
@@ -416,11 +418,38 @@ public class FluentUI2Tokens
         S32 = "4rem",      // extension (64px)
     };
 
+    // BottomNav / ColorPicker - Fluent uses the same neutral baseline as Material for these.
+    internal static readonly BottomNavTokens BottomNav = new()
+    {
+        BarHeight = "5rem",
+        BarBg = "var(--flare-color-surface-container)",
+        BorderColor = "var(--flare-color-surface-variant)",
+        SafeAreaPadding = "env(safe-area-inset-bottom, 0px)",
+        InactiveColor = "var(--flare-color-on-surface-variant)",
+        ActiveColor = "var(--flare-color-on-secondary-container)",
+        IconSize = "1.5rem",
+        LabelFontSize = "var(--flare-typescale-label-medium-size)",
+        LabelFontWeight = "500",
+        LabelFontWeightActive = "700",
+        IndicatorBg = "var(--flare-nav-active-indicator)",
+        IndicatorRadius = "var(--flare-nav-indicator-radius)",
+        IndicatorSize = "2rem",
+    };
+
+    internal static readonly ColorPickerTokens ColorPicker = new()
+    {
+        CheckerColor = "var(--flare-color-outline-variant)",
+        ThumbBg = "var(--flare-color-surface)",
+        ThumbBorderColor = "var(--flare-color-outline)",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete Fluent UI 2 design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
+        BottomNav = BottomNav,
+        ColorPicker = ColorPicker,
         FocusRing = "2px solid var(--flare-color-primary)",
         Typography = Typography,
         Shape = Shape,

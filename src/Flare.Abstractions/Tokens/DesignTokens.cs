@@ -90,16 +90,16 @@ public sealed record DesignTokens
     public SwitchTokens Switch { get; init; } = new();
 
     /// <summary>Navigation (nav item + active indicator) tokens.</summary>
-    public NavTokens Nav { get; init; } = new();
+    public required NavTokens Nav { get; init; }
 
     /// <summary>Mobile bottom-navigation bar tokens.</summary>
-    public BottomNavTokens BottomNav { get; init; } = new();
+    public required BottomNavTokens BottomNav { get; init; }
 
     /// <summary>FlareTableOfContents / FlareOnThisPage tokens.</summary>
-    public TableOfContentsTokens TableOfContents { get; init; } = new();
+    public required TableOfContentsTokens TableOfContents { get; init; }
 
     /// <summary>FlareColorPicker checkerboard + native range-thumb tokens.</summary>
-    public ColorPickerTokens ColorPicker { get; init; } = new();
+    public required ColorPickerTokens ColorPicker { get; init; }
 
     /// <summary>Theme-specific extras not in the core schema (e.g. Fluent focus ring vars).</summary>
     public IReadOnlyDictionary<string, string> Extended { get; init; }
