@@ -70,18 +70,9 @@
 .flare-chip--xl { padding: var(--flare-spacing-5) var(--flare-spacing-12); font-size: var(--flare-typescale-title-medium-size); gap: var(--flare-spacing-6); }
 .flare-chip--xl .flare-chip__avatar { width: 2.25rem; height: 2.25rem; }
 
-.flare-chip::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: currentColor;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
-}
-.flare-chip:hover::before  { opacity: var(--flare-state-hover-opacity); }
-.flare-chip:focus-visible::before  { opacity: var(--flare-state-focus-opacity); }
-.flare-chip:active::before { opacity: var(--flare-state-pressed-opacity); }
+/* Hover/focus/pressed state layer comes from the shared flare-state-layer-hover/-focus/-pressed
+   utilities (state-layer.css), added on the chip root; the chip keeps position:relative +
+   overflow:hidden (above), which the overlay relies on. */
 
 .flare-chip--selected {
     background-color: var(--fc-main, var(--flare-color-secondary-container));

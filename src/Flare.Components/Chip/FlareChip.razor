@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_resolvedSelectedClass, _sizeClass, _variantClass, _colorClass)" style="@_chipStyle" @attributes="AdditionalAttributes" role="button" tabindex="0" @onclick="HandleClick" @onkeydown="HandleKeyDown">
+<div class="@BuildCssClass(_resolvedSelectedClass, _sizeClass, _variantClass, _colorClass, Css.Classes.State.LayerHover, Css.Classes.State.LayerFocus, Css.Classes.State.LayerPressed)" style="@_chipStyle" @attributes="AdditionalAttributes" role="button" tabindex="0" @onclick="HandleClick" @onkeydown="HandleKeyDown">
     @if (Avatar is not null)
     {
         <span class="@Css.Classes.Chip.Avatar">@Avatar</span>
