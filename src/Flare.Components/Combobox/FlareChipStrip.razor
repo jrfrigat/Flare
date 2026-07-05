@@ -11,7 +11,7 @@
     @foreach (var item in Items)
     {
         var it = item;
-        <span class="@Css.Classes.Multiselect.Chip" style="@Style?.Invoke(it)">
+        <span class="@Css.Classes.Multiselect.Chip" style="@ChipStyle?.Invoke(it)">
             @if (Template is not null)
             {
                 @Template(it)
@@ -44,7 +44,7 @@
     [Parameter] public RenderFragment<TItem>? Template { get; set; }
 
     /// <summary>Optional inline style per chip (e.g. a colour), keyed by the item.</summary>
-    [Parameter] public Func<TItem, string?>? Style { get; set; }
+    [Parameter] public Func<TItem, string?>? ChipStyle { get; set; }
 
     /// <summary>Hides the remove buttons (disabled/read-only field).</summary>
     [Parameter] public bool ReadOnly { get; set; }

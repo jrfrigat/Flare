@@ -97,17 +97,17 @@ public class C_FlareSelectTests : FlareTestContext
 }
 
 // ------------------------------------------------------------------------------
-// FlareAutocomplete  (8 tests from Wave2)
+// FlareCombobox  (was FlareAutocomplete; absorbed in the select-family rebuild)
 // ------------------------------------------------------------------------------
 
-public class C_FlareAutocompleteTests : FlareTestContext
+public class C_FlareComboboxTests : FlareTestContext
 {
     private static readonly string[] _cities = ["Berlin", "London", "Paris", "Tokyo"];
 
     [Fact]
     public void RendersRootDiv()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities));
 
         Assert.NotEmpty(cut.FindAll(".flare-autocomplete"));
@@ -116,7 +116,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersLabel()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Label, "City")
             .Add(x => x.Items, _cities));
 
@@ -126,7 +126,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersPlaceholder()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Placeholder, "Search city...")
             .Add(x => x.Items, _cities));
 
@@ -136,7 +136,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersDisabled()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities)
             .Add(x => x.Disabled, true));
 
@@ -146,7 +146,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersHelperText()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities)
             .Add(x => x.HelperText, "Start typing to search"));
 
@@ -156,7 +156,7 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void RendersErrorText()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities)
             .Add(x => x.ErrorText, "City required"));
 
@@ -166,16 +166,16 @@ public class C_FlareAutocompleteTests : FlareTestContext
     [Fact]
     public void DropdownNotShownInitially()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities));
 
-        Assert.Empty(cut.FindAll(".flare-listbox__dropdown"));
+        Assert.Empty(cut.FindAll(".flare-listbox"));   // the option surface is not rendered while closed
     }
 
     [Fact]
     public void RendersInputField()
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p
+        var cut = Render<FlareCombobox<string>>(p => p
             .Add(x => x.Items, _cities));
 
         Assert.NotNull(cut.Find("input.flare-input__control"));

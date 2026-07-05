@@ -56,10 +56,7 @@
     /// <summary>The error element id, referenced by the trigger via <c>aria-describedby</c>.</summary>
     [Parameter] public string? ErrorId { get; set; }
 
-    /// <summary>Inline style forwarded to the root element.</summary>
-    [Parameter] public string? Style { get; set; }
-
-    /// <summary>Extra attributes splatted onto the root element.</summary>
+    /// <summary>Extra attributes splatted onto the root element (inline <c>Style</c> comes from the base).</summary>
     [Parameter] public IReadOnlyDictionary<string, object>? Attributes { get; set; }
 
     /// <summary>The field content (trigger + popup) rendered between the label and the helper line.</summary>

@@ -31,8 +31,7 @@ public partial class FlarePopup
     /// <summary>Sizes the panel to the anchor width (default true).</summary>
     [Parameter] public bool MatchWidth { get; set; } = true;
 
-    /// <summary>CSS class for the panel element (positioning/surface).</summary>
-    [Parameter] public string? Class { get; set; }
+    // The panel CSS class is the inherited FlareComponentBase.Class.
 
     /// <summary>The panel content (typically a <c>FlareOptionList</c>).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }

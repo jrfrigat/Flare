@@ -6,7 +6,7 @@ namespace Flare.Components.Tests.Component;
 
 // ------------------------------------------------------------------------------
 // Shared field chrome (FlareFieldBase) - EditContext validation wiring used by
-// FlareField / FlareSelect / FlareAutocomplete.
+// FlareField / FlareSelect / FlareCombobox.
 // ------------------------------------------------------------------------------
 
 public class C_FlareFieldValidationTests : FlareTestContext

@@ -1354,7 +1354,7 @@ public class C_FlareFormFieldSizeParityTests : FlareTestContext
     [InlineData(FieldSize.Lg, "flare-input--lg")]
     public void Autocomplete_Size_AppliesModifier(FieldSize size, string expected)
     {
-        var cut = Render<FlareAutocomplete<string>>(p => p.Add(x => x.Size, size));
+        var cut = Render<FlareCombobox<string>>(p => p.Add(x => x.Size, size));
         Assert.Contains(expected, cut.Find(".flare-autocomplete").ClassName);
     }
 

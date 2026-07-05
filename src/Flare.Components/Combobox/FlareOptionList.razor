@@ -87,8 +87,7 @@
     /// <summary>Extra CSS class on each option row.</summary>
     [Parameter] public string? OptionClass { get; set; }
 
-    /// <summary>Extra CSS class on the listbox root (positioning/surface).</summary>
-    [Parameter] public string? Class { get; set; }
+    // The listbox root's extra CSS class is the inherited FlareComponentBase.Class.
 
     /// <summary>Prevents the default mousedown so clicking an option does not blur the host's input.</summary>
     [Parameter] public bool PreventMouseDownDefault { get; set; }

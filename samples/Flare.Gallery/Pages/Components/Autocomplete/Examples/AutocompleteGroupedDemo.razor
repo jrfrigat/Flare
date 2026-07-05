@@ -1,10 +1,10 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareAutocomplete TValue="CountryItem"
+    <FlareCombobox TValue="CountryItem"
                        @bind-Value="_selectedCountry"
                        Label="Country"
                        Placeholder="Type to search…"
                        Items="_countries"
-                       GetLabel="@(c => c.Name)"
+                       ItemText="@(c => c.Name)"
                        GroupBy="@(c => c.Continent)"
                        MinChars="1"
                        Style="max-width:24rem;" />

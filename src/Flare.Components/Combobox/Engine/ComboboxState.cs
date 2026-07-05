@@ -169,6 +169,14 @@ public sealed class ComboboxState<TItem>
         Raise();
     }
 
+    /// <summary>
+    /// Sets the input text without filtering, opening or moving the highlight. The shell uses this to show
+    /// a committed value's label in a closed editable combobox, distinct from the interactive
+    /// <see cref="SetInput"/> that drives filtering while the user types.
+    /// </summary>
+    /// <param name="text">The display text to show in the input.</param>
+    public void SetInputSilent(string? text) => Input = text ?? string.Empty;
+
     // ---- Type-ahead (select-only first-letter navigation) -------------------------------------------
 
     /// <summary>

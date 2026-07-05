@@ -6,13 +6,13 @@
    Selecting a result navigates to its route. Results are grouped by kind.
    Built entirely from Flare primitives (no gallery CSS): width via the field's own Style, the
    responsive hide via Flare's own utility class, and the result row via FlareStack. *@
-<FlareAutocomplete TValue="SearchResult"
+<FlareCombobox TValue="SearchResult"
                    Class="@Css.Classes.Hidden.BelowSm"
                    Style="width:clamp(16rem, 48vw, 44rem)"
                    Placeholder="@GalleryStrings.Search_Placeholder"
                    NoResultsText="@GalleryStrings.Search_NoResults"
                    SearchFunc="DoSearchAsync"
-                   GetLabel="@(r => r.Title)"
+                   ItemText="@(r => r.Title)"
                    GroupBy="@(r => r.KindLabel)"
                    ValueChanged="OnSelected"
                    Variant="InputVariant.Outlined"
@@ -27,10 +27,10 @@
             <FlareText>@r.Title</FlareText>
         </FlareStack>
     </ItemTemplate>
-</FlareAutocomplete>
+</FlareCombobox>
 
 @code {
-    private Task<IEnumerable<SearchResult>> DoSearchAsync(string query) =>
+    private Task<IEnumerable<SearchResult>> DoSearchAsync(string query, CancellationToken ct) =>
         Task.FromResult<IEnumerable<SearchResult>>(Search.Search(query));
 
     private void OnSelected(SearchResult? result)

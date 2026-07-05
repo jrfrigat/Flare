@@ -2,7 +2,7 @@ namespace Flare.Css.Classes;
 
 /// <summary>
 /// Shared dropdown listbox classes used by the field-family popups (FlareSelect, FlareMultiSelect,
-/// FlareAutocomplete, FlareTagField) so the popup (rounded surface, elevation, option rows, group
+/// FlareCombobox, FlareTagField) so the popup (rounded surface, elevation, option rows, group
 /// headers and the anchored positioning) is styled once.
 /// </summary>
 public static class Listbox
