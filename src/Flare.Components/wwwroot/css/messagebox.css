@@ -23,13 +23,7 @@
     padding: var(--flare-spacing-12) var(--flare-spacing-12) var(--flare-spacing-6);
 }
 
-.flare-msgbox__title {
-    font-family: var(--flare-typescale-headline-small-font);
-    font-size: var(--flare-typescale-headline-small-size);
-    font-weight: var(--flare-typescale-headline-small-weight);
-    color: var(--flare-color-on-surface);
-    margin: 0;
-}
+/* __title style comes from the shared overlay-title rule (dialog.css). */
 
 .flare-msgbox__content {
     padding: 0 var(--flare-spacing-12) var(--flare-spacing-8);

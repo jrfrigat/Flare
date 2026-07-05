@@ -57,13 +57,6 @@
 
 .flare-dropzone--dragging .flare-dropzone__icon { transform: scale(1.15); }
 
-.flare-dropzone__label {
-  font-family: var(--flare-typescale-body-large-font);
-  font-size: var(--flare-typescale-body-large-size);
-  color: var(--flare-color-on-surface);
-}
+/* __label style comes from the shared control-label rule (checkbox.css). */
 
-.flare-dropzone__hint {
-  font-size: var(--flare-typescale-body-small-size);
-  color: var(--flare-color-on-surface-variant);
-}
+/* __hint style comes from the shared supporting-text rule (input.css). */

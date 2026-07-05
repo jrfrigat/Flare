@@ -39,7 +39,11 @@
     margin: 0 var(--flare-spacing-12) var(--flare-spacing-8);
 }
 
-.flare-dialog__title {
+/* Shared overlay-header title (dialog family + empty state): identical headline-small style. */
+.flare-dialog__title,
+.flare-msgbox__title,
+.flare-confirmdialog__title,
+.flare-empty-state__title {
     font-family: var(--flare-typescale-headline-small-font);
     font-size: var(--flare-typescale-headline-small-size);
     font-weight: var(--flare-typescale-headline-small-weight);

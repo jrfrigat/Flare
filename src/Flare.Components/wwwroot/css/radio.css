@@ -84,11 +84,7 @@
   transform: scale(1);
 }
 
-.flare-radio__label {
-  font-family: var(--flare-typescale-body-large-font);
-  font-size: var(--flare-typescale-body-large-size);
-  color: var(--flare-color-on-surface);
-}
+/* __label style comes from the shared control-label rule (checkbox.css). */
 
 /* Focus-visible ring (a11y) */
 .flare-radio__input:focus-visible + .flare-radio__indicator {

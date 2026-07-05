@@ -21,13 +21,7 @@
 
 .flare-confirmdialog__header { margin-bottom: var(--flare-spacing-6); }
 
-.flare-confirmdialog__title {
-    font-family: var(--flare-typescale-headline-small-font);
-    font-size: var(--flare-typescale-headline-small-size);
-    font-weight: var(--flare-typescale-headline-small-weight);
-    color: var(--flare-color-on-surface);
-    margin: 0;
-}
+/* __title style comes from the shared overlay-title rule (dialog.css). */
 
 .flare-confirmdialog__body {
     color: var(--flare-color-on-surface-variant);

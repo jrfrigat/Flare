@@ -609,11 +609,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   font-size: var(--flare-datagrid-detail-icon-size,1.25rem);
 }
 
-/* Batch-edit selection count in the toolbar. */
-.flare-datagrid__batch-count {
-  color: var(--flare-color-on-surface-variant);
-  font-size: var(--flare-typescale-body-small-size);
-}
+/* Batch-edit selection count in the toolbar. Text style comes from the shared supporting-text rule (input.css). */
 
 /* Tree-mode expand/collapse toggle in the first cell. */
 .flare-datagrid__tree-toggle {
