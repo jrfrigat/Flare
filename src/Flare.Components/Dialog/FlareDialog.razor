@@ -50,9 +50,9 @@
     /// <summary>Accessible name for a header-less dialog (rendered as <c>aria-label</c> when
     /// <see cref="Title"/> is empty). Ignored when a title is present, since the title labels the dialog.</summary>
     [Parameter] public string? AriaLabel { get; set; }
-    /// <summary>Optional hero icon shown centered above the title (MD3: secondary color).</summary>
+    /// <summary>Optional hero icon shown centered above the title.</summary>
     [Parameter] public RenderFragment? Icon { get; set; }
-    /// <summary>Shows a divider between the header and the content (MD3 scroll divider).</summary>
+    /// <summary>Shows a divider between the header and the content.</summary>
     [Parameter] public bool Divider { get; set; }
     /// <summary>Main body content rendered inside the dialog.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }

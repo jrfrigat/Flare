@@ -38,7 +38,7 @@
     [Parameter] public string? Icon { get; set; }
     /// <summary>Custom icon content, used in place of <see cref="Icon"/> (e.g. a configured <c>FlareIcon</c> or SVG).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Visual style variant. Defaults to <see cref="ButtonVariant.Text"/> (the MD3 "standard" icon button).</summary>
+    /// <summary>Visual style variant. Defaults to <see cref="ButtonVariant.Text"/> (a standard, chrome-less icon button).</summary>
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Text;
     /// <summary>Size of the button.</summary>
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
@@ -46,7 +46,7 @@
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons).</summary>
     [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
-    /// <summary>Opt-in MD3 Expressive press morph: the corner radius animates while the button is pressed.</summary>
+    /// <summary>Opt-in press morph: the corner radius animates while the button is pressed.</summary>
     [Parameter] public bool PressMorph { get; set; }
     /// <summary>Disables the button when true.</summary>
     [Parameter] public bool Disabled { get; set; }

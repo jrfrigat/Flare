@@ -6,11 +6,11 @@ using System.Globalization;
 namespace Flare.Components;
 
 /// <summary>
-/// MD3 dynamic-color scheme variant - how the source (seed) color is expanded into tonal roles.
+/// Dynamic-color scheme variant - how the source (seed) color is expanded into tonal roles.
 /// </summary>
 public enum DynamicVariant
 {
-    /// <summary>Balanced palette close to the source hue (MD3 default).</summary>
+    /// <summary>Balanced palette close to the source hue (the default).</summary>
     TonalSpot,
     /// <summary>More saturated, punchier palette.</summary>
     Vibrant,
@@ -123,7 +123,7 @@ public readonly record struct FlareColor
     public static implicit operator FlareColor(string? value) => Custom(value);
 
     /// <summary>
-    /// MD3 <b>dynamic color</b>: derives a harmonized, contrast-safe tonal set (main / on / container /
+    /// <b>Dynamic color</b>: derives a harmonized, contrast-safe tonal set (main / on / container /
     /// on-container) from a single source/seed color (e.g. one extracted from an album cover) and applies
     /// it to a component. The four roles are emitted as CSS <c>light-dark()</c> pairs so they adapt to the
     /// active light/dark mode automatically. Unlike <see cref="Custom"/> (a single color with naive

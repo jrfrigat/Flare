@@ -62,8 +62,8 @@ public sealed record ProgressTokens
     /// <summary>Duration of the wavy animation.</summary>
     [CssVar(ProgressField.WavyDuration)] public required string WavyDuration { get; init; }
 
-    // ---- MD3 Expressive linear/circular geometry the component reads at runtime. Defaults match
-    // the component's built-in fallbacks so a theme that doesn't set them renders unchanged. ----
+    // ---- Linear/circular geometry the component reads at runtime. Defaults match the component's
+    // built-in fallbacks so a theme that doesn't set them renders unchanged. ----
 
     /// <summary>Linear track corner radius. Default = full (rounded track).</summary>
     [CssVar(ProgressField.TrackRadius)] public required string TrackRadius { get; init; }

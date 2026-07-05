@@ -1,7 +1,7 @@
 // Flare color extractor: derive a representative seed color from an image, suitable for
 // FlareColor.Dynamic. Loads the image to a small offscreen canvas, quantizes the pixels into
 // coarse buckets, then scores buckets by population x chroma (skipping near-grey / very dark /
-// very light) - a lightweight take on the MD3 Score step. Cross-origin images need CORS
+// very light) - a lightweight color-scoring step. Cross-origin images need CORS
 // (crossorigin=anonymous + an allowing host) or getImageData throws (returns null here).
 
 function rgbToHsl(r, g, b) {

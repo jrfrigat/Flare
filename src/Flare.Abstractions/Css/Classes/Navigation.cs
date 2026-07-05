@@ -10,7 +10,7 @@ public static class Navigation
     /// <summary>The <c>flare-nav-menu--rail</c> CSS class.</summary>
     public const string NavMenuRail = "flare-nav-menu--rail";
     /// <summary>The <c>flare-nav-menu--rail-labeled</c> CSS class: a rail that stacks a small caption
-    /// under each icon (MD3 navigation rail) instead of hiding the text.</summary>
+    /// under each icon (a labeled navigation rail) instead of hiding the text.</summary>
     public const string NavMenuRailLabeled = "flare-nav-menu--rail-labeled";
     /// <summary>The <c>flare-nav-menu--framed</c> CSS class (pinned header/footer + scrolling middle).</summary>
     public const string NavMenuFramed = "flare-nav-menu--framed";

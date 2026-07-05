@@ -1,10 +1,10 @@
 /* ==========================================================================
-   FlareSlider - MD3 Expressive (default) / theme-overridable
-   Per-size MD3 geometry lives in --_trk-* / --_hnd-* vars on the size classes.
+   FlareSlider - default geometry / theme-overridable
+   Per-size geometry lives in --_trk-* / --_hnd-* vars on the size classes.
    Presentation resolves as var(--flare-slider-X, <size/default>) so a theme can
    override ANY aspect via plain tokens (thin rail, circular thumb, even a clip-path
    shape) without being limited to a fixed set of shapes. Empty theme tokens are not
-   emitted, so MD3 keeps its per-size geometry from the size classes.
+   emitted, so the component keeps its per-size geometry from the size classes.
    The visual track is drawn as rounded rail segments; the native <input type=range>
    sits transparently on top for interaction + thumb.
    ========================================================================== */
@@ -14,7 +14,7 @@
     gap: var(--flare-spacing-2);
 }
 
-/* ---- Size geometry (MD3 Expressive spec "## Sizes", dp -> rem) ----
+/* ---- Size geometry (dp -> rem) ----
    track 16/24/40/56/96dp - handle 44/44/52/68/108dp - track-shape 8/8/12/16/28dp */
 .flare-slider--xs { --_trk-h: 1rem;   --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 20px; }
 .flare-slider--sm { --_trk-h: 1.5rem; --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 22px; }
@@ -149,7 +149,7 @@
 .flare-slider__input::-webkit-slider-runnable-track { background: transparent; border: none; height: 100%; }
 .flare-slider__input::-moz-range-track { background: transparent; border: none; height: 100%; }
 
-/* Handle. MD3 = tall narrow bar (border-width 0); a theme sets handle width/height/radius/
+/* Handle. Default = tall narrow bar (border-width 0); a theme sets handle width/height/radius/
    border-width/clip-path tokens for any other shape (circle, triangle, ...). */
 .flare-slider__input::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -190,7 +190,7 @@
         color-mix(in srgb, var(--_active) calc(var(--_sl-hover) * 100%), transparent);
 }
 
-/* Pressed: handle narrows to the pressed width + stronger state layer (MD3 Expressive) */
+/* Pressed: handle narrows to the pressed width + stronger state layer */
 .flare-slider__input:active::-webkit-slider-thumb {
     width: var(--_hnd-width-pressed);
     box-shadow: 0 0 0 calc(var(--_sl-size) / 2)
@@ -415,7 +415,7 @@
     transform: translateY(50%) scale(1);
 }
 
-/* Disabled: split opacity - active 0.38 / inactive 0.12 (MD3) */
+/* Disabled: split opacity - active 0.38 / inactive 0.12 */
 .flare-slider--disabled { pointer-events: none; }
 .flare-slider--disabled {
     --_active: color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent);

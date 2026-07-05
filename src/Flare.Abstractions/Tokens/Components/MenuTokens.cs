@@ -8,7 +8,7 @@ public sealed record MenuTokens
     // --- 1. PANEL ---
     /// <summary>Panel min width token (<c>10rem</c>).</summary>
     [CssVar(MenuPanel.MinWidth)] public required string PanelMinWidth { get; init; }
-    /// <summary>Name of the panel entrance @keyframes animation (MD3 = scale+fade; Fluent = fade/slide without scale).</summary>
+    /// <summary>Name of the panel entrance @keyframes animation (e.g. scale+fade, or fade/slide without scale).</summary>
     [CssVar(MenuPanel.EnterAnimation)] public required string EnterAnimation { get; init; }
     /// <summary>Panel radius token (<c>var(--flare-popover-radius, var(--flare-shape-small))</c>).</summary>
     [CssVar(MenuPanel.Radius)] public required string PanelRadius { get; init; }

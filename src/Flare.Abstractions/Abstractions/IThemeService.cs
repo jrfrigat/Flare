@@ -72,8 +72,8 @@ public interface IThemeService
     Task RequireThemeAssetsAsync(string? themeId, string? paletteId);
 
     /// <summary>
-    /// Generates a palette from a seed using the current theme's generator (MD3 tonal /
-    /// Fluent ramp) or the core default. Does not register or apply it.
+    /// Generates a palette from a seed using the current theme's generator (its own color rules)
+    /// or the core default. Does not register or apply it.
     /// </summary>
     Palette GeneratePalette(string id, string name, PaletteSeed seed, string? source = null);
 

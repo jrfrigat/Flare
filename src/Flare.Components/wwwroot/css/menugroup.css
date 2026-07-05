@@ -4,7 +4,7 @@
     gap: var(--flare-menu-item-gap-between, 0);
     padding: var(--flare-menu-group-padding, 0);
     border-radius: var(--flare-menu-group-radius, 0);
-    /* MD3 Expressive: a group is a rounded "island" surface. Default themes keep it transparent. */
+    /* A group can be a rounded "island" surface. Default themes keep it transparent. */
     background: var(--flare-menu-group-bg, transparent);
 }
 
@@ -19,7 +19,7 @@
     color: var(--flare-color-on-surface-variant);
 }
 
-/* Adjacent groups are separated by a gap (MD3 Expressive: two distinct "islands").
+/* Adjacent groups are separated by a gap (two distinct "islands").
    An optional divider line can be enabled per theme via --flare-menu-group-divider. */
 .flare-menu-group + .flare-menu-group {
     margin-top: var(--flare-menu-group-gap, 0.5rem);

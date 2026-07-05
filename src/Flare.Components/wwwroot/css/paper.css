@@ -18,7 +18,7 @@
 .flare-paper--padding-large   { padding: var(--flare-spacing-12); }
 .flare-paper--padding-xlarge  { padding: var(--flare-spacing-16); }
 
-/* MD3-style surface tones via box-shadow elevation */
+/* Surface tones via box-shadow elevation */
 .flare-paper--elevation-0 { box-shadow: none; background: var(--flare-color-surface); }
 .flare-paper--elevation-1 { box-shadow: var(--flare-elevation-1); }
 .flare-paper--elevation-2 { box-shadow: var(--flare-elevation-2); }

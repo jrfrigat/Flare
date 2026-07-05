@@ -67,7 +67,7 @@
                 background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
-/* MD3 hover: active indicator -> on-surface (1dp) + an 8% state layer over the container.
+/* Hover: a theme can recolor the active indicator and add a state layer over the container.
    Themes opt in via the tokens; default leaves the rest indicator unchanged. */
 .flare-input__field:hover {
     background-image: var(--flare-input-hover-state-layer, none);
@@ -75,7 +75,7 @@
 }
 
 /* Focus comes after hover so the focus indicator wins when the field is focused (the hover
-   state layer may still show while hovering a focused field, per MD3). */
+   state layer may still show while hovering a focused field). */
 /* Layout-neutral focus: keep the rest border WIDTH (so the field never resizes), recolour it to the
    accent, and add the extra accent thickness as an inset box-shadow. Reserving the emphasis this way
    stops the field "jumping" on focus (the border-width change did). */
@@ -89,12 +89,12 @@
     background: transparent;
     border: none;
     outline: none;
-    /* Block padding drives the field height (MD3 filled = 56dp via 1rem + 24px line). */
+    /* Block padding drives the field height (default ~56dp via 1rem + 24px line). */
     padding: var(--flare-input-padding, 0.75rem 1rem);
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);
-    /* MD3 caret follows the field's accent (--fc-main), default primary */
+    /* Caret follows the field's accent (--fc-main), default primary */
     caret-color: var(--fc-main, var(--flare-color-primary));
 }
 
@@ -117,7 +117,7 @@
 .flare-input--xl .flare-select__control,
 .flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
 
-/* Placeholder text is muted (MD3: on-surface-variant). The ::placeholder pseudo styles real <input>s;
+/* Placeholder text is muted (on-surface-variant). The ::placeholder pseudo styles real <input>s;
    the .flare-input__placeholder class is the equivalent <span> for the combobox triggers (Select/
    MultiSelect), which have no native input. */
 .flare-input__control::placeholder {
@@ -187,7 +187,7 @@
     outline-offset: 1px;
 }
 
-/* Supporting-text row: helper/error on the left, character counter on the right (MD3). */
+/* Supporting-text row: helper/error on the left, character counter on the right. */
 .flare-input__support {
     display: flex;
     align-items: flex-start;
@@ -215,14 +215,14 @@
   border-color: var(--flare-color-error);
   border-bottom-color: var(--flare-color-error);
 }
-/* Error hover: indicator darkens (MD3 error.hover = error + 8% on-surface, so darker in light /
+/* Error hover: the indicator darkens (blend error with 8% on-surface, so darker in light /
    lighter in dark). The 8% state layer itself already shows via the generic :hover rule. */
 .flare-input--error .flare-input__field:hover {
   border-bottom-color: var(--flare-input-error-hover-indicator,
     color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error)));
 }
 
-/* Disabled (MD3): container at 4% on-surface, active indicator at 38%, content at 38%
+/* Disabled: container at 4% on-surface, active indicator at 38%, content at 38%
    (separate, not one blanket opacity). */
 .flare-input--disabled { pointer-events: none; }
 .flare-input--disabled .flare-input__field {
@@ -263,18 +263,18 @@
 .flare-input--floating .flare-input__field:focus-within .flare-input__label--floating,
 .flare-input--floating .flare-input__control:not(:placeholder-shown) ~ .flare-input__label--floating {
     top: 0.25rem;
-    /* MD3 populated label = 12pt / 16pt line. */
+    /* Populated label = 12pt / 16pt line. */
     font-size: var(--flare-typescale-body-small-size);
     line-height: var(--flare-typescale-body-small-height);
 }
-/* MD3: the label turns primary ONLY while focused; populated-but-unfocused stays
+/* The label turns primary ONLY while focused; populated-but-unfocused stays
    on-surface-variant (inherited from the base floating-label rule). */
 .flare-input--floating .flare-input__field:focus-within .flare-input__label--floating {
     color: var(--fc-main, var(--flare-color-primary));
 }
 
-/* Error state colors (MD3): label, caret, trailing icon -> error (active indicator handled
-   above; supporting text via __helper--error). Leading icon stays neutral per spec. The third
+/* Error state colors: label, caret, trailing icon -> error (active indicator handled
+   above; supporting text via __helper--error). Leading icon stays neutral. The third
    selector beats the focus-primary label rule so an errored+focused label stays error. */
 .flare-input--error .flare-input__label,
 .flare-input--error .flare-input__label--floating,

@@ -11,9 +11,9 @@ public enum LinkTabsVariant
     /// <summary>The active theme's default tab style (a simple underline indicator).</summary>
     Default,
 
-    /// <summary>Active link filled with a soft tonal pill (MD3 secondary-container, FluentUI2 "subtle-circular").</summary>
+    /// <summary>Active link filled with a soft tonal pill.</summary>
     Tonal,
 
-    /// <summary>Active link filled with the solid accent as a pill / segmented control (MD3 primary-container, FluentUI2 "filled-circular").</summary>
+    /// <summary>Active link filled with the solid accent as a pill / segmented control.</summary>
     Filled,
 }

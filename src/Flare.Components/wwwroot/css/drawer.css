@@ -8,7 +8,7 @@
 
 .flare-drawer {
   position: fixed;
-  /* MD3 sheet/drawer container = surface-container-low */
+  /* Sheet/drawer container = surface-container-low */
   background: var(--flare-color-surface-container-low);
   box-shadow: var(--flare-elevation-3);
   z-index: 401;

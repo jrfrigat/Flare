@@ -1,6 +1,6 @@
 /* FAB speed-dial menu - a FlareFloatingActionButton with a child FlareFloatingActionMenu.
-   The trigger and actions reuse the themed .flare-fab styling (MD3 rounded-square /
-   Fluent squared) instead of hardcoded circles. */
+   The trigger and actions reuse the themed .flare-fab styling (theme-driven shape)
+   instead of hardcoded circles. */
 
 .flare-fab-menu {
     position: relative;

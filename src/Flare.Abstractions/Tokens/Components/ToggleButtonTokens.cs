@@ -2,9 +2,9 @@ using Flare.Css;
 using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens.Components;
 
-/// <summary>Per-theme tokens for <c>FlareToggleButton</c> / <c>FlareToggleGroup</c> (MD3 Segmented Button).
-/// Toggle has 3 sizes (S/M/L). The selected state may morph the corner radius (MD3) or only change
-/// colour (Fluent) - both are expressed purely through these tokens, so the shared CSS stays theme-agnostic.</summary>
+/// <summary>Per-theme tokens for <c>FlareToggleButton</c> / <c>FlareToggleGroup</c> (segmented button).
+/// Toggle has 3 sizes (S/M/L). The selected state may morph the corner radius or only change the
+/// colour - both are expressed purely through these tokens, so the shared CSS stays theme-agnostic.</summary>
 public sealed record ToggleButtonTokens
 {
     // --- 1. CONTAINER HEIGHT (with label) for 3 sizes ---

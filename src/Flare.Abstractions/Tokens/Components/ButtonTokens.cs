@@ -88,7 +88,7 @@ public sealed record ButtonTokens
     [CssVar(Button.IconSize.Xl)] public required string IconSizeXl { get; init; }
 
     // --- 7. LABEL TYPOGRAPHY for the 5 sizes ---
-    // Each theme defines its own scale (e.g. MD3: label-large -> title-medium -> headline-*).
+    // Each theme defines its own scale (e.g. label-large -> title-medium -> headline-*).
     // (compound: each TypeStyle expands to several --flare-btn-label-* vars in CssVarMap.FlattenDesign)
     /// <summary>Label xs token.</summary>
     public required TypeStyle LabelXs { get; init; }

@@ -1,6 +1,6 @@
 namespace Flare.Components;
 
-/// <summary>Visual style of a FlareButton (MD3 button variants).</summary>
+/// <summary>Visual style of a FlareButton.</summary>
 public enum ButtonVariant
 {
     /// <summary>Filled.</summary>

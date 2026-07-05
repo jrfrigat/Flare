@@ -61,7 +61,7 @@ h6[tabindex="-1"]:focus {
 }
 
 /* Text-field controls indicate focus via their own active indicator (the field's bottom
-   border on :focus-within), per MD3/Fluent. Suppress the generic focus-ring outline so a
+   border on :focus-within). Suppress the generic focus-ring outline so a
    click/focus doesn't draw a full ring around the field. Must come after the rules above so
    it wins at equal specificity (and beats the global :focus-visible). */
 /* The inner-input fields all render .flare-input__control (covers FlareField/Numeric/Masked/

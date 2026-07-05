@@ -8,7 +8,7 @@
 /* The clock toggle button uses the shared flare-input__toggle reset (input.css). */
 
 /* Scrim + panel base (fixed/elevated surface) come from the shared flare-picker__scrim /
-   flare-picker__panel (picker.css). The MD3 time-picker keeps its larger container:
+   flare-picker__panel (picker.css). The time-picker keeps its larger container:
    a wider radius + more padding (28dp). */
 .flare-timepicker__panel {
   min-width: 17rem;
@@ -75,7 +75,7 @@
 }
 .flare-timepicker__actions { display: flex; justify-content: flex-end; gap: var(--flare-spacing-4); margin-top: var(--flare-spacing-6); }
 
-/* ---- Dial variant (MD3 clock) ---- */
+/* ---- Dial variant (analog clock) ---- */
 .flare-timepicker__panel--dial { min-width: 19rem; }
 .flare-timepicker__dial-top {
   display: flex;

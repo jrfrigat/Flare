@@ -18,8 +18,8 @@
   flex-shrink: 0;
 }
 
-/* MD3 state-layer (40dp around the 20dp ring). Color: on-surface (unselected) / primary (selected).
-   Fluent suppresses the halo via --flare-radio-state-layer-* = transparent. */
+/* State-layer (40dp around the 20dp ring). Color: on-surface (unselected) / primary (selected).
+   Set --flare-radio-state-layer-* = transparent to suppress the halo. */
 .flare-radio__container::before {
   content: '';
   position: absolute;

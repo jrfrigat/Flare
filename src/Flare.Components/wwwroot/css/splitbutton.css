@@ -33,7 +33,7 @@
     border-top-right-radius: var(--flare-split-btn-trigger-radius-md-top-right) !important;
     border-bottom-right-radius: var(--flare-split-btn-trigger-radius-md-bottom-right) !important;
     border-bottom-left-radius: var(--flare-split-btn-trigger-radius-md-bottom-left) !important;
-    /* Trigger width: MD3 default = height (square), Fluent fixes 24dp via the token */
+    /* Trigger width: default = height (square); a theme can fix a width via the token */
     width: var(--flare-split-btn-trigger-width, var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)));
     padding-inline: 0 !important;
 }

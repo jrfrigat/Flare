@@ -1,7 +1,7 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Inset style of a <see cref="FlareDivider"/>, per Material Design 3.
+/// Inset style of a <see cref="FlareDivider"/>.
 /// </summary>
 public enum DividerInset
 {

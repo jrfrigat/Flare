@@ -31,13 +31,13 @@ public interface ITheme
 
     /// <summary>
     /// Optional dark-mode override of <see cref="DesignTokens.Extended"/> for the rare
-    /// mode-specific non-color extras (e.g. Fluent focus-stroke colors). Null = no override.
+    /// mode-specific non-color extras (e.g. focus-stroke colors). Null = no override.
     /// </summary>
     IReadOnlyDictionary<string, string>? ExtendedDarkOverride => null;
 
     /// <summary>
-    /// Optional palette generator that follows this design system's color rules (MD3 tonal,
-    /// Fluent ramp). When null, the core default <see cref="IPaletteGenerator"/> implementation is used.
+    /// Optional palette generator that follows this design system's own color rules (e.g. a tonal
+    /// or ramp-based scheme). When null, the core default <see cref="IPaletteGenerator"/> implementation is used.
     /// </summary>
     IPaletteGenerator? PaletteGenerator => null;
 }

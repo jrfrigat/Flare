@@ -4,7 +4,7 @@
     gap: var(--flare-spacing-4);
     padding: var(--flare-spacing-3) var(--flare-spacing-8);
     box-sizing: border-box;
-    min-height: var(--flare-chip-height, 2rem); /* MD3 chip height 32dp */
+    min-height: var(--flare-chip-height, 2rem); /* default chip height 32dp */
     border-radius: var(--flare-chip-radius, var(--flare-shape-small));
     /* Color via shared role tokens (--fc-*); default is neutral.
        Role -> flare-color-* class; custom -> inline --fc-main/--fc-on. */
@@ -35,12 +35,12 @@
 }
 .flare-chip__avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* MD3: assist/suggestion leading icon uses the primary color; selected chips
+/* Assist/suggestion leading icon uses the primary color; selected chips
    inherit the chip's foreground so the icon matches the filled state. */
 .flare-chip__icon--leading { color: var(--flare-color-primary); }
 .flare-chip--selected .flare-chip__icon--leading { color: inherit; }
 
-/* MD3 elevated chip: filled surface-container-low with a level-1 shadow, no border. */
+/* Elevated chip: filled surface-container-low with a level-1 shadow, no border. */
 .flare-chip--elevated {
     background-color: var(--flare-color-surface-container-low);
     border-color: transparent;

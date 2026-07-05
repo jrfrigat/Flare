@@ -4,8 +4,7 @@ namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
 /// Design tokens for the Card component. These control the geometry, color, and motion of cards.
-/// Defaults follow Material Design 3 Expressive; other themes override the fields they need so each
-/// variant looks native (see <c>FluentUI2Tokens</c>, <c>AeroTokens</c>).
+/// A theme supplies every value and overrides the fields it needs so each variant looks native.
 /// </summary>
 public sealed record CardTokens
 {

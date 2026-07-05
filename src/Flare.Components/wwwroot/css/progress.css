@@ -19,8 +19,8 @@
   transition: width 0.3s var(--flare-motion-easing-standard);
 }
 
-/* MD3 split track: active indicator + gap + remaining track (no SVG).
-   Gap is token-driven - MD3 sets it to 4px, Fluent leaves it 0 (continuous bar). */
+/* Split track: active indicator + gap + remaining track (no SVG).
+   Gap is token-driven - a theme can set e.g. 4px, or leave it 0 for a continuous bar. */
 .flare-progress--linear.flare-progress--split {
   display: flex;
   align-items: center;
@@ -39,12 +39,12 @@
   height: 100%;
   background: var(--flare-color-secondary-container);
   border-radius: var(--flare-progress-track-radius, var(--flare-shape-full));
-  /* MD3: leave a gap before the trailing stop indicator so the track does not
-     run under the dot. Reserves gap + dot-size on the right (0 in Fluent). */
+  /* Leave a gap before the trailing stop indicator so the track does not
+     run under the dot. Reserves gap + dot-size on the right (0 when the dot is off). */
   margin-right: calc(var(--flare-progress-gap, 0) + var(--flare-progress-stop-size, 0px));
 }
 
-/* MD3 trailing stop-indicator dot (token-gated; Fluent sets size to 0 -> hidden).
+/* Trailing stop-indicator dot (token-gated; set size to 0 to hide).
    Scoped to the plain determinate linear bar - not buffer/query/indeterminate. */
 .flare-progress--linear:not(.flare-progress--buffer):not(.flare-progress--query):not(.flare-progress--indeterminate)::after {
   content: "";
@@ -64,7 +64,7 @@
 }
 
 /* ==========================================================================
-   MD3 EXPRESSIVE WAVY LINEAR (spec)
+   WAVY LINEAR
    Reuses the split-track layout (.flare-progress--split): active bar + gap +
    remaining track + trailing stop indicator, so the wavy mode gets the SAME gap
    (--flare-progress-gap) and stop dot as the plain split mode. The active bar
@@ -106,7 +106,7 @@
 }
 
 /* ==========================================================================
-   MD3 EXPRESSIVE WAVY RING
+   WAVY RING
    Only the active arc is wavy (track stays a smooth circle). Flow: rotate the wavy
    path while shifting stroke-dashoffset by the same fraction (pathLength=100, so a
    full 360deg == 100 units). The fill window stays put on screen while the crests
@@ -155,7 +155,7 @@
   transition: stroke-dasharray 0.3s var(--flare-motion-easing-standard);
 }
 
-/* Determinate circular: the active arc + remaining-track arc (with the MD3 gap)
+/* Determinate circular: the active arc + remaining-track arc (with the gap)
    are computed as plain numeric stroke-dasharray values inline in the component -
    no CSS calc() in stroke-dasharray, which several browsers reject. */
 

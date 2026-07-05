@@ -290,7 +290,7 @@
 }
 
 /* Keyboard navigation focus (ring only for keyboard focus, not mouse clicks). Uses the per-theme
-   focus-ring token so MD3 (3px) and Fluent (2px) each render their own spec. */
+   focus-ring token so each theme renders its own focus-ring spec. */
 .flare-datagrid__table:focus-visible {
   outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
   outline-offset: 2px;

@@ -11,7 +11,7 @@ namespace Flare.Theming;
 /// </summary>
 /// <example>
 /// // Start from a theme package's published reference and override only what you need:
-/// var theme = new FlareThemeBuilder("my-theme", "My Custom Theme", Md3.DesignReference)
+/// var theme = new FlareThemeBuilder("my-theme", "My Custom Theme", baseReference)
 ///     .WithShape(s => s with { Medium = "8px" })
 ///     .WithButton(b => b with { HeightMd = "48px" })
 ///     .WithStyleAsset("_content/MyApp/css/my-theme.css")
@@ -29,8 +29,8 @@ public sealed class FlareThemeBuilder
 
     /// <summary>
     /// Creates a theme builder starting from <paramref name="baseDesign"/>, then override only what you
-    /// need via the <c>With*</c> methods. Pass a theme package's published reference - e.g.
-    /// <c>Md3.DesignReference</c> or <c>Fluent2.DesignReference</c> - as the base: Flare's core ships no
+    /// need via the <c>With*</c> methods. Pass a theme (or reference) package's published
+    /// <c>DesignReference</c> as the base: Flare's core ships no
     /// built-in design baseline (design values live in theme packages, not the theme-agnostic core).
     /// </summary>
     public FlareThemeBuilder(string id, string displayName, DesignTokens baseDesign)

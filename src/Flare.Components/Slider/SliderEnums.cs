@@ -1,13 +1,12 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Size of <see cref="FlareSlider"/>, mapping to the Material Design 3 Expressive slider sizes
-/// (track thickness 16/24/40/56/96dp). Larger sizes also grow the handle and icons. Uses the
-/// shared Xs..Xl scale; Xs is the MD3 Expressive default.
+/// Size of <see cref="FlareSlider"/> (track thickness 16/24/40/56/96dp). Larger sizes also grow the
+/// handle and icons. Uses the shared Xs..Xl scale; Xs is the default.
 /// </summary>
 public enum SliderSize
 {
-    /// <summary>Extra small - 16dp track, 44dp handle (MD3 Expressive default).</summary>
+    /// <summary>Extra small - 16dp track, 44dp handle (the default).</summary>
     Xs,
     /// <summary>Small - 24dp track, 44dp handle.</summary>
     Sm,

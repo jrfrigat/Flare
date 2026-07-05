@@ -183,7 +183,7 @@
             ThemeService.CurrentTheme.Id, ThemeService.CurrentPalette.Id, ThemeService.Mode));
 
         // When the dynamic palette is active and the THEME changed, regenerate it with the new
-        // theme's color rules (MD3 tonal vs Fluent ramp etc.). Guarded so the re-applied palette's
+        // theme's own color rules. Guarded so the re-applied palette's
         // own OnThemeChanged does not recurse.
         if (!_dynamicBusy
             && ThemeService.CurrentPalette.Id == Palette.DynamicId

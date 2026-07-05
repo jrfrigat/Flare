@@ -16,7 +16,7 @@
 
 /* Error + disabled state come from the shared flare-input--error / flare-input--disabled
    (input.css); the root emits those modifiers and the field/control carry flare-input__field
-   / flare-input__control, so the MD3 state treatment applies uniformly. */
+   / flare-input__control, so the shared state treatment applies uniformly. */
 
 /* The trigger field's click-to-open cursor comes from the shared flare-picker__field (picker.css). */
 

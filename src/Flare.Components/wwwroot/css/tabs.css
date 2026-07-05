@@ -79,7 +79,7 @@
   gap: var(--flare-spacing-4);
   padding: var(--flare-spacing-6) var(--flare-spacing-10);
   border: none;
-  /* MD3: active-indicator height 3dp; inactive label = on-surface */
+  /* Active-indicator height 3dp; inactive label = on-surface */
   border-bottom: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
   margin-bottom: -1px;
   background: transparent;
@@ -112,7 +112,7 @@
   border-bottom-color: var(--flare-tabs-active-color, var(--flare-color-primary));
 }
 
-/* Primary tabs (MD3): content-hugging active indicator with rounded top corners.
+/* Primary tabs: content-hugging active indicator with rounded top corners.
    Horizontal only; vertical primary falls back to the underline style. */
 .flare-tabs--primary:not(.flare-tabs--vertical) .flare-tabs__tab { position: relative; }
 .flare-tabs--primary:not(.flare-tabs--vertical) .flare-tabs__tab--active { border-bottom-color: transparent; }

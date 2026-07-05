@@ -3,7 +3,7 @@
 
 @if (Variant == ProgressVariant.Circular && _wavyActive)
 {
-    @* MD3 Expressive wavy ring (spec): ONLY the active indicator is wavy; the remaining track is a
+    @* Wavy ring: ONLY the active indicator is wavy; the remaining track is a
        normal smooth circle. The active arc is a wavy path whose phase is animated (SMIL d-morph) so
        the crests travel around the ring. pathLength=100 keeps the active-arc dash in percent units. *@
     <div class="@BuildCssClass(Css.Classes.Progress.Circular, Css.Classes.Progress.Wavy, _colorClass)"
@@ -46,7 +46,7 @@ else if (Variant == ProgressVariant.Circular)
 }
 else if (Variant == ProgressVariant.Linear && _wavyActive)
 {
-    @* MD3 Expressive wavy linear (spec): split-track layout (active bar + gap + remaining track +
+    @* Wavy linear: split-track layout (active bar + gap + remaining track +
        trailing stop indicator). The active bar holds a continuous sine path (constant wavelength,
        amplitude and speed from theme tokens) that is clipped to the bar and translated one
        wavelength per cycle for a seamless flow. The remaining track stays a flat line. *@
@@ -117,7 +117,7 @@ else
     [Parameter] public int Size { get; set; } = 40;
     /// <summary>Track thickness in pixels for the linear variants (Linear/Buffer/Query). 0 = theme default (4px).</summary>
     [Parameter] public int Thickness { get; set; }
-    /// <summary>MD3 Expressive wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.</summary>
+    /// <summary>Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.</summary>
     [Parameter] public bool Wavy { get; set; }
     /// <summary>Secondary buffer fill percentage (0-100), used only with Variant=Buffer.</summary>
     [Parameter] public double BufferValue { get; set; }
@@ -155,8 +155,8 @@ else
     private double _circularGap => ReadTokenNum("--flare-progress-circular-gap", 0);
 
     // ===========================================================================================
-    // WAVY (MD3 Expressive) - opt-in per theme via --flare-progress-wavy-enabled (1=on). A theme
-    // that doesn't define it (e.g. Fluent) renders the plain bar/ring even when Wavy="true".
+    // WAVY - opt-in per theme via --flare-progress-wavy-enabled (1=on). A theme
+    // that doesn't define it renders the plain bar/ring even when Wavy="true".
     // ===========================================================================================
     private bool _wavyActive => Wavy && !_indeterminate && ReadTokenNum("--flare-progress-wavy-enabled", 0) > 0;
 

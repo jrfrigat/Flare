@@ -34,7 +34,7 @@
     border-radius: var(--flare-fab-radius-lg, var(--flare-shape-extra-large));
 }
 
-/* Surface variant (MD3): used by the small action FABs inside a FAB menu. */
+/* Surface variant: used by the small action FABs inside a FAB menu. */
 .flare-fab--surface {
     background-color: var(--flare-color-surface-container-high);
     color: var(--flare-color-primary);

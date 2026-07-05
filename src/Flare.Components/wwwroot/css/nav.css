@@ -104,7 +104,7 @@
 /*
    Expand/collapse animates grid-template-rows 0fr<->1fr, which interpolates to the real
    content height - no fixed max-height cap, so arbitrarily long groups are never clipped.
-   Uses the active theme's emphasized motion tokens (MD3 Expressive / Fluent UI 2).
+   Uses the active theme's emphasized motion tokens.
 */
 .flare-nav-group__items {
   display: grid;
@@ -203,7 +203,7 @@
 }
 
 /*
-   Labeled rail (NavMenuMode.RailLabeled, MD3 navigation rail): instead of hiding the text, stack a
+   Labeled rail (NavMenuMode.RailLabeled): instead of hiding the text, stack a
    small caption under each icon. These rules sit after the icon-only rail rules above and share their
    specificity, so the later declarations win for a menu carrying both --rail and --rail-labeled.
 */

@@ -9,7 +9,7 @@ public sealed record SplitButtonTokens
     /// <summary>Gap token (<c>0.125rem</c>).</summary>
     [CssVar(SplitButton.Gap)] public required string Gap { get; init; }
 
-    // Trigger button width. Default (MD3) = height (square); Fluent sets a fixed 24dp.
+    // Trigger button width. A theme may make it match the height (a square trigger) or pin a fixed width.
     /// <summary>Trigger width token (<c>var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))</c>).</summary>
     [CssVar(SplitButton.TriggerWidth)] public required string TriggerWidth { get; init; }
 
