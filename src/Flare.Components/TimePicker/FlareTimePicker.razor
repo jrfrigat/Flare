@@ -9,36 +9,45 @@
 @using Microsoft.JSInterop
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
-<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style">
-    @if (!string.IsNullOrEmpty(Label))
-    {
-        <label class="@Css.Classes.Input.Label">@Label</label>
-    }
-    <div class="@Css.Classes.Input.Field" @ref="_fieldEl">
-        <input class="@Css.Classes.Input.Control"
-               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
-               type="text"
-               inputmode="numeric"
-               maxlength="5"
-               value="@_text"
-               placeholder="@(Placeholder ?? "HH:mm")"
-               disabled="@Disabled"
-               readonly="@ReadOnly"
-               required="@Required"
-               aria-required="@(Required ? "true" : null)"
-               aria-label="@(Label ?? FlareStrings.TimePicker_FieldLabel)"
-               @oninput="HandleInput"
-               @onchange="HandleCommitText"
-               @attributes="AdditionalAttributes" />
-        <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
-                disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
-                aria-label="@FlareStrings.TimePicker_Open" @onclick="Toggle">
-            <FlareIcon Name="schedule" Style="font-size:1.25rem;" />
-        </button>
-    </div>
+@* Composes the shared FlareFieldChrome frame (root + label + helper/error). The time field owns its
+   trigger well (input + clock toggle) and the anchored clock/dropdown popup, rendered in the Field slot. *@
+<FlareFieldChrome ComponentClass="@Css.Classes.TimePicker.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@_invalid"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelFor="@_inputId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style">
+    <Field>
+        <div class="@Css.Classes.Input.Field" @ref="_fieldEl">
+            <input class="@Css.Classes.Input.Control"
+                   id="@_inputId"
+                   style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+                   type="text"
+                   inputmode="numeric"
+                   maxlength="5"
+                   value="@_text"
+                   placeholder="@(Placeholder ?? "HH:mm")"
+                   disabled="@Disabled"
+                   readonly="@ReadOnly"
+                   required="@Required"
+                   aria-required="@(Required ? "true" : null)"
+                   aria-label="@(Label ?? FlareStrings.TimePicker_FieldLabel)"
+                   aria-invalid="@(_invalid ? "true" : null)"
+                   aria-describedby="@_computedDescribedBy"
+                   @oninput="HandleInput"
+                   @onchange="HandleCommitText"
+                   @attributes="AdditionalAttributes" />
+            <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
+                    disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
+                    aria-label="@FlareStrings.TimePicker_Open" @onclick="Toggle">
+                <FlareIcon Name="schedule" Style="font-size:1.25rem;" />
+            </button>
+        </div>
 
-    @if (_open)
-    {
+        @if (_open)
+        {
         <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
         <div class="@($"{Css.Classes.Picker.Panel} {Css.Classes.TimePicker.Panel} {Css.Classes.TimePicker.Panel}--{PopupVariant.ToString().ToLowerInvariant()}")"
              @ref="_panelEl" role="dialog" aria-modal="true" aria-label="@_headline">
@@ -87,17 +96,9 @@
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Confirm">@(OkText ?? FlareStrings.Picker_Ok)</FlareButton>
             </div>
         </div>
-    }
-
-    @if (!string.IsNullOrEmpty(_displayedError))
-    {
-        <span class="@($"{Css.Classes.Input.Helper} {Css.Classes.Input.HelperError}")">@_displayedError</span>
-    }
-    else if (!string.IsNullOrEmpty(HelperText))
-    {
-        <span class="@Css.Classes.Input.Helper">@HelperText</span>
-    }
-</div>
+        }
+    </Field>
+</FlareFieldChrome>
 
 @code {
     /// <summary>Currently selected time.</summary>
@@ -166,19 +167,15 @@
 
     private string _headline => Headline ?? FlareStrings.TimePicker_Headline;
 
-    private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : string.Empty;
+    // Invalid drives the frame's error chrome (a resolved validation message).
+    private bool _invalid => !string.IsNullOrEmpty(_displayedError);
 
-    private string? _variantClass => VariantClass(Variant);
-    private string _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => string.Empty,
-    };
+    private readonly string _inputId = $"flare-timepicker-in-{Guid.NewGuid():N}";
+    private string _helperId => $"{_inputId}-help";
+    private string _errorId => $"{_inputId}-err";
+    private string? _computedDescribedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
 
     private async Task HandleInput(ChangeEventArgs e)
     {

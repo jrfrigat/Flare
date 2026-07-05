@@ -7,37 +7,46 @@
 @inject Flare.Components.Services.IElementJsService Element
 @inject Flare.Components.Services.IUiJsService Ui
 
-<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
-    @if (!string.IsNullOrEmpty(Label))
-    {
-        <label class="@Css.Classes.Input.Label">@Label</label>
-    }
-    <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldRef">
-        <input class="@Css.Classes.Input.Control"
-               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
-               type="text"
-               disabled="@Disabled"
-               readonly="@(!AllowInput || ReadOnly)"
-               required="@Required"
-               aria-required="@(Required ? "true" : null)"
-               placeholder="@(Placeholder ?? _numericPattern)"
-               aria-label="@(Label ?? Placeholder)"
-               value="@_text"
-               @onfocus="HandleFocus"
-               @oninput="HandleInput"
-               @onchange="HandleTextChange"
-               @onblur="HandleBlur" />
-        @if (AllowPicker)
+@* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date-time field owns its
+   trigger well (input + calendar/clock toggle) and the anchored combined popup, rendered in the Field slot. *@
+<FlareFieldChrome ComponentClass="@Css.Classes.DateTimePicker.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@_invalid"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelFor="@_inputId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldRef">
+            <input class="@Css.Classes.Input.Control"
+                   id="@_inputId"
+                   style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+                   type="text"
+                   disabled="@Disabled"
+                   readonly="@(!AllowInput || ReadOnly)"
+                   required="@Required"
+                   aria-required="@(Required ? "true" : null)"
+                   placeholder="@(Placeholder ?? _numericPattern)"
+                   aria-label="@(Label ?? Placeholder)"
+                   aria-invalid="@(_invalid ? "true" : null)"
+                   aria-describedby="@_computedDescribedBy"
+                   value="@_text"
+                   @onfocus="HandleFocus"
+                   @oninput="HandleInput"
+                   @onchange="HandleTextChange"
+                   @onblur="HandleBlur" />
+            @if (AllowPicker)
+            {
+                <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
+                        disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
+                        aria-label="@FlareStrings.DateTimePicker_Open" @onclick="TogglePanel">
+                    <FlareIcon Name="calendar_clock" Style="font-size:1.25rem;" />
+                </button>
+            }
+        </div>
+        @if (_open)
         {
-            <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
-                    disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
-                    aria-label="@FlareStrings.DateTimePicker_Open" @onclick="TogglePanel">
-                <FlareIcon Name="calendar_clock" Style="font-size:1.25rem;" />
-            </button>
-        }
-    </div>
-    @if (_open)
-    {
         <div class="@Css.Classes.Picker.Scrim" @onclick="() => _open = false" aria-hidden="true"></div>
         <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" style="@_panelStyle">
             @if (_panels)
@@ -62,16 +71,9 @@
                 <button class="@($"{Css.Classes.Button.Root} {Css.Classes.Button.Text}")" type="button" @onclick="Confirm" @onclick:stopPropagation>@(FlareStrings.Picker_Ok)</button>
             </div>
         </div>
-    }
-    @if (!string.IsNullOrEmpty(_displayedError))
-    {
-        <span class="@($"{Css.Classes.Input.Helper} {Css.Classes.Input.HelperError}")" role="alert">@_displayedError</span>
-    }
-    else if (!string.IsNullOrEmpty(HelperText))
-    {
-        <span class="@Css.Classes.Input.Helper">@HelperText</span>
-    }
-</div>
+        }
+    </Field>
+</FlareFieldChrome>
 
 @code {
     /// <summary>Currently selected date and time (supports <c>@bind-Value</c>).</summary>
@@ -107,21 +109,16 @@
 
     protected override string ComponentCssClass => Css.Classes.DateTimePicker.Root;
 
-    private string? _variantClass => VariantClass(Variant);
     private string? _displayedError => DisplayedError(ErrorText);
-    // Error/disabled state via the shared flare-input--error / --disabled (the field/control carry
-    // the shared flare-input__field / __control). Error-first matches the sibling picker convention.
-    private string? _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : null;
-    private string _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => string.Empty,
-    };
+    // Invalid drives the frame's error chrome (a resolved validation message).
+    private bool _invalid => !string.IsNullOrEmpty(_displayedError);
+
+    private readonly string _inputId = $"flare-datetimepicker-in-{Guid.NewGuid():N}";
+    private string _helperId => $"{_inputId}-help";
+    private string _errorId => $"{_inputId}-err";
+    private string? _computedDescribedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
 
     private bool _open;
     private int _activeTab;

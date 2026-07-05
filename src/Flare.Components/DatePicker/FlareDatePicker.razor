@@ -8,39 +8,48 @@
 @inject TimeProvider TimeProvider
 @inject Flare.Components.Services.IOverlayJsService Overlay
 
-<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style">
-    @if (!string.IsNullOrEmpty(Label))
-    {
-        <label class="@Css.Classes.Input.Label">@Label</label>
-    }
-    <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldEl">
-        <input class="@Css.Classes.Input.Control"
-               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
-               type="text"
-               value="@_text"
-               readonly="@(!AllowInput || ReadOnly)"
-               required="@Required"
-               placeholder="@(Placeholder ?? _numericPattern)"
-               disabled="@Disabled"
-               aria-label="@(Label ?? Placeholder)"
-               aria-required="@(Required ? "true" : null)"
-               @onfocus="HandleFocus"
-               @oninput="HandleInput"
-               @onchange="HandleTextChange"
-               @onblur="HandleBlur"
-               @attributes="AdditionalAttributes" />
-        @if (AllowPicker)
-        {
-            <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
-                    disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
-                    aria-label="@(FlareStrings.DatePicker_Today)" @onclick="Toggle">
-                <FlareIcon Name="calendar_month" Style="font-size:1.25rem;" />
-            </button>
-        }
-    </div>
+@* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date field owns its
+   trigger well (input + calendar toggle) and the anchored calendar popup, rendered in the Field slot. *@
+<FlareFieldChrome ComponentClass="@Css.Classes.DatePicker.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@_invalid"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelFor="@_inputId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style">
+    <Field>
+        <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldEl">
+            <input class="@Css.Classes.Input.Control"
+                   id="@_inputId"
+                   style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+                   type="text"
+                   value="@_text"
+                   readonly="@(!AllowInput || ReadOnly)"
+                   required="@Required"
+                   placeholder="@(Placeholder ?? _numericPattern)"
+                   disabled="@Disabled"
+                   aria-label="@(Label ?? Placeholder)"
+                   aria-required="@(Required ? "true" : null)"
+                   aria-invalid="@(_invalid ? "true" : null)"
+                   aria-describedby="@_computedDescribedBy"
+                   @onfocus="HandleFocus"
+                   @oninput="HandleInput"
+                   @onchange="HandleTextChange"
+                   @onblur="HandleBlur"
+                   @attributes="AdditionalAttributes" />
+            @if (AllowPicker)
+            {
+                <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
+                        disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
+                        aria-label="@(FlareStrings.DatePicker_Today)" @onclick="Toggle">
+                    <FlareIcon Name="calendar_month" Style="font-size:1.25rem;" />
+                </button>
+            }
+        </div>
 
-    @if (_open)
-    {
+        @if (_open)
+        {
         <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
         <div class="@Css.Classes.Picker.Panel @Css.Classes.DatePicker.Panel" @ref="_panelEl">
             <div class="@Css.Classes.DatePicker.Header">
@@ -112,17 +121,9 @@
                 }
             </div>
         </div>
-    }
-
-    @if (!string.IsNullOrEmpty(_displayedError))
-    {
-        <span class="@($"{Css.Classes.Input.Helper} {Css.Classes.Input.HelperError}")">@_displayedError</span>
-    }
-    else if (!string.IsNullOrEmpty(HelperText))
-    {
-        <span class="@Css.Classes.Input.Helper">@HelperText</span>
-    }
-</div>
+        }
+    </Field>
+</FlareFieldChrome>
 
 @code {
     /// <summary>Currently selected date (supports <c>@bind-Value</c>).</summary>
@@ -161,15 +162,12 @@
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
     /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
-    private string? _variantClass => VariantClass(Variant);
-    private string? _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => null,
-    };
+    private readonly string _inputId = $"flare-datepicker-in-{Guid.NewGuid():N}";
+    private string _helperId => $"{_inputId}-help";
+    private string _errorId => $"{_inputId}-err";
+    private string? _computedDescribedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
 
     private enum CalendarView { Day, Month, Year }
 
@@ -224,9 +222,8 @@
 
     private string? _displayedError => DisplayedError(ErrorText);
 
-    private string _stateClass =>
-        HasError || !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : string.Empty;
+    // Invalid drives the frame's error chrome: explicit HasError or a resolved validation message.
+    private bool _invalid => HasError || !string.IsNullOrEmpty(_displayedError);
 
     protected override void OnInitialized()
     {

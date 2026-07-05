@@ -1,12 +1,9 @@
-/* Field-family root: the shared column layout for the text field and every composite field.
-   input.css is the field hub - the shared __field / __control / __label rules below are reused by all
-   of them, so the root lives here too. Select/MultiSelect/Combobox/TagField compose FlareFieldChrome, so
-   their roots already carry .flare-input; only the date/time pickers still need naming here until they
-   move onto the shared frame too. */
-.flare-input,
-.flare-datepicker,
-.flare-datetimepicker,
-.flare-timepicker {
+/* Field-family root: the shared column layout for the text field and every composite field. input.css
+   is the field hub - the shared __field / __control / __label rules below are reused by all of them, so
+   the root lives here too. Every field (text/numeric/mask/password/textarea/otp, select/multiselect/
+   combobox/tagfield, and the date/time pickers) composes FlareFieldChrome, so every root carries
+   .flare-input; this single selector styles the whole family. */
+.flare-input {
     display: flex;
     flex-direction: column;
     gap: var(--flare-spacing-2);
