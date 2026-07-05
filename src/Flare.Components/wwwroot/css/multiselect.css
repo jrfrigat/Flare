@@ -44,9 +44,8 @@
    The trailing chevron uses the shared flare-input__arrow (input.css). Search moved into the trigger
    (flare-select__search in select.css) - there is no in-dropdown search box any more. */
 
-/* The option's checkbox is presentational - the whole row handles toggling, so the
-   checkbox must not capture the click (otherwise it would toggle twice and cancel out). */
-.flare-multiselect__option .flare-checkbox { pointer-events: none; }
+/* The multi option row's checkbox is now a pure CSS visual (.flare-listbox__checkbox in listbox.css),
+   drawn from the option's aria-selected state -- no interactive control to intercept the row click. */
 
 /* "Select all" option sits above the list with a divider. */
 .flare-multiselect__option--select-all {

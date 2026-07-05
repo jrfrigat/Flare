@@ -230,7 +230,6 @@
     private FlarePopup? _popup;
     private ElementReference _controlEl;
     private ElementReference _inputRef;
-    private bool _editing;
     private bool _focusQueued;
     private bool _wasOpen;
     private DeclaredOptionSet<TValue>? _declared;
@@ -312,7 +311,9 @@
             : null;
         _state.SetSource(SourceItems());
 
-        if (Open != _state.IsOpen && Open != _wasOpen)
+        // Two-way Open is only honored when the consumer controls it (binds OpenChanged); otherwise the
+        // open state is internal and must not be forced closed by an unbound Open=false on every re-render.
+        if (OpenChanged.HasDelegate && Open != _state.IsOpen)
         {
             if (Open) _state.Open(); else _state.Close();
         }
@@ -357,7 +358,6 @@
         if (Disabled || ReadOnly) return;
         if (Searchable)
         {
-            _editing = true;
             if (!_state.IsOpen) _state.Open(FocusStrategy.First);
             _focusQueued = true;
         }
@@ -371,7 +371,6 @@
     private void OnInputFocus()
     {
         if (Disabled || ReadOnly) return;
-        _editing = true;
         if (!_state.IsOpen) _state.Open(FocusStrategy.First);
         _ = NotifyOpenAsync();
     }
@@ -381,7 +380,6 @@
     private async Task HandleInputAsync(ChangeEventArgs e)
     {
         if (ReadOnly) return;
-        _editing = true;
         _state.SetInput(e.Value?.ToString() ?? string.Empty);
         if (!_state.IsOpen) _state.Open(FocusStrategy.First);
         await NotifyOpenAsync();
@@ -427,7 +425,7 @@
                 else return;
                 break;
             case "Escape":
-                if (_state.IsOpen) { _state.Close(); _editing = false; await NotifyOpenAsync(); }
+                if (_state.IsOpen) { _state.Close(); await NotifyOpenAsync(); }
                 break;
             default:
                 if (!Searchable && e.Key.Length == 1 && !char.IsControl(e.Key[0]))
@@ -444,13 +442,11 @@
     {
         _state.SetSelection(System.Array.Empty<TValue>());
         _state.SetInputSilent(string.Empty);
-        _editing = false;
         await PushValuesAsync();
     }
 
     private async Task HandleDismissAsync()
     {
-        _editing = false;
         _state.SetInputSilent(string.Empty);
         _state.Close();
         await NotifyOpenAsync();

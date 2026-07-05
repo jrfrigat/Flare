@@ -58,6 +58,53 @@
 /* Trailing check on the selected single-select option. */
 .flare-listbox__check { margin-left: auto; color: var(--flare-color-primary); font-size: 1.15em; }
 
+/* Leading visual checkbox on a multi-select option row (and the select-all row). It is an
+   aria-hidden presentation element -- the option's aria-selected conveys the real state -- so it
+   is drawn purely in CSS with no interactive control. [data-checked] and [data-indeterminate] are
+   mutually exclusive and set by the host from the selection / select-all tri-state. */
+.flare-listbox__checkbox {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 2px solid var(--flare-color-outline);
+    border-radius: var(--flare-shape-extra-small, 0.125rem);
+    position: relative;
+    transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
+                border-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-listbox__checkbox[data-checked],
+.flare-listbox__checkbox[data-indeterminate] {
+    background-color: var(--flare-color-primary);
+    border-color: var(--flare-color-primary);
+}
+
+/* Checkmark (checked). */
+.flare-listbox__checkbox[data-checked]::after {
+    content: "";
+    position: absolute;
+    left: 0.3125rem;
+    top: 0.0625rem;
+    width: 0.3125rem;
+    height: 0.625rem;
+    border: solid var(--flare-color-on-primary);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Dash (indeterminate / partial select-all). */
+.flare-listbox__checkbox[data-indeterminate]::after {
+    content: "";
+    position: absolute;
+    left: 0.1875rem;
+    top: 0.4375rem;
+    width: 0.625rem;
+    height: 0.125rem;
+    border-radius: 1px;
+    background-color: var(--flare-color-on-primary);
+}
+
 .flare-listbox__group-header {
     padding: var(--flare-spacing-4) var(--flare-spacing-6) var(--flare-spacing-2);
     font-size: var(--flare-typescale-label-small-size);

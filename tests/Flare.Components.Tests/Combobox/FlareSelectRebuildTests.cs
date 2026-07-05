@@ -91,6 +91,23 @@ public class FlareSelectRebuildTests : FlareTestContext
     }
 
     [Fact]
+    public void MultiSelect_stays_open_after_selecting_an_option()
+    {
+        // Regression: an unbound Open=false must not force-close the dropdown when the parent re-renders
+        // after ValuesChanged. Multi-select keeps the dropdown open for the next pick.
+        IReadOnlyList<string> bound = [];
+        var cut = Render<FlareMultiSelect<string>>(p => p
+            .Add(x => x.Items, Fruits)
+            .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => bound = v)));
+
+        cut.Find(".flare-multiselect__control").Click();      // open
+        cut.FindAll(".flare-listbox__option")[0].Click();     // pick Apple
+
+        Assert.Single(bound);
+        Assert.NotEmpty(cut.FindAll(".flare-listbox"));        // still open
+    }
+
+    [Fact]
     public void MultiSelect_MaxSelections_blocks_and_fires_callback()
     {
         var reached = 0;

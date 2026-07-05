@@ -271,8 +271,9 @@
         _state.SetSource(SourceItems());
         _state.SetSelection(Current is null ? System.Array.Empty<TValue>() : new[] { Current });
 
-        // Two-way Open (external control).
-        if (Open != _state.IsOpen && Open != _wasOpen)
+        // Two-way Open is only honored when the consumer controls it (binds OpenChanged); otherwise the
+        // open state is internal and must not be forced closed by an unbound Open=false on every re-render.
+        if (OpenChanged.HasDelegate && Open != _state.IsOpen)
         {
             if (Open) _state.Open(); else _state.Close();
         }
