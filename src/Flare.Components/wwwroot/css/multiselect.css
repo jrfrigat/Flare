@@ -40,12 +40,20 @@
     border-radius: var(--flare-shape-full);
 }
 .flare-multiselect__chip-remove:hover { background: color-mix(in srgb, var(--flare-color-on-secondary-container) 12%, transparent); }
+/* Disabled: dim the chips with the rest of the field content. The shared flare-input--disabled (input.css)
+   dims the control/label/placeholder but not the chips (a component visual). Covers both FlareMultiSelect
+   and FlareTagField, since TagField renders its chips via the shared FlareChipStrip (flare-multiselect__chip). */
+.flare-input--disabled .flare-multiselect__chip { opacity: var(--flare-state-disabled-opacity); }
 /* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css).
    The trailing chevron uses the shared flare-input__arrow (input.css). Search moved into the trigger
    (flare-select__search in select.css) - there is no in-dropdown search box any more. */
 
 /* The multi option row's checkbox is now a pure CSS visual (.flare-listbox__checkbox in listbox.css),
    drawn from the option's aria-selected state -- no interactive control to intercept the row click. */
+
+/* Per-option BEM hook carried alongside the shared flare-listbox__option on every multiselect row; the
+   row's visuals come from flare-listbox__option (listbox.css), so this is just a styling anchor. */
+.flare-multiselect__option {}
 
 /* "Select all" option sits above the list with a divider. */
 .flare-multiselect__option--select-all {
