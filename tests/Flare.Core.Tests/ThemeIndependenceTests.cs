@@ -80,4 +80,73 @@ public sealed class ThemeIndependenceTests
             "must not bake theme literals; make them 'required' and move the value to the theme/reference " +
             "package: " + string.Join(", ", offenders));
     }
+
+    // Concrete theme identifiers (design-system product + font names) that must never appear in the
+    // theme-agnostic core source. The core describes a token's ROLE, not a specific theme's value -
+    // theme names and their concrete values (e.g. "MD3 = 80dp") belong in the theme packages. These
+    // are product-name tokens, not English words, so they never false-match: "Material Design" and
+    // "Material You" (NOT bare "material", which is the allowed "material-symbols" icon font or
+    // "materialize"), "Fluent UI" / "FluentUI" / "Fluent2" (NOT the "fluent API" idiom), and the
+    // theme-specific fonts "Roboto"/"Segoe". Uppercase "MD3"/"MD2"/"FUI2" cannot occur in lowercase-hex
+    // GUIDs or SVG "M3"/"M2" moveto path data (which is why bare "M3"/"M2" is intentionally NOT listed).
+    private static readonly string[] ForbiddenThemeNames =
+    [
+        "MD3", "MD2", "FUI2", "Material Design", "Material You", "Fluent UI", "FluentUI", "Fluent2",
+        "Cupertino", "Roboto", "Segoe",
+    ];
+
+    // The three core rings whose SOURCE must stay free of concrete theme names.
+    private static readonly string[] CoreRingDirs =
+        ["Flare.Abstractions", "Flare.Theming", "Flare.Components"];
+
+    /// <summary>
+    /// Source-level guard for the "Flare knows no concrete theme" mandate: scans every source file in
+    /// the three core rings and fails if any names a concrete theme. Comments/XML-docs count - a token
+    /// documented as "MD3 = surface-container" silently teaches the core one theme's opinion, which is
+    /// exactly what the theme-agnostic, self-sufficient token model forbids. Themes (and their concrete
+    /// values) live in the external theme packages, discovered at runtime.
+    /// </summary>
+    [Fact]
+    public void CoreSource_NamesNoConcreteTheme()
+    {
+        var root = FindRepoRoot();
+        string[] sourceExtensions = [".cs", ".razor", ".css", ".js"];
+        var offenders = new List<string>();
+
+        foreach (var ring in CoreRingDirs)
+        {
+            var ringDir = Path.Combine(root, "src", ring);
+            foreach (var file in Directory.EnumerateFiles(ringDir, "*", SearchOption.AllDirectories))
+            {
+                if (!sourceExtensions.Contains(Path.GetExtension(file), StringComparer.OrdinalIgnoreCase))
+                    continue;
+                // Skip build output (bin/obj carry stale generated XML docs and compiled assets).
+                if (file.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.Ordinal) ||
+                    file.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.Ordinal))
+                    continue;
+
+                var lines = File.ReadAllLines(file);
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    var hit = ForbiddenThemeNames.FirstOrDefault(name => lines[i].Contains(name, StringComparison.Ordinal));
+                    if (hit is not null)
+                        offenders.Add($"{Path.GetRelativePath(root, file)}:{i + 1} ({hit})");
+                }
+            }
+        }
+
+        Assert.True(offenders.Count == 0,
+            "The theme-agnostic core must not name a concrete theme - describe the token's role, not a " +
+            "theme's value, and move theme specifics to the theme packages:\n" + string.Join("\n", offenders));
+    }
+
+    // The compile-time path of THIS test file, walked up until the folder that contains "src".
+    private static string FindRepoRoot([CallerFilePath] string thisFile = "")
+    {
+        var dir = Path.GetDirectoryName(thisFile);
+        while (dir is not null && !Directory.Exists(Path.Combine(dir, "src")))
+            dir = Path.GetDirectoryName(dir);
+        Assert.False(dir is null, "Could not locate the repository root (no ancestor 'src' folder).");
+        return dir!;
+    }
 }
