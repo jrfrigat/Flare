@@ -352,7 +352,7 @@ public class C_FlareTagFieldTests : FlareTestContext
     [Fact]
     public void RendersRootElement()
     {
-        var cut = Render<FlareTagField>();
+        var cut = Render<FlareTagField<string>>();
 
         Assert.NotEmpty(cut.FindAll(".flare-tag-input"));
     }
@@ -360,7 +360,7 @@ public class C_FlareTagFieldTests : FlareTestContext
     [Fact]
     public void RendersInputField()
     {
-        var cut = Render<FlareTagField>();
+        var cut = Render<FlareTagField<string>>();
 
         Assert.NotEmpty(cut.FindAll("input.flare-tag-input__input"));
     }
@@ -368,7 +368,7 @@ public class C_FlareTagFieldTests : FlareTestContext
     [Fact]
     public void PlaceholderRendered()
     {
-        var cut = Render<FlareTagField>(p => p
+        var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Placeholder, "Add a tag..."));
 
         Assert.Equal("Add a tag...", cut.Find("input.flare-tag-input__input").GetAttribute("placeholder"));
@@ -377,7 +377,7 @@ public class C_FlareTagFieldTests : FlareTestContext
     [Fact]
     public void DisabledState_HidesInput()
     {
-        var cut = Render<FlareTagField>(p => p
+        var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Disabled, true));
 
         Assert.Empty(cut.FindAll("input.flare-tag-input__input"));
@@ -386,10 +386,10 @@ public class C_FlareTagFieldTests : FlareTestContext
     [Fact]
     public void RendersExistingTags()
     {
-        var cut = Render<FlareTagField>(p => p
+        var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Values, (IReadOnlyList<string>)["Alpha", "Beta"]));
 
-        var chips = cut.FindAll(".flare-tag-input__chip");
+        var chips = cut.FindAll(".flare-multiselect__chip");   // shared FlareChipStrip renders the unified chip class
         Assert.Equal(2, chips.Count);
     }
 }

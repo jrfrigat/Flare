@@ -1053,7 +1053,7 @@ public class C_FieldVariantReuseTests : FlareTestContext
     [Fact]
     public void TagInput_Outlined_ReusesInputVariantClass()
     {
-        var cut = Render<FlareTagField>(p => p.Add(x => x.Variant, InputVariant.Outlined));
+        var cut = Render<FlareTagField<string>>(p => p.Add(x => x.Variant, InputVariant.Outlined));
         Assert.Contains("flare-input-variant--outlined", cut.Find(".flare-tag-input").ClassName);
     }
 
@@ -1363,7 +1363,7 @@ public class C_FlareFormFieldSizeParityTests : FlareTestContext
     [InlineData(FieldSize.Lg, "flare-input--lg")]
     public void TagInput_Size_AppliesModifier(FieldSize size, string expected)
     {
-        var cut = Render<FlareTagField>(p => p.Add(x => x.Size, size));
+        var cut = Render<FlareTagField<string>>(p => p.Add(x => x.Size, size));
         Assert.Contains(expected, cut.Find(".flare-tag-input").ClassName);
     }
 }
@@ -1467,7 +1467,7 @@ public class C_FlareTagFieldSuggestionsTests : FlareTestContext
     [Fact]
     public void StaticSuggestions_FilterOnInput()
     {
-        var cut = Render<FlareTagField>(p => p
+        var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Suggestions, new[] { "apple", "apricot", "banana" })
             .Add(x => x.MinChars, 1));
 
@@ -1482,7 +1482,7 @@ public class C_FlareTagFieldSuggestionsTests : FlareTestContext
     public void SelectingSuggestion_AddsTag()
     {
         IReadOnlyList<string> tags = [];
-        var cut = Render<FlareTagField>(p => p
+        var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Suggestions, new[] { "apple", "apricot" })
             .Add(x => x.ValuesChanged, EventCallback.Factory.Create<IReadOnlyList<string>>(this, v => tags = v)));
 
@@ -1494,7 +1494,7 @@ public class C_FlareTagFieldSuggestionsTests : FlareTestContext
     [Fact]
     public void AlreadyAddedTag_ExcludedFromSuggestions()
     {
-        var cut = Render<FlareTagField>(p => p
+        var cut = Render<FlareTagField<string>>(p => p
             .Add(x => x.Values, new[] { "apple" })
             .Add(x => x.Suggestions, new[] { "apple", "apricot" }));
 
