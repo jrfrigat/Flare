@@ -43,13 +43,7 @@
   border-bottom-color: var(--flare-color-primary);
 }
 
-/* Calendar */
-.flare-datetimepicker__nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--flare-spacing-4);
-}
+/* Calendar. The __nav layout is shared with DatePicker's __header (datepicker.css). */
 
 .flare-datetimepicker__nav-label {
   font-weight: 500;
@@ -89,15 +83,8 @@
   border-width: 2px;
 }
 
-/* Footer */
-.flare-datetimepicker__footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--flare-spacing-4);
-  margin-top: var(--flare-spacing-6);
-  border-top: 1px solid var(--flare-color-outline-variant);
-  padding-top: var(--flare-spacing-4);
-}
+/* Footer layout is shared with DatePicker (datepicker.css); only the top margin is datetimepicker-specific. */
+.flare-datetimepicker__footer { margin-top: var(--flare-spacing-6); }
 
 /* Panels layout: calendar + time as TWO SEPARATE elevated cards with a gap between
    them (like SplitButton). The outer panel becomes a transparent container; each

@@ -98,7 +98,9 @@
   background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-.flare-tabs__tab--active {
+/* Active-tab color, shared with FlareLinkTabs (identical, same --flare-tabs-* tokens). */
+.flare-tabs__tab--active,
+.flare-link-tab--active {
   color: var(--flare-tabs-active-color, var(--flare-color-primary));
   border-bottom-color: var(--flare-tabs-active-color, var(--flare-color-primary));
 }
@@ -151,7 +153,9 @@
 }
 
 .flare-tabs--tonal .flare-tabs__tab,
-.flare-tabs--filled .flare-tabs__tab {
+.flare-tabs--filled .flare-tabs__tab,
+.flare-link-tabs--tonal .flare-link-tab,
+.flare-link-tabs--filled .flare-link-tab {
   border-bottom: none;
   margin-bottom: 0;
   border-radius: var(--flare-tabs-pill-radius, var(--flare-shape-full));
@@ -159,14 +163,19 @@
 .flare-tabs--tonal .flare-tabs__tab--active::after,
 .flare-tabs--filled .flare-tabs__tab--active::after { display: none; }
 
+/* Tonal / Filled active pill, shared with FlareLinkTabs (identical, same tokens). */
 .flare-tabs--tonal .flare-tabs__tab--active,
-.flare-tabs--tonal .flare-tabs__tab--active:hover {
+.flare-tabs--tonal .flare-tabs__tab--active:hover,
+.flare-link-tabs--tonal .flare-link-tab--active,
+.flare-link-tabs--tonal .flare-link-tab--active:hover {
   background: var(--flare-tabs-selected-bg, var(--flare-color-secondary-container));
   color: var(--flare-tabs-selected-fg, var(--flare-color-on-secondary-container));
   border-bottom-color: transparent;
 }
 .flare-tabs--filled .flare-tabs__tab--active,
-.flare-tabs--filled .flare-tabs__tab--active:hover {
+.flare-tabs--filled .flare-tabs__tab--active:hover,
+.flare-link-tabs--filled .flare-link-tab--active,
+.flare-link-tabs--filled .flare-link-tab--active:hover {
   background: var(--flare-tabs-filled-bg, var(--flare-color-primary));
   color: var(--flare-tabs-filled-fg, var(--flare-color-on-primary));
   border-bottom-color: transparent;

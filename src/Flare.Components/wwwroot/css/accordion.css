@@ -29,8 +29,11 @@
   background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
 }
 
-/* Rich header content (icons/badges) sits inline before the chevron. */
-.flare-accordion-panel__header-text {
+/* Rich header content (icons/badges) sits inline before the chevron. Shared with FlareCollapse:
+   accordion and collapse are visually distinct (filled sections vs transparent standalone), but the
+   inline header-text layout and the disabled treatment are identical, so they share these two rules. */
+.flare-accordion-panel__header-text,
+.flare-collapse__header-text {
   display: inline-flex;
   align-items: center;
   gap: var(--flare-spacing-4);
@@ -38,8 +41,9 @@
   min-width: 0;
 }
 
-/* Disabled panel */
-.flare-accordion-panel--disabled .flare-accordion-panel__header {
+/* Disabled expandable header (accordion + collapse). */
+.flare-accordion-panel--disabled .flare-accordion-panel__header,
+.flare-collapse--disabled .flare-collapse__header {
   cursor: not-allowed;
   opacity: var(--flare-state-disabled-opacity);
 }

@@ -37,10 +37,7 @@
   background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-.flare-link-tab--active {
-  color: var(--flare-tabs-active-color, var(--flare-color-primary));
-  border-bottom-color: var(--flare-tabs-active-color, var(--flare-color-primary));
-}
+/* --active color is shared with FlareTabs (tabs.css), same --flare-tabs-* tokens. */
 
 .flare-link-tab--disabled {
   opacity: var(--flare-state-disabled-opacity);
@@ -71,23 +68,5 @@
   width: fit-content;
 }
 
-.flare-link-tabs--tonal .flare-link-tab,
-.flare-link-tabs--filled .flare-link-tab {
-  border-bottom: none;
-  margin-bottom: 0;
-  border-radius: var(--flare-tabs-pill-radius, var(--flare-shape-full));
-}
-
-.flare-link-tabs--tonal .flare-link-tab--active,
-.flare-link-tabs--tonal .flare-link-tab--active:hover {
-  background: var(--flare-tabs-selected-bg, var(--flare-color-secondary-container));
-  color: var(--flare-tabs-selected-fg, var(--flare-color-on-secondary-container));
-  border-bottom-color: transparent;
-}
-
-.flare-link-tabs--filled .flare-link-tab--active,
-.flare-link-tabs--filled .flare-link-tab--active:hover {
-  background: var(--flare-tabs-filled-bg, var(--flare-color-primary));
-  color: var(--flare-tabs-filled-fg, var(--flare-color-on-primary));
-  border-bottom-color: transparent;
-}
+/* The pill-tab base and the Tonal/Filled active states are identical to FlareTabs and are shared
+   there (tabs.css) via combined selector lists - the route bar reuses the same --flare-tabs-* tokens. */

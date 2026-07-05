@@ -27,18 +27,7 @@
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-.flare-collapse--disabled .flare-collapse__header {
-    cursor: not-allowed;
-    opacity: var(--flare-state-disabled-opacity);
-}
-
-.flare-collapse__header-text {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--flare-spacing-4);
-    flex: 1;
-    min-width: 0;
-}
+/* The disabled treatment and __header-text layout are shared with FlareAccordion (accordion.css). */
 
 .flare-collapse__icon {
     flex-shrink: 0;

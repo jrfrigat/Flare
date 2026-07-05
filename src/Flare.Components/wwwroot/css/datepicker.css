@@ -19,7 +19,9 @@
    the calendar panel is JS-positioned (positionAnchoredPanel) to escape a Card's overflow:hidden. */
 .flare-datepicker__panel { min-width: 18rem; }
 
-.flare-datepicker__header {
+/* Picker nav header (label + prev/next), shared with DateTimePicker's __nav (identical). */
+.flare-datepicker__header,
+.flare-datetimepicker__nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,14 +54,16 @@
 /* The day-headers / grid / day cells + states come from the shared flare-picker__* month grid
    (picker.css); only the month/year views + range highlighting below are datepicker-specific. */
 
-.flare-datepicker__footer {
+/* Picker action footer, shared with DateTimePicker; only the top margin differs per picker. */
+.flare-datepicker__footer,
+.flare-datetimepicker__footer {
   display: flex;
   justify-content: flex-end;
   gap: var(--flare-spacing-4);
   border-top: 1px solid var(--flare-color-outline-variant);
-  margin-top: var(--flare-spacing-4);
   padding-top: var(--flare-spacing-4);
 }
+.flare-datepicker__footer { margin-top: var(--flare-spacing-4); }
 
 /* Date Range Picker */
 .flare-daterangepicker {
