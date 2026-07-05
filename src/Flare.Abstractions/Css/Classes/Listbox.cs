@@ -22,4 +22,9 @@ public static class Listbox
     public const string GroupHeader = "flare-listbox__group-header";
     /// <summary>The <c>flare-listbox__check</c> CSS class.</summary>
     public const string Check = "flare-listbox__check";
+    /// <summary>The <c>flare-listbox__checkbox</c> CSS class: the leading visual checkbox on a multi-select
+    /// option row (an <c>aria-hidden</c> presentation element; the option's <c>aria-selected</c> conveys state).</summary>
+    public const string Checkbox = "flare-listbox__checkbox";
+    /// <summary>The <c>flare-listbox__empty</c> CSS class: the "no results" row shown when a query matches nothing.</summary>
+    public const string Empty = "flare-listbox__empty";
 }

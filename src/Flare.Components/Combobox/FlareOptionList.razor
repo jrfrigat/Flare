@@ -1,0 +1,182 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@typeparam TItem
+@using Flare.Components.Combobox
+
+@* The dumb option surface for the select family. Renders a prebuilt, engine-cached row list
+   (ComboboxRow: group headers + options) and reads highlight/selection/disabled from parameters, so moving
+   the highlight is a single attribute diff and no options are re-materialized per render (the old
+   BuildOptions allocation is gone). It owns no state, no keyboard and no open/close: the shell drives all of
+   that on the engine. Selection is conveyed by aria-selected on the option itself; the multi checkbox is an
+   aria-hidden visual, never a nested interactive control. Visuals come from the shared .flare-listbox CSS. *@
+
+<div class="@Css.Classes.Listbox.Root @Class"
+     @ref="_root"
+     id="@Id"
+     role="listbox"
+     aria-multiselectable="@(Multiselectable ? "true" : null)"
+     aria-labelledby="@AriaLabelledBy"
+     @onmousedown:preventDefault="PreventMouseDownDefault">
+    @Header
+    @{ _optionCount = CountOptions(Rows); }
+    @if (_optionCount == 0)
+    {
+        @Empty
+    }
+    else if (Virtualize && !HasHeaders(Rows) && _optionCount > VirtualizeThreshold)
+    {
+        <Virtualize Items="AsCollection(Rows)" Context="row" OverscanCount="4">
+            @_renderRow(row)
+        </Virtualize>
+    }
+    else
+    {
+        foreach (var row in Rows)
+        {
+            @_renderRow(row)
+        }
+    }
+</div>
+
+@code {
+    /// <summary>The header+option rows to render, already ordered and grouped (from the engine's cached projection).</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<ComboboxRow<TItem>> Rows { get; set; } = System.Array.Empty<ComboboxRow<TItem>>();
+
+    /// <summary>The highlighted option index (into the filtered options); -1 for none.</summary>
+    [Parameter] public int HighlightedIndex { get; set; } = -1;
+
+    /// <summary>Returns whether an item is selected (drives <c>aria-selected</c> and the selected styling).</summary>
+    [Parameter] public Func<TItem, bool>? IsSelected { get; set; }
+
+    /// <summary>Returns whether an item is disabled (drives <c>aria-disabled</c> and non-committable styling).</summary>
+    [Parameter] public Func<TItem, bool>? IsDisabled { get; set; }
+
+    /// <summary>Resolves an item's display text when no <see cref="ItemTemplate"/> is supplied.</summary>
+    [Parameter] public Func<TItem, string> Label { get; set; } = static i => i?.ToString() ?? string.Empty;
+
+    /// <summary>Custom render template for an option row. Overrides the <see cref="Label"/> text.</summary>
+    [Parameter] public RenderFragment<TItem>? ItemTemplate { get; set; }
+
+    /// <summary>Renders a leading visual checkbox on each option (multi-select).</summary>
+    [Parameter] public bool ShowCheckbox { get; set; }
+
+    /// <summary>Renders a trailing check mark on the selected option (single-select).</summary>
+    [Parameter] public bool ShowCheck { get; set; }
+
+    /// <summary>Enables virtualized rendering above <see cref="VirtualizeThreshold"/> when not grouped.</summary>
+    [Parameter] public bool Virtualize { get; set; }
+
+    /// <summary>Option count above which virtualized rendering kicks in. Default: 50.</summary>
+    [Parameter] public int VirtualizeThreshold { get; set; } = 50;
+
+    /// <summary>Content rendered above the options (e.g. a select-all row).</summary>
+    [Parameter] public RenderFragment? Header { get; set; }
+
+    /// <summary>Content rendered in place of the options when there are none (e.g. a "no results" message).</summary>
+    [Parameter] public RenderFragment? Empty { get; set; }
+
+    /// <summary>Listbox root id; option ids are <c>{Id}-opt-{optionIndex}</c> for <c>aria-activedescendant</c>.</summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>Sets <c>aria-multiselectable</c> on the listbox root.</summary>
+    [Parameter] public bool Multiselectable { get; set; }
+
+    /// <summary>Value forwarded to <c>aria-labelledby</c> on the listbox root.</summary>
+    [Parameter] public string? AriaLabelledBy { get; set; }
+
+    /// <summary>Extra CSS class on each option row.</summary>
+    [Parameter] public string? OptionClass { get; set; }
+
+    /// <summary>Extra CSS class on the listbox root (positioning/surface).</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Prevents the default mousedown so clicking an option does not blur the host's input.</summary>
+    [Parameter] public bool PreventMouseDownDefault { get; set; }
+
+    /// <summary>Invoked with the item of the clicked option.</summary>
+    [Parameter] public EventCallback<TItem> OnSelect { get; set; }
+
+    /// <summary>Invoked with the option index the pointer moved over (hover highlight).</summary>
+    [Parameter] public EventCallback<int> OnHighlight { get; set; }
+
+    /// <summary>The listbox root element, for anchored positioning by the host.</summary>
+    public ElementReference Element => _root;
+
+    protected override string ComponentCssClass => Css.Classes.Listbox.Root;
+
+    private ElementReference _root;
+    private int _optionCount;
+
+    private static int CountOptions(IReadOnlyList<ComboboxRow<TItem>> rows)
+    {
+        var n = 0;
+        for (var i = 0; i < rows.Count; i++)
+            if (!rows[i].IsHeader) n++;
+        return n;
+    }
+
+    private static bool HasHeaders(IReadOnlyList<ComboboxRow<TItem>> rows)
+    {
+        for (var i = 0; i < rows.Count; i++)
+            if (rows[i].IsHeader) return true;
+        return false;
+    }
+
+    // Virtualize wants an ICollection. The engine's cached rows are already a List (no allocation); an
+    // exotic IReadOnlyList that is not a collection is materialized once as a fallback.
+    private static ICollection<ComboboxRow<TItem>> AsCollection(IReadOnlyList<ComboboxRow<TItem>> rows)
+        => rows as ICollection<ComboboxRow<TItem>> ?? rows.ToList();
+
+    private string? OptionId(int optionIndex) => Id is not null ? $"{Id}-opt-{optionIndex}" : null;
+
+    private string OptionCss(bool selected, bool highlighted)
+    {
+        var parts = new List<string>(4) { Css.Classes.Listbox.Option };
+        if (!string.IsNullOrEmpty(OptionClass)) parts.Add(OptionClass!);
+        if (selected) parts.Add(Css.Classes.Listbox.OptionSelected);
+        if (highlighted) parts.Add(Css.Classes.Listbox.OptionActive);
+        return string.Join(' ', parts);
+    }
+
+    private RenderFragment<ComboboxRow<TItem>> _renderRow => row =>
+    @<text>
+        @if (row.IsHeader)
+        {
+            <div class="@Css.Classes.Listbox.GroupHeader" role="presentation">@row.Group</div>
+        }
+        else
+        {
+            var item = row.Item;
+            var sel = IsSelected?.Invoke(item) ?? false;
+            var dis = IsDisabled?.Invoke(item) ?? false;
+            var hi = row.OptionIndex == HighlightedIndex;
+            <div class="@OptionCss(sel, hi)"
+                 id="@OptionId(row.OptionIndex)"
+                 role="option"
+                 aria-selected="@(sel ? "true" : "false")"
+                 aria-disabled="@(dis ? "true" : null)"
+                 aria-setsize="@_optionCount"
+                 aria-posinset="@(row.OptionIndex + 1)"
+                 @onclick="() => OnSelect.InvokeAsync(item)"
+                 @onclick:stopPropagation="true"
+                 @onmousemove="() => OnHighlight.InvokeAsync(row.OptionIndex)">
+                @if (ShowCheckbox)
+                {
+                    <span class="@Css.Classes.Listbox.Checkbox" data-checked="@(sel ? "true" : null)" aria-hidden="true"></span>
+                }
+                @if (ItemTemplate is not null)
+                {
+                    @ItemTemplate(item)
+                }
+                else
+                {
+                    <span>@Label(item)</span>
+                }
+                @if (ShowCheck && sel)
+                {
+                    <FlareIcon Name="check" Class="@Css.Classes.Listbox.Check" />
+                }
+            </div>
+        }
+    </text>;
+}

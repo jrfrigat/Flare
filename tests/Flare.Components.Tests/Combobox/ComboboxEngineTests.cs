@@ -317,6 +317,21 @@ public class ComboboxEngineTests
     }
 
     [Fact]
+    public void Rows_are_cached_until_the_filter_changes()
+    {
+        var s = new ComboboxState<string>(ComboboxPolicy<string>.ForCombobox() with { Label = x => x });
+        s.SetSource(Fruits.ToList());
+        var rows1 = s.Collection.Rows;
+        var rows2 = s.Collection.Rows;
+        Assert.Same(rows1, rows2);              // no rebuild on repeated access (highlight/hover reuse)
+
+        s.SetInput("ap");                        // filter changes -> rows rebuilt
+        var rows3 = s.Collection.Rows;
+        Assert.NotSame(rows1, rows3);
+        Assert.Equal(2, rows3.Count);            // Apple, Apricot
+    }
+
+    [Fact]
     public void Fuzzy_ranks_best_match_first()
     {
         var policy = ComboboxPolicy<string>.ForCombobox() with { Label = x => x, Fuzzy = true };

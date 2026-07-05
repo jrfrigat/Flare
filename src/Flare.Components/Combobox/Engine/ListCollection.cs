@@ -26,6 +26,7 @@ public sealed class ListCollection<TItem>
     private List<TItem> _ordered = new();
     private List<TItem> _filtered = new();
     private string _query = string.Empty;
+    private IReadOnlyList<ComboboxRow<TItem>>? _rows;
 
     /// <summary>Creates the view for the given policy (which supplies label/group/disabled/filter delegates).</summary>
     /// <param name="policy">The owning combobox policy.</param>
@@ -85,6 +86,7 @@ public sealed class ListCollection<TItem>
             result = result.GroupBy(_policy.Group).SelectMany(static g => g);
 
         _filtered = result as List<TItem> ?? result.ToList();
+        _rows = null; // invalidate the cached row projection; rebuilt on next access
     }
 
     /// <summary>Returns an item's group label, or null when grouping is off.</summary>
@@ -154,6 +156,13 @@ public sealed class ListCollection<TItem>
         }
         return -1;
     }
+
+    /// <summary>
+    /// The header+option row projection, cached and rebuilt only when the filtered set changes (so moving
+    /// the highlight or the selection never re-materializes off-screen rows). This is the single point that
+    /// eliminates the old per-render option allocation.
+    /// </summary>
+    public IReadOnlyList<ComboboxRow<TItem>> Rows => _rows ??= BuildRows();
 
     /// <summary>
     /// Projects the filtered options into a flat header+option row list for grouped rendering and grouped

@@ -1,0 +1,14 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* The anchored dropdown panel for the select family and the family's ONLY JS-interop site. Positions the
+   panel as a fixed popup under its anchor (escaping any Card overflow:hidden) and owns the single unified
+   dismissal (pointerdown-outside + focusout) that replaces the per-shell blur timers. The shell passes the
+   trigger element as Anchor, the widget root as DismissRoot (for containment) and the listbox as content. *@
+
+@if (Open)
+{
+    <div class="@Class" @ref="_panel">
+        @ChildContent
+    </div>
+}

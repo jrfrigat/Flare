@@ -1,0 +1,59 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@typeparam TItem
+
+@* The removable-chip strip shared by FlareMultiSelect and FlareTagField, so the selected-values chips are
+   rendered and dismissed identically once instead of being copied per component. Remove buttons are real,
+   keyboard-reachable buttons (unlike the old tabindex=-1 chips). The host owns the selection; this only
+   renders it and raises OnRemove. *@
+
+<span class="@Css.Classes.Multiselect.Chips">
+    @foreach (var item in Items)
+    {
+        var it = item;
+        <span class="@Css.Classes.Multiselect.Chip" style="@Style?.Invoke(it)">
+            @if (Template is not null)
+            {
+                @Template(it)
+            }
+            else
+            {
+                <span>@Label(it)</span>
+            }
+            @if (!ReadOnly)
+            {
+                <button type="button"
+                        class="@Css.Classes.Multiselect.ChipRemove"
+                        aria-label="@RemoveLabel"
+                        @onclick="@(() => OnRemove.InvokeAsync(it))"
+                        @onclick:stopPropagation="true"
+                        @onmousedown:preventDefault="true">&#x2715;</button>
+            }
+        </span>
+    }
+</span>
+
+@code {
+    /// <summary>The selected items to render as chips, in selection order.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<TItem> Items { get; set; } = System.Array.Empty<TItem>();
+
+    /// <summary>Resolves a chip's display text when no <see cref="Template"/> is supplied.</summary>
+    [Parameter] public Func<TItem, string> Label { get; set; } = static i => i?.ToString() ?? string.Empty;
+
+    /// <summary>Custom render template for a chip's content. Overrides the <see cref="Label"/> text.</summary>
+    [Parameter] public RenderFragment<TItem>? Template { get; set; }
+
+    /// <summary>Optional inline style per chip (e.g. a colour), keyed by the item.</summary>
+    [Parameter] public Func<TItem, string?>? Style { get; set; }
+
+    /// <summary>Hides the remove buttons (disabled/read-only field).</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>Accessible label for the remove button.</summary>
+    [Parameter] public string RemoveLabel { get; set; } = FlareStrings.Input_Clear;
+
+    /// <summary>Invoked with the item whose chip remove button was activated.</summary>
+    [Parameter] public EventCallback<TItem> OnRemove { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Multiselect.Chips;
+}

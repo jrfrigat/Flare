@@ -47,4 +47,16 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
 
     /// <inheritdoc />
     public ValueTask RemoveAnchoredPanelAsync(string id) => InvokeVoidAsync("removeAnchoredPanel", id);
+
+    /// <inheritdoc />
+    public ValueTask ScrollIntoViewAsync(string optionId, string block = "nearest")
+        => InvokeVoidAsync("scrollOptionIntoView", optionId, block);
+
+    /// <inheritdoc />
+    public ValueTask RegisterDismissAsync<T>(string id, ElementReference element,
+        DotNetObjectReference<T> dotNetRef, string method) where T : class
+        => InvokeVoidAsync("registerDismiss", id, element, dotNetRef, method);
+
+    /// <inheritdoc />
+    public ValueTask RemoveDismissAsync(string id) => InvokeVoidAsync("removeDismiss", id);
 }

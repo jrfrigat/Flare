@@ -1,0 +1,90 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* Shared field frame for the select family: the root element (with state/size/variant/open classes), the
+   label, the field slot and the helper/error line. Rendering this once removes the duplicated label +
+   helper/error + state-class blocks that each shell used to repeat. The shell supplies its own root class
+   and the trigger markup via the Field slot; the chrome owns nothing behavioural. *@
+
+<div class="@ClassString()" style="@Style" @ref="_root" @attributes="Attributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="@Css.Classes.Input.Label" id="@LabelId">@Label</label>
+    }
+    @Field
+    @if (!string.IsNullOrEmpty(ErrorText))
+    {
+        <span id="@ErrorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@ErrorText</span>
+    }
+    else if (!string.IsNullOrEmpty(HelperText))
+    {
+        <span id="@HelperId" class="@Css.Classes.Input.Helper">@HelperText</span>
+    }
+</div>
+
+@code {
+    /// <summary>The shell's root CSS class (e.g. <c>flare-select</c>).</summary>
+    [Parameter, EditorRequired] public string RootClass { get; set; } = string.Empty;
+
+    /// <summary>The disabled/error state modifier class, or null.</summary>
+    [Parameter] public string? StateClass { get; set; }
+
+    /// <summary>The size modifier class, or null.</summary>
+    [Parameter] public string? SizeClass { get; set; }
+
+    /// <summary>The visual variant modifier class, or null.</summary>
+    [Parameter] public string? VariantClass { get; set; }
+
+    /// <summary>The open-state modifier class applied while the dropdown is open, or null.</summary>
+    [Parameter] public string? OpenClass { get; set; }
+
+    /// <summary>The field label text; omitted when null/empty.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>The label element id, referenced by the trigger via <c>aria-labelledby</c>.</summary>
+    [Parameter] public string? LabelId { get; set; }
+
+    /// <summary>Helper text shown below the field when there is no error.</summary>
+    [Parameter] public string? HelperText { get; set; }
+
+    /// <summary>The helper element id, referenced by the trigger via <c>aria-describedby</c>.</summary>
+    [Parameter] public string? HelperId { get; set; }
+
+    /// <summary>Error text; when set it replaces the helper and is announced as an alert.</summary>
+    [Parameter] public string? ErrorText { get; set; }
+
+    /// <summary>The error element id, referenced by the trigger via <c>aria-describedby</c>.</summary>
+    [Parameter] public string? ErrorId { get; set; }
+
+    /// <summary>Inline style forwarded to the root element.</summary>
+    [Parameter] public string? Style { get; set; }
+
+    /// <summary>Extra attributes splatted onto the root element.</summary>
+    [Parameter] public IReadOnlyDictionary<string, object>? Attributes { get; set; }
+
+    /// <summary>The field content (trigger + popup) rendered between the label and the helper line.</summary>
+    [Parameter, EditorRequired] public RenderFragment? Field { get; set; }
+
+    private ElementReference _root;
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => string.Empty;
+
+    /// <summary>The root element, for anchored positioning and dismissal containment by the shell.</summary>
+    public ElementReference Root => _root;
+
+    private string ClassString()
+    {
+        var sb = new System.Text.StringBuilder(RootClass);
+        Append(sb, StateClass);
+        Append(sb, SizeClass);
+        Append(sb, VariantClass);
+        Append(sb, OpenClass);
+        return sb.ToString();
+    }
+
+    private static void Append(System.Text.StringBuilder sb, string? cls)
+    {
+        if (!string.IsNullOrEmpty(cls)) { sb.Append(' '); sb.Append(cls); }
+    }
+}

@@ -165,3 +165,39 @@ export function removeAnchoredPanel(id) {
     const off = _anchoredPanels.get(id);
     if (off) { off(); _anchoredPanels.delete(id); }
 }
+
+// -- Scroll the keyboard-highlighted option into view within its listbox scroll container. --
+export function scrollOptionIntoView(optionId, block) {
+    const el = document.getElementById(optionId);
+    if (el) el.scrollIntoView({ block: block || 'nearest', inline: 'nearest' });
+}
+
+// -- Unified popup dismissal (combobox family) --
+// One handler pair per open popup: a capture-phase pointerdown outside the widget, plus a focusout that
+// escapes the widget (Tab away). Replaces the per-component blur timer + separate outside-click, so there
+// is no SignalR blur race and no two mechanisms fighting.
+const _dismiss = new Map();
+
+export function registerDismiss(id, element, dotNetRef, method) {
+    removeDismiss(id);
+    const onPointerDown = (e) => {
+        if (element && !element.contains(e.target)) dotNetRef.invokeMethodAsync(method);
+    };
+    const onFocusOut = (e) => {
+        const to = e.relatedTarget;
+        // Dismiss only when focus actually leaves the widget (ignore moves between its own children).
+        if (element && to && !element.contains(to)) dotNetRef.invokeMethodAsync(method);
+    };
+    _dismiss.set(id, { onPointerDown, onFocusOut, element });
+    document.addEventListener('pointerdown', onPointerDown, true);
+    if (element) element.addEventListener('focusout', onFocusOut);
+}
+
+export function removeDismiss(id) {
+    const h = _dismiss.get(id);
+    if (h) {
+        document.removeEventListener('pointerdown', h.onPointerDown, true);
+        if (h.element) h.element.removeEventListener('focusout', h.onFocusOut);
+        _dismiss.delete(id);
+    }
+}
