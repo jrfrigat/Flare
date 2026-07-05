@@ -137,14 +137,7 @@
     /// <summary>Text shown when a query returns no suggestions. When null, falls back to the localized default.</summary>
     [Parameter] public string? NoResultsText { get; set; }
 
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
-
-    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
-
-    /// <summary>Optional typography scale for the input text.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
+    // Variant, Size and Typo are inherited from FlareFieldBase.
 
     /// <inheritdoc />
     protected override string ComponentCssClass => Css.Classes.TagInput.Root;

@@ -179,14 +179,7 @@
     /// <summary>Option count above which the dropdown virtualizes (when not grouped). Default: 50.</summary>
     [Parameter] public int VirtualizeThreshold { get; set; } = 50;
 
-    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
-
-    /// <summary>Optional typography scale for the control text.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
-
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    // Variant, Size and Typo are inherited from FlareFieldBase.
 
     /// <inheritdoc />
     protected override string ComponentCssClass => Css.Classes.Select.Root;

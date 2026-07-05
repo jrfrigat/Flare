@@ -121,10 +121,6 @@
     [Parameter] public bool ShowCharacterCount { get; set; }
     /// <summary>Semantic color that influences the focus/active border of the input field.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
-    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
     /// <summary>When true (the default), the field is block-level and fills the width of its container.
     /// Set to false to size the field to its content (inline) instead.</summary>
     [Parameter] public bool FullWidth { get; set; } = true;
@@ -132,9 +128,6 @@
     /// spacing to the surrounding layout; <see cref="FieldMargin.Dense"/> / <see cref="FieldMargin.Normal"/>
     /// add a compact / comfortable margin above and below.</summary>
     [Parameter] public FieldMargin Margin { get; set; } = FieldMargin.None;
-    /// <summary>Optional typography scale for the input text. Overrides the size-derived font.
-    /// Null keeps the size default.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>When true, the value updates on every keystroke (oninput) rather than only on change/blur.</summary>
     [Parameter] public bool Immediate { get; set; }
     /// <summary>Debounce in milliseconds for <see cref="Immediate"/> updates. 0 = no debounce.</summary>

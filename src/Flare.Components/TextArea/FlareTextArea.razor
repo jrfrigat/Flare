@@ -7,7 +7,7 @@
    (a <textarea>), so it shares the family chrome + input logic and only adds the textarea-specific rows /
    auto-grow / max-lines. *@
 
-<FlareFieldChrome Variant="Variant"
+<FlareFieldChrome Variant="Variant" Size="Size"
                   Invalid="@(!string.IsNullOrEmpty(_displayedError))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(AutoGrow ? Css.Classes.Textarea.Autogrow : null)"
@@ -51,9 +51,6 @@
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
     // FlareFieldBase (IFlareField).
-    /// <summary>Optional typography scale for the textarea text. Overrides the default body font.
-    /// Null keeps the component default.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Number of visible text rows.</summary>
     [Parameter] public int Rows { get; set; } = 4;
     /// <summary>Auto-resizes the textarea height to fit its content (zero-JS, via CSS field-sizing).</summary>
@@ -64,8 +61,6 @@
     [Parameter] public int MaxLength { get; set; } = 0;
     /// <summary>Shows a character counter in the supporting-text row. Auto-enabled when <see cref="MaxLength"/> is set.</summary>
     [Parameter] public bool ShowCharacterCount { get; set; }
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
     /// <summary>When true, the value updates on every keystroke (oninput) rather than only on change/blur.</summary>
     [Parameter] public bool Immediate { get; set; }
     /// <summary>Debounce in milliseconds for <see cref="Immediate"/> updates. 0 = no debounce.</summary>
