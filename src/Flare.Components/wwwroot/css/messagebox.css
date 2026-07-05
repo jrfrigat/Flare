@@ -1,12 +1,5 @@
-.flare-msgbox-scrim {
-    position: fixed;
-    inset: 0;
-    background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity, 0.32) * 100%), transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1100;
-}
+/* Scrim layout comes from the shared modal scrim (confirmdialog.css); the message box sits above other overlays. */
+.flare-msgbox-scrim { z-index: 1100; }
 
 .flare-msgbox {
     background: var(--flare-color-surface-container-high);
