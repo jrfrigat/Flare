@@ -1,4 +1,12 @@
-.flare-input {
+/* Field-family root: the shared column layout for the text field and every composite field
+   (select, multiselect, and the date/time pickers). input.css is the field hub - the shared
+   __field / __control / __label rules below are reused by all of them, so the root lives here too. */
+.flare-input,
+.flare-select,
+.flare-multiselect,
+.flare-datepicker,
+.flare-datetimepicker,
+.flare-timepicker {
     display: flex;
     flex-direction: column;
     gap: var(--flare-spacing-2);

@@ -1,4 +1,4 @@
-.flare-multiselect { display: flex; flex-direction: column; gap: var(--flare-spacing-2); position: relative; }
+/* Root column layout comes from the shared field-family root (input.css). */
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 /* The trigger carries the shared flare-input__field well (box-model, border, transition, :hover +
    :focus-within ring, and the shared flare-input--disabled/--error state); the trigger-layout block

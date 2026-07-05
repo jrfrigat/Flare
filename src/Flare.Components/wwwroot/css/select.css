@@ -1,9 +1,4 @@
-.flare-select {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flare-spacing-2);
-    position: relative;
-}
+/* Root column layout comes from the shared field-family root (input.css). */
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error
    classes (see input.css); the select only styles its combobox trigger and dropdown below. */
