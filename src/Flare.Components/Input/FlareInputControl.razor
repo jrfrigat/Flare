@@ -12,7 +12,7 @@
 
 @if (Multiline)
 {
-    <textarea class="@Css.Classes.Input.Control"
+    <textarea class="@ControlCss()"
               id="@Id"
               style="@Style"
               value="@Value"
@@ -33,7 +33,7 @@
 }
 else
 {
-    <input class="@Css.Classes.Input.Control"
+    <input class="@ControlCss()"
            id="@Id"
            style="@Style"
            value="@Value"
@@ -95,6 +95,9 @@ else
     /// <summary>Maximum characters. 0 = no limit.</summary>
     [Parameter] public int MaxLength { get; set; }
 
+    /// <summary>Extra CSS class appended to the control element (e.g. a component-specific control class).</summary>
+    [Parameter] public string? ControlClass { get; set; }
+
     /// <summary>Renders a <c>&lt;textarea&gt;</c> instead of an <c>&lt;input&gt;</c>.</summary>
     [Parameter] public bool Multiline { get; set; }
 
@@ -117,6 +120,9 @@ else
 
     private ElementReference _element;
     private readonly CancelScope _debounce = new();
+
+    private string ControlCss() =>
+        string.IsNullOrEmpty(ControlClass) ? Css.Classes.Input.Control : $"{Css.Classes.Input.Control} {ControlClass}";
 
     /// <summary>The underlying input element, for the parent field to focus it.</summary>
     public ElementReference Element => _element;
