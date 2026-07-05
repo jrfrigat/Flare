@@ -136,19 +136,47 @@ internal static class Program
             ? CssAudit.ScanLiteralTokenFallbacks(cssDir)
             : (IReadOnlyList<string>)Array.Empty<string>();
 
+        var duplicates = constants.Duplicates;
+
         Console.WriteLine();
         Console.WriteLine($"Flare.Components CSS classes: {css.Count}");
-        Console.WriteLine($"CssClasses constants:        {constants.Values.Count}");
+        Console.WriteLine($"CssClasses constants:        {constants.Values.Count}"
+            + (constants.DeclarationCount != constants.Values.Count
+                ? $" distinct ({constants.DeclarationCount} declarations, {duplicates.Count} duplicated)" : ""));
+        // Reconcile the constant total with the class total so the difference is never a mystery: a
+        // constant is either a real Flare.Components class, a runtime PREFIX concatenated with an id at
+        // runtime (ends with '-', e.g. flare-theme-/flare-palette-), or a theme-INFRASTRUCTURE marker set
+        // on the wrapper element (flare-root/-rtl/-mode-*). Prefixes and markers have no standalone
+        // '.flare-x {}' rule, so the constant total legitimately exceeds the class total even in sync.
+        int classC = 0, prefixC = 0, infraC = 0, otherC = 0;
+        foreach (var v in constants.Values)
+        {
+            if (css.ContainsKey(v)) classC++;
+            else if (v.EndsWith("-", StringComparison.Ordinal)) prefixC++;
+            else if (IsThemeInfrastructure(v)) infraC++;
+            else otherC++;
+        }
+        Console.WriteLine($"  = {classC} class + {prefixC} runtime-prefix + {infraC} infrastructure marker(s)"
+            + (otherC > 0 ? $" + {otherC} other" : ""));
         if (themeCss is not null)
             Console.WriteLine($"Theme CSS classes:           {themeCss.Count}  (themes: {ThemeNames(themeDirs)})");
         Console.WriteLine();
 
         var clean = missingInConstants.Count == 0 && missingInCss.Count == 0
-            && inThemeNotBase.Count == 0 && literalFallbacks.Count == 0;
+            && inThemeNotBase.Count == 0 && literalFallbacks.Count == 0 && duplicates.Count == 0;
         if (clean)
         {
             Console.WriteLine("OK - CssClasses, Flare.Components CSS and themes are fully in sync.");
             return true;
+        }
+
+        if (duplicates.Count > 0)
+        {
+            Console.WriteLine($"--- {duplicates.Count} DUPLICATE constant value(s) (a CSS class declared by >1 constant) ---");
+            foreach (var d in duplicates)
+                Console.WriteLine($"  [=] {d}");
+            Console.WriteLine("      (consolidate to ONE constant and reference it from the other call sites)");
+            Console.WriteLine();
         }
 
         if (literalFallbacks.Count > 0)
@@ -595,15 +623,36 @@ internal static class Program
     }
 }
 
-/// <summary>Constants parsed from CssClasses.cs: value -> declaring nested class + field.</summary>
+/// <summary>
+/// Constants parsed from the CssClasses partials: value -&gt; ALL declaring (nested class, field) pairs.
+/// Keeping every declaration (not just the last) is what lets the audit report duplicate constants -
+/// two <c>const</c>s that resolve to the same <c>"flare-x"</c> string, which the old value-keyed
+/// dictionary silently collapsed.
+/// </summary>
 internal sealed class ConstSet
 {
-    private readonly Dictionary<string, (string Owner, string Field)> _byValue = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, List<(string Owner, string Field)>> _byValue = new(StringComparer.Ordinal);
 
+    /// <summary>The distinct CSS-class values that have at least one constant.</summary>
     public IReadOnlyCollection<string> Values => _byValue.Keys;
 
-    public void Add(string value, string owner, string field) => _byValue[value] = (owner, field);
+    /// <summary>Total number of <c>const</c> declarations, counting duplicates separately.</summary>
+    public int DeclarationCount => _byValue.Values.Sum(l => l.Count);
+
+    public void Add(string value, string owner, string field) =>
+        (_byValue.TryGetValue(value, out var list) ? list : _byValue[value] = new()).Add((owner, field));
 
     public string LocationOf(string value) =>
-        _byValue.TryGetValue(value, out var loc) ? $"Css.Classes.{loc.Owner}.{loc.Field}" : "?";
+        _byValue.TryGetValue(value, out var locs) && locs.Count > 0
+            ? $"Css.Classes.{locs[0].Owner}.{locs[0].Field}" : "?";
+
+    /// <summary>
+    /// Values declared by MORE than one constant (redundant duplicates), each formatted as
+    /// <c>flare-x  (Css.Classes.A.B, Css.Classes.C.D)</c> listing every declaration site.
+    /// </summary>
+    public IReadOnlyList<string> Duplicates =>
+        _byValue.Where(kv => kv.Value.Count > 1)
+            .OrderBy(kv => kv.Key, StringComparer.Ordinal)
+            .Select(kv => $"{kv.Key}  ({string.Join(", ", kv.Value.Select(l => $"Css.Classes.{l.Owner}.{l.Field}"))})")
+            .ToList();
 }
