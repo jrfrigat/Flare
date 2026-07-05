@@ -82,21 +82,11 @@
     border-bottom: var(--flare-input-hover-border-bottom, var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant)));
 }
 
-/* Focus comes after hover so the focus indicator wins when the field is focused (the hover
-   state layer may still show while hovering a focused field). */
-/* Layout-neutral focus: keep the rest border WIDTH (so the field never resizes), recolour it to the
-   accent, and add the extra accent thickness as an inset box-shadow. Reserving the emphasis this way
-   stops the field "jumping" on focus (the border-width change did).
-   Keyboard-only: the indicator shows when the well itself is focus-visible (the combobox triggers,
-   whose div IS the focusable element -- so a mouse click, which is not focus-visible, draws nothing)
-   OR when it contains a focus-visible descendant (the text-input fields, which are always focus-visible
-   while focused, so they keep their active indicator on click as expected). Mirrors the global
-   :focus-visible policy in a11y.css so a pointer focus never rings a control. */
-.flare-input__field:focus-visible,
-.flare-input__field:has(:focus-visible) {
-    border-color: var(--fc-main, var(--flare-color-primary));
-    box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
-}
+/* Field focus ring intentionally disabled for now (to be redesigned as keyboard-only later).
+   It previously recoloured the border + drew an inset box-shadow on :focus-visible / :has(:focus-visible),
+   but that also fired on a mouse click for text inputs (which are always :focus-visible while focused),
+   so a click drew the ring too. NOTE: with this removed, fields have no visible focus indicator until a
+   keyboard-only ring is re-added. The --flare-input-focus-ring token is kept for that. */
 
 .flare-input__control {
     flex: 1;
