@@ -3,19 +3,13 @@
 
 @* The one shared field frame for the WHOLE field/input family (text, numeric, mask, password, textarea,
    otp, select, multiselect, combobox, tagfield, pickers). It renders the shared column: the .flare-input
-   root (with the universal variant/size/state emitted BOTH as data-* attributes AND, during the CSS
-   transition, as the legacy modifier classes), the label, the Field slot (the well/control the field owns),
-   and the supporting-text row (helper OR error + an optional counter). It owns NOTHING behavioural and no
-   TValue -- that boundary is what keeps it from becoming a super-component. The field supplies its own root
-   modifier via ComponentClass and its control markup via Field. *@
+   root (carrying the universal variant/size/state modifier classes), the label, the Field slot (the
+   well/control the field owns), and the supporting-text row (helper OR error + an optional counter). It
+   owns NOTHING behavioural and no TValue -- that boundary is what keeps it from becoming a super-component.
+   The field supplies its own root modifier via ComponentClass and its control markup via Field. *@
 
 <div class="@RootClass()"
      style="@Style"
-     data-variant="@VariantData()"
-     data-size="@SizeData()"
-     data-invalid="@(Invalid ? "true" : null)"
-     data-disabled="@(Disabled ? "true" : null)"
-     data-readonly="@(ReadOnly ? "true" : null)"
      @ref="_root"
      @attributes="Attributes">
     @if (!string.IsNullOrEmpty(Label) && !FloatingLabel)
@@ -47,19 +41,19 @@
     /// <summary>Any extra component-specific modifier classes (open/floating/auto/margin/adornment).</summary>
     [Parameter] public string? ExtraClass { get; set; }
 
-    /// <summary>Visual variant, emitted as <c>data-variant</c> (+ the legacy variant class during transition).</summary>
+    /// <summary>Visual variant (Filled/Outlined), emitted as the shared variant modifier class.</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
 
-    /// <summary>Control size, emitted as <c>data-size</c> (+ the legacy size class during transition).</summary>
+    /// <summary>Control size (Xs..Xl), emitted as the shared size modifier class.</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
 
-    /// <summary>Invalid/error state -> <c>data-invalid</c> (+ <c>flare-input--error</c>).</summary>
+    /// <summary>Invalid/error state; emits the shared <c>flare-input--error</c> modifier.</summary>
     [Parameter] public bool Invalid { get; set; }
 
-    /// <summary>Disabled state -> <c>data-disabled</c> (+ <c>flare-input--disabled</c>).</summary>
+    /// <summary>Disabled state; emits the shared <c>flare-input--disabled</c> modifier.</summary>
     [Parameter] public bool Disabled { get; set; }
 
-    /// <summary>Read-only state -> <c>data-readonly</c>.</summary>
+    /// <summary>Read-only state; forwarded by fields to their control (the frame draws no read-only chrome).</summary>
     [Parameter] public bool ReadOnly { get; set; }
 
     /// <summary>The field label text; omitted when null/empty or when <see cref="FloatingLabel"/> (the field
@@ -107,8 +101,9 @@
     private bool HasSupport =>
         !string.IsNullOrEmpty(ErrorText) || !string.IsNullOrEmpty(HelperText) || Counter is not null;
 
-    // The shared root always carries .flare-input; the component modifier + universal state/variant/size
-    // classes (kept until the CSS moves fully to data-*) + any extra component modifier follow.
+    // The shared root always carries .flare-input; the component modifier + the universal state/variant/size
+    // modifier classes + any extra component modifier follow. State precedence is Disabled-first (a disabled
+    // field never also shows the error indicator), matching the field shells.
     private string RootClass()
     {
         var sb = new System.Text.StringBuilder(Css.Classes.Input.Root);
@@ -128,16 +123,6 @@
         FieldSize.Lg => Css.Classes.Input.SizeLg,
         FieldSize.Xl => Css.Classes.Input.SizeXl,
         _ => null,
-    };
-
-    private string? SizeData() => Size switch
-    {
-        FieldSize.Xs => "xs", FieldSize.Sm => "sm", FieldSize.Lg => "lg", FieldSize.Xl => "xl", _ => "md",
-    };
-
-    private string? VariantData() => Variant switch
-    {
-        InputVariant.Filled => "filled", InputVariant.Outlined => "outlined", _ => null,
     };
 
     private string? VariantClassOf() => Variant switch
