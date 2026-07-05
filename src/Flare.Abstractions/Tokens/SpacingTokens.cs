@@ -5,9 +5,9 @@ namespace Flare.Abstractions.Tokens;
 /// <summary>
 /// Default values for the spacing scale (padding/margin/gap). The step index is a multiple of the
 /// 0.125rem (2px) base unit: <c>S2</c> = 0.25rem, <c>S4</c> = 0.5rem, <c>S8</c> = 1rem, and so on.
-/// The default ramp (0/2/4/6/8/10/12/16/20/24/32 px for S0..S16) matches the Fluent UI 2 spacing ramp
-/// exactly (None/XXS/XS/SNudge/S/MNudge/M/L/XL/XXL/XXXL) and is a superset of the Material Design 3
-/// 4dp grid (4/8/12/16/24/32 = S2/S4/S6/S8/S12/S16), so a single default serves both themes.
+/// The default ramp (0/2/4/6/8/10/12/16/20/24/32 px for S0..S16) is an 11-step scale that is a superset
+/// of a 4px grid (4/8/12/16/24/32 = S2/S4/S6/S8/S12/S16), so a single default serves both fine-nudge
+/// and 4px-grid design systems.
 /// Mode-independent (the same scale serves light and dark). A theme overrides only what it wants
 /// via <c>with</c> -- e.g. a denser theme can tighten the whole scale -- and component CSS resolves
 /// every spacing through <c>var(--flare-spacing-*)</c>, so the override applies everywhere at once.

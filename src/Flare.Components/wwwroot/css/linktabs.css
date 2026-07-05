@@ -17,7 +17,7 @@
   gap: var(--flare-spacing-4);
   padding: var(--flare-spacing-6) var(--flare-spacing-10);
   border: none;
-  /* MD3: active-indicator height 3dp; inactive label = on-surface */
+  /* Active-indicator height 3dp; inactive label = on-surface */
   border-bottom: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
   margin-bottom: -1px;
   background: transparent;

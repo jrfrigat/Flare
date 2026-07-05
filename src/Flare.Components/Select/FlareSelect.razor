@@ -98,7 +98,7 @@
     /// <summary>Optional typography scale for the control text. Overrides the size-derived font; null keeps the default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
-    /// Default keeps the theme's field style (MD3 filled / Fluent outlined).</summary>
+    /// Default keeps the theme's own field style.</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
 
     protected override string ComponentCssClass => Css.Classes.Select.Root;

@@ -295,7 +295,7 @@ public static class ProgressField
     /// <summary>CSS custom-property name for the wavy duration token.</summary>
     public const string WavyDuration = $"{Prefix}-wavy-duration";
 
-    // MD3 Expressive linear/circular geometry the component actually reads (track/stop/wave),
+    // Linear/circular progress geometry the component actually reads (track/stop/wave),
     // distinct from the legacy linear-radius/circular-stroke-width names above.
     /// <summary>CSS custom-property name for the linear track radius token.</summary>
     public const string TrackRadius = $"{Prefix}-track-radius";
@@ -338,7 +338,7 @@ public static class NavField
     public const string IndicatorRadius = $"{Prefix}-indicator-radius";
     /// <summary>CSS custom-property name for the active-indicator background token.</summary>
     public const string ActiveIndicator = $"{Prefix}-active-indicator";
-    /// <summary>CSS custom-property name for the active item left-bar token (e.g. Fluent rail accent).</summary>
+    /// <summary>CSS custom-property name for the active item left-bar token (an optional left accent bar).</summary>
     public const string ActiveLeftBar = $"{Prefix}-active-left-bar";
 }
 

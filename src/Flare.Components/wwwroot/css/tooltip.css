@@ -22,7 +22,7 @@
               visibility var(--flare-motion-duration-short1);
 }
 
-/* MD3 rich tooltip: surface container, on-surface text, elevation 3, wraps. */
+/* Rich tooltip: surface container, on-surface text, elevation 3, wraps. */
 .flare-tooltip__content--rich {
   background: var(--flare-color-surface-container);
   color: var(--flare-color-on-surface);

@@ -1,5 +1,5 @@
-/* FlareTableOfContents / FlareOnThisPage. One token-driven layout renders both the MD3 "pill"
-   look (filled rounded active link, no rail) and the FluentUI2 "rail" look (thin vertical line
+/* FlareTableOfContents / FlareOnThisPage. One token-driven layout renders both the "pill"
+   look (filled rounded active link, no rail) and the "rail" look (thin vertical line
    with a left marker bar on the active link). Themes flip the look via --flare-toc-* tokens. */
 .flare-toc {
   font-family: var(--flare-typescale-body-medium-font);
@@ -23,7 +23,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
-  /* Rail: a vertical line beside the links (width/colour 0/transparent in MD3). */
+  /* Rail: a vertical line beside the links (width/colour 0/transparent for no rail). */
   border-inline-start: var(--flare-toc-rail-width, 0) solid var(--flare-toc-rail-color, transparent);
 }
 
@@ -38,7 +38,7 @@
   position: relative;
   padding-block: var(--flare-spacing-2);
   padding-inline: var(--flare-toc-link-pad-x, 0.75rem);
-  /* Left marker bar (Fluent); pulled over the rail line. 0-width in MD3. */
+  /* Left marker bar; pulled over the rail line. 0-width for the pill look. */
   margin-inline-start: calc(-1 * var(--flare-toc-marker-width, 0));
   border-inline-start: var(--flare-toc-marker-width, 0) solid transparent;
   border-radius: var(--flare-toc-active-radius, var(--flare-shape-full));

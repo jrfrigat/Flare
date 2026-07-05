@@ -27,7 +27,7 @@
     animation: var(--flare-menu-panel-enter-animation, flare-menu-in) var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
 }
 
-/* MD3 Expressive: when the menu is split into groups, the panel becomes a transparent
+/* When the menu is split into groups, the panel can become a transparent
    container so the groups read as separate floating "islands" with no backing behind them.
    Themes opt in via tokens; otherwise the panel keeps its normal surface. */
 .flare-menu__panel:has(.flare-menu-group) {
@@ -38,14 +38,14 @@
 /* Each group can carry its own elevation so the islands visibly float. */
 .flare-menu-group { box-shadow: var(--flare-menu-group-shadow, none); }
 
-/* MD3: scale + fade (expand from the anchor corner) */
+/* Default: scale + fade (expand from the anchor corner) */
 @keyframes flare-menu-in {
     from { opacity: 0; transform: scale(0.95) translateY(-0.25rem); }
     to   { opacity: 1; transform: scale(1)    translateY(0);         }
 }
 
-/* Fluent: fade + slight shift only, no scale */
-@keyframes flare-menu-in-fluent {
+/* Alternative: fade + slight shift only, no scale */
+@keyframes flare-menu-in-fade {
     from { opacity: 0; transform: translateY(-0.25rem); }
     to   { opacity: 1; transform: translateY(0);         }
 }

@@ -32,12 +32,12 @@
 .flare-divider--text-left::before { flex: 0 0 1rem; }
 .flare-divider--text-right::after { flex: 0 0 1rem; }
 
-/* Inset divider (MD3) - indents from the leading edge */
+/* Inset divider - indents from the leading edge */
 .flare-divider--inset {
   margin-inline-start: var(--flare-spacing-32);
 }
 
-/* Middle-inset divider (MD3) - indents from both edges */
+/* Middle-inset divider - indents from both edges */
 .flare-divider--middle-inset {
   margin-inline-start: var(--flare-spacing-32);
   margin-inline-end: var(--flare-spacing-32);

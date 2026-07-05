@@ -117,7 +117,7 @@
     [Parameter] public int MaxLength { get; set; } = 0;
     /// <summary>Shows a clear (x) button inside the field when the input has a non-empty value.</summary>
     [Parameter] public bool Clearable { get; set; }
-    /// <summary>Shows a character counter in the supporting-text row (per MD3). Renders the current length,
+    /// <summary>Shows a character counter in the supporting-text row. Renders the current length,
     /// and "current/<see cref="MaxLength"/>" when MaxLength is set.</summary>
     [Parameter] public bool ShowCharacterCount { get; set; }
     /// <summary>Semantic color that influences the focus/active border of the input field.</summary>
@@ -206,7 +206,7 @@
     private string? _typoStyle => Typo is { } t ? FlareTypography.FontStyle(t) : null;
 
     private int _charCount => Value?.ToString()?.Length ?? 0;
-    // MD3: a character limit implies a visible counter; ShowCharacterCount forces one without a limit.
+    // A character limit implies a visible counter; ShowCharacterCount forces one without a limit.
     private bool _showCounter => ShowCharacterCount || MaxLength > 0;
 
     private bool _hasValue => Value switch

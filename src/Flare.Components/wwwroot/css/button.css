@@ -35,10 +35,10 @@
     /* UNIFIED TRANSITION: controls the visuals and all 4 corners */
     /* NB: border-radius is intentionally NOT transitioned. Corner radii come from per-theme
        tokens, so animating them would morph every button's geometry on a theme switch (the
-       leftover "MD3 shape" effect). Keep only colour/shadow/outline transitions. A press-time
+       leftover shape-morph effect). Keep only colour/shadow/outline transitions. A press-time
        shape morph, if wanted, should be a scoped :active transition - not a global one. */
     transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
-    /* Reserve 1px for the border on all buttons (Fluent UI 2 & MD3 approach) */
+    /* Reserve 1px for the border on all buttons so a bordered variant never shifts layout */
     border: 1px solid transparent;
 }
 
@@ -93,7 +93,7 @@
 
 .flare-btn--outlined {
     background-color: transparent;
-    /* Default (no colour) = neutral MD3 (on-surface-variant / outline-variant); role/custom = accent. */
+    /* Default (no colour) = neutral (on-surface-variant / outline-variant); role/custom = accent. */
     color: var(--fc-main, var(--flare-color-on-surface-variant));
     border-color: var(--fc-main, var(--flare-color-outline-variant));
 }
@@ -210,16 +210,16 @@
 }
 
 /* ==========================================================================
-   SHAPE AXIS (Fluent UI 2 + MD3 Expressive). Default = no class (theme's own
+   SHAPE AXIS. Default = no class (theme's own
    button radius). The three explicit shapes override the per-corner radii with
    the shorthand, so they must sit after the size grid to win on source order
    (equal specificity). border-radius is intentionally not transitioned here -
    see the note on the base .flare-btn rule.
 
    - Rounded:  rounded rectangle, theme shape scale (XS/SM -> medium,
-               MD -> large, LG/XL -> extra-large). Fluent "rounded" / MD3 "square".
+               MD -> large, LG/XL -> extra-large).
    - Circular: fully rounded pill (and a circle for icon-only buttons).
-   - Square:   sharp, non-rounded corners. Fluent "square".
+   - Square:   sharp, non-rounded corners.
    ========================================================================== */
 .flare-btn--rounded { border-radius: var(--flare-shape-large); }
 .flare-btn--rounded.flare-btn--xs,
@@ -232,7 +232,7 @@
 .flare-btn--square { border-radius: var(--flare-shape-none); }
 
 /* ==========================================================================
-   PRESS MORPH (MD3 Expressive, opt-in via .flare-btn--morph): the corner radius
+   PRESS MORPH (opt-in via .flare-btn--morph): the corner radius
    animates while pressed. Scoped to this class only - the base .flare-btn keeps
    border-radius out of its transition so theme switches never morph geometry.
    The full base transition list is re-declared here (not appended) plus border-radius.
@@ -269,7 +269,7 @@
     white-space: nowrap;
 }
 
-/* Optically tuck each icon toward the button edge on its side (MD3 gives the icon side
+/* Optically tuck each icon toward the button edge on its side (the icon side gets
    slightly less padding than the label side). */
 .flare-btn__icon--leading {
     margin-inline-start: calc(-1 * var(--flare-spacing-2));
@@ -280,8 +280,8 @@
 
 /* ==========================================================================
    ICON-ONLY: icon without text -> square (width = height), no inline
-   padding and no gap. The radius is inherited from the size (full -> circle in MD3,
-   rect radius -> rounded square in Fluent). The size comes from ButtonTokens.
+   padding and no gap. The radius is inherited from the size (full -> circle,
+   a rect radius -> rounded square). The size comes from ButtonTokens.
    ========================================================================== */
 .flare-btn--icon-only {
     --_flare-btn-padding-inline: 0;

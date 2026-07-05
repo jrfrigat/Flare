@@ -1,7 +1,7 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Size of a <see cref="FlareFloatingActionButton"/>, per Material Design 3.
+/// Size of a <see cref="FlareFloatingActionButton"/>.
 /// </summary>
 public enum FabSize
 {

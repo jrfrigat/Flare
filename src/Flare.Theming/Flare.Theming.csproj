@@ -5,7 +5,7 @@
     <TargetFramework></TargetFramework>
     <PackageId>Flare.Theming</PackageId>
     <Description>Flare theming engine: theme/palette services, palette generation, color math and the design-token to CSS-variable mapping. Depends only on Flare.Abstractions.</Description>
-    <PackageTags>blazor;theming;design-tokens;palette;material-design;fluent-ui;dotnet</PackageTags>
+    <PackageTags>blazor;theming;design-tokens;palette;dotnet</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>

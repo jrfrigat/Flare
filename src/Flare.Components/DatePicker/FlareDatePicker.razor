@@ -157,7 +157,7 @@
     protected override string ComponentCssClass => Css.Classes.DatePicker.Root;
 
     /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
-    /// Default keeps the theme's field style (MD3 filled / Fluent outlined).</summary>
+    /// Default keeps the theme's own field style.</summary>
     [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
     /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;

@@ -105,7 +105,7 @@
 }
 
 /* Panels layout: calendar + time as TWO SEPARATE elevated cards with a gap between
-   them (MD3, like SplitButton). The outer panel becomes a transparent container; each
+   them (like SplitButton). The outer panel becomes a transparent container; each
    pane is its own surface. */
 .flare-datetimepicker__panel--split {
   min-width: 36rem !important;

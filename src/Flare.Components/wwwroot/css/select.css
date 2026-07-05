@@ -39,7 +39,7 @@
 /* Size grid (Xs..Xl) lives in input.css as the single source for the whole input family. */
 
 /* Disabled + error: the trigger carries flare-input__field, so the shared
-   flare-input--disabled/--error .flare-input__field rules (MD3 4%/38% surface + error border) and
+   flare-input--disabled/--error .flare-input__field rules (4%/38% surface + error border) and
    the shared label/helper/arrow/placeholder treatment apply automatically. Only the single-value text
    (a select-specific span) needs the disabled dim here. */
 .flare-input--disabled .flare-select__value {

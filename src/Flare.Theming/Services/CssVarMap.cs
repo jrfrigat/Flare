@@ -331,7 +331,7 @@ public static class CssVarMap
         v[Css.Tokens.TableOfContents.LinkPadX] = t.TableOfContents.LinkPadX;
         v[Css.Tokens.TableOfContents.Indent] = t.TableOfContents.Indent;
 
-        // Geometry tokens are always emitted (MD3 = "initial" -> component per-size fallback),
+        // Geometry tokens are always emitted ("initial" -> component per-size fallback),
         // so a theme switch deterministically overwrites the previous theme's values.
         v[Css.Tokens.Slider.TrackHeight] = t.Slider.TrackHeight;
         v[Css.Tokens.Slider.TrackRadius] = t.Slider.TrackRadius;

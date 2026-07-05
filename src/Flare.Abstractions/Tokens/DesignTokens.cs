@@ -53,7 +53,7 @@ public sealed record DesignTokens
     /// <summary>Tabs token.</summary>
     public required TabsTokens Tabs { get; init; }
 
-    /// <summary>Slider geometry/colors. Defaults to MD3 Expressive; Fluent overrides to a thin rail.</summary>
+    /// <summary>Slider geometry/colors. A theme supplies the shape (e.g. a bar handle or a thin rail with a circular thumb).</summary>
     public required SliderTokens Slider { get; init; }
 
     /// <summary>Input/Select/TextArea form field tokens.</summary>
@@ -119,7 +119,7 @@ public sealed record DesignTokens
     /// <summary>FlareColorPicker checkerboard + native range-thumb tokens.</summary>
     public required ColorPickerTokens ColorPicker { get; init; }
 
-    /// <summary>Theme-specific extras not in the core schema (e.g. Fluent focus ring vars).</summary>
+    /// <summary>Theme-specific extras not in the core schema (e.g. extra focus-ring vars a theme needs).</summary>
     public IReadOnlyDictionary<string, string> Extended { get; init; }
         = new Dictionary<string, string>();
 }

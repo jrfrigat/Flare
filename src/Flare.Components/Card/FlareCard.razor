@@ -30,7 +30,7 @@ else
     [Parameter] public CardSize Size { get; set; } = CardSize.Md;
 
     /// <summary>
-    /// Overrides the card's drop shadow with an explicit elevation level (0-5 on the MD3 elevation scale,
+    /// Overrides the card's drop shadow with an explicit elevation level (0-5 on the elevation scale,
     /// clamped). <c>Elevation="0"</c> is flat (no shadow); higher values lift the card further. When
     /// <c>null</c> (default) each <see cref="Variant"/> keeps its own elevation - <see cref="CardVariant.Elevated"/>
     /// is level 1, while <see cref="CardVariant.Filled"/>/<see cref="CardVariant.Outlined"/>/<see cref="CardVariant.Tonal"/>/<see cref="CardVariant.Text"/>
@@ -39,7 +39,7 @@ else
     /// </summary>
     [Parameter] public int? Elevation { get; set; }
 
-    /// <summary>When true, lays the card out horizontally (media on the leading side, content beside it), like FluentUI 2 horizontal orientation. Default false (vertical).</summary>
+    /// <summary>When true, lays the card out horizontally (media on the leading side, content beside it). Default false (vertical).</summary>
     [Parameter] public bool Compact { get; set; }
 
     /// <summary>Click handler. When set (or Href), the card becomes interactive (hover state layer, role=button, keyboard focus).</summary>

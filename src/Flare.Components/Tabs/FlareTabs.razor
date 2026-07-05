@@ -79,7 +79,7 @@
     [Parameter] public RenderFragment? HeaderStart { get; set; }
     /// <summary>Custom content rendered at the end (right/bottom) of the tab header, after the tabs - e.g. action buttons. The tab bar grows to push this to the far edge.</summary>
     [Parameter] public RenderFragment? HeaderEnd { get; set; }
-    /// <summary>Type scale applied to the tab labels. Null (default) keeps the MD3 label-large scale.</summary>
+    /// <summary>Type scale applied to the tab labels. Null (default) keeps the theme's label scale.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Side the tab bar is placed on (Top/Bottom/Left/Right). Left/Right render a vertical bar. Default Top.</summary>
     [Parameter] public TabsPlacement Placement { get; set; } = TabsPlacement.Top;

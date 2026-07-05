@@ -1,4 +1,4 @@
-/* ToggleButton - MD3 segmented button / standalone toggle. A DISTINCT MD3 control, not a variant of
+/* ToggleButton - a segmented button / standalone toggle. A DISTINCT control, not a variant of
    .flare-btn: it deliberately uses its own compact size scale (one step shorter than .flare-btn - md
    is 2.5rem vs the button's 3rem), a label-large font, a filled rest colour
    (surface-container-highest), a snappier short1 state layer, and a round->squircle selection morph.
@@ -32,7 +32,7 @@
         border-radius var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
 }
 
-/* MD3 state layer */
+/* State layer */
 .flare-toggle-btn::before {
     content: '';
     position: absolute;
@@ -121,7 +121,7 @@
 
 .flare-toggle-btn__label { line-height: 1; white-space: nowrap; }
 
-/* --- Toggle Group (MD3 Segmented Button) --- */
+/* --- Toggle Group (Segmented Button) --- */
 .flare-togglegroup {
     display: inline-flex;
     border: var(--flare-togglegroup-border, 1px solid var(--flare-color-outline));

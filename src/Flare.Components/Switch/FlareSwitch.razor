@@ -39,11 +39,11 @@
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Accent color of the selected track (role -> shared class, custom -> inline token). Default = primary.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
-    /// <summary>Switch size (Sm or Md). Default Md (MD3 52x32dp).</summary>
+    /// <summary>Switch size (Sm or Md). Default Md (52x32dp).</summary>
     [Parameter] public SwitchSize Size { get; set; } = SwitchSize.Md;
     /// <summary>Label position relative to the switch (End = after, Start = before). Default End.</summary>
     [Parameter] public LabelPlacement LabelPlacement { get; set; } = LabelPlacement.End;
-    /// <summary>Icon shown on the handle when the switch is ON (MD3 "with icon", e.g. a check mark).</summary>
+    /// <summary>Icon shown on the handle when the switch is ON (e.g. a check mark).</summary>
     [Parameter] public RenderFragment? SelectedIcon { get; set; }
     /// <summary>Icon shown on the handle when the switch is OFF. Optional; when omitted the off handle is plain.</summary>
     [Parameter] public RenderFragment? UnselectedIcon { get; set; }

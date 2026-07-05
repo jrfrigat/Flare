@@ -1,6 +1,6 @@
 namespace Flare.Components;
 
-/// <summary>MD3 type scale roles mapped to semantic HTML elements and CSS utility classes.</summary>
+/// <summary>Semantic type-scale roles mapped to semantic HTML elements and CSS utility classes.</summary>
 public enum TypographyScale
 {
     /// <summary>Display Large - largest display text, maps to h1.</summary>

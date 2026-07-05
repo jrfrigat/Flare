@@ -70,7 +70,7 @@
   gap: var(--flare-spacing-4);
   min-width: 20rem;
   max-width: 36rem;
-  /* MD3: single-line 48dp, two-line grows to ~68dp via wrapping content */
+  /* Single-line 48dp, two-line grows to ~68dp via wrapping content */
   min-height: var(--flare-snackbar-min-height, 3rem);
   padding: var(--flare-snackbar-padding-block,0.875rem) var(--flare-spacing-10);
   border-radius: var(--flare-snackbar-radius, var(--flare-shape-extra-small));

@@ -23,7 +23,7 @@ else
     [Parameter] public string? Text { get; set; }
     /// <summary>Controls where the text label is anchored when <see cref="Text"/> is set.</summary>
     [Parameter] public DividerTextAlign TextAlign { get; set; } = DividerTextAlign.Center;
-    /// <summary>Inset style (None full-bleed, Inset leading-edge, MiddleInset both edges), per MD3.</summary>
+    /// <summary>Inset style (None full-bleed, Inset leading-edge, MiddleInset both edges).</summary>
     [Parameter] public DividerInset Inset { get; set; } = DividerInset.None;
 
     protected override string ComponentCssClass => Css.Classes.Divider.Root;

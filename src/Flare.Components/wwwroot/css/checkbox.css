@@ -18,7 +18,7 @@
     flex-shrink: 0;
 }
 
-/* MD3 state-layer circle (40dp around 18dp box = 0.6875rem spread each side) */
+/* State-layer circle (40dp around 18dp box = 0.6875rem spread each side) */
 .flare-checkbox__container::before {
     content: '';
     position: absolute;
@@ -29,7 +29,7 @@
     pointer-events: none;
 }
 
-/* State layer is an MD3 trait - Fluent sets these tokens to transparent (no halo) */
+/* State layer is token-gated - set these tokens to transparent for no halo */
 .flare-checkbox:not(.flare-checkbox--disabled):hover .flare-checkbox__container::before {
     background: var(--flare-checkbox-state-layer-hover,
         color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent));
@@ -57,7 +57,7 @@
     box-sizing: border-box;   /* keep the box exactly --_cb-size incl. border */
     width: var(--_cb-size);
     height: var(--_cb-size);
-    /* MD3 checkbox corner = 2dp; Fluent overrides via --flare-checkbox-radius */
+    /* Default checkbox corner = 2dp; override via --flare-checkbox-radius */
     border-radius: var(--flare-checkbox-radius, 2px);
     border: var(--flare-checkbox-border-width, 2px) solid var(--flare-color-outline);
     background-color: transparent;
@@ -104,7 +104,7 @@
     transform: translate(-50%, -50%);
 }
 
-/* Focus-visible ring (a11y) - MD3: secondary 3dp (focus.indicator); Fluent: inner+outer double ring */
+/* Focus-visible ring (a11y) - default secondary 3dp; a theme can set an inner+outer double ring */
 .flare-checkbox__input:focus-visible + .flare-checkbox__indicator {
     outline: var(--flare-checkbox-focus-outline, 3px solid var(--flare-color-secondary));
     outline-offset: var(--flare-checkbox-focus-outline-offset, 2px);

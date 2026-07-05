@@ -121,7 +121,7 @@ export function prefersColorSchemeDark() {
 
 // --- OS accent color (Dynamic Color) ---
 // Reads the OS/browser accent color exposed via the CSS `AccentColor` system color (Windows accent,
-// macOS accent, Android Material You). Returns a #RRGGBB hex, or null when the real OS accent is not
+// macOS accent, Android dynamic color). Returns a #RRGGBB hex, or null when the real OS accent is not
 // available -- the caller then falls back to the configured seed.
 //
 // IMPORTANT: Chromium (Chrome/Edge) deliberately does NOT expose the real OS accent on the open web

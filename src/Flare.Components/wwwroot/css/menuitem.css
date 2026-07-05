@@ -40,7 +40,7 @@
     border-bottom-right-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
 }
 
-/* State layer (MD3 state-layer): hover 8% / focus 10% / pressed 10% */
+/* State layer: hover 8% / focus 10% / pressed 10% */
 .flare-menu-item::before {
     content: '';
     position: absolute;

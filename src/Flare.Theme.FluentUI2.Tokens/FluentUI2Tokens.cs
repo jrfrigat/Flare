@@ -220,7 +220,7 @@ public class FluentUI2Tokens
     internal static readonly MenuTokens Menu = new()
     {
         PanelMinWidth = "10rem",
-        EnterAnimation = "flare-menu-in-fluent",
+        EnterAnimation = "flare-menu-in-fade",
         PanelRadius = "var(--flare-popover-radius, var(--flare-shape-small))",
         PanelBg = "var(--flare-color-surface-container)",
         PanelShadow = "var(--flare-elevation-2)",

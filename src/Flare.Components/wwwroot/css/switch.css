@@ -37,7 +37,7 @@
         border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
-/* The circular handle - a real element so it can hold an optional icon (MD3 with-icon). */
+/* The circular handle - a real element so it can hold an optional icon (with-icon mode). */
 .flare-switch__handle {
     position: absolute;
     top: 50%;
@@ -50,7 +50,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    /* Unselected icon color (MD3: surface-container-highest on the outline handle). */
+    /* Unselected icon color (surface-container-highest on the outline handle). */
     color: var(--flare-switch-icon-off-color, var(--flare-color-surface-container-highest));
     transition:
         left var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
@@ -60,7 +60,7 @@
         box-shadow var(--flare-motion-duration-short1) ease;
 }
 
-/* Handle icon: MD3 = 16dp. */
+/* Handle icon size (default 16dp). */
 .flare-switch__handle .flare-icon,
 .flare-switch__handle .material-symbols-rounded {
     font-size: var(--flare-switch-icon-size, 1rem);
@@ -87,12 +87,12 @@
     width: var(--flare-switch-thumb-on-size, 1.5rem);
     height: var(--flare-switch-thumb-on-size, 1.5rem);
     background: var(--flare-switch-thumb-on-color, var(--flare-color-on-primary));
-    /* Selected icon color (MD3: primary on the on-primary handle). */
+    /* Selected icon color (primary on the on-primary handle). */
     color: var(--flare-switch-icon-on-color, var(--flare-color-primary));
 }
 
-/* Pressed (MD3): the handle grows to 28dp. Token-gated so Fluent (which doesn't resize on
-   press) neutralizes it by setting the pressed sizes to its normal handle sizes. */
+/* Pressed: the handle grows to 28dp. Token-gated so a theme that doesn't resize on
+   press neutralizes it by setting the pressed sizes to its normal handle sizes. */
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__thumb .flare-switch__handle {
     width: var(--flare-switch-thumb-pressed-off-size, 1.75rem);
     height: var(--flare-switch-thumb-pressed-off-size, 1.75rem);
@@ -102,7 +102,7 @@
     height: var(--flare-switch-thumb-pressed-on-size, 1.75rem);
 }
 
-/* Hover - track background (Fluent: subtle fill on OFF hover; MD3: no change) */
+/* Hover - track background (a theme may add a subtle fill on OFF hover; default = no change) */
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__thumb {
     background: var(--flare-switch-track-hover-off-bg,
         var(--flare-switch-track-off-bg, var(--flare-color-surface-container-highest)));
@@ -116,7 +116,7 @@
         var(--flare-switch-track-on-bg, var(--flare-color-primary)));
 }
 
-/* Hover - state layer around thumb ball (MD3 only; Fluent sets these vars to none) */
+/* Hover - state layer around thumb ball (token-gated; a theme can disable it by setting these vars to none) */
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__thumb .flare-switch__handle {
     box-shadow: var(--flare-switch-hover-shadow-off,
         0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent));
@@ -127,15 +127,15 @@
         0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent));
 }
 
-/* Focus-visible ring. MD3: 3dp secondary indicator, 2dp offset. */
+/* Focus-visible ring (default 3dp secondary indicator, 2dp offset). */
 .flare-switch__input:focus-visible + .flare-switch__thumb {
     outline: var(--flare-switch-focus-outline, 3px solid var(--flare-color-secondary));
     outline-offset: var(--flare-switch-focus-outline-offset, 2px);
     box-shadow: var(--flare-switch-focus-shadow, none);
 }
 
-/* Handle color by interaction state (MD3): unselected -> on-surface-variant,
-   selected -> primary-container. Token-gated so Fluent keeps its handle color. */
+/* Handle color by interaction state: unselected -> on-surface-variant,
+   selected -> primary-container. Token-gated so a theme can keep its own handle color. */
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__handle,
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__handle,
 .flare-switch__input:focus-visible + .flare-switch__thumb .flare-switch__handle {
@@ -147,7 +147,7 @@
     background: var(--flare-switch-thumb-state-on-color, var(--flare-color-primary-container));
 }
 
-/* Focus state layer (MD3 ~10%), in addition to the focus ring. */
+/* Focus state layer (~10%), in addition to the focus ring. */
 .flare-switch__input:focus-visible + .flare-switch__thumb .flare-switch__handle {
     box-shadow: var(--flare-switch-focus-shadow-off,
         0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) 10%, transparent));
@@ -168,12 +168,12 @@
     color: var(--flare-color-error);
 }
 
-/* Disabled (MD3): neutral track at 12% + handle at 38% (separate, not one blanket opacity).
+/* Disabled: neutral track at 12% + handle at 38% (separate, not one blanket opacity).
    Placed after the checked/hover/focus rules so it wins for both states. */
 /* Label before the switch */
 .flare-switch--label-start { flex-direction: row-reverse; }
 
-/* Size grid (xs..xl). MD3 default is Medium (52x32dp = base tokens, no class). All metrics are
+/* Size grid (xs..xl). Default is Medium (52x32dp = base tokens, no class). All metrics are
    token-driven; on-left = 100% - (thumb-on-size + 0.25rem), off-left = track-height x 0.125. */
 .flare-switch--xs {
     --flare-switch-track-width: 2.125rem;

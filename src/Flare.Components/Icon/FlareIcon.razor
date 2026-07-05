@@ -51,9 +51,9 @@ else
     [Parameter] public string? Size { get; set; }
     /// <summary>Icon color. Role (<c>FlareColor.Primary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token. Default inherits.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
-    /// <summary>Convenience pixel size for both SVG and Material icons (e.g. <c>48</c> -> "48px"). Ignored when <see cref="Size"/> is set.</summary>
+    /// <summary>Convenience pixel size for both SVG and font icons (e.g. <c>48</c> -> "48px"). Ignored when <see cref="Size"/> is set.</summary>
     [Parameter] public int? SizePx { get; set; }
-    /// <summary>SVG viewBox for custom path data in <see cref="Icon"/>. Defaults to the Material 24x24 grid; set e.g. "0 0 1024 1024" for icons authored on a different canvas.</summary>
+    /// <summary>SVG viewBox for custom path data in <see cref="Icon"/>. Defaults to a 24x24 grid; set e.g. "0 0 1024 1024" for icons authored on a different canvas.</summary>
     [Parameter] public string ViewBox { get; set; } = "0 0 24 24";
     /// <summary>Accessible label; sets aria-label and role=img when provided.</summary>
     [Parameter] public string? AriaLabel { get; set; }

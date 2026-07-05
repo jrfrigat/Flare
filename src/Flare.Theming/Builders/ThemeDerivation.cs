@@ -16,10 +16,10 @@ public static class ThemeDerivation
     /// except the members you override. Only <paramref name="id"/> is required (a derived theme needs a
     /// distinct id so it can be registered alongside its base).
     /// <code>
-    /// var myFluent = new Fluent2Theme().Derive(
-    ///     id: "my-fluent",
+    /// var myTheme = new SomeBaseTheme().Derive(
+    ///     id: "my-theme",
     ///     design: d => d with { Shape = d.Shape with { Medium = "10px" } });
-    /// services.AddFlareTheme(myFluent);
+    /// services.AddFlareTheme(myTheme);
     /// </code>
     /// </summary>
     /// <param name="baseTheme">The theme to derive from; all non-overridden members are taken from it.</param>

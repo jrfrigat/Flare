@@ -11,7 +11,7 @@ public sealed record Palette
 {
     /// <summary>
     /// Reserved id for the Dynamic Color palette: a palette generated at runtime from the OS/browser
-    /// accent color (Windows/macOS accent, Android Material You) via the active theme's generator.
+    /// accent color (Windows/macOS accent, Android dynamic color) via the active theme's generator.
     /// Select it like any palette; the actual colors are produced by <c>IThemeService.ApplyDynamicPaletteAsync</c>.
     /// </summary>
     public const string DynamicId = "dynamic";
@@ -22,8 +22,8 @@ public sealed record Palette
     public required string Name { get; init; }
 
     /// <summary>
-    /// Origin/family this palette ships with, for grouping in pickers (e.g. "Material Design 3",
-    /// "Fluent UI 2"). Purely informational -- a palette is structurally universal and can be
+    /// Origin/family this palette ships with, for grouping in pickers (e.g. the design system it was
+    /// extracted from). Purely informational -- a palette is structurally universal and can be
     /// applied to any theme. Null/empty groups under a generic heading.
     /// </summary>
     public string? Source { get; init; }

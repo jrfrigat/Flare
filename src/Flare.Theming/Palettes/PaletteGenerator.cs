@@ -9,7 +9,7 @@ namespace Flare.Theming;
 /// <summary>
 /// Core, design-system-agnostic generator: derives every role from the seed using HSL/contrast
 /// math (brand-tinted neutrals, derived containers/on-colors, fixed semantic accents). A theme
-/// may supply a richer generator (HCT tonal, Fluent ramp) in a later sprint; the contract is the same.
+/// may supply a richer generator (e.g. a tonal or ramp-based scheme) in a later sprint; the contract is the same.
 /// </summary>
 public sealed class DefaultPaletteGenerator : IPaletteGenerator
 {
