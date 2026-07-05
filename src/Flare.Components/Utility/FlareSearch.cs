@@ -1,7 +1,7 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Relevance scoring for type-ahead search. Components such as <c>FlareAutocomplete</c> and
+/// Relevance scoring for type-ahead search. Components such as <c>FlareCombobox</c> and
 /// <c>FlareMultiSelect</c> use <see cref="Score"/> to rank matches (best first) instead of a plain
 /// alphabetical or insertion-order filter, so typing "lo" surfaces "London" above "Los Angeles".
 /// Consumers can also call it directly to build a custom <c>RankFunc</c>.

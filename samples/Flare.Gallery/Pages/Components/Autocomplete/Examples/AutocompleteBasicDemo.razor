@@ -1,5 +1,5 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareAutocomplete TValue="string"
+    <FlareCombobox TValue="string"
                        @bind-Value="_selectedCity"
                        Label="City"
                        Placeholder="Type to search…"
@@ -7,7 +7,7 @@
                        MinChars="1"
                        Clearable="true"
                        Style="max-width:24rem;" />
-    <FlareAutocomplete TValue="string"
+    <FlareCombobox TValue="string"
                        @bind-Value="_selectedCity"
                        Label="City (Large - Xs..Xl grid)"
                        Placeholder="Type to search…"
@@ -30,6 +30,6 @@
         "Toronto", "Vienna", "Warsaw", "Zurich"
     ];
 
-    private Task<IEnumerable<string>> SearchCities(string query) =>
+    private Task<IEnumerable<string>> SearchCities(string query, CancellationToken ct) =>
         Task.FromResult(_cities.Where(c => c.Contains(query, StringComparison.OrdinalIgnoreCase)));
 }

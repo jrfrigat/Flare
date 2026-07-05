@@ -1,0 +1,485 @@
+@namespace Flare.Components
+@inherits FlareFieldBase
+@implements IFlareMultiField<TValue>
+@typeparam TValue
+@using Flare.Components.Combobox
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Web
+
+@* Multi-value dropdown select over the shared engine: the selection shows as removable chips or a comma
+   list, the dropdown has leading-checkbox option rows and an optional select-all, and it stays open on each
+   pick. Composes the shared primitives; the engine owns selection (incl. max + tri-state select-all). *@
+
+<FlareFieldChrome @ref="_chrome"
+                  RootClass="@Css.Classes.Multiselect.Root"
+                  StateClass="@_stateClass"
+                  SizeClass="@_sizeClass"
+                  VariantClass="@_variantClass"
+                  OpenClass="@(_state.IsOpen ? Css.Classes.Multiselect.Open : null)"
+                  Label="@Label" LabelId="@_labelId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.Input.Field @Css.Classes.Multiselect.Control"
+             @ref="_controlEl"
+             style="@(Typo is { } t ? FlareTypography.FontStyle(t) : null)"
+             role="@(Searchable ? null : "combobox")"
+             aria-haspopup="@(Searchable ? null : "listbox")"
+             aria-expanded="@(Searchable ? null : (_state.IsOpen ? "true" : "false"))"
+             aria-controls="@(!Searchable && _state.IsOpen ? _listboxId : null)"
+             aria-activedescendant="@(Searchable ? null : _activeDescendantId)"
+             aria-labelledby="@(!Searchable && !string.IsNullOrEmpty(Label) ? _labelId : null)"
+             aria-label="@(!Searchable && string.IsNullOrEmpty(Label) ? Placeholder : null)"
+             aria-describedby="@(Searchable ? null : _describedBy)"
+             aria-disabled="@(Disabled ? "true" : null)"
+             aria-readonly="@(ReadOnly ? "true" : null)"
+             aria-required="@(!Searchable && Required ? "true" : null)"
+             tabindex="@(Disabled || Searchable ? -1 : 0)"
+             @onclick="OnControlClick"
+             @onkeydown="HandleKeyDownAsync">
+            <span class="@Css.Classes.Multiselect.Value">
+                @if (_selected.Count > 0)
+                {
+                    @if (Chips)
+                    {
+                        <FlareChipStrip TItem="TValue"
+                                        Items="_selected"
+                                        Label="ResolveLabel"
+                                        Template="ChipTemplate"
+                                        ReadOnly="@(Disabled || ReadOnly)"
+                                        OnRemove="RemoveOneAsync" />
+                    }
+                    else
+                    {
+                        @string.Join(", ", _selected.Select(ResolveLabel))
+                    }
+                }
+                @if (_showPlaceholder)
+                {
+                    <span class="@Css.Classes.Input.Placeholder">@Placeholder</span>
+                }
+            </span>
+            @if (Searchable)
+            {
+                <input class="@Css.Classes.Select.Search"
+                       @ref="_inputRef"
+                       value="@_state.Input"
+                       placeholder="@(_selected.Count == 0 ? Placeholder : null)"
+                       disabled="@Disabled"
+                       readonly="@ReadOnly"
+                       autocomplete="off"
+                       spellcheck="false"
+                       role="combobox"
+                       aria-haspopup="listbox"
+                       aria-expanded="@(_state.IsOpen ? "true" : "false")"
+                       aria-controls="@(_state.IsOpen ? _listboxId : null)"
+                       aria-autocomplete="list"
+                       aria-activedescendant="@_activeDescendantId"
+                       aria-labelledby="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                       aria-describedby="@_describedBy"
+                       aria-required="@(Required ? "true" : null)"
+                       @oninput="HandleInputAsync"
+                       @onfocus="OnInputFocus"
+                       @onkeydown="HandleKeyDownAsync"
+                       @onkeydown:stopPropagation="true" />
+            }
+            @if (Clearable && !Disabled && !ReadOnly && _selected.Count > 0)
+            {
+                <button type="button" class="@Css.Classes.Autocomplete.Clear"
+                        tabindex="-1" aria-label="@FlareStrings.Input_Clear"
+                        @onclick="HandleClearAsync" @onclick:stopPropagation="true"
+                        @onmousedown:preventDefault="true">
+                    <span aria-hidden="true">&#x2715;</span>
+                </button>
+            }
+            <FlareIcon Name="@(_state.IsOpen ? "expand_less" : "expand_more")" Class="@Css.Classes.Input.Arrow" />
+        </div>
+        @if (_chrome is not null)
+        {
+            <FlarePopup @ref="_popup" Open="_state.IsOpen" Anchor="_controlEl" DismissRoot="_chrome.Root"
+                        OnDismiss="HandleDismissAsync" Class="@Css.Classes.Multiselect.Dropdown">
+                <FlareOptionList TItem="TValue"
+                                 Id="@_listboxId"
+                                 Rows="_state.Collection.Rows"
+                                 HighlightedIndex="_state.HighlightedIndex"
+                                 IsSelected="_state.Selection.IsSelected"
+                                 IsDisabled="_state.Collection.IsDisabled"
+                                 Label="ResolveLabel"
+                                 ItemTemplate="ItemTemplate"
+                                 ShowCheckbox="true"
+                                 Multiselectable="true"
+                                 OptionClass="@Css.Classes.Multiselect.Option"
+                                 Virtualize="true"
+                                 VirtualizeThreshold="VirtualizeThreshold"
+                                 AriaLabelledBy="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                                 OnSelect="HandleSelectAsync"
+                                 OnHighlight="HandleHover"
+                                 PreventMouseDownDefault="Searchable">
+                    <Header>
+                        @if (ShowSelectAll && _state.Collection.Count > 0)
+                        {
+                            var tri = _state.SelectAllState();
+                            <div class="@Css.Classes.Listbox.Option @Css.Classes.Multiselect.Option @Css.Classes.Multiselect.OptionSelectAll"
+                                 role="option"
+                                 aria-selected="@(tri == TriState.All ? "true" : "false")"
+                                 @onclick="ToggleSelectAllAsync"
+                                 @onclick:stopPropagation="true"
+                                 @onmousedown:preventDefault="Searchable">
+                                <span class="@Css.Classes.Listbox.Checkbox"
+                                      data-checked="@(tri == TriState.All ? "true" : null)"
+                                      data-indeterminate="@(tri == TriState.Some ? "true" : null)"
+                                      aria-hidden="true"></span>
+                                <span>@FlareStrings.MultiSelect_SelectAll</span>
+                            </div>
+                        }
+                    </Header>
+                    <Empty>
+                        @if (Searchable && !string.IsNullOrEmpty(_state.Input))
+                        {
+                            <div class="@Css.Classes.Select.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
+                        }
+                    </Empty>
+                </FlareOptionList>
+            </FlarePopup>
+        }
+    </Field>
+</FlareFieldChrome>
+
+@code {
+    /// <summary>The bound collection of selected values (supports <c>@bind-Values</c>).</summary>
+    [Parameter] public IReadOnlyList<TValue> Values { get; set; } = System.Array.Empty<TValue>();
+
+    /// <summary>Callback invoked when the selection changes, enabling <c>@bind-Values</c>.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<TValue>> ValuesChanged { get; set; }
+
+    /// <summary>Expression used to bind and validate the field against an <c>EditContext</c>.</summary>
+    [Parameter] public Expression<Func<IReadOnlyList<TValue>>>? For { get; set; }
+
+    /// <summary>Collection of items to populate the dropdown.</summary>
+    [Parameter] public IEnumerable<TValue>? Items { get; set; }
+
+    /// <summary>Declarative options as native <c>&lt;option&gt;</c> child markup.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Returns the display text for an item.</summary>
+    [Parameter] public Func<TValue, string>? ItemLabel { get; set; }
+
+    /// <summary>Custom render template for a dropdown option row.</summary>
+    [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
+
+    /// <summary>Custom render template for a selected chip's content.</summary>
+    [Parameter] public RenderFragment<TValue>? ChipTemplate { get; set; }
+
+    /// <summary>Returns the group label for an item; when non-null, options are grouped under headers.</summary>
+    [Parameter] public Func<TValue, string>? GroupBy { get; set; }
+
+    /// <summary>Returns whether an item is disabled (shown, never committable).</summary>
+    [Parameter] public Func<TValue, bool>? ItemDisabled { get; set; }
+
+    /// <summary>Renders the selected values as removable chips instead of a comma list.</summary>
+    [Parameter] public bool Chips { get; set; }
+
+    /// <summary>Shows a select-all row at the top of the dropdown.</summary>
+    [Parameter] public bool ShowSelectAll { get; set; }
+
+    /// <summary>Maximum number of selected items; 0 means unlimited.</summary>
+    [Parameter] public int MaxSelections { get; set; }
+
+    /// <summary>Invoked when a pick is rejected because <see cref="MaxSelections"/> is reached.</summary>
+    [Parameter] public EventCallback OnMaxSelectionsReached { get; set; }
+
+    /// <summary>Shows an in-field search input that filters the options as the user types.</summary>
+    [Parameter] public bool Searchable { get; set; }
+
+    /// <summary>Ranks filtered options by fuzzy relevance instead of insertion order.</summary>
+    [Parameter] public bool Fuzzy { get; set; }
+
+    /// <summary>Custom relevance scorer <c>(item, query) =&gt; score</c>; overrides <see cref="Fuzzy"/>.</summary>
+    [Parameter] public Func<TValue, string, double>? RankFunc { get; set; }
+
+    /// <summary>Text shown in the dropdown when a search query matches no options.</summary>
+    [Parameter] public string? NoResultsText { get; set; }
+
+    /// <summary>Shows a clear button that resets the selection.</summary>
+    [Parameter] public bool Clearable { get; set; }
+
+    /// <summary>Whether the dropdown is open (supports <c>@bind-Open</c>).</summary>
+    [Parameter] public bool Open { get; set; }
+
+    /// <summary>Callback invoked when the open state changes.</summary>
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    /// <summary>Option count above which the dropdown virtualizes (when not grouped). Default: 50.</summary>
+    [Parameter] public int VirtualizeThreshold { get; set; } = 50;
+
+    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+
+    /// <summary>Optional typography scale for the control text.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Multiselect.Root;
+
+    private ComboboxState<TValue> _state = default!;
+    private FlareFieldChrome? _chrome;
+    private FlarePopup? _popup;
+    private ElementReference _controlEl;
+    private ElementReference _inputRef;
+    private bool _focusQueued;
+    private bool _wasOpen;
+    private DeclaredOptionSet<TValue>? _declared;
+
+    // The live selection for display (the engine is the source of truth once open).
+    private IReadOnlyList<TValue> _selected => _state.Selection.Selected;
+
+    private readonly string _controlId = $"flare-multiselect-{Guid.NewGuid():N}";
+    private string _labelId => $"{_controlId}-label";
+    private string _errorId => $"{_controlId}-err";
+    private string _helperId => $"{_controlId}-help";
+    private string _listboxId => $"{_controlId}-listbox";
+    private string? _describedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+    private string? _activeDescendantId =>
+        _state.IsOpen && _state.HighlightedIndex >= 0 ? $"{_listboxId}-opt-{_state.HighlightedIndex}" : null;
+
+    private string? _displayedError => DisplayedError(ErrorText);
+    private string? _stateClass =>
+        Disabled ? Css.Classes.Input.Disabled :
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error : null;
+    private string? _variantClass => VariantClass(Variant);
+    private string? _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
+        _ => null,
+    };
+
+    private bool _showPlaceholder => _selected.Count == 0 && !Searchable && !string.IsNullOrEmpty(Placeholder);
+
+    // Controlled vs uncontrolled (mirrors the pre-rebuild FlareMultiSelect).
+    private IReadOnlyList<TValue>? _prevValues;
+    private bool _seeded;
+    private bool Controlled => ValuesChanged.HasDelegate;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _state = new ComboboxState<TValue>(ComboboxPolicy<TValue>.ForMultiSelect() with
+        {
+            Label = ResolveLabel,
+            Group = GroupBy,
+            ItemDisabled = ItemDisabled,
+            Fuzzy = Fuzzy,
+            RankScorer = RankFunc,
+            Comparer = EqualityComparer<TValue>.Default,
+            MaxSelections = MaxSelections,
+            Searchable = true,
+        });
+        _state.Changed += OnStateChanged;
+        _state.ScrollRequested += OnScrollRequested;
+    }
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        UpdateFieldIdentifier(For);
+
+        // Push the controlled/uncontrolled selection into the engine when it changes externally.
+        if (Controlled || !_seeded)
+        {
+            _state.SetSelection(Values);
+            _seeded = true;
+        }
+        else if (!ReferenceEquals(Values, _prevValues))
+        {
+            _state.SetSelection(Values);
+        }
+        _prevValues = Values;
+
+        _declared = ChildContent is not null
+            ? DeclaredOptions.Parse<TValue>(ChildContent, EqualityComparer<TValue>.Default)
+            : null;
+        _state.SetSource(SourceItems());
+
+        // Two-way Open is only honored when the consumer controls it (binds OpenChanged); otherwise the
+        // open state is internal and must not be forced closed by an unbound Open=false on every re-render.
+        if (OpenChanged.HasDelegate && Open != _state.IsOpen)
+        {
+            if (Open) _state.Open(); else _state.Close();
+        }
+    }
+
+    private IReadOnlyList<TValue> SourceItems()
+    {
+        if (_declared is not null) return _declared.Values;
+        return Items is null ? System.Array.Empty<TValue>() : Items as IReadOnlyList<TValue> ?? Items.ToList();
+    }
+
+    private string ResolveLabel(TValue item)
+    {
+        if (ItemLabel is not null) return ItemLabel(item);
+        if (_declared is not null && item is not null && _declared.Labels.TryGetValue(item, out var l)) return l;
+        return item?.ToString() ?? string.Empty;
+    }
+
+    private void OnStateChanged() => InvokeAsync(StateHasChanged);
+
+    private async void OnScrollRequested(int index)
+    {
+        if (_popup is null) return;
+        try { await _popup.ScrollOptionIntoViewAsync($"{_listboxId}-opt-{index}"); }
+        catch (ObjectDisposedException) { }
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusQueued)
+        {
+            _focusQueued = false;
+            try { await _inputRef.FocusAsync(); } catch (Microsoft.JSInterop.JSException) { } catch (InvalidOperationException) { }
+        }
+    }
+
+    // ---- Interaction -------------------------------------------------------------------------------
+
+    private void OnControlClick()
+    {
+        if (Disabled || ReadOnly) return;
+        if (Searchable)
+        {
+            if (!_state.IsOpen) _state.Open(FocusStrategy.First);
+            _focusQueued = true;
+        }
+        else
+        {
+            _state.ToggleOpen();
+        }
+        _ = NotifyOpenAsync();
+    }
+
+    private void OnInputFocus()
+    {
+        if (Disabled || ReadOnly) return;
+        if (!_state.IsOpen) _state.Open(FocusStrategy.First);
+        _ = NotifyOpenAsync();
+    }
+
+    private void HandleHover(int index) => _state.HighlightAt(index);
+
+    private async Task HandleInputAsync(ChangeEventArgs e)
+    {
+        if (ReadOnly) return;
+        _state.SetInput(e.Value?.ToString() ?? string.Empty);
+        if (!_state.IsOpen) _state.Open(FocusStrategy.First);
+        await NotifyOpenAsync();
+    }
+
+    private async Task HandleSelectAsync(TValue item)
+    {
+        var result = _state.Commit(item);
+        if (result.ChangedSelection) await PushValuesAsync();
+        else if (result.RejectedForMax) await OnMaxSelectionsReached.InvokeAsync();
+    }
+
+    private async Task RemoveOneAsync(TValue item)
+    {
+        _state.Commit(item);   // toggles the selected item off
+        await PushValuesAsync();
+    }
+
+    private async Task ToggleSelectAllAsync()
+    {
+        _state.ToggleSelectAll();
+        await PushValuesAsync();
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs e)
+    {
+        if (Disabled || ReadOnly) return;
+        switch (e.Key)
+        {
+            case "ArrowDown": _state.MoveHighlight(1); break;
+            case "ArrowUp": _state.MoveHighlight(-1); break;
+            case "Home": if (_state.IsOpen && !Searchable) _state.HighlightFirst(); else return; break;
+            case "End": if (_state.IsOpen && !Searchable) _state.HighlightLast(); else return; break;
+            case "Enter":
+            case " ":
+                if (e.Key == " " && Searchable) return;
+                if (_state.IsOpen && _state.HighlightedItem is { } hi) await HandleSelectAsync(hi);
+                else { _state.Open(); await NotifyOpenAsync(); }
+                break;
+            case "Backspace":
+                if (Searchable && string.IsNullOrEmpty(_state.Input) && _selected.Count > 0)
+                    await RemoveOneAsync(_selected[^1]);
+                else return;
+                break;
+            case "Escape":
+                if (_state.IsOpen) { _state.Close(); await NotifyOpenAsync(); }
+                break;
+            default:
+                if (!Searchable && e.Key.Length == 1 && !char.IsControl(e.Key[0]))
+                {
+                    _state.TypeAhead(e.Key[0]);
+                    await NotifyOpenAsync();
+                }
+                else return;
+                break;
+        }
+    }
+
+    private async Task HandleClearAsync()
+    {
+        _state.SetSelection(System.Array.Empty<TValue>());
+        _state.SetInputSilent(string.Empty);
+        await PushValuesAsync();
+    }
+
+    private async Task HandleDismissAsync()
+    {
+        _state.SetInputSilent(string.Empty);
+        _state.Close();
+        await NotifyOpenAsync();
+    }
+
+    private async Task PushValuesAsync()
+    {
+        // Do NOT touch _prevValues here: it tracks the last incoming Values parameter so an unbound
+        // (uncontrolled) Values reference stays reference-equal across parent re-renders and the engine's
+        // live selection is not reset. Overwriting it with our snapshot made the next OnParametersSet see a
+        // spurious change and wipe the selection.
+        var snapshot = _selected.ToArray();
+        await ValuesChanged.InvokeAsync(snapshot);
+        NotifyFieldChanged();
+    }
+
+    private async Task NotifyOpenAsync()
+    {
+        if (_state.IsOpen != _wasOpen)
+        {
+            _wasOpen = _state.IsOpen;
+            await OpenChanged.InvokeAsync(_state.IsOpen);
+        }
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        if (_state is not null)
+        {
+            _state.Changed -= OnStateChanged;
+            _state.ScrollRequested -= OnScrollRequested;
+        }
+        await base.DisposeAsync();
+    }
+}

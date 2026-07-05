@@ -1,0 +1,490 @@
+@namespace Flare.Components
+@inherits FlareFieldBase
+@implements IFlareField<TValue>
+@typeparam TValue
+@using Flare.Components.Combobox
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Web
+
+@* Single-value editable combobox: an <input role=combobox> over the shared behaviour engine. Absorbs the
+   old FlareAutocomplete (local Items or an async ct-aware SearchFunc) and adds free typing (custom values),
+   grouping, disabled options, virtualization and two-way Open. All behaviour lives in the engine; this shell
+   only wires parameters, forwards the value callback and keeps the display text in sync. *@
+
+<FlareFieldChrome @ref="_chrome"
+                  RootClass="@Css.Classes.Autocomplete.Root"
+                  StateClass="@_stateClass"
+                  SizeClass="@_sizeClass"
+                  VariantClass="@_variantClass"
+                  Label="@Label" LabelId="@_labelId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.Input.Field @Css.Classes.Autocomplete.Field" @ref="_controlEl">
+            <input class="@Css.Classes.Input.Control"
+                   @ref="_inputRef"
+                   id="@_controlId"
+                   style="@(Typo is { } t ? FlareTypography.FontStyle(t) : null)"
+                   value="@_state.Input"
+                   placeholder="@Placeholder"
+                   disabled="@Disabled"
+                   readonly="@ReadOnly"
+                   autocomplete="off"
+                   spellcheck="false"
+                   role="combobox"
+                   aria-haspopup="listbox"
+                   aria-autocomplete="list"
+                   aria-expanded="@(_state.IsOpen ? "true" : "false")"
+                   aria-controls="@(_state.IsOpen ? _listboxId : null)"
+                   aria-activedescendant="@_activeDescendantId"
+                   aria-labelledby="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                   aria-describedby="@_describedBy"
+                   aria-required="@(Required ? "true" : null)"
+                   aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+                   @oninput="HandleInputAsync"
+                   @onfocus="HandleFocus"
+                   @onkeydown="HandleKeyDownAsync" />
+            @if (Clearable && !Disabled && !ReadOnly && (Current is not null || !string.IsNullOrEmpty(_state.Input)))
+            {
+                <button type="button" class="@Css.Classes.Autocomplete.Clear"
+                        tabindex="-1" aria-label="@FlareStrings.Input_Clear"
+                        @onmousedown:preventDefault="true" @onclick="HandleClearAsync">
+                    <span aria-hidden="true">&#x2715;</span>
+                </button>
+            }
+            <span class="@Css.Classes.Autocomplete.Icon">
+                @if (_searching)
+                {
+                    <FlareIcon Name="progress_activity" Class="@Css.Classes.Autocomplete.Spinner" />
+                }
+                else
+                {
+                    <FlareIcon Name="@(_state.IsOpen ? "expand_less" : "expand_more")" />
+                }
+            </span>
+        </div>
+        @if (_chrome is not null)
+        {
+            <FlarePopup @ref="_popup" Open="_state.IsOpen" Anchor="_controlEl" DismissRoot="_chrome.Root"
+                        OnDismiss="HandleDismissAsync" Class="@Css.Classes.Select.Dropdown">
+                <FlareOptionList TItem="TValue"
+                                 Id="@_listboxId"
+                                 Rows="_state.Collection.Rows"
+                                 HighlightedIndex="_state.HighlightedIndex"
+                                 IsSelected="_state.Selection.IsSelected"
+                                 IsDisabled="_state.Collection.IsDisabled"
+                                 Label="ResolveLabel"
+                                 ItemTemplate="ItemTemplate"
+                                 ShowCheck="true"
+                                 Virtualize="true"
+                                 VirtualizeThreshold="VirtualizeThreshold"
+                                 AriaLabelledBy="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                                 OnSelect="HandleSelectAsync"
+                                 OnHighlight="HandleHover"
+                                 PreventMouseDownDefault="true">
+                    <Empty>
+                        @if (!_searching && !string.IsNullOrEmpty(_state.Input))
+                        {
+                            <div class="@Css.Classes.Listbox.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
+                        }
+                    </Empty>
+                </FlareOptionList>
+            </FlarePopup>
+        }
+    </Field>
+</FlareFieldChrome>
+
+@code {
+    /// <summary>Currently selected value (supports <c>@bind-Value</c>).</summary>
+    [Parameter] public TValue? Value { get; set; }
+
+    /// <summary>Callback invoked when the selected value changes, enabling <c>@bind-Value</c>.</summary>
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+
+    /// <summary>Expression used to bind and validate the field against an <c>EditContext</c>.</summary>
+    [Parameter] public Expression<Func<TValue?>>? For { get; set; }
+
+    /// <summary>Callback invoked when the typed input text changes.</summary>
+    [Parameter] public EventCallback<string?> InputValueChanged { get; set; }
+
+    /// <summary>Static collection of items to filter locally when no <see cref="SearchFunc"/> is supplied.</summary>
+    [Parameter] public IEnumerable<TValue>? Items { get; set; }
+
+    /// <summary>Declarative options as native <c>&lt;option&gt;</c> child markup (used instead of <see cref="Items"/>).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Async, cancelable search callback; when set it owns filtering and the engine shows its results as-is.</summary>
+    [Parameter] public Func<string, CancellationToken, Task<IEnumerable<TValue>>>? SearchFunc { get; set; }
+
+    /// <summary>Returns the display text for an item. When null, the declarative label or <c>ToString()</c> is used.</summary>
+    [Parameter] public Func<TValue, string>? ItemText { get; set; }
+
+    /// <summary>Custom render template for a dropdown option. Overrides the <see cref="ItemText"/> text.</summary>
+    [Parameter] public RenderFragment<TValue>? ItemTemplate { get; set; }
+
+    /// <summary>Returns the group label for an item; when non-null, options are grouped under headers.</summary>
+    [Parameter] public Func<TValue, string>? GroupBy { get; set; }
+
+    /// <summary>Returns whether an item is disabled (shown, never committable).</summary>
+    [Parameter] public Func<TValue, bool>? ItemDisabled { get; set; }
+
+    /// <summary>Ranks local matches by fuzzy relevance (via <see cref="FlareSearch"/>) instead of insertion order.</summary>
+    [Parameter] public bool Fuzzy { get; set; }
+
+    /// <summary>Custom relevance scorer <c>(item, query) =&gt; score</c> for local items; overrides <see cref="Fuzzy"/>.</summary>
+    [Parameter] public Func<TValue, string, double>? RankFunc { get; set; }
+
+    /// <summary>Allows committing a typed value not in the list (free typing). Requires <see cref="CustomValueFactory"/> for non-string values.</summary>
+    [Parameter] public bool AllowsCustomValue { get; set; }
+
+    /// <summary>Converts the typed text into a value when committing a custom entry. Defaults to identity for string values.</summary>
+    [Parameter] public Func<string, TValue>? CustomValueFactory { get; set; }
+
+    /// <summary>Invoked with the raw text when a custom (not-in-list) value is committed.</summary>
+    [Parameter] public EventCallback<string> OnCustomValue { get; set; }
+
+    /// <summary>Minimum number of typed characters before an async search runs. Default: 1.</summary>
+    [Parameter] public int MinChars { get; set; } = 1;
+
+    /// <summary>Maximum number of async results to display. Default: 10.</summary>
+    [Parameter] public int MaxItems { get; set; } = 10;
+
+    /// <summary>Milliseconds to wait after input before running an async search. Default: 300ms.</summary>
+    [Parameter] public int DebounceMs { get; set; } = 300;
+
+    /// <summary>Shows a clear button that resets the value and text. Default: true.</summary>
+    [Parameter] public bool Clearable { get; set; } = true;
+
+    /// <summary>Text shown in the dropdown when a query matches nothing. When null, falls back to the localized default.</summary>
+    [Parameter] public string? NoResultsText { get; set; }
+
+    /// <summary>Whether the dropdown is open (supports <c>@bind-Open</c>).</summary>
+    [Parameter] public bool Open { get; set; }
+
+    /// <summary>Callback invoked when the open state changes, enabling <c>@bind-Open</c>.</summary>
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+
+    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+
+    /// <summary>Option count above which the dropdown virtualizes (when not grouped). Default: 50.</summary>
+    [Parameter] public int VirtualizeThreshold { get; set; } = 50;
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Autocomplete.Root;
+
+    private ComboboxState<TValue> _state = default!;
+    private FlareFieldChrome? _chrome;
+    private FlarePopup? _popup;
+    private ElementReference _controlEl;
+    private ElementReference _inputRef;
+    private readonly CancelScope _cts = new();
+    private bool _searching;
+    private bool _editing;             // input focused / user is editing the query
+    private bool _wasOpen;             // tracks Open transitions for OpenChanged
+    private DeclaredOptionSet<TValue>? _declared;
+
+    private readonly string _controlId = $"flare-combobox-{Guid.NewGuid():N}";
+    private string _labelId => $"{_controlId}-label";
+    private string _errorId => $"{_controlId}-err";
+    private string _helperId => $"{_controlId}-help";
+    private string _listboxId => $"{_controlId}-listbox";
+    private string? _describedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+    private string? _activeDescendantId =>
+        _state.IsOpen && _state.HighlightedIndex >= 0 ? $"{_listboxId}-opt-{_state.HighlightedIndex}" : null;
+
+    private string? _displayedError => DisplayedError(ErrorText);
+    private string? _stateClass =>
+        Disabled ? Css.Classes.Input.Disabled :
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error : null;
+    private string? _variantClass => VariantClass(Variant);
+    private string? _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
+        _ => null,
+    };
+
+    // Controlled vs uncontrolled: with @bind-Value the consumer owns the value; otherwise the component
+    // keeps its own selection seeded from any one-way Value (mirrors FlareSelect).
+    private TValue? _internal;
+    private TValue? _prevValue;
+    private bool _seeded;
+    private bool Controlled => ValueChanged.HasDelegate;
+    private TValue? Current => Controlled ? Value : _internal;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _state = new ComboboxState<TValue>(BuildPolicy());
+        _state.Changed += OnStateChanged;
+        _state.ScrollRequested += OnScrollRequested;
+    }
+
+    private ComboboxPolicy<TValue> BuildPolicy() => ComboboxPolicy<TValue>.ForCombobox() with
+    {
+        // Delegates read the current parameters via `this`, so the policy is built once but stays live.
+        Label = ResolveLabel,
+        Group = GroupBy,
+        ItemDisabled = ItemDisabled,
+        Fuzzy = Fuzzy,
+        RankScorer = RankFunc,
+        Comparer = EqualityComparer<TValue>.Default,
+        // Async search owns filtering; local Items are filtered by the engine.
+        Searchable = SearchFunc is null,
+    };
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        UpdateFieldIdentifier(For);
+
+        // Controlled/uncontrolled value reconciliation.
+        if (Controlled)
+        {
+            _internal = Value;
+        }
+        else if (!_seeded || !EqualityComparer<TValue?>.Default.Equals(Value, _prevValue))
+        {
+            _internal = Value;
+            _seeded = true;
+        }
+        _prevValue = Value;
+
+        // Feed the engine the current source + selection.
+        _declared = ChildContent is not null
+            ? DeclaredOptions.Parse<TValue>(ChildContent, EqualityComparer<TValue>.Default)
+            : null;
+        _state.SetSource(SourceItems());
+        _state.SetSelection(Current is null ? System.Array.Empty<TValue>() : new[] { Current });
+
+        // Two-way Open is only honored when the consumer controls it (binds OpenChanged); otherwise the
+        // open state is internal and must not be forced closed by an unbound Open=false on every re-render.
+        if (OpenChanged.HasDelegate && Open != _state.IsOpen)
+        {
+            if (Open) _state.Open(); else _state.Close();
+        }
+
+        // Keep the closed display showing the selected label (the interactive query is untouched while editing).
+        if (!_editing)
+            _state.SetInputSilent(Current is not null ? ResolveLabel(Current) : string.Empty);
+    }
+
+    private IReadOnlyList<TValue> SourceItems()
+    {
+        if (_declared is not null) return _declared.Values;
+        return Items is null ? System.Array.Empty<TValue>() : Items as IReadOnlyList<TValue> ?? Items.ToList();
+    }
+
+    private string ResolveLabel(TValue item)
+    {
+        if (ItemText is not null) return ItemText(item);
+        if (_declared is not null && item is not null && _declared.Labels.TryGetValue(item, out var l)) return l;
+        return item?.ToString() ?? string.Empty;
+    }
+
+    private void OnStateChanged() => InvokeAsync(StateHasChanged);
+
+    private async void OnScrollRequested(int index)
+    {
+        if (_popup is null) return;
+        try { await _popup.ScrollOptionIntoViewAsync($"{_listboxId}-opt-{index}"); }
+        catch (ObjectDisposedException) { }
+    }
+
+    // ---- Interaction -------------------------------------------------------------------------------
+
+    private void HandleFocus()
+    {
+        if (Disabled || ReadOnly) return;
+        _editing = true;
+        // Open showing all options; the label clears so the next keystroke is a fresh query.
+        _state.SetInput(string.Empty);
+        if (!_state.IsOpen) _state.Open(FocusStrategy.First);
+    }
+
+    private async Task HandleInputAsync(ChangeEventArgs e)
+    {
+        if (ReadOnly) return;
+        _editing = true;
+        var text = e.Value?.ToString() ?? string.Empty;
+        _state.SetInput(text);
+        await InputValueChanged.InvokeAsync(text);
+
+        if (SearchFunc is not null)
+            await RunSearchAsync(text);
+    }
+
+    private async Task RunSearchAsync(string text)
+    {
+        var token = _cts.Next();
+        if (text.Length < MinChars)
+        {
+            _state.SetSource(System.Array.Empty<TValue>());
+            _searching = false;
+            return;
+        }
+
+        _searching = true;
+        StateHasChanged();
+        try
+        {
+            if (DebounceMs > 0) await Task.Delay(DebounceMs, token);
+            if (token.IsCancellationRequested) return;
+
+            var results = await SearchFunc!(text, token);
+            if (token.IsCancellationRequested) return;
+
+            _state.SetSource(results.Take(MaxItems).ToList());
+            if (!_state.IsOpen) _state.Open(FocusStrategy.First); else _state.HighlightFirst();
+        }
+        catch (OperationCanceledException) { }
+        finally
+        {
+            if (!token.IsCancellationRequested)
+            {
+                _searching = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void HandleHover(int index) => _state.HighlightAt(index);
+
+    private async Task HandleSelectAsync(TValue item)
+    {
+        var result = _state.Commit(item);
+        if (result.ChangedSelection)
+        {
+            _state.SetInputSilent(ResolveLabel(item));
+            await CommitValueAsync(item);
+        }
+        await NotifyOpenAsync();
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs e)
+    {
+        if (Disabled || ReadOnly) return;
+        switch (e.Key)
+        {
+            case "ArrowDown": _state.MoveHighlight(1); break;
+            case "ArrowUp": _state.MoveHighlight(-1); break;
+            case "Enter":
+                if (_state.IsOpen && _state.HighlightedItem is { } hi)
+                    await HandleSelectAsync(hi);
+                else
+                    await TryCommitCustomAsync();
+                break;
+            case "Escape":
+                if (_state.IsOpen) { _state.Close(); RevertDisplay(); }
+                await NotifyOpenAsync();
+                break;
+            default:
+                return; // let Home/End/Backspace/typing act on the input text
+        }
+    }
+
+    private async Task HandleClearAsync()
+    {
+        _cts.Cancel();
+        _searching = false;
+        _state.SetInputSilent(string.Empty);
+        _state.Close();
+        _editing = false;
+        if (Current is not null) await CommitValueAsync(default);
+        await NotifyOpenAsync();
+        try { await _inputRef.FocusAsync(); } catch (Microsoft.JSInterop.JSException) { } catch (InvalidOperationException) { }
+    }
+
+    private async Task HandleDismissAsync()
+    {
+        _editing = false;
+        // Reconcile the typed text: commit a custom value, or revert to the selected label.
+        if (AllowsCustomValue && !string.IsNullOrWhiteSpace(_state.Input) && !MatchesCurrent())
+            await TryCommitCustomAsync();
+        else
+            RevertDisplay();
+        _state.Close();
+        await NotifyOpenAsync();
+    }
+
+    private async Task TryCommitCustomAsync()
+    {
+        var text = _state.Input;
+        if (!AllowsCustomValue || string.IsNullOrWhiteSpace(text))
+        {
+            if (_state.IsOpen) _state.Close();
+            RevertDisplay();
+            await NotifyOpenAsync();
+            return;
+        }
+
+        var custom = CreateCustom(text);
+        if (custom is null)
+        {
+            RevertDisplay();
+            return;
+        }
+
+        _state.SetInputSilent(ResolveLabel(custom));
+        _state.Close();
+        await CommitValueAsync(custom);
+        await OnCustomValue.InvokeAsync(text);
+        await NotifyOpenAsync();
+    }
+
+    private TValue? CreateCustom(string text)
+    {
+        if (CustomValueFactory is not null) return CustomValueFactory(text);
+        if (typeof(TValue) == typeof(string)) return (TValue)(object)text;
+        return default; // non-string custom values require a factory
+    }
+
+    private bool MatchesCurrent() =>
+        Current is not null && string.Equals(ResolveLabel(Current), _state.Input, StringComparison.Ordinal);
+
+    private void RevertDisplay() =>
+        _state.SetInputSilent(Current is not null ? ResolveLabel(Current) : string.Empty);
+
+    private async Task CommitValueAsync(TValue? value)
+    {
+        _internal = value;
+        _editing = false;
+        await ValueChanged.InvokeAsync(value);
+        NotifyFieldChanged();
+    }
+
+    private async Task NotifyOpenAsync()
+    {
+        if (_state.IsOpen != _wasOpen)
+        {
+            _wasOpen = _state.IsOpen;
+            await OpenChanged.InvokeAsync(_state.IsOpen);
+        }
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        _cts.Dispose();
+        if (_state is not null)
+        {
+            _state.Changed -= OnStateChanged;
+            _state.ScrollRequested -= OnScrollRequested;
+        }
+        await base.DisposeAsync();
+    }
+}

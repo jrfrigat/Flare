@@ -1,10 +1,10 @@
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareAutocomplete TValue="UserItem"
+    <FlareCombobox TValue="UserItem"
                        @bind-Value="_user"
                        Label="Assignee"
                        Placeholder="Search users…"
                        Items="_users"
-                       GetLabel="@(u => u.Name)"
+                       ItemText="@(u => u.Name)"
                        MinChars="1"
                        MaxItems="5"
                        DebounceMs="200"
@@ -20,9 +20,9 @@
                 </FlareStack>
             </FlareStack>
         </ItemTemplate>
-    </FlareAutocomplete>
+    </FlareCombobox>
 
-    <FlareAutocomplete TValue="string" Label="Disabled" Disabled
+    <FlareCombobox TValue="string" Label="Disabled" Disabled
                        Items="@(new[] { "One", "Two" })" Style="max-width:24rem;" />
 </FlareStack>
 

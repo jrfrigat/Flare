@@ -24,7 +24,7 @@
     ];
 
     // Simulates a server lookup with latency.
-    private async Task<IEnumerable<string>> SearchUsersAsync(string query)
+    private async Task<IEnumerable<string>> SearchUsersAsync(string query, CancellationToken ct)
     {
         await Task.Delay(200);
         return _userPool.Where(u => u.Contains(query, StringComparison.OrdinalIgnoreCase));

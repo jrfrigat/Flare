@@ -1,0 +1,430 @@
+@namespace Flare.Components
+@inherits FlareFieldBase
+@implements IFlareMultiField<TValue>
+@typeparam TValue
+@using Flare.Components.Combobox
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Web
+
+@* Free-typing multi-value tag field: chips + an editable input, with an optional suggestions dropdown.
+   The shared engine drives the suggestions dropdown (filter, highlight, keyboard, virtualization); the
+   shell owns the ordered tag list (so duplicates and MaxTags behave naturally) and composes the shared
+   FlareChipStrip / FlarePopup / FlareOptionList primitives - no combobox behaviour is re-implemented.
+   Generic over the tag type; the common string case needs no CustomValueFactory. *@
+
+<FlareFieldChrome @ref="_chrome"
+                  RootClass="@Css.Classes.TagInput.Root"
+                  StateClass="@_stateClass"
+                  SizeClass="@_sizeClass"
+                  VariantClass="@_variantClass"
+                  Label="@Label" LabelId="@_labelId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.Input.Field @Css.Classes.TagInput.Field" @ref="_controlEl" @onclick="FocusInputAsync">
+            <FlareChipStrip TItem="TValue"
+                            Items="_tags"
+                            Label="ResolveLabel"
+                            Template="ChipTemplate"
+                            ChipStyle="ChipStyleOf"
+                            ReadOnly="@(Disabled || ReadOnly)"
+                            RemoveLabel="@FlareStrings.TagInput_Remove"
+                            OnRemove="RemoveTagAsync" />
+            @if (!Disabled && !ReadOnly && (MaxTags <= 0 || _tags.Count < MaxTags))
+            {
+                <input class="@Css.Classes.Input.Control @Css.Classes.TagInput.Input"
+                       @ref="_inputRef"
+                       id="@_controlId"
+                       style="@(Typo is { } t ? FlareTypography.FontStyle(t) : null)"
+                       value="@_state.Input"
+                       placeholder="@(_tags.Count == 0 ? Placeholder : null)"
+                       autocomplete="off"
+                       spellcheck="false"
+                       role="@(_hasSuggestions ? "combobox" : null)"
+                       aria-expanded="@(_hasSuggestions ? (_state.IsOpen ? "true" : "false") : null)"
+                       aria-autocomplete="@(_hasSuggestions ? "list" : null)"
+                       aria-controls="@(_hasSuggestions && _state.IsOpen ? _listboxId : null)"
+                       aria-activedescendant="@_activeDescendantId"
+                       aria-labelledby="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                       aria-describedby="@_describedBy"
+                       aria-required="@(Required ? "true" : null)"
+                       @oninput="HandleInputAsync"
+                       @onfocus="HandleFocusAsync"
+                       @onblur="HandleBlurAsync"
+                       @onkeydown="HandleKeyDownAsync" />
+            }
+        </div>
+        @if (_hasSuggestions && _chrome is not null)
+        {
+            <FlarePopup @ref="_popup" Open="_state.IsOpen" Anchor="_controlEl" DismissRoot="_chrome.Root"
+                        OnDismiss="HandleDismissAsync" Class="@Css.Classes.Select.Dropdown">
+                <FlareOptionList TItem="TValue"
+                                 Id="@_listboxId"
+                                 Rows="_state.Collection.Rows"
+                                 HighlightedIndex="_state.HighlightedIndex"
+                                 IsDisabled="_state.Collection.IsDisabled"
+                                 Label="ResolveLabel"
+                                 ItemTemplate="SuggestionTemplate"
+                                 AriaLabelledBy="@(!string.IsNullOrEmpty(Label) ? _labelId : null)"
+                                 OnSelect="PickSuggestionAsync"
+                                 OnHighlight="HandleHover"
+                                 PreventMouseDownDefault="true">
+                    <Empty>
+                        @if (!_loading && !string.IsNullOrEmpty(_state.Input))
+                        {
+                            <div class="@Css.Classes.Listbox.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
+                        }
+                    </Empty>
+                </FlareOptionList>
+            </FlarePopup>
+        }
+    </Field>
+</FlareFieldChrome>
+
+@code {
+    /// <summary>The current list of tags (supports <c>@bind-Values</c>).</summary>
+    [Parameter] public IReadOnlyList<TValue> Values { get; set; } = System.Array.Empty<TValue>();
+
+    /// <summary>Callback invoked when the tag list changes, enabling <c>@bind-Values</c>.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<TValue>> ValuesChanged { get; set; }
+
+    /// <summary>Expression used to bind and validate the field against an <c>EditContext</c>.</summary>
+    [Parameter] public Expression<Func<IReadOnlyList<TValue>>>? For { get; set; }
+
+    /// <summary>Converts the typed text into a tag value. Defaults to identity for string tags.</summary>
+    [Parameter] public Func<string, TValue>? CustomValueFactory { get; set; }
+
+    /// <summary>Resolves a tag/suggestion's display text. When null, <c>ToString()</c> is used.</summary>
+    [Parameter] public Func<TValue, string>? ItemText { get; set; }
+
+    /// <summary>Keys that commit the current input as a tag. Defaults to Enter, comma and semicolon.</summary>
+    [Parameter] public IReadOnlyList<string> Separators { get; set; } = DefaultSeparators;
+
+    /// <summary>Allows adding duplicate tags. Requires a reference/value type whose equality permits it.</summary>
+    [Parameter] public bool AllowDuplicates { get; set; }
+
+    /// <summary>Adds the current input as a tag when focus leaves the field. Default: true.</summary>
+    [Parameter] public bool AddOnBlur { get; set; } = true;
+
+    /// <summary>Maximum number of tags; 0 means unlimited.</summary>
+    [Parameter] public int MaxTags { get; set; }
+
+    /// <summary>Custom render template for a chip's content.</summary>
+    [Parameter] public RenderFragment<TValue>? ChipTemplate { get; set; }
+
+    /// <summary>Optional per-tag chip colour; rendered as the chip background.</summary>
+    [Parameter] public Func<TValue, string?>? ChipColor { get; set; }
+
+    /// <summary>Static suggestions offered in a dropdown as the user types. Already-added tags are excluded.</summary>
+    [Parameter] public IEnumerable<TValue>? Suggestions { get; set; }
+
+    /// <summary>Async, cancelable suggestion provider (server-side); overrides <see cref="Suggestions"/> when set.</summary>
+    [Parameter] public Func<string, CancellationToken, Task<IEnumerable<TValue>>>? SearchFunc { get; set; }
+
+    /// <summary>Custom render template for a suggestion row.</summary>
+    [Parameter] public RenderFragment<TValue>? SuggestionTemplate { get; set; }
+
+    /// <summary>Maximum number of suggestions shown. Default: 8.</summary>
+    [Parameter] public int MaxSuggestions { get; set; } = 8;
+
+    /// <summary>Minimum characters typed before suggestions appear. Default: 1.</summary>
+    [Parameter] public int MinChars { get; set; } = 1;
+
+    /// <summary>Debounce in milliseconds before querying <see cref="SearchFunc"/>. Default: 200ms.</summary>
+    [Parameter] public int DebounceMs { get; set; } = 200;
+
+    /// <summary>Text shown when a query returns no suggestions. When null, falls back to the localized default.</summary>
+    [Parameter] public string? NoResultsText { get; set; }
+
+    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+
+    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+
+    /// <summary>Optional typography scale for the input text.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.TagInput.Root;
+
+    private static readonly IReadOnlyList<string> DefaultSeparators = ["Enter", ",", ";"];
+
+    private ComboboxState<TValue> _state = default!;
+    private FlareFieldChrome? _chrome;
+    private FlarePopup? _popup;
+    private ElementReference _controlEl;
+    private ElementReference _inputRef;
+    private readonly CancelScope _cts = new();
+    private bool _loading;
+    private readonly List<TValue> _tags = new();
+    private IReadOnlyList<TValue>? _prevValues;
+
+    private bool _hasSuggestions => Suggestions is not null || SearchFunc is not null;
+
+    private readonly string _controlId = $"flare-tagfield-{Guid.NewGuid():N}";
+    private string _labelId => $"{_controlId}-label";
+    private string _errorId => $"{_controlId}-err";
+    private string _helperId => $"{_controlId}-help";
+    private string _listboxId => $"{_controlId}-listbox";
+    private string? _describedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+    private string? _activeDescendantId =>
+        _hasSuggestions && _state.IsOpen && _state.HighlightedIndex >= 0 ? $"{_listboxId}-opt-{_state.HighlightedIndex}" : null;
+
+    private string? _displayedError => DisplayedError(ErrorText);
+    private string? _stateClass =>
+        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
+        Disabled ? Css.Classes.Input.Disabled : null;
+    private string? _variantClass => VariantClass(Variant);
+    private string? _sizeClass => Size switch
+    {
+        FieldSize.Xs => Css.Classes.Input.SizeXs,
+        FieldSize.Sm => Css.Classes.Input.SizeSm,
+        FieldSize.Lg => Css.Classes.Input.SizeLg,
+        FieldSize.Xl => Css.Classes.Input.SizeXl,
+        _ => null,
+    };
+
+    // Uncontrolled convenience: keep the last pushed list to detect an external reset.
+    private bool Controlled => ValuesChanged.HasDelegate;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _state = new ComboboxState<TValue>(ComboboxPolicy<TValue>.ForCombobox() with
+        {
+            Label = ResolveLabel,
+            Comparer = EqualityComparer<TValue>.Default,
+            Searchable = SearchFunc is null,   // local suggestions filter in the engine; async owns its own filtering
+        });
+        _state.Changed += OnStateChanged;
+        _state.ScrollRequested += OnScrollRequested;
+    }
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        UpdateFieldIdentifier(For);
+
+        if (!ReferenceEquals(Values, _prevValues))
+        {
+            _prevValues = Values;
+            _tags.Clear();
+            _tags.AddRange(Values);
+        }
+        RefreshLocalSource();
+    }
+
+    private string ResolveLabel(TValue item) => ItemText?.Invoke(item) ?? item?.ToString() ?? string.Empty;
+
+    private string? ChipStyleOf(TValue item) =>
+        ChipColor?.Invoke(item) is { } c ? $"background-color:{c};color:#fff" : null;
+
+    private void OnStateChanged() => InvokeAsync(StateHasChanged);
+
+    private async void OnScrollRequested(int index)
+    {
+        if (_popup is null) return;
+        try { await _popup.ScrollOptionIntoViewAsync($"{_listboxId}-opt-{index}"); }
+        catch (ObjectDisposedException) { }
+    }
+
+    // Feed the engine the available local suggestions (excluding already-added tags).
+    private void RefreshLocalSource()
+    {
+        if (SearchFunc is not null) return; // async owns the source
+        var available = (Suggestions ?? Enumerable.Empty<TValue>())
+            .Where(s => !IsTagged(s))
+            .Take(MaxSuggestions)
+            .ToList();
+        _state.SetSource(available);
+    }
+
+    private bool IsTagged(TValue item)
+    {
+        var cmp = EqualityComparer<TValue>.Default;
+        foreach (var t in _tags)
+            if (cmp.Equals(t, item)) return true;
+        return false;
+    }
+
+    // ---- Interaction -------------------------------------------------------------------------------
+
+    private async Task FocusInputAsync()
+    {
+        if (Disabled || ReadOnly) return;
+        try { await _inputRef.FocusAsync(); } catch (Microsoft.JSInterop.JSException) { } catch (InvalidOperationException) { }
+    }
+
+    private void HandleHover(int index) => _state.HighlightAt(index);
+
+    private async Task HandleFocusAsync()
+    {
+        if (Disabled || ReadOnly || !_hasSuggestions) return;
+        if (SearchFunc is null)
+        {
+            _state.SetInput(string.Empty);
+            if (!_state.IsOpen) _state.Open(FocusStrategy.First);
+        }
+    }
+
+    private async Task HandleInputAsync(ChangeEventArgs e)
+    {
+        if (ReadOnly) return;
+        var text = e.Value?.ToString() ?? string.Empty;
+        _state.SetInput(text);
+        if (SearchFunc is not null && _hasSuggestions)
+            await RunSearchAsync(text);
+    }
+
+    private async Task RunSearchAsync(string text)
+    {
+        var token = _cts.Next();
+        var query = text.Trim();
+        if (query.Length < MinChars)
+        {
+            _state.SetSource(System.Array.Empty<TValue>());
+            _state.Close();
+            _loading = false;
+            return;
+        }
+
+        _loading = true;
+        StateHasChanged();
+        try
+        {
+            if (DebounceMs > 0) await Task.Delay(DebounceMs, token);
+            if (token.IsCancellationRequested) return;
+
+            var results = await SearchFunc!(query, token);
+            if (token.IsCancellationRequested) return;
+
+            _state.SetSource(results.Where(s => !IsTagged(s)).Take(MaxSuggestions).ToList());
+            if (!_state.IsOpen) _state.Open(FocusStrategy.First); else _state.HighlightFirst();
+        }
+        catch (OperationCanceledException) { }
+        finally
+        {
+            if (!token.IsCancellationRequested)
+            {
+                _loading = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private async Task HandleKeyDownAsync(KeyboardEventArgs e)
+    {
+        if (Disabled || ReadOnly) return;
+
+        if (_hasSuggestions && (e.Key == "ArrowDown" || e.Key == "ArrowUp"))
+        {
+            _state.MoveHighlight(e.Key == "ArrowDown" ? 1 : -1);
+            return;
+        }
+        if (e.Key == "Escape")
+        {
+            _state.Close();
+            return;
+        }
+
+        if (Separators.Contains(e.Key))
+        {
+            if (_hasSuggestions && _state.IsOpen && _state.HighlightedItem is { } hi)
+                await PickSuggestionAsync(hi);
+            else if (!string.IsNullOrWhiteSpace(_state.Input))
+                await CommitCustomAsync(_state.Input);
+        }
+        else if (e.Key == "Backspace" && string.IsNullOrEmpty(_state.Input) && _tags.Count > 0)
+        {
+            await RemoveTagAsync(_tags[^1]);
+        }
+    }
+
+    private async Task HandleBlurAsync()
+    {
+        // Option clicks do not blur (the listbox prevents its mousedown default), so a real blur means the
+        // field lost focus: add the pending text as a tag when configured, then close.
+        if (AddOnBlur && !string.IsNullOrWhiteSpace(_state.Input))
+            await CommitCustomAsync(_state.Input);
+        _state.Close();
+    }
+
+    private Task HandleDismissAsync()
+    {
+        _state.Close();
+        return Task.CompletedTask;
+    }
+
+    private async Task PickSuggestionAsync(TValue item)
+    {
+        if (_state.Collection.IsDisabled(item)) return;
+        await AddTagAsync(item);
+        _state.SetInput(string.Empty);
+        RefreshLocalSource();
+        if (_state.IsOpen) _state.HighlightFirst();
+        await FocusInputAsync();
+    }
+
+    private async Task CommitCustomAsync(string text)
+    {
+        var value = CreateCustom(text.Trim());
+        if (value is null) return;
+        await AddTagAsync(value);
+        _state.SetInput(string.Empty);
+        RefreshLocalSource();
+    }
+
+    private TValue? CreateCustom(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return default;
+        if (CustomValueFactory is not null) return CustomValueFactory(text);
+        if (typeof(TValue) == typeof(string)) return (TValue)(object)text;
+        return default; // non-string tags require a factory
+    }
+
+    private async Task AddTagAsync(TValue tag)
+    {
+        if (MaxTags > 0 && _tags.Count >= MaxTags) return;
+        if (!AllowDuplicates && IsTagged(tag)) return;
+        _tags.Add(tag);
+        await CommitTagsAsync();
+    }
+
+    private async Task RemoveTagAsync(TValue tag)
+    {
+        var cmp = EqualityComparer<TValue>.Default;
+        for (var i = _tags.Count - 1; i >= 0; i--)
+            if (cmp.Equals(_tags[i], tag)) { _tags.RemoveAt(i); break; }
+        await CommitTagsAsync();
+        RefreshLocalSource();
+    }
+
+    private async Task CommitTagsAsync()
+    {
+        // Do NOT touch _prevValues here: it tracks the last incoming Values parameter so an unbound
+        // (uncontrolled) Values reference stays reference-equal across parent re-renders and the shell's
+        // live _tags list is not reset. Overwriting it with our snapshot made the next OnParametersSet see a
+        // spurious change and clear the tags.
+        var snapshot = _tags.ToArray();
+        await ValuesChanged.InvokeAsync(snapshot);
+        NotifyFieldChanged();
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        _cts.Dispose();
+        if (_state is not null)
+        {
+            _state.Changed -= OnStateChanged;
+            _state.ScrollRequested -= OnScrollRequested;
+        }
+        await base.DisposeAsync();
+    }
+}

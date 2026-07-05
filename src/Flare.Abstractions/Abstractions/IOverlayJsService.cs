@@ -59,4 +59,28 @@ public interface IOverlayJsService : IAsyncDisposable
 
     /// <summary>Stops positioning and detaches listeners for the anchored panel under <paramref name="id"/>.</summary>
     ValueTask RemoveAnchoredPanelAsync(string id);
+
+    /// <summary>
+    /// Scrolls the option element with the given id into view within its scroll container. Used to keep the
+    /// keyboard-highlighted option visible as the active descendant moves.
+    /// </summary>
+    /// <param name="optionId">The id of the option element to reveal.</param>
+    /// <param name="block">Vertical alignment: <c>nearest</c> (default), <c>center</c>, <c>start</c> or <c>end</c>.</param>
+    ValueTask ScrollIntoViewAsync(string optionId, string block = "nearest");
+
+    /// <summary>
+    /// Registers a single unified dismissal handler for a popup: a document capture-phase
+    /// <c>pointerdown</c> outside <paramref name="element"/> and a <c>focusout</c> that escapes it (tabbing
+    /// away), both invoking <paramref name="method"/>. Replaces the blur-timer + outside-click pair with one
+    /// reliable mechanism (no SignalR blur race).
+    /// </summary>
+    /// <param name="id">A stable id identifying this handler.</param>
+    /// <param name="element">The widget root; interactions inside it are ignored, outside it dismiss.</param>
+    /// <param name="dotNetRef">The component reference whose <paramref name="method"/> is invoked.</param>
+    /// <param name="method">The <c>[JSInvokable]</c> method name to invoke on dismissal.</param>
+    ValueTask RegisterDismissAsync<T>(string id, ElementReference element,
+        DotNetObjectReference<T> dotNetRef, string method) where T : class;
+
+    /// <summary>Removes the dismissal handler registered under <paramref name="id"/>.</summary>
+    ValueTask RemoveDismissAsync(string id);
 }
