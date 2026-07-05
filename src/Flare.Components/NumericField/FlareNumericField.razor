@@ -7,63 +7,62 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
-    @if (!string.IsNullOrEmpty(Label))
-    {
-        <label class="@Css.Classes.Input.Label" for="@_inputId">@Label</label>
-    }
-    <div class="@Css.Classes.Input.Field">
-        @if (!string.IsNullOrEmpty(Prefix))
-        {
-            <span class="@Css.Classes.Numericfield.Prefix">@Prefix</span>
-        }
-        <input class="@Css.Classes.Input.Control"
-               id="@_inputId"
-               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
-               type="@(_useTextMode ? "text" : "number")"
-               inputmode="@(_useTextMode ? "decimal" : null)"
-               value="@_inputDisplay"
-               placeholder="@Placeholder"
-               disabled="@Disabled"
-               readonly="@ReadOnly"
-               required="@Required"
-               min="@(_useTextMode ? null : _minStr)"
-               max="@(_useTextMode ? null : _maxStr)"
-               step="@(_useTextMode ? null : _stepStr)"
-               aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
-               aria-describedby="@_computedDescribedBy"
-               @onfocus="HandleFocus"
-               @onchange="HandleChange"
-               @oninput="HandleInput"
-               @onblur="HandleBlur"
-               @onkeydown="HandleKeyDown" />
-        @if (!string.IsNullOrEmpty(Suffix))
-        {
-            <span class="@Css.Classes.Numericfield.Suffix">@Suffix</span>
-        }
-        @if (ShowStepper)
-        {
-            <span class="@Css.Classes.Numericfield.Stepper">
-                <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepUp"
-                        tabindex="-1" disabled="@(Disabled || ReadOnly)"
-                        aria-label="@(FlareStrings.NumericField_Increment)"
-                        @onclick="@(() => StepBy(Step ?? 1))">▲</button>
-                <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepDown"
-                        tabindex="-1" disabled="@(Disabled || ReadOnly)"
-                        aria-label="@(FlareStrings.NumericField_Decrement)"
-                        @onclick="@(() => StepBy(-(Step ?? 1)))">▼</button>
-            </span>
-        }
-    </div>
-    @if (!string.IsNullOrEmpty(_displayedError))
-    {
-        <span id="@_errorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@_displayedError</span>
-    }
-    else if (!string.IsNullOrEmpty(HelperText))
-    {
-        <span id="@_helperId" class="@Css.Classes.Input.Helper">@HelperText</span>
-    }
-</div>
+@* Composes the shared FlareFieldChrome frame (root + label + helper/error). The numeric input is complex
+   (type=number, min/max/step, focus-swap text mode, clamp-on-change-vs-not-on-input), so it keeps its own
+   control inside the frame's Field slot rather than the shared FlareInputControl. *@
+<FlareFieldChrome Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelFor="@_inputId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.Input.Field">
+            @if (!string.IsNullOrEmpty(Prefix))
+            {
+                <span class="@Css.Classes.Numericfield.Prefix">@Prefix</span>
+            }
+            <input class="@Css.Classes.Input.Control"
+                   id="@_inputId"
+                   style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
+                   type="@(_useTextMode ? "text" : "number")"
+                   inputmode="@(_useTextMode ? "decimal" : null)"
+                   value="@_inputDisplay"
+                   placeholder="@Placeholder"
+                   disabled="@Disabled"
+                   readonly="@ReadOnly"
+                   required="@Required"
+                   min="@(_useTextMode ? null : _minStr)"
+                   max="@(_useTextMode ? null : _maxStr)"
+                   step="@(_useTextMode ? null : _stepStr)"
+                   aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
+                   aria-describedby="@_computedDescribedBy"
+                   @onfocus="HandleFocus"
+                   @onchange="HandleChange"
+                   @oninput="HandleInput"
+                   @onblur="HandleBlur"
+                   @onkeydown="HandleKeyDown" />
+            @if (!string.IsNullOrEmpty(Suffix))
+            {
+                <span class="@Css.Classes.Numericfield.Suffix">@Suffix</span>
+            }
+            @if (ShowStepper)
+            {
+                <span class="@Css.Classes.Numericfield.Stepper">
+                    <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepUp"
+                            tabindex="-1" disabled="@(Disabled || ReadOnly)"
+                            aria-label="@(FlareStrings.NumericField_Increment)"
+                            @onclick="@(() => StepBy(Step ?? 1))">▲</button>
+                    <button type="button" class="@Css.Classes.Numericfield.Step @Css.Classes.Numericfield.StepDown"
+                            tabindex="-1" disabled="@(Disabled || ReadOnly)"
+                            aria-label="@(FlareStrings.NumericField_Decrement)"
+                            @onclick="@(() => StepBy(-(Step ?? 1)))">▼</button>
+                </span>
+            }
+        </div>
+    </Field>
+</FlareFieldChrome>
 
 @code {
     /// <summary>Current numeric value of the field.</summary>
