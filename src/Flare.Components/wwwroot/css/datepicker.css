@@ -147,42 +147,8 @@
 .flare-picker__day.flare-daterangepicker__day--end { border-radius: 0 var(--flare-shape-full) var(--flare-shape-full) 0; }
 .flare-picker__day.flare-daterangepicker__day--start.flare-daterangepicker__day--end { border-radius: var(--flare-shape-full); }
 
-/* Month grid */
-.flare-datepicker__month-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--flare-spacing-2);
-  padding: var(--flare-spacing-2) 0;
-}
-
-.flare-datepicker__month-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: var(--flare-spacing-5) var(--flare-spacing-2);
-  border-radius: var(--flare-shape-small);
-  font-size: 0.875rem;
-  color: var(--flare-color-on-surface);
-  text-align: center;
-  font-family: inherit;
-  transition: background-color var(--flare-motion-duration-short2);
-}
-
-.flare-datepicker__month-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
-}
-
-.flare-datepicker__month-btn--selected {
-  background: var(--flare-color-primary);
-  color: var(--flare-color-on-primary);
-  font-weight: 600;
-}
-
-.flare-datepicker__month-btn--selected:hover {
-  background: var(--flare-color-primary);
-}
-
-/* Year grid */
+/* Month + year views: two identical 3-column grids of selectable cells, so they share one rule set. */
+.flare-datepicker__month-grid,
 .flare-datepicker__year-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -190,6 +156,7 @@
   padding: var(--flare-spacing-2) 0;
 }
 
+.flare-datepicker__month-btn,
 .flare-datepicker__year-btn {
   background: transparent;
   border: none;
@@ -203,16 +170,19 @@
   transition: background-color var(--flare-motion-duration-short2);
 }
 
+.flare-datepicker__month-btn:hover:not(:disabled),
 .flare-datepicker__year-btn:hover:not(:disabled) {
   background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
 }
 
+.flare-datepicker__month-btn--selected,
 .flare-datepicker__year-btn--selected {
   background: var(--flare-color-primary);
   color: var(--flare-color-on-primary);
   font-weight: 600;
 }
 
+.flare-datepicker__month-btn--selected:hover,
 .flare-datepicker__year-btn--selected:hover {
   background: var(--flare-color-primary);
 }
