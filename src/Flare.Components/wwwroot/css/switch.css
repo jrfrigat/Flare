@@ -157,11 +157,7 @@
         0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) 10%, transparent));
 }
 
-.flare-switch__label {
-    font-family: var(--flare-typescale-body-large-font);
-    font-size: var(--flare-typescale-body-large-size);
-    color: var(--flare-color-on-surface);
-}
+/* __label style comes from the shared control-label rule (checkbox.css). */
 
 .flare-switch__error {
     font-size: var(--flare-typescale-body-small-size);

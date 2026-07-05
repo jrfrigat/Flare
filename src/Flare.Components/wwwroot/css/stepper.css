@@ -100,10 +100,7 @@
   color: var(--flare-color-on-surface-variant);
 }
 
-.flare-stepper__description {
-  font-size: var(--flare-typescale-body-small-size);
-  color: var(--flare-color-on-surface-variant);
-}
+/* __description style comes from the shared supporting-text rule (input.css). */
 
 .flare-stepper__optional {
   font-size: var(--flare-typescale-label-small-size);

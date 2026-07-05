@@ -111,7 +111,11 @@
     box-shadow: var(--flare-checkbox-focus-shadow, none);
 }
 
-.flare-checkbox__label {
+/* Shared control label (selection controls + dropzone): identical body-large style. */
+.flare-checkbox__label,
+.flare-radio__label,
+.flare-switch__label,
+.flare-dropzone__label {
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);

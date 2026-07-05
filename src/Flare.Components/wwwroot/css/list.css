@@ -37,10 +37,7 @@
 
 .flare-list-item__primary { color: var(--flare-color-on-surface); }
 
-.flare-list-item__secondary {
-    font-size: var(--flare-typescale-body-small-size);
-    color: var(--flare-color-on-surface-variant);
-}
+/* __secondary style comes from the shared supporting-text rule (input.css). */
 
 .flare-list-item__trailing {
     display: flex;

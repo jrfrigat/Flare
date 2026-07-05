@@ -1,29 +1,12 @@
-.flare-multiselect { display: flex; flex-direction: column; gap: var(--flare-spacing-2); position: relative; }
+/* Root column layout comes from the shared field-family root (input.css). */
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
-/* The trigger carries the shared flare-input__field well (box-model, border, transition, :hover +
-   :focus-within ring, and the shared flare-input--disabled/--error state); the trigger-layout block
-   below is BYTE-IDENTICAL to FlareSelect's .flare-select__control (font/color/outline match the shared
-   flare-input__control model, so the value/placeholder inherit like a text input). */
-.flare-multiselect__control {
-    justify-content: space-between;
-    gap: var(--flare-spacing-4);
-    padding: var(--flare-spacing-6) var(--flare-spacing-8);
-    font-family: var(--flare-typescale-body-large-font);
-    font-size: var(--flare-typescale-body-large-size);
-    color: var(--flare-color-on-surface);
-    outline: none;
-    cursor: pointer;
-    user-select: none;
-}
-.flare-multiselect--open .flare-multiselect__control { border-bottom-color: var(--flare-color-primary); }
+/* The combobox trigger (__control) and its --open indicator are shared with FlareSelect - see the
+   combined rules in select.css. Only __value differs: multiselect holds chips, so it does not ellipsis. */
 .flare-multiselect__value { flex: 1; }
 /* The placeholder span uses the shared flare-input__placeholder (input.css). */
 
-/* Disabled/error surface + border + arrow + placeholder come from the shared flare-input__field /
-   flare-input__arrow / flare-input__placeholder rules; only the value span needs dimming here. */
-.flare-input--disabled .flare-multiselect__value {
-    opacity: var(--flare-state-disabled-opacity);
-}
+/* Disabled/error surface + the value dim are shared with FlareSelect - the disabled __value rule in
+   select.css lists both select + multiselect. */
 
 /* Size grid (Xs..Xl) comes entirely from the shared grid in input.css: multiselect__control is listed
    there alongside select__control (padding + font-size), and the value/placeholder inherit the control

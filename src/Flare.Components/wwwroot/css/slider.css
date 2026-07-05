@@ -299,10 +299,7 @@
     transform: translateX(-50%) scale(1);
 }
 
-.flare-slider__helper {
-    font-size: var(--flare-typescale-body-small-size);
-    color: var(--flare-color-on-surface-variant);
-}
+/* __helper style comes from the shared supporting-text rule (input.css). */
 .flare-slider__helper--error { color: var(--flare-color-error); }
 
 /* ==========================================================================

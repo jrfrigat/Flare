@@ -1,9 +1,4 @@
-.flare-select {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flare-spacing-2);
-    position: relative;
-}
+/* Root column layout comes from the shared field-family root (input.css). */
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error
    classes (see input.css); the select only styles its combobox trigger and dropdown below. */
@@ -12,7 +7,10 @@
    (.flare-select__dropdown / .flare-listbox) can be fully styled. It carries the shared
    flare-input__field well (box-model, border, transition, :hover + :focus-within ring, and the
    shared flare-input--disabled/--error state), and only adds the trigger-specific layout below. */
-.flare-select__control {
+/* Combobox trigger layout, shared by Select and MultiSelect: both carry the flare-input__field well,
+   and this only adds the trigger-specific layout (font/color match the shared flare-input__control). */
+.flare-select__control,
+.flare-multiselect__control {
     justify-content: space-between;
     gap: var(--flare-spacing-4);
     padding: var(--flare-spacing-6) var(--flare-spacing-8);
@@ -24,7 +22,8 @@
     user-select: none;
 }
 
-.flare-select--open .flare-select__control { border-bottom-color: var(--flare-color-primary); }
+.flare-select--open .flare-select__control,
+.flare-multiselect--open .flare-multiselect__control { border-bottom-color: var(--flare-color-primary); }
 
 .flare-select__value { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* The placeholder span uses the shared flare-input__placeholder (input.css). */
@@ -42,6 +41,7 @@
    flare-input--disabled/--error .flare-input__field rules (4%/38% surface + error border) and
    the shared label/helper/arrow/placeholder treatment apply automatically. Only the single-value text
    (a select-specific span) needs the disabled dim here. */
-.flare-input--disabled .flare-select__value {
+.flare-input--disabled .flare-select__value,
+.flare-input--disabled .flare-multiselect__value {
     opacity: var(--flare-state-disabled-opacity);
 }
