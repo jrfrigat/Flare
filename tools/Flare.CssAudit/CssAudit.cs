@@ -17,16 +17,21 @@ public sealed class CssAuditReport
     public required IReadOnlyList<string> ThemeOnlyClasses { get; init; }
     /// <summary><c>[!]</c> dead literal fallbacks on always-emitted semantic tokens (see <see cref="CssAudit"/>).</summary>
     public required IReadOnlyList<string> LiteralTokenFallbacks { get; init; }
+    /// <summary><c>[=]</c> CSS-class values declared by more than one <c>CssClasses</c> constant (redundant duplicates to consolidate).</summary>
+    public required IReadOnlyList<string> DuplicateConstants { get; init; }
 
-    /// <summary>True when CssClasses, Flare.Components CSS and the themes are fully in sync and no
-    /// component CSS bakes a theme literal as a fallback on an always-emitted semantic token.</summary>
+    /// <summary>True when CssClasses, Flare.Components CSS and the themes are fully in sync, no
+    /// component CSS bakes a theme literal as a fallback on an always-emitted semantic token, and no
+    /// CSS class is declared by more than one constant.</summary>
     public bool InSync =>
         ClassesMissingConstant.Count == 0 && ConstantsMissingCss.Count == 0
-        && ThemeOnlyClasses.Count == 0 && LiteralTokenFallbacks.Count == 0;
+        && ThemeOnlyClasses.Count == 0 && LiteralTokenFallbacks.Count == 0
+        && DuplicateConstants.Count == 0;
 
     /// <summary>All findings across the reports, for a single combined failure message.</summary>
     public IEnumerable<string> AllFindings =>
-        ClassesMissingConstant.Concat(ConstantsMissingCss).Concat(ThemeOnlyClasses).Concat(LiteralTokenFallbacks);
+        ClassesMissingConstant.Concat(ConstantsMissingCss).Concat(ThemeOnlyClasses)
+            .Concat(LiteralTokenFallbacks).Concat(DuplicateConstants);
 }
 
 /// <summary>
@@ -68,6 +73,7 @@ public static class CssAudit
             ConstantsMissingCss = minus.Select(v => $"[-] {v}  ({constants.LocationOf(v)})").ToList(),
             ThemeOnlyClasses = tilde.Select(c => $"[~] {c}  (in {string.Join(", ", themeCss[c])})").ToList(),
             LiteralTokenFallbacks = ScanLiteralTokenFallbacks(cssDir),
+            DuplicateConstants = constants.Duplicates.Select(d => $"[=] {d}").ToList(),
         };
     }
 
