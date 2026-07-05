@@ -136,3 +136,47 @@ public class C_FlareSelectAriaTests : FlareTestContext
         Assert.NotNull(cut.Find($"#{active}"));
     }
 }
+
+// ------------------------------------------------------------------------------
+// Uncontrolled selection (no @bind-Value / @bind-Values)
+// ------------------------------------------------------------------------------
+
+public class C_FlareSelectUncontrolledTests : FlareTestContext
+{
+    private static readonly string[] _items = ["Alpha", "Beta", "Gamma"];
+
+    [Fact]
+    public void Select_Uncontrolled_ShowsSelectionWithoutBinding()
+    {
+        var cut = Render<FlareSelect<string>>(p => p.Add(x => x.Items, _items));
+
+        cut.Find(".flare-select__control").Click();
+        cut.FindAll(".flare-select__option")[1].Click();   // pick "Beta"
+
+        Assert.Contains("Beta", cut.Find(".flare-select__value").TextContent);
+    }
+
+    [Fact]
+    public void Select_Uncontrolled_SeedsFromOneWayValue()
+    {
+        var cut = Render<FlareSelect<string>>(p => p
+            .Add(x => x.Items, _items)
+            .Add(x => x.Value, "Gamma"));
+
+        Assert.Contains("Gamma", cut.Find(".flare-select__value").TextContent);
+    }
+
+    [Fact]
+    public void MultiSelect_Uncontrolled_AccumulatesSelectionWithoutBinding()
+    {
+        var cut = Render<FlareMultiSelect<string>>(p => p.Add(x => x.Items, _items));
+
+        cut.Find(".flare-multiselect__control").Click();
+        cut.FindAll(".flare-multiselect__option")[0].Click();   // Alpha
+        cut.FindAll(".flare-multiselect__option")[2].Click();   // Gamma
+
+        var shown = cut.Find(".flare-multiselect__value").TextContent;
+        Assert.Contains("Alpha", shown);
+        Assert.Contains("Gamma", shown);
+    }
+}

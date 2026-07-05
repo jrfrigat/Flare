@@ -40,18 +40,46 @@ public class FlareSelect<TValue> : FlareSelectBase<TValue>, IFlareField<TValue>
     /// <inheritdoc />
     protected override string DropdownCssClass => Css.Classes.Select.Dropdown;
 
+    // Controlled vs uncontrolled: when the consumer two-way-binds (ValueChanged has a delegate) they own
+    // the value and Value is the source of truth. Otherwise the component keeps its own selection (seeded
+    // from any one-way Value), so a bare `<FlareSelect Items="..." />` works like a native <select>.
+    private TValue? _internal;
+    private TValue? _prevValue;
+    private bool _seeded;
+
+    private bool Controlled => ValueChanged.HasDelegate;
+    private TValue? Current => Controlled ? Value : _internal;
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        if (Controlled)
+        {
+            _internal = Value;
+        }
+        else if (!_seeded || !EqualityComparer<TValue?>.Default.Equals(Value, _prevValue))
+        {
+            // Seed once, and re-seed only when the consumer explicitly changes the one-way Value (reset).
+            _internal = Value;
+            _seeded = true;
+        }
+        _prevValue = Value;
+        base.OnParametersSet();
+    }
+
     /// <inheritdoc />
     protected override IReadOnlyList<TValue> SelectedValues =>
-        Value is null ? System.Array.Empty<TValue>() : new[] { Value };
+        Current is null ? System.Array.Empty<TValue>() : new[] { Current };
 
     /// <inheritdoc />
     protected override bool IsSelected(TValue item) =>
-        EqualityComparer<TValue>.Default.Equals(item, Value);
+        EqualityComparer<TValue>.Default.Equals(item, Current);
 
     /// <inheritdoc />
     protected override async Task CommitAsync(TValue item)
     {
-        if (EqualityComparer<TValue>.Default.Equals(item, Value)) return;
+        if (EqualityComparer<TValue>.Default.Equals(item, Current)) return;
+        _internal = item;   // drives the display in uncontrolled mode
         await ValueChanged.InvokeAsync(item);
         NotifyFieldChanged();
     }
