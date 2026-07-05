@@ -1,12 +1,16 @@
-.flare-confirmdialog__backdrop {
+/* Shared modal scrim layout: a full-viewport centered backdrop over the scrim color, reused by the
+   message box and shortcuts-help overlays (each only sets its own z-index). */
+.flare-confirmdialog__backdrop,
+.flare-msgbox-scrim,
+.flare-shortcuts-help__scrim {
     position: fixed;
     inset: 0;
     background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity, 0.32) * 100%), transparent);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
 }
+.flare-confirmdialog__backdrop { z-index: 1000; }
 
 .flare-confirmdialog {
     background: var(--flare-color-surface-container-high);

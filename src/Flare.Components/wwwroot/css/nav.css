@@ -88,7 +88,9 @@
   background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-.flare-nav-group__icon { display: inline-flex; font-size: 1.25rem; flex-shrink: 0; }
+/* Nav group and nav link icons share one icon layout. */
+.flare-nav-group__icon,
+.flare-nav-link__icon { display: inline-flex; font-size: 1.25rem; flex-shrink: 0; }
 .flare-nav-group__title { flex: 1; }
 
 .flare-nav-group__chevron {
@@ -160,7 +162,7 @@
   pointer-events: none;
 }
 
-.flare-nav-link__icon { display: inline-flex; font-size: 1.25rem; flex-shrink: 0; }
+/* __icon layout is shared with .flare-nav-group__icon above. */
 .flare-nav-link__text { flex: 1; min-width: 0; }
 .flare-nav-link__badge {
   background: var(--flare-color-error);

@@ -170,14 +170,8 @@
   border-radius: 0;
 }
 
-.flare-datagrid__toolbar {
-  display: flex;
-  align-items: center;
-  gap: var(--flare-spacing-4);
-  padding: var(--flare-spacing-4) 0;
-  justify-content: flex-end;
-}
-
+/* Toolbar (top) and footer (bottom) share one end-aligned bar layout. */
+.flare-datagrid__toolbar,
 .flare-datagrid__footer {
   display: flex;
   align-items: center;

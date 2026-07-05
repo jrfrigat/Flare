@@ -1,13 +1,6 @@
 /* Keyboard-shortcuts help dialog (FlareShortcuts). */
-.flare-shortcuts-help__scrim {
-    position: fixed;
-    inset: 0;
-    background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity, 0.32) * 100%), transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
+/* Scrim layout comes from the shared modal scrim (confirmdialog.css). */
+.flare-shortcuts-help__scrim { z-index: 1000; }
 
 .flare-shortcuts-help {
     background: var(--flare-color-surface-container-high);
