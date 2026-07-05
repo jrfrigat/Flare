@@ -11,48 +11,10 @@
   border-bottom: 1px solid var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
 }
 
-.flare-link-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--flare-spacing-4);
-  padding: var(--flare-spacing-6) var(--flare-spacing-10);
-  border: none;
-  /* Active-indicator height 3dp; inactive label = on-surface */
-  border-bottom: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
-  margin-bottom: -1px;
-  background: transparent;
-  color: var(--flare-tabs-inactive-color, var(--flare-color-on-surface));
-  font-family: var(--flare-typescale-label-large-font);
-  font-size: var(--flare-typescale-label-large-size);
-  font-weight: var(--flare-typescale-label-large-weight);
-  text-decoration: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-              background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-              border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
-}
-
-.flare-link-tab:hover:not(.flare-link-tab--disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
-}
-
-/* --active color is shared with FlareTabs (tabs.css), same --flare-tabs-* tokens. */
-
-.flare-link-tab--disabled {
-  opacity: var(--flare-state-disabled-opacity);
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.flare-link-tab__icon {
-  display: inline-flex;
-  align-items: center;
-}
-
-.flare-link-tab__label {
-  display: inline-block;
-}
+/* Each item (FlareLinkTab) is an <a> that reuses FlareTabs' item classes directly - flare-tabs__tab,
+   __tab--active, __tab--disabled and __label (tabs.css, which carries text-decoration:none + a
+   pointer-events guard for the anchor) - so a route link looks identical to an in-page tab with zero
+   duplicated item CSS. Only this bar container and its Tonal/Filled track are link-tabs-specific. */
 
 /* ============================ Variants ====================================
    Tonal / Filled: rounded pill tabs in an optional track (segmented control), mirroring
@@ -68,5 +30,5 @@
   width: fit-content;
 }
 
-/* The pill-tab base and the Tonal/Filled active states are identical to FlareTabs and are shared
-   there (tabs.css) via combined selector lists - the route bar reuses the same --flare-tabs-* tokens. */
+/* The Tonal/Filled pill tab + active states come from tabs.css (the --tonal/--filled selector lists
+   there include the .flare-link-tabs-- containers), so the route bar reuses them 1:1. */

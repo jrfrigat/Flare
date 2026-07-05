@@ -9,14 +9,8 @@ public static class LinkTabs
     public const string Tonal = "flare-link-tabs--tonal";
     /// <summary>The <c>flare-link-tabs--filled</c> CSS class.</summary>
     public const string Filled = "flare-link-tabs--filled";
-    /// <summary>The <c>flare-link-tab</c> CSS class.</summary>
-    public const string Tab = "flare-link-tab";
-    /// <summary>The <c>flare-link-tab--active</c> CSS class.</summary>
-    public const string TabActive = "flare-link-tab--active";
-    /// <summary>The <c>flare-link-tab--disabled</c> CSS class.</summary>
-    public const string TabDisabled = "flare-link-tab--disabled";
-    /// <summary>The <c>flare-link-tab__icon</c> CSS class.</summary>
-    public const string TabIcon = "flare-link-tab__icon";
-    /// <summary>The <c>flare-link-tab__label</c> CSS class.</summary>
-    public const string TabLabel = "flare-link-tab__label";
+
+    // An item (FlareLinkTab) reuses FlareTabs' item classes directly - Css.Classes.Tabs.TabButton /
+    // TabActive / TabDisabled / Label - so a route link is styled identically to an in-page tab and no
+    // flare-link-tab* item classes are declared here. Only the bar container above is link-tabs-specific.
 }

@@ -79,6 +79,7 @@
   gap: var(--flare-spacing-4);
   padding: var(--flare-spacing-6) var(--flare-spacing-10);
   border: none;
+  text-decoration: none;  /* FlareLinkTab reuses this class on its <a> items. */
   /* Active-indicator height 3dp; inactive label = on-surface */
   border-bottom: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
   margin-bottom: -1px;
@@ -98,9 +99,8 @@
   background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-/* Active-tab color, shared with FlareLinkTabs (identical, same --flare-tabs-* tokens). */
-.flare-tabs__tab--active,
-.flare-link-tab--active {
+/* Active-tab color (FlareLinkTab reuses this class on its route links). */
+.flare-tabs__tab--active {
   color: var(--flare-tabs-active-color, var(--flare-color-primary));
   border-bottom-color: var(--flare-tabs-active-color, var(--flare-color-primary));
 }
@@ -154,8 +154,8 @@
 
 .flare-tabs--tonal .flare-tabs__tab,
 .flare-tabs--filled .flare-tabs__tab,
-.flare-link-tabs--tonal .flare-link-tab,
-.flare-link-tabs--filled .flare-link-tab {
+.flare-link-tabs--tonal .flare-tabs__tab,
+.flare-link-tabs--filled .flare-tabs__tab {
   border-bottom: none;
   margin-bottom: 0;
   border-radius: var(--flare-tabs-pill-radius, var(--flare-shape-full));
@@ -163,19 +163,19 @@
 .flare-tabs--tonal .flare-tabs__tab--active::after,
 .flare-tabs--filled .flare-tabs__tab--active::after { display: none; }
 
-/* Tonal / Filled active pill, shared with FlareLinkTabs (identical, same tokens). */
+/* Tonal / Filled active pill (FlareLinkTabs reuses the tab classes in its own --tonal/--filled bar). */
 .flare-tabs--tonal .flare-tabs__tab--active,
 .flare-tabs--tonal .flare-tabs__tab--active:hover,
-.flare-link-tabs--tonal .flare-link-tab--active,
-.flare-link-tabs--tonal .flare-link-tab--active:hover {
+.flare-link-tabs--tonal .flare-tabs__tab--active,
+.flare-link-tabs--tonal .flare-tabs__tab--active:hover {
   background: var(--flare-tabs-selected-bg, var(--flare-color-secondary-container));
   color: var(--flare-tabs-selected-fg, var(--flare-color-on-secondary-container));
   border-bottom-color: transparent;
 }
 .flare-tabs--filled .flare-tabs__tab--active,
 .flare-tabs--filled .flare-tabs__tab--active:hover,
-.flare-link-tabs--filled .flare-link-tab--active,
-.flare-link-tabs--filled .flare-link-tab--active:hover {
+.flare-link-tabs--filled .flare-tabs__tab--active,
+.flare-link-tabs--filled .flare-tabs__tab--active:hover {
   background: var(--flare-tabs-filled-bg, var(--flare-color-primary));
   color: var(--flare-tabs-filled-fg, var(--flare-color-on-primary));
   border-bottom-color: transparent;
@@ -195,9 +195,13 @@
 }
 .flare-tabs--outlined .flare-tabs__tab--active::after { display: none; }
 
-.flare-tabs__tab:disabled {
+/* Disabled: :disabled for the FlareTabs <button>, --disabled for the FlareLinkTab <a>
+   (an anchor cannot be :disabled, so pointer-events:none also blocks its hover/click). */
+.flare-tabs__tab:disabled,
+.flare-tabs__tab--disabled {
   opacity: var(--flare-state-disabled-opacity);
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .flare-tabs__badge {

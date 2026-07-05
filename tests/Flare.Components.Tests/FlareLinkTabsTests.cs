@@ -38,7 +38,7 @@ public class FlareLinkTabsTests : FlareTestContext
     {
         var cut = Render(TwoLinkTabs());
 
-        var anchors = cut.FindAll("a.flare-link-tab");
+        var anchors = cut.FindAll("a.flare-tabs__tab");
         Assert.Equal(2, anchors.Count);
     }
 
@@ -47,7 +47,7 @@ public class FlareLinkTabsTests : FlareTestContext
     {
         var cut = Render(TwoLinkTabs());
 
-        var anchors = cut.FindAll("a.flare-link-tab");
+        var anchors = cut.FindAll("a.flare-tabs__tab");
         Assert.Contains("Login", anchors[0].TextContent);
         Assert.Equal("/login", anchors[0].GetAttribute("href"));
         Assert.Contains("Register", anchors[1].TextContent);
@@ -89,9 +89,9 @@ public class FlareLinkTabsTests : FlareTestContext
 
         var cut = Render(TwoLinkTabs(NavMatchMode.Exact));
 
-        var anchors = cut.FindAll("a.flare-link-tab");
-        Assert.Contains("flare-link-tab--active", anchors[0].ClassName);
-        Assert.DoesNotContain("flare-link-tab--active", anchors[1].ClassName);
+        var anchors = cut.FindAll("a.flare-tabs__tab");
+        Assert.Contains("flare-tabs__tab--active", anchors[0].ClassName);
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[1].ClassName);
     }
 
     [Fact]
@@ -102,8 +102,8 @@ public class FlareLinkTabsTests : FlareTestContext
 
         var cut = Render(TwoLinkTabs(NavMatchMode.Exact));
 
-        var anchors = cut.FindAll("a.flare-link-tab");
-        Assert.DoesNotContain("flare-link-tab--active", anchors[0].ClassName);
+        var anchors = cut.FindAll("a.flare-tabs__tab");
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[0].ClassName);
     }
 
     [Fact]
@@ -114,9 +114,9 @@ public class FlareLinkTabsTests : FlareTestContext
 
         var cut = Render(TwoLinkTabs(NavMatchMode.Prefix));
 
-        var anchors = cut.FindAll("a.flare-link-tab");
-        Assert.Contains("flare-link-tab--active", anchors[0].ClassName);
-        Assert.DoesNotContain("flare-link-tab--active", anchors[1].ClassName);
+        var anchors = cut.FindAll("a.flare-tabs__tab");
+        Assert.Contains("flare-tabs__tab--active", anchors[0].ClassName);
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[1].ClassName);
     }
 
     [Fact]
@@ -128,8 +128,8 @@ public class FlareLinkTabsTests : FlareTestContext
 
         var cut = Render(TwoLinkTabs(NavMatchMode.Prefix));
 
-        var anchors = cut.FindAll("a.flare-link-tab");
-        Assert.DoesNotContain("flare-link-tab--active", anchors[0].ClassName);
+        var anchors = cut.FindAll("a.flare-tabs__tab");
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[0].ClassName);
     }
 
     [Fact]
@@ -140,16 +140,16 @@ public class FlareLinkTabsTests : FlareTestContext
 
         var cut = Render(TwoLinkTabs());
 
-        var anchors = cut.FindAll("a.flare-link-tab");
-        Assert.Contains("flare-link-tab--active", anchors[0].ClassName);
-        Assert.DoesNotContain("flare-link-tab--active", anchors[1].ClassName);
+        var anchors = cut.FindAll("a.flare-tabs__tab");
+        Assert.Contains("flare-tabs__tab--active", anchors[0].ClassName);
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[1].ClassName);
 
         nav.NavigateTo("/register");
-        cut.WaitForState(() => cut.FindAll("a.flare-link-tab")[1].ClassName?.Contains("flare-link-tab--active") == true);
+        cut.WaitForState(() => cut.FindAll("a.flare-tabs__tab")[1].ClassName?.Contains("flare-tabs__tab--active") == true);
 
-        anchors = cut.FindAll("a.flare-link-tab");
-        Assert.DoesNotContain("flare-link-tab--active", anchors[0].ClassName);
-        Assert.Contains("flare-link-tab--active", anchors[1].ClassName);
+        anchors = cut.FindAll("a.flare-tabs__tab");
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[0].ClassName);
+        Assert.Contains("flare-tabs__tab--active", anchors[1].ClassName);
     }
 
     [Fact]
@@ -160,9 +160,9 @@ public class FlareLinkTabsTests : FlareTestContext
 
         var cut = Render(TwoLinkTabs());
 
-        var anchors = cut.FindAll("a.flare-link-tab");
-        Assert.DoesNotContain("flare-link-tab--active", anchors[0].ClassName);
-        Assert.DoesNotContain("flare-link-tab--active", anchors[1].ClassName);
+        var anchors = cut.FindAll("a.flare-tabs__tab");
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[0].ClassName);
+        Assert.DoesNotContain("flare-tabs__tab--active", anchors[1].ClassName);
     }
 
     // ------------------------------------------------------------------
@@ -216,7 +216,7 @@ public class FlareLinkTabsTests : FlareTestContext
                 .Add(x => x.Href, "/one")
                 .Add(x => x.Disabled, true)));
 
-        Assert.Contains("flare-link-tab--disabled", cut.Find("a.flare-link-tab").ClassName);
+        Assert.Contains("flare-tabs__tab--disabled", cut.Find("a.flare-tabs__tab").ClassName);
     }
 
     [Fact]
@@ -228,14 +228,14 @@ public class FlareLinkTabsTests : FlareTestContext
                 .Add(x => x.Href, "/one")
                 .Add(x => x.Disabled, true)));
 
-        var a = cut.Find("a.flare-link-tab");
+        var a = cut.Find("a.flare-tabs__tab");
         Assert.False(a.HasAttribute("href"));
         Assert.Equal("true", a.GetAttribute("aria-disabled"));
         Assert.Equal("-1", a.GetAttribute("tabindex"));
     }
 
     [Fact]
-    public void LeadingIcon_RendersIconSpan()
+    public void LeadingIcon_RendersInsideTab()
     {
         var cut = Render<FlareLinkTabs>(p => p
             .AddChildContent<FlareLinkTab>(t => t
@@ -248,6 +248,8 @@ public class FlareLinkTabsTests : FlareTestContext
                     b.CloseElement();
                 }))));
 
-        Assert.NotEmpty(cut.FindAll(".flare-link-tab__icon"));
+        // The icon fragment renders directly inside the shared flare-tabs__tab anchor (no wrapper span,
+        // matching FlareTabs' own leading-icon rendering).
+        Assert.NotEmpty(cut.FindAll("a.flare-tabs__tab #tab-icon"));
     }
 }

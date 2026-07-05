@@ -16,9 +16,9 @@
    @attributes="AdditionalAttributes">
     @if (LeadingIcon is not null)
     {
-        <span class="@Css.Classes.LinkTabs.TabIcon">@LeadingIcon</span>
+        @LeadingIcon
     }
-    <span class="@Css.Classes.LinkTabs.TabLabel">@Label</span>
+    <span class="@Css.Classes.Tabs.Label">@Label</span>
 </a>
 
 @code {
@@ -39,14 +39,17 @@
     /// whether/how to navigate.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
 
-    protected override string ComponentCssClass => Css.Classes.LinkTabs.Tab;
+    // A route link reuses FlareTabs' item classes so it looks identical to an in-page tab; only its
+    // container (flare-link-tabs) differs. tabs.css gives flare-tabs__tab text-decoration:none and a
+    // pointer-events guard so it works on this <a> (which cannot use the button's :disabled pseudo).
+    protected override string ComponentCssClass => Css.Classes.Tabs.TabButton;
 
     private bool _isActive;
 
     private string _safeHref => Flare.Components.Security.CssValidator.IsHrefSafe(Href) ? (Href ?? string.Empty) : "about:blank";
 
-    private string _activeClass => _isActive ? Css.Classes.LinkTabs.TabActive : string.Empty;
-    private string _disabledClass => Disabled ? Css.Classes.LinkTabs.TabDisabled : string.Empty;
+    private string _activeClass => _isActive ? Css.Classes.Tabs.TabActive : string.Empty;
+    private string _disabledClass => Disabled ? Css.Classes.Tabs.TabDisabled : string.Empty;
 
     protected override void OnInitialized()
     {

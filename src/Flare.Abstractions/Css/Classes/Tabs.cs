@@ -28,6 +28,9 @@ public static class Tabs
     public const string TabButton = "flare-tabs__tab";
     /// <summary>The <c>flare-tabs__tab--active</c> CSS class.</summary>
     public const string TabActive = "flare-tabs__tab--active";
+    /// <summary>The <c>flare-tabs__tab--disabled</c> CSS class (used by FlareLinkTab's anchor items,
+    /// which cannot use the native <c>:disabled</c> pseudo the FlareTabs button relies on).</summary>
+    public const string TabDisabled = "flare-tabs__tab--disabled";
     /// <summary>The <c>flare-tabs__tab-close</c> CSS class.</summary>
     public const string TabClose = "flare-tabs__tab-close";
     /// <summary>The <c>flare-tabs__panels</c> CSS class.</summary>
