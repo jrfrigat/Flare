@@ -12,10 +12,10 @@
    only wires parameters, forwards the value callback and keeps the display text in sync. *@
 
 <FlareFieldChrome @ref="_chrome"
-                  RootClass="@Css.Classes.Autocomplete.Root"
-                  StateClass="@_stateClass"
-                  SizeClass="@_sizeClass"
-                  VariantClass="@_variantClass"
+                  ComponentClass="@Css.Classes.Autocomplete.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
                   Label="@Label" LabelId="@_labelId"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"

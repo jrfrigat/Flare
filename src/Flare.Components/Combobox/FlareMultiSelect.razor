@@ -11,11 +11,11 @@
    pick. Composes the shared primitives; the engine owns selection (incl. max + tri-state select-all). *@
 
 <FlareFieldChrome @ref="_chrome"
-                  RootClass="@Css.Classes.Multiselect.Root"
-                  StateClass="@_stateClass"
-                  SizeClass="@_sizeClass"
-                  VariantClass="@_variantClass"
-                  OpenClass="@(_state.IsOpen ? Css.Classes.Multiselect.Open : null)"
+                  ComponentClass="@Css.Classes.Multiselect.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  ExtraClass="@(_state.IsOpen ? Css.Classes.Multiselect.Open : null)"
                   Label="@Label" LabelId="@_labelId"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"

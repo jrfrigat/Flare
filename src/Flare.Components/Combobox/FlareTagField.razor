@@ -13,10 +13,10 @@
    Generic over the tag type; the common string case needs no CustomValueFactory. *@
 
 <FlareFieldChrome @ref="_chrome"
-                  RootClass="@Css.Classes.TagInput.Root"
-                  StateClass="@_stateClass"
-                  SizeClass="@_sizeClass"
-                  VariantClass="@_variantClass"
+                  ComponentClass="@Css.Classes.TagInput.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
                   Label="@Label" LabelId="@_labelId"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"

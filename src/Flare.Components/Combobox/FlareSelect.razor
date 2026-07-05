@@ -12,11 +12,11 @@
    behaviour is re-implemented. *@
 
 <FlareFieldChrome @ref="_chrome"
-                  RootClass="@Css.Classes.Select.Root"
-                  StateClass="@_stateClass"
-                  SizeClass="@_sizeClass"
-                  VariantClass="@_variantClass"
-                  OpenClass="@(_state.IsOpen ? Css.Classes.Select.Open : null)"
+                  ComponentClass="@Css.Classes.Select.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  ExtraClass="@(_state.IsOpen ? Css.Classes.Select.Open : null)"
                   Label="@Label" LabelId="@_labelId"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
