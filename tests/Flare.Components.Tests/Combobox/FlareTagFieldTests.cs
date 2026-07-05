@@ -76,6 +76,20 @@ public class FlareTagFieldTests : FlareTestContext
     }
 
     [Fact]
+    public void Uncontrolled_keeps_tags_across_parent_rerender()
+    {
+        // Regression: uncontrolled (no @bind-Values) tags must survive a parent re-render.
+        var cut = Render<FlareTagField<string>>();
+        var input = cut.Find("input.flare-tag-input__input");
+        input.Input("alpha");
+        input.KeyDown(new KeyboardEventArgs { Key = "Enter" });
+        Assert.Single(cut.FindAll(".flare-multiselect__chip"));
+
+        cut.Render(p => p.Add(x => x.Placeholder, "add"));   // simulate a parent re-render
+        Assert.Single(cut.FindAll(".flare-multiselect__chip"));
+    }
+
+    [Fact]
     public void Chip_remove_button_removes_the_tag()
     {
         IReadOnlyList<string> tags = ["keep", "drop"];

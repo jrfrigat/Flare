@@ -407,8 +407,11 @@
 
     private async Task CommitTagsAsync()
     {
+        // Do NOT touch _prevValues here: it tracks the last incoming Values parameter so an unbound
+        // (uncontrolled) Values reference stays reference-equal across parent re-renders and the shell's
+        // live _tags list is not reset. Overwriting it with our snapshot made the next OnParametersSet see a
+        // spurious change and clear the tags.
         var snapshot = _tags.ToArray();
-        _prevValues = snapshot;   // our own push must not look like an external reset
         await ValuesChanged.InvokeAsync(snapshot);
         NotifyFieldChanged();
     }

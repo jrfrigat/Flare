@@ -108,6 +108,21 @@ public class FlareSelectRebuildTests : FlareTestContext
     }
 
     [Fact]
+    public void MultiSelect_uncontrolled_keeps_selection_across_parent_rerender()
+    {
+        // Regression: uncontrolled (no @bind-Values) selection must survive a parent re-render. Overwriting
+        // the incoming-Values tracker on our own push made OnParametersSet wipe the engine selection.
+        var cut = Render<FlareMultiSelect<string>>(p => p.Add(x => x.Items, Fruits));
+
+        cut.Find(".flare-multiselect__control").Click();
+        cut.FindAll(".flare-listbox__option")[0].Click();   // pick Apple
+        Assert.Contains("Apple", cut.Find(".flare-multiselect__value").TextContent);
+
+        cut.Render(p => p.Add(x => x.Items, Fruits));   // simulate a parent re-render
+        Assert.Contains("Apple", cut.Find(".flare-multiselect__value").TextContent);
+    }
+
+    [Fact]
     public void MultiSelect_MaxSelections_blocks_and_fires_callback()
     {
         var reached = 0;
