@@ -1,9 +1,9 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:22rem;">
     <FlareMultiSelect TValue="string"
                       Items="_frameworks"
-                      GetLabel="x => x"
-                      SelectedValues="_selectedFrameworks"
-                      SelectedValuesChanged="v => _selectedFrameworks = v.ToList()"
+                      ItemLabel="x => x"
+                      Values="_selectedFrameworks"
+                      ValuesChanged="v => _selectedFrameworks = v.ToList()"
                       Label="Frameworks"
                       HelperText="Choose one or more." />
 </FlareStack>

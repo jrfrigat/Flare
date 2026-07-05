@@ -1,9 +1,9 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:22rem;">
     <FlareMultiSelect TValue="string"
                       Items="_fruits"
-                      GetLabel="x => x"
-                      SelectedValues="_selectedFruits"
-                      SelectedValuesChanged="v => _selectedFruits = v.ToList()"
+                      ItemLabel="x => x"
+                      Values="_selectedFruits"
+                      ValuesChanged="v => _selectedFruits = v.ToList()"
                       Chips="true"
                       Searchable="true"
                       Label="Select fruits (chips)" />

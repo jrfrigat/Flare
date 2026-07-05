@@ -1,9 +1,9 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:22rem;">
     <FlareMultiSelect TValue="string"
                       Items="_frameworks"
-                      GetLabel="x => x"
-                      SelectedValues="_selectedError"
-                      SelectedValuesChanged="v => _selectedError = v.ToList()"
+                      ItemLabel="x => x"
+                      Values="_selectedError"
+                      ValuesChanged="v => _selectedError = v.ToList()"
                       Label="Required field"
                       ErrorText="Please select at least one option." />
 </FlareStack>

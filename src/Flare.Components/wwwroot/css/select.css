@@ -29,9 +29,10 @@
 /* The placeholder span uses the shared flare-input__placeholder (input.css). */
 
 /* JS-anchored (PositionAnchoredPanel) so the popup escapes a Card's overflow:hidden; the surface
-   and z-index come from .flare-listbox. Select uses fixed positioning instead of the shared
-   .flare-listbox__dropdown absolute anchoring. */
-.flare-select__dropdown {
+   and z-index come from .flare-listbox. Select and MultiSelect both use fixed positioning instead of
+   the shared .flare-listbox__dropdown absolute anchoring. */
+.flare-select__dropdown,
+.flare-multiselect__dropdown {
     position: fixed;
 }
 

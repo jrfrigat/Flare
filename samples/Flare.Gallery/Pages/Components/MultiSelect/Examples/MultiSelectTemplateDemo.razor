@@ -1,6 +1,6 @@
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareMultiSelect TValue="string"
-                      @bind-SelectedValues="_selected"
+                      @bind-Values="_selected"
                       Items="_langs"
                       Label="Languages"
                       Placeholder="Pick languages"
@@ -12,12 +12,12 @@
         </ItemTemplate>
     </FlareMultiSelect>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
-        Selected: @(_selected.Count == 0 ? "—" : string.Join(", ", _selected))
+        Selected: @(_selected.Count == 0 ? "-" : string.Join(", ", _selected))
     </FlareText>
 </FlareStack>
 
 @code {
-    private IReadOnlyCollection<string> _selected = [];
+    private IReadOnlyList<string> _selected = [];
 
     private readonly string[] _langs = ["C#", "F#", "TypeScript", "Rust", "Go", "Python"];
 }

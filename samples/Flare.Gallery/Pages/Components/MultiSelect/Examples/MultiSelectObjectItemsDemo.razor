@@ -1,12 +1,11 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:22rem;">
     <FlareMultiSelect TValue="Country"
                       Items="_countries"
-                      GetLabel="c => c.Name"
-                      GetValue="c => c"
+                      ItemLabel="c => c.Name"
                       GroupBy="c => c.Region"
                       Chips="true"
-                      SelectedValues="_selectedCountries"
-                      SelectedValuesChanged="v => _selectedCountries = v.ToList()"
+                      Values="_selectedCountries"
+                      ValuesChanged="v => _selectedCountries = v.ToList()"
                       Label="Countries (grouped by region)"
                       Placeholder="Select countries" />
     @if (_selectedCountries.Any())
