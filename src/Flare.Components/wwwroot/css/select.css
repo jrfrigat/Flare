@@ -49,12 +49,15 @@
     font-size: var(--flare-typescale-body-small-size);
 }
 
-/* JS-anchored (PositionAnchoredPanel) so the popup escapes a Card's overflow:hidden; the surface
-   and z-index come from .flare-listbox. Select and MultiSelect both use fixed positioning instead of
-   the shared .flare-listbox__dropdown absolute anchoring. */
+/* JS-anchored (PositionAnchoredPanel) so the popup escapes a Card's overflow:hidden. This is the
+   positioned wrapper around .flare-listbox, so the dropdown z-index MUST live here: the inner
+   .flare-listbox is position:static (its own z-index is ignored), so without a z-index on this fixed
+   wrapper the popup paints at the auto level and later-in-DOM fields overlap it (reads as a
+   see-through dropdown). Select, MultiSelect, Combobox and TagField all use this fixed wrapper. */
 .flare-select__dropdown,
 .flare-multiselect__dropdown {
     position: fixed;
+    z-index: var(--flare-z-dropdown, 1000);
 }
 
 /* Size grid (Xs..Xl) lives in input.css as the single source for the whole input family. */
