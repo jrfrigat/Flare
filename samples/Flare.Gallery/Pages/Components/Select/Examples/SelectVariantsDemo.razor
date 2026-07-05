@@ -1,10 +1,15 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
-    <FlareSelect TValue="string" Variant="InputVariant.Filled" Label="Filled (shared with FlareField)">
+    <FlareSelect TValue="string" Variant="InputVariant.Filled" Label="Filled (shared with FlareField)" @bind-Value="_filled">
         <option value="a">Option A</option>
         <option value="b">Option B</option>
     </FlareSelect>
-    <FlareSelect TValue="string" Variant="InputVariant.Outlined" Label="Outlined">
+    <FlareSelect TValue="string" Variant="InputVariant.Outlined" Label="Outlined" @bind-Value="_outlined">
         <option value="a">Option A</option>
         <option value="b">Option B</option>
     </FlareSelect>
 </FlareStack>
+
+@code {
+    private string? _filled;
+    private string? _outlined;
+}

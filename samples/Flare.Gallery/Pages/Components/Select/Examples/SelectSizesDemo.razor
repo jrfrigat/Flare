@@ -1,22 +1,30 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
-    <FlareSelect TValue="string" Size="FieldSize.Xs" Label="Extra small (xs)">
+    <FlareSelect TValue="string" Size="FieldSize.Xs" Label="Extra small (xs)" @bind-Value="_xs">
         <option value="a">Option A</option>
         <option value="b">Option B</option>
     </FlareSelect>
-    <FlareSelect TValue="string" Size="FieldSize.Sm" Label="Small (sm)">
+    <FlareSelect TValue="string" Size="FieldSize.Sm" Label="Small (sm)" @bind-Value="_sm">
         <option value="a">Option A</option>
         <option value="b">Option B</option>
     </FlareSelect>
-    <FlareSelect TValue="string" Size="FieldSize.Md" Label="Medium (md, default)">
+    <FlareSelect TValue="string" Size="FieldSize.Md" Label="Medium (md, default)" @bind-Value="_md">
         <option value="a">Option A</option>
         <option value="b">Option B</option>
     </FlareSelect>
-    <FlareSelect TValue="string" Size="FieldSize.Lg" Label="Large (lg)">
+    <FlareSelect TValue="string" Size="FieldSize.Lg" Label="Large (lg)" @bind-Value="_lg">
         <option value="a">Option A</option>
         <option value="b">Option B</option>
     </FlareSelect>
-    <FlareSelect TValue="string" Size="FieldSize.Xl" Label="Extra large (xl)">
+    <FlareSelect TValue="string" Size="FieldSize.Xl" Label="Extra large (xl)" @bind-Value="_xl">
         <option value="a">Option A</option>
         <option value="b">Option B</option>
     </FlareSelect>
 </FlareStack>
+
+@code {
+    private string? _xs;
+    private string? _sm;
+    private string? _md;
+    private string? _lg;
+    private string? _xl;
+}
