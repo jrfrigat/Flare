@@ -20,15 +20,11 @@
    Tonal / Filled: rounded pill tabs in an optional track (segmented control), mirroring
    FlareTabs' Tonal/Filled pill states via the same tokens. */
 
+/* The pill track (gap/padding/track-bg/pill-radius) and the pill tab + active states all come from the
+   shared --tonal/--filled selector lists in tabs.css. Only these two structural bits are link-tabs-
+   specific: it IS its own bar, so it drops its own bottom divider and hugs its content width. */
 .flare-link-tabs--tonal,
 .flare-link-tabs--filled {
   border-bottom: none;
-  gap: var(--flare-spacing-2);
-  padding: var(--flare-spacing-2);
-  background: var(--flare-tabs-track-bg, transparent);
-  border-radius: var(--flare-tabs-pill-radius, var(--flare-shape-full));
   width: fit-content;
 }
-
-/* The Tonal/Filled pill tab + active states come from tabs.css (the --tonal/--filled selector lists
-   there include the .flare-link-tabs-- containers), so the route bar reuses them 1:1. */

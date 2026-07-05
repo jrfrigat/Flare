@@ -144,8 +144,13 @@
 .flare-tabs--tonal .flare-tabs__bar-wrap,
 .flare-tabs--filled .flare-tabs__bar-wrap { border-bottom: none; }
 
+/* Tonal/Filled pill track, shared by the FlareTabs bar and the FlareLinkTabs container (which is its
+   own bar). Only WHERE the divider is dropped differs (the bar-wrap for tabs, the container itself for
+   link tabs), so that stays each component's own rule. */
 .flare-tabs--tonal .flare-tabs__bar,
-.flare-tabs--filled .flare-tabs__bar {
+.flare-tabs--filled .flare-tabs__bar,
+.flare-link-tabs--tonal,
+.flare-link-tabs--filled {
   gap: var(--flare-spacing-2);
   padding: var(--flare-spacing-2);
   background: var(--flare-tabs-track-bg, transparent);
