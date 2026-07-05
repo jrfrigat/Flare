@@ -175,18 +175,6 @@
         _hasSuggestions && _state.IsOpen && _state.HighlightedIndex >= 0 ? $"{_listboxId}-opt-{_state.HighlightedIndex}" : null;
 
     private string? _displayedError => DisplayedError(ErrorText);
-    private string? _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : null;
-    private string? _variantClass => VariantClass(Variant);
-    private string? _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => null,
-    };
 
     // Uncontrolled convenience: keep the last pushed list to detect an external reset.
     private bool Controlled => ValuesChanged.HasDelegate;

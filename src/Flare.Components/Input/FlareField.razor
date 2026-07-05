@@ -30,7 +30,7 @@
             {
                 <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconLeading" aria-hidden="true">@LeadingIcon</span>
             }
-            <FlareInputControl Value="@Value?.ToString()"
+            <FlareInputControl Value="@_displayText"
                                ValueChanged="EmitValue"
                                Id="@_inputId"
                                Placeholder="@Placeholder"
@@ -213,6 +213,28 @@
     {
         await ValueChanged.InvokeAsync(default);
         NotifyFieldChanged();
+    }
+
+    // The display string, formatted SYMMETRICALLY with EmitValue's parse: string is passed through
+    // as-is; any other TValue is formatted invariantly (ConvertToInvariantString) so it round-trips
+    // with the invariant ConvertFromInvariantString parse below. A plain Value.ToString() would format
+    // in the current culture and then fail to re-parse (invariant) for e.g. a comma-decimal locale.
+    private string? _displayText
+    {
+        get
+        {
+            if (Value is null) return null;
+            if (Value is string s) return s;
+            var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+            try
+            {
+                var converter = TypeDescriptor.GetConverter(targetType);
+                if (converter.CanConvertTo(typeof(string)))
+                    return converter.ConvertToInvariantString(Value);
+            }
+            catch { }
+            return Value.ToString();
+        }
     }
 
     // Converts the control's raw string back to TValue (identity for string; TypeConverter otherwise),

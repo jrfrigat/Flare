@@ -213,18 +213,6 @@
         _state.IsOpen && _state.HighlightedIndex >= 0 ? $"{_listboxId}-opt-{_state.HighlightedIndex}" : null;
 
     private string? _displayedError => DisplayedError(ErrorText);
-    private string? _stateClass =>
-        Disabled ? Css.Classes.Input.Disabled :
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error : null;
-    private string? _variantClass => VariantClass(Variant);
-    private string? _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => null,
-    };
 
     private bool _showPlaceholder => Current is null && !_editing && !string.IsNullOrEmpty(Placeholder);
 

@@ -124,22 +124,6 @@
 
     private string? _displayedError => DisplayedError(ErrorText);
 
-    private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : string.Empty;
-
-    private string? _variantClass => VariantClass(Variant);
-
-    // Reuses the shared flare-input size grid (NumericField renders flare-input__field/__control).
-    private string _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => string.Empty,
-    };
-
     // Format set -> focus-swap text mode (separators/currency/percent cannot live in type=number).
     private bool _useTextMode => !string.IsNullOrEmpty(Format);
     private bool _focused;

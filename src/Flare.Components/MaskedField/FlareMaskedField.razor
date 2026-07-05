@@ -28,7 +28,8 @@
                                MaxLength="@(Pattern?.Length ?? 0)"
                                AriaInvalid="@(!string.IsNullOrEmpty(_displayedError))"
                                AriaDescribedBy="@_computedDescribedBy"
-                               Style="@_typoStyle" />
+                               Style="@_typoStyle"
+                               AdditionalAttributes="AdditionalAttributes" />
         </div>
     </Field>
 </FlareFieldChrome>
