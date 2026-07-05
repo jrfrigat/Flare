@@ -23,10 +23,7 @@ public static class Multiselect
     public const string Option = "flare-multiselect__option";
     /// <summary>The <c>flare-multiselect__option--select-all</c> CSS class.</summary>
     public const string OptionSelectAll = "flare-multiselect__option--select-all";
-    /// <summary>The <c>flare-multiselect__search</c> CSS class.</summary>
-    public const string Search = "flare-multiselect__search";
-    /// <summary>The <c>flare-multiselect__search-wrap</c> CSS class.</summary>
-    public const string SearchWrap = "flare-multiselect__search-wrap";
+    // Search moved into the trigger: the in-field input uses the shared Css.Classes.Select.Search.
     // The placeholder span uses the shared Css.Classes.Input.Placeholder (flare-input__placeholder).
     /// <summary>The <c>flare-multiselect__value</c> CSS class.</summary>
     public const string Value = "flare-multiselect__value";

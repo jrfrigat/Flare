@@ -1014,6 +1014,9 @@
   <data name="Field_Sizes" xml:space="preserve">
     <value>Размеры (xs - xl)</value>
   </data>
+  <data name="Field_Searchable" xml:space="preserve">
+    <value>С поиском (фильтрация вводом)</value>
+  </data>
   <data name="Field_Variants" xml:space="preserve">
     <value>Варианты (filled / outlined)</value>
   </data>

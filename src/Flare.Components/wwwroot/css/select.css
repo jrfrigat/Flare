@@ -25,8 +25,29 @@
 .flare-select--open .flare-select__control,
 .flare-multiselect--open .flare-multiselect__control { border-bottom-color: var(--flare-color-primary); }
 
-.flare-select__value { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flare-select__value { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* The placeholder span uses the shared flare-input__placeholder (input.css). */
+
+/* In-field search input (Searchable), shared by Select and MultiSelect. It sits inside the flare-input__field
+   trigger well and inherits its font/color; the single-select trigger collapses it (inline flex:0) until the
+   field is being edited, so the rich selected value shows in its place. */
+.flare-select__search {
+    flex: 1 1 4rem;
+    min-width: 3rem;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+}
+
+/* "No results" row shown in the dropdown when a search query matches no options. */
+.flare-select__empty {
+    padding: var(--flare-spacing-4) var(--flare-spacing-6);
+    color: var(--flare-color-on-surface-variant);
+    font-size: var(--flare-typescale-body-small-size);
+}
 
 /* JS-anchored (PositionAnchoredPanel) so the popup escapes a Card's overflow:hidden; the surface
    and z-index come from .flare-listbox. Select and MultiSelect both use fixed positioning instead of

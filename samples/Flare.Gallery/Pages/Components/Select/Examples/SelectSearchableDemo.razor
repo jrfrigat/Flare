@@ -1,0 +1,25 @@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareSelect TValue="string"
+                 @bind-Value="_selected"
+                 Label="Country"
+                 Placeholder="Search a country..."
+                 Items="_countries"
+                 Searchable="true"
+                 Fuzzy="true"
+                 Style="max-width:24rem;" />
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Selected: @(_selected ?? "-")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string? _selected;
+
+    private static readonly string[] _countries =
+    [
+        "Argentina", "Australia", "Austria", "Belgium", "Brazil", "Canada", "Chile", "China",
+        "Denmark", "Egypt", "Finland", "France", "Germany", "Greece", "India", "Indonesia",
+        "Ireland", "Italy", "Japan", "Mexico", "Netherlands", "Norway", "Poland", "Portugal",
+        "Spain", "Sweden", "Switzerland", "Turkey", "Ukraine", "United Kingdom", "United States"
+    ];
+}

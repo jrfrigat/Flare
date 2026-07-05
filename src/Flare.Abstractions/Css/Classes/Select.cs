@@ -19,4 +19,10 @@ public static class Select
     public const string Dropdown = "flare-select__dropdown";
     /// <summary>The <c>flare-select__option</c> CSS class (option row; visuals come from the shared <see cref="Listbox.Option"/>).</summary>
     public const string Option = "flare-select__option";
+    /// <summary>The <c>flare-select__search</c> CSS class: the in-field search input in the trigger, shared
+    /// by Select and MultiSelect when <c>Searchable</c> is set.</summary>
+    public const string Search = "flare-select__search";
+    /// <summary>The <c>flare-select__empty</c> CSS class: the "no results" row shown in the dropdown when a
+    /// search query matches no options.</summary>
+    public const string Empty = "flare-select__empty";
 }

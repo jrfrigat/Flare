@@ -147,6 +147,18 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Fixed: FlareBottomNav no longer shows a Material pill under the Fluent theme, and disabled bottom-nav / link-tab items are now keyboard-safe (not focusable, aria-disabled)
+        ///Fixed: FlareLinkTabs is now a navigation landmark instead of an invalid tablist, and header-less dialogs no longer leave a dangling aria-labelledby
+        ///Fixed: the temporary layout drawer is now a proper modal (focus trap, Escape, aria-modal), plus small correctness fixes to Card hover elevation, Avatar re-render and Password field styling
+        /// [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV10 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Clean onion / ports-and-adapters architecture: 5 rings (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) with dependencies pointing strictly inward
         ///Flare.Components is now UI-only - every service implementation (JS interop, storage, dialog/snackbar/message-box) moved to Flare.Infrastructure; the old Flare.Core grab-bag was retired
         ///AddFlare wires ports to adapters in the Flare.Blazor composition root, so the browser host stays swappable and Flare.Components never dep [остаток строки не уместился]&quot;;.
@@ -203,37 +215,44 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("About_WhatsNewV6", resourceCulture);
             }
         }
-
-        /// <summary>Looks up a localized string with the v0.0.10 release highlights (one per line).</summary>
-        public static string About_WhatsNewV10 {
-            get {
-                return ResourceManager.GetString("About_WhatsNewV10", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string with the v0.0.9 release highlights (one per line).</summary>
-        public static string About_WhatsNewV9 {
-            get {
-                return ResourceManager.GetString("About_WhatsNewV9", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string with the v0.0.8 release highlights (one per line).</summary>
-        public static string About_WhatsNewV8 {
-            get {
-                return ResourceManager.GetString("About_WhatsNewV8", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Component dialogs: IDialogService.ShowAsync&lt;TComponent&gt; renders any component as a modal and returns a typed DialogResult.
+        ///   Ищет локализованную строку, похожую на Component dialogs: IDialogService.ShowAsync&lt;TComponent&gt; renders any component as a modal and returns a typed DialogResult - no inline @bind-Visible plumbing
+        ///Pass values in with a DialogParameters bag and close from the body via the cascaded FlareDialogInstance (Dialog.Close(value) / Dialog.Cancel())
+        ///DialogOptions controls the size, scrim/Escape dismissal and the header divider; the existing confirm and alert helpers are unchanged
+        ///Gallery: a new Component dialog demo on the Dialog page
+        ///Stepper wizards: F [остаток строки не уместился]&quot;;.
         /// </summary>
         public static string About_WhatsNewV7 {
             get {
                 return ResourceManager.GetString("About_WhatsNewV7", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareIconButton: a dedicated icon-only button - a thin wrapper over FlareButton, replacing the verbose FlareButton + LeadingIcon idiom
+        ///FlareCollapse: a standalone expand/collapse container (Expanded flag or built-in header), with its own Gallery page
+        ///FlareChip Variant (Outlined/Filled/Elevated) and a numeric FlareCard Elevation (0-5; 0 == flat)
+        ///FlareAvatar FallbackIcon/FallbackContent; FlareField gains Error/Invalid (state without a message), FullWidth and Margin
+        ///FlareSelect now accepts declarative &lt;opt [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV8 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Fixed: FlarePasswordField two-way binding now works - it used to swallow the typed value, so a consumer&apos;s @bind-Value never updated (silently breaking login and registration forms)
+        ///FlarePasswordField now surfaces the FlareField parameters forms need: Immediate (commit on keystroke) and DebounceInterval, Variant, FullWidth, Margin, and For; Required now emits the native required attribute
+        ///Gallery: a new Live two-way binding demo on the Password Field page that echoes the bound value as you type.
+        /// </summary>
+        public static string About_WhatsNewV9 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV9", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basic (single expand).
         /// </summary>
@@ -874,6 +893,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Fallback icon.
+        /// </summary>
+        public static string Avatar_Fallback {
+            get {
+                return ResourceManager.GetString("Avatar_Fallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Image &amp; Fallback.
         /// </summary>
         public static string Avatar_ImageFallback {
@@ -1007,7 +1035,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Badge_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basic bottom navigation.
         /// </summary>
@@ -1016,7 +1044,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("BottomNav_Basic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Disabled item &amp; custom aria-label.
         /// </summary>
@@ -1025,7 +1053,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("BottomNav_Disabled", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareBottomNav, FlareBottomNavItem - mobile bottom navigation bar..
         /// </summary>
@@ -1034,7 +1062,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("BottomNav_Subtitle", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Bottom Nav.
         /// </summary>
@@ -1043,7 +1071,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("BottomNav_Title", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Items.
         /// </summary>
@@ -1441,6 +1469,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Elevation.
+        /// </summary>
+        public static string Cards_Elevation {
+            get {
+                return ResourceManager.GetString("Cards_Elevation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Rich Content Cards.
         /// </summary>
         public static string Cards_RichContent {
@@ -1666,6 +1703,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Variants.
+        /// </summary>
+        public static string Chip_Variants {
+            get {
+                return ResourceManager.GetString("Chip_Variants", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Active.
         /// </summary>
         public static string ChipGroup_Active {
@@ -1842,6 +1888,42 @@ namespace Flare.Gallery.Resources {
         public static string CodeEditor_Title {
             get {
                 return ResourceManager.GetString("CodeEditor_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на With header.
+        /// </summary>
+        public static string Collapse_Header {
+            get {
+                return ResourceManager.GetString("Collapse_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Externally controlled.
+        /// </summary>
+        public static string Collapse_Standalone {
+            get {
+                return ResourceManager.GetString("Collapse_Standalone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A standalone expand/collapse container for a single region - driven by an Expanded flag or its own optional header..
+        /// </summary>
+        public static string Collapse_Subtitle {
+            get {
+                return ResourceManager.GetString("Collapse_Subtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Collapse.
+        /// </summary>
+        public static string Collapse_Title {
+            get {
+                return ResourceManager.GetString("Collapse_Title", resourceCulture);
             }
         }
         
@@ -2942,7 +3024,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Alert", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Cancel.
         /// </summary>
@@ -2951,7 +3033,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_BodyCancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Cancelled.
         /// </summary>
@@ -2960,7 +3042,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Cancelled", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Component dialog.
         /// </summary>
@@ -2969,7 +3051,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Component", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Confirm.
         /// </summary>
@@ -2978,7 +3060,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Confirm", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Edit profile.
         /// </summary>
@@ -2987,7 +3069,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_EditProfile", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Email.
         /// </summary>
@@ -2996,7 +3078,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Email", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Hero icon &amp; divider.
         /// </summary>
@@ -3014,7 +3096,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Inline", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Name.
         /// </summary>
@@ -3023,7 +3105,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Name", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Profile saved: {0}.
         /// </summary>
@@ -3032,7 +3114,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_ProfileSaved", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Prompt.
         /// </summary>
@@ -3041,7 +3123,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Prompt", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Save.
         /// </summary>
@@ -3050,7 +3132,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_Save", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Show alert dialog.
         /// </summary>
@@ -3079,7 +3161,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Inline @bind-Visible dialog, service-based confirm and alert..
+        ///   Ищет локализованную строку, похожую на Render any component as a modal via the dialog service, plus inline @bind-Visible, confirm and alert..
         /// </summary>
         public static string Dialog_Subtitle {
             get {
@@ -3277,6 +3359,33 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Error state (no message).
+        /// </summary>
+        public static string Field_ErrorState {
+            get {
+                return ResourceManager.GetString("Field_ErrorState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Width &amp; margin.
+        /// </summary>
+        public static string Field_FullWidthMargin {
+            get {
+                return ResourceManager.GetString("Field_FullWidthMargin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Searchable (type to filter).
+        /// </summary>
+        public static string Field_Searchable {
+            get {
+                return ResourceManager.GetString("Field_Searchable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Sizes (xs to xl).
         /// </summary>
         public static string Field_Sizes {
@@ -3284,7 +3393,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Field_Sizes", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Variants (filled / outlined).
         /// </summary>
@@ -4807,6 +4916,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Stretch items.
+        /// </summary>
+        public static string Layout_StackStretch {
+            get {
+                return ResourceManager.GetString("Layout_StackStretch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Admin Shell (live demo).
         /// </summary>
         public static string LayoutShell_AdminShell {
@@ -4947,6 +5065,15 @@ namespace Flare.Gallery.Resources {
         public static string Link_Title {
             get {
                 return ResourceManager.GetString("Link_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Typography.
+        /// </summary>
+        public static string Link_Typo {
+            get {
+                return ResourceManager.GetString("Link_Typo", resourceCulture);
             }
         }
         
@@ -5127,6 +5254,15 @@ namespace Flare.Gallery.Resources {
         public static string Menu_Groups_Activator {
             get {
                 return ResourceManager.GetString("Menu_Groups_Activator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Icon color &amp; external links.
+        /// </summary>
+        public static string Menu_IconColor {
+            get {
+                return ResourceManager.GetString("Menu_IconColor", resourceCulture);
             }
         }
         
@@ -5678,7 +5814,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("PasswordInput_Disabled", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Error State.
+        /// </summary>
+        public static string PasswordInput_ErrorState {
+            get {
+                return ResourceManager.GetString("PasswordInput_ErrorState", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Live two-way binding.
         /// </summary>
@@ -5687,7 +5832,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("PasswordInput_LiveBinding", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Bound value:.
         /// </summary>
@@ -5696,22 +5841,13 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("PasswordInput_LiveValue", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на (empty).
         /// </summary>
         public static string PasswordInput_LiveValueEmpty {
             get {
                 return ResourceManager.GetString("PasswordInput_LiveValueEmpty", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Error State.
-        /// </summary>
-        public static string PasswordInput_ErrorState {
-            get {
-                return ResourceManager.GetString("PasswordInput_ErrorState", resourceCulture);
             }
         }
         
@@ -6139,6 +6275,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Shown only on md (Only + Invert)..
+        /// </summary>
+        public static string Responsive_ShownMd {
+            get {
+                return ResourceManager.GetString("Responsive_ShownMd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Resize the window to see Flare adapt. Breakpoints: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920..
         /// </summary>
         public static string Responsive_Subtitle {
@@ -6400,6 +6545,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на IDialogService - render any component as a modal and await a typed result, plus awaitable Confirm / Alert..
+        /// </summary>
+        public static string Services_DialogSubtitle {
+            get {
+                return ResourceManager.GetString("Services_DialogSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dialog service.
+        /// </summary>
+        public static string Services_DialogTitle {
+            get {
+                return ResourceManager.GetString("Services_DialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Download .csv.
         /// </summary>
         public static string Services_DownloadCsv {
@@ -6533,25 +6696,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Services_MsgBoxSubtitle", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Dialog service.
-        /// </summary>
-        public static string Services_DialogTitle {
-            get {
-                return ResourceManager.GetString("Services_DialogTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на IDialogService - render any component as a modal and await a typed result, plus awaitable Confirm / Alert.
-        /// </summary>
-        public static string Services_DialogSubtitle {
-            get {
-                return ResourceManager.GetString("Services_DialogSubtitle", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Message box service.
         /// </summary>
@@ -7147,6 +7292,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Options overload.
+        /// </summary>
+        public static string Snackbar_Options {
+            get {
+                return ResourceManager.GetString("Snackbar_Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Severity.
         /// </summary>
         public static string Snackbar_Severity {
@@ -7262,7 +7416,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Stepper_Basic", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Custom navigation &amp; wheel scroll.
         /// </summary>
@@ -7271,22 +7425,22 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Stepper_CustomNav", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Bound index &amp; skippable step.
-        /// </summary>
-        public static string Stepper_Skippable {
-            get {
-                return ResourceManager.GetString("Stepper_Skippable", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Async validation guard.
         /// </summary>
         public static string Stepper_Guard {
             get {
                 return ResourceManager.GetString("Stepper_Guard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bound index &amp; skippable step.
+        /// </summary>
+        public static string Stepper_Skippable {
+            get {
+                return ResourceManager.GetString("Stepper_Skippable", resourceCulture);
             }
         }
         
@@ -8119,6 +8273,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Group cascade.
+        /// </summary>
+        public static string ToggleButton_GroupCascade {
+            get {
+                return ResourceManager.GetString("ToggleButton_GroupCascade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Toggle Group - Multi Select.
         /// </summary>
         public static string ToggleButton_GroupMulti {
@@ -8403,111 +8566,6 @@ namespace Flare.Gallery.Resources {
         public static string VirtualList_VirtualList {
             get {
                 return ResourceManager.GetString("VirtualList_VirtualList", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Variants.</summary>
-        public static string Chip_Variants {
-            get {
-                return ResourceManager.GetString("Chip_Variants", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Fallback icon.</summary>
-        public static string Avatar_Fallback {
-            get {
-                return ResourceManager.GetString("Avatar_Fallback", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Error state (no message).</summary>
-        public static string Field_ErrorState {
-            get {
-                return ResourceManager.GetString("Field_ErrorState", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Width and margin.</summary>
-        public static string Field_FullWidthMargin {
-            get {
-                return ResourceManager.GetString("Field_FullWidthMargin", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Collapse.</summary>
-        public static string Collapse_Title {
-            get {
-                return ResourceManager.GetString("Collapse_Title", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string for the Collapse page subtitle.</summary>
-        public static string Collapse_Subtitle {
-            get {
-                return ResourceManager.GetString("Collapse_Subtitle", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Externally controlled.</summary>
-        public static string Collapse_Standalone {
-            get {
-                return ResourceManager.GetString("Collapse_Standalone", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to With header.</summary>
-        public static string Collapse_Header {
-            get {
-                return ResourceManager.GetString("Collapse_Header", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Stretch items.</summary>
-        public static string Layout_StackStretch {
-            get {
-                return ResourceManager.GetString("Layout_StackStretch", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Icon color and external links.</summary>
-        public static string Menu_IconColor {
-            get {
-                return ResourceManager.GetString("Menu_IconColor", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Group cascade.</summary>
-        public static string ToggleButton_GroupCascade {
-            get {
-                return ResourceManager.GetString("ToggleButton_GroupCascade", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Elevation.</summary>
-        public static string Cards_Elevation {
-            get {
-                return ResourceManager.GetString("Cards_Elevation", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Typography.</summary>
-        public static string Link_Typo {
-            get {
-                return ResourceManager.GetString("Link_Typo", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Options overload.</summary>
-        public static string Snackbar_Options {
-            get {
-                return ResourceManager.GetString("Snackbar_Options", resourceCulture);
-            }
-        }
-
-        /// <summary>Looks up a localized string similar to Shown only on md (Only + Invert).</summary>
-        public static string Responsive_ShownMd {
-            get {
-                return ResourceManager.GetString("Responsive_ShownMd", resourceCulture);
             }
         }
     }

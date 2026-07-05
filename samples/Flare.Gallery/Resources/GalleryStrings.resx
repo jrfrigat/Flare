@@ -1014,6 +1014,9 @@
   <data name="Field_Sizes" xml:space="preserve">
     <value>Sizes (xs to xl)</value>
   </data>
+  <data name="Field_Searchable" xml:space="preserve">
+    <value>Searchable (type to filter)</value>
+  </data>
   <data name="Field_Variants" xml:space="preserve">
     <value>Variants (filled / outlined)</value>
   </data>

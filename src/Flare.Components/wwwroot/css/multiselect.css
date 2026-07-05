@@ -2,7 +2,7 @@
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 /* The combobox trigger (__control) and its --open indicator are shared with FlareSelect - see the
    combined rules in select.css. Only __value differs: multiselect holds chips, so it does not ellipsis. */
-.flare-multiselect__value { flex: 1; }
+.flare-multiselect__value { flex: 0 1 auto; min-width: 0; }
 /* The placeholder span uses the shared flare-input__placeholder (input.css). */
 
 /* Disabled/error surface + the value dim are shared with FlareSelect - the disabled __value rule in
@@ -41,31 +41,8 @@
 }
 .flare-multiselect__chip-remove:hover { background: color-mix(in srgb, var(--flare-color-on-secondary-container) 12%, transparent); }
 /* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css).
-   The trailing chevron uses the shared flare-input__arrow (input.css). */
-
-/* In-dropdown search box. */
-.flare-multiselect__search-wrap {
-    padding: var(--flare-spacing-4);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
-    position: sticky;
-    top: 0;
-    background: var(--flare-color-surface-container-high);
-    z-index: 1;
-}
-
-.flare-multiselect__search {
-    width: 100%;
-    box-sizing: border-box;
-    font: inherit;
-    color: var(--flare-color-on-surface);
-    background: var(--flare-color-surface-container-highest);
-    border: 1px solid var(--flare-color-outline-variant);
-    border-radius: var(--flare-shape-extra-small);
-    padding: var(--flare-spacing-3) var(--flare-spacing-5);
-    outline: none;
-}
-
-.flare-multiselect__search:focus { border-color: var(--flare-color-primary); }
+   The trailing chevron uses the shared flare-input__arrow (input.css). Search moved into the trigger
+   (flare-select__search in select.css) - there is no in-dropdown search box any more. */
 
 /* The option's checkbox is presentational - the whole row handles toggling, so the
    checkbox must not capture the click (otherwise it would toggle twice and cancel out). */
