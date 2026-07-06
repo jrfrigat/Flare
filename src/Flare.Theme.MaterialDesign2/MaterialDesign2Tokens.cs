@@ -188,6 +188,7 @@ internal static class MaterialDesign2Tokens
         Motion = Motion,
         State = State,
         Button = Button,
+        ButtonGroup = MaterialDesignTokens.Design.ButtonGroup,
         SplitButton = MaterialDesignTokens.Design.SplitButton,
         Fab = Fab,
         Menu = Menu,

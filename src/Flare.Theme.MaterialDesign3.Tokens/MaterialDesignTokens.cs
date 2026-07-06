@@ -154,6 +154,17 @@ public class MaterialDesignTokens
         LabelXl = Typography.HeadlineLarge,
     };
 
+    // CONNECTED button group: no gap, a 1px negative overlap that collapses adjacent borders into one
+    // seam, rounded group ends, flat interior corners. MD3 Expressive overrides this to a separated look.
+    internal static readonly ButtonGroupTokens ButtonGroup = new()
+    {
+        Gap = "0",
+        Overlap = "-1px",
+        OuterRadius = "var(--flare-shape-small)",
+        InnerRadius = "0",
+        ZActive = "1",
+    };
+
     internal static readonly SplitButtonTokens SplitButton = new()
     {
         Gap = "0.125rem", // 2dp (between space)
@@ -780,6 +791,7 @@ public class MaterialDesignTokens
         Badge = Badge,
         Alert = Alert,
         Button = Button,
+        ButtonGroup = ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,
         Fab = Fab,

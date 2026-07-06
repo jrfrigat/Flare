@@ -36,6 +36,8 @@ public sealed record DesignTokens
     public required AlertTokens Alert { get; init; }
     /// <summary>Button token.</summary>
     public required ButtonTokens Button { get; init; }
+    /// <summary>Button group token.</summary>
+    public required ButtonGroupTokens ButtonGroup { get; init; }
     /// <summary>Split button token.</summary>
     public required SplitButtonTokens SplitButton { get; init; }
     /// <summary>Toggle button token.</summary>

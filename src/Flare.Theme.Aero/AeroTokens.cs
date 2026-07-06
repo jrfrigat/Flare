@@ -275,6 +275,7 @@ internal class AeroTokens
         Badge = Badge,
         Alert = Alert,
         Button = Button,
+        ButtonGroup = MaterialDesignTokens.Design.ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,
         Fab = Fab,

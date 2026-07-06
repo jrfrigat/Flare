@@ -1,6 +1,17 @@
+/* ==========================================================================
+   FlareButtonGroup - THEME-AGNOSTIC base. This file carries NO visual opinion: it only reads the
+   --flare-btn-group-* tokens, every one of which DEFAULTS to a plain, un-connected row of buttons
+   (gap 0, no overlap, square corners). Each theme SETS the model it wants via ButtonGroupTokens:
+     - connected  = gap 0 + a negative --overlap that collapses adjacent borders + flat --inner-radius
+     - separated  = a positive --gap + zero --overlap + rounded --inner-radius
+   (see Flare.Abstractions/Tokens/Components/ButtonGroupTokens.cs). Logical margins/corners so RTL mirrors
+   automatically; no per-size fan-out (the outer radius may be a calc(--_flare-btn-height / 2) capsule and
+   the button's own size class supplies that height). */
+
 .flare-btn-group {
     display: inline-flex;
     box-sizing: border-box;
+    gap: var(--flare-btn-group-gap, 0);
 }
 
 .flare-btn-group--full {
@@ -12,110 +23,50 @@
     flex-direction: column;
 }
 
-/* ==========================================================================
-   SEAMS AND DIVIDERS
-   ========================================================================== */
-
-/* Horizontal group: overlap buttons horizontally by 1px */
+/* Connected overlap: a (usually negative) leading margin on every non-first segment pulls it over its
+   neighbour so two 1px borders collapse into one seam. Default 0 = separated / no overlap. Logical
+   properties -> correct in both LTR and RTL and for vertical stacks. */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
-    margin-left: -1px;
+    margin-inline-start: var(--flare-btn-group-overlap, 0);
 }
-
-/* Vertical group: overlap vertically */
 .flare-btn-group--vertical .flare-btn:not(:first-child) {
-    margin-top: -1px;
+    margin-block-start: var(--flare-btn-group-overlap, 0);
 }
 
-/* Focus/hover ring above neighbors so an adjacent button does not clip it */
+/* Raise the hovered/focused segment so its border + focus ring are not clipped by an overlapping
+   neighbour. Only matters in the connected (overlapping) mode; harmless when separated. */
 .flare-btn-group .flare-btn:hover,
 .flare-btn-group .flare-btn:focus-visible {
-    z-index: 1;
+    z-index: var(--flare-btn-group-z-active, 1);
 }
 
 /* ==========================================================================
-   PER-CORNER RADIUS OVERRIDE
-   The group drives the button's per-corner tokens (--flare-btn-radius-{size}-{side}).
-   A button reads variables for ITS size ONLY, so one rule can safely
-   set all 5 sizes at once. Horizontal and vertical are split via :not()
-   so the rules do not conflict; a lone button gets both sides (first+last).
+   PER-CORNER RADIUS - position based, driven by two group tokens (outer/inner). Interior corners read
+   --inner-radius; the group's two ends read --outer-radius. Logical corners so first/last map to the
+   correct visual ends in RTL. No xs..xl fan-out: the button reads --_flare-btn-height for a capsule.
    ========================================================================== */
 
-/* 1. Flatten ALL corners on every button in the group (any size) */
+/* Every segment: all four corners default to the interior radius. */
 .flare-btn-group .flare-btn {
-    --flare-btn-radius-xs-top-left: 0px !important;
-    --flare-btn-radius-xs-top-right: 0px !important;
-    --flare-btn-radius-xs-bottom-right: 0px !important;
-    --flare-btn-radius-xs-bottom-left: 0px !important;
-    --flare-btn-radius-sm-top-left: 0px !important;
-    --flare-btn-radius-sm-top-right: 0px !important;
-    --flare-btn-radius-sm-bottom-right: 0px !important;
-    --flare-btn-radius-sm-bottom-left: 0px !important;
-    --flare-btn-radius-md-top-left: 0px !important;
-    --flare-btn-radius-md-top-right: 0px !important;
-    --flare-btn-radius-md-bottom-right: 0px !important;
-    --flare-btn-radius-md-bottom-left: 0px !important;
-    --flare-btn-radius-lg-top-left: 0px !important;
-    --flare-btn-radius-lg-top-right: 0px !important;
-    --flare-btn-radius-lg-bottom-right: 0px !important;
-    --flare-btn-radius-lg-bottom-left: 0px !important;
-    --flare-btn-radius-xl-top-left: 0px !important;
-    --flare-btn-radius-xl-top-right: 0px !important;
-    --flare-btn-radius-xl-bottom-right: 0px !important;
-    --flare-btn-radius-xl-bottom-left: 0px !important;
+    border-radius: var(--flare-btn-group-inner-radius, 0);
 }
 
-/* 2. HORIZONTAL - first button: round the LEFT corners to the theme shape */
+/* Horizontal: first segment rounds its LEADING (start) end, last segment its TRAILING (end) end. */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
-    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-sm-top-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-top-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-bottom-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-lg-top-left: var(--flare-shape-medium) !important;
-    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium) !important;
-    --flare-btn-radius-xl-top-left: var(--flare-shape-large) !important;
-    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large) !important;
+    border-start-start-radius: var(--flare-btn-group-outer-radius, 0);
+    border-end-start-radius: var(--flare-btn-group-outer-radius, 0);
 }
-
-/* HORIZONTAL - last button: round the RIGHT corners */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
-    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-sm-top-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-top-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-bottom-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-lg-top-right: var(--flare-shape-medium) !important;
-    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium) !important;
-    --flare-btn-radius-xl-top-right: var(--flare-shape-large) !important;
-    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large) !important;
+    border-start-end-radius: var(--flare-btn-group-outer-radius, 0);
+    border-end-end-radius: var(--flare-btn-group-outer-radius, 0);
 }
 
-/* 3. VERTICAL - first button: round the TOP corners */
+/* Vertical: first segment rounds its TOP corners, last segment its BOTTOM corners. */
 .flare-btn-group--vertical .flare-btn:first-child {
-    --flare-btn-radius-xs-top-left: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-xs-top-right: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-sm-top-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-sm-top-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-top-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-top-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-lg-top-left: var(--flare-shape-medium) !important;
-    --flare-btn-radius-lg-top-right: var(--flare-shape-medium) !important;
-    --flare-btn-radius-xl-top-left: var(--flare-shape-large) !important;
-    --flare-btn-radius-xl-top-right: var(--flare-shape-large) !important;
+    border-start-start-radius: var(--flare-btn-group-outer-radius, 0);
+    border-start-end-radius: var(--flare-btn-group-outer-radius, 0);
 }
-
-/* VERTICAL - last button: round the BOTTOM corners */
 .flare-btn-group--vertical .flare-btn:last-child {
-    --flare-btn-radius-xs-bottom-left: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-xs-bottom-right: var(--flare-shape-extra-small) !important;
-    --flare-btn-radius-sm-bottom-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-sm-bottom-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-bottom-left: var(--flare-shape-small) !important;
-    --flare-btn-radius-md-bottom-right: var(--flare-shape-small) !important;
-    --flare-btn-radius-lg-bottom-left: var(--flare-shape-medium) !important;
-    --flare-btn-radius-lg-bottom-right: var(--flare-shape-medium) !important;
-    --flare-btn-radius-xl-bottom-left: var(--flare-shape-large) !important;
-    --flare-btn-radius-xl-bottom-right: var(--flare-shape-large) !important;
+    border-end-start-radius: var(--flare-btn-group-outer-radius, 0);
+    border-end-end-radius: var(--flare-btn-group-outer-radius, 0);
 }

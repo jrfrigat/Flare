@@ -1,128 +1,22 @@
 /* ==========================================================================
-   MD3 EXPRESSIVE button group: SEPARATED segments with a gap (like split button)
-   - a gap between buttons, not an overlap;
-   - inner corners rounded (shape-small ~ 8dp), outer ends - capsule;
-   - on hover/press the segment morphs into a full capsule.
-   Fluent stays "connected" - this file is for the MD3 theme only.
+   MD3 EXPRESSIVE button group. The SEPARATED geometry (2dp gap, no overlap, rounded inner corners,
+   capsule ends) now comes ENTIRELY from the separated ButtonGroupTokens bundle
+   (MaterialDesign3ExpressiveTheme.Design.ButtonGroup) consumed by the neutral base buttongroup.css -
+   there is NO geometry override here anymore. Only the genuinely-interactive Expressive behaviour
+   remains: a segment morphs into a full capsule on hover/press.
 
-   Wrapped in @scope so the group's MD3 geometry does not leak into a nested scope
-   of another theme (Fluent via FlareThemeScope inside an MD3 app): the lower bound
-   cuts the cascade at any nested .flare-root that is NOT md3-expressive.
-   In a foreign scope the group falls back to the base connected style (buttongroup.css).
+   @scope so this interaction does not leak into a nested non-md3-expressive theme (Fluent via
+   FlareThemeScope inside an MD3 app); the lower bound cuts the cascade at any nested .flare-root that is
+   not md3-expressive.
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* 1. Gap between segments (2dp, like split button) */
-    .flare-btn-group {
-        gap: var(--flare-btn-group-gap, 0.125rem);
-    }
-
-    /* 2. Remove the -1px overlap and the seam border of connected mode */
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
-        margin-left: 0;
-    }
-
-    .flare-btn-group--vertical .flare-btn:not(:first-child) {
-        margin-top: 0;
-    }
-
-    /* 3. Inner corners of ALL segments - small rounding (instead of flat 0) */
-    .flare-btn-group .flare-btn {
-        --flare-btn-radius-xs-top-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-xs-top-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-xs-bottom-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-xs-bottom-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-sm-top-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-sm-top-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-sm-bottom-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-sm-bottom-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-md-top-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-md-top-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-md-bottom-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-md-bottom-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-lg-top-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-lg-top-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-lg-bottom-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-lg-bottom-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-xl-top-left: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-xl-top-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-xl-bottom-right: var(--flare-shape-small, 0.5rem) !important;
-        --flare-btn-radius-xl-bottom-left: var(--flare-shape-small, 0.5rem) !important;
-    }
-
-    /* ======================================================================
-       OUTER ENDS - full "capsule" (height / 2)
-       A button reads tokens for its own size only, so one rule sets all 5.
-       Horizontal and vertical are split via :not() so they do not conflict.
-       ====================================================================== */
-
-    /* HORIZONTAL - first button: left ends to capsule */
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
-        --flare-btn-radius-xs-top-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-xs-bottom-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-sm-top-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-sm-bottom-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-md-top-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-md-bottom-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-lg-top-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-lg-bottom-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-xl-top-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-        --flare-btn-radius-xl-bottom-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-    }
-
-    /* HORIZONTAL - last button: right ends to capsule */
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
-        --flare-btn-radius-xs-top-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-xs-bottom-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-sm-top-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-sm-bottom-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-md-top-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-md-bottom-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-lg-top-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-lg-bottom-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-xl-top-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-        --flare-btn-radius-xl-bottom-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-    }
-
-    /* VERTICAL - first button: top ends to capsule */
-    .flare-btn-group--vertical .flare-btn:first-child {
-        --flare-btn-radius-xs-top-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-xs-top-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-sm-top-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-sm-top-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-md-top-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-md-top-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-lg-top-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-lg-top-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-xl-top-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-        --flare-btn-radius-xl-top-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-    }
-
-    /* VERTICAL - last button: bottom ends to capsule */
-    .flare-btn-group--vertical .flare-btn:last-child {
-        --flare-btn-radius-xs-bottom-left: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-xs-bottom-right: calc(var(--flare-btn-height-xs, 2rem) / 2) !important;
-        --flare-btn-radius-sm-bottom-left: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-sm-bottom-right: calc(var(--flare-btn-height-sm, 2.5rem) / 2) !important;
-        --flare-btn-radius-md-bottom-left: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-md-bottom-right: calc(var(--flare-btn-height-md, 3rem) / 2) !important;
-        --flare-btn-radius-lg-bottom-left: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-lg-bottom-right: calc(var(--flare-btn-height-lg, 3.5rem) / 2) !important;
-        --flare-btn-radius-xl-bottom-left: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-        --flare-btn-radius-xl-bottom-right: calc(var(--flare-btn-height-xl, 4rem) / 2) !important;
-    }
-
-    /* ======================================================================
-       EXPRESSIVE: segment morphs into a round capsule on interaction [specs]
-       Radius is taken from the ACTUAL height (--_flare-btn-height sets the size class),
-       so one rule covers all sizes. border-radius (0,4,0) overrides both
-       the single-button morph (0,3,0) and scoped (0,2,0) - no !important needed.
-       ====================================================================== */
+    /* Segment morphs into a round capsule on interaction. Radius from the ACTUAL height
+       (--_flare-btn-height, set by the button's size class), so one rule covers all sizes.
+       !important so it overrides the base group's per-corner outer/inner rules on every corner. */
     .flare-btn-group .flare-btn:hover,
     .flare-btn-group .flare-btn:focus-visible,
     .flare-btn-group .flare-btn:active {
-        border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2);
-        /* keep z-index via !important: specificity EQUALS scoped z-index:1 (tie), load order decides */
-        z-index: 2 !important;
+        border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 }
