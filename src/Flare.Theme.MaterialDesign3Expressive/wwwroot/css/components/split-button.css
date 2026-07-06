@@ -8,9 +8,11 @@
     transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard);
 }
 
-/* Give the trigger a base radius transition so the theme override animates smoothly */
+/* Snappy inner-corner morph on open/hover. The old 300ms (medium2) made the corner visibly "hang"
+   behind the click; the main button + button group morph their corners instantly, so keep the trigger
+   quick (short2 ~100ms) - a perceptible Expressive morph, not a lag. */
 .flare-split-btn .flare-split-btn__trigger.flare-btn {
-    transition: border-radius var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
+    transition: border-radius var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-standard), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
 }
 
 /* ==========================================================================
@@ -19,6 +21,19 @@
    lower boundary cuts the cascade at any nested .flare-root that is NOT md3-expressive.
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
+
+    /* Inner (seam) corners AT REST match the connected button group's rounding (--flare-shape-small ~ 8dp)
+       instead of the subtle 4dp baseline, so the split button and the button group read as one shape
+       system in Expressive. The outer ends stay circular (from the base tokens); hover/open grow the inner
+       corner further (below). Same specificity as the base radius rules, but this theme sheet loads later. */
+    .flare-split-btn .flare-split-btn__main.flare-btn {
+        border-top-right-radius: var(--flare-shape-small) !important;
+        border-bottom-right-radius: var(--flare-shape-small) !important;
+    }
+    .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn {
+        border-top-left-radius: var(--flare-shape-small) !important;
+        border-bottom-left-radius: var(--flare-shape-small) !important;
+    }
 
     /* When the menu is open the trigger becomes fully round: ALL 4 corners = height / 2,
        so the left rounding matches the right. Radius is taken from the ACTUAL height
