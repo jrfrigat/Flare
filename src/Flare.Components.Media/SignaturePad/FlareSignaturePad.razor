@@ -22,8 +22,12 @@
     /// <summary>Height of the drawing canvas in pixels.</summary>
     [Parameter] public int Height { get; set; } = 200;
 
-    /// <summary>CSS color value used for the stroke. Defaults to the on-surface design token.</summary>
-    [Parameter] public string StrokeColor { get; set; } = "var(--flare-color-on-surface)";
+    /// <summary>
+    /// Color of the drawn stroke. Accepts a semantic role (<c>FlareColor.Primary</c>), a custom
+    /// CSS color (<c>"#e53935"</c> via implicit conversion) or a dynamic color. Defaults to
+    /// <see cref="FlareColor.OnSurface"/> (high-emphasis content color).
+    /// </summary>
+    [Parameter] public FlareColor StrokeColor { get; set; } = FlareColor.OnSurface;
 
     /// <summary>Width of the drawn stroke in pixels.</summary>
     [Parameter] public double StrokeWidth { get; set; } = 2.0;
@@ -39,6 +43,13 @@
 
     protected override string ComponentCssClass => "flare-signature-pad";
 
+    // A <canvas> 2D context cannot resolve CSS variables, so translate the FlareColor into a CSS
+    // color expression: a role -> its semantic var, a custom/dynamic color -> its own value. The JS
+    // side resolves the var()/light-dark() against the live theme before applying it as strokeStyle.
+    private string StrokeCssColor =>
+        StrokeColor.Value
+        ?? (StrokeColor.RoleName is { } r ? $"var(--flare-color-{r})" : "var(--flare-color-on-surface)");
+
     private readonly string _padId = Guid.NewGuid().ToString("N");
     private ElementReference _canvas;
     private IJSObjectReference? _module;
@@ -53,7 +64,7 @@
                 "import", "./_content/Flare.Components.Media/js/signature.js");
             _dotNetRef = DotNetObjectReference.Create(this);
             await _module.InvokeVoidAsync("init", _padId, _canvas, _dotNetRef);
-            await _module.InvokeVoidAsync("setStrokeStyle", _padId, StrokeColor, StrokeWidth, PressureSensitive);
+            await _module.InvokeVoidAsync("setStrokeStyle", _padId, StrokeCssColor, StrokeWidth, PressureSensitive);
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
