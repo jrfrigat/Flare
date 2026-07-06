@@ -22,7 +22,8 @@
                 <FlareIcon Name="@StartIcon" />
             </span>
         }
-        <div class="@Css.Classes.Slider.TrackArea">
+        <div class="@Css.Classes.Slider.TrackArea"
+             @onwheel="HandleWheel" @onwheel:preventDefault="@(MouseWheel && !Disabled)">
             <div class="@Css.Classes.Slider.TrackWrap"
                  style="--_pct:@(_lowPct.ToString("F2", CultureInfo.InvariantCulture))%;--_pct-end:@(_highPct.ToString("F2", CultureInfo.InvariantCulture))%;--_init:@(_initPercent.ToString("F2", CultureInfo.InvariantCulture))%">
                 <div class="@Css.Classes.Slider.Rail" aria-hidden="true">
@@ -160,6 +161,14 @@
     [Parameter] public bool Indicator { get; set; }
     /// <summary>Renders the slider vertically (value increases upward). Length is set via the <c>--flare-slider-length</c> CSS var (default 12rem).</summary>
     [Parameter] public bool Vertical { get; set; }
+    /// <summary>
+    /// When true, hovering the slider and turning the mouse wheel adjusts <see cref="Value"/>: each
+    /// notch moves by <see cref="Step"/> (scroll up increases, down decreases) and page scrolling is
+    /// suppressed over the track. In range mode a plain wheel moves the low handle
+    /// (<see cref="Value"/>) and <c>Ctrl</c>+wheel moves the high handle (<see cref="ValueEnd"/>);
+    /// neither handle can cross the other. No effect when <see cref="Disabled"/>.
+    /// </summary>
+    [Parameter] public bool MouseWheel { get; set; }
     /// <summary>Label text displayed above the slider.</summary>
     [Parameter] public string? Label { get; set; }
     /// <summary>Accessible label used when no visible <see cref="Label"/> is provided.</summary>
@@ -391,6 +400,29 @@
             await ValueEndChanged.InvokeAsync(Math.Clamp(v, _effLow, _safeMax));
             NotifyEdit();
         }
+    }
+
+    private async Task HandleWheel(WheelEventArgs e)
+    {
+        if (!MouseWheel || Disabled || e.DeltaY == 0) return;
+        // Scroll up (DeltaY < 0) increases; scroll down decreases. One step per notch.
+        var delta = (e.DeltaY < 0 ? 1 : -1) * _safeStep;
+        if (Range && e.CtrlKey)
+        {
+            // Ctrl+wheel adjusts the high handle (ValueEnd); it cannot drop below the low handle.
+            var next = Math.Clamp(ValueEnd + delta, _effLow, _safeMax);
+            if (next == ValueEnd) return;
+            await ValueEndChanged.InvokeAsync(next);
+        }
+        else
+        {
+            // Plain wheel adjusts Value; in range mode that is the low handle and it cannot pass the high one.
+            var upper = Range ? _effHigh : _safeMax;
+            var next = Math.Clamp(Value + delta, _safeMin, upper);
+            if (next == Value) return;
+            await ValueChanged.InvokeAsync(next);
+        }
+        NotifyEdit();
     }
 
     private static bool TryParse(ChangeEventArgs e, out double v) =>

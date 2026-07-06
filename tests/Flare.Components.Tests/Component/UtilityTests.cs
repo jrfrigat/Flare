@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components.Tests.Component;
 
@@ -656,6 +657,142 @@ public class C_FlareSliderTests : FlareTestContext
             .Add(x => x.Step, 50.0).Add(x => x.Stepper, true));
 
         Assert.Equal(2, cut.FindAll(".flare-slider__tick--active").Count);
+    }
+
+    [Fact]
+    public void MouseWheel_ScrollUp_IncrementsByStep()
+    {
+        double? changed = null;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Step, 5.0)
+            .Add(x => x.Value, 50.0)
+            .Add(x => x.ValueChanged, (double v) => changed = v));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+
+        Assert.Equal(55.0, changed);
+    }
+
+    [Fact]
+    public void MouseWheel_ScrollDown_DecrementsByStep()
+    {
+        double? changed = null;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Step, 5.0)
+            .Add(x => x.Value, 50.0)
+            .Add(x => x.ValueChanged, (double v) => changed = v));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = 1 });
+
+        Assert.Equal(45.0, changed);
+    }
+
+    [Fact]
+    public void MouseWheel_ClampsAtMax_NoCallbackWhenAlreadyAtBound()
+    {
+        var invoked = false;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Step, 5.0)
+            .Add(x => x.Value, 100.0)
+            .Add(x => x.ValueChanged, (double _) => invoked = true));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+
+        Assert.False(invoked);
+    }
+
+    [Fact]
+    public void MouseWheel_Disabled_DoesNothing()
+    {
+        var invoked = false;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true).Add(x => x.Disabled, true)
+            .Add(x => x.Value, 50.0)
+            .Add(x => x.ValueChanged, (double _) => invoked = true));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+
+        Assert.False(invoked);
+    }
+
+    [Fact]
+    public void MouseWheel_Off_DoesNothing()
+    {
+        var invoked = false;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.Value, 50.0)
+            .Add(x => x.ValueChanged, (double _) => invoked = true));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+
+        Assert.False(invoked);
+    }
+
+    [Fact]
+    public void MouseWheel_Range_PlainWheel_MovesLowHandleOnly()
+    {
+        double? low = null, high = null;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true).Add(x => x.Range, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Step, 5.0)
+            .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 60.0)
+            .Add(x => x.ValueChanged, (double v) => low = v)
+            .Add(x => x.ValueEndChanged, (double v) => high = v));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+
+        Assert.Equal(25.0, low);   // low handle moved
+        Assert.Null(high);         // high handle untouched
+    }
+
+    [Fact]
+    public void MouseWheel_Range_CtrlWheel_MovesHighHandleOnly()
+    {
+        double? low = null, high = null;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true).Add(x => x.Range, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Step, 5.0)
+            .Add(x => x.Value, 20.0).Add(x => x.ValueEnd, 60.0)
+            .Add(x => x.ValueChanged, (double v) => low = v)
+            .Add(x => x.ValueEndChanged, (double v) => high = v));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1, CtrlKey = true });
+
+        Assert.Equal(65.0, high);  // high handle moved
+        Assert.Null(low);          // low handle untouched
+    }
+
+    [Fact]
+    public void MouseWheel_Range_PlainWheel_LowCannotPassHigh()
+    {
+        var invoked = false;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true).Add(x => x.Range, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Step, 5.0)
+            .Add(x => x.Value, 60.0).Add(x => x.ValueEnd, 60.0)   // low already at high
+            .Add(x => x.ValueChanged, (double _) => invoked = true));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = -1 });
+
+        Assert.False(invoked);
+    }
+
+    [Fact]
+    public void MouseWheel_Range_CtrlWheel_HighCannotDropBelowLow()
+    {
+        var invoked = false;
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.MouseWheel, true).Add(x => x.Range, true)
+            .Add(x => x.Min, 0.0).Add(x => x.Max, 100.0).Add(x => x.Step, 5.0)
+            .Add(x => x.Value, 60.0).Add(x => x.ValueEnd, 60.0)   // high already at low
+            .Add(x => x.ValueEndChanged, (double _) => invoked = true));
+
+        cut.Find(".flare-slider__track-area").TriggerEvent("onwheel", new WheelEventArgs { DeltaY = 1, CtrlKey = true });
+
+        Assert.False(invoked);
     }
 }
 

@@ -1515,6 +1515,9 @@
   <data name="Slider_Init" xml:space="preserve">
     <value>Init anchor (balance)</value>
   </data>
+  <data name="Slider_Wheel" xml:space="preserve">
+    <value>Mouse wheel</value>
+  </data>
   <data name="Slider_Colors" xml:space="preserve">
     <value>Colors</value>
   </data>

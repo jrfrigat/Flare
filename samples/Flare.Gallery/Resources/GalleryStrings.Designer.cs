@@ -7236,7 +7236,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Slider_Init", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Labeled marks.
         /// </summary>
@@ -7306,6 +7306,15 @@ namespace Flare.Gallery.Resources {
         public static string Slider_Vertical {
             get {
                 return ResourceManager.GetString("Slider_Vertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Mouse wheel.
+        /// </summary>
+        public static string Slider_Wheel {
+            get {
+                return ResourceManager.GetString("Slider_Wheel", resourceCulture);
             }
         }
         
