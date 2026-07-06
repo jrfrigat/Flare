@@ -45,72 +45,50 @@ public static class PopoverPopup
 /// <summary>CSS variable tokens for data grid field.</summary>
 public static class DataGridField
 {
-    /// <summary>CSS custom-property name for the surface color token.</summary>
-    public const string SurfaceColor = "--flare-datagrid-surface-color";
-    /// <summary>CSS custom-property name for the header bg token.</summary>
-    public const string HeaderBg = "--flare-datagrid-header-bg";
-    /// <summary>CSS custom-property name for the header color token.</summary>
-    public const string HeaderColor = "--flare-datagrid-header-color";
-    /// <summary>CSS custom-property name for the header font family token.</summary>
-    public const string HeaderFontFamily = "--flare-datagrid-header-font-family";
-    /// <summary>CSS custom-property name for the header font size token.</summary>
-    public const string HeaderFontSize = "--flare-datagrid-header-font-size";
-    /// <summary>CSS custom-property name for the header font weight token.</summary>
-    public const string HeaderFontWeight = "--flare-datagrid-header-font-weight";
-    /// <summary>CSS custom-property name for the header height token.</summary>
-    public const string HeaderHeight = "--flare-datagrid-header-height";
-    /// <summary>CSS custom-property name for the header padding token.</summary>
-    public const string HeaderPadding = "--flare-datagrid-header-padding";
-    /// <summary>CSS custom-property name for the row height token.</summary>
-    public const string RowHeight = "--flare-datagrid-row-height";
-    /// <summary>CSS custom-property name for the row height dense token.</summary>
-    public const string RowHeightDense = "--flare-datagrid-row-height-dense";
-    /// <summary>CSS custom-property name for the cell padding token.</summary>
-    public const string CellPadding = "--flare-datagrid-cell-padding";
-    /// <summary>CSS custom-property name for the cell color token.</summary>
-    public const string CellColor = "--flare-datagrid-cell-color";
-    /// <summary>CSS custom-property name for the cell font family token.</summary>
-    public const string CellFontFamily = "--flare-datagrid-cell-font-family";
-    /// <summary>CSS custom-property name for the cell font size token.</summary>
-    public const string CellFontSize = "--flare-datagrid-cell-font-size";
-    /// <summary>CSS custom-property name for the selected row bg token.</summary>
-    public const string SelectedRowBg = "--flare-datagrid-selected-row-bg";
-    /// <summary>CSS custom-property name for the selected row color token.</summary>
-    public const string SelectedRowColor = "--flare-datagrid-selected-row-color";
-    /// <summary>CSS custom-property name for the hover row bg token.</summary>
-    public const string HoverRowBg = "--flare-datagrid-hover-row-bg";
-    /// <summary>CSS custom-property name for the sort icon color token.</summary>
-    public const string SortIconColor = "--flare-datagrid-sort-icon-color";
-    /// <summary>CSS custom-property name for the sort icon active color token.</summary>
-    public const string SortIconActiveColor = "--flare-datagrid-sort-icon-active-color";
-    /// <summary>CSS custom-property name for the border color token.</summary>
-    public const string BorderColor = "--flare-datagrid-border-color";
-    /// <summary>CSS custom-property name for the border width token.</summary>
-    public const string BorderWidth = "--flare-datagrid-border-width";
-    /// <summary>CSS custom-property name for the filter row bg token.</summary>
-    public const string FilterRowBg = "--flare-datagrid-filter-row-bg";
-    /// <summary>CSS custom-property name for the group header bg token.</summary>
-    public const string GroupHeaderBg = "--flare-datagrid-group-header-bg";
-    /// <summary>CSS custom-property name for the group header color token.</summary>
-    public const string GroupHeaderColor = "--flare-datagrid-group-header-color";
-    /// <summary>CSS custom-property name for the toolbar bg token.</summary>
-    public const string ToolbarBg = "--flare-datagrid-toolbar-bg";
-    /// <summary>CSS custom-property name for the toolbar height token.</summary>
-    public const string ToolbarHeight = "--flare-datagrid-toolbar-height";
-    /// <summary>CSS custom-property name for the toolbar padding token.</summary>
-    public const string ToolbarPadding = "--flare-datagrid-toolbar-padding";
-    /// <summary>CSS custom-property name for the empty state bg token.</summary>
-    public const string EmptyStateBg = "--flare-datagrid-empty-state-bg";
-    /// <summary>CSS custom-property name for the empty state color token.</summary>
-    public const string EmptyStateColor = "--flare-datagrid-empty-state-color";
-    /// <summary>CSS custom-property name for the resize handle width token.</summary>
+    // DataGrid color/font/bg/padding/row-height are NOT tokenized here: the grid reuses the shared color
+    // roles, --flare-typescale-*, --flare-spacing-* and --flare-state-* directly (per the "reuse shared
+    // tokens, do not duplicate" mandate). Only grid-specific geometry - icon sizes, divider/handle widths,
+    // overlay percentages - are tokens.
+    /// <summary>CSS custom-property name for the sort-direction icon size.</summary>
+    public const string SortIconSize = "--flare-datagrid-sort-icon-size";
+    /// <summary>CSS custom-property name for the multi-sort priority badge size.</summary>
+    public const string SortPrioritySize = "--flare-datagrid-sort-priority-size";
+    /// <summary>CSS custom-property name for the filter-icon size.</summary>
+    public const string FilterIconSize = "--flare-datagrid-filter-icon-size";
+    /// <summary>CSS custom-property name for the boolean-cell icon size.</summary>
+    public const string BoolIconSize = "--flare-datagrid-bool-icon-size";
+    /// <summary>CSS custom-property name for the toolbar-button icon size.</summary>
+    public const string BtnIconSize = "--flare-datagrid-btn-icon-size";
+    /// <summary>CSS custom-property name for the close-icon size.</summary>
+    public const string CloseIconSize = "--flare-datagrid-close-icon-size";
+    /// <summary>CSS custom-property name for the group/tree chevron size.</summary>
+    public const string ChevronSize = "--flare-datagrid-chevron-size";
+    /// <summary>CSS custom-property name for the detail-row toggle icon size.</summary>
+    public const string DetailIconSize = "--flare-datagrid-detail-icon-size";
+    /// <summary>CSS custom-property name for the tree-toggle icon size.</summary>
+    public const string TreeToggleSize = "--flare-datagrid-tree-toggle-size";
+    /// <summary>CSS custom-property name for the composite-column label size.</summary>
+    public const string CompositeLabelSize = "--flare-datagrid-composite-label-size";
+    /// <summary>CSS custom-property name for the column resize-handle width.</summary>
     public const string ResizeHandleWidth = "--flare-datagrid-resize-handle-width";
-    /// <summary>CSS custom-property name for the resize handle color token.</summary>
-    public const string ResizeHandleColor = "--flare-datagrid-resize-handle-color";
-    /// <summary>CSS custom-property name for the column picker bg token.</summary>
-    public const string ColumnPickerBg = "--flare-datagrid-column-picker-bg";
-    /// <summary>CSS custom-property name for the column picker elevation token.</summary>
-    public const string ColumnPickerElevation = "--flare-datagrid-column-picker-elevation";
+    /// <summary>CSS custom-property name for the record (card) divider width.</summary>
+    public const string RecordDividerWidth = "--flare-datagrid-record-divider-width";
+    /// <summary>CSS custom-property name for the aggregate-row divider width.</summary>
+    public const string AggregateDividerWidth = "--flare-datagrid-aggregate-divider-width";
+    /// <summary>CSS custom-property name for the filter-group rail width.</summary>
+    public const string FilterGroupRail = "--flare-datagrid-filter-group-rail";
+    /// <summary>CSS custom-property name for the active-cell focus outline.</summary>
+    public const string ActiveCellOutline = "--flare-datagrid-active-cell-outline";
+    /// <summary>CSS custom-property name for the column-picker minimum width.</summary>
+    public const string ColumnPickerMinWidth = "--flare-datagrid-column-picker-min-width";
+    /// <summary>CSS custom-property name for the selected+hover row mix percentage.</summary>
+    public const string RowSelectedHoverPct = "--flare-datagrid-row-selected-hover-pct";
+    /// <summary>CSS custom-property name for the row-being-edited tint percentage.</summary>
+    public const string RowEditingPct = "--flare-datagrid-row-editing-pct";
+    /// <summary>CSS custom-property name for the loading-veil opacity percentage.</summary>
+    public const string LoadingVeilPct = "--flare-datagrid-loading-veil-pct";
+    /// <summary>CSS custom-property name for the loading content dim opacity.</summary>
+    public const string LoadingDim = "--flare-datagrid-loading-dim";
 }
 
 /// <summary>CSS variable tokens for card field.</summary>

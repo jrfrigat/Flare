@@ -563,39 +563,26 @@ public static class CssVarMap
         #endregion
 
         #region DATAGRID
-        v[Css.Tokens.DataGridField.SurfaceColor] = t.DataGrid.SurfaceColor;
-        v[Css.Tokens.DataGridField.HeaderBg] = t.DataGrid.HeaderBg;
-        v[Css.Tokens.DataGridField.HeaderColor] = t.DataGrid.HeaderColor;
-        v[Css.Tokens.DataGridField.HeaderFontFamily] = t.DataGrid.HeaderFontFamily;
-        v[Css.Tokens.DataGridField.HeaderFontSize] = t.DataGrid.HeaderFontSize;
-        v[Css.Tokens.DataGridField.HeaderFontWeight] = t.DataGrid.HeaderFontWeight;
-        v[Css.Tokens.DataGridField.HeaderHeight] = t.DataGrid.HeaderHeight;
-        v[Css.Tokens.DataGridField.HeaderPadding] = t.DataGrid.HeaderPadding;
-        v[Css.Tokens.DataGridField.RowHeight] = t.DataGrid.RowHeight;
-        v[Css.Tokens.DataGridField.RowHeightDense] = t.DataGrid.RowHeightDense;
-        v[Css.Tokens.DataGridField.CellPadding] = t.DataGrid.CellPadding;
-        v[Css.Tokens.DataGridField.CellColor] = t.DataGrid.CellColor;
-        v[Css.Tokens.DataGridField.CellFontFamily] = t.DataGrid.CellFontFamily;
-        v[Css.Tokens.DataGridField.CellFontSize] = t.DataGrid.CellFontSize;
-        v[Css.Tokens.DataGridField.SelectedRowBg] = t.DataGrid.SelectedRowBg;
-        v[Css.Tokens.DataGridField.SelectedRowColor] = t.DataGrid.SelectedRowColor;
-        v[Css.Tokens.DataGridField.HoverRowBg] = t.DataGrid.HoverRowBg;
-        v[Css.Tokens.DataGridField.SortIconColor] = t.DataGrid.SortIconColor;
-        v[Css.Tokens.DataGridField.SortIconActiveColor] = t.DataGrid.SortIconActiveColor;
-        v[Css.Tokens.DataGridField.BorderColor] = t.DataGrid.BorderColor;
-        v[Css.Tokens.DataGridField.BorderWidth] = t.DataGrid.BorderWidth;
-        v[Css.Tokens.DataGridField.FilterRowBg] = t.DataGrid.FilterRowBg;
-        v[Css.Tokens.DataGridField.GroupHeaderBg] = t.DataGrid.GroupHeaderBg;
-        v[Css.Tokens.DataGridField.GroupHeaderColor] = t.DataGrid.GroupHeaderColor;
-        v[Css.Tokens.DataGridField.ToolbarBg] = t.DataGrid.ToolbarBg;
-        v[Css.Tokens.DataGridField.ToolbarHeight] = t.DataGrid.ToolbarHeight;
-        v[Css.Tokens.DataGridField.ToolbarPadding] = t.DataGrid.ToolbarPadding;
-        v[Css.Tokens.DataGridField.EmptyStateBg] = t.DataGrid.EmptyStateBg;
-        v[Css.Tokens.DataGridField.EmptyStateColor] = t.DataGrid.EmptyStateColor;
+        v[Css.Tokens.DataGridField.SortIconSize] = t.DataGrid.SortIconSize;
+        v[Css.Tokens.DataGridField.SortPrioritySize] = t.DataGrid.SortPrioritySize;
+        v[Css.Tokens.DataGridField.FilterIconSize] = t.DataGrid.FilterIconSize;
+        v[Css.Tokens.DataGridField.BoolIconSize] = t.DataGrid.BoolIconSize;
+        v[Css.Tokens.DataGridField.BtnIconSize] = t.DataGrid.BtnIconSize;
+        v[Css.Tokens.DataGridField.CloseIconSize] = t.DataGrid.CloseIconSize;
+        v[Css.Tokens.DataGridField.ChevronSize] = t.DataGrid.ChevronSize;
+        v[Css.Tokens.DataGridField.DetailIconSize] = t.DataGrid.DetailIconSize;
+        v[Css.Tokens.DataGridField.TreeToggleSize] = t.DataGrid.TreeToggleSize;
+        v[Css.Tokens.DataGridField.CompositeLabelSize] = t.DataGrid.CompositeLabelSize;
         v[Css.Tokens.DataGridField.ResizeHandleWidth] = t.DataGrid.ResizeHandleWidth;
-        v[Css.Tokens.DataGridField.ResizeHandleColor] = t.DataGrid.ResizeHandleColor;
-        v[Css.Tokens.DataGridField.ColumnPickerBg] = t.DataGrid.ColumnPickerBg;
-        v[Css.Tokens.DataGridField.ColumnPickerElevation] = t.DataGrid.ColumnPickerElevation;
+        v[Css.Tokens.DataGridField.RecordDividerWidth] = t.DataGrid.RecordDividerWidth;
+        v[Css.Tokens.DataGridField.AggregateDividerWidth] = t.DataGrid.AggregateDividerWidth;
+        v[Css.Tokens.DataGridField.FilterGroupRail] = t.DataGrid.FilterGroupRail;
+        v[Css.Tokens.DataGridField.ActiveCellOutline] = t.DataGrid.ActiveCellOutline;
+        v[Css.Tokens.DataGridField.ColumnPickerMinWidth] = t.DataGrid.ColumnPickerMinWidth;
+        v[Css.Tokens.DataGridField.RowSelectedHoverPct] = t.DataGrid.RowSelectedHoverPct;
+        v[Css.Tokens.DataGridField.RowEditingPct] = t.DataGrid.RowEditingPct;
+        v[Css.Tokens.DataGridField.LoadingVeilPct] = t.DataGrid.LoadingVeilPct;
+        v[Css.Tokens.DataGridField.LoadingDim] = t.DataGrid.LoadingDim;
         #endregion
 
         #region CARD
