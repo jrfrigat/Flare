@@ -468,78 +468,21 @@ public static class CssVarMap
         #endregion
 
         #region DIALOG
-        v[Css.Tokens.DialogPanel.SurfaceColor] = t.Dialog.SurfaceColor;
         v[Css.Tokens.DialogPanel.Radius] = t.Dialog.Radius;
-        v[Css.Tokens.DialogPanel.MaxWidth] = t.Dialog.MaxWidth;
-        v[Css.Tokens.DialogPanel.MinWidth] = t.Dialog.MinWidth;
-        v[Css.Tokens.DialogPanel.Padding] = t.Dialog.Padding;
-        v[Css.Tokens.DialogPanel.HeaderPadding] = t.Dialog.HeaderPadding;
-        v[Css.Tokens.DialogPanel.ActionsPadding] = t.Dialog.ActionsPadding;
-        v[Css.Tokens.DialogPanel.ActionsGap] = t.Dialog.ActionsGap;
-        v[Css.Tokens.DialogPanel.ScrimColor] = t.Dialog.ScrimColor;
-        v[Css.Tokens.DialogPanel.ScrimOpacity] = t.Dialog.ScrimOpacity;
-        v[Css.Tokens.DialogPanel.Elevation] = t.Dialog.Elevation;
-        v[Css.Tokens.DialogPanel.TitleColor] = t.Dialog.TitleColor;
-        v[Css.Tokens.DialogPanel.TitleFontFamily] = t.Dialog.TitleFontFamily;
-        v[Css.Tokens.DialogPanel.TitleFontSize] = t.Dialog.TitleFontSize;
-        v[Css.Tokens.DialogPanel.TitleFontWeight] = t.Dialog.TitleFontWeight;
-        v[Css.Tokens.DialogPanel.ContentColor] = t.Dialog.ContentColor;
-        v[Css.Tokens.DialogPanel.ContentFontFamily] = t.Dialog.ContentFontFamily;
-        v[Css.Tokens.DialogPanel.ContentFontSize] = t.Dialog.ContentFontSize;
-        v[Css.Tokens.DialogPanel.TransitionDuration] = t.Dialog.TransitionDuration;
-        v[Css.Tokens.DialogPanel.TransitionEasing] = t.Dialog.TransitionEasing;
-        v[Css.Tokens.DialogPanel.SizeXsWidth] = t.Dialog.SizeXsWidth;
-        v[Css.Tokens.DialogPanel.SizeSmWidth] = t.Dialog.SizeSmWidth;
-        v[Css.Tokens.DialogPanel.SizeMdWidth] = t.Dialog.SizeMdWidth;
-        v[Css.Tokens.DialogPanel.SizeLgWidth] = t.Dialog.SizeLgWidth;
-        v[Css.Tokens.DialogPanel.SizeXlWidth] = t.Dialog.SizeXlWidth;
-        v[Css.Tokens.DialogPanel.SizeFullWidth] = t.Dialog.SizeFullWidth;
+        v[Css.Tokens.DialogPanel.IconSize] = t.Dialog.IconSize;
         #endregion
 
         #region DRAWER
-        v[Css.Tokens.DrawerPanel.SurfaceColor] = t.Drawer.SurfaceColor;
         v[Css.Tokens.DrawerPanel.Width] = t.Drawer.Width;
         v[Css.Tokens.DrawerPanel.MiniWidth] = t.Drawer.MiniWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointSmWidth] = t.Drawer.BreakpointSmWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointMdWidth] = t.Drawer.BreakpointMdWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointLgWidth] = t.Drawer.BreakpointLgWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointXlWidth] = t.Drawer.BreakpointXlWidth;
-        v[Css.Tokens.DrawerPanel.Elevation] = t.Drawer.Elevation;
-        v[Css.Tokens.DrawerPanel.Radius] = t.Drawer.Radius;
-        v[Css.Tokens.DrawerPanel.ScrimColor] = t.Drawer.ScrimColor;
-        v[Css.Tokens.DrawerPanel.ScrimOpacity] = t.Drawer.ScrimOpacity;
-        v[Css.Tokens.DrawerPanel.TransitionDuration] = t.Drawer.TransitionDuration;
-        v[Css.Tokens.DrawerPanel.TransitionEasing] = t.Drawer.TransitionEasing;
-        v[Css.Tokens.DrawerPanel.HeaderPadding] = t.Drawer.HeaderPadding;
-        v[Css.Tokens.DrawerPanel.ContentPadding] = t.Drawer.ContentPadding;
-        v[Css.Tokens.DrawerPanel.TitleColor] = t.Drawer.TitleColor;
-        v[Css.Tokens.DrawerPanel.TitleFontFamily] = t.Drawer.TitleFontFamily;
-        v[Css.Tokens.DrawerPanel.TitleFontSize] = t.Drawer.TitleFontSize;
         #endregion
 
         #region SNACKBAR
-        v[Css.Tokens.SnackbarPanel.SurfaceColor] = t.Snackbar.SurfaceColor;
-        v[Css.Tokens.SnackbarPanel.TextColor] = t.Snackbar.TextColor;
-        v[Css.Tokens.SnackbarPanel.ActionColor] = t.Snackbar.ActionColor;
         v[Css.Tokens.SnackbarPanel.Radius] = t.Snackbar.Radius;
-        v[Css.Tokens.SnackbarPanel.MinWidth] = t.Snackbar.MinWidth;
-        v[Css.Tokens.SnackbarPanel.MaxWidth] = t.Snackbar.MaxWidth;
-        v[Css.Tokens.SnackbarPanel.Height] = t.Snackbar.Height;
-        v[Css.Tokens.SnackbarPanel.HeightMultiLine] = t.Snackbar.HeightMultiLine;
-        v[Css.Tokens.SnackbarPanel.Padding] = t.Snackbar.Padding;
-        v[Css.Tokens.SnackbarPanel.Gap] = t.Snackbar.Gap;
-        v[Css.Tokens.SnackbarPanel.Elevation] = t.Snackbar.Elevation;
-        v[Css.Tokens.SnackbarPanel.FontFamily] = t.Snackbar.FontFamily;
-        v[Css.Tokens.SnackbarPanel.FontSize] = t.Snackbar.FontSize;
-        v[Css.Tokens.SnackbarPanel.ActionFontWeight] = t.Snackbar.ActionFontWeight;
-        v[Css.Tokens.SnackbarPanel.ActionFontSize] = t.Snackbar.ActionFontSize;
-        v[Css.Tokens.SnackbarPanel.TransitionDuration] = t.Snackbar.TransitionDuration;
-        v[Css.Tokens.SnackbarPanel.TransitionEasing] = t.Snackbar.TransitionEasing;
-        v[Css.Tokens.SnackbarPanel.AutoHideDelay] = t.Snackbar.AutoHideDelay.ToString();
-        v[Css.Tokens.SnackbarPanel.BottomOffset] = t.Snackbar.BottomOffset;
-        v[Css.Tokens.SnackbarPanel.LeftOffset] = t.Snackbar.LeftOffset;
-        v[Css.Tokens.SnackbarPanel.RightOffset] = t.Snackbar.RightOffset;
-        v[Css.Tokens.SnackbarPanel.StackGap] = t.Snackbar.StackGap;
+        v[Css.Tokens.SnackbarPanel.MinHeight] = t.Snackbar.MinHeight;
+        v[Css.Tokens.SnackbarPanel.PaddingBlock] = t.Snackbar.PaddingBlock;
+        v[Css.Tokens.SnackbarPanel.ProviderInset] = t.Snackbar.ProviderInset;
+        v[Css.Tokens.SnackbarPanel.CloseOpacity] = t.Snackbar.CloseOpacity;
         #endregion
 
         #region TOOLTIP
