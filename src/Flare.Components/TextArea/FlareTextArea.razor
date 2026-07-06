@@ -8,19 +8,19 @@
    auto-grow / max-lines. *@
 
 <FlareFieldChrome Variant="Variant" Size="Size"
-                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(AutoGrow ? Css.Classes.Textarea.Autogrow : null)"
-                  Label="@Label" LabelFor="@_textareaId"
-                  HelperText="@HelperText" HelperId="@_helperId"
-                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Label="@Label" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@Style">
     <Field>
         <div class="@Css.Classes.Input.Field">
             <FlareInputControl Multiline="true"
                                Value="@Value"
                                ValueChanged="EmitValue"
-                               Id="@_textareaId"
+                               Id="@ControlId"
                                ControlClass="@Css.Classes.Textarea.Control"
                                Placeholder="@Placeholder"
                                Disabled="Disabled"
@@ -28,8 +28,8 @@
                                Required="Required"
                                Rows="Rows"
                                MaxLength="MaxLength"
-                               AriaInvalid="@(!string.IsNullOrEmpty(_displayedError))"
-                               AriaDescribedBy="@_computedDescribedBy"
+                               AriaInvalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
+                               AriaDescribedBy="@SupportDescribedBy"
                                Immediate="Immediate"
                                DebounceInterval="DebounceInterval"
                                Style="@_controlStyle"
@@ -70,18 +70,10 @@
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
 
-    private readonly string _textareaId = $"flare-textarea-{Guid.NewGuid():N}";
-    private string _helperId => $"{_textareaId}-help";
-    private string _errorId  => $"{_textareaId}-err";
-    private string? _computedDescribedBy =>
-        !string.IsNullOrEmpty(_displayedError) ? _errorId :
-        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
-
     // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
-    // FlareFieldBase; here we only feed it the For accessor and surface the resolved error.
+    // FlareFieldBase; here we only feed it the For accessor. ControlId/HelperId/ErrorId/DisplayedErrorText/
+    // SupportDescribedBy (the id + supporting-text wiring) are also inherited from FlareFieldBase.
     protected override void OnParametersSet() => UpdateFieldIdentifier(For);
-
-    private string? _displayedError => DisplayedError(ErrorText);
 
     private bool _showCounter => ShowCharacterCount || MaxLength > 0;
 
