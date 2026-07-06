@@ -9,6 +9,10 @@ public sealed record MotionTokens
     [CssVar(Motion.DurationShort1)] public required string DurationShort1 { get; init; }
     /// <summary>Duration short 2 token.</summary>
     [CssVar(Motion.DurationShort2)] public required string DurationShort2 { get; init; }
+    /// <summary>Duration short 3 token.</summary>
+    [CssVar(Motion.DurationShort3)] public required string DurationShort3 { get; init; }
+    /// <summary>Duration short 4 token.</summary>
+    [CssVar(Motion.DurationShort4)] public required string DurationShort4 { get; init; }
     /// <summary>Duration medium 1 token.</summary>
     [CssVar(Motion.DurationMedium1)] public required string DurationMedium1 { get; init; }
     /// <summary>Duration medium 2 token.</summary>

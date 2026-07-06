@@ -9,6 +9,12 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record NavTokens
 {
+    /// <summary>Active weight.</summary>
+    [CssVar(NavField.ActiveWeight)] public required string ActiveWeight { get; init; }
+    /// <summary>Badge weight.</summary>
+    [CssVar(NavField.BadgeWeight)] public required string BadgeWeight { get; init; }
+    /// <summary>Rail label line height.</summary>
+    [CssVar(NavField.RailLabelLineHeight)] public required string RailLabelLineHeight { get; init; }
     /// <summary>Hover/focus corner radius of a nav item.</summary>
     [CssVar(NavField.ItemRadius)] public required string ItemRadius { get; init; }
 

@@ -51,6 +51,8 @@ internal class VisualStudioTokens
     {
         DurationShort1 = "40ms",
         DurationShort2 = "80ms",
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "120ms",
         DurationMedium2 = "180ms",
         DurationLong1 = "260ms",
@@ -85,6 +87,8 @@ internal class VisualStudioTokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         Radius = "var(--flare-shape-small)",
         BorderWidth = "1px",
         Padding = "0.625rem 0.875rem",
@@ -93,6 +97,9 @@ internal class VisualStudioTokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         GapXs = "0.1875rem",
         GapSm = "0.25rem",
         GapMd = "0.375rem",
@@ -180,6 +187,7 @@ internal class VisualStudioTokens
 
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
     };
@@ -191,6 +199,12 @@ internal class VisualStudioTokens
     // theme-scoped tabs.css using these tokens.
     internal static readonly TabsTokens Tabs = new()
     {
+        ActiveWeight = "700",
+        CloseOpacity = "0.6",
+        LabelFont = "var(--flare-typescale-label-large-font)",
+        LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelWeight = "var(--flare-typescale-label-large-weight)",
+        ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
@@ -281,6 +295,9 @@ internal class VisualStudioTokens
     // Nav - left accent bar (VS solution-explorer style), no pill.
     internal static readonly NavTokens Nav = new()
     {
+        ActiveWeight = "600",
+        BadgeWeight = "600",
+        RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",
@@ -291,16 +308,16 @@ internal class VisualStudioTokens
     public static readonly Dictionary<string, string> Extended = new()
     {
         // VS focus ring color used by the scoped button/input CSS.
-        ["--flare-vs-focus"] = "rgba(0,120,212,0.45)",
+        [VisualStudioCssVars.Focus] = "rgba(0,120,212,0.45)",
 
         // Tabs - VS 2026 "flowing" document tabs, consumed by the theme-scoped tabs.css.
-        ["--flare-vs-tab-gap"] = "2px",
-        ["--flare-vs-tab-strip-bg"] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.TabGap] = "2px",
+        [VisualStudioCssVars.TabStripBg] = "var(--flare-color-surface-container)",
         // Rounded top corners so the strip flows around the active/hovered tab (wrap-around).
-        ["--flare-vs-tab-radius"] = "var(--flare-shape-large)",
+        [VisualStudioCssVars.TabRadius] = "var(--flare-shape-large)",
         // Active tab fill: in light it is the white editor surface; the dark override lifts it to a
         // lighter selection gray so the rounded tab still reads as "floating" above the strip.
-        ["--flare-vs-tab-active-bg"] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.TabActiveBg] = "var(--flare-color-surface)",
     };
 
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
@@ -451,11 +468,11 @@ internal class VisualStudioTokens
     {
         return new Dictionary<string, string>(Extended)
         {
-            ["--flare-vs-focus"] = "rgba(55,148,255,0.5)",
+            [VisualStudioCssVars.Focus] = "rgba(55,148,255,0.5)",
             // VS 2026: the active document tab takes the editor surface (#1E1E1E) -- darker than the
             // strip (#2D2D30) -- so the rounded tab reads as connected to the editor below it, rather
             // than as a lighter floating pill. (Light mode already uses the white editor surface.)
-            ["--flare-vs-tab-active-bg"] = "var(--flare-color-surface)",
+            [VisualStudioCssVars.TabActiveBg] = "var(--flare-color-surface)",
         };
     }
 

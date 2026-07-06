@@ -10,6 +10,10 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record StepperTokens
 {
+    /// <summary>Focus ring thickness.</summary>
+    [CssVar(Stepper.FocusRingThickness)] public required string FocusRingThickness { get; init; }
+    /// <summary>Focus ring color.</summary>
+    [CssVar(Stepper.FocusRingColor)] public required string FocusRingColor { get; init; }
     /// <summary>Diameter of the step indicator circle.</summary>
     [CssVar(Stepper.CircleSize)] public required string CircleSize { get; init; }
 

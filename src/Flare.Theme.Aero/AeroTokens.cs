@@ -50,6 +50,8 @@ internal class AeroTokens
     {
         DurationShort1 = "50ms",
         DurationShort2 = "90ms",
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "130ms",
         DurationMedium2 = "200ms",
         DurationLong1 = "280ms",
@@ -84,6 +86,8 @@ internal class AeroTokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         Radius = "var(--flare-shape-small)",
         BorderWidth = "1px",
         Padding = "0.625rem 0.875rem",
@@ -92,6 +96,9 @@ internal class AeroTokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         GapXs = "0.1875rem",
         GapSm = "0.25rem",
         GapMd = "0.375rem",
@@ -179,6 +186,7 @@ internal class AeroTokens
 
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
     };
@@ -247,6 +255,9 @@ internal class AeroTokens
     // Nav - left accent bar (Office side-nav), no pill.
     internal static readonly NavTokens Nav = new()
     {
+        ActiveWeight = "600",
+        BadgeWeight = "600",
+        RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",
@@ -257,7 +268,7 @@ internal class AeroTokens
     public static readonly Dictionary<string, string> Extended = new()
     {
         // Aero focus glow color used by the scoped button/input CSS.
-        ["--flare-aero-glow"] = "rgba(60,127,177,0.55)",
+        [AeroCssVars.Glow] = "rgba(60,127,177,0.55)",
     };
 
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
@@ -422,7 +433,7 @@ internal class AeroTokens
     {
         return new Dictionary<string, string>(Extended)
         {
-            ["--flare-aero-glow"] = "rgba(91,155,224,0.55)",
+            [AeroCssVars.Glow] = "rgba(91,155,224,0.55)",
         };
     }
 

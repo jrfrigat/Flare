@@ -3,128 +3,121 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for split button.</summary>
 public static class SplitButton
 {
-    private const string FlareSplit = $"{Vars.Flare}-split-btn";
-
     /// <summary>CSS custom-property name for the gap token.</summary>
-    public const string Gap = $"{FlareSplit}-gap";
+    public const string Gap = "--flare-split-btn-gap";
     /// <summary>CSS custom-property name for the trigger width token.</summary>
-    public const string TriggerWidth = $"{FlareSplit}-trigger-width";
+    public const string TriggerWidth = "--flare-split-btn-trigger-width";
 
     /// <summary>Per-corner radii for the main (left) split button across all 5 sizes.</summary>
     public static class MainRadius
     {
-        private const string Prefix = $"{FlareSplit}-main-radius";
-
         /// <summary>CSS custom-property name for the xs top left token.</summary>
-        public const string XsTopLeft = $"{Prefix}-{Size.Xs}-{Side.TL}";
+        public const string XsTopLeft = "--flare-split-btn-main-radius-xs-top-left";
         /// <summary>CSS custom-property name for the xs top right token.</summary>
-        public const string XsTopRight = $"{Prefix}-{Size.Xs}-{Side.TR}";
+        public const string XsTopRight = "--flare-split-btn-main-radius-xs-top-right";
         /// <summary>CSS custom-property name for the xs bottom right token.</summary>
-        public const string XsBottomRight = $"{Prefix}-{Size.Xs}-{Side.BR}";
+        public const string XsBottomRight = "--flare-split-btn-main-radius-xs-bottom-right";
         /// <summary>CSS custom-property name for the xs bottom left token.</summary>
-        public const string XsBottomLeft = $"{Prefix}-{Size.Xs}-{Side.BL}";
+        public const string XsBottomLeft = "--flare-split-btn-main-radius-xs-bottom-left";
 
         /// <summary>CSS custom-property name for the sm top left token.</summary>
-        public const string SmTopLeft = $"{Prefix}-{Size.Sm}-{Side.TL}";
+        public const string SmTopLeft = "--flare-split-btn-main-radius-sm-top-left";
         /// <summary>CSS custom-property name for the sm top right token.</summary>
-        public const string SmTopRight = $"{Prefix}-{Size.Sm}-{Side.TR}";
+        public const string SmTopRight = "--flare-split-btn-main-radius-sm-top-right";
         /// <summary>CSS custom-property name for the sm bottom right token.</summary>
-        public const string SmBottomRight = $"{Prefix}-{Size.Sm}-{Side.BR}";
+        public const string SmBottomRight = "--flare-split-btn-main-radius-sm-bottom-right";
         /// <summary>CSS custom-property name for the sm bottom left token.</summary>
-        public const string SmBottomLeft = $"{Prefix}-{Size.Sm}-{Side.BL}";
+        public const string SmBottomLeft = "--flare-split-btn-main-radius-sm-bottom-left";
 
         /// <summary>CSS custom-property name for the md top left token.</summary>
-        public const string MdTopLeft = $"{Prefix}-{Size.Md}-{Side.TL}";
+        public const string MdTopLeft = "--flare-split-btn-main-radius-md-top-left";
         /// <summary>CSS custom-property name for the md top right token.</summary>
-        public const string MdTopRight = $"{Prefix}-{Size.Md}-{Side.TR}";
+        public const string MdTopRight = "--flare-split-btn-main-radius-md-top-right";
         /// <summary>CSS custom-property name for the md bottom right token.</summary>
-        public const string MdBottomRight = $"{Prefix}-{Size.Md}-{Side.BR}";
+        public const string MdBottomRight = "--flare-split-btn-main-radius-md-bottom-right";
         /// <summary>CSS custom-property name for the md bottom left token.</summary>
-        public const string MdBottomLeft = $"{Prefix}-{Size.Md}-{Side.BL}";
+        public const string MdBottomLeft = "--flare-split-btn-main-radius-md-bottom-left";
 
         /// <summary>CSS custom-property name for the lg top left token.</summary>
-        public const string LgTopLeft = $"{Prefix}-{Size.Lg}-{Side.TL}";
+        public const string LgTopLeft = "--flare-split-btn-main-radius-lg-top-left";
         /// <summary>CSS custom-property name for the lg top right token.</summary>
-        public const string LgTopRight = $"{Prefix}-{Size.Lg}-{Side.TR}";
+        public const string LgTopRight = "--flare-split-btn-main-radius-lg-top-right";
         /// <summary>CSS custom-property name for the lg bottom right token.</summary>
-        public const string LgBottomRight = $"{Prefix}-{Size.Lg}-{Side.BR}";
+        public const string LgBottomRight = "--flare-split-btn-main-radius-lg-bottom-right";
         /// <summary>CSS custom-property name for the lg bottom left token.</summary>
-        public const string LgBottomLeft = $"{Prefix}-{Size.Lg}-{Side.BL}";
+        public const string LgBottomLeft = "--flare-split-btn-main-radius-lg-bottom-left";
 
         /// <summary>CSS custom-property name for the xl top left token.</summary>
-        public const string XlTopLeft = $"{Prefix}-{Size.Xl}-{Side.TL}";
+        public const string XlTopLeft = "--flare-split-btn-main-radius-xl-top-left";
         /// <summary>CSS custom-property name for the xl top right token.</summary>
-        public const string XlTopRight = $"{Prefix}-{Size.Xl}-{Side.TR}";
+        public const string XlTopRight = "--flare-split-btn-main-radius-xl-top-right";
         /// <summary>CSS custom-property name for the xl bottom right token.</summary>
-        public const string XlBottomRight = $"{Prefix}-{Size.Xl}-{Side.BR}";
+        public const string XlBottomRight = "--flare-split-btn-main-radius-xl-bottom-right";
         /// <summary>CSS custom-property name for the xl bottom left token.</summary>
-        public const string XlBottomLeft = $"{Prefix}-{Size.Xl}-{Side.BL}";
+        public const string XlBottomLeft = "--flare-split-btn-main-radius-xl-bottom-left";
     }
 
     /// <summary>Per-corner radii for the trigger (right) split button across all 5 sizes.</summary>
     public static class TriggerRadius
     {
-        private const string Prefix = $"{FlareSplit}-trigger-radius";
-
         /// <summary>CSS custom-property name for the xs top left token.</summary>
-        public const string XsTopLeft = $"{Prefix}-{Size.Xs}-{Side.TL}";
+        public const string XsTopLeft = "--flare-split-btn-trigger-radius-xs-top-left";
         /// <summary>CSS custom-property name for the xs top right token.</summary>
-        public const string XsTopRight = $"{Prefix}-{Size.Xs}-{Side.TR}";
+        public const string XsTopRight = "--flare-split-btn-trigger-radius-xs-top-right";
         /// <summary>CSS custom-property name for the xs bottom right token.</summary>
-        public const string XsBottomRight = $"{Prefix}-{Size.Xs}-{Side.BR}";
+        public const string XsBottomRight = "--flare-split-btn-trigger-radius-xs-bottom-right";
         /// <summary>CSS custom-property name for the xs bottom left token.</summary>
-        public const string XsBottomLeft = $"{Prefix}-{Size.Xs}-{Side.BL}";
+        public const string XsBottomLeft = "--flare-split-btn-trigger-radius-xs-bottom-left";
 
         /// <summary>CSS custom-property name for the sm top left token.</summary>
-        public const string SmTopLeft = $"{Prefix}-{Size.Sm}-{Side.TL}";
+        public const string SmTopLeft = "--flare-split-btn-trigger-radius-sm-top-left";
         /// <summary>CSS custom-property name for the sm top right token.</summary>
-        public const string SmTopRight = $"{Prefix}-{Size.Sm}-{Side.TR}";
+        public const string SmTopRight = "--flare-split-btn-trigger-radius-sm-top-right";
         /// <summary>CSS custom-property name for the sm bottom right token.</summary>
-        public const string SmBottomRight = $"{Prefix}-{Size.Sm}-{Side.BR}";
+        public const string SmBottomRight = "--flare-split-btn-trigger-radius-sm-bottom-right";
         /// <summary>CSS custom-property name for the sm bottom left token.</summary>
-        public const string SmBottomLeft = $"{Prefix}-{Size.Sm}-{Side.BL}";
+        public const string SmBottomLeft = "--flare-split-btn-trigger-radius-sm-bottom-left";
 
         /// <summary>CSS custom-property name for the md top left token.</summary>
-        public const string MdTopLeft = $"{Prefix}-{Size.Md}-{Side.TL}";
+        public const string MdTopLeft = "--flare-split-btn-trigger-radius-md-top-left";
         /// <summary>CSS custom-property name for the md top right token.</summary>
-        public const string MdTopRight = $"{Prefix}-{Size.Md}-{Side.TR}";
+        public const string MdTopRight = "--flare-split-btn-trigger-radius-md-top-right";
         /// <summary>CSS custom-property name for the md bottom right token.</summary>
-        public const string MdBottomRight = $"{Prefix}-{Size.Md}-{Side.BR}";
+        public const string MdBottomRight = "--flare-split-btn-trigger-radius-md-bottom-right";
         /// <summary>CSS custom-property name for the md bottom left token.</summary>
-        public const string MdBottomLeft = $"{Prefix}-{Size.Md}-{Side.BL}";
+        public const string MdBottomLeft = "--flare-split-btn-trigger-radius-md-bottom-left";
 
         /// <summary>CSS custom-property name for the lg top left token.</summary>
-        public const string LgTopLeft = $"{Prefix}-{Size.Lg}-{Side.TL}";
+        public const string LgTopLeft = "--flare-split-btn-trigger-radius-lg-top-left";
         /// <summary>CSS custom-property name for the lg top right token.</summary>
-        public const string LgTopRight = $"{Prefix}-{Size.Lg}-{Side.TR}";
+        public const string LgTopRight = "--flare-split-btn-trigger-radius-lg-top-right";
         /// <summary>CSS custom-property name for the lg bottom right token.</summary>
-        public const string LgBottomRight = $"{Prefix}-{Size.Lg}-{Side.BR}";
+        public const string LgBottomRight = "--flare-split-btn-trigger-radius-lg-bottom-right";
         /// <summary>CSS custom-property name for the lg bottom left token.</summary>
-        public const string LgBottomLeft = $"{Prefix}-{Size.Lg}-{Side.BL}";
+        public const string LgBottomLeft = "--flare-split-btn-trigger-radius-lg-bottom-left";
 
         /// <summary>CSS custom-property name for the xl top left token.</summary>
-        public const string XlTopLeft = $"{Prefix}-{Size.Xl}-{Side.TL}";
+        public const string XlTopLeft = "--flare-split-btn-trigger-radius-xl-top-left";
         /// <summary>CSS custom-property name for the xl top right token.</summary>
-        public const string XlTopRight = $"{Prefix}-{Size.Xl}-{Side.TR}";
+        public const string XlTopRight = "--flare-split-btn-trigger-radius-xl-top-right";
         /// <summary>CSS custom-property name for the xl bottom right token.</summary>
-        public const string XlBottomRight = $"{Prefix}-{Size.Xl}-{Side.BR}";
+        public const string XlBottomRight = "--flare-split-btn-trigger-radius-xl-bottom-right";
         /// <summary>CSS custom-property name for the xl bottom left token.</summary>
-        public const string XlBottomLeft = $"{Prefix}-{Size.Xl}-{Side.BL}";
+        public const string XlBottomLeft = "--flare-split-btn-trigger-radius-xl-bottom-left";
     }
 
     /// <summary>Arrow icon size across the 5 sizes.</summary>
     public static class CaretSize
     {
-        private const string Prefix = $"{FlareSplit}-caret-size";
         /// <summary>CSS custom-property name for the xs token.</summary>
-        public const string Xs = $"{Prefix}-{Size.Xs}";
+        public const string Xs = "--flare-split-btn-caret-size-xs";
         /// <summary>CSS custom-property name for the sm token.</summary>
-        public const string Sm = $"{Prefix}-{Size.Sm}";
+        public const string Sm = "--flare-split-btn-caret-size-sm";
         /// <summary>CSS custom-property name for the md token.</summary>
-        public const string Md = $"{Prefix}-{Size.Md}";
+        public const string Md = "--flare-split-btn-caret-size-md";
         /// <summary>CSS custom-property name for the lg token.</summary>
-        public const string Lg = $"{Prefix}-{Size.Lg}";
+        public const string Lg = "--flare-split-btn-caret-size-lg";
         /// <summary>CSS custom-property name for the xl token.</summary>
-        public const string Xl = $"{Prefix}-{Size.Xl}";
+        public const string Xl = "--flare-split-btn-caret-size-xl";
     }
 }

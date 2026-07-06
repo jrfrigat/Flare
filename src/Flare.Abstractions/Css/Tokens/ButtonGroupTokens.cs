@@ -8,18 +8,16 @@ namespace Flare.Css.Tokens;
 /// </summary>
 public static class ButtonGroup
 {
-    private const string FlareGroup = $"{Vars.Flare}-btn-group";
-
     /// <summary>CSS custom-property name for the gap between segments (positive = separated segments).</summary>
-    public const string Gap = $"{FlareGroup}-gap";
+    public const string Gap = "--flare-btn-group-gap";
     /// <summary>CSS custom-property name for the segment overlap: a (usually negative) inline/block margin on
     /// non-first segments that collapses two adjacent 1px borders into one shared seam. <c>0</c> = no overlap.</summary>
-    public const string Overlap = $"{FlareGroup}-overlap";
+    public const string Overlap = "--flare-btn-group-overlap";
     /// <summary>CSS custom-property name for the OUTER (leading/trailing group-end) corner radius.</summary>
-    public const string OuterRadius = $"{FlareGroup}-outer-radius";
+    public const string OuterRadius = "--flare-btn-group-outer-radius";
     /// <summary>CSS custom-property name for the INNER (interior seam) corner radius.</summary>
-    public const string InnerRadius = $"{FlareGroup}-inner-radius";
+    public const string InnerRadius = "--flare-btn-group-inner-radius";
     /// <summary>CSS custom-property name for the z-index applied to a hovered/focused segment so its border
     /// and focus ring are not clipped by an overlapping neighbour.</summary>
-    public const string ZActive = $"{FlareGroup}-z-active";
+    public const string ZActive = "--flare-btn-group-z-active";
 }

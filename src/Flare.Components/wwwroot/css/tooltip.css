@@ -28,7 +28,7 @@
   color: var(--flare-color-on-surface);
   box-shadow: var(--flare-elevation-3);
   white-space: normal;
-  max-width: 18rem;
+  max-width: var(--flare-tooltip-max-width);
   padding: var(--flare-spacing-6) var(--flare-spacing-8);
 }
 
@@ -40,25 +40,25 @@
 }
 
 .flare-tooltip--top .flare-tooltip__content {
-  bottom: calc(100% + 0.5rem);
+  bottom: calc(100% + var(--flare-tooltip-offset));
   left: 50%;
   transform: translateX(-50%);
 }
 
 .flare-tooltip--bottom .flare-tooltip__content {
-  top: calc(100% + 0.5rem);
+  top: calc(100% + var(--flare-tooltip-offset));
   left: 50%;
   transform: translateX(-50%);
 }
 
 .flare-tooltip--left .flare-tooltip__content {
-  right: calc(100% + 0.5rem);
+  right: calc(100% + var(--flare-tooltip-offset));
   top: 50%;
   transform: translateY(-50%);
 }
 
 .flare-tooltip--right .flare-tooltip__content {
-  left: calc(100% + 0.5rem);
+  left: calc(100% + var(--flare-tooltip-offset));
   top: 50%;
   transform: translateY(-50%);
 }

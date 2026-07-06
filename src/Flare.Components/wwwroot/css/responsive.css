@@ -3,12 +3,13 @@
    xs: 0-599px | sm: 600px | md: 960px | lg: 1280px | xl: 1920px
    ============================================= */
 
-/* Breakpoint CSS custom properties (read-only reference values) */
+/* Breakpoint CSS custom properties (read-only reference values). Names match Css.Tokens.Breakpoint.* */
 :root {
-    --flare-bp-sm: 600px;
-    --flare-bp-md: 960px;
-    --flare-bp-lg: 1280px;
-    --flare-bp-xl: 1920px;
+    --flare-breakpoint-xs: 0;
+    --flare-breakpoint-sm: 600px;
+    --flare-breakpoint-md: 960px;
+    --flare-breakpoint-lg: 1280px;
+    --flare-breakpoint-xl: 1920px;
 }
 
 /* --- Visibility utilities --- */

@@ -9,6 +9,16 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record TableOfContentsTokens
 {
+    /// <summary>Active weight.</summary>
+    [CssVar(TableOfContents.ActiveWeight)] public required string ActiveWeight { get; init; }
+    /// <summary>Hover bg opacity.</summary>
+    [CssVar(TableOfContents.HoverBgOpacity)] public required string HoverBgOpacity { get; init; }
+    /// <summary>Line height.</summary>
+    [CssVar(TableOfContents.LineHeight)] public required string LineHeight { get; init; }
+    /// <summary>Title tracking.</summary>
+    [CssVar(TableOfContents.TitleTracking)] public required string TitleTracking { get; init; }
+    /// <summary>Title weight.</summary>
+    [CssVar(TableOfContents.TitleWeight)] public required string TitleWeight { get; init; }
     /// <summary>Active (current section) link text color.</summary>
     [CssVar(TableOfContents.ActiveColor)] public required string ActiveColor { get; init; }
 

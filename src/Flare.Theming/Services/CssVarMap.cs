@@ -80,6 +80,8 @@ public static class CssVarMap
         // Motion
         v[Css.Tokens.Motion.DurationShort1] = t.Motion.DurationShort1;
         v[Css.Tokens.Motion.DurationShort2] = t.Motion.DurationShort2;
+        v[Css.Tokens.Motion.DurationShort3] = t.Motion.DurationShort3;
+        v[Css.Tokens.Motion.DurationShort4] = t.Motion.DurationShort4;
         v[Css.Tokens.Motion.DurationMedium1] = t.Motion.DurationMedium1;
         v[Css.Tokens.Motion.DurationMedium2] = t.Motion.DurationMedium2;
         v[Css.Tokens.Motion.DurationLong1] = t.Motion.DurationLong1;
@@ -110,6 +112,8 @@ public static class CssVarMap
 
         #region ALERT
         v[Css.Tokens.Alert.Radius] = t.Alert.Radius;
+        v[Css.Tokens.Alert.BodyOpacity] = t.Alert.BodyOpacity;
+        v[Css.Tokens.Alert.CloseOpacity] = t.Alert.CloseOpacity;
         v[Css.Tokens.Alert.BorderWidth] = t.Alert.BorderWidth;
         v[Css.Tokens.Alert.Padding] = t.Alert.Padding;
         v[Css.Tokens.Alert.Gap] = t.Alert.Gap;
@@ -118,6 +122,9 @@ public static class CssVarMap
         #region BUTTON
         // Gaps
         v[Css.Tokens.Button.Gap.Xs] = t.Button.GapXs;
+        v[Css.Tokens.Button.LoadingOpacity] = t.Button.LoadingOpacity;
+        v[Css.Tokens.Button.ContainerRadius] = t.Button.ContainerRadius;
+        v[Css.Tokens.Button.TextPaddingInline] = t.Button.TextPaddingInline;
         v[Css.Tokens.Button.Gap.Sm] = t.Button.GapSm;
         v[Css.Tokens.Button.Gap.Md] = t.Button.GapMd;
         v[Css.Tokens.Button.Gap.Lg] = t.Button.GapLg;
@@ -266,6 +273,10 @@ public static class CssVarMap
 
         #region TOGGLE BUTTON
         v[Css.Tokens.ToggleButton.Height.Sm] = t.ToggleButton.HeightSm;
+        v[Css.Tokens.ToggleButton.HeightXs] = t.ToggleButton.HeightXs;
+        v[Css.Tokens.ToggleButton.HeightXl] = t.ToggleButton.HeightXl;
+        v[Css.Tokens.ToggleButton.PaddingXs] = t.ToggleButton.PaddingXs;
+        v[Css.Tokens.ToggleButton.PaddingXl] = t.ToggleButton.PaddingXl;
         v[Css.Tokens.ToggleButton.Height.Md] = t.ToggleButton.HeightMd;
         v[Css.Tokens.ToggleButton.Height.Lg] = t.ToggleButton.HeightLg;
 
@@ -308,6 +319,7 @@ public static class CssVarMap
 
         #region MENU
         v[Css.Tokens.Checkbox.BorderWidth] = t.Checkbox.BorderWidth;
+        v[Css.Tokens.Checkbox.Size] = t.Checkbox.Size;
         v[Css.Tokens.Checkbox.Radius] = t.Checkbox.Radius;
         v[Css.Tokens.Checkbox.StateLayerHover] = t.Checkbox.StateLayerHover;
         v[Css.Tokens.Checkbox.StateLayerHoverChecked] = t.Checkbox.StateLayerHoverChecked;
@@ -315,10 +327,17 @@ public static class CssVarMap
         v[Css.Tokens.Checkbox.FocusOutlineOffset] = t.Checkbox.FocusOutlineOffset;
         v[Css.Tokens.Checkbox.FocusShadow] = t.Checkbox.FocusShadow;
         v[Css.Tokens.Radio.StateLayerHover] = t.Radio.StateLayerHover;
+        v[Css.Tokens.Radio.Size] = t.Radio.Size;
         v[Css.Tokens.Radio.StateLayerHoverChecked] = t.Radio.StateLayerHoverChecked;
         v[Css.Tokens.Chip.Radius] = t.Chip.Radius;
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
+        v[Css.Tokens.Tabs.ActiveWeight] = t.Tabs.ActiveWeight;
+        v[Css.Tokens.Tabs.CloseOpacity] = t.Tabs.CloseOpacity;
+        v[Css.Tokens.Tabs.LabelFont] = t.Tabs.LabelFont;
+        v[Css.Tokens.Tabs.LabelSize] = t.Tabs.LabelSize;
+        v[Css.Tokens.Tabs.LabelWeight] = t.Tabs.LabelWeight;
+        v[Css.Tokens.Tabs.ScrollShadowOpacity] = t.Tabs.ScrollShadowOpacity;
         v[Css.Tokens.Tabs.ActiveColor] = t.Tabs.ActiveColor;
         v[Css.Tokens.Tabs.InactiveColor] = t.Tabs.InactiveColor;
         v[Css.Tokens.Tabs.DividerColor] = t.Tabs.DividerColor;
@@ -329,6 +348,11 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.TrackBg] = t.Tabs.TrackBg;
         v[Css.Tokens.Tabs.PillRadius] = t.Tabs.PillRadius;
         v[Css.Tokens.TableOfContents.ActiveColor] = t.TableOfContents.ActiveColor;
+        v[Css.Tokens.TableOfContents.ActiveWeight] = t.TableOfContents.ActiveWeight;
+        v[Css.Tokens.TableOfContents.HoverBgOpacity] = t.TableOfContents.HoverBgOpacity;
+        v[Css.Tokens.TableOfContents.LineHeight] = t.TableOfContents.LineHeight;
+        v[Css.Tokens.TableOfContents.TitleTracking] = t.TableOfContents.TitleTracking;
+        v[Css.Tokens.TableOfContents.TitleWeight] = t.TableOfContents.TitleWeight;
         v[Css.Tokens.TableOfContents.InactiveColor] = t.TableOfContents.InactiveColor;
         v[Css.Tokens.TableOfContents.TitleColor] = t.TableOfContents.TitleColor;
         v[Css.Tokens.TableOfContents.RailColor] = t.TableOfContents.RailColor;
@@ -382,6 +406,8 @@ public static class CssVarMap
         v[Css.Tokens.Timeline.ConnectorWidth] = t.Timeline.ConnectorWidth;
 
         v[Css.Tokens.Stepper.CircleSize] = t.Stepper.CircleSize;
+        v[Css.Tokens.Stepper.FocusRingThickness] = t.Stepper.FocusRingThickness;
+        v[Css.Tokens.Stepper.FocusRingColor] = t.Stepper.FocusRingColor;
         v[Css.Tokens.Stepper.CircleBorderWidth] = t.Stepper.CircleBorderWidth;
         v[Css.Tokens.Stepper.CircleIconSize] = t.Stepper.CircleIconSize;
         v[Css.Tokens.Stepper.ConnectorThickness] = t.Stepper.ConnectorThickness;
@@ -391,6 +417,8 @@ public static class CssVarMap
         v[Css.Tokens.Stepper.StepMinWidth] = t.Stepper.StepMinWidth;
 
         v[Css.Tokens.Tree.Indent] = t.Tree.Indent;
+        v[Css.Tokens.Tree.ToggleHoverBg] = t.Tree.ToggleHoverBg;
+        v[Css.Tokens.Tree.DropInsideBg] = t.Tree.DropInsideBg;
         v[Css.Tokens.Tree.ToggleSize] = t.Tree.ToggleSize;
         v[Css.Tokens.Tree.IconSize] = t.Tree.IconSize;
         v[Css.Tokens.Tree.SelectedBg] = t.Tree.SelectedBg;
@@ -398,6 +426,7 @@ public static class CssVarMap
         v[Css.Tokens.Tree.DropIndicatorColor] = t.Tree.DropIndicatorColor;
 
         v[Css.Tokens.Calendar.MaxWidth] = t.Calendar.MaxWidth;
+        v[Css.Tokens.Calendar.EventPadY] = t.Calendar.EventPadY;
         v[Css.Tokens.Calendar.MonthMinWidth] = t.Calendar.MonthMinWidth;
         v[Css.Tokens.Calendar.NavBtnSize] = t.Calendar.NavBtnSize;
         v[Css.Tokens.Calendar.CellMinHeight] = t.Calendar.CellMinHeight;
@@ -408,6 +437,7 @@ public static class CssVarMap
         v[Css.Tokens.Calendar.OtherMonthOpacity] = t.Calendar.OtherMonthOpacity;
 
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
+        v[Css.Tokens.MenuPanel.GroupDivider] = t.Menu.GroupDivider;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;
         v[Css.Tokens.MenuPanel.Bg] = t.Menu.PanelBg;
@@ -444,171 +474,65 @@ public static class CssVarMap
         v[Css.Tokens.InputField.OutlinedBorder] = t.Input.OutlinedBorder;
         v[Css.Tokens.InputField.OutlinedRadius] = t.Input.OutlinedRadius;
         v[Css.Tokens.InputField.FilledBorderBottom] = t.Input.FilledBorderBottom;
-        v[Css.Tokens.InputField.FilledRadius] = t.Input.FilledRadius;
         v[Css.Tokens.InputField.FocusBorder] = t.Input.FocusBorder;
         v[Css.Tokens.InputField.FocusBorderBottom] = t.Input.FocusBorderBottom;
         v[Css.Tokens.InputField.HoverBorderBottom] = t.Input.HoverBorderBottom;
         v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
         v[Css.Tokens.InputField.Padding] = t.Input.Padding;
-        v[Css.Tokens.InputField.FontFamily] = t.Input.FontFamily;
-        v[Css.Tokens.InputField.FontSize] = t.Input.FontSize;
-        v[Css.Tokens.InputField.TextColor] = t.Input.TextColor;
         v[Css.Tokens.InputField.PlaceholderColor] = t.Input.PlaceholderColor;
-        v[Css.Tokens.InputField.CaretColor] = t.Input.CaretColor;
-        v[Css.Tokens.InputField.ErrorBorder] = t.Input.ErrorBorder;
-        v[Css.Tokens.InputField.ErrorColor] = t.Input.ErrorColor;
         v[Css.Tokens.InputField.DisabledBg] = t.Input.DisabledBg;
         v[Css.Tokens.InputField.DisabledIndicator] = t.Input.DisabledIndicator;
-        v[Css.Tokens.InputField.HelperFontSize] = t.Input.HelperFontSize;
-        v[Css.Tokens.InputField.HelperColor] = t.Input.HelperColor;
-        v[Css.Tokens.InputField.LabelFontFamily] = t.Input.LabelFontFamily;
-        v[Css.Tokens.InputField.LabelFontSize] = t.Input.LabelFontSize;
-        v[Css.Tokens.InputField.LabelFontWeight] = t.Input.LabelFontWeight;
-        v[Css.Tokens.InputField.LabelColor] = t.Input.LabelColor;
+        v[Css.Tokens.InputField.ErrorHoverIndicator] = t.Input.ErrorHoverIndicator;
         #endregion
 
         #region DIALOG
-        v[Css.Tokens.DialogPanel.SurfaceColor] = t.Dialog.SurfaceColor;
         v[Css.Tokens.DialogPanel.Radius] = t.Dialog.Radius;
-        v[Css.Tokens.DialogPanel.MaxWidth] = t.Dialog.MaxWidth;
-        v[Css.Tokens.DialogPanel.MinWidth] = t.Dialog.MinWidth;
-        v[Css.Tokens.DialogPanel.Padding] = t.Dialog.Padding;
-        v[Css.Tokens.DialogPanel.HeaderPadding] = t.Dialog.HeaderPadding;
-        v[Css.Tokens.DialogPanel.ActionsPadding] = t.Dialog.ActionsPadding;
-        v[Css.Tokens.DialogPanel.ActionsGap] = t.Dialog.ActionsGap;
-        v[Css.Tokens.DialogPanel.ScrimColor] = t.Dialog.ScrimColor;
-        v[Css.Tokens.DialogPanel.ScrimOpacity] = t.Dialog.ScrimOpacity;
-        v[Css.Tokens.DialogPanel.Elevation] = t.Dialog.Elevation;
-        v[Css.Tokens.DialogPanel.TitleColor] = t.Dialog.TitleColor;
-        v[Css.Tokens.DialogPanel.TitleFontFamily] = t.Dialog.TitleFontFamily;
-        v[Css.Tokens.DialogPanel.TitleFontSize] = t.Dialog.TitleFontSize;
-        v[Css.Tokens.DialogPanel.TitleFontWeight] = t.Dialog.TitleFontWeight;
-        v[Css.Tokens.DialogPanel.ContentColor] = t.Dialog.ContentColor;
-        v[Css.Tokens.DialogPanel.ContentFontFamily] = t.Dialog.ContentFontFamily;
-        v[Css.Tokens.DialogPanel.ContentFontSize] = t.Dialog.ContentFontSize;
-        v[Css.Tokens.DialogPanel.TransitionDuration] = t.Dialog.TransitionDuration;
-        v[Css.Tokens.DialogPanel.TransitionEasing] = t.Dialog.TransitionEasing;
-        v[Css.Tokens.DialogPanel.SizeXsWidth] = t.Dialog.SizeXsWidth;
-        v[Css.Tokens.DialogPanel.SizeSmWidth] = t.Dialog.SizeSmWidth;
-        v[Css.Tokens.DialogPanel.SizeMdWidth] = t.Dialog.SizeMdWidth;
-        v[Css.Tokens.DialogPanel.SizeLgWidth] = t.Dialog.SizeLgWidth;
-        v[Css.Tokens.DialogPanel.SizeXlWidth] = t.Dialog.SizeXlWidth;
-        v[Css.Tokens.DialogPanel.SizeFullWidth] = t.Dialog.SizeFullWidth;
+        v[Css.Tokens.DialogPanel.IconSize] = t.Dialog.IconSize;
         #endregion
 
         #region DRAWER
-        v[Css.Tokens.DrawerPanel.SurfaceColor] = t.Drawer.SurfaceColor;
         v[Css.Tokens.DrawerPanel.Width] = t.Drawer.Width;
         v[Css.Tokens.DrawerPanel.MiniWidth] = t.Drawer.MiniWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointSmWidth] = t.Drawer.BreakpointSmWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointMdWidth] = t.Drawer.BreakpointMdWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointLgWidth] = t.Drawer.BreakpointLgWidth;
-        v[Css.Tokens.DrawerPanel.BreakpointXlWidth] = t.Drawer.BreakpointXlWidth;
-        v[Css.Tokens.DrawerPanel.Elevation] = t.Drawer.Elevation;
-        v[Css.Tokens.DrawerPanel.Radius] = t.Drawer.Radius;
-        v[Css.Tokens.DrawerPanel.ScrimColor] = t.Drawer.ScrimColor;
-        v[Css.Tokens.DrawerPanel.ScrimOpacity] = t.Drawer.ScrimOpacity;
-        v[Css.Tokens.DrawerPanel.TransitionDuration] = t.Drawer.TransitionDuration;
-        v[Css.Tokens.DrawerPanel.TransitionEasing] = t.Drawer.TransitionEasing;
-        v[Css.Tokens.DrawerPanel.HeaderPadding] = t.Drawer.HeaderPadding;
-        v[Css.Tokens.DrawerPanel.ContentPadding] = t.Drawer.ContentPadding;
-        v[Css.Tokens.DrawerPanel.TitleColor] = t.Drawer.TitleColor;
-        v[Css.Tokens.DrawerPanel.TitleFontFamily] = t.Drawer.TitleFontFamily;
-        v[Css.Tokens.DrawerPanel.TitleFontSize] = t.Drawer.TitleFontSize;
         #endregion
 
         #region SNACKBAR
-        v[Css.Tokens.SnackbarPanel.SurfaceColor] = t.Snackbar.SurfaceColor;
-        v[Css.Tokens.SnackbarPanel.TextColor] = t.Snackbar.TextColor;
-        v[Css.Tokens.SnackbarPanel.ActionColor] = t.Snackbar.ActionColor;
         v[Css.Tokens.SnackbarPanel.Radius] = t.Snackbar.Radius;
-        v[Css.Tokens.SnackbarPanel.MinWidth] = t.Snackbar.MinWidth;
-        v[Css.Tokens.SnackbarPanel.MaxWidth] = t.Snackbar.MaxWidth;
-        v[Css.Tokens.SnackbarPanel.Height] = t.Snackbar.Height;
-        v[Css.Tokens.SnackbarPanel.HeightMultiLine] = t.Snackbar.HeightMultiLine;
-        v[Css.Tokens.SnackbarPanel.Padding] = t.Snackbar.Padding;
-        v[Css.Tokens.SnackbarPanel.Gap] = t.Snackbar.Gap;
-        v[Css.Tokens.SnackbarPanel.Elevation] = t.Snackbar.Elevation;
-        v[Css.Tokens.SnackbarPanel.FontFamily] = t.Snackbar.FontFamily;
-        v[Css.Tokens.SnackbarPanel.FontSize] = t.Snackbar.FontSize;
-        v[Css.Tokens.SnackbarPanel.ActionFontWeight] = t.Snackbar.ActionFontWeight;
-        v[Css.Tokens.SnackbarPanel.ActionFontSize] = t.Snackbar.ActionFontSize;
-        v[Css.Tokens.SnackbarPanel.TransitionDuration] = t.Snackbar.TransitionDuration;
-        v[Css.Tokens.SnackbarPanel.TransitionEasing] = t.Snackbar.TransitionEasing;
-        v[Css.Tokens.SnackbarPanel.AutoHideDelay] = t.Snackbar.AutoHideDelay.ToString();
-        v[Css.Tokens.SnackbarPanel.BottomOffset] = t.Snackbar.BottomOffset;
-        v[Css.Tokens.SnackbarPanel.LeftOffset] = t.Snackbar.LeftOffset;
-        v[Css.Tokens.SnackbarPanel.RightOffset] = t.Snackbar.RightOffset;
-        v[Css.Tokens.SnackbarPanel.StackGap] = t.Snackbar.StackGap;
+        v[Css.Tokens.SnackbarPanel.MinHeight] = t.Snackbar.MinHeight;
+        v[Css.Tokens.SnackbarPanel.PaddingBlock] = t.Snackbar.PaddingBlock;
+        v[Css.Tokens.SnackbarPanel.ProviderInset] = t.Snackbar.ProviderInset;
+        v[Css.Tokens.SnackbarPanel.CloseOpacity] = t.Snackbar.CloseOpacity;
         #endregion
 
         #region TOOLTIP
-        v[Css.Tokens.TooltipPopup.SurfaceColor] = t.Tooltip.SurfaceColor;
-        v[Css.Tokens.TooltipPopup.TextColor] = t.Tooltip.TextColor;
-        v[Css.Tokens.TooltipPopup.Radius] = t.Tooltip.Radius;
-        v[Css.Tokens.TooltipPopup.Padding] = t.Tooltip.Padding;
         v[Css.Tokens.TooltipPopup.MaxWidth] = t.Tooltip.MaxWidth;
-        v[Css.Tokens.TooltipPopup.FontFamily] = t.Tooltip.FontFamily;
-        v[Css.Tokens.TooltipPopup.FontSize] = t.Tooltip.FontSize;
-        v[Css.Tokens.TooltipPopup.FontWeight] = t.Tooltip.FontWeight;
-        v[Css.Tokens.TooltipPopup.LineHeight] = t.Tooltip.LineHeight;
         v[Css.Tokens.TooltipPopup.Offset] = t.Tooltip.Offset;
-        v[Css.Tokens.TooltipPopup.ArrowSize] = t.Tooltip.ArrowSize;
-        v[Css.Tokens.TooltipPopup.TransitionDuration] = t.Tooltip.TransitionDuration;
-        v[Css.Tokens.TooltipPopup.TransitionEasing] = t.Tooltip.TransitionEasing;
-        v[Css.Tokens.TooltipPopup.ShowDelay] = t.Tooltip.ShowDelay.ToString();
-        v[Css.Tokens.TooltipPopup.HideDelay] = t.Tooltip.HideDelay.ToString();
         #endregion
 
         #region POPOVER
-        v[Css.Tokens.PopoverPopup.SurfaceColor] = t.Popover.SurfaceColor;
         v[Css.Tokens.PopoverPopup.Radius] = t.Popover.Radius;
-        v[Css.Tokens.PopoverPopup.Elevation] = t.Popover.Elevation;
-        v[Css.Tokens.PopoverPopup.Padding] = t.Popover.Padding;
-        v[Css.Tokens.PopoverPopup.MinWidth] = t.Popover.MinWidth;
-        v[Css.Tokens.PopoverPopup.MaxWidth] = t.Popover.MaxWidth;
-        v[Css.Tokens.PopoverPopup.MaxHeight] = t.Popover.MaxHeight;
-        v[Css.Tokens.PopoverPopup.Offset] = t.Popover.Offset;
-        v[Css.Tokens.PopoverPopup.ArrowSize] = t.Popover.ArrowSize;
-        v[Css.Tokens.PopoverPopup.ScrimColor] = t.Popover.ScrimColor;
-        v[Css.Tokens.PopoverPopup.TransitionDuration] = t.Popover.TransitionDuration;
-        v[Css.Tokens.PopoverPopup.TransitionEasing] = t.Popover.TransitionEasing;
         #endregion
 
         #region DATAGRID
-        v[Css.Tokens.DataGridField.SurfaceColor] = t.DataGrid.SurfaceColor;
-        v[Css.Tokens.DataGridField.HeaderBg] = t.DataGrid.HeaderBg;
-        v[Css.Tokens.DataGridField.HeaderColor] = t.DataGrid.HeaderColor;
-        v[Css.Tokens.DataGridField.HeaderFontFamily] = t.DataGrid.HeaderFontFamily;
-        v[Css.Tokens.DataGridField.HeaderFontSize] = t.DataGrid.HeaderFontSize;
-        v[Css.Tokens.DataGridField.HeaderFontWeight] = t.DataGrid.HeaderFontWeight;
-        v[Css.Tokens.DataGridField.HeaderHeight] = t.DataGrid.HeaderHeight;
-        v[Css.Tokens.DataGridField.HeaderPadding] = t.DataGrid.HeaderPadding;
-        v[Css.Tokens.DataGridField.RowHeight] = t.DataGrid.RowHeight;
-        v[Css.Tokens.DataGridField.RowHeightDense] = t.DataGrid.RowHeightDense;
-        v[Css.Tokens.DataGridField.CellPadding] = t.DataGrid.CellPadding;
-        v[Css.Tokens.DataGridField.CellColor] = t.DataGrid.CellColor;
-        v[Css.Tokens.DataGridField.CellFontFamily] = t.DataGrid.CellFontFamily;
-        v[Css.Tokens.DataGridField.CellFontSize] = t.DataGrid.CellFontSize;
-        v[Css.Tokens.DataGridField.SelectedRowBg] = t.DataGrid.SelectedRowBg;
-        v[Css.Tokens.DataGridField.SelectedRowColor] = t.DataGrid.SelectedRowColor;
-        v[Css.Tokens.DataGridField.HoverRowBg] = t.DataGrid.HoverRowBg;
-        v[Css.Tokens.DataGridField.SortIconColor] = t.DataGrid.SortIconColor;
-        v[Css.Tokens.DataGridField.SortIconActiveColor] = t.DataGrid.SortIconActiveColor;
-        v[Css.Tokens.DataGridField.BorderColor] = t.DataGrid.BorderColor;
-        v[Css.Tokens.DataGridField.BorderWidth] = t.DataGrid.BorderWidth;
-        v[Css.Tokens.DataGridField.FilterRowBg] = t.DataGrid.FilterRowBg;
-        v[Css.Tokens.DataGridField.GroupHeaderBg] = t.DataGrid.GroupHeaderBg;
-        v[Css.Tokens.DataGridField.GroupHeaderColor] = t.DataGrid.GroupHeaderColor;
-        v[Css.Tokens.DataGridField.ToolbarBg] = t.DataGrid.ToolbarBg;
-        v[Css.Tokens.DataGridField.ToolbarHeight] = t.DataGrid.ToolbarHeight;
-        v[Css.Tokens.DataGridField.ToolbarPadding] = t.DataGrid.ToolbarPadding;
-        v[Css.Tokens.DataGridField.EmptyStateBg] = t.DataGrid.EmptyStateBg;
-        v[Css.Tokens.DataGridField.EmptyStateColor] = t.DataGrid.EmptyStateColor;
+        v[Css.Tokens.DataGridField.SortIconSize] = t.DataGrid.SortIconSize;
+        v[Css.Tokens.DataGridField.SortPrioritySize] = t.DataGrid.SortPrioritySize;
+        v[Css.Tokens.DataGridField.FilterIconSize] = t.DataGrid.FilterIconSize;
+        v[Css.Tokens.DataGridField.BoolIconSize] = t.DataGrid.BoolIconSize;
+        v[Css.Tokens.DataGridField.BtnIconSize] = t.DataGrid.BtnIconSize;
+        v[Css.Tokens.DataGridField.CloseIconSize] = t.DataGrid.CloseIconSize;
+        v[Css.Tokens.DataGridField.ChevronSize] = t.DataGrid.ChevronSize;
+        v[Css.Tokens.DataGridField.DetailIconSize] = t.DataGrid.DetailIconSize;
+        v[Css.Tokens.DataGridField.TreeToggleSize] = t.DataGrid.TreeToggleSize;
+        v[Css.Tokens.DataGridField.CompositeLabelSize] = t.DataGrid.CompositeLabelSize;
         v[Css.Tokens.DataGridField.ResizeHandleWidth] = t.DataGrid.ResizeHandleWidth;
-        v[Css.Tokens.DataGridField.ResizeHandleColor] = t.DataGrid.ResizeHandleColor;
-        v[Css.Tokens.DataGridField.ColumnPickerBg] = t.DataGrid.ColumnPickerBg;
-        v[Css.Tokens.DataGridField.ColumnPickerElevation] = t.DataGrid.ColumnPickerElevation;
+        v[Css.Tokens.DataGridField.RecordDividerWidth] = t.DataGrid.RecordDividerWidth;
+        v[Css.Tokens.DataGridField.AggregateDividerWidth] = t.DataGrid.AggregateDividerWidth;
+        v[Css.Tokens.DataGridField.FilterGroupRail] = t.DataGrid.FilterGroupRail;
+        v[Css.Tokens.DataGridField.ActiveCellOutline] = t.DataGrid.ActiveCellOutline;
+        v[Css.Tokens.DataGridField.ColumnPickerMinWidth] = t.DataGrid.ColumnPickerMinWidth;
+        v[Css.Tokens.DataGridField.RowSelectedHoverPct] = t.DataGrid.RowSelectedHoverPct;
+        v[Css.Tokens.DataGridField.RowEditingPct] = t.DataGrid.RowEditingPct;
+        v[Css.Tokens.DataGridField.LoadingVeilPct] = t.DataGrid.LoadingVeilPct;
+        v[Css.Tokens.DataGridField.LoadingDim] = t.DataGrid.LoadingDim;
         #endregion
 
         #region CARD
@@ -647,48 +571,22 @@ public static class CssVarMap
         #endregion
 
         #region AVATAR
-        v[Css.Tokens.AvatarField.SurfaceColor] = t.Avatar.SurfaceColor;
-        v[Css.Tokens.AvatarField.TextColor] = t.Avatar.TextColor;
-        v[Css.Tokens.AvatarField.IconColor] = t.Avatar.IconColor;
-        v[Css.Tokens.AvatarField.RoundedRadius] = t.Avatar.RoundedRadius;
-        v[Css.Tokens.AvatarField.SquareRadius] = t.Avatar.SquareRadius;
-        v[Css.Tokens.AvatarField.SizeXs] = t.Avatar.SizeXs;
-        v[Css.Tokens.AvatarField.SizeSm] = t.Avatar.SizeSm;
-        v[Css.Tokens.AvatarField.SizeMd] = t.Avatar.SizeMd;
-        v[Css.Tokens.AvatarField.SizeLg] = t.Avatar.SizeLg;
-        v[Css.Tokens.AvatarField.SizeXl] = t.Avatar.SizeXl;
-        v[Css.Tokens.AvatarField.FontFamily] = t.Avatar.FontFamily;
-        v[Css.Tokens.AvatarField.FontSize] = t.Avatar.FontSize;
-        v[Css.Tokens.AvatarField.FontWeight] = t.Avatar.FontWeight;
+        v[Css.Tokens.AvatarField.GroupSpacing] = t.Avatar.GroupSpacing;
         v[Css.Tokens.AvatarField.GroupBorderWidth] = t.Avatar.GroupBorderWidth;
         v[Css.Tokens.AvatarField.GroupBorderColor] = t.Avatar.GroupBorderColor;
-        v[Css.Tokens.AvatarField.GroupOverflowBg] = t.Avatar.GroupOverflowBg;
-        v[Css.Tokens.AvatarField.GroupOverflowColor] = t.Avatar.GroupOverflowColor;
+        v[Css.Tokens.AvatarField.OverflowBg] = t.Avatar.OverflowBg;
+        v[Css.Tokens.AvatarField.OverflowColor] = t.Avatar.OverflowColor;
         #endregion
 
         #region PROGRESS
-        v[Css.Tokens.ProgressField.TrackColor] = t.Progress.TrackColor;
-        v[Css.Tokens.ProgressField.IndicatorColor] = t.Progress.IndicatorColor;
-        v[Css.Tokens.ProgressField.CircularColor] = t.Progress.CircularColor;
-        v[Css.Tokens.ProgressField.CircularTrackColor] = t.Progress.CircularTrackColor;
         v[Css.Tokens.ProgressField.LinearHeight] = t.Progress.LinearHeight;
-        v[Css.Tokens.ProgressField.LinearHeightSm] = t.Progress.LinearHeightSm;
-        v[Css.Tokens.ProgressField.LinearHeightLg] = t.Progress.LinearHeightLg;
-        v[Css.Tokens.ProgressField.LinearRadius] = t.Progress.LinearRadius;
-        v[Css.Tokens.ProgressField.CircularSize] = t.Progress.CircularSize;
-        v[Css.Tokens.ProgressField.CircularSizeSm] = t.Progress.CircularSizeSm;
-        v[Css.Tokens.ProgressField.CircularSizeLg] = t.Progress.CircularSizeLg;
-        v[Css.Tokens.ProgressField.CircularStrokeWidth] = t.Progress.CircularStrokeWidth;
-        v[Css.Tokens.ProgressField.CircularStrokeWidthSm] = t.Progress.CircularStrokeWidthSm;
-        v[Css.Tokens.ProgressField.CircularStrokeWidthLg] = t.Progress.CircularStrokeWidthLg;
-        v[Css.Tokens.ProgressField.IndeterminateDuration] = t.Progress.IndeterminateDuration;
-        v[Css.Tokens.ProgressField.IndeterminateEasing] = t.Progress.IndeterminateEasing;
-        v[Css.Tokens.ProgressField.BufferColor] = t.Progress.BufferColor;
-        v[Css.Tokens.ProgressField.WavyDuration] = t.Progress.WavyDuration;
         v[Css.Tokens.ProgressField.TrackRadius] = t.Progress.TrackRadius;
         v[Css.Tokens.ProgressField.Gap] = t.Progress.Gap;
         v[Css.Tokens.ProgressField.StopSize] = t.Progress.StopSize;
         v[Css.Tokens.ProgressField.StopInset] = t.Progress.StopInset;
+        v[Css.Tokens.ProgressField.StopColor] = t.Progress.StopColor;
+        v[Css.Tokens.ProgressField.BufferOpacity] = t.Progress.BufferOpacity;
+        v[Css.Tokens.ProgressField.CircularSize] = t.Progress.CircularSize;
         v[Css.Tokens.ProgressField.CircularWidth] = t.Progress.CircularWidth;
         v[Css.Tokens.ProgressField.CircularCap] = t.Progress.CircularCap;
         v[Css.Tokens.ProgressField.CircularGap] = t.Progress.CircularGap;
@@ -703,6 +601,9 @@ public static class CssVarMap
 
         #region NAV
         v[Css.Tokens.NavField.ItemRadius] = t.Nav.ItemRadius;
+        v[Css.Tokens.NavField.ActiveWeight] = t.Nav.ActiveWeight;
+        v[Css.Tokens.NavField.BadgeWeight] = t.Nav.BadgeWeight;
+        v[Css.Tokens.NavField.RailLabelLineHeight] = t.Nav.RailLabelLineHeight;
         v[Css.Tokens.NavField.IndicatorRadius] = t.Nav.IndicatorRadius;
         v[Css.Tokens.NavField.ActiveIndicator] = t.Nav.ActiveIndicator;
         v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;
@@ -727,38 +628,123 @@ public static class CssVarMap
         #region SWITCH
         v[Css.Tokens.SwitchField.TrackWidth] = t.Switch.TrackWidth;
         v[Css.Tokens.SwitchField.TrackHeight] = t.Switch.TrackHeight;
-        v[Css.Tokens.SwitchField.TrackWidthSm] = t.Switch.TrackWidthSm;
-        v[Css.Tokens.SwitchField.TrackHeightSm] = t.Switch.TrackHeightSm;
-        v[Css.Tokens.SwitchField.TrackWidthLg] = t.Switch.TrackWidthLg;
-        v[Css.Tokens.SwitchField.TrackHeightLg] = t.Switch.TrackHeightLg;
-        v[Css.Tokens.SwitchField.TrackRadius] = t.Switch.TrackRadius;
-        v[Css.Tokens.SwitchField.TrackColor] = t.Switch.TrackColor;
-        v[Css.Tokens.SwitchField.TrackBorderColor] = t.Switch.TrackBorderColor;
-        v[Css.Tokens.SwitchField.TrackBorderWidth] = t.Switch.TrackBorderWidth;
-        v[Css.Tokens.SwitchField.TrackColorSelected] = t.Switch.TrackColorSelected;
-        v[Css.Tokens.SwitchField.TrackBorderColorSelected] = t.Switch.TrackBorderColorSelected;
-        v[Css.Tokens.SwitchField.ThumbSize] = t.Switch.ThumbSize;
-        v[Css.Tokens.SwitchField.ThumbSizeSm] = t.Switch.ThumbSizeSm;
-        v[Css.Tokens.SwitchField.ThumbSizeLg] = t.Switch.ThumbSizeLg;
-        v[Css.Tokens.SwitchField.ThumbColor] = t.Switch.ThumbColor;
-        v[Css.Tokens.SwitchField.ThumbColorSelected] = t.Switch.ThumbColorSelected;
-        v[Css.Tokens.SwitchField.ThumbIconColor] = t.Switch.ThumbIconColor;
-        v[Css.Tokens.SwitchField.ThumbIconColorSelected] = t.Switch.ThumbIconColorSelected;
-        v[Css.Tokens.SwitchField.ThumbShadow] = t.Switch.ThumbShadow;
-        v[Css.Tokens.SwitchField.FocusOutlineWidth] = t.Switch.FocusOutlineWidth;
-        v[Css.Tokens.SwitchField.FocusOutlineColor] = t.Switch.FocusOutlineColor;
+        v[Css.Tokens.SwitchField.TrackOffBg] = t.Switch.TrackOffBg;
+        v[Css.Tokens.SwitchField.TrackOnBg] = t.Switch.TrackOnBg;
+        v[Css.Tokens.SwitchField.TrackBorder] = t.Switch.TrackBorder;
+        v[Css.Tokens.SwitchField.TrackHoverBorderColor] = t.Switch.TrackHoverBorderColor;
+        v[Css.Tokens.SwitchField.ThumbOffSize] = t.Switch.ThumbOffSize;
+        v[Css.Tokens.SwitchField.ThumbOnSize] = t.Switch.ThumbOnSize;
+        v[Css.Tokens.SwitchField.ThumbPressedOffSize] = t.Switch.ThumbPressedOffSize;
+        v[Css.Tokens.SwitchField.ThumbPressedOnSize] = t.Switch.ThumbPressedOnSize;
+        v[Css.Tokens.SwitchField.ThumbOffLeft] = t.Switch.ThumbOffLeft;
+        v[Css.Tokens.SwitchField.ThumbOnLeft] = t.Switch.ThumbOnLeft;
+        v[Css.Tokens.SwitchField.ThumbOffColor] = t.Switch.ThumbOffColor;
+        v[Css.Tokens.SwitchField.ThumbOnColor] = t.Switch.ThumbOnColor;
+        v[Css.Tokens.SwitchField.ThumbStateOffColor] = t.Switch.ThumbStateOffColor;
+        v[Css.Tokens.SwitchField.ThumbStateOnColor] = t.Switch.ThumbStateOnColor;
+        v[Css.Tokens.SwitchField.IconSize] = t.Switch.IconSize;
+        v[Css.Tokens.SwitchField.IconOffColor] = t.Switch.IconOffColor;
+        v[Css.Tokens.SwitchField.IconOnColor] = t.Switch.IconOnColor;
+        v[Css.Tokens.SwitchField.FocusOutline] = t.Switch.FocusOutline;
         v[Css.Tokens.SwitchField.FocusOutlineOffset] = t.Switch.FocusOutlineOffset;
-        v[Css.Tokens.SwitchField.TransitionDuration] = t.Switch.TransitionDuration;
-        v[Css.Tokens.SwitchField.TransitionEasing] = t.Switch.TransitionEasing;
-        v[Css.Tokens.SwitchField.PressedLayerColor] = t.Switch.PressedLayerColor;
-        v[Css.Tokens.SwitchField.PressedLayerOpacity] = t.Switch.PressedLayerOpacity;
-        v[Css.Tokens.SwitchField.DisabledOpacity] = t.Switch.DisabledOpacity;
+        v[Css.Tokens.SwitchField.FocusShadow] = t.Switch.FocusShadow;
+        v[Css.Tokens.SwitchField.TrackHoverOffBg] = t.Switch.TrackHoverOffBg;
+        v[Css.Tokens.SwitchField.TrackHoverOnBg] = t.Switch.TrackHoverOnBg;
+        v[Css.Tokens.SwitchField.HoverShadowOff] = t.Switch.HoverShadowOff;
+        v[Css.Tokens.SwitchField.HoverShadowOn] = t.Switch.HoverShadowOn;
+        v[Css.Tokens.SwitchField.DisabledTrackBg] = t.Switch.DisabledTrackBg;
+        v[Css.Tokens.SwitchField.DisabledTrackBorder] = t.Switch.DisabledTrackBorder;
+        v[Css.Tokens.SwitchField.DisabledHandleBg] = t.Switch.DisabledHandleBg;
         #endregion
 
         #region COLOR PICKER
         v[Css.Tokens.ColorPickerField.CheckerColor] = t.ColorPicker.CheckerColor;
         v[Css.Tokens.ColorPickerField.ThumbBg] = t.ColorPicker.ThumbBg;
         v[Css.Tokens.ColorPickerField.ThumbBorderColor] = t.ColorPicker.ThumbBorderColor;
+        #endregion
+
+        #region APPBAR
+        v[Css.Tokens.AppBarField.Gap] = t.AppBar.Gap;
+        v[Css.Tokens.AppBarField.Height] = t.AppBar.Height;
+        v[Css.Tokens.AppBarField.HeightDense] = t.AppBar.HeightDense;
+        v[Css.Tokens.AppBarField.PaddingX] = t.AppBar.PaddingX;
+        v[Css.Tokens.AppBarField.TitlePaddingX] = t.AppBar.TitlePaddingX;
+        #endregion
+
+        #region BREADCRUMB
+        v[Css.Tokens.BreadcrumbField.LinkHoverOpacity] = t.Breadcrumb.LinkHoverOpacity;
+        v[Css.Tokens.BreadcrumbField.SeparatorOpacity] = t.Breadcrumb.SeparatorOpacity;
+        #endregion
+
+        #region DATETIMEPICKER
+        v[Css.Tokens.DateTimePickerField.PanelGap] = t.DateTimePicker.PanelGap;
+        #endregion
+
+        #region DROPZONE
+        v[Css.Tokens.DropzoneField.BorderWidth] = t.Dropzone.BorderWidth;
+        v[Css.Tokens.DropzoneField.HoverBg] = t.Dropzone.HoverBg;
+        v[Css.Tokens.DropzoneField.DraggingBg] = t.Dropzone.DraggingBg;
+        v[Css.Tokens.DropzoneField.DraggingRingWidth] = t.Dropzone.DraggingRingWidth;
+        v[Css.Tokens.DropzoneField.IconSize] = t.Dropzone.IconSize;
+        #endregion
+
+        #region FORM
+        v[Css.Tokens.FormField.HorizontalColumns] = t.Form.HorizontalColumns;
+        #endregion
+
+        #region LAYOUT
+        v[Css.Tokens.LayoutField.AppBarHeight] = t.Layout.AppBarHeight;
+        v[Css.Tokens.LayoutField.ContentPadding] = t.Layout.ContentPadding;
+        v[Css.Tokens.LayoutField.ContentPaddingMobile] = t.Layout.ContentPaddingMobile;
+        v[Css.Tokens.LayoutField.DrawerRailWidth] = t.Layout.DrawerRailWidth;
+        v[Css.Tokens.LayoutField.DrawerWidth] = t.Layout.DrawerWidth;
+        #endregion
+
+        #region LINK
+        v[Css.Tokens.LinkField.FocusRingWidth] = t.Link.FocusRingWidth;
+        v[Css.Tokens.LinkField.HoverOpacity] = t.Link.HoverOpacity;
+        #endregion
+
+        #region OTP
+        v[Css.Tokens.OtpField.BorderWidth] = t.Otp.BorderWidth;
+        v[Css.Tokens.OtpField.CellHeight] = t.Otp.CellHeight;
+        v[Css.Tokens.OtpField.CellWidth] = t.Otp.CellWidth;
+        v[Css.Tokens.OtpField.FocusRingWidth] = t.Otp.FocusRingWidth;
+        v[Css.Tokens.OtpField.FontSize] = t.Otp.FontSize;
+        v[Css.Tokens.OtpField.FontWeight] = t.Otp.FontWeight;
+        #endregion
+
+        #region PICKER
+        v[Css.Tokens.PickerField.OutsideOpacity] = t.Picker.OutsideOpacity;
+        v[Css.Tokens.PickerField.DisabledOpacity] = t.Picker.DisabledOpacity;
+        #endregion
+
+        #region SCRIM
+        v[Css.Tokens.ScrimField.Opacity] = t.Scrim.Opacity;
+        #endregion
+
+        #region SCROLLTOP
+        v[Css.Tokens.ScrollTopField.TopInset] = t.ScrollTop.TopInset;
+        v[Css.Tokens.ScrollTopField.TopSize] = t.ScrollTop.TopSize;
+        #endregion
+
+        #region SKELETON
+        v[Css.Tokens.SkeletonField.PulseMinOpacity] = t.Skeleton.PulseMinOpacity;
+        v[Css.Tokens.SkeletonField.WaveOpacity] = t.Skeleton.WaveOpacity;
+        #endregion
+
+        #region TABLE
+        v[Css.Tokens.TableField.CellPaddingH] = t.Table.CellPaddingH;
+        v[Css.Tokens.TableField.CellPaddingV] = t.Table.CellPaddingV;
+        v[Css.Tokens.TableField.StripeOpacity] = t.Table.StripeOpacity;
+        #endregion
+
+        #region TIMEPICKER
+        v[Css.Tokens.TimePickerField.ColumnsSepSize] = t.TimePicker.ColumnsSepSize;
+        v[Css.Tokens.TimePickerField.DisplaySize] = t.TimePicker.DisplaySize;
+        v[Css.Tokens.TimePickerField.HeadlineTracking] = t.TimePicker.HeadlineTracking;
+        v[Css.Tokens.TimePickerField.PanelRadius] = t.TimePicker.PanelRadius;
+        v[Css.Tokens.TimePickerField.TimeSepSize] = t.TimePicker.TimeSepSize;
         #endregion
 
         // Extended (deeply custom overrides)

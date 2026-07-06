@@ -121,6 +121,48 @@ public sealed record DesignTokens
     /// <summary>FlareColorPicker checkerboard + native range-thumb tokens.</summary>
     public required ColorPickerTokens ColorPicker { get; init; }
 
+    /// <summary>appbar geometry tokens.</summary>
+    public required AppBarTokens AppBar { get; init; }
+
+    /// <summary>breadcrumb geometry tokens.</summary>
+    public required BreadcrumbTokens Breadcrumb { get; init; }
+
+    /// <summary>datetimepicker geometry tokens.</summary>
+    public required DateTimePickerTokens DateTimePicker { get; init; }
+
+    /// <summary>Dropzone geometry tokens.</summary>
+    public required DropzoneTokens Dropzone { get; init; }
+
+    /// <summary>form geometry tokens.</summary>
+    public required FormTokens Form { get; init; }
+
+    /// <summary>layout geometry tokens.</summary>
+    public required LayoutTokens Layout { get; init; }
+
+    /// <summary>link geometry tokens.</summary>
+    public required LinkTokens Link { get; init; }
+
+    /// <summary>otp geometry tokens.</summary>
+    public required OtpTokens Otp { get; init; }
+
+    /// <summary>picker geometry tokens.</summary>
+    public required PickerTokens Picker { get; init; }
+
+    /// <summary>scrim geometry tokens.</summary>
+    public required ScrimTokens Scrim { get; init; }
+
+    /// <summary>scroll geometry tokens.</summary>
+    public required ScrollTopTokens ScrollTop { get; init; }
+
+    /// <summary>skeleton geometry tokens.</summary>
+    public required SkeletonTokens Skeleton { get; init; }
+
+    /// <summary>table geometry tokens.</summary>
+    public required TableTokens Table { get; init; }
+
+    /// <summary>timepicker geometry tokens.</summary>
+    public required TimePickerTokens TimePicker { get; init; }
+
     /// <summary>Theme-specific extras not in the core schema (e.g. extra focus-ring vars a theme needs).</summary>
     public IReadOnlyDictionary<string, string> Extended { get; init; }
         = new Dictionary<string, string>();

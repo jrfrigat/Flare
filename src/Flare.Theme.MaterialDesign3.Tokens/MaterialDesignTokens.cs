@@ -58,6 +58,8 @@ public class MaterialDesignTokens
     {
         DurationShort1 = "50ms",
         DurationShort2 = "100ms",
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "200ms",
         DurationMedium2 = "300ms",
         DurationLong1 = "450ms",
@@ -93,6 +95,8 @@ public class MaterialDesignTokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         // MD3 Expressive: extra-small radius, no border on filled variant
         Radius = "var(--flare-shape-extra-small)",
         BorderWidth = "0",
@@ -102,6 +106,9 @@ public class MaterialDesignTokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         // 5 gap sizes (Gap) between text and icon
         // XS/S - height matches the MD3 spec -> gap = spec (8dp);
         // M=8 matches; L/XL - adapted to the reduced height.
@@ -197,6 +204,10 @@ public class MaterialDesignTokens
     // MD3: round rest shape, morphs into a squircle on selection (values = record defaults).
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
+        HeightXs = "1.75rem",
+        HeightXl = "3.5rem",
+        PaddingXs = "0.5rem",
+        PaddingXl = "2rem",
         HeightSm = "2rem",
         HeightMd = "2.5rem",
         HeightLg = "3rem",
@@ -235,6 +246,7 @@ public class MaterialDesignTokens
 
     internal static readonly CheckboxTokens Checkbox = new()
     {
+        Size = "1.125rem",
         BorderWidth = "2px",
         Radius = "2px",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
@@ -245,6 +257,7 @@ public class MaterialDesignTokens
     };
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
         StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
     };
@@ -255,6 +268,12 @@ public class MaterialDesignTokens
     };
     internal static readonly TabsTokens Tabs = new()
     {
+        ActiveWeight = "700",
+        CloseOpacity = "0.6",
+        LabelFont = "var(--flare-typescale-label-large-font)",
+        LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelWeight = "var(--flare-typescale-label-large-weight)",
+        ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-on-surface)",
@@ -271,6 +290,7 @@ public class MaterialDesignTokens
     // item 4dp (end items 12dp), label-large text, vertical 8dp, gap 2dp, focus-ring secondary.
     internal static readonly MenuTokens Menu = new()
     {
+        GroupDivider = "none",
         PanelRadius = "var(--flare-shape-large)",     // 16dp
         PanelMinWidth = "7rem",                       // 112dp
         PanelShadow = "var(--flare-elevation-3)",     // elevation 3
@@ -313,42 +333,32 @@ public class MaterialDesignTokens
     internal static readonly InputTokens Input = new()
     {
         FilledBg = "var(--flare-color-surface-container-highest)",
-        OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
-        Padding = "1rem 1rem",
         OutlinedBorder = "none",
+        OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
         FilledBorderBottom = "1px solid var(--flare-color-on-surface-variant)",
-        HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
-        HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
         FocusBorder = "none",
         FocusBorderBottom = "3px solid var(--flare-color-primary)",
-        // Neutral baseline members (formerly the record defaults), carried explicitly.
-        FilledRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
-        FontFamily = "var(--flare-typescale-body-large-font)",
-        FontSize = "var(--flare-typescale-body-large-size)",
-        TextColor = "var(--flare-color-on-surface)",
+        HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
+        HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
+        Padding = "1rem 1rem",
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
-        CaretColor = "var(--flare-color-primary)",
-        ErrorBorder = "var(--flare-color-error)",
-        ErrorColor = "var(--flare-color-error)",
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
-        HelperFontSize = "var(--flare-typescale-body-small-size, 0.75rem)",
-        HelperColor = "var(--flare-color-on-surface-variant)",
-        LabelFontFamily = "var(--flare-typescale-label-medium-font, var(--flare-typescale-label-large-font))",
-        LabelFontSize = "var(--flare-typescale-label-medium-size, 0.75rem)",
-        LabelFontWeight = "var(--flare-typescale-label-medium-weight, 400)",
-        LabelColor = "var(--flare-color-on-surface-variant)",
+        ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
     };
 
     // Progress - MD3 Expressive: rounded full track, 4px thick, trailing stop-indicator dot, round
     // circular caps, and the opt-in wavy determinate track (with-wave 10dp, amplitude 3dp, wavelength 40dp).
     internal static readonly ProgressTokens Progress = new()
     {
-        TrackRadius = "var(--flare-shape-full)",
         LinearHeight = "4px",
+        TrackRadius = "var(--flare-shape-full)",
         Gap = "4px",
         StopSize = "4px",
         StopInset = "0px",
+        StopColor = "var(--fc-main, var(--flare-color-primary))",
+        BufferOpacity = "30%",
+        CircularSize = "40px",
         CircularWidth = "4px",
         CircularCap = "round",
         CircularGap = "4px",
@@ -359,24 +369,6 @@ public class MaterialDesignTokens
         WaveSpeed = "1s",
         RingWaves = "8",
         RingWaveAmplitude = "1.6",
-        // Neutral baseline members (formerly the record defaults), carried explicitly.
-        TrackColor = "var(--flare-color-surface-container-highest)",
-        IndicatorColor = "var(--flare-color-primary)",
-        CircularColor = "var(--flare-color-primary)",
-        CircularTrackColor = "var(--flare-color-surface-container-highest)",
-        LinearHeightSm = "2px",
-        LinearHeightLg = "8px",
-        LinearRadius = "var(--flare-shape-full)",
-        CircularSize = "40px",
-        CircularSizeSm = "24px",
-        CircularSizeLg = "56px",
-        CircularStrokeWidth = "4px",
-        CircularStrokeWidthSm = "3px",
-        CircularStrokeWidthLg = "5px",
-        IndeterminateDuration = "2s",
-        IndeterminateEasing = "var(--flare-motion-easing-standard)",
-        BufferColor = "color-mix(in srgb, var(--flare-color-primary) 32%, var(--flare-color-surface-container-highest))",
-        WavyDuration = "1.5s",
     };
 
     /// <summary>
@@ -393,6 +385,9 @@ public class MaterialDesignTokens
 
     internal static readonly NavTokens Nav = new()
     {
+        ActiveWeight = "600",
+        BadgeWeight = "600",
+        RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "var(--flare-shape-full)",
         ActiveIndicator = "var(--flare-color-secondary-container)",
@@ -418,6 +413,11 @@ public class MaterialDesignTokens
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
     {
+        ActiveWeight = "600",
+        HoverBgOpacity = "40%",
+        LineHeight = "1.4",
+        TitleTracking = "0.05em",
+        TitleWeight = "600",
         ActiveColor = "var(--flare-color-on-secondary-container)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
         TitleColor = "var(--flare-color-on-surface-variant)",
@@ -439,106 +439,37 @@ public class MaterialDesignTokens
 
     internal static readonly TooltipTokens Tooltip = new()
     {
-        SurfaceColor = "var(--flare-color-inverse-surface)",
-        TextColor = "var(--flare-color-inverse-on-surface)",
-        Radius = "var(--flare-shape-extra-small)",
-        Padding = "6px 8px",
-        MaxWidth = "300px",
-        FontFamily = "var(--flare-typescale-body-small-font)",
-        FontSize = "var(--flare-typescale-body-small-size)",
-        FontWeight = "var(--flare-typescale-body-small-weight, 400)",
-        LineHeight = "var(--flare-typescale-body-small-height)",
-        Offset = "8px",
-        ArrowSize = "8px",
-        TransitionDuration = "var(--flare-motion-duration-short1)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
-        ShowDelay = 100,
-        HideDelay = 0,
+        MaxWidth = "18rem",
+        Offset = "0.5rem",
     };
 
     internal static readonly PopoverTokens Popover = new()
     {
-        SurfaceColor = "var(--flare-color-surface-container)",
         Radius = "var(--flare-shape-medium)",
-        Elevation = "var(--flare-elevation-2)",
-        Padding = "8px 0",
-        MinWidth = "112px",
-        MaxWidth = "calc(100vw - 32px)",
-        MaxHeight = "calc(100vh - 32px)",
-        Offset = "4px",
-        ArrowSize = "12px",
-        ScrimColor = "transparent",
-        TransitionDuration = "var(--flare-motion-duration-short2)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
     };
 
     internal static readonly AvatarTokens Avatar = new()
     {
-        SurfaceColor = "var(--flare-color-primary-container)",
-        TextColor = "var(--flare-color-on-primary-container)",
-        IconColor = "var(--flare-color-on-primary-container)",
-        RoundedRadius = "var(--flare-shape-full)",
-        SquareRadius = "var(--flare-shape-small)",
-        SizeXs = "24px",
-        SizeSm = "32px",
-        SizeMd = "40px",
-        SizeLg = "48px",
-        SizeXl = "64px",
-        FontFamily = "var(--flare-typescale-label-large-font)",
-        FontSize = "var(--flare-typescale-label-large-size)",
-        FontWeight = "var(--flare-typescale-label-large-weight, 500)",
+        GroupSpacing = "-0.75rem",
         GroupBorderWidth = "2px",
         GroupBorderColor = "var(--flare-color-surface)",
-        GroupOverflowBg = "var(--flare-color-surface-container-highest)",
-        GroupOverflowColor = "var(--flare-color-on-surface-variant)",
+        OverflowBg = "var(--flare-color-surface-container-highest)",
+        OverflowColor = "var(--flare-color-on-surface-variant)",
     };
 
     internal static readonly DrawerTokens Drawer = new()
     {
-        SurfaceColor = "var(--flare-color-surface-container-low)",
         Width = "360px",
         MiniWidth = "72px",
-        BreakpointSmWidth = "256px",
-        BreakpointMdWidth = "256px",
-        BreakpointLgWidth = "360px",
-        BreakpointXlWidth = "360px",
-        Elevation = "var(--flare-elevation-1)",
-        Radius = "var(--flare-shape-extra-large)",
-        ScrimColor = "var(--flare-color-scrim)",
-        ScrimOpacity = "0.32",
-        TransitionDuration = "var(--flare-motion-duration-medium2)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
-        HeaderPadding = "16px",
-        ContentPadding = "8px 0",
-        TitleColor = "var(--flare-color-on-surface)",
-        TitleFontFamily = "var(--flare-typescale-title-large-font)",
-        TitleFontSize = "var(--flare-typescale-title-large-size)",
     };
 
     internal static readonly SnackbarTokens Snackbar = new()
     {
-        SurfaceColor = "var(--flare-color-inverse-surface)",
-        TextColor = "var(--flare-color-inverse-on-surface)",
-        ActionColor = "var(--flare-color-inverse-primary)",
         Radius = "var(--flare-shape-extra-small)",
-        MinWidth = "344px",
-        MaxWidth = "560px",
-        Height = "48px",
-        HeightMultiLine = "68px",
-        Padding = "0 16px",
-        Gap = "8px",
-        Elevation = "var(--flare-elevation-3)",
-        FontFamily = "var(--flare-typescale-body-medium-font)",
-        FontSize = "var(--flare-typescale-body-medium-size)",
-        ActionFontWeight = "var(--flare-typescale-label-large-weight, 500)",
-        ActionFontSize = "var(--flare-typescale-label-large-size)",
-        TransitionDuration = "var(--flare-motion-duration-short2)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
-        AutoHideDelay = 5000,
-        BottomOffset = "16px",
-        LeftOffset = "16px",
-        RightOffset = "16px",
-        StackGap = "8px",
+        MinHeight = "3rem",
+        PaddingBlock = "0.875rem",
+        ProviderInset = "1.5rem",
+        CloseOpacity = "0.75",
     };
 
     internal static readonly SliderTokens Slider = new()
@@ -568,71 +499,34 @@ public class MaterialDesignTokens
 
     internal static readonly DialogTokens Dialog = new()
     {
-        SurfaceColor = "var(--flare-color-surface-container-high)",
         Radius = "var(--flare-shape-extra-large)",
-        MaxWidth = "560px",
-        MinWidth = "280px",
-        Padding = "24px",
-        HeaderPadding = "24px 24px 0 24px",
-        ActionsPadding = "0 24px 24px 24px",
-        ActionsGap = "8px",
-        ScrimColor = "var(--flare-color-scrim)",
-        ScrimOpacity = "0.32",
-        Elevation = "var(--flare-elevation-3)",
-        TitleColor = "var(--flare-color-on-surface)",
-        TitleFontFamily = "var(--flare-typescale-headline-small-font)",
-        TitleFontSize = "var(--flare-typescale-headline-small-size)",
-        TitleFontWeight = "var(--flare-typescale-headline-small-weight)",
-        ContentColor = "var(--flare-color-on-surface-variant)",
-        ContentFontFamily = "var(--flare-typescale-body-medium-font)",
-        ContentFontSize = "var(--flare-typescale-body-medium-size)",
-        TransitionDuration = "var(--flare-motion-duration-medium2)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
-        SizeXsWidth = "320px",
-        SizeSmWidth = "400px",
-        SizeMdWidth = "560px",
-        SizeLgWidth = "720px",
-        SizeXlWidth = "880px",
-        SizeFullWidth = "100%",
+        IconSize = "1.5rem",
     };
 
     // DataGrid baseline geometry/colors. No theme customizes the grid, so both references carry the
     // same neutral baseline explicitly now that the core record ships no defaults.
     internal static readonly DataGridTokens DataGrid = new()
     {
-        SurfaceColor = "var(--flare-color-surface)",
-        HeaderBg = "var(--flare-color-surface-container)",
-        HeaderColor = "var(--flare-color-on-surface)",
-        HeaderFontFamily = "var(--flare-typescale-label-medium-font)",
-        HeaderFontSize = "var(--flare-typescale-label-medium-size)",
-        HeaderFontWeight = "var(--flare-typescale-label-medium-weight, 500)",
-        HeaderHeight = "56px",
-        HeaderPadding = "0 16px",
-        RowHeight = "52px",
-        RowHeightDense = "40px",
-        CellPadding = "0 16px",
-        CellColor = "var(--flare-color-on-surface)",
-        CellFontFamily = "var(--flare-typescale-body-medium-font)",
-        CellFontSize = "var(--flare-typescale-body-medium-size)",
-        SelectedRowBg = "var(--flare-color-primary-container)",
-        SelectedRowColor = "var(--flare-color-on-primary-container)",
-        HoverRowBg = "color-mix(in srgb, var(--flare-color-on-surface) var(--flare-state-hover-opacity, 8%), transparent)",
-        SortIconColor = "var(--flare-color-on-surface-variant)",
-        SortIconActiveColor = "var(--flare-color-primary)",
-        BorderColor = "var(--flare-color-outline-variant)",
-        BorderWidth = "1px",
-        FilterRowBg = "var(--flare-color-surface-container-low)",
-        GroupHeaderBg = "var(--flare-color-surface-container)",
-        GroupHeaderColor = "var(--flare-color-on-surface)",
-        ToolbarBg = "var(--flare-color-surface)",
-        ToolbarHeight = "56px",
-        ToolbarPadding = "0 16px",
-        EmptyStateBg = "transparent",
-        EmptyStateColor = "var(--flare-color-on-surface-variant)",
+        SortIconSize = "1.125rem",
+        SortPrioritySize = "0.625rem",
+        FilterIconSize = "1.125rem",
+        BoolIconSize = "1.25rem",
+        BtnIconSize = "1rem",
+        CloseIconSize = "1.125rem",
+        ChevronSize = "1.25rem",
+        DetailIconSize = "1.25rem",
+        TreeToggleSize = "1.25rem",
+        CompositeLabelSize = "0.6875rem",
         ResizeHandleWidth = "4px",
-        ResizeHandleColor = "var(--flare-color-outline)",
-        ColumnPickerBg = "var(--flare-color-surface-container)",
-        ColumnPickerElevation = "var(--flare-elevation-2)",
+        RecordDividerWidth = "2px",
+        AggregateDividerWidth = "2px",
+        FilterGroupRail = "3px",
+        ActiveCellOutline = "2px solid var(--flare-color-primary)",
+        ColumnPickerMinWidth = "160px",
+        RowSelectedHoverPct = "18%",
+        RowEditingPct = "6%",
+        LoadingVeilPct = "55%",
+        LoadingDim = "0.6",
     };
 
     // Rating: Size = initial defers to the component size classes; empty star = outline-variant,
@@ -649,6 +543,7 @@ public class MaterialDesignTokens
     // circles, primary "today" marker, primary-tinted selection, 30% dimmed adjacent-month days.
     internal static readonly CalendarTokens Calendar = new()
     {
+        EventPadY = "0.0625rem",
         MaxWidth = "400px",
         MonthMinWidth = "16rem",
         NavBtnSize = "2rem",
@@ -663,6 +558,8 @@ public class MaterialDesignTokens
     // Tree: 24dp indent per level, 24dp expander/handle, 20dp icons, primary-tinted selection.
     internal static readonly TreeTokens Tree = new()
     {
+        ToggleHoverBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
+        DropInsideBg = "color-mix(in srgb, var(--flare-color-primary) 12%, transparent)",
         Indent = "var(--flare-spacing-12)",
         ToggleSize = "1.5rem",
         IconSize = "1.25rem",
@@ -675,6 +572,8 @@ public class MaterialDesignTokens
     // when complete) at least 24dp long, 80dp per-step min width.
     internal static readonly StepperTokens Stepper = new()
     {
+        FocusRingThickness = "2px",
+        FocusRingColor = "var(--flare-color-primary)",
         CircleSize = "2rem",
         CircleBorderWidth = "2px",
         CircleIconSize = "1.125rem",
@@ -713,32 +612,33 @@ public class MaterialDesignTokens
     {
         TrackWidth = "52px",
         TrackHeight = "32px",
-        TrackWidthSm = "40px",
-        TrackHeightSm = "24px",
-        TrackWidthLg = "64px",
-        TrackHeightLg = "40px",
-        TrackRadius = "var(--flare-shape-full)",
-        TrackColor = "var(--flare-color-surface-container-highest)",
-        TrackBorderColor = "var(--flare-color-outline)",
-        TrackBorderWidth = "2px",
-        TrackColorSelected = "var(--flare-color-primary)",
-        TrackBorderColorSelected = "var(--flare-color-primary)",
-        ThumbSize = "24px",
-        ThumbSizeSm = "16px",
-        ThumbSizeLg = "32px",
-        ThumbColor = "var(--flare-color-outline)",
-        ThumbColorSelected = "var(--flare-color-on-primary)",
-        ThumbIconColor = "var(--flare-color-surface-container-highest)",
-        ThumbIconColorSelected = "var(--flare-color-primary)",
-        ThumbShadow = "var(--flare-elevation-1)",
-        FocusOutlineWidth = "2px",
-        FocusOutlineColor = "var(--flare-color-primary)",
+        TrackOffBg = "var(--flare-color-surface-container-highest)",
+        TrackOnBg = "var(--fc-main, var(--flare-color-primary))",
+        TrackBorder = "2px solid var(--flare-color-outline)",
+        TrackHoverBorderColor = "var(--flare-color-outline)",
+        ThumbOffSize = "1rem",
+        ThumbOnSize = "1.5rem",
+        ThumbPressedOffSize = "1.75rem",
+        ThumbPressedOnSize = "1.75rem",
+        ThumbOffLeft = "0.25rem",
+        ThumbOnLeft = "calc(100% - 1.75rem)",
+        ThumbOffColor = "var(--flare-color-outline)",
+        ThumbOnColor = "var(--flare-color-on-primary)",
+        ThumbStateOffColor = "var(--flare-color-on-surface-variant)",
+        ThumbStateOnColor = "var(--flare-color-primary-container)",
+        IconSize = "1rem",
+        IconOffColor = "var(--flare-color-surface-container-highest)",
+        IconOnColor = "var(--flare-color-primary)",
+        FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
-        TransitionDuration = "var(--flare-motion-duration-short2)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
-        PressedLayerColor = "var(--flare-color-primary)",
-        PressedLayerOpacity = "var(--flare-state-pressed-opacity)",
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        FocusShadow = "none",
+        TrackHoverOffBg = "var(--flare-switch-track-off-bg)",
+        TrackHoverOnBg = "var(--flare-switch-track-on-bg)",
+        HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        HoverShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        DisabledTrackBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
+        DisabledTrackBorder = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
+        DisabledHandleBg = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
     };
 
     // Spacing scale: the 2px-base ramp (0/2/4/6/8/10/12/16/20/24/32/48/64px). Superset of the MD3 4dp
@@ -760,11 +660,123 @@ public class MaterialDesignTokens
         S32 = "4rem",
     };
 
+    internal static readonly AppBarTokens AppBar = new()
+    {
+        Gap = "0.25rem",
+        Height = "4rem",
+        HeightDense = "3rem",
+        PaddingX = "0.25rem",
+        TitlePaddingX = "0.75rem",
+    };
+
+    internal static readonly BreadcrumbTokens Breadcrumb = new()
+    {
+        LinkHoverOpacity = "0.8",
+        SeparatorOpacity = "0.5",
+    };
+
+    internal static readonly DateTimePickerTokens DateTimePicker = new()
+    {
+        PanelGap = "1rem",
+    };
+
+    internal static readonly DropzoneTokens Dropzone = new()
+    {
+        BorderWidth = "2px",
+        HoverBg = "color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface))",
+        DraggingBg = "color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface))",
+        DraggingRingWidth = "2px",
+        IconSize = "2.5rem",
+    };
+
+    internal static readonly FormTokens Form = new()
+    {
+        HorizontalColumns = "auto 1fr",
+    };
+
+    internal static readonly LayoutTokens Layout = new()
+    {
+        AppBarHeight = "64px",
+        ContentPadding = "1.5rem 2rem",
+        ContentPaddingMobile = "1rem",
+        DrawerRailWidth = "3.5rem",
+        DrawerWidth = "260px",
+    };
+
+    internal static readonly LinkTokens Link = new()
+    {
+        FocusRingWidth = "2px",
+        HoverOpacity = "0.8",
+    };
+
+    internal static readonly OtpTokens Otp = new()
+    {
+        BorderWidth = "2px",
+        CellHeight = "3rem",
+        CellWidth = "2.75rem",
+        FocusRingWidth = "2px",
+        FontSize = "1.25rem",
+        FontWeight = "600",
+    };
+
+    internal static readonly PickerTokens Picker = new()
+    {
+        OutsideOpacity = "0.4",
+        DisabledOpacity = "0.3",
+    };
+
+    internal static readonly ScrimTokens Scrim = new()
+    {
+        Opacity = "0.32",
+    };
+
+    internal static readonly ScrollTopTokens ScrollTop = new()
+    {
+        TopInset = "1.5rem",
+        TopSize = "2.75rem",
+    };
+
+    internal static readonly SkeletonTokens Skeleton = new()
+    {
+        PulseMinOpacity = "0.4",
+        WaveOpacity = "12%",
+    };
+
+    internal static readonly TableTokens Table = new()
+    {
+        CellPaddingH = "1rem",
+        CellPaddingV = "0.75rem",
+        StripeOpacity = "4%",
+    };
+
+    internal static readonly TimePickerTokens TimePicker = new()
+    {
+        ColumnsSepSize = "1.5rem",
+        DisplaySize = "2.75rem",
+        HeadlineTracking = "0.05em",
+        PanelRadius = "var(--flare-shape-extra-large)",
+        TimeSepSize = "2.5rem",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
+        AppBar = AppBar,
+        Breadcrumb = Breadcrumb,
+        DateTimePicker = DateTimePicker,
+        Dropzone = Dropzone,
+        Form = Form,
+        Layout = Layout,
+        Link = Link,
+        Otp = Otp,
+        Picker = Picker,
+        Scrim = Scrim,
+        ScrollTop = ScrollTop,
+        Skeleton = Skeleton,
+        Table = Table,
+        TimePicker = TimePicker,
         Spacing = Spacing,
         Switch = Switch,
         DataGrid = DataGrid,

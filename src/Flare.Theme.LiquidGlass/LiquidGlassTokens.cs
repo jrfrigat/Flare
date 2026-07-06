@@ -51,6 +51,8 @@ internal class LiquidGlassTokens
     {
         DurationShort1 = "100ms",
         DurationShort2 = "150ms",
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "250ms",
         DurationMedium2 = "350ms",
         DurationLong1 = "450ms",
@@ -85,6 +87,8 @@ internal class LiquidGlassTokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         Radius = "var(--flare-shape-large)",
         BorderWidth = "0px",
         Padding = "0.875rem 1rem",
@@ -93,6 +97,9 @@ internal class LiquidGlassTokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         GapXs = "0.25rem",
         GapSm = "0.3125rem",
         GapMd = "0.4375rem",
@@ -180,6 +187,7 @@ internal class LiquidGlassTokens
 
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
     };
@@ -187,22 +195,20 @@ internal class LiquidGlassTokens
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
     internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
 
-    // The iconic green iOS switch: gray off track, green on track, white circular thumb.
+    // The iconic green iOS switch: gray off track, green on track, white circular thumb (same size on/off).
     internal static readonly SwitchTokens Switch = MaterialDesignTokens.Design.Switch with
     {
         TrackWidth = "51px",
         TrackHeight = "31px",
-        TrackRadius = "var(--flare-shape-full)",
-        TrackColor = "var(--flare-color-surface-container-highest)",
-        TrackBorderColor = "transparent",
-        TrackBorderWidth = "0px",
-        TrackColorSelected = "var(--flare-color-success)",
-        TrackBorderColorSelected = "var(--flare-color-success)",
-        ThumbSize = "27px",
-        ThumbColor = "#FFFFFF",
-        ThumbColorSelected = "#FFFFFF",
-        ThumbShadow = "0 1px 3px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15)",
-        FocusOutlineColor = "var(--flare-color-primary)",
+        TrackOffBg = "var(--flare-color-surface-container-highest)",
+        TrackOnBg = "var(--flare-color-success)",
+        TrackBorder = "0 solid transparent",
+        ThumbOffSize = "27px",
+        ThumbOnSize = "27px",
+        ThumbPressedOffSize = "27px",
+        ThumbPressedOnSize = "27px",
+        ThumbOffColor = "#FFFFFF",
+        ThumbOnColor = "#FFFFFF",
     };
 
     internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
@@ -244,25 +250,25 @@ internal class LiquidGlassTokens
     public static readonly Dictionary<string, string> Extended = new()
     {
         // Accent focus glow shared by the scoped CSS (the Liquid Glass "material").
-        ["--flare-liquid-glow"] = "rgba(0,122,255,0.35)",
+        [LiquidGlassCssVars.Glow] = "rgba(0,122,255,0.35)",
         // Lightly translucent fills (no backdrop blur, for performance) - opaque
         // enough to stay clean over the soft backdrop, tinted enough to read as glass.
-        ["--flare-liquid-tint"] = "rgba(255,255,255,0.74)",
-        ["--flare-liquid-tint-strong"] = "rgba(255,255,255,0.88)",
+        [LiquidGlassCssVars.Tint] = "rgba(255,255,255,0.74)",
+        [LiquidGlassCssVars.TintStrong] = "rgba(255,255,255,0.88)",
         // Content surfaces (menus, dropdowns, dialogs, drawers, popovers): nearly opaque
         // so text stays readable - the colourful backdrop no longer bleeds through. The
         // glass illusion is preserved by the rim, edge and float shadow around the surface.
-        ["--flare-liquid-content-tint"] = "rgba(255,255,255,0.96)",
+        [LiquidGlassCssVars.ContentTint] = "rgba(255,255,255,0.96)",
         // Gentler sheen for content surfaces so the top row of text isn't washed out.
-        ["--flare-liquid-content-sheen"] = "rgba(255,255,255,0.22)",
+        [LiquidGlassCssVars.ContentSheen] = "rgba(255,255,255,0.22)",
         // Lensing rim: a bright light edge bent around the glass (top + bottom + hairline ring).
-        ["--flare-liquid-rim"] = "rgba(255,255,255,0.75)",
-        ["--flare-liquid-rim-low"] = "rgba(255,255,255,0.30)",
-        ["--flare-liquid-edge"] = "rgba(255,255,255,0.50)",
+        [LiquidGlassCssVars.Rim] = "rgba(255,255,255,0.75)",
+        [LiquidGlassCssVars.RimLow] = "rgba(255,255,255,0.30)",
+        [LiquidGlassCssVars.Edge] = "rgba(255,255,255,0.50)",
         // Specular sheen layered over the top of every glass surface.
-        ["--flare-liquid-sheen"] = "rgba(255,255,255,0.55)",
+        [LiquidGlassCssVars.Sheen] = "rgba(255,255,255,0.55)",
         // Soft floating drop shadow.
-        ["--flare-liquid-shadow"] = "0 8px 30px rgba(0,0,0,0.12)",
+        [LiquidGlassCssVars.Shadow] = "0 8px 30px rgba(0,0,0,0.12)",
 
         // Card + input backgrounds are translucent glass tints that differ light/dark (see the
         // DarkExtended overrides), so they stay mode-specific here rather than on the mode-agnostic
@@ -453,19 +459,19 @@ internal class LiquidGlassTokens
     {
         return new Dictionary<string, string>(Extended)
         {
-            ["--flare-liquid-glow"] = "rgba(10,132,255,0.40)",
+            [LiquidGlassCssVars.Glow] = "rgba(10,132,255,0.40)",
             // Dark frosted glass: darker tint, dimmer rim/sheen, deeper shadow.
-            ["--flare-liquid-tint"] = "rgba(44,44,46,0.74)",
-            ["--flare-liquid-tint-strong"] = "rgba(58,58,60,0.88)",
+            [LiquidGlassCssVars.Tint] = "rgba(44,44,46,0.74)",
+            [LiquidGlassCssVars.TintStrong] = "rgba(58,58,60,0.88)",
             // Nearly opaque dark frosted glass for text-bearing surfaces (dark bleed is
             // worse for contrast, so push opacity high); gentle sheen so labels stay crisp.
-            ["--flare-liquid-content-tint"] = "rgba(40,40,42,0.97)",
-            ["--flare-liquid-content-sheen"] = "rgba(255,255,255,0.07)",
-            ["--flare-liquid-rim"] = "rgba(255,255,255,0.28)",
-            ["--flare-liquid-rim-low"] = "rgba(255,255,255,0.10)",
-            ["--flare-liquid-edge"] = "rgba(255,255,255,0.14)",
-            ["--flare-liquid-sheen"] = "rgba(255,255,255,0.16)",
-            ["--flare-liquid-shadow"] = "0 8px 30px rgba(0,0,0,0.45)",
+            [LiquidGlassCssVars.ContentTint] = "rgba(40,40,42,0.97)",
+            [LiquidGlassCssVars.ContentSheen] = "rgba(255,255,255,0.07)",
+            [LiquidGlassCssVars.Rim] = "rgba(255,255,255,0.28)",
+            [LiquidGlassCssVars.RimLow] = "rgba(255,255,255,0.10)",
+            [LiquidGlassCssVars.Edge] = "rgba(255,255,255,0.14)",
+            [LiquidGlassCssVars.Sheen] = "rgba(255,255,255,0.16)",
+            [LiquidGlassCssVars.Shadow] = "0 8px 30px rgba(0,0,0,0.45)",
             ["--flare-card-elevated-bg"] = "rgba(44,44,46,0.78)",
             ["--flare-card-filled-bg"] = "rgba(44,44,46,0.78)",
             ["--flare-card-outlined-bg"] = "rgba(44,44,46,0.70)",

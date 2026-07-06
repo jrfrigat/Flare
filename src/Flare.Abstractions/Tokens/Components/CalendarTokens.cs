@@ -10,6 +10,8 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record CalendarTokens
 {
+    /// <summary>Event pad y.</summary>
+    [CssVar(Calendar.EventPadY)] public required string EventPadY { get; init; }
     /// <summary>Maximum width of a single-month calendar.</summary>
     [CssVar(Calendar.MaxWidth)] public required string MaxWidth { get; init; }
 
