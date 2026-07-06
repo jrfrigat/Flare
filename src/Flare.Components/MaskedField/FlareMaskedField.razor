@@ -163,17 +163,22 @@
         var mi = 0;
         foreach (var c in masked)
         {
-            if (mi >= Pattern.Length) break;
-            var mc = Pattern[mi];
-            if (mc == '#' || mc == 'A' || mc == '*')
+            // Walk past literal mask positions first. A literal that is already
+            // present in the input is consumed in place; otherwise the slot is
+            // skipped so this char can fill the next placeholder. Skipping is
+            // what lets a leading literal (e.g. '+' or '(') be auto-filled when
+            // the user types the first value char into an empty field.
+            var consumedLiteral = false;
+            while (mi < Pattern.Length && Pattern[mi] is not ('#' or 'A' or '*'))
             {
-                result.Append(c);
+                if (c == Pattern[mi]) { mi++; consumedLiteral = true; break; }
                 mi++;
             }
-            else
-            {
-                if (c == mc) mi++;
-            }
+            if (consumedLiteral) continue;
+            if (mi >= Pattern.Length) break;
+            // Placeholder position: capture the typed char.
+            result.Append(c);
+            mi++;
         }
         return result.ToString();
     }
