@@ -36,9 +36,9 @@ public sealed class CssAuditReport
 
 /// <summary>
 /// Outcome of a <c>--flare-*</c> token synchronization audit (the token counterpart of
-/// <see cref="CssAuditReport"/>). Unlike classes, tokens are NOT expected to be fully in sync today, so
-/// this report is informational (the <c>tokens</c> CLI verb prints it) and is deliberately NOT wired
-/// into a build-failing gate. Each list holds human-readable findings.
+/// <see cref="CssAuditReport"/>). Token usage and <c>Css.Tokens</c> are now fully reconciled, so this is
+/// both printed by the <c>tokens</c> CLI verb and enforced as a build gate by
+/// <c>CssAuditTests.CssTokens_Components_And_Themes_StayInSync</c>. Each list holds human-readable findings.
 /// </summary>
 public sealed class TokenAuditReport
 {
