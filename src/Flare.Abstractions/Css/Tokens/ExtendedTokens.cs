@@ -221,60 +221,65 @@ public static class NavField
 /// <summary>CSS variable tokens for switch field.</summary>
 public static class SwitchField
 {
-    /// <summary>CSS custom-property name for the track width token.</summary>
+    // Track radius, transition, disabled/pressed-layer and the sm/lg size variants are gone: switch.css
+    // reuses the shared shape/motion/state scales and its own size classes. What remains is the per-state
+    // geometry and colors the CSS reads.
+    /// <summary>CSS custom-property name for the track width.</summary>
     public const string TrackWidth = "--flare-switch-track-width";
-    /// <summary>CSS custom-property name for the track height token.</summary>
+    /// <summary>CSS custom-property name for the track height.</summary>
     public const string TrackHeight = "--flare-switch-track-height";
-    /// <summary>CSS custom-property name for the track width sm token.</summary>
-    public const string TrackWidthSm = "--flare-switch-track-width-sm";
-    /// <summary>CSS custom-property name for the track height sm token.</summary>
-    public const string TrackHeightSm = "--flare-switch-track-height-sm";
-    /// <summary>CSS custom-property name for the track width lg token.</summary>
-    public const string TrackWidthLg = "--flare-switch-track-width-lg";
-    /// <summary>CSS custom-property name for the track height lg token.</summary>
-    public const string TrackHeightLg = "--flare-switch-track-height-lg";
-    /// <summary>CSS custom-property name for the track radius token.</summary>
-    public const string TrackRadius = "--flare-switch-track-radius";
-    /// <summary>CSS custom-property name for the track color token.</summary>
-    public const string TrackColor = "--flare-switch-track-color";
-    /// <summary>CSS custom-property name for the track border color token.</summary>
-    public const string TrackBorderColor = "--flare-switch-track-border-color";
-    /// <summary>CSS custom-property name for the track border width token.</summary>
-    public const string TrackBorderWidth = "--flare-switch-track-border-width";
-    /// <summary>CSS custom-property name for the track color selected token.</summary>
-    public const string TrackColorSelected = "--flare-switch-track-color-selected";
-    /// <summary>CSS custom-property name for the track border color selected token.</summary>
-    public const string TrackBorderColorSelected = "--flare-switch-track-border-color-selected";
-    /// <summary>CSS custom-property name for the thumb size token.</summary>
-    public const string ThumbSize = "--flare-switch-thumb-size";
-    /// <summary>CSS custom-property name for the thumb size sm token.</summary>
-    public const string ThumbSizeSm = "--flare-switch-thumb-size-sm";
-    /// <summary>CSS custom-property name for the thumb size lg token.</summary>
-    public const string ThumbSizeLg = "--flare-switch-thumb-size-lg";
-    /// <summary>CSS custom-property name for the thumb color token.</summary>
-    public const string ThumbColor = "--flare-switch-thumb-color";
-    /// <summary>CSS custom-property name for the thumb color selected token.</summary>
-    public const string ThumbColorSelected = "--flare-switch-thumb-color-selected";
-    /// <summary>CSS custom-property name for the thumb icon color token.</summary>
-    public const string ThumbIconColor = "--flare-switch-thumb-icon-color";
-    /// <summary>CSS custom-property name for the thumb icon color selected token.</summary>
-    public const string ThumbIconColorSelected = "--flare-switch-thumb-icon-color-selected";
-    /// <summary>CSS custom-property name for the thumb shadow token.</summary>
-    public const string ThumbShadow = "--flare-switch-thumb-shadow";
-    /// <summary>CSS custom-property name for the focus outline width token.</summary>
-    public const string FocusOutlineWidth = "--flare-switch-focus-outline-width";
-    /// <summary>CSS custom-property name for the focus outline color token.</summary>
-    public const string FocusOutlineColor = "--flare-switch-focus-outline-color";
-    /// <summary>CSS custom-property name for the focus outline offset token.</summary>
+    /// <summary>CSS custom-property name for the track background when off.</summary>
+    public const string TrackOffBg = "--flare-switch-track-off-bg";
+    /// <summary>CSS custom-property name for the track background when on.</summary>
+    public const string TrackOnBg = "--flare-switch-track-on-bg";
+    /// <summary>CSS custom-property name for the track border (shorthand) when off.</summary>
+    public const string TrackBorder = "--flare-switch-track-border";
+    /// <summary>CSS custom-property name for the track border color on hover.</summary>
+    public const string TrackHoverBorderColor = "--flare-switch-track-hover-border-color";
+    /// <summary>CSS custom-property name for the thumb diameter when off.</summary>
+    public const string ThumbOffSize = "--flare-switch-thumb-off-size";
+    /// <summary>CSS custom-property name for the thumb diameter when on.</summary>
+    public const string ThumbOnSize = "--flare-switch-thumb-on-size";
+    /// <summary>CSS custom-property name for the thumb diameter when pressed and off.</summary>
+    public const string ThumbPressedOffSize = "--flare-switch-thumb-pressed-off-size";
+    /// <summary>CSS custom-property name for the thumb diameter when pressed and on.</summary>
+    public const string ThumbPressedOnSize = "--flare-switch-thumb-pressed-on-size";
+    /// <summary>CSS custom-property name for the thumb inline position when off.</summary>
+    public const string ThumbOffLeft = "--flare-switch-thumb-off-left";
+    /// <summary>CSS custom-property name for the thumb inline position when on.</summary>
+    public const string ThumbOnLeft = "--flare-switch-thumb-on-left";
+    /// <summary>CSS custom-property name for the thumb color when off.</summary>
+    public const string ThumbOffColor = "--flare-switch-thumb-off-color";
+    /// <summary>CSS custom-property name for the thumb color when on.</summary>
+    public const string ThumbOnColor = "--flare-switch-thumb-on-color";
+    /// <summary>CSS custom-property name for the thumb color in the off state layer.</summary>
+    public const string ThumbStateOffColor = "--flare-switch-thumb-state-off-color";
+    /// <summary>CSS custom-property name for the thumb color in the on state layer.</summary>
+    public const string ThumbStateOnColor = "--flare-switch-thumb-state-on-color";
+    /// <summary>CSS custom-property name for the thumb icon size.</summary>
+    public const string IconSize = "--flare-switch-icon-size";
+    /// <summary>CSS custom-property name for the thumb icon color when off.</summary>
+    public const string IconOffColor = "--flare-switch-icon-off-color";
+    /// <summary>CSS custom-property name for the thumb icon color when on.</summary>
+    public const string IconOnColor = "--flare-switch-icon-on-color";
+    /// <summary>CSS custom-property name for the focus outline (shorthand).</summary>
+    public const string FocusOutline = "--flare-switch-focus-outline";
+    /// <summary>CSS custom-property name for the focus outline offset.</summary>
     public const string FocusOutlineOffset = "--flare-switch-focus-outline-offset";
-    /// <summary>CSS custom-property name for the transition duration token.</summary>
-    public const string TransitionDuration = "--flare-switch-transition-duration";
-    /// <summary>CSS custom-property name for the transition easing token.</summary>
-    public const string TransitionEasing = "--flare-switch-transition-easing";
-    /// <summary>CSS custom-property name for the pressed layer color token.</summary>
-    public const string PressedLayerColor = "--flare-switch-pressed-layer-color";
-    /// <summary>CSS custom-property name for the pressed layer opacity token.</summary>
-    public const string PressedLayerOpacity = "--flare-switch-pressed-layer-opacity";
-    /// <summary>CSS custom-property name for the disabled opacity token.</summary>
-    public const string DisabledOpacity = "--flare-switch-disabled-opacity";
+    /// <summary>CSS custom-property name for the focus shadow.</summary>
+    public const string FocusShadow = "--flare-switch-focus-shadow";
+    /// <summary>CSS custom-property name for the track background on off-hover.</summary>
+    public const string TrackHoverOffBg = "--flare-switch-track-hover-off-bg";
+    /// <summary>CSS custom-property name for the track background on on-hover.</summary>
+    public const string TrackHoverOnBg = "--flare-switch-track-hover-on-bg";
+    /// <summary>CSS custom-property name for the off-state hover state-layer shadow.</summary>
+    public const string HoverShadowOff = "--flare-switch-hover-shadow-off";
+    /// <summary>CSS custom-property name for the on-state hover state-layer shadow.</summary>
+    public const string HoverShadowOn = "--flare-switch-hover-shadow-on";
+    /// <summary>CSS custom-property name for the disabled track background.</summary>
+    public const string DisabledTrackBg = "--flare-switch-disabled-track-bg";
+    /// <summary>CSS custom-property name for the disabled track border color.</summary>
+    public const string DisabledTrackBorder = "--flare-switch-disabled-track-border";
+    /// <summary>CSS custom-property name for the disabled thumb (handle) background.</summary>
+    public const string DisabledHandleBg = "--flare-switch-disabled-handle-bg";
 }

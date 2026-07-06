@@ -187,22 +187,20 @@ internal class LiquidGlassTokens
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };
     internal static readonly TabsTokens Tabs = MaterialDesignTokens.Design.Tabs;
 
-    // The iconic green iOS switch: gray off track, green on track, white circular thumb.
+    // The iconic green iOS switch: gray off track, green on track, white circular thumb (same size on/off).
     internal static readonly SwitchTokens Switch = MaterialDesignTokens.Design.Switch with
     {
         TrackWidth = "51px",
         TrackHeight = "31px",
-        TrackRadius = "var(--flare-shape-full)",
-        TrackColor = "var(--flare-color-surface-container-highest)",
-        TrackBorderColor = "transparent",
-        TrackBorderWidth = "0px",
-        TrackColorSelected = "var(--flare-color-success)",
-        TrackBorderColorSelected = "var(--flare-color-success)",
-        ThumbSize = "27px",
-        ThumbColor = "#FFFFFF",
-        ThumbColorSelected = "#FFFFFF",
-        ThumbShadow = "0 1px 3px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15)",
-        FocusOutlineColor = "var(--flare-color-primary)",
+        TrackOffBg = "var(--flare-color-surface-container-highest)",
+        TrackOnBg = "var(--flare-color-success)",
+        TrackBorder = "0 solid transparent",
+        ThumbOffSize = "27px",
+        ThumbOnSize = "27px",
+        ThumbPressedOffSize = "27px",
+        ThumbPressedOnSize = "27px",
+        ThumbOffColor = "#FFFFFF",
+        ThumbOnColor = "#FFFFFF",
     };
 
     internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
