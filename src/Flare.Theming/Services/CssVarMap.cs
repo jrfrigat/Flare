@@ -112,6 +112,8 @@ public static class CssVarMap
 
         #region ALERT
         v[Css.Tokens.Alert.Radius] = t.Alert.Radius;
+        v[Css.Tokens.Alert.BodyOpacity] = t.Alert.BodyOpacity;
+        v[Css.Tokens.Alert.CloseOpacity] = t.Alert.CloseOpacity;
         v[Css.Tokens.Alert.BorderWidth] = t.Alert.BorderWidth;
         v[Css.Tokens.Alert.Padding] = t.Alert.Padding;
         v[Css.Tokens.Alert.Gap] = t.Alert.Gap;
@@ -120,6 +122,9 @@ public static class CssVarMap
         #region BUTTON
         // Gaps
         v[Css.Tokens.Button.Gap.Xs] = t.Button.GapXs;
+        v[Css.Tokens.Button.LoadingOpacity] = t.Button.LoadingOpacity;
+        v[Css.Tokens.Button.ContainerRadius] = t.Button.ContainerRadius;
+        v[Css.Tokens.Button.TextPaddingInline] = t.Button.TextPaddingInline;
         v[Css.Tokens.Button.Gap.Sm] = t.Button.GapSm;
         v[Css.Tokens.Button.Gap.Md] = t.Button.GapMd;
         v[Css.Tokens.Button.Gap.Lg] = t.Button.GapLg;
@@ -268,6 +273,10 @@ public static class CssVarMap
 
         #region TOGGLE BUTTON
         v[Css.Tokens.ToggleButton.Height.Sm] = t.ToggleButton.HeightSm;
+        v[Css.Tokens.ToggleButton.HeightXs] = t.ToggleButton.HeightXs;
+        v[Css.Tokens.ToggleButton.HeightXl] = t.ToggleButton.HeightXl;
+        v[Css.Tokens.ToggleButton.PaddingXs] = t.ToggleButton.PaddingXs;
+        v[Css.Tokens.ToggleButton.PaddingXl] = t.ToggleButton.PaddingXl;
         v[Css.Tokens.ToggleButton.Height.Md] = t.ToggleButton.HeightMd;
         v[Css.Tokens.ToggleButton.Height.Lg] = t.ToggleButton.HeightLg;
 
@@ -310,6 +319,7 @@ public static class CssVarMap
 
         #region MENU
         v[Css.Tokens.Checkbox.BorderWidth] = t.Checkbox.BorderWidth;
+        v[Css.Tokens.Checkbox.Size] = t.Checkbox.Size;
         v[Css.Tokens.Checkbox.Radius] = t.Checkbox.Radius;
         v[Css.Tokens.Checkbox.StateLayerHover] = t.Checkbox.StateLayerHover;
         v[Css.Tokens.Checkbox.StateLayerHoverChecked] = t.Checkbox.StateLayerHoverChecked;
@@ -317,10 +327,17 @@ public static class CssVarMap
         v[Css.Tokens.Checkbox.FocusOutlineOffset] = t.Checkbox.FocusOutlineOffset;
         v[Css.Tokens.Checkbox.FocusShadow] = t.Checkbox.FocusShadow;
         v[Css.Tokens.Radio.StateLayerHover] = t.Radio.StateLayerHover;
+        v[Css.Tokens.Radio.Size] = t.Radio.Size;
         v[Css.Tokens.Radio.StateLayerHoverChecked] = t.Radio.StateLayerHoverChecked;
         v[Css.Tokens.Chip.Radius] = t.Chip.Radius;
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
+        v[Css.Tokens.Tabs.ActiveWeight] = t.Tabs.ActiveWeight;
+        v[Css.Tokens.Tabs.CloseOpacity] = t.Tabs.CloseOpacity;
+        v[Css.Tokens.Tabs.LabelFont] = t.Tabs.LabelFont;
+        v[Css.Tokens.Tabs.LabelSize] = t.Tabs.LabelSize;
+        v[Css.Tokens.Tabs.LabelWeight] = t.Tabs.LabelWeight;
+        v[Css.Tokens.Tabs.ScrollShadowOpacity] = t.Tabs.ScrollShadowOpacity;
         v[Css.Tokens.Tabs.ActiveColor] = t.Tabs.ActiveColor;
         v[Css.Tokens.Tabs.InactiveColor] = t.Tabs.InactiveColor;
         v[Css.Tokens.Tabs.DividerColor] = t.Tabs.DividerColor;
@@ -331,6 +348,11 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.TrackBg] = t.Tabs.TrackBg;
         v[Css.Tokens.Tabs.PillRadius] = t.Tabs.PillRadius;
         v[Css.Tokens.TableOfContents.ActiveColor] = t.TableOfContents.ActiveColor;
+        v[Css.Tokens.TableOfContents.ActiveWeight] = t.TableOfContents.ActiveWeight;
+        v[Css.Tokens.TableOfContents.HoverBgOpacity] = t.TableOfContents.HoverBgOpacity;
+        v[Css.Tokens.TableOfContents.LineHeight] = t.TableOfContents.LineHeight;
+        v[Css.Tokens.TableOfContents.TitleTracking] = t.TableOfContents.TitleTracking;
+        v[Css.Tokens.TableOfContents.TitleWeight] = t.TableOfContents.TitleWeight;
         v[Css.Tokens.TableOfContents.InactiveColor] = t.TableOfContents.InactiveColor;
         v[Css.Tokens.TableOfContents.TitleColor] = t.TableOfContents.TitleColor;
         v[Css.Tokens.TableOfContents.RailColor] = t.TableOfContents.RailColor;
@@ -384,6 +406,8 @@ public static class CssVarMap
         v[Css.Tokens.Timeline.ConnectorWidth] = t.Timeline.ConnectorWidth;
 
         v[Css.Tokens.Stepper.CircleSize] = t.Stepper.CircleSize;
+        v[Css.Tokens.Stepper.FocusRingThickness] = t.Stepper.FocusRingThickness;
+        v[Css.Tokens.Stepper.FocusRingColor] = t.Stepper.FocusRingColor;
         v[Css.Tokens.Stepper.CircleBorderWidth] = t.Stepper.CircleBorderWidth;
         v[Css.Tokens.Stepper.CircleIconSize] = t.Stepper.CircleIconSize;
         v[Css.Tokens.Stepper.ConnectorThickness] = t.Stepper.ConnectorThickness;
@@ -393,6 +417,8 @@ public static class CssVarMap
         v[Css.Tokens.Stepper.StepMinWidth] = t.Stepper.StepMinWidth;
 
         v[Css.Tokens.Tree.Indent] = t.Tree.Indent;
+        v[Css.Tokens.Tree.ToggleHoverBg] = t.Tree.ToggleHoverBg;
+        v[Css.Tokens.Tree.DropInsideBg] = t.Tree.DropInsideBg;
         v[Css.Tokens.Tree.ToggleSize] = t.Tree.ToggleSize;
         v[Css.Tokens.Tree.IconSize] = t.Tree.IconSize;
         v[Css.Tokens.Tree.SelectedBg] = t.Tree.SelectedBg;
@@ -400,6 +426,7 @@ public static class CssVarMap
         v[Css.Tokens.Tree.DropIndicatorColor] = t.Tree.DropIndicatorColor;
 
         v[Css.Tokens.Calendar.MaxWidth] = t.Calendar.MaxWidth;
+        v[Css.Tokens.Calendar.EventPadY] = t.Calendar.EventPadY;
         v[Css.Tokens.Calendar.MonthMinWidth] = t.Calendar.MonthMinWidth;
         v[Css.Tokens.Calendar.NavBtnSize] = t.Calendar.NavBtnSize;
         v[Css.Tokens.Calendar.CellMinHeight] = t.Calendar.CellMinHeight;
@@ -410,6 +437,7 @@ public static class CssVarMap
         v[Css.Tokens.Calendar.OtherMonthOpacity] = t.Calendar.OtherMonthOpacity;
 
         v[Css.Tokens.MenuPanel.MinWidth] = t.Menu.PanelMinWidth;
+        v[Css.Tokens.MenuPanel.GroupDivider] = t.Menu.GroupDivider;
         v[Css.Tokens.MenuPanel.EnterAnimation] = t.Menu.EnterAnimation;
         v[Css.Tokens.MenuPanel.Radius] = t.Menu.PanelRadius;
         v[Css.Tokens.MenuPanel.Bg] = t.Menu.PanelBg;
@@ -573,6 +601,9 @@ public static class CssVarMap
 
         #region NAV
         v[Css.Tokens.NavField.ItemRadius] = t.Nav.ItemRadius;
+        v[Css.Tokens.NavField.ActiveWeight] = t.Nav.ActiveWeight;
+        v[Css.Tokens.NavField.BadgeWeight] = t.Nav.BadgeWeight;
+        v[Css.Tokens.NavField.RailLabelLineHeight] = t.Nav.RailLabelLineHeight;
         v[Css.Tokens.NavField.IndicatorRadius] = t.Nav.IndicatorRadius;
         v[Css.Tokens.NavField.ActiveIndicator] = t.Nav.ActiveIndicator;
         v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;

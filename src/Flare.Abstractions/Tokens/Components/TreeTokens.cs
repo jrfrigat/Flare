@@ -10,6 +10,10 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record TreeTokens
 {
+    /// <summary>Toggle hover bg.</summary>
+    [CssVar(Tree.ToggleHoverBg)] public required string ToggleHoverBg { get; init; }
+    /// <summary>Drop inside bg.</summary>
+    [CssVar(Tree.DropInsideBg)] public required string DropInsideBg { get; init; }
     /// <summary>Horizontal indent applied per nesting level.</summary>
     [CssVar(Tree.Indent)] public required string Indent { get; init; }
 

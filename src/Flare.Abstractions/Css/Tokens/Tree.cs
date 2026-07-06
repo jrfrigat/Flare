@@ -3,6 +3,10 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for <c>FlareTreeView</c> / <c>FlareTreeItem</c>.</summary>
 public static class Tree
 {
+    /// <summary>CSS custom-property name for the toggle hover bg token.</summary>
+    public const string ToggleHoverBg = "--flare-tree-toggle-hover-bg";
+    /// <summary>CSS custom-property name for the drop inside bg token.</summary>
+    public const string DropInsideBg = "--flare-tree-drop-inside-bg";
     /// <summary>CSS custom-property name for the child-level indent token.</summary>
     public const string Indent = "--flare-tree-indent";
     /// <summary>CSS custom-property name for the expander / drag-handle square size token.</summary>

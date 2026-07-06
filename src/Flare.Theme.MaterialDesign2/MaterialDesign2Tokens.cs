@@ -95,6 +95,9 @@ internal static class MaterialDesign2Tokens
     // MD2 buttons: rectangular 4dp corners, 36dp default height, uppercase Button label.
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         HeightXs = "1.75rem",  // 28dp
         HeightSm = "2rem",     // 32dp
         HeightMd = "2.25rem",  // 36dp (classic MD2 contained button)

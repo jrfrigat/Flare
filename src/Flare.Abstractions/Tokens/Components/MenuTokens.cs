@@ -5,6 +5,8 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme tokens for <c>FlareMenu</c> / <c>FlareMenuItem</c> (dropdown panel + items).</summary>
 public sealed record MenuTokens
 {
+    /// <summary>Group divider.</summary>
+    [CssVar(MenuPanel.GroupDivider)] public required string GroupDivider { get; init; }
     // --- 1. PANEL ---
     /// <summary>Panel min width token (<c>10rem</c>).</summary>
     [CssVar(MenuPanel.MinWidth)] public required string PanelMinWidth { get; init; }

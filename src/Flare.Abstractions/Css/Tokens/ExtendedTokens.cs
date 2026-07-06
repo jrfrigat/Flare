@@ -208,6 +208,12 @@ public static class ProgressField
 /// <summary>CSS variable tokens for navigation (drawer/rail nav items and the active indicator).</summary>
 public static class NavField
 {
+    /// <summary>CSS custom-property name for the active weight token.</summary>
+    public const string ActiveWeight = "--flare-nav-active-weight";
+    /// <summary>CSS custom-property name for the badge weight token.</summary>
+    public const string BadgeWeight = "--flare-nav-badge-weight";
+    /// <summary>CSS custom-property name for the rail label line height token.</summary>
+    public const string RailLabelLineHeight = "--flare-nav-rail-label-line-height";
     /// <summary>CSS custom-property name for the nav item hover/focus radius token.</summary>
     public const string ItemRadius = "--flare-nav-item-radius";
     /// <summary>CSS custom-property name for the active-indicator radius token.</summary>

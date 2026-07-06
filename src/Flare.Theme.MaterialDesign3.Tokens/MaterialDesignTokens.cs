@@ -95,6 +95,8 @@ public class MaterialDesignTokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         // MD3 Expressive: extra-small radius, no border on filled variant
         Radius = "var(--flare-shape-extra-small)",
         BorderWidth = "0",
@@ -104,6 +106,9 @@ public class MaterialDesignTokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         // 5 gap sizes (Gap) between text and icon
         // XS/S - height matches the MD3 spec -> gap = spec (8dp);
         // M=8 matches; L/XL - adapted to the reduced height.
@@ -199,6 +204,10 @@ public class MaterialDesignTokens
     // MD3: round rest shape, morphs into a squircle on selection (values = record defaults).
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
+        HeightXs = "1.75rem",
+        HeightXl = "3.5rem",
+        PaddingXs = "0.5rem",
+        PaddingXl = "2rem",
         HeightSm = "2rem",
         HeightMd = "2.5rem",
         HeightLg = "3rem",
@@ -237,6 +246,7 @@ public class MaterialDesignTokens
 
     internal static readonly CheckboxTokens Checkbox = new()
     {
+        Size = "1.125rem",
         BorderWidth = "2px",
         Radius = "2px",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
@@ -247,6 +257,7 @@ public class MaterialDesignTokens
     };
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
         StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
     };
@@ -257,6 +268,12 @@ public class MaterialDesignTokens
     };
     internal static readonly TabsTokens Tabs = new()
     {
+        ActiveWeight = "700",
+        CloseOpacity = "0.6",
+        LabelFont = "var(--flare-typescale-label-large-font)",
+        LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelWeight = "var(--flare-typescale-label-large-weight)",
+        ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-on-surface)",
@@ -273,6 +290,7 @@ public class MaterialDesignTokens
     // item 4dp (end items 12dp), label-large text, vertical 8dp, gap 2dp, focus-ring secondary.
     internal static readonly MenuTokens Menu = new()
     {
+        GroupDivider = "none",
         PanelRadius = "var(--flare-shape-large)",     // 16dp
         PanelMinWidth = "7rem",                       // 112dp
         PanelShadow = "var(--flare-elevation-3)",     // elevation 3
@@ -367,6 +385,9 @@ public class MaterialDesignTokens
 
     internal static readonly NavTokens Nav = new()
     {
+        ActiveWeight = "600",
+        BadgeWeight = "600",
+        RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "var(--flare-shape-full)",
         ActiveIndicator = "var(--flare-color-secondary-container)",
@@ -392,6 +413,11 @@ public class MaterialDesignTokens
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
     {
+        ActiveWeight = "600",
+        HoverBgOpacity = "40%",
+        LineHeight = "1.4",
+        TitleTracking = "0.05em",
+        TitleWeight = "600",
         ActiveColor = "var(--flare-color-on-secondary-container)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
         TitleColor = "var(--flare-color-on-surface-variant)",
@@ -517,6 +543,7 @@ public class MaterialDesignTokens
     // circles, primary "today" marker, primary-tinted selection, 30% dimmed adjacent-month days.
     internal static readonly CalendarTokens Calendar = new()
     {
+        EventPadY = "0.0625rem",
         MaxWidth = "400px",
         MonthMinWidth = "16rem",
         NavBtnSize = "2rem",
@@ -531,6 +558,8 @@ public class MaterialDesignTokens
     // Tree: 24dp indent per level, 24dp expander/handle, 20dp icons, primary-tinted selection.
     internal static readonly TreeTokens Tree = new()
     {
+        ToggleHoverBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
+        DropInsideBg = "color-mix(in srgb, var(--flare-color-primary) 12%, transparent)",
         Indent = "var(--flare-spacing-12)",
         ToggleSize = "1.5rem",
         IconSize = "1.25rem",
@@ -543,6 +572,8 @@ public class MaterialDesignTokens
     // when complete) at least 24dp long, 80dp per-step min width.
     internal static readonly StepperTokens Stepper = new()
     {
+        FocusRingThickness = "2px",
+        FocusRingColor = "var(--flare-color-primary)",
         CircleSize = "2rem",
         CircleBorderWidth = "2px",
         CircleIconSize = "1.125rem",

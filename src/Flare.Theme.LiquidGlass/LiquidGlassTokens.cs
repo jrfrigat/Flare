@@ -87,6 +87,8 @@ internal class LiquidGlassTokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         Radius = "var(--flare-shape-large)",
         BorderWidth = "0px",
         Padding = "0.875rem 1rem",
@@ -95,6 +97,9 @@ internal class LiquidGlassTokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         GapXs = "0.25rem",
         GapSm = "0.3125rem",
         GapMd = "0.4375rem",
@@ -182,6 +187,7 @@ internal class LiquidGlassTokens
 
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
     };

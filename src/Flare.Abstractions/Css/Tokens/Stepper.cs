@@ -3,6 +3,10 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for <c>FlareStepper</c>.</summary>
 public static class Stepper
 {
+    /// <summary>CSS custom-property name for the focus ring thickness token.</summary>
+    public const string FocusRingThickness = "--flare-stepper-focus-ring-thickness";
+    /// <summary>CSS custom-property name for the focus ring color token.</summary>
+    public const string FocusRingColor = "--flare-stepper-focus-ring-color";
     /// <summary>CSS custom-property name for the step indicator circle diameter token.</summary>
     public const string CircleSize = "--flare-stepper-circle-size";
     /// <summary>CSS custom-property name for the step circle border width token.</summary>

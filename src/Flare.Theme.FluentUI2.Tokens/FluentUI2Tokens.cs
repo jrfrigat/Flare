@@ -89,6 +89,8 @@ public class FluentUI2Tokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         // Fluent UI 2: small radius, border visible by default
         Radius = "var(--flare-shape-small)",
         BorderWidth = "1px",
@@ -98,6 +100,9 @@ public class FluentUI2Tokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         // Compact gaps (Gap) between text and the Microsoft icon
         GapXs = "0.125rem",        // 2px
         GapSm = "0.25rem",         // 4px
@@ -190,6 +195,10 @@ public class FluentUI2Tokens
     // Toggle: currently = MD3 defaults (Fluent-specific sizes/shape - an open decision in the spec).
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
+        HeightXs = "1.75rem",
+        HeightXl = "3.5rem",
+        PaddingXs = "0.5rem",
+        PaddingXl = "2rem",
         HeightSm = "2rem",
         HeightMd = "2.5rem",
         HeightLg = "3rem",
@@ -232,6 +241,7 @@ public class FluentUI2Tokens
     // All members are now set explicitly, since the core record carries no default values.
     internal static readonly MenuTokens Menu = new()
     {
+        GroupDivider = "none",
         PanelMinWidth = "10rem",
         EnterAnimation = "flare-menu-in-fade",
         PanelRadius = "var(--flare-popover-radius, var(--flare-shape-small))",
@@ -267,6 +277,7 @@ public class FluentUI2Tokens
     // Checkbox - Fluent: 1px border, 4dp corner, no MD3 halo, double focus ring.
     internal static readonly CheckboxTokens Checkbox = new()
     {
+        Size = "1.125rem",
         BorderWidth = "1px",
         Radius = "var(--flare-shape-small)",
         StateLayerHover = "transparent",
@@ -279,6 +290,7 @@ public class FluentUI2Tokens
     // Radio - Fluent: no MD3 state-layer halo.
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
     };
@@ -291,6 +303,12 @@ public class FluentUI2Tokens
     };
     internal static readonly TabsTokens Tabs = new()
     {
+        ActiveWeight = "700",
+        CloseOpacity = "0.6",
+        LabelFont = "var(--flare-typescale-label-large-font)",
+        LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelWeight = "var(--flare-typescale-label-large-weight)",
+        ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-on-surface)",
@@ -307,6 +325,11 @@ public class FluentUI2Tokens
     // without the MD3 pill.
     internal static readonly Flare.Abstractions.Tokens.Components.TableOfContentsTokens TableOfContents = new()
     {
+        ActiveWeight = "600",
+        HoverBgOpacity = "40%",
+        LineHeight = "1.4",
+        TitleTracking = "0.05em",
+        TitleWeight = "600",
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
         TitleColor = "var(--flare-color-on-surface)",
@@ -393,6 +416,9 @@ public class FluentUI2Tokens
     // Nav - no pill in Fluent; a left accent bar marks the active item.
     internal static readonly NavTokens Nav = new()
     {
+        ActiveWeight = "600",
+        BadgeWeight = "600",
+        RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",
@@ -499,6 +525,7 @@ public class FluentUI2Tokens
     // Calendar: same neutral baseline (400px cap, 32dp nav, 48dp cells, primary today/selection).
     internal static readonly CalendarTokens Calendar = new()
     {
+        EventPadY = "0.0625rem",
         MaxWidth = "400px",
         MonthMinWidth = "16rem",
         NavBtnSize = "2rem",
@@ -513,6 +540,8 @@ public class FluentUI2Tokens
     // Tree: same neutral baseline (24dp indent/handle, 20dp icons, primary-tinted selection).
     internal static readonly TreeTokens Tree = new()
     {
+        ToggleHoverBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
+        DropInsideBg = "color-mix(in srgb, var(--flare-color-primary) 12%, transparent)",
         Indent = "var(--flare-spacing-12)",
         ToggleSize = "1.5rem",
         IconSize = "1.25rem",
@@ -524,6 +553,8 @@ public class FluentUI2Tokens
     // Stepper: same neutral baseline (32dp circle, 2px connector, primary when complete).
     internal static readonly StepperTokens Stepper = new()
     {
+        FocusRingThickness = "2px",
+        FocusRingColor = "var(--flare-color-primary)",
         CircleSize = "2rem",
         CircleBorderWidth = "2px",
         CircleIconSize = "1.125rem",

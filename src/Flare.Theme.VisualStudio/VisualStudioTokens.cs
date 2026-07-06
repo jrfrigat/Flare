@@ -87,6 +87,8 @@ internal class VisualStudioTokens
 
     internal static readonly AlertTokens Alert = new()
     {
+        BodyOpacity = "0.9",
+        CloseOpacity = "0.7",
         Radius = "var(--flare-shape-small)",
         BorderWidth = "1px",
         Padding = "0.625rem 0.875rem",
@@ -95,6 +97,9 @@ internal class VisualStudioTokens
 
     internal static readonly ButtonTokens Button = new()
     {
+        LoadingOpacity = "0.8",
+        ContainerRadius = "var(--flare-shape-full)",
+        TextPaddingInline = "0.75rem",
         GapXs = "0.1875rem",
         GapSm = "0.25rem",
         GapMd = "0.375rem",
@@ -182,6 +187,7 @@ internal class VisualStudioTokens
 
     internal static readonly RadioTokens Radio = new()
     {
+        Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
     };
@@ -193,6 +199,12 @@ internal class VisualStudioTokens
     // theme-scoped tabs.css using these tokens.
     internal static readonly TabsTokens Tabs = new()
     {
+        ActiveWeight = "700",
+        CloseOpacity = "0.6",
+        LabelFont = "var(--flare-typescale-label-large-font)",
+        LabelSize = "var(--flare-typescale-label-large-size)",
+        LabelWeight = "var(--flare-typescale-label-large-weight)",
+        ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
@@ -283,6 +295,9 @@ internal class VisualStudioTokens
     // Nav - left accent bar (VS solution-explorer style), no pill.
     internal static readonly NavTokens Nav = new()
     {
+        ActiveWeight = "600",
+        BadgeWeight = "600",
+        RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
         IndicatorRadius = "0",
         ActiveIndicator = "none",

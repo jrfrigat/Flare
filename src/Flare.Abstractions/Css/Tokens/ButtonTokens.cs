@@ -5,6 +5,12 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for button.</summary>
 public static class Button
 {
+    /// <summary>CSS custom-property name for the loading opacity token.</summary>
+    public const string LoadingOpacity = "--flare-btn-loading-opacity";
+    /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
+    public const string ContainerRadius = "--flare-btn-radius";
+    /// <summary>CSS custom-property name for the text padding inline token.</summary>
+    public const string TextPaddingInline = "--flare-btn-text-padding-inline";
     /// <summary>Per-corner button radii, addressable by size and side.</summary>
     public static class Radius
     {

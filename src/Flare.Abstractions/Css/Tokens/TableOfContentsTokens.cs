@@ -3,6 +3,16 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable names for <c>FlareTableOfContents</c> / <c>FlareOnThisPage</c>.</summary>
 public static class TableOfContents
 {
+    /// <summary>CSS custom-property name for the active weight token.</summary>
+    public const string ActiveWeight = "--flare-toc-active-weight";
+    /// <summary>CSS custom-property name for the hover bg opacity token.</summary>
+    public const string HoverBgOpacity = "--flare-toc-hover-bg-opacity";
+    /// <summary>CSS custom-property name for the line height token.</summary>
+    public const string LineHeight = "--flare-toc-line-height";
+    /// <summary>CSS custom-property name for the title tracking token.</summary>
+    public const string TitleTracking = "--flare-toc-title-tracking";
+    /// <summary>CSS custom-property name for the title weight token.</summary>
+    public const string TitleWeight = "--flare-toc-title-weight";
     /// <summary>CSS custom-property name for the active color token.</summary>
     public const string ActiveColor = "--flare-toc-active-color";
     /// <summary>CSS custom-property name for the inactive color token.</summary>

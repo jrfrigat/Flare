@@ -3,6 +3,10 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for alert.</summary>
 public static class Alert
 {
+    /// <summary>CSS custom-property name for the body opacity token.</summary>
+    public const string BodyOpacity = "--flare-alert-body-opacity";
+    /// <summary>CSS custom-property name for the close opacity token.</summary>
+    public const string CloseOpacity = "--flare-alert-close-opacity";
     /// <summary>Border radius of the alert container.</summary>
     public const string Radius = "--flare-alert-radius";
 

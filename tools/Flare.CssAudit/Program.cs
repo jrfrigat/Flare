@@ -622,6 +622,7 @@ internal static class Program
     // --_flare-* internals (there the '--' is followed by '_'). Comments/strings are stripped first so
     // a doc mention like "--flare-x-*" cannot leak in as a fake token.
     private static readonly Regex TokenRx = new(@"--flare-[a-z0-9-]+", RegexOptions.Compiled);
+    private static readonly Regex StringLitRx = new("\"([^\"\\\\]|\\\\.)*\"", RegexOptions.Compiled);
 
     /// <summary>
     /// Every distinct <c>--flare-*</c> token that appears (read via <c>var()</c> or defined) in the CSS
@@ -668,11 +669,17 @@ internal static class Program
                 || path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.Ordinal)) continue;
             var text = File.ReadAllText(path);
             var file = Path.GetFileName(path);
-            foreach (Match m in TokenRx.Matches(text))
+            // A token is genuinely CONSUMED by code only inside a double-quoted string literal
+            // (inline style, ReadToken argument, class-builder). Scanning raw text would also pick up
+            // token names mentioned in XML-doc comments (e.g. <c>--flare-tabs-*</c>), a false positive.
+            foreach (Match lit in StringLitRx.Matches(text))
             {
-                var tok = m.Value.TrimEnd('-');
-                if (tok.Length <= "--flare-".Length) continue;
-                (map.TryGetValue(tok, out var files) ? files : map[tok] = new(StringComparer.Ordinal)).Add(file);
+                foreach (Match m in TokenRx.Matches(lit.Value))
+                {
+                    var tok = m.Value.TrimEnd('-');
+                    if (tok.Length <= "--flare-".Length) continue;
+                    (map.TryGetValue(tok, out var files) ? files : map[tok] = new(StringComparer.Ordinal)).Add(file);
+                }
             }
         }
     }

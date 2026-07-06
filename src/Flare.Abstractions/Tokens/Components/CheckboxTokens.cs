@@ -5,6 +5,8 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme tokens for <c>FlareCheckbox</c> (box, state-layer, focus ring).</summary>
 public sealed record CheckboxTokens
 {
+    /// <summary>Size.</summary>
+    [CssVar(Checkbox.Size)] public required string Size { get; init; }
     /// <summary>Border (outline) thickness of the box.</summary>
     [CssVar(Checkbox.BorderWidth)] public required string BorderWidth { get; init; }
 

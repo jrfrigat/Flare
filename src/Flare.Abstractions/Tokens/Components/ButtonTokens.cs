@@ -11,6 +11,12 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record ButtonTokens
 {
+    /// <summary>Loading opacity.</summary>
+    [CssVar(Button.LoadingOpacity)] public required string LoadingOpacity { get; init; }
+    /// <summary>Fallback container corner radius for buttons that do not set a per-size radius.</summary>
+    [CssVar(Button.ContainerRadius)] public required string ContainerRadius { get; init; }
+    /// <summary>Text padding inline.</summary>
+    [CssVar(Button.TextPaddingInline)] public required string TextPaddingInline { get; init; }
     // --- 1. STRONGLY-TYPED GAPS (gaps between icon and text) ---
     /// <summary>Gap xs token (<c>0.25rem</c>).</summary>
     [CssVar(Button.Gap.Xs)] public required string GapXs { get; init; }

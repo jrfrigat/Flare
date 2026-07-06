@@ -5,6 +5,10 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme token values for <c>FlareAlert</c>.</summary>
 public sealed record AlertTokens
 {
+    /// <summary>Body opacity.</summary>
+    [CssVar(Alert.BodyOpacity)] public required string BodyOpacity { get; init; }
+    /// <summary>Close opacity.</summary>
+    [CssVar(Alert.CloseOpacity)] public required string CloseOpacity { get; init; }
     /// <summary>Border radius of the alert container (a theme typically maps this to its shape scale).</summary>
     [CssVar(Alert.Radius)] public required string Radius { get; init; }
 

@@ -4,6 +4,10 @@ namespace Flare.Css.Tokens;
 /// centre-icon size/color). Defaults live in the splitter stylesheet; set these to customize.</summary>
 public static class Splitter
 {
+    /// <summary>CSS custom-property name for the grip length token.</summary>
+    public const string GripLength = "--flare-splitter-grip-length";
+    /// <summary>CSS custom-property name for the grip thickness token.</summary>
+    public const string GripThickness = "--flare-splitter-grip-thickness";
     /// <summary>Handle thickness (CSS length).</summary>
     public const string GutterSize = "--flare-splitter-gutter-size";
     /// <summary>Handle color when idle.</summary>

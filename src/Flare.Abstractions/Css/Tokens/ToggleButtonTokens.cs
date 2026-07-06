@@ -3,6 +3,14 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for toggle button.</summary>
 public static class ToggleButton
 {
+    /// <summary>CSS custom-property name for the height xs token.</summary>
+    public const string HeightXs = "--flare-toggle-btn-height-xs";
+    /// <summary>CSS custom-property name for the height xl token.</summary>
+    public const string HeightXl = "--flare-toggle-btn-height-xl";
+    /// <summary>CSS custom-property name for the padding xs token.</summary>
+    public const string PaddingXs = "--flare-toggle-btn-padding-xs";
+    /// <summary>CSS custom-property name for the padding xl token.</summary>
+    public const string PaddingXl = "--flare-toggle-btn-padding-xl";
     /// <summary>Container height per size (with label).</summary>
     public static class Height
     {

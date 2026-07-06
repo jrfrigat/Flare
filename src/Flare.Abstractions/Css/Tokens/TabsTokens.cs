@@ -3,6 +3,18 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for tabs.</summary>
 public static class Tabs
 {
+    /// <summary>CSS custom-property name for the active weight token.</summary>
+    public const string ActiveWeight = "--flare-tabs-active-weight";
+    /// <summary>CSS custom-property name for the close opacity token.</summary>
+    public const string CloseOpacity = "--flare-tabs-close-opacity";
+    /// <summary>CSS custom-property name for the label font token.</summary>
+    public const string LabelFont = "--flare-tabs-label-font";
+    /// <summary>CSS custom-property name for the label size token.</summary>
+    public const string LabelSize = "--flare-tabs-label-size";
+    /// <summary>CSS custom-property name for the label weight token.</summary>
+    public const string LabelWeight = "--flare-tabs-label-weight";
+    /// <summary>CSS custom-property name for the scroll shadow opacity token.</summary>
+    public const string ScrollShadowOpacity = "--flare-tabs-scroll-shadow-opacity";
     /// <summary>CSS custom-property name for the indicator thickness token.</summary>
     public const string IndicatorThickness = "--flare-tabs-indicator-thickness";
     /// <summary>CSS custom-property name for the active color token.</summary>

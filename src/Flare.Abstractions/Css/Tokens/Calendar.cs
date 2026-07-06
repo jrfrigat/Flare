@@ -3,6 +3,8 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for <c>FlareCalendar</c>.</summary>
 public static class Calendar
 {
+    /// <summary>CSS custom-property name for the event pad y token.</summary>
+    public const string EventPadY = "--flare-calendar-event-pad-y";
     /// <summary>CSS custom-property name for the single-month max width token.</summary>
     public const string MaxWidth = "--flare-calendar-max-width";
     /// <summary>CSS custom-property name for the per-month minimum width token.</summary>

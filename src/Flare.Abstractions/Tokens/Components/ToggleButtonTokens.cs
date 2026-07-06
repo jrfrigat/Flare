@@ -7,6 +7,14 @@ namespace Flare.Abstractions.Tokens.Components;
 /// colour - both are expressed purely through these tokens, so the shared CSS stays theme-agnostic.</summary>
 public sealed record ToggleButtonTokens
 {
+    /// <summary>Height xs.</summary>
+    [CssVar(ToggleButton.HeightXs)] public required string HeightXs { get; init; }
+    /// <summary>Height xl.</summary>
+    [CssVar(ToggleButton.HeightXl)] public required string HeightXl { get; init; }
+    /// <summary>Padding xs.</summary>
+    [CssVar(ToggleButton.PaddingXs)] public required string PaddingXs { get; init; }
+    /// <summary>Padding xl.</summary>
+    [CssVar(ToggleButton.PaddingXl)] public required string PaddingXl { get; init; }
     // --- 1. CONTAINER HEIGHT (with label) for 3 sizes ---
     /// <summary>Height sm token (<c>2rem</c>).</summary>
     [CssVar(ToggleButton.Height.Sm)] public required string HeightSm { get; init; }      // 32dp

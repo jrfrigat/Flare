@@ -5,6 +5,18 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Per-theme tokens for <c>FlareTabs</c> / <c>FlareTab</c>.</summary>
 public sealed record TabsTokens
 {
+    /// <summary>Active weight.</summary>
+    [CssVar(Tabs.ActiveWeight)] public required string ActiveWeight { get; init; }
+    /// <summary>Close opacity.</summary>
+    [CssVar(Tabs.CloseOpacity)] public required string CloseOpacity { get; init; }
+    /// <summary>Label font.</summary>
+    [CssVar(Tabs.LabelFont)] public required string LabelFont { get; init; }
+    /// <summary>Label size.</summary>
+    [CssVar(Tabs.LabelSize)] public required string LabelSize { get; init; }
+    /// <summary>Label weight.</summary>
+    [CssVar(Tabs.LabelWeight)] public required string LabelWeight { get; init; }
+    /// <summary>Scroll shadow opacity.</summary>
+    [CssVar(Tabs.ScrollShadowOpacity)] public required string ScrollShadowOpacity { get; init; }
     /// <summary>Active-indicator thickness.</summary>
     [CssVar(Tabs.IndicatorThickness)] public required string IndicatorThickness { get; init; }
 
