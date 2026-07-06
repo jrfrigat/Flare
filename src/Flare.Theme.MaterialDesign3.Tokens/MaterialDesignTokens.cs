@@ -313,31 +313,18 @@ public class MaterialDesignTokens
     internal static readonly InputTokens Input = new()
     {
         FilledBg = "var(--flare-color-surface-container-highest)",
-        OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
-        Padding = "1rem 1rem",
         OutlinedBorder = "none",
+        OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
         FilledBorderBottom = "1px solid var(--flare-color-on-surface-variant)",
-        HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
-        HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
         FocusBorder = "none",
         FocusBorderBottom = "3px solid var(--flare-color-primary)",
-        // Neutral baseline members (formerly the record defaults), carried explicitly.
-        FilledRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
-        FontFamily = "var(--flare-typescale-body-large-font)",
-        FontSize = "var(--flare-typescale-body-large-size)",
-        TextColor = "var(--flare-color-on-surface)",
+        HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
+        HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
+        Padding = "1rem 1rem",
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
-        CaretColor = "var(--flare-color-primary)",
-        ErrorBorder = "var(--flare-color-error)",
-        ErrorColor = "var(--flare-color-error)",
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
-        HelperFontSize = "var(--flare-typescale-body-small-size, 0.75rem)",
-        HelperColor = "var(--flare-color-on-surface-variant)",
-        LabelFontFamily = "var(--flare-typescale-label-medium-font, var(--flare-typescale-label-large-font))",
-        LabelFontSize = "var(--flare-typescale-label-medium-size, 0.75rem)",
-        LabelFontWeight = "var(--flare-typescale-label-medium-weight, 400)",
-        LabelColor = "var(--flare-color-on-surface-variant)",
+        ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
     };
 
     // Progress - MD3 Expressive: rounded full track, 4px thick, trailing stop-indicator dot, round

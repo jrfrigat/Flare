@@ -444,27 +444,15 @@ public static class CssVarMap
         v[Css.Tokens.InputField.OutlinedBorder] = t.Input.OutlinedBorder;
         v[Css.Tokens.InputField.OutlinedRadius] = t.Input.OutlinedRadius;
         v[Css.Tokens.InputField.FilledBorderBottom] = t.Input.FilledBorderBottom;
-        v[Css.Tokens.InputField.FilledRadius] = t.Input.FilledRadius;
         v[Css.Tokens.InputField.FocusBorder] = t.Input.FocusBorder;
         v[Css.Tokens.InputField.FocusBorderBottom] = t.Input.FocusBorderBottom;
         v[Css.Tokens.InputField.HoverBorderBottom] = t.Input.HoverBorderBottom;
         v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
         v[Css.Tokens.InputField.Padding] = t.Input.Padding;
-        v[Css.Tokens.InputField.FontFamily] = t.Input.FontFamily;
-        v[Css.Tokens.InputField.FontSize] = t.Input.FontSize;
-        v[Css.Tokens.InputField.TextColor] = t.Input.TextColor;
         v[Css.Tokens.InputField.PlaceholderColor] = t.Input.PlaceholderColor;
-        v[Css.Tokens.InputField.CaretColor] = t.Input.CaretColor;
-        v[Css.Tokens.InputField.ErrorBorder] = t.Input.ErrorBorder;
-        v[Css.Tokens.InputField.ErrorColor] = t.Input.ErrorColor;
         v[Css.Tokens.InputField.DisabledBg] = t.Input.DisabledBg;
         v[Css.Tokens.InputField.DisabledIndicator] = t.Input.DisabledIndicator;
-        v[Css.Tokens.InputField.HelperFontSize] = t.Input.HelperFontSize;
-        v[Css.Tokens.InputField.HelperColor] = t.Input.HelperColor;
-        v[Css.Tokens.InputField.LabelFontFamily] = t.Input.LabelFontFamily;
-        v[Css.Tokens.InputField.LabelFontSize] = t.Input.LabelFontSize;
-        v[Css.Tokens.InputField.LabelFontWeight] = t.Input.LabelFontWeight;
-        v[Css.Tokens.InputField.LabelColor] = t.Input.LabelColor;
+        v[Css.Tokens.InputField.ErrorHoverIndicator] = t.Input.ErrorHoverIndicator;
         #endregion
 
         #region DIALOG

@@ -350,31 +350,18 @@ public class FluentUI2Tokens
     internal static readonly InputTokens Input = new()
     {
         FilledBg = "var(--flare-color-surface)",
-        OutlinedRadius = "var(--flare-shape-small)",
         OutlinedBorder = "1px solid var(--flare-color-outline)",
+        OutlinedRadius = "var(--flare-shape-small)",
         FilledBorderBottom = "1px solid var(--flare-color-outline)",
         FocusBorder = "1px solid var(--flare-color-outline)",
         FocusBorderBottom = "2px solid var(--flare-color-primary)",
-        // Neutral baseline members (formerly the record defaults), carried explicitly.
-        FilledRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
         HoverBorderBottom = "var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant))",
         HoverStateLayer = "none",
         Padding = "0.75rem 1rem",
-        FontFamily = "var(--flare-typescale-body-large-font)",
-        FontSize = "var(--flare-typescale-body-large-size)",
-        TextColor = "var(--flare-color-on-surface)",
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
-        CaretColor = "var(--flare-color-primary)",
-        ErrorBorder = "var(--flare-color-error)",
-        ErrorColor = "var(--flare-color-error)",
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
-        HelperFontSize = "var(--flare-typescale-body-small-size, 0.75rem)",
-        HelperColor = "var(--flare-color-on-surface-variant)",
-        LabelFontFamily = "var(--flare-typescale-label-medium-font, var(--flare-typescale-label-large-font))",
-        LabelFontSize = "var(--flare-typescale-label-medium-size, 0.75rem)",
-        LabelFontWeight = "var(--flare-typescale-label-medium-weight, 400)",
-        LabelColor = "var(--flare-color-on-surface-variant)",
+        ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
     };
 
     // Progress - Fluent: thin 2px rail, squared corners, no stop dot, 3px butt-cap ring. Wavy is left

@@ -3,56 +3,37 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for input field.</summary>
 public static class InputField
 {
-    /// <summary>CSS custom-property name for the filled bg token.</summary>
+    // Font, text/caret color, error border/color and label/helper styling are gone - the field frame and the
+    // shared typescale/color scales own them. Only the control-well geometry and per-variant/-state borders
+    // remain (plus the CSS-computed keyboard focus ring).
+    /// <summary>CSS custom-property name for the filled-variant background.</summary>
     public const string FilledBg = "--flare-input-bg";
-    /// <summary>CSS custom-property name for the outlined border token.</summary>
+    /// <summary>CSS custom-property name for the outlined-variant border.</summary>
     public const string OutlinedBorder = "--flare-input-border";
-    /// <summary>CSS custom-property name for the outlined radius token.</summary>
+    /// <summary>CSS custom-property name for the control-well radius (rounded-top for filled).</summary>
     public const string OutlinedRadius = "--flare-input-radius";
-    /// <summary>CSS custom-property name for the filled border bottom token.</summary>
+    /// <summary>CSS custom-property name for the filled-variant resting bottom border.</summary>
     public const string FilledBorderBottom = "--flare-input-border-bottom";
-    /// <summary>CSS custom-property name for the filled radius token.</summary>
-    public const string FilledRadius = "--flare-input-filled-radius";
-    /// <summary>CSS custom-property name for the focus border token.</summary>
+    /// <summary>CSS custom-property name for the outlined-variant focus border.</summary>
     public const string FocusBorder = "--flare-input-focus-border";
-    /// <summary>CSS custom-property name for the focus border bottom token.</summary>
+    /// <summary>CSS custom-property name for the filled-variant focus bottom border.</summary>
     public const string FocusBorderBottom = "--flare-input-focus-border-bottom";
-    /// <summary>CSS custom-property name for the filled hover bottom-border token.</summary>
+    /// <summary>CSS custom-property name for the filled-variant hover bottom border.</summary>
     public const string HoverBorderBottom = "--flare-input-hover-border-bottom";
-    /// <summary>CSS custom-property name for the filled hover state-layer token.</summary>
+    /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
-    /// <summary>CSS custom-property name for the padding token.</summary>
+    /// <summary>CSS custom-property name for the control padding.</summary>
     public const string Padding = "--flare-input-padding";
-    /// <summary>CSS custom-property name for the font family token.</summary>
-    public const string FontFamily = "--flare-input-font-family";
-    /// <summary>CSS custom-property name for the font size token.</summary>
-    public const string FontSize = "--flare-input-font-size";
-    /// <summary>CSS custom-property name for the text color token.</summary>
-    public const string TextColor = "--flare-input-text-color";
-    /// <summary>CSS custom-property name for the placeholder color token.</summary>
+    /// <summary>CSS custom-property name for the placeholder color.</summary>
     public const string PlaceholderColor = "--flare-input-placeholder-color";
-    /// <summary>CSS custom-property name for the caret color token.</summary>
-    public const string CaretColor = "--flare-input-caret-color";
-    /// <summary>CSS custom-property name for the error border token.</summary>
-    public const string ErrorBorder = "--flare-input-error-border";
-    /// <summary>CSS custom-property name for the error color token.</summary>
-    public const string ErrorColor = "--flare-input-error-color";
-    /// <summary>CSS custom-property name for the disabled bg token.</summary>
+    /// <summary>CSS custom-property name for the disabled background.</summary>
     public const string DisabledBg = "--flare-input-disabled-bg";
-    /// <summary>CSS custom-property name for the disabled indicator token.</summary>
+    /// <summary>CSS custom-property name for the disabled border/indicator color.</summary>
     public const string DisabledIndicator = "--flare-input-disabled-indicator";
-    /// <summary>CSS custom-property name for the helper font size token.</summary>
-    public const string HelperFontSize = "--flare-input-helper-font-size";
-    /// <summary>CSS custom-property name for the helper color token.</summary>
-    public const string HelperColor = "--flare-input-helper-color";
-    /// <summary>CSS custom-property name for the label font family token.</summary>
-    public const string LabelFontFamily = "--flare-input-label-font-family";
-    /// <summary>CSS custom-property name for the label font size token.</summary>
-    public const string LabelFontSize = "--flare-input-label-font-size";
-    /// <summary>CSS custom-property name for the label font weight token.</summary>
-    public const string LabelFontWeight = "--flare-input-label-font-weight";
-    /// <summary>CSS custom-property name for the label color token.</summary>
-    public const string LabelColor = "--flare-input-label-color";
+    /// <summary>CSS custom-property name for the errored-field hover bottom-border color.</summary>
+    public const string ErrorHoverIndicator = "--flare-input-error-hover-indicator";
+    /// <summary>CSS custom-property name for the computed keyboard focus ring (defined per-variant in CSS).</summary>
+    public const string FocusRing = "--flare-input-focus-ring";
 }
 
 /// <summary>CSS variable tokens for the dialog panel.</summary>
