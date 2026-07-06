@@ -13,14 +13,14 @@
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
-                  Label="@Label" LabelFor="@_inputId"
-                  HelperText="@HelperText" HelperId="@_helperId"
-                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Label="@Label" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldRef">
             <input class="@Css.Classes.Input.Control"
-                   id="@_inputId"
+                   id="@ControlId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="text"
                    disabled="@Disabled"
@@ -30,7 +30,7 @@
                    placeholder="@(Placeholder ?? _numericPattern)"
                    aria-label="@(Label ?? Placeholder)"
                    aria-invalid="@(_invalid ? "true" : null)"
-                   aria-describedby="@_computedDescribedBy"
+                   aria-describedby="@SupportDescribedBy"
                    value="@_text"
                    @onfocus="HandleFocus"
                    @oninput="HandleInput"
@@ -102,16 +102,8 @@
 
     protected override string ComponentCssClass => Css.Classes.DateTimePicker.Root;
 
-    private string? _displayedError => DisplayedError(ErrorText);
     // Invalid drives the frame's error chrome (a resolved validation message).
-    private bool _invalid => !string.IsNullOrEmpty(_displayedError);
-
-    private readonly string _inputId = $"flare-datetimepicker-in-{Guid.NewGuid():N}";
-    private string _helperId => $"{_inputId}-help";
-    private string _errorId => $"{_inputId}-err";
-    private string? _computedDescribedBy =>
-        !string.IsNullOrEmpty(_displayedError) ? _errorId :
-        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+    private bool _invalid => !string.IsNullOrEmpty(DisplayedErrorText);
 
     private bool _open;
     private int _activeTab;

@@ -15,14 +15,14 @@
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
-                  Label="@Label" LabelFor="@_inputId"
-                  HelperText="@HelperText" HelperId="@_helperId"
-                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Label="@Label" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@Style">
     <Field>
         <div class="@Css.Classes.Input.Field" @ref="_fieldEl">
             <input class="@Css.Classes.Input.Control"
-                   id="@_inputId"
+                   id="@ControlId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="text"
                    inputmode="numeric"
@@ -35,7 +35,7 @@
                    aria-required="@(Required ? "true" : null)"
                    aria-label="@(Label ?? FlareStrings.TimePicker_FieldLabel)"
                    aria-invalid="@(_invalid ? "true" : null)"
-                   aria-describedby="@_computedDescribedBy"
+                   aria-describedby="@SupportDescribedBy"
                    @oninput="HandleInput"
                    @onchange="HandleCommitText"
                    @attributes="AdditionalAttributes" />
@@ -156,19 +156,10 @@
         await base.DisposeAsync();
     }
 
-    private string? _displayedError => DisplayedError(ErrorText);
-
     private string _headline => Headline ?? FlareStrings.TimePicker_Headline;
 
     // Invalid drives the frame's error chrome (a resolved validation message).
-    private bool _invalid => !string.IsNullOrEmpty(_displayedError);
-
-    private readonly string _inputId = $"flare-timepicker-in-{Guid.NewGuid():N}";
-    private string _helperId => $"{_inputId}-help";
-    private string _errorId => $"{_inputId}-err";
-    private string? _computedDescribedBy =>
-        !string.IsNullOrEmpty(_displayedError) ? _errorId :
-        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+    private bool _invalid => !string.IsNullOrEmpty(DisplayedErrorText);
 
     private async Task HandleInput(ChangeEventArgs e)
     {

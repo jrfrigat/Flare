@@ -11,11 +11,11 @@
    (type=number, min/max/step, focus-swap text mode, clamp-on-change-vs-not-on-input), so it keeps its own
    control inside the frame's Field slot rather than the shared FlareInputControl. *@
 <FlareFieldChrome Variant="Variant" Size="Size"
-                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
-                  Label="@Label" LabelFor="@_inputId"
-                  HelperText="@HelperText" HelperId="@_helperId"
-                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Label="@Label" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field">
@@ -24,7 +24,7 @@
                 <span class="@Css.Classes.Numericfield.Prefix">@Prefix</span>
             }
             <input class="@Css.Classes.Input.Control"
-                   id="@_inputId"
+                   id="@ControlId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="@(_useTextMode ? "text" : "number")"
                    inputmode="@(_useTextMode ? "decimal" : null)"
@@ -36,8 +36,8 @@
                    min="@(_useTextMode ? null : _minStr)"
                    max="@(_useTextMode ? null : _maxStr)"
                    step="@(_useTextMode ? null : _stepStr)"
-                   aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
-                   aria-describedby="@_computedDescribedBy"
+                   aria-invalid="@(!string.IsNullOrEmpty(DisplayedErrorText) ? "true" : null)"
+                   aria-describedby="@SupportDescribedBy"
                    @onfocus="HandleFocus"
                    @onchange="HandleChange"
                    @oninput="HandleInput"
@@ -99,13 +99,8 @@
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
 
-    private readonly string _inputId = $"flare-numeric-{Guid.NewGuid():N}";
-    private string _helperId => $"{_inputId}-help";
-    private string _errorId  => $"{_inputId}-err";
-    private string? _computedDescribedBy =>
-        !string.IsNullOrEmpty(_displayedError) ? _errorId :
-        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
-
+    // The control/helper/error ids, the computed aria-describedby and the displayed error text are all
+    // provided by FlareFieldBase (ControlId/HelperId/ErrorId/SupportDescribedBy/DisplayedErrorText).
     // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
     // FlareFieldBase; here we only feed it the For accessor and surface the resolved error.
     protected override void OnParametersSet() => UpdateFieldIdentifier(For);
@@ -115,8 +110,6 @@
         _debounceCts.Dispose();
         await base.DisposeAsync();
     }
-
-    private string? _displayedError => DisplayedError(ErrorText);
 
     // Format set -> focus-swap text mode (separators/currency/percent cannot live in type=number).
     private bool _useTextMode => !string.IsNullOrEmpty(Format);

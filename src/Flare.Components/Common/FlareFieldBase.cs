@@ -95,6 +95,28 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
     /// <returns>The override, the first validation message, or null.</returns>
     protected string? DisplayedError(string? errorText) => errorText ?? ValidationError;
 
+    /// <summary>A stable, unique DOM id for this field's control element. Wires the label's <c>for</c>
+    /// and the <c>aria-describedby</c> targets; generated once per component instance.</summary>
+    protected string ControlId { get; } = $"flare-field-{Guid.NewGuid():N}";
+
+    /// <summary>The DOM id of the helper-text element (derived from <see cref="ControlId"/>).</summary>
+    protected string HelperId => $"{ControlId}-help";
+
+    /// <summary>The DOM id of the error-text element (derived from <see cref="ControlId"/>).</summary>
+    protected string ErrorId => $"{ControlId}-err";
+
+    /// <summary>The error currently shown: the <see cref="ErrorText"/> override, else the bound
+    /// validation message, else null. Parameterless convenience over <see cref="DisplayedError"/> that
+    /// reads the inherited <see cref="ErrorText"/>.</summary>
+    protected string? DisplayedErrorText => DisplayedError(ErrorText);
+
+    /// <summary>The <c>aria-describedby</c> target for the control: the error id when an error is shown,
+    /// else the helper id when helper text is present, else null. Fields with an EXTRA describedby source
+    /// (e.g. an <c>AriaDescribedBy</c> parameter) compose this with their own.</summary>
+    protected string? SupportDescribedBy =>
+        !string.IsNullOrEmpty(DisplayedErrorText) ? ErrorId :
+        !string.IsNullOrEmpty(HelperText) ? HelperId : null;
+
     /// <summary>Notifies the edit context that the bound field changed, when the field is bound.</summary>
     protected void NotifyFieldChanged()
     {
