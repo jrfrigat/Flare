@@ -2,10 +2,10 @@
     <FlareSlider @bind-Value="_volume" MouseWheel="true" Label="Volume" Min="0" Max="100" Step="5"
                  StartIcon="volume_mute" EndIcon="volume_up" ShowValue="true" />
     <FlareSlider @bind-Value="_low" @bind-ValueEnd="_high" MouseWheel="true" Range="true"
-                 Label="Range (wheel pans the span)" Min="0" Max="100" Step="5" ShowValue="true" />
+                 Label="Range (wheel = low, Ctrl+wheel = high)" Min="0" Max="100" Step="5" ShowValue="true" />
 </FlareStack>
 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.75rem">
-    Hover a slider and turn the mouse wheel. Volume: @_volume | Range: @_low - @_high
+    Hover and turn the wheel; hold Ctrl to move the high handle. Volume: @_volume | Range: @_low - @_high
 </FlareText>
 
 @code {

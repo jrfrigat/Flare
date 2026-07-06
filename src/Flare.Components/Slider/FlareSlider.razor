@@ -162,10 +162,11 @@
     /// <summary>Renders the slider vertically (value increases upward). Length is set via the <c>--flare-slider-length</c> CSS var (default 12rem).</summary>
     [Parameter] public bool Vertical { get; set; }
     /// <summary>
-    /// When true, hovering the slider and turning the mouse wheel adjusts the value: each notch moves
-    /// by <see cref="Step"/> (scroll up increases, down decreases) and page scrolling is suppressed
-    /// over the track. In range mode the whole selected span is panned by one step. No effect when
-    /// <see cref="Disabled"/>.
+    /// When true, hovering the slider and turning the mouse wheel adjusts <see cref="Value"/>: each
+    /// notch moves by <see cref="Step"/> (scroll up increases, down decreases) and page scrolling is
+    /// suppressed over the track. In range mode a plain wheel moves the low handle
+    /// (<see cref="Value"/>) and <c>Ctrl</c>+wheel moves the high handle (<see cref="ValueEnd"/>);
+    /// neither handle can cross the other. No effect when <see cref="Disabled"/>.
     /// </summary>
     [Parameter] public bool MouseWheel { get; set; }
     /// <summary>Label text displayed above the slider.</summary>
@@ -406,20 +407,18 @@
         if (!MouseWheel || Disabled || e.DeltaY == 0) return;
         // Scroll up (DeltaY < 0) increases; scroll down decreases. One step per notch.
         var delta = (e.DeltaY < 0 ? 1 : -1) * _safeStep;
-        if (Range)
+        if (Range && e.CtrlKey)
         {
-            // Pan the whole [low,high] window by one step, preserving its width. Clamp the shift so
-            // neither handle leaves [min,max]; keep the consumer's Value/ValueEnd identities intact.
-            var lo = Math.Min(Value, ValueEnd);
-            var hi = Math.Max(Value, ValueEnd);
-            delta = delta > 0 ? Math.Min(delta, _safeMax - hi) : Math.Max(delta, _safeMin - lo);
-            if (delta == 0) return;
-            await ValueChanged.InvokeAsync(Value + delta);
-            await ValueEndChanged.InvokeAsync(ValueEnd + delta);
+            // Ctrl+wheel adjusts the high handle (ValueEnd); it cannot drop below the low handle.
+            var next = Math.Clamp(ValueEnd + delta, _effLow, _safeMax);
+            if (next == ValueEnd) return;
+            await ValueEndChanged.InvokeAsync(next);
         }
         else
         {
-            var next = Math.Clamp(Value + delta, _safeMin, _safeMax);
+            // Plain wheel adjusts Value; in range mode that is the low handle and it cannot pass the high one.
+            var upper = Range ? _effHigh : _safeMax;
+            var next = Math.Clamp(Value + delta, _safeMin, upper);
             if (next == Value) return;
             await ValueChanged.InvokeAsync(next);
         }
