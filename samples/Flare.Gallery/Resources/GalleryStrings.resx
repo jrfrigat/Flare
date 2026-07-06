@@ -2450,6 +2450,12 @@ Leaner CSS: shared input, picker, and listbox styles cut duplication across the 
 About 100 more component styles are now themeable knobs you can override
 Fixed a batch of accessibility and theme bugs across nav, dialogs, drawers, and inputs</value>
   </data>
+  <data name="About_WhatsNewV13" xml:space="preserve">
+    <value>Slider gains mouse-wheel control: hover and scroll to change the value (Ctrl+wheel moves the range's upper handle)
+SignaturePad stroke color is now a theme-aware FlareColor - a semantic role, a custom color, or a dynamic one
+Fixed: MaskedField dropped the first character on masks that start with a literal (e.g. a phone "+")
+Fixed: RichTextEditor toolbar buttons threw an error and applied no formatting</value>
+  </data>
   <data name="About_WhatsNewV12" xml:space="preserve">
     <value>Simplified the token API to direct --flare-* variables, dropping an extra layer of indirection
 New token audit reports every style variable against the registry and reached fully in sync
