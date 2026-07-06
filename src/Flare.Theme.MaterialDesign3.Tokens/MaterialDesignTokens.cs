@@ -445,18 +445,7 @@ public class MaterialDesignTokens
 
     internal static readonly PopoverTokens Popover = new()
     {
-        SurfaceColor = "var(--flare-color-surface-container)",
         Radius = "var(--flare-shape-medium)",
-        Elevation = "var(--flare-elevation-2)",
-        Padding = "8px 0",
-        MinWidth = "112px",
-        MaxWidth = "calc(100vw - 32px)",
-        MaxHeight = "calc(100vh - 32px)",
-        Offset = "4px",
-        ArrowSize = "12px",
-        ScrimColor = "transparent",
-        TransitionDuration = "var(--flare-motion-duration-short2)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
     };
 
     internal static readonly AvatarTokens Avatar = new()

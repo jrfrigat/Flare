@@ -548,18 +548,7 @@ public static class CssVarMap
         #endregion
 
         #region POPOVER
-        v[Css.Tokens.PopoverPopup.SurfaceColor] = t.Popover.SurfaceColor;
         v[Css.Tokens.PopoverPopup.Radius] = t.Popover.Radius;
-        v[Css.Tokens.PopoverPopup.Elevation] = t.Popover.Elevation;
-        v[Css.Tokens.PopoverPopup.Padding] = t.Popover.Padding;
-        v[Css.Tokens.PopoverPopup.MinWidth] = t.Popover.MinWidth;
-        v[Css.Tokens.PopoverPopup.MaxWidth] = t.Popover.MaxWidth;
-        v[Css.Tokens.PopoverPopup.MaxHeight] = t.Popover.MaxHeight;
-        v[Css.Tokens.PopoverPopup.Offset] = t.Popover.Offset;
-        v[Css.Tokens.PopoverPopup.ArrowSize] = t.Popover.ArrowSize;
-        v[Css.Tokens.PopoverPopup.ScrimColor] = t.Popover.ScrimColor;
-        v[Css.Tokens.PopoverPopup.TransitionDuration] = t.Popover.TransitionDuration;
-        v[Css.Tokens.PopoverPopup.TransitionEasing] = t.Popover.TransitionEasing;
         #endregion
 
         #region DATAGRID

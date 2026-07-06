@@ -16,30 +16,11 @@ public static class TooltipPopup
 /// <summary>CSS variable tokens for popover popup.</summary>
 public static class PopoverPopup
 {
-    /// <summary>CSS custom-property name for the surface color token.</summary>
-    public const string SurfaceColor = "--flare-popover-surface-color";
-    /// <summary>CSS custom-property name for the radius token.</summary>
+    // Popover surface/elevation/padding/width/offset/scrim/motion are NOT tokens here - popover.css and
+    // menu.css read the shared color/elevation/spacing/motion tokens directly. Only the corner radius is a
+    // popover-family token (themes vary it: shape-medium vs shape-small), shared by all popover-like surfaces.
+    /// <summary>CSS custom-property name for the popover-family corner radius.</summary>
     public const string Radius = "--flare-popover-radius";
-    /// <summary>CSS custom-property name for the elevation token.</summary>
-    public const string Elevation = "--flare-popover-elevation";
-    /// <summary>CSS custom-property name for the padding token.</summary>
-    public const string Padding = "--flare-popover-padding";
-    /// <summary>CSS custom-property name for the min width token.</summary>
-    public const string MinWidth = "--flare-popover-min-width";
-    /// <summary>CSS custom-property name for the max width token.</summary>
-    public const string MaxWidth = "--flare-popover-max-width";
-    /// <summary>CSS custom-property name for the max height token.</summary>
-    public const string MaxHeight = "--flare-popover-max-height";
-    /// <summary>CSS custom-property name for the offset token.</summary>
-    public const string Offset = "--flare-popover-offset";
-    /// <summary>CSS custom-property name for the arrow size token.</summary>
-    public const string ArrowSize = "--flare-popover-arrow-size";
-    /// <summary>CSS custom-property name for the scrim color token.</summary>
-    public const string ScrimColor = "--flare-popover-scrim-color";
-    /// <summary>CSS custom-property name for the transition duration token.</summary>
-    public const string TransitionDuration = "--flare-popover-transition-duration";
-    /// <summary>CSS custom-property name for the transition easing token.</summary>
-    public const string TransitionEasing = "--flare-popover-transition-easing";
 }
 
 /// <summary>CSS variable tokens for data grid field.</summary>
