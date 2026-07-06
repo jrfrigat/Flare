@@ -22,15 +22,25 @@
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* Inner (seam) corners AT REST match the connected button group's rounding (--flare-shape-small ~ 8dp)
-       instead of the subtle 4dp baseline, so the split button and the button group read as one shape
-       system in Expressive. The outer ends stay circular (from the base tokens); hover/open grow the inner
-       corner further (below). Same specificity as the base radius rules, but this theme sheet loads later. */
+    /* Rest geometry: OUTER end = a full capsule from the ACTUAL height, INNER (seam) corner = shape-small
+       (~8dp), matching the connected button group so the two read as one shape system.
+
+       CRITICAL: the outer end must be calc(height/2), NOT the button's 9999px pill token. When a ~9999px
+       radius shares an edge with the small 8dp inner corner, the browser scales BOTH radii down
+       proportionally (side / sum-of-radii is tiny), crushing the 8dp corner to ~0 -- so the gap edge
+       renders SQUARE even though getComputedStyle still reports 8px. Using calc(height/2) keeps the
+       per-edge radius sum sane (24 + 8 = 32px < button width), so the 8dp seam corner actually paints.
+       The button group already does this (calc height/2 outer), which is why its 8dp inner renders fine.
+       Same specificity as the base radius rules, but this theme sheet loads later. */
     .flare-split-btn .flare-split-btn__main.flare-btn {
+        border-top-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-bottom-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
         border-top-right-radius: var(--flare-shape-small) !important;
         border-bottom-right-radius: var(--flare-shape-small) !important;
     }
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn {
+        border-top-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-bottom-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
         border-top-left-radius: var(--flare-shape-small) !important;
         border-bottom-left-radius: var(--flare-shape-small) !important;
     }
