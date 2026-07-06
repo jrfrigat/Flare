@@ -43,6 +43,7 @@ internal static class Program
         return cmd switch
         {
             "check" => Check(css, constants, themeCss, cssThemeDirs, cssDir) ? 0 : 1,
+            "tokens" => TokenCheck(root),
             "generate" or "gen" => Generate(css, constants),
             "merge" => Merge(css, cssClassesDir),
             null => Menu(css, constants, cssDir, cssClassesDir, themeCss, cssThemeDirs),
@@ -50,11 +51,56 @@ internal static class Program
         };
     }
 
+    // Prints the token audit (--flare-* CSS usage vs Css.Tokens constants). Report-only: always returns
+    // 0 so it never fails a build or CI step -- tokens are not expected to be fully in sync yet.
+    private static int TokenCheck(string? root = null)
+    {
+        var report = CssAudit.RunTokens(root);
+        Console.WriteLine();
+        Console.WriteLine("=== Flare Token Audit (report only -- NOT a build gate) ===");
+        Console.WriteLine($"  [T+] used in Flare.Components CSS, no Css.Tokens const : {report.TokensMissingConstant.Count}");
+        Console.WriteLine($"  [T-] Css.Tokens const with NO CSS reference anywhere   : {report.ConstantsMissingCss.Count}");
+        Console.WriteLine($"  [T~] used in a theme, undeclared, not in base CSS      : {report.ThemeOnlyTokens.Count}");
+        Console.WriteLine();
+
+        if (report.InSync)
+        {
+            Console.WriteLine("OK - Css.Tokens and CSS token usage are fully in sync.");
+            return 0;
+        }
+
+        if (report.TokensMissingConstant.Count > 0)
+        {
+            Console.WriteLine($"--- {report.TokensMissingConstant.Count} token(s) in CSS but MISSING from Css.Tokens ---");
+            foreach (var f in report.TokensMissingConstant) Console.WriteLine($"  {f}");
+            Console.WriteLine("      (a component-internal CSS token with a fallback default, or a token that should gain a const)");
+            Console.WriteLine();
+        }
+
+        if (report.ConstantsMissingCss.Count > 0)
+        {
+            Console.WriteLine($"--- {report.ConstantsMissingCss.Count} const(s) in Css.Tokens but referenced by NO CSS ---");
+            foreach (var f in report.ConstantsMissingCss) Console.WriteLine($"  {f}");
+            Console.WriteLine("      (dead or aliased token const, or one consumed only from C#/inline styles)");
+            Console.WriteLine();
+        }
+
+        if (report.ThemeOnlyTokens.Count > 0)
+        {
+            Console.WriteLine($"--- {report.ThemeOnlyTokens.Count} token(s) used by a theme but undeclared and absent from base CSS ---");
+            foreach (var f in report.ThemeOnlyTokens) Console.WriteLine($"  {f}");
+            Console.WriteLine();
+        }
+
+        return 0;
+    }
+
     private static int Usage()
     {
-        Console.WriteLine("Flare.CssAudit - keeps CssClasses in sync with component CSS.");
-        Console.WriteLine("Usage: cssaudit [check|generate]");
+        Console.WriteLine("Flare.CssAudit - keeps CssClasses and Css.Tokens in sync with component CSS.");
+        Console.WriteLine("Usage: cssaudit [check|tokens|generate]");
         Console.WriteLine("  check     Report classes missing in CssClasses and constants missing in CSS (exit 1 on mismatch).");
+        Console.WriteLine("  tokens    Report --flare-* token drift between CSS and Css.Tokens (report only, always exit 0).");
         Console.WriteLine("  generate  Emit C# constants for CSS classes missing from CssClasses, grouped by CSS file.");
         Console.WriteLine("  (no arg)  Interactive menu.");
         return 0;
@@ -86,16 +132,18 @@ internal static class Program
             Console.WriteLine($"  Themes     : {ThemeNames(themeDirs)}");
             Console.WriteLine($"  {css.Count} CSS classes, {constants.Values.Count} constants");
             Console.WriteLine();
-            Console.WriteLine("  [1] Check (compare both directions)");
-            Console.WriteLine("  [2] Generate missing constants (preview, grouped by CSS file)");
-            Console.WriteLine("  [3] Merge missing constants into CssClasses/ partials (in place)");
+            Console.WriteLine("  [1] Check classes (compare both directions)");
+            Console.WriteLine("  [2] Token audit (--flare-* CSS vs Css.Tokens, report only)");
+            Console.WriteLine("  [3] Generate missing constants (preview, grouped by CSS file)");
+            Console.WriteLine("  [4] Merge missing constants into CssClasses/ partials (in place)");
             Console.WriteLine("  [0] Exit");
             Console.Write("> ");
             switch (Console.ReadLine()?.Trim())
             {
                 case "1": Check(css, constants, themeCss, themeDirs, cssDir); break;
-                case "2": Generate(css, constants); break;
-                case "3":
+                case "2": TokenCheck(); break;
+                case "3": Generate(css, constants); break;
+                case "4":
                     Merge(css, cssClassesDir);
                     constants = CollectConstants(cssClassesDir); // refresh after writing
                     break;
@@ -568,6 +616,102 @@ internal static class Program
         return css;
     }
 
+    // ---- Token (--flare-*) collection & comparison ----
+
+    // A --flare-* custom property. The literal "--flare" (dash-dash-f) rules out the private
+    // --_flare-* internals (there the '--' is followed by '_'). Comments/strings are stripped first so
+    // a doc mention like "--flare-x-*" cannot leak in as a fake token.
+    private static readonly Regex TokenRx = new(@"--flare-[a-z0-9-]+", RegexOptions.Compiled);
+
+    /// <summary>
+    /// Every distinct <c>--flare-*</c> token that appears (read via <c>var()</c> or defined) in the CSS
+    /// under <paramref name="cssDirs"/>, mapped to the file(s) that mention it. The token counterpart of
+    /// <see cref="CollectCssClasses"/>.
+    /// </summary>
+    internal static SortedDictionary<string, SortedSet<string>> CollectCssTokens(params string[] cssDirs)
+    {
+        var map = new SortedDictionary<string, SortedSet<string>>(StringComparer.Ordinal);
+        foreach (var cssDir in cssDirs)
+        {
+            if (!Directory.Exists(cssDir)) continue;
+            foreach (var path in Directory.EnumerateFiles(cssDir, "*.css", SearchOption.AllDirectories).OrderBy(p => p))
+            {
+                var text = StripCommentsAndStrings(File.ReadAllText(path));
+                var tm = Regex.Match(path, @"Flare\.Theme\.([^\\/]+)");
+                var file = tm.Success ? $"{tm.Groups[1].Value}/{Path.GetFileName(path)}" : Path.GetFileName(path);
+                foreach (Match m in TokenRx.Matches(text))
+                {
+                    var tok = m.Value.TrimEnd('-'); // defensive: never key on a trailing separator
+                    if (tok.Length <= "--flare-".Length) continue;
+                    (map.TryGetValue(tok, out var files) ? files : map[tok] = new(StringComparer.Ordinal)).Add(file);
+                }
+            }
+        }
+        return map;
+    }
+
+    /// <summary>
+    /// Every <c>--flare-*</c> constant declared under <c>Flare.Abstractions/Css/Tokens</c>. The token
+    /// counterpart of <see cref="CollectConstants"/>; skips non-token consts (the <c>--fc-*</c> local
+    /// colors and the <c>xs</c>/<c>top-left</c> Size/Side vocab) by keeping only <c>--flare-</c> values.
+    /// </summary>
+    internal static ConstSet CollectTokenConstants(string tokensDir)
+    {
+        var set = new ConstSet("Css.Tokens");
+        if (!Directory.Exists(tokensDir)) return set;
+        foreach (var file in Directory.EnumerateFiles(tokensDir, "*.cs").OrderBy(p => p, StringComparer.Ordinal))
+        {
+            string current = "Tokens";
+            foreach (var raw in File.ReadAllLines(file))
+            {
+                var nm = NestedClassRx.Match(raw);
+                if (nm.Success) current = nm.Groups[1].Value;
+
+                var cm = ConstRx.Match(raw);
+                if (cm.Success && cm.Groups[2].Value.StartsWith("--flare-", StringComparison.Ordinal))
+                    set.Add(cm.Groups[2].Value, current, cm.Groups[1].Value);
+            }
+        }
+        return set;
+    }
+
+    // The three token sync reports, shared by the CLI `tokens` verb and CssAudit.RunTokens.
+    //   Plus  -> tokens read in Flare.Components CSS with no Css.Tokens const (and not covered by a
+    //            declared prefix const or a known runtime-prefix family like --flare-typescale-*)
+    //   Minus -> Css.Tokens consts referenced by NO CSS at all (component or theme), directly or as a
+    //            prefix -- i.e. dead or aliased token constants
+    //   Tilde -> tokens a theme references that are neither declared nor present in the base CSS
+    internal static (List<string> Plus, List<string> Minus, List<string> Tilde) CompareTokens(
+        SortedDictionary<string, SortedSet<string>> css, ConstSet constants,
+        SortedDictionary<string, SortedSet<string>>? themeCss, string[] knownPrefixes)
+    {
+        var consts = constants.Values;
+        var themeKeys = (themeCss?.Keys ?? Enumerable.Empty<string>()).ToList();
+        var allCss = new HashSet<string>(css.Keys, StringComparer.Ordinal);
+        foreach (var k in themeKeys) allCss.Add(k);
+
+        // A token is DECLARED if a const names it exactly, a const is a segment prefix of it (the
+        // --flare-btn-label -> --flare-btn-label-md-font runtime-prefix pattern), or it belongs to a
+        // known runtime-prefix family (typescale names come from Typography.Font/Weight/... methods).
+        bool DeclaredByConst(string t) =>
+            consts.Contains(t) || consts.Any(c => t.Length > c.Length && t.StartsWith(c + "-", StringComparison.Ordinal));
+        bool DeclaredByPrefix(string t) =>
+            knownPrefixes.Any(p => t == p || t.StartsWith(p + "-", StringComparison.Ordinal));
+        bool Declared(string t) => DeclaredByConst(t) || DeclaredByPrefix(t);
+
+        // A const is USED if any CSS token equals it or expands it (const is a segment prefix).
+        bool UsedInCss(string c) =>
+            allCss.Contains(c) || allCss.Any(t => t.Length > c.Length && t.StartsWith(c + "-", StringComparison.Ordinal));
+
+        var plus = css.Keys.Where(t => !Declared(t))
+            .OrderBy(t => t, StringComparer.Ordinal).ToList();
+        var minus = consts.Where(c => !UsedInCss(c))
+            .OrderBy(c => c, StringComparer.Ordinal).ToList();
+        var tilde = themeKeys.Where(t => !Declared(t) && !css.ContainsKey(t))
+            .OrderBy(t => t, StringComparer.Ordinal).ToList();
+        return (plus, minus, tilde);
+    }
+
     // Prefer the file whose name matches the class prefix (avoids dumping into shared files like a11y.css).
     private static string PickOwningFile(string cls, SortedSet<string> files)
     {
@@ -632,6 +776,11 @@ internal static class Program
 internal sealed class ConstSet
 {
     private readonly Dictionary<string, List<(string Owner, string Field)>> _byValue = new(StringComparer.Ordinal);
+    private readonly string _qualifier;
+
+    /// <param name="qualifier">The <c>Css.*</c> holder these constants live under, used only to format
+    /// location hints (e.g. <c>Css.Classes</c> for class names, <c>Css.Tokens</c> for token names).</param>
+    public ConstSet(string qualifier = "Css.Classes") => _qualifier = qualifier;
 
     /// <summary>The distinct CSS-class values that have at least one constant.</summary>
     public IReadOnlyCollection<string> Values => _byValue.Keys;
@@ -644,7 +793,7 @@ internal sealed class ConstSet
 
     public string LocationOf(string value) =>
         _byValue.TryGetValue(value, out var locs) && locs.Count > 0
-            ? $"Css.Classes.{locs[0].Owner}.{locs[0].Field}" : "?";
+            ? $"{_qualifier}.{locs[0].Owner}.{locs[0].Field}" : "?";
 
     /// <summary>
     /// Values declared by MORE than one constant (redundant duplicates), each formatted as

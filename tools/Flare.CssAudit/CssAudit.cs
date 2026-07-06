@@ -35,11 +35,73 @@ public sealed class CssAuditReport
 }
 
 /// <summary>
+/// Outcome of a <c>--flare-*</c> token synchronization audit (the token counterpart of
+/// <see cref="CssAuditReport"/>). Unlike classes, tokens are NOT expected to be fully in sync today, so
+/// this report is informational (the <c>tokens</c> CLI verb prints it) and is deliberately NOT wired
+/// into a build-failing gate. Each list holds human-readable findings.
+/// </summary>
+public sealed class TokenAuditReport
+{
+    /// <summary><c>[T+]</c> tokens read in Flare.Components CSS with no <c>Css.Tokens</c> constant.</summary>
+    public required IReadOnlyList<string> TokensMissingConstant { get; init; }
+    /// <summary><c>[T-]</c> <c>Css.Tokens</c> constants referenced by no CSS at all (dead or aliased).</summary>
+    public required IReadOnlyList<string> ConstantsMissingCss { get; init; }
+    /// <summary><c>[T~]</c> tokens a theme references that are neither declared nor in the base CSS.</summary>
+    public required IReadOnlyList<string> ThemeOnlyTokens { get; init; }
+
+    /// <summary>True when CSS token usage and Css.Tokens fully agree (no drift in any direction).</summary>
+    public bool InSync =>
+        TokensMissingConstant.Count == 0 && ConstantsMissingCss.Count == 0 && ThemeOnlyTokens.Count == 0;
+
+    /// <summary>All findings across the reports, for a single combined message.</summary>
+    public IEnumerable<string> AllFindings =>
+        TokensMissingConstant.Concat(ConstantsMissingCss).Concat(ThemeOnlyTokens);
+}
+
+/// <summary>
 /// Programmatic entry point for the CssClasses/CSS/theme sync check. The CLI <c>check</c> command
 /// and the test suite both run through <see cref="Run"/> so they can never disagree.
 /// </summary>
 public static class CssAudit
 {
+    // Token families whose NAMES are generated at runtime from a prefix rather than declared as a 1:1
+    // const, so a CSS reference such as --flare-typescale-body-large-font is "declared" via its
+    // generator (Typography.Font/Weight/Size/Height/Spacing), not via a literal constant.
+    internal static readonly string[] KnownTokenPrefixes = { "--flare-typescale" };
+
+    /// <summary>
+    /// Runs the token audit (<c>--flare-*</c> CSS usage vs <c>Css.Tokens</c> constants) against the
+    /// repository source tree. Report-only: the caller decides what to do with the findings; nothing
+    /// here fails a build.
+    /// </summary>
+    /// <param name="repoRoot">Repo root; located by walking up when null (see <see cref="Run"/>).</param>
+    public static TokenAuditReport RunTokens(string? repoRoot = null)
+    {
+        var root = repoRoot ?? Program.FindRepoRoot()
+            ?? throw new DirectoryNotFoundException(
+                "Could not locate the repo root (a folder containing src/Flare.Components).");
+
+        var cssDir = Path.Combine(root, "src", "Flare.Components", "wwwroot", "css");
+        var tokensDir = Path.Combine(root, "src", "Flare.Abstractions", "Css", "Tokens");
+        var themeDirs = Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*")
+            .Select(d => Path.Combine(d, "wwwroot", "css"))
+            .Where(Directory.Exists)
+            .ToArray();
+
+        var css = Program.CollectCssTokens(cssDir);
+        var constants = Program.CollectTokenConstants(tokensDir);
+        var themeCss = Program.CollectCssTokens(themeDirs);
+
+        var (plus, minus, tilde) = Program.CompareTokens(css, constants, themeCss, KnownTokenPrefixes);
+
+        return new TokenAuditReport
+        {
+            TokensMissingConstant = plus.Select(t => $"[T+] {t}  (in {string.Join(", ", css[t])})").ToList(),
+            ConstantsMissingCss = minus.Select(v => $"[T-] {v}  ({constants.LocationOf(v)})").ToList(),
+            ThemeOnlyTokens = tilde.Select(t => $"[T~] {t}  (in {string.Join(", ", themeCss[t])})").ToList(),
+        };
+    }
+
     /// <summary>
     /// Runs the audit against the repository source tree.
     /// </summary>
