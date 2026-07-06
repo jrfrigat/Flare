@@ -6,7 +6,7 @@
   "display": "standalone",
   "background_color": "#fffbfe",
   "theme_color": "#6750a4",
-  "description": "Interactive gallery for the Flare Blazor component library - Material Design 3 and Fluent UI 2 themes.",
+  "description": "Interactive gallery for the Flare Blazor component library - theme-agnostic UI built on semantic tokens, with seven optional preset design systems.",
   "prefer_related_applications": false,
   "categories": ["developer tools", "design"],
   "icons": [

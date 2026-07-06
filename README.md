@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://flare.frigat.duckdns.org/">
-    <img src="assets/banner.png" alt="Flare - Blazor component library for .NET 10 with Material Design 3 and Fluent UI 2" width="860">
+    <img src="assets/banner.png" alt="Flare - Theme-agnostic Blazor component library for .NET 10 powered by a semantic token system" width="860">
   </a>
 </p>
 
@@ -15,11 +15,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://flare.frigat.duckdns.org/)
 
-A production-ready Blazor component library - **.NET 10**-first, also targeting **.NET 8 and .NET 9** - with **runtime theme switching** across seven design systems (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026), with no page reload and no flash of unstyled content.
+A production-ready, **theme-agnostic** Blazor component library - **.NET 10**-first, also targeting **.NET 8 and .NET 9** - with **zero baked-in styling**. Build your own design system with semantic tokens, or start instantly with one of seven production-ready preset themes (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026), all shipped as independent, optional packages. Runtime theme switching, no page reload, no flash of unstyled content.
 
 **[Live demo / component gallery ->](https://flare.frigat.duckdns.org/)**
 
-**100+ components - 7 design systems x 34 palettes (+ Dynamic Color) x light/dark/auto - unified color API - zero third-party CSS dependencies - Docker-ready Gallery**
+**100+ components - build your own theme with semantic tokens - 7 optional preset design systems x 34 palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
 
 ---
 

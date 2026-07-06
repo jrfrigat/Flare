@@ -12,8 +12,11 @@ and types of any component, consult the generated [API Reference](../../api/inde
 
 - A **.NET 8 / 9 / 10 Blazor** UI library (net10-first). Works in **both** Blazor WebAssembly and Blazor Server.
 - **100+ components**, all prefixed `Flare*` (e.g. `FlareButton`, `FlareDataGrid`).
-- **Token-based theming.** Multiple design systems (Material Design 3 Expressive, Fluent UI 2, Aero,
-  Liquid Glass, Visual Studio) are separate packages, switchable at runtime. You never write theme CSS.
+- **Token-based theming - you own the design system.** Components ship with zero baked-in styling; every
+  color, shape, size and motion comes from a theme via one semantic token API. Seven preset design systems
+  (Material Design 3 Expressive, MD3, MD2, Fluent UI 2, Aero, Liquid Glass, Visual Studio) ship as
+  independent, optional packages - use one instantly or build a fully custom theme from scratch. You never
+  write theme CSS.
 - Component **variants/sizes/shapes are enums**, not strings (e.g. `Variant="ButtonVariant.Filled"`).
 
 ---
@@ -43,7 +46,7 @@ and types of any component, consult the generated [API Reference](../../api/inde
 # Core (pulls in Flare.Components (+ the Abstractions/Theming/Infrastructure rings), 100+ components):
 dotnet add package Flare.Blazor
 
-# At least one theme (separate packages):
+# A theme - use a preset package below, or build your own (docs/en/theme-creation-guide.md):
 dotnet add package Flare.Theme.MaterialDesign3Expressive
 # others: Flare.Theme.FluentUI2, Flare.Theme.Aero, Flare.Theme.LiquidGlass, Flare.Theme.VisualStudio
 ```

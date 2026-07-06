@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://flare.frigat.duckdns.org/">
-    <img src="assets/banner.png" alt="Flare - библиотека компонентов Blazor для .NET 10 с Material Design 3 и Fluent UI 2" width="860">
+    <img src="assets/banner.png" alt="Flare - не зависящая от тем библиотека компонентов Blazor для .NET 10 на основе системы семантических токенов" width="860">
   </a>
 </p>
 
@@ -15,11 +15,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Live demo](https://img.shields.io/badge/live%20demo-gallery-7c3aed)](https://flare.frigat.duckdns.org/)
 
-Производственная библиотека компонентов Blazor для **.NET 10** с **переключением тем во время выполнения** между семью дизайн-системами - Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass и Visual Studio 2026 - без перезагрузки страницы и без мигания неоформленного контента.
+Производственная, **не зависящая от тем** библиотека компонентов Blazor для **.NET 10** с **нулевым встроенным стилем**. Создавайте собственную дизайн-систему на семантических токенах или начните мгновенно с одной из семи готовых preset-тем (Material Design 3 Expressive, Material Design 3, Material Design 2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026) - все поставляются как независимые, необязательные пакеты. Переключение тем во время выполнения без перезагрузки страницы и без мигания.
 
 **[Живое демо / галерея компонентов ->](https://flare.frigat.duckdns.org/)**
 
-**100+ компонентов - 7 дизайн-систем x 34 палитры (+ Dynamic Color) x светлая/тёмная/авто - единый API цвета - нет зависимостей от сторонних CSS - Docker-готовая галерея**
+**100+ компонентов - своя тема на семантических токенах - 7 необязательных preset-дизайн-систем x 34 палитры (+ Dynamic Color) x светлая/тёмная/авто - нет зависимостей от сторонних CSS - Docker-готовая галерея**
 
 ---
 
