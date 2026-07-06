@@ -164,72 +164,44 @@ public static class AvatarField
 /// <summary>CSS variable tokens for progress field.</summary>
 public static class ProgressField
 {
-    /// <summary>CSS custom-property name for the track color token.</summary>
-    public const string TrackColor = "--flare-progress-track-color";
-    /// <summary>CSS custom-property name for the indicator color token.</summary>
-    public const string IndicatorColor = "--flare-progress-indicator-color";
-    /// <summary>CSS custom-property name for the circular color token.</summary>
-    public const string CircularColor = "--flare-progress-circular-color";
-    /// <summary>CSS custom-property name for the circular track color token.</summary>
-    public const string CircularTrackColor = "--flare-progress-circular-track-color";
-    /// <summary>CSS custom-property name for the linear height token.</summary>
+    // Colors, the sm/lg size+stroke variants, indeterminate timing and buffer-color are gone: progress.css
+    // reuses the shared color/motion scales and its own size classes directly. What remains is the geometry
+    // the component reads - in CSS, and (for the wavy variant) in C# via ReadToken.
+    /// <summary>CSS custom-property name for the linear track/indicator height.</summary>
     public const string LinearHeight = "--flare-progress-linear-height";
-    /// <summary>CSS custom-property name for the linear height sm token.</summary>
-    public const string LinearHeightSm = "--flare-progress-linear-height-sm";
-    /// <summary>CSS custom-property name for the linear height lg token.</summary>
-    public const string LinearHeightLg = "--flare-progress-linear-height-lg";
-    /// <summary>CSS custom-property name for the linear radius token.</summary>
-    public const string LinearRadius = "--flare-progress-linear-radius";
-    /// <summary>CSS custom-property name for the circular size token.</summary>
-    public const string CircularSize = "--flare-progress-circular-size";
-    /// <summary>CSS custom-property name for the circular size sm token.</summary>
-    public const string CircularSizeSm = "--flare-progress-circular-size-sm";
-    /// <summary>CSS custom-property name for the circular size lg token.</summary>
-    public const string CircularSizeLg = "--flare-progress-circular-size-lg";
-    /// <summary>CSS custom-property name for the circular stroke width token.</summary>
-    public const string CircularStrokeWidth = "--flare-progress-circular-stroke-width";
-    /// <summary>CSS custom-property name for the circular stroke width sm token.</summary>
-    public const string CircularStrokeWidthSm = "--flare-progress-circular-stroke-width-sm";
-    /// <summary>CSS custom-property name for the circular stroke width lg token.</summary>
-    public const string CircularStrokeWidthLg = "--flare-progress-circular-stroke-width-lg";
-    /// <summary>CSS custom-property name for the indeterminate duration token.</summary>
-    public const string IndeterminateDuration = "--flare-progress-indeterminate-duration";
-    /// <summary>CSS custom-property name for the indeterminate easing token.</summary>
-    public const string IndeterminateEasing = "--flare-progress-indeterminate-easing";
-    /// <summary>CSS custom-property name for the buffer color token.</summary>
-    public const string BufferColor = "--flare-progress-buffer-color";
-    /// <summary>CSS custom-property name for the wavy duration token.</summary>
-    public const string WavyDuration = "--flare-progress-wavy-duration";
-
-    // Linear/circular progress geometry the component actually reads (track/stop/wave),
-    // distinct from the legacy linear-radius/circular-stroke-width names above.
-    /// <summary>CSS custom-property name for the linear track radius token.</summary>
+    /// <summary>CSS custom-property name for the linear track corner radius.</summary>
     public const string TrackRadius = "--flare-progress-track-radius";
-    /// <summary>CSS custom-property name for the gap between track and indicator token.</summary>
+    /// <summary>CSS custom-property name for the gap between indicator and remaining track.</summary>
     public const string Gap = "--flare-progress-gap";
-    /// <summary>CSS custom-property name for the trailing stop-indicator size token.</summary>
+    /// <summary>CSS custom-property name for the trailing stop-indicator size.</summary>
     public const string StopSize = "--flare-progress-stop-size";
-    /// <summary>CSS custom-property name for the trailing stop-indicator inset token.</summary>
+    /// <summary>CSS custom-property name for the trailing stop-indicator inset.</summary>
     public const string StopInset = "--flare-progress-stop-inset";
-    /// <summary>CSS custom-property name for the circular indicator stroke width token.</summary>
+    /// <summary>CSS custom-property name for the trailing stop-indicator color.</summary>
+    public const string StopColor = "--flare-progress-stop-color";
+    /// <summary>CSS custom-property name for the buffer track opacity.</summary>
+    public const string BufferOpacity = "--flare-progress-buffer-opacity";
+    /// <summary>CSS custom-property name for the circular variant diameter.</summary>
+    public const string CircularSize = "--flare-progress-circular-size";
+    /// <summary>CSS custom-property name for the circular indicator stroke width.</summary>
     public const string CircularWidth = "--flare-progress-circular-width";
-    /// <summary>CSS custom-property name for the circular indicator line cap token.</summary>
+    /// <summary>CSS custom-property name for the circular indicator line cap.</summary>
     public const string CircularCap = "--flare-progress-circular-cap";
-    /// <summary>CSS custom-property name for the circular indicator/track gap token.</summary>
+    /// <summary>CSS custom-property name for the circular indicator/track gap.</summary>
     public const string CircularGap = "--flare-progress-circular-gap";
-    /// <summary>CSS custom-property name for the wavy-progress enable flag token (1 = on).</summary>
+    /// <summary>CSS custom-property name for the wavy-progress enable flag (1 = on).</summary>
     public const string WavyEnabled = "--flare-progress-wavy-enabled";
-    /// <summary>CSS custom-property name for the wavy linear-track height token.</summary>
+    /// <summary>CSS custom-property name for the wavy linear-track height.</summary>
     public const string WavyHeight = "--flare-progress-wavy-height";
-    /// <summary>CSS custom-property name for the wave length token.</summary>
+    /// <summary>CSS custom-property name for the wave length.</summary>
     public const string WaveLength = "--flare-progress-wave-length";
-    /// <summary>CSS custom-property name for the wave amplitude token.</summary>
+    /// <summary>CSS custom-property name for the wave amplitude.</summary>
     public const string WaveAmplitude = "--flare-progress-wave-amplitude";
-    /// <summary>CSS custom-property name for the wave animation speed token.</summary>
+    /// <summary>CSS custom-property name for the wave animation speed.</summary>
     public const string WaveSpeed = "--flare-progress-wave-speed";
-    /// <summary>CSS custom-property name for the circular wavy ring wave count token.</summary>
+    /// <summary>CSS custom-property name for the circular wavy ring wave count.</summary>
     public const string RingWaves = "--flare-progress-ring-waves";
-    /// <summary>CSS custom-property name for the circular wavy ring wave amplitude token.</summary>
+    /// <summary>CSS custom-property name for the circular wavy ring wave amplitude.</summary>
     public const string RingWaveAmplitude = "--flare-progress-ring-wave-amplitude";
 }
 

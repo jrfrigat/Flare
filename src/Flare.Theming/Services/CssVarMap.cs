@@ -561,28 +561,14 @@ public static class CssVarMap
         #endregion
 
         #region PROGRESS
-        v[Css.Tokens.ProgressField.TrackColor] = t.Progress.TrackColor;
-        v[Css.Tokens.ProgressField.IndicatorColor] = t.Progress.IndicatorColor;
-        v[Css.Tokens.ProgressField.CircularColor] = t.Progress.CircularColor;
-        v[Css.Tokens.ProgressField.CircularTrackColor] = t.Progress.CircularTrackColor;
         v[Css.Tokens.ProgressField.LinearHeight] = t.Progress.LinearHeight;
-        v[Css.Tokens.ProgressField.LinearHeightSm] = t.Progress.LinearHeightSm;
-        v[Css.Tokens.ProgressField.LinearHeightLg] = t.Progress.LinearHeightLg;
-        v[Css.Tokens.ProgressField.LinearRadius] = t.Progress.LinearRadius;
-        v[Css.Tokens.ProgressField.CircularSize] = t.Progress.CircularSize;
-        v[Css.Tokens.ProgressField.CircularSizeSm] = t.Progress.CircularSizeSm;
-        v[Css.Tokens.ProgressField.CircularSizeLg] = t.Progress.CircularSizeLg;
-        v[Css.Tokens.ProgressField.CircularStrokeWidth] = t.Progress.CircularStrokeWidth;
-        v[Css.Tokens.ProgressField.CircularStrokeWidthSm] = t.Progress.CircularStrokeWidthSm;
-        v[Css.Tokens.ProgressField.CircularStrokeWidthLg] = t.Progress.CircularStrokeWidthLg;
-        v[Css.Tokens.ProgressField.IndeterminateDuration] = t.Progress.IndeterminateDuration;
-        v[Css.Tokens.ProgressField.IndeterminateEasing] = t.Progress.IndeterminateEasing;
-        v[Css.Tokens.ProgressField.BufferColor] = t.Progress.BufferColor;
-        v[Css.Tokens.ProgressField.WavyDuration] = t.Progress.WavyDuration;
         v[Css.Tokens.ProgressField.TrackRadius] = t.Progress.TrackRadius;
         v[Css.Tokens.ProgressField.Gap] = t.Progress.Gap;
         v[Css.Tokens.ProgressField.StopSize] = t.Progress.StopSize;
         v[Css.Tokens.ProgressField.StopInset] = t.Progress.StopInset;
+        v[Css.Tokens.ProgressField.StopColor] = t.Progress.StopColor;
+        v[Css.Tokens.ProgressField.BufferOpacity] = t.Progress.BufferOpacity;
+        v[Css.Tokens.ProgressField.CircularSize] = t.Progress.CircularSize;
         v[Css.Tokens.ProgressField.CircularWidth] = t.Progress.CircularWidth;
         v[Css.Tokens.ProgressField.CircularCap] = t.Progress.CircularCap;
         v[Css.Tokens.ProgressField.CircularGap] = t.Progress.CircularGap;

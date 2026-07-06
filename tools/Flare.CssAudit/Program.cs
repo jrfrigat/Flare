@@ -651,6 +651,33 @@ internal static class Program
     }
 
     /// <summary>
+    /// Adds every <c>--flare-*</c> token referenced from component <c>.razor</c>/<c>.cs</c> (e.g. a
+    /// <c>ReadTokenNum("--flare-progress-wave-amplitude")</c> call or an inline style string) to
+    /// <paramref name="map"/>. These are real usages the CSS scan misses, so a token consumed only in C#
+    /// is not mis-reported as dead. Token NAME constants live in Flare.Abstractions, not here, so scanning
+    /// Flare.Components code cannot pick up the declarations themselves.
+    /// </summary>
+    internal static void AddComponentCodeTokens(SortedDictionary<string, SortedSet<string>> map, string componentRoot)
+    {
+        if (!Directory.Exists(componentRoot)) return;
+        foreach (var path in Directory.EnumerateFiles(componentRoot, "*.*", SearchOption.AllDirectories))
+        {
+            var ext = Path.GetExtension(path);
+            if (ext is not ".razor" and not ".cs") continue;
+            if (path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.Ordinal)
+                || path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.Ordinal)) continue;
+            var text = File.ReadAllText(path);
+            var file = Path.GetFileName(path);
+            foreach (Match m in TokenRx.Matches(text))
+            {
+                var tok = m.Value.TrimEnd('-');
+                if (tok.Length <= "--flare-".Length) continue;
+                (map.TryGetValue(tok, out var files) ? files : map[tok] = new(StringComparer.Ordinal)).Add(file);
+            }
+        }
+    }
+
+    /// <summary>
     /// Every <c>--flare-*</c> constant declared under <c>Flare.Abstractions/Css/Tokens</c>. The token
     /// counterpart of <see cref="CollectConstants"/>; skips non-token consts (the <c>--fc-*</c> local
     /// colors and the <c>xs</c>/<c>top-left</c> Size/Side vocab) by keeping only <c>--flare-</c> values.

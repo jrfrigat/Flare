@@ -89,6 +89,7 @@ public static class CssAudit
             .ToArray();
 
         var css = Program.CollectCssTokens(cssDir);
+        Program.AddComponentCodeTokens(css, Path.Combine(root, "src", "Flare.Components"));
         var constants = Program.CollectTokenConstants(tokensDir);
         var themeCss = Program.CollectCssTokens(themeDirs);
 
