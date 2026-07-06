@@ -629,11 +629,123 @@ public class MaterialDesignTokens
         S32 = "4rem",
     };
 
+    internal static readonly AppBarTokens AppBar = new()
+    {
+        Gap = "0.25rem",
+        Height = "4rem",
+        HeightDense = "3rem",
+        PaddingX = "0.25rem",
+        TitlePaddingX = "0.75rem",
+    };
+
+    internal static readonly BreadcrumbTokens Breadcrumb = new()
+    {
+        LinkHoverOpacity = "0.8",
+        SeparatorOpacity = "0.5",
+    };
+
+    internal static readonly DateTimePickerTokens DateTimePicker = new()
+    {
+        PanelGap = "1rem",
+    };
+
+    internal static readonly DropzoneTokens Dropzone = new()
+    {
+        BorderWidth = "2px",
+        HoverBg = "color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface))",
+        DraggingBg = "color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface))",
+        DraggingRingWidth = "2px",
+        IconSize = "2.5rem",
+    };
+
+    internal static readonly FormTokens Form = new()
+    {
+        HorizontalColumns = "auto 1fr",
+    };
+
+    internal static readonly LayoutTokens Layout = new()
+    {
+        AppBarHeight = "64px",
+        ContentPadding = "1.5rem 2rem",
+        ContentPaddingMobile = "1rem",
+        DrawerRailWidth = "3.5rem",
+        DrawerWidth = "260px",
+    };
+
+    internal static readonly LinkTokens Link = new()
+    {
+        FocusRingWidth = "2px",
+        HoverOpacity = "0.8",
+    };
+
+    internal static readonly OtpTokens Otp = new()
+    {
+        BorderWidth = "2px",
+        CellHeight = "3rem",
+        CellWidth = "2.75rem",
+        FocusRingWidth = "2px",
+        FontSize = "1.25rem",
+        FontWeight = "600",
+    };
+
+    internal static readonly PickerTokens Picker = new()
+    {
+        OutsideOpacity = "0.4",
+        DisabledOpacity = "0.3",
+    };
+
+    internal static readonly ScrimTokens Scrim = new()
+    {
+        Opacity = "0.32",
+    };
+
+    internal static readonly ScrollTopTokens ScrollTop = new()
+    {
+        TopInset = "1.5rem",
+        TopSize = "2.75rem",
+    };
+
+    internal static readonly SkeletonTokens Skeleton = new()
+    {
+        PulseMinOpacity = "0.4",
+        WaveOpacity = "12%",
+    };
+
+    internal static readonly TableTokens Table = new()
+    {
+        CellPaddingH = "1rem",
+        CellPaddingV = "0.75rem",
+        StripeOpacity = "4%",
+    };
+
+    internal static readonly TimePickerTokens TimePicker = new()
+    {
+        ColumnsSepSize = "1.5rem",
+        DisplaySize = "2.75rem",
+        HeadlineTracking = "0.05em",
+        PanelRadius = "var(--flare-shape-extra-large)",
+        TimeSepSize = "2.5rem",
+    };
+
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
 
     /// <summary>The complete MD3 Expressive design tokens. Use this as the base for custom themes.</summary>
     public static readonly DesignTokens Design = new()
     {
+        AppBar = AppBar,
+        Breadcrumb = Breadcrumb,
+        DateTimePicker = DateTimePicker,
+        Dropzone = Dropzone,
+        Form = Form,
+        Layout = Layout,
+        Link = Link,
+        Otp = Otp,
+        Picker = Picker,
+        Scrim = Scrim,
+        ScrollTop = ScrollTop,
+        Skeleton = Skeleton,
+        Table = Table,
+        TimePicker = TimePicker,
         Spacing = Spacing,
         Switch = Switch,
         DataGrid = DataGrid,

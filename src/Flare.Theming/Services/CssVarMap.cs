@@ -632,6 +632,90 @@ public static class CssVarMap
         v[Css.Tokens.ColorPickerField.ThumbBorderColor] = t.ColorPicker.ThumbBorderColor;
         #endregion
 
+        #region APPBAR
+        v[Css.Tokens.AppBarField.Gap] = t.AppBar.Gap;
+        v[Css.Tokens.AppBarField.Height] = t.AppBar.Height;
+        v[Css.Tokens.AppBarField.HeightDense] = t.AppBar.HeightDense;
+        v[Css.Tokens.AppBarField.PaddingX] = t.AppBar.PaddingX;
+        v[Css.Tokens.AppBarField.TitlePaddingX] = t.AppBar.TitlePaddingX;
+        #endregion
+
+        #region BREADCRUMB
+        v[Css.Tokens.BreadcrumbField.LinkHoverOpacity] = t.Breadcrumb.LinkHoverOpacity;
+        v[Css.Tokens.BreadcrumbField.SeparatorOpacity] = t.Breadcrumb.SeparatorOpacity;
+        #endregion
+
+        #region DATETIMEPICKER
+        v[Css.Tokens.DateTimePickerField.PanelGap] = t.DateTimePicker.PanelGap;
+        #endregion
+
+        #region DROPZONE
+        v[Css.Tokens.DropzoneField.BorderWidth] = t.Dropzone.BorderWidth;
+        v[Css.Tokens.DropzoneField.HoverBg] = t.Dropzone.HoverBg;
+        v[Css.Tokens.DropzoneField.DraggingBg] = t.Dropzone.DraggingBg;
+        v[Css.Tokens.DropzoneField.DraggingRingWidth] = t.Dropzone.DraggingRingWidth;
+        v[Css.Tokens.DropzoneField.IconSize] = t.Dropzone.IconSize;
+        #endregion
+
+        #region FORM
+        v[Css.Tokens.FormField.HorizontalColumns] = t.Form.HorizontalColumns;
+        #endregion
+
+        #region LAYOUT
+        v[Css.Tokens.LayoutField.AppBarHeight] = t.Layout.AppBarHeight;
+        v[Css.Tokens.LayoutField.ContentPadding] = t.Layout.ContentPadding;
+        v[Css.Tokens.LayoutField.ContentPaddingMobile] = t.Layout.ContentPaddingMobile;
+        v[Css.Tokens.LayoutField.DrawerRailWidth] = t.Layout.DrawerRailWidth;
+        v[Css.Tokens.LayoutField.DrawerWidth] = t.Layout.DrawerWidth;
+        #endregion
+
+        #region LINK
+        v[Css.Tokens.LinkField.FocusRingWidth] = t.Link.FocusRingWidth;
+        v[Css.Tokens.LinkField.HoverOpacity] = t.Link.HoverOpacity;
+        #endregion
+
+        #region OTP
+        v[Css.Tokens.OtpField.BorderWidth] = t.Otp.BorderWidth;
+        v[Css.Tokens.OtpField.CellHeight] = t.Otp.CellHeight;
+        v[Css.Tokens.OtpField.CellWidth] = t.Otp.CellWidth;
+        v[Css.Tokens.OtpField.FocusRingWidth] = t.Otp.FocusRingWidth;
+        v[Css.Tokens.OtpField.FontSize] = t.Otp.FontSize;
+        v[Css.Tokens.OtpField.FontWeight] = t.Otp.FontWeight;
+        #endregion
+
+        #region PICKER
+        v[Css.Tokens.PickerField.OutsideOpacity] = t.Picker.OutsideOpacity;
+        v[Css.Tokens.PickerField.DisabledOpacity] = t.Picker.DisabledOpacity;
+        #endregion
+
+        #region SCRIM
+        v[Css.Tokens.ScrimField.Opacity] = t.Scrim.Opacity;
+        #endregion
+
+        #region SCROLLTOP
+        v[Css.Tokens.ScrollTopField.TopInset] = t.ScrollTop.TopInset;
+        v[Css.Tokens.ScrollTopField.TopSize] = t.ScrollTop.TopSize;
+        #endregion
+
+        #region SKELETON
+        v[Css.Tokens.SkeletonField.PulseMinOpacity] = t.Skeleton.PulseMinOpacity;
+        v[Css.Tokens.SkeletonField.WaveOpacity] = t.Skeleton.WaveOpacity;
+        #endregion
+
+        #region TABLE
+        v[Css.Tokens.TableField.CellPaddingH] = t.Table.CellPaddingH;
+        v[Css.Tokens.TableField.CellPaddingV] = t.Table.CellPaddingV;
+        v[Css.Tokens.TableField.StripeOpacity] = t.Table.StripeOpacity;
+        #endregion
+
+        #region TIMEPICKER
+        v[Css.Tokens.TimePickerField.ColumnsSepSize] = t.TimePicker.ColumnsSepSize;
+        v[Css.Tokens.TimePickerField.DisplaySize] = t.TimePicker.DisplaySize;
+        v[Css.Tokens.TimePickerField.HeadlineTracking] = t.TimePicker.HeadlineTracking;
+        v[Css.Tokens.TimePickerField.PanelRadius] = t.TimePicker.PanelRadius;
+        v[Css.Tokens.TimePickerField.TimeSepSize] = t.TimePicker.TimeSepSize;
+        #endregion
+
         // Extended (deeply custom overrides)
         foreach (var (k, val) in t.Extended)
             v[k] = val;
