@@ -22,7 +22,8 @@
                 <FlareIcon Name="@StartIcon" />
             </span>
         }
-        <div class="@Css.Classes.Slider.TrackArea">
+        <div class="@Css.Classes.Slider.TrackArea"
+             @onwheel="HandleWheel" @onwheel:preventDefault="@(MouseWheel && !Disabled)">
             <div class="@Css.Classes.Slider.TrackWrap"
                  style="--_pct:@(_lowPct.ToString("F2", CultureInfo.InvariantCulture))%;--_pct-end:@(_highPct.ToString("F2", CultureInfo.InvariantCulture))%;--_init:@(_initPercent.ToString("F2", CultureInfo.InvariantCulture))%">
                 <div class="@Css.Classes.Slider.Rail" aria-hidden="true">
@@ -160,6 +161,13 @@
     [Parameter] public bool Indicator { get; set; }
     /// <summary>Renders the slider vertically (value increases upward). Length is set via the <c>--flare-slider-length</c> CSS var (default 12rem).</summary>
     [Parameter] public bool Vertical { get; set; }
+    /// <summary>
+    /// When true, hovering the slider and turning the mouse wheel adjusts the value: each notch moves
+    /// by <see cref="Step"/> (scroll up increases, down decreases) and page scrolling is suppressed
+    /// over the track. In range mode the whole selected span is panned by one step. No effect when
+    /// <see cref="Disabled"/>.
+    /// </summary>
+    [Parameter] public bool MouseWheel { get; set; }
     /// <summary>Label text displayed above the slider.</summary>
     [Parameter] public string? Label { get; set; }
     /// <summary>Accessible label used when no visible <see cref="Label"/> is provided.</summary>
@@ -391,6 +399,31 @@
             await ValueEndChanged.InvokeAsync(Math.Clamp(v, _effLow, _safeMax));
             NotifyEdit();
         }
+    }
+
+    private async Task HandleWheel(WheelEventArgs e)
+    {
+        if (!MouseWheel || Disabled || e.DeltaY == 0) return;
+        // Scroll up (DeltaY < 0) increases; scroll down decreases. One step per notch.
+        var delta = (e.DeltaY < 0 ? 1 : -1) * _safeStep;
+        if (Range)
+        {
+            // Pan the whole [low,high] window by one step, preserving its width. Clamp the shift so
+            // neither handle leaves [min,max]; keep the consumer's Value/ValueEnd identities intact.
+            var lo = Math.Min(Value, ValueEnd);
+            var hi = Math.Max(Value, ValueEnd);
+            delta = delta > 0 ? Math.Min(delta, _safeMax - hi) : Math.Max(delta, _safeMin - lo);
+            if (delta == 0) return;
+            await ValueChanged.InvokeAsync(Value + delta);
+            await ValueEndChanged.InvokeAsync(ValueEnd + delta);
+        }
+        else
+        {
+            var next = Math.Clamp(Value + delta, _safeMin, _safeMax);
+            if (next == Value) return;
+            await ValueChanged.InvokeAsync(next);
+        }
+        NotifyEdit();
     }
 
     private static bool TryParse(ChangeEventArgs e, out double v) =>
