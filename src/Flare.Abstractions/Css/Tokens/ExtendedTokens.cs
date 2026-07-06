@@ -3,36 +3,14 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for tooltip popup.</summary>
 public static class TooltipPopup
 {
-    /// <summary>CSS custom-property name for the surface color token.</summary>
-    public const string SurfaceColor = "--flare-tooltip-surface-color";
-    /// <summary>CSS custom-property name for the text color token.</summary>
-    public const string TextColor = "--flare-tooltip-text-color";
-    /// <summary>CSS custom-property name for the radius token.</summary>
-    public const string Radius = "--flare-tooltip-radius";
-    /// <summary>CSS custom-property name for the padding token.</summary>
-    public const string Padding = "--flare-tooltip-padding";
-    /// <summary>CSS custom-property name for the max width token.</summary>
+    // Tooltip color/radius/padding/font/motion are NOT tokenized here: the tooltip reuses the shared
+    // inverse-surface role, --flare-shape-*, --flare-spacing-*, --flare-typescale-* and --flare-motion-*
+    // directly (per the "reuse shared tokens, do not duplicate" mandate). Only the two tooltip-specific
+    // geometry values remain.
+    /// <summary>CSS custom-property name for the rich-tooltip max width.</summary>
     public const string MaxWidth = "--flare-tooltip-max-width";
-    /// <summary>CSS custom-property name for the font family token.</summary>
-    public const string FontFamily = "--flare-tooltip-font-family";
-    /// <summary>CSS custom-property name for the font size token.</summary>
-    public const string FontSize = "--flare-tooltip-font-size";
-    /// <summary>CSS custom-property name for the font weight token.</summary>
-    public const string FontWeight = "--flare-tooltip-font-weight";
-    /// <summary>CSS custom-property name for the line height token.</summary>
-    public const string LineHeight = "--flare-tooltip-line-height";
-    /// <summary>CSS custom-property name for the offset token.</summary>
+    /// <summary>CSS custom-property name for the tooltip's distance from its anchor.</summary>
     public const string Offset = "--flare-tooltip-offset";
-    /// <summary>CSS custom-property name for the arrow size token.</summary>
-    public const string ArrowSize = "--flare-tooltip-arrow-size";
-    /// <summary>CSS custom-property name for the transition duration token.</summary>
-    public const string TransitionDuration = "--flare-tooltip-transition-duration";
-    /// <summary>CSS custom-property name for the transition easing token.</summary>
-    public const string TransitionEasing = "--flare-tooltip-transition-easing";
-    /// <summary>CSS custom-property name for the show delay token.</summary>
-    public const string ShowDelay = "--flare-tooltip-show-delay";
-    /// <summary>CSS custom-property name for the hide delay token.</summary>
-    public const string HideDelay = "--flare-tooltip-hide-delay";
 }
 
 /// <summary>CSS variable tokens for popover popup.</summary>

@@ -439,21 +439,8 @@ public class MaterialDesignTokens
 
     internal static readonly TooltipTokens Tooltip = new()
     {
-        SurfaceColor = "var(--flare-color-inverse-surface)",
-        TextColor = "var(--flare-color-inverse-on-surface)",
-        Radius = "var(--flare-shape-extra-small)",
-        Padding = "6px 8px",
-        MaxWidth = "300px",
-        FontFamily = "var(--flare-typescale-body-small-font)",
-        FontSize = "var(--flare-typescale-body-small-size)",
-        FontWeight = "var(--flare-typescale-body-small-weight, 400)",
-        LineHeight = "var(--flare-typescale-body-small-height)",
-        Offset = "8px",
-        ArrowSize = "8px",
-        TransitionDuration = "var(--flare-motion-duration-short1)",
-        TransitionEasing = "var(--flare-motion-easing-standard)",
-        ShowDelay = 100,
-        HideDelay = 0,
+        MaxWidth = "18rem",
+        Offset = "0.5rem",
     };
 
     internal static readonly PopoverTokens Popover = new()

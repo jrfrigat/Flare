@@ -543,21 +543,8 @@ public static class CssVarMap
         #endregion
 
         #region TOOLTIP
-        v[Css.Tokens.TooltipPopup.SurfaceColor] = t.Tooltip.SurfaceColor;
-        v[Css.Tokens.TooltipPopup.TextColor] = t.Tooltip.TextColor;
-        v[Css.Tokens.TooltipPopup.Radius] = t.Tooltip.Radius;
-        v[Css.Tokens.TooltipPopup.Padding] = t.Tooltip.Padding;
         v[Css.Tokens.TooltipPopup.MaxWidth] = t.Tooltip.MaxWidth;
-        v[Css.Tokens.TooltipPopup.FontFamily] = t.Tooltip.FontFamily;
-        v[Css.Tokens.TooltipPopup.FontSize] = t.Tooltip.FontSize;
-        v[Css.Tokens.TooltipPopup.FontWeight] = t.Tooltip.FontWeight;
-        v[Css.Tokens.TooltipPopup.LineHeight] = t.Tooltip.LineHeight;
         v[Css.Tokens.TooltipPopup.Offset] = t.Tooltip.Offset;
-        v[Css.Tokens.TooltipPopup.ArrowSize] = t.Tooltip.ArrowSize;
-        v[Css.Tokens.TooltipPopup.TransitionDuration] = t.Tooltip.TransitionDuration;
-        v[Css.Tokens.TooltipPopup.TransitionEasing] = t.Tooltip.TransitionEasing;
-        v[Css.Tokens.TooltipPopup.ShowDelay] = t.Tooltip.ShowDelay.ToString();
-        v[Css.Tokens.TooltipPopup.HideDelay] = t.Tooltip.HideDelay.ToString();
         #endregion
 
         #region POPOVER

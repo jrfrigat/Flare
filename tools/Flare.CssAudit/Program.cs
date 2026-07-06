@@ -675,6 +675,13 @@ internal static class Program
         return set;
     }
 
+    // A semantic-scale / role primitive: color role, shape/spacing/elevation/motion scale, typescale, or
+    // interaction-state opacity. These are framework tokens themes set and consumers may use, so they are
+    // legitimately declared even when no base component CSS reads that particular value.
+    private static readonly Regex SemanticScaleRx = new(
+        @"^--flare-(color|shape|spacing|typescale|motion|state|elevation|shadow)-", RegexOptions.Compiled);
+    private static bool IsSemanticScaleToken(string token) => SemanticScaleRx.IsMatch(token);
+
     // The three token sync reports, shared by the CLI `tokens` verb and CssAudit.RunTokens.
     //   Plus  -> tokens read in Flare.Components CSS with no Css.Tokens const (and not covered by a
     //            declared prefix const or a known runtime-prefix family like --flare-typescale-*)
@@ -705,7 +712,10 @@ internal static class Program
 
         var plus = css.Keys.Where(t => !Declared(t))
             .OrderBy(t => t, StringComparer.Ordinal).ToList();
-        var minus = consts.Where(c => !UsedInCss(c))
+        // A semantic-scale/role primitive (color/shape/spacing/typescale/motion/state/elevation) is a
+        // framework token themes set and consumers may use; it is legitimately declared even when no base
+        // component CSS reads that particular value, so it is exempt from the "unused const" report.
+        var minus = consts.Where(c => !UsedInCss(c) && !IsSemanticScaleToken(c))
             .OrderBy(c => c, StringComparer.Ordinal).ToList();
         var tilde = themeKeys.Where(t => !Declared(t) && !css.ContainsKey(t))
             .OrderBy(t => t, StringComparer.Ordinal).ToList();
