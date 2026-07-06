@@ -5,136 +5,125 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for button.</summary>
 public static class Button
 {
-    private const string FlareBtn = $"{Vars.Flare}-btn";
-
     /// <summary>Per-corner button radii, addressable by size and side.</summary>
     public static class Radius
     {
-        private const string FlareBtnRadius = $"{FlareBtn}-radius";
-
         /// <summary>CSS custom-property name for the xs top left token.</summary>
-        public const string XsTopLeft = $"{FlareBtnRadius}-{Size.Xs}-{Side.TL}";
+        public const string XsTopLeft = "--flare-btn-radius-xs-top-left";
         /// <summary>CSS custom-property name for the xs top right token.</summary>
-        public const string XsTopRight = $"{FlareBtnRadius}-{Size.Xs}-{Side.TR}";
+        public const string XsTopRight = "--flare-btn-radius-xs-top-right";
         /// <summary>CSS custom-property name for the xs bottom right token.</summary>
-        public const string XsBottomRight = $"{FlareBtnRadius}-{Size.Xs}-{Side.BR}";
+        public const string XsBottomRight = "--flare-btn-radius-xs-bottom-right";
         /// <summary>CSS custom-property name for the xs bottom left token.</summary>
-        public const string XsBottomLeft = $"{FlareBtnRadius}-{Size.Xs}-{Side.BL}";
+        public const string XsBottomLeft = "--flare-btn-radius-xs-bottom-left";
 
         /// <summary>CSS custom-property name for the sm top left token.</summary>
-        public const string SmTopLeft = $"{FlareBtnRadius}-{Size.Sm}-{Side.TL}";
+        public const string SmTopLeft = "--flare-btn-radius-sm-top-left";
         /// <summary>CSS custom-property name for the sm top right token.</summary>
-        public const string SmTopRight = $"{FlareBtnRadius}-{Size.Sm}-{Side.TR}";
+        public const string SmTopRight = "--flare-btn-radius-sm-top-right";
         /// <summary>CSS custom-property name for the sm bottom right token.</summary>
-        public const string SmBottomRight = $"{FlareBtnRadius}-{Size.Sm}-{Side.BR}";
+        public const string SmBottomRight = "--flare-btn-radius-sm-bottom-right";
         /// <summary>CSS custom-property name for the sm bottom left token.</summary>
-        public const string SmBottomLeft = $"{FlareBtnRadius}-{Size.Sm}-{Side.BL}";
+        public const string SmBottomLeft = "--flare-btn-radius-sm-bottom-left";
 
         /// <summary>CSS custom-property name for the md top left token.</summary>
-        public const string MdTopLeft = $"{FlareBtnRadius}-{Size.Md}-{Side.TL}";
+        public const string MdTopLeft = "--flare-btn-radius-md-top-left";
         /// <summary>CSS custom-property name for the md top right token.</summary>
-        public const string MdTopRight = $"{FlareBtnRadius}-{Size.Md}-{Side.TR}";
+        public const string MdTopRight = "--flare-btn-radius-md-top-right";
         /// <summary>CSS custom-property name for the md bottom right token.</summary>
-        public const string MdBottomRight = $"{FlareBtnRadius}-{Size.Md}-{Side.BR}";
+        public const string MdBottomRight = "--flare-btn-radius-md-bottom-right";
         /// <summary>CSS custom-property name for the md bottom left token.</summary>
-        public const string MdBottomLeft = $"{FlareBtnRadius}-{Size.Md}-{Side.BL}";
+        public const string MdBottomLeft = "--flare-btn-radius-md-bottom-left";
 
         /// <summary>CSS custom-property name for the lg top left token.</summary>
-        public const string LgTopLeft = $"{FlareBtnRadius}-{Size.Lg}-{Side.TL}";
+        public const string LgTopLeft = "--flare-btn-radius-lg-top-left";
         /// <summary>CSS custom-property name for the lg top right token.</summary>
-        public const string LgTopRight = $"{FlareBtnRadius}-{Size.Lg}-{Side.TR}";
+        public const string LgTopRight = "--flare-btn-radius-lg-top-right";
         /// <summary>CSS custom-property name for the lg bottom right token.</summary>
-        public const string LgBottomRight = $"{FlareBtnRadius}-{Size.Lg}-{Side.BR}";
+        public const string LgBottomRight = "--flare-btn-radius-lg-bottom-right";
         /// <summary>CSS custom-property name for the lg bottom left token.</summary>
-        public const string LgBottomLeft = $"{FlareBtnRadius}-{Size.Lg}-{Side.BL}";
+        public const string LgBottomLeft = "--flare-btn-radius-lg-bottom-left";
 
         /// <summary>CSS custom-property name for the xl top left token.</summary>
-        public const string XlTopLeft = $"{FlareBtnRadius}-{Size.Xl}-{Side.TL}";
+        public const string XlTopLeft = "--flare-btn-radius-xl-top-left";
         /// <summary>CSS custom-property name for the xl top right token.</summary>
-        public const string XlTopRight = $"{FlareBtnRadius}-{Size.Xl}-{Side.TR}";
+        public const string XlTopRight = "--flare-btn-radius-xl-top-right";
         /// <summary>CSS custom-property name for the xl bottom right token.</summary>
-        public const string XlBottomRight = $"{FlareBtnRadius}-{Size.Xl}-{Side.BR}";
+        public const string XlBottomRight = "--flare-btn-radius-xl-bottom-right";
         /// <summary>CSS custom-property name for the xl bottom left token.</summary>
-        public const string XlBottomLeft = $"{FlareBtnRadius}-{Size.Xl}-{Side.BL}";
+        public const string XlBottomLeft = "--flare-btn-radius-xl-bottom-left";
     }
 
     /// <summary>Gap between the icon and label inside a button, per size.</summary>
     public static class Gap
     {
-        private const string FlareBtnGap = $"{FlareBtn}-gap";
-
         /// <summary>CSS custom-property name for the xs token.</summary>
-        public const string Xs = $"{FlareBtnGap}-{Size.Xs}";
+        public const string Xs = "--flare-btn-gap-xs";
         /// <summary>CSS custom-property name for the sm token.</summary>
-        public const string Sm = $"{FlareBtnGap}-{Size.Sm}";
+        public const string Sm = "--flare-btn-gap-sm";
         /// <summary>CSS custom-property name for the md token.</summary>
-        public const string Md = $"{FlareBtnGap}-{Size.Md}";
+        public const string Md = "--flare-btn-gap-md";
         /// <summary>CSS custom-property name for the lg token.</summary>
-        public const string Lg = $"{FlareBtnGap}-{Size.Lg}";
+        public const string Lg = "--flare-btn-gap-lg";
         /// <summary>CSS custom-property name for the xl token.</summary>
-        public const string Xl = $"{FlareBtnGap}-{Size.Xl}";
+        public const string Xl = "--flare-btn-gap-xl";
     }
 
     /// <summary>Button container heights, per size.</summary>
     public static class Height
     {
-        private const string FlareBtnHeight = $"{FlareBtn}-height";
-
         /// <summary>CSS custom-property name for the xs token.</summary>
-        public const string Xs = $"{FlareBtnHeight}-{Size.Xs}";
+        public const string Xs = "--flare-btn-height-xs";
         /// <summary>CSS custom-property name for the sm token.</summary>
-        public const string Sm = $"{FlareBtnHeight}-{Size.Sm}";
+        public const string Sm = "--flare-btn-height-sm";
         /// <summary>CSS custom-property name for the md token.</summary>
-        public const string Md = $"{FlareBtnHeight}-{Size.Md}";
+        public const string Md = "--flare-btn-height-md";
         /// <summary>CSS custom-property name for the lg token.</summary>
-        public const string Lg = $"{FlareBtnHeight}-{Size.Lg}";
+        public const string Lg = "--flare-btn-height-lg";
         /// <summary>CSS custom-property name for the xl token.</summary>
-        public const string Xl = $"{FlareBtnHeight}-{Size.Xl}";
+        public const string Xl = "--flare-btn-height-xl";
     }
 
     /// <summary>CSS variable tokens for padding inline.</summary>
     public static class PaddingInline
     {
-        private const string FlareBtnPadding = $"{FlareBtn}-padding-inline";
-
         /// <summary>CSS custom-property name for the xs token.</summary>
-        public const string Xs = $"{FlareBtnPadding}-{Size.Xs}";
+        public const string Xs = "--flare-btn-padding-inline-xs";
         /// <summary>CSS custom-property name for the sm token.</summary>
-        public const string Sm = $"{FlareBtnPadding}-{Size.Sm}";
+        public const string Sm = "--flare-btn-padding-inline-sm";
         /// <summary>CSS custom-property name for the md token.</summary>
-        public const string Md = $"{FlareBtnPadding}-{Size.Md}";
+        public const string Md = "--flare-btn-padding-inline-md";
         /// <summary>CSS custom-property name for the lg token.</summary>
-        public const string Lg = $"{FlareBtnPadding}-{Size.Lg}";
+        public const string Lg = "--flare-btn-padding-inline-lg";
         /// <summary>CSS custom-property name for the xl token.</summary>
-        public const string Xl = $"{FlareBtnPadding}-{Size.Xl}";
+        public const string Xl = "--flare-btn-padding-inline-xl";
     }
 
     /// <summary>Button icon size, per size.</summary>
     public static class IconSize
     {
-        private const string Prefix = $"{FlareBtn}-icon-size";
         /// <summary>CSS custom-property name for the xs token.</summary>
-        public const string Xs = $"{Prefix}-{Size.Xs}";
+        public const string Xs = "--flare-btn-icon-size-xs";
         /// <summary>CSS custom-property name for the sm token.</summary>
-        public const string Sm = $"{Prefix}-{Size.Sm}";
+        public const string Sm = "--flare-btn-icon-size-sm";
         /// <summary>CSS custom-property name for the md token.</summary>
-        public const string Md = $"{Prefix}-{Size.Md}";
+        public const string Md = "--flare-btn-icon-size-md";
         /// <summary>CSS custom-property name for the lg token.</summary>
-        public const string Lg = $"{Prefix}-{Size.Lg}";
+        public const string Lg = "--flare-btn-icon-size-lg";
         /// <summary>CSS custom-property name for the xl token.</summary>
-        public const string Xl = $"{Prefix}-{Size.Xl}";
+        public const string Xl = "--flare-btn-icon-size-xl";
     }
 
     /// <summary>Prefix for the label typography CSS variables: --flare-btn-label-{size}-{font|weight|size|height|spacing}.</summary>
-    public const string LabelPrefix = $"{FlareBtn}-label";
+    public const string LabelPrefix = "--flare-btn-label";
 
     // Focus ring and shadow behavior
     /// <summary>CSS custom-property name for the focus outline token.</summary>
-    public const string FocusOutline = $"{FlareBtn}-focus-outline";
+    public const string FocusOutline = "--flare-btn-focus-outline";
     /// <summary>CSS custom-property name for the focus outline offset token.</summary>
-    public const string FocusOutlineOffset = $"{FlareBtn}-focus-outline-offset";
+    public const string FocusOutlineOffset = "--flare-btn-focus-outline-offset";
     /// <summary>CSS custom-property name for the focus shadow token.</summary>
-    public const string FocusShadow = $"{FlareBtn}-focus-shadow";
+    public const string FocusShadow = "--flare-btn-focus-shadow";
     /// <summary>CSS custom-property name for the filled hover shadow token.</summary>
-    public const string FilledHoverShadow = $"{FlareBtn}-filled-hover-shadow";
+    public const string FilledHoverShadow = "--flare-btn-filled-hover-shadow";
 }
