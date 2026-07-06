@@ -3706,7 +3706,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Height", @"int", @"200", @"Height of the drawing canvas in pixels.", null, false, false, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"OnChanged", @"EventCallback", null, @"Callback raised after the user finishes a stroke.", null, false, true, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"PressureSensitive", @"bool", @"true", @"Varies stroke width with pointer/pen pressure (0.4x-1.6x of StrokeWidth). Default true.", null, false, false, false, @"FlareSignaturePad"),
-                new ApiParameterInfo(@"StrokeColor", @"string", @"""var(--flare-color-on-surface)""", @"CSS color value used for the stroke. Defaults to the on-surface design token.", null, false, false, false, @"FlareSignaturePad"),
+                new ApiParameterInfo(@"StrokeColor", @"FlareColor", null, @"Color of the drawn stroke. Accepts a semantic role (FlareColor.Primary), a custom CSS color (""#e53935"" via implicit conversion) or a dynamic color. Defaults to FlareColor.OnSurface (high-emphasis content color).", null, false, false, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"StrokeWidth", @"double", @"2", @"Width of the drawn stroke in pixels.", null, false, false, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"Width", @"int", @"400", @"Width of the drawing canvas in pixels.", null, false, false, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),

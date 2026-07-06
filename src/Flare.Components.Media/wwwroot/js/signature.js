@@ -83,10 +83,25 @@ export function getDataUrl(padId) {
     return pad ? pad.canvasEl.toDataURL('image/png') : null;
 }
 
+// Resolve a CSS color expression (var(--flare-color-*), light-dark(...), color-mix(...)) to the
+// concrete color the browser paints. A canvas 2D context ignores these expressions, so we let the
+// browser compute them on a hidden probe placed inside the pad (so it inherits the theme's scoped
+// --flare-* custom properties and color-scheme). Concrete colors (#hex, rgb(...)) pass through.
+function resolveColor(canvasEl, color) {
+    if (!color || !/var\(|light-dark\(|color-mix\(/.test(color)) return color;
+    const probe = document.createElement('span');
+    probe.style.color = color;
+    probe.style.display = 'none';
+    (canvasEl.parentElement || document.body).appendChild(probe);
+    const resolved = getComputedStyle(probe).color;
+    probe.remove();
+    return resolved || color;
+}
+
 export function setStrokeStyle(padId, color, lineWidth, pressureSensitive) {
     const pad = pads.get(padId);
     if (!pad) return;
-    pad.ctx.strokeStyle = color;
+    pad.ctx.strokeStyle = resolveColor(pad.canvasEl, color);
     pad.baseWidth = lineWidth;
     pad.ctx.lineWidth = lineWidth;
     pad.ctx.lineCap = 'round';
