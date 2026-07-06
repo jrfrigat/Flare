@@ -204,43 +204,24 @@ public static class CardField
     public const string TransitionEasing = "--flare-card-transition-easing";
 }
 
-/// <summary>CSS variable tokens for avatar field.</summary>
+/// <summary>
+/// CSS variable tokens for the avatar GROUP (overlapping stack + overflow badge). Avatar-proper color,
+/// size, radius and font are NOT tokenized here on purpose: they come from the shared systems - the color
+/// role / tonal <c>--fc-*</c> model, <c>--flare-shape-*</c>, <c>--flare-typescale-*</c> and the size
+/// utility classes - so the component is themed the same way as every other surface.
+/// </summary>
 public static class AvatarField
 {
-    /// <summary>CSS custom-property name for the surface color token.</summary>
-    public const string SurfaceColor = "--flare-avatar-surface-color";
-    /// <summary>CSS custom-property name for the text color token.</summary>
-    public const string TextColor = "--flare-avatar-text-color";
-    /// <summary>CSS custom-property name for the icon color token.</summary>
-    public const string IconColor = "--flare-avatar-icon-color";
-    /// <summary>CSS custom-property name for the rounded radius token.</summary>
-    public const string RoundedRadius = "--flare-avatar-rounded-radius";
-    /// <summary>CSS custom-property name for the square radius token.</summary>
-    public const string SquareRadius = "--flare-avatar-square-radius";
-    /// <summary>CSS custom-property name for the size xs token.</summary>
-    public const string SizeXs = "--flare-avatar-size-xs";
-    /// <summary>CSS custom-property name for the size sm token.</summary>
-    public const string SizeSm = "--flare-avatar-size-sm";
-    /// <summary>CSS custom-property name for the size md token.</summary>
-    public const string SizeMd = "--flare-avatar-size-md";
-    /// <summary>CSS custom-property name for the size lg token.</summary>
-    public const string SizeLg = "--flare-avatar-size-lg";
-    /// <summary>CSS custom-property name for the size xl token.</summary>
-    public const string SizeXl = "--flare-avatar-size-xl";
-    /// <summary>CSS custom-property name for the font family token.</summary>
-    public const string FontFamily = "--flare-avatar-font-family";
-    /// <summary>CSS custom-property name for the font size token.</summary>
-    public const string FontSize = "--flare-avatar-font-size";
-    /// <summary>CSS custom-property name for the font weight token.</summary>
-    public const string FontWeight = "--flare-avatar-font-weight";
-    /// <summary>CSS custom-property name for the group border width token.</summary>
+    /// <summary>CSS custom-property name for the group overlap spacing (negative inline margin).</summary>
+    public const string GroupSpacing = "--flare-avatar-group-spacing";
+    /// <summary>CSS custom-property name for the group overlap ring width.</summary>
     public const string GroupBorderWidth = "--flare-avatar-group-border-width";
-    /// <summary>CSS custom-property name for the group border color token.</summary>
+    /// <summary>CSS custom-property name for the group overlap ring color.</summary>
     public const string GroupBorderColor = "--flare-avatar-group-border-color";
-    /// <summary>CSS custom-property name for the group overflow bg token.</summary>
-    public const string GroupOverflowBg = "--flare-avatar-group-overflow-bg";
-    /// <summary>CSS custom-property name for the group overflow color token.</summary>
-    public const string GroupOverflowColor = "--flare-avatar-group-overflow-color";
+    /// <summary>CSS custom-property name for the overflow badge background.</summary>
+    public const string OverflowBg = "--flare-avatar-overflow-bg";
+    /// <summary>CSS custom-property name for the overflow badge text color.</summary>
+    public const string OverflowColor = "--flare-avatar-overflow-color";
 }
 
 /// <summary>CSS variable tokens for progress field.</summary>

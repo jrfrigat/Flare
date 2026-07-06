@@ -647,23 +647,11 @@ public static class CssVarMap
         #endregion
 
         #region AVATAR
-        v[Css.Tokens.AvatarField.SurfaceColor] = t.Avatar.SurfaceColor;
-        v[Css.Tokens.AvatarField.TextColor] = t.Avatar.TextColor;
-        v[Css.Tokens.AvatarField.IconColor] = t.Avatar.IconColor;
-        v[Css.Tokens.AvatarField.RoundedRadius] = t.Avatar.RoundedRadius;
-        v[Css.Tokens.AvatarField.SquareRadius] = t.Avatar.SquareRadius;
-        v[Css.Tokens.AvatarField.SizeXs] = t.Avatar.SizeXs;
-        v[Css.Tokens.AvatarField.SizeSm] = t.Avatar.SizeSm;
-        v[Css.Tokens.AvatarField.SizeMd] = t.Avatar.SizeMd;
-        v[Css.Tokens.AvatarField.SizeLg] = t.Avatar.SizeLg;
-        v[Css.Tokens.AvatarField.SizeXl] = t.Avatar.SizeXl;
-        v[Css.Tokens.AvatarField.FontFamily] = t.Avatar.FontFamily;
-        v[Css.Tokens.AvatarField.FontSize] = t.Avatar.FontSize;
-        v[Css.Tokens.AvatarField.FontWeight] = t.Avatar.FontWeight;
+        v[Css.Tokens.AvatarField.GroupSpacing] = t.Avatar.GroupSpacing;
         v[Css.Tokens.AvatarField.GroupBorderWidth] = t.Avatar.GroupBorderWidth;
         v[Css.Tokens.AvatarField.GroupBorderColor] = t.Avatar.GroupBorderColor;
-        v[Css.Tokens.AvatarField.GroupOverflowBg] = t.Avatar.GroupOverflowBg;
-        v[Css.Tokens.AvatarField.GroupOverflowColor] = t.Avatar.GroupOverflowColor;
+        v[Css.Tokens.AvatarField.OverflowBg] = t.Avatar.OverflowBg;
+        v[Css.Tokens.AvatarField.OverflowColor] = t.Avatar.OverflowColor;
         #endregion
 
         #region PROGRESS

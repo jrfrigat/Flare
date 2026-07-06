@@ -474,23 +474,11 @@ public class MaterialDesignTokens
 
     internal static readonly AvatarTokens Avatar = new()
     {
-        SurfaceColor = "var(--flare-color-primary-container)",
-        TextColor = "var(--flare-color-on-primary-container)",
-        IconColor = "var(--flare-color-on-primary-container)",
-        RoundedRadius = "var(--flare-shape-full)",
-        SquareRadius = "var(--flare-shape-small)",
-        SizeXs = "24px",
-        SizeSm = "32px",
-        SizeMd = "40px",
-        SizeLg = "48px",
-        SizeXl = "64px",
-        FontFamily = "var(--flare-typescale-label-large-font)",
-        FontSize = "var(--flare-typescale-label-large-size)",
-        FontWeight = "var(--flare-typescale-label-large-weight, 500)",
+        GroupSpacing = "-0.75rem",
         GroupBorderWidth = "2px",
         GroupBorderColor = "var(--flare-color-surface)",
-        GroupOverflowBg = "var(--flare-color-surface-container-highest)",
-        GroupOverflowColor = "var(--flare-color-on-surface-variant)",
+        OverflowBg = "var(--flare-color-surface-container-highest)",
+        OverflowColor = "var(--flare-color-on-surface-variant)",
     };
 
     internal static readonly DrawerTokens Drawer = new()
