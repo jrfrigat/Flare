@@ -1,6 +1,7 @@
 using Flare.Abstractions;
 using Flare.Theming;
 using Flare.Abstractions.Tokens;
+using Flare.Abstractions.Tokens.Components;
 using Flare.Theme.MaterialDesign3.Tokens;
 
 namespace Flare.Theme.MaterialDesign3Expressive;
@@ -16,7 +17,19 @@ public sealed class Md3Theme : ITheme
 
     public string Id => ThemeId;
     public string DisplayName => "Material Design 3 Expressive";
-    public DesignTokens Design => MaterialDesignTokens.Design;
+    public DesignTokens Design => MaterialDesignTokens.Design with
+    {
+        // SEPARATED button group (Expressive): a real 2dp gap, no overlap, rounded interior corners and
+        // full-capsule ends. Purely a token bundle - the base buttongroup.css is untouched (no override).
+        ButtonGroup = new ButtonGroupTokens
+        {
+            Gap = "0.125rem",
+            Overlap = "0",
+            OuterRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2)",
+            InnerRadius = "var(--flare-shape-small)",
+            ZActive = "1",
+        },
+    };
     public string DefaultPaletteId => Md3Palettes.Violet.Id;
     public IReadOnlyList<Palette> Palettes => Md3Palettes.All;
     public IPaletteGenerator? PaletteGenerator => Md3TonalGenerator.Instance;

@@ -189,6 +189,14 @@ public static class CssVarMap
         FlattenBtnLabel(v, "xl", t.Button.LabelXl);
         #endregion
 
+        #region BUTTON GROUP
+        v[Css.Tokens.ButtonGroup.Gap] = t.ButtonGroup.Gap;
+        v[Css.Tokens.ButtonGroup.Overlap] = t.ButtonGroup.Overlap;
+        v[Css.Tokens.ButtonGroup.OuterRadius] = t.ButtonGroup.OuterRadius;
+        v[Css.Tokens.ButtonGroup.InnerRadius] = t.ButtonGroup.InnerRadius;
+        v[Css.Tokens.ButtonGroup.ZActive] = t.ButtonGroup.ZActive;
+        #endregion
+
         #region SPLIT BUTTON
         // Base seam gap
         v[Css.Tokens.SplitButton.Gap] = t.SplitButton.Gap;

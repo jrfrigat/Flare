@@ -145,6 +145,17 @@ public class FluentUI2Tokens
         LabelXl = Typography.TitleLarge,
     };
 
+    // Connected button group (Fluent's segmented look): touching segments, 1px overlap collapsing the
+    // shared border, small rounded ends, flat interior corners.
+    internal static readonly ButtonGroupTokens ButtonGroup = new()
+    {
+        Gap = "0",
+        Overlap = "-1px",
+        OuterRadius = "var(--flare-shape-small)",
+        InnerRadius = "0",
+        ZActive = "1",
+    };
+
     internal static readonly SplitButtonTokens SplitButton = new()
     {
         Gap = "1px", // Thin 1px Microsoft seam between the two parts
@@ -815,6 +826,7 @@ public class FluentUI2Tokens
         Badge = Badge,
         Alert = Alert,
         Button = Button,
+        ButtonGroup = ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,
         Fab = Fab,

@@ -163,15 +163,8 @@
    ============================================ */
 
 /* Button - no RTL adjustment needed */
-/* ButtonGroup - reverse */
-[dir="rtl"] .flare-btn-group {
-  direction: rtl;
-}
-
-[dir="rtl"] .flare-btn-group .flare-btn + .flare-btn {
-  border-left: none;
-  border-right: 1px solid;
-}
+/* ButtonGroup - no RTL rules needed: buttongroup.css uses logical properties (margin-inline/block-start
+   for the overlap, border-*-*-radius logical corners), which mirror automatically under [dir="rtl"]. */
 
 /* SplitButton - reverse */
 [dir="rtl"] .flare-split-btn {

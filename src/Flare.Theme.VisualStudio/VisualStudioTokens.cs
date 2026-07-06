@@ -318,6 +318,7 @@ internal class VisualStudioTokens
         Badge = Badge,
         Alert = Alert,
         Button = Button,
+        ButtonGroup = FluentUI2Tokens.Design.ButtonGroup,
         SplitButton = SplitButton,
         ToggleButton = ToggleButton,
         Fab = Fab,
