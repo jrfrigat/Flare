@@ -80,6 +80,8 @@ public static class CssVarMap
         // Motion
         v[Css.Tokens.Motion.DurationShort1] = t.Motion.DurationShort1;
         v[Css.Tokens.Motion.DurationShort2] = t.Motion.DurationShort2;
+        v[Css.Tokens.Motion.DurationShort3] = t.Motion.DurationShort3;
+        v[Css.Tokens.Motion.DurationShort4] = t.Motion.DurationShort4;
         v[Css.Tokens.Motion.DurationMedium1] = t.Motion.DurationMedium1;
         v[Css.Tokens.Motion.DurationMedium2] = t.Motion.DurationMedium2;
         v[Css.Tokens.Motion.DurationLong1] = t.Motion.DurationLong1;

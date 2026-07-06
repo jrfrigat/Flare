@@ -165,6 +165,8 @@ public class TokenParityTests
             {
                 DurationShort1 = "50ms",
                 DurationShort2 = "100ms",
+                DurationShort3 = "150ms",
+                DurationShort4 = "200ms",
                 DurationMedium1 = "200ms",
                 DurationMedium2 = "300ms",
                 DurationLong1 = "400ms",

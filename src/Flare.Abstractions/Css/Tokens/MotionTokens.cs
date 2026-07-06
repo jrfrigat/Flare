@@ -7,6 +7,10 @@ public static class Motion
     public const string DurationShort1 = "--flare-motion-duration-short1";
     /// <summary>CSS custom-property name for the duration short 2 token.</summary>
     public const string DurationShort2 = "--flare-motion-duration-short2";
+    /// <summary>CSS custom-property name for the duration short 3 token.</summary>
+    public const string DurationShort3 = "--flare-motion-duration-short3";
+    /// <summary>CSS custom-property name for the duration short 4 token.</summary>
+    public const string DurationShort4 = "--flare-motion-duration-short4";
     /// <summary>CSS custom-property name for the duration medium 1 token.</summary>
     public const string DurationMedium1 = "--flare-motion-duration-medium1";
     /// <summary>CSS custom-property name for the duration medium 2 token.</summary>

@@ -66,6 +66,8 @@ internal static class MaterialDesign2Tokens
     {
         DurationShort1 = "100ms",
         DurationShort2 = "150ms",
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "200ms",
         DurationMedium2 = "250ms",
         DurationLong1 = "300ms",

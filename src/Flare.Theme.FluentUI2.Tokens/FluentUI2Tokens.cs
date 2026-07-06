@@ -52,6 +52,8 @@ public class FluentUI2Tokens
     {
         DurationShort1 = "50ms",   // durationUltraFast
         DurationShort2 = "100ms",  // durationFaster
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "150ms", // durationFast
         DurationMedium2 = "200ms", // durationNormal
         DurationLong1 = "300ms",   // durationSlow

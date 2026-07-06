@@ -51,6 +51,8 @@ internal class LiquidGlassTokens
     {
         DurationShort1 = "100ms",
         DurationShort2 = "150ms",
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "250ms",
         DurationMedium2 = "350ms",
         DurationLong1 = "450ms",

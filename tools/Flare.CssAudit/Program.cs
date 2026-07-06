@@ -713,6 +713,20 @@ internal static class Program
         @"^--flare-(color|shape|spacing|typescale|motion|state|elevation|shadow)-", RegexOptions.Compiled);
     private static bool IsSemanticScaleToken(string token) => SemanticScaleRx.IsMatch(token);
 
+    // Per-instance / structural CSS custom properties a component sets on an element at runtime (via an
+    // inline style computed in C#), NOT theme-configurable design tokens - the token counterpart of the
+    // element-scoped --fc-* colors. They legitimately have no Css.Tokens constant, so they are not [T+].
+    private static readonly HashSet<string> InstanceVarExact = new(StringComparer.Ordinal)
+    {
+        "--flare-color", "--flare-color-on", "--flare-elevation", "--flare-chart-dot", "--flare-swatch",
+        "--flare-slider-length", "--flare-tab-label-rotation", "--flare-toc-depth", "--flare-vtree-indent",
+        "--flare-textarea-max-lines", "--flare-layout-cols", "--flare-col-start",
+    };
+    private static readonly string[] InstanceVarPrefixes = { "--flare-col-span", "--flare-dial-", "--flare-z-" };
+    private static bool IsInstanceVar(string token) =>
+        InstanceVarExact.Contains(token)
+        || Array.Exists(InstanceVarPrefixes, p => token == p || token.StartsWith(p + "-", StringComparison.Ordinal) || token.StartsWith(p, StringComparison.Ordinal) && p.EndsWith("-", StringComparison.Ordinal));
+
     // The three token sync reports, shared by the CLI `tokens` verb and CssAudit.RunTokens.
     //   Plus  -> tokens read in Flare.Components CSS with no Css.Tokens const (and not covered by a
     //            declared prefix const or a known runtime-prefix family like --flare-typescale-*)
@@ -741,7 +755,7 @@ internal static class Program
         bool UsedInCss(string c) =>
             allCss.Contains(c) || allCss.Any(t => t.Length > c.Length && t.StartsWith(c + "-", StringComparison.Ordinal));
 
-        var plus = css.Keys.Where(t => !Declared(t))
+        var plus = css.Keys.Where(t => !Declared(t) && !IsInstanceVar(t))
             .OrderBy(t => t, StringComparer.Ordinal).ToList();
         // A semantic-scale/role primitive (color/shape/spacing/typescale/motion/state/elevation) is a
         // framework token themes set and consumers may use; it is legitimately declared even when no base

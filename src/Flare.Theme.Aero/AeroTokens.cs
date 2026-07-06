@@ -50,6 +50,8 @@ internal class AeroTokens
     {
         DurationShort1 = "50ms",
         DurationShort2 = "90ms",
+        DurationShort3 = "150ms",
+        DurationShort4 = "200ms",
         DurationMedium1 = "130ms",
         DurationMedium2 = "200ms",
         DurationLong1 = "280ms",
