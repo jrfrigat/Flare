@@ -682,21 +682,25 @@ internal static class Program
     /// counterpart of <see cref="CollectConstants"/>; skips non-token consts (the <c>--fc-*</c> local
     /// colors and the <c>xs</c>/<c>top-left</c> Size/Side vocab) by keeping only <c>--flare-</c> values.
     /// </summary>
-    internal static ConstSet CollectTokenConstants(string tokensDir)
+    internal static ConstSet CollectTokenConstants(params string[] dirs)
     {
         var set = new ConstSet("Css.Tokens");
-        if (!Directory.Exists(tokensDir)) return set;
-        foreach (var file in Directory.EnumerateFiles(tokensDir, "*.cs").OrderBy(p => p, StringComparer.Ordinal))
+        foreach (var dir in dirs)
         {
-            string current = "Tokens";
-            foreach (var raw in File.ReadAllLines(file))
+            if (!Directory.Exists(dir)) continue;
+            foreach (var file in Directory.EnumerateFiles(dir, "*.cs").OrderBy(p => p, StringComparer.Ordinal))
             {
-                var nm = NestedClassRx.Match(raw);
-                if (nm.Success) current = nm.Groups[1].Value;
+                if (file.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.Ordinal)) continue;
+                string current = "Tokens";
+                foreach (var raw in File.ReadAllLines(file))
+                {
+                    var nm = NestedClassRx.Match(raw);
+                    if (nm.Success) current = nm.Groups[1].Value;
 
-                var cm = ConstRx.Match(raw);
-                if (cm.Success && cm.Groups[2].Value.StartsWith("--flare-", StringComparison.Ordinal))
-                    set.Add(cm.Groups[2].Value, current, cm.Groups[1].Value);
+                    var cm = ConstRx.Match(raw);
+                    if (cm.Success && cm.Groups[2].Value.StartsWith("--flare-", StringComparison.Ordinal))
+                        set.Add(cm.Groups[2].Value, current, cm.Groups[1].Value);
+                }
             }
         }
         return set;

@@ -257,7 +257,7 @@ internal class AeroTokens
     public static readonly Dictionary<string, string> Extended = new()
     {
         // Aero focus glow color used by the scoped button/input CSS.
-        ["--flare-aero-glow"] = "rgba(60,127,177,0.55)",
+        [AeroCssVars.Glow] = "rgba(60,127,177,0.55)",
     };
 
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
@@ -422,7 +422,7 @@ internal class AeroTokens
     {
         return new Dictionary<string, string>(Extended)
         {
-            ["--flare-aero-glow"] = "rgba(91,155,224,0.55)",
+            [AeroCssVars.Glow] = "rgba(91,155,224,0.55)",
         };
     }
 

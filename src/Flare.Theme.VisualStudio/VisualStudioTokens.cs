@@ -291,16 +291,16 @@ internal class VisualStudioTokens
     public static readonly Dictionary<string, string> Extended = new()
     {
         // VS focus ring color used by the scoped button/input CSS.
-        ["--flare-vs-focus"] = "rgba(0,120,212,0.45)",
+        [VisualStudioCssVars.Focus] = "rgba(0,120,212,0.45)",
 
         // Tabs - VS 2026 "flowing" document tabs, consumed by the theme-scoped tabs.css.
-        ["--flare-vs-tab-gap"] = "2px",
-        ["--flare-vs-tab-strip-bg"] = "var(--flare-color-surface-container)",
+        [VisualStudioCssVars.TabGap] = "2px",
+        [VisualStudioCssVars.TabStripBg] = "var(--flare-color-surface-container)",
         // Rounded top corners so the strip flows around the active/hovered tab (wrap-around).
-        ["--flare-vs-tab-radius"] = "var(--flare-shape-large)",
+        [VisualStudioCssVars.TabRadius] = "var(--flare-shape-large)",
         // Active tab fill: in light it is the white editor surface; the dark override lifts it to a
         // lighter selection gray so the rounded tab still reads as "floating" above the strip.
-        ["--flare-vs-tab-active-bg"] = "var(--flare-color-surface)",
+        [VisualStudioCssVars.TabActiveBg] = "var(--flare-color-surface)",
     };
 
     // ----- v2 composition: one DesignTokens (mode-agnostic) + per-mode ColorScheme -----
@@ -451,11 +451,11 @@ internal class VisualStudioTokens
     {
         return new Dictionary<string, string>(Extended)
         {
-            ["--flare-vs-focus"] = "rgba(55,148,255,0.5)",
+            [VisualStudioCssVars.Focus] = "rgba(55,148,255,0.5)",
             // VS 2026: the active document tab takes the editor surface (#1E1E1E) -- darker than the
             // strip (#2D2D30) -- so the rounded tab reads as connected to the editor below it, rather
             // than as a lighter floating pill. (Light mode already uses the white editor surface.)
-            ["--flare-vs-tab-active-bg"] = "var(--flare-color-surface)",
+            [VisualStudioCssVars.TabActiveBg] = "var(--flare-color-surface)",
         };
     }
 

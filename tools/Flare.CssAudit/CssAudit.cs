@@ -90,8 +90,14 @@ public static class CssAudit
 
         var css = Program.CollectCssTokens(cssDir);
         Program.AddComponentCodeTokens(css, Path.Combine(root, "src", "Flare.Components"));
-        var constants = Program.CollectTokenConstants(tokensDir);
+        // Core token constants + each theme's OWN private token constants (theme tokens live in the theme
+        // project, not the core - so a theme-private token declared there is not reported as undeclared).
+        var themeProjectDirs = Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*");
+        var constants = Program.CollectTokenConstants(new[] { tokensDir }.Concat(themeProjectDirs).ToArray());
         var themeCss = Program.CollectCssTokens(themeDirs);
+        // Theme-private tokens are often defined + read entirely in the theme's C# (its extra-var dict and
+        // DesignTokens value strings), never in a .css file - count those references so they are not [T-].
+        foreach (var td in themeProjectDirs) Program.AddComponentCodeTokens(themeCss, td);
 
         var (plus, minus, tilde) = Program.CompareTokens(css, constants, themeCss, KnownTokenPrefixes);
 

@@ -242,25 +242,25 @@ internal class LiquidGlassTokens
     public static readonly Dictionary<string, string> Extended = new()
     {
         // Accent focus glow shared by the scoped CSS (the Liquid Glass "material").
-        ["--flare-liquid-glow"] = "rgba(0,122,255,0.35)",
+        [LiquidGlassCssVars.Glow] = "rgba(0,122,255,0.35)",
         // Lightly translucent fills (no backdrop blur, for performance) - opaque
         // enough to stay clean over the soft backdrop, tinted enough to read as glass.
-        ["--flare-liquid-tint"] = "rgba(255,255,255,0.74)",
-        ["--flare-liquid-tint-strong"] = "rgba(255,255,255,0.88)",
+        [LiquidGlassCssVars.Tint] = "rgba(255,255,255,0.74)",
+        [LiquidGlassCssVars.TintStrong] = "rgba(255,255,255,0.88)",
         // Content surfaces (menus, dropdowns, dialogs, drawers, popovers): nearly opaque
         // so text stays readable - the colourful backdrop no longer bleeds through. The
         // glass illusion is preserved by the rim, edge and float shadow around the surface.
-        ["--flare-liquid-content-tint"] = "rgba(255,255,255,0.96)",
+        [LiquidGlassCssVars.ContentTint] = "rgba(255,255,255,0.96)",
         // Gentler sheen for content surfaces so the top row of text isn't washed out.
-        ["--flare-liquid-content-sheen"] = "rgba(255,255,255,0.22)",
+        [LiquidGlassCssVars.ContentSheen] = "rgba(255,255,255,0.22)",
         // Lensing rim: a bright light edge bent around the glass (top + bottom + hairline ring).
-        ["--flare-liquid-rim"] = "rgba(255,255,255,0.75)",
-        ["--flare-liquid-rim-low"] = "rgba(255,255,255,0.30)",
-        ["--flare-liquid-edge"] = "rgba(255,255,255,0.50)",
+        [LiquidGlassCssVars.Rim] = "rgba(255,255,255,0.75)",
+        [LiquidGlassCssVars.RimLow] = "rgba(255,255,255,0.30)",
+        [LiquidGlassCssVars.Edge] = "rgba(255,255,255,0.50)",
         // Specular sheen layered over the top of every glass surface.
-        ["--flare-liquid-sheen"] = "rgba(255,255,255,0.55)",
+        [LiquidGlassCssVars.Sheen] = "rgba(255,255,255,0.55)",
         // Soft floating drop shadow.
-        ["--flare-liquid-shadow"] = "0 8px 30px rgba(0,0,0,0.12)",
+        [LiquidGlassCssVars.Shadow] = "0 8px 30px rgba(0,0,0,0.12)",
 
         // Card + input backgrounds are translucent glass tints that differ light/dark (see the
         // DarkExtended overrides), so they stay mode-specific here rather than on the mode-agnostic
@@ -451,19 +451,19 @@ internal class LiquidGlassTokens
     {
         return new Dictionary<string, string>(Extended)
         {
-            ["--flare-liquid-glow"] = "rgba(10,132,255,0.40)",
+            [LiquidGlassCssVars.Glow] = "rgba(10,132,255,0.40)",
             // Dark frosted glass: darker tint, dimmer rim/sheen, deeper shadow.
-            ["--flare-liquid-tint"] = "rgba(44,44,46,0.74)",
-            ["--flare-liquid-tint-strong"] = "rgba(58,58,60,0.88)",
+            [LiquidGlassCssVars.Tint] = "rgba(44,44,46,0.74)",
+            [LiquidGlassCssVars.TintStrong] = "rgba(58,58,60,0.88)",
             // Nearly opaque dark frosted glass for text-bearing surfaces (dark bleed is
             // worse for contrast, so push opacity high); gentle sheen so labels stay crisp.
-            ["--flare-liquid-content-tint"] = "rgba(40,40,42,0.97)",
-            ["--flare-liquid-content-sheen"] = "rgba(255,255,255,0.07)",
-            ["--flare-liquid-rim"] = "rgba(255,255,255,0.28)",
-            ["--flare-liquid-rim-low"] = "rgba(255,255,255,0.10)",
-            ["--flare-liquid-edge"] = "rgba(255,255,255,0.14)",
-            ["--flare-liquid-sheen"] = "rgba(255,255,255,0.16)",
-            ["--flare-liquid-shadow"] = "0 8px 30px rgba(0,0,0,0.45)",
+            [LiquidGlassCssVars.ContentTint] = "rgba(40,40,42,0.97)",
+            [LiquidGlassCssVars.ContentSheen] = "rgba(255,255,255,0.07)",
+            [LiquidGlassCssVars.Rim] = "rgba(255,255,255,0.28)",
+            [LiquidGlassCssVars.RimLow] = "rgba(255,255,255,0.10)",
+            [LiquidGlassCssVars.Edge] = "rgba(255,255,255,0.14)",
+            [LiquidGlassCssVars.Sheen] = "rgba(255,255,255,0.16)",
+            [LiquidGlassCssVars.Shadow] = "0 8px 30px rgba(0,0,0,0.45)",
             ["--flare-card-elevated-bg"] = "rgba(44,44,46,0.78)",
             ["--flare-card-filled-bg"] = "rgba(44,44,46,0.78)",
             ["--flare-card-outlined-bg"] = "rgba(44,44,46,0.70)",

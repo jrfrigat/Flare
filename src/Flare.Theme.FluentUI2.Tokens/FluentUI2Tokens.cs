@@ -439,11 +439,11 @@ public class FluentUI2Tokens
     /// </summary>
     public static readonly Dictionary<string, string> Extended = new()
     {
-        ["--flare-fluent-stroke-width-thin"] = "1px",
-        ["--flare-fluent-stroke-width-thick"] = "2px",
-        ["--flare-fluent-focus-stroke-width"] = "2px",
-        ["--flare-fluent-focus-stroke-color"] = "#000000",
-        ["--flare-fluent-focus-stroke-outer"] = "#FFFFFF",
+        [FluentCssVars.StrokeWidthThin] = "1px",
+        [FluentCssVars.StrokeWidthThick] = "2px",
+        [FluentCssVars.FocusStrokeWidth] = "2px",
+        [FluentCssVars.FocusStrokeColor] = "#000000",
+        [FluentCssVars.FocusStrokeOuter] = "#FFFFFF",
 
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
@@ -864,8 +864,8 @@ public class FluentUI2Tokens
     {
         var dict = new Dictionary<string, string>(Extended)
         {
-            ["--flare-fluent-focus-stroke-color"] = "#FFFFFF",
-            ["--flare-fluent-focus-stroke-outer"] = "#000000",
+            [FluentCssVars.FocusStrokeColor] = "#FFFFFF",
+            [FluentCssVars.FocusStrokeOuter] = "#000000",
             ["--flare-switch-track-hover-off-bg"] = "var(--flare-color-surface-container)",
             ["--flare-switch-track-hover-on-bg"] = "#2886D4",
         };
