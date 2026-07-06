@@ -6,19 +6,9 @@
 
 /* Label, helper and error text reuse the shared flare-input__label / __helper / __helper--error (input.css). */
 
-.flare-autocomplete__wrapper {
-  position: relative;
-}
-
 /* The field-well box-model + focus ring (incl. :focus-within) come entirely from the shared
-   flare-input__field (input.css); the base class is just the BEM anchor for the --open modifier. */
+   flare-input__field (input.css); this base class is just the BEM anchor for the combobox field. */
 .flare-autocomplete__field {}
-/* Open-popup alias: keeps the focus ring while the popup is open even though focus may have moved
-   into the listbox. */
-.flare-autocomplete__field--open {
-  border-color: var(--fc-main, var(--flare-color-primary));
-  box-shadow: var(--flare-input-focus-ring, inset 0 0 0 1px var(--fc-main, var(--flare-color-primary)));
-}
 
 /* Control chrome (flex/transparent/padding/font) inherited from .flare-input__control (input.css). */
 
@@ -44,17 +34,8 @@
 }
 .flare-autocomplete__clear:hover { color: var(--flare-color-on-surface); }
 
-/* Anchors the shared .flare-listbox popup under the field; the listbox supplies the
-   surface (background, radius, elevation, scrolling). Only positioning lives here. */
-/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css). */
-
-.flare-autocomplete__empty {
-  padding: var(--flare-spacing-6) var(--flare-spacing-8);
-  color: var(--flare-color-on-surface-variant);
-  font-family: var(--flare-typescale-body-large-font);
-  font-size: var(--flare-typescale-body-large-size);
-  font-style: italic;
-}
+/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css),
+   and the "no results" row from the shared flare-listbox__empty. */
 
 /* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css).
    The shared disabled content-opacity rule targets flare-input__icon, so dim the autocomplete's own

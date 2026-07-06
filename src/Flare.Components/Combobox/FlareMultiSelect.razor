@@ -11,11 +11,11 @@
    pick. Composes the shared primitives; the engine owns selection (incl. max + tri-state select-all). *@
 
 <FlareFieldChrome @ref="_chrome"
-                  RootClass="@Css.Classes.Multiselect.Root"
-                  StateClass="@_stateClass"
-                  SizeClass="@_sizeClass"
-                  VariantClass="@_variantClass"
-                  OpenClass="@(_state.IsOpen ? Css.Classes.Multiselect.Open : null)"
+                  ComponentClass="@Css.Classes.Multiselect.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  ExtraClass="@(_state.IsOpen ? Css.Classes.Multiselect.Open : null)"
                   Label="@Label" LabelId="@_labelId"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
@@ -213,14 +213,7 @@
     /// <summary>Option count above which the dropdown virtualizes (when not grouped). Default: 50.</summary>
     [Parameter] public int VirtualizeThreshold { get; set; } = 50;
 
-    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
-
-    /// <summary>Optional typography scale for the control text.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
-
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+    // Variant, Size and Typo are inherited from FlareFieldBase.
 
     /// <inheritdoc />
     protected override string ComponentCssClass => Css.Classes.Multiselect.Root;
@@ -249,18 +242,6 @@
         _state.IsOpen && _state.HighlightedIndex >= 0 ? $"{_listboxId}-opt-{_state.HighlightedIndex}" : null;
 
     private string? _displayedError => DisplayedError(ErrorText);
-    private string? _stateClass =>
-        Disabled ? Css.Classes.Input.Disabled :
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error : null;
-    private string? _variantClass => VariantClass(Variant);
-    private string? _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => null,
-    };
 
     private bool _showPlaceholder => _selected.Count == 0 && !Searchable && !string.IsNullOrEmpty(Placeholder);
 

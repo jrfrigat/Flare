@@ -1,7 +1,6 @@
 .flare-tag-input {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flare-spacing-2);
+    /* Column layout (flex/flex-direction/gap) comes from the shared .flare-input (input.css); only the
+       text cursor over the chip well is TagField-specific. */
     cursor: text;
 }
 
@@ -18,61 +17,13 @@
     min-height: 2.75rem;
 }
 
-.flare-tag-input__chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--flare-spacing-2);
-    padding: var(--flare-spacing-1) var(--flare-spacing-4);
-    background: var(--flare-color-secondary-container);
-    color: var(--flare-color-on-secondary-container);
-    border-radius: var(--flare-chip-radius, var(--flare-shape-small));
-    font-size: var(--flare-typescale-label-large-size);
-    font-family: var(--flare-typescale-label-large-font);
-    line-height: 1.5;
-}
-
-.flare-tag-input__remove {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    padding: 0;
-    width: 1rem;
-    height: 1rem;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 0.875rem;
-    color: inherit;
-    line-height: 1;
-    transition: background var(--flare-motion-duration-short1);
-}
-
-.flare-tag-input__remove:hover {
-    background: var(--flare-tag-input-remove-hover-bg, color-mix(in srgb, var(--flare-color-on-secondary-container) 20%, transparent));
-}
+/* The rendered chips + their remove button reuse the shared FlareChipStrip -> flare-multiselect__chip*
+   (multiselect.css, including the disabled chip dim); the suggestion popup uses the shared flare-listbox
+   (listbox.css) with its flare-listbox__empty "no results" row. */
 
 /* The inline entry field carries the shared flare-input__control (flex/transparent/border/outline/
    font/color/caret + the size grid); only its compact inline padding + a min-width are TagField's. */
 .flare-tag-input__input {
     min-width: 8rem;
     padding: var(--flare-spacing-1) 0;
-}
-
-/* Disabled: pointer-events + the well surface + the input/label/helper dim come from the shared
-   flare-input--disabled (input.css); only the chips need a component-specific dim. */
-.flare-input--disabled .flare-tag-input__chip { opacity: var(--flare-state-disabled-opacity); }
-
-/* ---- Suggestions dropdown ---- */
-.flare-tag-input__wrapper {
-    position: relative;
-}
-
-/* Popup surface + anchoring come from the shared .flare-listbox / .flare-listbox__dropdown (listbox.css),
-   so the suggestion dropdown matches Autocomplete/Select/MultiSelect. */
-
-.flare-tag-input__empty {
-    padding: var(--flare-spacing-4) var(--flare-spacing-6);
-    color: var(--flare-color-on-surface-variant);
-    font-size: var(--flare-typescale-body-small-size);
 }

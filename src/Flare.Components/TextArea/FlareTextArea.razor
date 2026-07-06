@@ -3,45 +3,46 @@
 @implements IFlareField<string>
 @using System.Linq.Expressions
 
-<div class="@BuildCssClass(_stateClass, AutoGrow ? Css.Classes.Textarea.Autogrow : null, VariantClass(Variant))" style="@Style">
-    @if (!string.IsNullOrEmpty(Label))
-    {
-        <label class="@Css.Classes.Input.Label" for="@_textareaId">@Label</label>
-    }
-    <div class="@Css.Classes.Input.Field">
-        <textarea class="@Css.Classes.Input.Control @Css.Classes.Textarea.Control"
-                  id="@_textareaId"
-                  style="@_controlStyle"
-                  placeholder="@Placeholder"
-                  disabled="@Disabled"
-                  readonly="@ReadOnly"
-                  required="@Required"
-                  rows="@Rows"
-                  maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
-                  aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
-                  aria-describedby="@_computedDescribedBy"
-                  @onchange="HandleChange"
-                  @oninput="HandleInput"
-                  @attributes="AdditionalAttributes">@Value</textarea>
-    </div>
-    @if (!string.IsNullOrEmpty(_displayedError) || !string.IsNullOrEmpty(HelperText) || _showCounter)
-    {
-        <div class="@Css.Classes.Input.Support">
-            @if (!string.IsNullOrEmpty(_displayedError))
-            {
-                <span id="@_errorId" class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError" role="alert">@_displayedError</span>
-            }
-            else if (!string.IsNullOrEmpty(HelperText))
-            {
-                <span id="@_helperId" class="@Css.Classes.Input.Helper">@HelperText</span>
-            }
-            @if (_showCounter)
-            {
-                <span class="@Css.Classes.Input.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
-            }
+@* Multi-line text field. Composes the shared FlareFieldChrome frame + FlareInputControl in multiline mode
+   (a <textarea>), so it shares the family chrome + input logic and only adds the textarea-specific rows /
+   auto-grow / max-lines. *@
+
+<FlareFieldChrome Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  ExtraClass="@(AutoGrow ? Css.Classes.Textarea.Autogrow : null)"
+                  Label="@Label" LabelFor="@_textareaId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style">
+    <Field>
+        <div class="@Css.Classes.Input.Field">
+            <FlareInputControl Multiline="true"
+                               Value="@Value"
+                               ValueChanged="EmitValue"
+                               Id="@_textareaId"
+                               ControlClass="@Css.Classes.Textarea.Control"
+                               Placeholder="@Placeholder"
+                               Disabled="Disabled"
+                               ReadOnly="ReadOnly"
+                               Required="Required"
+                               Rows="Rows"
+                               MaxLength="MaxLength"
+                               AriaInvalid="@(!string.IsNullOrEmpty(_displayedError))"
+                               AriaDescribedBy="@_computedDescribedBy"
+                               Immediate="Immediate"
+                               DebounceInterval="DebounceInterval"
+                               Style="@_controlStyle"
+                               AdditionalAttributes="AdditionalAttributes" />
         </div>
-    }
-</div>
+    </Field>
+    <Counter>
+        @if (_showCounter)
+        {
+            <span class="@Css.Classes.Input.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
+        }
+    </Counter>
+</FlareFieldChrome>
 
 @code {
     /// <summary>Current text content of the textarea.</summary>
@@ -50,9 +51,6 @@
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
     // FlareFieldBase (IFlareField).
-    /// <summary>Optional typography scale for the textarea text. Overrides the default body font.
-    /// Null keeps the component default.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Number of visible text rows.</summary>
     [Parameter] public int Rows { get; set; } = 4;
     /// <summary>Auto-resizes the textarea height to fit its content (zero-JS, via CSS field-sizing).</summary>
@@ -63,8 +61,6 @@
     [Parameter] public int MaxLength { get; set; } = 0;
     /// <summary>Shows a character counter in the supporting-text row. Auto-enabled when <see cref="MaxLength"/> is set.</summary>
     [Parameter] public bool ShowCharacterCount { get; set; }
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
     /// <summary>When true, the value updates on every keystroke (oninput) rather than only on change/blur.</summary>
     [Parameter] public bool Immediate { get; set; }
     /// <summary>Debounce in milliseconds for <see cref="Immediate"/> updates. 0 = no debounce.</summary>
@@ -87,10 +83,6 @@
 
     private string? _displayedError => DisplayedError(ErrorText);
 
-    private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : string.Empty;
-
     private bool _showCounter => ShowCharacterCount || MaxLength > 0;
 
     // Typo wins over the size-derived font via an inline style (size-grid selectors out-specify a class).
@@ -107,34 +99,10 @@
         }
     }
 
-    private readonly CancelScope _debounceCts = new();
-
-    private Task HandleChange(ChangeEventArgs e) => EmitValue(e.Value?.ToString());
-
-    private async Task HandleInput(ChangeEventArgs e)
-    {
-        if (!Immediate) return;
-        var val = e.Value?.ToString();
-        if (DebounceInterval <= 0) { await EmitValue(val); return; }
-        var token = _debounceCts.Next();
-        try
-        {
-            await Task.Delay(DebounceInterval, token);
-            await InvokeAsync(() => EmitValue(val));
-        }
-        catch (TaskCanceledException) { }
-    }
-
+    // Debounce/immediate policy lives in FlareInputControl; this just raises the typed callback.
     private async Task EmitValue(string? val)
     {
         await ValueChanged.InvokeAsync(val);
         NotifyFieldChanged();
-    }
-
-    /// <inheritdoc />
-    public override async ValueTask DisposeAsync()
-    {
-        _debounceCts.Dispose();
-        await base.DisposeAsync();
     }
 }

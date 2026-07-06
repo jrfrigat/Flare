@@ -1,0 +1,156 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using Microsoft.AspNetCore.Components.Web
+
+@* The one shared editable control for the text-input family (FlareField/Password/Masked/Numeric/TextArea
+   and the combobox/tag entry inputs). It renders the bare .flare-input__control element (an <input> or,
+   when Multiline, a <textarea>) inside the field's well, wires the aria/disabled/readonly/required
+   attributes and the Immediate/DebounceInterval oninput-vs-onchange policy, and bubbles the raw string up
+   via ValueChanged. It trafficks in STRINGS only: the parent field owns the typed value and converts to/from
+   this string, so there is no second value channel to keep in sync (the MudBlazor Value/Text echo bug
+   class). Presentational + value-less-typing = never a super-component. *@
+
+@if (Multiline)
+{
+    <textarea class="@ControlCss()"
+              id="@Id"
+              style="@Style"
+              value="@Value"
+              placeholder="@Placeholder"
+              disabled="@Disabled"
+              readonly="@ReadOnly"
+              required="@Required"
+              rows="@(Rows > 0 ? Rows : null)"
+              maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
+              aria-label="@AriaLabel"
+              aria-invalid="@(AriaInvalid ? "true" : null)"
+              aria-describedby="@AriaDescribedBy"
+              @onchange="HandleChange"
+              @oninput="HandleInput"
+              @onkeydown="OnKeyDown"
+              @onkeyup="OnKeyUp"
+              @attributes="AdditionalAttributes"></textarea>
+}
+else
+{
+    <input class="@ControlCss()"
+           id="@Id"
+           style="@Style"
+           value="@Value"
+           placeholder="@Placeholder"
+           disabled="@Disabled"
+           readonly="@ReadOnly"
+           required="@Required"
+           type="@Type"
+           maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
+           inputmode="@InputMode"
+           aria-label="@AriaLabel"
+           aria-invalid="@(AriaInvalid ? "true" : null)"
+           aria-describedby="@AriaDescribedBy"
+           @ref="_element"
+           @onchange="HandleChange"
+           @oninput="HandleInput"
+           @onkeydown="OnKeyDown"
+           @onkeyup="OnKeyUp"
+           @attributes="AdditionalAttributes" />
+}
+
+@code {
+    /// <summary>The current display string (the parent field owns the typed value and supplies its string form).</summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>Raised with the raw string on commit (change) or, when <see cref="Immediate"/>, on input.</summary>
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>Placeholder text shown when empty.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>Disables the control.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Makes the control read-only.</summary>
+    [Parameter] public bool ReadOnly { get; set; }
+
+    /// <summary>Marks the control as required (native <c>required</c>).</summary>
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>The HTML <c>type</c> attribute (single-line only).</summary>
+    [Parameter] public string Type { get; set; } = "text";
+
+    /// <summary>The HTML <c>inputmode</c> hint (single-line only).</summary>
+    [Parameter] public string? InputMode { get; set; }
+
+    /// <summary>The control element id (for a label <c>for</c> and <c>aria-*</c> wiring).</summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>Accessible label, forwarded as <c>aria-label</c>.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <summary>Sets <c>aria-invalid</c> when true.</summary>
+    [Parameter] public bool AriaInvalid { get; set; }
+
+    /// <summary>Space-separated ids forwarded as <c>aria-describedby</c>.</summary>
+    [Parameter] public string? AriaDescribedBy { get; set; }
+
+    /// <summary>Maximum characters. 0 = no limit.</summary>
+    [Parameter] public int MaxLength { get; set; }
+
+    /// <summary>Extra CSS class appended to the control element (e.g. a component-specific control class).</summary>
+    [Parameter] public string? ControlClass { get; set; }
+
+    /// <summary>Renders a <c>&lt;textarea&gt;</c> instead of an <c>&lt;input&gt;</c>.</summary>
+    [Parameter] public bool Multiline { get; set; }
+
+    /// <summary>Visible rows for the textarea (multiline only).</summary>
+    [Parameter] public int Rows { get; set; }
+
+    /// <summary>When true, emits on every keystroke (oninput) rather than only on change/blur.</summary>
+    [Parameter] public bool Immediate { get; set; }
+
+    /// <summary>Debounce in milliseconds for <see cref="Immediate"/> emits. 0 = no debounce.</summary>
+    [Parameter] public int DebounceInterval { get; set; }
+
+    /// <summary>Invoked on keydown.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+
+    /// <summary>Invoked on keyup.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Input.Control;
+
+    private ElementReference _element;
+    private readonly CancelScope _debounce = new();
+
+    private string ControlCss() =>
+        string.IsNullOrEmpty(ControlClass) ? Css.Classes.Input.Control : $"{Css.Classes.Input.Control} {ControlClass}";
+
+    /// <summary>The underlying input element, for the parent field to focus it.</summary>
+    public ElementReference Element => _element;
+
+    private Task HandleChange(ChangeEventArgs e) => ValueChanged.InvokeAsync(e.Value?.ToString());
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        if (!Immediate) return;               // off -> commit only on change/blur
+        var raw = e.Value?.ToString();
+        if (DebounceInterval <= 0)
+        {
+            await ValueChanged.InvokeAsync(raw);
+            return;
+        }
+        var token = _debounce.Next();
+        try
+        {
+            await Task.Delay(DebounceInterval, token);
+            await InvokeAsync(() => ValueChanged.InvokeAsync(raw));
+        }
+        catch (TaskCanceledException) { }
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        _debounce.Dispose();
+        await base.DisposeAsync();
+    }
+}

@@ -6,13 +6,14 @@ using System.Linq.Expressions;
 namespace Flare.Components;
 
 /// <summary>
-/// Base class for the Flare field family (text field, select, multi-select, autocomplete).
-/// Centralizes the shared field-chrome plumbing so it is not re-implemented per component:
-/// the EditContext validation wiring (subscription, bound-field identifier, validation-message
-/// lookup and change notification) and the theme-independent visual-variant mapping.
-/// It also carries the shared field parameters (label, placeholder, helper/error text, disabled,
-/// read-only, required); the keyboard-input fields additionally share the <c>flare-input__*</c>
-/// chrome CSS (label/field/helper/counter) rather than re-declaring per-component copies.
+/// Base class for the Flare field family (text field, numeric, mask, textarea, password, select,
+/// multi-select, combobox, tag field, and the date/time pickers).
+/// Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext
+/// validation wiring (subscription, bound-field identifier, validation-message lookup and change
+/// notification) and the shared field parameters (label, placeholder, helper/error text, disabled,
+/// read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo
+/// to the shared <see cref="FlareFieldChrome"/> frame, so they live here once rather than being
+/// re-declared per component.
 /// </summary>
 public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 {
@@ -36,6 +37,17 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 
     /// <summary>Marks the field as required (visual indicator + native <c>required</c> where applicable).</summary>
     [Parameter] public bool Required { get; set; }
+
+    /// <summary>Visual variant (Filled/Outlined) of the field, independent of the active theme.
+    /// <see cref="InputVariant.Default"/> (the default) keeps the theme's own field style.</summary>
+    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
+
+    /// <summary>Control size (Xs..Xl). <see cref="FieldSize.Md"/> (the default) is the standard field height.</summary>
+    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+
+    /// <summary>Optional typography scale for the field's text. Overrides the size-derived font;
+    /// null (the default) keeps the size default.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
 
     /// <summary>The cascaded edit context used for validation when the field is bound with a <c>For</c> accessor.</summary>
     [CascadingParameter] protected EditContext? EditContext { get; set; }
@@ -92,19 +104,6 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 
     private void HandleValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
         => InvokeAsync(StateHasChanged);
-
-    /// <summary>
-    /// Maps a theme-independent <see cref="InputVariant"/> to its shared field token class
-    /// (the <c>--flare-input-*</c> variant), or null to keep the active theme's default style.
-    /// </summary>
-    /// <param name="variant">The requested visual variant.</param>
-    /// <returns>The variant CSS class, or null for <see cref="InputVariant.Default"/>.</returns>
-    protected static string? VariantClass(InputVariant variant) => variant switch
-    {
-        InputVariant.Filled => Css.Classes.Input.VariantFilled,
-        InputVariant.Outlined => Css.Classes.Input.VariantOutlined,
-        _ => null,
-    };
 
     /// <inheritdoc />
     public override async ValueTask DisposeAsync()

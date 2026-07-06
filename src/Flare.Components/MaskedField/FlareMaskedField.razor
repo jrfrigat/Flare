@@ -3,35 +3,36 @@
 @implements IFlareField<string>
 @using System.Linq.Expressions
 @using System.Text.RegularExpressions
-@using Microsoft.AspNetCore.Components.Forms
 
-<div class="@BuildCssClass(_stateClass, _variantClass, _sizeClass)" style="@Style" @attributes="AdditionalAttributes">
-    @if (!string.IsNullOrEmpty(Label))
-    {
-        <label class="@Css.Classes.Input.Label">@Label</label>
-    }
-    <div class="@Css.Classes.Input.Field">
-        <input class="@Css.Classes.Input.Control"
-               style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
-               type="text"
-               value="@_display"
-               placeholder="@(_placeholder ?? Placeholder)"
-               disabled="@Disabled"
-               readonly="@ReadOnly"
-               required="@Required"
-               maxlength="@Pattern?.Length"
-               @oninput="HandleInput"
-               @attributes="AdditionalAttributes" />
-    </div>
-    @if (!string.IsNullOrEmpty(_displayedError))
-    {
-        <span class="@Css.Classes.Input.Helper @Css.Classes.Input.HelperError">@_displayedError</span>
-    }
-    else if (!string.IsNullOrEmpty(HelperText))
-    {
-        <span class="@Css.Classes.Input.Helper">@HelperText</span>
-    }
-</div>
+@* Masked text field. Composes the shared FlareFieldChrome frame + FlareInputControl (immediate mode, so the
+   mask applies as the user types); only the mask/preset formatting is component-specific. *@
+
+<FlareFieldChrome Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelFor="@_inputId"
+                  HelperText="@HelperText" HelperId="@_helperId"
+                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.Input.Field">
+            <FlareInputControl Value="@_display"
+                               ValueChanged="OnInput"
+                               Immediate="true"
+                               Id="@_inputId"
+                               Type="text"
+                               Placeholder="@(_placeholder ?? Placeholder)"
+                               Disabled="Disabled"
+                               ReadOnly="ReadOnly"
+                               Required="Required"
+                               MaxLength="@(Pattern?.Length ?? 0)"
+                               AriaInvalid="@(!string.IsNullOrEmpty(_displayedError))"
+                               AriaDescribedBy="@_computedDescribedBy"
+                               Style="@_typoStyle"
+                               AdditionalAttributes="AdditionalAttributes" />
+        </div>
+    </Field>
+</FlareFieldChrome>
 
 @code {
     /// <summary>Current unmasked value of the input.</summary>
@@ -50,29 +51,21 @@
     [Parameter] public bool AutoApply { get; set; } = true;
     // Label, Placeholder, HelperText, ErrorText, Disabled, ReadOnly and Required are inherited from
     // FlareFieldBase (IFlareField).
-    /// <summary>Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.
-    /// Default keeps the theme's field style.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
-    /// <summary>Control size (Xs..Xl), shared with FlareField. Medium is the default field height.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
+    // Variant, Size and Typo are inherited from FlareFieldBase.
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<string?>>? For { get; set; }
 
-    private string? _variantClass => VariantClass(Variant);
-    private string _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => string.Empty,
-    };
-
     protected override string ComponentCssClass => Css.Classes.Input.Root;
 
+    private readonly string _inputId = $"flare-masked-{Guid.NewGuid():N}";
+    private string _helperId => $"{_inputId}-help";
+    private string _errorId => $"{_inputId}-err";
+    private string? _computedDescribedBy =>
+        !string.IsNullOrEmpty(_displayedError) ? _errorId :
+        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
+
     private string _display = string.Empty;
+    private string? _typoStyle => Typo is { } t ? FlareTypography.FontStyle(t) : null;
 
     // Effective mask: explicit Mask wins, else the selected preset.
     private string? Pattern => Mask ?? (Preset switch
@@ -103,10 +96,6 @@
 
     private string? _displayedError => DisplayedError(ErrorText);
 
-    private string _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : string.Empty;
-
     private static readonly TimeSpan RegexTimeout = TimeSpan.FromMilliseconds(100);
 
     /// <summary>Validates that <paramref name="value"/> matches <see cref="Mask"/> when treated as a regex pattern. Returns true when Mask is null or empty.</summary>
@@ -120,9 +109,9 @@
         catch (RegexMatchTimeoutException) { return false; }
     }
 
-    private async Task HandleInput(ChangeEventArgs e)
+    private async Task OnInput(string? raw)
     {
-        var raw = e.Value?.ToString() ?? string.Empty;
+        raw ??= string.Empty;
         if (AutoApply)
         {
             _display = ApplyMask(raw);

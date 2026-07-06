@@ -1,6 +1,8 @@
-/* Field-family root: the shared column layout for the text field and every composite field
-   (select, multiselect, and the date/time pickers). input.css is the field hub - the shared
-   __field / __control / __label rules below are reused by all of them, so the root lives here too. */
+/* Field-family root: the shared column layout for the text field and every composite field. input.css
+   is the field hub - the shared __field / __control / __label rules below are reused by all of them, so
+   the root lives here too. Every field composes FlareFieldChrome so every root carries .flare-input and
+   is styled by it; the component roots are listed alongside purely so each keeps a CSS home (the CSS
+   class <-> Css.Classes constant contract, enforced by CssAudit, requires a rule per root class). */
 .flare-input,
 .flare-select,
 .flare-multiselect,

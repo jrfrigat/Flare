@@ -13,10 +13,10 @@
    Generic over the tag type; the common string case needs no CustomValueFactory. *@
 
 <FlareFieldChrome @ref="_chrome"
-                  RootClass="@Css.Classes.TagInput.Root"
-                  StateClass="@_stateClass"
-                  SizeClass="@_sizeClass"
-                  VariantClass="@_variantClass"
+                  ComponentClass="@Css.Classes.TagInput.Root"
+                  Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(_displayedError))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
                   Label="@Label" LabelId="@_labelId"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
@@ -137,14 +137,7 @@
     /// <summary>Text shown when a query returns no suggestions. When null, falls back to the localized default.</summary>
     [Parameter] public string? NoResultsText { get; set; }
 
-    /// <summary>Visual variant (Filled/Outlined) independent of the theme, shared with FlareField.</summary>
-    [Parameter] public InputVariant Variant { get; set; } = InputVariant.Default;
-
-    /// <summary>Control size (Xs..Xl). Medium is the default field height.</summary>
-    [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
-
-    /// <summary>Optional typography scale for the input text.</summary>
-    [Parameter] public TypographyScale? Typo { get; set; }
+    // Variant, Size and Typo are inherited from FlareFieldBase.
 
     /// <inheritdoc />
     protected override string ComponentCssClass => Css.Classes.TagInput.Root;
@@ -175,18 +168,6 @@
         _hasSuggestions && _state.IsOpen && _state.HighlightedIndex >= 0 ? $"{_listboxId}-opt-{_state.HighlightedIndex}" : null;
 
     private string? _displayedError => DisplayedError(ErrorText);
-    private string? _stateClass =>
-        !string.IsNullOrEmpty(_displayedError) ? Css.Classes.Input.Error :
-        Disabled ? Css.Classes.Input.Disabled : null;
-    private string? _variantClass => VariantClass(Variant);
-    private string? _sizeClass => Size switch
-    {
-        FieldSize.Xs => Css.Classes.Input.SizeXs,
-        FieldSize.Sm => Css.Classes.Input.SizeSm,
-        FieldSize.Lg => Css.Classes.Input.SizeLg,
-        FieldSize.Xl => Css.Classes.Input.SizeXl,
-        _ => null,
-    };
 
     // Uncontrolled convenience: keep the last pushed list to detect an external reset.
     private bool Controlled => ValuesChanged.HasDelegate;
