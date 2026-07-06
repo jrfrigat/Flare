@@ -70,7 +70,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Flare is an open-source Blazor component library built with .NET 10..
+        ///   Ищет локализованную строку, похожую на Flare is a theme-agnostic, open-source Blazor component library for .NET 10 - a token-driven engine for building your own design system. Seven production-ready preset design systems ship as independent, optional packages..
         /// </summary>
         public static string About_Intro {
             get {
@@ -88,7 +88,7 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Design systems.
+        ///   Ищет локализованную строку, похожую на Preset themes.
         /// </summary>
         public static string About_Themes {
             get {
@@ -155,6 +155,33 @@ namespace Flare.Gallery.Resources {
         public static string About_WhatsNewV10 {
             get {
                 return ResourceManager.GetString("About_WhatsNewV10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Theme engine rebuilt: MD3 and Fluent UI 2 baselines are now separate token packages, and the core is fully theme-agnostic
+        ///Select and MultiSelect rebuilt on a faster headless core, with in-field search, better accessibility, and uncontrolled use
+        ///Unified field family: text, numeric, date/time, tags, autocomplete, and select share one consistent look and behavior
+        ///Leaner CSS: shared input, picker, and listbox styles cut duplication across the whole library
+        ///About 100 more component styles are now themeable k [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV11 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simplified the token API to direct --flare-* variables, dropping an extra layer of indirection
+        ///New token audit reports every style variable against the registry and reached fully in sync
+        ///Reconciled every token family to what the CSS actually uses, removing pass-through duplicates
+        ///Added 14 new and extended 13 existing component token families for complete theming coverage
+        ///Extended the motion scale with new short durations for finer animation control
+        ///The theming API is now exhaustive and audit-clean: bui [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string About_WhatsNewV12 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV12", resourceCulture);
             }
         }
         
@@ -3393,7 +3420,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Field_Sizes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Variants (filled / outlined).
         /// </summary>

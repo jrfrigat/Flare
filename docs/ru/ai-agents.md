@@ -12,8 +12,11 @@
 
 - UI-библиотека для **.NET 8 / 9 / 10 Blazor** (приоритет net10). Работает и в Blazor WebAssembly, и в Blazor Server.
 - **100+ компонентов**, все с префиксом `Flare*` (например `FlareButton`, `FlareDataGrid`).
-- **Темизация на токенах.** Несколько дизайн-систем (Material Design 3 Expressive, Fluent UI 2, Aero,
-  Liquid Glass, Visual Studio) - это отдельные пакеты, переключаемые в рантайме. CSS темы писать не нужно.
+- **Темизация на токенах - дизайн-система в ваших руках.** Компоненты не содержат вшитых стилей; каждый
+  цвет, форма, размер и анимация берутся из темы через единый API семантических токенов. Семь готовых
+  дизайн-систем (Material Design 3 Expressive, MD3, MD2, Fluent UI 2, Aero, Liquid Glass, Visual Studio)
+  поставляются как независимые, необязательные пакеты - используйте готовую или создайте свою с нуля. CSS
+  темы писать не нужно.
 - **Варианты/размеры/формы компонентов - это enum'ы**, а не строки (например `Variant="ButtonVariant.Filled"`).
 
 ---
@@ -43,7 +46,7 @@
 # Ядро (тянет Flare.Components (+ кольца Abstractions/Theming/Infrastructure), 100+ компонентов):
 dotnet add package Flare.Blazor
 
-# Хотя бы одна тема (отдельные пакеты):
+# Тема - подключите preset-пакет ниже или создайте свою (docs/ru/theme-creation-guide.md):
 dotnet add package Flare.Theme.MaterialDesign3Expressive
 # другие: Flare.Theme.FluentUI2, Flare.Theme.Aero, Flare.Theme.LiquidGlass, Flare.Theme.VisualStudio
 ```

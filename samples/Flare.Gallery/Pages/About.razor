@@ -34,7 +34,7 @@
         </FlareCol>
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Filled" Style="text-align:center;">
-                <FlareText Color="FlareColor.Tertiary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">5</FlareText>
+                <FlareText Color="FlareColor.Tertiary" Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold">7</FlareText>
                 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelMedium">@GalleryStrings.About_Themes</FlareText>
             </FlareCard>
         </FlareCol>
@@ -43,6 +43,30 @@
 
 <section>
     <GallerySectionHeader Icon="new_releases" Title="@GalleryStrings.About_WhatsNew" />
+    <FlareCard Variant="CardVariant.Outlined" Style="margin-bottom:1rem;">
+        <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v0.1.0 - 2026-07-06</FlareText>
+        <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+            @foreach (var item in _whatsNewV12)
+            {
+                <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+                    <FlareIcon Size="1rem" Color="FlareColor.Primary" Name="check_circle" Style="margin-top:2px" />
+                    <FlareText Typo="TypographyScale.BodyMedium">@item</FlareText>
+                </FlareStack>
+            }
+        </FlareStack>
+    </FlareCard>
+    <FlareCard Variant="CardVariant.Outlined" Style="margin-bottom:1rem;">
+        <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v0.0.11 - 2026-07-06</FlareText>
+        <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+            @foreach (var item in _whatsNewV11)
+            {
+                <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
+                    <FlareIcon Size="1rem" Color="FlareColor.Primary" Name="check_circle" Style="margin-top:2px" />
+                    <FlareText Typo="TypographyScale.BodyMedium">@item</FlareText>
+                </FlareStack>
+            }
+        </FlareStack>
+    </FlareCard>
     <FlareCard Variant="CardVariant.Outlined" Style="margin-bottom:1rem;">
         <FlareText Typo="TypographyScale.TitleMedium" Style="margin-bottom:0.75rem;">v0.0.10 - 2026-07-04</FlareText>
         <FlareStack Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Start">
@@ -180,7 +204,7 @@
 </FlareStack>
 
 @code {
-    private readonly string _version = "0.0.10";
+    private readonly string _version = "0.1.0";
 
     private void GoToGitHub() => Nav.NavigateTo("https://github.com/jrfrigat/Flare", forceLoad: true);
 
@@ -188,6 +212,8 @@
     private static string[] Lines(string value) =>
         value.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
+    private string[] _whatsNewV12 => Lines(GalleryStrings.About_WhatsNewV12);
+    private string[] _whatsNewV11 => Lines(GalleryStrings.About_WhatsNewV11);
     private string[] _whatsNewV10 => Lines(GalleryStrings.About_WhatsNewV10);
     private string[] _whatsNewV9 => Lines(GalleryStrings.About_WhatsNewV9);
     private string[] _whatsNewV8 => Lines(GalleryStrings.About_WhatsNewV8);

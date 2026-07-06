@@ -3,6 +3,104 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.0] - 2026-07-06
+
+Flare's theming API reaches completeness with this release: every value the component CSS reads is now a
+themeable `--flare-*` token, the token registry is audit-clean and fully in sync with the CSS, and no
+Material Design opinion remains baked into the core. That milestone is also a repositioning. Flare is a
+theme-agnostic Blazor component library - a token-driven engine for building your own design system,
+where components ship with zero baked-in styling and every color, shape, size, and motion comes from a
+theme you control through one semantic token API. Seven production-ready preset themes (MD3 Expressive,
+MD3, MD2, Fluent UI 2, Aero, Liquid Glass, Visual Studio 2026) ship as independent, optional packages -
+pick one to start instantly, or build a fully custom theme from scratch; the umbrella `Flare.Blazor`
+package ships no theme of its own.
+
+### Added
+- **14 new component token families make previously hard-coded component geometry themeable.** `AppBar`,
+  `Breadcrumb`, `DateTimePicker`, `Dropzone`, `Form`, `Layout`, `Link`, `Otp`, `Picker`, `Scrim`,
+  `ScrollTop`, `Skeleton`, `Table`, and `TimePicker` gained token records, and 13 existing families
+  (`alert`, `button`, `calendar`, `checkbox`, `radio`, `menu`, `nav`, `stepper`, `tabs`, `toc`, `toggle`,
+  `tree`, `splitter`) were extended to cover values the CSS still read as literals. Every newly wired
+  value equals the prior CSS fallback, so the shipped themes render identically - the change is that a
+  custom theme can now override these too.
+- **`cssaudit tokens` report plus a build gate.** A token analog of the existing class audit cross-checks
+  every `--flare-*` token referenced in component CSS against the `Css.Tokens` registry and reports drift
+  in either direction - `[T+]` a token used in CSS with no constant, `[T-]` a constant no CSS references,
+  `[T~]` a theme-only token. The registry now audits fully in sync (`[T+]0 / [T-]0 / [T~]0`), and
+  `CssAuditTests.CssTokens_Components_And_Themes_StayInSync` fails the build if that drifts.
+- **Extended the semantic motion scale** with `short3` / `short4` durations, so components that needed an
+  intermediate duration reference a scale token instead of a literal.
+
+### Changed
+- **`Flare.Css.Tokens` uses direct `--flare-*` string literals** instead of the `Vars.Flare` prefix
+  indirection, and the breakpoint variables were aligned from `--flare-bp-*` to `--flare-breakpoint-*` to
+  match the rest of the naming scheme.
+- **Every wired token family was reconciled to CSS reality under the theme-agnostic mandate.** Where a
+  per-component token merely forwarded a shared role, typescale, spacing, motion, or elevation token, the
+  pass-through duplicate was deleted and the CSS now references the shared token directly; only genuine
+  component-specific geometry was kept and wired. Families touched: `Avatar`, `Tooltip`, `DataGrid`,
+  `Popover`, `Dialog`/`Drawer`/`Snackbar`, `Progress`, `Switch`, and `Input`.
+- **Theme-private token names moved into the theme projects.** Names that only a specific theme consumes
+  no longer live in the core, keeping the core registry limited to the shared, theme-agnostic surface.
+
+### Fixed
+- **The Liquid Glass iOS switch style now applies.** Its tokens were wired but never reached the rendered
+  switch; reconciling the `Switch` token family connected them, so the Liquid Glass theme's switch renders
+  as intended.
+
+## [0.0.11] - 2026-07-06
+
+The largest release since the token mandate landed. Flare's core is now fully theme-agnostic: the
+Material Design 3 and FluentUI2 baselines were extracted into their own reference token packages, and the
+core ships zero visual defaults - a theme must supply every value or the components render unstyled by
+design. Alongside that, the Select family was rebuilt on a headless C# core, the field components
+converged on one shared chrome, and a large CSS deduplication pass removed the last of the re-baked
+Material literals.
+
+### Added
+- **Baseline token packages `Flare.Theme.MaterialDesign3.Tokens` and `Flare.Theme.FluentUI2.Tokens`.**
+  The MD3 and Fluent baselines that used to live inside the core are now standalone reference packages. A
+  theme derives from one of them (`<Ref>.Design with { ... }`) instead of inheriting a baked-in core
+  baseline, so the two shipped themes are now genuinely independent rather than one being the default the
+  other patches.
+- **`FlareThemeBuilder` takes a base `DesignTokens`.** The builder now derives a theme from an explicit
+  reference package's tokens; there is no longer an implicit MD3 baseline underneath every theme.
+- **Headless Select core - `ComboboxState` / `ListCollection` / `SelectionManager`.** The selection,
+  filtering and open/close logic now lives in plain C# with no DOM dependency, so it is unit-testable on
+  its own and shared by every select-family shell.
+- **`FlareSelect` / `FlareMultiSelect` uncontrolled use.** Both work without `@bind-Value` (they hold
+  their own selection when no binding is supplied), and `FlareMultiSelect` now implements
+  `IFlareMultiField` and participates in `EditContext` validation.
+
+### Changed
+- **The core is now fully theme-agnostic - roughly 28 component token records are `required`.** Spacing,
+  Card, DataGrid, Switch, Progress, Input, Menu, Slider, Dialog, Button, Nav, Tabs, Alert, Badge, Chip,
+  Radio, Fab, Checkbox, ToggleButton, Drawer, Snackbar, Tooltip, Popover and Avatar records, plus
+  `CornerRadius` and the `ColorScheme` shadow set, no longer carry literal defaults. A theme must supply
+  every value; a guard test fails the build on any re-introduced literal default. Components render
+  unstyled without a theme by design - the shipped themes are unaffected.
+- **The Select family is now thin shells over the headless core.** `FlareSelect` and `FlareMultiSelect`
+  are UI-only wrappers around `ComboboxState` and friends. Search moved into the trigger field (you type
+  where the value shows, not in a separate box) and the keyboard/ARIA contract was hardened.
+- **The field family shares one `FlareFieldBase` and one visual chrome.** Text, Password, Numeric, Masked,
+  TextArea, DatePicker, TimePicker, DateTimePicker, TagField, Autocomplete, Select and MultiSelect all
+  render the same label/helper/error, input well, and size + disabled/error state classes.
+  `FlareInputControl` was renamed `FlareTextInput`.
+- **Large CSS deduplication.** Shared `flare-input` / `flare-picker` / `flare-listbox` families back all
+  the field and picker components; tabs and linktabs share one pill track; the DataGrid bars, nav icons
+  and modal scrim were consolidated. `FlareButtonGroup` is now theme-agnostic via `ButtonGroupTokens`, the
+  FAB adopts the shared `flare-btn` chrome, and hover state layers follow `--flare-state-hover-opacity`
+  instead of per-component opacities.
+- **Concrete theme names purged from the core** and roughly 100 remaining component literals promoted to
+  themeable tokens, so the values that were previously hardcoded can now be retargeted by a theme.
+- **ASCII-only source mandate completed.** Cyrillic comments were translated to English and stray UTF-8
+  BOMs were stripped across the codebase.
+
+### Fixed
+- **A batch of accessibility and cross-theme bugs.** The `FlareBottomNav` Fluent pill regression,
+  disabled-item keyboard safety, dialog ARIA naming, the layout drawer's modal semantics, and the
+  password-field eye icon were all corrected. `CssAudit` now also reports duplicate token constants.
+
 ## [0.0.10] - 2026-07-04
 
 A quality and hardening release driven by a full component review against Flare's

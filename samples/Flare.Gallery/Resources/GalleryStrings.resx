@@ -2431,13 +2431,29 @@
     <value>Blazor UI · .NET 10 · 116+ components</value>
   </data>
   <data name="About_Intro" xml:space="preserve">
-    <value>Flare is an open-source Blazor component library built with .NET 10.</value>
+    <value>Flare is a theme-agnostic, open-source Blazor component library for .NET 10 - a token-driven engine for building your own design system. Seven production-ready preset design systems ship as independent, optional packages.</value>
   </data>
   <data name="About_WhatsNewV10" xml:space="preserve">
     <value>Fixed: FlareBottomNav no longer shows a Material pill under the Fluent theme, and disabled bottom-nav / link-tab items are now keyboard-safe (not focusable, aria-disabled)
 Fixed: FlareLinkTabs is now a navigation landmark instead of an invalid tablist, and header-less dialogs no longer leave a dangling aria-labelledby
 Fixed: the temporary layout drawer is now a proper modal (focus trap, Escape, aria-modal), plus small correctness fixes to Card hover elevation, Avatar re-render and Password field styling
 Changed: the theme token layer was cleaned up - baked Material values moved onto the shared shape/elevation scales and ~900 dead literal fallbacks were stripped from the component CSS</value>
+  </data>
+  <data name="About_WhatsNewV11" xml:space="preserve">
+    <value>Theme engine rebuilt: MD3 and Fluent UI 2 baselines are now separate token packages, and the core is fully theme-agnostic
+Select and MultiSelect rebuilt on a faster headless core, with in-field search, better accessibility, and uncontrolled use
+Unified field family: text, numeric, date/time, tags, autocomplete, and select share one consistent look and behavior
+Leaner CSS: shared input, picker, and listbox styles cut duplication across the whole library
+About 100 more component styles are now themeable knobs you can override
+Fixed a batch of accessibility and theme bugs across nav, dialogs, drawers, and inputs</value>
+  </data>
+  <data name="About_WhatsNewV12" xml:space="preserve">
+    <value>Simplified the token API to direct --flare-* variables, dropping an extra layer of indirection
+New token audit reports every style variable against the registry and reached fully in sync
+Reconciled every token family to what the CSS actually uses, removing pass-through duplicates
+Added 14 new and extended 13 existing component token families for complete theming coverage
+Extended the motion scale with new short durations for finer animation control
+The theming API is now exhaustive and audit-clean: building your own design system is a first-class task</value>
   </data>
   <data name="About_WhatsNewV9" xml:space="preserve">
     <value>Fixed: FlarePasswordField two-way binding now works - it used to swallow the typed value, so a consumer's @bind-Value never updated (silently breaking login and registration forms)
@@ -2518,7 +2534,7 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
     <value>Components</value>
   </data>
   <data name="About_Themes" xml:space="preserve">
-    <value>Design systems</value>
+    <value>Preset themes</value>
   </data>
 
   <!-- Comparison -->
