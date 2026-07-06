@@ -26,7 +26,7 @@ export function execCommand(editorId, command, value = null) {
         case 'formatBlock': if (value) wrapAsBlock(range, value); break;
         default: break;
     }
-    dotNetRef.invokeMethodAsync('OnContentChanged', entry.el.innerHTML);
+    entry.dotNetRef.invokeMethodAsync('OnContentChanged', entry.el.innerHTML);
 }
 
 export function getContent(editorId) {
