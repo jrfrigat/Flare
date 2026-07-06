@@ -3,7 +3,7 @@
 @implements IFlareField<string>
 @using System.Linq.Expressions
 
-@* Multi-line text field. Composes the shared FlareFieldChrome frame + FlareInputControl in multiline mode
+@* Multi-line text field. Composes the shared FlareFieldChrome frame + FlareTextInput in multiline mode
    (a <textarea>), so it shares the family chrome + input logic and only adds the textarea-specific rows /
    auto-grow / max-lines. *@
 
@@ -17,7 +17,7 @@
                   Style="@Style">
     <Field>
         <div class="@Css.Classes.Input.Field">
-            <FlareInputControl Multiline="true"
+            <FlareTextInput Multiline="true"
                                Value="@Value"
                                ValueChanged="EmitValue"
                                Id="@ControlId"
@@ -91,7 +91,7 @@
         }
     }
 
-    // Debounce/immediate policy lives in FlareInputControl; this just raises the typed callback.
+    // Debounce/immediate policy lives in FlareTextInput; this just raises the typed callback.
     private async Task EmitValue(string? val)
     {
         await ValueChanged.InvokeAsync(val);

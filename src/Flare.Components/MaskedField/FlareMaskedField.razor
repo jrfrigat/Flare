@@ -4,7 +4,7 @@
 @using System.Linq.Expressions
 @using System.Text.RegularExpressions
 
-@* Masked text field. Composes the shared FlareFieldChrome frame + FlareInputControl (immediate mode, so the
+@* Masked text field. Composes the shared FlareFieldChrome frame + FlareTextInput (immediate mode, so the
    mask applies as the user types); only the mask/preset formatting is component-specific. *@
 
 <FlareFieldChrome Variant="Variant" Size="Size"
@@ -16,7 +16,7 @@
                   Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field">
-            <FlareInputControl Value="@_display"
+            <FlareTextInput Value="@_display"
                                ValueChanged="OnInput"
                                Immediate="true"
                                Id="@ControlId"
