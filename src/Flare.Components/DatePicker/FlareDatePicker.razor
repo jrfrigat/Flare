@@ -14,14 +14,14 @@
                   Variant="Variant" Size="Size"
                   Invalid="@_invalid"
                   Disabled="Disabled" ReadOnly="ReadOnly"
-                  Label="@Label" LabelFor="@_inputId"
-                  HelperText="@HelperText" HelperId="@_helperId"
-                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Label="@Label" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@Style">
     <Field>
         <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldEl">
             <input class="@Css.Classes.Input.Control"
-                   id="@_inputId"
+                   id="@ControlId"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="text"
                    value="@_text"
@@ -32,7 +32,7 @@
                    aria-label="@(Label ?? Placeholder)"
                    aria-required="@(Required ? "true" : null)"
                    aria-invalid="@(_invalid ? "true" : null)"
-                   aria-describedby="@_computedDescribedBy"
+                   aria-describedby="@SupportDescribedBy"
                    @onfocus="HandleFocus"
                    @oninput="HandleInput"
                    @onchange="HandleTextChange"
@@ -155,13 +155,6 @@
 
     protected override string ComponentCssClass => Css.Classes.DatePicker.Root;
 
-    private readonly string _inputId = $"flare-datepicker-in-{Guid.NewGuid():N}";
-    private string _helperId => $"{_inputId}-help";
-    private string _errorId => $"{_inputId}-err";
-    private string? _computedDescribedBy =>
-        !string.IsNullOrEmpty(_displayedError) ? _errorId :
-        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
-
     private enum CalendarView { Day, Month, Year }
 
     private bool _open;
@@ -213,10 +206,8 @@
 
     private string MonthLabel => new DateTime(_viewYear, _viewMonth, 1).ToString("MMMM yyyy", _culture);
 
-    private string? _displayedError => DisplayedError(ErrorText);
-
     // Invalid drives the frame's error chrome: explicit HasError or a resolved validation message.
-    private bool _invalid => HasError || !string.IsNullOrEmpty(_displayedError);
+    private bool _invalid => HasError || !string.IsNullOrEmpty(DisplayedErrorText);
 
     protected override void OnInitialized()
     {

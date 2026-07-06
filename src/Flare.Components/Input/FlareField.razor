@@ -16,9 +16,9 @@
                   Invalid="_hasError" Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@_extraClass"
                   FloatingLabel="FloatingLabel"
-                  Label="@Label" LabelFor="@_inputId"
-                  HelperText="@HelperText" HelperId="@_helperId"
-                  ErrorText="@_displayedError" ErrorId="@_errorId"
+                  Label="@Label" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@_inlineStyle">
     <Field>
         <div class="@Css.Classes.Input.Field">
@@ -32,7 +32,7 @@
             }
             <FlareInputControl Value="@_displayText"
                                ValueChanged="EmitValue"
-                               Id="@_inputId"
+                               Id="@ControlId"
                                Placeholder="@Placeholder"
                                Disabled="Disabled"
                                ReadOnly="ReadOnly"
@@ -68,7 +68,7 @@
             }
             @if (FloatingLabel && !string.IsNullOrEmpty(Label))
             {
-                <label class="@Css.Classes.Input.Label @Css.Classes.Input.LabelFloating" for="@_inputId">@Label</label>
+                <label class="@Css.Classes.Input.Label @Css.Classes.Input.LabelFloating" for="@ControlId">@Label</label>
             }
         </div>
     </Field>
@@ -139,19 +139,14 @@
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
 
-    private readonly string _inputId = $"flare-input-{Guid.NewGuid():N}";
-    private string _helperId => $"{_inputId}-help";
-    private string _errorId => $"{_inputId}-err";
-    private string? _describedBy =>
-        !string.IsNullOrEmpty(_displayedError) ? _errorId :
-        !string.IsNullOrEmpty(HelperText) ? _helperId : null;
-
+    // ControlId/HelperId/ErrorId/DisplayedErrorText/SupportDescribedBy are inherited from FlareFieldBase.
+    // FlareField additionally merges the shared describedby target with its own AriaDescribedBy parameter.
     private string? _computedDescribedBy
     {
         get
         {
             var parts = new System.Collections.Generic.List<string>();
-            if (!string.IsNullOrEmpty(_describedBy)) parts.Add(_describedBy);
+            if (!string.IsNullOrEmpty(SupportDescribedBy)) parts.Add(SupportDescribedBy);
             if (!string.IsNullOrEmpty(AriaDescribedBy)) parts.Add(AriaDescribedBy);
             return parts.Count > 0 ? string.Join(' ', parts) : null;
         }
@@ -159,10 +154,8 @@
 
     protected override void OnParametersSet() => UpdateFieldIdentifier(For);
 
-    private string? _displayedError => DisplayedError(ErrorText);
-
     // The error state is on when explicitly toggled (Error/Invalid) or when a message is displayed.
-    private bool _hasError => Error || Invalid || !string.IsNullOrEmpty(_displayedError);
+    private bool _hasError => Error || Invalid || !string.IsNullOrEmpty(DisplayedErrorText);
 
     // Component-specific root modifiers (variant/size/state come from the frame). Floating, adornments,
     // color accent, full-width and margin are FlareField-specific.
