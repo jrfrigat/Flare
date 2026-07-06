@@ -19,11 +19,13 @@
 /* Horizontal group: overlap buttons horizontally by 1px */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
     margin-left: -1px;
+    border-left: 1px solid var(--flare-color-outline-variant, var(--flare-color-outline, color-mix(in srgb, currentColor 30%, transparent)));
 }
 
 /* Vertical group: overlap vertically */
 .flare-btn-group--vertical .flare-btn:not(:first-child) {
     margin-top: -1px;
+    border-top: 1px solid var(--flare-color-outline-variant, var(--flare-color-outline, color-mix(in srgb, currentColor 30%, transparent)));
 }
 
 /* Focus/hover ring above neighbors so an adjacent button does not clip it */
