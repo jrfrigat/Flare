@@ -7,7 +7,7 @@
 @using Microsoft.AspNetCore.Components.Web
 
 @* The canonical single-line text field. Composes the shared FlareFieldChrome frame (root + label +
-   helper/error + counter) and the shared FlareInputControl (the editable element), so the chrome markup
+   helper/error + counter) and the shared FlareTextInput (the editable element), so the chrome markup
    and the input/debounce logic live once for the whole family. This component only owns the typed value
    (string <-> TValue conversion), the adornments/icons/clear that sit inside the well, and the floating
    label. *@
@@ -30,7 +30,7 @@
             {
                 <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconLeading" aria-hidden="true">@LeadingIcon</span>
             }
-            <FlareInputControl Value="@_displayText"
+            <FlareTextInput Value="@_displayText"
                                ValueChanged="EmitValue"
                                Id="@ControlId"
                                Placeholder="@Placeholder"
@@ -224,7 +224,7 @@
     }
 
     // Converts the control's raw string back to TValue (identity for string; TypeConverter otherwise),
-    // then raises the typed callback. Debounce/immediate policy lives in FlareInputControl.
+    // then raises the typed callback. Debounce/immediate policy lives in FlareTextInput.
     private async Task EmitValue(string? raw)
     {
         TValue? converted = default;

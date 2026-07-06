@@ -9,7 +9,7 @@
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The numeric input is complex
    (type=number, min/max/step, focus-swap text mode, clamp-on-change-vs-not-on-input), so it keeps its own
-   control inside the frame's Field slot rather than the shared FlareInputControl. *@
+   control inside the frame's Field slot rather than the shared FlareTextInput. *@
 <FlareFieldChrome Variant="Variant" Size="Size"
                   Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                   Disabled="Disabled" ReadOnly="ReadOnly"

@@ -2,13 +2,17 @@
 @inherits FlareComponentBase
 @using Microsoft.AspNetCore.Components.Web
 
-@* The one shared editable control for the text-input family (FlareField/Password/Masked/Numeric/TextArea
-   and the combobox/tag entry inputs). It renders the bare .flare-input__control element (an <input> or,
-   when Multiline, a <textarea>) inside the field's well, wires the aria/disabled/readonly/required
-   attributes and the Immediate/DebounceInterval oninput-vs-onchange policy, and bubbles the raw string up
-   via ValueChanged. It trafficks in STRINGS only: the parent field owns the typed value and converts to/from
-   this string, so there is no second value channel to keep in sync (the MudBlazor Value/Text echo bug
-   class). Presentational + value-less-typing = never a super-component. *@
+@* FlareTextInput -- the shared editable text element reused by the SIMPLE string fields: FlareField (and
+   FlareTextField / FlarePasswordField via it), FlareMaskedField and FlareTextArea. It renders the bare
+   .flare-input__control element (an <input> or, when Multiline, a <textarea>) inside the field's well, wires
+   the aria/disabled/readonly/required attributes and the Immediate/DebounceInterval oninput-vs-onchange
+   policy, and bubbles the raw string up via ValueChanged. It trafficks in STRINGS only, on ONE value channel:
+   the parent field owns the typed value and converts to/from this string, so there is no second value channel
+   to keep in sync (the MudBlazor Value/Text echo-bug class).
+   Fields whose input needs MORE than a single string channel deliberately render their own <input> inside the
+   same frame instead of using this: FlareNumericField (type=number + min/max/step + clamp-on-change-not-input)
+   and the date/time pickers (focus-swap + distinct mask-on-input vs parse-on-change).
+   Presentational + value-less-typing = never a super-component. *@
 
 @if (Multiline)
 {
