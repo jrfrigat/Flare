@@ -71,8 +71,16 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment-retry.outputs.page_url }}
     steps:
+      # GitHub Pages occasionally fails a deploy at "syncing_files" with a transient
+      # "Deployment failed, try again later"; retry once so a single backend blip
+      # does not fail the run (the built artifact is reused).
       - name: Deploy
         id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Deploy (retry after a transient Pages sync failure)
+        id: deployment-retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v5
