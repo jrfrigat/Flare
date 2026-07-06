@@ -20,21 +20,10 @@
     /* 2. Remove the -1px overlap and the seam border of connected mode */
     .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
         margin-left: 0;
-        border-left-color: transparent;
     }
 
     .flare-btn-group--vertical .flare-btn:not(:first-child) {
         margin-top: 0;
-        border-top-color: transparent;
-    }
-
-    /* Outlined keeps its own border at the joint (comes after the common reset) */
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn--outlined:not(:first-child) {
-        border-left-color: var(--flare-color-outline);
-    }
-
-    .flare-btn-group--vertical .flare-btn--outlined:not(:first-child) {
-        border-top-color: var(--flare-color-outline);
     }
 
     /* 3. Inner corners of ALL segments - small rounding (instead of flat 0) */

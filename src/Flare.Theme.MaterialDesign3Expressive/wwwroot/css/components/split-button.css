@@ -8,9 +8,11 @@
     transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard);
 }
 
-/* Give the trigger a base radius transition so the theme override animates smoothly */
+/* Snappy inner-corner morph on open/hover. The old 300ms (medium2) made the corner visibly "hang"
+   behind the click; the main button + button group morph their corners instantly, so keep the trigger
+   quick (short2 ~100ms) - a perceptible Expressive morph, not a lag. */
 .flare-split-btn .flare-split-btn__trigger.flare-btn {
-    transition: border-radius var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
+    transition: border-radius var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-standard), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
 }
 
 /* ==========================================================================
@@ -19,6 +21,29 @@
    lower boundary cuts the cascade at any nested .flare-root that is NOT md3-expressive.
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
+
+    /* Rest geometry: OUTER end = a full capsule from the ACTUAL height, INNER (seam) corner = shape-small
+       (~8dp), matching the connected button group so the two read as one shape system.
+
+       CRITICAL: the outer end must be calc(height/2), NOT the button's 9999px pill token. When a ~9999px
+       radius shares an edge with the small 8dp inner corner, the browser scales BOTH radii down
+       proportionally (side / sum-of-radii is tiny), crushing the 8dp corner to ~0 -- so the gap edge
+       renders SQUARE even though getComputedStyle still reports 8px. Using calc(height/2) keeps the
+       per-edge radius sum sane (24 + 8 = 32px < button width), so the 8dp seam corner actually paints.
+       The button group already does this (calc height/2 outer), which is why its 8dp inner renders fine.
+       Same specificity as the base radius rules, but this theme sheet loads later. */
+    .flare-split-btn .flare-split-btn__main.flare-btn {
+        border-top-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-bottom-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-top-right-radius: var(--flare-shape-small) !important;
+        border-bottom-right-radius: var(--flare-shape-small) !important;
+    }
+    .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn {
+        border-top-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-bottom-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-top-left-radius: var(--flare-shape-small) !important;
+        border-bottom-left-radius: var(--flare-shape-small) !important;
+    }
 
     /* When the menu is open the trigger becomes fully round: ALL 4 corners = height / 2,
        so the left rounding matches the right. Radius is taken from the ACTUAL height
@@ -29,27 +54,23 @@
     }
 
     /* ======================================================================
-       MORPHING OF THE INNER (SEAM) CORNERS ON HOVER/PRESSED [specs section 2]
-       The inner corner of the active half GROWS on hover/press (per size).
-       The value is set on the container (--_split-inner-hover) and inherited by the halves.
+       HOVER/PRESS MORPH: the hovered half rounds into a FULL capsule -- its inner (seam) corner grows
+       to height/2, so the whole half becomes a pill (the outer end is already circular). This mirrors the
+       connected button group's segment morph, so the two components behave identically. Radius comes from
+       the ACTUAL height (--_flare-btn-height set by the size class), so one rule covers xs..xl. The 8dp
+       rest -> full-capsule jump is a clearly visible morph (the previous 8->12dp step read as "no change").
+       (0,4,0) beats the scoped rest radius (0,3,0).
        ====================================================================== */
-    .flare-split-btn--xs { --_split-inner-hover: 0.5rem; }   /* 8dp */
-    .flare-split-btn--sm { --_split-inner-hover: 0.75rem; }  /* 12dp */
-    .flare-split-btn--md { --_split-inner-hover: 0.75rem; }  /* 12dp */
-    .flare-split-btn--lg { --_split-inner-hover: 1.25rem; }  /* 20dp */
-    .flare-split-btn--xl { --_split-inner-hover: 1.25rem; }  /* 20dp */
-
-    /* Main: inner RIGHT corners (seam) grow. (0,5,0) beats the scoped radius (0,4,0). */
     .flare-split-btn .flare-split-btn__main.flare-btn:hover,
     .flare-split-btn .flare-split-btn__main.flare-btn:active {
-        border-top-right-radius: var(--_split-inner-hover, 0.75rem) !important;
-        border-bottom-right-radius: var(--_split-inner-hover, 0.75rem) !important;
+        border-top-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-bottom-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
-    /* Trigger: inner LEFT corners grow (except the open state - full circle there). */
+    /* Trigger: inner LEFT grows to the full capsule (except the open state - already a full circle). */
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:hover,
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:active {
-        border-top-left-radius: var(--_split-inner-hover, 0.75rem) !important;
-        border-bottom-left-radius: var(--_split-inner-hover, 0.75rem) !important;
+        border-top-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+        border-bottom-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 }
