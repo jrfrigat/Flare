@@ -20,27 +20,10 @@
     /* 2. Remove the -1px overlap and the seam border of connected mode */
     .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
         margin-left: 0;
-        /* REMOVE the connected-mode seam border (width 0), don't just hide it with a transparent color:
-           a 1px transparent border still occupies 1px of the border-box, so a filled/tonal segment's fill
-           starts 1px in on the left -> an asymmetric, faux-3d left edge. Width 0 = truly no border. */
-        border-left-width: 0;
     }
 
     .flare-btn-group--vertical .flare-btn:not(:first-child) {
         margin-top: 0;
-        border-top-width: 0;
-    }
-
-    /* Outlined segments are standalone pills in separated mode -> restore their OWN full outline (the
-       general reset above zeroed the left/top edge, so put a real 1px outline border back). */
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn--outlined:not(:first-child) {
-        border-left-width: 1px;
-        border-left-color: var(--flare-color-outline);
-    }
-
-    .flare-btn-group--vertical .flare-btn--outlined:not(:first-child) {
-        border-top-width: 1px;
-        border-top-color: var(--flare-color-outline);
     }
 
     /* 3. Inner corners of ALL segments - small rounding (instead of flat 0) */
