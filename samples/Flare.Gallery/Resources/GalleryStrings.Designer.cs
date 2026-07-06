@@ -186,6 +186,18 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Slider gains mouse-wheel control: hover and scroll to change the value (Ctrl+wheel moves the range&apos;s upper handle)
+        ///SignaturePad stroke color is now a theme-aware FlareColor - a semantic role, a custom color, or a dynamic one
+        ///Fixed: MaskedField dropped the first character on masks that start with a literal (e.g. a phone &quot;+&quot;)
+        ///Fixed: RichTextEditor toolbar buttons threw an error and applied no formatting.
+        /// </summary>
+        public static string About_WhatsNewV13 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Clean onion / ports-and-adapters architecture: 5 rings (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) with dependencies pointing strictly inward
         ///Flare.Components is now UI-only - every service implementation (JS interop, storage, dialog/snackbar/message-box) moved to Flare.Infrastructure; the old Flare.Core grab-bag was retired
         ///AddFlare wires ports to adapters in the Flare.Blazor composition root, so the browser host stays swappable and Flare.Components never dep [остаток строки не уместился]&quot;;.
@@ -7236,7 +7248,7 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Slider_Init", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Labeled marks.
         /// </summary>

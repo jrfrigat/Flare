@@ -3,6 +3,36 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] - 2026-07-06
+
+A small follow-up release: mouse-wheel control on the Slider, a theme-aware SignaturePad stroke color, and
+two component bug fixes.
+
+### Added
+- **`FlareSlider.MouseWheel`** - opt-in mouse-wheel control. When enabled, hovering the slider and turning
+  the wheel moves `Value` by one `Step` (scroll up increases, down decreases) and page scrolling is
+  suppressed over the track. In range mode a plain wheel moves the low handle (`Value`) and `Ctrl`+wheel
+  moves the high handle (`ValueEnd`); neither handle can cross the other. New Gallery demo (EN + RU).
+
+### Changed
+- **`FlareSignaturePad.StrokeColor` is now a `FlareColor`** (was a raw CSS string). It accepts a semantic
+  role (`FlareColor.Primary`), a custom color (`FlareColor.Custom("#e53935")` or the implicit string
+  conversion) or a dynamic color, and defaults to `FlareColor.OnSurface`. Because a `<canvas>` cannot
+  resolve CSS variables, the color is now resolved against the live theme before it is applied as the
+  stroke style - so a role/token-based stroke actually renders (the previous `var(--flare-*)` default was
+  passed straight to the canvas and silently fell back to black). The basic Gallery demo now strokes in the
+  primary color.
+
+### Fixed
+- **`FlareMaskedField` no longer drops the first character on a mask that starts with a literal.** With a
+  mask like `+# (###) ###-##-##` or `(###) ###-####`, the leading literal (`+`, `(`) meant the first typed
+  digit was discarded and nothing appeared; the leading literal is now auto-filled, so typing `7` renders
+  `+7 (`.
+- **`FlareRichTextEditor` toolbar buttons work again.** Every toolbar command threw
+  `ReferenceError: dotNetRef is not defined` (an out-of-scope reference in `execCommand`) and applied no
+  formatting; it now uses the per-editor .NET reference, so bold/italic/lists/headings/links apply and the
+  content change is reported back.
+
 ## [0.1.0] - 2026-07-06
 
 Flare's theming API reaches completeness with this release: every value the component CSS reads is now a
