@@ -1824,6 +1824,24 @@
   <data name="Color_RolesTitle" xml:space="preserve">
     <value>Semantic roles</value>
   </data>
+  <data name="Color_TextTonesTitle" xml:space="preserve">
+    <value>Text tones</value>
+  </data>
+  <data name="Color_TextTonesDesc" xml:space="preserve">
+    <value>Three neutral on-surface tones for a primary / secondary / tertiary text hierarchy. The third tone (on-surface-variant2) is fainter than on-surface-variant.</value>
+  </data>
+  <data name="Color_TextToneOnSurface" xml:space="preserve">
+    <value>On surface - primary text</value>
+  </data>
+  <data name="Color_TextToneVariant" xml:space="preserve">
+    <value>On surface variant - secondary text</value>
+  </data>
+  <data name="Color_TextToneVariant2" xml:space="preserve">
+    <value>On surface variant 2 - faint tertiary text</value>
+  </data>
+  <data name="Dialog_Sheet" xml:space="preserve">
+    <value>Bottom sheet</value>
+  </data>
   <data name="Color_RolesDesc" xml:space="preserve">
     <value>Every color-aware component takes a single Color parameter of type FlareColor. A semantic role renders via a shared, cached CSS class and stays theme-aware in both Material Design 3 and Fluent UI 2.</value>
   </data>

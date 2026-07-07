@@ -71,3 +71,9 @@
     --fc-container: var(--flare-color-surface-variant);
     --fc-on-container: var(--flare-color-on-surface-variant);
 }
+.flare-color-on-surface-variant2 {
+    --fc-main: var(--flare-color-on-surface-variant2);
+    --fc-on: var(--flare-color-surface);
+    --fc-container: var(--flare-color-surface-variant);
+    --fc-on-container: var(--flare-color-on-surface-variant2);
+}

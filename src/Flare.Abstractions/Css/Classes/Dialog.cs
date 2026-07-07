@@ -37,4 +37,10 @@ public static class Dialog
     public const string HeaderCentered = "flare-dialog__header--centered";
     /// <summary>The <c>flare-dialog__icon</c> CSS class.</summary>
     public const string Icon = "flare-dialog__icon";
+    /// <summary>The <c>flare-dialog--bottom</c> CSS class: bottom-sheet panel position.</summary>
+    public const string PositionBottom = "flare-dialog--bottom";
+    /// <summary>The <c>flare-dialog-scrim--bottom</c> CSS class: bottom-aligned scrim for a sheet.</summary>
+    public const string ScrimBottom = "flare-dialog-scrim--bottom";
+    /// <summary>The <c>flare-dialog__grabber</c> CSS class: the sheet drag-grabber handle.</summary>
+    public const string Grabber = "flare-dialog__grabber";
 }

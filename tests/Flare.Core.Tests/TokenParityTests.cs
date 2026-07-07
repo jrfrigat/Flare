@@ -225,6 +225,7 @@ public class TokenParityTests
             OnSurface = "#1C1B1F",
             SurfaceVariant = "#E7E0EC",
             OnSurfaceVariant = "#49454F",
+            OnSurfaceVariant2 = "#615D67",
             SurfaceContainer = "#F3EDF7",
             SurfaceContainerLow = "#F7F2FA",
             SurfaceContainerHigh = "#ECE6F0",

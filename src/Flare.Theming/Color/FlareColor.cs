@@ -45,6 +45,8 @@ public enum FlareColorRole
     OnSurface,
     /// <summary>On-surface-variant color - muted/secondary text and icons on surfaces.</summary>
     OnSurfaceVariant,
+    /// <summary>On-surface-variant-2 color - fainter tertiary text (footnotes, counts, captions).</summary>
+    OnSurfaceVariant2,
 }
 
 /// <summary>
@@ -107,6 +109,8 @@ public readonly record struct FlareColor
     public static FlareColor OnSurface => new(FlareColorRole.OnSurface);
     /// <summary>On-surface-variant (muted/secondary content) color.</summary>
     public static FlareColor OnSurfaceVariant => new(FlareColorRole.OnSurfaceVariant);
+    /// <summary>On-surface-variant-2 (fainter tertiary content) color.</summary>
+    public static FlareColor OnSurfaceVariant2 => new(FlareColorRole.OnSurfaceVariant2);
 
     /// <summary>
     /// Creates a color from an arbitrary CSS value (e.g. <c>#FF0000</c>, <c>rgb(...)</c>) or a Flare
@@ -297,6 +301,7 @@ public readonly record struct FlareColor
         FlareColorRole.Info => "info",
         FlareColorRole.OnSurface => "on-surface",
         FlareColorRole.OnSurfaceVariant => "on-surface-variant",
+        FlareColorRole.OnSurfaceVariant2 => "on-surface-variant2",
         _ => "primary",
     };
 
@@ -318,6 +323,7 @@ public readonly record struct FlareColor
             "info" => FlareColorRole.Info,
             "on-surface" => FlareColorRole.OnSurface,
             "on-surface-variant" => FlareColorRole.OnSurfaceVariant,
+            "on-surface-variant2" => FlareColorRole.OnSurfaceVariant2,
             _ => FlareColorRole.Default,
         };
         return role != FlareColorRole.Default;

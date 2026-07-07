@@ -15,6 +15,7 @@
     <FlareStack Gap="FlareSpacing.Medium">
         <FlareStack Row Wrap Gap="FlareSpacing.Small">
             <FlareButton OnClick="ShowComponentDialog">@GalleryStrings.Dialog_Component</FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="ShowBottomSheet">@GalleryStrings.Dialog_Sheet</FlareButton>
             <FlareButton Variant="ButtonVariant.Tonal" OnClick="ConfirmAsync">@GalleryStrings.Services_Confirm</FlareButton>
             <FlareButton Variant="ButtonVariant.Outlined" OnClick="AlertAsync">@GalleryStrings.Services_Alert</FlareButton>
         </FlareStack>
@@ -45,6 +46,9 @@
                 var result = await Dialog.ShowAsync<PersonEditDialog>(
                     "Edit profile", parameters, new DialogOptions { Size = DialogSize.Sm });
 
+                // Same contract, presented as a slide-up bottom sheet (rounded top, grabber):
+                // var result = await Dialog.ShowSheetAsync<PersonEditDialog>("Edit profile", parameters);
+
                 if (!result.Cancelled && result.GetData<PersonEditDialog.Profile>() is { } edited)
                     Apply(edited); // edited.Name / edited.Email
             }
@@ -62,6 +66,29 @@
             .Add(nameof(PersonEditDialog.Email), "ada@example.com");
 
         var result = await Dialog.ShowAsync<PersonEditDialog>(
+            GalleryStrings.Dialog_EditProfile, parameters, new DialogOptions { Size = DialogSize.Sm });
+
+        if (result.Cancelled)
+        {
+            _result = GalleryStrings.Dialog_Cancelled;
+            return;
+        }
+
+        if (result.GetData<PersonEditDialog.Profile>() is { } profile)
+        {
+            _result = $"{profile.Name} ({profile.Email})";
+            Snackbar.Show(string.Format(GalleryStrings.Dialog_ProfileSaved, profile.Name), SnackbarSeverity.Success);
+        }
+    }
+
+    private async Task ShowBottomSheet()
+    {
+        var parameters = new DialogParameters()
+            .Add(nameof(PersonEditDialog.Name), "Ada Lovelace")
+            .Add(nameof(PersonEditDialog.Email), "ada@example.com");
+
+        // Same typed-parameter + result contract as ShowAsync, presented as a slide-up bottom sheet.
+        var result = await Dialog.ShowSheetAsync<PersonEditDialog>(
             GalleryStrings.Dialog_EditProfile, parameters, new DialogOptions { Size = DialogSize.Sm });
 
         if (result.Cancelled)

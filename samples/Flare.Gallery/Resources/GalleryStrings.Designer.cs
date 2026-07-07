@@ -2066,6 +2066,51 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на On surface - primary text.
+        /// </summary>
+        public static string Color_TextToneOnSurface {
+            get {
+                return ResourceManager.GetString("Color_TextToneOnSurface", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Three neutral on-surface tones for a primary / secondary / tertiary text hierarchy. The third tone (on-surface-variant2) is fainter than on-surface-variant..
+        /// </summary>
+        public static string Color_TextTonesDesc {
+            get {
+                return ResourceManager.GetString("Color_TextTonesDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Text tones.
+        /// </summary>
+        public static string Color_TextTonesTitle {
+            get {
+                return ResourceManager.GetString("Color_TextTonesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на On surface variant - secondary text.
+        /// </summary>
+        public static string Color_TextToneVariant {
+            get {
+                return ResourceManager.GetString("Color_TextToneVariant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на On surface variant 2 - faint tertiary text.
+        /// </summary>
+        public static string Color_TextToneVariant2 {
+            get {
+                return ResourceManager.GetString("Color_TextToneVariant2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Color.
         /// </summary>
         public static string Color_Title {
@@ -3169,6 +3214,15 @@ namespace Flare.Gallery.Resources {
         public static string Dialog_Save {
             get {
                 return ResourceManager.GetString("Dialog_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bottom sheet.
+        /// </summary>
+        public static string Dialog_Sheet {
+            get {
+                return ResourceManager.GetString("Dialog_Sheet", resourceCulture);
             }
         }
         

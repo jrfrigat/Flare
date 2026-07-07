@@ -79,6 +79,7 @@ public class ThemeCompositionTests
         OnSurface = "#000",
         SurfaceVariant = "#EEE",
         OnSurfaceVariant = "#333",
+        OnSurfaceVariant2 = "#444",
         SurfaceContainer = "#EEE",
         SurfaceContainerLow = "#F5F5F5",
         SurfaceContainerHigh = "#DDD",

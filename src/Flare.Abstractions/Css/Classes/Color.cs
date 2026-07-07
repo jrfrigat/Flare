@@ -33,6 +33,8 @@ public static class Color
     public const string OnSurface = "flare-color-on-surface";
     /// <summary>The <c>flare-color-on-surface-variant</c> CSS class.</summary>
     public const string OnSurfaceVariant = "flare-color-on-surface-variant";
+    /// <summary>The <c>flare-color-on-surface-variant2</c> CSS class (fainter tertiary text tone).</summary>
+    public const string OnSurfaceVariant2 = "flare-color-on-surface-variant2";
     /// <summary>The <c>flare-color-primary</c> CSS class.</summary>
     public const string Primary = "flare-color-primary";
     /// <summary>The <c>flare-color-secondary</c> CSS class.</summary>

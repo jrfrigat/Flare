@@ -1824,6 +1824,24 @@
   <data name="Color_RolesTitle" xml:space="preserve">
     <value>Семантические роли</value>
   </data>
+  <data name="Color_TextTonesTitle" xml:space="preserve">
+    <value>Тоны текста</value>
+  </data>
+  <data name="Color_TextTonesDesc" xml:space="preserve">
+    <value>Три нейтральных тона поверх поверхности для иерархии текста: основной / вторичный / третичный. Третий тон (on-surface-variant2) тусклее, чем on-surface-variant.</value>
+  </data>
+  <data name="Color_TextToneOnSurface" xml:space="preserve">
+    <value>On surface - основной текст</value>
+  </data>
+  <data name="Color_TextToneVariant" xml:space="preserve">
+    <value>On surface variant - вторичный текст</value>
+  </data>
+  <data name="Color_TextToneVariant2" xml:space="preserve">
+    <value>On surface variant 2 - тусклый третичный текст</value>
+  </data>
+  <data name="Dialog_Sheet" xml:space="preserve">
+    <value>Нижний лист</value>
+  </data>
   <data name="Color_RolesDesc" xml:space="preserve">
     <value>Каждый компонент с цветом принимает один параметр Color типа FlareColor. Семантическая роль рендерится через общий кэшируемый CSS-класс и остаётся тема-зависимой в Material Design 3 и Fluent UI 2.</value>
   </data>

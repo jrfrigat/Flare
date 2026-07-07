@@ -791,6 +791,7 @@ public static class CssVarMap
             [Css.Tokens.Color.OnSurface] = c.OnSurface,
             [Css.Tokens.Color.SurfaceVariant] = c.SurfaceVariant,
             [Css.Tokens.Color.OnSurfaceVariant] = c.OnSurfaceVariant,
+            [Css.Tokens.Color.OnSurfaceVariant2] = c.OnSurfaceVariant2,
             [Css.Tokens.Color.SurfaceContainer] = c.SurfaceContainer,
             [Css.Tokens.Color.SurfaceContainerLow] = c.SurfaceContainerLow,
             [Css.Tokens.Color.SurfaceContainerHigh] = c.SurfaceContainerHigh,

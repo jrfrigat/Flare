@@ -10,6 +10,31 @@ public sealed class DialogOptions
     public DialogSize Size { get; set; } = DialogSize.Md;
 
     /// <summary>
+    /// Where the dialog is anchored. Defaults to <see cref="DialogPosition.Center"/>.
+    /// Use <see cref="DialogPosition.Bottom"/> (or the <see cref="IDialogService.ShowSheetAsync{TComponent}"/>
+    /// helper) to present the dialog as a slide-up bottom sheet.
+    /// </summary>
+    public DialogPosition Position { get; set; } = DialogPosition.Center;
+
+    /// <summary>
+    /// Shows a drag-grabber handle at the top of the panel. Meaningful for
+    /// <see cref="DialogPosition.Bottom"/> sheets; ignored for centered dialogs. Default
+    /// <see langword="false"/> (the <see cref="IDialogService.ShowSheetAsync{TComponent}"/> helper turns it on).
+    /// </summary>
+    public bool ShowGrabber { get; set; }
+
+    /// <summary>
+    /// Extra CSS class(es) applied to the dialog panel, so an app can skin a specific dialog
+    /// (e.g. a glass surface or a bespoke sheet) without hand-writing global CSS. Null for none.
+    /// </summary>
+    public string? PanelClass { get; set; }
+
+    /// <summary>
+    /// Extra CSS class(es) applied to the dialog scrim/backdrop. Null for none.
+    /// </summary>
+    public string? ScrimClass { get; set; }
+
+    /// <summary>
     /// Accessible name applied (as <c>aria-label</c>) when the dialog has no title. Set this for
     /// header-less component dialogs so the modal is not left without an accessible name.
     /// </summary>

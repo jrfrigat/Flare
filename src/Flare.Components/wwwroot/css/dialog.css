@@ -93,3 +93,46 @@
         align-items: flex-end;
     }
 }
+
+/* ---------------------------------------------------------------------------
+   Bottom-sheet position (DialogPosition.Bottom / IDialogService.ShowSheetAsync).
+   Anchored to the bottom edge, rounded top corners only, slide-up entrance and
+   safe-area padding. Rules come after the small-screen block so the top-only
+   radius wins there too. On wide viewports the Size max-width keeps it a
+   centered bottom card; on mobile the existing rules make it full-width.
+   --------------------------------------------------------------------------- */
+.flare-dialog-scrim--bottom {
+    align-items: flex-end;
+}
+
+.flare-dialog--bottom {
+    width: 100%;
+    border-start-start-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    border-start-end-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    animation: flare-dialog-sheet-in
+        var(--flare-motion-duration-medium2)
+        var(--flare-motion-easing-emphasized);
+}
+
+/* The sheet drag-grabber handle. */
+.flare-dialog__grabber {
+    flex: none;
+    width: 2rem;
+    height: 0.25rem;
+    margin: var(--flare-spacing-6) auto 0;
+    border-radius: var(--flare-shape-full);
+    background: var(--flare-color-on-surface-variant);
+    opacity: 0.4;
+}
+
+@keyframes flare-dialog-sheet-in {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flare-dialog--bottom { animation: none; }
+}

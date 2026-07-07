@@ -74,6 +74,8 @@ public static class Color
     public const string SurfaceVariant = "--flare-color-surface-variant";
     /// <summary>CSS custom-property name <c>--flare-color-on-surface-variant</c>.</summary>
     public const string OnSurfaceVariant = "--flare-color-on-surface-variant";
+    /// <summary>CSS custom-property name <c>--flare-color-on-surface-variant2</c> (fainter tertiary text tone).</summary>
+    public const string OnSurfaceVariant2 = "--flare-color-on-surface-variant2";
     /// <summary>CSS custom-property name <c>--flare-color-surface-container</c>.</summary>
     public const string SurfaceContainer = "--flare-color-surface-container";
     /// <summary>CSS custom-property name <c>--flare-color-surface-container-low</c>.</summary>

@@ -5,14 +5,18 @@
 
 @if (Visible)
 {
-    <div class="@Css.Classes.Dialog.Scrim" @onclick="HandleScrimClick">
-        <div class="@BuildCssClass(_sizeClass)" style="@Style" @onclick:stopPropagation="true"
+    <div class="@_scrimClass" @onclick="HandleScrimClick">
+        <div class="@BuildCssClass(_sizeClass, _positionClass, PanelClass)" style="@Style" @onclick:stopPropagation="true"
              @attributes="AdditionalAttributes"
              role="dialog" aria-modal="true"
              aria-labelledby="@(string.IsNullOrEmpty(Title) ? null : _titleId)"
              aria-label="@(string.IsNullOrEmpty(Title) ? AriaLabel : null)"
              aria-describedby="@_contentId"
              @ref="_dialogEl">
+            @if (ShowGrabber && Position == DialogPosition.Bottom)
+            {
+                <div class="@Css.Classes.Dialog.Grabber" aria-hidden="true"></div>
+            }
             @if (Icon is not null)
             {
                 <div class="@Css.Classes.Dialog.Icon" aria-hidden="true">@Icon</div>
@@ -64,8 +68,26 @@
     [Parameter] public bool CloseOnEsc { get; set; } = true;
     /// <summary>Maximum width of the dialog.</summary>
     [Parameter] public DialogSize Size { get; set; } = DialogSize.Md;
+    /// <summary>Where the dialog is anchored. <see cref="DialogPosition.Bottom"/> renders a slide-up bottom sheet.</summary>
+    [Parameter] public DialogPosition Position { get; set; } = DialogPosition.Center;
+    /// <summary>Shows a drag-grabber handle at the top (only for <see cref="DialogPosition.Bottom"/> sheets).</summary>
+    [Parameter] public bool ShowGrabber { get; set; }
+    /// <summary>Extra CSS class(es) applied to the dialog panel.</summary>
+    [Parameter] public string? PanelClass { get; set; }
+    /// <summary>Extra CSS class(es) applied to the scrim/backdrop.</summary>
+    [Parameter] public string? ScrimClass { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Dialog.Root;
+
+    private string _positionClass => Position == DialogPosition.Bottom ? Css.Classes.Dialog.PositionBottom : string.Empty;
+
+    // Scrim = base + (bottom-aligned when a sheet) + any caller scrim class.
+    private string _scrimClass => string.Join(' ', new[]
+    {
+        Css.Classes.Dialog.Scrim,
+        Position == DialogPosition.Bottom ? Css.Classes.Dialog.ScrimBottom : null,
+        ScrimClass,
+    }.Where(c => !string.IsNullOrEmpty(c)));
 
     private readonly string _id = Guid.NewGuid().ToString("N")[..8];
     private string _titleId   => $"flare-dialog-title-{_id}";

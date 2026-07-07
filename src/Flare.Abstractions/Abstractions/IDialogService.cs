@@ -61,6 +61,25 @@ public interface IDialogService
         DialogParameters? parameters = null, DialogOptions? options = null)
         where TComponent : IComponent;
 
+    /// <summary>
+    /// Opens <typeparamref name="TComponent"/> as a slide-up <b>bottom sheet</b> and awaits its result.
+    /// Identical to <see cref="ShowAsync{TComponent}"/> in every respect (typed parameters, cascaded
+    /// <see cref="FlareDialogInstance"/>, <see cref="DialogResult"/> return) except the presentation:
+    /// the panel is anchored to the bottom edge with rounded top corners, a slide-up transition and a
+    /// drag-grabber handle. Any supplied <paramref name="options"/> are honoured, but
+    /// <see cref="DialogOptions.Position"/> is forced to <see cref="DialogPosition.Bottom"/> and the
+    /// grabber is enabled. For a grabber-less sheet, call <see cref="ShowAsync{TComponent}"/> with
+    /// <see cref="DialogOptions.Position"/> set to <see cref="DialogPosition.Bottom"/>.
+    /// </summary>
+    /// <typeparam name="TComponent">The Blazor component rendered as the sheet body.</typeparam>
+    /// <param name="title">The sheet title, or null for a header-less sheet.</param>
+    /// <param name="parameters">Values bound to the body component's parameters, or null for none.</param>
+    /// <param name="options">Presentation options, or null for a default bottom sheet.</param>
+    /// <returns>The <see cref="DialogResult"/> produced when the sheet closes.</returns>
+    Task<DialogResult> ShowSheetAsync<TComponent>(string? title = null,
+        DialogParameters? parameters = null, DialogOptions? options = null)
+        where TComponent : IComponent;
+
     // Provider communication
     /// <summary>Raised when the pending request changes, so the host component can re-render.</summary>
     event Action? OnStateChanged;

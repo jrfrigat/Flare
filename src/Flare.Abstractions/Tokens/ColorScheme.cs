@@ -72,6 +72,13 @@ public sealed record ColorScheme
     public required string SurfaceVariant { get; init; }
     /// <summary>On surface variant color role.</summary>
     public required string OnSurfaceVariant { get; init; }
+    /// <summary>
+    /// A second, fainter on-surface text tone below <see cref="OnSurfaceVariant"/> - a lower-emphasis
+    /// alternative for tertiary content such as footnotes, item counts and captions. Extends the
+    /// two-tier on-surface text ramp (on-surface -> on-surface-variant) with a third neutral step;
+    /// a future <c>OnSurfaceVariant3</c> would add a fourth.
+    /// </summary>
+    public required string OnSurfaceVariant2 { get; init; }
     /// <summary>Surface container color role.</summary>
     public required string SurfaceContainer { get; init; }
     /// <summary>Surface container low color role.</summary>

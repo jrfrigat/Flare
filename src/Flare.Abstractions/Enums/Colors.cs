@@ -74,6 +74,8 @@ public static class Colors
     public static string SurfaceVariant => Css.Tokens.Vars.Var(Css.Tokens.Color.SurfaceVariant);
     /// <summary>On surface variant color accessor.</summary>
     public static string OnSurfaceVariant => Css.Tokens.Vars.Var(Css.Tokens.Color.OnSurfaceVariant);
+    /// <summary>On surface variant 2 (fainter tertiary text tone) color accessor.</summary>
+    public static string OnSurfaceVariant2 => Css.Tokens.Vars.Var(Css.Tokens.Color.OnSurfaceVariant2);
 
     /// <summary>Background color accessor.</summary>
     public static string Background => Css.Tokens.Vars.Var(Css.Tokens.Color.Background);

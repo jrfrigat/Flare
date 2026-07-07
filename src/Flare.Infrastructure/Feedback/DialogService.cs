@@ -60,6 +60,31 @@ public sealed class DialogService : IDialogService
         return new DialogReference(instance);
     }
 
+    /// <summary>Opens a component dialog presented as a bottom sheet and awaits its result.</summary>
+    public Task<DialogResult> ShowSheetAsync<TComponent>(string? title = null,
+        DialogParameters? parameters = null, DialogOptions? options = null)
+        where TComponent : IComponent
+    {
+        // Copy the caller's options (never mutate a shared/Default instance) and force the sheet
+        // presentation with a grabber. For a grabber-less sheet, call ShowAsync with
+        // Position = Bottom and ShowGrabber = false instead.
+        var sheet = options is null
+            ? new DialogOptions { Position = DialogPosition.Bottom, ShowGrabber = true }
+            : new DialogOptions
+            {
+                Size = options.Size,
+                AriaLabel = options.AriaLabel,
+                CloseOnScrimClick = options.CloseOnScrimClick,
+                CloseOnEsc = options.CloseOnEsc,
+                Divider = options.Divider,
+                PanelClass = options.PanelClass,
+                ScrimClass = options.ScrimClass,
+                ShowGrabber = true,
+                Position = DialogPosition.Bottom,
+            };
+        return ShowAsync<TComponent>(title, parameters, sheet);
+    }
+
     // Called by a FlareDialogInstance when it closes (button, scrim, Escape, or programmatic close).
     private void Remove(FlareDialogInstance instance)
     {
