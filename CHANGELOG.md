@@ -3,6 +3,30 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- **Bottom-sheet dialogs.** `DialogOptions.Position` (`Center`/`Bottom`), `DialogOptions.ShowGrabber`,
+  and `IDialogService.ShowSheetAsync<T>` present the same imperative component-dialog contract (typed
+  parameters + cascaded `FlareDialogInstance` + `DialogResult`) as a slide-up bottom sheet: full-width,
+  rounded top corners, grabber handle, safe-area padding. New `DialogOptions.PanelClass`/`ScrimClass`
+  also let an app skin a specific dialog (e.g. glass) without global CSS. New Gallery demo (EN + RU).
+- **`ColorScheme.OnSurfaceVariant2`** - a third, fainter neutral on-surface text tone below
+  `on-surface-variant` for tertiary text (footnotes, counts, captions). Exposed as
+  `FlareColor.OnSurfaceVariant2`, `Colors.OnSurfaceVariant2`, the `--flare-color-on-surface-variant2`
+  variable and the `.flare-color-on-surface-variant2` utility. The `2` suffix leaves room for a future
+  `OnSurfaceVariant3`. All in-box themes and the MD3/Fluent reference packages supply a value.
+
+### Changed
+- **Flare no longer draws a loading splash; each app owns its own** (background + animation).
+  `flare-bootstrap.js` now only applies the saved theme/palette/mode classes to `<html>` before first
+  paint and fires a readiness signal - `window.hideFlareSplash()` dispatches a `flare:ready` event and
+  fades out the app's own splash element if it is tagged `id="flare-splash"` / `[data-flare-splash]`.
+  The built-in spinner, theme-colored backdrop and the `data-splash-light`/`data-splash-dark`
+  attributes are removed (`data-splash-timeout` is kept, also readable as `data-ready-timeout`). Apps
+  that relied on the built-in splash should add their own to `index.html` (see the getting-started
+  guide); `FlareThemeProvider.ManageSplash` and `revealApp`/`RevealAppAsync` are unchanged in name.
+
 ## [0.1.1] - 2026-07-06
 
 A small follow-up release: mouse-wheel control on the Slider, a theme-aware SignaturePad stroke color, and

@@ -54,12 +54,36 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/png" href="favicon.png" />
 
-    <!-- Anti-FOUC: sets theme classes + a theme-aware splash before first paint. One line. -->
+    <!-- Flare boot: applies the saved theme/palette/mode classes to <html> before first paint and
+         fires window.hideFlareSplash()/"flare:ready" when the app is ready. It draws NO splash -
+         the app (below) owns its own loading background + animation. One line. -->
     <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
+
+    <!-- App-owned loading splash (background + spinner). Tagged id="flare-splash" so Flare fades it
+         out on ready. The theme classes on <html> (set above) make it dark-mode aware. -->
+    <style>
+        html { background: #fffbfe; }
+        html.flare-mode-dark { background: #141218; color-scheme: dark; }
+        #flare-splash {
+            position: fixed; inset: 0; z-index: 99999;
+            display: flex; align-items: center; justify-content: center;
+            background: #fffbfe;
+        }
+        html.flare-mode-dark #flare-splash { background: #141218; }
+        #flare-splash .gallery-splash__spinner {
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 4px solid rgba(128, 128, 128, .25); border-top-color: #888;
+            animation: gallery-splash-spin 1s linear infinite;
+        }
+        @keyframes gallery-splash-spin { to { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) { #flare-splash .gallery-splash__spinner { animation-duration: 2.4s; } }
+    </style>
     <script type="importmap"></script>
 </head>
 
 <body>
+    <div id="flare-splash"><div class="gallery-splash__spinner"></div></div>
+
     <div id="app">
         <svg class="loading-progress">
             <circle r="40%" cx="50%" cy="50%" />

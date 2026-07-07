@@ -81,7 +81,7 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 
 **`index.html` / `App.razor` `<head>`:**
 ```html
-<!-- One line: sets theme classes + an anti-FOUC splash before first paint -->
+<!-- One line: sets theme classes before first paint + fires "flare:ready" (your app draws its own splash) -->
 <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
 <!-- Component styles -->
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />

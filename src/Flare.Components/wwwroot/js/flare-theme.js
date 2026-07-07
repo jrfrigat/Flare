@@ -62,9 +62,10 @@ export function whenFontsReady(timeoutMs) {
     });
 }
 
-// Fades out the anti-FOUC startup splash created by flare-bootstrap.js, but only after two animation
-// frames so the freshly applied theme classes/CSS have painted first. Safe no-op when there is no
-// splash (e.g. the bootstrap script was not included).
+// Signals app readiness (via window.hideFlareSplash from flare-bootstrap.js: dispatches "flare:ready"
+// and fades out the app's own tagged splash element), but only after two animation frames so the
+// freshly applied theme classes/CSS have painted first. Flare itself draws no splash - the app owns
+// it. Safe no-op when the bootstrap script was not included.
 export function revealApp() {
     return new Promise((resolve) => {
         const reveal = () => {

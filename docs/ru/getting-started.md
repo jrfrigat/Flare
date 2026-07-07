@@ -73,8 +73,8 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 
 ```html
 <head>
-    <!-- Одна строка: классы темы + анти-FOUC сплэш до первого кадра.
-         FlareThemeProvider сам уберёт сплэш, когда CSS темы и шрифты загрузятся. -->
+    <!-- Одна строка: применяет сохранённые классы темы к <html> до первого кадра (без мигания темы)
+         и шлёт "flare:ready", когда приложение оформлено. Сплэш НЕ рисует - его рисует приложение. -->
     <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
     <!-- Все стили компонентов -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
@@ -106,22 +106,48 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 
 ### Загрузочный сплэш (анти-FOUC)
 
-Сразу из коробки: бутстрап-скрипт рисует полноэкранный сплэш в цвете темы до первого кадра, а
-`FlareThemeProvider` сам убирает его, когда применит классы темы, дождётся загрузки стилей темы и
-веб-шрифтов (`document.fonts.ready`) и отрисует первый оформленный кадр. Никакого мигания и ничего
-подключать вручную не нужно.
+**Flare не рисует загрузочный сплэш - его рисует само приложение** (фон + анимация), чтобы он
+совпадал с вашим брендом. Бутстрап-скрипт делает только (1) применяет сохранённые классы
+темы/палитры/режима к `<html>` до первого кадра (нет мигания темы) и (2) шлёт сигнал готовности, когда
+приложение оформлено: `FlareThemeProvider` вызывает его после применения классов темы, загрузки стилей
+темы и веб-шрифтов (`document.fonts.ready`) и отрисовки первого оформленного кадра.
 
-Настройка - через `data-*` атрибуты на теге бутстрапа (все необязательны):
+Добавьте свой сплэш в `index.html`. Дайте ему `id="flare-splash"` (или атрибут `data-flare-splash`) -
+и Flare сам плавно уберёт его по готовности; классы темы на `<html>` позволяют учесть тёмный режим:
+
+```html
+<style>
+    html { background: #fffbfe; }
+    html.flare-mode-dark { background: #141218; }
+    #flare-splash { position: fixed; inset: 0; z-index: 99999; display: flex;
+        align-items: center; justify-content: center; background: #fffbfe; }
+    html.flare-mode-dark #flare-splash { background: #141218; }
+    /* ...ваш спиннер / логотип / анимация... */
+</style>
+...
+<body>
+    <div id="flare-splash"><!-- ваша анимация загрузки --></div>
+    <div id="app">...</div>
+</body>
+```
+
+Хотите убрать его сами? Слушайте событие:
+
+```js
+window.addEventListener('flare:ready', () => { /* спрятать свой сплэш */ });
+```
+
+Настройка бутстрап-скрипта - через `data-*` атрибуты (все необязательны):
 
 ```html
 <script src="_content/Flare.Components/js/flare-bootstrap.js"
         data-default-theme="md3-expressive" data-default-palette="md3-violet" data-default-mode="auto"
-        data-splash-light="#FEF7FF" data-splash-dark="#141218" data-splash-timeout="8000"></script>
+        data-ready-timeout="8000"></script>
 ```
 
-`data-splash-timeout` (мс) - страховочное раскрытие на случай, если провайдера нет или загрузка
-упала. Чтобы управлять сплэшем самостоятельно, задайте `ManageSplash="false"` на `FlareThemeProvider`
-и вызывайте `window.hideFlareSplash()` сами.
+`data-ready-timeout` (мс) - страховочный сигнал на случай, если провайдера нет или загрузка упала.
+Чтобы слать готовность самостоятельно, задайте `ManageSplash="false"` на `FlareThemeProvider` и
+вызывайте `window.hideFlareSplash()` (или свою логику по `flare:ready`) сами.
 
 ---
 

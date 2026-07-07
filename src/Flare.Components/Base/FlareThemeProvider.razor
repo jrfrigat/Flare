@@ -23,10 +23,11 @@
     [Parameter] public bool RespectSystemColorScheme { get; set; } = true;
 
     /// <summary>
-    /// When true (default), the provider fades out the anti-FOUC startup splash painted by
-    /// <c>flare-bootstrap.js</c> once the theme stylesheets and web fonts have loaded and the first
-    /// themed frame has painted -- so the app is revealed fully styled, with no flash of unstyled
-    /// content. Set to false to manage the splash yourself (call <c>window.hideFlareSplash()</c>).
+    /// When true (default), the provider signals app-readiness once the theme stylesheets and web
+    /// fonts have loaded and the first themed frame has painted: it calls <c>window.hideFlareSplash()</c>
+    /// (from <c>flare-bootstrap.js</c>), which dispatches a <c>flare:ready</c> event and fades out the
+    /// app's own tagged splash element. Flare draws no splash itself - the app owns its loading
+    /// background + animation. Set to false to signal readiness yourself.
     /// </summary>
     [Parameter] public bool ManageSplash { get; set; } = true;
 
@@ -91,9 +92,9 @@
         catch (JSDisconnectedException) { }
     }
 
-    // Gate the anti-FOUC splash on the last thing that still loads asynchronously after the themed
+    // Gate the readiness signal on the last thing that still loads asynchronously after the themed
     // markup is in place: the web fonts. revealApp then waits two frames so the themed CSS paints
-    // before the splash fades out.
+    // before the app's own splash is faded out.
     private async Task RevealWhenReadyAsync()
     {
         try
@@ -102,8 +103,8 @@
             // These live in the theme JS module, which a stale PWA service-worker cache can still be
             // serving from a previous build (the module loads at a fingerprint-free URL, unlike the
             // framework files) -- so if they are missing we must not let the JSException break the
-            // render. Fall back to the global splash-hide that flare-bootstrap.js has always defined,
-            // so the app is revealed instead of stranded behind the splash (or worse, crashing).
+            // render. Fall back to the global readiness signal that flare-bootstrap.js has always
+            // defined, so the app is revealed instead of stranded behind its splash (or crashing).
             try
             {
                 await ThemeJsService.WhenFontsReadyAsync();

@@ -36,7 +36,7 @@ public sealed class ThemeJsService : FlareJsModule, IThemeJsService
     public ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default)
         => InvokeVoidAsync("whenFontsReady", timeoutMs);
 
-    /// <summary>Fades out the startup splash once the themed UI has painted.</summary>
+    /// <summary>Signals app-readiness (flare:ready + fades the app's own tagged splash) once the themed UI has painted.</summary>
     public ValueTask RevealAppAsync(CancellationToken ct = default)
         => InvokeVoidAsync("revealApp");
 

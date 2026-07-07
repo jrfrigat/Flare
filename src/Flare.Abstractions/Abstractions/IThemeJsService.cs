@@ -36,8 +36,10 @@ public interface IThemeJsService : IAsyncDisposable
     ValueTask WhenFontsReadyAsync(int timeoutMs = 3000, CancellationToken ct = default);
 
     /// <summary>
-    /// Fades out the anti-FOUC startup splash painted by <c>flare-bootstrap.js</c>, after the freshly
-    /// applied theme has painted. A safe no-op when no splash is present.
+    /// Signals app-readiness after the freshly applied theme has painted: calls
+    /// <c>window.hideFlareSplash()</c> (from <c>flare-bootstrap.js</c>), which dispatches a
+    /// <c>flare:ready</c> event and fades out the app's own tagged splash element. A safe no-op when
+    /// the bootstrap script is absent.
     /// </summary>
     ValueTask RevealAppAsync(CancellationToken ct = default);
 

@@ -73,8 +73,8 @@ builder.Services.AddFlareTheme(new Fluent2Theme());
 
 ```html
 <head>
-    <!-- One line: theme classes + anti-FOUC splash before the first frame.
-         FlareThemeProvider hides the splash automatically once theme CSS and fonts are ready. -->
+    <!-- One line: applies the saved theme classes to <html> before the first frame (no theme flash)
+         and fires "flare:ready" when the app is styled. It draws no splash - your app owns that. -->
     <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
     <!-- All component styles -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
@@ -106,22 +106,48 @@ Automatic dark mode is on by default: `FlareThemeProvider` watches the system
 
 ### Loading splash (anti-FOUC)
 
-Out of the box: the bootstrap script paints a theme-colored full-screen splash before the first
-frame, and `FlareThemeProvider` hides it once it has applied the theme classes, awaited the theme
-stylesheets and web fonts (`document.fonts.ready`), and painted the first themed frame. No flash of
-unstyled content, and nothing to wire by hand.
+**Flare draws no loading splash - each app owns its own** (background + animation), so it matches your
+brand. The bootstrap script only (1) applies the saved theme/palette/mode classes to `<html>` before
+the first paint (so there is no theme flash), and (2) fires a readiness signal when the app is styled:
+`FlareThemeProvider` calls it after it has applied the theme classes, awaited the theme stylesheets and
+web fonts (`document.fonts.ready`), and painted the first themed frame.
 
-Customize it through `data-*` attributes on the bootstrap tag (all optional):
+Add your own splash to `index.html`. Give it `id="flare-splash"` (or a `data-flare-splash` attribute)
+and Flare fades it out for you on ready; the theme classes on `<html>` let you make it dark-mode aware:
+
+```html
+<style>
+    html { background: #fffbfe; }
+    html.flare-mode-dark { background: #141218; }
+    #flare-splash { position: fixed; inset: 0; z-index: 99999; display: flex;
+        align-items: center; justify-content: center; background: #fffbfe; }
+    html.flare-mode-dark #flare-splash { background: #141218; }
+    /* ...your own spinner / logo / animation... */
+</style>
+...
+<body>
+    <div id="flare-splash"><!-- your loading animation --></div>
+    <div id="app">...</div>
+</body>
+```
+
+Prefer to hide it yourself? Listen for the event instead:
+
+```js
+window.addEventListener('flare:ready', () => { /* hide your splash */ });
+```
+
+Customize the boot script through `data-*` attributes (all optional):
 
 ```html
 <script src="_content/Flare.Components/js/flare-bootstrap.js"
         data-default-theme="md3-expressive" data-default-palette="md3-violet" data-default-mode="auto"
-        data-splash-light="#FEF7FF" data-splash-dark="#141218" data-splash-timeout="8000"></script>
+        data-ready-timeout="8000"></script>
 ```
 
-`data-splash-timeout` (ms) is a safety reveal in case the provider is absent or boot fails. To drive
-the splash yourself, set `ManageSplash="false"` on `FlareThemeProvider` and call
-`window.hideFlareSplash()` when ready.
+`data-ready-timeout` (ms) is a safety signal in case the provider is absent or boot fails. To signal
+readiness yourself, set `ManageSplash="false"` on `FlareThemeProvider` and call
+`window.hideFlareSplash()` (or dispatch your own logic on `flare:ready`) when ready.
 
 ---
 
