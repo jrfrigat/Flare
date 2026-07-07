@@ -198,6 +198,17 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Bottom-sheet dialogs: DialogOptions.Position=Bottom and IDialogService.ShowSheetAsync present a component dialog as a slide-up sheet (grabber, rounded top); new DialogOptions.PanelClass/ScrimClass
+        ///New OnSurfaceVariant2 color role - a third, fainter on-surface text tone for tertiary text (footnotes, counts, captions)
+        ///Flare no longer draws a loading splash - each app owns its own; the boot script only sets theme classes and fires a flare:ready signal.
+        /// </summary>
+        public static string About_WhatsNewV14 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV14", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Clean onion / ports-and-adapters architecture: 5 rings (Flare.Abstractions, Flare.Theming, Flare.Infrastructure, Flare.Components, Flare.Blazor) with dependencies pointing strictly inward
         ///Flare.Components is now UI-only - every service implementation (JS interop, storage, dialog/snackbar/message-box) moved to Flare.Infrastructure; the old Flare.Core grab-bag was retired
         ///AddFlare wires ports to adapters in the Flare.Blazor composition root, so the browser host stays swappable and Flare.Components never dep [остаток строки не уместился]&quot;;.

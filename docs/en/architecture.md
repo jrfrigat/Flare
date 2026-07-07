@@ -280,16 +280,18 @@ expressions from the published reference instances (e.g. `Md3.LightColors with {
 ### Anti-FOUC Bootstrap
 
 A one-line bootstrap script (`_content/Flare.Components/js/flare-bootstrap.js`) applies the saved
-theme/palette/mode classes before first paint, and paints a theme-aware full-screen splash so the
-page never shows white or unstyled content while the app boots.
+theme/palette/mode classes before first paint, so the page never flashes the wrong theme while the app
+boots. Flare draws no loading splash itself - each app owns its own (background + animation), so it
+matches the app's brand.
 
-`FlareThemeProvider` then reveals the app automatically (`ManageSplash`, default `true`): on its first
-interactive render it applies the theme classes and static CSS, awaits each theme stylesheet's `load`
-event and the document's web fonts (`document.fonts.ready`), then fades the splash out after the first
-themed frame has painted. So a consumer gets full anti-FOUC behaviour from the single `<script>` line
-plus the provider, with nothing to wire by hand. A safety timeout in the bootstrap reveals the page
-anyway if the provider is absent or boot fails; set `ManageSplash="false"` to drive
-`window.hideFlareSplash()` yourself.
+The script exposes a readiness signal instead: `window.hideFlareSplash()` dispatches a `flare:ready`
+event and fades out the app's own splash element if it is tagged `id="flare-splash"` /
+`[data-flare-splash]`. `FlareThemeProvider` fires it automatically (`ManageSplash`, default `true`): on
+its first interactive render it applies the theme classes and static CSS, awaits each theme stylesheet's
+`load` event and the document's web fonts (`document.fonts.ready`), then signals ready after the first
+themed frame has painted. A safety timeout in the bootstrap fires anyway if the provider is absent or
+boot fails; set `ManageSplash="false"` to signal readiness (`window.hideFlareSplash()` or the
+`flare:ready` event) yourself.
 
 ### Persistence
 

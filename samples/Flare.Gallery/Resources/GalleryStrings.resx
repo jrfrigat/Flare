@@ -2468,6 +2468,11 @@ Leaner CSS: shared input, picker, and listbox styles cut duplication across the 
 About 100 more component styles are now themeable knobs you can override
 Fixed a batch of accessibility and theme bugs across nav, dialogs, drawers, and inputs</value>
   </data>
+  <data name="About_WhatsNewV14" xml:space="preserve">
+    <value>Bottom-sheet dialogs: DialogOptions.Position=Bottom and IDialogService.ShowSheetAsync present a component dialog as a slide-up sheet (grabber, rounded top); new DialogOptions.PanelClass/ScrimClass
+New OnSurfaceVariant2 color role - a third, fainter on-surface text tone for tertiary text (footnotes, counts, captions)
+Flare no longer draws a loading splash - each app owns its own; the boot script only sets theme classes and fires a flare:ready signal</value>
+  </data>
   <data name="About_WhatsNewV13" xml:space="preserve">
     <value>Slider gains mouse-wheel control: hover and scroll to change the value (Ctrl+wheel moves the range's upper handle)
 SignaturePad stroke color is now a theme-aware FlareColor - a semantic role, a custom color, or a dynamic one

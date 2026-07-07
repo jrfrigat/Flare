@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.1.2] - 2026-07-07
 
 ### Added
 - **Bottom-sheet dialogs.** `DialogOptions.Position` (`Center`/`Bottom`), `DialogOptions.ShowGrabber`,
