@@ -3310,6 +3310,42 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Divider_Title", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Description List.
+        /// </summary>
+        public static string DescriptionList_Title {
+            get {
+                return ResourceManager.GetString("DescriptionList_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A read-only label to value panel for detail views - the read-only analogue of the data grid.
+        /// </summary>
+        public static string DescriptionList_Subtitle {
+            get {
+                return ResourceManager.GetString("DescriptionList_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Basic (bordered).
+        /// </summary>
+        public static string DescriptionList_Basic {
+            get {
+                return ResourceManager.GetString("DescriptionList_Basic", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Striped, rich labels &amp; nested rows.
+        /// </summary>
+        public static string DescriptionList_StripedNested {
+            get {
+                return ResourceManager.GetString("DescriptionList_StripedNested", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Top/bottom, size &amp; close options.

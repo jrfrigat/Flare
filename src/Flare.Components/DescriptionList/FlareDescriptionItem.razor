@@ -1,0 +1,23 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* One label -> value row. display:contents (set by the CSS) lets the <dt>/<dd> join the parent
+   FlareDescriptionList grid so labels and values align across rows. *@
+<div class="@BuildCssClass()" @attributes="AdditionalAttributes">
+    <dt class="@Css.Classes.DescriptionList.Label">@(LabelContent ?? _labelText)</dt>
+    <dd class="@Css.Classes.DescriptionList.Value" style="@Style">@ChildContent</dd>
+</div>
+
+@code {
+    /// <summary>The term/label text. Use <see cref="LabelContent"/> for rich label markup (e.g. a chip).</summary>
+    [Parameter] public string? Label { get; set; }
+    /// <summary>Rich label markup; overrides <see cref="Label"/> when set.</summary>
+    [Parameter] public RenderFragment? LabelContent { get; set; }
+    /// <summary>The value/description content shown in the second column.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>The component's root CSS class.</summary>
+    protected override string ComponentCssClass => Css.Classes.DescriptionList.Row;
+
+    private RenderFragment? _labelText => Label is null ? null : builder => builder.AddContent(0, Label);
+}

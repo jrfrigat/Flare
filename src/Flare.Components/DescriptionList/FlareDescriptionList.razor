@@ -1,0 +1,31 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* Read-only label -> value panel (a term/definition list). The <dl> is a two-column grid; each
+   FlareDescriptionItem row uses display:contents so its <dt>/<dd> align to the shared columns. *@
+<dl class="@BuildCssClass(_stripedClass, _borderedClass)" style="@_style" @attributes="AdditionalAttributes">
+    @ChildContent
+</dl>
+
+@code {
+    /// <summary>The rows, typically <see cref="FlareDescriptionItem"/> components.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Tints alternate rows for readability.</summary>
+    [Parameter] public bool Striped { get; set; }
+    /// <summary>Draws a divider under every row.</summary>
+    [Parameter] public bool Bordered { get; set; }
+    /// <summary>Width of the label column (any CSS length, e.g. "12rem"). When null the column sizes to
+    /// the widest label.</summary>
+    [Parameter] public string? LabelWidth { get; set; }
+
+    /// <summary>The component's root CSS class.</summary>
+    protected override string ComponentCssClass => Css.Classes.DescriptionList.Root;
+
+    private string _stripedClass => Striped ? Css.Classes.DescriptionList.Striped : string.Empty;
+    private string _borderedClass => Bordered ? Css.Classes.DescriptionList.Bordered : string.Empty;
+
+    // LabelWidth overrides the auto label column; GS-3: sanitize the user-supplied length.
+    private string? _style => LabelWidth is not null
+        ? $"grid-template-columns:{Flare.Components.Security.CssValidator.StripDangerous(LabelWidth)} 1fr;{Style}"
+        : Style;
+}

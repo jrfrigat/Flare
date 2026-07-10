@@ -156,6 +156,7 @@ public static class ComponentCatalog
         new ComponentEntry("/components/chip",              "Chip",                    "Chip_Title",            ComponentGroup.DataDisplay),
         new ComponentEntry("/components/chip-group",        "Chip Group",              "ChipGroup_Title",       ComponentGroup.DataDisplay),
         new ComponentEntry("/components/data-tree",         "Data Tree",               "DataTree_Title",        ComponentGroup.DataDisplay),
+        new ComponentEntry("/components/description-list",  "Description List",        "DescriptionList_Title", ComponentGroup.DataDisplay),
         new ComponentEntry("/components/kanban",            "Kanban Board",            "Kanban_Title",          ComponentGroup.DataDisplay),
         new ComponentEntry("/components/list",              "List",                    "List_Title",            ComponentGroup.DataDisplay),
         new ComponentEntry("/components/markdown",          "Markdown",                "Markdown_Title",        ComponentGroup.DataDisplay),

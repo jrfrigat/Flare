@@ -1110,6 +1110,18 @@
   <data name="Divider_Title" xml:space="preserve">
     <value>Разделитель (Divider)</value>
   </data>
+  <data name="DescriptionList_Title" xml:space="preserve">
+    <value>Список описаний (Description List)</value>
+  </data>
+  <data name="DescriptionList_Subtitle" xml:space="preserve">
+    <value>Панель "метка - значение" только для чтения для страниц с деталями - read-only аналог таблицы данных.</value>
+  </data>
+  <data name="DescriptionList_Basic" xml:space="preserve">
+    <value>Базовый (с рамкой)</value>
+  </data>
+  <data name="DescriptionList_StripedNested" xml:space="preserve">
+    <value>Полосы, сложные метки и вложенные строки</value>
+  </data>
   <data name="Divider_Subtitle" xml:space="preserve">
     <value>FlareDivider - горизонтальная/вертикальная линия с опциональным текстом.</value>
   </data>

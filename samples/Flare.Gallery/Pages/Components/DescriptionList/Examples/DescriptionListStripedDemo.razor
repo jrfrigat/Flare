@@ -1,0 +1,29 @@
+@* Striped rows + a wider label column. Rich LabelContent (a mono parameter name + a direction chip)
+   and a nested FlareDescriptionList for a table-valued parameter's columns - the Weir stored-proc case. *@
+<FlareStack Style="max-width:40rem;">
+    <FlareDescriptionList Striped LabelWidth="14rem">
+        <FlareDescriptionItem>
+            <LabelContent>
+                <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
+                    <FlareText Element="span" Mono>@("@customerId")</FlareText>
+                    <FlareChip Label="IN" Size="ChipSize.Sm" Color="FlareColor.Primary" />
+                </FlareStack>
+            </LabelContent>
+            <ChildContent><FlareCode>INT</FlareCode></ChildContent>
+        </FlareDescriptionItem>
+        <FlareDescriptionItem>
+            <LabelContent>
+                <FlareStack Row Gap="FlareSpacing.XSmall" Align="FlareAlignItems.Center">
+                    <FlareText Element="span" Mono>@("@lines")</FlareText>
+                    <FlareChip Label="TVP" Size="ChipSize.Sm" Color="FlareColor.Secondary" />
+                </FlareStack>
+            </LabelContent>
+            <ChildContent>
+                <FlareDescriptionList>
+                    <FlareDescriptionItem Label="ProductId"><FlareCode>INT</FlareCode></FlareDescriptionItem>
+                    <FlareDescriptionItem Label="Qty"><FlareCode>INT</FlareCode></FlareDescriptionItem>
+                </FlareDescriptionList>
+            </ChildContent>
+        </FlareDescriptionItem>
+    </FlareDescriptionList>
+</FlareStack>

@@ -1,0 +1,39 @@
+/* Read-only key/value panel. The <dl> is a two-column grid; rows use display:contents so every
+   label and value lines up on the shared columns regardless of content width. */
+.flare-description-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    font-size: var(--flare-typescale-body-medium-size);
+    line-height: var(--flare-typescale-body-medium-height);
+}
+
+.flare-description-list__row { display: contents; }
+
+.flare-description-list__label,
+.flare-description-list__value {
+    padding: var(--flare-spacing-3) var(--flare-spacing-8);
+    min-width: 0;
+}
+
+.flare-description-list__label {
+    color: var(--flare-color-on-surface-variant);
+    font-weight: var(--flare-typescale-label-large-weight);
+    text-align: start;
+    white-space: nowrap;
+}
+
+.flare-description-list__value {
+    margin: 0;
+    color: var(--flare-color-on-surface);
+    overflow-wrap: anywhere;
+}
+
+/* Striped: tint alternate rows (both cells, so the stripe spans the row). */
+.flare-description-list--striped .flare-description-list__row:nth-child(even) > * {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent);
+}
+
+/* Bordered: a hairline under every row but the last. */
+.flare-description-list--bordered .flare-description-list__row:not(:last-child) > * {
+    border-bottom: 1px solid var(--flare-color-outline-variant);
+}

@@ -1,0 +1,12 @@
+@page "/components/description-list"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.DescriptionList_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareDescriptionList">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.DescriptionList_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.DescriptionList_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.DescriptionList_Basic" DemoType="typeof(Examples.DescriptionListBasicDemo)" />
+<AutoDemoSection Title="@GalleryStrings.DescriptionList_StripedNested" DemoType="typeof(Examples.DescriptionListStripedDemo)" />
