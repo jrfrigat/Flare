@@ -941,6 +941,15 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("FileUpload_DropText", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Choose file.
+        /// </summary>
+        public static string FileUpload_ButtonText {
+            get {
+                return ResourceManager.GetString("FileUpload_ButtonText", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Reset.

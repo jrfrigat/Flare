@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="@BuildCssClass(_draggingClass, _disabledClass)"
+<div class="@BuildCssClass(_variantClass, _draggingClass, _disabledClass)"
      style="@Style"
      @ondragover:preventDefault="true"
      @ondragenter:preventDefault="true"
@@ -11,14 +11,24 @@
      @ondrop:preventDefault="true"
      @attributes="AdditionalAttributes">
     <div class="flare-file-upload__drop-wrap">
-        <label class="flare-file-upload__zone" for="@_inputId">
-            <span class="flare-file-upload__icon material-symbols-rounded" aria-hidden="true">upload_file</span>
-            <span class="flare-file-upload__primary">@(DropText ?? FlareStrings.FileUpload_DropText)</span>
-            @if (!string.IsNullOrEmpty(Accept))
-            {
-                <span class="flare-file-upload__hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
-            }
-        </label>
+        @if (Variant == FileUploadVariant.Button)
+        {
+            <label class="flare-file-upload__button" for="@_inputId">
+                <span class="flare-file-upload__button-icon material-symbols-rounded" aria-hidden="true">upload_file</span>
+                <span>@(ButtonText ?? FlareStrings.FileUpload_ButtonText)</span>
+            </label>
+        }
+        else
+        {
+            <label class="flare-file-upload__zone" for="@_inputId">
+                <span class="flare-file-upload__icon material-symbols-rounded" aria-hidden="true">upload_file</span>
+                <span class="flare-file-upload__primary">@(DropText ?? FlareStrings.FileUpload_DropText)</span>
+                @if (!string.IsNullOrEmpty(Accept))
+                {
+                    <span class="flare-file-upload__hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
+                }
+            </label>
+        }
         <InputFile id="@_inputId"
                    class="flare-file-upload__input"
                    accept="@Accept"
@@ -54,10 +64,16 @@
     [Parameter] public string? DropText { get; set; }
     /// <summary>Maximum number of files that can be selected.</summary>
     [Parameter] public int MaxFiles { get; set; } = 10;
+    /// <summary>The visual form of the trigger - a drag-and-drop zone (default) or a compact button.</summary>
+    [Parameter] public FileUploadVariant Variant { get; set; } = FileUploadVariant.DropZone;
+    /// <summary>Label for the <see cref="FileUploadVariant.Button"/> trigger. Defaults to the localized
+    /// "choose file" text.</summary>
+    [Parameter] public string? ButtonText { get; set; }
 
     protected override string ComponentCssClass => "flare-file-upload";
 
     private bool _isDragging;
+    private string _variantClass => Variant == FileUploadVariant.Button ? "flare-file-upload--button" : string.Empty;
     private readonly List<IBrowserFile> _files = [];
     private readonly string _inputId = $"flare-fu-{Guid.NewGuid():N}";
 

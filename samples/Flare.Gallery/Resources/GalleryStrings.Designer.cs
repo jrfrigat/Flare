@@ -3526,6 +3526,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("FileUpload_DropZone", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Button variant (compact trigger).
+        /// </summary>
+        public static string FileUpload_Button {
+            get {
+                return ResourceManager.GetString("FileUpload_Button", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Drop Zone - custom content.

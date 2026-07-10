@@ -189,6 +189,7 @@
   <!-- FileUpload / RichTextEditor -->
   <data name="FileUpload_DropText" xml:space="preserve"><value>Перетащите файлы или нажмите для выбора</value></data>
   <data name="FileUpload_Accepted" xml:space="preserve"><value>Допустимые форматы:</value></data>
+  <data name="FileUpload_ButtonText" xml:space="preserve"><value>Выберите файл</value></data>
   <data name="RTE_Label" xml:space="preserve"><value>Редактор текста</value></data>
   <data name="RTE_Placeholder" xml:space="preserve"><value>Начните вводить текст…</value></data>
 

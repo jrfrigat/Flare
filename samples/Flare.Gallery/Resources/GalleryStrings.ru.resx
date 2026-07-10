@@ -942,6 +942,9 @@
   <data name="FileUpload_DropZone" xml:space="preserve">
     <value>Зона перетаскивания</value>
   </data>
+  <data name="FileUpload_Button" xml:space="preserve">
+    <value>Вариант-кнопка (компактный триггер)</value>
+  </data>
   <data name="FileUpload_DropZoneCustom" xml:space="preserve">
     <value>Зона перетаскивания - своё содержимое</value>
   </data>

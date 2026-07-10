@@ -942,6 +942,9 @@
   <data name="FileUpload_DropZone" xml:space="preserve">
     <value>Drop Zone</value>
   </data>
+  <data name="FileUpload_Button" xml:space="preserve">
+    <value>Button variant (compact trigger)</value>
+  </data>
   <data name="FileUpload_DropZoneCustom" xml:space="preserve">
     <value>Drop Zone - custom content</value>
   </data>

@@ -1,0 +1,16 @@
+@* Button variant: a compact trigger that opens the OS file dialog - for an "Import" action where a
+   full drop zone would be overkill. *@
+<FlareStack Style="max-width:32rem;">
+    <FlareFileUpload Variant="FileUploadVariant.Button" Accept=".json" OnFilesChanged="HandleImport" />
+    @if (_name is not null)
+    {
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Selected: @_name</FlareText>
+    }
+</FlareStack>
+
+@code {
+    private string? _name;
+
+    private void HandleImport(IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files)
+        => _name = files.FirstOrDefault()?.Name;
+}
