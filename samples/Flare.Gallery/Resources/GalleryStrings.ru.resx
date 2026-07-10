@@ -2468,6 +2468,11 @@ Select и MultiSelect перестроены на быстром headless-ядр
 Ещё около 100 стилей компонентов стали настраиваемыми токенами
 Исправлена группа проблем доступности и тем в навигации, диалогах, drawer и полях ввода</value>
   </data>
+  <data name="About_WhatsNewV15" xml:space="preserve">
+    <value>Новый IBrowserViewportService: один инжектируемый сервис для текущего брейкпоинта и размера вьюпорта, произвольных медиа-запросов (MatchesAsync), троттлированных подписок на ресайз/брейкпоинт и ResizeObserver по элементу - отписка через dispose токена (без возни с DotNetObjectReference)
+Новый брейкпоинт Xxl (от 2560px): Breakpoint.Xxl и соответствующая колонка FlareCol.Xxl
+FlareMediaQuery, FlareLayout и FlareDateTimePicker теперь следят за вьюпортом через IBrowserViewportService вместо покомпонентных JSInvokable-колбэков</value>
+  </data>
   <data name="About_WhatsNewV14" xml:space="preserve">
     <value>Диалоги-шторки: DialogOptions.Position=Bottom и IDialogService.ShowSheetAsync показывают компонентный диалог как выезжающий снизу лист (grabber, скругление сверху); новые DialogOptions.PanelClass/ScrimClass
 Новая цветовая роль OnSurfaceVariant2 - третий, более тусклый тон текста поверх поверхности для третичного текста (сноски, счётчики, подписи)

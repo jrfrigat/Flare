@@ -3,6 +3,25 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.3] - 2026-07-10
+
+### Added
+- **`IBrowserViewportService`** - one dependency-injected entry point for everything responsive: the
+  current viewport size and breakpoint (`GetViewportSizeAsync`/`GetBreakpointAsync`), arbitrary CSS
+  media-query matching (`MatchesAsync`), throttled window-resize and breakpoint-tier subscriptions
+  (`SubscribeAsync`/`SubscribeBreakpointAsync`), and per-element `ResizeObserver` observation
+  (`ObserveElementAsync`). Subscriptions return an `IAsyncDisposable` token - no observer interface to
+  implement, no `DotNetObjectReference` to create, no subscription id to track: the service owns a single
+  JS listener shared across all subscribers. Registered by `AddFlare()`; returns a configured fallback
+  during prerender. New Gallery demo (EN + RU).
+- **`Xxl` breakpoint** (default 2560px and up) on the shared breakpoint scale: `Breakpoint.Xxl` plus a
+  matching `FlareCol.Xxl` column span, extending the responsive grid past the previous five-tier ceiling.
+
+### Changed
+- **`FlareMediaQuery`, `FlareLayout` and `FlareDateTimePicker`** now observe the viewport through
+  `IBrowserViewportService` instead of each exposing its own `[JSInvokable] OnBreakpointChanged` callback -
+  one shared, throttled resize listener instead of a per-component JS round-trip.
+
 ## [0.1.2] - 2026-07-07
 
 ### Added

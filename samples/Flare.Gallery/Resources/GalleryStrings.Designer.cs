@@ -198,6 +198,17 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на New IBrowserViewportService: one injected service for the current breakpoint and viewport size, arbitrary media-query checks (MatchesAsync), throttled resize/breakpoint subscriptions and per-element ResizeObserver - dispose the returned token to unsubscribe (no DotNetObjectReference plumbing)
+        ///New Xxl breakpoint (2560px and up): Breakpoint.Xxl and a matching FlareCol.Xxl column span
+        ///FlareMediaQuery, FlareLayout and FlareDateTimePicker now track the viewport through IBrowserViewportService instead of per-component JSInvokable callbacks.
+        /// </summary>
+        public static string About_WhatsNewV15 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV15", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Bottom-sheet dialogs: DialogOptions.Position=Bottom and IDialogService.ShowSheetAsync present a component dialog as a slide-up sheet (grabber, rounded top); new DialogOptions.PanelClass/ScrimClass
         ///New OnSurfaceVariant2 color role - a third, fainter on-surface text tone for tertiary text (footnotes, counts, captions)
         ///Flare no longer draws a loading splash - each app owns its own; the boot script only sets theme classes and fires a flare:ready signal.
