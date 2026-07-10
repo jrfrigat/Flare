@@ -30,71 +30,7 @@ export function scrollToTop(selector) {
     if (target) target.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// -- Breakpoint detection (FlareMediaQuery) -----------------------------------
-// Boundaries mirror responsive.css: xs<600, sm>=600, md>=960, lg>=1280, xl>=1920.
-const _bpListeners = new Map();
-
-// window.innerWidth can read as 0 (or otherwise be unavailable) during an unsettled/very-early
-// paint moment -- e.g. right after navigation, before the viewport is fully established in some
-// embedding contexts. A width of 0 falls through every >= check in currentBreakpoint() and would
-// misreport 'Xs', so treat non-positive readings as invalid and fall back to
-// document.documentElement.clientWidth (generally populated even before window dimensions settle),
-// then document.body.clientWidth as a last resort. Returns null when no source yields a usable width.
-function measuredWidth() {
-    const w = window.innerWidth;
-    if (w > 0) return w;
-    const docEl = document.documentElement && document.documentElement.clientWidth;
-    if (docEl > 0) return docEl;
-    const body = document.body && document.body.clientWidth;
-    if (body > 0) return body;
-    return null;
-}
-
-function widthToBreakpoint(w) {
-    if (w >= 1920) return 'Xl';
-    if (w >= 1280) return 'Lg';
-    if (w >= 960)  return 'Md';
-    if (w >= 600)  return 'Sm';
-    return 'Xs';
-}
-
-function currentBreakpoint() {
-    const w = measuredWidth();
-    // No reliable width source at all: default to Md rather than confidently reporting the
-    // narrowest tier off a bogus 0 reading.
-    return w === null ? 'Md' : widthToBreakpoint(w);
-}
-
-export function getBreakpoint() {
-    return currentBreakpoint();
-}
-
-export function subscribeBreakpoint(id, dotNetRef) {
-    unsubscribeBreakpoint(id);
-    let last = currentBreakpoint();
-    const handler = () => {
-        // Skip entirely on a spurious resize event where the width is unmeasurable -- don't let a
-        // transient invalid reading overwrite `last` or notify C# of a bogus breakpoint.
-        const w = measuredWidth();
-        if (w === null) return;
-        const bp = widthToBreakpoint(w);
-        if (bp !== last) {
-            last = bp;
-            dotNetRef.invokeMethodAsync('OnBreakpointChanged', bp);
-        }
-    };
-    window.addEventListener('resize', handler, { passive: true });
-    _bpListeners.set(id, handler);
-    return last;
-}
-
-export function unsubscribeBreakpoint(id) {
-    const handler = _bpListeners.get(id);
-    if (handler) {
-        window.removeEventListener('resize', handler);
-        _bpListeners.delete(id);
-    }
-}
+// Breakpoint / viewport detection moved to flare-viewport.js (Flare.Components.IBrowserViewportService).
 
 // -- FlareTabs overflow scroller --------------------------------------------
 const _tabScrollers = new Map();

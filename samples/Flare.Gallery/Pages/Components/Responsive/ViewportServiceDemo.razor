@@ -1,0 +1,78 @@
+@* Live demo of IBrowserViewportService: one injected service reports the viewport size, breakpoint and
+   orientation (updated on a throttled resize), plus ObserveElementAsync tracking a single element's own
+   size via the browser ResizeObserver. No DotNetObjectReference or [JSInvokable] plumbing in sight. *@
+@inject IBrowserViewportService Viewport
+@implements IAsyncDisposable
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlarePaper Elevation="1" Style="padding:1rem;">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleSmall">
+                @GalleryStrings.Responsive_ViewportSize <strong>@_size.Width &times; @_size.Height px</strong>
+            </FlareText>
+            <FlareText>@GalleryStrings.Responsive_CurrentBp <strong>@_bp</strong></FlareText>
+            <FlareText>
+                @GalleryStrings.Responsive_ViewportOrientation
+                <strong>@(_size.IsPortrait ? GalleryStrings.Responsive_Portrait : GalleryStrings.Responsive_Landscape)</strong>
+            </FlareText>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+                @GalleryStrings.Responsive_PortraitQuery <strong>@_portrait</strong>
+            </FlareText>
+        </FlareStack>
+    </FlarePaper>
+
+    <div>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:0.5rem;">
+            @GalleryStrings.Responsive_ElementObserverDesc
+        </FlareText>
+        <div @ref="_box"
+             style="resize:both;overflow:auto;min-width:160px;min-height:96px;max-width:100%;padding:1rem;box-sizing:border-box;border:1px solid var(--flare-color-outline);border-radius:var(--flare-shape-medium);background:var(--flare-color-surface-container-high);color:var(--flare-color-on-surface);">
+            <strong>@GalleryStrings.Responsive_ElementSize</strong> @_boxWidth &times; @_boxHeight px
+        </div>
+    </div>
+</FlareStack>
+
+@code {
+    private ViewportSize _size;
+    private Breakpoint _bp = Breakpoint.Md;
+    private bool _portrait;
+    private ElementReference _box;
+    private int _boxWidth;
+    private int _boxHeight;
+    private IAsyncDisposable? _viewportSub;
+    private IAsyncDisposable? _elementSub;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try
+        {
+            _viewportSub = await Viewport.SubscribeAsync(OnViewportAsync);
+            _elementSub = await Viewport.ObserveElementAsync(_box, OnElementAsync);
+            _portrait = await Viewport.MatchesAsync("(orientation: portrait)");
+            StateHasChanged();
+        }
+        catch (Exception) { /* prerender / JS unavailable */ }
+    }
+
+    private async Task OnViewportAsync(ViewportChange change)
+    {
+        _size = change.Size;
+        _bp = change.Breakpoint;
+        _portrait = _size.IsPortrait;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnElementAsync(ElementBoundingRect rect)
+    {
+        _boxWidth = (int)rect.Width;
+        _boxHeight = (int)rect.Height;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_viewportSub is not null) { try { await _viewportSub.DisposeAsync(); } catch { } }
+        if (_elementSub is not null) { try { await _elementSub.DisposeAsync(); } catch { } }
+    }
+}

@@ -22,16 +22,6 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask ScrollToTopAsync(string? selector) => InvokeVoidAsync("scrollToTop", selector);
 
     /// <inheritdoc />
-    public ValueTask<string> GetBreakpointAsync() => InvokeAsync<string>("getBreakpoint");
-
-    /// <inheritdoc />
-    public ValueTask<string> SubscribeBreakpointAsync<T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
-        => InvokeAsync<string>("subscribeBreakpoint", id, dotNetRef);
-
-    /// <inheritdoc />
-    public ValueTask UnsubscribeBreakpointAsync(string id) => InvokeVoidAsync("unsubscribeBreakpoint", id);
-
-    /// <inheritdoc />
     public ValueTask RegisterTabScrollerAsync<T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerTabScroller", bar, dotNetRef);
 

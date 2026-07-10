@@ -6386,7 +6386,97 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Responsive_ShownMd", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Viewport service (C#).
+        /// </summary>
+        public static string Responsive_ViewportTitle {
+            get {
+                return ResourceManager.GetString("Responsive_ViewportTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to IBrowserViewportService reports live pixel size, breakpoint and orientation.
+        /// </summary>
+        public static string Responsive_ViewportDesc {
+            get {
+                return ResourceManager.GetString("Responsive_ViewportDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Viewport size:.
+        /// </summary>
+        public static string Responsive_ViewportSize {
+            get {
+                return ResourceManager.GetString("Responsive_ViewportSize", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Orientation:.
+        /// </summary>
+        public static string Responsive_ViewportOrientation {
+            get {
+                return ResourceManager.GetString("Responsive_ViewportOrientation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Portrait.
+        /// </summary>
+        public static string Responsive_Portrait {
+            get {
+                return ResourceManager.GetString("Responsive_Portrait", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Landscape.
+        /// </summary>
+        public static string Responsive_Landscape {
+            get {
+                return ResourceManager.GetString("Responsive_Landscape", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to matches (orientation: portrait):.
+        /// </summary>
+        public static string Responsive_PortraitQuery {
+            get {
+                return ResourceManager.GetString("Responsive_PortraitQuery", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Element resize observer.
+        /// </summary>
+        public static string Responsive_ElementObserverTitle {
+            get {
+                return ResourceManager.GetString("Responsive_ElementObserverTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to ObserveElementAsync tracks a single element's own size via the browser ResizeObserver.
+        /// </summary>
+        public static string Responsive_ElementObserverDesc {
+            get {
+                return ResourceManager.GetString("Responsive_ElementObserverDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Observed element size:.
+        /// </summary>
+        public static string Responsive_ElementSize {
+            get {
+                return ResourceManager.GetString("Responsive_ElementSize", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Resize the window to see Flare adapt. Breakpoints: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920..
         /// </summary>

@@ -57,4 +57,17 @@ public static class Hidden
     public const string OnlyXl = "flare-hidden--only-xl";
     /// <summary>The <c>flare-hidden--only-xs</c> CSS class.</summary>
     public const string OnlyXs = "flare-hidden--only-xs";
+
+    /// <summary>The <c>flare-hidden--only-xxl</c> CSS class.</summary>
+    public const string OnlyXxl = "flare-hidden--only-xxl";
+    /// <summary>The <c>flare-hidden--below-xxl</c> CSS class.</summary>
+    public const string BelowXxl = "flare-hidden--below-xxl";
+    /// <summary>The <c>flare-hidden--above-xl</c> CSS class.</summary>
+    public const string AboveXl = "flare-hidden--above-xl";
+    /// <summary>The <c>flare-hidden--invert-only-xxl</c> CSS class.</summary>
+    public const string InvertOnlyXxl = "flare-hidden--invert-only-xxl";
+    /// <summary>The <c>flare-hidden--invert-below-xxl</c> CSS class.</summary>
+    public const string InvertBelowXxl = "flare-hidden--invert-below-xxl";
+    /// <summary>The <c>flare-hidden--invert-above-xl</c> CSS class.</summary>
+    public const string InvertAboveXl = "flare-hidden--invert-above-xl";
 }
