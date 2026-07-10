@@ -6,8 +6,16 @@
     and emits a generated C# registry consumed by Flare.Gallery.
 
     This project is a DOCS-ONLY tool. It is NOT packed and NOT published to NuGet.
-    It references the Flare meta-package solely so the component assemblies and
-    their .xml documentation files are copied next to the tool for reflection.
+
+    It references EVERY component package the Gallery documents (the Flare meta-package
+    plus each optional Flare.Components.* add-on) purely so their assemblies AND their
+    .xml documentation files are copied next to the tool. The tool's own output directory
+    is therefore a complete, self-contained probe directory: all component DLLs + their XML
+    docs + the ASP.NET Core Components dependencies, and NO theme packages (themes contain
+    no documentable components/enums, and the registry deliberately excludes them). This is
+    why the default MSBuild invocation - which passes no probe directory and so probes the
+    tool's own bin - produces the full registry. Keep this list in sync with the component
+    (non-theme) ProjectReferences in samples/Flare.Gallery/Flare.Gallery.csproj.
   -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -21,7 +29,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Core meta-package (brings Flare.Components + Flare.Infrastructure + their deps). -->
     <ProjectReference Include="..\..\src\Flare\Flare.csproj" />
+    <!-- Optional add-on component packages the Gallery also documents. Without these, the
+         generated registry silently drops their components (Carousel/IDE/Kanban/etc.). -->
+    <ProjectReference Include="..\..\src\Flare.Components.Carousel\Flare.Components.Carousel.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.IDE\Flare.Components.IDE.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.Kanban\Flare.Components.Kanban.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.Media\Flare.Components.Media.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.QrCode\Flare.Components.QrCode.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.RichTextEditor\Flare.Components.RichTextEditor.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Components.Transfer\Flare.Components.Transfer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

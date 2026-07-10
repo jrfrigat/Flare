@@ -9,7 +9,7 @@ internal sealed class ComponentExtractor
     private const string ParameterAttr = "Microsoft.AspNetCore.Components.ParameterAttribute";
     private const string CascadingParameterAttr = "Microsoft.AspNetCore.Components.CascadingParameterAttribute";
     private const string EditorRequiredAttr = "Microsoft.AspNetCore.Components.EditorRequiredAttribute";
-    private const string BaseTypeName = "Flare.Core.Components.FlareComponentBase";
+    internal const string BaseTypeName = "Flare.Components.FlareComponentBase";
 
     private readonly XmlDocReader _docs;
     private readonly NullabilityInfoContext _nullability = new();

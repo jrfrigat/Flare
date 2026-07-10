@@ -142,7 +142,7 @@ static List<Assembly> LoadFlareAssemblies(string dir)
 static Type? FindBaseComponent(Type type)
 {
     for (var b = type.BaseType; b is not null; b = b.BaseType)
-        if (b.FullName == "Flare.Core.Components.FlareComponentBase")
+        if (b.FullName == ComponentExtractor.BaseTypeName)
             return b;
     return null;
 }
