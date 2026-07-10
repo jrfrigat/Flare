@@ -23,6 +23,8 @@
     [Parameter] public int? Lg { get; set; }  // >=1280px
     /// <summary>Column span at the xl breakpoint (>=1920px).</summary>
     [Parameter] public int? Xl { get; set; }  // >=1920px
+    /// <summary>Column span at the xxl breakpoint (>=2560px).</summary>
+    [Parameter] public int? Xxl { get; set; }  // >=2560px
     /// <summary>Number of columns to offset (push) the column from the left.</summary>
     [Parameter] public int Offset { get; set; }
 
@@ -41,6 +43,7 @@
             if (Md is int md) parts.Add($"--flare-col-span-md:{md}");
             if (Lg is int lg) parts.Add($"--flare-col-span-lg:{lg}");
             if (Xl is int xl) parts.Add($"--flare-col-span-xl:{xl}");
+            if (Xxl is int xxl) parts.Add($"--flare-col-span-xxl:{xxl}");
             // ColStart wins over Offset; Offset N starts the column at line N+1.
             var start = ColStart ?? (Offset > 0 ? Offset + 1 : (int?)null);
             if (start is int s) parts.Add($"--flare-col-start:{s}");

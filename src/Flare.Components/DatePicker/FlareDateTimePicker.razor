@@ -5,7 +5,7 @@
 @using System.Linq.Expressions
 @inject TimeProvider TimeProvider
 @inject Flare.Components.Services.IElementJsService Element
-@inject Flare.Components.Services.IUiJsService Ui
+@inject IBrowserViewportService Viewport
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The date-time field owns its
    trigger well (input + calendar/clock toggle) and the anchored combined popup, rendered in the Field slot. *@
@@ -116,9 +116,8 @@
     private double _panelLeft;
     private double _panelMinWidth = 280;
     private bool _is24Hour;
-    private string _bp = "Xs";
-    private DotNetObjectReference<FlareDateTimePicker>? _bpRef;
-    private readonly string _bpId = $"dtp-{Guid.NewGuid():N}";
+    private Breakpoint _bp = Breakpoint.Xs;
+    private IAsyncDisposable? _bpSubscription;
     private string _text = string.Empty;
     private DateTimeOffset? _syncedValue;
     private bool _focused;
@@ -143,7 +142,7 @@
     private DateTimeVariant _effectiveVariant => Mode switch
     {
         DateTimeVariant.Panels => DateTimeVariant.Panels,
-        DateTimeVariant.Auto => _bp is "Md" or "Lg" or "Xl" ? DateTimeVariant.Panels : DateTimeVariant.Tabs,
+        DateTimeVariant.Auto => _bp.IsAtLeast(Breakpoint.Md) ? DateTimeVariant.Panels : DateTimeVariant.Tabs,
         _ => DateTimeVariant.Tabs,
     };
     private bool _panels => _effectiveVariant == DateTimeVariant.Panels;
@@ -355,17 +354,14 @@
         {
             try
             {
-                _bpRef = DotNetObjectReference.Create(this);
-                _bp = await Ui.SubscribeBreakpointAsync(_bpId, _bpRef);
-                StateHasChanged();
+                // Auto layout tracks the viewport tier; the service reports it immediately and on change.
+                _bpSubscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointAsync);
             }
             catch { /* breakpoint sync is best-effort */ }
         }
     }
 
-    /// <summary>JS callback when the viewport breakpoint changes (Auto layout).</summary>
-    [JSInvokable]
-    public Task OnBreakpointChanged(string breakpoint)
+    private Task OnBreakpointAsync(Breakpoint breakpoint)
     {
         _bp = breakpoint;
         return InvokeAsync(StateHasChanged);
@@ -373,8 +369,10 @@
 
     public override async ValueTask DisposeAsync()
     {
-        try { await Ui.UnsubscribeBreakpointAsync(_bpId); } catch { }
-        _bpRef?.Dispose();
+        if (_bpSubscription is not null)
+        {
+            try { await _bpSubscription.DisposeAsync(); } catch { }
+        }
         await base.DisposeAsync();
     }
 }

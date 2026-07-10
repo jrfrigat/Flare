@@ -1,6 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject Flare.Components.Services.IUiJsService Ui
+@inject IBrowserViewportService Viewport
 @implements IAsyncDisposable
 
 @if (ChildContent is not null)
@@ -30,9 +30,7 @@
     protected override string ComponentCssClass => Css.Classes.MediaQuery.Root;
 
     private Breakpoint _current;
-    private bool _appliedOnce;
-    private DotNetObjectReference<FlareMediaQuery>? _ref;
-    private readonly string _id = Guid.NewGuid().ToString("N");
+    private IAsyncDisposable? _subscription;
 
     protected override void OnInitialized() => _current = InitialBreakpoint;
 
@@ -41,35 +39,29 @@
         if (!firstRender) return;
         try
         {
-            _ref = DotNetObjectReference.Create(this);
-            var bp = await Ui.SubscribeBreakpointAsync(_id, _ref);
-            await ApplyAsync(bp);
+            // One call: the service delivers the current breakpoint immediately and on every change.
+            _subscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointAsync);
         }
         catch (InvalidOperationException) { /* prerender */ }
         catch (JSDisconnectedException) { }
     }
 
-    [JSInvokable]
-    public Task OnBreakpointChanged(string bp) => ApplyAsync(bp);
-
-    private async Task ApplyAsync(string bp)
+    private async Task OnBreakpointAsync(Breakpoint bp)
     {
-        if (!Enum.TryParse<Breakpoint>(bp, out var parsed)) return;
-        if (parsed == _current && _appliedOnce) return;
-        _appliedOnce = true;
-        var changed = parsed != _current;
-        _current = parsed;
-        if (changed)
-            await OnChanged.InvokeAsync(_current);
+        if (bp == _current) return;
+        _current = bp;
+        await OnChanged.InvokeAsync(_current);
         await InvokeAsync(StateHasChanged);
     }
 
     public override async ValueTask DisposeAsync()
     {
-        try { await Ui.UnsubscribeBreakpointAsync(_id); }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        _ref?.Dispose();
+        if (_subscription is not null)
+        {
+            try { await _subscription.DisposeAsync(); }
+            catch (InvalidOperationException) { }
+            catch (JSDisconnectedException) { }
+        }
         await base.DisposeAsync();
     }
 }

@@ -68,52 +68,60 @@
 @media (min-width: 1920px) {
   .flare-col { grid-column: var(--flare-col-start, auto) / span var(--flare-col-span-xl, var(--flare-col-span-lg, var(--flare-col-span-md, var(--flare-col-span-sm, var(--flare-col-span, 1))))); }
 }
+@media (min-width: 2560px) {
+  .flare-col { grid-column: var(--flare-col-start, auto) / span var(--flare-col-span-xxl, var(--flare-col-span-xl, var(--flare-col-span-lg, var(--flare-col-span-md, var(--flare-col-span-sm, var(--flare-col-span, 1)))))); }
+}
 
-/* FlareHidden - CSS-only responsive visibility */
-@media (max-width: 599.98px)                    { .flare-hidden--only-xs,
-                                                   .flare-hidden--below-sm,
-                                                   .flare-hidden--below-md,
-                                                   .flare-hidden--below-lg,
-                                                   .flare-hidden--below-xl { display: none !important; } }
-@media (min-width: 600px) and (max-width: 959.98px)  { .flare-hidden--only-sm { display: none !important; } }
-@media (min-width: 960px) and (max-width: 1279.98px) { .flare-hidden--only-md { display: none !important; } }
-@media (min-width: 1280px) and (max-width: 1919.98px){ .flare-hidden--only-lg { display: none !important; } }
-@media (min-width: 1920px)                      { .flare-hidden--only-xl,
-                                                   .flare-hidden--above-lg,
-                                                   .flare-hidden--above-md,
-                                                   .flare-hidden--above-sm,
-                                                   .flare-hidden--above-xs { display: none !important; } }
+/* FlareHidden - CSS-only responsive visibility (tiers: xs<600, sm, md, lg, xl, xxl>=2560) */
+
+/* only-{bp}: hide while the viewport is within that tier's range */
+@media (max-width: 599.98px)                          { .flare-hidden--only-xs { display: none !important; } }
+@media (min-width: 600px)  and (max-width: 959.98px)  { .flare-hidden--only-sm { display: none !important; } }
+@media (min-width: 960px)  and (max-width: 1279.98px) { .flare-hidden--only-md { display: none !important; } }
+@media (min-width: 1280px) and (max-width: 1919.98px) { .flare-hidden--only-lg { display: none !important; } }
+@media (min-width: 1920px) and (max-width: 2559.98px) { .flare-hidden--only-xl { display: none !important; } }
+@media (min-width: 2560px)                            { .flare-hidden--only-xxl { display: none !important; } }
+
+/* below-{bp}: hide while the viewport is narrower than that tier's lower bound */
+@media (max-width: 599.98px)  { .flare-hidden--below-sm { display: none !important; } }
+@media (max-width: 959.98px)  { .flare-hidden--below-md { display: none !important; } }
+@media (max-width: 1279.98px) { .flare-hidden--below-lg { display: none !important; } }
+@media (max-width: 1919.98px) { .flare-hidden--below-xl { display: none !important; } }
+@media (max-width: 2559.98px) { .flare-hidden--below-xxl { display: none !important; } }
+
+/* above-{bp}: hide once the viewport reaches the NEXT tier's lower bound */
 @media (min-width: 600px)  { .flare-hidden--above-xs { display: none !important; } }
 @media (min-width: 960px)  { .flare-hidden--above-sm { display: none !important; } }
 @media (min-width: 1280px) { .flare-hidden--above-md { display: none !important; } }
 @media (min-width: 1920px) { .flare-hidden--above-lg { display: none !important; } }
-@media (max-width: 959.98px)  { .flare-hidden--below-md { display: none !important; } }
-@media (max-width: 1279.98px) { .flare-hidden--below-lg { display: none !important; } }
-@media (max-width: 1919.98px) { .flare-hidden--below-xl { display: none !important; } }
+@media (min-width: 2560px) { .flare-hidden--above-xl { display: none !important; } }
 
 /* Inverted: shown ONLY where the non-inverted variant would hide. Hidden by default, revealed in range. */
 .flare-hidden--invert-only-xs, .flare-hidden--invert-only-sm, .flare-hidden--invert-only-md,
-.flare-hidden--invert-only-lg, .flare-hidden--invert-only-xl,
+.flare-hidden--invert-only-lg, .flare-hidden--invert-only-xl, .flare-hidden--invert-only-xxl,
 .flare-hidden--invert-below-sm, .flare-hidden--invert-below-md, .flare-hidden--invert-below-lg,
-.flare-hidden--invert-below-xl,
+.flare-hidden--invert-below-xl, .flare-hidden--invert-below-xxl,
 .flare-hidden--invert-above-xs, .flare-hidden--invert-above-sm, .flare-hidden--invert-above-md,
-.flare-hidden--invert-above-lg { display: none !important; }
+.flare-hidden--invert-above-lg, .flare-hidden--invert-above-xl { display: none !important; }
 
 @media (max-width: 599.98px)                          { .flare-hidden--invert-only-xs { display: revert !important; } }
-@media (min-width: 600px) and (max-width: 959.98px)   { .flare-hidden--invert-only-sm { display: revert !important; } }
-@media (min-width: 960px) and (max-width: 1279.98px)  { .flare-hidden--invert-only-md { display: revert !important; } }
+@media (min-width: 600px)  and (max-width: 959.98px)  { .flare-hidden--invert-only-sm { display: revert !important; } }
+@media (min-width: 960px)  and (max-width: 1279.98px) { .flare-hidden--invert-only-md { display: revert !important; } }
 @media (min-width: 1280px) and (max-width: 1919.98px) { .flare-hidden--invert-only-lg { display: revert !important; } }
-@media (min-width: 1920px)                            { .flare-hidden--invert-only-xl { display: revert !important; } }
+@media (min-width: 1920px) and (max-width: 2559.98px) { .flare-hidden--invert-only-xl { display: revert !important; } }
+@media (min-width: 2560px)                            { .flare-hidden--invert-only-xxl { display: revert !important; } }
 
 @media (max-width: 599.98px)  { .flare-hidden--invert-below-sm { display: revert !important; } }
 @media (max-width: 959.98px)  { .flare-hidden--invert-below-md { display: revert !important; } }
 @media (max-width: 1279.98px) { .flare-hidden--invert-below-lg { display: revert !important; } }
 @media (max-width: 1919.98px) { .flare-hidden--invert-below-xl { display: revert !important; } }
+@media (max-width: 2559.98px) { .flare-hidden--invert-below-xxl { display: revert !important; } }
 
 @media (min-width: 600px)  { .flare-hidden--invert-above-xs { display: revert !important; } }
 @media (min-width: 960px)  { .flare-hidden--invert-above-sm { display: revert !important; } }
 @media (min-width: 1280px) { .flare-hidden--invert-above-md { display: revert !important; } }
 @media (min-width: 1920px) { .flare-hidden--invert-above-lg { display: revert !important; } }
+@media (min-width: 2560px) { .flare-hidden--invert-above-xl { display: revert !important; } }
 
 /* Column span + offset are emitted as CSS custom properties by FlareCol (see the .flare-col rules
    above), so they accept any value and are not limited to a fixed 1-12 scale. */

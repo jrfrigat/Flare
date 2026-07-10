@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @implements IAsyncDisposable
 @inherits FlareComponentBase
-@inject Flare.Components.Services.IUiJsService Ui
+@inject IBrowserViewportService Viewport
 @inject NavigationManager Nav
 
 @* Application shell. Compose it from a FlareLayoutAppBar, one or more FlareLayoutDrawer (each owning
@@ -37,8 +37,7 @@
     private string _scrimClass => _ctx.AnyOverlayOpen ? Css.Classes.Layout.ScrimOpen : string.Empty;
 
     private readonly FlareLayoutContext _ctx = new();
-    private readonly string _id = Guid.NewGuid().ToString("N");
-    private DotNetObjectReference<FlareLayout>? _dotNetRef;
+    private IAsyncDisposable? _subscription;
     private bool _isMobile;
 
     protected override void OnInitialized()
@@ -52,17 +51,14 @@
         if (!firstRender || !Responsive) return;
         try
         {
-            _dotNetRef = DotNetObjectReference.Create(this);
-            var bp = await Ui.GetBreakpointAsync();
-            await SetMobileAsync(IsMobile(bp));
-            await Ui.SubscribeBreakpointAsync(_id, _dotNetRef);
+            // The service reports the current breakpoint immediately (in sync) and on every change.
+            _subscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointAsync);
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
     }
 
-    [JSInvokable]
-    public Task OnBreakpointChanged(string breakpoint) => InvokeAsync(() => SetMobileAsync(IsMobile(breakpoint)));
+    private Task OnBreakpointAsync(Breakpoint bp) => InvokeAsync(() => SetMobileAsync(IsMobile(bp)));
 
     private async Task SetMobileAsync(bool mobile)
     {
@@ -79,7 +75,8 @@
             InvokeAsync(async () => { await _ctx.CloseOverlaysAsync(); StateHasChanged(); });
     }
 
-    private static bool IsMobile(string breakpoint) => breakpoint is "Xs" or "Sm";
+    // Mobile = below the Md (960px) bound, i.e. the Xs/Sm tiers.
+    private static bool IsMobile(Breakpoint breakpoint) => breakpoint.IsAtMost(Breakpoint.Sm);
 
     private void OnContextStateChanged() => InvokeAsync(StateHasChanged);
 
@@ -93,8 +90,10 @@
     {
         _ctx.StateChanged -= OnContextStateChanged;
         Nav.LocationChanged -= OnLocationChanged;
-        try { await Ui.UnsubscribeBreakpointAsync(_id); } catch { }
-        _dotNetRef?.Dispose();
+        if (_subscription is not null)
+        {
+            try { await _subscription.DisposeAsync(); } catch { }
+        }
         await base.DisposeAsync();
     }
 }

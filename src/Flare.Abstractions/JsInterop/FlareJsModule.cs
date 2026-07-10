@@ -35,8 +35,10 @@ public abstract class FlareJsModule : IAsyncDisposable
     protected async ValueTask InvokeVoidAsync(string identifier, params object?[] args) =>
         await (await ModuleAsync()).InvokeVoidAsync(identifier, args);
 
-    /// <summary>Disposes the cached module reference (best-effort; ignores teardown races).</summary>
-    public async ValueTask DisposeAsync()
+    /// <summary>Disposes the cached module reference (best-effort; ignores teardown races). Override to
+    /// release additional interop state (e.g. a self <see cref="DotNetObjectReference{T}"/>), then call
+    /// <c>base.DisposeAsync()</c>.</summary>
+    public virtual async ValueTask DisposeAsync()
     {
         if (_module is null) return;
         try

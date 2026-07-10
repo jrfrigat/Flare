@@ -1,6 +1,6 @@
 /* =============================================
    Flare Responsive Breakpoints & Utilities
-   xs: 0-599px | sm: 600px | md: 960px | lg: 1280px | xl: 1920px
+   xs: 0-599px | sm: 600px | md: 960px | lg: 1280px | xl: 1920px | xxl: 2560px
    ============================================= */
 
 /* Breakpoint CSS custom properties (read-only reference values). Names match Css.Tokens.Breakpoint.* */
@@ -10,6 +10,7 @@
     --flare-breakpoint-md: 960px;
     --flare-breakpoint-lg: 1280px;
     --flare-breakpoint-xl: 1920px;
+    --flare-breakpoint-xxl: 2560px;
 }
 
 /* --- Visibility utilities --- */
