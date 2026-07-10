@@ -881,6 +881,29 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareCode"] = new ApiComponentInfo(
+            @"FlareCode",
+            @"Flare.Components.FlareCode",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The code text (or markup) rendered inside the inline <code> element.", null, false, false, false, @"FlareCode"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareCodeBlock"] = new ApiComponentInfo(
             @"FlareCodeBlock",
             @"Flare.Components.FlareCodeBlock",
@@ -1183,6 +1206,7 @@ public static class ComponentApiRegistry
                 @"FlareChipStrip",
                 @"FlareClipboard",
                 @"FlareClockDial",
+                @"FlareCode",
                 @"FlareCodeBlock",
                 @"FlareCol",
                 @"FlareCollapse",
@@ -1196,6 +1220,8 @@ public static class ComponentApiRegistry
                 @"FlareDatePicker",
                 @"FlareDateRangePicker",
                 @"FlareDateTimePicker",
+                @"FlareDescriptionItem",
+                @"FlareDescriptionList",
                 @"FlareDialog",
                 @"FlareDialogProvider",
                 @"FlareDivider",
@@ -1665,6 +1691,57 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareDescriptionItem"] = new ApiComponentInfo(
+            @"FlareDescriptionItem",
+            @"Flare.Components.FlareDescriptionItem",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The value/description content shown in the second column.", null, false, false, false, @"FlareDescriptionItem"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"The term/label text. Use LabelContent for rich label markup (e.g. a chip).", null, false, false, false, @"FlareDescriptionItem"),
+                new ApiParameterInfo(@"LabelContent", @"RenderFragment?", null, @"Rich label markup; overrides Label when set.", null, false, false, false, @"FlareDescriptionItem"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareDescriptionList"] = new ApiComponentInfo(
+            @"FlareDescriptionList",
+            @"Flare.Components.FlareDescriptionList",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Bordered", @"bool", @"false", @"Draws a divider under every row.", null, false, false, false, @"FlareDescriptionList"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The rows, typically FlareDescriptionItem components.", null, false, false, false, @"FlareDescriptionList"),
+                new ApiParameterInfo(@"LabelWidth", @"string?", null, @"Width of the label column (any CSS length, e.g. ""12rem""). When null the column sizes to the widest label.", null, false, false, false, @"FlareDescriptionList"),
+                new ApiParameterInfo(@"Striped", @"bool", @"false", @"Tints alternate rows for readability.", null, false, false, false, @"FlareDescriptionList"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareDialog"] = new ApiComponentInfo(
             @"FlareDialog",
             @"Flare.Components.FlareDialog",
@@ -2021,11 +2098,13 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types as a MIME or extension filter string.", null, false, false, false, @"FlareFileUpload"),
+                new ApiParameterInfo(@"ButtonText", @"string?", null, @"Label for the Button trigger. Defaults to the localized ""choose file"" text.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the upload zone when true.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"DropText", @"string?", null, @"Instructional text shown inside the drop zone. Defaults to the localized ""FileUpload_DropText"" string.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUpload"),
+                new ApiParameterInfo(@"Variant", @"FileUploadVariant", @"FileUploadVariant.DropZone", @"The visual form of the trigger - a drag-and-drop zone (default) or a compact button.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -2242,6 +2321,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AlignItems", @"FlareAlignItems", @"FlareAlignItems.Default", @"Aligns grid items along the block (column) axis.", null, false, false, false, @"FlareGrid"),
+                new ApiParameterInfo(@"AutoFit", @"bool", @"false", @"Only meaningful together with MinColumnWidth. When true the track set uses auto-fit instead of auto-fill, so the present items stretch to consume the whole row (empty trailing tracks collapse). Use it for a card wall that should always fill its width; leave it false to keep items at their minimum size and preserve the empty trailing tracks.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered inside the grid.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"ColumnGap", @"string?", null, @"Overrides the column gap independently (raw CSS value, e.g. ""0.5rem"").", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"Columns", @"int", @"12", @"Number of equal-width columns in the grid. Ignored when MinColumnWidth is set.", null, false, false, false, @"FlareGrid"),
@@ -4397,6 +4477,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Row", @"bool", @"false", @"Flex direction - row or column (default).", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"StretchFirst", @"bool", @"false", @"When true, only the first direct child grows to fill the remaining main-axis space (flex: 1 1 auto) while the others keep their natural size - e.g. a title that expands to push trailing actions to the edge. Ignored when StretchItems is set.", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"StretchItems", @"bool", @"false", @"When true, every direct child grows to share the available space equally along the main axis (each child gets flex: 1 1 0). Use it to make items fill a row/column evenly.", null, false, false, false, @"FlareStack"),
+                new ApiParameterInfo(@"StretchLast", @"bool", @"false", @"When true, only the last direct child grows to fill the remaining main-axis space (flex: 1 1 auto) while the others keep their natural size - e.g. a fixed leading rail with a content pane that fills the rest. Ignored when StretchItems or StretchFirst is set.", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"Wrap", @"bool", @"false", @"Allows children to wrap onto multiple lines.", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -4757,6 +4838,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Text content rendered inside the typography element.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Text color. Role (FlareColor.Primary) -> shared class; custom (FlareColor.Custom(""#..."")) -> inline token. Default inherits.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Element", @"string?", null, @"HTML element to render (e.g. ""h1""..""h5"", ""p"", ""span""). When null a sensible default for the Typo is used.", null, false, false, false, @"FlareText"),
+                new ApiParameterInfo(@"Mono", @"bool", @"false", @"When true, renders in the monospace font - for code-like runs and keystrokes (pair with Element=""code""/""kbd""). It only swaps the font; for the tonal inline-code chip use FlareCode.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale", @"TypographyScale.BodyMedium", @"Type-scale role applied to the text (defaults to BodyMedium).", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Weight", @"FontWeight", @"FontWeight.Default", @"Font weight override. Default keeps the type scale's weight.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -6203,6 +6285,22 @@ public static class ComponentApiRegistry
                 @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTimePicker",
+            });
+
+        e[@"FileUploadVariant"] = new ApiEnumInfo(
+            @"FileUploadVariant",
+            @"Flare.Components.FileUploadVariant",
+            @"Flare.Components",
+            @"The visual form a FlareFileUpload presents.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"DropZone", @"0", @"A large dashed drag-and-drop area that also opens the file dialog on click (default)."),
+                new ApiEnumMember(@"Button", @"1", @"A single compact button that opens the OS file dialog - no drop area."),
+            },
+            new string[]
+            {
+                @"FlareFileUpload",
             });
 
         e[@"FilterOperator"] = new ApiEnumInfo(
