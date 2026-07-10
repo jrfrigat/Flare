@@ -2489,6 +2489,12 @@ Select и MultiSelect перестроены на быстром headless-ядр
 Ещё около 100 стилей компонентов стали настраиваемыми токенами
 Исправлена группа проблем доступности и тем в навигации, диалогах, drawer и полях ввода</value>
   </data>
+  <data name="About_WhatsNewV16" xml:space="preserve">
+    <value>Новый FlareDescriptionList / FlareDescriptionItem: read-only панель пар "ключ - значение" (read-only аналог FlareDataGrid) с опциями Striped, Bordered и LabelWidth и произвольным содержимым метки
+Новый инлайновый код-чип FlareCode и FlareText.Mono для моноширинных токенов в тексте (code/kbd/samp/pre теперь рендерятся как настоящие семантические элементы)
+FlareFileUpload получил компактный вариант Button, открывающий системный диалог выбора файла без зоны перетаскивания
+FlareGrid.AutoFit заполняет строку имеющимися карточками (без пустых хвостовых дорожек); FlareStack.StretchLast растит только последний дочерний элемент</value>
+  </data>
   <data name="About_WhatsNewV15" xml:space="preserve">
     <value>Новый IBrowserViewportService: один инжектируемый сервис для текущего брейкпоинта и размера вьюпорта, произвольных медиа-запросов (MatchesAsync), троттлированных подписок на ресайз/брейкпоинт и ResizeObserver по элементу - отписка через dispose токена (без возни с DotNetObjectReference)
 Новый брейкпоинт Xxl (от 2560px): Breakpoint.Xxl и соответствующая колонка FlareCol.Xxl

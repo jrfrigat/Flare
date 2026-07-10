@@ -2489,6 +2489,12 @@ Leaner CSS: shared input, picker, and listbox styles cut duplication across the 
 About 100 more component styles are now themeable knobs you can override
 Fixed a batch of accessibility and theme bugs across nav, dialogs, drawers, and inputs</value>
   </data>
+  <data name="About_WhatsNewV16" xml:space="preserve">
+    <value>New FlareDescriptionList / FlareDescriptionItem: a read-only key/value detail panel (the read-only analogue of FlareDataGrid) with Striped, Bordered and LabelWidth options and rich label content
+New FlareCode inline code chip and FlareText.Mono for monospace tokens mid-prose (code/kbd/samp/pre now render as real semantic elements)
+FlareFileUpload gains a compact Button variant that opens the OS file dialog with no drop zone
+FlareGrid.AutoFit fills the row with the present cards (no empty trailing tracks); FlareStack.StretchLast grows only the last child</value>
+  </data>
   <data name="About_WhatsNewV15" xml:space="preserve">
     <value>New IBrowserViewportService: one injected service for the current breakpoint and viewport size, arbitrary media-query checks (MatchesAsync), throttled resize/breakpoint subscriptions and per-element ResizeObserver - dispose the returned token to unsubscribe (no DotNetObjectReference plumbing)
 New Xxl breakpoint (2560px and up): Breakpoint.Xxl and a matching FlareCol.Xxl column span

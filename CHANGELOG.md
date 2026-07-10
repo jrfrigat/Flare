@@ -3,6 +3,28 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.4] - 2026-07-11
+
+### Added
+- **`FlareDescriptionList` / `FlareDescriptionItem`** - a read-only key/value detail panel (the
+  read-only analogue of `FlareDataGrid`), rendered as a semantic `<dl>` two-column grid so labels and
+  values stay aligned across rows regardless of content width. `Striped`, `Bordered` and `LabelWidth`
+  options; each item takes a plain `Label` or rich `LabelContent`, and lists nest by placing a
+  `FlareDescriptionList` inside a value.
+- **`FlareCode`** - a themed inline `<code>` chip (monospace on a subtle surface-container tonal chip,
+  extra-small radius) for a code token mid-prose, matching the inline-code recipe used by the Markdown
+  renderer so prose and standalone tokens read identically.
+- **`FlareText.Mono`** - swaps `FlareText` to a monospace font while keeping the type-scale metrics;
+  `code`, `kbd`, `samp` and `pre` are added to the element allow-list, so `<FlareText Element="kbd" Mono>`
+  renders real keystrokes.
+- **`FlareFileUpload.Variant`** (`FileUploadVariant.DropZone | Button`) - a compact button form factor
+  that opens the OS file dialog with no drop area, reusing the same selected-file list, plus a localized
+  `ButtonText`.
+- **`FlareGrid.AutoFit`** - with `MinColumnWidth` set, emits `repeat(auto-fit, ...)` instead of
+  `auto-fill` so the present cards stretch to fill the row with no empty trailing tracks.
+- **`FlareStack.StretchLast`** - the mirror of `StretchFirst`: only the last child grows, for a fixed
+  leading rail beside a pane that fills the rest.
+
 ## [0.1.3] - 2026-07-10
 
 ### Added
