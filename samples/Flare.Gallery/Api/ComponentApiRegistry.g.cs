@@ -40,9 +40,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AllowMultiple", @"bool", @"false", @"When true, multiple panels can be expanded simultaneously.", null, false, false, false, @"FlareAccordion"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Accordion panels rendered as children.", null, false, false, false, @"FlareAccordion"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -68,9 +68,10 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ExpandedChanged", @"EventCallback<bool>", null, @"Callback fired when the expanded state changes.", null, false, true, false, @"FlareAccordionPanel"),
                 new ApiParameterInfo(@"Header", @"string", @"""""", @"Text displayed in the panel's toggle header button.", null, false, false, false, @"FlareAccordionPanel"),
                 new ApiParameterInfo(@"HeaderContent", @"RenderFragment?", null, @"Rich header content (icons, badges, custom markup); overrides Header when set.", null, false, false, false, @"FlareAccordionPanel"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"OnBeforeToggle", @"Func<bool, Task<bool>>?", null, @"Async guard fired before the panel toggles (the argument is the proposed expanded state); return false to block it -- e.g. confirm before collapsing a panel with unsaved edits.", null, false, false, false, @"FlareAccordionPanel"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -101,9 +102,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowCloseButton", @"bool", @"false", @"Shows a close button that hides the alert. Alias for Dismissible for discoverability.", null, false, false, false, @"FlareAlert"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Optional bold title displayed above the alert body.", null, false, false, false, @"FlareAlert"),
                 new ApiParameterInfo(@"Variant", @"AlertVariant", @"AlertVariant.Filled", @"Visual display variant: Filled (default), Outlined, or Text.", null, false, false, false, @"FlareAlert"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -131,58 +132,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Title", @"string?", null, @"Plain-text title displayed in the app bar.", null, false, false, false, @"FlareAppBar"),
                 new ApiParameterInfo(@"TitleContent", @"RenderFragment?", null, @"Custom content rendered in the title area.", null, false, false, false, @"FlareAppBar"),
                 new ApiParameterInfo(@"Trailing", @"RenderFragment?", null, @"Content placed at the trailing (right) edge.", null, false, false, false, @"FlareAppBar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
-            new string[]
-            {
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
-        c[@"FlareAutocomplete"] = new ApiComponentInfo(
-            @"FlareAutocomplete",
-            @"Flare.Components.FlareAutocomplete",
-            @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Clearable", @"bool", null, @"Shows a clear (x) button that resets the value and text.", null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"DebounceMs", @"int", null, @"Milliseconds to wait after user input before triggering search. Default: 300ms.", null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Disabled", @"bool", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"GetLabel", @"Func<TValue?, string>", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"GroupBy", @"Func<TValue?, string>?", null, @"Returns the group label for an item. When non-null, dropdown items are grouped.", null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TValue?>?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Items", @"IEnumerable<TValue?>?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Label", @"string?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"MaxItems", @"int", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"MinChars", @"int", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"NoResultsText", @"string", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"SearchFunc", @"Func<string, Task<IEnumerable<TValue?>>>?", null, null, null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl), shared with FlareField. Medium is the default field height.", null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Value", @"TValue?", null, @"Currently selected value (supports @bind-Value).", null, false, false, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, null, null, false, true, false, @"FlareAutocomplete"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) independent of the theme, shared with FlareField. Default keeps the theme's field style (MD3 filled / Fluent outlined).", null, false, false, false, @"FlareAutocomplete"),
-            },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -202,14 +156,16 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Alt", @"string?", null, @"Alt text for the avatar image element.", null, false, false, false, @"FlareAvatar"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Background color of the avatar. Role -> shared class (tonal); custom -> inline tokens. Default = a stable color picked from the text.", null, false, false, false, @"FlareAvatar"),
+                new ApiParameterInfo(@"FallbackContent", @"RenderFragment?", null, @"Custom content rendered when the avatar has no image and no text, in place of the default FallbackIcon (e.g. a custom FlareIcon, an emoji, or an SVG).", null, false, false, false, @"FlareAvatar"),
+                new ApiParameterInfo(@"FallbackIcon", @"string", @"""person""", @"Material Symbols icon name shown when the avatar has no image and no text. Defaults to person. Ignored when FallbackContent is set.", null, false, false, false, @"FlareAvatar"),
                 new ApiParameterInfo(@"Group", @"FlareAvatarGroup?", null, @"Parent avatar group that manages max-visible and overflow counting.", null, true, false, false, @"FlareAvatar"),
                 new ApiParameterInfo(@"Shape", @"AvatarShape", @"AvatarShape.Circle", @"Shape of the avatar: Circle, Square, or Rounded.", null, false, false, false, @"FlareAvatar"),
                 new ApiParameterInfo(@"Size", @"AvatarSize", @"AvatarSize.Md", @"Size variant controlling the avatar dimensions.", null, false, false, false, @"FlareAvatar"),
                 new ApiParameterInfo(@"Src", @"string?", null, @"URL of the image displayed as the avatar.", null, false, false, false, @"FlareAvatar"),
                 new ApiParameterInfo(@"Text", @"string?", null, @"Name or initials text used when no image is provided.", null, false, false, false, @"FlareAvatar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -233,9 +189,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Max", @"int", @"5", @"Maximum number of avatars to display before showing an overflow badge.", null, false, false, false, @"FlareAvatarGroup"),
                 new ApiParameterInfo(@"Size", @"AvatarSize", @"AvatarSize.Md", @"Size shared by the overflow badge (child avatars set their own size).", null, false, false, false, @"FlareAvatarGroup"),
                 new ApiParameterInfo(@"Spacing", @"string", @"""-0.75rem""", @"Negative margin applied between avatars, e.g. ""-0.75rem"".", null, false, false, false, @"FlareAvatarGroup"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -260,9 +216,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"NavContent", @"RenderFragment?", null, @"Left navigation entries, typically FlareBackstageItem components.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Whether the backstage is shown.", null, false, false, false, @"FlareBackstage"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Raised when the open state changes (e.g. the back arrow closes it). Supports two-way binding.", null, false, true, false, @"FlareBackstage"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -287,9 +243,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Icon", @"string?", null, @"Material icon name shown before the label.", null, false, false, false, @"FlareBackstageItem"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"The entry's text.", null, false, false, false, @"FlareBackstageItem"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Raised when the entry is clicked.", null, false, true, false, @"FlareBackstageItem"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -319,11 +275,70 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Standalone", @"bool", @"false", @"Renders the badge as an inline pill instead of a corner indicator. Enabled automatically when there is no ChildContent anchor.", null, false, false, false, @"FlareBadge"),
                 new ApiParameterInfo(@"Text", @"string?", null, @"Arbitrary text label shown on the indicator. Overrides Count when set.", null, false, false, false, @"FlareBadge"),
                 new ApiParameterInfo(@"Visible", @"bool", @"true", @"Controls visibility of the badge indicator.", null, false, false, false, @"FlareBadge"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareBottomNav"] = new ApiComponentInfo(
+            @"FlareBottomNav",
+            @"Flare.Components.FlareBottomNav",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the navigation landmark, forwarded as aria-label.", null, false, false, false, @"FlareBottomNav"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The FlareBottomNavItem entries rendered inside the bar, laid out with equal flex distribution across the available width.", null, false, false, false, @"FlareBottomNav"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareBottomNavItem"] = new ApiComponentInfo(
+            @"FlareBottomNavItem",
+            @"Flare.Components.FlareBottomNavItem",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Active", @"bool", @"false", @"Forces the active state regardless of current route.", null, false, false, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Label content rendered under the icon.", null, false, false, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents navigation and interaction when true.", null, false, false, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"Href", @"string?", null, @"URL the item navigates to.", null, false, false, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"Icon rendered above the label.", null, false, false, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"Match", @"NavMatchMode", @"NavMatchMode.Prefix", @"Route matching strategy - prefix or exact.", null, false, false, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"OnActiveChanged", @"EventCallback<bool>", null, @"Callback fired when the item's active state changes (true when it becomes active).", null, false, true, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback fired when the item is clicked.", null, false, true, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"Tooltip", @"string?", null, @"Optional native tooltip (title).", null, false, false, false, @"FlareBottomNavItem"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -348,9 +363,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ItemsBeforeCollapse", @"int", @"1", @"Number of leading items kept visible when collapsed. Default 1.", null, false, false, false, @"FlareBreadcrumb"),
                 new ApiParameterInfo(@"MaxItems", @"int", @"0", @"When the item count exceeds this value, the middle items collapse into an expandable ellipsis (Items mode only). 0 (default) disables collapsing.", null, false, false, false, @"FlareBreadcrumb"),
                 new ApiParameterInfo(@"Separator", @"string", @"""/""", @"Character or string rendered between breadcrumb items.", null, false, false, false, @"FlareBreadcrumb"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -382,7 +397,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LoadingText", @"string?", null, @"Replaces the button label text while Loading is true.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the button is clicked.", null, false, true, false, @"FlareButton"),
                 new ApiParameterInfo(@"OnColor", @"string?", null, @"Optional foreground color for the filled variant when Color is a custom color.", null, false, false, false, @"FlareButton"),
-                new ApiParameterInfo(@"PressMorph", @"bool", @"false", @"Opt-in MD3 Expressive press morph: the corner radius animates while the button is pressed.", null, false, false, false, @"FlareButton"),
+                new ApiParameterInfo(@"PressMorph", @"bool", @"false", @"Opt-in press morph: the corner radius animates while the button is pressed.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button. Default keeps the theme's native shape; Rounded, Circular and Square force a rounded rectangle, pill, or sharp corners.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the button.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link button (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareButton"),
@@ -390,9 +405,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Type", @"ButtonType", @"ButtonType.Button", @"HTML type attribute of the button element (Button, Submit, or Reset).", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Overrides the label's typography with a type-scale value (font family/size/weight/line-height). When null (default) the label uses the per-Size button label typography.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Filled", @"Visual style variant of the button.", null, false, false, false, @"FlareButton"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -418,9 +433,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"ButtonSize?", null, @"Size applied to all buttons in the group. Null keeps each button's own Size.", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"Variant", @"ButtonVariant?", null, @"Visual style variant applied to all buttons in the group. Null keeps each button's own Variant.", null, false, false, false, @"FlareButtonGroup"),
                 new ApiParameterInfo(@"Vertical", @"bool", @"false", @"Layout vertical direction of the group.", null, false, false, false, @"FlareButtonGroup"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -449,9 +464,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnEventClick", @"EventCallback<CalendarEvent>", null, @"Callback raised when the user clicks on a calendar event.", null, false, true, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"SelectedDate", @"DateOnly?", null, @"Currently selected date value.", null, false, false, false, @"FlareCalendar"),
                 new ApiParameterInfo(@"SelectedDateChanged", @"EventCallback<DateOnly>", null, @"Callback raised when the selected date changes.", null, false, true, false, @"FlareCalendar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -472,7 +487,8 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered inside the card. Compose with FlareCardMedia / FlareCardHeader / FlareCardContent / FlareCardFooter / FlareCardActions.", null, false, false, false, @"FlareCard"),
-                new ApiParameterInfo(@"Compact", @"bool", @"false", @"When true, lays the card out horizontally (media on the leading side, content beside it), like FluentUI 2 horizontal orientation. Default false (vertical).", null, false, false, false, @"FlareCard"),
+                new ApiParameterInfo(@"Compact", @"bool", @"false", @"When true, lays the card out horizontally (media on the leading side, content beside it). Default false (vertical).", null, false, false, false, @"FlareCard"),
+                new ApiParameterInfo(@"Elevation", @"int?", null, @"Overrides the card's drop shadow with an explicit elevation level (0-5 on the elevation scale, clamped). Elevation=""0"" is flat (no shadow); higher values lift the card further. When null (default) each Variant keeps its own elevation - Elevated is level 1, while Filled/Outlined/Tonal/Text are flat. The level is applied through the --flare-card-elevation variable rather than the final box-shadow, so a clickable elevated card still lifts on hover.", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"When set, the card renders as a link (<a>) to this URL.", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Click handler. When set (or Href), the card becomes interactive (hover state layer, role=button, keyboard focus).", null, false, true, false, @"FlareCard"),
                 new ApiParameterInfo(@"OnSelectionChange", @"EventCallback<bool>", null, @"Fired with the new selected state whenever the user toggles a selectable card.", null, false, true, false, @"FlareCard"),
@@ -482,9 +498,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"CardSize", @"CardSize.Md", @"Overall size - controls corner radius and inner gap. Default Md.", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link card (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareCard"),
                 new ApiParameterInfo(@"Variant", @"CardVariant", @"CardVariant.Elevated", @"Visual variant - Elevated (default), Filled, Outlined, Tonal, or Text. Mirrors ButtonVariant.", null, false, false, false, @"FlareCard"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -506,9 +522,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"Align", @"CardActionsAlign", @"CardActionsAlign.Start", @"Horizontal alignment of the actions. Default Start.", null, false, false, false, @"FlareCardActions"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Action buttons of the card (e.g. FlareButton).", null, false, false, false, @"FlareCardActions"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -529,9 +545,9 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main body content of the card.", null, false, false, false, @"FlareCardContent"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -552,9 +568,9 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Footer content of the card (metadata, status, links). For button rows prefer FlareCardActions.", null, false, false, false, @"FlareCardFooter"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -579,9 +595,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Custom header content; overrides Title/Subtitle.", null, false, false, false, @"FlareCardHeader"),
                 new ApiParameterInfo(@"Subtitle", @"string?", null, @"Subtitle text (used when ChildContent is not provided).", null, false, false, false, @"FlareCardHeader"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Title text (used when ChildContent is not provided).", null, false, false, false, @"FlareCardHeader"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -604,9 +620,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Alt", @"string?", null, @"Alternative text for the image (accessibility).", null, false, false, false, @"FlareCardMedia"),
                 new ApiParameterInfo(@"Height", @"string", @"""12rem""", @"CSS height of the media area (e.g. ""12rem"", ""180px""). Default 12rem.", null, false, false, false, @"FlareCardMedia"),
                 new ApiParameterInfo(@"Src", @"string?", null, @"Image source URL.", null, false, false, false, @"FlareCardMedia"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -626,20 +642,20 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"AutoPlay", @"bool", null, @"Automatically advances slides on a timer.", null, false, false, false, @"FlareCarousel"),
                 new ApiParameterInfo(@"AutoPlayIntervalMs", @"int", null, @"Milliseconds between automatic slide advances.", null, false, false, false, @"FlareCarousel"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TItem?>?", null, @"Template used to render each slide's content.", null, false, false, false, @"FlareCarousel"),
                 new ApiParameterInfo(@"Items", @"IReadOnlyList<TItem?>?", null, @"Data items to render as carousel slides.", null, false, false, false, @"FlareCarousel"),
                 new ApiParameterInfo(@"Loop", @"bool", null, @"Wraps from the last slide back to the first.", null, false, false, false, @"FlareCarousel"),
                 new ApiParameterInfo(@"ShowArrows", @"bool", null, @"Shows previous and next navigation arrow buttons.", null, false, false, false, @"FlareCarousel"),
                 new ApiParameterInfo(@"ShowDots", @"bool", null, @"Shows dot indicators for direct slide navigation.", null, false, false, false, @"FlareCarousel"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -664,9 +680,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Height", @"int", @"220", @"SVG viewport height in pixels.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Optional title displayed above the chart and used as the SVG accessible name.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Type", @"ChartType", @"ChartType.Line", @"Chart rendering type: Line, Bar, Pie, or Donut.", null, false, false, false, @"FlareChart"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -698,13 +714,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"UncheckedIcon", @"RenderFragment?", null, @"Custom icon shown when unchecked.", null, false, false, false, @"FlareCheckbox"),
                 new ApiParameterInfo(@"Value", @"bool?", null, @"Tri-state value: true = checked, false = unchecked, null = indeterminate.", null, false, false, false, @"FlareCheckbox"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<bool?>", null, @"Callback invoked when the checked state changes (always true/false - a click resolves the indeterminate state).", null, false, true, false, @"FlareCheckbox"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -728,7 +744,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Closable", @"bool", @"false", @"Shows a close button to remove the chip. Alias for Closeable.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Closeable", @"bool", @"false", @"Shows a close button to remove the chip.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the chip. Role -> shared color class; custom -> inline tokens. Default = theme default.", null, false, false, false, @"FlareChip"),
-                new ApiParameterInfo(@"Elevated", @"bool", @"false", @"Renders the chip as an elevated chip (filled surface with a shadow, no border).", null, false, false, false, @"FlareChip"),
+                new ApiParameterInfo(@"Elevated", @"bool", @"false", @"Renders the chip as an elevated chip (filled surface with a shadow, no border). Convenience shorthand for Variant=""ChipVariant.Elevated""; when true it overrides Variant.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"GroupContext", @"FlareChipGroupContext?", null, @"Parent chip group context providing selection state management.", null, true, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Text label displayed inside the chip.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon content rendered before the chip label.", null, false, false, false, @"FlareChip"),
@@ -738,9 +754,10 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"SelectedChanged", @"EventCallback<bool>", null, @"Callback raised when the selected state toggles.", null, false, true, false, @"FlareChip"),
                 new ApiParameterInfo(@"Size", @"ChipSize", @"ChipSize.Md", @"Size of the chip.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Value used by FlareChipGroup to identify this chip.", null, false, false, false, @"FlareChip"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Variant", @"ChipVariant", @"ChipVariant.Outlined", @"Visual style of the chip: Outlined (default, bordered), Filled (solid surface fill) or Elevated (filled with a shadow). Setting Elevated is equivalent to Elevated and takes precedence over this parameter when true.", null, false, false, false, @"FlareChip"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -765,9 +782,38 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MultiSelect", @"bool", @"false", @"Allow multiple chips to be selected simultaneously.", null, false, false, false, @"FlareChipGroup"),
                 new ApiParameterInfo(@"SelectedValues", @"IReadOnlyCollection<string>", null, @"The currently selected values.", null, false, false, false, @"FlareChipGroup"),
                 new ApiParameterInfo(@"SelectedValuesChanged", @"EventCallback<IReadOnlyCollection<string>>", null, @"Fires when the selection changes.", null, false, true, false, @"FlareChipGroup"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareChipStrip"] = new ApiComponentInfo(
+            @"FlareChipStrip",
+            @"Flare.Components.FlareChipStrip",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"ChipStyle", @"Func<TItem?, string?>?", null, @"Optional inline style per chip (e.g. a colour), keyed by the item.", null, false, false, false, @"FlareChipStrip"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Items", @"IReadOnlyList<TItem?>", null, @"The selected items to render as chips, in selection order.", null, false, false, true, @"FlareChipStrip"),
+                new ApiParameterInfo(@"Label", @"Func<TItem?, string>", null, @"Resolves a chip's display text when no Template is supplied.", null, false, false, false, @"FlareChipStrip"),
+                new ApiParameterInfo(@"OnRemove", @"EventCallback<TItem?>", null, @"Invoked with the item whose chip remove button was activated.", null, false, true, false, @"FlareChipStrip"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Hides the remove buttons (disabled/read-only field).", null, false, false, false, @"FlareChipStrip"),
+                new ApiParameterInfo(@"RemoveLabel", @"string", null, @"Accessible label for the remove button.", null, false, false, false, @"FlareChipStrip"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Template", @"RenderFragment<TItem?>?", null, @"Custom render template for a chip's content. Overrides the Label text.", null, false, false, false, @"FlareChipStrip"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -794,9 +840,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Sm", @"Button size of the copy control. Default Sm.", null, false, false, false, @"FlareClipboard"),
                 new ApiParameterInfo(@"Text", @"string", @"""""", @"Text copied to the clipboard when the control is activated.", null, false, false, true, @"FlareClipboard"),
                 new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Outlined", @"Button variant of the copy control. Default Outlined.", null, false, false, false, @"FlareClipboard"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -821,9 +867,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Is24Hour", @"bool", @"false", @"24-hour (two rings, no AM/PM) when true; 12-hour with AM/PM when false.", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"Minute", @"int", @"0", @"Minute (0-59).", null, false, false, false, @"FlareClockDial"),
                 new ApiParameterInfo(@"MinuteChanged", @"EventCallback<int>", null, @"Raised when the minute changes.", null, false, true, false, @"FlareClockDial"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -852,13 +898,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"SmartEditing", @"bool", @"true", @"Enables Tab indentation and bracket/quote auto-closing in edit mode. Default true.", null, false, false, false, @"FlareCodeBlock"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The code string displayed (and edited when ReadOnly is false).", null, false, false, false, @"FlareCodeBlock"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string>", null, @"Callback invoked when the user edits the code (ignored while read-only).", null, false, true, false, @"FlareCodeBlock"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -887,9 +933,38 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Span", @"int", @"1", @"Default column span across all breakpoints. Accepts any value (not just 1-12); it is emitted as a CSS variable and resolved by the grid, so it tracks the parent grid's column count.", null, false, false, false, @"FlareCol"),
                 new ApiParameterInfo(@"Xl", @"int?", null, @"Column span at the xl breakpoint (>=1920px).", null, false, false, false, @"FlareCol"),
                 new ApiParameterInfo(@"Xs", @"int?", null, @"Column span at the xs breakpoint (<600px).", null, false, false, false, @"FlareCol"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Xxl", @"int?", null, @"Column span at the xxl breakpoint (>=2560px).", null, false, false, false, @"FlareCol"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareCollapse"] = new ApiComponentInfo(
+            @"FlareCollapse",
+            @"Flare.Components.FlareCollapse",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content revealed when the collapse is expanded.", null, false, false, false, @"FlareCollapse"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the built-in header toggle. A headerless collapse is unaffected (it is controlled only through Expanded).", null, false, false, false, @"FlareCollapse"),
+                new ApiParameterInfo(@"Expanded", @"bool", @"false", @"Whether the content region is expanded. Supports two-way binding (@bind-Expanded).", null, false, false, false, @"FlareCollapse"),
+                new ApiParameterInfo(@"ExpandedChanged", @"EventCallback<bool>", null, @"Fired when the expanded state changes (enables @bind-Expanded).", null, false, true, false, @"FlareCollapse"),
+                new ApiParameterInfo(@"Header", @"string?", null, @"Optional header text. When set (or HeaderContent) a clickable toggle header is rendered; otherwise the collapse is headerless and driven only by Expanded.", null, false, false, false, @"FlareCollapse"),
+                new ApiParameterInfo(@"HeaderContent", @"RenderFragment?", null, @"Rich header content (icons, badges, custom markup); overrides Header when set and renders a clickable toggle header.", null, false, false, false, @"FlareCollapse"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -914,10 +989,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Presets", @"List<ColorPreset>", null, null, null, false, false, false, @"FlareColorCustomizer"),
                 new ApiParameterInfo(@"ResetLabel", @"string?", null, null, null, false, false, false, @"FlareColorCustomizer"),
                 new ApiParameterInfo(@"ShowColorPicker", @"bool", @"true", null, null, false, false, false, @"FlareColorCustomizer"),
+                new ApiParameterInfo(@"ShowContrast", @"bool", @"true", @"Shows a WCAG contrast preview (""Aa"" sample + ratio + AA/AAA/Fail badge) of readable text on the selected primary color.", null, false, false, false, @"FlareColorCustomizer"),
                 new ApiParameterInfo(@"ShowReset", @"bool", @"true", null, null, false, false, false, @"FlareColorCustomizer"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -940,9 +1016,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"DarkLabel", @"string", @"""Dark""", @"Label text when clicking switches to dark mode.", null, false, false, false, @"FlareColorModeToggle"),
                 new ApiParameterInfo(@"LightLabel", @"string", @"""Light""", @"Label text when clicking switches to light mode.", null, false, false, false, @"FlareColorModeToggle"),
                 new ApiParameterInfo(@"ShowLabel", @"bool", @"false", @"Show a text label beside the icon.", null, false, false, false, @"FlareColorModeToggle"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -971,13 +1047,15 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowEyeDropper", @"bool", @"false", @"Shows an eyedropper button to sample a color from the screen (Chrome/Edge only).", null, false, false, false, @"FlareColorPicker"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Selected color as a hex string (#RRGGBB or #RRGGBBAA).", null, false, false, false, @"FlareColorPicker"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string>", null, @"Callback invoked when the selected color changes.", null, false, true, false, @"FlareColorPicker"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"CloseFromOutside", @"CloseFromOutside()", @"Task", null, @"Closes the panel; invoked from JS when a pointer-down lands outside the picker.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnCanvasPick", @"OnCanvasPick(double saturation, double lightness)", @"Task", null, null,
                     new ApiMethodParameter[]
@@ -995,6 +1073,67 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareCombobox"] = new ApiComponentInfo(
+            @"FlareCombobox",
+            @"Flare.Components.FlareCombobox",
+            @"Flare.Components",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AllowsCustomValue", @"bool", null, @"Allows committing a typed value not in the list (free typing). Requires CustomValueFactory for non-string values.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup (used instead of Items).", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Clearable", @"bool", null, @"Shows a clear button that resets the value and text. Default: true.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"CustomValueFactory", @"Func<string, TValue?>?", null, @"Converts the typed text into a value when committing a custom entry. Defaults to identity for string values.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"DebounceMs", @"int", null, @"Milliseconds to wait after input before running an async search. Default: 300ms.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, @"Expression used to bind and validate the field against an EditContext.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Fuzzy", @"bool", null, @"Ranks local matches by fuzzy relevance (via FlareSearch) instead of insertion order.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"GroupBy", @"Func<TValue?, string>?", null, @"Returns the group label for an item; when non-null, options are grouped under headers.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"InputValueChanged", @"EventCallback<string?>", null, @"Callback invoked when the typed input text changes.", null, false, true, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ItemDisabled", @"Func<TValue?, bool>?", null, @"Returns whether an item is disabled (shown, never committable).", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a dropdown option. Overrides the ItemText text.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ItemText", @"Func<TValue?, string>?", null, @"Returns the display text for an item. When null, the declarative label or ToString() is used.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Items", @"IEnumerable<TValue?>?", null, @"Static collection of items to filter locally when no SearchFunc is supplied.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"MaxItems", @"int", null, @"Maximum number of async results to display. Default: 10.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"MinChars", @"int", null, @"Minimum number of typed characters before an async search runs. Default: 1.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"NoResultsText", @"string?", null, @"Text shown in the dropdown when a query matches nothing. When null, falls back to the localized default.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"OnCustomValue", @"EventCallback<string>", null, @"Invoked with the raw text when a custom (not-in-list) value is committed.", null, false, true, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Open", @"bool", null, @"Whether the dropdown is open (supports @bind-Open).", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback invoked when the open state changes, enabling @bind-Open.", null, false, true, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"RankFunc", @"Func<TValue?, string, double>?", null, @"Custom relevance scorer (item, query) => score for local items; overrides Fuzzy.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", null, @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"SearchFunc", @"Func<string, CancellationToken, Task<IEnumerable<TValue?>>>?", null, @"Async, cancelable search callback; when set it owns filtering and the engine shows its results as-is.", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Value", @"TValue?", null, @"Currently selected value (supports @bind-Value).", null, false, false, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the selected value changes, enabling @bind-Value.", null, false, true, false, @"FlareCombobox"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"VirtualizeThreshold", @"int", null, @"Option count above which the dropdown virtualizes (when not grouped). Default: 50.", null, false, false, false, @"FlareCombobox"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareFieldBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareComponentBase"] = new ApiComponentInfo(
             @"FlareComponentBase",
             @"Flare.Components.FlareComponentBase",
@@ -1003,9 +1142,9 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1019,12 +1158,13 @@ public static class ComponentApiRegistry
                 @"FlareAccordionPanel",
                 @"FlareAlert",
                 @"FlareAppBar",
-                @"FlareAutocomplete",
                 @"FlareAvatar",
                 @"FlareAvatarGroup",
                 @"FlareBackstage",
                 @"FlareBackstageItem",
                 @"FlareBadge",
+                @"FlareBottomNav",
+                @"FlareBottomNavItem",
                 @"FlareBreadcrumb",
                 @"FlareButton",
                 @"FlareButtonGroup",
@@ -1040,13 +1180,16 @@ public static class ComponentApiRegistry
                 @"FlareCheckbox",
                 @"FlareChip",
                 @"FlareChipGroup",
+                @"FlareChipStrip",
                 @"FlareClipboard",
                 @"FlareClockDial",
                 @"FlareCodeBlock",
                 @"FlareCol",
+                @"FlareCollapse",
                 @"FlareColorCustomizer",
                 @"FlareColorModeToggle",
                 @"FlareColorPicker",
+                @"FlareCombobox",
                 @"FlareContainer",
                 @"FlareDataGrid",
                 @"FlareDataTree",
@@ -1062,6 +1205,7 @@ public static class ComponentApiRegistry
                 @"FlareDropZone",
                 @"FlareEmptyState",
                 @"FlareField",
+                @"FlareFieldChrome",
                 @"FlareFileUpload",
                 @"FlareFloatingActionButton",
                 @"FlareFloatingActionMenu",
@@ -1074,6 +1218,7 @@ public static class ComponentApiRegistry
                 @"FlareHidden",
                 @"FlareHighlighter",
                 @"FlareIcon",
+                @"FlareIconButton",
                 @"FlareIdeLayout",
                 @"FlareImage",
                 @"FlareInfiniteScroll",
@@ -1084,6 +1229,8 @@ public static class ComponentApiRegistry
                 @"FlareLayoutDrawer",
                 @"FlareLazy",
                 @"FlareLink",
+                @"FlareLinkTab",
+                @"FlareLinkTabs",
                 @"FlareList",
                 @"FlareListItem",
                 @"FlareMarkdown",
@@ -1099,12 +1246,14 @@ public static class ComponentApiRegistry
                 @"FlareNavMenu",
                 @"FlareNumericField",
                 @"FlareOnThisPage",
+                @"FlareOptionList",
                 @"FlareOtpField",
                 @"FlareOverlay",
                 @"FlarePagination",
                 @"FlarePaper",
                 @"FlarePasswordField",
                 @"FlarePopover",
+                @"FlarePopup",
                 @"FlareProgress",
                 @"FlarePropertyGrid",
                 @"FlarePropertyGridItem",
@@ -1143,6 +1292,7 @@ public static class ComponentApiRegistry
                 @"FlareText",
                 @"FlareTextArea",
                 @"FlareTextField",
+                @"FlareTextInput",
                 @"FlareTimePicker",
                 @"FlareTimeline",
                 @"FlareTimelineItem",
@@ -1172,9 +1322,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered inside the container.", null, false, false, false, @"FlareContainer"),
                 new ApiParameterInfo(@"Fluid", @"bool", @"false", @"When true, container spans full available width (overrides MaxWidth).", null, false, false, false, @"FlareContainer"),
                 new ApiParameterInfo(@"MaxWidth", @"ContainerMaxWidth", @"ContainerMaxWidth.Lg", @"Maximum width constraint for the container.", null, false, false, false, @"FlareContainer"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1190,15 +1340,15 @@ public static class ComponentApiRegistry
             @"FlareDataGrid",
             @"Flare.Components.FlareDataGrid",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"FlareDataGrid partial: column-band (grouped header) layout logic.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Aggregates", @"IReadOnlyList<AggregateDefinition<TItem?>>?", null, @"Aggregate definitions rendered as a footer row (Sum/Count/Average/Min/Max per column).", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Bordered", @"bool", null, @"Draws vertical borders between columns.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"CellSelection", @"bool", null, @"Enables Excel-like cell-range selection. With the grid focused, arrow keys move the active cell, Shift+Arrow (and Shift+Home/End) extend a rectangular selection, click-drag and Shift+Click select with the mouse, Ctrl+C copies the selection to the clipboard as tab-separated text and (when OnPaste is set) Ctrl+V pastes tab-separated text into the cells.", null, false, false, false, @"FlareDataGrid"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ColumnOrder", @"IReadOnlyList<string>?", null, @"Controlled column display order by column key - Id, else SortKey, else Title (left to right). Columns not listed keep their declared order at the end. When set, treat the grid as controlled and update this value from OnColumnOrderChanged.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Columns", @"RenderFragment?", null, @"FlareColumn descriptors defining the grid columns.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"ColumnsButtonLabel", @"string?", null, @"Overrides the label on the column-picker button (defaults to a localized ""Columns"").", null, false, false, false, @"FlareDataGrid"),
@@ -1230,7 +1380,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnRowSaved", @"EventCallback<TItem?>", null, @"Callback fired when a single row is saved (inline edit).", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"OnSortChanged", @"EventCallback<IReadOnlyList<DataGridSort>>", null, @"Raised when the sort changes, with all active sorts in apply order.", null, false, true, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"OnStateChanged", @"EventCallback<DataGridState>", null, @"Raised after any sort/filter/group/page/page-size change, with the complete grid state.", null, false, true, false, @"FlareDataGrid"),
-                new ApiParameterInfo(@"OverscanCount", @"int?", null, @"Number of extra rows to render above/below the visible area (also fetched for ItemsProvider). null (default): use 20 — pre-loads 20 rows in each direction for smooth scrolling.> 0: custom overscan count for fine-tuning.", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"OverscanCount", @"int?", null, @"Number of extra rows to render above/below the visible area (also fetched for ItemsProvider). null (default): use 20 - pre-loads 20 rows in each direction for smooth scrolling.> 0: custom overscan count for fine-tuning.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"PageSize", @"int", null, @"Number of rows displayed per page.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"PersistStateKey", @"string?", null, @"When set, the grid persists sort/filter/column state to localStorage under this key. State is restored on component init and saved on every user change.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"PinnedBottomRows", @"IReadOnlyList<TItem?>?", null, @"Rows pinned to the bottom of the grid - always shown below the scrolling data, outside sorting, filtering and paging. Sticky in scrolling grids (above any aggregate row).", null, false, false, false, @"FlareDataGrid"),
@@ -1252,11 +1402,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowColumnPicker", @"bool", null, @"Shows a built-in ""Columns"" button in the toolbar that opens a checklist to show/hide individual columns. Hidden columns are tracked by their key (Id / SortKey / Title).", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"ShowPager", @"bool", null, @"Whether the grid renders its own built-in pager below the table (default true). Set to false to suppress it and place a FlareDataGridPager yourself (e.g. in FooterContent or ToolbarContent).", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Striped", @"bool", null, @"Alternating row background (""zebra"" striping).", null, false, false, false, @"FlareDataGrid"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Custom content rendered in the toolbar area above the table. Child components placed here (quick filter, presets, export, filter builder, column picker, pager) resolve the grid automatically via the cascade - no Grid binding needed.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Tree", @"DataGridTreeConfig<TItem?>?", null, @"Tree-grid configuration for hierarchical data. When set, enables expand/collapse UI and recursive row rendering based on the ChildrenSelector.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Virtual", @"bool", null, @"Enables virtual scrolling instead of pagination (consistent with FlareList.Virtual). Combine with an ItemsProvider to load rows on demand as the user scrolls.", null, false, false, false, @"FlareDataGrid"),
-                new ApiParameterInfo(@"VirtualItemSize", @"float?", null, @"Estimated row height in pixels for the virtual scroller. null (default): auto-detect via ResizeObserver — works for variable-height rows.> 0: fixed height — faster rendering, use when all rows have the same height (e.g. 44px for compact tables).", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"VirtualItemSize", @"float?", null, @"Estimated row height in pixels for the virtual scroller. null (default): auto-detect via ResizeObserver - works for variable-height rows.> 0: fixed height - faster rendering, use when all rows have the same height (e.g. 44px for compact tables).", null, false, false, false, @"FlareDataGrid"),
             },
             new ApiMethodInfo[]
             {
@@ -1281,7 +1431,7 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"DeselectAll", @"DeselectAll()", @"void", null, @"Deselects all items.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Tears down JS interop and observers.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FilterByAsync", @"FilterByAsync(string columnKey, string value)", @"Task", null, @"Applies a filter command to the grid.",
                     new ApiMethodParameter[]
@@ -1351,9 +1501,9 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ChildrenProvider", @"Func<TItem?, Task<IEnumerable<TItem?>>>?", null, @"Async function that loads children for a given item.", null, false, false, false, @"FlareDataTree"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"HasChildren", @"Func<TItem?, bool>?", null, @"Optional predicate that reports whether an item has children without pre-loading them. When set, a node shows an expand chevron if this returns true even before children are fetched.", null, false, false, false, @"FlareDataTree"),
                 new ApiParameterInfo(@"Height", @"string", null, @"CSS height of the virtualized scrollable container.", null, false, false, false, @"FlareDataTree"),
                 new ApiParameterInfo(@"ItemClick", @"EventCallback<TItem?>", null, @"Callback raised when a tree node is clicked.", null, false, true, false, @"FlareDataTree"),
@@ -1361,7 +1511,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TItem?>?", null, @"Template used to render each tree node's content.", null, false, false, false, @"FlareDataTree"),
                 new ApiParameterInfo(@"Items", @"IEnumerable<TItem?>?", null, @"Root-level items to render in the virtual tree.", null, false, false, true, @"FlareDataTree"),
                 new ApiParameterInfo(@"KeySelector", @"Func<TItem?, object>", null, @"Function that returns a unique key for each item.", null, false, false, true, @"FlareDataTree"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1377,7 +1527,7 @@ public static class ComponentApiRegistry
             @"FlareDatePicker",
             @"Flare.Components.FlareDatePicker",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
@@ -1386,27 +1536,29 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ClearText", @"string?", null, @"Override text for the Clear button. When null, falls back to the localizer key Picker_Clear.", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture.", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"DateFormat", @"string?", null, @"Display/parse format. Null (default) uses the culture short date pattern; can be a long format like ""dd MMMM yyyy"".", null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", null, null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, null, null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"For", @"Expression<Func<DateOnly?>>?", null, null, null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"HasError", @"bool", @"false", null, null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, null, null, false, false, false, @"FlareDatePicker"),
+                new ApiParameterInfo(@"HasError", @"bool", @"false", @"Forces the error visual state without an error message (e.g. driven by external validation).", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"IsDateDisabled", @"Func<DateOnly, bool>?", null, @"Predicate that disables specific dates (return true to disable). Applied on top of Min/Max.", null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"Label", @"string?", null, null, null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"Max", @"DateOnly?", null, null, null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"Min", @"DateOnly?", null, null, null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, null, null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"ShowClearButton", @"bool", @"true", null, null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"ShowTodayButton", @"bool", @"true", null, null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), shared with FlareField. Medium is the default field height.", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"TodayText", @"string?", null, @"Override text for the Today button. When null, falls back to the localizer key DatePicker_Today.", null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"Value", @"DateOnly?", null, @"Currently selected date (supports @bind-Value).", null, false, false, false, @"FlareDatePicker"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<DateOnly?>", null, null, null, false, true, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) independent of the theme, shared with FlareField. Default keeps the theme's field style (MD3 filled / Fluent outlined).", null, false, false, false, @"FlareDatePicker"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -1415,6 +1567,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1430,24 +1583,28 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables both date pickers when true.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the picker when true.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"EndDate", @"DateOnly?", null, @"End date of the selected range.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"EndDateChanged", @"EventCallback<DateOnly?>", null, @"Callback invoked when the end date changes.", null, false, true, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"EndLabel", @"string?", null, @"Label for the end date picker. When null, falls back to the localizer key DateRangePicker_EndLabel.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"EndLabel", @"string?", null, @"Label for the end date picker (Fields mode). When null, falls back to DateRangePicker_EndLabel.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error message shown below the range picker.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the range picker.", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Overall label shown above both date pickers.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"IsDateDisabled", @"Func<DateOnly, bool>?", null, @"Predicate to disable specific dates.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Overall label shown above the picker.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Max", @"DateOnly?", null, @"Latest selectable date (inclusive).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Min", @"DateOnly?", null, @"Earliest selectable date (inclusive).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Mode", @"DateRangePickerMode", @"DateRangePickerMode.Fields", @"How the range is selected: two linked inputs (Fields, default) or a single inline range calendar (Calendar).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"Presets", @"IReadOnlyList<DateRangePreset>?", null, @"Custom preset list. When null, a localized default set is used (requires ShowPresets).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"ShowPresets", @"bool", @"false", @"Shows a row of quick-range preset chips (Today, Last 7 days, This month, ...).", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), forwarded to both date fields. Medium is the default field height.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl) for the input fields (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"StartDate", @"DateOnly?", null, @"Start date of the selected range.", null, false, false, false, @"FlareDateRangePicker"),
                 new ApiParameterInfo(@"StartDateChanged", @"EventCallback<DateOnly?>", null, @"Callback invoked when the start date changes.", null, false, true, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"StartLabel", @"string?", null, @"Label for the start date picker. When null, falls back to the localizer key DateRangePicker_StartLabel.", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text, forwarded to both date fields. Null keeps the default.", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined), forwarded to both date fields. Default keeps the theme's field style.", null, false, false, false, @"FlareDateRangePicker"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"StartLabel", @"string?", null, @"Label for the start date picker (Fields mode). When null, falls back to DateRangePicker_StartLabel.", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) for the input fields (Fields mode).", null, false, false, false, @"FlareDateRangePicker"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1463,7 +1620,7 @@ public static class ComponentApiRegistry
             @"FlareDateTimePicker",
             @"Flare.Components.FlareDateTimePicker",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
@@ -1471,37 +1628,36 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AllowPicker", @"bool", @"true", @"Allows opening the picker popup (shows the icon button). Default true.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture for the calendar and parsing. Default = CurrentUICulture.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"DateTimeFormat", @"string?", null, @"Display/parse format. Null (default) uses the culture short date + time pattern.", null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", null, null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, null, null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, null, null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"Label", @"string?", null, null, null, false, false, false, @"FlareDateTimePicker"),
+                new ApiParameterInfo(@"For", @"Expression<Func<DateTimeOffset?>>?", null, @"Expression used to bind and validate the field inside an EditForm.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Max", @"DateTimeOffset?", null, null, null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Min", @"DateTimeOffset?", null, null, null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Mode", @"DateTimeVariant", @"DateTimeVariant.Auto", @"Popup layout: Auto (default, responsive), Tabs or Panels (side by side).", null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, null, null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), shared with FlareField. Medium is the default field height.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"TimeVariant", @"TimePickerVariant", @"TimePickerVariant.Dropdown", @"Time tab style: Dial (clock) or Dropdown (number fields, default).", null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Use24Hour", @"bool?", null, @"Forces 12/24-hour clock on the dial. Null auto-detects from culture.", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"Value", @"DateTimeOffset?", null, @"Currently selected date and time (supports @bind-Value).", null, false, false, false, @"FlareDateTimePicker"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<DateTimeOffset?>", null, null, null, false, true, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) independent of the theme, shared with FlareField. Default keeps the theme's field style.", null, false, false, false, @"FlareDateTimePicker"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"OnBreakpointChanged", @"OnBreakpointChanged(string breakpoint)", @"Task", null, @"JS callback when the viewport breakpoint changes (Auto layout).",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"breakpoint", @"string", null),
-                    }),
             },
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1518,24 +1674,29 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Actions", @"RenderFragment?", null, @"Action buttons rendered in the dialog footer.", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name for a header-less dialog (rendered as aria-label when Title is empty). Ignored when a title is present, since the title labels the dialog.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main body content rendered inside the dialog.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"CloseOnEsc", @"bool", @"true", @"Closes the dialog when the Escape key is pressed.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"CloseOnScrimClick", @"bool", @"true", @"Closes the dialog when the scrim backdrop is clicked.", null, false, false, false, @"FlareDialog"),
-                new ApiParameterInfo(@"Divider", @"bool", @"false", @"Shows a divider between the header and the content (MD3 scroll divider).", null, false, false, false, @"FlareDialog"),
-                new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"Optional hero icon shown centered above the title (MD3: secondary color).", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"Divider", @"bool", @"false", @"Shows a divider between the header and the content.", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"Optional hero icon shown centered above the title.", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"PanelClass", @"string?", null, @"Extra CSS class(es) applied to the dialog panel.", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"Position", @"DialogPosition", @"DialogPosition.Center", @"Where the dialog is anchored. Bottom renders a slide-up bottom sheet.", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"ScrimClass", @"string?", null, @"Extra CSS class(es) applied to the scrim/backdrop.", null, false, false, false, @"FlareDialog"),
+                new ApiParameterInfo(@"ShowGrabber", @"bool", @"false", @"Shows a drag-grabber handle at the top (only for Bottom sheets).", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"Size", @"DialogSize", @"DialogSize.Md", @"Maximum width of the dialog.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Title text displayed in the dialog header.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"Visible", @"bool", @"false", @"Controls whether the dialog is shown.", null, false, false, false, @"FlareDialog"),
                 new ApiParameterInfo(@"VisibleChanged", @"EventCallback<bool>", null, @"Callback raised when visibility should change.", null, false, true, false, @"FlareDialog"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -1555,13 +1716,13 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -1581,13 +1742,13 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Inset", @"DividerInset", @"DividerInset.None", @"Inset style (None full-bleed, Inset leading-edge, MiddleInset both edges), per MD3.", null, false, false, false, @"FlareDivider"),
+                new ApiParameterInfo(@"Inset", @"DividerInset", @"DividerInset.None", @"Inset style (None full-bleed, Inset leading-edge, MiddleInset both edges).", null, false, false, false, @"FlareDivider"),
                 new ApiParameterInfo(@"Text", @"string?", null, @"Optional text label centered in the divider (e.g. ""OR"").", null, false, false, false, @"FlareDivider"),
                 new ApiParameterInfo(@"TextAlign", @"DividerTextAlign", @"DividerTextAlign.Center", @"Controls where the text label is anchored when Text is set.", null, false, false, false, @"FlareDivider"),
                 new ApiParameterInfo(@"Vertical", @"bool", @"false", @"Renders a vertical divider instead of horizontal.", null, false, false, false, @"FlareDivider"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1612,9 +1773,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Icon", @"string?", @"""description""", @"Material icon name shown in the tab header.", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Modified", @"bool", @"false", @"Whether the document has unsaved changes (shows a dot/asterisk indicator).", null, false, false, false, @"FlareDocumentTab"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Display title for the document tab.", null, false, false, false, @"FlareDocumentTab"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -1642,9 +1803,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnTabChanged", @"EventCallback<string>", null, null, null, false, true, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, null, null, false, true, false, @"FlareDocumentTabs"),
                 new ApiParameterInfo(@"OverflowBehavior", @"TabOverflowBehavior", @"TabOverflowBehavior.Scroll", null, null, false, false, false, @"FlareDocumentTabs"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1676,15 +1837,15 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback fired when the drawer open state changes.", null, false, true, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Variant", @"DrawerVariant", @"DrawerVariant.Temporary", @"Drawer variant - temporary (slides in/out, default), permanent (always visible), or mini (icon-only, expands on hover).", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Width", @"string", @"""280px""", @"Width applied to left/right anchored drawers.", null, false, false, false, @"FlareDrawer"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -1711,9 +1872,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MaxFileSize", @"long", @"10485760", @"Maximum allowed file size in bytes per file.", null, false, false, false, @"FlareDropZone"),
                 new ApiParameterInfo(@"Multiple", @"bool", @"true", @"Allows selecting more than one file at a time.", null, false, false, false, @"FlareDropZone"),
                 new ApiParameterInfo(@"OnFilesDropped", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback raised when files are dropped or selected.", null, false, true, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1738,9 +1899,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Description", @"string?", null, @"Supporting description text.", null, false, false, false, @"FlareEmptyState"),
                 new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"Icon content displayed above the title.", null, false, false, false, @"FlareEmptyState"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Main heading text.", null, false, false, false, @"FlareEmptyState"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1756,49 +1917,51 @@ public static class ComponentApiRegistry
             @"FlareField",
             @"Flare.Components.FlareField",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"AdornmentEnd", @"RenderFragment?", null, @"Content rendered after the input field as a trailing adornment (e.g. unit label, suffix text, or button).", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"AdornmentStart", @"RenderFragment?", null, @"Content rendered before the input field as a leading adornment (e.g. currency symbol, prefix text, or button).", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"AriaDescribedBy", @"string?", null, @"Space-separated IDs of elements that describe the input, forwarded as aria-describedby.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the input, forwarded as aria-label.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Clearable", @"bool", null, @"Shows a clear (x) button inside the field when the input has a non-empty value.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color that influences the focus/active border of the input field.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"DebounceInterval", @"int", null, @"Debounce in milliseconds for Immediate updates. 0 = no debounce.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the input when true.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Error", @"bool", null, @"Forces the field into the error (invalid) visual state - red active indicator and aria-invalid - without requiring an ErrorText message. Useful when the error is surfaced elsewhere (a form-level summary) or when only the state, not a message, is wanted. The error state is also shown automatically whenever ErrorText or a bound validation message is present.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"FloatingLabel", @"bool", null, @"Renders the label as an animated floating label that moves above the input on focus.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the input.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"FullWidth", @"bool", null, @"When true (the default), the field is block-level and fills the width of its container. Set to false to size the field to its content (inline) instead.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Immediate", @"bool", null, @"When true, the value updates on every keystroke (oninput) rather than only on change/blur.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the input.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Invalid", @"bool", null, @"Alias for Error: forces the invalid visual state without a message.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered inside the leading edge of the input.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Margin", @"FieldMargin", null, @"Vertical (block) margin around the field. None (default) leaves spacing to the surrounding layout; Dense / Normal add a compact / comfortable margin above and below.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"MaxLength", @"int", null, @"Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"OnKeyDown", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keydown in the input.", null, false, true, false, @"FlareField"),
                 new ApiParameterInfo(@"OnKeyUp", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keyup in the input.", null, false, true, false, @"FlareField"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the input is empty.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the input read-only when true.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"ShowCharacterCount", @"bool", null, @"Shows a character counter in the supporting-text row (per MD3). Renders the current length, and ""current/MaxLength"" when MaxLength is set.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Medium is the default field height.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", null, @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ShowCharacterCount", @"bool", null, @"Shows a character counter in the supporting-text row. Renders the current length, and ""current/MaxLength"" when MaxLength is set.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"TrailingIcon", @"RenderFragment?", null, @"Icon rendered inside the trailing edge of the input.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"Type", @"string", null, @"HTML type attribute of the underlying input element.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font. Null keeps the size default.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Value", @"TValue?", null, @"Current value of the input.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the value changes.", null, false, true, false, @"FlareField"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -1807,6 +1970,46 @@ public static class ComponentApiRegistry
             {
                 @"FlareTextField",
             }
+            );
+
+        c[@"FlareFieldChrome"] = new ApiComponentInfo(
+            @"FlareFieldChrome",
+            @"Flare.Components.FlareFieldChrome",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Attributes", @"IReadOnlyDictionary<string, object>?", null, @"Extra attributes splatted onto the root element (inline Style comes from the base).", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"ComponentClass", @"string?", null, @"The field's own root modifier class (e.g. flare-select); appended after the shared flare-input root so component-specific CSS still keys off it.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Counter", @"RenderFragment?", null, @"Optional trailing content for the support row (a character counter).", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disabled state; emits the shared flare-input--disabled modifier.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"ErrorId", @"string?", null, @"The error element id, referenced via aria-describedby.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it replaces the helper and is announced as an alert.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"ExtraClass", @"string?", null, @"Any extra component-specific modifier classes (open/floating/auto/margin/adornment).", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Field", @"RenderFragment?", null, @"The field content (the well: control + adornments), rendered between the label and the support row.", null, false, false, true, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"FloatingLabel", @"bool", @"false", @"The field renders its own floating label inside the well; the frame suppresses the top label.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"HelperId", @"string?", null, @"The helper element id, referenced via aria-describedby.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field when there is no error.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Invalid", @"bool", @"false", @"Invalid/error state; emits the shared flare-input--error modifier.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"The field label text; omitted when null/empty or when FloatingLabel (the field renders its own floating label inside the well).", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"LabelFor", @"string?", null, @"The for target of the label (the input id), for real-input fields; null for div triggers.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"LabelId", @"string?", null, @"The label element id (for aria-labelledby from a div trigger).", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Read-only state; forwarded by fields to their control (the frame draws no read-only chrome).", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), emitted as the shared size modifier class.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined), emitted as the shared variant modifier class.", null, false, false, false, @"FlareFieldChrome"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
             );
 
         c[@"FlareFileUpload"] = new ApiComponentInfo(
@@ -1823,9 +2026,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUpload"),
                 new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1848,14 +2051,15 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label forwarded as aria-label.", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Optional FlareFloatingActionMenu. When present the FAB becomes a speed-dial trigger.", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the FAB (tonal container). Role -> shared color class; custom -> inline tokens. Default = theme default (primary-container).", null, false, false, false, @"FlareFloatingActionButton"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the FAB (blocks activation and dims it via the shared button disabled state).", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"The icon content rendered inside the FAB.", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Optional label text. When set, renders as an extended FAB.", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback invoked when the FAB is clicked (ignored in speed-dial mode - the FAB toggles the menu instead).", null, false, true, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Position", @"FabPosition", @"FabPosition.BottomRight", @"Positioning mode (BottomRight, BottomLeft, or Static for inline flow).", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Size", @"FabSize", @"FabSize.Md", @"Size of the FAB (Sm 40dp, Md 56dp baseline, Lg 96dp).", null, false, false, false, @"FlareFloatingActionButton"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1877,9 +2081,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The FlareFloatingActionMenuItem entries.", null, false, false, false, @"FlareFloatingActionMenu"),
                 new ApiParameterInfo(@"Direction", @"FabMenuDirection", @"FabMenuDirection.Up", @"Direction the menu expands from the FAB.", null, false, false, false, @"FlareFloatingActionMenu"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1903,9 +2107,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Icon", @"string", @"""star""", @"Material Symbols icon displayed on this action's small FAB.", null, false, false, false, @"FlareFloatingActionMenuItem"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label shown beside the action button.", null, false, false, false, @"FlareFloatingActionMenuItem"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the action is clicked.", null, false, true, false, @"FlareFloatingActionMenuItem"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1931,9 +2135,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Model", @"object", null, @"Model instance the form is bound to.", null, false, false, true, @"FlareForm"),
                 new ApiParameterInfo(@"OnInvalidSubmit", @"EventCallback<EditContext>", null, @"Callback raised when the form fails validation on submit.", null, false, true, false, @"FlareForm"),
                 new ApiParameterInfo(@"OnValidSubmit", @"EventCallback<EditContext>", null, @"Callback raised when the form passes all validation rules.", null, false, true, false, @"FlareForm"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -1953,13 +2157,14 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Model", @"TModel?", null, @"Model instance the form is bound to.", null, false, false, true, @"FlareFormBuilder"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Model", @"TModel?", null, @"Model instance the form is bound to. Supports @bind-Model so a reset propagates back to the parent.", null, false, false, true, @"FlareFormBuilder"),
+                new ApiParameterInfo(@"ModelChanged", @"EventCallback<TModel?>", null, @"Raised when the bound model reference changes (e.g. on reset), for two-way binding.", null, false, true, false, @"FlareFormBuilder"),
                 new ApiParameterInfo(@"OnValidSubmit", @"EventCallback<TModel?>", null, @"Callback raised after the form passes validation.", null, false, true, false, @"FlareFormBuilder"),
                 new ApiParameterInfo(@"ResetLabel", @"string?", null, @"Label text for the form reset button. When null, falls back to the localizer key FormBuilder_Reset.", null, false, false, false, @"FlareFormBuilder"),
                 new ApiParameterInfo(@"ShowReset", @"bool", null, @"Shows a reset button alongside the submit button.", null, false, false, false, @"FlareFormBuilder"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"SubmitLabel", @"string?", null, @"Label text for the form submit button. When null, falls back to the localizer key FormBuilder_Submit.", null, false, false, false, @"FlareFormBuilder"),
             },
             System.Array.Empty<ApiMethodInfo>(),
@@ -1985,9 +2190,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field control.", null, false, false, false, @"FlareFormField"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown above the field control.", null, false, false, false, @"FlareFormField"),
                 new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required, adding a visual indicator.", null, false, false, false, @"FlareFormField"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2014,9 +2219,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder for the formula editor.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The current cell content / formula.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Raised when the formula text changes. Supports two-way binding.", null, false, true, false, @"FlareFormulaBar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2039,14 +2244,15 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AlignItems", @"FlareAlignItems", @"FlareAlignItems.Default", @"Aligns grid items along the block (column) axis.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered inside the grid.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"ColumnGap", @"string?", null, @"Overrides the column gap independently (raw CSS value, e.g. ""0.5rem"").", null, false, false, false, @"FlareGrid"),
-                new ApiParameterInfo(@"Columns", @"int", @"12", @"Number of equal-width columns in the grid.", null, false, false, false, @"FlareGrid"),
+                new ApiParameterInfo(@"Columns", @"int", @"12", @"Number of equal-width columns in the grid. Ignored when MinColumnWidth is set.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"Gap", @"FlareSpacing", @"FlareSpacing.Medium", @"Spacing between all grid cells using design-token values.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"GapValue", @"string?", null, @"Raw CSS gap value used when Gap is Custom.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"Justify", @"FlareJustifyContent", @"FlareJustifyContent.Default", @"Justifies grid items along the inline (row) axis.", null, false, false, false, @"FlareGrid"),
+                new ApiParameterInfo(@"MinColumnWidth", @"string?", null, @"When set (any CSS length, e.g. ""15rem""), the grid becomes responsive: it fits as many equal columns as the width allows, each at least this wide (repeat(auto-fill, minmax(min, 1fr))). This overrides Columns and needs no media queries.", null, false, false, false, @"FlareGrid"),
                 new ApiParameterInfo(@"RowGap", @"string?", null, @"Overrides the row gap independently (raw CSS value, e.g. ""0.5rem"").", null, false, false, false, @"FlareGrid"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2071,9 +2277,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content hidden at the specified breakpoint(s).", null, false, false, false, @"FlareHidden"),
                 new ApiParameterInfo(@"Invert", @"bool", @"false", @"Inverts the behavior: content is shown ONLY where it would otherwise be hidden.", null, false, false, false, @"FlareHidden"),
                 new ApiParameterInfo(@"Only", @"Breakpoint?", null, @"Hide content only at this exact breakpoint.", null, false, false, false, @"FlareHidden"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2098,9 +2304,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Language", @"string?", null, @"Syntax language hint (e.g. 'csharp', 'javascript'). Used for CSS class only - does not execute code.", null, false, false, false, @"FlareHighlighter"),
                 new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum characters displayed. 0 = unlimited.", null, false, false, false, @"FlareHighlighter"),
                 new ApiParameterInfo(@"Text", @"string?", null, @"Full text in which to highlight occurrences of Highlight.", null, false, false, false, @"FlareHighlighter"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2125,11 +2331,48 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Icon", @"string?", null, @"SVG path data or full SVG markup (rendered verbatim), or a legacy Material Symbol name. Prefer Name for Material Symbols. SECURITY: markup is emitted without sanitization, so only pass trusted, developer-authored values (e.g. Icons.*) here -- never untrusted/user input.", null, false, false, false, @"FlareIcon"),
                 new ApiParameterInfo(@"Name", @"string?", null, @"Material Symbols icon name (e.g. ""home"", ""chevron_left"").", null, false, false, false, @"FlareIcon"),
                 new ApiParameterInfo(@"Size", @"string?", null, @"Icon size as any CSS length (e.g. ""3rem"", ""48px"", ""1.5em""). Applies to BOTH SVG and Material Symbols icons (the icon box is 1em, so size is driven by font-size). When unset, inherits the themed default. Takes precedence over SizePx.", null, false, false, false, @"FlareIcon"),
-                new ApiParameterInfo(@"SizePx", @"int?", null, @"Convenience pixel size for both SVG and Material icons (e.g. 48 -> ""48px""). Ignored when Size is set.", null, false, false, false, @"FlareIcon"),
-                new ApiParameterInfo(@"ViewBox", @"string", @"""0 0 24 24""", @"SVG viewBox for custom path data in Icon. Defaults to the Material 24x24 grid; set e.g. ""0 0 1024 1024"" for icons authored on a different canvas.", null, false, false, false, @"FlareIcon"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"SizePx", @"int?", null, @"Convenience pixel size for both SVG and font icons (e.g. 48 -> ""48px""). Ignored when Size is set.", null, false, false, false, @"FlareIcon"),
+                new ApiParameterInfo(@"ViewBox", @"string", @"""0 0 24 24""", @"SVG viewBox for custom path data in Icon. Defaults to a 24x24 grid; set e.g. ""0 0 1024 1024"" for icons authored on a different canvas.", null, false, false, false, @"FlareIcon"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareIconButton"] = new ApiComponentInfo(
+            @"FlareIconButton",
+            @"Flare.Components.FlareIconButton",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the button, forwarded as aria-label. Strongly recommended for icon-only buttons.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"AriaPressed", @"bool", @"false", @"Indicates pressed state for toggle icon buttons, forwarded as aria-pressed.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Custom icon content, used in place of Icon (e.g. a configured FlareIcon or SVG).", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the button. Role -> shared class; custom -> inline tokens. Default keeps the theme default.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Href", @"string?", null, @"When set, the button renders as a link (<a>) to this URL. Disabled/Loading removes the href.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Icon", @"string?", null, @"Material Symbols icon name rendered inside the button (e.g. settings). Ignored when ChildContent is supplied.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a spinner and disables the button when true.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the button is clicked.", null, false, true, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"PressMorph", @"bool", @"false", @"Opt-in press morph: the corner radius animates while the button is pressed.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons).", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the button.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link button (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Type", @"ButtonType", @"ButtonType.Button", @"HTML type attribute of the button element (Button, Submit, or Reset).", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Text", @"Visual style variant. Defaults to Text (a standard, chrome-less icon button).", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2170,13 +2413,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"RightResizable", @"bool", @"true", @"Whether the right region can be drag-resized.", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"RightToolPanel", @"RenderFragment?", null, @"Right tool panel (e.g. Properties).", null, false, false, false, @"FlareIdeLayout"),
                 new ApiParameterInfo(@"StatusBar", @"RenderFragment?", null, @"Status bar at the bottom of the IDE.", null, false, false, false, @"FlareIdeLayout"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ResizePanel", @"ResizePanel(string position, int sizePx)", @"void", null, @"Invoked from JS during a divider drag with the new region size in pixels.",
                     new ApiMethodParameter[]
@@ -2213,9 +2456,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Skeleton", @"bool", @"false", @"Shows a skeleton placeholder while the image loads.", null, false, false, false, @"FlareImage"),
                 new ApiParameterInfo(@"Src", @"string?", null, @"URL of the image to display.", null, false, false, false, @"FlareImage"),
                 new ApiParameterInfo(@"Width", @"string?", null, @"CSS width applied to the image wrapper.", null, false, false, false, @"FlareImage"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2241,13 +2484,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LoadingContent", @"RenderFragment?", null, @"Content displayed while more items are loading.", null, false, false, false, @"FlareInfiniteScroll"),
                 new ApiParameterInfo(@"OnLoadMore", @"EventCallback", null, @"Callback raised when the scroll sentinel is reached.", null, false, true, false, @"FlareInfiniteScroll"),
                 new ApiParameterInfo(@"RootMargin", @"string", @"""0px""", @"IntersectionObserver rootMargin value (CSS margin shorthand). Default ""0px"".", null, false, false, false, @"FlareInfiniteScroll"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"TriggerLoad", @"TriggerLoad()", @"Task", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
@@ -2272,11 +2515,15 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Cards", @"IReadOnlyList<KanbanCard>?", null, @"Cards to distribute across the Kanban columns.", null, false, false, false, @"FlareKanban"),
                 new ApiParameterInfo(@"CardsChanged", @"EventCallback<IReadOnlyList<KanbanCard>>", null, @"Callback raised when cards are moved between columns.", null, false, true, false, @"FlareKanban"),
                 new ApiParameterInfo(@"Columns", @"IReadOnlyList<KanbanColumn>?", null, @"Column definitions that structure the Kanban board.", null, false, false, false, @"FlareKanban"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Releases the imported JS module reference.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -2294,31 +2541,16 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AppBar", @"RenderFragment?", null, @"App bar slot (slot-based API).", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Free-form children (component-based API: FlareLayoutAppBar + FlareLayoutDrawer + FlareLayoutContent).", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"Content", @"RenderFragment?", null, @"Main content slot (slot-based API).", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"ContentAlignment", @"LayoutContentAlignment", @"LayoutContentAlignment.Center", @"Horizontal placement of the content within the main area when ContentMaxWidth caps it (slot-based API). Defaults to Center.", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"ContentClass", @"string?", null, @"Extra CSS class for the main content element (slot-based API), e.g. for a max-width frame.", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"ContentMaxWidth", @"ContainerMaxWidth", @"ContainerMaxWidth.Full", @"Optional readable-width cap for the content (slot-based API); the content is centered horizontally while the scrollbar stays at the window edge. Defaults to Full (no constraint -- full width with padding).", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"ContentStyle", @"string?", null, @"Inline style for the main content element (slot-based API).", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"Drawer", @"RenderFragment?", null, @"Drawer slot (slot-based API).", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"DrawerOpen", @"bool", @"true", @"Initial drawer open state. Supports @bind-DrawerOpen.", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"DrawerOpenChanged", @"EventCallback<bool>", null, @"Callback fired when the drawer state changes.", null, false, true, false, @"FlareLayout"),
-                new ApiParameterInfo(@"MiniRail", @"bool", @"false", @"When true, collapsing the drawer on desktop leaves a narrow icon rail (--flare-drawer-mini-width) instead of hiding it entirely; the toggle switches between the rail and the full-width drawer. Has no effect on mobile, where the drawer is always a full off-canvas overlay.", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"Responsive", @"bool", @"true", @"When true (default) the layout is responsive: below the medium breakpoint (960px) the drawer becomes an off-canvas overlay, starts closed, and closes on navigation; above it the drawer is a permanent sidebar. Set false to manage the drawer entirely yourself.", null, false, false, false, @"FlareLayout"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The composed layout: a FlareLayoutAppBar, one or more FlareLayoutDrawer, and a FlareLayoutContent. Place start drawers before the content and end drawers after it (markup order = visual order).", null, false, false, false, @"FlareLayout"),
+                new ApiParameterInfo(@"Responsive", @"bool", @"true", @"When true (default) the layout watches the viewport and turns push drawers into off-canvas overlays below the mobile breakpoint (960px); set false to manage drawers entirely yourself.", null, false, false, false, @"FlareLayout"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"OnBreakpointChanged", @"OnBreakpointChanged(string breakpoint)", @"Task", null, null,
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"breakpoint", @"string", null),
-                    }),
             },
             new string[]
             {
@@ -2338,11 +2570,11 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered in the app bar.", null, false, false, false, @"FlareLayoutAppBar"),
-                new ApiParameterInfo(@"DrawerToggle", @"bool", @"false", @"When true, automatically renders a hamburger icon that toggles the drawer via the cascading FlareLayoutContext.", null, false, false, false, @"FlareLayoutAppBar"),
+                new ApiParameterInfo(@"DrawerToggle", @"bool", @"false", @"When true, renders a hamburger that toggles the layout's primary drawer (the first non-overlay start drawer) via the cascading FlareLayoutContext.", null, false, false, false, @"FlareLayoutAppBar"),
                 new ApiParameterInfo(@"MenuButton", @"RenderFragment?", null, @"Custom menu/hamburger button at the leading edge (slot-based API).", null, false, false, false, @"FlareLayoutAppBar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2365,9 +2597,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Alignment", @"LayoutContentAlignment", @"LayoutContentAlignment.Center", @"Horizontal placement of the content when MaxWidth caps it. Defaults to Center.", null, false, false, false, @"FlareLayoutContent"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered in the layout content area.", null, false, false, false, @"FlareLayoutContent"),
                 new ApiParameterInfo(@"MaxWidth", @"ContainerMaxWidth", @"ContainerMaxWidth.Full", @"Optional readable-width cap for the content; the content is centered horizontally while the scrollbar stays at the window edge. Defaults to Full (no constraint -- full width with padding).", null, false, false, false, @"FlareLayoutContent"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2387,12 +2619,48 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child content rendered in the layout drawer.", null, false, false, false, @"FlareLayoutDrawer"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Anchor", @"DrawerAnchor", @"DrawerAnchor.Left", @"Which side of the layout the drawer attaches to (Left or Right; Top/Bottom are treated as Left). Defaults to Left.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name applied (as aria-label) while the drawer is an open modal overlay (the Temporary variant, or any drawer on mobile). Recommended so the modal navigation surface has an accessible name.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Drawer content (typically a FlareNavMenu).", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"HoverExpand", @"bool", @"false", @"Mini variant only: while collapsed, expand to full Width as a floating overlay on pointer/keyboard hover, then collapse again on leave.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"Open", @"bool", @"false", @"Whether the drawer is open (expanded). Supports @bind-Open.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Raised when the open state changes, for two-way binding.", null, false, true, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"RailWidth", @"string?", null, @"Collapsed icon-rail width for the Mini variant; falls back to the --flare-layout-drawer-rail-width token.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"Variant", @"DrawerVariant", @"DrawerVariant.Persistent", @"How the drawer occupies space and collapses: Persistent (push, hidden when closed), Mini (collapses to an icon rail), Temporary (floats over content with a scrim), Responsive (push on desktop, temporary on mobile), or Permanent (always visible, never collapses). Defaults to Persistent.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"Width", @"string?", null, @"Open width (e.g. ""16rem""); falls back to the --flare-layout-drawer-width token.", null, false, false, false, @"FlareLayoutDrawer"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CloseFromEsc", @"CloseFromEsc()", @"Task", null, @"Invoked by the shared Escape handler while the drawer is an open modal overlay; closes it.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"IsOverlayOpen", @"IsOverlayOpen(bool isMobile)", @"bool", null, @"True when the drawer is currently a floating overlay that is open (so the scrim shows).",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"isMobile", @"bool", null),
+                    }),
+                new ApiMethodInfo(@"ReservesTrack", @"ReservesTrack(bool isMobile)", @"bool", null, @"Whether the drawer occupies an in-flow grid track (not floating). A push drawer keeps its track even when closed -- at zero width -- so the track count stays stable and the width can animate.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"isMobile", @"bool", null),
+                    }),
+                new ApiMethodInfo(@"SetOpenAsync", @"SetOpenAsync(bool open)", @"Task", null, @"Sets the open state, raises OpenChanged, and notifies the layout. No-op when unchanged.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"open", @"bool", null),
+                    }),
+                new ApiMethodInfo(@"ToggleAsync", @"ToggleAsync()", @"Task", null, @"Toggles the open state.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"TrackWidth", @"TrackWidth(bool isMobile)", @"string", null, @"The CSS width of the drawer's reserved grid track (""0"" when floating or a closed push drawer).",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"isMobile", @"bool", null),
+                    }),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -2417,13 +2685,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Placeholder", @"RenderFragment?", null, @"Optional content shown in place of ChildContent until it is revealed (e.g. a FlareSkeleton). When unset the wrapper is empty until reveal; combine with MinHeight so the page reserves space and the observer fires progressively.", null, false, false, false, @"FlareLazy"),
                 new ApiParameterInfo(@"Root", @"string?", null, @"CSS selector of the scrollable ancestor to watch instead of the browser viewport. Resolved with element.closest(selector), so it works when the content lives inside an overflow:auto panel (e.g. a side editor or dialog body) rather than the page itself. Null (default) observes the viewport.", null, false, false, false, @"FlareLazy"),
                 new ApiParameterInfo(@"RootMargin", @"string", @"""200px""", @"IntersectionObserver rootMargin (CSS margin shorthand). Positive values reveal the content before it is actually on screen for a seamless scroll. Default ""200px"".", null, false, false, false, @"FlareLazy"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnVisibilityChanged", @"OnVisibilityChanged(bool visible)", @"Task", null, @"Invoked by the IntersectionObserver when the wrapper enters or leaves the viewport.",
                     new ApiMethodParameter[]
@@ -2454,10 +2722,69 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Href", @"string?", null, @"URL the link navigates to when clicked.", null, false, false, false, @"FlareLink"),
                 new ApiParameterInfo(@"Target", @"string", @"""_self""", @"HTML target attribute (e.g. ""_blank"", ""_self"").", null, false, false, false, @"FlareLink"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Tooltip text rendered as the HTML title attribute for accessibility.", null, false, false, false, @"FlareLink"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional type-scale applied to the link text (font family/size/weight/line-height). When null (default) the link inherits the surrounding text's typography.", null, false, false, false, @"FlareLink"),
                 new ApiParameterInfo(@"Underline", @"LinkUnderline", @"LinkUnderline.Hover", @"Underline behavior: Always, Hover, or None.", null, false, false, false, @"FlareLink"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareLinkTab"] = new ApiComponentInfo(
+            @"FlareLinkTab",
+            @"Flare.Components.FlareLinkTab",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents navigation and interaction when true.", null, false, false, false, @"FlareLinkTab"),
+                new ApiParameterInfo(@"Href", @"string?", null, @"URL this tab navigates to. Matched against the current route to derive the active state.", null, false, false, false, @"FlareLinkTab"),
+                new ApiParameterInfo(@"Label", @"string", @"""""", @"Link label shown in the tab.", null, false, false, false, @"FlareLinkTab"),
+                new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered before the label.", null, false, false, false, @"FlareLinkTab"),
+                new ApiParameterInfo(@"Match", @"NavMatchMode", @"NavMatchMode.Prefix", @"Route matching strategy used to derive the active state - prefix or exact. Default Prefix.", null, false, false, false, @"FlareLinkTab"),
+                new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Invoked when the tab is clicked, before navigation would occur. When set, the default navigation is suppressed (mirrors OnClick) so the handler can decide whether/how to navigate.", null, false, true, false, @"FlareLinkTab"),
+                new ApiParameterInfo(@"Tooltip", @"string?", null, @"Tooltip text shown on hover/focus of the tab (native title).", null, false, false, false, @"FlareLinkTab"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareLinkTabs"] = new ApiComponentInfo(
+            @"FlareLinkTabs",
+            @"Flare.Components.FlareLinkTabs",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the navigation landmark, rendered as aria-label on the <nav>. Recommended when a page has more than one navigation region.", null, false, false, false, @"FlareLinkTabs"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"FlareLinkTab items rendered in the bar. Each renders its own <a> and determines its active state independently by comparing its Href against the current route - there is no parent-managed active index, since each tab is a real page navigation rather than an in-page panel switch.", null, false, false, false, @"FlareLinkTabs"),
+                new ApiParameterInfo(@"Variant", @"LinkTabsVariant", @"LinkTabsVariant.Default", @"Visual variant of the tab bar (theme-independent). Mirrors TabsVariant's pill styles so a set of route links can look like the same segmented control as an in-page FlareTabs. Default keeps a simple underline-only style.", null, false, false, false, @"FlareLinkTabs"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2477,16 +2804,16 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child list items rendered inside the list (non-virtual mode).", null, false, false, false, @"FlareList"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Dense", @"bool", null, @"Reduces vertical padding for a compact appearance.", null, false, false, false, @"FlareList"),
                 new ApiParameterInfo(@"Height", @"string", null, @"Fixed height of the virtualized container.", null, false, false, false, @"FlareList"),
                 new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TItem?>?", null, @"Template used to render each item when Virtual=true.", null, false, false, false, @"FlareList"),
                 new ApiParameterInfo(@"Items", @"IReadOnlyList<TItem?>?", null, @"Data source when Virtual=true.", null, false, false, false, @"FlareList"),
                 new ApiParameterInfo(@"MaxHeight", @"string?", null, @"Max height of the virtualized container (used instead of Height when set).", null, false, false, false, @"FlareList"),
                 new ApiParameterInfo(@"OverscanCount", @"int", null, @"Number of extra items rendered outside the visible viewport.", null, false, false, false, @"FlareList"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Virtual", @"bool", null, @"Enables Blazor Virtualize for large datasets.", null, false, false, false, @"FlareList"),
             },
             System.Array.Empty<ApiMethodInfo>(),
@@ -2515,9 +2842,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Secondary", @"string?", null, @"Secondary text displayed below the primary label.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Selected", @"bool", @"false", @"Whether the item is in a selected state.", null, false, false, false, @"FlareListItem"),
                 new ApiParameterInfo(@"Trailing", @"RenderFragment?", null, @"Content rendered at the end of the item.", null, false, false, false, @"FlareListItem"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2540,9 +2867,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"SanitizeHtml", @"bool", @"true", @"When true, strips script tags and dangerous attribute patterns from the rendered HTML. Default: true.", null, false, false, false, @"FlareMarkdown"),
                 new ApiParameterInfo(@"SyntaxHighlight", @"bool", @"false", @"When true, applies CSS-based syntax highlighting classes to fenced code blocks.", null, false, false, false, @"FlareMarkdown"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Markdown source text to render.", null, false, false, false, @"FlareMarkdown"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2558,36 +2885,34 @@ public static class ComponentApiRegistry
             @"FlareMaskedField",
             @"Flare.Components.FlareMaskedField",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AutoApply", @"bool", @"true", @"When true (default), the mask is applied automatically as the user types -- literal characters (separators like -, /, () are inserted for them. Set false to disable auto-formatting and let the user type the value freely.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the input when true.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"For", @"Expression<Func<string?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the input.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the input.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Mask", @"string?", null, @"Mask pattern; use # digit, A letter, * alphanumeric. Overrides Preset.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the input is empty.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Preset", @"MaskPreset", @"MaskPreset.None", @"Ready-made mask preset (Phone/Date/Time/IpAddress/CreditCard/Ssn). Used when Mask is not set.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the input read-only when true.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), shared with FlareField. Medium is the default field height.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Current unmasked value of the input.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Callback invoked when the value changes.", null, false, true, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) independent of the theme, shared with FlareField. Default keeps the theme's field style.", null, false, false, false, @"FlareMaskedField"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2606,19 +2931,14 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment<Breakpoint>?", null, @"Content rendered with the current Breakpoint as context, e.g. <FlareMediaQuery Context=""bp"">@if (bp <= Breakpoint.Sm) { ... }</FlareMediaQuery>. The breakpoint is also supplied to descendants as a cascading value.", null, false, false, false, @"FlareMediaQuery"),
                 new ApiParameterInfo(@"InitialBreakpoint", @"Breakpoint", @"Breakpoint.Md", @"The breakpoint assumed during prerender / before the first JS measurement. Default Md.", null, false, false, false, @"FlareMediaQuery"),
                 new ApiParameterInfo(@"OnChanged", @"EventCallback<Breakpoint>", null, @"Raised whenever the active breakpoint changes.", null, false, true, false, @"FlareMediaQuery"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"OnBreakpointChanged", @"OnBreakpointChanged(string bp)", @"Task", null, null,
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"bp", @"string", null),
-                    }),
             },
             new string[]
             {
@@ -2643,9 +2963,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the dropdown panel.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"Dense", @"bool", @"false", @"Reduces item height/padding for a denser menu (consistent with other components' Dense).", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"OnToggle", @"EventCallback<bool>", null, @"Callback triggered whenever the menu open state changes.", null, false, true, false, @"FlareMenu"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2666,9 +2986,9 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the bar.", null, false, false, false, @"FlareMenuBar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2690,9 +3010,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The menu items (FlareMenuItem) that belong to this group.", null, false, false, false, @"FlareMenuGroup"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Optional section header rendered above the group's items.", null, false, false, false, @"FlareMenuGroup"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2716,10 +3036,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents the menu item from being clicked.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"URL the menu item navigates to. When set renders an anchor element instead of a button.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"Icon", @"string?", null, @"Material Symbols icon displayed before the label.", null, false, false, false, @"FlareMenuItem"),
+                new ApiParameterInfo(@"IconColor", @"FlareColor", null, @"Color of the leading Icon. Role -> shared color class; custom -> inline token. Default keeps the theme's neutral icon color.", null, false, false, false, @"FlareMenuItem"),
+                new ApiParameterInfo(@"LeadingIconColor", @"FlareColor", null, @"Alias for IconColor; when set (non-default) it overrides IconColor.", null, false, false, false, @"FlareMenuItem"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the menu item is clicked.", null, false, true, false, @"FlareMenuItem"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Target", @"string?", null, @"HTML target for the anchor when Href is set (e.g. _blank to open an external link in a new tab). A _blank target automatically adds rel=""noopener noreferrer"". Ignored when the item renders as a button (no Href).", null, false, false, false, @"FlareMenuItem"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2735,36 +3058,54 @@ public static class ComponentApiRegistry
             @"FlareMultiSelect",
             @"Flare.Components.FlareMultiSelect",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Chips", @"bool", null, @"Renders the selected values as removable chips in the control (instead of a comma list).", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the control when true.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text displayed below the control, overriding HelperText.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"GetLabel", @"Func<TValue?, string>", null, @"Function to get the display label from an item.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"GetValue", @"Func<TValue?, TValue?>", null, @"Function to get the value key from an item.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"GroupBy", @"Func<TValue?, string>?", null, @"Returns the group label for an item. When non-null, dropdown options are grouped under headers.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text displayed below the control.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a dropdown option. Overrides GetLabel text in the list (the control summary still uses the label text).", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Items", @"IEnumerable<TValue?>?", null, @"The items to display in the dropdown.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the control.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when nothing is selected.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Searchable", @"bool", null, @"Shows a search input at the top of the dropdown to filter options.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"SelectedValues", @"IReadOnlyCollection<TValue?>?", null, @"The currently selected values.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"SelectedValuesChanged", @"EventCallback<IReadOnlyCollection<TValue?>>", null, @"Fires when the selection changes.", null, false, true, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"ShowSelectAll", @"bool", null, @"Shows a select-all checkbox at the top of the dropdown.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Medium is the default field height.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the control text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) independent of the theme, shared with FlareField. Default keeps the theme's field style (MD3 filled / Fluent outlined).", null, false, false, false, @"FlareMultiSelect"),
-                new ApiParameterInfo(@"VirtualizeThreshold", @"int", null, @"When the filtered item count exceeds this threshold, the dropdown switches to virtualized rendering. Default: 50.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ChipTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a selected chip's content.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Chips", @"bool", null, @"Renders the selected values as removable chips instead of a comma list.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Clearable", @"bool", null, @"Shows a clear button that resets the selection.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"For", @"Expression<Func<IReadOnlyList<TValue?>>>?", null, @"Expression used to bind and validate the field against an EditContext.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Fuzzy", @"bool", null, @"Ranks filtered options by fuzzy relevance instead of insertion order.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"GroupBy", @"Func<TValue?, string>?", null, @"Returns the group label for an item; when non-null, options are grouped under headers.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ItemDisabled", @"Func<TValue?, bool>?", null, @"Returns whether an item is disabled (shown, never committable).", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ItemLabel", @"Func<TValue?, string>?", null, @"Returns the display text for an item.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a dropdown option row.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Items", @"IEnumerable<TValue?>?", null, @"Collection of items to populate the dropdown.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"MaxSelections", @"int", null, @"Maximum number of selected items; 0 means unlimited.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"NoResultsText", @"string?", null, @"Text shown in the dropdown when a search query matches no options.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"OnMaxSelectionsReached", @"EventCallback", null, @"Invoked when a pick is rejected because MaxSelections is reached.", null, false, true, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Open", @"bool", null, @"Whether the dropdown is open (supports @bind-Open).", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback invoked when the open state changes.", null, false, true, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"RankFunc", @"Func<TValue?, string, double>?", null, @"Custom relevance scorer (item, query) => score; overrides Fuzzy.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", null, @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Searchable", @"bool", null, @"Shows an in-field search input that filters the options as the user types.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ShowSelectAll", @"bool", null, @"Shows a select-all row at the top of the dropdown.", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Values", @"IReadOnlyList<TValue?>", null, @"The bound collection of selected values (supports @bind-Values).", null, false, false, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"ValuesChanged", @"EventCallback<IReadOnlyList<TValue?>>", null, @"Callback invoked when the selection changes, enabling @bind-Values.", null, false, true, false, @"FlareMultiSelect"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"VirtualizeThreshold", @"int", null, @"Option count above which the dropdown virtualizes (when not grouped). Default: 50.", null, false, false, false, @"FlareMultiSelect"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2785,9 +3126,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ExpandedChanged", @"EventCallback<bool>", null, @"Callback fired when the expanded state changes.", null, false, true, false, @"FlareNavGroup"),
                 new ApiParameterInfo(@"Icon", @"string?", null, @"Material Symbols icon name rendered before the label.", null, false, false, false, @"FlareNavGroup"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Group title text.", null, false, false, false, @"FlareNavGroup"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2821,13 +3162,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnActiveChanged", @"EventCallback<bool>", null, @"Callback fired when the link's active state changes (true when it becomes active).", null, false, true, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback fired when the link is clicked.", null, false, true, false, @"FlareNavLink"),
                 new ApiParameterInfo(@"Tooltip", @"string?", null, @"Optional native tooltip (title). Useful as the hover label when the link is collapsed to icon-only in a mini-rail.", null, false, false, false, @"FlareNavLink"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -2849,11 +3190,14 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the navigation landmark, forwarded as aria-label.", null, false, false, false, @"FlareNavMenu"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Navigation items rendered inside the menu.", null, false, false, false, @"FlareNavMenu"),
+                new ApiParameterInfo(@"Footer", @"RenderFragment?", null, @"Optional items pinned to the bottom of the menu, below the scrolling area. See Header for the framed-layout behavior this enables.", null, false, false, false, @"FlareNavMenu"),
+                new ApiParameterInfo(@"Header", @"RenderFragment?", null, @"Optional items pinned to the top of the menu, above the scrolling area. Setting either Header or Footer switches the menu to a framed layout that fills its container's height: the header and footer stay fixed while ChildContent scrolls between them. Put ordinary nav items here so they collapse to icons in a mini-rail too.", null, false, false, false, @"FlareNavMenu"),
                 new ApiParameterInfo(@"HideScrollbar", @"bool", @"false", @"When true, the menu scrolls its own overflow vertically but the scrollbar is hidden (scrolling still works via wheel/touch/keyboard). Useful inside a fixed-height drawer.", null, false, false, false, @"FlareNavMenu"),
-                new ApiParameterInfo(@"Rail", @"bool", @"false", @"Mini-rail mode: collapses every item to its icon only -- link/group text, the group expand chevron and link badges are hidden and the icons are centered. When the menu is inside a FlareLayout with MiniRail, this turns on automatically while the drawer is collapsed, so no wiring is needed; set it explicitly to force the rail anywhere.", null, false, false, false, @"FlareNavMenu"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Mode", @"NavMenuMode?", null, @"Presentation of the menu (Full or Rail), decoupled from any surrounding layout. When set, it takes precedence over Rail and the collapsed-drawer auto-rail; leave it unset (null) to keep the legacy behavior.", null, false, false, false, @"FlareNavMenu"),
+                new ApiParameterInfo(@"Rail", @"bool", @"false", @"Mini-rail mode: collapses every item to its icon only -- link/group text, the group expand chevron and link badges are hidden and the icons are centered. When the menu is inside a FlareLayoutDrawer with Variant=""DrawerVariant.Mini"", this turns on automatically while that drawer is collapsed, so no wiring is needed; set it explicitly to force the rail anywhere.", null, false, false, false, @"FlareNavMenu"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -2869,35 +3213,36 @@ public static class ComponentApiRegistry
             @"FlareNumericField",
             @"Flare.Components.FlareNumericField",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Culture", @"CultureInfo?", null, @"Culture used to render and parse Format. Defaults to the current UI culture.", null, false, false, false, @"FlareNumericField"),
                 new ApiParameterInfo(@"DebounceInterval", @"int", null, @"Debounce in milliseconds for Immediate updates. 0 = no debounce.", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the field when true.", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareNumericField"),
                 new ApiParameterInfo(@"Format", @"string?", null, @"Display format applied while the field is not focused: standard .NET numeric format (e.g. ""N0"" group separators, ""C2"" currency, ""P0"" percent). Setting this switches the control to a text field that shows the formatted value when blurred and a plain editable number while focused (focus-swap), so separators/currency symbols do not block typing.", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Immediate", @"bool", null, @"When true, the value updates on every keystroke (oninput) rather than only on change/blur.", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the field.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Max", @"double?", null, @"Maximum allowed value.", null, false, false, false, @"FlareNumericField"),
                 new ApiParameterInfo(@"Min", @"double?", null, @"Minimum allowed value.", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Prefix", @"string?", null, @"Non-editable text rendered before the input (e.g. currency symbol).", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the field read-only when true.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", null, @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"ShowStepper", @"bool", null, @"Shows up/down stepper buttons that increment/decrement by Step (default 1).", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl), shared with FlareField. Medium is the default field height.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Step", @"double?", null, @"Increment step used by the number input.", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Suffix", @"string?", null, @"Non-editable text rendered after the input (e.g. unit label).", null, false, false, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Value", @"TValue?", null, @"Current numeric value of the field.", null, false, false, false, @"FlareNumericField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the numeric value changes.", null, false, true, false, @"FlareNumericField"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.", null, false, false, false, @"FlareNumericField"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -2906,6 +3251,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -2927,13 +3273,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ScrollRoot", @"string?", null, @"CSS selector of the scrollable ancestor used for the active-section highlight, when the content scrolls inside a panel rather than the page. Null (default) observes the viewport.", null, false, false, false, @"FlareOnThisPage"),
                 new ApiParameterInfo(@"ShowWhenEmpty", @"bool", @"false", @"When true the (empty) container still renders before any heading is found. Default false.", null, false, false, false, @"FlareOnThisPage"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Heading shown above the list. Defaults to a localized ""On this page"".", null, false, false, false, @"FlareOnThisPage"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SetActive", @"SetActive(string[] ids)", @"Task", null, @"Invoked by JS with the ids of every heading currently visible on screen.",
                     new ApiMethodParameter[]
@@ -2946,6 +3292,47 @@ public static class ComponentApiRegistry
                         new ApiMethodParameter(@"headings", @"TocHeading[]", null),
                     }),
             },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareOptionList"] = new ApiComponentInfo(
+            @"FlareOptionList",
+            @"Flare.Components.FlareOptionList",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AriaLabelledBy", @"string?", null, @"Value forwarded to aria-labelledby on the listbox root.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Empty", @"RenderFragment?", null, @"Content rendered in place of the options when there are none (e.g. a ""no results"" message).", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"Header", @"RenderFragment?", null, @"Content rendered above the options (e.g. a select-all row).", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"HighlightedIndex", @"int", null, @"The highlighted option index (into the filtered options); -1 for none.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"Id", @"string?", null, @"Listbox root id; option ids are {Id}-opt-{optionIndex} for aria-activedescendant.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"IsDisabled", @"Func<TItem?, bool>?", null, @"Returns whether an item is disabled (drives aria-disabled and non-committable styling).", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"IsSelected", @"Func<TItem?, bool>?", null, @"Returns whether an item is selected (drives aria-selected and the selected styling).", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TItem?>?", null, @"Custom render template for an option row. Overrides the Label text.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"Label", @"Func<TItem?, string>", null, @"Resolves an item's display text when no ItemTemplate is supplied.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"Multiselectable", @"bool", null, @"Sets aria-multiselectable on the listbox root.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"OnHighlight", @"EventCallback<int>", null, @"Invoked with the option index the pointer moved over (hover highlight).", null, false, true, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"OnSelect", @"EventCallback<TItem?>", null, @"Invoked with the item of the clicked option.", null, false, true, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"OptionClass", @"string?", null, @"Extra CSS class on each option row.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"PreventMouseDownDefault", @"bool", null, @"Prevents the default mousedown so clicking an option does not blur the host's input.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"Rows", @"IReadOnlyList<ComboboxRow<TItem?>>", null, @"The header+option rows to render, already ordered and grouped (from the engine's cached projection).", null, false, false, true, @"FlareOptionList"),
+                new ApiParameterInfo(@"ShowCheck", @"bool", null, @"Renders a trailing check mark on the selected option (single-select).", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"ShowCheckbox", @"bool", null, @"Renders a leading visual checkbox on each option (multi-select).", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Virtualize", @"bool", null, @"Enables virtualized rendering above VirtualizeThreshold when not grouped.", null, false, false, false, @"FlareOptionList"),
+                new ApiParameterInfo(@"VirtualizeThreshold", @"int", null, @"Option count above which virtualized rendering kicks in. Default: 50.", null, false, false, false, @"FlareOptionList"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareComponentBase",
@@ -2973,9 +3360,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnComplete", @"EventCallback<string>", null, @"Callback fired when all digits are filled.", null, false, true, false, @"FlareOtpField"),
                 new ApiParameterInfo(@"Value", @"string", @"""""", @"Current value as a string of digits. Supports @bind-Value. Empty string means no input.", null, false, false, false, @"FlareOtpField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string>", null, @"Callback fired when the value changes.", null, false, true, false, @"FlareOtpField"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -3006,9 +3393,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Opacity", @"double", @"0.5", @"Background opacity value between 0 and 1.", null, false, false, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the overlay is visible.", null, false, false, false, @"FlareOverlay"),
                 new ApiParameterInfo(@"ZIndex", @"int", @"1200", @"CSS z-index applied to the overlay element.", null, false, false, false, @"FlareOverlay"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3043,9 +3430,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Size", @"PaginationSize", @"PaginationSize.Md", @"Size of the pagination controls.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"TotalItems", @"int", @"0", @"Total number of items across all pages. Used for info display.", null, false, false, false, @"FlarePagination"),
                 new ApiParameterInfo(@"TotalPages", @"int", @"0", @"Total number of pages available.", null, false, false, false, @"FlarePagination"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3071,9 +3458,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Padding", @"FlareSpacing", @"FlareSpacing.None", @"Padding applied inside the paper surface using design-token values.", null, false, false, false, @"FlarePaper"),
                 new ApiParameterInfo(@"PaddingValue", @"string?", null, @"Raw CSS padding value used when Padding is Custom.", null, false, false, false, @"FlarePaper"),
                 new ApiParameterInfo(@"Square", @"bool", @"false", @"When true, removes border-radius for a flat rectangular shape.", null, false, false, false, @"FlarePaper"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3089,32 +3476,36 @@ public static class ComponentApiRegistry
             @"FlarePasswordField",
             @"Flare.Components.FlarePasswordField",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"DebounceInterval", @"int", @"0", @"Debounce in milliseconds for Immediate updates. 0 = no debounce.", null, false, false, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field.", null, false, false, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text overrides HelperText when set.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"For", @"Expression<Func<string>>?", null, @"Expression used to bind and validate the field inside an EditForm.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"FullWidth", @"bool", @"true", @"When true (the default), the field is block-level and fills the width of its container. Set to false to size the field to its content (inline) instead.", null, false, false, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"Immediate", @"bool", @"false", @"When true, the value updates on every keystroke (oninput) rather than only on change/blur.", null, false, false, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"Margin", @"FieldMargin", @"FieldMargin.None", @"Vertical (block) margin around the field. None (default) leaves spacing to the surrounding layout; Dense / Normal add a compact / comfortable margin above and below.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.", null, false, false, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text.", null, false, false, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required, emitting the native required attribute on the input.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The bound password value.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Fires when the value changes, so the field can be driven with @bind-Value.", null, false, true, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.", null, false, false, false, @"FlarePasswordField"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3140,14 +3531,54 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback raised when the open state should change.", null, false, true, false, @"FlarePopover"),
                 new ApiParameterInfo(@"Placement", @"PopoverPlacement", @"PopoverPlacement.BottomStart", @"Position of the panel relative to the anchor element.", null, false, false, false, @"FlarePopover"),
                 new ApiParameterInfo(@"SmartPosition", @"bool", @"false", @"Enables collision detection (flip/shift) to keep the popover within viewport.", null, false, false, false, @"FlarePopover"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Trigger", @"PopoverTrigger", @"PopoverTrigger.Manual", @"How the popover opens. Click toggles it from the anchor with no extra wiring; Manual (default) leaves it fully controlled.", null, false, false, false, @"FlarePopover"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlarePopup"] = new ApiComponentInfo(
+            @"FlarePopup",
+            @"Flare.Components.FlarePopup",
+            @"Flare.Components",
+            @"The anchored dropdown panel for the select family (see the markup partial for the rationale). Owns the fixed-position anchoring and the single unified dismissal handler through IOverlayJsService, so no shell re-implements the open/position/dismiss lifecycle or a blur timer.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Anchor", @"ElementReference", null, @"The element the panel is positioned under (the trigger).", null, false, false, true, @"FlarePopup"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The panel content (typically a FlareOptionList).", null, false, false, false, @"FlarePopup"),
+                new ApiParameterInfo(@"DismissRoot", @"ElementReference", null, @"The widget root used for dismissal containment (interactions inside it do not dismiss).", null, false, false, true, @"FlarePopup"),
+                new ApiParameterInfo(@"MatchWidth", @"bool", @"true", @"Sizes the panel to the anchor width (default true).", null, false, false, false, @"FlarePopup"),
+                new ApiParameterInfo(@"OnDismiss", @"EventCallback", null, @"Invoked when a pointer-down outside the widget or a focus-out escaping it should dismiss.", null, false, true, false, @"FlarePopup"),
+                new ApiParameterInfo(@"Open", @"bool", @"false", @"Whether the panel is open (rendered + positioned).", null, false, false, false, @"FlarePopup"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DismissFromJs", @"DismissFromJs()", @"Task", null, @"Invoked from JS when a pointer-down outside the widget or a focus-out escaping it occurs.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"ScrollOptionIntoViewAsync", @"ScrollOptionIntoViewAsync(string optionId)", @"ValueTask", null, @"Scrolls the option element with optionId into view within the panel.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"optionId", @"string", @"The option element id to reveal."),
+                    }),
             },
             new string[]
             {
@@ -3172,10 +3603,10 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Thickness", @"int", @"0", @"Track thickness in pixels for the linear variants (Linear/Buffer/Query). 0 = theme default (4px).", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Variant", @"ProgressVariant", @"ProgressVariant.Linear", @"Display style: Linear bar, Circular spinner, Buffer, or Query.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Wavy", @"bool", @"false", @"MD3 Expressive wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Wavy", @"bool", @"false", @"Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.", null, false, false, false, @"FlareProgress"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3197,9 +3628,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The property rows, typically FlarePropertyGridItem components.", null, false, false, false, @"FlarePropertyGrid"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Optional category/header text shown above the rows.", null, false, false, false, @"FlarePropertyGrid"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3222,9 +3653,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"A custom value editor (overrides Value), e.g. an input or select.", null, false, false, false, @"FlarePropertyGridItem"),
                 new ApiParameterInfo(@"Name", @"string?", null, @"The property name shown in the left column.", null, false, false, false, @"FlarePropertyGridItem"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The property value shown when no ChildContent editor is supplied.", null, false, false, false, @"FlarePropertyGridItem"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3254,9 +3685,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"IconUrl", @"string?", null, @"URL of an image to overlay in the centre of the QR code.", null, false, false, false, @"FlareQrCode"),
                 new ApiParameterInfo(@"Size", @"int", @"200", @"Pixel width and height of the rendered SVG.", null, false, false, false, @"FlareQrCode"),
                 new ApiParameterInfo(@"Value", @"string", @"""""", @"The data string to encode as a QR code.", null, false, false, false, @"FlareQrCode"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3277,9 +3708,9 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The quick-access command buttons (usually small FlareButton items).", null, false, false, false, @"FlareQuickAccessToolbar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3299,9 +3730,9 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Radio button items rendered inside the group.", null, false, false, false, @"FlareRadioGroup"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Accent color of the selected radio (role -> shared class, custom -> inline token). Default = primary.", null, false, false, false, @"FlareRadioGroup"),
                 new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables all radio buttons in the group.", null, false, false, false, @"FlareRadioGroup"),
                 new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareRadioGroup"),
@@ -3310,13 +3741,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Label", @"string?", null, @"Legend label shown above the group.", null, false, false, false, @"FlareRadioGroup"),
                 new ApiParameterInfo(@"LabelPlacement", @"LabelPlacement", null, @"Label position relative to each radio (End = after, Start = before). Default End.", null, false, false, false, @"FlareRadioGroup"),
                 new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl) applied to every radio in the group. Medium is the default.", null, false, false, false, @"FlareRadioGroup"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Value", @"TValue?", null, @"Currently selected value in the group.", null, false, false, false, @"FlareRadioGroup"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the selected value changes.", null, false, true, false, @"FlareRadioGroup"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -3347,9 +3778,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"StarTemplate", @"RenderFragment<bool>?", null, @"Custom template for each star icon. Receives true when the star is filled.", null, false, false, false, @"FlareRating"),
                 new ApiParameterInfo(@"Value", @"double", @"0", @"Currently selected star rating. Supports fractional values (e.g. 2.5) when AllowHalf is true.", null, false, false, false, @"FlareRating"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<double>", null, @"Callback invoked when the rating changes.", null, false, true, false, @"FlareRating"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3375,13 +3806,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MaxSize", @"string?", null, null, null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"MinSize", @"string?", null, null, null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"OnResized", @"EventCallback<string>", null, null, null, false, true, false, @"FlareResizable"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnResizedCallback", @"OnResizedCallback(string newSize)", @"Task", null, null,
                     new ApiMethodParameter[]
@@ -3409,9 +3840,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Ribbon tabs rendered inside the ribbon bar.", null, false, false, false, @"FlareRibbon"),
                 new ApiParameterInfo(@"OnTabChanged", @"EventCallback<string?>", null, @"Callback fired when the active tab changes. The parameter is the tab title.", null, false, true, false, @"FlareRibbon"),
                 new ApiParameterInfo(@"SizeMode", @"RibbonSizeMode", @"RibbonSizeMode.Full", @"Current ribbon size mode - full (default) shows commands, collapsed shows only tabs.", null, false, false, false, @"FlareRibbon"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3437,9 +3868,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed below the icon in large mode.", null, false, false, false, @"FlareRibbonButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback when the button is clicked.", null, false, true, false, @"FlareRibbonButton"),
                 new ApiParameterInfo(@"Tooltip", @"string?", null, @"Tooltip text shown on hover.", null, false, false, false, @"FlareRibbonButton"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3465,9 +3896,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown next to / below the icon.", null, false, false, false, @"FlareRibbonDropdown"),
                 new ApiParameterInfo(@"MenuContent", @"RenderFragment?", null, @"The dropdown menu items, typically FlareMenuItem entries.", null, false, false, false, @"FlareRibbonDropdown"),
                 new ApiParameterInfo(@"Tooltip", @"string?", null, @"Tooltip and accessible label for the dropdown.", null, false, false, false, @"FlareRibbonDropdown"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3489,9 +3920,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Command items rendered inside the group.", null, false, false, false, @"FlareRibbonGroup"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label displayed below the group content.", null, false, false, false, @"FlareRibbonGroup"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3511,9 +3942,9 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3536,9 +3967,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Groups rendered inside this tab panel.", null, false, false, false, @"FlareRibbonTab"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables this tab preventing activation.", null, false, false, false, @"FlareRibbonTab"),
                 new ApiParameterInfo(@"Title", @"string", @"""""", @"Display title for the ribbon tab.", null, false, false, false, @"FlareRibbonTab"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
@@ -3570,13 +4001,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowLink", @"bool", @"false", @"Shows a link-insertion button in the toolbar.", null, false, false, false, @"FlareRichTextEditor"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"HTML string representing the current editor content.", null, false, false, false, @"FlareRichTextEditor"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string>", null, @"Callback raised when the editor content changes.", null, false, true, false, @"FlareRichTextEditor"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnContentChanged", @"OnContentChanged(string html)", @"Task", null, null,
                     new ApiMethodParameter[]
@@ -3601,14 +4032,15 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"Selector", @"string?", null, @"CSS selector of the scroll container to watch (e.g. an app-shell content panel). When null (the default) the page itself (window) is used.", null, false, false, false, @"FlareScrollTop"),
                 new ApiParameterInfo(@"Threshold", @"int", @"200", @"Scroll distance in pixels before the button appears.", null, false, false, false, @"FlareScrollTop"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"SetVisible", @"SetVisible(bool visible)", @"void", null, null,
                     new ApiMethodParameter[]
@@ -3629,28 +4061,41 @@ public static class ComponentApiRegistry
             @"FlareSelect",
             @"Flare.Components.FlareSelect",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the select when true.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"GroupBy", @"Func<TValue?, string>?", null, @"Returns the group label for an item. When non-null, options are grouped under headers.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the select.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"ItemLabel", @"Func<TValue?, string>?", null, @"Function that returns the display text for an item.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for an item (control + dropdown). Overrides ItemLabel text.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Declarative options as native <option> child markup (used instead of Items).", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Clearable", @"bool", null, @"Shows a clear button that resets the value.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"For", @"Expression<Func<TValue?>>?", null, @"Expression used to bind and validate the field against an EditContext.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Fuzzy", @"bool", null, @"Ranks filtered options by fuzzy relevance (via FlareSearch) instead of insertion order.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"GroupBy", @"Func<TValue?, string>?", null, @"Returns the group label for an item; when non-null, options are grouped under headers.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ItemDisabled", @"Func<TValue?, bool>?", null, @"Returns whether an item is disabled (shown, never committable).", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"ItemLabel", @"Func<TValue?, string>?", null, @"Returns the display text for an item. When null, the declarative label or ToString() is used.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for an item (dropdown row and, unless SelectedTemplate is set, the trigger).", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Items", @"IEnumerable<TValue?>?", null, @"Collection of items to populate the dropdown.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the select.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown in the control when no item is selected.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Medium is the default field height.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the control text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"Value", @"TValue?", null, @"Currently selected item value.", null, false, false, false, @"FlareSelect"),
-                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the selection changes.", null, false, true, false, @"FlareSelect"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) independent of the theme, shared with FlareField. Default keeps the theme's field style (MD3 filled / Fluent outlined).", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"NoResultsText", @"string?", null, @"Text shown in the dropdown when a search query matches no options.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Open", @"bool", null, @"Whether the dropdown is open (supports @bind-Open).", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback invoked when the open state changes, enabling @bind-Open.", null, false, true, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"RankFunc", @"Func<TValue?, string, double>?", null, @"Custom relevance scorer (item, query) => score; overrides Fuzzy.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", null, @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Searchable", @"bool", null, @"Shows an in-field search input that filters the options as the user types.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"SelectedTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for the selected value in the trigger. Falls back to ItemTemplate.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Value", @"TValue?", null, @"Currently selected value (supports @bind-Value).", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback invoked when the selection changes, enabling @bind-Value.", null, false, true, false, @"FlareSelect"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"VirtualizeThreshold", @"int", null, @"Option count above which the dropdown virtualizes (when not grouped). Default: 50.", null, false, false, false, @"FlareSelect"),
             },
             new ApiMethodInfo[]
             {
@@ -3659,6 +4104,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -3680,9 +4126,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnAddSheet", @"EventCallback", null, @"Raised when the add button is clicked.", null, false, true, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"Sheets", @"IReadOnlyList<string>?", null, @"The sheet names rendered as tabs, in order.", null, false, false, false, @"FlareSheetTabs"),
                 new ApiParameterInfo(@"ShowAddButton", @"bool", @"true", @"Whether the trailing ""add sheet"" button is shown (default true).", null, false, false, false, @"FlareSheetTabs"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3706,18 +4152,18 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Height", @"int", @"200", @"Height of the drawing canvas in pixels.", null, false, false, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"OnChanged", @"EventCallback", null, @"Callback raised after the user finishes a stroke.", null, false, true, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"PressureSensitive", @"bool", @"true", @"Varies stroke width with pointer/pen pressure (0.4x-1.6x of StrokeWidth). Default true.", null, false, false, false, @"FlareSignaturePad"),
-                new ApiParameterInfo(@"StrokeColor", @"FlareColor", null, @"Color of the drawn stroke. Accepts a semantic role (FlareColor.Primary), a custom CSS color (""#e53935"" via implicit conversion) or a dynamic color. Defaults to FlareColor.OnSurface (high-emphasis content color).", null, false, false, false, @"FlareSignaturePad"),
+                new ApiParameterInfo(@"StrokeColor", @"FlareColor", null, @"Color of the drawn stroke. Accepts a semantic role (FlareColor.Primary), a custom CSS color (""#e53935"" via implicit conversion) or a dynamic color. Defaults to OnSurface (high-emphasis content color).", null, false, false, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"StrokeWidth", @"double", @"2", @"Width of the drawn stroke in pixels.", null, false, false, false, @"FlareSignaturePad"),
                 new ApiParameterInfo(@"Width", @"int", @"400", @"Width of the drawing canvas in pixels.", null, false, false, false, @"FlareSignaturePad"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
                 new ApiMethodInfo(@"ClearAsync", @"ClearAsync()", @"Task", null, @"Clears all drawn strokes from the canvas.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"GetDataUrlAsync", @"GetDataUrlAsync()", @"Task<string>", null, @"Returns the current canvas content as a base-64-encoded PNG data URL, or null when unavailable.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -3745,9 +4191,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Height", @"string?", null, @"CSS height applied inline to the skeleton element.", null, false, false, false, @"FlareSkeleton"),
                 new ApiParameterInfo(@"Variant", @"SkeletonVariant", @"SkeletonVariant.Rect", @"Shape of the skeleton placeholder: Rect, Text, or Circle.", null, false, false, false, @"FlareSkeleton"),
                 new ApiParameterInfo(@"Width", @"string?", null, @"CSS width applied inline to the skeleton element.", null, false, false, false, @"FlareSkeleton"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3784,7 +4230,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MouseWheel", @"bool", @"false", @"When true, hovering the slider and turning the mouse wheel adjusts Value: each notch moves by Step (scroll up increases, down decreases) and page scrolling is suppressed over the track. In range mode a plain wheel moves the low handle (Value) and Ctrl+wheel moves the high handle (ValueEnd); neither handle can cross the other. No effect when Disabled.", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Range", @"bool", @"false", @"Enables a two-handle range slider (Value = low, ValueEnd = high).", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"ShowValue", @"bool", @"true", @"Shows the current value (or low-high range) next to the label when true.", null, false, false, false, @"FlareSlider"),
-                new ApiParameterInfo(@"Size", @"SliderSize", @"SliderSize.Xs", @"Size variant (MD3 Expressive XSmall-XLarge). Controls track thickness and handle height.", null, false, false, false, @"FlareSlider"),
+                new ApiParameterInfo(@"Size", @"SliderSize", @"SliderSize.Xs", @"Size variant (XSmall-XLarge). Controls track thickness and handle height.", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"StartIcon", @"string?", null, @"Material Symbols icon name shown before the track (e.g. ""volume_mute"").", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Step", @"double", @"1", @"Increment step between slider positions. Defaults to 1; any positive decimal step is allowed.", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Stepper", @"bool", @"false", @"Shows step (stop) indicators along the track at each Step position.", null, false, false, false, @"FlareSlider"),
@@ -3793,13 +4239,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ValueEnd", @"double", @"100", @"Upper bound of the selected range (range mode only).", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"ValueEndChanged", @"EventCallback<double>", null, @"Callback invoked when ValueEnd changes.", null, false, true, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Vertical", @"bool", @"false", @"Renders the slider vertically (value increases upward). Length is set via the --flare-slider-length CSS var (default 12rem).", null, false, false, false, @"FlareSlider"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -3821,13 +4267,13 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"MaxVisible", @"int", @"5", @"Maximum number of snackbar messages shown simultaneously.", null, false, false, false, @"FlareSnackbarProvider"),
                 new ApiParameterInfo(@"Position", @"SnackbarPosition", @"SnackbarPosition.BottomCenter", @"Screen position where the snackbar stack appears.", null, false, false, false, @"FlareSnackbarProvider"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -3847,9 +4293,9 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3877,9 +4323,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the primary action button is clicked.", null, false, true, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size applied to both buttons.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Filled", @"Visual style variant applied to both the main and trigger buttons.", null, false, false, false, @"FlareSplitButton"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3911,13 +4357,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnSizeChanged", @"EventCallback<string>", null, @"Invoked with the previous neighbour's new pixel size (e.g. ""240px"") after a resize.", null, false, true, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Orientation", @"SplitterOrientation", @"SplitterOrientation.Auto", @"Resize axis. Default Auto: the splitter reads the parent flex container's direction, so you usually do not need to set this. Provide an explicit value only to override (e.g. a non-flex parent).", null, false, false, false, @"FlareSplitter"),
                 new ApiParameterInfo(@"Size", @"string?", null, @"Thickness of the handle as a CSS length (e.g. ""8px"", ""0.75rem""). Default 0.5rem.", null, false, false, false, @"FlareSplitter"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnSplitChanged", @"OnSplitChanged(string newSize)", @"Task", null, null,
                     new ApiMethodParameter[]
@@ -3949,10 +4395,12 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Justify", @"FlareJustifyContent", @"FlareJustifyContent.Default", @"Main-axis justification of children.", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"Reverse", @"bool", @"false", @"Flex direction - reverse or not (default).", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"Row", @"bool", @"false", @"Flex direction - row or column (default).", null, false, false, false, @"FlareStack"),
+                new ApiParameterInfo(@"StretchFirst", @"bool", @"false", @"When true, only the first direct child grows to fill the remaining main-axis space (flex: 1 1 auto) while the others keep their natural size - e.g. a title that expands to push trailing actions to the edge. Ignored when StretchItems is set.", null, false, false, false, @"FlareStack"),
+                new ApiParameterInfo(@"StretchItems", @"bool", @"false", @"When true, every direct child grows to share the available space equally along the main axis (each child gets flex: 1 1 0). Use it to make items fill a row/column evenly.", null, false, false, false, @"FlareStack"),
                 new ApiParameterInfo(@"Wrap", @"bool", @"false", @"Allows children to wrap onto multiple lines.", null, false, false, false, @"FlareStack"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3975,9 +4423,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"CenterContent", @"RenderFragment?", null, @"Content rendered in the center section.", null, false, false, false, @"FlareStatusBar"),
                 new ApiParameterInfo(@"LeftContent", @"RenderFragment?", null, @"Content rendered in the left section (e.g. line/column info).", null, false, false, false, @"FlareStatusBar"),
                 new ApiParameterInfo(@"RightContent", @"RenderFragment?", null, @"Content rendered in the right section (e.g. language, encoding).", null, false, false, false, @"FlareStatusBar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3997,26 +4445,30 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"ActionContent", @"RenderFragment<StepperContext>?", null, @"Optional navigation content rendered in place of the built-in Back/Next buttons. Receives a StepperContext with the active position and the navigation operations, so a consumer can render bespoke controls (custom icon buttons, wheel/keyboard navigation, ...). When null (the default) the component renders its built-in Back/Next buttons.", null, false, false, false, @"FlareStepper"),
+                new ApiParameterInfo(@"ActiveIndex", @"int", @"0", @"Zero-based index of the active step. Supports two-way binding (@bind-ActiveIndex): the component writes the new index out via ActiveIndexChanged on every navigation, and adopts an externally assigned value (e.g. from a consumer's custom controls) on the next render. An out-of-range value is clamped to the registered step count. The getter always reports the live active step, so reading it after a navigation reflects the current position.", null, false, false, false, @"FlareStepper"),
+                new ApiParameterInfo(@"ActiveIndexChanged", @"EventCallback<int>", null, @"Fired with the new index whenever ActiveIndex changes (Next/Back/click or a programmatic move), enabling @bind-ActiveIndex. For a plain ""step changed"" notification without binding, use OnStepChanged instead (both fire).", null, false, true, false, @"FlareStepper"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the step indicator tab list. Defaults to localised ""Progress steps"".", null, false, false, false, @"FlareStepper"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"FlareStep descriptors registered as children.", null, false, false, false, @"FlareStepper"),
                 new ApiParameterInfo(@"Linear", @"bool", @"true", @"Prevents skipping ahead to non-completed steps.", null, false, false, false, @"FlareStepper"),
                 new ApiParameterInfo(@"NonLinear", @"bool", @"false", @"Allows clicking any step regardless of completion when true.", null, false, false, false, @"FlareStepper"),
                 new ApiParameterInfo(@"OnStepChanged", @"EventCallback<int>", null, @"Callback fired when the active step index changes.", null, false, true, false, @"FlareStepper"),
+                new ApiParameterInfo(@"OnStepChanging", @"Func<StepperChange, Task<bool>>?", null, @"Async guard fired BEFORE the active step changes (any navigation: Next/Back/click). Return false to block the change -- e.g. validate the current step before advancing. The StepperChange carries the current and target indices, so a handler that only validates forward moves can allow change.To < change.From.", null, false, false, false, @"FlareStepper"),
                 new ApiParameterInfo(@"Orientation", @"StepperOrientation", @"StepperOrientation.Horizontal", @"Layout orientation - horizontal or vertical.", null, false, false, false, @"FlareStepper"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"Back", @"Back()", @"Task", null, null,
+                new ApiMethodInfo(@"Back", @"Back()", @"Task", null, @"Returns to the previous step. No-op on the first step. Runs the OnStepChanging guard.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"GoTo", @"GoTo(int index)", @"Task", null, null,
+                new ApiMethodInfo(@"GoTo", @"GoTo(int index)", @"Task", null, @"Navigates to index (clamped to range) when allowed by the linear/skippable rules. Runs the OnStepChanging guard.",
                     new ApiMethodParameter[]
                     {
-                        new ApiMethodParameter(@"index", @"int", null),
+                        new ApiMethodParameter(@"index", @"int", @"Zero-based target step index."),
                     }),
-                new ApiMethodInfo(@"Next", @"Next()", @"Task", null, null,
+                new ApiMethodInfo(@"Next", @"Next()", @"Task", null, @"Advances to the next step. No-op on the last step. Runs the OnStepChanging guard.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -4041,13 +4493,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Icon", @"string?", null, @"Material Symbols icon displayed before the label.", null, false, false, false, @"FlareSubMenu"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text for the submenu trigger item.", null, false, false, false, @"FlareSubMenu"),
                 new ApiParameterInfo(@"Placement", @"SubmenuPlacement", @"SubmenuPlacement.End", @"Submenu opens to this side relative to the parent item.", null, false, false, false, @"FlareSubMenu"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -4073,18 +4525,18 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"For", @"Expression<Func<bool>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed next to the switch.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"LabelPlacement", @"LabelPlacement", @"LabelPlacement.End", @"Label position relative to the switch (End = after, Start = before). Default End.", null, false, false, false, @"FlareSwitch"),
-                new ApiParameterInfo(@"SelectedIcon", @"RenderFragment?", null, @"Icon shown on the handle when the switch is ON (MD3 ""with icon"", e.g. a check mark).", null, false, false, false, @"FlareSwitch"),
-                new ApiParameterInfo(@"Size", @"SwitchSize", @"SwitchSize.Md", @"Switch size (Sm or Md). Default Md (MD3 52x32dp).", null, false, false, false, @"FlareSwitch"),
+                new ApiParameterInfo(@"SelectedIcon", @"RenderFragment?", null, @"Icon shown on the handle when the switch is ON (e.g. a check mark).", null, false, false, false, @"FlareSwitch"),
+                new ApiParameterInfo(@"Size", @"SwitchSize", @"SwitchSize.Md", @"Switch size (Sm or Md). Default Md (52x32dp).", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"UnselectedIcon", @"RenderFragment?", null, @"Icon shown on the handle when the switch is OFF. Optional; when omitted the off handle is plain.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"Value", @"bool", @"false", @"Whether the switch is on.", null, false, false, false, @"FlareSwitch"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<bool>", null, @"Callback invoked when the toggle state changes.", null, false, true, false, @"FlareSwitch"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -4114,13 +4566,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered before the tab label.", null, false, false, false, @"FlareTab"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Invoked when the tab button is clicked, before activation. Fires even for the active tab.", null, false, true, false, @"FlareTab"),
                 new ApiParameterInfo(@"Tooltip", @"string?", null, @"Tooltip text shown on hover/focus of the tab (native title).", null, false, false, false, @"FlareTab"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -4140,11 +4592,11 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Bordered", @"bool", null, @"Adds borders around all cells.", null, false, false, false, @"FlareTable"),
                 new ApiParameterInfo(@"Caption", @"string?", null, @"Accessible caption rendered as a <caption> element inside the table. Provides a text summary of the table's purpose - not supported by MudBlazor or Blazorise.", null, false, false, false, @"FlareTable"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Raw table content for simple (non-typed) usage.", null, false, false, false, @"FlareTable"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ColSpan", @"int", null, @"Number of columns (used for group-row colspan).", null, false, false, false, @"FlareTable"),
                 new ApiParameterInfo(@"Dense", @"bool", null, @"Reduces cell padding for a denser layout (consistent with other components' Dense).", null, false, false, false, @"FlareTable"),
                 new ApiParameterInfo(@"FooterContent", @"RenderFragment<IEnumerable<TItem?>>?", null, @"Renders the footer row(s) inside <tfoot> receiving all items.", null, false, false, false, @"FlareTable"),
@@ -4156,7 +4608,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowFooter", @"bool", null, @"When true, renders a <tfoot> using FooterContent.", null, false, false, false, @"FlareTable"),
                 new ApiParameterInfo(@"StickyHeader", @"bool", null, @"Pins the table header while the body scrolls.", null, false, false, false, @"FlareTable"),
                 new ApiParameterInfo(@"Striped", @"bool", null, @"Alternates row background colors for readability.", null, false, false, false, @"FlareTable"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4178,9 +4630,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The links, typically a sequence of FlareTocLink.", null, false, false, false, @"FlareTableOfContents"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Optional heading shown above the links (e.g. ""On this page""). When null no title is rendered.", null, false, false, false, @"FlareTableOfContents"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4210,15 +4662,15 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnPreviewInteraction", @"EventCallback<TabInteractionEventArgs>", null, @"Invoked before a tab is activated or closed. Set Cancel in the handler to veto the interaction (e.g. block switching away from a tab with unsaved changes). Async handlers are awaited before the interaction proceeds.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"OnTabClose", @"EventCallback<string>", null, @"Callback fired with the label of a closed tab.", null, false, true, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Placement", @"TabsPlacement", @"TabsPlacement.Top", @"Side the tab bar is placed on (Top/Bottom/Left/Right). Left/Right render a vertical bar. Default Top.", null, false, false, false, @"FlareTabs"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Type scale applied to the tab labels. Null (default) keeps the MD3 label-large scale.", null, false, false, false, @"FlareTabs"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Type scale applied to the tab labels. Null (default) keeps the theme's label scale.", null, false, false, false, @"FlareTabs"),
                 new ApiParameterInfo(@"Variant", @"TabsVariant", @"TabsVariant.Default", @"Visual variant of the tab bar (theme-independent). Default keeps the active theme's style.", null, false, false, false, @"FlareTabs"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnTabScrollState", @"OnTabScrollState(bool overflowing, bool atStart, bool atEnd)", @"void", null, null,
                     new ApiMethodParameter[]
@@ -4241,36 +4693,41 @@ public static class ComponentApiRegistry
             @"FlareTagField",
             @"Flare.Components.FlareTagField",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AddOnBlur", @"bool", @"true", @"Adds the current input as a tag when focus leaves.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"AllowDuplicates", @"bool", @"false", @"Allows adding duplicate tags when true.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"ChipColor", @"Func<string, string?>?", null, @"Optional function that returns an inline CSS style string for each chip (e.g. background color). Receives the tag value.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"DebounceMs", @"int", @"200", @"Debounce in milliseconds before querying SearchFunc.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the tag input when true.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"For", @"Expression<Func<IReadOnlyList<string>>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the tag input.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the tag input.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"MaxSuggestions", @"int", @"8", @"Maximum number of suggestions shown in the dropdown.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"MaxTags", @"int", @"0", @"Maximum number of tags allowed; 0 means unlimited.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"MinChars", @"int", @"1", @"Minimum characters typed before suggestions appear.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"NoResultsText", @"string", @"""No results""", @"Text shown in the dropdown when a query returns no suggestions.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder shown when no tags have been entered.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Prevents adding or removing tags when true.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"SearchFunc", @"Func<string, Task<IEnumerable<string>>>?", null, @"Async suggestion provider (server-side). Receives the current input; overrides Suggestions when set.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Separators", @"IReadOnlyList<string>", null, @"Keyboard keys that commit the current input as a tag. Defaults to Enter, comma, and semicolon.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl), shared with FlareField. Medium is the default field height.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Suggestions", @"IEnumerable<string>?", null, @"Static list of suggestions offered in a dropdown as the user types. Already-added tags are excluded.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Values", @"IReadOnlyList<string>", null, @"Current list of tags.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"ValuesChanged", @"EventCallback<IReadOnlyList<string>>", null, @"Callback invoked when the tag list changes.", null, false, true, false, @"FlareTagField"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) independent of the theme, shared with FlareField. Default keeps the theme's field style (MD3 filled / Fluent outlined).", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AddOnBlur", @"bool", null, @"Adds the current input as a tag when focus leaves the field. Default: true.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AllowDuplicates", @"bool", null, @"Allows adding duplicate tags. Requires a reference/value type whose equality permits it.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"ChipColor", @"Func<TValue?, string?>?", null, @"Optional per-tag chip colour; rendered as the chip background.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"ChipTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a chip's content.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"CustomValueFactory", @"Func<string, TValue?>?", null, @"Converts the typed text into a tag value. Defaults to identity for string tags.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"DebounceMs", @"int", null, @"Debounce in milliseconds before querying SearchFunc. Default: 200ms.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Disabled", @"bool", null, @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"For", @"Expression<Func<IReadOnlyList<TValue?>>>?", null, @"Expression used to bind and validate the field against an EditContext.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ItemText", @"Func<TValue?, string>?", null, @"Resolves a tag/suggestion's display text. When null, ToString() is used.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"MaxSuggestions", @"int", null, @"Maximum number of suggestions shown. Default: 8.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"MaxTags", @"int", null, @"Maximum number of tags; 0 means unlimited.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"MinChars", @"int", null, @"Minimum characters typed before suggestions appear. Default: 1.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"NoResultsText", @"string?", null, @"Text shown when a query returns no suggestions. When null, falls back to the localized default.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", null, @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", null, @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"SearchFunc", @"Func<string, CancellationToken, Task<IEnumerable<TValue?>>>?", null, @"Async, cancelable suggestion provider (server-side); overrides Suggestions when set.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Separators", @"IReadOnlyList<string>", null, @"Keys that commit the current input as a tag. Defaults to Enter, comma and semicolon.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Size", @"FieldSize", null, @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"SuggestionTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a suggestion row.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Suggestions", @"IEnumerable<TValue?>?", null, @"Static suggestions offered in a dropdown as the user types. Already-added tags are excluded.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Values", @"IReadOnlyList<TValue?>", null, @"The current list of tags (supports @bind-Values).", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"ValuesChanged", @"EventCallback<IReadOnlyList<TValue?>>", null, @"Callback invoked when the tag list changes, enabling @bind-Values.", null, false, true, false, @"FlareTagField"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", null, @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4279,6 +4736,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4298,12 +4756,12 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AnchorId", @"string?", null, @"When set, gives the element a stable id (a link target) and renders a hover ""#"" deep-link. Use on headings so FlareOnThisPage and shareable URLs can reference the section.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Text content rendered inside the typography element.", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Text color. Role (FlareColor.Primary) -> shared class; custom (FlareColor.Custom(""#..."")) -> inline token. Default inherits.", null, false, false, false, @"FlareText"),
-                new ApiParameterInfo(@"Element", @"string?", null, null, null, false, false, false, @"FlareText"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale", @"TypographyScale.BodyMedium", null, null, false, false, false, @"FlareText"),
+                new ApiParameterInfo(@"Element", @"string?", null, @"HTML element to render (e.g. ""h1""..""h5"", ""p"", ""span""). When null a sensible default for the Typo is used.", null, false, false, false, @"FlareText"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale", @"TypographyScale.BodyMedium", @"Type-scale role applied to the text (defaults to BodyMedium).", null, false, false, false, @"FlareText"),
                 new ApiParameterInfo(@"Weight", @"FontWeight", @"FontWeight.Default", @"Font weight override. Default keeps the type scale's weight.", null, false, false, false, @"FlareText"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4319,39 +4777,38 @@ public static class ComponentApiRegistry
             @"FlareTextArea",
             @"Flare.Components.FlareTextArea",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AutoGrow", @"bool", @"false", @"Auto-resizes the textarea height to fit its content (zero-JS, via CSS field-sizing).", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"DebounceInterval", @"int", @"0", @"Debounce in milliseconds for Immediate updates. 0 = no debounce.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the textarea when true.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"For", @"Expression<Func<string?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the textarea.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"Immediate", @"bool", @"false", @"When true, the value updates on every keystroke (oninput) rather than only on change/blur.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the textarea.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"MaxLines", @"int", @"0", @"With AutoGrow, caps growth at this many lines (then scrolls). 0 = unlimited.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the textarea is empty.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the textarea read-only when true.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"Rows", @"int", @"4", @"Number of visible text rows.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"ShowCharacterCount", @"bool", @"false", @"Shows a character counter in the supporting-text row. Auto-enabled when MaxLength is set.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the textarea text. Overrides the default body font. Null keeps the component default.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Current text content of the textarea.", null, false, false, false, @"FlareTextArea"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Callback invoked when the text changes.", null, false, true, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.", null, false, false, false, @"FlareTextArea"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
-            new ApiMethodInfo[]
-            {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
-                    System.Array.Empty<ApiMethodParameter>()),
-            },
+            System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4367,42 +4824,94 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"AdornmentEnd", @"RenderFragment?", null, @"Content rendered after the input field as a trailing adornment (e.g. unit label, suffix text, or button).", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"AdornmentStart", @"RenderFragment?", null, @"Content rendered before the input field as a leading adornment (e.g. currency symbol, prefix text, or button).", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"AriaDescribedBy", @"string?", null, @"Space-separated IDs of elements that describe the input, forwarded as aria-describedby.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the input, forwarded as aria-label.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"false", @"Shows a clear (x) button inside the field when the input has a non-empty value.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color that influences the focus/active border of the input field.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"DebounceInterval", @"int", @"0", @"Debounce in milliseconds for Immediate updates. 0 = no debounce.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the input when true.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Error", @"bool", @"false", @"Forces the field into the error (invalid) visual state - red active indicator and aria-invalid - without requiring an ErrorText message. Useful when the error is surfaced elsewhere (a form-level summary) or when only the state, not a message, is wanted. The error state is also shown automatically whenever ErrorText or a bound validation message is present.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"FloatingLabel", @"bool", @"false", @"Renders the label as an animated floating label that moves above the input on focus.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"For", @"Expression<Func<string>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the input.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"FullWidth", @"bool", @"true", @"When true (the default), the field is block-level and fills the width of its container. Set to false to size the field to its content (inline) instead.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Immediate", @"bool", @"false", @"When true, the value updates on every keystroke (oninput) rather than only on change/blur.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the input.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Invalid", @"bool", @"false", @"Alias for Error: forces the invalid visual state without a message.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered inside the leading edge of the input.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Margin", @"FieldMargin", @"FieldMargin.None", @"Vertical (block) margin around the field. None (default) leaves spacing to the surrounding layout; Dense / Normal add a compact / comfortable margin above and below.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum number of characters allowed. 0 = no limit. Server-side validation is always required.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"OnKeyDown", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keydown in the input.", null, false, true, false, @"FlareField"),
                 new ApiParameterInfo(@"OnKeyUp", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keyup in the input.", null, false, true, false, @"FlareField"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the input is empty.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the input read-only when true.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"ShowCharacterCount", @"bool", @"false", @"Shows a character counter in the supporting-text row (per MD3). Renders the current length, and ""current/MaxLength"" when MaxLength is set.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Medium is the default field height.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ShowCharacterCount", @"bool", @"false", @"Shows a character counter in the supporting-text row. Renders the current length, and ""current/MaxLength"" when MaxLength is set.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"TrailingIcon", @"RenderFragment?", null, @"Icon rendered inside the trailing edge of the input.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"Type", @"string", @"""text""", @"HTML type attribute of the underlying input element.", null, false, false, false, @"FlareField"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font. Null keeps the size default.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"Current value of the input.", null, false, false, false, @"FlareField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Callback invoked when the value changes.", null, false, true, false, @"FlareField"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) independent of the theme. Default keeps the theme's style.", null, false, false, false, @"FlareField"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
                 @"FlareField",
+                @"FlareFieldBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareTextInput"] = new ApiComponentInfo(
+            @"FlareTextInput",
+            @"Flare.Components.FlareTextInput",
+            @"Flare.Components",
+            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaDescribedBy", @"string?", null, @"Space-separated ids forwarded as aria-describedby.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"AriaInvalid", @"bool", @"false", @"Sets aria-invalid when true.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label, forwarded as aria-label.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"ControlClass", @"string?", null, @"Extra CSS class appended to the control element (e.g. a component-specific control class).", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"DebounceInterval", @"int", @"0", @"Debounce in milliseconds for Immediate emits. 0 = no debounce.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Id", @"string?", null, @"The control element id (for a label for and aria-* wiring).", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Immediate", @"bool", @"false", @"When true, emits on every keystroke (oninput) rather than only on change/blur.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"InputMode", @"string?", null, @"The HTML inputmode hint (single-line only).", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"MaxLength", @"int", @"0", @"Maximum characters. 0 = no limit.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Multiline", @"bool", @"false", @"Renders a <textarea> instead of an <input>.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"OnKeyDown", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keydown.", null, false, true, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"OnKeyUp", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keyup.", null, false, true, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when empty.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the control read-only.", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the control as required (native required).", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Rows", @"int", @"0", @"Visible rows for the textarea (multiline only).", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Type", @"string", @"""text""", @"The HTML type attribute (single-line only).", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"Value", @"string?", null, @"The current display string (the parent field owns the typed value and supplies its string form).", null, false, false, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Raised with the raw string on commit (change) or, when Immediate, on input.", null, false, true, false, @"FlareTextInput"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
+            new string[]
+            {
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4414,30 +4923,32 @@ public static class ComponentApiRegistry
             @"FlareTimePicker",
             @"Flare.Components.FlareTimePicker",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"CancelText", @"string", @"""Cancel""", @"Cancel button text. Default ""Cancel"".", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the time picker when true.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Overrides validation with a custom error message.", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"CancelText", @"string?", null, @"Cancel button text. When null, falls back to the localized ""Cancel"".", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"For", @"Expression<Func<TimeOnly?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Headline", @"string", @"""Select time""", @"Headline shown at the top of the picker popup.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the time picker.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Label text displayed above the time picker.", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"Headline", @"string?", null, @"Headline shown at the top of the picker popup. When null, falls back to the localized default.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"MinuteStep", @"int", @"1", @"Minute increment shown in the Dropdown column. Default 1.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"OkText", @"string", @"""OK""", @"Confirm button text. Default ""OK"".", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder shown when empty. Default ""HH:mm"".", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"PopupVariant", @"TimePickerVariant", @"TimePickerVariant.Dial", @"Popup style: MD3 clock Dial (default) or Dropdown columns.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl) of the trigger field, shared with FlareField. Medium is the default.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the input text. Overrides the size-derived font; null keeps the default.", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"OkText", @"string?", null, @"Confirm button text. When null, falls back to the localized ""OK"".", null, false, false, false, @"FlareTimePicker"),
+                new ApiParameterInfo(@"PopupVariant", @"TimePickerVariant", @"TimePickerVariant.Dial", @"Popup style: an analog clock Dial (default) or Dropdown columns.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Use24Hour", @"bool?", null, @"Forces 12-hour (AM/PM) or 24-hour clock. Null (default) auto-detects from the current culture.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"Value", @"TimeOnly?", null, @"Currently selected time.", null, false, false, false, @"FlareTimePicker"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<TimeOnly?>", null, @"Callback invoked when the selected time changes.", null, false, true, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the trigger field, shared with FlareField. Default keeps the theme's field style.", null, false, false, false, @"FlareTimePicker"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
             },
             new ApiMethodInfo[]
             {
@@ -4446,6 +4957,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareFieldBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -4465,9 +4977,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Alternating", @"bool", @"false", @"When true, odd items appear on the left and even items on the right.", null, false, false, false, @"FlareTimeline"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Timeline items rendered inside the container.", null, false, false, false, @"FlareTimeline"),
                 new ApiParameterInfo(@"Connector", @"ConnectorVariant", @"ConnectorVariant.Solid", @"Connector line style: Solid (default), Dashed, or Dotted.", null, false, false, false, @"FlareTimeline"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4492,9 +5004,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Icon", @"string?", null, @"Material Symbols icon name shown in the dot.", null, false, false, false, @"FlareTimelineItem"),
                 new ApiParameterInfo(@"Time", @"string?", null, @"Timestamp or date string shown above the title.", null, false, false, false, @"FlareTimelineItem"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Title text displayed in the item body.", null, false, false, false, @"FlareTimelineItem"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4518,9 +5030,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Link text/content.", null, false, false, false, @"FlareTocLink"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"Anchor target, e.g. ""#section"" or a full path plus fragment.", null, false, false, false, @"FlareTocLink"),
                 new ApiParameterInfo(@"Level", @"int", @"0", @"Indent depth (0 = top level). Each level adds one indent step.", null, false, false, false, @"FlareTocLink"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4542,17 +5054,18 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label forwarded as aria-label.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Button label content shown alongside the icon.", null, false, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color tinting the selected state. Role -> shared color class; custom -> inline tokens. Overridden by the parent FlareToggleGroup.Color when that is set. Default = theme's secondary container.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true. Also disabled when the parent FlareToggleGroup.Disabled is true.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Group", @"FlareToggleGroupContext?", null, @"Cascading context supplied by a parent FlareToggleGroup.", null, true, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"OffIcon", @"RenderFragment?", null, @"Icon rendered when the button is not pressed.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"OnIcon", @"RenderFragment?", null, @"Icon rendered when the button is pressed. Defaults to OffIcon if not set.", null, false, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the toggle button.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the toggle button. Overridden by the parent FlareToggleGroup.Size when that is set.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Toggled", @"bool", @"false", @"Whether the button is currently in the pressed/active state.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"ToggledChanged", @"EventCallback<bool>", null, @"Callback raised when the pressed state changes.", null, false, true, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Value", @"object?", null, @"The value reported to a parent FlareToggleGroup when toggled.", null, false, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4572,12 +5085,15 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child FlareToggleButton components.", null, false, false, false, @"FlareToggleGroup"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Color", @"FlareColor?", null, @"Color cascaded to every child FlareToggleButton (tints the selected state). When null (default) each button keeps its own Color.", null, false, false, false, @"FlareToggleGroup"),
+                new ApiParameterInfo(@"Disabled", @"bool", null, @"When true, disables every child FlareToggleButton in the group.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"MultiSelect", @"bool", null, @"Allows multiple buttons to be active simultaneously.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"Orientation", @"string", null, @"""horizontal"" (default) or ""vertical"".", null, false, false, false, @"FlareToggleGroup"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Size", @"ButtonSize?", null, @"Size cascaded to every child FlareToggleButton. When null (default) each button keeps its own Size.", null, false, false, false, @"FlareToggleGroup"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Value", @"TValue?", null, @"Selected value when MultiSelect is false.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<TValue?>", null, @"Callback raised when the single selection changes.", null, false, true, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"Values", @"IReadOnlyList<TValue?>?", null, @"Selected values when MultiSelect is true.", null, false, false, false, @"FlareToggleGroup"),
@@ -4609,9 +5125,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ShowToolbar", @"bool", @"false", @"Whether to show the toolbar area.", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Panel title displayed in the header (and on the collapsed rail inside a layout).", null, false, false, false, @"FlareToolPanel"),
                 new ApiParameterInfo(@"ToolbarContent", @"RenderFragment?", null, @"Optional toolbar content in the header (e.g. filter, settings buttons).", null, false, false, false, @"FlareToolPanel"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4633,9 +5149,9 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The toolbar's command buttons and controls.", null, false, false, false, @"FlareToolbar"),
                 new ApiParameterInfo(@"Dense", @"bool", @"false", @"Tightens spacing and button size for a denser bar.", null, false, false, false, @"FlareToolbar"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4663,13 +5179,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Placement", @"TooltipPlacement", @"TooltipPlacement.Top", @"Position of the tooltip relative to the trigger element.", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"SmartPosition", @"bool", @"false", @"Enables smart positioning (flip/shift) to keep tooltip within viewport.", null, false, false, false, @"FlareTooltip"),
                 new ApiParameterInfo(@"TooltipContent", @"RenderFragment?", null, @"Rich content rendered inside the tooltip bubble. Takes priority over Content.", null, false, false, false, @"FlareTooltip"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -4689,12 +5205,12 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"ItemLabel", @"Func<TItem?, string>?", null, @"Function that returns the display text for an item.", null, false, false, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"SourceItems", @"IReadOnlyList<TItem?>?", null, @"Items available in the source (left) panel.", null, false, false, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"SourceTitle", @"string", null, @"Header label shown above the source panel.", null, false, false, false, @"FlareTransfer"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"TargetItems", @"IReadOnlyList<TItem?>?", null, @"Items already placed in the target (right) panel.", null, false, false, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"TargetItemsChanged", @"EventCallback<IReadOnlyList<TItem?>>", null, @"Callback raised when the target list changes.", null, false, true, false, @"FlareTransfer"),
                 new ApiParameterInfo(@"TargetTitle", @"string", null, @"Header label shown above the target panel.", null, false, false, false, @"FlareTransfer"),
@@ -4726,9 +5242,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the item row is clicked.", null, false, true, false, @"FlareTreeItem"),
                 new ApiParameterInfo(@"Selected", @"bool", @"false", @"Whether this item is currently selected.", null, false, false, false, @"FlareTreeItem"),
                 new ApiParameterInfo(@"SelectedChanged", @"EventCallback<bool>", null, @"Callback raised when the selected state changes.", null, false, true, false, @"FlareTreeItem"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4755,9 +5271,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnItemDragEnd", @"EventCallback", null, @"Callback raised when an item drag ends.", null, false, true, false, @"FlareTreeView"),
                 new ApiParameterInfo(@"OnItemDragStart", @"EventCallback<TreeDragEventArgs>", null, @"Callback raised when an item drag starts.", null, false, true, false, @"FlareTreeView"),
                 new ApiParameterInfo(@"OnItemDrop", @"EventCallback<TreeDropEventArgs>", null, @"Callback raised when an item is dropped on a valid target. Contains source item and target item.", null, false, true, false, @"FlareTreeView"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4777,13 +5293,13 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -4812,13 +5328,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Poster", @"string?", null, @"URL of a poster image shown before the video plays.", null, false, false, false, @"FlareVideoPlayer"),
                 new ApiParameterInfo(@"Src", @"string?", null, @"URL of the video source to display.", null, false, false, false, @"FlareVideoPlayer"),
                 new ApiParameterInfo(@"SubtitleSrc", @"string?", null, @"URL of a WebVTT subtitle track to display. Adds a <track> element to the video.", null, false, false, false, @"FlareVideoPlayer"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, null,
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"OnEnded", @"OnEnded()", @"void", null, null,
                     System.Array.Empty<ApiMethodParameter>()),
@@ -4851,13 +5367,13 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, null, null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Height", @"string", null, @"CSS height of the scrollable container.", null, false, false, false, @"FlareVirtualList"),
                 new ApiParameterInfo(@"ItemTemplate", @"RenderFragment<TItem?>?", null, @"Template used to render each individual item.", null, false, false, false, @"FlareVirtualList"),
                 new ApiParameterInfo(@"Items", @"IReadOnlyList<TItem?>?", null, @"Data source list to virtualize and render.", null, false, false, false, @"FlareVirtualList"),
                 new ApiParameterInfo(@"OverscanCount", @"int", null, @"Number of extra items rendered outside the visible viewport.", null, false, false, false, @"FlareVirtualList"),
-                new ApiParameterInfo(@"Style", @"string?", null, null, null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -4884,11 +5400,11 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Sum", @"0", null),
-                new ApiEnumMember(@"Count", @"1", null),
-                new ApiEnumMember(@"Average", @"2", null),
-                new ApiEnumMember(@"Min", @"3", null),
-                new ApiEnumMember(@"Max", @"4", null),
+                new ApiEnumMember(@"Sum", @"0", @"Sum."),
+                new ApiEnumMember(@"Count", @"1", @"Count."),
+                new ApiEnumMember(@"Average", @"2", @"Average."),
+                new ApiEnumMember(@"Min", @"3", @"Min."),
+                new ApiEnumMember(@"Max", @"4", @"Max."),
             },
             System.Array.Empty<string>());
 
@@ -4896,14 +5412,14 @@ public static class ComponentApiRegistry
             @"AlertSeverity",
             @"Flare.Components.AlertSeverity",
             @"Flare.Components",
-            null,
+            @"Severity of a FlareAlert, controlling its color and icon.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Info", @"0", null),
-                new ApiEnumMember(@"Success", @"1", null),
-                new ApiEnumMember(@"Warning", @"2", null),
-                new ApiEnumMember(@"Error", @"3", null),
+                new ApiEnumMember(@"Info", @"0", @"Info."),
+                new ApiEnumMember(@"Success", @"1", @"Success."),
+                new ApiEnumMember(@"Warning", @"2", @"Warning."),
+                new ApiEnumMember(@"Error", @"3", @"Error."),
             },
             new string[]
             {
@@ -4918,9 +5434,9 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Filled", @"0", null),
-                new ApiEnumMember(@"Outlined", @"1", null),
-                new ApiEnumMember(@"Text", @"2", null),
+                new ApiEnumMember(@"Filled", @"0", @"Filled."),
+                new ApiEnumMember(@"Outlined", @"1", @"Outlined."),
+                new ApiEnumMember(@"Text", @"2", @"Text."),
             },
             new string[]
             {
@@ -4935,9 +5451,9 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Circle", @"0", null),
-                new ApiEnumMember(@"Square", @"1", null),
-                new ApiEnumMember(@"Rounded", @"2", null),
+                new ApiEnumMember(@"Circle", @"0", @"Circle."),
+                new ApiEnumMember(@"Square", @"1", @"Square."),
+                new ApiEnumMember(@"Rounded", @"2", @"Rounded."),
             },
             new string[]
             {
@@ -4952,11 +5468,11 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Xs", @"0", null),
-                new ApiEnumMember(@"Sm", @"1", null),
-                new ApiEnumMember(@"Md", @"2", null),
-                new ApiEnumMember(@"Lg", @"3", null),
-                new ApiEnumMember(@"Xl", @"4", null),
+                new ApiEnumMember(@"Xs", @"0", @"Xs."),
+                new ApiEnumMember(@"Sm", @"1", @"Sm."),
+                new ApiEnumMember(@"Md", @"2", @"Md."),
+                new ApiEnumMember(@"Lg", @"3", @"Lg."),
+                new ApiEnumMember(@"Xl", @"4", @"Xl."),
             },
             new string[]
             {
@@ -4987,10 +5503,10 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"TopRight", @"0", null),
-                new ApiEnumMember(@"TopLeft", @"1", null),
-                new ApiEnumMember(@"BottomRight", @"2", null),
-                new ApiEnumMember(@"BottomLeft", @"3", null),
+                new ApiEnumMember(@"TopRight", @"0", @"Top right."),
+                new ApiEnumMember(@"TopLeft", @"1", @"Top left."),
+                new ApiEnumMember(@"BottomRight", @"2", @"Bottom right."),
+                new ApiEnumMember(@"BottomLeft", @"3", @"Bottom left."),
             },
             new string[]
             {
@@ -5014,15 +5530,16 @@ public static class ComponentApiRegistry
             @"Breakpoint",
             @"Flare.Components.Breakpoint",
             @"Flare.Components",
-            null,
+            @"A responsive viewport tier on the shared Xs..Xxl scale. The values are the discrete tiers only; range comparisons (at-least / at-most / between) are expressed with the strongly typed helpers on BreakpointExtensions rather than being baked into the enum. Default lower bounds (see FlareBreakpoints): Xs 0, Sm 600, Md 960, Lg 1280, Xl 1920, Xxl 2560 (px). The bounds are configurable per subscription and via FlareOptions.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Xs", @"0", null),
-                new ApiEnumMember(@"Sm", @"1", null),
-                new ApiEnumMember(@"Md", @"2", null),
-                new ApiEnumMember(@"Lg", @"3", null),
-                new ApiEnumMember(@"Xl", @"4", null),
+                new ApiEnumMember(@"Xs", @"0", @"Handset / smallest tier (viewport width below the Sm bound; default < 600px)."),
+                new ApiEnumMember(@"Sm", @"1", @"Small tier (default 600px and up, below Md)."),
+                new ApiEnumMember(@"Md", @"2", @"Medium tier (default 960px and up, below Lg)."),
+                new ApiEnumMember(@"Lg", @"3", @"Large tier (default 1280px and up, below Xl)."),
+                new ApiEnumMember(@"Xl", @"4", @"Extra-large tier (default 1920px and up, below Xxl)."),
+                new ApiEnumMember(@"Xxl", @"5", @"Extra-extra-large tier (default 2560px and up)."),
             },
             new string[]
             {
@@ -5035,25 +5552,26 @@ public static class ComponentApiRegistry
             @"ButtonShape",
             @"Flare.Components.ButtonShape",
             @"Flare.Components",
-            @"Corner shape of a button. Unifies the Fluent UI 2 shape set (Rounded, Circular, Square) with the Material Design 3 Expressive shape axis; every value resolves to per-theme shape tokens, so a shape looks native in whichever theme is active.",
+            @"Corner shape of a button, orthogonal to its variant. Every value resolves to per-theme shape tokens, so a shape looks native in whichever theme is active.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Default", @"0", @"The theme's own button shape, with no override (MD3 = pill, Fluent UI 2 = lightly rounded). The default - keeps each theme's native button identity."),
-                new ApiEnumMember(@"Rounded", @"1", @"Rounded rectangle using the theme shape scale (Fluent UI 2 ""rounded"", MD3 ""square"")."),
+                new ApiEnumMember(@"Default", @"0", @"The theme's own button shape, with no override. The default - keeps each theme's native button identity."),
+                new ApiEnumMember(@"Rounded", @"1", @"Rounded rectangle using the theme shape scale."),
                 new ApiEnumMember(@"Circular", @"2", @"Fully rounded (pill) corners - a circle for an icon-only button."),
-                new ApiEnumMember(@"Square", @"3", @"Sharp, non-rounded corners (zero radius), per Fluent UI 2 ""square""."),
+                new ApiEnumMember(@"Square", @"3", @"Sharp, non-rounded corners (zero radius)."),
             },
             new string[]
             {
                 @"FlareButton",
+                @"FlareIconButton",
             });
 
         e[@"ButtonSize"] = new ApiEnumInfo(
             @"ButtonSize",
             @"Flare.Components.ButtonSize",
             @"Flare.Components",
-            null,
+            @"Size of a FlareButton on the shared Xs..Xl scale (Md is the default).",
             null,
             new ApiEnumMember[]
             {
@@ -5068,8 +5586,10 @@ public static class ComponentApiRegistry
                 @"FlareButton",
                 @"FlareButtonGroup",
                 @"FlareClipboard",
+                @"FlareIconButton",
                 @"FlareSplitButton",
                 @"FlareToggleButton",
+                @"FlareToggleGroup",
             });
 
         e[@"ButtonType"] = new ApiEnumInfo(
@@ -5087,27 +5607,29 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareButton",
+                @"FlareIconButton",
             });
 
         e[@"ButtonVariant"] = new ApiEnumInfo(
             @"ButtonVariant",
             @"Flare.Components.ButtonVariant",
             @"Flare.Components",
-            null,
+            @"Visual style of a FlareButton.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Filled", @"0", null),
-                new ApiEnumMember(@"Outlined", @"1", null),
-                new ApiEnumMember(@"Text", @"2", null),
-                new ApiEnumMember(@"Elevated", @"3", null),
-                new ApiEnumMember(@"Tonal", @"4", null),
+                new ApiEnumMember(@"Filled", @"0", @"Filled."),
+                new ApiEnumMember(@"Outlined", @"1", @"Outlined."),
+                new ApiEnumMember(@"Text", @"2", @"Text."),
+                new ApiEnumMember(@"Elevated", @"3", @"Elevated."),
+                new ApiEnumMember(@"Tonal", @"4", @"Tonal."),
             },
             new string[]
             {
                 @"FlareButton",
                 @"FlareButtonGroup",
                 @"FlareClipboard",
+                @"FlareIconButton",
                 @"FlareSplitButton",
             });
 
@@ -5149,15 +5671,15 @@ public static class ComponentApiRegistry
             @"CardVariant",
             @"Flare.Components.CardVariant",
             @"Flare.Components",
-            @"Visual style of a FlareCard, independent of the active theme. Each theme reskins the variants through its CardTokens, so a variant looks native everywhere (e.g. Tonal is MD3 secondary-container vs FluentUI2 ""filled-alternative""). The five names mirror ButtonVariant (Filled/Outlined/Text/Elevated/Tonal).",
+            @"Visual style of a FlareCard, independent of the active theme. Each theme reskins the variants through its CardTokens, so a variant looks native everywhere (e.g. Tonal is a soft secondary-container fill). The five names mirror ButtonVariant (Filled/Outlined/Text/Elevated/Tonal).",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Filled", @"0", @"Solid container tinted from the surface scale (MD3 filled card, FluentUI2 ""filled"")."),
-                new ApiEnumMember(@"Outlined", @"1", @"Bordered container with no elevation (MD3 outlined card, FluentUI2 ""outline"")."),
-                new ApiEnumMember(@"Text", @"2", @"Transparent container with no border or shadow, only a hover wash (FluentUI2 ""subtle"")."),
-                new ApiEnumMember(@"Elevated", @"3", @"Surface container lifted by a drop shadow (MD3 elevated card). The default."),
-                new ApiEnumMember(@"Tonal", @"4", @"Soft tonal container using the secondary-container color (MD3, FluentUI2 ""filled-alternative"")."),
+                new ApiEnumMember(@"Filled", @"0", @"Solid container tinted from the surface scale."),
+                new ApiEnumMember(@"Outlined", @"1", @"Bordered container with no elevation."),
+                new ApiEnumMember(@"Text", @"2", @"Transparent container with no border or shadow, only a hover wash."),
+                new ApiEnumMember(@"Elevated", @"3", @"Surface container lifted by a drop shadow. The default."),
+                new ApiEnumMember(@"Tonal", @"4", @"Soft tonal container using the secondary-container color."),
             },
             new string[]
             {
@@ -5168,14 +5690,14 @@ public static class ComponentApiRegistry
             @"ChartType",
             @"Flare.Components.ChartType",
             @"Flare.Components",
-            null,
+            @"The kind of chart FlareChart renders from its data.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Line", @"0", null),
-                new ApiEnumMember(@"Bar", @"1", null),
-                new ApiEnumMember(@"Pie", @"2", null),
-                new ApiEnumMember(@"Donut", @"3", null),
+                new ApiEnumMember(@"Line", @"0", @"Line chart connecting data points."),
+                new ApiEnumMember(@"Bar", @"1", @"Vertical bar chart."),
+                new ApiEnumMember(@"Pie", @"2", @"Pie chart (full circle of proportional slices)."),
+                new ApiEnumMember(@"Donut", @"3", @"Donut chart (pie with a hollow center)."),
             },
             new string[]
             {
@@ -5195,6 +5717,23 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Md", @"2", @"Medium - default chip size."),
                 new ApiEnumMember(@"Lg", @"3", @"Large."),
                 new ApiEnumMember(@"Xl", @"4", @"Extra large."),
+            },
+            new string[]
+            {
+                @"FlareChip",
+            });
+
+        e[@"ChipVariant"] = new ApiEnumInfo(
+            @"ChipVariant",
+            @"Flare.Components.ChipVariant",
+            @"Flare.Components",
+            @"Visual style of a FlareChip, independent of the active theme. Provides three chip styles: Outlined (the default - a bordered, transparent chip), Filled (a solid surface fill with no border) and Elevated (a filled surface lifted by a drop shadow).",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Outlined", @"0", @"Bordered chip with a transparent background. The default."),
+                new ApiEnumMember(@"Filled", @"1", @"Solid surface fill with no border."),
+                new ApiEnumMember(@"Elevated", @"2", @"Filled surface lifted by a level-1 drop shadow, with no border."),
             },
             new string[]
             {
@@ -5266,6 +5805,22 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"CommitKind"] = new ApiEnumInfo(
+            @"CommitKind",
+            @"Flare.Components.Combobox.CommitKind",
+            @"Flare.Components.Combobox",
+            @"The outcome of a commit intent, so the shell can forward the right consumer callback.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"NoOp", @"0", @"Nothing happened (no highlighted item, empty commit)."),
+                new ApiEnumMember(@"Changed", @"1", @"The selection set changed (added or removed); the shell should raise its value callback."),
+                new ApiEnumMember(@"RejectedMax", @"2", @"Rejected: the maximum selection count was already reached."),
+                new ApiEnumMember(@"RejectedDisabled", @"3", @"Rejected: the target option is disabled."),
+                new ApiEnumMember(@"RejectedEmpty", @"4", @"Rejected: removing would empty a selection that must keep at least one item."),
+            },
+            System.Array.Empty<string>());
+
         e[@"CompositeMode"] = new ApiEnumInfo(
             @"CompositeMode",
             @"Flare.Components.CompositeMode",
@@ -5283,13 +5838,13 @@ public static class ComponentApiRegistry
             @"ConnectorVariant",
             @"Flare.Components.ConnectorVariant",
             @"Flare.Components",
-            null,
+            @"Line style of the connector between timeline items.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Solid", @"0", null),
-                new ApiEnumMember(@"Dashed", @"1", null),
-                new ApiEnumMember(@"Dotted", @"2", null),
+                new ApiEnumMember(@"Solid", @"0", @"Solid."),
+                new ApiEnumMember(@"Dashed", @"1", @"Dashed."),
+                new ApiEnumMember(@"Dotted", @"2", @"Dotted."),
             },
             new string[]
             {
@@ -5314,7 +5869,6 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareContainer",
-                @"FlareLayout",
                 @"FlareLayoutContent",
             });
 
@@ -5384,6 +5938,22 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"DateRangePickerMode"] = new ApiEnumInfo(
+            @"DateRangePickerMode",
+            @"Flare.Components.DateRangePickerMode",
+            @"Flare.Components",
+            @"How a FlareDateRangePicker presents the range selection.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Fields", @"0", @"Two linked date inputs (start and end), each with its own calendar popup. The default."),
+                new ApiEnumMember(@"Calendar", @"1", @"A single inline calendar where you click the start day then the end day; the days in between are highlighted and a live preview follows the pointer while choosing the end."),
+            },
+            new string[]
+            {
+                @"FlareDateRangePicker",
+            });
+
         e[@"DateTimeVariant"] = new ApiEnumInfo(
             @"DateTimeVariant",
             @"Flare.Components.DateTimeVariant",
@@ -5399,6 +5969,22 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareDateTimePicker",
+            });
+
+        e[@"DialogPosition"] = new ApiEnumInfo(
+            @"DialogPosition",
+            @"Flare.Abstractions.DialogPosition",
+            @"Flare.Abstractions",
+            @"Where a component dialog is anchored within the viewport. Center is the classic centered modal; Bottom presents the same component-dialog contract as a slide-up bottom sheet (full-width, rounded top corners, optional grabber handle, safe-area padding).",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Center", @"0", @"Centered in the viewport (the default modal presentation)."),
+                new ApiEnumMember(@"Bottom", @"1", @"Anchored to the bottom edge as a slide-up bottom sheet."),
+            },
+            new string[]
+            {
+                @"FlareDialog",
             });
 
         e[@"DialogSize"] = new ApiEnumInfo(
@@ -5426,7 +6012,7 @@ public static class ComponentApiRegistry
             @"DividerInset",
             @"Flare.Components.DividerInset",
             @"Flare.Components",
-            @"Inset style of a FlareDivider, per Material Design 3.",
+            @"Inset style of a FlareDivider.",
             null,
             new ApiEnumMember[]
             {
@@ -5447,9 +6033,9 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Left", @"0", null),
-                new ApiEnumMember(@"Center", @"1", null),
-                new ApiEnumMember(@"Right", @"2", null),
+                new ApiEnumMember(@"Left", @"0", @"Left."),
+                new ApiEnumMember(@"Center", @"1", @"Center."),
+                new ApiEnumMember(@"Right", @"2", @"Right."),
             },
             new string[]
             {
@@ -5460,18 +6046,19 @@ public static class ComponentApiRegistry
             @"DrawerAnchor",
             @"Flare.Components.DrawerAnchor",
             @"Flare.Components",
-            null,
+            @"Screen edge a FlareDrawer is anchored to.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Left", @"0", null),
-                new ApiEnumMember(@"Right", @"1", null),
-                new ApiEnumMember(@"Top", @"2", null),
-                new ApiEnumMember(@"Bottom", @"3", null),
+                new ApiEnumMember(@"Left", @"0", @"Left."),
+                new ApiEnumMember(@"Right", @"1", @"Right."),
+                new ApiEnumMember(@"Top", @"2", @"Top."),
+                new ApiEnumMember(@"Bottom", @"3", @"Bottom."),
             },
             new string[]
             {
                 @"FlareDrawer",
+                @"FlareLayoutDrawer",
             });
 
         e[@"DrawerVariant"] = new ApiEnumInfo(
@@ -5491,17 +6078,18 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareDrawer",
+                @"FlareLayoutDrawer",
             });
 
         e[@"DynamicVariant"] = new ApiEnumInfo(
             @"DynamicVariant",
             @"Flare.Components.DynamicVariant",
             @"Flare.Components",
-            @"MD3 dynamic-color scheme variant - how the source (seed) color is expanded into tonal roles.",
+            @"Dynamic-color scheme variant - how the source (seed) color is expanded into tonal roles.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"TonalSpot", @"0", @"Balanced palette close to the source hue (MD3 default)."),
+                new ApiEnumMember(@"TonalSpot", @"0", @"Balanced palette close to the source hue (the default)."),
                 new ApiEnumMember(@"Vibrant", @"1", @"More saturated, punchier palette."),
                 new ApiEnumMember(@"Expressive", @"2", @"Hue-shifted, playful palette."),
                 new ApiEnumMember(@"Neutral", @"3", @"Low-chroma, muted palette."),
@@ -5517,10 +6105,10 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Up", @"0", null),
-                new ApiEnumMember(@"Down", @"1", null),
-                new ApiEnumMember(@"Left", @"2", null),
-                new ApiEnumMember(@"Right", @"3", null),
+                new ApiEnumMember(@"Up", @"0", @"Up."),
+                new ApiEnumMember(@"Down", @"1", @"Down."),
+                new ApiEnumMember(@"Left", @"2", @"Left."),
+                new ApiEnumMember(@"Right", @"3", @"Right."),
             },
             new string[]
             {
@@ -5548,7 +6136,7 @@ public static class ComponentApiRegistry
             @"FabSize",
             @"Flare.Components.FabSize",
             @"Flare.Components",
-            @"Size of a FlareFloatingActionButton, per Material Design 3.",
+            @"Size of a FlareFloatingActionButton.",
             null,
             new ApiEnumMember[]
             {
@@ -5559,6 +6147,25 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareFloatingActionButton",
+            });
+
+        e[@"FieldMargin"] = new ApiEnumInfo(
+            @"FieldMargin",
+            @"Flare.Components.FieldMargin",
+            @"Flare.Components",
+            @"Vertical (block) margin applied around a text field (FlareField / FlareTextField), mirroring the dense/normal spacing presets common in form layouts.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"No outer margin (the default - spacing is left to the surrounding layout)."),
+                new ApiEnumMember(@"Dense", @"1", @"A small vertical margin above and below the field (compact forms)."),
+                new ApiEnumMember(@"Normal", @"2", @"A normal vertical margin above and below the field (comfortable forms)."),
+            },
+            new string[]
+            {
+                @"FlareField",
+                @"FlarePasswordField",
+                @"FlareTextField",
             });
 
         e[@"FieldSize"] = new ApiEnumInfo(
@@ -5577,20 +6184,23 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
-                @"FlareAutocomplete",
                 @"FlareBadge",
                 @"FlareCheckbox",
+                @"FlareCombobox",
                 @"FlareDatePicker",
                 @"FlareDateRangePicker",
                 @"FlareDateTimePicker",
                 @"FlareField",
+                @"FlareFieldChrome",
                 @"FlareMaskedField",
                 @"FlareMultiSelect",
                 @"FlareNumericField",
+                @"FlarePasswordField",
                 @"FlareRadioGroup",
                 @"FlareRating",
                 @"FlareSelect",
                 @"FlareTagField",
+                @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTimePicker",
             });
@@ -5604,14 +6214,14 @@ public static class ComponentApiRegistry
             new ApiEnumMember[]
             {
                 new ApiEnumMember(@"Contains", @"0", @"Cell text contains the value (default, case-insensitive)."),
-                new ApiEnumMember(@"Equals", @"1", null),
-                new ApiEnumMember(@"NotEquals", @"2", null),
-                new ApiEnumMember(@"StartsWith", @"3", null),
-                new ApiEnumMember(@"EndsWith", @"4", null),
-                new ApiEnumMember(@"GreaterThan", @"5", null),
-                new ApiEnumMember(@"GreaterThanOrEqual", @"6", null),
-                new ApiEnumMember(@"LessThan", @"7", null),
-                new ApiEnumMember(@"LessThanOrEqual", @"8", null),
+                new ApiEnumMember(@"Equals", @"1", @"Equals."),
+                new ApiEnumMember(@"NotEquals", @"2", @"Not equals."),
+                new ApiEnumMember(@"StartsWith", @"3", @"Starts with."),
+                new ApiEnumMember(@"EndsWith", @"4", @"Ends with."),
+                new ApiEnumMember(@"GreaterThan", @"5", @"Greater than."),
+                new ApiEnumMember(@"GreaterThanOrEqual", @"6", @"Greater than or equal."),
+                new ApiEnumMember(@"LessThan", @"7", @"Less than."),
+                new ApiEnumMember(@"LessThanOrEqual", @"8", @"Less than or equal."),
                 new ApiEnumMember(@"Between", @"9", @"Inclusive range between Value and Value2."),
                 new ApiEnumMember(@"NotBetween", @"10", @"Outside the inclusive range between Value and Value2."),
                 new ApiEnumMember(@"In", @"11", @"Cell value is one of Values."),
@@ -5660,6 +6270,7 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Info", @"7", @"Info / neutral-informative state color."),
                 new ApiEnumMember(@"OnSurface", @"8", @"On-surface color - default high-emphasis text/icon color on surfaces."),
                 new ApiEnumMember(@"OnSurfaceVariant", @"9", @"On-surface-variant color - muted/secondary text and icons on surfaces."),
+                new ApiEnumMember(@"OnSurfaceVariant2", @"10", @"On-surface-variant-2 color - fainter tertiary text (footnotes, counts, captions)."),
             },
             System.Array.Empty<string>());
 
@@ -5693,11 +6304,11 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Xs", @"0", @"Extra small — dense, for toolbars and inline elements."),
-                new ApiEnumMember(@"Sm", @"1", @"Small — compact."),
-                new ApiEnumMember(@"Md", @"2", @"Medium — default size."),
+                new ApiEnumMember(@"Xs", @"0", @"Extra small - dense, for toolbars and inline elements."),
+                new ApiEnumMember(@"Sm", @"1", @"Small - compact."),
+                new ApiEnumMember(@"Md", @"2", @"Medium - default size."),
                 new ApiEnumMember(@"Lg", @"3", @"Large."),
-                new ApiEnumMember(@"Xl", @"4", @"Extra large — prominent."),
+                new ApiEnumMember(@"Xl", @"4", @"Extra large - prominent."),
             },
             System.Array.Empty<string>());
 
@@ -5724,6 +6335,20 @@ public static class ComponentApiRegistry
                 @"FlarePaper",
                 @"FlareStack",
             });
+
+        e[@"FocusStrategy"] = new ApiEnumInfo(
+            @"FocusStrategy",
+            @"Flare.Components.Combobox.FocusStrategy",
+            @"Flare.Components.Combobox",
+            @"Which option to highlight when the dropdown opens.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"First", @"0", @"Highlight the first enabled option."),
+                new ApiEnumMember(@"Last", @"1", @"Highlight the last enabled option."),
+                new ApiEnumMember(@"KeepSelected", @"2", @"Highlight the (first) selected option if any, otherwise the first enabled option."),
+            },
+            System.Array.Empty<string>());
 
         e[@"FontWeight"] = new ApiEnumInfo(
             @"FontWeight",
@@ -5786,15 +6411,15 @@ public static class ComponentApiRegistry
             @"ImageObjectFit",
             @"Flare.Components.ImageObjectFit",
             @"Flare.Components",
-            null,
+            @"How a FlareImage is fitted into its box (maps to CSS object-fit).",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Cover", @"0", null),
-                new ApiEnumMember(@"Contain", @"1", null),
-                new ApiEnumMember(@"Fill", @"2", null),
-                new ApiEnumMember(@"None", @"3", null),
-                new ApiEnumMember(@"ScaleDown", @"4", null),
+                new ApiEnumMember(@"Cover", @"0", @"Cover."),
+                new ApiEnumMember(@"Contain", @"1", @"Contain."),
+                new ApiEnumMember(@"Fill", @"2", @"Fill."),
+                new ApiEnumMember(@"None", @"3", @"None."),
+                new ApiEnumMember(@"ScaleDown", @"4", @"Scale down."),
             },
             new string[]
             {
@@ -5805,24 +6430,26 @@ public static class ComponentApiRegistry
             @"InputVariant",
             @"Flare.Components.InputVariant",
             @"Flare.Components",
-            @"Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea), independent of the active theme. Default keeps the theme's style (MD3 = filled, Fluent = outlined).",
+            @"Visual variant of a text field (FlareField, FlareNumericField, FlareTextArea), independent of the active theme. Default keeps the theme's own field style.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Default", @"0", @"Use the active theme's field style (MD3 filled / Fluent outlined)."),
-                new ApiEnumMember(@"Filled", @"1", @"Filled: surface container background + bottom active indicator (MD3 filled-text-field)."),
-                new ApiEnumMember(@"Outlined", @"2", @"Outlined: transparent background + full 1dp outline, brand outline on focus (MD3 outlined-text-field)."),
+                new ApiEnumMember(@"Default", @"0", @"Use the active theme's own field style."),
+                new ApiEnumMember(@"Filled", @"1", @"Filled: surface container background + bottom active indicator."),
+                new ApiEnumMember(@"Outlined", @"2", @"Outlined: transparent background + full outline, brand outline on focus."),
             },
             new string[]
             {
-                @"FlareAutocomplete",
+                @"FlareCombobox",
                 @"FlareDatePicker",
                 @"FlareDateRangePicker",
                 @"FlareDateTimePicker",
                 @"FlareField",
+                @"FlareFieldChrome",
                 @"FlareMaskedField",
                 @"FlareMultiSelect",
                 @"FlareNumericField",
+                @"FlarePasswordField",
                 @"FlareSelect",
                 @"FlareTagField",
                 @"FlareTextArea",
@@ -5862,21 +6489,37 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
-                @"FlareLayout",
                 @"FlareLayoutContent",
+            });
+
+        e[@"LinkTabsVariant"] = new ApiEnumInfo(
+            @"LinkTabsVariant",
+            @"Flare.Components.LinkTabsVariant",
+            @"Flare.Components",
+            @"Visual style of a FlareLinkTabs bar, independent of the active theme. Mirrors the pill-shaped variants of TabsVariant (Tonal/Filled) so a row of route links can read as the same segmented control as an in-page FlareTabs, reusing the same --flare-tabs-* design tokens.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Default", @"0", @"The active theme's default tab style (a simple underline indicator)."),
+                new ApiEnumMember(@"Tonal", @"1", @"Active link filled with a soft tonal pill."),
+                new ApiEnumMember(@"Filled", @"2", @"Active link filled with the solid accent as a pill / segmented control."),
+            },
+            new string[]
+            {
+                @"FlareLinkTabs",
             });
 
         e[@"LinkUnderline"] = new ApiEnumInfo(
             @"LinkUnderline",
             @"Flare.Components.LinkUnderline",
             @"Flare.Components",
-            null,
+            @"When a FlareLink shows its underline.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Always", @"0", null),
-                new ApiEnumMember(@"Hover", @"1", null),
-                new ApiEnumMember(@"None", @"2", null),
+                new ApiEnumMember(@"Always", @"0", @"Always."),
+                new ApiEnumMember(@"Hover", @"1", @"Hover."),
+                new ApiEnumMember(@"None", @"2", @"None."),
             },
             new string[]
             {
@@ -5926,17 +6569,32 @@ public static class ComponentApiRegistry
                 @"FlareMenu",
             });
 
+        e[@"MenuTrigger"] = new ApiEnumInfo(
+            @"MenuTrigger",
+            @"Flare.Components.Combobox.MenuTrigger",
+            @"Flare.Components.Combobox",
+            @"What user gesture opens the dropdown.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Click", @"0", @"Opens on a pointer click / Enter / Space / Arrow on the trigger (select-only pattern)."),
+                new ApiEnumMember(@"Input", @"1", @"Opens as the user types in an editable input (combobox pattern)."),
+                new ApiEnumMember(@"Focus", @"2", @"Opens as soon as the trigger gains focus."),
+                new ApiEnumMember(@"Manual", @"3", @"Never opens on its own; the host drives Open explicitly."),
+            },
+            System.Array.Empty<string>());
+
         e[@"MessageBoxKind"] = new ApiEnumInfo(
             @"MessageBoxKind",
             @"Flare.Abstractions.MessageBoxKind",
             @"Flare.Abstractions",
-            null,
+            @"The kind of message box to display.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Prompt", @"0", null),
-                new ApiEnumMember(@"Confirm", @"1", null),
-                new ApiEnumMember(@"Alert", @"2", null),
+                new ApiEnumMember(@"Prompt", @"0", @"A dialog with a text input that returns the entered string."),
+                new ApiEnumMember(@"Confirm", @"1", @"A yes/no confirmation dialog that returns a boolean."),
+                new ApiEnumMember(@"Alert", @"2", @"An information dialog with a single dismiss button."),
             },
             System.Array.Empty<string>());
 
@@ -5944,16 +6602,35 @@ public static class ComponentApiRegistry
             @"NavMatchMode",
             @"Flare.Components.NavMatchMode",
             @"Flare.Components",
-            null,
+            @"How a nav link's href is matched against the current URL to decide the active state.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Prefix", @"0", null),
-                new ApiEnumMember(@"Exact", @"1", null),
+                new ApiEnumMember(@"Prefix", @"0", @"Prefix."),
+                new ApiEnumMember(@"Exact", @"1", @"Exact."),
             },
             new string[]
             {
+                @"FlareBottomNavItem",
+                @"FlareLinkTab",
                 @"FlareNavLink",
+            });
+
+        e[@"NavMenuMode"] = new ApiEnumInfo(
+            @"NavMenuMode",
+            @"Flare.Components.NavMenuMode",
+            @"Flare.Components",
+            @"How a FlareNavMenu presents its items. Set it explicitly to control the menu independently of any surrounding FlareLayout; leave it unset to keep the legacy behavior (driven by Rail or the collapsed layout drawer).",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Full", @"0", @"The full menu: labels, group titles, expand chevrons and badges are all shown."),
+                new ApiEnumMember(@"Rail", @"1", @"Mini-rail: every item is trimmed to its icon only -- link/group text, the group expand chevron and link badges are hidden and the icons are centered."),
+                new ApiEnumMember(@"RailLabeled", @"2", @"Labeled rail: each item shows its icon with a small caption stacked underneath instead of hiding the text. Wider than Rail but self-describing."),
+            },
+            new string[]
+            {
+                @"FlareNavMenu",
             });
 
         e[@"PaginationSize"] = new ApiEnumInfo(
@@ -5979,22 +6656,38 @@ public static class ComponentApiRegistry
             @"PopoverPlacement",
             @"Flare.Components.PopoverPlacement",
             @"Flare.Components",
-            null,
+            @"Side and alignment a FlarePopover is placed relative to its anchor.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Top", @"0", null),
-                new ApiEnumMember(@"TopStart", @"1", null),
-                new ApiEnumMember(@"TopEnd", @"2", null),
-                new ApiEnumMember(@"Bottom", @"3", null),
-                new ApiEnumMember(@"BottomStart", @"4", null),
-                new ApiEnumMember(@"BottomEnd", @"5", null),
-                new ApiEnumMember(@"Left", @"6", null),
-                new ApiEnumMember(@"LeftStart", @"7", null),
-                new ApiEnumMember(@"LeftEnd", @"8", null),
-                new ApiEnumMember(@"Right", @"9", null),
-                new ApiEnumMember(@"RightStart", @"10", null),
-                new ApiEnumMember(@"RightEnd", @"11", null),
+                new ApiEnumMember(@"Top", @"0", @"Top."),
+                new ApiEnumMember(@"TopStart", @"1", @"Top start."),
+                new ApiEnumMember(@"TopEnd", @"2", @"Top end."),
+                new ApiEnumMember(@"Bottom", @"3", @"Bottom."),
+                new ApiEnumMember(@"BottomStart", @"4", @"Bottom start."),
+                new ApiEnumMember(@"BottomEnd", @"5", @"Bottom end."),
+                new ApiEnumMember(@"Left", @"6", @"Left."),
+                new ApiEnumMember(@"LeftStart", @"7", @"Left start."),
+                new ApiEnumMember(@"LeftEnd", @"8", @"Left end."),
+                new ApiEnumMember(@"Right", @"9", @"Right."),
+                new ApiEnumMember(@"RightStart", @"10", @"Right start."),
+                new ApiEnumMember(@"RightEnd", @"11", @"Right end."),
+            },
+            new string[]
+            {
+                @"FlarePopover",
+            });
+
+        e[@"PopoverTrigger"] = new ApiEnumInfo(
+            @"PopoverTrigger",
+            @"Flare.Components.PopoverTrigger",
+            @"Flare.Components",
+            @"How a FlarePopover is opened.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Manual", @"0", @"The consumer drives Open/OpenChanged (default) -- no built-in handler."),
+                new ApiEnumMember(@"Click", @"1", @"Clicking the anchor toggles the popover open and closed."),
             },
             new string[]
             {
@@ -6005,14 +6698,14 @@ public static class ComponentApiRegistry
             @"ProgressVariant",
             @"Flare.Components.ProgressVariant",
             @"Flare.Components",
-            null,
+            @"Visual style of a FlareProgress indicator.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Linear", @"0", null),
-                new ApiEnumMember(@"Circular", @"1", null),
-                new ApiEnumMember(@"Buffer", @"2", null),
-                new ApiEnumMember(@"Query", @"3", null),
+                new ApiEnumMember(@"Linear", @"0", @"Linear."),
+                new ApiEnumMember(@"Circular", @"1", @"Circular."),
+                new ApiEnumMember(@"Buffer", @"2", @"Buffer."),
+                new ApiEnumMember(@"Query", @"3", @"Query."),
             },
             new string[]
             {
@@ -6057,13 +6750,29 @@ public static class ComponentApiRegistry
             @"SelectionMode",
             @"Flare.Components.SelectionMode",
             @"Flare.Components",
-            null,
+            @"How many rows a FlareDataGrid lets the user select.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"None", @"0", null),
-                new ApiEnumMember(@"Single", @"1", null),
-                new ApiEnumMember(@"Multiple", @"2", null),
+                new ApiEnumMember(@"None", @"0", @"None."),
+                new ApiEnumMember(@"Single", @"1", @"Single."),
+                new ApiEnumMember(@"Multiple", @"2", @"Multiple."),
+            },
+            new string[]
+            {
+                @"FlareDataGrid",
+            });
+
+        e[@"SelectionMode"] = new ApiEnumInfo(
+            @"SelectionMode",
+            @"Flare.Components.Combobox.SelectionMode",
+            @"Flare.Components.Combobox",
+            @"How many items a combobox may hold selected at once.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Single", @"0", @"At most one selected value (FlareSelect, FlareCombobox)."),
+                new ApiEnumMember(@"Multiple", @"1", @"Any number of selected values (FlareMultiSelect, FlareTagField)."),
             },
             new string[]
             {
@@ -6074,13 +6783,13 @@ public static class ComponentApiRegistry
             @"SkeletonAnimation",
             @"Flare.Components.SkeletonAnimation",
             @"Flare.Components",
-            null,
+            @"Loading animation of a FlareSkeleton placeholder.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Wave", @"0", null),
-                new ApiEnumMember(@"Pulse", @"1", null),
-                new ApiEnumMember(@"None", @"2", null),
+                new ApiEnumMember(@"Wave", @"0", @"Wave."),
+                new ApiEnumMember(@"Pulse", @"1", @"Pulse."),
+                new ApiEnumMember(@"None", @"2", @"None."),
             },
             new string[]
             {
@@ -6091,13 +6800,13 @@ public static class ComponentApiRegistry
             @"SkeletonVariant",
             @"Flare.Components.SkeletonVariant",
             @"Flare.Components",
-            null,
+            @"Shape of a FlareSkeleton placeholder.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Text", @"0", null),
-                new ApiEnumMember(@"Rect", @"1", null),
-                new ApiEnumMember(@"Circle", @"2", null),
+                new ApiEnumMember(@"Text", @"0", @"Text."),
+                new ApiEnumMember(@"Rect", @"1", @"Rect."),
+                new ApiEnumMember(@"Circle", @"2", @"Circle."),
             },
             new string[]
             {
@@ -6108,11 +6817,11 @@ public static class ComponentApiRegistry
             @"SliderSize",
             @"Flare.Components.SliderSize",
             @"Flare.Components",
-            @"Size of FlareSlider, mapping to the Material Design 3 Expressive slider sizes (track thickness 16/24/40/56/96dp). Larger sizes also grow the handle and icons. Uses the shared Xs..Xl scale; Xs is the MD3 Expressive default.",
+            @"Size of FlareSlider (track thickness 16/24/40/56/96dp). Larger sizes also grow the handle and icons. Uses the shared Xs..Xl scale; Xs is the default.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Xs", @"0", @"Extra small - 16dp track, 44dp handle (MD3 Expressive default)."),
+                new ApiEnumMember(@"Xs", @"0", @"Extra small - 16dp track, 44dp handle (the default)."),
                 new ApiEnumMember(@"Sm", @"1", @"Small - 24dp track, 44dp handle."),
                 new ApiEnumMember(@"Md", @"2", @"Medium - 40dp track, 52dp handle; supports start/end icons."),
                 new ApiEnumMember(@"Lg", @"3", @"Large - 56dp track, 68dp handle; supports start/end icons."),
@@ -6131,12 +6840,12 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"TopLeft", @"0", null),
-                new ApiEnumMember(@"TopCenter", @"1", null),
-                new ApiEnumMember(@"TopRight", @"2", null),
-                new ApiEnumMember(@"BottomLeft", @"3", null),
-                new ApiEnumMember(@"BottomCenter", @"4", null),
-                new ApiEnumMember(@"BottomRight", @"5", null),
+                new ApiEnumMember(@"TopLeft", @"0", @"Top-left corner."),
+                new ApiEnumMember(@"TopCenter", @"1", @"Top edge, centered."),
+                new ApiEnumMember(@"TopRight", @"2", @"Top-right corner."),
+                new ApiEnumMember(@"BottomLeft", @"3", @"Bottom-left corner."),
+                new ApiEnumMember(@"BottomCenter", @"4", @"Bottom edge, centered."),
+                new ApiEnumMember(@"BottomRight", @"5", @"Bottom-right corner."),
             },
             new string[]
             {
@@ -6147,15 +6856,15 @@ public static class ComponentApiRegistry
             @"SnackbarSeverity",
             @"Flare.Abstractions.SnackbarSeverity",
             @"Flare.Abstractions",
-            null,
+            @"Severity of a snackbar notification, controlling its accent color and icon.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Normal", @"0", null),
-                new ApiEnumMember(@"Info", @"1", null),
-                new ApiEnumMember(@"Success", @"2", null),
-                new ApiEnumMember(@"Warning", @"3", null),
-                new ApiEnumMember(@"Error", @"4", null),
+                new ApiEnumMember(@"Normal", @"0", @"Neutral notification with no severity accent."),
+                new ApiEnumMember(@"Info", @"1", @"Informational notification."),
+                new ApiEnumMember(@"Success", @"2", @"Success notification."),
+                new ApiEnumMember(@"Warning", @"3", @"Warning notification."),
+                new ApiEnumMember(@"Error", @"4", @"Error notification."),
             },
             System.Array.Empty<string>());
 
@@ -6163,13 +6872,13 @@ public static class ComponentApiRegistry
             @"SortDirection",
             @"Flare.Components.SortDirection",
             @"Flare.Components",
-            null,
+            @"Sort direction applied to a data-grid column.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"None", @"0", null),
-                new ApiEnumMember(@"Ascending", @"1", null),
-                new ApiEnumMember(@"Descending", @"2", null),
+                new ApiEnumMember(@"None", @"0", @"None."),
+                new ApiEnumMember(@"Ascending", @"1", @"Ascending."),
+                new ApiEnumMember(@"Descending", @"2", @"Descending."),
             },
             System.Array.Empty<string>());
 
@@ -6177,12 +6886,12 @@ public static class ComponentApiRegistry
             @"StepperOrientation",
             @"Flare.Components.StepperOrientation",
             @"Flare.Components",
-            null,
+            @"Layout orientation of a FlareStepper.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Horizontal", @"0", null),
-                new ApiEnumMember(@"Vertical", @"1", null),
+                new ApiEnumMember(@"Horizontal", @"0", @"Horizontal."),
+                new ApiEnumMember(@"Vertical", @"1", @"Vertical."),
             },
             new string[]
             {
@@ -6211,13 +6920,13 @@ public static class ComponentApiRegistry
             @"SwitchSize",
             @"Flare.Components.SwitchSize",
             @"Flare.Components",
-            @"Size of FlareSwitch. Medium is the MD3 default (52x32dp).",
+            @"Size of FlareSwitch. Medium is the default (52x32dp).",
             null,
             new ApiEnumMember[]
             {
                 new ApiEnumMember(@"Xs", @"0", @"Extra small."),
                 new ApiEnumMember(@"Sm", @"1", @"Small (compact) switch."),
-                new ApiEnumMember(@"Md", @"2", @"Medium - MD3 default (52x32dp)."),
+                new ApiEnumMember(@"Md", @"2", @"Medium - the default (52x32dp)."),
                 new ApiEnumMember(@"Lg", @"3", @"Large."),
                 new ApiEnumMember(@"Xl", @"4", @"Extra large."),
             },
@@ -6295,17 +7004,17 @@ public static class ComponentApiRegistry
             @"TabsVariant",
             @"Flare.Components.TabsVariant",
             @"Flare.Components",
-            @"Visual style of a FlareTabs bar, independent of the active theme. Each theme reskins the variants through its tokens, so a variant looks native everywhere (e.g. Filled is MD3 primary-container vs FluentUI2 ""filled-circular""). Four names mirror ButtonVariant (Text/Tonal/Filled/Outlined).",
+            @"Visual style of a FlareTabs bar, independent of the active theme. Each theme reskins the variants through its tokens, so a variant looks native everywhere (e.g. Filled is a solid accent pill). Four names mirror ButtonVariant (Text/Tonal/Filled/Outlined).",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Default", @"0", @"The active theme's default tab style (MD3 = secondary underline, FluentUI2 = transparent underline)."),
-                new ApiEnumMember(@"Underline", @"1", @"Full-width underline active indicator (MD3 secondary tabs, FluentUI2 ""transparent"")."),
-                new ApiEnumMember(@"Primary", @"2", @"Content-hugging underline indicator with rounded top corners (MD3 primary tabs)."),
-                new ApiEnumMember(@"Text", @"3", @"No persistent indicator: the active tab is color/weight only, with a subtle hover wash (FluentUI2 ""subtle"")."),
-                new ApiEnumMember(@"Tonal", @"4", @"Active tab filled with a soft tonal pill (MD3 secondary-container, FluentUI2 ""subtle-circular"")."),
-                new ApiEnumMember(@"Filled", @"5", @"Active tab filled with the solid accent as a pill / segmented control (MD3 primary-container, FluentUI2 ""filled-circular"")."),
-                new ApiEnumMember(@"Outlined", @"6", @"Bordered card / folder tabs that connect to the panel below (classic / Ant ""card"")."),
+                new ApiEnumMember(@"Default", @"0", @"The active theme's default tab style (typically a simple underline indicator)."),
+                new ApiEnumMember(@"Underline", @"1", @"Full-width underline active indicator."),
+                new ApiEnumMember(@"Primary", @"2", @"Content-hugging underline indicator with rounded top corners."),
+                new ApiEnumMember(@"Text", @"3", @"No persistent indicator: the active tab is color/weight only, with a subtle hover wash."),
+                new ApiEnumMember(@"Tonal", @"4", @"Active tab filled with a soft tonal pill."),
+                new ApiEnumMember(@"Filled", @"5", @"Active tab filled with the solid accent as a pill / segmented control."),
+                new ApiEnumMember(@"Outlined", @"6", @"Bordered card / folder tabs that connect to the panel below (classic ""card"" tabs)."),
             },
             new string[]
             {
@@ -6369,7 +7078,7 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Dial", @"0", @"MD3 analog clock dial (12-hour with AM/PM). Click numbers to select hour then minute."),
+                new ApiEnumMember(@"Dial", @"0", @"Analog clock dial (12-hour with AM/PM). Click numbers to select hour then minute."),
                 new ApiEnumMember(@"Dropdown", @"1", @"Compact 24-hour hour/minute columns (scrollbar hidden)."),
             },
             new string[]
@@ -6382,13 +7091,13 @@ public static class ComponentApiRegistry
             @"TimelineAlign",
             @"Flare.Components.TimelineAlign",
             @"Flare.Components",
-            null,
+            @"Which side of the rail FlareTimeline items are placed on.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Left", @"0", null),
-                new ApiEnumMember(@"Right", @"1", null),
-                new ApiEnumMember(@"Alternate", @"2", null),
+                new ApiEnumMember(@"Left", @"0", @"Left."),
+                new ApiEnumMember(@"Right", @"1", @"Right."),
+                new ApiEnumMember(@"Alternate", @"2", @"Alternate."),
             },
             new string[]
             {
@@ -6416,14 +7125,14 @@ public static class ComponentApiRegistry
             @"TooltipPlacement",
             @"Flare.Components.TooltipPlacement",
             @"Flare.Components",
-            null,
+            @"Side of the anchor a FlareTooltip is placed on.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"Top", @"0", null),
-                new ApiEnumMember(@"Bottom", @"1", null),
-                new ApiEnumMember(@"Left", @"2", null),
-                new ApiEnumMember(@"Right", @"3", null),
+                new ApiEnumMember(@"Top", @"0", @"Top."),
+                new ApiEnumMember(@"Bottom", @"1", @"Bottom."),
+                new ApiEnumMember(@"Left", @"2", @"Left."),
+                new ApiEnumMember(@"Right", @"3", @"Right."),
             },
             new string[]
             {
@@ -6444,11 +7153,25 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"TriState"] = new ApiEnumInfo(
+            @"TriState",
+            @"Flare.Components.Combobox.TriState",
+            @"Flare.Components.Combobox",
+            @"Tri-state of a ""select all"" affordance over the currently visible, enabled options.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"None of the visible enabled options are selected."),
+                new ApiEnumMember(@"Some", @"1", @"Some but not all are selected (renders as the mixed / indeterminate state)."),
+                new ApiEnumMember(@"All", @"2", @"All visible enabled options are selected."),
+            },
+            System.Array.Empty<string>());
+
         e[@"TypographyScale"] = new ApiEnumInfo(
             @"TypographyScale",
             @"Flare.Components.TypographyScale",
             @"Flare.Components",
-            @"MD3 type scale roles mapped to semantic HTML elements and CSS utility classes.",
+            @"Semantic type-scale roles mapped to semantic HTML elements and CSS utility classes.",
             null,
             new ApiEnumMember[]
             {
@@ -6470,15 +7193,17 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
-                @"FlareAutocomplete",
                 @"FlareButton",
+                @"FlareCombobox",
                 @"FlareDatePicker",
                 @"FlareDateRangePicker",
                 @"FlareDateTimePicker",
                 @"FlareField",
+                @"FlareLink",
                 @"FlareMaskedField",
                 @"FlareMultiSelect",
                 @"FlareNumericField",
+                @"FlarePasswordField",
                 @"FlareSelect",
                 @"FlareTabs",
                 @"FlareTagField",
