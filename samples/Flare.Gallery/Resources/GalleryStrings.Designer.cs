@@ -198,6 +198,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New FlareDescriptionList / FlareDescriptionItem: a read-only key/value detail panel.
+        /// </summary>
+        public static string About_WhatsNewV16 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV16", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на New IBrowserViewportService: one injected service for the current breakpoint and viewport size, arbitrary media-query checks (MatchesAsync), throttled resize/breakpoint subscriptions and per-element ResizeObserver - dispose the returned token to unsubscribe (no DotNetObjectReference plumbing)
         ///New Xxl breakpoint (2560px and up): Breakpoint.Xxl and a matching FlareCol.Xxl column span
         ///FlareMediaQuery, FlareLayout and FlareDateTimePicker now track the viewport through IBrowserViewportService instead of per-component JSInvokable callbacks.
