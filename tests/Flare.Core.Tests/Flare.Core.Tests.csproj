@@ -8,13 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="10.0.1">
+    <PackageReference Include="coverlet.collector">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
-    <PackageReference Include="xunit.v3" Version="3.2.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,11 +30,6 @@
     <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3.Tokens\Flare.Theme.MaterialDesign3.Tokens.csproj" />
     <!-- Reusable audit logic for the CssClasses/CSS/theme in-sync guard test. -->
     <ProjectReference Include="..\..\tools\Flare.CssAudit\Flare.CssAudit.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.300" />
-    <PackageReference Update="MinVer" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,44 @@
+<Project>
+
+  <!--
+    Central Package Management (CPM). Every NuGet package version used anywhere in the repo is
+    declared ONCE here; individual .csproj files reference packages WITHOUT a Version attribute
+    (CPM supplies it). To bump a dependency, edit this file only - no per-project edits, no
+    rebuild churn across 30 projects. Dependabot updates this single file too.
+
+    - GlobalPackageReference: injected into EVERY project automatically (build/pack tooling).
+    - PackageVersion: the version a project gets when it lists the package via <PackageReference>.
+    - Per-target-framework needs (e.g. Flare.Abstractions' ASP.NET Core version) use VersionOverride
+      in the csproj, keeping the TFM-conditional logic local.
+  -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- Build/versioning/pack tooling needed by every project (replaces the MinVer + SourceLink
+       PackageReferences that used to be injected via Directory.Build.props and then re-pinned in
+       each csproj). GlobalPackageReference implies PrivateAssets="all". -->
+  <ItemGroup>
+    <GlobalPackageReference Include="MinVer" Version="7.0.0" />
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Roslyn source generator (samples/Flare.Gallery.Generators). -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.6.0" />
+    <!-- Blazor / ASP.NET Core runtime. Flare.Abstractions pins this per-TFM via VersionOverride
+         (net8.0 -> 8.0.*, net9.0 -> 9.0.*, net10.0 -> the version below). -->
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.9" />
+    <!-- Test stack (tests/Flare.*.Tests). -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageVersion Include="xunit.v3" Version="3.2.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="bunit" Version="2.7.2" />
+    <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+  </ItemGroup>
+
+</Project>

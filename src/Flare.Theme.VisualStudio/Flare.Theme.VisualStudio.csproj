@@ -19,9 +19,4 @@
     <ProjectReference Include="..\Flare.Theme.FluentUI2.Tokens\Flare.Theme.FluentUI2.Tokens.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.300" />
-    <PackageReference Update="MinVer" Version="7.0.0" />
-  </ItemGroup>
-
 </Project>

@@ -31,12 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(AspNetCoreComponentsVersion)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="10.0.300" />
-    <PackageReference Update="MinVer" Version="7.0.0" />
+    <!-- Version varies per target framework (see AspNetCoreComponentsVersion above). VersionOverride
+         is CPM's escape hatch for a version that must differ from the central pin per TFM. -->
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" VersionOverride="$(AspNetCoreComponentsVersion)" />
   </ItemGroup>
 
 </Project>
