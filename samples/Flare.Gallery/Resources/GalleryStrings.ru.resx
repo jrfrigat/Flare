@@ -2693,7 +2693,7 @@ MarkdownParser: защита от vbscript/data-uri/expression()/опасных 
   <data name="OtpField_Disabled" xml:space="preserve"><value>Отключено</value></data>
   <data name="OtpField_Alphanumeric" xml:space="preserve"><value>Буквенно-цифровой (8 символов)</value></data>
   <data name="Responsive_Title" xml:space="preserve"><value>Адаптивность и отзывчивость</value></data>
-  <data name="Responsive_Subtitle" xml:space="preserve"><value>Измените размер окна, чтобы увидеть адаптацию Flare. Контрольные точки: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920.</value></data>
+  <data name="Responsive_Subtitle" xml:space="preserve"><value>Измените размер окна, чтобы увидеть адаптацию Flare. Контрольные точки: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920 · xxl ≥2560.</value></data>
   <data name="Responsive_GridTitle" xml:space="preserve"><value>Адаптивная сетка (FlareGrid / FlareCol)</value></data>
   <data name="Responsive_GridDescA" xml:space="preserve"><value>Каждая колонка</value></data>
   <data name="Responsive_GridDescB" xml:space="preserve"><value>- 1 в ряд на телефонах, 2 на планшетах, 3-4 на десктопе.</value></data>
@@ -2711,6 +2711,16 @@ MarkdownParser: защита от vbscript/data-uri/expression()/опасных 
   <data name="Responsive_LastChange" xml:space="preserve"><value>Последнее изменение в C#:</value></data>
   <data name="Responsive_NoneYet" xml:space="preserve"><value>(пока нет)</value></data>
   <data name="Responsive_ShownMd" xml:space="preserve"><value>Видно только на md (Only + Invert).</value></data>
+  <data name="Responsive_ViewportTitle" xml:space="preserve"><value>Сервис вьюпорта (C#)</value></data>
+  <data name="Responsive_ViewportDesc" xml:space="preserve"><value>IBrowserViewportService отдаёт актуальный размер в пикселях, контрольную точку и ориентацию из одного внедряемого сервиса - без DotNetObjectReference и JS-взаимодействия, с одним throttle-слушателем resize на всех подписчиков.</value></data>
+  <data name="Responsive_ViewportSize" xml:space="preserve"><value>Размер вьюпорта:</value></data>
+  <data name="Responsive_ViewportOrientation" xml:space="preserve"><value>Ориентация:</value></data>
+  <data name="Responsive_Portrait" xml:space="preserve"><value>Портретная</value></data>
+  <data name="Responsive_Landscape" xml:space="preserve"><value>Альбомная</value></data>
+  <data name="Responsive_PortraitQuery" xml:space="preserve"><value>соответствует (orientation: portrait):</value></data>
+  <data name="Responsive_ElementObserverTitle" xml:space="preserve"><value>Наблюдатель размера элемента</value></data>
+  <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync отслеживает собственный размер отдельного элемента через браузерный ResizeObserver. Потяните за нижний правый угол, чтобы изменить размер блока:</value></data>
+  <data name="Responsive_ElementSize" xml:space="preserve"><value>Размер наблюдаемого элемента:</value></data>
   <data name="Chip_Variants" xml:space="preserve"><value>Варианты</value></data>
   <data name="Avatar_Fallback" xml:space="preserve"><value>Запасная иконка</value></data>
   <data name="Field_ErrorState" xml:space="preserve"><value>Состояние ошибки (без сообщения)</value></data>

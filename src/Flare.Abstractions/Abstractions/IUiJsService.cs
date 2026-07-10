@@ -5,9 +5,9 @@ namespace Flare.Components.Services;
 
 /// <summary>
 /// Typed JS-interop for miscellaneous UI utilities backed by <c>flare-ui.js</c>: a scroll-to-top
-/// button, responsive breakpoint detection, tab-bar overflow scrolling, global keyboard shortcuts
-/// and the EyeDropper API. Wraps the module so components inject a service instead of importing it
-/// and calling string identifiers themselves.
+/// button, tab-bar overflow scrolling, global keyboard shortcuts and the EyeDropper API. Wraps the
+/// module so components inject a service instead of importing it and calling string identifiers
+/// themselves. Responsive breakpoint / viewport detection lives in <see cref="IBrowserViewportService"/>.
 /// </summary>
 public interface IUiJsService : IAsyncDisposable
 {
@@ -23,17 +23,6 @@ public interface IUiJsService : IAsyncDisposable
 
     /// <summary>Smoothly scrolls the matched container (or the window) to the top.</summary>
     ValueTask ScrollToTopAsync(string? selector);
-
-    /// <summary>Returns the current responsive breakpoint (<c>Xs</c>..<c>Xl</c>).</summary>
-    ValueTask<string> GetBreakpointAsync();
-
-    /// <summary>Subscribes to breakpoint changes (invokes <c>OnBreakpointChanged</c>); returns the current breakpoint.</summary>
-    /// <param name="id">A stable id identifying this subscription.</param>
-    /// <param name="dotNetRef">The component reference whose <c>OnBreakpointChanged(string)</c> is invoked.</param>
-    ValueTask<string> SubscribeBreakpointAsync<T>(string id, DotNetObjectReference<T> dotNetRef) where T : class;
-
-    /// <summary>Removes the breakpoint subscription registered under <paramref name="id"/>.</summary>
-    ValueTask UnsubscribeBreakpointAsync(string id);
 
     /// <summary>Observes a tab bar and reports overflow state via <c>OnTabScrollState</c>.</summary>
     /// <param name="bar">The scrollable tab-bar element.</param>

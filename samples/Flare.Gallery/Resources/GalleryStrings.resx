@@ -2693,7 +2693,7 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
   <data name="OtpField_Disabled" xml:space="preserve"><value>Disabled</value></data>
   <data name="OtpField_Alphanumeric" xml:space="preserve"><value>Alphanumeric (8-char)</value></data>
   <data name="Responsive_Title" xml:space="preserve"><value>Responsive &amp; Adaptivity</value></data>
-  <data name="Responsive_Subtitle" xml:space="preserve"><value>Resize the window to see Flare adapt. Breakpoints: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920.</value></data>
+  <data name="Responsive_Subtitle" xml:space="preserve"><value>Resize the window to see Flare adapt. Breakpoints: xs &lt;600 · sm ≥600 · md ≥960 · lg ≥1280 · xl ≥1920 · xxl ≥2560.</value></data>
   <data name="Responsive_GridTitle" xml:space="preserve"><value>Responsive grid (FlareGrid / FlareCol)</value></data>
   <data name="Responsive_GridDescA" xml:space="preserve"><value>Each column is</value></data>
   <data name="Responsive_GridDescB" xml:space="preserve"><value>- 1 per row on phones, 2 on tablets, 3-4 on desktop.</value></data>
@@ -2711,6 +2711,16 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
   <data name="Responsive_LastChange" xml:space="preserve"><value>Last change reported to C#:</value></data>
   <data name="Responsive_NoneYet" xml:space="preserve"><value>(none yet)</value></data>
   <data name="Responsive_ShownMd" xml:space="preserve"><value>Shown only on md (Only + Invert).</value></data>
+  <data name="Responsive_ViewportTitle" xml:space="preserve"><value>Viewport service (C#)</value></data>
+  <data name="Responsive_ViewportDesc" xml:space="preserve"><value>IBrowserViewportService reports live pixel size, breakpoint and orientation from one injectable service - no DotNetObjectReference, no JS interop, and it shares a single throttled resize listener across every subscriber.</value></data>
+  <data name="Responsive_ViewportSize" xml:space="preserve"><value>Viewport size:</value></data>
+  <data name="Responsive_ViewportOrientation" xml:space="preserve"><value>Orientation:</value></data>
+  <data name="Responsive_Portrait" xml:space="preserve"><value>Portrait</value></data>
+  <data name="Responsive_Landscape" xml:space="preserve"><value>Landscape</value></data>
+  <data name="Responsive_PortraitQuery" xml:space="preserve"><value>matches (orientation: portrait):</value></data>
+  <data name="Responsive_ElementObserverTitle" xml:space="preserve"><value>Element resize observer</value></data>
+  <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync tracks a single element's own size via the browser ResizeObserver. Drag the bottom-right corner to resize the box:</value></data>
+  <data name="Responsive_ElementSize" xml:space="preserve"><value>Observed element size:</value></data>
   <data name="Chip_Variants" xml:space="preserve"><value>Variants</value></data>
   <data name="Avatar_Fallback" xml:space="preserve"><value>Fallback icon</value></data>
   <data name="Field_ErrorState" xml:space="preserve"><value>Error state (no message)</value></data>
