@@ -28,6 +28,8 @@
 .flare-stack--stretch > * { flex: 1 1 0; min-width: 0; min-height: 0; }
 /* Stretch-first: only the first child grows to fill the remaining space. */
 .flare-stack--stretch-first > :first-child { flex: 1 1 auto; min-width: 0; min-height: 0; }
+/* Stretch-last: only the last child grows to fill the remaining space. */
+.flare-stack--stretch-last > :last-child { flex: 1 1 auto; min-width: 0; min-height: 0; }
 
 /* Gap modifiers */
 .flare-stack--gap-none     { gap: 0; }

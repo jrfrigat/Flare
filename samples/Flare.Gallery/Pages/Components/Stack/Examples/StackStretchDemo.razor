@@ -1,4 +1,5 @@
-@* StretchItems: every child shares the row equally. StretchFirst: only the first child grows. *@
+@* StretchItems: every child shares the row equally. StretchFirst: only the first child grows.
+   StretchLast: only the last child grows (a fixed leading control + a pane that fills the rest). *@
 <FlareStack Gap="FlareSpacing.Large">
     <FlareStack Row StretchItems Gap="FlareSpacing.Small">
         <FlarePaper Elevation="1" Style="padding:0.75rem;text-align:center;">A</FlarePaper>
@@ -9,5 +10,10 @@
     <FlareStack Row StretchFirst Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareTextField Placeholder="Grows to fill the row" />
         <FlareButton Variant="ButtonVariant.Filled">Send</FlareButton>
+    </FlareStack>
+
+    <FlareStack Row StretchLast Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareButton Variant="ButtonVariant.Outlined">Filter</FlareButton>
+        <FlareTextField Placeholder="Fills the rest of the row" />
     </FlareStack>
 </FlareStack>

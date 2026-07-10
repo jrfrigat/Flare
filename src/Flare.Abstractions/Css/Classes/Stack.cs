@@ -19,6 +19,8 @@ public static class Stack
     public const string Stretch = "flare-stack--stretch";
     /// <summary>The <c>flare-stack--stretch-first</c> CSS class: the first direct child grows to fill the remaining space.</summary>
     public const string StretchFirst = "flare-stack--stretch-first";
+    /// <summary>The <c>flare-stack--stretch-last</c> CSS class: the last direct child grows to fill the remaining space.</summary>
+    public const string StretchLast = "flare-stack--stretch-last";
     /// <summary>The <c>flare-stack--gap-none</c> CSS class.</summary>
     public const string GapNone = "flare-stack--gap-none";
     /// <summary>The <c>flare-stack--gap-xxsmall</c> CSS class.</summary>

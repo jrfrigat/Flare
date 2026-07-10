@@ -1140,6 +1140,9 @@
   <data name="Layout_ResponsiveGrid" xml:space="preserve">
     <value>Responsive Grid (resize browser to see)</value>
   </data>
+  <data name="Layout_AutoFitGrid" xml:space="preserve">
+    <value>Auto-fit card wall (MinColumnWidth + AutoFit)</value>
+  </data>
   <data name="Layout_Divider" xml:space="preserve">
     <value>Divider</value>
   </data>

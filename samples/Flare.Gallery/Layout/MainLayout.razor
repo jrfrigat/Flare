@@ -42,11 +42,11 @@
         @* Two-column doc layout built from Flare primitives: a flexible content column and a fixed
            "On this page" rail. The rail hides below the md breakpoint (Css.Classes.Hidden.BelowMd) --
            when it does, the content column simply fills the row. No gallery CSS. *@
-        <FlareStack Row Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start">
-            @* Plain content host: Flare has no "fills remaining space" primitive, so the flex sizing
-               (grow + min-width:0 to let wide code blocks shrink) is expressed inline. The id is a
-               scan target for the TOC, not a styling hook. *@
-            <div id="gallery-main" style="flex:1;min-width:0;">@Body</div>
+        <FlareStack Row Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start" StretchFirst>
+            @* Plain content host: StretchFirst makes this first child fill the space beside the fixed rail
+               (flex:1 1 auto + min-width:0 so wide code blocks can shrink) - no inline flex needed. The id
+               is a scan target for the TOC, not a styling hook. *@
+            <div id="gallery-main">@Body</div>
             @* Recreated per navigation (@key) so it re-scans the new page's demo-section titles.
                Sticky positioning is a layout concern of this rail, expressed via the component's Style. *@
             <FlareOnThisPage @key="NavManager.Uri"

@@ -5002,6 +5002,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Layout_ResponsiveGrid", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Auto-fit card wall (MinColumnWidth + AutoFit).
+        /// </summary>
+        public static string Layout_AutoFitGrid {
+            get {
+                return ResourceManager.GetString("Layout_AutoFitGrid", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Spacer.

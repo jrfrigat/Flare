@@ -16,6 +16,13 @@
     /// This overrides <see cref="Columns"/> and needs no media queries.
     /// </summary>
     [Parameter] public string? MinColumnWidth { get; set; }
+    /// <summary>
+    /// Only meaningful together with <see cref="MinColumnWidth"/>. When true the track set uses
+    /// <c>auto-fit</c> instead of <c>auto-fill</c>, so the present items stretch to consume the whole row
+    /// (empty trailing tracks collapse). Use it for a card wall that should always fill its width; leave
+    /// it false to keep items at their minimum size and preserve the empty trailing tracks.
+    /// </summary>
+    [Parameter] public bool AutoFit { get; set; }
     /// <summary>Spacing between all grid cells using design-token values.</summary>
     [Parameter] public FlareSpacing Gap { get; set; } = FlareSpacing.Medium;
     /// <summary>Raw CSS gap value used when <see cref="Gap"/> is <see cref="FlareSpacing.Custom"/>.</summary>
@@ -75,9 +82,10 @@
 
         var parts = new System.Text.StringBuilder();
         // MinColumnWidth turns the grid into an auto-fitting responsive track set (no media queries);
-        // otherwise it is a fixed N-column grid. GS-3: sanitize the user-supplied length.
+        // otherwise it is a fixed N-column grid. AutoFit picks auto-fit (items stretch to fill the row)
+        // over the default auto-fill (empty trailing tracks kept). GS-3: sanitize the user-supplied length.
         if (MinColumnWidth is not null)
-            parts.Append($"grid-template-columns:repeat(auto-fill,minmax({Flare.Components.Security.CssValidator.StripDangerous(MinColumnWidth)},1fr))");
+            parts.Append($"grid-template-columns:repeat({(AutoFit ? "auto-fit" : "auto-fill")},minmax({Flare.Components.Security.CssValidator.StripDangerous(MinColumnWidth)},1fr))");
         else
             parts.Append($"grid-template-columns:repeat({Columns},1fr)");
 
