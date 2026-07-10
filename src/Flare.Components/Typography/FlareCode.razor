@@ -1,0 +1,12 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+<code class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">@ChildContent</code>
+
+@code {
+    /// <summary>The code text (or markup) rendered inside the inline <c>&lt;code&gt;</c> element.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>The component's root CSS class.</summary>
+    protected override string ComponentCssClass => Css.Classes.Code.Root;
+}

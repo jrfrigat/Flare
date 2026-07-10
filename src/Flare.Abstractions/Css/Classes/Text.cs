@@ -67,6 +67,8 @@ public static class Text
     public const string AlignEnd = "flare-text--align-end";
     /// <summary>The <c>flare-text--align-justify</c> CSS class.</summary>
     public const string AlignJustify = "flare-text--align-justify";
+    /// <summary>The <c>flare-text--mono</c> CSS class: renders the text in the monospace font.</summary>
+    public const string Mono = "flare-text--mono";
     /// <summary>The <c>flare-text-center</c> CSS class.</summary>
     public const string Center = "flare-text-center";
     /// <summary>The <c>flare-text-left</c> CSS class.</summary>

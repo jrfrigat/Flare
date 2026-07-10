@@ -1,0 +1,9 @@
+/* Inline code token: a monospace run on a subtle tonal chip. Matches the inline <code> recipe used by
+   flare-markdown so prose and standalone FlareCode read identically. */
+.flare-code {
+  font-family: monospace;
+  font-size: 0.875em;
+  background: var(--flare-color-surface-container);
+  padding: 0.1em 0.3em;
+  border-radius: var(--flare-shape-extra-small);
+}

@@ -130,3 +130,6 @@
 .flare-text--align-right   { text-align: right; }
 .flare-text--align-end     { text-align: end; }
 .flare-text--align-justify { text-align: justify; }
+
+/* Monospace override (FlareText Mono) - swaps only the font family, keeps the type-scale metrics. */
+.flare-text--mono { font-family: monospace; }

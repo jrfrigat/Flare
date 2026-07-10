@@ -23,6 +23,11 @@ public sealed class FlareText : FlareComponentBase
     /// <summary>Horizontal text alignment. <see cref="TextAlign.Default"/> inherits the surrounding alignment.</summary>
     [Parameter] public TextAlign Align { get; set; } = TextAlign.Default;
 
+    /// <summary>When true, renders in the monospace font - for code-like runs and keystrokes (pair with
+    /// <c>Element="code"</c>/<c>"kbd"</c>). It only swaps the font; for the tonal inline-code chip use
+    /// <see cref="FlareCode"/>.</summary>
+    [Parameter] public bool Mono { get; set; }
+
     /// <summary>
     /// When set, gives the element a stable <c>id</c> (a link target) and renders a hover "#" deep-link.
     /// Use on headings so <c>FlareOnThisPage</c> and shareable URLs can reference the section.
@@ -51,7 +56,7 @@ public sealed class FlareText : FlareComponentBase
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, _safeElement);
-        builder.AddAttribute(1, "class", BuildCssClass(_scaleClass, Color.CssClass, _weightClass, _alignClass));
+        builder.AddAttribute(1, "class", BuildCssClass(_scaleClass, Color.CssClass, _weightClass, _alignClass, _monoClass));
         if (_inlineStyle is not null)
             builder.AddAttribute(2, "style", _inlineStyle);
         if (AnchorId is not null)
@@ -118,6 +123,8 @@ public sealed class FlareText : FlareComponentBase
         _ => null,
     };
 
+    private string? _monoClass => Mono ? Css.Classes.Text.Mono : null;
+
     private string _htmlElement => Typo switch
     {
         TypographyScale.DisplayLarge
@@ -133,7 +140,7 @@ public sealed class FlareText : FlareComponentBase
     };
 
     private static readonly HashSet<string> AllowedElements = new(StringComparer.OrdinalIgnoreCase)
-        { "h1", "h2", "h3", "h4", "h5", "h6", "p", "span", "div", "strong", "em", "small", "b", "i" };
+        { "h1", "h2", "h3", "h4", "h5", "h6", "p", "span", "div", "strong", "em", "small", "b", "i", "code", "kbd", "samp", "pre" };
 
     private string _safeElement => Element is not null && AllowedElements.Contains(Element) ? Element : _htmlElement;
 

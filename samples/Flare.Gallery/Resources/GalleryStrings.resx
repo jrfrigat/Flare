@@ -1725,6 +1725,9 @@
   <data name="Typography_ColorElement" xml:space="preserve">
     <value>Color &amp; element</value>
   </data>
+  <data name="Typography_Code" xml:space="preserve">
+    <value>Inline code &amp; monospace</value>
+  </data>
   <data name="VideoPlayer_Title" xml:space="preserve">
     <value>Video Player</value>
   </data>

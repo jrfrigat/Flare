@@ -91,6 +91,7 @@
 @import 'paper.css';
 @import 'highlighter.css';
 @import 'codeblock.css';
+@import 'code.css';
 @import 'shortcuts.css';
 @import 'markdown.css';
 @import url('responsive.css');

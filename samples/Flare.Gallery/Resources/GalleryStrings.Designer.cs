@@ -8683,6 +8683,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Typography_ColorElement", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inline code &amp; monospace.
+        /// </summary>
+        public static string Typography_Code {
+            get {
+                return ResourceManager.GetString("Typography_Code", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Scale.
