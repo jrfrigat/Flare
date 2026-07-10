@@ -26,8 +26,10 @@ COPY ["src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj",           
 COPY ["src/Flare/Flare.csproj",                                                     "src/Flare/"]
 COPY ["samples/Flare.Gallery.Generators/Flare.Gallery.Generators.csproj",           "samples/Flare.Gallery.Generators/"]
 COPY ["samples/Flare.Gallery/Flare.Gallery.csproj",                                 "samples/Flare.Gallery/"]
-# Directory.Build.props must be present so referenced projects get <TargetFramework>
-COPY Directory.Build.props .
+# Both repo-level props files must be present for restore: Directory.Build.props (shared
+# <TargetFramework> etc.) and Directory.Packages.props (Central Package Management - the single
+# source of every NuGet version; without it the version-less PackageReferences won't resolve).
+COPY Directory.Build.props Directory.Packages.props ./
 RUN dotnet restore "samples/Flare.Gallery/Flare.Gallery.csproj"
 
 # Copy full source and publish
