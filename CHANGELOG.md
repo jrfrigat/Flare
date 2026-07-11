@@ -3,6 +3,30 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.6] - 2026-07-11
+
+A field-family release: follow-ups from a cross-framework audit (vs MudBlazor / Blazorise / Fluent UI
+Blazor) applied across the whole text/input field family.
+
+### Added
+- **`FocusAsync()` across the editable field family** - a new `FlareEditableFieldBase` gives `FlareField` /
+  `FlareTextField`, `FlarePasswordField`, `FlareNumericField`, `FlareMaskedField` and `FlareTextArea` a
+  programmatic `FocusAsync()`; `FlareOtpField` focuses its first cell. Plus `SelectAsync()` / `BlurAsync()`
+  (and `SelectRangeAsync()` on `FlareField`), backed by three new `IElementJsService` helpers.
+- **`Autofocus`** (focus on first render) and **`OnFocus` / `OnBlur`** events on the text-entry fields.
+- **`Pattern`** (regex) and **`InputMode`** on `FlareField` / `FlareTextField`; **`Autocomplete`** and
+  **`Spellcheck`** on the text fields; **`DataList`** (native `<datalist>` suggestions).
+- **`Clearable` on every editable field** (was `FlareField`-only) plus **`OnClearButtonClick`**.
+- **`FlareNumericField`**: public **`Increment()` / `Decrement()`** and **`SelectAllOnFocus`**.
+- **`FlareTextArea`**: **`Resize`** (None/Vertical/Horizontal/Both) and **`Spellcheck`**.
+- **`HelperTextOnFocus`** - shows the helper text only while the field is focused.
+
+### Changed
+- **`FlareOtpField` now composes the shared field chrome** (`FlareFieldChrome`) like the rest of the
+  family: it gains `Label`, `HelperText` / `ErrorText` (a real message row, not just the red-cell `Error`
+  bool), `Required`, `ReadOnly` and `EditContext` / `For` validation - an error message now also reddens
+  the cells. The cell row itself is unchanged.
+
 ## [0.1.5] - 2026-07-11
 
 A button-family release: follow-ups from a cross-framework audit (vs MudBlazor / Blazorise / Fluent UI

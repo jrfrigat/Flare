@@ -2501,6 +2501,13 @@ Leaner CSS: shared input, picker, and listbox styles cut duplication across the 
 About 100 more component styles are now themeable knobs you can override
 Fixed a batch of accessibility and theme bugs across nav, dialogs, drawers, and inputs</value>
   </data>
+  <data name="About_WhatsNewV18" xml:space="preserve">
+    <value>FocusAsync()/SelectAsync()/BlurAsync() across every editable field (text, password, numeric, mask, textarea) and FlareOtpField
+Autofocus, OnFocus/OnBlur events, Pattern, InputMode, Autocomplete and Spellcheck on the text fields
+Clearable on every editable field (was FlareField-only) plus OnClearButtonClick
+FlareNumericField Increment()/Decrement() and SelectAllOnFocus; FlareTextArea Resize; HelperTextOnFocus and DataList
+FlareOtpField now composes the shared field chrome: Label, HelperText/ErrorText, Required and EditContext validation (an error also reddens the cells)</value>
+  </data>
   <data name="About_WhatsNewV17" xml:space="preserve">
     <value>FocusAsync() across the whole button family (Button, IconButton, ToggleButton, SplitButton, FAB) for programmatic focus
 ButtonEdge (Start/End) on IconButton and ToggleButton for optical edge alignment in app bars and toolbars

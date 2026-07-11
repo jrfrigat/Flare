@@ -198,6 +198,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FocusAsync()/SelectAsync()/BlurAsync() across every editable field (text, password, numeric, mask, textarea) and FlareOtpField.
+        /// </summary>
+        public static string About_WhatsNewV18 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV18", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to FocusAsync() across the whole button family.
         /// </summary>
         public static string About_WhatsNewV17 {

@@ -2501,6 +2501,13 @@ Select и MultiSelect перестроены на быстром headless-ядр
 Ещё около 100 стилей компонентов стали настраиваемыми токенами
 Исправлена группа проблем доступности и тем в навигации, диалогах, drawer и полях ввода</value>
   </data>
+  <data name="About_WhatsNewV18" xml:space="preserve">
+    <value>FocusAsync()/SelectAsync()/BlurAsync() у каждого редактируемого поля (текст, пароль, число, маска, textarea) и FlareOtpField
+Autofocus, события OnFocus/OnBlur, Pattern, InputMode, Autocomplete и Spellcheck на текстовых полях
+Clearable на каждом редактируемом поле (раньше только у FlareField) плюс OnClearButtonClick
+FlareNumericField Increment()/Decrement() и SelectAllOnFocus; FlareTextArea Resize; HelperTextOnFocus и DataList
+FlareOtpField теперь использует общую chrome поля: Label, HelperText/ErrorText, Required и валидацию EditContext (ошибка также краснит ячейки)</value>
+  </data>
   <data name="About_WhatsNewV17" xml:space="preserve">
     <value>FocusAsync() по всему семейству кнопок (Button, IconButton, ToggleButton, SplitButton, FAB) для программного фокуса
 ButtonEdge (Start/End) у IconButton и ToggleButton для оптического выравнивания к краю в аппбарах и тулбарах
