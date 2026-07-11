@@ -1,6 +1,8 @@
 using Flare.Abstractions;
+using Flare.Infrastructure;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Flare.Components.Tests;
 
@@ -12,6 +14,11 @@ namespace Flare.Components.Tests;
 /// </summary>
 public sealed class OverlayDialogAuditTests : FlareTestContext
 {
+    public OverlayDialogAuditTests()
+    {
+        Services.AddSingleton<ISnackbarService, SnackbarService>();
+    }
+
     // -- Tooltip ---------------------------------------------------------------
 
     [Fact]
@@ -158,5 +165,79 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         cut.Find(".flare-menu__activator").Click();
         cut.Find(".flare-menu-item").Click();
         Assert.Empty(cut.FindAll(".flare-menu__panel"));
+    }
+
+    // -- Snackbar --------------------------------------------------------------
+
+    [Fact]
+    public void Snackbar_PreventDuplicate_SuppressesRepeat()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var svc = Services.GetRequiredService<ISnackbarService>();
+        var opts = new SnackbarOptions { DurationMs = 0, PreventDuplicate = true };
+
+        svc.Show("same", opts);
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 1);
+        svc.Show("same", opts);
+
+        Assert.Single(cut.FindAll(".flare-snackbar"));
+    }
+
+    [Fact]
+    public void Snackbar_WithoutPreventDuplicate_StacksBoth()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var svc = Services.GetRequiredService<ISnackbarService>();
+
+        svc.Show("dup", new SnackbarOptions { DurationMs = 0 });
+        svc.Show("dup", new SnackbarOptions { DurationMs = 0 });
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 2);
+
+        Assert.Equal(2, cut.FindAll(".flare-snackbar").Count);
+    }
+
+    [Fact]
+    public void Snackbar_Clear_DismissesAll()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var svc = Services.GetRequiredService<ISnackbarService>();
+
+        svc.Show("a", new SnackbarOptions { DurationMs = 0 });
+        svc.Show("b", new SnackbarOptions { DurationMs = 0 });
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 2);
+
+        svc.Clear();
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 0);
+        Assert.Empty(cut.FindAll(".flare-snackbar"));
+    }
+
+    [Fact]
+    public void Snackbar_Remove_DismissesById()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var svc = Services.GetRequiredService<ISnackbarService>();
+        var id = Guid.NewGuid();
+
+        svc.Show(new SnackbarMessage(id, "one", SnackbarSeverity.Normal, 0));
+        svc.Show("two", new SnackbarOptions { DurationMs = 0 });
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 2);
+
+        svc.Remove(id);
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count == 1);
+        Assert.Contains("two", cut.Markup);
+        Assert.DoesNotContain("one", cut.Markup);
+    }
+
+    [Fact]
+    public void Snackbar_CustomContent_IsRendered()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var svc = Services.GetRequiredService<ISnackbarService>();
+        RenderFragment body = b => b.AddMarkupContent(0, "<i id=\"custom-snack\">rich</i>");
+
+        svc.Show(body, new SnackbarOptions { DurationMs = 0 });
+        cut.WaitForState(() => cut.FindAll("#custom-snack").Count == 1);
+
+        Assert.NotEmpty(cut.FindAll("#custom-snack"));
     }
 }

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components;
+
 namespace Flare.Abstractions;
 
 /// <summary>Severity of a snackbar notification, controlling its accent color and icon.</summary>
@@ -43,6 +45,8 @@ public enum SnackbarPosition
 /// <param name="ShowProgress">When true, an indeterminate progress bar is shown below the message (e.g. for an in-progress action).</param>
 /// <param name="CssClass">Optional extra CSS class(es) applied to this snackbar's root element for per-message styling.</param>
 /// <param name="CloseAfterNavigation">When true, this snackbar is dismissed automatically on the next route change.</param>
+/// <param name="PreventDuplicate">When true, the snackbar is suppressed if one with the same text and severity is already shown.</param>
+/// <param name="Content">Optional custom body rendered instead of <paramref name="Text"/> (for a rich, component-based snackbar).</param>
 public sealed record SnackbarMessage(
     Guid Id,
     string Text,
@@ -53,7 +57,9 @@ public sealed record SnackbarMessage(
     bool ShowClose = true,
     bool ShowProgress = false,
     string? CssClass = null,
-    bool CloseAfterNavigation = false);
+    bool CloseAfterNavigation = false,
+    bool PreventDuplicate = false,
+    RenderFragment? Content = null);
 
 /// <summary>
 /// Per-message options for <see cref="ISnackbarService.Show(string, SnackbarOptions)"/>: severity, timing,
@@ -77,6 +83,9 @@ public sealed class SnackbarOptions
     public string? CssClass { get; set; }
     /// <summary>When true, the snackbar is dismissed automatically on the next route change.</summary>
     public bool CloseAfterNavigation { get; set; }
+    /// <summary>When true, this notification is suppressed if a snackbar with the same text and severity is
+    /// already shown (avoids spamming the stack with repeated messages).</summary>
+    public bool PreventDuplicate { get; set; }
 }
 
 /// <summary>
@@ -92,6 +101,12 @@ public interface ISnackbarService
     /// <summary>Raised when an existing snackbar (matched by <see cref="SnackbarMessage.Id"/>) should be replaced in place.</summary>
     event Action<SnackbarMessage>? OnUpdate;
 
+    /// <summary>Raised when a single snackbar (matched by id) should be dismissed programmatically.</summary>
+    event Action<Guid>? OnRemove;
+
+    /// <summary>Raised when every shown snackbar should be dismissed.</summary>
+    event Action? OnClear;
+
     /// <summary>Enqueues a snackbar notification.</summary>
     void Show(string text,
               SnackbarSeverity severity = SnackbarSeverity.Normal,
@@ -99,6 +114,21 @@ public interface ISnackbarService
               string? actionText = null,
               Func<Task>? onAction = null,
               bool showClose = true);
+
+    /// <summary>
+    /// Enqueues a snackbar whose body is a custom <see cref="RenderFragment"/> (rich / component-based
+    /// content) instead of plain text - e.g. a message with an inline avatar, link or progress row.
+    /// </summary>
+    /// <param name="content">The custom body rendered inside the snackbar.</param>
+    /// <param name="options">Per-message options (severity, timing, action, styling), or null for defaults.</param>
+    void Show(RenderFragment content, SnackbarOptions? options = null);
+
+    /// <summary>Dismisses the shown snackbar with the given <see cref="SnackbarMessage.Id"/>. No-op if it is not shown.</summary>
+    /// <param name="id">The id of the snackbar to dismiss.</param>
+    void Remove(Guid id);
+
+    /// <summary>Dismisses every currently shown snackbar.</summary>
+    void Clear();
 
     /// <summary>
     /// Enqueues a snackbar notification configured by a <see cref="SnackbarOptions"/> bag - use this when

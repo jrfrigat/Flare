@@ -1,0 +1,28 @@
+@inject ISnackbarService Snackbar
+
+@* PreventDuplicate suppresses a repeat while an identical notice is still shown; Clear() dismisses
+   the whole stack; the RenderFragment overload shows a custom, component-based body. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
+    <FlareButton OnClick="ShowDuplicate">@GalleryStrings.Snackbar_Duplicate</FlareButton>
+    <FlareButton Variant="ButtonVariant.Tonal" OnClick="ShowCustom">@GalleryStrings.Snackbar_Custom</FlareButton>
+    <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => Snackbar.Clear())">@GalleryStrings.Snackbar_ClearAll</FlareButton>
+</FlareStack>
+
+@code {
+    private void ShowDuplicate() => Snackbar.Show(GalleryStrings.Snackbar_Duplicate, new SnackbarOptions
+    {
+        Severity = SnackbarSeverity.Info,
+        DurationMs = 0,
+        PreventDuplicate = true,
+    });
+
+    private void ShowCustom()
+    {
+        RenderFragment body =
+            @<FlareStack Row Gap="FlareSpacing.Small" AlignItems="FlareAlignItems.Center">
+                <FlareIcon Name="cloud_done" />
+                <span>@GalleryStrings.Snackbar_CustomBody</span>
+            </FlareStack>;
+        Snackbar.Show(body, new SnackbarOptions { Severity = SnackbarSeverity.Success, DurationMs = 0 });
+    }
+}

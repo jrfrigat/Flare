@@ -7556,7 +7556,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Snackbar_Options", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dedupe, clear and custom content.
+        /// </summary>
+        public static string Snackbar_Manage {
+            get {
+                return ResourceManager.GetString("Snackbar_Manage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show duplicate (deduped).
+        /// </summary>
+        public static string Snackbar_Duplicate {
+            get {
+                return ResourceManager.GetString("Snackbar_Duplicate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Custom content.
+        /// </summary>
+        public static string Snackbar_Custom {
+            get {
+                return ResourceManager.GetString("Snackbar_Custom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Custom body with an icon.
+        /// </summary>
+        public static string Snackbar_CustomBody {
+            get {
+                return ResourceManager.GetString("Snackbar_CustomBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Clear all.
+        /// </summary>
+        public static string Snackbar_ClearAll {
+            get {
+                return ResourceManager.GetString("Snackbar_ClearAll", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Severity.
         /// </summary>

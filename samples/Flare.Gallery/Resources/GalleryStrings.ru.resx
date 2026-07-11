@@ -2703,4 +2703,9 @@
   <data name="Cards_Elevation" xml:space="preserve"><value>Высота тени (elevation)</value></data>
   <data name="Link_Typo" xml:space="preserve"><value>Типографика</value></data>
   <data name="Snackbar_Options" xml:space="preserve"><value>Перегрузка с опциями</value></data>
+  <data name="Snackbar_Manage" xml:space="preserve"><value>Дедупликация, очистка и своё содержимое</value></data>
+  <data name="Snackbar_Duplicate" xml:space="preserve"><value>Показать дубль (дедуп)</value></data>
+  <data name="Snackbar_Custom" xml:space="preserve"><value>Своё содержимое</value></data>
+  <data name="Snackbar_CustomBody" xml:space="preserve"><value>Своё тело с иконкой</value></data>
+  <data name="Snackbar_ClearAll" xml:space="preserve"><value>Очистить все</value></data>
 </root>
