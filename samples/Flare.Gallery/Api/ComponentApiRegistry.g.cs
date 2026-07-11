@@ -2139,14 +2139,18 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the FAB (blocks activation and dims it via the shared button disabled state).", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"The icon content rendered inside the FAB.", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Optional label text. When set, renders as an extended FAB.", null, false, false, false, @"FlareFloatingActionButton"),
-                new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback invoked when the FAB is clicked (ignored in speed-dial mode - the FAB toggles the menu instead).", null, false, true, false, @"FlareFloatingActionButton"),
+                new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the FAB is clicked (ignored in speed-dial mode - the FAB toggles the menu instead).", null, false, true, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Position", @"FabPosition", @"FabPosition.BottomRight", @"Positioning mode (BottomRight, BottomLeft, or Static for inline flow).", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"Size", @"FabSize", @"FabSize.Md", @"Size of the FAB (Sm 40dp, Md 56dp baseline, Lg 96dp).", null, false, false, false, @"FlareFloatingActionButton"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the FAB element.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -2191,7 +2195,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Prevents the action from being clicked.", null, false, false, false, @"FlareFloatingActionMenuItem"),
                 new ApiParameterInfo(@"Icon", @"string", @"""star""", @"Material Symbols icon displayed on this action's small FAB.", null, false, false, false, @"FlareFloatingActionMenuItem"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label shown beside the action button.", null, false, false, false, @"FlareFloatingActionMenuItem"),
-                new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the action is clicked.", null, false, true, false, @"FlareFloatingActionMenuItem"),
+                new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback raised when the action is clicked.", null, false, true, false, @"FlareFloatingActionMenuItem"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -2446,11 +2450,14 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Custom icon content, used in place of Icon (e.g. a configured FlareIcon or SVG).", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the button. Role -> shared class; custom -> inline tokens. Default keeps the theme default.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Edge", @"ButtonEdge", @"ButtonEdge.None", @"Optical edge alignment - a negative inline margin pulling the button toward the container edge so its icon lines up in app bars/toolbars/list slots.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Href", @"string?", null, @"When set, the button renders as a link (<a>) to this URL. Disabled/Loading removes the href.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Icon", @"string?", null, @"Material Symbols icon name rendered inside the button (e.g. settings). Ignored when ChildContent is supplied.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a spinner and disables the button when true.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the button is clicked.", null, false, true, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"OnColor", @"string?", null, @"Optional foreground color for the filled variant when Color is a custom color.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"PressMorph", @"bool", @"false", @"Opt-in press morph: the corner radius animates while the button is pressed.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"Rel", @"string?", null, @"The link's rel attribute (link mode). Null + Target_blank defaults to noopener noreferrer.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons).", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the button.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link button (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareIconButton"),
@@ -2460,7 +2467,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the underlying button.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -4413,7 +4424,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the primary action button.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -5144,6 +5159,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Button label content shown alongside the icon.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color tinting the selected state. Role -> shared color class; custom -> inline tokens. Overridden by the parent FlareToggleGroup.Color when that is set. Default = theme's secondary container.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true. Also disabled when the parent FlareToggleGroup.Disabled is true.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Edge", @"ButtonEdge", @"ButtonEdge.None", @"Optical edge alignment - a negative inline margin pulling the button toward the container edge.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Group", @"FlareToggleGroupContext?", null, @"Cascading context supplied by a parent FlareToggleGroup.", null, true, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"OffIcon", @"RenderFragment?", null, @"Icon rendered when the button is not pressed.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"OnIcon", @"RenderFragment?", null, @"Icon rendered when the button is pressed. Defaults to OffIcon if not set.", null, false, false, false, @"FlareToggleButton"),
@@ -5155,7 +5171,18 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the toggle button element.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"SetToggledAsync", @"SetToggledAsync(bool toggled)", @"Task", null, @"Sets the pressed state programmatically. No-op when disabled or already in that state; inside a group it routes through the group so the group's binding stays authoritative.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"toggled", @"bool", null),
+                    }),
+                new ApiMethodInfo(@"Toggle", @"Toggle()", @"Task", null, @"Toggles the pressed state, exactly as a user click would (honors the disabled state and, inside a group, the group's selection rules).",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -5174,10 +5201,12 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"CheckMark", @"bool", null, @"Shows a leading checkmark on each selected button.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Child FlareToggleButton components.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Color", @"FlareColor?", null, @"Color cascaded to every child FlareToggleButton (tints the selected state). When null (default) each button keeps its own Color.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"Disabled", @"bool", null, @"When true, disables every child FlareToggleButton in the group.", null, false, false, false, @"FlareToggleGroup"),
+                new ApiParameterInfo(@"Mandatory", @"bool", null, @"Single-select only: when true the active button cannot be deselected by clicking it (one selection is always kept). Default false - single-select is deselectable (a ""toggle"" selection).", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"MultiSelect", @"bool", null, @"Allows multiple buttons to be active simultaneously.", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"Orientation", @"string", null, @"""horizontal"" (default) or ""vertical"".", null, false, false, false, @"FlareToggleGroup"),
                 new ApiParameterInfo(@"Size", @"ButtonSize?", null, @"Size cascaded to every child FlareToggleButton. When null (default) each button keeps its own Size.", null, false, false, false, @"FlareToggleGroup"),
@@ -5634,6 +5663,24 @@ public static class ComponentApiRegistry
                 @"FlareDrawer",
                 @"FlareHidden",
                 @"FlareMediaQuery",
+            });
+
+        e[@"ButtonEdge"] = new ApiEnumInfo(
+            @"ButtonEdge",
+            @"Flare.Components.ButtonEdge",
+            @"Flare.Components",
+            @"Optical edge alignment for an icon/toggle button: a negative inline margin that pulls the button toward the container edge so its icon lines up with adjacent content (app bars, toolbars, list-item leading/trailing slots).",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"No edge offset (default)."),
+                new ApiEnumMember(@"Start", @"1", @"Pull toward the leading (inline-start) edge."),
+                new ApiEnumMember(@"End", @"2", @"Pull toward the trailing (inline-end) edge."),
+            },
+            new string[]
+            {
+                @"FlareIconButton",
+                @"FlareToggleButton",
             });
 
         e[@"ButtonShape"] = new ApiEnumInfo(
