@@ -3,6 +3,29 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.9] - 2026-07-12
+
+A polish release: gap follow-ups surfaced while building real apps on Flare (the Weir dashboard and the
+PlaylistShared / Deka design), turning Style-only escape hatches into first-class parameters.
+
+### Added
+- **`FlareLayoutAppBar`**: `Height` (any CSS length) and `Dense` (a slimmer 48px bar for tool-window /
+  IDE-style shells) - both drive the `--flare-layout-appbar-height` token; plus a dedicated
+  `--flare-layout-appbar-bg` token so an app or theme can lift the nav surface above the canvas without
+  inline CSS.
+- **Date/time pickers**: `Autofocus` on `FlareDatePicker` / `FlareTimePicker` / `FlareDateTimePicker`
+  (focuses the input on first render), matching the editable field family.
+
+### Changed
+- **`FlareChart` sparkline height is now fixed pixels**: in `Sparkline` mode `Height` pins the SVG's CSS
+  pixel height (full-width, non-scaling) instead of scaling with the container width - the real sparkline
+  contract. Non-sparkline charts keep the width-driven aspect ratio.
+
+### Fixed
+- **Icon-only buttons** (`FlareIconButton` and friends) rendered the glyph ~2px off-center: the
+  leading/trailing optical tuck (meant for an icon next to a label) was not reset for the label-less
+  icon-only case. The lone glyph is now centered; icon+label buttons keep the intentional tuck.
+
 ## [0.1.8] - 2026-07-11
 
 An overlay/dialog release: cross-framework audit follow-ups (vs MudBlazor / Blazorise / DevExpress /
