@@ -19,6 +19,8 @@ public enum ChartType
     Scatter,
     /// <summary>Radar (spider) chart: each category is an axis radiating from the center.</summary>
     Radar,
+    /// <summary>Heat map: a colored grid where each series is a row and each label is a column.</summary>
+    HeatMap,
 }
 
 /// <summary>A single X/Y point for a scatter series.</summary>

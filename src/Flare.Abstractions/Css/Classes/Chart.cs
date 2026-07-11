@@ -29,4 +29,14 @@ public static class Chart
     public const string Body = "flare-chart__body";
     /// <summary>The <c>flare-chart__body--row</c> modifier: lays the legend beside the plot (Left/Right position).</summary>
     public const string BodyRow = "flare-chart__body--row";
+    /// <summary>The <c>flare-chart--animate</c> modifier: enables the enter animation (respects reduced-motion).</summary>
+    public const string Animate = "flare-chart--animate";
+    /// <summary>The <c>flare-chart__bar</c> CSS class: a bar/segment rect (animation target).</summary>
+    public const string Bar = "flare-chart__bar";
+    /// <summary>The <c>flare-chart__line</c> CSS class: a line series path (draw-on animation target).</summary>
+    public const string Line = "flare-chart__line";
+    /// <summary>The <c>flare-chart__cell</c> CSS class: a heat-map grid cell.</summary>
+    public const string Cell = "flare-chart__cell";
+    /// <summary>The <c>flare-chart__table</c> CSS class: the visually-hidden data table for screen readers.</summary>
+    public const string Table = "flare-chart__table";
 }

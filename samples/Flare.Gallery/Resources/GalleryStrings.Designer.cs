@@ -1719,6 +1719,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Animation, heat map &amp; accessible data table.
+        /// </summary>
+        public static string Charts_Advanced {
+            get {
+                return ResourceManager.GetString("Charts_Advanced", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pie Chart.
         /// </summary>
         public static string Charts_Pie {

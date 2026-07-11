@@ -513,6 +513,9 @@
   <data name="Charts_Config" xml:space="preserve">
     <value>Горизонтальный, значения, формат осей и интерактив</value>
   </data>
+  <data name="Charts_Advanced" xml:space="preserve">
+    <value>Анимация, тепловая карта и доступная таблица данных</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Группа чипов</value>
   </data>

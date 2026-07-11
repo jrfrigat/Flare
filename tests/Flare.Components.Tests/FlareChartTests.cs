@@ -326,4 +326,55 @@ public class FlareChartTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll(".flare-chart__body--row"));
     }
+
+    // --- Phase 4: animation, heatmap, a11y ---------------------------------------------------
+
+    [Fact]
+    public void Animate_AddsModifier_AndAnimationClasses()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Bar)
+            .Add(x => x.Data, _data)
+            .Add(x => x.Animate, true));
+
+        Assert.NotEmpty(cut.FindAll(".flare-chart--animate"));
+        Assert.NotEmpty(cut.FindAll("rect.flare-chart__bar"));
+    }
+
+    [Fact]
+    public void Line_CarriesAnimationClass_AndPathLength()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data));
+
+        var line = cut.Find("path.flare-chart__line");
+        Assert.Equal("1", line.GetAttribute("pathLength"));
+    }
+
+    [Fact]
+    public void HeatMap_RendersCellPerValue()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.HeatMap)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("Mon", [1, 2, 3]),
+                new ChartSeries("Tue", [4, 5, 6]),
+            ], ["A", "B", "C"])));
+
+        Assert.Equal(6, cut.FindAll("rect.flare-chart__cell").Count); // 2 rows x 3 cols
+        Assert.Empty(cut.FindAll(".flare-chart__legend"));             // no legend for heat maps
+    }
+
+    [Fact]
+    public void DataTable_RendersHiddenTable_ForScreenReaders()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.DataTable, true));
+
+        var table = cut.Find("table.flare-chart__table");
+        Assert.Equal(4, table.QuerySelectorAll("tbody tr").Length); // one row per category
+    }
 }

@@ -4,6 +4,42 @@
     width: 100%;
 }
 
+/* Enter animation (opt-in via Animate). Token-driven, CSS-only, and disabled under reduced-motion -
+   a differentiator vs Chart.js JS animation and MudBlazor (which has none). */
+.flare-chart--animate .flare-chart__bar {
+    transform-box: fill-box;
+    transform-origin: bottom;
+    animation: flare-chart-grow var(--flare-motion-duration-medium2) var(--flare-motion-easing-emphasized-decelerate) both;
+}
+.flare-chart--animate .flare-chart__line {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: flare-chart-draw var(--flare-motion-duration-long2) var(--flare-motion-easing-standard) forwards;
+}
+@keyframes flare-chart-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes flare-chart-draw { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+    .flare-chart--animate .flare-chart__bar,
+    .flare-chart--animate .flare-chart__line { animation: none; stroke-dashoffset: 0; }
+}
+
+/* Heat-map cells. */
+.flare-chart__cell { transition: opacity var(--flare-motion-duration-short2); }
+.flare-chart__cell:hover { opacity: 0.85; }
+
+/* Visually-hidden data table exposed to screen readers as a chart fallback. */
+.flare-chart__table {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .flare-chart {
     display: flex;
     flex-direction: column;

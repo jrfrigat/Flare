@@ -513,6 +513,9 @@
   <data name="Charts_Config" xml:space="preserve">
     <value>Horizontal, values, axis format &amp; interactivity</value>
   </data>
+  <data name="Charts_Advanced" xml:space="preserve">
+    <value>Animation, heat map &amp; accessible data table</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Chip Group</value>
   </data>

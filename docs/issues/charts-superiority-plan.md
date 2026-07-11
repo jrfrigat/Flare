@@ -39,15 +39,27 @@ revisit only if DateTime-aware tick spacing is needed.
 - Deferred (low value): `YAxisTicks` count control, `XAxisLabelRotation`, `TooltipTemplate` (the text
   tooltip is enough for now), horizontal *stacked* bar, dual axis.
 
-## Phase 4 - leapfrog / advanced - TODO
-- **Token-driven CSS/SVG animation** (enter + data-update transitions) - Mud has none, and unlike Chart.js
-  it's CSS/token-native (respects `prefers-reduced-motion`). A differentiator.
-- **HeatMap**, **Bubble**, **Combo** (mixed bar+line via per-series type), **PolarArea** / **Rose**.
-- **C#/SignalR streaming** (append/shift data + smooth transition, no JS plugin) - Blazorise needs
-  chartjs-plugin-streaming; Flare can do it in managed code.
-- Annotations / trend line (linear regression overlay).
-- a11y: an opt-in visually-hidden `<table>` data fallback for screen readers.
-- Responsive `MatchBoundsToSize` (fill container height, not just width), RTL, `CustomContent` SVG overlay.
+## Phase 4 - leapfrog / advanced - DONE (2026-07-11, high-value items)
+- **`Animate`**: token-driven, CSS-only enter animation (bars grow via `scaleY`, lines draw-on via
+  `stroke-dasharray`/`pathLength=1`) that honors `prefers-reduced-motion`. **The differentiator** - Mud
+  has no animation, and unlike Chart.js's JS animation this is CSS/token-native.
+- **`ChartType.HeatMap`**: a colored grid (each series = a row, each label = a column; intensity via
+  primary-color opacity), with optional `ShowValues` cell labels.
+- **`DataTable`**: an opt-in visually-hidden `<table>` fallback so screen readers can read the underlying
+  values - an a11y leapfrog none of the three offer.
+- **Streaming** needs no dedicated API: FlareChart re-renders when `Data` changes, so a consumer updates
+  `Data` on a timer/SignalR push and (with `Animate`) it transitions - vs Blazorise's chartjs-plugin-streaming.
+
+**Deliberately deferred (niche or model-heavy; not worth churn now):** Bubble (needs an X/Y/R point model),
+Combo/mixed (needs a per-series type override), Rose / PolarArea (pie variants), annotations / trend line,
+`MatchBoundsToSize` height-fill, RTL, and horizontal *stacked* bars. Documented for on-demand pickup.
+
+---
+
+**Result:** FlareChart now spans **9 types** (Line, Area, Bar, StackedBar, Pie, Donut, Scatter, Radar,
+HeatMap) with axis config, interactivity, animation and an a11y fallback - all native SVG / zero-JS /
+token-themed, which no competitor matches on all axes (Fluent has no charts; Chart.js/Blazorise is a
+canvas dep with license row caps; MudBlazor has more exotic types but no animation and weaker theming/a11y).
 
 ## Not planned (deliberately)
 - **Wrapping Chart.js** - would forfeit the zero-JS / token / a11y / SSR moat and add a ~200KB canvas
