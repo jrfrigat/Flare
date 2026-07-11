@@ -131,6 +131,10 @@ export function registerDialogResize(handle, panel, minWidth, minHeight) {
             const r = panel.getBoundingClientRect();
             sw = r.width;
             sh = r.height;
+            // The size preset caps max-width/height; lift the caps so the dragged size takes effect
+            // (only once the user actually resizes, so the initial size is untouched).
+            panel.style.maxWidth = 'none';
+            panel.style.maxHeight = 'none';
         },
         onMove(dx, dy) {
             panel.style.width = Math.max(minW, sw + dx) + 'px';
