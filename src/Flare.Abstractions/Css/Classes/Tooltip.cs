@@ -13,6 +13,20 @@ public static class Tooltip
     public const string Left = "flare-tooltip--left";
     /// <summary>The <c>flare-tooltip--right</c> CSS class.</summary>
     public const string Right = "flare-tooltip--right";
+    /// <summary>The <c>flare-tooltip--hover</c> modifier that enables the hover trigger.</summary>
+    public const string TriggerHover = "flare-tooltip--hover";
+    /// <summary>The <c>flare-tooltip--focus</c> modifier that enables the keyboard-focus trigger.</summary>
+    public const string TriggerFocus = "flare-tooltip--focus";
+    /// <summary>The <c>flare-tooltip--click</c> modifier that enables the click/tap trigger.</summary>
+    public const string TriggerClick = "flare-tooltip--click";
+    /// <summary>The <c>flare-tooltip--open</c> modifier applied while a click-triggered tooltip is open.</summary>
+    public const string Open = "flare-tooltip--open";
+    /// <summary>The <c>flare-tooltip--arrow</c> modifier that renders a directional arrow.</summary>
+    public const string Arrow = "flare-tooltip--arrow";
+    /// <summary>The <c>flare-tooltip--disabled</c> modifier that suppresses the tooltip.</summary>
+    public const string Disabled = "flare-tooltip--disabled";
+    /// <summary>The <c>flare-tooltip__backdrop</c> CSS class (outside-click catcher for the click trigger).</summary>
+    public const string Backdrop = "flare-tooltip__backdrop";
     /// <summary>The <c>flare-tooltip__content</c> CSS class.</summary>
     public const string Content = "flare-tooltip__content";
     /// <summary>The <c>flare-tooltip__content--rich</c> CSS class.</summary>

@@ -1,0 +1,14 @@
+<FlareStack Row Justify="FlareJustifyContent.Center" Gap="FlareSpacing.Small" Wrap Style="padding:3rem 1.5rem;">
+    <FlareTooltip Content="Click to toggle" ShowOnClick="true" ShowOnHover="false" Arrow="true">
+        <FlareButton Variant="ButtonVariant.Filled">Click trigger</FlareButton>
+    </FlareTooltip>
+    <FlareTooltip Content="Shown on hover or keyboard focus" Arrow="true">
+        <FlareButton Variant="ButtonVariant.Outlined">Hover / focus + arrow</FlareButton>
+    </FlareTooltip>
+    <FlareTooltip Content="Focus only (Tab to me)" ShowOnHover="false" ShowOnFocus="true">
+        <FlareButton Variant="ButtonVariant.Outlined">Focus only</FlareButton>
+    </FlareTooltip>
+    <FlareTooltip Content="You should never see this" Disabled="true">
+        <FlareButton Variant="ButtonVariant.Text">Disabled tooltip</FlareButton>
+    </FlareTooltip>
+</FlareStack>

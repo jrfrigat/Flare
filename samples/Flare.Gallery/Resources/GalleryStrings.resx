@@ -1716,6 +1716,9 @@
   <data name="Tooltip_Rich" xml:space="preserve">
     <value>Rich content</value>
   </data>
+  <data name="Tooltip_Triggers" xml:space="preserve">
+    <value>Triggers, arrow and disabled</value>
+  </data>
   <data name="Clipboard_Title" xml:space="preserve">
     <value>Clipboard</value>
   </data>

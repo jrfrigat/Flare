@@ -3,6 +3,18 @@
   display: inline-flex;
 }
 
+.flare-tooltip--click {
+  cursor: pointer;
+}
+
+/* Transparent full-screen catcher so an outside click/tap dismisses a click-triggered tooltip. */
+.flare-tooltip__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: transparent;
+}
+
 .flare-tooltip__content {
   position: absolute;
   z-index: 1000;
@@ -32,11 +44,22 @@
   padding: var(--flare-spacing-6) var(--flare-spacing-8);
 }
 
-.flare-tooltip:hover .flare-tooltip__content,
-.flare-tooltip:focus-within .flare-tooltip__content,
+/* Show triggers are opt-in via modifier classes, so the component can gate hover / focus / click
+   independently. --fc-tt-delay (set inline from the Delay parameter) delays the appearance only;
+   the base rule's implicit 0 delay keeps the hide instant. */
+.flare-tooltip--hover:hover .flare-tooltip__content,
+.flare-tooltip--focus:focus-within .flare-tooltip__content,
+.flare-tooltip--open .flare-tooltip__content,
 .flare-tooltip__content--visible {
   opacity: 1;
   visibility: visible;
+  transition-delay: var(--fc-tt-delay, 0ms);
+}
+
+/* A disabled tooltip never shows, even if a trigger or controlled Open would otherwise reveal it. */
+.flare-tooltip--disabled .flare-tooltip__content {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .flare-tooltip--top .flare-tooltip__content {
@@ -61,4 +84,43 @@
   left: calc(100% + var(--flare-tooltip-offset));
   top: 50%;
   transform: translateY(-50%);
+}
+
+/* -- Arrow: a rotated square that inherits the bubble's surface color (inverse for the standard
+   bubble, surface-container for the rich variant). -- */
+.flare-tooltip--arrow .flare-tooltip__content::after {
+  content: '';
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--flare-color-inverse-surface);
+  transform: rotate(45deg);
+}
+
+.flare-tooltip--arrow .flare-tooltip__content--rich::after {
+  background: var(--flare-color-surface-container);
+}
+
+.flare-tooltip--top.flare-tooltip--arrow .flare-tooltip__content::after {
+  bottom: -0.25rem;
+  left: 50%;
+  margin-left: -0.25rem;
+}
+
+.flare-tooltip--bottom.flare-tooltip--arrow .flare-tooltip__content::after {
+  top: -0.25rem;
+  left: 50%;
+  margin-left: -0.25rem;
+}
+
+.flare-tooltip--left.flare-tooltip--arrow .flare-tooltip__content::after {
+  right: -0.25rem;
+  top: 50%;
+  margin-top: -0.25rem;
+}
+
+.flare-tooltip--right.flare-tooltip--arrow .flare-tooltip__content::after {
+  left: -0.25rem;
+  top: 50%;
+  margin-top: -0.25rem;
 }

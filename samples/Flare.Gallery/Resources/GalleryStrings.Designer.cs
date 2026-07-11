@@ -8602,6 +8602,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Triggers, arrow and disabled.
+        /// </summary>
+        public static string Tooltip_Triggers {
+            get {
+                return ResourceManager.GetString("Tooltip_Triggers", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareTooltip with Top, Bottom, Left, Right placements..
         /// </summary>
         public static string Tooltip_Subtitle {
