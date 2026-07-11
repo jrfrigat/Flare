@@ -12,3 +12,6 @@
 .swarm
 *.md
 !README.md
+# The Gallery embeds these as resources (single-source release notes) - keep them in the build context.
+!CHANGELOG.md
+!CHANGELOG.ru.md
