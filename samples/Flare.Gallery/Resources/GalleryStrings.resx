@@ -2633,6 +2633,7 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
   <data name="SplitButton_Title" xml:space="preserve"><value>Split Button</value></data>
   <data name="SplitButton_Subtitle" xml:space="preserve"><value>A primary action paired with a dropdown trigger for related secondary actions.</value></data>
   <data name="SplitButton_VariantsColors" xml:space="preserve"><value>Variants &amp; colors</value></data>
+  <data name="SplitButton_FullWidthLoading" xml:space="preserve"><value>Full width, loading &amp; programmatic open/close</value></data>
   <data name="Fab_Title" xml:space="preserve"><value>Floating Action Button</value></data>
   <data name="Fab_Subtitle" xml:space="preserve"><value>A prominent button for the primary action of a screen, available in color roles, sizes and an extended form with a label.</value></data>
   <data name="Fab_ColorsExtended" xml:space="preserve"><value>Colors &amp; extended</value></data>

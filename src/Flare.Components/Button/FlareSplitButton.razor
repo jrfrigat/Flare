@@ -1,13 +1,15 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_sizeClass, _openedClass)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_sizeClass, _openedClass, _fullClass)" style="@Style" @attributes="AdditionalAttributes">
     <FlareButton @ref="_main" Class="@Css.Classes.SplitButton.Main"
                  Variant="Variant" Color="Color" Size="Size"
-                 Disabled="Disabled" OnClick="OnClick">
+                 Disabled="Disabled" Loading="Loading"
+                 Href="@Href" Target="@Target" Rel="@Rel"
+                 OnClick="OnClick">
         @ChildContent
     </FlareButton>
-    <FlareMenu Anchor="MenuAnchor.BottomRight" AriaLabel="@MenuAriaLabel" Class="@Css.Classes.SplitButton.Menu" OnToggle="ToggleMenuState">
+    <FlareMenu @ref="_menu" Anchor="Placement" AriaLabel="@MenuAriaLabel" Class="@Css.Classes.SplitButton.Menu" OnToggle="ToggleMenuState">
         <Activator>
             <FlareButton Class="@Css.Classes.SplitButton.Trigger"
                          Variant="Variant" Color="Color" Size="Size"
@@ -34,6 +36,19 @@
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Disables the whole split button.</summary>
     [Parameter] public bool Disabled { get; set; }
+    /// <summary>Shows a spinner on the primary action button and disables it.</summary>
+    [Parameter] public bool Loading { get; set; }
+    /// <summary>Stretches the split button to the full width of its container (the primary action grows).</summary>
+    [Parameter] public bool FullWidth { get; set; }
+    /// <summary>When set, the primary action button renders as a link (&lt;a&gt;) to this URL.</summary>
+    [Parameter] public string? Href { get; set; }
+    /// <summary>Target for the primary link (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>
+    [Parameter] public string? Target { get; set; }
+    /// <summary>The primary link's <c>rel</c> (link mode); null + <see cref="Target"/> <c>_blank</c> defaults to
+    /// <c>noopener noreferrer</c>.</summary>
+    [Parameter] public string? Rel { get; set; }
+    /// <summary>Corner of the trigger the dropdown menu aligns to. Defaults to <see cref="MenuAnchor.BottomRight"/>.</summary>
+    [Parameter] public MenuAnchor Placement { get; set; } = MenuAnchor.BottomRight;
     /// <summary>Callback invoked when the primary action button is clicked.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
     /// <summary>Accessible label for the dropdown trigger (aria-label / menu label).</summary>
@@ -43,9 +58,18 @@
 
     private bool _menuOpen;
     private FlareButton? _main;
+    private FlareMenu? _menu;
 
     /// <summary>Sets keyboard focus to the primary action button.</summary>
     public ValueTask FocusAsync() => _main?.FocusAsync() ?? ValueTask.CompletedTask;
+
+    /// <summary>Opens the dropdown menu programmatically.</summary>
+    public Task Open() => _menu?.OpenAsync() ?? Task.CompletedTask;
+
+    /// <summary>Closes the dropdown menu programmatically.</summary>
+    public Task Close() => _menu?.CloseAsync() ?? Task.CompletedTask;
+
+    private string _fullClass => FullWidth ? Css.Classes.SplitButton.Full : string.Empty;
 
     private void ToggleMenuState(bool opened)
     {

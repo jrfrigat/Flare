@@ -21,6 +21,8 @@ public static class ToggleButton
     public const string Icon = "flare-toggle-btn__icon";
     /// <summary>The <c>flare-toggle-btn__label</c> CSS class.</summary>
     public const string Label = "flare-toggle-btn__label";
+    /// <summary>The <c>flare-toggle-btn__check</c> CSS class: the leading checkmark shown on a selected item when the group's CheckMark is on.</summary>
+    public const string Check = "flare-toggle-btn__check";
     /// <summary>The <c>flare-toggle-btn--icon-only</c> CSS class.</summary>
     public const string IconOnly = "flare-toggle-btn--icon-only";
 }

@@ -15,6 +15,11 @@
     display: inline-flex;
 }
 
+/* Full width: the split button spans its container; the primary action takes the free space and the
+   trigger keeps its square footprint. */
+.flare-split-btn--full { display: flex; width: 100%; }
+.flare-split-btn--full .flare-split-btn__main.flare-btn { flex: 1 1 auto; }
+
 .flare-split-btn .flare-menu__activator {
     display: inline-flex;
 }

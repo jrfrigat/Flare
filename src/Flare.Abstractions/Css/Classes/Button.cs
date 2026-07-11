@@ -87,6 +87,8 @@ public static class SplitButton
 
     /// <summary>The <c>flare-split-btn--open</c> CSS class.</summary>
     public const string Opened = "flare-split-btn--open";
+    /// <summary>The <c>flare-split-btn--full</c> CSS class: the split button spans the full container width.</summary>
+    public const string Full = "flare-split-btn--full";
 }
 
 /// <summary>CSS classes for button group.</summary>

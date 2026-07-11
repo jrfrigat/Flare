@@ -92,14 +92,26 @@
         await OnToggle.InvokeAsync(_open);
     }
 
-    /// <summary>Closes the menu, clears registered items and keyboard focus, and raises <see cref="OnToggle"/>.</summary>
-    private async Task CloseAsync()
+    /// <summary>Opens the menu programmatically (no-op if already open) and raises <see cref="OnToggle"/>.</summary>
+    public async Task OpenAsync()
     {
+        if (_open) return;
+        _open = true;
+        await OnToggle.InvokeAsync(true);
+        StateHasChanged();
+    }
+
+    /// <summary>Closes the menu (also callable programmatically), clears registered items and keyboard
+    /// focus, and raises <see cref="OnToggle"/>.</summary>
+    public async Task CloseAsync()
+    {
+        if (!_open) return;
         _open = false;
         _items.Clear();
         _focusedItem = null;
 
         await OnToggle.InvokeAsync(false);
+        StateHasChanged();
     }
 
     /// <summary>Registers a child <see cref="FlareMenuItem"/> for keyboard navigation. Called by items on init.</summary>

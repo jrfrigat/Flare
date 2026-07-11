@@ -39,9 +39,10 @@ if a concrete design needs, e.g., outlined-when-off / filled-when-on toggles.
 ### G9 - `FlareFloatingActionButton`: `Href` (link FAB), `Loading`, trailing icon - LOW
 MudFab has no link mode either; a link FAB + a loading FAB are occasionally useful. Additive.
 
-### G10 - `FlareSplitButton`: `Loading`, `FullWidth`, `Href`, menu `Placement`, public `Open()`/`Close()` - LOW
-Flare's SplitButton is already a single clean component (Blazorise needs a 3-part `Dropdown`+`DropdownToggle`
-compose; Mud/Fluent have no true split button). These would round out its API.
+### G10 - `FlareSplitButton`: `Loading`, `FullWidth`, `Href`, menu `Placement`, public `Open()`/`Close()` - DONE
+Shipped. `Loading` (spinner on the primary), `FullWidth`, `Href`/`Target`/`Rel` (primary as a link, with the
+`_blank` -> `noopener` default), `Placement` (`MenuAnchor`), and public `Open()`/`Close()`. Also gave
+`FlareMenu` public `OpenAsync()`/`CloseAsync()` (the split button delegates to them).
 
 ### CloseButton - LOW (only Blazorise has it)
 A dedicated dismiss "x" button that auto-closes its parent (Alert/Dialog/Snackbar/Drawer). Flare handles

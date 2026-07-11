@@ -7639,7 +7639,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("SplitButton_VariantsColors", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Full width, loading &amp; programmatic open/close.
+        /// </summary>
+        public static string SplitButton_FullWidthLoading {
+            get {
+                return ResourceManager.GetString("SplitButton_FullWidthLoading", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Horizontal &amp; vertical, min/max.
         /// </summary>

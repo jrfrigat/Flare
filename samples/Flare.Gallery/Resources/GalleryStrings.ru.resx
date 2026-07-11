@@ -2633,6 +2633,7 @@ MarkdownParser: защита от vbscript/data-uri/expression()/опасных 
   <data name="SplitButton_Title" xml:space="preserve"><value>Сплит-кнопка</value></data>
   <data name="SplitButton_Subtitle" xml:space="preserve"><value>Основное действие вместе с триггером выпадающего меню для связанных действий.</value></data>
   <data name="SplitButton_VariantsColors" xml:space="preserve"><value>Варианты и цвета</value></data>
+  <data name="SplitButton_FullWidthLoading" xml:space="preserve"><value>На всю ширину, загрузка и программное открытие</value></data>
   <data name="Fab_Title" xml:space="preserve"><value>Плавающая кнопка действия</value></data>
   <data name="Fab_Subtitle" xml:space="preserve"><value>Заметная кнопка основного действия экрана: цветовые роли, размеры и расширенная форма с подписью.</value></data>
   <data name="Fab_ColorsExtended" xml:space="preserve"><value>Цвета и расширенная</value></data>
