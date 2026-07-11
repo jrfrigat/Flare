@@ -377,4 +377,90 @@ public class FlareChartTests : FlareTestContext
         var table = cut.Find("table.flare-chart__table");
         Assert.Equal(4, table.QuerySelectorAll("tbody tr").Length); // one row per category
     }
+
+    // --- Deferred set 1-5: bubble, rose, polar-area, combo, trend line, annotations ----------
+
+    [Fact]
+    public void Bubble_SizesCirclesByRadiusWeight()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Bubble)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("S", System.Array.Empty<double>(), Points:
+                [
+                    new ChartPoint(1, 2, 1), new ChartPoint(3, 5, 8),
+                ]),
+            ])));
+
+        var circles = cut.FindAll("circle");
+        Assert.Equal(2, circles.Count);
+        double r0 = double.Parse(circles[0].GetAttribute("r")!, System.Globalization.CultureInfo.InvariantCulture);
+        double r1 = double.Parse(circles[1].GetAttribute("r")!, System.Globalization.CultureInfo.InvariantCulture);
+        Assert.True(r1 > r0); // the R=8 bubble is larger than R=1
+    }
+
+    [Fact]
+    public void Rose_RendersSectorPath_PerSeries()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Rose)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("A", [3]), new ChartSeries("B", [7]), new ChartSeries("C", [5]),
+            ])));
+
+        Assert.Equal(3, cut.FindAll("path").Count(p => (p.GetAttribute("style") ?? "").Contains("fill:")));
+    }
+
+    [Fact]
+    public void PolarArea_RendersWedges_AndGridRings()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.PolarArea)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("A", [3]), new ChartSeries("B", [7]),
+            ])));
+
+        Assert.Equal(2, cut.FindAll("path").Count(p => (p.GetAttribute("style") ?? "").Contains("fill-opacity")));
+        Assert.NotEmpty(cut.FindAll("circle")); // radial grid rings
+    }
+
+    [Fact]
+    public void Combo_RendersBarsAndLine_PerSeriesKind()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Combo)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("Volume", [10, 20, 15, 25], Kind: ChartSeriesKind.Bar),
+                new ChartSeries("Trend", [12, 18, 16, 22], Kind: ChartSeriesKind.Line),
+            ], ["q1", "q2", "q3", "q4"])));
+
+        Assert.Equal(4, cut.FindAll("rect.flare-chart__bar").Count); // bar series
+        Assert.NotEmpty(cut.FindAll("path.flare-chart__line"));       // line series
+    }
+
+    [Fact]
+    public void TrendLine_AddsDashedRegressionLine()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.TrendLine, true));
+
+        Assert.Contains(cut.FindAll("line"), l => (l.GetAttribute("stroke-dasharray") ?? "").Length > 0);
+    }
+
+    [Fact]
+    public void Annotations_DrawHorizontalThresholdLine()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.Annotations, new[]
+            {
+                new ChartAnnotation(ChartAnnotationKind.HorizontalLine, 5, Label: "Target"),
+            }));
+
+        Assert.Contains(cut.FindAll("line"), l => (l.GetAttribute("stroke-dasharray") ?? "").Length > 0);
+        Assert.Contains(cut.FindAll("text"), t => (t.TextContent ?? "").Contains("Target"));
+    }
 }

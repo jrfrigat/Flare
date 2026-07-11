@@ -50,16 +50,36 @@ revisit only if DateTime-aware tick spacing is needed.
 - **Streaming** needs no dedicated API: FlareChart re-renders when `Data` changes, so a consumer updates
   `Data` on a timer/SignalR push and (with `Animate`) it transitions - vs Blazorise's chartjs-plugin-streaming.
 
-**Deliberately deferred (niche or model-heavy; not worth churn now):** Bubble (needs an X/Y/R point model),
-Combo/mixed (needs a per-series type override), Rose / PolarArea (pie variants), annotations / trend line,
-`MatchBoundsToSize` height-fill, RTL, and horizontal *stacked* bars. Documented for on-demand pickup.
+## Phase 4b - deferred-set items 1-5 - DONE (2026-07-11)
+The cheap-win + medium tier from the deferred triage (all native SVG):
+- **`ChartType.Combo`** - per-series `ChartSeriesKind` (Bar/Line/Area) on one shared Y axis (Mud has no
+  combo; Blazorise needs a per-dataset type override).
+- **`TrendLine`** - least-squares regression overlay on line/area/scatter series (Mud has none).
+- **`ChartType.Bubble`** - scatter sized by the new `ChartPoint.R` weight (sqrt-scaled pixel radius).
+- **`ChartType.Rose`** (area-proportional sqrt sectors) + **`ChartType.PolarArea`** (linear wedges on a
+  radial grid).
+- **`Annotations`** - `ChartAnnotation` list: HorizontalLine (threshold/target), VerticalLine, HorizontalBand.
+  Mud has no annotations; Blazorise needs chartjs-plugin-annotation.
+
+Model additions (all back-compat, optional/defaulted): `ChartPoint.R`, `ChartSeries.Kind`,
+`ChartSeriesKind`, `ChartAnnotation`/`ChartAnnotationKind`.
+
+## Still deferred (low value / tradeoff; open for on-demand pickup)
+- **`MatchBoundsToSize`** (fill container height) - the clean version wants a ResizeObserver (JS), which
+  conflicts with the zero-JS moat; only worth it for fixed-height dashboard tiles.
+- **RTL** - mirror the X axis / legend / text-anchors; mechanical, do when an RTL locale needs charts.
+- **Horizontal *stacked* bar** - combine the horizontal + stacking code paths (~40 lines); low demand.
+- **Windowed streaming** (auto-shift time window + smooth scroll) - basic streaming already works by
+  updating `Data` on a timer/SignalR push with `Animate`; the fixed-window auto-shift is niche.
+- **Sankey**, per-axis tick-count control, dual/secondary Y axis, `TooltipTemplate` - niche.
 
 ---
 
-**Result:** FlareChart now spans **9 types** (Line, Area, Bar, StackedBar, Pie, Donut, Scatter, Radar,
-HeatMap) with axis config, interactivity, animation and an a11y fallback - all native SVG / zero-JS /
-token-themed, which no competitor matches on all axes (Fluent has no charts; Chart.js/Blazorise is a
-canvas dep with license row caps; MudBlazor has more exotic types but no animation and weaker theming/a11y).
+**Result:** FlareChart now spans **13 types** (Line, Area, Bar, StackedBar, Pie, Donut, Scatter, Bubble,
+Radar, HeatMap, Rose, PolarArea, Combo) with axis config, interactivity, animation, trend lines,
+annotations and an a11y fallback - all native SVG / zero-JS / token-themed, which no competitor matches on
+all axes (Fluent has no charts; Chart.js/Blazorise is a canvas dep with license row caps; MudBlazor has a
+couple more exotic types - Sankey - but no animation/trend/annotations and weaker theming/a11y).
 
 ## Not planned (deliberately)
 - **Wrapping Chart.js** - would forfeit the zero-JS / token / a11y / SSR moat and add a ~200KB canvas

@@ -516,6 +516,9 @@
   <data name="Charts_Advanced" xml:space="preserve">
     <value>Animation, heat map &amp; accessible data table</value>
   </data>
+  <data name="Charts_ExtraTypes" xml:space="preserve">
+    <value>Combo, rose, polar, bubble, trend line &amp; annotations</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Chip Group</value>
   </data>

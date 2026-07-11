@@ -29,15 +29,19 @@
                 case ChartType.Pie: @RenderPie(false); break;
                 case ChartType.Donut: @RenderPie(true); break;
                 case ChartType.Scatter: @RenderScatter(); break;
+                case ChartType.Bubble: @RenderScatter(); break;
                 case ChartType.Radar: @RenderRadar(); break;
                 case ChartType.HeatMap: @RenderHeatMap(); break;
+                case ChartType.Rose: @RenderRose(); break;
+                case ChartType.PolarArea: @RenderPolarArea(); break;
+                case ChartType.Combo: @RenderCombo(); break;
                 default: @RenderLine(); break; // Line + Area
             }
 
             @* Transparent hit zones in viewBox units, so detection scales with the SVG
                (mouse offsets in rendered px would not match the 0..400 viewBox). Suppressed
                for a sparkline (no tooltips in chromeless mode). *@
-            @if (!_spark && Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar)
+            @if (!_spark && Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar or ChartType.Combo)
             {
                 @foreach (var cat in _categories)
                 {
@@ -140,8 +144,14 @@
     /// <summary>Also renders a visually-hidden data <c>&lt;table&gt;</c> after the chart, so screen readers
     /// can read the underlying values (an accessibility fallback for the SVG).</summary>
     [Parameter] public bool DataTable { get; set; }
+    /// <summary>Overlays a linear-regression trend line on each line/area/scatter series.</summary>
+    [Parameter] public bool TrendLine { get; set; }
+    /// <summary>Threshold / target / band overlays drawn over a cartesian chart.</summary>
+    [Parameter] public IReadOnlyList<ChartAnnotation>? Annotations { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Chart.Root;
+
+    private bool _bubble => Type == ChartType.Bubble;
 
     // Series toggled off via the interactive legend.
     private readonly HashSet<int> _hidden = new();
@@ -249,7 +259,7 @@
         {
             int pts = _pts;
             if (pts <= 0) yield break;
-            if (Type is ChartType.Bar or ChartType.StackedBar)
+            if (Type is ChartType.Bar or ChartType.StackedBar or ChartType.Combo)
             {
                 double groupW = _plotW / (double)pts;
                 for (int i = 0; i < pts; i++)
@@ -405,7 +415,10 @@
                     sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"2.5\" style=\"fill:{color}\"/>"));
                 builder.AddMarkupContent(seq++, sb.ToString());
             }
+            if (TrendLine)
+                builder.AddMarkupContent(seq++, TrendLineMarkup(pointList, color));
         }
+        builder.AddMarkupContent(seq++, AnnotationsMarkup(min, max, pts));
         if (_showX)
             builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
         builder.AddMarkupContent(seq++, AxisTitles());
@@ -519,6 +532,7 @@
                     builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{x + bw / 2:F1}\" y=\"{(sv >= 0 ? y - 3 : y + barH + 9):F1}\" text-anchor=\"middle\" font-size=\"8\" style=\"fill:var(--flare-color-on-surface-variant)\">{sv:G3}</text>"));
             }
         }
+        builder.AddMarkupContent(seq++, AnnotationsMarkup(min, max, pts));
         if (_showX)
             builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
         builder.AddMarkupContent(seq++, AxisTitles());
@@ -582,6 +596,7 @@
                     builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{x + barW / 2:F1}\" y=\"{yCursor + h / 2 + 3:F1}\" text-anchor=\"middle\" font-size=\"8\" style=\"fill:var(--flare-color-surface)\">{v:G3}</text>"));
             }
         }
+        builder.AddMarkupContent(seq++, AnnotationsMarkup(0, max, pts));
         if (_showX) builder.AddMarkupContent(seq++, AxisLabels(0, max, pts));
         builder.AddMarkupContent(seq++, AxisTitles());
     };
@@ -598,19 +613,28 @@
         int seq = 0;
         if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(yMin, yMax));
 
+        // Bubble: map the largest R weight onto a pixel radius so the biggest bubble is a sensible size.
+        double rWeightMax = _bubble ? Math.Max(1e-9, allPts.Max(p => p.R)) : 0;
+
         for (int si = 0; si < series.Count; si++)
         {
+            if (IsHidden(si)) continue;
             var pointsList = series[si].Points;
             if (pointsList is null) continue;
             var color = GetColor(si);
+            var pixels = new List<(double X, double Y)>(pointsList.Count);
             var sb = new System.Text.StringBuilder();
             foreach (var p in pointsList)
             {
                 double x = _padL + (p.X - xMin) / (xMax - xMin) * _plotW;
                 double y = _padT + _plotH - (p.Y - yMin) / (yMax - yMin) * _plotH;
-                sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"3.5\" style=\"fill:{color}\" opacity=\"0.75\"/>"));
+                pixels.Add((x, y));
+                double r = _bubble ? 4 + 20 * Math.Sqrt(p.R / rWeightMax) : 3.5;
+                sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{r:F1}\" style=\"fill:{color}\" opacity=\"0.6\"/>"));
             }
             builder.AddMarkupContent(seq++, sb.ToString());
+            if (TrendLine)
+                builder.AddMarkupContent(seq++, TrendLineMarkup(pixels, color));
         }
         if (_showX)
         {
@@ -737,6 +761,165 @@
             builder.AddMarkupContent(seq++, t.ToString());
         }
     };
+
+    private RenderFragment RenderRose() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        var vals = series.Select(s => SafeValue(s.Values.FirstOrDefault())).ToList();
+        double max = vals.Count > 0 ? vals.Max() : 1;
+        if (max <= 0) max = 1;
+        double cx = _svgW / 2.0, cy = _svgH / 2.0;
+        double rMax = Math.Min(cx, cy) - 16;
+        int n = series.Count;
+        double step = 2 * Math.PI / n;
+        int seq = 0;
+        for (int i = 0; i < n; i++)
+        {
+            double rr = Math.Sqrt(vals[i] / max) * rMax; // sqrt => area-proportional sectors
+            double a0 = -Math.PI / 2 + i * step, a1 = a0 + step;
+            double x0 = cx + rr * Math.Cos(a0), y0 = cy + rr * Math.Sin(a0);
+            double x1 = cx + rr * Math.Cos(a1), y1 = cy + rr * Math.Sin(a1);
+            int large = step > Math.PI ? 1 : 0;
+            string path = string.Create(_inv, $"M {cx:F1} {cy:F1} L {x0:F1} {y0:F1} A {rr:F1} {rr:F1} 0 {large} 1 {x1:F1} {y1:F1} Z");
+            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" stroke-width=\"1\" style=\"fill:{GetColor(i)};stroke:var(--flare-color-surface)\"/>");
+        }
+    };
+
+    private RenderFragment RenderPolarArea() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        var vals = series.Select(s => SafeValue(s.Values.FirstOrDefault())).ToList();
+        double max = vals.Count > 0 ? vals.Max() : 1;
+        if (max <= 0) max = 1;
+        double cx = _svgW / 2.0, cy = _svgH / 2.0;
+        double rMax = Math.Min(cx, cy) - 16;
+        int n = series.Count;
+        double step = 2 * Math.PI / n;
+        int seq = 0;
+        if (_showGrid)
+        {
+            var g = new System.Text.StringBuilder();
+            for (int lv = 1; lv <= 4; lv++)
+                g.Append(string.Create(_inv, $"<circle cx=\"{cx:F1}\" cy=\"{cy:F1}\" r=\"{rMax * lv / 4:F1}\" fill=\"none\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>"));
+            builder.AddMarkupContent(seq++, g.ToString());
+        }
+        for (int i = 0; i < n; i++)
+        {
+            double rr = vals[i] / max * rMax; // linear radius (Chart.js style)
+            double a0 = -Math.PI / 2 + i * step, a1 = a0 + step;
+            double x0 = cx + rr * Math.Cos(a0), y0 = cy + rr * Math.Sin(a0);
+            double x1 = cx + rr * Math.Cos(a1), y1 = cy + rr * Math.Sin(a1);
+            int large = step > Math.PI ? 1 : 0;
+            string path = string.Create(_inv, $"M {cx:F1} {cy:F1} L {x0:F1} {y0:F1} A {rr:F1} {rr:F1} 0 {large} 1 {x1:F1} {y1:F1} Z");
+            builder.AddMarkupContent(seq++, $"<path d=\"{path}\" stroke-width=\"1\" style=\"fill:{GetColor(i)};fill-opacity:0.7;stroke:{GetColor(i)}\"/>");
+        }
+    };
+
+    private RenderFragment RenderCombo() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        var vis = Enumerable.Range(0, series.Count).Where(i => !IsHidden(i)).ToList();
+        var visVals = vis.SelectMany(i => series[i].Values).ToList();
+        if (visVals.Count == 0) return;
+        var (min, max) = ApplyBounds(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0));
+        int pts = series.Max(s => s.Values.Count);
+        int seq = 0;
+        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(min, max));
+
+        double groupW = _plotW / (double)pts;
+        var barIdx = vis.Where(i => (series[i].Kind ?? ChartSeriesKind.Bar) == ChartSeriesKind.Bar).ToList();
+        double barW = barIdx.Count > 0 ? groupW / (barIdx.Count + 1) : 0;
+        double LineX(int i) => _padL + i * groupW + groupW / 2.0;
+        int barSlot = 0;
+        double baseline = _padT + _plotH;
+
+        foreach (int si in vis)
+        {
+            var kind = series[si].Kind ?? ChartSeriesKind.Bar;
+            var vals = series[si].Values;
+            var color = GetColor(si);
+            if (kind == ChartSeriesKind.Bar)
+            {
+                for (int i = 0; i < vals.Count; i++)
+                {
+                    double sv = SafeValue(vals[i]);
+                    double x = _padL + i * groupW + barSlot * barW + barW * 0.25;
+                    double zeroY = baseline - (0 - min) / (max - min) * _plotH;
+                    double barH = Math.Abs(sv / (max - min) * _plotH);
+                    double y = sv >= 0 ? zeroY - barH : zeroY;
+                    builder.AddMarkupContent(seq++, string.Create(_inv, $"<rect class=\"{Css.Classes.Chart.Bar}\" x=\"{x:F1}\" y=\"{y:F1}\" width=\"{barW * BarWidthRatio:F1}\" height=\"{barH:F1}\" rx=\"2\" style=\"fill:{color}\"/>"));
+                }
+                barSlot++;
+            }
+            else
+            {
+                var pl = new List<(double X, double Y)>(vals.Count);
+                for (int i = 0; i < vals.Count; i++)
+                    pl.Add((LineX(i), baseline - (SafeValue(vals[i]) - min) / (max - min) * _plotH));
+                string linePath = Smooth ? SmoothPath(pl) : StraightPath(pl);
+                if (kind == ChartSeriesKind.Area)
+                {
+                    string gid = $"{_uid}-c{si}";
+                    builder.AddMarkupContent(seq++,
+                        $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" style=\"stop-color:{color};stop-opacity:0.35\"/><stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
+                    builder.AddMarkupContent(seq++, string.Create(_inv, $"<path d=\"{linePath} L {pl[^1].X:F1} {baseline:F1} L {pl[0].X:F1} {baseline:F1} Z\" stroke=\"none\" fill=\"url(#{gid})\"/>"));
+                }
+                builder.AddMarkupContent(seq++, $"<path class=\"{Css.Classes.Chart.Line}\" pathLength=\"1\" d=\"{linePath}\" fill=\"none\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\" style=\"stroke:{color}\"/>");
+            }
+        }
+        builder.AddMarkupContent(seq++, AnnotationsMarkup(min, max, pts));
+        if (_showX) builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
+        builder.AddMarkupContent(seq++, AxisTitles());
+    };
+
+    // Linear-regression trend line over pixel-space points (linearity is preserved by the pixel transform).
+    private string TrendLineMarkup(IReadOnlyList<(double X, double Y)> pts, string color)
+    {
+        if (pts.Count < 2) return "";
+        double n = pts.Count, sx = 0, sy = 0, sxx = 0, sxy = 0;
+        foreach (var (x, y) in pts) { sx += x; sy += y; sxx += x * x; sxy += x * y; }
+        double denom = n * sxx - sx * sx;
+        if (Math.Abs(denom) < 1e-9) return "";
+        double b = (n * sxy - sx * sy) / denom;
+        double a = (sy - b * sx) / n;
+        double x1 = pts.Min(p => p.X), x2 = pts.Max(p => p.X);
+        return string.Create(_inv, $"<line x1=\"{x1:F1}\" y1=\"{a + b * x1:F1}\" x2=\"{x2:F1}\" y2=\"{a + b * x2:F1}\" stroke-width=\"1.5\" stroke-dasharray=\"5 4\" style=\"stroke:{color};opacity:0.7\"/>");
+    }
+
+    // Threshold / target / band overlays on the value (Y) axis, plus category vertical lines.
+    private string AnnotationsMarkup(double min, double max, int pts)
+    {
+        if (Annotations is not { Count: > 0 } anns) return "";
+        var sb = new System.Text.StringBuilder();
+        double YOf(double v) => _padT + _plotH - (v - min) / (max - min) * _plotH;
+        foreach (var a in anns)
+        {
+            var color = a.Color ?? "var(--flare-color-error)";
+            switch (a.Kind)
+            {
+                case ChartAnnotationKind.HorizontalLine:
+                    double hy = YOf(a.Value);
+                    sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{hy:F1}\" x2=\"{_svgW - _padR}\" y2=\"{hy:F1}\" stroke-width=\"1.5\" stroke-dasharray=\"4 3\" style=\"stroke:{color}\"/>"));
+                    if (!string.IsNullOrEmpty(a.Label))
+                        sb.Append(string.Create(_inv, $"<text x=\"{_svgW - _padR:F1}\" y=\"{hy - 3:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:{color}\">{a.Label}</text>"));
+                    break;
+                case ChartAnnotationKind.HorizontalBand:
+                    double b1 = YOf(a.Value), b2 = YOf(a.Value2 ?? a.Value);
+                    double top = Math.Min(b1, b2), bh = Math.Abs(b2 - b1);
+                    sb.Append(string.Create(_inv, $"<rect x=\"{_padL}\" y=\"{top:F1}\" width=\"{_plotW:F1}\" height=\"{bh:F1}\" style=\"fill:{color};fill-opacity:0.12\"/>"));
+                    if (!string.IsNullOrEmpty(a.Label))
+                        sb.Append(string.Create(_inv, $"<text x=\"{_svgW - _padR:F1}\" y=\"{top - 3:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:{color}\">{a.Label}</text>"));
+                    break;
+                case ChartAnnotationKind.VerticalLine:
+                    double vx = pts > 1 ? _padL + a.Value * _plotW / (pts - 1) : _padL + _plotW / 2.0;
+                    sb.Append(string.Create(_inv, $"<line x1=\"{vx:F1}\" y1=\"{_padT}\" x2=\"{vx:F1}\" y2=\"{_padT + _plotH}\" stroke-width=\"1.5\" stroke-dasharray=\"4 3\" style=\"stroke:{color}\"/>"));
+                    if (!string.IsNullOrEmpty(a.Label))
+                        sb.Append(string.Create(_inv, $"<text x=\"{vx + 3:F1}\" y=\"{_padT + 10:F1}\" font-size=\"9\" style=\"fill:{color}\">{a.Label}</text>"));
+                    break;
+            }
+        }
+        return sb.ToString();
+    }
 
     // Visually-hidden data table (a11y fallback): categories x series.
     private RenderFragment RenderDataTable() => builder =>

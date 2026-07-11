@@ -1,0 +1,13 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareChart Type="ChartType.Combo" Title="Combo (bars + line) with a target line" Data="_combo" Annotations="_targets" />
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <div style="flex:1;min-width:14rem;"><FlareChart Type="ChartType.Rose" Title="Rose" Data="_radial" /></div>
+        <div style="flex:1;min-width:14rem;"><FlareChart Type="ChartType.PolarArea" Title="Polar area" Data="_radial" /></div>
+    </FlareStack>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <div style="flex:1;min-width:14rem;"><FlareChart Type="ChartType.Bubble" Title="Bubble" Data="_bubble" /></div>
+        <div style="flex:1;min-width:14rem;"><FlareChart Type="ChartType.Line" Title="Line + trend line" Data="_trend" TrendLine="true" /></div>
+    </FlareStack>
+</FlareStack>

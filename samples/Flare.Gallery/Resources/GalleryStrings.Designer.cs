@@ -1728,6 +1728,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Combo, rose, polar, bubble, trend line &amp; annotations.
+        /// </summary>
+        public static string Charts_ExtraTypes {
+            get {
+                return ResourceManager.GetString("Charts_ExtraTypes", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pie Chart.
         /// </summary>
         public static string Charts_Pie {
