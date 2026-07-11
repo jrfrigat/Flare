@@ -1690,7 +1690,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Charts_MultiLine", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Area, smooth &amp; sparklines (chromeless).
+        /// </summary>
+        public static string Charts_Sparkline {
+            get {
+                return ResourceManager.GetString("Charts_Sparkline", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Pie Chart.
         /// </summary>

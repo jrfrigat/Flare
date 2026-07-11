@@ -504,6 +504,9 @@
   <data name="Charts_MultiLine" xml:space="preserve">
     <value>Линейный график с несколькими сериями</value>
   </data>
+  <data name="Charts_Sparkline" xml:space="preserve">
+    <value>Заливка, сглаживание и спарклайны (без обвязки)</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Группа чипов</value>
   </data>

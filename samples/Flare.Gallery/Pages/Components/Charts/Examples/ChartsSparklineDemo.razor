@@ -1,0 +1,17 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareChart Type="ChartType.Line" Title="Revenue (area + smooth + markers)"
+                Data="_lineData" Area="true" Smooth="true" ShowMarkers="true" />
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium">
+        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:14rem;">
+            <FlareText Typo="TypographyScale.LabelMedium" Color="FlareColor.OnSurfaceVariant">Throughput</FlareText>
+            <FlareText Typo="TypographyScale.HeadlineSmall">1,284/s</FlareText>
+            <FlareChart Type="ChartType.Line" Sparkline="true" Area="true" Smooth="true" Height="72" Data="_spark1" />
+        </FlareCard>
+        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:14rem;">
+            <FlareText Typo="TypographyScale.LabelMedium" Color="FlareColor.OnSurfaceVariant">Latency p50</FlareText>
+            <FlareText Typo="TypographyScale.HeadlineSmall">42 ms</FlareText>
+            <FlareChart Type="ChartType.Line" Sparkline="true" Area="true" Height="72" Data="_spark2" />
+        </FlareCard>
+    </FlareStack>
+</FlareStack>

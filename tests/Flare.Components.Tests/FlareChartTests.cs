@@ -9,14 +9,15 @@ public class FlareChartTests : FlareTestContext
         ["q1", "q2", "q3", "q4"]);
 
     [Fact]
-    public void Line_RendersPolyline_WithStrokeStyle()
+    public void Line_RendersPath_WithStrokeStyle()
     {
         var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, _data));
 
-        var poly = cut.Find("polyline");
-        Assert.Contains("stroke:", poly.GetAttribute("style") ?? "");
+        // The line is a stroked <path> (unified for straight/smooth/area); color via style.
+        var path = cut.Find("path");
+        Assert.Contains("stroke:", path.GetAttribute("style") ?? "");
     }
 
     [Fact]
@@ -82,11 +83,11 @@ public class FlareChartTests : FlareTestContext
                 .Add(x => x.Type, ChartType.Line)
                 .Add(x => x.Data, _data));
 
-            var points = cut.Find("polyline").GetAttribute("points") ?? "";
-            // x,y pairs are comma-joined; decimals must be dots, so no ",," and a "." present
-            Assert.Contains(".", points);
-            Assert.DoesNotContain(",,", points);
-            Assert.DoesNotContain(", ", points);
+            var d = cut.Find("path").GetAttribute("d") ?? "";
+            // The path uses space-separated "M x y L x y" with dot decimals; a comma culture
+            // would emit "192,0", so any comma means the invariant formatting leaked.
+            Assert.Contains(".", d);
+            Assert.DoesNotContain(",", d);
         }
         finally
         {
@@ -105,5 +106,85 @@ public class FlareChartTests : FlareTestContext
             ])));
 
         Assert.Equal(2, cut.FindAll(".flare-chart__legend-item").Count);
+    }
+
+    // --- Phase 1 -------------------------------------------------------------------------------
+
+    [Fact]
+    public void Sparkline_IsChromeless_AndStretches()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Title, "Throughput")
+            .Add(x => x.Data, _data)
+            .Add(x => x.Sparkline, true));
+
+        Assert.NotEmpty(cut.FindAll(".flare-chart--sparkline"));
+        Assert.Empty(cut.FindAll(".flare-chart__legend"));       // no legend
+        Assert.Empty(cut.FindAll(".flare-chart__title"));        // no title
+        Assert.Empty(cut.FindAll("line"));                       // no grid lines
+        Assert.Empty(cut.FindAll("text"));                       // no axis labels
+        Assert.Equal("none", cut.Find("svg").GetAttribute("preserveAspectRatio"));
+        Assert.Contains("non-scaling-stroke", cut.Find("path").GetAttribute("vector-effect") ?? "");
+    }
+
+    [Fact]
+    public void Area_RendersGradientFilledPath()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.Area, true));
+
+        Assert.NotEmpty(cut.FindAll("lineargradient"));           // a fade gradient is defined
+        Assert.Contains(cut.FindAll("path"), p => (p.GetAttribute("fill") ?? "").StartsWith("url(#"));
+    }
+
+    [Fact]
+    public void ShowLegend_False_HidesLegend()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.ShowLegend, false));
+
+        Assert.Empty(cut.FindAll(".flare-chart__legend"));
+    }
+
+    [Fact]
+    public void ShowGrid_False_HidesGridLines()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.ShowGrid, false));
+
+        Assert.Empty(cut.FindAll("line"));
+    }
+
+    [Fact]
+    public void ShowMarkers_RendersPointCircles()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.ShowMarkers, true));
+
+        Assert.Equal(4, cut.FindAll("circle").Count); // one per data point
+    }
+
+    [Fact]
+    public void LegendPosition_Top_RendersLegendBeforePlot()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.LegendPosition, ChartLegendPosition.Top));
+
+        var root = cut.Find(".flare-chart");
+        var children = root.Children.ToList();
+        int legendIdx = children.FindIndex(c => c.ClassList.Contains("flare-chart__legend"));
+        int plotIdx = children.FindIndex(c => c.ClassList.Contains("flare-chart__plot"));
+        Assert.True(legendIdx >= 0 && plotIdx >= 0 && legendIdx < plotIdx);
     }
 }

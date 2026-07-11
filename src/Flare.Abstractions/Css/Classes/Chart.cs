@@ -21,4 +21,6 @@ public static class Chart
     public const string Title = "flare-chart__title";
     /// <summary>The <c>flare-chart__tooltip</c> CSS class.</summary>
     public const string Tooltip = "flare-chart__tooltip";
+    /// <summary>The <c>flare-chart--sparkline</c> modifier: a chromeless, edge-to-edge line for inline metric cards.</summary>
+    public const string Sparkline = "flare-chart--sparkline";
 }

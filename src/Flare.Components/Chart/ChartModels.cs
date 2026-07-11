@@ -13,6 +13,17 @@ public enum ChartType
     Donut,
 }
 
+/// <summary>Where the legend sits relative to the plot in <see cref="FlareChart"/>.</summary>
+public enum ChartLegendPosition
+{
+    /// <summary>Below the plot (the default).</summary>
+    Bottom,
+    /// <summary>Above the plot.</summary>
+    Top,
+    /// <summary>No legend.</summary>
+    None,
+}
+
 /// <summary>A single named data series plotted on a chart.</summary>
 /// <param name="Label">Series name shown in the legend and tooltips.</param>
 /// <param name="Values">The numeric values, one per category.</param>

@@ -1,15 +1,20 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
-    @if (Title is not null)
+<div class="@BuildCssClass(_spark ? Css.Classes.Chart.Sparkline : null)" style="@Style" @attributes="AdditionalAttributes">
+    @if (Title is not null && !_spark)
     {
         <div class="@Css.Classes.Chart.Title">
             <FlareText Typo="TypographyScale.TitleMedium">@Title</FlareText>
         </div>
     }
+    @if (_showLegend && LegendPosition == ChartLegendPosition.Top)
+    {
+        @RenderLegend()
+    }
     <div class="@Css.Classes.Chart.Plot">
         <svg class="@Css.Classes.Chart.Svg" viewBox="0 0 @_svgW @_svgH" xmlns="http://www.w3.org/2000/svg"
+             preserveAspectRatio="@(_spark ? "none" : null)"
              aria-label="@(Title ?? "Chart")" role="img">
             <title>@(Title ?? "Chart")</title>
             @if (!string.IsNullOrEmpty(Description))
@@ -25,8 +30,9 @@
             }
 
             @* Transparent hit zones in viewBox units, so detection scales with the SVG
-               (mouse offsets in rendered px would not match the 0..400 viewBox). *@
-            @if (Type is ChartType.Line or ChartType.Bar)
+               (mouse offsets in rendered px would not match the 0..400 viewBox). Suppressed
+               for a sparkline (no tooltips in chromeless mode). *@
+            @if (!_spark && Type is ChartType.Line or ChartType.Bar)
             {
                 @foreach (var cat in _categories)
                 {
@@ -37,7 +43,7 @@
                           @onmouseleave="ClearHover" />
                 }
             }
-            else if (Type is ChartType.Pie or ChartType.Donut)
+            else if (!_spark && Type is ChartType.Pie or ChartType.Donut)
             {
                 @foreach (var slice in _slices)
                 {
@@ -56,18 +62,9 @@
             </div>
         }
     </div>
-    @if (Data?.Series is { Count: > 0 } series)
+    @if (_showLegend && LegendPosition == ChartLegendPosition.Bottom)
     {
-        <div class="@Css.Classes.Chart.Legend">
-            @for (int i = 0; i < series.Count; i++)
-            {
-                var idx = i;
-                <div class="@Css.Classes.Chart.LegendItem">
-                    <span class="@Css.Classes.Chart.LegendDot" style="@($"--flare-chart-dot:{GetColor(idx)}")"></span>
-                    <span>@series[idx].Label</span>
-                </div>
-            }
-        </div>
+        @RenderLegend()
     }
 </div>
 
@@ -83,17 +80,56 @@
     /// <summary>SVG viewport height in pixels.</summary>
     [Parameter] public int Height { get; set; } = 220;
 
+    /// <summary>Fills the area under each line series with a soft fade from the series color to transparent
+    /// (line charts only).</summary>
+    [Parameter] public bool Area { get; set; }
+    /// <summary>Draws line series as smooth curves instead of straight segments.</summary>
+    [Parameter] public bool Smooth { get; set; }
+    /// <summary>Draws a marker dot at each line data point.</summary>
+    [Parameter] public bool ShowMarkers { get; set; }
+    /// <summary>Shows the horizontal grid lines behind an axis chart. Default true.</summary>
+    [Parameter] public bool ShowGrid { get; set; } = true;
+    /// <summary>Shows the numeric Y-axis labels. Default true.</summary>
+    [Parameter] public bool ShowYAxisLabels { get; set; } = true;
+    /// <summary>Shows the category X-axis labels. Default true.</summary>
+    [Parameter] public bool ShowXAxisLabels { get; set; } = true;
+    /// <summary>Shows the series legend. Default true.</summary>
+    [Parameter] public bool ShowLegend { get; set; } = true;
+    /// <summary>Where the legend sits relative to the plot.</summary>
+    [Parameter] public ChartLegendPosition LegendPosition { get; set; } = ChartLegendPosition.Bottom;
+    /// <summary>Overrides the plot padding (all sides, in viewBox units). Null keeps the default axis padding.</summary>
+    [Parameter] public int? Padding { get; set; }
+    /// <summary>Sparkline preset: a compact, chromeless line (no grid, axes, legend or title) that stretches
+    /// edge-to-edge with a crisp stroke - for inline metric cards. Combine with <see cref="Area"/> for a fill.</summary>
+    [Parameter] public bool Sparkline { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Chart.Root;
 
     // SVG numeric attributes require '.' as the decimal separator; never use the current
     // culture (e.g. ru-RU formats 192.0 as "192,0", which is invalid in SVG).
     private static readonly System.Globalization.CultureInfo _inv = System.Globalization.CultureInfo.InvariantCulture;
 
+    // Unique per-instance id prefix so area gradients from multiple charts on a page never collide.
+    private readonly string _uid = $"fc{Guid.NewGuid():N}";
+
     private const int _svgW = 400;
     private int _svgH => Height;
-    private const int _padL = 36, _padR = 12, _padT = 12, _padB = 28;
+
+    private bool _spark => Sparkline;
+    // Sparkline zeroes the chrome; otherwise a Padding override applies to all sides, else the axis defaults.
+    private int _padL => _spark ? 2 : (Padding ?? 36);
+    private int _padR => _spark ? 2 : (Padding ?? 12);
+    private int _padT => _spark ? 2 : (Padding ?? 12);
+    private int _padB => _spark ? 2 : (Padding ?? 28);
     private int _plotW => _svgW - _padL - _padR;
     private int _plotH => _svgH - _padT - _padB;
+
+    // Chrome toggles - all forced off in sparkline mode.
+    private bool _showGrid => !_spark && ShowGrid;
+    private bool _showY => !_spark && ShowYAxisLabels;
+    private bool _showX => !_spark && ShowXAxisLabels;
+    private bool _showLegend => !_spark && ShowLegend && LegendPosition != ChartLegendPosition.None
+        && Data?.Series is { Count: > 0 };
 
     // Tooltip state. Position is a percentage of the SVG box so it tracks the scaled
     // viewBox without needing the rendered pixel size.
@@ -124,6 +160,27 @@
         double.IsNaN(v) || double.IsInfinity(v) ? 0.0 : v;
 
     private int _pts => Data?.Series is { Count: > 0 } s ? s.Max(x => x.Values.Count) : 0;
+
+    private RenderFragment RenderLegend() => builder =>
+    {
+        var series = Data!.Series;
+        builder.OpenElement(0, "div");
+        builder.AddAttribute(1, "class", Css.Classes.Chart.Legend);
+        for (int i = 0; i < series.Count; i++)
+        {
+            builder.OpenElement(2, "div");
+            builder.AddAttribute(3, "class", Css.Classes.Chart.LegendItem);
+            builder.OpenElement(4, "span");
+            builder.AddAttribute(5, "class", Css.Classes.Chart.LegendDot);
+            builder.AddAttribute(6, "style", $"--flare-chart-dot:{GetColor(i)}");
+            builder.CloseElement();
+            builder.OpenElement(7, "span");
+            builder.AddContent(8, series[i].Label);
+            builder.CloseElement();
+            builder.CloseElement();
+        }
+        builder.CloseElement();
+    };
 
     // Category hit zones (line/bar), in viewBox units.
     private IEnumerable<(int Index, double XLeft, double Width, double XCenter)> _categories
@@ -241,29 +298,87 @@
         double min = allVals.Min(), max = allVals.Max();
         if (max == min) { max = min + 1; }
         int pts = series.Max(s => s.Values.Count);
+        int seq = 0;
 
-        // Grid lines
-        builder.AddMarkupContent(0, GridLines(min, max));
+        if (_showGrid || _showY)
+            builder.AddMarkupContent(seq++, GridLines(min, max));
+
+        double baseline = _padT + _plotH;
+        string vectorEffect = _spark ? " vector-effect=\"non-scaling-stroke\"" : "";
 
         for (int si = 0; si < series.Count; si++)
         {
             var vals = series[si].Values;
             if (vals.Count == 0) continue;
-            var points = vals.Select((v, i) =>
+            var pointList = new List<(double X, double Y)>(vals.Count);
+            for (int i = 0; i < vals.Count; i++)
             {
-                double sv = SafeValue(v);
+                double sv = SafeValue(vals[i]);
                 double x = _padL + (pts > 1 ? i * _plotW / (double)(pts - 1) : _plotW / 2.0);
                 double y = _padT + _plotH - (sv - min) / (max - min) * _plotH;
-                return string.Create(_inv, $"{x:F1},{y:F1}");
-            });
+                pointList.Add((x, y));
+            }
             var color = GetColor(si);
-            // Colors go through the style attribute: var() is not resolved in SVG
-            // presentation attributes (fill=/stroke=), only in CSS property values.
-            builder.AddMarkupContent(si + 1,
-                $"<polyline points=\"{string.Join(" ", points)}\" fill=\"none\" stroke-width=\"2\" stroke-linejoin=\"round\" style=\"stroke:{color}\"/>");
+            string linePath = Smooth ? SmoothPath(pointList) : StraightPath(pointList);
+
+            // Area fill: a gradient from the series color down to transparent. Colors go through style
+            // (var() is not resolved in SVG presentation attributes / stop-color, only in CSS values).
+            if (Area)
+            {
+                string gid = $"{_uid}-a{si}";
+                builder.AddMarkupContent(seq++,
+                    $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">" +
+                    $"<stop offset=\"0\" style=\"stop-color:{color};stop-opacity:0.35\"/>" +
+                    $"<stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
+                string areaPath = string.Create(_inv,
+                    $"{linePath} L {pointList[^1].X:F1} {baseline:F1} L {pointList[0].X:F1} {baseline:F1} Z");
+                builder.AddMarkupContent(seq++, $"<path d=\"{areaPath}\" stroke=\"none\" fill=\"url(#{gid})\"/>");
+            }
+
+            // The line itself (stroked path; polyline when straight is equivalent to the straight path).
+            builder.AddMarkupContent(seq++,
+                $"<path d=\"{linePath}\" fill=\"none\" stroke-width=\"2\" stroke-linejoin=\"round\" stroke-linecap=\"round\" style=\"stroke:{color}\"{vectorEffect}/>");
+
+            if (ShowMarkers)
+            {
+                var sb = new System.Text.StringBuilder();
+                foreach (var (x, y) in pointList)
+                    sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"2.5\" style=\"fill:{color}\"/>"));
+                builder.AddMarkupContent(seq++, sb.ToString());
+            }
         }
-        builder.AddMarkupContent(series.Count + 1, AxisLabels(min, max, pts));
+        if (_showX)
+            builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
     };
+
+    private static string StraightPath(IReadOnlyList<(double X, double Y)> pts)
+    {
+        if (pts.Count == 0) return "";
+        var sb = new System.Text.StringBuilder(string.Create(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}"));
+        for (int i = 1; i < pts.Count; i++)
+            sb.Append(string.Create(_inv, $" L {pts[i].X:F1} {pts[i].Y:F1}"));
+        return sb.ToString();
+    }
+
+    // Catmull-Rom -> cubic Bezier for a smooth line through the points.
+    private static string SmoothPath(IReadOnlyList<(double X, double Y)> pts)
+    {
+        if (pts.Count < 3) return StraightPath(pts);
+        var sb = new System.Text.StringBuilder(string.Create(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}"));
+        for (int i = 0; i < pts.Count - 1; i++)
+        {
+            var p0 = pts[Math.Max(0, i - 1)];
+            var p1 = pts[i];
+            var p2 = pts[i + 1];
+            var p3 = pts[Math.Min(pts.Count - 1, i + 2)];
+            double c1x = p1.X + (p2.X - p0.X) / 6.0;
+            double c1y = p1.Y + (p2.Y - p0.Y) / 6.0;
+            double c2x = p2.X - (p3.X - p1.X) / 6.0;
+            double c2y = p2.Y - (p3.Y - p1.Y) / 6.0;
+            sb.Append(string.Create(_inv, $" C {c1x:F1} {c1y:F1} {c2x:F1} {c2y:F1} {p2.X:F1} {p2.Y:F1}"));
+        }
+        return sb.ToString();
+    }
 
     private RenderFragment RenderBar() => builder =>
     {
@@ -275,8 +390,10 @@
         int pts = series.Max(s => s.Values.Count);
         double groupW = _plotW / (double)pts;
         double barW = groupW / (series.Count + 1);
+        int seq = 0;
 
-        builder.AddMarkupContent(0, GridLines(min, max));
+        if (_showGrid || _showY)
+            builder.AddMarkupContent(seq++, GridLines(min, max));
 
         for (int si = 0; si < series.Count; si++)
         {
@@ -289,11 +406,12 @@
                 double zeroY = _padT + _plotH - (0 - min) / (max - min) * _plotH;
                 double barH = Math.Abs(sv / (max - min) * _plotH);
                 double y = sv >= 0 ? zeroY - barH : zeroY;
-                builder.AddMarkupContent(si * 100 + i,
+                builder.AddMarkupContent(si * 100 + i + 1,
                     string.Create(_inv, $"<rect x=\"{x:F1}\" y=\"{y:F1}\" width=\"{barW * 0.85:F1}\" height=\"{barH:F1}\" rx=\"2\" style=\"fill:{color}\"/>"));
             }
         }
-        builder.AddMarkupContent(9999, AxisLabels(min, max, pts));
+        if (_showX)
+            builder.AddMarkupContent(9999, AxisLabels(min, max, pts));
     };
 
     private RenderFragment RenderPie(bool donut) => builder =>
@@ -314,8 +432,10 @@
         {
             double v = min + (max - min) * i / steps;
             double y = _padT + _plotH - (v - min) / (max - min) * _plotH;
-            sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{y:F1}\" x2=\"{_svgW - _padR}\" y2=\"{y:F1}\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>"));
-            sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{v:G3}</text>"));
+            if (_showGrid)
+                sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{y:F1}\" x2=\"{_svgW - _padR}\" y2=\"{y:F1}\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>"));
+            if (_showY)
+                sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{v:G3}</text>"));
         }
         return sb.ToString();
     }

@@ -504,6 +504,9 @@
   <data name="Charts_MultiLine" xml:space="preserve">
     <value>Multi-series Line</value>
   </data>
+  <data name="Charts_Sparkline" xml:space="preserve">
+    <value>Area, smooth &amp; sparklines (chromeless)</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Chip Group</value>
   </data>

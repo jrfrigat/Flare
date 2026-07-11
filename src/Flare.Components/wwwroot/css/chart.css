@@ -18,6 +18,19 @@
     margin-bottom: var(--flare-spacing-2);
 }
 
+/* Sparkline: a chromeless line that fills its host (e.g. a FlareCard body) edge-to-edge -
+   no card padding, border, background or gaps, so it reads as pure line + fill. */
+.flare-chart--sparkline {
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 0;
+    gap: 0;
+}
+.flare-chart--sparkline .flare-chart__svg {
+    display: block;
+}
+
 .flare-chart__svg {
     width: 100%;
     height: auto;
