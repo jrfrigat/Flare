@@ -5585,7 +5585,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Nav_GettingStarted", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Guide.
+        /// </summary>
+        public static string Nav_Guide {
+            get {
+                return ResourceManager.GetString("Nav_Guide", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Overview.
         /// </summary>

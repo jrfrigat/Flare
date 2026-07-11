@@ -10,23 +10,15 @@
             <Icon><FlareIcon Size="1.25rem" Name="settings" /></Icon>
             <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
         </FlareNavLink>
-        <FlareNavLink Href="/changelog" Tooltip="@GalleryStrings.Nav_Changelog">
-            <Icon><FlareIcon Size="1.25rem" Name="history" /></Icon>
-            <ChildContent>@GalleryStrings.Nav_Changelog</ChildContent>
-        </FlareNavLink>
-        <FlareNavLink Href="/about" Tooltip="@GalleryStrings.Nav_About">
-            <Icon><FlareIcon Size="1.25rem" Name="info" /></Icon>
-            <ChildContent>@GalleryStrings.Nav_About</ChildContent>
-        </FlareNavLink>
     </Footer>
     <ChildContent>
         <FlareNavLink Href="/" Match="NavMatchMode.Exact">
             <Icon><FlareIcon Size="1.25rem" Name="home" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
         </FlareNavLink>
-        <FlareNavLink Href="/getting-started">
-            <Icon><FlareIcon Size="1.25rem" Name="rocket_launch" /></Icon>
-            <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
+        <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Guide))" Active="@(RouteSection == GallerySection.Guide)">
+            <Icon><FlareIcon Size="1.25rem" Name="menu_book" /></Icon>
+            <ChildContent>@GalleryStrings.Nav_Guide</ChildContent>
         </FlareNavLink>
 
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Themes))" Active="@(RouteSection == GallerySection.Themes)">

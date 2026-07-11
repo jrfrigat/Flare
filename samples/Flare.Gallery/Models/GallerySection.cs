@@ -8,6 +8,8 @@ public enum GallerySection
 {
     /// <summary>No section selected; the secondary drawer is closed.</summary>
     None,
+    /// <summary>Guide / meta pages grouped together: getting started, changelog and about.</summary>
+    Guide,
     /// <summary>Theming pages (overview, color, custom theme).</summary>
     Themes,
     /// <summary>Component demo pages, grouped by category.</summary>
@@ -29,6 +31,7 @@ public static class GallerySections
         if (p.StartsWith("/components")) return GallerySection.Components;
         if (p.StartsWith("/services")) return GallerySection.Services;
         if (p == "/api" || p.StartsWith("/api/")) return GallerySection.Api;
+        if (p is "/getting-started" or "/changelog" or "/about") return GallerySection.Guide;
         return p is "/theming" or "/color" or "/custom-theme" ? GallerySection.Themes : GallerySection.None;
     }
 }

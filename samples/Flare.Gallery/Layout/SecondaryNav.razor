@@ -10,7 +10,22 @@
                    Style="padding:0.5rem 1rem;display:block;">@_sectionTitle</FlareText>
     </Header>
     <ChildContent>
-        @if (Section == GallerySection.Themes)
+        @if (Section == GallerySection.Guide)
+        {
+            <FlareNavLink Href="/getting-started">
+                <Icon><FlareIcon Size="1.25rem" Name="rocket_launch" /></Icon>
+                <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
+            </FlareNavLink>
+            <FlareNavLink Href="/changelog">
+                <Icon><FlareIcon Size="1.25rem" Name="history" /></Icon>
+                <ChildContent>@GalleryStrings.Nav_Changelog</ChildContent>
+            </FlareNavLink>
+            <FlareNavLink Href="/about">
+                <Icon><FlareIcon Size="1.25rem" Name="info" /></Icon>
+                <ChildContent>@GalleryStrings.Nav_About</ChildContent>
+            </FlareNavLink>
+        }
+        else if (Section == GallerySection.Themes)
         {
             <FlareNavLink Href="/theming" Match="NavMatchMode.Exact">@GalleryStrings.Nav_Theming</FlareNavLink>
             <FlareNavLink Href="/color">@GalleryStrings.Nav_Color</FlareNavLink>
@@ -59,6 +74,7 @@
 
     private string _sectionTitle => Section switch
     {
+        GallerySection.Guide => GalleryStrings.Nav_Guide,
         GallerySection.Themes => GalleryStrings.Nav_Theming,
         GallerySection.Components => GalleryStrings.Nav_Components,
         GallerySection.Services => GalleryStrings.Nav_Services,
