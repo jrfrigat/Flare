@@ -8,7 +8,8 @@
             <FlareText Typo="TypographyScale.TitleMedium">@Title</FlareText>
         </div>
     }
-    @if (_showLegend && LegendPosition == ChartLegendPosition.Top)
+    <div class="@Css.Classes.Chart.Body @(_legendRow ? Css.Classes.Chart.BodyRow : null)">
+    @if (_showLegend && LegendPosition is ChartLegendPosition.Top or ChartLegendPosition.Left)
     {
         @RenderLegend()
     }
@@ -41,9 +42,10 @@
                 {
                     var c = cat;
                     <rect x="@F(c.XLeft)" y="@F(_padT)" width="@F(c.Width)" height="@F(_plotH)"
-                          fill="transparent"
+                          fill="transparent" style="@(OnPointClick.HasDelegate ? "cursor:pointer" : null)"
                           @onmouseenter="() => SetHoverCategory(c.Index, c.XCenter)"
-                          @onmouseleave="ClearHover" />
+                          @onmouseleave="ClearHover"
+                          @onclick="() => HandlePointClick(c.Index)" />
                 }
             }
             else if (!_spark && Type is ChartType.Pie or ChartType.Donut)
@@ -53,7 +55,8 @@
                     var s = slice;
                     <path d="@s.Path" fill="transparent" class="@Css.Classes.Chart.Hit"
                           @onmouseenter="() => SetHoverSlice(s.Index, s.Cx, s.Cy)"
-                          @onmouseleave="ClearHover" />
+                          @onmouseleave="ClearHover"
+                          @onclick="() => HandlePointClick(s.Index)" />
                 }
             }
         </svg>
@@ -65,10 +68,11 @@
             </div>
         }
     </div>
-    @if (_showLegend && LegendPosition == ChartLegendPosition.Bottom)
+    @if (_showLegend && LegendPosition is ChartLegendPosition.Bottom or ChartLegendPosition.Right)
     {
         @RenderLegend()
     }
+    </div>
 </div>
 
 @code {
@@ -106,7 +110,44 @@
     /// edge-to-edge with a crisp stroke - for inline metric cards. Combine with <see cref="Area"/> for a fill.</summary>
     [Parameter] public bool Sparkline { get; set; }
 
+    /// <summary>Overrides the automatic minimum of the value axis.</summary>
+    [Parameter] public double? YMin { get; set; }
+    /// <summary>Overrides the automatic maximum of the value axis.</summary>
+    [Parameter] public double? YMax { get; set; }
+    /// <summary>.NET numeric format for the Y-axis labels (e.g. "N0", "C0", "P0"); null uses a general format.</summary>
+    [Parameter] public string? YAxisFormat { get; set; }
+    /// <summary>Title drawn under the X axis.</summary>
+    [Parameter] public string? XAxisTitle { get; set; }
+    /// <summary>Title drawn rotated beside the Y axis.</summary>
+    [Parameter] public string? YAxisTitle { get; set; }
+    /// <summary>Renders bar / stacked-bar charts horizontally (categories down the Y axis).</summary>
+    [Parameter] public bool Horizontal { get; set; }
+    /// <summary>Shows the numeric value on each bar and the percentage on each pie/donut slice.</summary>
+    [Parameter] public bool ShowValues { get; set; }
+    /// <summary>Donut hole size as a fraction of the radius (0..1). Default 0.55.</summary>
+    [Parameter] public double DonutRingRatio { get; set; } = 0.55;
+    /// <summary>Bar width as a fraction of its slot (0..1). Default 0.85.</summary>
+    [Parameter] public double BarWidthRatio { get; set; } = 0.85;
+    /// <summary>Raised with the category (or slice) index when a data point is clicked.</summary>
+    [Parameter] public EventCallback<int> OnPointClick { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Chart.Root;
+
+    // Series toggled off via the interactive legend.
+    private readonly HashSet<int> _hidden = new();
+    private bool IsHidden(int si) => _hidden.Contains(si);
+    private void ToggleSeries(int si) { if (!_hidden.Remove(si)) _hidden.Add(si); }
+    private bool _legendRow => _showLegend && LegendPosition is ChartLegendPosition.Left or ChartLegendPosition.Right;
+    private Task HandlePointClick(int index) => OnPointClick.InvokeAsync(index);
+
+    // Applies the YMin/YMax overrides to an auto-computed (min,max) pair.
+    private (double Min, double Max) ApplyBounds(double min, double max)
+    {
+        if (YMin.HasValue) min = YMin.Value;
+        if (YMax.HasValue) max = YMax.Value;
+        if (max == min) max = min + 1;
+        return (min, max);
+    }
 
     // SVG numeric attributes require '.' as the decimal separator; never use the current
     // culture (e.g. ru-RU formats 192.0 as "192,0", which is invalid in SVG).
@@ -173,14 +214,18 @@
         builder.AddAttribute(1, "class", Css.Classes.Chart.Legend);
         for (int i = 0; i < series.Count; i++)
         {
+            int idx = i;
             builder.OpenElement(2, "div");
-            builder.AddAttribute(3, "class", Css.Classes.Chart.LegendItem);
-            builder.OpenElement(4, "span");
-            builder.AddAttribute(5, "class", Css.Classes.Chart.LegendDot);
-            builder.AddAttribute(6, "style", $"--flare-chart-dot:{GetColor(i)}");
+            builder.AddAttribute(3, "class", IsHidden(idx)
+                ? $"{Css.Classes.Chart.LegendItem} {Css.Classes.Chart.LegendItemOff}"
+                : Css.Classes.Chart.LegendItem);
+            builder.AddAttribute(4, "onclick", EventCallback.Factory.Create(this, () => ToggleSeries(idx)));
+            builder.OpenElement(5, "span");
+            builder.AddAttribute(6, "class", Css.Classes.Chart.LegendDot);
+            builder.AddAttribute(7, "style", $"--flare-chart-dot:{GetColor(idx)}");
             builder.CloseElement();
-            builder.OpenElement(7, "span");
-            builder.AddContent(8, series[i].Label);
+            builder.OpenElement(8, "span");
+            builder.AddContent(9, series[idx].Label);
             builder.CloseElement();
             builder.CloseElement();
         }
@@ -225,7 +270,7 @@
             bool donut = Type == ChartType.Donut;
             double cx = _svgW / 2.0, cy = _svgH / 2.0;
             double r = Math.Min(cx, cy) - 16;
-            double inner = donut ? r * 0.55 : 0;
+            double inner = donut ? r * Math.Clamp(DonutRingRatio, 0, 0.95) : 0;
             double total = series.Sum(s => s.Values.FirstOrDefault());
             if (total == 0) yield break;
 
@@ -253,12 +298,11 @@
 
     private (double Min, double Max) _scale()
     {
-        var all = Data!.Series.SelectMany(s => s.Values).ToList();
+        var all = Data!.Series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
         if (all.Count == 0) return (0, 1);
         double min = all.Min(), max = all.Max();
-        if (Type == ChartType.Bar) { max = Math.Max(max, 0); min = Math.Min(min, 0); }
-        if (max == min) max = min + 1;
-        return (min, max);
+        if (Type is ChartType.Bar or ChartType.StackedBar) { max = Math.Max(max, 0); min = Math.Min(min, 0); }
+        return ApplyBounds(min, max);
     }
 
     private double _yOf(double v, double min, double max) =>
@@ -298,10 +342,9 @@
     private RenderFragment RenderLine() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var allVals = series.SelectMany(s => s.Values).ToList();
-        if (allVals.Count == 0) return;
-        double min = allVals.Min(), max = allVals.Max();
-        if (max == min) { max = min + 1; }
+        var visVals = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
+        if (visVals.Count == 0) return;
+        var (min, max) = ApplyBounds(visVals.Min(), visVals.Max());
         int pts = series.Max(s => s.Values.Count);
         int seq = 0;
 
@@ -313,6 +356,7 @@
 
         for (int si = 0; si < series.Count; si++)
         {
+            if (IsHidden(si)) continue;
             var vals = series[si].Values;
             if (vals.Count == 0) continue;
             var pointList = new List<(double X, double Y)>(vals.Count);
@@ -354,6 +398,7 @@
         }
         if (_showX)
             builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
+        builder.AddMarkupContent(seq++, AxisTitles());
     };
 
     private static string StraightPath(IReadOnlyList<(double X, double Y)> pts)
@@ -388,20 +433,66 @@
     private RenderFragment RenderBar() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var allVals = series.SelectMany(s => s.Values).ToList();
-        if (allVals.Count == 0) return;
-        double max = Math.Max(allVals.Max(), 0), min = Math.Min(allVals.Min(), 0);
-        if (max == min) max = min + 1;
+        var visVals = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
+        if (visVals.Count == 0) return;
+        var (min, max) = ApplyBounds(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0));
         int pts = series.Max(s => s.Values.Count);
-        double groupW = _plotW / (double)pts;
-        double barW = groupW / (series.Count + 1);
         int seq = 0;
 
+        if (Horizontal)
+        {
+            if (_showGrid || _showY)
+            {
+                var g = new System.Text.StringBuilder();
+                for (int t = 0; t <= 4; t++)
+                {
+                    double v = min + (max - min) * t / 4;
+                    double gx = _padL + (v - min) / (max - min) * _plotW;
+                    if (_showGrid) g.Append(string.Create(_inv, $"<line x1=\"{gx:F1}\" y1=\"{_padT}\" x2=\"{gx:F1}\" y2=\"{_padT + _plotH}\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>"));
+                    if (_showY) g.Append(string.Create(_inv, $"<text x=\"{gx:F1}\" y=\"{_padT + _plotH + 14:F1}\" text-anchor=\"middle\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{FmtY(v)}</text>"));
+                }
+                builder.AddMarkupContent(seq++, g.ToString());
+            }
+            double groupH = _plotH / (double)pts;
+            double slotH = groupH / (series.Count + 1);
+            double zeroX = _padL + (0 - min) / (max - min) * _plotW;
+            for (int si = 0; si < series.Count; si++)
+            {
+                if (IsHidden(si)) continue;
+                var vals = series[si].Values; var color = GetColor(si);
+                for (int i = 0; i < vals.Count; i++)
+                {
+                    double sv = SafeValue(vals[i]);
+                    double y = _padT + i * groupH + si * slotH + slotH * 0.25;
+                    double w = Math.Abs(sv / (max - min) * _plotW);
+                    double x = sv >= 0 ? zeroX : zeroX - w;
+                    double bh = slotH * BarWidthRatio;
+                    builder.AddMarkupContent(seq++, string.Create(_inv, $"<rect x=\"{x:F1}\" y=\"{y:F1}\" width=\"{w:F1}\" height=\"{bh:F1}\" rx=\"2\" style=\"fill:{color}\"/>"));
+                    if (ShowValues) builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{x + w + 3:F1}\" y=\"{y + bh / 2 + 3:F1}\" font-size=\"8\" style=\"fill:var(--flare-color-on-surface-variant)\">{sv:G3}</text>"));
+                }
+            }
+            if (_showX && Data?.Labels is { Count: > 0 } labels)
+            {
+                var t = new System.Text.StringBuilder();
+                for (int i = 0; i < pts && i < labels.Count; i++)
+                {
+                    double y = _padT + i * groupH + groupH / 2 + 3;
+                    t.Append(string.Create(_inv, $"<text x=\"{_padL - 4:F1}\" y=\"{y:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{labels[i]}</text>"));
+                }
+                builder.AddMarkupContent(seq++, t.ToString());
+            }
+            builder.AddMarkupContent(seq++, AxisTitles());
+            return;
+        }
+
+        double groupW = _plotW / (double)pts;
+        double barW = groupW / (series.Count + 1);
         if (_showGrid || _showY)
             builder.AddMarkupContent(seq++, GridLines(min, max));
 
         for (int si = 0; si < series.Count; si++)
         {
+            if (IsHidden(si)) continue;
             var vals = series[si].Values;
             var color = GetColor(si);
             for (int i = 0; i < vals.Count; i++)
@@ -411,21 +502,37 @@
                 double zeroY = _padT + _plotH - (0 - min) / (max - min) * _plotH;
                 double barH = Math.Abs(sv / (max - min) * _plotH);
                 double y = sv >= 0 ? zeroY - barH : zeroY;
-                builder.AddMarkupContent(si * 100 + i + 1,
-                    string.Create(_inv, $"<rect x=\"{x:F1}\" y=\"{y:F1}\" width=\"{barW * 0.85:F1}\" height=\"{barH:F1}\" rx=\"2\" style=\"fill:{color}\"/>"));
+                double bw = barW * BarWidthRatio;
+                builder.AddMarkupContent(seq++,
+                    string.Create(_inv, $"<rect x=\"{x:F1}\" y=\"{y:F1}\" width=\"{bw:F1}\" height=\"{barH:F1}\" rx=\"2\" style=\"fill:{color}\"/>"));
+                if (ShowValues)
+                    builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{x + bw / 2:F1}\" y=\"{(sv >= 0 ? y - 3 : y + barH + 9):F1}\" text-anchor=\"middle\" font-size=\"8\" style=\"fill:var(--flare-color-on-surface-variant)\">{sv:G3}</text>"));
             }
         }
         if (_showX)
-            builder.AddMarkupContent(9999, AxisLabels(min, max, pts));
+            builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
+        builder.AddMarkupContent(seq++, AxisTitles());
     };
 
     private RenderFragment RenderPie(bool donut) => builder =>
     {
         // donut vs pie is already encoded in Type, which _slices reads.
+        int seq = 0;
         foreach (var slice in _slices)
         {
-            builder.AddMarkupContent(slice.Index,
+            builder.AddMarkupContent(seq++,
                 $"<path d=\"{slice.Path}\" stroke-width=\"1.5\" style=\"fill:{GetColor(slice.Index)};stroke:var(--flare-color-surface)\"/>");
+        }
+        if (ShowValues && Data?.Series is { Count: > 0 } series)
+        {
+            double total = series.Sum(s => s.Values.FirstOrDefault());
+            if (total > 0)
+                foreach (var slice in _slices)
+                {
+                    double pct = series[slice.Index].Values.FirstOrDefault() / total * 100;
+                    if (pct < 4) continue; // skip labels on tiny slivers
+                    builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{slice.Cx:F1}\" y=\"{slice.Cy + 3:F1}\" text-anchor=\"middle\" font-size=\"10\" style=\"fill:var(--flare-color-surface)\">{pct:F0}%</text>"));
+                }
         }
     };
 
@@ -434,34 +541,39 @@
         if (Data?.Series is not { Count: > 0 } series) return;
         int pts = series.Max(s => s.Values.Count);
         if (pts == 0) return;
-        // Stacked totals per category (positive stacking).
+        // Stacked totals per category (positive stacking; hidden series excluded).
         double max = 0;
         for (int i = 0; i < pts; i++)
         {
             double sum = 0;
-            foreach (var s in series) if (i < s.Values.Count) sum += Math.Max(0, SafeValue(s.Values[i]));
+            for (int si = 0; si < series.Count; si++)
+                if (!IsHidden(si) && i < series[si].Values.Count) sum += Math.Max(0, SafeValue(series[si].Values[i]));
             max = Math.Max(max, sum);
         }
         if (max <= 0) max = 1;
+        if (YMax.HasValue) max = YMax.Value;
         int seq = 0;
         if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(0, max));
 
         double groupW = _plotW / (double)pts;
-        double barW = groupW * 0.6;
+        double barW = groupW * 0.6 * BarWidthRatio;
         for (int i = 0; i < pts; i++)
         {
             double x = _padL + i * groupW + (groupW - barW) / 2;
             double yCursor = _padT + _plotH;
             for (int si = 0; si < series.Count; si++)
             {
-                if (i >= series[si].Values.Count) continue;
+                if (IsHidden(si) || i >= series[si].Values.Count) continue;
                 double v = Math.Max(0, SafeValue(series[si].Values[i]));
                 double h = v / max * _plotH;
                 yCursor -= h;
                 builder.AddMarkupContent(seq++, string.Create(_inv, $"<rect x=\"{x:F1}\" y=\"{yCursor:F1}\" width=\"{barW:F1}\" height=\"{h:F1}\" rx=\"2\" style=\"fill:{GetColor(si)}\"/>"));
+                if (ShowValues && h >= 12)
+                    builder.AddMarkupContent(seq++, string.Create(_inv, $"<text x=\"{x + barW / 2:F1}\" y=\"{yCursor + h / 2 + 3:F1}\" text-anchor=\"middle\" font-size=\"8\" style=\"fill:var(--flare-color-surface)\">{v:G3}</text>"));
             }
         }
         if (_showX) builder.AddMarkupContent(seq++, AxisLabels(0, max, pts));
+        builder.AddMarkupContent(seq++, AxisTitles());
     };
 
     private RenderFragment RenderScatter() => builder =>
@@ -509,7 +621,7 @@
         if (Data?.Series is not { Count: > 0 } series) return;
         int axes = series.Max(s => s.Values.Count);
         if (axes < 3) return; // a radar needs at least 3 axes
-        double max = series.SelectMany(s => s.Values).DefaultIfEmpty(0).Max();
+        double max = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).DefaultIfEmpty(0).Max();
         if (max <= 0) max = 1;
         double cx = _svgW / 2.0, cy = _svgH / 2.0;
         double r = Math.Min(cx, cy) - 24;
@@ -553,6 +665,7 @@
 
         for (int si = 0; si < series.Count; si++)
         {
+            if (IsHidden(si)) continue;
             var vals = series[si].Values;
             if (vals.Count < 3) continue;
             var color = GetColor(si);
@@ -579,7 +692,26 @@
             if (_showGrid)
                 sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{y:F1}\" x2=\"{_svgW - _padR}\" y2=\"{y:F1}\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>"));
             if (_showY)
-                sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{v:G3}</text>"));
+                sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{FmtY(v)}</text>"));
+        }
+        return sb.ToString();
+    }
+
+    // Y-axis label formatting: the .NET YAxisFormat when set, else a compact general format.
+    private string FmtY(double v) =>
+        string.IsNullOrEmpty(YAxisFormat) ? v.ToString("G3", _inv) : v.ToString(YAxisFormat, _inv);
+
+    // Optional X/Y axis titles for the cartesian charts.
+    private string AxisTitles()
+    {
+        if (_spark) return "";
+        var sb = new System.Text.StringBuilder();
+        if (!string.IsNullOrEmpty(XAxisTitle))
+            sb.Append(string.Create(_inv, $"<text x=\"{_padL + _plotW / 2.0:F1}\" y=\"{_svgH - 2:F1}\" text-anchor=\"middle\" font-size=\"10\" style=\"fill:var(--flare-color-on-surface-variant)\">{XAxisTitle}</text>"));
+        if (!string.IsNullOrEmpty(YAxisTitle))
+        {
+            double cy = _padT + _plotH / 2.0;
+            sb.Append(string.Create(_inv, $"<text x=\"10\" y=\"{cy:F1}\" text-anchor=\"middle\" font-size=\"10\" transform=\"rotate(-90 10 {cy:F1})\" style=\"fill:var(--flare-color-on-surface-variant)\">{YAxisTitle}</text>"));
         }
         return sb.ToString();
     }

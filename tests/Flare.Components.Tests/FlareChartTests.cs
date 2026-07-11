@@ -181,8 +181,8 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.LegendPosition, ChartLegendPosition.Top));
 
-        var root = cut.Find(".flare-chart");
-        var children = root.Children.ToList();
+        var body = cut.Find(".flare-chart__body");
+        var children = body.Children.ToList();
         int legendIdx = children.FindIndex(c => c.ClassList.Contains("flare-chart__legend"));
         int plotIdx = children.FindIndex(c => c.ClassList.Contains("flare-chart__plot"));
         Assert.True(legendIdx >= 0 && plotIdx >= 0 && legendIdx < plotIdx);
@@ -243,5 +243,87 @@ public class FlareChartTests : FlareTestContext
 
         var seriesPolys = cut.FindAll("polygon").Where(p => (p.GetAttribute("style") ?? "").Contains("fill-opacity")).ToList();
         Assert.Equal(2, seriesPolys.Count);
+    }
+
+    // --- Phase 3: config + interactivity -----------------------------------------------------
+
+    [Fact]
+    public void YAxisFormat_FormatsGridLabels()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, new ChartData([new ChartSeries("A", [1000, 2000, 3000])]))
+            .Add(x => x.YMin, 0.0).Add(x => x.YMax, 3000.0)
+            .Add(x => x.YAxisFormat, "N0"));
+
+        // N0 with an invariant culture inserts thousands separators ("3,000").
+        Assert.Contains(cut.FindAll("text"), t => (t.TextContent ?? "").Contains("3,000"));
+    }
+
+    [Fact]
+    public void LegendClick_TogglesSeriesOff()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("One", [1, 2, 3]),
+                new ChartSeries("Two", [3, 2, 1]),
+            ])));
+
+        Assert.Equal(2, cut.FindAll("path[style*=stroke]").Count); // both lines drawn
+        cut.FindAll(".flare-chart__legend-item")[0].Click();        // hide series 0
+        Assert.Equal(1, cut.FindAll("path[style*=stroke]").Count);  // one line left
+        Assert.NotEmpty(cut.FindAll(".flare-chart__legend-item--off"));
+    }
+
+    [Fact]
+    public void OnPointClick_FiresWithCategoryIndex()
+    {
+        int? clicked = null;
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Bar)
+            .Add(x => x.Data, _data)
+            .Add(x => x.OnPointClick, i => clicked = i));
+
+        // the transparent category hit zones carry the click
+        cut.FindAll("rect").First(r => (r.GetAttribute("fill") ?? "") == "transparent").Click();
+        Assert.Equal(0, clicked);
+    }
+
+    [Fact]
+    public void Horizontal_Bar_Renders()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Bar)
+            .Add(x => x.Data, _data)
+            .Add(x => x.Horizontal, true));
+
+        var fills = cut.FindAll("rect").Where(r => (r.GetAttribute("style") ?? "").Contains("fill:")).ToList();
+        Assert.Equal(4, fills.Count); // one bar per category (single series)
+    }
+
+    [Fact]
+    public void ShowValues_Pie_RendersPercentLabels()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Pie)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("A", [3]),
+                new ChartSeries("B", [7]),
+            ]))
+            .Add(x => x.ShowValues, true));
+
+        Assert.Contains(cut.FindAll("text"), t => (t.TextContent ?? "").Contains("%"));
+    }
+
+    [Fact]
+    public void LegendPosition_Left_UsesRowBody()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.LegendPosition, ChartLegendPosition.Left));
+
+        Assert.NotEmpty(cut.FindAll(".flare-chart__body--row"));
     }
 }

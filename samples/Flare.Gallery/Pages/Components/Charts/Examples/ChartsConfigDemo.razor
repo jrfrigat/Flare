@@ -1,0 +1,19 @@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareChart Type="ChartType.Bar" Horizontal="true" ShowValues="true"
+                Title="Horizontal bar + values + N0 axis" Data="_bars" YAxisFormat="N0" />
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <div style="flex:1;min-width:16rem;">
+            <FlareChart Type="ChartType.Donut" ShowValues="true" DonutRingRatio="0.6"
+                        Title="Donut + %, legend right" Data="_pie"
+                        LegendPosition="ChartLegendPosition.Right" />
+        </div>
+        <div style="flex:1;min-width:16rem;">
+            <FlareChart Type="ChartType.Line" Data="_line" ShowMarkers="true"
+                        OnPointClick="OnPoint" Title="@_lineTitle" />
+        </div>
+    </FlareStack>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Click a point above, or click a legend label to toggle a series.
+    </FlareText>
+</FlareStack>

@@ -36,11 +36,39 @@
     height: auto;
 }
 
+/* Body wraps legend + plot so a Left/Right legend can sit beside the plot. */
+.flare-chart__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-4);
+}
+.flare-chart__body--row {
+    flex-direction: row;
+    align-items: center;
+}
+.flare-chart__body--row > .flare-chart__plot {
+    flex: 1;
+    min-width: 0;
+}
+.flare-chart__body--row > .flare-chart__legend {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin-top: 0;
+}
+
 .flare-chart__legend {
     display: flex;
     flex-wrap: wrap;
     gap: var(--flare-spacing-6);
     margin-top: var(--flare-spacing-2);
+}
+/* Interactive legend: click to toggle a series. */
+.flare-chart__legend-item {
+    cursor: pointer;
+    user-select: none;
+}
+.flare-chart__legend-item--off {
+    opacity: 0.4;
 }
 
 .flare-chart__legend-item {

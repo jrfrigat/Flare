@@ -33,6 +33,10 @@ public enum ChartLegendPosition
     Bottom,
     /// <summary>Above the plot.</summary>
     Top,
+    /// <summary>To the left of the plot.</summary>
+    Left,
+    /// <summary>To the right of the plot.</summary>
+    Right,
     /// <summary>No legend.</summary>
     None,
 }

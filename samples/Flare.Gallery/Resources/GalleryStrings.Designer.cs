@@ -1710,6 +1710,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal, values, axis format &amp; interactivity.
+        /// </summary>
+        public static string Charts_Config {
+            get {
+                return ResourceManager.GetString("Charts_Config", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pie Chart.
         /// </summary>
         public static string Charts_Pie {

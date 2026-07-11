@@ -28,14 +28,16 @@ category hit-zones). **Horizontal bar moved to Phase 3** (it flips the axis geom
 axis-config work). **TimeSeries** dropped as a dedicated type - a Line with time-string `Labels` covers it;
 revisit only if DateTime-aware tick spacing is needed.
 
-## Phase 3 - config depth + interactivity - TODO
-- Axis config: `YMin`/`YMax` (+ suggested), `YAxisTicks`, `YAxisFormat` (.NET format / func), axis titles
-  (`XAxisTitle`/`YAxisTitle`), `XAxisLabelRotation`, per-axis gridline toggles.
-- `LegendPosition` Left/Right (row layout) + click-to-toggle series visibility (`CanHideSeries` + event).
-- Data labels on points/bars/slices (`ShowValues`/`ShowDataLabels`).
-- Interactivity: `OnPointClick` / `SelectedIndex` + `SelectedIndexChanged`; `TooltipTemplate` (RenderFragment).
-- Pie/Donut: `ShowValues` (%/value in slice), `DonutRingRatio`.
-- Bar: width/spacing/justify controls, `BorderRadius`.
+## Phase 3 - config depth + interactivity - DONE (2026-07-11)
+- Axis config: `YMin`/`YMax` bounds, `YAxisFormat` (.NET numeric format), `XAxisTitle`/`YAxisTitle`.
+- `LegendPosition` Left/Right (row `__body` layout) + **click-to-toggle series visibility** (interactive
+  legend, hidden series excluded from scale/draw).
+- **`Horizontal`** bar (categories down the Y axis, value axis on X).
+- **`ShowValues`**: value labels on bars/stacked segments + percentage labels on pie/donut slices.
+- **`OnPointClick`** (`EventCallback<int>` with the category/slice index) on the transparent hit zones.
+- Pie/Donut: `DonutRingRatio`; Bar: `BarWidthRatio`.
+- Deferred (low value): `YAxisTicks` count control, `XAxisLabelRotation`, `TooltipTemplate` (the text
+  tooltip is enough for now), horizontal *stacked* bar, dual axis.
 
 ## Phase 4 - leapfrog / advanced - TODO
 - **Token-driven CSS/SVG animation** (enter + data-update transitions) - Mud has none, and unlike Chart.js
