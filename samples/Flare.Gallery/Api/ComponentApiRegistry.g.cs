@@ -3064,7 +3064,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"CloseAsync", @"CloseAsync()", @"Task", null, @"Closes the menu (also callable programmatically), clears registered items and keyboard focus, and raises OnToggle.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"OpenAsync", @"OpenAsync()", @"Task", null, @"Opens the menu programmatically (no-op if already open) and raises OnToggle.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -4415,10 +4421,16 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Label/content of the primary action button.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to both buttons.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the whole split button.", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"FullWidth", @"bool", @"false", @"Stretches the split button to the full width of its container (the primary action grows).", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"Href", @"string?", null, @"When set, the primary action button renders as a link (<a>) to this URL.", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a spinner on the primary action button and disables it.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"MenuAriaLabel", @"string", @"""More actions""", @"Accessible label for the dropdown trigger (aria-label / menu label).", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"MenuItems", @"RenderFragment?", null, @"FlareMenuItem entries shown in the dropdown opened by the trigger.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the primary action button is clicked.", null, false, true, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"Placement", @"MenuAnchor", @"MenuAnchor.BottomRight", @"Corner of the trigger the dropdown menu aligns to. Defaults to BottomRight.", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"Rel", @"string?", null, @"The primary link's rel (link mode); null + Target_blank defaults to noopener noreferrer.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size applied to both buttons.", null, false, false, false, @"FlareSplitButton"),
+                new ApiParameterInfo(@"Target", @"string?", null, @"Target for the primary link (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Filled", @"Visual style variant applied to both the main and trigger buttons.", null, false, false, false, @"FlareSplitButton"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -4426,7 +4438,11 @@ public static class ComponentApiRegistry
             },
             new ApiMethodInfo[]
             {
+                new ApiMethodInfo(@"Close", @"Close()", @"Task", null, @"Closes the dropdown menu programmatically.",
+                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the primary action button.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"Open", @"Open()", @"Task", null, @"Opens the dropdown menu programmatically.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -6718,6 +6734,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareMenu",
+                @"FlareSplitButton",
             });
 
         e[@"MenuTrigger"] = new ApiEnumInfo(
