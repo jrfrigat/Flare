@@ -19,7 +19,7 @@ A production-ready, **theme-agnostic** Blazor component library - **.NET 10**-fi
 
 **[Live demo / component gallery ->](https://flare.frigat.duckdns.org/)**
 
-**100+ components - build your own theme with semantic tokens - 7 optional preset design systems x 34 palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
+**100+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
 
 ---
 
@@ -29,7 +29,7 @@ A production-ready, **theme-agnostic** Blazor component library - **.NET 10**-fi
 - **Three independent theme axes** - swap the design system (MD3 Expressive / MD3 / MD2 / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026), the color palette, and light/dark/auto separately, at runtime
 - **Seven design systems, shipped as independent packages** - reference only the themes you use; the umbrella `Flare.Blazor` package ships no themes of its own
 - **Class-toggle delivery** - switching is a class swap on `<html>` (no per-switch CSS-var injection); `ThemeDelivery.Inject` available as a fallback
-- **Reusable palettes & generators** - built-in Material/Office/Aero/Liquid Glass/Visual Studio palettes (34 in total), plus `Palette.FromColors(id, name, seed)` to derive a full light+dark palette (MD3 tonal / Fluent ramp per active theme)
+- **Reusable palettes & generators** - built-in Material/Office/Aero/Liquid Glass/Visual Studio palettes (30+ in total), plus `Palette.FromColors(id, name, seed)` to derive a full light+dark palette (MD3 tonal / Fluent ramp per active theme)
 - **Dynamic Color** - opt-in palette derived at runtime from the OS/browser accent color (Windows/macOS accent, Android Material You via the CSS `AccentColor` system color) through the active theme's generator; falls back to a curated `DynamicFallbackPalette` where the real accent is unavailable - notably Chrome/Edge, which return a fixed placeholder, not the genuine accent (`opts.UseDynamicPalette = true`)
 - **Auto dark mode** - `ThemeMode.Auto` tracks `prefers-color-scheme`; a one-line bootstrap script kills the FOUC before first paint
 - **Unified color API** - one `Color` parameter (`FlareColor`) on every color-aware component: pass a semantic role (`FlareColor.Primary`) for a cached theme class, or any custom value (`FlareColor.Custom("#E91E63")`) for inline tokens
@@ -298,7 +298,7 @@ See [docs/en/theme-creation-guide.md](docs/en/theme-creation-guide.md) for the t
 
 ```sh
 dotnet build        # 0 errors
-dotnet test         # 1183 pass (1125 Components + 58 Core)
+dotnet test         # 1600+ pass (1500+ Components + 100+ Core)
 docker run -p 8080:80 flare-gallery   # Gallery at http://localhost:8080
 ```
 
