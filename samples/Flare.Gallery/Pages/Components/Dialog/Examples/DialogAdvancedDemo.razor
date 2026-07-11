@@ -1,0 +1,41 @@
+@inject ISnackbarService Snackbar
+@inherits LocalizedPage
+
+<FlareButton OnClick="@(() => _visible = true)">@GalleryStrings.Dialog_AdvancedOpen</FlareButton>
+
+<FlareDialog @bind-Visible="_visible" Title="@GalleryStrings.Dialog_Title"
+             ShowCloseButton="true" Draggable="true" Resizable="true" BeforeClose="GuardCloseAsync">
+    <ChildContent>
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Dialog_AdvancedBody
+            </FlareText>
+            <FlareSwitch @bind-Value="_unsaved" Label="@GalleryStrings.Dialog_UnsavedToggle" />
+        </FlareStack>
+    </ChildContent>
+    <Actions>
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="Save">@GalleryStrings.Dialog_Save</FlareButton>
+    </Actions>
+</FlareDialog>
+
+@code {
+    private bool _visible;
+    private bool _unsaved;
+
+    // BeforeClose guard: veto scrim / Escape / X dismissal while there are unsaved changes.
+    private ValueTask<bool> GuardCloseAsync(DialogCloseReason reason)
+    {
+        if (_unsaved)
+        {
+            Snackbar.Show(GalleryStrings.Dialog_UnsavedBlocked, SnackbarSeverity.Warning);
+            return ValueTask.FromResult(false);
+        }
+        return ValueTask.FromResult(true);
+    }
+
+    private void Save()
+    {
+        _unsaved = false;
+        _visible = false;
+    }
+}

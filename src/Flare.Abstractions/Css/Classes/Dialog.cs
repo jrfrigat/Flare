@@ -43,4 +43,12 @@ public static class Dialog
     public const string ScrimBottom = "flare-dialog-scrim--bottom";
     /// <summary>The <c>flare-dialog__grabber</c> CSS class: the sheet drag-grabber handle.</summary>
     public const string Grabber = "flare-dialog__grabber";
+    /// <summary>The <c>flare-dialog__close</c> CSS class: the built-in header close (X) button.</summary>
+    public const string CloseButton = "flare-dialog__close";
+    /// <summary>The <c>flare-dialog--draggable</c> CSS class applied when the dialog can be dragged by its header.</summary>
+    public const string Draggable = "flare-dialog--draggable";
+    /// <summary>The <c>flare-dialog__drag-handle</c> CSS class: the header region that starts a drag.</summary>
+    public const string DragHandle = "flare-dialog__drag-handle";
+    /// <summary>The <c>flare-dialog__resizer</c> CSS class: the bottom-right resize gripper.</summary>
+    public const string Resizer = "flare-dialog__resizer";
 }

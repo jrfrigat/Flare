@@ -921,6 +921,21 @@
   <data name="Dialog_ShowPrompt" xml:space="preserve">
     <value>Show prompt dialog</value>
   </data>
+  <data name="Dialog_Advanced" xml:space="preserve">
+    <value>Close button, draggable, resizable and close guard</value>
+  </data>
+  <data name="Dialog_AdvancedOpen" xml:space="preserve">
+    <value>Open advanced dialog</value>
+  </data>
+  <data name="Dialog_AdvancedBody" xml:space="preserve">
+    <value>Drag me by the header, resize from the bottom-right corner, or close with the X. Turn on "unsaved changes" to block accidental dismissal.</value>
+  </data>
+  <data name="Dialog_UnsavedToggle" xml:space="preserve">
+    <value>Simulate unsaved changes</value>
+  </data>
+  <data name="Dialog_UnsavedBlocked" xml:space="preserve">
+    <value>Blocked: you have unsaved changes</value>
+  </data>
   <data name="Drawer_Title" xml:space="preserve">
     <value>Drawer</value>
   </data>

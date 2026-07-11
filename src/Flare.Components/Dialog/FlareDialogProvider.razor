@@ -39,11 +39,16 @@
                  Size="dialog.Options.Size"
                  Position="dialog.Options.Position"
                  ShowGrabber="dialog.Options.ShowGrabber"
+                 ShowCloseButton="dialog.Options.ShowCloseButton"
+                 Draggable="dialog.Options.Draggable"
+                 Resizable="dialog.Options.Resizable"
+                 BeforeClose="dialog.Options.BeforeClose"
                  PanelClass="@dialog.Options.PanelClass"
                  ScrimClass="@dialog.Options.ScrimClass"
                  Divider="dialog.Options.Divider"
                  CloseOnScrimClick="dialog.Options.CloseOnScrimClick"
                  CloseOnEsc="dialog.Options.CloseOnEsc"
+                 CloseOnNavigation="dialog.Options.CloseOnNavigation"
                  VisibleChanged="@(visible => HandleDialogVisibleChanged(dialog, visible))">
         <ChildContent>
             <CascadingValue Value="dialog" IsFixed="true">

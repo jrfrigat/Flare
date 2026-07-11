@@ -79,6 +79,9 @@ public sealed class DialogService : IDialogService
                 Divider = options.Divider,
                 PanelClass = options.PanelClass,
                 ScrimClass = options.ScrimClass,
+                ShowCloseButton = options.ShowCloseButton,
+                CloseOnNavigation = options.CloseOnNavigation,
+                BeforeClose = options.BeforeClose,
                 ShowGrabber = true,
                 Position = DialogPosition.Bottom,
             };

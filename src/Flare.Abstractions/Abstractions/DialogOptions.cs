@@ -55,6 +55,25 @@ public sealed class DialogOptions
     /// <summary>Shows a divider between the title header and the body. Default <see langword="false"/>.</summary>
     public bool Divider { get; set; }
 
+    /// <summary>Shows a built-in close (X) button in the top corner of the panel. Default <see langword="false"/>.</summary>
+    public bool ShowCloseButton { get; set; }
+
+    /// <summary>Dismisses the dialog automatically when the app navigates to a new route. Default <see langword="true"/>.</summary>
+    public bool CloseOnNavigation { get; set; } = true;
+
+    /// <summary>Lets the user move the dialog by dragging its header. Default <see langword="false"/>.</summary>
+    public bool Draggable { get; set; }
+
+    /// <summary>Lets the user resize the dialog from a bottom-right gripper. Default <see langword="false"/>.</summary>
+    public bool Resizable { get; set; }
+
+    /// <summary>
+    /// Optional guard consulted before a scrim / Escape / close-button dismissal. Return
+    /// <see langword="true"/> to allow the close or <see langword="false"/> to veto it (e.g. to keep the
+    /// dialog open while there are unsaved changes). A programmatic close via the dialog handle bypasses it.
+    /// </summary>
+    public Func<DialogCloseReason, ValueTask<bool>>? BeforeClose { get; set; }
+
     /// <summary>Shared, immutable-by-convention default options used when a caller supplies none.</summary>
     public static DialogOptions Default { get; } = new();
 }

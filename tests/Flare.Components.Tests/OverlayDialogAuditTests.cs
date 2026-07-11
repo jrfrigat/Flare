@@ -294,4 +294,82 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         // A hover popover is not modal, so it must not render the dismiss backdrop.
         Assert.Empty(cut.FindAll(".flare-popover__backdrop"));
     }
+
+    // -- Dialog ----------------------------------------------------------------
+
+    [Fact]
+    public void Dialog_CloseButton_RendersAndCloses()
+    {
+        bool? last = null;
+        var cut = Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.ShowCloseButton, true)
+            .Add(x => x.VisibleChanged, (bool v) => last = v));
+
+        Assert.NotEmpty(cut.FindAll(".flare-dialog__close"));
+        cut.Find(".flare-dialog__close").Click();
+        Assert.False(last);
+    }
+
+    [Fact]
+    public void Dialog_BeforeClose_CanVetoClose()
+    {
+        bool? last = null;
+        var cut = Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.ShowCloseButton, true)
+            .Add(x => x.BeforeClose, _ => ValueTask.FromResult(false))
+            .Add(x => x.VisibleChanged, (bool v) => last = v));
+
+        cut.Find(".flare-dialog__close").Click();
+        Assert.Null(last); // vetoed - VisibleChanged never fired
+    }
+
+    [Fact]
+    public void Dialog_Draggable_AddsHandleAndClass()
+    {
+        var cut = Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.Title, "Move me")
+            .Add(x => x.Draggable, true));
+
+        Assert.NotEmpty(cut.FindAll(".flare-dialog--draggable"));
+        Assert.NotEmpty(cut.FindAll(".flare-dialog__drag-handle"));
+    }
+
+    [Fact]
+    public void Dialog_Resizable_AddsGripper()
+    {
+        var cut = Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.Resizable, true));
+
+        Assert.NotEmpty(cut.FindAll(".flare-dialog__resizer"));
+    }
+
+    [Fact]
+    public void Dialog_CloseOnNavigation_ClosesOnNavigate()
+    {
+        bool? last = null;
+        Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.CloseOnNavigation, true)
+            .Add(x => x.VisibleChanged, (bool v) => last = v));
+
+        Services.GetRequiredService<NavigationManager>().NavigateTo("other");
+        Assert.False(last);
+    }
+
+    [Fact]
+    public void Dialog_CloseOnNavigationFalse_StaysOpen()
+    {
+        bool? last = null;
+        Render<FlareDialog>(p => p
+            .Add(x => x.Visible, true)
+            .Add(x => x.CloseOnNavigation, false)
+            .Add(x => x.VisibleChanged, (bool v) => last = v));
+
+        Services.GetRequiredService<NavigationManager>().NavigateTo("other");
+        Assert.Null(last);
+    }
 }

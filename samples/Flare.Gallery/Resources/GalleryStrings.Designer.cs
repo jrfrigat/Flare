@@ -3182,7 +3182,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_ShowPrompt", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close button, draggable, resizable and close guard.
+        /// </summary>
+        public static string Dialog_Advanced {
+            get {
+                return ResourceManager.GetString("Dialog_Advanced", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Open advanced dialog.
+        /// </summary>
+        public static string Dialog_AdvancedOpen {
+            get {
+                return ResourceManager.GetString("Dialog_AdvancedOpen", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag me by the header...
+        /// </summary>
+        public static string Dialog_AdvancedBody {
+            get {
+                return ResourceManager.GetString("Dialog_AdvancedBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulate unsaved changes.
+        /// </summary>
+        public static string Dialog_UnsavedToggle {
+            get {
+                return ResourceManager.GetString("Dialog_UnsavedToggle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Blocked: you have unsaved changes.
+        /// </summary>
+        public static string Dialog_UnsavedBlocked {
+            get {
+                return ResourceManager.GetString("Dialog_UnsavedBlocked", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Render any component as a modal via the dialog service, plus inline @bind-Visible, confirm and alert..
         /// </summary>

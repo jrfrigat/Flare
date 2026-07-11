@@ -921,6 +921,21 @@
   <data name="Dialog_ShowPrompt" xml:space="preserve">
     <value>Показать диалог ввода</value>
   </data>
+  <data name="Dialog_Advanced" xml:space="preserve">
+    <value>Кнопка закрытия, перетаскивание, изменение размера и защита закрытия</value>
+  </data>
+  <data name="Dialog_AdvancedOpen" xml:space="preserve">
+    <value>Открыть расширенный диалог</value>
+  </data>
+  <data name="Dialog_AdvancedBody" xml:space="preserve">
+    <value>Перетащите за заголовок, измените размер за нижний правый угол или закройте крестиком. Включите "несохранённые изменения", чтобы блокировать случайное закрытие.</value>
+  </data>
+  <data name="Dialog_UnsavedToggle" xml:space="preserve">
+    <value>Имитировать несохранённые изменения</value>
+  </data>
+  <data name="Dialog_UnsavedBlocked" xml:space="preserve">
+    <value>Заблокировано: есть несохранённые изменения</value>
+  </data>
   <data name="Drawer_Title" xml:space="preserve">
     <value>Боковая панель</value>
   </data>
