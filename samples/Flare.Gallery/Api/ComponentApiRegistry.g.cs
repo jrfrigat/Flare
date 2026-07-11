@@ -394,10 +394,12 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Href", @"string?", null, @"When set, the button renders as a link (<a>) to this URL. Disabled/Loading removes the href.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon rendered before the button label.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a spinner and disables the button when true.", null, false, false, false, @"FlareButton"),
+                new ApiParameterInfo(@"LoadingTemplate", @"RenderFragment?", null, @"Custom content shown while Loading is true, replacing the default spinner (and LoadingText). Use it for a bespoke loading indicator.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"LoadingText", @"string?", null, @"Replaces the button label text while Loading is true.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the button is clicked.", null, false, true, false, @"FlareButton"),
                 new ApiParameterInfo(@"OnColor", @"string?", null, @"Optional foreground color for the filled variant when Color is a custom color.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"PressMorph", @"bool", @"false", @"Opt-in press morph: the corner radius animates while the button is pressed.", null, false, false, false, @"FlareButton"),
+                new ApiParameterInfo(@"Rel", @"string?", null, @"The link's rel attribute (link button only). When left null and Target is _blank, Flare defaults it to noopener noreferrer to prevent reverse tabnabbing.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button. Default keeps the theme's native shape; Rounded, Circular and Square force a rounded rectangle, pill, or sharp corners.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the button.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link button (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareButton"),
@@ -409,7 +411,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the underlying button (or link a) element.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
