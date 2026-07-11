@@ -1899,6 +1899,9 @@
   <data name="Nav_GettingStarted" xml:space="preserve">
     <value>Getting Started</value>
   </data>
+  <data name="Nav_Guide" xml:space="preserve">
+    <value>Guide</value>
+  </data>
   <data name="Nav_Theming" xml:space="preserve">
     <value>Theming</value>
   </data>
