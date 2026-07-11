@@ -45,7 +45,7 @@ else
     [Parameter] public bool Disabled { get; set; }
 
     /// <summary>Callback invoked when the FAB is clicked (ignored in speed-dial mode - the FAB toggles the menu instead).</summary>
-    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     /// <summary>Optional <see cref="FlareFloatingActionMenu"/>. When present the FAB becomes a speed-dial trigger.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
@@ -53,6 +53,10 @@ else
     protected override string ComponentCssClass => Css.Classes.Fab.Root;
 
     private bool _open;
+    private ElementReference _element;
+
+    /// <summary>Sets keyboard focus to the FAB element.</summary>
+    public ValueTask FocusAsync() => _element.FocusAsync();
 
     private string? _sizeClass => Size switch
     {
@@ -106,7 +110,8 @@ else
 
     private RenderFragment RenderFab(bool isTrigger) => __builder =>
     {
-        <button class="@BuildCssClass(Css.Classes.Button.Root, _sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
+        <button @ref="_element"
+                class="@BuildCssClass(Css.Classes.Button.Root, _sizeClass, _colorClass, isTrigger && _open ? Css.Classes.FabMenu.TriggerOpen : null)"
                 style="@CombineStyle(isTrigger ? null : Style)"
                 aria-label="@AriaLabel"
                 aria-expanded="@(isTrigger ? _open.ToString().ToLowerInvariant() : null)"

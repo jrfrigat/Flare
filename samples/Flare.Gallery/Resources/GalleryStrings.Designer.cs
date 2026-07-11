@@ -8566,7 +8566,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("ToggleButton_GroupMulti", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Toggle Group - Mandatory &amp; CheckMark.
+        /// </summary>
+        public static string ToggleButton_GroupCheckMark {
+            get {
+                return ResourceManager.GetString("ToggleButton_GroupCheckMark", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Icon Only.
         /// </summary>

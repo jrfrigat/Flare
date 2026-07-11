@@ -7,11 +7,13 @@ namespace Flare.Components;
 /// <param name="Size">Size cascaded to every button (null = each button keeps its own <c>Size</c>).</param>
 /// <param name="Color">Color cascaded to every button (null = each button keeps its own <c>Color</c>).</param>
 /// <param name="Disabled">When true, every button in the group is disabled.</param>
+/// <param name="CheckMark">When true, each selected button shows a leading checkmark.</param>
 public sealed record FlareToggleGroupContext(
     IReadOnlySet<object?> SelectedValues,
     bool MultiSelect,
     Func<object?, Task> Toggle,
     ButtonSize? Size = null,
     FlareColor? Color = null,
-    bool Disabled = false
+    bool Disabled = false,
+    bool CheckMark = false
 );

@@ -29,6 +29,11 @@
     [Parameter] public FlareColor? Color { get; set; }
     /// <summary>When true, disables every child <c>FlareToggleButton</c> in the group.</summary>
     [Parameter] public bool Disabled { get; set; }
+    /// <summary>Single-select only: when true the active button cannot be deselected by clicking it (one
+    /// selection is always kept). Default false - single-select is deselectable (a "toggle" selection).</summary>
+    [Parameter] public bool Mandatory { get; set; }
+    /// <summary>Shows a leading checkmark on each selected button.</summary>
+    [Parameter] public bool CheckMark { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.ToggleGroup.Root;
 
@@ -38,7 +43,7 @@
     private HashSet<object?> _selected = new();
     private FlareToggleGroupContext _context = null!;
     // Tracks the last cascaded settings so the context is rebuilt when they change (not only on selection change).
-    private (ButtonSize? Size, FlareColor? Color, bool Disabled) _lastCascade;
+    private (ButtonSize? Size, FlareColor? Color, bool Disabled, bool CheckMark) _lastCascade;
 
     protected override void OnParametersSet()
     {
@@ -46,7 +51,7 @@
             ? new HashSet<object?>(Values?.Cast<object?>() ?? Enumerable.Empty<object?>())
             : Value is not null ? new HashSet<object?> { Value } : new HashSet<object?>();
 
-        var cascade = (Size, Color, Disabled);
+        var cascade = (Size, Color, Disabled, CheckMark);
         // Rebuild the context when the selection set OR a cascaded setting changed, to avoid
         // forcing a full subtree re-render on every unrelated parent parameter set.
         if (_context is null || !newSelected.SetEquals(_selected) || cascade != _lastCascade)
@@ -58,7 +63,7 @@
     }
 
     private FlareToggleGroupContext BuildContext(IEnumerable<object?> selected)
-        => new(new HashSet<object?>(selected), MultiSelect, HandleToggle, Size, Color, Disabled);
+        => new(new HashSet<object?>(selected), MultiSelect, HandleToggle, Size, Color, Disabled, CheckMark);
 
     private async Task HandleToggle(object? value)
     {
@@ -72,6 +77,8 @@
         }
         else
         {
+            // Single-select: clicking the active item deselects it, unless Mandatory keeps one always selected.
+            if (Mandatory && _selected.Contains(value)) return;
             var next = _selected.Contains(value) ? default : (TValue?)value;
             _selected = next is not null ? new HashSet<object?> { next } : new HashSet<object?>();
             _context = BuildContext(_selected);

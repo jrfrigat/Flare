@@ -1,0 +1,14 @@
+@* Mandatory keeps one option always selected (single-select cannot be cleared); CheckMark shows a
+   leading check on the selected item. *@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareToggleGroup TValue="string" @bind-Value="_view" Mandatory CheckMark Color="FlareColor.Primary">
+        <FlareToggleButton Value="@("day")">Day</FlareToggleButton>
+        <FlareToggleButton Value="@("week")">Week</FlareToggleButton>
+        <FlareToggleButton Value="@("month")">Month</FlareToggleButton>
+    </FlareToggleGroup>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">View: @_view</FlareText>
+</FlareStack>
+
+@code {
+    private string? _view = "week";
+}

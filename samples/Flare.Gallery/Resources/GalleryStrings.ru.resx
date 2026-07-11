@@ -2283,6 +2283,9 @@
   <data name="ToggleButton_GroupMulti" xml:space="preserve">
     <value>Группа переключателей - множественный выбор</value>
   </data>
+  <data name="ToggleButton_GroupCheckMark" xml:space="preserve">
+    <value>Группа переключателей - обязательный выбор и галочка</value>
+  </data>
   <data name="GettingStarted_Installation" xml:space="preserve">
     <value>Установка</value>
   </data>

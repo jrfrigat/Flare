@@ -1,7 +1,8 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<button class="@BuildCssClass(_pressedClass, _sizeClass, _iconOnlyClass, _colorClass)"
+<button @ref="_element"
+        class="@BuildCssClass(_pressedClass, _sizeClass, _iconOnlyClass, _colorClass, _edgeClass)"
         style="@_btnStyle"
         type="button"
         disabled="@_effectiveDisabled"
@@ -9,6 +10,10 @@
         aria-pressed="@(_pressed ? "true" : "false")"
         @onclick="HandleClick"
         @attributes="AdditionalAttributes">
+    @if (_pressed && _showCheck)
+    {
+        <span class="@Css.Classes.ToggleButton.Check material-symbols-rounded" aria-hidden="true">check</span>
+    }
     @{ var icon = _pressed ? (OnIcon ?? OffIcon) : OffIcon; }
     @if (icon is not null)
     {
@@ -40,6 +45,8 @@
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Accessible label forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }
+    /// <summary>Optical edge alignment - a negative inline margin pulling the button toward the container edge.</summary>
+    [Parameter] public ButtonEdge Edge { get; set; } = ButtonEdge.None;
     /// <summary>The value reported to a parent FlareToggleGroup when toggled.</summary>
     [Parameter] public object? Value { get; set; }
 
@@ -51,8 +58,36 @@
     private bool _pressed;
     // Tracks the last Toggled parameter seen so we can detect external changes vs local clicks
     private bool _lastToggled;
+    private ElementReference _element;
+
+    /// <summary>Sets keyboard focus to the toggle button element.</summary>
+    public ValueTask FocusAsync() => _element.FocusAsync();
+
+    /// <summary>Toggles the pressed state, exactly as a user click would (honors the disabled state and,
+    /// inside a group, the group's selection rules).</summary>
+    public Task Toggle() => HandleClick();
+
+    /// <summary>Sets the pressed state programmatically. No-op when disabled or already in that state;
+    /// inside a group it routes through the group so the group's binding stays authoritative.</summary>
+    public async Task SetToggledAsync(bool toggled)
+    {
+        if (_effectiveDisabled || _pressed == toggled) return;
+        if (Group is not null) { await Group.Toggle(Value); return; }
+        _pressed = toggled;
+        _lastToggled = toggled;
+        await ToggledChanged.InvokeAsync(_pressed);
+        StateHasChanged();
+    }
 
     private string _pressedClass => _pressed ? Css.Classes.ToggleButton.Pressed : string.Empty;
+    private bool _showCheck => Group?.CheckMark == true;
+
+    private string _edgeClass => Edge switch
+    {
+        ButtonEdge.Start => Css.Classes.Button.EdgeStart,
+        ButtonEdge.End => Css.Classes.Button.EdgeEnd,
+        _ => string.Empty,
+    };
 
     // Group settings cascade: a group value overrides the button's own (Size/Color), or forces Disabled.
     private ButtonSize _effectiveSize => Group?.Size ?? Size;
@@ -107,6 +142,7 @@
         {
             _pressed = !_pressed;
             await ToggledChanged.InvokeAsync(_pressed);
+            StateHasChanged(); // needed when invoked via the public Toggle() (no automatic event re-render)
         }
     }
 }

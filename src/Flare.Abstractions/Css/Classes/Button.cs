@@ -47,6 +47,10 @@ public static class Button
     public const string Spinner = "flare-btn__spinner";
     /// <summary>The <c>flare-btn--full</c> CSS class.</summary>
     public const string Full = "flare-btn--full";
+    /// <summary>The <c>flare-edge-start</c> CSS class: negative inline-start margin for edge alignment.</summary>
+    public const string EdgeStart = "flare-edge-start";
+    /// <summary>The <c>flare-edge-end</c> CSS class: negative inline-end margin for edge alignment.</summary>
+    public const string EdgeEnd = "flare-edge-end";
     /// <summary>The <c>flare-btn__icon</c> CSS class.</summary>
     public const string Icon = "flare-btn__icon";
     /// <summary>The <c>flare-btn__icon--leading</c> CSS class.</summary>

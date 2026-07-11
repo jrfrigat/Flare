@@ -2,7 +2,7 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass(_sizeClass, _openedClass)" style="@Style" @attributes="AdditionalAttributes">
-    <FlareButton Class="@Css.Classes.SplitButton.Main"
+    <FlareButton @ref="_main" Class="@Css.Classes.SplitButton.Main"
                  Variant="Variant" Color="Color" Size="Size"
                  Disabled="Disabled" OnClick="OnClick">
         @ChildContent
@@ -40,8 +40,12 @@
     [Parameter] public string MenuAriaLabel { get; set; } = "More actions";
 
     protected override string ComponentCssClass => Css.Classes.SplitButton.Root;
-    
+
     private bool _menuOpen;
+    private FlareButton? _main;
+
+    /// <summary>Sets keyboard focus to the primary action button.</summary>
+    public ValueTask FocusAsync() => _main?.FocusAsync() ?? ValueTask.CompletedTask;
 
     private void ToggleMenuState(bool opened)
     {

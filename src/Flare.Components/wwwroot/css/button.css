@@ -126,6 +126,12 @@
     box-shadow: var(--flare-elevation-0) !important;
 }
 
+/* Edge alignment (ButtonEdge): pull an icon/toggle button toward the container edge so its glyph lines
+   up with adjacent content in app bars, toolbars and list-item slots. Generic (not .flare-btn-scoped)
+   so it works on the icon button's inner button and on the distinct toggle-button root alike. */
+.flare-edge-start { margin-inline-start: calc(var(--flare-spacing-12) * -1); }
+.flare-edge-end   { margin-inline-end:   calc(var(--flare-spacing-12) * -1); }
+
 /* ==========================================================================
    ADAPTIVE SIZE GRID
    ========================================================================== */

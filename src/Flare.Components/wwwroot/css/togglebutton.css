@@ -121,6 +121,14 @@
 
 .flare-toggle-btn__label { line-height: 1; white-space: nowrap; }
 
+/* Leading checkmark on a selected item when the group's CheckMark is enabled. */
+.flare-toggle-btn__check {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.25em;
+    line-height: 1;
+}
+
 /* --- Toggle Group (Segmented Button) --- */
 .flare-togglegroup {
     display: inline-flex;

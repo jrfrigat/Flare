@@ -4,9 +4,11 @@
 @* A dedicated icon-only button. Thin wrapper over FlareButton that renders the icon as the button's
    LeadingIcon with no label, so FlareButton's square icon-only treatment applies automatically. Use
    instead of the verbose <FlareButton><LeadingIcon><FlareIcon/></LeadingIcon></FlareButton> idiom. *@
-<FlareButton Variant="Variant"
+<FlareButton @ref="_button"
+             Variant="Variant"
              Size="Size"
              Color="Color"
+             OnColor="@OnColor"
              Shape="Shape"
              Disabled="Disabled"
              Loading="Loading"
@@ -16,8 +18,9 @@
              AriaLabel="@AriaLabel"
              Href="@Href"
              Target="@Target"
+             Rel="@Rel"
              OnClick="OnClick"
-             Class="@Class"
+             Class="@_composedClass"
              Style="@Style"
              @attributes="AdditionalAttributes">
     <LeadingIcon>
@@ -44,6 +47,11 @@
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
     /// <summary>Color of the button. Role -> shared class; custom -> inline tokens. Default keeps the theme default.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Optional foreground color for the filled variant when <see cref="Color"/> is a custom color.</summary>
+    [Parameter] public string? OnColor { get; set; }
+    /// <summary>Optical edge alignment - a negative inline margin pulling the button toward the container
+    /// edge so its icon lines up in app bars/toolbars/list slots.</summary>
+    [Parameter] public ButtonEdge Edge { get; set; } = ButtonEdge.None;
     /// <summary>Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons).</summary>
     [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
     /// <summary>Opt-in press morph: the corner radius animates while the button is pressed.</summary>
@@ -62,9 +70,26 @@
     [Parameter] public string? Href { get; set; }
     /// <summary>Target for the link button (e.g. "_blank"). Only used with <see cref="Href"/>.</summary>
     [Parameter] public string? Target { get; set; }
+    /// <summary>The link's <c>rel</c> attribute (link mode). Null + <see cref="Target"/> <c>_blank</c> defaults to
+    /// <c>noopener noreferrer</c>.</summary>
+    [Parameter] public string? Rel { get; set; }
     /// <summary>Callback invoked when the button is clicked.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     // This component only composes FlareButton; it has no root element of its own.
     protected override string ComponentCssClass => string.Empty;
+
+    private FlareButton? _button;
+
+    private string _edgeClass => Edge switch
+    {
+        ButtonEdge.Start => Css.Classes.Button.EdgeStart,
+        ButtonEdge.End => Css.Classes.Button.EdgeEnd,
+        _ => string.Empty,
+    };
+
+    private string _composedClass => string.Join(' ', new[] { _edgeClass, Class }.Where(s => !string.IsNullOrEmpty(s)));
+
+    /// <summary>Sets keyboard focus to the underlying button.</summary>
+    public ValueTask FocusAsync() => _button?.FocusAsync() ?? ValueTask.CompletedTask;
 }

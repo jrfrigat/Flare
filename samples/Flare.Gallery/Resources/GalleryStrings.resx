@@ -2283,6 +2283,9 @@
   <data name="ToggleButton_GroupMulti" xml:space="preserve">
     <value>Toggle Group - Multi Select</value>
   </data>
+  <data name="ToggleButton_GroupCheckMark" xml:space="preserve">
+    <value>Toggle Group - Mandatory &amp; CheckMark</value>
+  </data>
   <data name="GettingStarted_Installation" xml:space="preserve">
     <value>Installation</value>
   </data>

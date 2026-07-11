@@ -23,17 +23,17 @@
     /// <summary>Prevents the action from being clicked.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Callback raised when the action is clicked.</summary>
-    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
 
     [CascadingParameter] private FabMenuContext? FabContext { get; set; }
     private Action? CloseFabMenu => FabContext?.Close;
 
     protected override string ComponentCssClass => Css.Classes.FabMenu.Item;
 
-    private async Task HandleClickAsync()
+    private async Task HandleClickAsync(MouseEventArgs e)
     {
         if (Disabled) return;
         CloseFabMenu?.Invoke();
-        if (OnClick.HasDelegate) await OnClick.InvokeAsync();
+        if (OnClick.HasDelegate) await OnClick.InvokeAsync(e);
     }
 }
