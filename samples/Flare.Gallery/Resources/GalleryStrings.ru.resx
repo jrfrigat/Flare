@@ -1227,6 +1227,12 @@
   <data name="LayoutShell_ManualBindDesc" xml:space="preserve">
     <value>Используйте @bind-DrawerOpen для полного внешнего управления - удобно, когда нужно программно открывать/закрывать панель из родительского компонента.</value>
   </data>
+  <data name="LayoutShell_Density" xml:space="preserve">
+    <value>Плотный / произвольная высота app bar</value>
+  </data>
+  <data name="LayoutShell_DensityDesc" xml:space="preserve">
+    <value>Dense рисует более узкий app bar (48px вместо стандартных 64px) для оконных / IDE-подобных оболочек; Height задаёт любую CSS-длину. Оба задают токен --flare-layout-appbar-height, так что темы тоже могут его переопределить.</value>
+  </data>
   <data name="Link_Title" xml:space="preserve">
     <value>Ссылка</value>
   </data>

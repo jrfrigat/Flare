@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<header class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<header class="@BuildCssClass(_denseClass)" style="@_style" @attributes="AdditionalAttributes">
     @if (DrawerToggle)
     {
         <button class="@Css.Classes.Layout.AppBarToggle @(_isOpen ? Css.Classes.Layout.AppbarToggleOpen : null)"
@@ -30,10 +30,31 @@
     /// <summary>When true, renders a hamburger that toggles the layout's primary drawer (the first
     /// non-overlay start drawer) via the cascading <see cref="FlareLayoutContext"/>.</summary>
     [Parameter] public bool DrawerToggle { get; set; }
+    /// <summary>An explicit app bar height (any CSS length, e.g. <c>"50px"</c> or <c>"3.5rem"</c>). Overrides
+    /// the default 64px and the <see cref="Dense"/> preset. Sets the <c>--flare-layout-appbar-height</c> token.</summary>
+    [Parameter] public string? Height { get; set; }
+    /// <summary>Renders a slimmer app bar (the <c>--flare-layout-appbar-height-dense</c> token, 3rem by
+    /// default) - a common request for tool-window / IDE-style shells. Ignored when <see cref="Height"/> is set.</summary>
+    [Parameter] public bool Dense { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Layout.AppBar;
 
     private bool _isOpen => Layout?.PrimaryOpen ?? false;
+
+    private string? _denseClass => Dense ? Css.Classes.Layout.AppBarDense : null;
+
+    // An explicit Height sets the height token inline (authoritative over the Dense class and the default),
+    // sanitized before injection. Merged with any caller Style.
+    private string? _style
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Height)) return Style;
+            var safe = Flare.Components.Security.CssValidator.StripDangerous(Height);
+            var heightVar = string.IsNullOrEmpty(safe) ? null : $"{Css.Tokens.LayoutField.AppBarHeight}:{safe}";
+            return string.Join(';', new[] { Style, heightVar }.Where(s => !string.IsNullOrEmpty(s)));
+        }
+    }
 
     private Task ToggleDrawer() => Layout?.TogglePrimaryAsync() ?? Task.CompletedTask;
 }

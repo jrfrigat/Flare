@@ -5,6 +5,10 @@ public static class LayoutField
 {
     /// <summary>CSS custom-property name for the app bar height token.</summary>
     public const string AppBarHeight = "--flare-layout-appbar-height";
+    /// <summary>CSS custom-property name for the dense app bar height token.</summary>
+    public const string AppBarHeightDense = "--flare-layout-appbar-height-dense";
+    /// <summary>CSS custom-property name for the app bar background token (defaults to the surface role).</summary>
+    public const string AppBarBg = "--flare-layout-appbar-bg";
     /// <summary>CSS custom-property name for the content padding token.</summary>
     public const string ContentPadding = "--flare-layout-content-padding";
     /// <summary>CSS custom-property name for the content padding mobile token.</summary>

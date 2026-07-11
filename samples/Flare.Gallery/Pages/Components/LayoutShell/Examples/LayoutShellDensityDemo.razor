@@ -1,0 +1,37 @@
+@inherits LocalizedPage
+
+<div style="height:320px;overflow:hidden;border-radius:var(--flare-shape-medium);">
+    <FlareLayout>
+        @* Dense = a slimmer 48px bar; Height (any CSS length) would override it. *@
+        <FlareLayoutAppBar Dense="true" DrawerToggle="true">
+            <FlareText Typo="TypographyScale.TitleMedium">@GalleryStrings.LayoutShell_Density</FlareText>
+            <FlareStack Row Style="flex:1;" />
+            <FlareAvatar Icon="account_circle" Size="AvatarSize.Sm" />
+        </FlareLayoutAppBar>
+
+        <FlareLayoutDrawer @bind-Open="_open" Variant="DrawerVariant.Persistent" Width="12rem">
+            <FlareStack Style="padding:0.75rem 0.5rem;">
+                <FlareNavMenu>
+                    <FlareNavLink Href="#" Match="NavMatchMode.Exact">
+                        <Icon><FlareIcon Size="1.1rem" Name="dashboard" /></Icon>
+                        <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
+                    </FlareNavLink>
+                    <FlareNavLink Href="#">
+                        <Icon><FlareIcon Size="1.1rem" Name="settings" /></Icon>
+                        <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
+                    </FlareNavLink>
+                </FlareNavMenu>
+            </FlareStack>
+        </FlareLayoutDrawer>
+
+        <FlareLayoutContent>
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.LayoutShell_DensityDesc
+            </FlareText>
+        </FlareLayoutContent>
+    </FlareLayout>
+</div>
+
+@code {
+    private bool _open = true;
+}

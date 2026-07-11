@@ -1227,6 +1227,12 @@
   <data name="LayoutShell_ManualBindDesc" xml:space="preserve">
     <value>Use @bind-DrawerOpen for full external control - useful when you need to programmatically open/close from a parent component.</value>
   </data>
+  <data name="LayoutShell_Density" xml:space="preserve">
+    <value>Dense / custom-height app bar</value>
+  </data>
+  <data name="LayoutShell_DensityDesc" xml:space="preserve">
+    <value>Dense renders a slimmer app bar (48px vs the default 64px) for tool-window / IDE-style shells; Height sets any CSS length. Both drive the --flare-layout-appbar-height token, so themes can override it too.</value>
+  </data>
   <data name="Link_Title" xml:space="preserve">
     <value>Link</value>
   </data>

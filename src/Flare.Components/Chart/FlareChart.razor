@@ -15,7 +15,7 @@
     }
     <div class="@Css.Classes.Chart.Plot">
         <svg class="@Css.Classes.Chart.Svg" viewBox="0 0 @_svgW @_svgH" xmlns="http://www.w3.org/2000/svg"
-             preserveAspectRatio="@(_spark ? "none" : null)"
+             preserveAspectRatio="@(_spark ? "none" : null)" style="@_svgStyle"
              aria-label="@(Title ?? "Chart")" role="img">
             <title>@(Title ?? "Chart")</title>
             @if (!string.IsNullOrEmpty(Description))
@@ -178,6 +178,11 @@
 
     private const int _svgW = 400;
     private int _svgH => Height;
+
+    // A sparkline is a fixed-height, full-width strip: pin the SVG's CSS height to Height px (the
+    // viewBox already carries preserveAspectRatio="none"), so the rendered height no longer scales with
+    // the container width. Non-sparkline charts keep the width-driven aspect ratio (CSS height:auto).
+    private string? _svgStyle => _spark ? $"height:{Height}px" : null;
 
     private bool _spark => Sparkline;
     // Area fill is on for the explicit Area flag or the Area chart type.

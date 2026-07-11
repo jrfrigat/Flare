@@ -5081,7 +5081,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("LayoutShell_ManualBindDesc", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dense / custom-height app bar.
+        /// </summary>
+        public static string LayoutShell_Density {
+            get {
+                return ResourceManager.GetString("LayoutShell_Density", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dense renders a slimmer app bar...
+        /// </summary>
+        public static string LayoutShell_DensityDesc {
+            get {
+                return ResourceManager.GetString("LayoutShell_DensityDesc", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareLayout - ready-made admin shell with app bar, collapsible drawer, and main content area..
         /// </summary>

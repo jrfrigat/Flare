@@ -13,6 +13,8 @@ public static class Layout
     public const string ScrimOpen = "flare-layout--scrim-open";
     /// <summary>The <c>flare-layout-appbar</c> CSS class.</summary>
     public const string AppBar = "flare-layout-appbar";
+    /// <summary>The <c>flare-layout-appbar--dense</c> CSS class: a slimmer app bar.</summary>
+    public const string AppBarDense = "flare-layout-appbar--dense";
     /// <summary>The <c>flare-layout-appbar__toggle</c> CSS class.</summary>
     public const string AppBarToggle = "flare-layout-appbar__toggle";
     /// <summary>The <c>flare-layout-appbar__toggle--open</c> CSS class.</summary>

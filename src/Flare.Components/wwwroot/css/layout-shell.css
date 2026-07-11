@@ -4,6 +4,8 @@
     --flare-layout-drawer-width: 260px;
     --flare-layout-drawer-rail-width: 3.5rem;
     --flare-layout-appbar-height: 64px;
+    --flare-layout-appbar-height-dense: 3rem;
+    --flare-layout-appbar-bg: var(--flare-color-surface);
 }
 
 /* Shell: a grid with the app bar in row 1 (spanning every column) and the drawers + content in
@@ -34,10 +36,15 @@
     gap: var(--flare-spacing-6);
     padding: 0 var(--flare-spacing-8);
     height: var(--flare-layout-appbar-height, 64px);
-    background: var(--flare-color-surface);
+    background: var(--flare-layout-appbar-bg);
     border-bottom: 1px solid var(--flare-color-outline-variant);
     z-index: 100;
     color: var(--flare-color-on-surface);
+}
+
+/* Dense app bar: a slimmer bar for tool-window / IDE-style shells (overrides the height token). */
+.flare-layout-appbar--dense {
+    --flare-layout-appbar-height: var(--flare-layout-appbar-height-dense);
 }
 
 /* In-flow drawers and the content sit in row 2 and auto-flow into the computed columns in markup
