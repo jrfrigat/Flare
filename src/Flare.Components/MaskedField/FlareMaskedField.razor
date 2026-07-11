@@ -1,8 +1,9 @@
 @namespace Flare.Components
-@inherits FlareFieldBase
+@inherits FlareEditableFieldBase
 @implements IFlareField<string>
 @using System.Linq.Expressions
 @using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Components.Web
 
 @* Masked text field. Composes the shared FlareFieldChrome frame + FlareTextInput (immediate mode, so the
    mask applies as the user types); only the mask/preset formatting is component-specific. *@
@@ -16,7 +17,8 @@
                   Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field">
-            <FlareTextInput Value="@_display"
+            <FlareTextInput @ref="_input"
+                               Value="@_display"
                                ValueChanged="OnInput"
                                Immediate="true"
                                Id="@ControlId"
@@ -28,8 +30,20 @@
                                MaxLength="@(Pattern?.Length ?? 0)"
                                AriaInvalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                                AriaDescribedBy="@SupportDescribedBy"
+                               OnFocus="OnFocus"
+                               OnBlur="OnBlur"
                                Style="@_typoStyle"
                                AdditionalAttributes="AdditionalAttributes" />
+            @if (Clearable && !string.IsNullOrEmpty(_display) && !Disabled && !ReadOnly)
+            {
+                <button type="button"
+                        class="@Css.Classes.Input.Clear"
+                        aria-label="@(FlareStrings.Input_Clear)"
+                        tabindex="-1"
+                        @onclick="HandleClear">
+                    <span aria-hidden="true">&#x2715;</span>
+                </button>
+            }
         </div>
     </Field>
 </FlareFieldChrome>
@@ -54,11 +68,35 @@
     // Variant, Size and Typo are inherited from FlareFieldBase.
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<string?>>? For { get; set; }
+    /// <summary>Shows a clear (x) button inside the field when it has a value.</summary>
+    [Parameter] public bool Clearable { get; set; }
+    /// <summary>Invoked when the input gains focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+    /// <summary>Invoked when the input loses focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+    /// <summary>Invoked when the clear (x) button is clicked, after the value has been reset.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClearButtonClick { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
 
     private string _display = string.Empty;
+    private FlareTextInput? _input;
     private string? _typoStyle => Typo is { } t ? FlareTypography.FontStyle(t) : null;
+
+    /// <inheritdoc />
+    protected override ValueTask FocusCoreAsync() => _input?.FocusAsync() ?? ValueTask.CompletedTask;
+    /// <summary>Selects (highlights) all the text in the field.</summary>
+    public ValueTask SelectAsync() => _input?.SelectAsync() ?? ValueTask.CompletedTask;
+    /// <summary>Removes keyboard focus from the field.</summary>
+    public ValueTask BlurAsync() => _input?.BlurAsync() ?? ValueTask.CompletedTask;
+
+    private async Task HandleClear(MouseEventArgs e)
+    {
+        _display = string.Empty;
+        await ValueChanged.InvokeAsync(null);
+        NotifyFieldChanged();
+        await OnClearButtonClick.InvokeAsync(e);
+    }
 
     // Effective mask: explicit Mask wins, else the selected preset.
     private string? Pattern => Mask ?? (Preset switch

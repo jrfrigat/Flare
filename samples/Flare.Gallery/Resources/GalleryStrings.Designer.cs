@@ -5722,6 +5722,33 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("NumericField_Basic", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Clearable, select-on-focus &amp; imperative step.
+        /// </summary>
+        public static string NumericField_Interactive {
+            get {
+                return ResourceManager.GetString("NumericField_Interactive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Focus, autofocus, patterns &amp; events.
+        /// </summary>
+        public static string Field_FocusInteraction {
+            get {
+                return ResourceManager.GetString("Field_FocusInteraction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Resize, clearable &amp; spellcheck.
+        /// </summary>
+        public static string TextArea_Resize {
+            get {
+                return ResourceManager.GetString("TextArea_Resize", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Currency, percent, separators &amp; clamp.

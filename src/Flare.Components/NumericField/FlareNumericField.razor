@@ -1,11 +1,13 @@
 @namespace Flare.Components
-@inherits FlareFieldBase
+@inherits FlareEditableFieldBase
 @implements IFlareField<TValue>
 @typeparam TValue
+@inject Flare.Components.Services.IElementJsService ElementJs
 @using System.ComponentModel
 @using System.Linq.Expressions
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
 
 @* Composes the shared FlareFieldChrome frame (root + label + helper/error). The numeric input is complex
    (type=number, min/max/step, focus-swap text mode, clamp-on-change-vs-not-on-input), so it keeps its own
@@ -38,6 +40,7 @@
                    step="@(_useTextMode ? null : _stepStr)"
                    aria-invalid="@(!string.IsNullOrEmpty(DisplayedErrorText) ? "true" : null)"
                    aria-describedby="@SupportDescribedBy"
+                   @ref="_inputEl"
                    @onfocus="HandleFocus"
                    @onchange="HandleChange"
                    @oninput="HandleInput"
@@ -46,6 +49,16 @@
             @if (!string.IsNullOrEmpty(Suffix))
             {
                 <span class="@Css.Classes.Numericfield.Suffix">@Suffix</span>
+            }
+            @if (Clearable && _hasValue && !Disabled && !ReadOnly)
+            {
+                <button type="button"
+                        class="@Css.Classes.Input.Clear"
+                        aria-label="@(FlareStrings.Input_Clear)"
+                        tabindex="-1"
+                        @onclick="HandleClear">
+                    <span aria-hidden="true">&#x2715;</span>
+                </button>
             }
             @if (ShowStepper)
             {
@@ -96,8 +109,40 @@
     [Parameter] public int DebounceInterval { get; set; }
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TValue>>? For { get; set; }
+    /// <summary>Shows a clear (x) button inside the field when it has a value.</summary>
+    [Parameter] public bool Clearable { get; set; }
+    /// <summary>Selects the whole value when the field gains focus (so the next keystroke replaces it).</summary>
+    [Parameter] public bool SelectAllOnFocus { get; set; }
+    /// <summary>Invoked when the input gains focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+    /// <summary>Invoked when the input loses focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+    /// <summary>Invoked when the clear (x) button is clicked, after the value has been reset.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClearButtonClick { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
+
+    private ElementReference _inputEl;
+    private bool _hasValue => Value is not null;
+
+    /// <inheritdoc />
+    protected override ValueTask FocusCoreAsync() => _inputEl.FocusAsync();
+    /// <summary>Selects (highlights) all the text in the field.</summary>
+    public ValueTask SelectAsync() => ElementJs.SelectAsync(_inputEl);
+    /// <summary>Removes keyboard focus from the field.</summary>
+    public ValueTask BlurAsync() => ElementJs.BlurAsync(_inputEl);
+    /// <summary>Increases the value by <see cref="Step"/> (default 1), clamped to <see cref="Min"/>/<see cref="Max"/>.</summary>
+    public Task Increment() => StepBy(Step ?? 1);
+    /// <summary>Decreases the value by <see cref="Step"/> (default 1), clamped to <see cref="Min"/>/<see cref="Max"/>.</summary>
+    public Task Decrement() => StepBy(-(Step ?? 1));
+
+    private async Task HandleClear(MouseEventArgs e)
+    {
+        await ValueChanged.InvokeAsync(default);
+        if (_useTextMode) _text = string.Empty;
+        NotifyFieldChanged();
+        await OnClearButtonClick.InvokeAsync(e);
+    }
 
     // The control/helper/error ids, the computed aria-describedby and the displayed error text are all
     // provided by FlareFieldBase (ControlId/HelperId/ErrorId/SupportDescribedBy/DisplayedErrorText).
@@ -185,18 +230,28 @@
 
     private readonly CancelScope _debounceCts = new();
 
-    private void HandleFocus()
+    private async Task HandleFocus(FocusEventArgs e)
     {
-        if (!_useTextMode) return;
-        _focused = true;
-        _text = _rawEditable; // swap to the plain editable form
+        if (_useTextMode)
+        {
+            _focused = true;
+            _text = _rawEditable; // swap to the plain editable form
+        }
+        if (SelectAllOnFocus)
+        {
+            try { await ElementJs.SelectAsync(_inputEl); } catch { /* best-effort */ }
+        }
+        await OnFocus.InvokeAsync(e);
     }
 
-    private async Task HandleBlur()
+    private async Task HandleBlur(FocusEventArgs e)
     {
-        if (!_useTextMode) return;
-        _focused = false;
-        await InvokeAsync(StateHasChanged); // re-render the formatted display
+        if (_useTextMode)
+        {
+            _focused = false;
+            await InvokeAsync(StateHasChanged); // re-render the formatted display
+        }
+        await OnBlur.InvokeAsync(e);
     }
 
     // change fires on blur/commit -> always clamp to Min/Max.

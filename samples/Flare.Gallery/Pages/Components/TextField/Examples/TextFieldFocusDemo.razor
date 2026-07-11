@@ -1,0 +1,33 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
+    <FlareTextField @ref="_field" @bind-Value="_value" Label="Imperative focus"
+                    HelperText="Shown only while focused (HelperTextOnFocus)."
+                    HelperTextOnFocus="true" Clearable="true" />
+    <FlareStack Row Gap="FlareSpacing.Small" Wrap>
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="Focus">Focus</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="SelectAll">Select all</FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" OnClick="Blur">Blur</FlareButton>
+    </FlareStack>
+
+    <FlareTextField @bind-Value="_email" Label="Email (pattern + autocomplete + inputmode)"
+                    Type="email" InputMode="email" Autocomplete="email"
+                    Pattern="@EmailPattern"
+                    OnFocus="HandleFocus" OnBlur="HandleBlur"
+                    HelperText="@(_editing ? "Editing…" : "Native pattern validation; email keyboard on mobile.")" />
+</FlareStack>
+
+@code {
+    private const string EmailPattern = "[^@\\s]+@[^@\\s]+\\.[^@\\s]+";
+    private FlareTextField? _field;
+    private string? _value = "Hello Flare";
+    private string? _email;
+    private bool _editing;
+
+    private async Task Focus() => await _field!.FocusAsync();
+    private async Task SelectAll() => await _field!.SelectAsync();
+    private async Task Blur() => await _field!.BlurAsync();
+
+    private void HandleFocus(FocusEventArgs e) => _editing = true;
+    private void HandleBlur(FocusEventArgs e) => _editing = false;
+}

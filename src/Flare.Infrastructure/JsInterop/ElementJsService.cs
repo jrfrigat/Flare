@@ -12,6 +12,18 @@ public sealed class ElementJsService(IJSRuntime js) : IElementJsService
         js.InvokeVoidAsync("flareOtp.focus", element);
 
     /// <inheritdoc />
+    public ValueTask SelectAsync(ElementReference element) =>
+        js.InvokeVoidAsync("flareField.select", element);
+
+    /// <inheritdoc />
+    public ValueTask BlurAsync(ElementReference element) =>
+        js.InvokeVoidAsync("flareField.blur", element);
+
+    /// <inheritdoc />
+    public ValueTask SelectRangeAsync(ElementReference element, int start, int end) =>
+        js.InvokeVoidAsync("flareField.selectRange", element, start, end);
+
+    /// <inheritdoc />
     public ValueTask<ElementBounds> GetBoundsAsync(ElementReference element) =>
         js.InvokeAsync<ElementBounds>("flareGetBounds", element);
 }

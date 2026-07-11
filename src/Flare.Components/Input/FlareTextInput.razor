@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IElementJsService ElementJs
 @using Microsoft.AspNetCore.Components.Web
 
 @* FlareTextInput -- the shared editable text element reused by the SIMPLE string fields: FlareField (and
@@ -26,11 +27,16 @@
               required="@Required"
               rows="@(Rows > 0 ? Rows : null)"
               maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
+              spellcheck="@(Spellcheck?.ToString().ToLowerInvariant())"
+              autocomplete="@Autocomplete"
               aria-label="@AriaLabel"
               aria-invalid="@(AriaInvalid ? "true" : null)"
               aria-describedby="@AriaDescribedBy"
+              @ref="_element"
               @onchange="HandleChange"
               @oninput="HandleInput"
+              @onfocus="OnFocus"
+              @onblur="OnBlur"
               @onkeydown="OnKeyDown"
               @onkeyup="OnKeyUp"
               @attributes="AdditionalAttributes"></textarea>
@@ -48,12 +54,18 @@ else
            type="@Type"
            maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
            inputmode="@InputMode"
+           pattern="@Pattern"
+           autocomplete="@Autocomplete"
+           spellcheck="@(Spellcheck?.ToString().ToLowerInvariant())"
+           list="@DataList"
            aria-label="@AriaLabel"
            aria-invalid="@(AriaInvalid ? "true" : null)"
            aria-describedby="@AriaDescribedBy"
            @ref="_element"
            @onchange="HandleChange"
            @oninput="HandleInput"
+           @onfocus="OnFocus"
+           @onblur="OnBlur"
            @onkeydown="OnKeyDown"
            @onkeyup="OnKeyUp"
            @attributes="AdditionalAttributes" />
@@ -83,6 +95,18 @@ else
 
     /// <summary>The HTML <c>inputmode</c> hint (single-line only).</summary>
     [Parameter] public string? InputMode { get; set; }
+
+    /// <summary>The HTML <c>pattern</c> regex the value must match (single-line only).</summary>
+    [Parameter] public string? Pattern { get; set; }
+
+    /// <summary>The HTML <c>autocomplete</c> token (e.g. <c>email</c>, <c>current-password</c>, <c>one-time-code</c>, <c>off</c>).</summary>
+    [Parameter] public string? Autocomplete { get; set; }
+
+    /// <summary>The HTML <c>spellcheck</c> attribute; null leaves it unset (browser default).</summary>
+    [Parameter] public bool? Spellcheck { get; set; }
+
+    /// <summary>Id of a <c>&lt;datalist&gt;</c> element with native suggestions (single-line only).</summary>
+    [Parameter] public string? DataList { get; set; }
 
     /// <summary>The control element id (for a label <c>for</c> and <c>aria-*</c> wiring).</summary>
     [Parameter] public string? Id { get; set; }
@@ -120,6 +144,12 @@ else
     /// <summary>Invoked on keyup.</summary>
     [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
 
+    /// <summary>Invoked when the control gains focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+
+    /// <summary>Invoked when the control loses focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Input.Control;
 
     private ElementReference _element;
@@ -130,6 +160,18 @@ else
 
     /// <summary>The underlying input element, for the parent field to focus it.</summary>
     public ElementReference Element => _element;
+
+    /// <summary>Sets keyboard focus to the underlying control.</summary>
+    public ValueTask FocusAsync(bool preventScroll = false) => _element.FocusAsync(preventScroll);
+
+    /// <summary>Selects (highlights) all the text in the underlying control.</summary>
+    public ValueTask SelectAsync() => ElementJs.SelectAsync(_element);
+
+    /// <summary>Removes focus from the underlying control.</summary>
+    public ValueTask BlurAsync() => ElementJs.BlurAsync(_element);
+
+    /// <summary>Focuses the control and selects the character range [<paramref name="start"/>, <paramref name="end"/>).</summary>
+    public ValueTask SelectRangeAsync(int start, int end) => ElementJs.SelectRangeAsync(_element, start, end);
 
     private Task HandleChange(ChangeEventArgs e) => ValueChanged.InvokeAsync(e.Value?.ToString());
 

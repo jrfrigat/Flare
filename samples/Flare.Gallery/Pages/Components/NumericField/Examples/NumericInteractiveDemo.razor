@@ -1,0 +1,21 @@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
+    <FlareNumericField TValue="int" @ref="_num" @bind-Value="_qty"
+                       Label="Quantity (clearable, select-on-focus)"
+                       Min="0" Max="99" ShowStepper="true"
+                       Clearable="true" SelectAllOnFocus="true" />
+    <FlareStack Row Gap="FlareSpacing.Small" Wrap>
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="Inc">Increment()</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="Dec">Decrement()</FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" OnClick="FocusNum">FocusAsync()</FlareButton>
+    </FlareStack>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Value: @_qty</FlareText>
+</FlareStack>
+
+@code {
+    private FlareNumericField<int>? _num;
+    private int _qty = 1;
+
+    private Task Inc() => _num!.Increment();
+    private Task Dec() => _num!.Decrement();
+    private async Task FocusNum() => await _num!.FocusAsync();
+}

@@ -45,6 +45,8 @@
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>HTML autocomplete value for each input cell. Use "one-time-code" to enable browser OTP autofill. Default: "off".</summary>
     [Parameter] public string AutoComplete { get; set; } = "off";
+    /// <summary>Focuses the first cell on first render (best-effort).</summary>
+    [Parameter] public bool Autofocus { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Otp.Root;
     private string _disabledClass => Disabled ? Css.Classes.Otp.Disabled : string.Empty;
@@ -65,6 +67,21 @@
         for (var i = 0; i < Length; i++)
             _digits[i] = i < Value.Length ? Value[i].ToString() : string.Empty;
     }
+
+    private bool _autofocused;
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Autofocus && !_autofocused && !Disabled)
+        {
+            _autofocused = true;
+            await FocusCell(0);
+        }
+    }
+
+    /// <summary>Sets keyboard focus to the first OTP cell.</summary>
+    public ValueTask FocusAsync() => new(FocusCell(0));
 
     private async Task OnInput(ChangeEventArgs e, int idx)
     {

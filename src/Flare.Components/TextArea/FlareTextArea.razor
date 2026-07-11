@@ -1,7 +1,8 @@
 @namespace Flare.Components
-@inherits FlareFieldBase
+@inherits FlareEditableFieldBase
 @implements IFlareField<string>
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Web
 
 @* Multi-line text field. Composes the shared FlareFieldChrome frame + FlareTextInput in multiline mode
    (a <textarea>), so it shares the family chrome + input logic and only adds the textarea-specific rows /
@@ -17,7 +18,8 @@
                   Style="@Style">
     <Field>
         <div class="@Css.Classes.Input.Field">
-            <FlareTextInput Multiline="true"
+            <FlareTextInput @ref="_input"
+                               Multiline="true"
                                Value="@Value"
                                ValueChanged="EmitValue"
                                Id="@ControlId"
@@ -28,12 +30,25 @@
                                Required="Required"
                                Rows="Rows"
                                MaxLength="MaxLength"
+                               Spellcheck="Spellcheck"
                                AriaInvalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                                AriaDescribedBy="@SupportDescribedBy"
                                Immediate="Immediate"
                                DebounceInterval="DebounceInterval"
+                               OnFocus="OnFocus"
+                               OnBlur="OnBlur"
                                Style="@_controlStyle"
                                AdditionalAttributes="AdditionalAttributes" />
+            @if (Clearable && !string.IsNullOrEmpty(Value) && !Disabled && !ReadOnly)
+            {
+                <button type="button"
+                        class="@Css.Classes.Input.Clear"
+                        aria-label="@(FlareStrings.Input_Clear)"
+                        tabindex="-1"
+                        @onclick="HandleClear">
+                    <span aria-hidden="true">&#x2715;</span>
+                </button>
+            }
         </div>
     </Field>
     <Counter>
@@ -67,8 +82,45 @@
     [Parameter] public int DebounceInterval { get; set; }
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<string?>>? For { get; set; }
+    /// <summary>Shows a clear (x) button inside the field when it has a value.</summary>
+    [Parameter] public bool Clearable { get; set; }
+    /// <summary>The HTML <c>spellcheck</c> attribute; null (default) leaves the browser default.</summary>
+    [Parameter] public bool? Spellcheck { get; set; }
+    /// <summary>User-drag resize affordance (CSS <c>resize</c>). Ignored while <see cref="AutoGrow"/> is on.</summary>
+    [Parameter] public TextAreaResize Resize { get; set; } = TextAreaResize.Default;
+    /// <summary>Invoked when the textarea gains focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+    /// <summary>Invoked when the textarea loses focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+    /// <summary>Invoked when the clear (x) button is clicked, after the value has been reset.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClearButtonClick { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
+
+    private FlareTextInput? _input;
+
+    /// <inheritdoc />
+    protected override ValueTask FocusCoreAsync() => _input?.FocusAsync() ?? ValueTask.CompletedTask;
+    /// <summary>Selects (highlights) all the text in the textarea.</summary>
+    public ValueTask SelectAsync() => _input?.SelectAsync() ?? ValueTask.CompletedTask;
+    /// <summary>Removes keyboard focus from the textarea.</summary>
+    public ValueTask BlurAsync() => _input?.BlurAsync() ?? ValueTask.CompletedTask;
+
+    private async Task HandleClear(MouseEventArgs e)
+    {
+        await ValueChanged.InvokeAsync(null);
+        NotifyFieldChanged();
+        await OnClearButtonClick.InvokeAsync(e);
+    }
+
+    private string? ResizeCss() => Resize switch
+    {
+        TextAreaResize.None => "resize:none",
+        TextAreaResize.Vertical => "resize:vertical",
+        TextAreaResize.Horizontal => "resize:horizontal",
+        TextAreaResize.Both => "resize:both",
+        _ => null,
+    };
 
     // EditContext subscription, the bound FieldIdentifier and the validation lookup are provided by
     // FlareFieldBase; here we only feed it the For accessor. ControlId/HelperId/ErrorId/DisplayedErrorText/
@@ -86,6 +138,8 @@
         {
             var parts = new List<string>();
             if (MaxLines > 0) parts.Add($"--flare-textarea-max-lines:{MaxLines}");
+            var resize = ResizeCss();
+            if (resize is not null) parts.Add(resize);
             if (_typoStyle is not null) parts.Add(_typoStyle);
             return parts.Count > 0 ? string.Join(';', parts) : null;
         }

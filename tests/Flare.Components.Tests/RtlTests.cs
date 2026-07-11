@@ -4,7 +4,7 @@ namespace Flare.Components.Tests;
 /// RTL (Right-to-Left) layout tests for key Flare components.
 /// Verifies components render correctly in RTL mode.
 /// </summary>
-public class RtlTests : BunitContext
+public class RtlTests : FlareTestContext
 {
     [Fact]
     public void FlareButton_Should_Render_In_Rtl()

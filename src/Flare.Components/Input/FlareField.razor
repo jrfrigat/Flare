@@ -1,5 +1,5 @@
 @namespace Flare.Components
-@inherits FlareFieldBase
+@inherits FlareEditableFieldBase
 @typeparam TValue
 @implements IFlareField<TValue>
 @using System.ComponentModel
@@ -17,7 +17,7 @@
                   ExtraClass="@_extraClass"
                   FloatingLabel="FloatingLabel"
                   Label="@Label" LabelFor="@ControlId"
-                  HelperText="@HelperText" HelperId="@HelperId"
+                  HelperText="@_effectiveHelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@_inlineStyle">
     <Field>
@@ -30,7 +30,8 @@
             {
                 <span class="@Css.Classes.Input.Icon @Css.Classes.Input.IconLeading" aria-hidden="true">@LeadingIcon</span>
             }
-            <FlareTextInput Value="@_displayText"
+            <FlareTextInput @ref="_input"
+                               Value="@_displayText"
                                ValueChanged="EmitValue"
                                Id="@ControlId"
                                Placeholder="@Placeholder"
@@ -38,6 +39,11 @@
                                ReadOnly="ReadOnly"
                                Required="Required"
                                Type="@Type"
+                               InputMode="@InputMode"
+                               Pattern="@Pattern"
+                               Autocomplete="@Autocomplete"
+                               Spellcheck="@Spellcheck"
+                               DataList="@DataList"
                                MaxLength="MaxLength"
                                AriaLabel="@AriaLabel"
                                AriaInvalid="_hasError"
@@ -46,6 +52,8 @@
                                DebounceInterval="DebounceInterval"
                                OnKeyDown="OnKeyDown"
                                OnKeyUp="OnKeyUp"
+                               OnFocus="HandleFocus"
+                               OnBlur="HandleBlur"
                                Style="@_typoStyle"
                                AdditionalAttributes="AdditionalAttributes" />
             @if (Clearable && _hasValue && !Disabled && !ReadOnly)
@@ -136,8 +144,56 @@
     [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
     /// <summary>Invoked on keyup in the input.</summary>
     [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
+    /// <summary>Invoked when the input gains focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
+    /// <summary>Invoked when the input loses focus.</summary>
+    [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+    /// <summary>Invoked when the clear (x) button is clicked, after the value has been reset.</summary>
+    [Parameter] public EventCallback<MouseEventArgs> OnClearButtonClick { get; set; }
+    /// <summary>Shows the <see cref="FlareFieldBase.HelperText"/> only while the input is focused.</summary>
+    [Parameter] public bool HelperTextOnFocus { get; set; }
+    /// <summary>The HTML <c>pattern</c> regex the value must match (native constraint validation).</summary>
+    [Parameter] public string? Pattern { get; set; }
+    /// <summary>The HTML <c>inputmode</c> hint that selects the mobile virtual keyboard
+    /// (e.g. <c>email</c>, <c>numeric</c>, <c>tel</c>, <c>url</c>).</summary>
+    [Parameter] public string? InputMode { get; set; }
+    /// <summary>The HTML <c>autocomplete</c> token (e.g. <c>email</c>, <c>username</c>, <c>off</c>) for browser/password-manager autofill.</summary>
+    [Parameter] public string? Autocomplete { get; set; }
+    /// <summary>The HTML <c>spellcheck</c> attribute; null (default) leaves the browser default.</summary>
+    [Parameter] public bool? Spellcheck { get; set; }
+    /// <summary>Id of a <c>&lt;datalist&gt;</c> element providing native autocomplete suggestions.</summary>
+    [Parameter] public string? DataList { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Input.Root;
+
+    private FlareTextInput? _input;
+    private bool _focused;
+
+    /// <inheritdoc />
+    protected override ValueTask FocusCoreAsync() => _input?.FocusAsync() ?? ValueTask.CompletedTask;
+    /// <summary>Selects (highlights) all the text in the field.</summary>
+    public ValueTask SelectAsync() => _input?.SelectAsync() ?? ValueTask.CompletedTask;
+    /// <summary>Removes keyboard focus from the field.</summary>
+    public ValueTask BlurAsync() => _input?.BlurAsync() ?? ValueTask.CompletedTask;
+    /// <summary>Focuses the field and selects the character range [<paramref name="start"/>, <paramref name="end"/>).</summary>
+    public ValueTask SelectRangeAsync(int start, int end) => _input?.SelectRangeAsync(start, end) ?? ValueTask.CompletedTask;
+
+    // Helper text is hidden until focus only when HelperTextOnFocus is set.
+    private string? _effectiveHelperText => HelperTextOnFocus && !_focused ? null : HelperText;
+
+    private async Task HandleFocus(FocusEventArgs e)
+    {
+        _focused = true;
+        if (HelperTextOnFocus) StateHasChanged();
+        await OnFocus.InvokeAsync(e);
+    }
+
+    private async Task HandleBlur(FocusEventArgs e)
+    {
+        _focused = false;
+        if (HelperTextOnFocus) StateHasChanged();
+        await OnBlur.InvokeAsync(e);
+    }
 
     // ControlId/HelperId/ErrorId/DisplayedErrorText/SupportDescribedBy are inherited from FlareFieldBase.
     // FlareField additionally merges the shared describedby target with its own AriaDescribedBy parameter.
@@ -195,10 +251,11 @@
         _ => true,
     };
 
-    private async Task HandleClear()
+    private async Task HandleClear(MouseEventArgs e)
     {
         await ValueChanged.InvokeAsync(default);
         NotifyFieldChanged();
+        await OnClearButtonClick.InvokeAsync(e);
     }
 
     // The display string, formatted SYMMETRICALLY with EmitValue's parse: string is passed through

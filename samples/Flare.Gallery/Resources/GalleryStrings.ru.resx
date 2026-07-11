@@ -1032,6 +1032,15 @@
   <data name="NumericField_Basic" xml:space="preserve">
     <value>Целое и дробное (min/max, шаг, формат)</value>
   </data>
+  <data name="NumericField_Interactive" xml:space="preserve">
+    <value>Очистка, выделение при фокусе и программный шаг</value>
+  </data>
+  <data name="Field_FocusInteraction" xml:space="preserve">
+    <value>Фокус, автофокус, паттерны и события</value>
+  </data>
+  <data name="TextArea_Resize" xml:space="preserve">
+    <value>Изменение размера, очистка и проверка орфографии</value>
+  </data>
   <data name="TextArea_Title" xml:space="preserve">
     <value>Многострочное поле (Text Area)</value>
   </data>

@@ -22,6 +22,15 @@ public interface IElementJsService
     /// <summary>Focuses <paramref name="element"/> and selects its contents (e.g. an OTP digit input).</summary>
     ValueTask FocusAndSelectAsync(ElementReference element);
 
+    /// <summary>Selects (highlights) all the text in <paramref name="element"/> without moving focus elsewhere.</summary>
+    ValueTask SelectAsync(ElementReference element);
+
+    /// <summary>Removes focus from <paramref name="element"/> (programmatic blur).</summary>
+    ValueTask BlurAsync(ElementReference element);
+
+    /// <summary>Focuses <paramref name="element"/> and selects the character range [<paramref name="start"/>, <paramref name="end"/>).</summary>
+    ValueTask SelectRangeAsync(ElementReference element, int start, int end);
+
     /// <summary>Returns the element's viewport rectangle and the current viewport size.</summary>
     ValueTask<ElementBounds> GetBoundsAsync(ElementReference element);
 }

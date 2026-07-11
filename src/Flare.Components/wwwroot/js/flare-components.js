@@ -13,6 +13,19 @@ window.flareOtp = {
     }
 };
 
+// -- Field imperative helpers (select/blur/caret-range) ----------------------
+// Focus is done natively from C# via ElementReference.FocusAsync; only the
+// operations with no built-in Blazor equivalent live here.
+window.flareField = {
+    select: function (el) { if (el && el.select) el.select(); },
+    blur: function (el) { if (el && el.blur) el.blur(); },
+    selectRange: function (el, start, end) {
+        if (el && el.setSelectionRange) {
+            try { el.focus(); el.setSelectionRange(start, end); } catch (_) { }
+        }
+    }
+};
+
 // -- Clipboard write fallback (no eval/innerHTML - GS-5 compliant) ------------
 window.FlareClipboardFallback = {
     copy: function (text) {

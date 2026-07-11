@@ -1032,6 +1032,15 @@
   <data name="NumericField_Basic" xml:space="preserve">
     <value>Integer &amp; decimal (min/max, step, format)</value>
   </data>
+  <data name="NumericField_Interactive" xml:space="preserve">
+    <value>Clearable, select-on-focus &amp; imperative step</value>
+  </data>
+  <data name="Field_FocusInteraction" xml:space="preserve">
+    <value>Focus, autofocus, patterns &amp; events</value>
+  </data>
+  <data name="TextArea_Resize" xml:space="preserve">
+    <value>Resize, clearable &amp; spellcheck</value>
+  </data>
   <data name="TextArea_Title" xml:space="preserve">
     <value>Text Area</value>
   </data>
