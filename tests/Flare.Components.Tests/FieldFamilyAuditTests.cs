@@ -135,4 +135,51 @@ public class FieldFamilyAuditTests : FlareTestContext
         var style = cut.Find("textarea").GetAttribute("style") ?? string.Empty;
         Assert.Contains("resize:none", style);
     }
+
+    // --- Item 10: OtpField now composes the shared FlareFieldChrome (label + helper/error + validation).
+    [Fact]
+    public void Otp_Inherits_FieldBase_And_Composes_Chrome()
+    {
+        Assert.True(typeof(FlareFieldBase).IsAssignableFrom(typeof(FlareOtpField)));
+
+        var cut = Render<FlareOtpField>(p => p.Add(c => c.Length, 4));
+        // The shared field frame wraps the cell group; the cells keep their own look.
+        Assert.NotEmpty(cut.FindAll(".flare-input"));
+        Assert.NotEmpty(cut.FindAll(".flare-otp[role=group]"));
+        Assert.Equal(4, cut.FindAll("input.flare-otp__cell").Count);
+    }
+
+    [Fact]
+    public void Otp_Label_Wires_Group_Via_AriaLabelledBy()
+    {
+        var cut = Render<FlareOtpField>(p => p
+            .Add(c => c.Length, 4)
+            .Add(c => c.Label, "Verification code"));
+
+        var label = cut.Find("label");
+        Assert.Equal("Verification code", label.TextContent);
+        // A group control is labelled by aria-labelledby (not a single for=/input id).
+        Assert.Equal(label.Id, cut.Find(".flare-otp").GetAttribute("aria-labelledby"));
+    }
+
+    [Fact]
+    public void Otp_HelperText_Renders_In_SupportRow()
+    {
+        var cut = Render<FlareOtpField>(p => p
+            .Add(c => c.Length, 4)
+            .Add(c => c.HelperText, "Enter the code we sent you"));
+
+        Assert.Contains("Enter the code we sent you", cut.Find(".flare-input__helper").TextContent);
+    }
+
+    [Fact]
+    public void Otp_ErrorText_ShowsMessage_AndReddensCells()
+    {
+        var cut = Render<FlareOtpField>(p => p
+            .Add(c => c.Length, 4)
+            .Add(c => c.ErrorText, "Invalid code"));
+
+        Assert.Contains("Invalid code", cut.Find(".flare-input__helper--error").TextContent);
+        Assert.NotEmpty(cut.FindAll("input.flare-otp__cell--error"));
+    }
 }

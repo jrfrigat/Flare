@@ -1,0 +1,18 @@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:26rem;">
+    <FlareOtpField @bind-Value="_code" Length="6"
+                   Label="Verification code"
+                   HelperText="Enter the 6-digit code we sent to your phone."
+                   AutoComplete="one-time-code" />
+
+    <FlareOtpField @bind-Value="_confirm" Length="6"
+                   Label="Confirm code (try anything but 123456)"
+                   Required="true"
+                   ErrorText="@(_confirm.Length == 6 && _confirm != "123456" ? "That code is incorrect." : null)" />
+</FlareStack>
+
+@code {
+    // OTP now composes the shared field chrome: Label above, HelperText/ErrorText below, Required, and
+    // an ErrorText that both shows the message and reddens the cells - the cells themselves are unchanged.
+    private string _code = string.Empty;
+    private string _confirm = string.Empty;
+}

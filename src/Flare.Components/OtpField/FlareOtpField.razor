@@ -1,28 +1,49 @@
 @namespace Flare.Components
-@inherits FlareComponentBase
+@inherits FlareFieldBase
 @inject Flare.Components.Services.IElementJsService Element
 @inject IFlareClipboard Clipboard
+@using System.Linq.Expressions
 
-<div class="@BuildCssClass(_disabledClass)" style="@Style" @attributes="AdditionalAttributes" role="group" aria-label="@(AriaLabel ?? FlareStrings.OtpInput_GroupLabel)">
-    @for (var i = 0; i < Length; i++)
-    {
-        var idx = i;
-        <input class="@Css.Classes.Otp.Cell @(idx == _active ? Css.Classes.Otp.CellFocused : "") @(Error ? Css.Classes.Otp.CellError : "")"
-               type="@_inputType"
-               inputmode="@InputMode"
-               maxlength="1"
-               value="@(_digits[idx])"
-               disabled="@Disabled"
-               autocomplete="@AutoComplete"
-               aria-label="@(string.Format(FlareStrings.OtpInput_CellLabel, idx + 1, Length))"
-               @ref="_refs[idx]"
-               @oninput="@(e => OnInput(e, idx))"
-               @onkeydown="@(e => OnKeyDown(e, idx))"
-               @onfocus="@(() => _active = idx)"
-               @onblur="@(() => _active = -1)"
-               @onpaste="@(e => OnPaste(e))" />
-    }
-</div>
+@* OTP composes the shared FlareFieldChrome frame (label + helper/error + variant/size/state) like the rest
+   of the field family; the N-cell row is a group control in the Field slot and keeps its own look, wired to
+   the label via aria-labelledby (not a single for=) exactly like the div-trigger Select. *@
+
+<FlareFieldChrome Variant="Variant" Size="Size"
+                  Invalid="@_invalid"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelId="@_labelId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@BuildCssClass(_disabledClass)"
+             role="group"
+             aria-labelledby="@(string.IsNullOrEmpty(Label) ? null : _labelId)"
+             aria-label="@(string.IsNullOrEmpty(Label) ? (AriaLabel ?? FlareStrings.OtpInput_GroupLabel) : null)"
+             aria-describedby="@SupportDescribedBy"
+             aria-invalid="@(_invalid ? "true" : null)">
+            @for (var i = 0; i < Length; i++)
+            {
+                var idx = i;
+                <input class="@Css.Classes.Otp.Cell @(idx == _active ? Css.Classes.Otp.CellFocused : "") @(_invalid ? Css.Classes.Otp.CellError : "")"
+                       type="@_inputType"
+                       inputmode="@InputMode"
+                       maxlength="1"
+                       value="@(_digits[idx])"
+                       disabled="@Disabled"
+                       readonly="@ReadOnly"
+                       autocomplete="@AutoComplete"
+                       aria-label="@(string.Format(FlareStrings.OtpInput_CellLabel, idx + 1, Length))"
+                       @ref="_refs[idx]"
+                       @oninput="@(e => OnInput(e, idx))"
+                       @onkeydown="@(e => OnKeyDown(e, idx))"
+                       @onfocus="@(() => _active = idx)"
+                       @onblur="@(() => _active = -1)"
+                       @onpaste="@(e => OnPaste(e))" />
+            }
+        </div>
+    </Field>
+</FlareFieldChrome>
 
 @code {
     /// <summary>Number of OTP digits. Default is 6.</summary>
@@ -37,20 +58,25 @@
     [Parameter] public bool Masked { get; set; }
     /// <summary>Numeric input mode (default). Set to "text" for alphanumeric codes.</summary>
     [Parameter] public string InputMode { get; set; } = "numeric";
-    /// <summary>Disables all input cells.</summary>
-    [Parameter] public bool Disabled { get; set; }
-    /// <summary>Applies error styling to all cells.</summary>
+    /// <summary>Forces the error (invalid) visual state on all cells without a message. The error state is
+    /// also shown automatically whenever <see cref="FlareFieldBase.ErrorText"/> or a bound validation message is present.</summary>
     [Parameter] public bool Error { get; set; }
-    /// <summary>ARIA group label for accessibility. When null, falls back to the localizer key OtpInput_GroupLabel.</summary>
+    /// <summary>ARIA group label, used only when no <see cref="FlareFieldBase.Label"/> is set. When null, falls back to the localizer key OtpInput_GroupLabel.</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>HTML autocomplete value for each input cell. Use "one-time-code" to enable browser OTP autofill. Default: "off".</summary>
     [Parameter] public string AutoComplete { get; set; } = "off";
     /// <summary>Focuses the first cell on first render (best-effort).</summary>
     [Parameter] public bool Autofocus { get; set; }
+    /// <summary>Expression used to bind and validate the field inside an <c>EditForm</c>.</summary>
+    [Parameter] public Expression<Func<string>>? For { get; set; }
+    // Label, HelperText, ErrorText, Disabled, ReadOnly, Required, Variant, Size are inherited from FlareFieldBase.
 
     protected override string ComponentCssClass => Css.Classes.Otp.Root;
     private string _disabledClass => Disabled ? Css.Classes.Otp.Disabled : string.Empty;
     private string _inputType => Masked ? "password" : "text";
+    private string _labelId => $"{ControlId}-label";
+    // Error is on when explicitly forced (Error) or when a message/validation error is displayed.
+    private bool _invalid => Error || !string.IsNullOrEmpty(DisplayedErrorText);
 
     private string[] _digits = [];
     private ElementReference[] _refs = [];
@@ -66,6 +92,8 @@
 
         for (var i = 0; i < Length; i++)
             _digits[i] = i < Value.Length ? Value[i].ToString() : string.Empty;
+
+        UpdateFieldIdentifier(For);
     }
 
     private bool _autofocused;
@@ -146,6 +174,7 @@
     {
         var value = string.Concat(_digits);
         await ValueChanged.InvokeAsync(value);
+        NotifyFieldChanged();
         if (value.Length == Length && _digits.All(d => !string.IsNullOrEmpty(d)))
             await OnComplete.InvokeAsync(value);
         StateHasChanged();

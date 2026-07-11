@@ -2741,6 +2741,7 @@ MarkdownParser: защита от vbscript/data-uri/expression()/опасных 
   <data name="OtpField_Title" xml:space="preserve"><value>OTP-поле</value></data>
   <data name="OtpField_Subtitle" xml:space="preserve"><value>Поле для одноразового пароля с автофокусом, поддержкой вставки и навигацией с клавиатуры.</value></data>
   <data name="OtpField_Basic" xml:space="preserve"><value>Базовое</value></data>
+  <data name="OtpField_Labeled" xml:space="preserve"><value>Метка, подсказка и валидация (общая chrome поля)</value></data>
   <data name="OtpField_Pin" xml:space="preserve"><value>4-значный PIN (маскированный)</value></data>
   <data name="OtpField_ErrorState" xml:space="preserve"><value>Состояние ошибки</value></data>
   <data name="OtpField_Disabled" xml:space="preserve"><value>Отключено</value></data>

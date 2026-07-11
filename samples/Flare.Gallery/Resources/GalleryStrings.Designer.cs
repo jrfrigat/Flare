@@ -5839,6 +5839,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("OtpField_Basic", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Label, helper text &amp; validation (shared field chrome).
+        /// </summary>
+        public static string OtpField_Labeled {
+            get {
+                return ResourceManager.GetString("OtpField_Labeled", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Disabled.

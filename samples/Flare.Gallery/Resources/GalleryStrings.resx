@@ -2741,6 +2741,7 @@ Gallery rebuilt entirely on Flare components - no raw divs or magic code</value>
   <data name="OtpField_Title" xml:space="preserve"><value>OTP Field</value></data>
   <data name="OtpField_Subtitle" xml:space="preserve"><value>One-time password input with auto-focus, paste support, and keyboard navigation.</value></data>
   <data name="OtpField_Basic" xml:space="preserve"><value>Basic</value></data>
+  <data name="OtpField_Labeled" xml:space="preserve"><value>Label, helper text &amp; validation (shared field chrome)</value></data>
   <data name="OtpField_Pin" xml:space="preserve"><value>4-Digit PIN (Masked)</value></data>
   <data name="OtpField_ErrorState" xml:space="preserve"><value>Error State</value></data>
   <data name="OtpField_Disabled" xml:space="preserve"><value>Disabled</value></data>

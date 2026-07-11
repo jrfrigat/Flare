@@ -39,15 +39,18 @@ Consensus gap ranking (how many of the 3 competitors have it):
 9. **`SelectRangeAsync(start, end)`** (caret range), **TextArea `Resize`** (None/Both/Vertical/Horizontal),
    **`DataList`** (native `<datalist>` suggestions), **`HelperTextOnFocus`** (show helper only while focused).
 
-## Deferred
+## Shipped on `main` (item 10, minimal scope)
 
-### 10 - `FlareOtpField` does not inherit `FlareFieldBase` - NEEDS DESIGN
-`FlareOtpField` is a standalone `FlareComponentBase`, so it lacks the family chrome: no `Label`,
-`HelperText`/`ErrorText`, `Variant`/`Size`, `Required`/`ReadOnly`, no `FlareFieldChrome` support row.
-Open question: should OTP compose `FlareFieldChrome` (gaining label + helper/error + variant/size for
-free) with its N-cell row in the `Field` slot, or stay deliberately standalone (its multi-input model is
-unlike a single control - `Value` is a joined digit string, `ReadOnly` and floating labels are awkward)?
-Decision pending. If adopted: OTP would render `<FlareFieldChrome>` with the cell row as `Field`,
-inherit `FlareFieldBase` (Label/Helper/Error/Variant/Size/Required), and keep `Length`/`OnComplete`/
-`Masked`/`AutoComplete`/`ClearAsync` as OTP-specifics. `FocusAsync`/`Autofocus` were added in items 1-2
-regardless (they don't depend on the inheritance change).
+### 10 - `FlareOtpField` now composes `FlareFieldChrome` - DONE (minimal)
+Resolved the "does OTP look too different for the chrome?" question: the chrome is only the vertical
+column (label above / helper-error below), NOT the control's look - proven by the div-trigger `FlareSelect`
+using the same chrome. OTP now `@inherits FlareFieldBase` and wraps its N-cell group in `<FlareFieldChrome>`
+with the cells in the `Field` slot (their look is untouched), labelled via `aria-labelledby` (not a single
+`for=`), exactly like Select. Gained: `Label`, `HelperText`/`ErrorText` (a message row, not just the red-cell
+`Error` bool), `Required`, `ReadOnly` (cells honour it), and `EditContext`/`For` validation - an `ErrorText`
+or bound validation message now both shows the message and reddens the cells. `Length`/`OnComplete`/`Masked`/
+`AutoComplete`/`FocusAsync`/`Autofocus`/`ClearAsync` stay OTP-specific.
+
+Chosen scope was **minimal**: `Variant` (Filled/Outlined) and `Size` (Xs..Xl) are accepted (inherited) but
+not visually wired onto the cells - the cells have their own fixed look and mapping variants/sizes onto them
+is marginal-value CSS work. Revisit only if a concrete design needs sized/variant OTP cells.
