@@ -2492,6 +2492,14 @@ Select и MultiSelect перестроены на быстром headless-ядр
 Ещё около 100 стилей компонентов стали настраиваемыми токенами
 Исправлена группа проблем доступности и тем в навигации, диалогах, drawer и полях ввода</value>
   </data>
+  <data name="About_WhatsNewV17" xml:space="preserve">
+    <value>FocusAsync() по всему семейству кнопок (Button, IconButton, ToggleButton, SplitButton, FAB) для программного фокуса
+ButtonEdge (Start/End) у IconButton и ToggleButton для оптического выравнивания к краю в аппбарах и тулбарах
+FlareButton.LoadingTemplate для кастомного индикатора загрузки; FlareToggleButton.Toggle()/SetToggledAsync()
+FlareToggleGroup.Mandatory (всегда держать один выбранным) и CheckMark (галочка на выбранном)
+FlareSplitButton дополнен: Loading, FullWidth, ссылка Href, Placement меню и публичные Open()/Close()
+Кнопки-ссылки по умолчанию ставят rel=noopener noreferrer при target=_blank (защита от reverse-tabnabbing)</value>
+  </data>
   <data name="About_WhatsNewV16" xml:space="preserve">
     <value>Новый FlareDescriptionList / FlareDescriptionItem: read-only панель пар "ключ - значение" (read-only аналог FlareDataGrid) с опциями Striped, Bordered и LabelWidth и произвольным содержимым метки
 Новый инлайновый код-чип FlareCode и FlareText.Mono для моноширинных токенов в тексте (code/kbd/samp/pre теперь рендерятся как настоящие семантические элементы)

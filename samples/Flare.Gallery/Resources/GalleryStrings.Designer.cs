@@ -198,6 +198,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FocusAsync() across the whole button family.
+        /// </summary>
+        public static string About_WhatsNewV17 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV17", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to New FlareDescriptionList / FlareDescriptionItem: a read-only key/value detail panel.
         /// </summary>
         public static string About_WhatsNewV16 {

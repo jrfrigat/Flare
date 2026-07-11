@@ -3,6 +3,34 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.5] - 2026-07-11
+
+A button-family release: follow-ups from a cross-framework audit (vs MudBlazor / Blazorise / Fluent UI
+Blazor) applied across the whole button family.
+
+### Added
+- **`FlareButton`**: `FocusAsync()` (programmatic focus via a captured `ElementReference`),
+  `LoadingTemplate` (custom loading content replacing the default spinner), and an explicit `Rel`.
+- **`FocusAsync()` across the button family** - `FlareIconButton`, `FlareToggleButton`, `FlareSplitButton`
+  (focuses the primary action) and `FlareFloatingActionButton`.
+- **`ButtonEdge`** (`None`/`Start`/`End`) on `FlareIconButton` and `FlareToggleButton` - optical edge
+  alignment (a negative inline margin) for app bars, toolbars and list-item leading/trailing slots.
+- **`FlareToggleButton.Toggle()` / `SetToggledAsync(bool)`** - programmatic toggle control.
+- **`FlareToggleGroup.Mandatory`** (single-select cannot be cleared) and **`CheckMark`** (a leading check
+  on the selected item).
+- **`FlareSplitButton`**: `Loading`, `FullWidth`, `Href`/`Target`/`Rel` (the primary action as a link),
+  `Placement` (`MenuAnchor`), and public `Open()` / `Close()`. `FlareMenu` gains public
+  `OpenAsync()` / `CloseAsync()`.
+- **`FlareIconButton`**: `OnColor` and a `Rel` override.
+
+### Changed
+- **Link buttons default `rel="noopener noreferrer"` when `Target="_blank"`** (`FlareButton`,
+  `FlareIconButton`, `FlareSplitButton`) - prevents reverse tabnabbing via `window.opener`. Override with
+  the new `Rel` parameter.
+- **`FlareFloatingActionButton` and `FlareFloatingActionMenuItem` `OnClick` are now
+  `EventCallback<MouseEventArgs>`** (were the argument-less `EventCallback`), for consistency with the rest
+  of the button family.
+
 ## [0.1.4] - 2026-07-11
 
 ### Added
