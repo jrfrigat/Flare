@@ -4,6 +4,31 @@
 [семантическому версионированию](https://semver.org/). Записи, отсутствующие в этом файле,
 показываются на английском из `CHANGELOG.md`.
 
+## [0.1.8] - 2026-07-11
+
+Релиз overlay/диалогов: доработки по кросс-фреймворк аудиту (vs MudBlazor / Blazorise / DevExpress /
+Fluent UI Blazor) по всему семейству оверлеев — tooltip, меню, snackbar, popover и диалог.
+
+### Добавлено
+- **`FlareTooltip`**: `Delay` (задержка появления по наведению), независимые триггеры `ShowOnHover` /
+  `ShowOnFocus` / `ShowOnClick`, `Arrow` (стрелка) и `Disabled` (rich-вариант теперь подключается при
+  заданном `TooltipContent`).
+- **Контекстное меню `FlareMenu`**: `Activation="RightClick"` превращает меню в контекстное (подавляя
+  меню браузера), `PositionAtCursor` привязывает панель к курсору, `MaxHeight` прокручивает длинный
+  список, а `FlareMenuItem.AutoClose="false"` держит меню открытым для переключаемых пунктов.
+- **Snackbar**: `SnackbarOptions.PreventDuplicate` подавляет дубликаты, `ISnackbarService.Remove(id)` и
+  `Clear()` программно гасят один или все, а `Show(RenderFragment, ...)` рендерит своё, компонентное
+  содержимое вместо простого текста.
+- **`FlarePopover`**: `Trigger="Hover"` (с `Delay` / `HideDelay`), прокрутка по `MaxHeight` и
+  `MatchAnchorWidth` (ширина по якорю, как у выпадающего списка); `MinWidth` / `MaxWidth` теперь применяются.
+- **`FlareDialog`**: `ShowCloseButton` (встроенный крестик в шапке), отменяемый гард `BeforeClose`
+  (veto закрытия по scrim / Escape / крестику, например при несохранённых изменениях), а также
+  `Draggable` + `Resizable` (перетаскивание за шапку, изменение размера за нижний правый угол).
+
+### Изменено
+- Диалоги теперь по умолчанию закрываются при навигации (`CloseOnNavigation`, отключаемо) — как в
+  MudBlazor и Fluent UI Blazor.
+
 ## [0.1.7] - 2026-07-11
 
 Релиз даты/времени и графиков: доработки пикеров по кросс-фреймворк аудиту и полная переработка

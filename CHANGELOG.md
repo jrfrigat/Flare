@@ -3,6 +3,31 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.8] - 2026-07-11
+
+An overlay/dialog release: cross-framework audit follow-ups (vs MudBlazor / Blazorise / DevExpress /
+Fluent UI Blazor) across the whole overlay family - tooltip, menu, snackbar, popover and dialog.
+
+### Added
+- **`FlareTooltip`**: `Delay` (hover-intent show delay), independent `ShowOnHover` / `ShowOnFocus` /
+  `ShowOnClick` triggers, an `Arrow`, and `Disabled` (the rich variant is now wired when `TooltipContent`
+  is set).
+- **`FlareMenu` context menu**: `Activation="RightClick"` turns it into a context menu (suppressing the
+  browser menu), `PositionAtCursor` pins the panel to the pointer, `MaxHeight` scrolls a long list, and
+  `FlareMenuItem.AutoClose="false"` keeps the menu open for toggle-style / multi-action items.
+- **Snackbar**: `SnackbarOptions.PreventDuplicate` de-dupes repeats, `ISnackbarService.Remove(id)` and
+  `Clear()` dismiss one or all programmatically, and `Show(RenderFragment, ...)` renders a custom,
+  component-based body instead of plain text.
+- **`FlarePopover`**: `Trigger="Hover"` (with `Delay` / `HideDelay`), `MaxHeight` scrolling, and
+  `MatchAnchorWidth` (dropdown-style width that tracks the anchor); `MinWidth` / `MaxWidth` are now applied.
+- **`FlareDialog`**: `ShowCloseButton` (built-in header X), a cancelable `BeforeClose` guard (veto a
+  scrim / Escape / close-button dismissal, e.g. for unsaved changes), and `Draggable` + `Resizable` (drag
+  the header, resize from a bottom-right gripper).
+
+### Changed
+- Dialogs now dismiss automatically on navigation by default (`CloseOnNavigation`, opt-out) - matching
+  MudBlazor and Fluent UI Blazor.
+
 ## [0.1.7] - 2026-07-11
 
 A date/time + charts release: cross-framework audit follow-ups for the pickers, and a ground-up
