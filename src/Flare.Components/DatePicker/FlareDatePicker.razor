@@ -164,6 +164,9 @@
     [Parameter] public bool AutoClose { get; set; } = true;
     /// <summary>Renders the calendar inline (always visible under the field) rather than in a popup.</summary>
     [Parameter] public bool Inline { get; set; }
+    /// <summary>Requests focus on the date input after the first render (best-effort). Only one field per
+    /// page should set this.</summary>
+    [Parameter] public bool Autofocus { get; set; }
     /// <summary>Shows a leading week-of-year number column in the calendar.</summary>
     [Parameter] public bool ShowWeekNumbers { get; set; }
     /// <summary>Overrides the culture's first day of week when set (null = use the culture's, e.g. for a
@@ -304,11 +307,17 @@
     private string _text = string.Empty;
     private DateOnly? _syncedValue;
     private bool _focused;
+    private bool _autofocused;
 
     // Fixed-position the calendar under the field on open (and clean up on close) so it escapes a
     // Card's overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender && Autofocus && !_autofocused && !Disabled)
+        {
+            _autofocused = true;
+            try { await FocusAsync(); } catch { /* input may not be in the DOM yet - best-effort */ }
+        }
         if (Inline) return; // inline panel sits in normal flow - no anchored positioning
         if (_open == _panelPositioned) return;
         try

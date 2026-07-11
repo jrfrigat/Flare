@@ -37,10 +37,12 @@ both its Calendar-mode grid and its inner Fields-mode pickers.
 
 ## Deferred
 
-### 9 - `Autofocus` on the pickers - LOW
+### 9 - `Autofocus` on the pickers - DONE
 Blazorise + Fluent auto-focus a picker on render. Flare pickers inherit `FlareFieldBase` (not the
-editable `FlareEditableFieldBase`), so they never got the field-family `Autofocus`. Small, but low value
-for a picker; revisit if asked. (Consumers can call the new `FocusAsync()` in `OnAfterRenderAsync`.)
+editable `FlareEditableFieldBase`), so they never got the field-family `Autofocus`. **Shipped:** an
+`Autofocus` bool on `FlareDatePicker`, `FlareTimePicker` and `FlareDateTimePicker` (the three input-backed
+pickers) - it calls `FocusAsync()` once on first render (best-effort, guarded). The range picker
+(`FlareComponentBase`, no single input) is out of scope. Per-picker, matching the imperative-API pattern.
 
 ### 10 - MudBlazor-only richness - LOW
 Not shipped (Mud-only, marginal for Flare's model):

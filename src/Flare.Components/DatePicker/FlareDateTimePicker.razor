@@ -106,6 +106,9 @@
     [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
     /// <summary>Returns extra CSS class(es) for a given day cell (e.g. to mark holidays).</summary>
     [Parameter] public Func<DateOnly, string>? DayClassFunc { get; set; }
+    /// <summary>Requests focus on the input after the first render (best-effort). Only one field per page
+    /// should set this.</summary>
+    [Parameter] public bool Autofocus { get; set; }
     /// <summary>Raised when the picker popup opens.</summary>
     [Parameter] public EventCallback Opened { get; set; }
     /// <summary>Raised when the picker popup closes.</summary>
@@ -144,6 +147,7 @@
     private bool _invalid => !string.IsNullOrEmpty(DisplayedErrorText);
 
     private bool _open;
+    private bool _autofocused;
     private int _activeTab;
     private DateOnly? _selectedDate;
     private int _hour;
@@ -390,6 +394,12 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender && Autofocus && !_autofocused && !Disabled)
+        {
+            _autofocused = true;
+            try { await FocusAsync(); } catch { /* input may not be in the DOM yet - best-effort */ }
+        }
+
         if (firstRender && Mode == DateTimeVariant.Auto)
         {
             try

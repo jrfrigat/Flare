@@ -125,4 +125,21 @@ public class DateTimePickerAuditTests : FlareTestContext
             Assert.NotNull(t.GetMethod("FocusAsync"));
         }
     }
+
+    // Item 9: Autofocus on the three input-backed pickers (parity with the editable field family).
+    [Fact]
+    public void Pickers_Expose_Autofocus_Parameter()
+    {
+        Assert.NotNull(typeof(FlareDatePicker).GetProperty("Autofocus"));
+        Assert.NotNull(typeof(FlareTimePicker).GetProperty("Autofocus"));
+        Assert.NotNull(typeof(FlareDateTimePicker).GetProperty("Autofocus"));
+    }
+
+    // Autofocus focuses in OnAfterRender (best-effort, wrapped in try/catch), so rendering with it set is safe.
+    [Fact]
+    public void DatePicker_Autofocus_RendersWithoutThrowing()
+    {
+        var cut = Render<FlareDatePicker>(p => p.Add(c => c.Autofocus, true));
+        Assert.NotEmpty(cut.FindAll("input"));
+    }
 }

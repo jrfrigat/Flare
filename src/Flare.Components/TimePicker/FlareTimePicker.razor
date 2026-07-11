@@ -151,6 +151,9 @@
     [Parameter] public TimeOnly? Max { get; set; }
     /// <summary>Confirms and closes as soon as the last time unit is selected (no OK press). Default false.</summary>
     [Parameter] public bool AutoClose { get; set; }
+    /// <summary>Requests focus on the time input after the first render (best-effort). Only one field per
+    /// page should set this.</summary>
+    [Parameter] public bool Autofocus { get; set; }
     /// <summary>Raised when the picker popup opens.</summary>
     [Parameter] public EventCallback Opened { get; set; }
     /// <summary>Raised when the picker popup closes.</summary>
@@ -266,6 +269,7 @@
     private int _dropActive;   // 0 = hour, 1 = minute (Dropdown keyboard)
     private string _dropBuf = string.Empty;
     private bool _focusDrop;
+    private bool _autofocused;
 
     private async Task Toggle()
     {
@@ -301,6 +305,12 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender && Autofocus && !_autofocused && !Disabled)
+        {
+            _autofocused = true;
+            try { await FocusAsync(); } catch { /* input may not be in the DOM yet - best-effort */ }
+        }
+
         // Fixed-position the popup under the field on open (clean up on close) so it escapes a Card's
         // overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
         if (_open != _panelPositioned)
