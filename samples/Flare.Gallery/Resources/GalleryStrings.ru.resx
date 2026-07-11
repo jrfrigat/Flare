@@ -507,6 +507,9 @@
   <data name="Charts_Sparkline" xml:space="preserve">
     <value>Заливка, сглаживание и спарклайны (без обвязки)</value>
   </data>
+  <data name="Charts_MoreTypes" xml:space="preserve">
+    <value>Стопка, точечный и лепестковый</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Группа чипов</value>
   </data>

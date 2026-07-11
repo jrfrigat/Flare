@@ -187,4 +187,61 @@ public class FlareChartTests : FlareTestContext
         int plotIdx = children.FindIndex(c => c.ClassList.Contains("flare-chart__plot"));
         Assert.True(legendIdx >= 0 && plotIdx >= 0 && legendIdx < plotIdx);
     }
+
+    // --- Phase 2: breadth types --------------------------------------------------------------
+
+    [Fact]
+    public void Area_Type_RendersGradientFill()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Area)
+            .Add(x => x.Data, _data));
+
+        Assert.NotEmpty(cut.FindAll("lineargradient"));
+        Assert.Contains(cut.FindAll("path"), p => (p.GetAttribute("fill") ?? "").StartsWith("url(#"));
+    }
+
+    [Fact]
+    public void StackedBar_RendersOneFillRect_PerSeriesPerCategory()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.StackedBar)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("A", [1, 2, 3, 4]),
+                new ChartSeries("B", [4, 3, 2, 1]),
+            ], ["q1", "q2", "q3", "q4"])));
+
+        var fills = cut.FindAll("rect").Where(r => (r.GetAttribute("style") ?? "").Contains("fill:")).ToList();
+        Assert.Equal(8, fills.Count); // 2 series x 4 categories
+    }
+
+    [Fact]
+    public void Scatter_RendersCircle_PerPoint()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Scatter)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("S", System.Array.Empty<double>(), Points:
+                [
+                    new ChartPoint(1, 2), new ChartPoint(3, 5),
+                    new ChartPoint(4, 1), new ChartPoint(6, 7),
+                ]),
+            ])));
+
+        Assert.Equal(4, cut.FindAll("circle").Count);
+    }
+
+    [Fact]
+    public void Radar_RendersFilledPolygon_PerSeries()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Radar)
+            .Add(x => x.Data, new ChartData([
+                new ChartSeries("A", [4, 6, 3, 7, 5]),
+                new ChartSeries("B", [6, 3, 7, 4, 6]),
+            ], ["Speed", "Power", "Range", "Cost", "Eco"])));
+
+        var seriesPolys = cut.FindAll("polygon").Where(p => (p.GetAttribute("style") ?? "").Contains("fill-opacity")).ToList();
+        Assert.Equal(2, seriesPolys.Count);
+    }
 }

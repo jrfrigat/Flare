@@ -1701,6 +1701,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Stacked bar, scatter &amp; radar.
+        /// </summary>
+        public static string Charts_MoreTypes {
+            get {
+                return ResourceManager.GetString("Charts_MoreTypes", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pie Chart.
         /// </summary>
         public static string Charts_Pie {

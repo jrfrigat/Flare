@@ -20,10 +20,13 @@ and **C#/SignalR streaming** with no JS plugin.
 override. Line unified to a single `<path>` (straight/smooth/area share it). Closes
 [flarechart-sparkline-mode.md](flarechart-sparkline-mode.md).
 
-## Phase 2 - breadth of core types - TODO
-Add the high-value missing types, all native SVG: **StackedBar**, **Horizontal bar** (`Horizontal`/index
-axis flip), **Area as a first-class type** (or keep as the `Area` flag), **Scatter**, **TimeSeries**
-(DateTime X + time-formatted labels), **Radar**. Extends `ChartType` + per-type renderers.
+## Phase 2 - breadth of core types - DONE (2026-07-11)
+Added native-SVG types: **`Area`** (first-class type = line + fill), **`StackedBar`** (positive stacking),
+**`Scatter`** (new `ChartPoint`/`ChartSeries.Points` X-Y model), **`Radar`** (N-axis spider with grid rings
++ axis labels + filled polygons). `ChartType` extended; `_scale`/hit-zones adapted (Area+StackedBar get
+category hit-zones). **Horizontal bar moved to Phase 3** (it flips the axis geometry, which lives with the
+axis-config work). **TimeSeries** dropped as a dedicated type - a Line with time-string `Labels` covers it;
+revisit only if DateTime-aware tick spacing is needed.
 
 ## Phase 3 - config depth + interactivity - TODO
 - Axis config: `YMin`/`YMax` (+ suggested), `YAxisTicks`, `YAxisFormat` (.NET format / func), axis titles

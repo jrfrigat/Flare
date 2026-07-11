@@ -24,15 +24,18 @@
             @switch (Type)
             {
                 case ChartType.Bar: @RenderBar(); break;
+                case ChartType.StackedBar: @RenderStackedBar(); break;
                 case ChartType.Pie: @RenderPie(false); break;
                 case ChartType.Donut: @RenderPie(true); break;
-                default: @RenderLine(); break;
+                case ChartType.Scatter: @RenderScatter(); break;
+                case ChartType.Radar: @RenderRadar(); break;
+                default: @RenderLine(); break; // Line + Area
             }
 
             @* Transparent hit zones in viewBox units, so detection scales with the SVG
                (mouse offsets in rendered px would not match the 0..400 viewBox). Suppressed
                for a sparkline (no tooltips in chromeless mode). *@
-            @if (!_spark && Type is ChartType.Line or ChartType.Bar)
+            @if (!_spark && Type is ChartType.Line or ChartType.Area or ChartType.Bar or ChartType.StackedBar)
             {
                 @foreach (var cat in _categories)
                 {
@@ -116,6 +119,8 @@
     private int _svgH => Height;
 
     private bool _spark => Sparkline;
+    // Area fill is on for the explicit Area flag or the Area chart type.
+    private bool _area => Area || Type == ChartType.Area;
     // Sparkline zeroes the chrome; otherwise a Padding override applies to all sides, else the axis defaults.
     private int _padL => _spark ? 2 : (Padding ?? 36);
     private int _padR => _spark ? 2 : (Padding ?? 12);
@@ -189,7 +194,7 @@
         {
             int pts = _pts;
             if (pts <= 0) yield break;
-            if (Type == ChartType.Bar)
+            if (Type is ChartType.Bar or ChartType.StackedBar)
             {
                 double groupW = _plotW / (double)pts;
                 for (int i = 0; i < pts; i++)
@@ -323,7 +328,7 @@
 
             // Area fill: a gradient from the series color down to transparent. Colors go through style
             // (var() is not resolved in SVG presentation attributes / stop-color, only in CSS values).
-            if (Area)
+            if (_area)
             {
                 string gid = $"{_uid}-a{si}";
                 builder.AddMarkupContent(seq++,
@@ -421,6 +426,145 @@
         {
             builder.AddMarkupContent(slice.Index,
                 $"<path d=\"{slice.Path}\" stroke-width=\"1.5\" style=\"fill:{GetColor(slice.Index)};stroke:var(--flare-color-surface)\"/>");
+        }
+    };
+
+    private RenderFragment RenderStackedBar() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        int pts = series.Max(s => s.Values.Count);
+        if (pts == 0) return;
+        // Stacked totals per category (positive stacking).
+        double max = 0;
+        for (int i = 0; i < pts; i++)
+        {
+            double sum = 0;
+            foreach (var s in series) if (i < s.Values.Count) sum += Math.Max(0, SafeValue(s.Values[i]));
+            max = Math.Max(max, sum);
+        }
+        if (max <= 0) max = 1;
+        int seq = 0;
+        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(0, max));
+
+        double groupW = _plotW / (double)pts;
+        double barW = groupW * 0.6;
+        for (int i = 0; i < pts; i++)
+        {
+            double x = _padL + i * groupW + (groupW - barW) / 2;
+            double yCursor = _padT + _plotH;
+            for (int si = 0; si < series.Count; si++)
+            {
+                if (i >= series[si].Values.Count) continue;
+                double v = Math.Max(0, SafeValue(series[si].Values[i]));
+                double h = v / max * _plotH;
+                yCursor -= h;
+                builder.AddMarkupContent(seq++, string.Create(_inv, $"<rect x=\"{x:F1}\" y=\"{yCursor:F1}\" width=\"{barW:F1}\" height=\"{h:F1}\" rx=\"2\" style=\"fill:{GetColor(si)}\"/>"));
+            }
+        }
+        if (_showX) builder.AddMarkupContent(seq++, AxisLabels(0, max, pts));
+    };
+
+    private RenderFragment RenderScatter() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        var allPts = series.Where(s => s.Points is { Count: > 0 }).SelectMany(s => s.Points!).ToList();
+        if (allPts.Count == 0) return;
+        double xMin = allPts.Min(p => p.X), xMax = allPts.Max(p => p.X);
+        double yMin = allPts.Min(p => p.Y), yMax = allPts.Max(p => p.Y);
+        if (xMax == xMin) xMax = xMin + 1;
+        if (yMax == yMin) yMax = yMin + 1;
+        int seq = 0;
+        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(yMin, yMax));
+
+        for (int si = 0; si < series.Count; si++)
+        {
+            var pointsList = series[si].Points;
+            if (pointsList is null) continue;
+            var color = GetColor(si);
+            var sb = new System.Text.StringBuilder();
+            foreach (var p in pointsList)
+            {
+                double x = _padL + (p.X - xMin) / (xMax - xMin) * _plotW;
+                double y = _padT + _plotH - (p.Y - yMin) / (yMax - yMin) * _plotH;
+                sb.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"3.5\" style=\"fill:{color}\" opacity=\"0.75\"/>"));
+            }
+            builder.AddMarkupContent(seq++, sb.ToString());
+        }
+        if (_showX)
+        {
+            var sb = new System.Text.StringBuilder();
+            for (int i = 0; i <= 4; i++)
+            {
+                double xv = xMin + (xMax - xMin) * i / 4;
+                double x = _padL + (xv - xMin) / (xMax - xMin) * _plotW;
+                double y = _padT + _plotH + 14;
+                sb.Append(string.Create(_inv, $"<text x=\"{x:F1}\" y=\"{y:F1}\" text-anchor=\"middle\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{xv:G3}</text>"));
+            }
+            builder.AddMarkupContent(seq++, sb.ToString());
+        }
+    };
+
+    private RenderFragment RenderRadar() => builder =>
+    {
+        if (Data?.Series is not { Count: > 0 } series) return;
+        int axes = series.Max(s => s.Values.Count);
+        if (axes < 3) return; // a radar needs at least 3 axes
+        double max = series.SelectMany(s => s.Values).DefaultIfEmpty(0).Max();
+        if (max <= 0) max = 1;
+        double cx = _svgW / 2.0, cy = _svgH / 2.0;
+        double r = Math.Min(cx, cy) - 24;
+        int seq = 0;
+
+        if (_showGrid)
+        {
+            var g = new System.Text.StringBuilder();
+            const int levels = 4;
+            for (int lv = 1; lv <= levels; lv++)
+            {
+                double rr = r * lv / levels;
+                var poly = new System.Text.StringBuilder();
+                for (int k = 0; k < axes; k++)
+                {
+                    double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                    poly.Append(string.Create(_inv, $"{cx + rr * Math.Cos(ang):F1},{cy + rr * Math.Sin(ang):F1} "));
+                }
+                g.Append($"<polygon points=\"{poly.ToString().Trim()}\" fill=\"none\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>");
+            }
+            for (int k = 0; k < axes; k++)
+            {
+                double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                g.Append(string.Create(_inv, $"<line x1=\"{cx:F1}\" y1=\"{cy:F1}\" x2=\"{cx + r * Math.Cos(ang):F1}\" y2=\"{cy + r * Math.Sin(ang):F1}\" stroke-width=\"0.5\" style=\"stroke:var(--flare-color-outline-variant)\"/>"));
+            }
+            builder.AddMarkupContent(seq++, g.ToString());
+        }
+
+        if (_showX && Data?.Labels is { Count: > 0 } labels)
+        {
+            var t = new System.Text.StringBuilder();
+            for (int k = 0; k < axes && k < labels.Count; k++)
+            {
+                double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                double lx = cx + (r + 10) * Math.Cos(ang), ly = cy + (r + 10) * Math.Sin(ang);
+                string anchor = Math.Abs(Math.Cos(ang)) < 0.3 ? "middle" : (Math.Cos(ang) > 0 ? "start" : "end");
+                t.Append(string.Create(_inv, $"<text x=\"{lx:F1}\" y=\"{ly + 3:F1}\" text-anchor=\"{anchor}\" font-size=\"9\" style=\"fill:var(--flare-color-on-surface-variant)\">{labels[k]}</text>"));
+            }
+            builder.AddMarkupContent(seq++, t.ToString());
+        }
+
+        for (int si = 0; si < series.Count; si++)
+        {
+            var vals = series[si].Values;
+            if (vals.Count < 3) continue;
+            var color = GetColor(si);
+            var poly = new System.Text.StringBuilder();
+            for (int k = 0; k < axes; k++)
+            {
+                double v = k < vals.Count ? SafeValue(vals[k]) : 0;
+                double rr = v / max * r;
+                double ang = -Math.PI / 2 + 2 * Math.PI * k / axes;
+                poly.Append(string.Create(_inv, $"{cx + rr * Math.Cos(ang):F1},{cy + rr * Math.Sin(ang):F1} "));
+            }
+            builder.AddMarkupContent(seq++, $"<polygon points=\"{poly.ToString().Trim()}\" stroke-width=\"2\" stroke-linejoin=\"round\" style=\"fill:{color};stroke:{color};fill-opacity:0.2\"/>");
         }
     };
 
