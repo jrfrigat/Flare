@@ -2,13 +2,17 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass(_denseClass)" style="@Style" @attributes="AdditionalAttributes">
-    <div class="@Css.Classes.Menu.Activator" @onclick="Toggle" aria-haspopup="menu" aria-expanded="@_open.ToString().ToLowerInvariant()" aria-controls="@_panelId">
+    <div class="@Css.Classes.Menu.Activator"
+         @onclick="HandleActivatorClick"
+         @oncontextmenu="HandleActivatorContextMenu"
+         @oncontextmenu:preventDefault="@(Activation == MenuActivation.RightClick)"
+         aria-haspopup="menu" aria-expanded="@_open.ToString().ToLowerInvariant()" aria-controls="@_panelId">
         @Activator
     </div>
     @if (_open)
     {
-        <div class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
-        <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass" role="menu" tabindex="-1"
+        <div class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" @oncontextmenu="CloseAsync" @oncontextmenu:preventDefault="true" aria-hidden="true"></div>
+        <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="menu" tabindex="-1"
              aria-label="@AriaLabel" aria-activedescendant="@_focusedItem?.ItemId"
              @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="true">
             <CascadingValue Value="_menuContext" IsFixed="true">
@@ -33,6 +37,15 @@
     [Parameter] public EventCallback<bool> OnToggle { get; set; }
     /// <summary>Reduces item height/padding for a denser menu (consistent with other components' Dense).</summary>
     [Parameter] public bool Dense { get; set; }
+    /// <summary>How the menu opens from its activator. <see cref="MenuActivation.RightClick"/> turns it into a
+    /// context menu (and suppresses the browser's own menu).</summary>
+    [Parameter] public MenuActivation Activation { get; set; } = MenuActivation.LeftClick;
+    /// <summary>Opens the panel pinned to the pointer position instead of the activator corner - the
+    /// expected behavior for a context menu.</summary>
+    [Parameter] public bool PositionAtCursor { get; set; }
+    /// <summary>Optional CSS max-height for the panel (e.g. <c>"20rem"</c>); a longer list scrolls instead
+    /// of overflowing the viewport.</summary>
+    [Parameter] public string? MaxHeight { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Menu.Root;
 
@@ -40,6 +53,9 @@
 
     private bool _open;
     private bool _wasOpen;
+    // Pointer coordinates captured when a menu opens at the cursor (context menu / PositionAtCursor).
+    private double? _cursorX;
+    private double? _cursorY;
     private ElementReference _panelEl;
     private FlareMenuItem? _focusedItem;
     private readonly List<FlareMenuItem> _items = [];
@@ -70,7 +86,9 @@
         }
     }
 
-    private string _anchorClass => Anchor switch
+    // When opened at the pointer the panel is fixed-positioned (via inline style), so it uses the neutral
+    // at-cursor class rather than an activator-corner anchor.
+    private string _anchorClass => _cursorX is not null ? Css.Classes.Menu.AtCursor : Anchor switch
     {
         MenuAnchor.BottomRight => Css.Classes.Menu.BottomRight,
         MenuAnchor.TopLeft     => Css.Classes.Menu.TopLeft,
@@ -79,17 +97,58 @@
         _                      => Css.Classes.Menu.BottomLeft,
     };
 
-    /// <summary>Opens the menu when closed, or closes it when open, and raises <see cref="OnToggle"/>.</summary>
-    private async Task Toggle()
-    {
-        _open = !_open;
-        if (!_open)
-        {
-            _items.Clear();
-            _focusedItem = null;
-        }
+    private string _scrollClass => string.IsNullOrEmpty(MaxHeight) ? string.Empty : Css.Classes.Menu.PanelScroll;
 
-        await OnToggle.InvokeAsync(_open);
+    // Cursor coordinates (context menu) and/or a MaxHeight cap ride on an inline style; sanitize the
+    // caller-supplied length before injecting it.
+    private string? _panelStyle
+    {
+        get
+        {
+            var parts = new List<string>(2);
+            if (_cursorX is not null && _cursorY is not null)
+                parts.Add(FormattableString.Invariant($"left:{_cursorX.Value:F0}px;top:{_cursorY.Value:F0}px"));
+            if (!string.IsNullOrEmpty(MaxHeight))
+            {
+                var safe = Flare.Components.Security.CssValidator.StripDangerous(MaxHeight);
+                if (!string.IsNullOrEmpty(safe)) parts.Add($"max-height:{safe}");
+            }
+            return parts.Count == 0 ? null : string.Join(';', parts);
+        }
+    }
+
+    // Left-click activation only toggles when Activation is LeftClick; RightClick uses oncontextmenu.
+    private async Task HandleActivatorClick(MouseEventArgs e)
+    {
+        if (Activation == MenuActivation.LeftClick)
+            await Toggle(e);
+    }
+
+    private async Task HandleActivatorContextMenu(MouseEventArgs e)
+    {
+        if (Activation != MenuActivation.RightClick) return;
+        if (_open) { await CloseAsync(); return; }
+        await OpenAt(e);
+    }
+
+    /// <summary>Opens the menu when closed, or closes it when open, and raises <see cref="OnToggle"/>.</summary>
+    private async Task Toggle(MouseEventArgs e)
+    {
+        if (_open) { await CloseAsync(); return; }
+        await OpenAt(e);
+    }
+
+    // Open the panel, capturing the pointer position when PositionAtCursor so it pins to the cursor.
+    private async Task OpenAt(MouseEventArgs e)
+    {
+        if (PositionAtCursor)
+        {
+            _cursorX = e.ClientX;
+            _cursorY = e.ClientY;
+        }
+        _open = true;
+        await OnToggle.InvokeAsync(true);
+        StateHasChanged();
     }
 
     /// <summary>Opens the menu programmatically (no-op if already open) and raises <see cref="OnToggle"/>.</summary>
@@ -109,6 +168,8 @@
         _open = false;
         _items.Clear();
         _focusedItem = null;
+        _cursorX = null;
+        _cursorY = null;
 
         await OnToggle.InvokeAsync(false);
         StateHasChanged();

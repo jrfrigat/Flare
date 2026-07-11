@@ -21,6 +21,10 @@ public static class Menu
     public const string TopLeft = "flare-menu__panel--top-left";
     /// <summary>The <c>flare-menu__panel--top-right</c> CSS class.</summary>
     public const string TopRight = "flare-menu__panel--top-right";
+    /// <summary>The <c>flare-menu__panel--at-cursor</c> CSS class (panel positioned at the pointer).</summary>
+    public const string AtCursor = "flare-menu__panel--at-cursor";
+    /// <summary>The <c>flare-menu__panel--scroll</c> CSS class (scrolls when MaxHeight is capped).</summary>
+    public const string PanelScroll = "flare-menu__panel--scroll";
     /// <summary>The <c>flare-menu-item</c> CSS class.</summary>
     public const string Item = "flare-menu-item";
     /// <summary>The <c>flare-menu-item--disabled</c> CSS class.</summary>

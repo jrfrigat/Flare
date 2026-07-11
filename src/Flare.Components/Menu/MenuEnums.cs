@@ -1,5 +1,15 @@
 namespace Flare.Components;
 
+/// <summary>How a <see cref="FlareMenu"/> is opened from its activator.</summary>
+public enum MenuActivation
+{
+    /// <summary>A normal left click / tap toggles the menu (default).</summary>
+    LeftClick,
+    /// <summary>A right click (context-menu gesture) opens the menu and suppresses the browser menu -
+    /// pair with <see cref="FlareMenu.PositionAtCursor"/> for a true context menu.</summary>
+    RightClick,
+}
+
 /// <summary>
 /// Corner of the activator that the <see cref="FlareMenu"/> dropdown panel aligns to,
 /// and the direction in which it opens. Logical (RTL-aware) aliases are also provided.

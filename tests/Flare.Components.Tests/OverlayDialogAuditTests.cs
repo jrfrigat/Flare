@@ -1,4 +1,6 @@
 using Flare.Abstractions;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Flare.Components.Tests;
 
@@ -85,5 +87,76 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
         var cut = Render<FlareTooltip>(p => p
             .Add(x => x.TooltipContent, "<b>rich</b>"));
         Assert.NotEmpty(cut.FindAll(".flare-tooltip__content--rich"));
+    }
+
+    // -- Menu ------------------------------------------------------------------
+
+    private static RenderFragment Markup(string html) => b => b.AddMarkupContent(0, html);
+
+    [Fact]
+    public void Menu_RightClickActivation_OpensAtCursor_LeftClickIgnored()
+    {
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activation, MenuActivation.RightClick)
+            .Add(m => m.PositionAtCursor, true)
+            .Add(m => m.Activator, Markup("<span>x</span>")));
+
+        // Left click must not open a right-click menu.
+        cut.Find(".flare-menu__activator").Click();
+        Assert.Empty(cut.FindAll(".flare-menu__panel"));
+
+        cut.Find(".flare-menu__activator").ContextMenu(new MouseEventArgs { ClientX = 120, ClientY = 240 });
+        var panel = cut.Find(".flare-menu__panel");
+        Assert.Contains("flare-menu__panel--at-cursor", panel.ClassList);
+        var style = panel.GetAttribute("style") ?? "";
+        Assert.Contains("left:120px", style);
+        Assert.Contains("top:240px", style);
+    }
+
+    [Fact]
+    public void Menu_MaxHeight_AddsScrollClassAndStyle()
+    {
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.MaxHeight, "14rem")
+            .Add(m => m.Activator, Markup("<span>x</span>")));
+
+        cut.Find(".flare-menu__activator").Click();
+        var panel = cut.Find(".flare-menu__panel");
+        Assert.Contains("flare-menu__panel--scroll", panel.ClassList);
+        Assert.Contains("max-height:14rem", panel.GetAttribute("style") ?? "");
+    }
+
+    private static RenderFragment MenuItem(bool autoClose) => b =>
+    {
+        b.OpenComponent<FlareMenuItem>(0);
+        b.AddAttribute(1, nameof(FlareMenuItem.AutoClose), autoClose);
+        b.AddAttribute(2, nameof(FlareMenuItem.ChildContent), (RenderFragment)(c => c.AddContent(0, "Toggle")));
+        b.CloseComponent();
+    };
+
+    [Fact]
+    public void MenuItem_AutoCloseFalse_KeepsMenuOpen()
+    {
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, Markup("<span>x</span>"))
+            .Add(m => m.ChildContent, MenuItem(autoClose: false)));
+
+        cut.Find(".flare-menu__activator").Click();
+        Assert.NotEmpty(cut.FindAll(".flare-menu__panel"));
+
+        cut.Find(".flare-menu-item").Click();
+        Assert.NotEmpty(cut.FindAll(".flare-menu__panel"));
+    }
+
+    [Fact]
+    public void MenuItem_DefaultAutoClose_ClosesMenu()
+    {
+        var cut = Render<FlareMenu>(p => p
+            .Add(m => m.Activator, Markup("<span>x</span>"))
+            .Add(m => m.ChildContent, MenuItem(autoClose: true)));
+
+        cut.Find(".flare-menu__activator").Click();
+        cut.Find(".flare-menu-item").Click();
+        Assert.Empty(cut.FindAll(".flare-menu__panel"));
     }
 }

@@ -56,6 +56,13 @@
 .flare-menu__panel--top-left     { bottom: calc(100% + 0.25rem); left: 0;  transform-origin: bottom left; }
 .flare-menu__panel--top-right    { bottom: calc(100% + 0.25rem); right: 0; transform-origin: bottom right; }
 
+/* Context menu: the panel is pinned to the pointer via a fixed top/left inline style (set from the
+   triggering event), so it drops the anchor's absolute edges and just carries the expand origin. */
+.flare-menu__panel--at-cursor { position: fixed; transform-origin: top left; }
+
+/* A MaxHeight-capped menu scrolls its items instead of overflowing the viewport. */
+.flare-menu__panel--scroll { overflow-y: auto; }
+
 /* Submenu styles */
 .flare-submenu {
     position: relative;

@@ -2555,6 +2555,11 @@
   <data name="Menu_Action_Paste" xml:space="preserve"><value>Paste</value></data>
   <data name="Menu_Action_ZoomIn" xml:space="preserve"><value>Zoom in</value></data>
   <data name="Menu_Action_ZoomOut" xml:space="preserve"><value>Zoom out</value></data>
+  <data name="Menu_Context" xml:space="preserve"><value>Context menu, scrolling and keep-open</value></data>
+  <data name="Menu_ContextHint" xml:space="preserve"><value>Right-click here</value></data>
+  <data name="Menu_Scroll" xml:space="preserve"><value>Long list</value></data>
+  <data name="Menu_ScrollItem" xml:space="preserve"><value>Row</value></data>
+  <data name="Menu_KeepOpen" xml:space="preserve"><value>Multi-select</value></data>
   <data name="ButtonGroup_FullWidth" xml:space="preserve"><value>Full width</value></data>
   <data name="SplitButton_Title" xml:space="preserve"><value>Split Button</value></data>
   <data name="SplitButton_Subtitle" xml:space="preserve"><value>A primary action paired with a dropdown trigger for related secondary actions.</value></data>

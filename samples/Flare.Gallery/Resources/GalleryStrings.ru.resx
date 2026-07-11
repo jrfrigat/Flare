@@ -2555,6 +2555,11 @@
   <data name="Menu_Action_Paste" xml:space="preserve"><value>Вставить</value></data>
   <data name="Menu_Action_ZoomIn" xml:space="preserve"><value>Увеличить</value></data>
   <data name="Menu_Action_ZoomOut" xml:space="preserve"><value>Уменьшить</value></data>
+  <data name="Menu_Context" xml:space="preserve"><value>Контекстное меню, прокрутка и удержание</value></data>
+  <data name="Menu_ContextHint" xml:space="preserve"><value>Правый клик здесь</value></data>
+  <data name="Menu_Scroll" xml:space="preserve"><value>Длинный список</value></data>
+  <data name="Menu_ScrollItem" xml:space="preserve"><value>Строка</value></data>
+  <data name="Menu_KeepOpen" xml:space="preserve"><value>Множественный выбор</value></data>
   <data name="ButtonGroup_FullWidth" xml:space="preserve"><value>На всю ширину</value></data>
   <data name="SplitButton_Title" xml:space="preserve"><value>Сплит-кнопка</value></data>
   <data name="SplitButton_Subtitle" xml:space="preserve"><value>Основное действие вместе с триггером выпадающего меню для связанных действий.</value></data>

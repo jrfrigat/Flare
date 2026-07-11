@@ -59,6 +59,9 @@ else
     [Parameter] public FlareColor IconColor { get; set; } = FlareColor.Default;
     /// <summary>Alias for <see cref="IconColor"/>; when set (non-default) it overrides <see cref="IconColor"/>.</summary>
     [Parameter] public FlareColor LeadingIconColor { get; set; } = FlareColor.Default;
+    /// <summary>Whether clicking the item closes the menu. Set <see langword="false"/> to keep the menu open
+    /// for a toggle-style or multi-action item. Default <see langword="true"/>.</summary>
+    [Parameter] public bool AutoClose { get; set; } = true;
     /// <summary>Callback raised when the menu item is clicked.</summary>
     [Parameter] public EventCallback OnClick { get; set; }
 
@@ -112,11 +115,12 @@ else
         RegisterMenuItem?.Invoke(this);
     }
 
-    /// <summary>Invokes <see cref="OnClick"/> (unless disabled) and closes the parent menu.</summary>
+    /// <summary>Invokes <see cref="OnClick"/> (unless disabled) and closes the parent menu when
+    /// <see cref="AutoClose"/> is set.</summary>
     private async Task HandleClick()
     {
         if (Disabled) return;
         if (OnClick.HasDelegate) await OnClick.InvokeAsync();
-        if (CloseMenu is not null) await CloseMenu();
+        if (AutoClose && CloseMenu is not null) await CloseMenu();
     }
 }

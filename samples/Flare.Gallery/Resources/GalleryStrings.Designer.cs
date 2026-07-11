@@ -5288,7 +5288,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Menu_Action_ZoomOut", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Context menu, scrolling and keep-open.
+        /// </summary>
+        public static string Menu_Context {
+            get {
+                return ResourceManager.GetString("Menu_Context", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Right-click here.
+        /// </summary>
+        public static string Menu_ContextHint {
+            get {
+                return ResourceManager.GetString("Menu_ContextHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long list.
+        /// </summary>
+        public static string Menu_Scroll {
+            get {
+                return ResourceManager.GetString("Menu_Scroll", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Row.
+        /// </summary>
+        public static string Menu_ScrollItem {
+            get {
+                return ResourceManager.GetString("Menu_ScrollItem", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multi-select.
+        /// </summary>
+        public static string Menu_KeepOpen {
+            get {
+                return ResourceManager.GetString("Menu_KeepOpen", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Anchor positions.
         /// </summary>
