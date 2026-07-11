@@ -7,6 +7,14 @@
 <FlareButton Variant="ButtonVariant.Tonal" Loading="@_loading" Size="ButtonSize.Sm" OnClick="@ToggleLoading">
     Upload
 </FlareButton>
+@* LoadingTemplate: a custom indicator instead of the default spinner. *@
+<FlareButton Variant="ButtonVariant.Filled" Color="FlareColor.Tertiary" Loading="@_loading" OnClick="@ToggleLoading">
+    <LoadingTemplate>
+        <FlareIcon Name="hourglass_top" Size="1.1rem" />
+        <FlareText Element="span">Working…</FlareText>
+    </LoadingTemplate>
+    <ChildContent>Export</ChildContent>
+</FlareButton>
 
 @code{
     private bool _loading;
