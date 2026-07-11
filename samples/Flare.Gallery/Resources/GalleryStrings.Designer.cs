@@ -6053,7 +6053,43 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Popover_Placement", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover, dropdown width and scrolling.
+        /// </summary>
+        public static string Popover_Hover {
+            get {
+                return ResourceManager.GetString("Popover_Hover", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover me.
+        /// </summary>
+        public static string Popover_HoverAnchor {
+            get {
+                return ResourceManager.GetString("Popover_HoverAnchor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dropdown (matches width).
+        /// </summary>
+        public static string Popover_WidthAnchor {
+            get {
+                return ResourceManager.GetString("Popover_WidthAnchor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Scrollable popover.
+        /// </summary>
+        public static string Popover_ScrollAnchor {
+            get {
+                return ResourceManager.GetString("Popover_ScrollAnchor", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlarePopover anchored content with placements and an optional arrow..
         /// </summary>

@@ -1332,6 +1332,18 @@
   <data name="Popover_Placement" xml:space="preserve">
     <value>Placement, arrow &amp; min/max width</value>
   </data>
+  <data name="Popover_Hover" xml:space="preserve">
+    <value>Hover, dropdown width and scrolling</value>
+  </data>
+  <data name="Popover_HoverAnchor" xml:space="preserve">
+    <value>Hover me</value>
+  </data>
+  <data name="Popover_WidthAnchor" xml:space="preserve">
+    <value>Dropdown (matches width)</value>
+  </data>
+  <data name="Popover_ScrollAnchor" xml:space="preserve">
+    <value>Scrollable popover</value>
+  </data>
   <data name="PasswordInput_Title" xml:space="preserve">
     <value>Password Field</value>
   </data>

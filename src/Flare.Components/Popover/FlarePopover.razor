@@ -4,7 +4,8 @@
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @implements IAsyncDisposable
 
-<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes"
+     @onmouseenter="HandleMouseEnter" @onmouseleave="HandleMouseLeave">
     @if (Trigger == PopoverTrigger.Click)
     {
         <span style="display:inline-flex;cursor:pointer" @onclick="ToggleAsync">@AnchorContent</span>
@@ -15,10 +16,13 @@
     }
     @if (Open)
     {
-        <div class="@Css.Classes.Popover.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
+        @if (Trigger != PopoverTrigger.Hover)
+        {
+            <div class="@Css.Classes.Popover.Backdrop" @onclick="CloseAsync" aria-hidden="true"></div>
+        }
         <div @ref="_floatingRef"
-             class="@Css.Classes.Popover.Paper @_placementClass @_arrowClass"
-             style="@_floatingStyle">
+             class="@Css.Classes.Popover.Paper @_placementClass @_arrowClass @_matchWidthClass"
+             style="@_paperStyle">
             <CascadingValue Value="@((Func<Task>)CloseAsync)" Name="ClosePopover">
                 @ChildContent
             </CascadingValue>
@@ -35,8 +39,9 @@
     [Parameter] public bool                 Open          { get; set; }
     /// <summary>Callback raised when the open state should change.</summary>
     [Parameter] public EventCallback<bool>  OpenChanged   { get; set; }
-    /// <summary>How the popover opens. <see cref="PopoverTrigger.Click"/> toggles it from the anchor
-    /// with no extra wiring; <see cref="PopoverTrigger.Manual"/> (default) leaves it fully controlled.</summary>
+    /// <summary>How the popover opens. <see cref="PopoverTrigger.Click"/> toggles it from the anchor,
+    /// <see cref="PopoverTrigger.Hover"/> opens on hover, and <see cref="PopoverTrigger.Manual"/> (default)
+    /// leaves it fully controlled. All modes still drive <see cref="Open"/>/<see cref="OpenChanged"/>.</summary>
     [Parameter] public PopoverTrigger       Trigger       { get; set; } = PopoverTrigger.Manual;
     /// <summary>Position of the panel relative to the anchor element.</summary>
     [Parameter] public PopoverPlacement     Placement     { get; set; } = PopoverPlacement.BottomStart;
@@ -44,12 +49,22 @@
     [Parameter] public string?              MaxWidth      { get; set; }
     /// <summary>CSS min-width applied to the popover panel.</summary>
     [Parameter] public string?              MinWidth      { get; set; }
+    /// <summary>CSS max-height applied to the panel; taller content scrolls inside it.</summary>
+    [Parameter] public string?              MaxHeight     { get; set; }
+    /// <summary>Sizes the panel to the anchor's width (like a dropdown). Overrides <see cref="MinWidth"/>/
+    /// <see cref="MaxWidth"/> and applies to the default (non-<see cref="SmartPosition"/>) positioning.</summary>
+    [Parameter] public bool                 MatchAnchorWidth { get; set; }
     /// <summary>Shows a directional arrow pointing to the anchor.</summary>
     [Parameter] public bool                 Arrow         { get; set; }
     /// <summary>Enables collision detection (flip/shift) to keep the popover within viewport.</summary>
     [Parameter] public bool                 SmartPosition { get; set; }
     /// <summary>Offset in pixels between anchor and popover.</summary>
     [Parameter] public int                  Offset        { get; set; } = 8;
+    /// <summary>For <see cref="PopoverTrigger.Hover"/>: milliseconds to wait before opening on hover.</summary>
+    [Parameter] public int                  Delay         { get; set; }
+    /// <summary>For <see cref="PopoverTrigger.Hover"/>: milliseconds to wait before closing after the pointer
+    /// leaves (a short grace period so brief gaps between anchor and panel do not close it).</summary>
+    [Parameter] public int                  HideDelay     { get; set; } = 120;
 
     protected override string ComponentCssClass => Css.Classes.Popover.Anchor;
 
@@ -57,6 +72,8 @@
     private string? _floatingStyle;
     private bool _initialized;
     private bool _wasOpen;
+    // Debounce guard: each hover enter/leave bumps this so a stale delayed open/close is discarded.
+    private int _hoverGen;
     private readonly string _id = "flare-popover-" + Guid.NewGuid().ToString("N")[..8];
 
     private string _placementClass => Placement switch
@@ -76,6 +93,32 @@
     };
 
     private string _arrowClass => Arrow ? Css.Classes.Popover.Arrow : string.Empty;
+    private string _matchWidthClass => MatchAnchorWidth ? Css.Classes.Popover.PaperMatchWidth : string.Empty;
+
+    // Width/height caps ride on the panel style, merged with the JS position (when SmartPosition).
+    // MatchAnchorWidth owns the width, so the min/max-width params are skipped in that mode.
+    private string? _paperStyle
+    {
+        get
+        {
+            var parts = new List<string>(4);
+            if (!string.IsNullOrEmpty(_floatingStyle)) parts.Add(_floatingStyle!);
+            if (!MatchAnchorWidth)
+            {
+                AddLength(parts, "min-width", MinWidth);
+                AddLength(parts, "max-width", MaxWidth);
+            }
+            AddLength(parts, "max-height", MaxHeight);
+            return parts.Count == 0 ? null : string.Join(';', parts);
+        }
+    }
+
+    private static void AddLength(List<string> parts, string prop, string? value)
+    {
+        if (string.IsNullOrEmpty(value)) return;
+        var safe = Flare.Components.Security.CssValidator.StripDangerous(value);
+        if (!string.IsNullOrEmpty(safe)) parts.Add($"{prop}:{safe}");
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -87,9 +130,12 @@
                 await UpdatePositionAsync();
                 _initialized = true;
             }
-            // Trap Tab focus inside the modal popover and remember the trigger so it is refocused on
-            // close (the trap helper stashes document.activeElement and restores it on release).
-            try { await Overlay.TrapFocusAsync(_id, _floatingRef); } catch { }
+            // A hover popover is not modal: it must not trap focus (that would steal focus on hover).
+            // Click/Manual popovers trap Tab focus and refocus the trigger on close.
+            if (Trigger != PopoverTrigger.Hover)
+            {
+                try { await Overlay.TrapFocusAsync(_id, _floatingRef); } catch { }
+            }
         }
         else if (!Open && _wasOpen)
         {
@@ -134,6 +180,33 @@
 
     // Built-in anchor handler for Trigger="Click".
     private async Task ToggleAsync() => await OpenChanged.InvokeAsync(!Open);
+
+    // Hover trigger: open after Delay, close after HideDelay. The generation guard discards a delayed
+    // action if another enter/leave happened meanwhile (debounce). mouseleave does not fire while the
+    // pointer is over the panel because the panel is a DOM descendant of this root.
+    private async Task HandleMouseEnter()
+    {
+        if (Trigger != PopoverTrigger.Hover || Open) return;
+        var gen = ++_hoverGen;
+        if (Delay > 0)
+        {
+            await Task.Delay(Delay);
+            if (gen != _hoverGen) return;
+        }
+        await OpenChanged.InvokeAsync(true);
+    }
+
+    private async Task HandleMouseLeave()
+    {
+        if (Trigger != PopoverTrigger.Hover || !Open) return;
+        var gen = ++_hoverGen;
+        if (HideDelay > 0)
+        {
+            await Task.Delay(HideDelay);
+            if (gen != _hoverGen) return;
+        }
+        await OpenChanged.InvokeAsync(false);
+    }
 
     public override async ValueTask DisposeAsync()
     {

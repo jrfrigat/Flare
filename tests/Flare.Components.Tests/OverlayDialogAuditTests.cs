@@ -240,4 +240,58 @@ public sealed class OverlayDialogAuditTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll("#custom-snack"));
     }
+
+    // -- Popover ---------------------------------------------------------------
+
+    [Fact]
+    public void Popover_MatchAnchorWidth_AddsClass()
+    {
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Open, true)
+            .Add(x => x.MatchAnchorWidth, true)
+            .Add(x => x.AnchorContent, Markup("<span>a</span>"))
+            .Add(x => x.ChildContent, Markup("<span>c</span>")));
+
+        Assert.NotEmpty(cut.FindAll(".flare-popover__paper--match-width"));
+    }
+
+    [Fact]
+    public void Popover_MaxHeight_AppliesStyle()
+    {
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Open, true)
+            .Add(x => x.MaxHeight, "12rem")
+            .Add(x => x.AnchorContent, Markup("<span>a</span>"))
+            .Add(x => x.ChildContent, Markup("<span>c</span>")));
+
+        Assert.Contains("max-height:12rem", cut.Find(".flare-popover__paper").GetAttribute("style") ?? "");
+    }
+
+    [Fact]
+    public void Popover_HoverTrigger_RaisesOpenOnEnter()
+    {
+        var opened = false;
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Trigger, PopoverTrigger.Hover)
+            .Add(x => x.Delay, 0)
+            .Add(x => x.AnchorContent, Markup("<span>a</span>"))
+            .Add(x => x.OpenChanged, (bool v) => opened = v));
+
+        cut.Find(".flare-popover-anchor").MouseEnter();
+        cut.WaitForState(() => opened);
+        Assert.True(opened);
+    }
+
+    [Fact]
+    public void Popover_HoverTrigger_NoScrim()
+    {
+        var cut = Render<FlarePopover>(p => p
+            .Add(x => x.Open, true)
+            .Add(x => x.Trigger, PopoverTrigger.Hover)
+            .Add(x => x.AnchorContent, Markup("<span>a</span>"))
+            .Add(x => x.ChildContent, Markup("<span>c</span>")));
+
+        // A hover popover is not modal, so it must not render the dismiss backdrop.
+        Assert.Empty(cut.FindAll(".flare-popover__backdrop"));
+    }
 }
