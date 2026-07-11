@@ -2522,6 +2522,13 @@ Select и MultiSelect перестроены на быстром headless-ядр
 Ещё около 100 стилей компонентов стали настраиваемыми токенами
 Исправлена группа проблем доступности и тем в навигации, диалогах, drawer и полях ввода</value>
   </data>
+  <data name="About_WhatsNewV19" xml:space="preserve">
+    <value>Пикеры даты/времени получили публичный императивный API (OpenAsync/CloseAsync/ToggleAsync/ClearAsync/FocusAsync) и события Opened/Closed
+DatePicker: OpenTo (прыжок к сетке года), inline-календарь, номера недель, override FirstDayOfWeek, AutoClose и DayClassFunc
+TimePicker: секунды, min/max времени и шаг часов
+FlareChart вырос с 4 до 13 типов: Area, StackedBar, Scatter, Bubble, Radar, HeatMap, Rose, PolarArea и Combo - всё нативный SVG
+FlareChart: спарклайн и заливка, конфиг осей, интерактивная легенда, OnPointClick, трендлайны, аннотации, анимация и a11y-таблица</value>
+  </data>
   <data name="About_WhatsNewV18" xml:space="preserve">
     <value>FocusAsync()/SelectAsync()/BlurAsync() у каждого редактируемого поля (текст, пароль, число, маска, textarea) и FlareOtpField
 Autofocus, события OnFocus/OnBlur, Pattern, InputMode, Autocomplete и Spellcheck на текстовых полях

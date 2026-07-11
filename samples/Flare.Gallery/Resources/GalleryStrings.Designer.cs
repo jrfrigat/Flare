@@ -198,6 +198,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date/time pickers gain a public imperative API plus Opened/Closed events (and the FlareChart 4-to-13 type expansion).
+        /// </summary>
+        public static string About_WhatsNewV19 {
+            get {
+                return ResourceManager.GetString("About_WhatsNewV19", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to FocusAsync()/SelectAsync()/BlurAsync() across every editable field (text, password, numeric, mask, textarea) and FlareOtpField.
         /// </summary>
         public static string About_WhatsNewV18 {

@@ -2522,6 +2522,13 @@ Leaner CSS: shared input, picker, and listbox styles cut duplication across the 
 About 100 more component styles are now themeable knobs you can override
 Fixed a batch of accessibility and theme bugs across nav, dialogs, drawers, and inputs</value>
   </data>
+  <data name="About_WhatsNewV19" xml:space="preserve">
+    <value>Date/time pickers gain a public imperative API (OpenAsync/CloseAsync/ToggleAsync/ClearAsync/FocusAsync) plus Opened/Closed events
+DatePicker: OpenTo (jump to the year grid), inline calendar, week numbers, a FirstDayOfWeek override, AutoClose and DayClassFunc
+TimePicker: ShowSeconds, min/max time and HourStep
+FlareChart grew from 4 to 13 types: Area, StackedBar, Scatter, Bubble, Radar, HeatMap, Rose, PolarArea and Combo - all native SVG
+FlareChart: sparkline + area fill, axis config, interactive legend, OnPointClick, trend lines, annotations, animation and an a11y data table</value>
+  </data>
   <data name="About_WhatsNewV18" xml:space="preserve">
     <value>FocusAsync()/SelectAsync()/BlurAsync() across every editable field (text, password, numeric, mask, textarea) and FlareOtpField
 Autofocus, OnFocus/OnBlur events, Pattern, InputMode, Autocomplete and Spellcheck on the text fields

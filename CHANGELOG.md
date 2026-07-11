@@ -3,6 +3,32 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.7] - 2026-07-11
+
+A date/time + charts release: cross-framework audit follow-ups for the pickers, and a ground-up
+expansion of `FlareChart` (still native SVG, zero-JS, token-themed throughout).
+
+### Added
+- **Date/time pickers - public imperative API** on `FlareDatePicker` / `FlareTimePicker` /
+  `FlareDateTimePicker`: `OpenAsync()`, `CloseAsync()`, `ToggleAsync()`, `ClearAsync()`, `FocusAsync()`,
+  plus `Opened` / `Closed` events.
+- **`FlareDatePicker`**: `OpenTo` (Day/Month/Year - jump straight to the year grid for far-back dates),
+  `AutoClose`, `Inline` (an always-open calendar in normal flow), `ShowWeekNumbers`, an explicit
+  `FirstDayOfWeek` override, and `DayClassFunc` for per-day custom CSS (holidays, highlights).
+- **`FlareTimePicker`**: `ShowSeconds`, `Min` / `Max` time (out-of-range cells disabled), and `HourStep`.
+- **`FlareChart` grew from 4 to 13 chart types** - added `Area`, `StackedBar`, `Scatter`, `Bubble`,
+  `Radar`, `HeatMap`, `Rose`, `PolarArea` and `Combo` (per-series `ChartSeriesKind` bar/line/area).
+- **`FlareChart` sparkline & fills**: `Sparkline` (chromeless, edge-to-edge with a crisp stroke), `Area`
+  gradient fill, `Smooth` curves, `ShowMarkers`, and granular `ShowGrid` / `ShowLegend` /
+  `ShowXAxisLabels` / `ShowYAxisLabels` / `LegendPosition` / `Padding` toggles.
+- **`FlareChart` config & interactivity**: `YMin` / `YMax`, `YAxisFormat`, `XAxisTitle` / `YAxisTitle`,
+  `Horizontal` bars, `ShowValues`, `OnPointClick`, `DonutRingRatio`, `BarWidthRatio`, an interactive
+  legend (click a label to toggle a series), `TrendLine` (least-squares overlay) and `Annotations`
+  (threshold / target / band overlays).
+- **`FlareChart` polish**: `Animate` (token-driven, `prefers-reduced-motion`-aware enter animation - a
+  differentiator vs Chart.js's JS animation and MudBlazor's none) and `DataTable` (a visually-hidden data
+  table so screen readers can read the values).
+
 ## [0.1.6] - 2026-07-11
 
 A field-family release: follow-ups from a cross-framework audit (vs MudBlazor / Blazorise / Fluent UI
