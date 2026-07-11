@@ -9,7 +9,16 @@
         var m = msg;
         <div class="@BuildCssClass(Css.Classes.Snackbar.Root, $"flare-snackbar--{m.Severity.ToString().ToLowerInvariant()}", m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null, m.CssClass)"
              role="status">
-            <span class="@Css.Classes.Snackbar.Text">@m.Text</span>
+            <span class="@Css.Classes.Snackbar.Text">
+                @if (m.Content is not null)
+                {
+                    @m.Content
+                }
+                else
+                {
+                    @m.Text
+                }
+            </span>
             <div class="@Css.Classes.Snackbar.Actions">
                 @if (!string.IsNullOrEmpty(m.ActionText) && m.OnAction is not null)
                 {
@@ -62,6 +71,8 @@
         base.OnInitialized();
         SnackbarService.OnShow += HandleShow;
         SnackbarService.OnUpdate += HandleUpdate;
+        SnackbarService.OnRemove += HandleRemove;
+        SnackbarService.OnClear += HandleClear;
         Navigation.LocationChanged += HandleLocationChanged;
     }
 
@@ -77,6 +88,11 @@
     {
         InvokeAsync(async () =>
         {
+            // Opt-in de-duplication: drop a repeated text/severity notice instead of stacking copies.
+            if (msg.PreventDuplicate && msg.Content is null &&
+                _messages.Any(m => m.Text == msg.Text && m.Severity == msg.Severity))
+                return;
+
             while (_messages.Count >= MaxVisible && _messages.Count > 0)
                 _messages.RemoveAt(0);
             _messages.Add(msg);
@@ -101,6 +117,17 @@
         StateHasChanged();
     });
 
+    // Programmatic single dismissal (ISnackbarService.Remove).
+    private void HandleRemove(Guid id) => InvokeAsync(() => Dismiss(id));
+
+    // Programmatic dismiss-all (ISnackbarService.Clear).
+    private void HandleClear() => InvokeAsync(() =>
+    {
+        if (_messages.Count == 0) return;
+        _messages.Clear();
+        StateHasChanged();
+    });
+
     private void Dismiss(Guid id)
     {
         var msg = _messages.FirstOrDefault(m => m.Id == id);
@@ -115,6 +142,8 @@
     {
         SnackbarService.OnShow -= HandleShow;
         SnackbarService.OnUpdate -= HandleUpdate;
+        SnackbarService.OnRemove -= HandleRemove;
+        SnackbarService.OnClear -= HandleClear;
         Navigation.LocationChanged -= HandleLocationChanged;
         await base.DisposeAsync();
     }

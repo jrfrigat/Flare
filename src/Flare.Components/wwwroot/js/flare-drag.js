@@ -90,6 +90,65 @@ export function removeResizeHandle(handle) {
     if (off) { off(); _resizeHandles.delete(handle); }
 }
 
+// -- FlareDialog drag (move the panel by its header) + corner resize ----------
+// Both reuse the shared startDrag gesture so there is no bespoke pointer plumbing here. Drag applies a
+// CSS translate (preserving the centering transform's starting offset); resize grows width/height from
+// the bottom-right gripper down to the given minimums.
+const _dialogDrags = new Map();
+
+export function registerDialogDrag(handle, panel) {
+    if (!handle || !panel) return;
+    let startX = 0, startY = 0;
+    const off = startDrag(handle, {
+        cursor: 'move',
+        onStart() {
+            const m = new DOMMatrixReadOnly(getComputedStyle(panel).transform);
+            startX = m.m41;
+            startY = m.m42;
+        },
+        onMove(dx, dy) {
+            panel.style.transform = `translate(${startX + dx}px, ${startY + dy}px)`;
+        },
+    });
+    _dialogDrags.set(handle, off);
+}
+
+export function removeDialogDrag(handle) {
+    const off = _dialogDrags.get(handle);
+    if (off) { off(); _dialogDrags.delete(handle); }
+}
+
+const _dialogResizes = new Map();
+
+export function registerDialogResize(handle, panel, minWidth, minHeight) {
+    if (!handle || !panel) return;
+    const minW = parseFloat(minWidth) || 0;
+    const minH = parseFloat(minHeight) || 0;
+    let sw = 0, sh = 0;
+    const off = startDrag(handle, {
+        cursor: 'nwse-resize',
+        onStart() {
+            const r = panel.getBoundingClientRect();
+            sw = r.width;
+            sh = r.height;
+            // The size preset caps max-width/height; lift the caps so the dragged size takes effect
+            // (only once the user actually resizes, so the initial size is untouched).
+            panel.style.maxWidth = 'none';
+            panel.style.maxHeight = 'none';
+        },
+        onMove(dx, dy) {
+            panel.style.width = Math.max(minW, sw + dx) + 'px';
+            panel.style.height = Math.max(minH, sh + dy) + 'px';
+        },
+    });
+    _dialogResizes.set(handle, off);
+}
+
+export function removeDialogResize(handle) {
+    const off = _dialogResizes.get(handle);
+    if (off) { off(); _dialogResizes.delete(handle); }
+}
+
 // -- FlareSplitter (handle that resizes its two flex siblings) ----------------
 const _splitters = new Map();
 

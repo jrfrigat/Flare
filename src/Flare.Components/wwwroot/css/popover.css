@@ -23,6 +23,15 @@
     animation: flare-popover-in var(--flare-motion-duration-short3) var(--flare-motion-easing-decelerate);
 }
 
+/* MatchAnchorWidth: the panel tracks the anchor's width (an absolutely-positioned child fills its
+   relatively-positioned .flare-popover-anchor). Drops the min/max clamps so it neither grows nor shrinks
+   past the trigger. Applies to the default (non-SmartPosition) positioning. */
+.flare-popover__paper--match-width {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+}
+
 @keyframes flare-popover-in {
     from { opacity: 0; }
     to   { opacity: 1; }

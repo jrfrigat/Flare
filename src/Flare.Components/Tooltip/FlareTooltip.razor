@@ -3,11 +3,17 @@
 @inject ICollisionService CollisionService
 @implements IAsyncDisposable
 
-<div class="@BuildCssClass(_placementClass)" style="@Style" @attributes="AdditionalAttributes"
-     aria-describedby="@(_hasTooltip ? _tooltipId : null)">
+<div class="@BuildCssClass(_placementClass, _triggerClasses)" style="@_rootStyle" @attributes="AdditionalAttributes"
+     aria-describedby="@(_hasTooltip ? _tooltipId : null)"
+     @onclick="HandleRootClick"
+     @onkeydown="HandleKeyDown">
     @ChildContent
+    @if (_clickOpen)
+    {
+        <div class="@Css.Classes.Tooltip.Backdrop" @onclick="CloseClick" @onclick:stopPropagation="true" aria-hidden="true"></div>
+    }
     <div @ref="_floatingRef"
-         class="@Css.Classes.Tooltip.Content @(Open ? Css.Classes.Tooltip.ContentVisible : "")"
+         class="@_contentClass"
          role="tooltip"
          id="@_tooltipId"
          style="@_floatingStyle">
@@ -23,7 +29,7 @@
 </div>
 
 @code {
-    /// <summary>The element that triggers the tooltip on hover.</summary>
+    /// <summary>The element that triggers the tooltip.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Text displayed inside the tooltip bubble.</summary>
     [Parameter] public string? Content { get; set; }
@@ -35,6 +41,21 @@
     [Parameter] public bool SmartPosition { get; set; }
     /// <summary>Offset in pixels between trigger and tooltip.</summary>
     [Parameter] public int Offset { get; set; } = 8;
+    /// <summary>Milliseconds to wait before the tooltip appears (hover-intent delay). 0 shows it instantly.
+    /// The hide is always instant.</summary>
+    [Parameter] public int Delay { get; set; }
+    /// <summary>Shows the tooltip while the trigger is hovered. Default <see langword="true"/>.</summary>
+    [Parameter] public bool ShowOnHover { get; set; } = true;
+    /// <summary>Shows the tooltip while the trigger (or a child) has keyboard focus - important for
+    /// keyboard and screen-reader users. Default <see langword="true"/>.</summary>
+    [Parameter] public bool ShowOnFocus { get; set; } = true;
+    /// <summary>Toggles the tooltip when the trigger is clicked or tapped (dismissed by an outside click
+    /// or Escape). Default <see langword="false"/>.</summary>
+    [Parameter] public bool ShowOnClick { get; set; }
+    /// <summary>Renders a directional arrow pointing from the bubble to the trigger.</summary>
+    [Parameter] public bool Arrow { get; set; }
+    /// <summary>Suppresses the tooltip entirely (no hover / focus / click / controlled reveal).</summary>
+    [Parameter] public bool Disabled { get; set; }
     /// <summary>Controls whether the tooltip is visible (for programmatic control).</summary>
     [Parameter] public bool Open { get; set; }
     /// <summary>Callback raised when the open state should change.</summary>
@@ -48,6 +69,7 @@
     private ElementReference _floatingRef;
     private string? _floatingStyle;
     private bool _initialized;
+    private bool _clickOpen;
 
     private string _placementClass => Placement switch
     {
@@ -56,6 +78,36 @@
         TooltipPlacement.Right  => Css.Classes.Tooltip.Right,
         _                       => Css.Classes.Tooltip.Top,
     };
+
+    // Trigger classes gate the CSS reveal selectors. A disabled tooltip drops every trigger and is
+    // pinned hidden by the --disabled rule.
+    private string _triggerClasses
+    {
+        get
+        {
+            if (Disabled) return Css.Classes.Tooltip.Disabled;
+            var parts = new List<string>(4);
+            if (ShowOnHover) parts.Add(Css.Classes.Tooltip.TriggerHover);
+            if (ShowOnFocus) parts.Add(Css.Classes.Tooltip.TriggerFocus);
+            if (ShowOnClick) parts.Add(Css.Classes.Tooltip.TriggerClick);
+            if (ShowOnClick && _clickOpen) parts.Add(Css.Classes.Tooltip.Open);
+            if (Arrow) parts.Add(Css.Classes.Tooltip.Arrow);
+            return string.Join(' ', parts);
+        }
+    }
+
+    private string _contentClass => string.Join(' ', new[]
+    {
+        Css.Classes.Tooltip.Content,
+        TooltipContent is not null ? Css.Classes.Tooltip.ContentRich : null,
+        Open ? Css.Classes.Tooltip.ContentVisible : null,
+    }.Where(c => !string.IsNullOrEmpty(c)));
+
+    // Delay is a per-instance behavior, not a theme token, so it rides on a local --fc-* var (outside
+    // the --flare-* token audit) merged with any caller Style.
+    private string? _rootStyle => Delay > 0
+        ? string.Join(';', new[] { Style, $"--fc-tt-delay:{Delay}ms" }.Where(s => !string.IsNullOrEmpty(s)))
+        : Style;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -74,6 +126,26 @@
         }
     }
 
+    private async Task HandleRootClick()
+    {
+        if (Disabled || !ShowOnClick) return;
+        _clickOpen = !_clickOpen;
+        await OpenChanged.InvokeAsync(_clickOpen);
+    }
+
+    private async Task CloseClick()
+    {
+        if (!_clickOpen) return;
+        _clickOpen = false;
+        await OpenChanged.InvokeAsync(false);
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape" && _clickOpen)
+            await CloseClick();
+    }
+
     private async Task UpdatePositionAsync()
     {
         if (_floatingRef.Context is null) return;
@@ -89,7 +161,7 @@
                     Offset = Offset,
                     Flip = true,
                     Shift = true,
-                    ArrowSize = 0
+                    ArrowSize = Arrow ? 8 : 0
                 });
 
             _floatingStyle = $"position:fixed;top:{result.Top:F0}px;left:{result.Left:F0}px;z-index:9999";

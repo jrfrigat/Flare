@@ -9,6 +9,8 @@ public static class Popover
     public const string Backdrop = "flare-popover__backdrop";
     /// <summary>The <c>flare-popover__paper</c> CSS class.</summary>
     public const string Paper = "flare-popover__paper";
+    /// <summary>The <c>flare-popover__paper--match-width</c> CSS class (panel width tracks the anchor).</summary>
+    public const string PaperMatchWidth = "flare-popover__paper--match-width";
     /// <summary>The <c>flare-popover__paper--bottom</c> CSS class.</summary>
     public const string PaperBottom = "flare-popover__paper--bottom";
     /// <summary>The <c>flare-popover__paper--bottom-end</c> CSS class.</summary>

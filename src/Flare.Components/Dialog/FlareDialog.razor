@@ -1,12 +1,14 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
+@inject Flare.Components.Services.IDialogDragJsService DialogDrag
+@inject NavigationManager Navigation
 @implements IAsyncDisposable
 
 @if (Visible)
 {
     <div class="@_scrimClass" @onclick="HandleScrimClick">
-        <div class="@BuildCssClass(_sizeClass, _positionClass, PanelClass)" style="@Style" @onclick:stopPropagation="true"
+        <div class="@BuildCssClass(_sizeClass, _positionClass, _draggableClass, PanelClass)" style="@Style" @onclick:stopPropagation="true"
              @attributes="AdditionalAttributes"
              role="dialog" aria-modal="true"
              aria-labelledby="@(string.IsNullOrEmpty(Title) ? null : _titleId)"
@@ -17,14 +19,25 @@
             {
                 <div class="@Css.Classes.Dialog.Grabber" aria-hidden="true"></div>
             }
+            @if (ShowCloseButton)
+            {
+                <button type="button" class="@Css.Classes.Dialog.CloseButton" aria-label="@FlareStrings.Dialog_Close"
+                        @onclick="HandleCloseButton">
+                    <span class="material-symbols-rounded" aria-hidden="true">close</span>
+                </button>
+            }
             @if (Icon is not null)
             {
                 <div class="@Css.Classes.Dialog.Icon" aria-hidden="true">@Icon</div>
             }
-            @if (!string.IsNullOrEmpty(Title))
+            @if (_showHeader)
             {
-                <div class="@Css.Classes.Dialog.Header @(Icon is not null ? Css.Classes.Dialog.HeaderCentered : null)">
-                    <h2 class="@Css.Classes.Dialog.Title" id="@_titleId">@Title</h2>
+                <div class="@Css.Classes.Dialog.Header @(Icon is not null ? Css.Classes.Dialog.HeaderCentered : null) @(Draggable ? Css.Classes.Dialog.DragHandle : null)"
+                     @ref="_headerEl">
+                    @if (!string.IsNullOrEmpty(Title))
+                    {
+                        <h2 class="@Css.Classes.Dialog.Title" id="@_titleId">@Title</h2>
+                    }
                 </div>
             }
             @if (Divider)
@@ -39,6 +52,10 @@
                 <div class="@Css.Classes.Dialog.Actions">
                     @Actions
                 </div>
+            }
+            @if (Resizable)
+            {
+                <div class="@Css.Classes.Dialog.Resizer" @ref="_resizerEl" aria-hidden="true"></div>
             }
         </div>
     </div>
@@ -66,6 +83,18 @@
     [Parameter] public bool CloseOnScrimClick { get; set; } = true;
     /// <summary>Closes the dialog when the Escape key is pressed.</summary>
     [Parameter] public bool CloseOnEsc { get; set; } = true;
+    /// <summary>Dismisses the dialog automatically when the app navigates to a new route. Default <see langword="true"/>.</summary>
+    [Parameter] public bool CloseOnNavigation { get; set; } = true;
+    /// <summary>Shows a built-in close (X) button in the top corner of the panel.</summary>
+    [Parameter] public bool ShowCloseButton { get; set; }
+    /// <summary>Lets the user move the dialog by dragging its header.</summary>
+    [Parameter] public bool Draggable { get; set; }
+    /// <summary>Lets the user resize the dialog from a bottom-right gripper.</summary>
+    [Parameter] public bool Resizable { get; set; }
+    /// <summary>Optional guard consulted before a scrim / Escape / close-button dismissal. Return
+    /// <see langword="true"/> to allow the close or <see langword="false"/> to veto it (e.g. to keep the
+    /// dialog open while there are unsaved changes).</summary>
+    [Parameter] public Func<DialogCloseReason, ValueTask<bool>>? BeforeClose { get; set; }
     /// <summary>Maximum width of the dialog.</summary>
     [Parameter] public DialogSize Size { get; set; } = DialogSize.Md;
     /// <summary>Where the dialog is anchored. <see cref="DialogPosition.Bottom"/> renders a slide-up bottom sheet.</summary>
@@ -80,6 +109,9 @@
     protected override string ComponentCssClass => Css.Classes.Dialog.Root;
 
     private string _positionClass => Position == DialogPosition.Bottom ? Css.Classes.Dialog.PositionBottom : string.Empty;
+    private string _draggableClass => Draggable ? Css.Classes.Dialog.Draggable : string.Empty;
+    // Render a header bar whenever there is a title or the dialog is draggable (the header is the drag handle).
+    private bool _showHeader => !string.IsNullOrEmpty(Title) || Draggable;
 
     // Scrim = base + (bottom-aligned when a sheet) + any caller scrim class.
     private string _scrimClass => string.Join(' ', new[]
@@ -94,8 +126,16 @@
     private string _contentId => $"flare-dialog-content-{_id}";
     private string? _sizeClass;
     private ElementReference _dialogEl;
+    private ElementReference _headerEl;
+    private ElementReference _resizerEl;
     private DotNetObjectReference<FlareDialog>? _dotNetRef;
     private bool _wasVisible;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Navigation.LocationChanged += HandleLocationChanged;
+    }
 
     protected override void OnParametersSet()
     {
@@ -127,6 +167,11 @@
                     await Overlay.RegisterDialogEscAsync(_id, _dotNetRef);
 
                 await Overlay.TrapFocusAsync(_id, _dialogEl);
+
+                if (Draggable)
+                    await DialogDrag.RegisterDragAsync(_headerEl, _dialogEl);
+                if (Resizable)
+                    await DialogDrag.RegisterResizeAsync(_resizerEl, _dialogEl, "240", "160");
             }
             catch { /* SSR or pre-render: JS not available */ }
         }
@@ -138,6 +183,8 @@
                 await Overlay.UnlockBodyScrollAsync();
                 await Overlay.RemoveDialogEscAsync(_id);
                 await Overlay.ReleaseFocusTrapAsync(_id);
+                if (Draggable) await DialogDrag.RemoveDragAsync(_headerEl);
+                if (Resizable) await DialogDrag.RemoveResizeAsync(_resizerEl);
             }
             catch { }
         }
@@ -147,21 +194,43 @@
     public async Task CloseFromEsc()
     {
         if (CloseOnEsc)
-            await VisibleChanged.InvokeAsync(false);
+            await TryCloseAsync(DialogCloseReason.EscapeKey);
     }
 
     private async Task HandleScrimClick()
     {
         if (CloseOnScrimClick)
-            await VisibleChanged.InvokeAsync(false);
+            await TryCloseAsync(DialogCloseReason.ScrimClick);
     }
+
+    private Task HandleCloseButton() => TryCloseAsync(DialogCloseReason.CloseButton);
+
+    // Consults the BeforeClose guard (if any) before dismissing; a false result vetoes the close.
+    private async Task TryCloseAsync(DialogCloseReason reason)
+    {
+        if (BeforeClose is not null && !await BeforeClose(reason))
+            return;
+        await VisibleChanged.InvokeAsync(false);
+    }
+
+    // Auto-dismiss on navigation (opt-out via CloseOnNavigation); navigation cannot be vetoed, so the
+    // BeforeClose guard is not consulted here.
+    private void HandleLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        => InvokeAsync(async () =>
+        {
+            if (Visible && CloseOnNavigation)
+                await VisibleChanged.InvokeAsync(false);
+        });
 
     public override async ValueTask DisposeAsync()
     {
+        Navigation.LocationChanged -= HandleLocationChanged;
         // If the dialog is still open when disposed (e.g. page navigation), release locks/handlers.
         if (_wasVisible)
         {
             try { await Overlay.UnlockBodyScrollAsync(); } catch { }
+            if (Draggable) { try { await DialogDrag.RemoveDragAsync(_headerEl); } catch { } }
+            if (Resizable) { try { await DialogDrag.RemoveResizeAsync(_resizerEl); } catch { } }
         }
         try { await Overlay.RemoveDialogEscAsync(_id); } catch { }
         try { await Overlay.ReleaseFocusTrapAsync(_id); } catch { }

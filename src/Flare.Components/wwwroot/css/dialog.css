@@ -9,6 +9,7 @@
 }
 
 .flare-dialog {
+    position: relative;
     background-color: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
     border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
@@ -17,6 +18,56 @@
     width: 100%;
     box-shadow: var(--flare-elevation-3);
     overflow: hidden;
+}
+
+/* Built-in header close (X) button, pinned to the top corner of the panel. */
+.flare-dialog__close {
+    position: absolute;
+    top: var(--flare-spacing-6);
+    inset-inline-end: var(--flare-spacing-6);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: none;
+    border-radius: var(--flare-shape-full);
+    background: transparent;
+    color: var(--flare-color-on-surface-variant);
+    cursor: pointer;
+    transition: background-color var(--flare-motion-duration-short2);
+}
+
+.flare-dialog__close:hover {
+    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+}
+
+.flare-dialog__close:focus-visible {
+    outline: 2px solid var(--flare-color-primary);
+    outline-offset: 2px;
+}
+
+.flare-dialog__close .material-symbols-rounded { font-size: 1.25rem; }
+
+/* Draggable: the header becomes a move handle. */
+.flare-dialog--draggable .flare-dialog__drag-handle {
+    cursor: move;
+    user-select: none;
+}
+
+/* Resize gripper in the bottom-right corner (opt-in). */
+.flare-dialog__resizer {
+    position: absolute;
+    inset-inline-end: 0;
+    bottom: 0;
+    width: 1rem;
+    height: 1rem;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg, transparent 50%, var(--flare-color-outline) 50%);
+    opacity: 0.6;
+    touch-action: none;
 }
 
 .flare-dialog__icon {

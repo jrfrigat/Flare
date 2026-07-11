@@ -3182,7 +3182,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Dialog_ShowPrompt", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Close button, draggable, resizable and close guard.
+        /// </summary>
+        public static string Dialog_Advanced {
+            get {
+                return ResourceManager.GetString("Dialog_Advanced", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Open advanced dialog.
+        /// </summary>
+        public static string Dialog_AdvancedOpen {
+            get {
+                return ResourceManager.GetString("Dialog_AdvancedOpen", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag me by the header...
+        /// </summary>
+        public static string Dialog_AdvancedBody {
+            get {
+                return ResourceManager.GetString("Dialog_AdvancedBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Simulate unsaved changes.
+        /// </summary>
+        public static string Dialog_UnsavedToggle {
+            get {
+                return ResourceManager.GetString("Dialog_UnsavedToggle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Blocked: you have unsaved changes.
+        /// </summary>
+        public static string Dialog_UnsavedBlocked {
+            get {
+                return ResourceManager.GetString("Dialog_UnsavedBlocked", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Render any component as a modal via the dialog service, plus inline @bind-Visible, confirm and alert..
         /// </summary>
@@ -5288,7 +5333,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Menu_Action_ZoomOut", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Context menu, scrolling and keep-open.
+        /// </summary>
+        public static string Menu_Context {
+            get {
+                return ResourceManager.GetString("Menu_Context", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Right-click here.
+        /// </summary>
+        public static string Menu_ContextHint {
+            get {
+                return ResourceManager.GetString("Menu_ContextHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long list.
+        /// </summary>
+        public static string Menu_Scroll {
+            get {
+                return ResourceManager.GetString("Menu_Scroll", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Row.
+        /// </summary>
+        public static string Menu_ScrollItem {
+            get {
+                return ResourceManager.GetString("Menu_ScrollItem", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Multi-select.
+        /// </summary>
+        public static string Menu_KeepOpen {
+            get {
+                return ResourceManager.GetString("Menu_KeepOpen", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Anchor positions.
         /// </summary>
@@ -6008,7 +6098,43 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Popover_Placement", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover, dropdown width and scrolling.
+        /// </summary>
+        public static string Popover_Hover {
+            get {
+                return ResourceManager.GetString("Popover_Hover", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hover me.
+        /// </summary>
+        public static string Popover_HoverAnchor {
+            get {
+                return ResourceManager.GetString("Popover_HoverAnchor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dropdown (matches width).
+        /// </summary>
+        public static string Popover_WidthAnchor {
+            get {
+                return ResourceManager.GetString("Popover_WidthAnchor", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Scrollable popover.
+        /// </summary>
+        public static string Popover_ScrollAnchor {
+            get {
+                return ResourceManager.GetString("Popover_ScrollAnchor", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlarePopover anchored content with placements and an optional arrow..
         /// </summary>
@@ -7511,7 +7637,52 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Snackbar_Options", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dedupe, clear and custom content.
+        /// </summary>
+        public static string Snackbar_Manage {
+            get {
+                return ResourceManager.GetString("Snackbar_Manage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show duplicate (deduped).
+        /// </summary>
+        public static string Snackbar_Duplicate {
+            get {
+                return ResourceManager.GetString("Snackbar_Duplicate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Custom content.
+        /// </summary>
+        public static string Snackbar_Custom {
+            get {
+                return ResourceManager.GetString("Snackbar_Custom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Custom body with an icon.
+        /// </summary>
+        public static string Snackbar_CustomBody {
+            get {
+                return ResourceManager.GetString("Snackbar_CustomBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Clear all.
+        /// </summary>
+        public static string Snackbar_ClearAll {
+            get {
+                return ResourceManager.GetString("Snackbar_ClearAll", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Severity.
         /// </summary>
@@ -8601,6 +8772,15 @@ namespace Flare.Gallery.Resources {
             }
         }
         
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Triggers, arrow and disabled.
+        /// </summary>
+        public static string Tooltip_Triggers {
+            get {
+                return ResourceManager.GetString("Tooltip_Triggers", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareTooltip with Top, Bottom, Left, Right placements..
         /// </summary>

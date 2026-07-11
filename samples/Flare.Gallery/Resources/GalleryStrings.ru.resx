@@ -921,6 +921,21 @@
   <data name="Dialog_ShowPrompt" xml:space="preserve">
     <value>Показать диалог ввода</value>
   </data>
+  <data name="Dialog_Advanced" xml:space="preserve">
+    <value>Кнопка закрытия, перетаскивание, изменение размера и защита закрытия</value>
+  </data>
+  <data name="Dialog_AdvancedOpen" xml:space="preserve">
+    <value>Открыть расширенный диалог</value>
+  </data>
+  <data name="Dialog_AdvancedBody" xml:space="preserve">
+    <value>Перетащите за заголовок, измените размер за нижний правый угол или закройте крестиком. Включите "несохранённые изменения", чтобы блокировать случайное закрытие.</value>
+  </data>
+  <data name="Dialog_UnsavedToggle" xml:space="preserve">
+    <value>Имитировать несохранённые изменения</value>
+  </data>
+  <data name="Dialog_UnsavedBlocked" xml:space="preserve">
+    <value>Заблокировано: есть несохранённые изменения</value>
+  </data>
   <data name="Drawer_Title" xml:space="preserve">
     <value>Боковая панель</value>
   </data>
@@ -1332,6 +1347,18 @@
   <data name="Popover_Placement" xml:space="preserve">
     <value>Размещение, стрелка и min/max ширина</value>
   </data>
+  <data name="Popover_Hover" xml:space="preserve">
+    <value>Наведение, ширина по якорю и прокрутка</value>
+  </data>
+  <data name="Popover_HoverAnchor" xml:space="preserve">
+    <value>Наведи на меня</value>
+  </data>
+  <data name="Popover_WidthAnchor" xml:space="preserve">
+    <value>Выпадающий (по ширине)</value>
+  </data>
+  <data name="Popover_ScrollAnchor" xml:space="preserve">
+    <value>Прокручиваемый попап</value>
+  </data>
   <data name="PasswordInput_Title" xml:space="preserve">
     <value>Поле пароля</value>
   </data>
@@ -1715,6 +1742,9 @@
   </data>
   <data name="Tooltip_Rich" xml:space="preserve">
     <value>Богатое содержимое</value>
+  </data>
+  <data name="Tooltip_Triggers" xml:space="preserve">
+    <value>Триггеры, стрелка и отключение</value>
   </data>
   <data name="Clipboard_Title" xml:space="preserve">
     <value>Буфер обмена (Clipboard)</value>
@@ -2552,6 +2582,11 @@
   <data name="Menu_Action_Paste" xml:space="preserve"><value>Вставить</value></data>
   <data name="Menu_Action_ZoomIn" xml:space="preserve"><value>Увеличить</value></data>
   <data name="Menu_Action_ZoomOut" xml:space="preserve"><value>Уменьшить</value></data>
+  <data name="Menu_Context" xml:space="preserve"><value>Контекстное меню, прокрутка и удержание</value></data>
+  <data name="Menu_ContextHint" xml:space="preserve"><value>Правый клик здесь</value></data>
+  <data name="Menu_Scroll" xml:space="preserve"><value>Длинный список</value></data>
+  <data name="Menu_ScrollItem" xml:space="preserve"><value>Строка</value></data>
+  <data name="Menu_KeepOpen" xml:space="preserve"><value>Множественный выбор</value></data>
   <data name="ButtonGroup_FullWidth" xml:space="preserve"><value>На всю ширину</value></data>
   <data name="SplitButton_Title" xml:space="preserve"><value>Сплит-кнопка</value></data>
   <data name="SplitButton_Subtitle" xml:space="preserve"><value>Основное действие вместе с триггером выпадающего меню для связанных действий.</value></data>
@@ -2695,4 +2730,9 @@
   <data name="Cards_Elevation" xml:space="preserve"><value>Высота тени (elevation)</value></data>
   <data name="Link_Typo" xml:space="preserve"><value>Типографика</value></data>
   <data name="Snackbar_Options" xml:space="preserve"><value>Перегрузка с опциями</value></data>
+  <data name="Snackbar_Manage" xml:space="preserve"><value>Дедупликация, очистка и своё содержимое</value></data>
+  <data name="Snackbar_Duplicate" xml:space="preserve"><value>Показать дубль (дедуп)</value></data>
+  <data name="Snackbar_Custom" xml:space="preserve"><value>Своё содержимое</value></data>
+  <data name="Snackbar_CustomBody" xml:space="preserve"><value>Своё тело с иконкой</value></data>
+  <data name="Snackbar_ClearAll" xml:space="preserve"><value>Очистить все</value></data>
 </root>

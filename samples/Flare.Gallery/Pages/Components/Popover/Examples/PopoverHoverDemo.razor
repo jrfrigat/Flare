@@ -1,0 +1,47 @@
+<FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Start">
+    @* Hover trigger with a short open delay (not modal - no scrim). *@
+    <FlarePopover @bind-Open="_hover" Trigger="PopoverTrigger.Hover" Delay="150" Placement="PopoverPlacement.Bottom" Arrow="true">
+        <AnchorContent>
+            <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Popover_HoverAnchor</FlareButton>
+        </AnchorContent>
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.XSmall" Style="padding:0.75rem 1rem;max-width:16rem;">
+                <FlareText Typo="TypographyScale.BodySmall">@GalleryStrings.Popover_Subtitle</FlareText>
+            </FlareStack>
+        </ChildContent>
+    </FlarePopover>
+
+    @* MatchAnchorWidth sizes the panel to the trigger, like a dropdown. *@
+    <FlarePopover @bind-Open="_width" Trigger="PopoverTrigger.Click" MatchAnchorWidth="true" Placement="PopoverPlacement.BottomStart">
+        <AnchorContent>
+            <FlareButton Variant="ButtonVariant.Filled" Style="min-width:16rem;" OnClick="@(() => _width = !_width)">@GalleryStrings.Popover_WidthAnchor</FlareButton>
+        </AnchorContent>
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.None" Style="padding:0.5rem;">
+                <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.5rem;">@GalleryStrings.Menu_ScrollItem 1</FlareText>
+                <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.5rem;">@GalleryStrings.Menu_ScrollItem 2</FlareText>
+            </FlareStack>
+        </ChildContent>
+    </FlarePopover>
+
+    @* MaxHeight caps the panel so long content scrolls inside it. *@
+    <FlarePopover @bind-Open="_scroll" Trigger="PopoverTrigger.Click" MaxHeight="12rem" Placement="PopoverPlacement.BottomStart">
+        <AnchorContent>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => _scroll = !_scroll)">@GalleryStrings.Popover_ScrollAnchor</FlareButton>
+        </AnchorContent>
+        <ChildContent>
+            <FlareStack Gap="FlareSpacing.None" Style="padding:0.5rem;">
+                @for (var i = 1; i <= 15; i++)
+                {
+                    <FlareText Typo="TypographyScale.BodySmall" Style="padding:0.4rem 0.75rem;">@GalleryStrings.Menu_ScrollItem @i</FlareText>
+                }
+            </FlareStack>
+        </ChildContent>
+    </FlarePopover>
+</FlareStack>
+
+@code {
+    private bool _hover;
+    private bool _width;
+    private bool _scroll;
+}

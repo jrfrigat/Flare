@@ -921,6 +921,21 @@
   <data name="Dialog_ShowPrompt" xml:space="preserve">
     <value>Show prompt dialog</value>
   </data>
+  <data name="Dialog_Advanced" xml:space="preserve">
+    <value>Close button, draggable, resizable and close guard</value>
+  </data>
+  <data name="Dialog_AdvancedOpen" xml:space="preserve">
+    <value>Open advanced dialog</value>
+  </data>
+  <data name="Dialog_AdvancedBody" xml:space="preserve">
+    <value>Drag me by the header, resize from the bottom-right corner, or close with the X. Turn on "unsaved changes" to block accidental dismissal.</value>
+  </data>
+  <data name="Dialog_UnsavedToggle" xml:space="preserve">
+    <value>Simulate unsaved changes</value>
+  </data>
+  <data name="Dialog_UnsavedBlocked" xml:space="preserve">
+    <value>Blocked: you have unsaved changes</value>
+  </data>
   <data name="Drawer_Title" xml:space="preserve">
     <value>Drawer</value>
   </data>
@@ -1332,6 +1347,18 @@
   <data name="Popover_Placement" xml:space="preserve">
     <value>Placement, arrow &amp; min/max width</value>
   </data>
+  <data name="Popover_Hover" xml:space="preserve">
+    <value>Hover, dropdown width and scrolling</value>
+  </data>
+  <data name="Popover_HoverAnchor" xml:space="preserve">
+    <value>Hover me</value>
+  </data>
+  <data name="Popover_WidthAnchor" xml:space="preserve">
+    <value>Dropdown (matches width)</value>
+  </data>
+  <data name="Popover_ScrollAnchor" xml:space="preserve">
+    <value>Scrollable popover</value>
+  </data>
   <data name="PasswordInput_Title" xml:space="preserve">
     <value>Password Field</value>
   </data>
@@ -1715,6 +1742,9 @@
   </data>
   <data name="Tooltip_Rich" xml:space="preserve">
     <value>Rich content</value>
+  </data>
+  <data name="Tooltip_Triggers" xml:space="preserve">
+    <value>Triggers, arrow and disabled</value>
   </data>
   <data name="Clipboard_Title" xml:space="preserve">
     <value>Clipboard</value>
@@ -2552,6 +2582,11 @@
   <data name="Menu_Action_Paste" xml:space="preserve"><value>Paste</value></data>
   <data name="Menu_Action_ZoomIn" xml:space="preserve"><value>Zoom in</value></data>
   <data name="Menu_Action_ZoomOut" xml:space="preserve"><value>Zoom out</value></data>
+  <data name="Menu_Context" xml:space="preserve"><value>Context menu, scrolling and keep-open</value></data>
+  <data name="Menu_ContextHint" xml:space="preserve"><value>Right-click here</value></data>
+  <data name="Menu_Scroll" xml:space="preserve"><value>Long list</value></data>
+  <data name="Menu_ScrollItem" xml:space="preserve"><value>Row</value></data>
+  <data name="Menu_KeepOpen" xml:space="preserve"><value>Multi-select</value></data>
   <data name="ButtonGroup_FullWidth" xml:space="preserve"><value>Full width</value></data>
   <data name="SplitButton_Title" xml:space="preserve"><value>Split Button</value></data>
   <data name="SplitButton_Subtitle" xml:space="preserve"><value>A primary action paired with a dropdown trigger for related secondary actions.</value></data>
@@ -2695,4 +2730,9 @@
   <data name="Cards_Elevation" xml:space="preserve"><value>Elevation</value></data>
   <data name="Link_Typo" xml:space="preserve"><value>Typography</value></data>
   <data name="Snackbar_Options" xml:space="preserve"><value>Options overload</value></data>
+  <data name="Snackbar_Manage" xml:space="preserve"><value>Dedupe, clear and custom content</value></data>
+  <data name="Snackbar_Duplicate" xml:space="preserve"><value>Show duplicate (deduped)</value></data>
+  <data name="Snackbar_Custom" xml:space="preserve"><value>Custom content</value></data>
+  <data name="Snackbar_CustomBody" xml:space="preserve"><value>Custom body with an icon</value></data>
+  <data name="Snackbar_ClearAll" xml:space="preserve"><value>Clear all</value></data>
 </root>
