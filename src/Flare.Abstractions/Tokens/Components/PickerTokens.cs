@@ -10,4 +10,7 @@ public sealed record PickerTokens
 
     /// <summary>Disabled Opacity.</summary>
     [CssVar(PickerField.DisabledOpacity)] public required string DisabledOpacity { get; init; }
+
+    /// <summary>Week-number column opacity (the leading week-of-year cells in the calendar grid).</summary>
+    [CssVar(PickerField.WeekNumberOpacity)] public required string WeekNumberOpacity { get; init; }
 }

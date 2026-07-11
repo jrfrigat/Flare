@@ -7,4 +7,6 @@ public static class PickerField
     public const string OutsideOpacity = "--flare-picker-outside-opacity";
     /// <summary>CSS custom-property name for the disabled opacity token.</summary>
     public const string DisabledOpacity = "--flare-picker-disabled-opacity";
+    /// <summary>CSS custom-property name for the week-number column opacity token.</summary>
+    public const string WeekNumberOpacity = "--flare-picker-weeknum-opacity";
 }

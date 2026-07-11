@@ -717,6 +717,7 @@ public static class CssVarMap
         #region PICKER
         v[Css.Tokens.PickerField.OutsideOpacity] = t.Picker.OutsideOpacity;
         v[Css.Tokens.PickerField.DisabledOpacity] = t.Picker.DisabledOpacity;
+        v[Css.Tokens.PickerField.WeekNumberOpacity] = t.Picker.WeekNumberOpacity;
         #endregion
 
         #region SCRIM

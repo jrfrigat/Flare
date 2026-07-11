@@ -723,6 +723,7 @@ public class MaterialDesignTokens
     {
         OutsideOpacity = "0.4",
         DisabledOpacity = "0.3",
+        WeekNumberOpacity = "0.7",
     };
 
     internal static readonly ScrimTokens Scrim = new()
