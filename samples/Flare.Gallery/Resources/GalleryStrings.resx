@@ -1356,6 +1356,9 @@
   <data name="DatePicker_Constraints" xml:space="preserve">
     <value>Min/max, today/clear &amp; error</value>
   </data>
+  <data name="DatePicker_Advanced" xml:space="preserve">
+    <value>Open-to-year, week numbers, inline &amp; imperative open/close</value>
+  </data>
   <data name="TimePicker_Title" xml:space="preserve">
     <value>Time Picker</value>
   </data>
@@ -1364,6 +1367,9 @@
   </data>
   <data name="TimePicker_Basic" xml:space="preserve">
     <value>Basic, helper, error &amp; disabled</value>
+  </data>
+  <data name="TimePicker_Advanced" xml:space="preserve">
+    <value>Seconds, step, min/max &amp; auto-close</value>
   </data>
   <data name="DateRangePicker_Title" xml:space="preserve">
     <value>Date Range Picker</value>

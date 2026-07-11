@@ -1157,6 +1157,15 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Picker_Clear", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Week {0}.
+        /// </summary>
+        public static string Picker_WeekNumber {
+            get {
+                return ResourceManager.GetString("Picker_WeekNumber", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Next.
@@ -1382,7 +1391,16 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("TimePicker_Minutes", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Seconds.
+        /// </summary>
+        public static string TimePicker_Seconds {
+            get {
+                return ResourceManager.GetString("TimePicker_Seconds", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Open time picker.
         /// </summary>

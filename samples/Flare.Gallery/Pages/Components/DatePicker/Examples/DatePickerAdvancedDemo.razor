@@ -1,0 +1,32 @@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:26rem;">
+    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center" Wrap>
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="Open">Open()</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined" OnClick="Close">Close()</FlareButton>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Popup: @_status</FlareText>
+    </FlareStack>
+
+    <FlareDatePicker @ref="_picker" @bind-Value="_dob"
+                     Label="Date of birth (opens on year view + ISO week numbers, Monday-first)"
+                     OpenTo="PickerOpenTo.Year"
+                     ShowWeekNumbers="true"
+                     FirstDayOfWeek="DayOfWeek.Monday"
+                     Opened="OnOpened"
+                     Closed="OnClosed" />
+
+    <FlareDatePicker @bind-Value="_inline"
+                     Label="Inline calendar (always visible)"
+                     Inline="true"
+                     ShowWeekNumbers="true" />
+</FlareStack>
+
+@code {
+    private FlareDatePicker? _picker;
+    private DateOnly? _dob;
+    private DateOnly? _inline = new(2026, 7, 15);
+    private string _status = "closed";
+
+    private Task Open() => _picker!.OpenAsync();
+    private Task Close() => _picker!.CloseAsync();
+    private void OnOpened() => _status = "opened";
+    private void OnClosed() => _status = "closed";
+}

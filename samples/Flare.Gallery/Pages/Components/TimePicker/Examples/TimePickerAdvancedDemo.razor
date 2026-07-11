@@ -1,0 +1,18 @@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:24rem;">
+    <FlareTimePicker @bind-Value="_time"
+                     Label="With seconds (Dropdown), 15-min steps, 09:00-17:00 only"
+                     PopupVariant="TimePickerVariant.Dropdown"
+                     ShowSeconds="true"
+                     MinuteStep="15"
+                     Min="@(new TimeOnly(9, 0))"
+                     Max="@(new TimeOnly(17, 0))"
+                     AutoClose="true" />
+
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Value: @(_time?.ToString("HH:mm:ss") ?? "(none)")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private TimeOnly? _time = new(9, 30, 0);
+}

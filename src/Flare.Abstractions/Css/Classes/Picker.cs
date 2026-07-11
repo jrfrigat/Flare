@@ -13,6 +13,8 @@ public static class Picker
     public const string Scrim = "flare-picker__scrim";
     /// <summary>The <c>flare-picker__panel</c> CSS class: the fixed, elevated picker popup surface.</summary>
     public const string Panel = "flare-picker__panel";
+    /// <summary>The <c>flare-picker__panel--inline</c> modifier: the picker rendered inline (static, no scrim).</summary>
+    public const string PanelInline = "flare-picker__panel--inline";
     /// <summary>The <c>flare-picker__day-headers</c> CSS class: the weekday header row of the month grid.</summary>
     public const string DayHeaders = "flare-picker__day-headers";
     /// <summary>The <c>flare-picker__grid</c> CSS class: the 7-column month day grid.</summary>
@@ -27,4 +29,10 @@ public static class Picker
     public const string DayOutside = "flare-picker__day--outside";
     /// <summary>The <c>flare-picker__day--disabled</c> CSS class.</summary>
     public const string DayDisabled = "flare-picker__day--disabled";
+    /// <summary>The <c>flare-picker__grid--weeks</c> modifier: the day grid with a leading week-number column.</summary>
+    public const string GridWeeks = "flare-picker__grid--weeks";
+    /// <summary>The <c>flare-picker__day-headers--weeks</c> modifier: the header row with a leading week-number column.</summary>
+    public const string DayHeadersWeeks = "flare-picker__day-headers--weeks";
+    /// <summary>The <c>flare-picker__weeknum</c> CSS class: a week-of-year number cell in the leading column.</summary>
+    public const string WeekNum = "flare-picker__weeknum";
 }

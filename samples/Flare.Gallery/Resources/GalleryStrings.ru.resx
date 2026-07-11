@@ -1353,6 +1353,9 @@
   <data name="DatePicker_Basic" xml:space="preserve">
     <value>Базовый, формат и отключение</value>
   </data>
+  <data name="DatePicker_Advanced" xml:space="preserve">
+    <value>Открытие на год, номера недель, inline и программное открытие/закрытие</value>
+  </data>
   <data name="DatePicker_Constraints" xml:space="preserve">
     <value>Min/max, сегодня/очистить и ошибка</value>
   </data>
@@ -1361,6 +1364,9 @@
   </data>
   <data name="TimePicker_Subtitle" xml:space="preserve">
     <value>FlareTimePicker - выбор времени суток.</value>
+  </data>
+  <data name="TimePicker_Advanced" xml:space="preserve">
+    <value>Секунды, шаг, min/max и авто-закрытие</value>
   </data>
   <data name="TimePicker_Basic" xml:space="preserve">
     <value>Базовый, подсказка, ошибка и отключение</value>

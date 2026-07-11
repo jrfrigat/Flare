@@ -36,6 +36,9 @@
                              Size="@Size"
                              Min="@Min"
                              Max="@StartFieldMax"
+                             ShowWeekNumbers="@ShowWeekNumbers"
+                             FirstDayOfWeek="@FirstDayOfWeek"
+                             DayClassFunc="@DayClassFunc"
                              IsDateDisabled="@IsDateDisabled" />
             <span class="@Css.Classes.Daterangepicker.Sep material-symbols-rounded">arrow_forward</span>
             <FlareDatePicker Value="@EndDate"
@@ -47,6 +50,9 @@
                              Size="@Size"
                              Min="@EndFieldMin"
                              Max="@Max"
+                             ShowWeekNumbers="@ShowWeekNumbers"
+                             FirstDayOfWeek="@FirstDayOfWeek"
+                             DayClassFunc="@DayClassFunc"
                              IsDateDisabled="@IsDateDisabled" />
         </div>
     }
@@ -67,6 +73,7 @@
                 </span>
             </div>
             <FlareMonthGrid ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
+                            FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                             AriaLabel="@HeaderLabel"
                             Selected="@(d => d == StartDate || d == EndDate)"
                             Disabled="@(d => Disabled || IsDayDisabled(d))"
@@ -126,6 +133,12 @@
     [Parameter] public bool ShowPresets { get; set; }
     /// <summary>Custom preset list. When null, a localized default set is used (requires <see cref="ShowPresets"/>).</summary>
     [Parameter] public IReadOnlyList<DateRangePreset>? Presets { get; set; }
+    /// <summary>Shows a leading week-of-year number column in the calendar.</summary>
+    [Parameter] public bool ShowWeekNumbers { get; set; }
+    /// <summary>Overrides the culture's first day of week (null = use the culture's).</summary>
+    [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
+    /// <summary>Returns extra CSS class(es) for a given day cell (e.g. to mark holidays), on top of the range highlight.</summary>
+    [Parameter] public Func<DateOnly, string>? DayClassFunc { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Daterangepicker.Root;
 
@@ -182,7 +195,8 @@
         InRange(d)      ? Css.Classes.Daterangepicker.DayInRange : null,
         IsRangeStart(d) ? Css.Classes.Daterangepicker.DayStart   : null,
         IsRangeEnd(d)   ? Css.Classes.Daterangepicker.DayEnd     : null,
-    }.Where(c => c is not null));
+        DayClassFunc?.Invoke(d),
+    }.Where(c => !string.IsNullOrEmpty(c)));
 
     private bool IsDayDisabled(DateOnly d) =>
         (Min is { } min && d < min) || (Max is { } max && d > max) || (IsDateDisabled?.Invoke(d) ?? false);

@@ -85,6 +85,7 @@
   <data name="Picker_Ok" xml:space="preserve"><value>ОК</value></data>
   <data name="Picker_Cancel" xml:space="preserve"><value>Отмена</value></data>
   <data name="Picker_Clear" xml:space="preserve"><value>Очистить</value></data>
+  <data name="Picker_WeekNumber" xml:space="preserve"><value>Неделя {0}</value></data>
   <data name="Picker_Previous" xml:space="preserve"><value>Предыдущий</value></data>
   <data name="Picker_Next" xml:space="preserve"><value>Следующий</value></data>
   <data name="TimePicker_Headline" xml:space="preserve"><value>Выберите время</value></data>
@@ -93,6 +94,7 @@
   <data name="TimePicker_FieldLabel" xml:space="preserve"><value>Время</value></data>
   <data name="TimePicker_Hours" xml:space="preserve"><value>Часы</value></data>
   <data name="TimePicker_Minutes" xml:space="preserve"><value>Минуты</value></data>
+  <data name="TimePicker_Seconds" xml:space="preserve"><value>Секунды</value></data>
 
   <!-- Field (shared field-family strings) -->
   <data name="Field_NoResults" xml:space="preserve"><value>Нет результатов</value></data>

@@ -3058,7 +3058,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("DatePicker_Constraints", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Open-to-year, week numbers, inline &amp; imperative open/close.
+        /// </summary>
+        public static string DatePicker_Advanced {
+            get {
+                return ResourceManager.GetString("DatePicker_Advanced", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareDatePicker - calendar field with min/max, format and today/clear actions..
         /// </summary>
@@ -8582,6 +8591,15 @@ namespace Flare.Gallery.Resources {
         public static string TimePicker_Basic {
             get {
                 return ResourceManager.GetString("TimePicker_Basic", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Seconds, step, min/max &amp; auto-close.
+        /// </summary>
+        public static string TimePicker_Advanced {
+            get {
+                return ResourceManager.GetString("TimePicker_Advanced", resourceCulture);
             }
         }
         

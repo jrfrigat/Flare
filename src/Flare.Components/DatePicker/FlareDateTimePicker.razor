@@ -21,6 +21,7 @@
         <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldRef">
             <input class="@Css.Classes.Input.Control"
                    id="@ControlId"
+                   @ref="_inputEl"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="text"
                    disabled="@Disabled"
@@ -47,7 +48,7 @@
         </div>
         @if (_open)
         {
-        <div class="@Css.Classes.Picker.Scrim" @onclick="() => _open = false" aria-hidden="true"></div>
+        <div class="@Css.Classes.Picker.Scrim" @onclick="CloseAsync" aria-hidden="true"></div>
         <div class="@Css.Classes.Picker.Panel @Css.Classes.DateTimePicker.Panel @(_panels ? Css.Classes.DateTimePicker.PanelSplit : null)" style="@_panelStyle">
             @if (_panels)
             {
@@ -99,8 +100,45 @@
     [Parameter] public bool? Use24Hour { get; set; }
     /// <summary>Culture for the calendar and parsing. Default = CurrentUICulture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>Shows a leading week-of-year number column in the calendar.</summary>
+    [Parameter] public bool ShowWeekNumbers { get; set; }
+    /// <summary>Overrides the culture's first day of week (null = use the culture's).</summary>
+    [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
+    /// <summary>Returns extra CSS class(es) for a given day cell (e.g. to mark holidays).</summary>
+    [Parameter] public Func<DateOnly, string>? DayClassFunc { get; set; }
+    /// <summary>Raised when the picker popup opens.</summary>
+    [Parameter] public EventCallback Opened { get; set; }
+    /// <summary>Raised when the picker popup closes.</summary>
+    [Parameter] public EventCallback Closed { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.DateTimePicker.Root;
+
+    private ElementReference _inputEl;
+
+    /// <summary>Opens the picker popup.</summary>
+    public Task OpenAsync() => _open ? Task.CompletedTask : TogglePanel();
+    /// <summary>Closes the picker popup.</summary>
+    public async Task CloseAsync()
+    {
+        if (!_open) return;
+        _open = false;
+        await Closed.InvokeAsync();
+        StateHasChanged();
+    }
+    /// <summary>Toggles the picker popup.</summary>
+    public Task ToggleAsync() => TogglePanel();
+    /// <summary>Clears the selected value.</summary>
+    public Task ClearAsync() => Clear();
+    /// <summary>Sets keyboard focus to the input.</summary>
+    public ValueTask FocusAsync() => _inputEl.FocusAsync();
+
+    private string ComposeDayClass(DateOnly d)
+    {
+        var selected = d == _selectedDate ? Css.Classes.Picker.DaySelected : string.Empty;
+        var extra = DayClassFunc?.Invoke(d);
+        if (string.IsNullOrEmpty(extra)) return selected;
+        return string.IsNullOrEmpty(selected) ? extra : $"{selected} {extra}";
+    }
 
     // Invalid drives the frame's error chrome (a resolved validation message).
     private bool _invalid => !string.IsNullOrEmpty(DisplayedErrorText);
@@ -163,9 +201,10 @@
             </span>
         </div>
         <FlareMonthGrid ViewYear="_viewDate.Year" ViewMonth="_viewDate.Month" Culture="_culture" Today="Today"
+                        FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                         AriaLabel="@_viewDate.ToString("MMMM yyyy", _culture)"
                         Selected="@(d => d == _selectedDate)"
-                        DayClass="@(d => d == _selectedDate ? Css.Classes.Picker.DaySelected : string.Empty)"
+                        DayClass="ComposeDayClass"
                         OnDayClick="SelectDate" />
     </text>;
 
@@ -294,8 +333,8 @@
     private async Task TogglePanel()
     {
         if (Disabled || ReadOnly) return;
-        _open = !_open;
-        if (_open)
+        if (_open) { await CloseAsync(); return; }
+        _open = true;
         {
             try
             {
@@ -317,6 +356,7 @@
                 _panelLeft = 0;
             }
         }
+        await Opened.InvokeAsync();
     }
 
     private void PrevMonth() => _viewDate = _viewDate.AddMonths(-1);
@@ -338,13 +378,13 @@
     {
         if (_selectedDate.HasValue)
             await CommitValue(new DateTimeOffset(_selectedDate.Value.ToDateTime(new TimeOnly(_hour, _minute))));
-        _open = false;
+        await CloseAsync();
     }
 
     private async Task Clear()
     {
         await CommitValue(null);
-        _open = false;
+        await CloseAsync();
     }
 
 

@@ -23,6 +23,14 @@
     box-shadow: var(--flare-elevation-3);
     padding: var(--flare-spacing-6);
 }
+/* Inline/static picker: rendered in normal flow under the field (no fixed positioning, no scrim). */
+.flare-picker__panel--inline {
+    position: static;
+    z-index: auto;
+    box-shadow: none;
+    padding: var(--flare-spacing-3) 0 0;
+    background: transparent;
+}
 
 /* Compact month-calendar day grid, shared by DatePicker / DateTimePicker / DateRangePicker
    (distinct from the event FlareCalendar's flare-calendar__* grid). */
@@ -38,6 +46,20 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: var(--flare-spacing-1);
+}
+/* Week-number column: a leading auto-width column before the seven day columns. */
+.flare-picker__day-headers--weeks,
+.flare-picker__grid--weeks {
+    grid-template-columns: auto repeat(7, 1fr);
+}
+.flare-picker__weeknum {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    font-size: 0.7rem;
+    color: var(--flare-color-on-surface-variant);
+    opacity: 0.7;
 }
 .flare-picker__day {
     aspect-ratio: 1;

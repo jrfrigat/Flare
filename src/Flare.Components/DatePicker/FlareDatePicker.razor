@@ -22,6 +22,7 @@
         <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldEl">
             <input class="@Css.Classes.Input.Control"
                    id="@ControlId"
+                   @ref="_inputEl"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="text"
                    value="@_text"
@@ -38,7 +39,7 @@
                    @onchange="HandleTextChange"
                    @onblur="HandleBlur"
                    @attributes="AdditionalAttributes" />
-            @if (AllowPicker)
+            @if (AllowPicker && !Inline)
             {
                 <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
@@ -48,10 +49,13 @@
             }
         </div>
 
-        @if (_open)
+        @if (_open && !Inline)
         {
-        <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
-        <div class="@Css.Classes.Picker.Panel @Css.Classes.DatePicker.Panel" @ref="_panelEl">
+            <div class="@Css.Classes.Picker.Scrim" @onclick="Close" aria-hidden="true"></div>
+        }
+        @if (_open || Inline)
+        {
+        <div class="@Css.Classes.Picker.Panel @(Inline ? Css.Classes.Picker.PanelInline : null) @Css.Classes.DatePicker.Panel" @ref="_panelEl">
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous">
@@ -72,10 +76,11 @@
             @if (_calView == CalendarView.Day)
             {
                 <FlareMonthGrid ViewYear="_viewYear" ViewMonth="_viewMonth" Culture="_culture" Today="Today"
+                                FirstDayOfWeek="FirstDayOfWeek" ShowWeekNumbers="ShowWeekNumbers"
                                 AriaLabel="@HeaderLabel"
                                 Selected="@(d => d == Value)"
                                 Disabled="IsDisabled"
-                                DayClass="@(d => d == Value ? Css.Classes.Picker.DaySelected : string.Empty)"
+                                DayClass="ComposeDayClass"
                                 OnDayClick="SelectDay"
                                 OnKeyDown="HandleGridKeyDown" />
             }
@@ -152,8 +157,74 @@
     [Parameter] public Func<DateOnly, bool>? IsDateDisabled { get; set; }
     /// <summary>Culture used for the calendar (day headers, month names, first day of week). Default = CurrentUICulture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>The calendar view the picker opens to (Day/Month/Year). <see cref="PickerOpenTo.Year"/> is
+    /// handy for far-back dates like a date of birth.</summary>
+    [Parameter] public PickerOpenTo OpenTo { get; set; } = PickerOpenTo.Day;
+    /// <summary>Closes the picker automatically when a day is selected. Default true. Ignored when <see cref="Inline"/>.</summary>
+    [Parameter] public bool AutoClose { get; set; } = true;
+    /// <summary>Renders the calendar inline (always visible under the field) rather than in a popup.</summary>
+    [Parameter] public bool Inline { get; set; }
+    /// <summary>Shows a leading week-of-year number column in the calendar.</summary>
+    [Parameter] public bool ShowWeekNumbers { get; set; }
+    /// <summary>Overrides the culture's first day of week when set (null = use the culture's, e.g. for a
+    /// Monday-first calendar regardless of locale).</summary>
+    [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
+    /// <summary>Returns extra CSS class(es) for a given day cell (e.g. to mark holidays or highlight days).</summary>
+    [Parameter] public Func<DateOnly, string>? DayClassFunc { get; set; }
+    /// <summary>Raised when the calendar popup opens.</summary>
+    [Parameter] public EventCallback Opened { get; set; }
+    /// <summary>Raised when the calendar popup closes.</summary>
+    [Parameter] public EventCallback Closed { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.DatePicker.Root;
+
+    private ElementReference _inputEl;
+    private CalendarView _initialView => OpenTo switch
+    {
+        PickerOpenTo.Month => CalendarView.Month,
+        PickerOpenTo.Year => CalendarView.Year,
+        _ => CalendarView.Day,
+    };
+
+    /// <summary>Opens the calendar popup.</summary>
+    public Task OpenAsync() => SetOpenAsync(true);
+    /// <summary>Closes the calendar popup.</summary>
+    public Task CloseAsync() => SetOpenAsync(false);
+    /// <summary>Toggles the calendar popup open/closed.</summary>
+    public Task ToggleAsync() => SetOpenAsync(!_open);
+    /// <summary>Clears the selected date.</summary>
+    public Task ClearAsync() => ClearValue();
+    /// <summary>Sets keyboard focus to the date input.</summary>
+    public ValueTask FocusAsync() => _inputEl.FocusAsync();
+
+    // Single entry point for open-state changes so Opened/Closed fire consistently. Inline pickers are
+    // always shown, so open/close is a no-op there.
+    private async Task SetOpenAsync(bool open)
+    {
+        if (Inline || Disabled || ReadOnly || _open == open) return;
+        _open = open;
+        if (open)
+        {
+            var anchor = Value ?? Today;
+            _viewYear = anchor.Year;
+            _viewMonth = anchor.Month;
+            _calView = _initialView;
+            await Opened.InvokeAsync();
+        }
+        else
+        {
+            await Closed.InvokeAsync();
+        }
+        StateHasChanged();
+    }
+
+    private string ComposeDayClass(DateOnly d)
+    {
+        var selected = d == Value ? Css.Classes.Picker.DaySelected : string.Empty;
+        var extra = DayClassFunc?.Invoke(d);
+        if (string.IsNullOrEmpty(extra)) return selected;
+        return string.IsNullOrEmpty(selected) ? extra : $"{selected} {extra}";
+    }
 
     private enum CalendarView { Day, Month, Year }
 
@@ -215,6 +286,7 @@
         var anchor = Value ?? Today;
         _viewYear = anchor.Year;
         _viewMonth = anchor.Month;
+        _calView = _initialView;
     }
 
     protected override void OnParametersSet()
@@ -237,6 +309,7 @@
     // Card's overflow:hidden. The scrim handles dismissal, so no document listener is needed here.
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (Inline) return; // inline panel sits in normal flow - no anchored positioning
         if (_open == _panelPositioned) return;
         try
         {
@@ -317,20 +390,9 @@
         _calView = CalendarView.Month;
     }
 
-    private void Toggle()
-    {
-        if (Disabled || ReadOnly) return;
-        _open = !_open;
-        if (_open)
-        {
-            var anchor = Value ?? Today;
-            _viewYear = anchor.Year;
-            _viewMonth = anchor.Month;
-            _calView = CalendarView.Day;
-        }
-    }
+    private Task Toggle() => SetOpenAsync(!_open);
 
-    private void Close() => _open = false;
+    private Task Close() => SetOpenAsync(false);
 
     private void GoToToday()
     {
@@ -343,7 +405,7 @@
     {
         await ValueChanged.InvokeAsync(d);
         NotifyFieldChanged();
-        _open = false;
+        if (AutoClose) await SetOpenAsync(false);
     }
 
     /// <summary>Parses a date typed directly into the field (keyboard entry).</summary>
@@ -394,7 +456,7 @@
     {
         await ValueChanged.InvokeAsync(null);
         NotifyFieldChanged();
-        _open = false;
+        await SetOpenAsync(false);
     }
 
     private async Task HandleGridKeyDown(KeyboardEventArgs e)

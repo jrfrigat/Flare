@@ -23,12 +23,13 @@
         <div class="@Css.Classes.Input.Field" @ref="_fieldEl">
             <input class="@Css.Classes.Input.Control"
                    id="@ControlId"
+                   @ref="_inputEl"
                    style="@(Typo is { } _t ? FlareTypography.FontStyle(_t) : null)"
                    type="text"
                    inputmode="numeric"
-                   maxlength="5"
+                   maxlength="@(ShowSeconds ? 8 : 5)"
                    value="@_text"
-                   placeholder="@(Placeholder ?? "HH:mm")"
+                   placeholder="@(Placeholder ?? (ShowSeconds ? "HH:mm:ss" : "HH:mm"))"
                    disabled="@Disabled"
                    readonly="@ReadOnly"
                    required="@Required"
@@ -65,15 +66,20 @@
                     <span class="@Css.Classes.TimePicker.DisplayPart @(_dropActive == 0 ? Css.Classes.TimePicker.DisplayPartActive : "")">@_tempHour.ToString("00")</span>
                     <span class="@Css.Classes.TimePicker.DisplaySep">:</span>
                     <span class="@Css.Classes.TimePicker.DisplayPart @(_dropActive == 1 ? Css.Classes.TimePicker.DisplayPartActive : "")">@_tempMinute.ToString("00")</span>
+                    @if (ShowSeconds)
+                    {
+                        <span class="@Css.Classes.TimePicker.DisplaySep">:</span>
+                        <span class="@Css.Classes.TimePicker.DisplayPart @(_dropActive == 2 ? Css.Classes.TimePicker.DisplayPartActive : "")">@_tempSecond.ToString("00")</span>
+                    }
                 </div>
                 <div class="@Css.Classes.TimePicker.Columns" tabindex="0" @ref="_dropRef" @onkeydown="OnDropKey">
                     <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Hours">
-                        @for (var h = 0; h < 24; h++)
+                        @for (var h = 0; h < 24; h += _hourStep)
                         {
                             var hour = h;
                             <button type="button"
                                     class="@Css.Classes.TimePicker.Cell @(hour == _tempHour ? Css.Classes.TimePicker.CellSelected : "")"
-                                    role="option" aria-selected="@(hour == _tempHour)"
+                                    role="option" aria-selected="@(hour == _tempHour)" disabled="@HourDisabled(hour)"
                                     @onclick="@(() => _tempHour = hour)">@hour.ToString("00")</button>
                         }
                     </div>
@@ -84,10 +90,24 @@
                             var min = m;
                             <button type="button"
                                     class="@Css.Classes.TimePicker.Cell @(min == _tempMinute ? Css.Classes.TimePicker.CellSelected : "")"
-                                    role="option" aria-selected="@(min == _tempMinute)"
-                                    @onclick="@(() => _tempMinute = min)">@min.ToString("00")</button>
+                                    role="option" aria-selected="@(min == _tempMinute)" disabled="@MinuteDisabled(min)"
+                                    @onclick="@(() => SelectMinute(min))">@min.ToString("00")</button>
                         }
                     </div>
+                    @if (ShowSeconds)
+                    {
+                        <div class="@Css.Classes.TimePicker.ColumnsSep">:</div>
+                        <div class="@Css.Classes.TimePicker.Col" role="listbox" aria-label="@FlareStrings.TimePicker_Seconds">
+                            @for (var s = 0; s < 60; s++)
+                            {
+                                var sec = s;
+                                <button type="button"
+                                        class="@Css.Classes.TimePicker.Cell @(sec == _tempSecond ? Css.Classes.TimePicker.CellSelected : "")"
+                                        role="option" aria-selected="@(sec == _tempSecond)" disabled="@SecondDisabled(sec)"
+                                        @onclick="@(() => SelectSecond(sec))">@sec.ToString("00")</button>
+                            }
+                        </div>
+                    }
                 </div>
             }
 
@@ -121,17 +141,64 @@
     [Parameter] public string? CancelText { get; set; }
     /// <summary>Expression used to bind and validate the field.</summary>
     [Parameter] public Expression<Func<TimeOnly?>>? For { get; set; }
+    /// <summary>Adds a seconds column (Dropdown variant) and HH:mm:ss text entry. Default false.</summary>
+    [Parameter] public bool ShowSeconds { get; set; }
+    /// <summary>Hour increment shown in the Dropdown column. Default 1.</summary>
+    [Parameter] public int HourStep { get; set; } = 1;
+    /// <summary>Earliest selectable time (inclusive); out-of-range cells are disabled.</summary>
+    [Parameter] public TimeOnly? Min { get; set; }
+    /// <summary>Latest selectable time (inclusive); out-of-range cells are disabled.</summary>
+    [Parameter] public TimeOnly? Max { get; set; }
+    /// <summary>Confirms and closes as soon as the last time unit is selected (no OK press). Default false.</summary>
+    [Parameter] public bool AutoClose { get; set; }
+    /// <summary>Raised when the picker popup opens.</summary>
+    [Parameter] public EventCallback Opened { get; set; }
+    /// <summary>Raised when the picker popup closes.</summary>
+    [Parameter] public EventCallback Closed { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.TimePicker.Root;
 
     private bool _open;
     private int _tempHour;
     private int _tempMinute;
+    private int _tempSecond;
     private string _text = string.Empty;
     private TimeOnly? _syncedValue;
     private bool _is24Hour;
 
+    private ElementReference _inputEl;
     private ElementReference _fieldEl;
+
+    private int _hourStep => HourStep < 1 ? 1 : HourStep;
+    private string _timeFormat => ShowSeconds ? "HH:mm:ss" : "HH:mm";
+
+    /// <summary>Opens the picker popup.</summary>
+    public Task OpenAsync() { if (!_open) return Toggle(); return Task.CompletedTask; }
+    /// <summary>Closes the picker popup.</summary>
+    public Task CloseAsync() => Close();
+    /// <summary>Toggles the picker popup.</summary>
+    public Task ToggleAsync() => Toggle();
+    /// <summary>Clears the selected time.</summary>
+    public async Task ClearAsync() { await Commit(null); await Close(); }
+    /// <summary>Sets keyboard focus to the time input.</summary>
+    public ValueTask FocusAsync() => _inputEl.FocusAsync();
+
+    private bool TimeInRange(TimeOnly t) => (!Min.HasValue || t >= Min.Value) && (!Max.HasValue || t <= Max.Value);
+    private bool HourDisabled(int h) => (Min.HasValue && new TimeOnly(h, 59, 59) < Min.Value) || (Max.HasValue && new TimeOnly(h, 0, 0) > Max.Value);
+    private bool MinuteDisabled(int m) => (Min.HasValue && new TimeOnly(_tempHour, m, 59) < Min.Value) || (Max.HasValue && new TimeOnly(_tempHour, m, 0) > Max.Value);
+    private bool SecondDisabled(int s) => !TimeInRange(new TimeOnly(_tempHour, _tempMinute, s));
+
+    private async Task SelectMinute(int m)
+    {
+        _tempMinute = m;
+        if (AutoClose && !ShowSeconds) await Confirm();
+    }
+
+    private async Task SelectSecond(int s)
+    {
+        _tempSecond = s;
+        if (AutoClose) await Confirm();
+    }
     private ElementReference _panelEl;
     private bool _panelPositioned;
     private readonly string _panelId = $"flare-timepicker-{Guid.NewGuid():N}";
@@ -145,7 +212,7 @@
         if (!Equals(Value, _syncedValue))
         {
             _syncedValue = Value;
-            _text = Value?.ToString("HH:mm") ?? string.Empty;
+            _text = Value?.ToString(_timeFormat) ?? string.Empty;
         }
     }
 
@@ -164,7 +231,7 @@
     private async Task HandleInput(ChangeEventArgs e)
     {
         _text = MaskTime(e.Value?.ToString());
-        if (_text.Length == 5 && TimeOnly.TryParseExact(_text, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var t))
+        if (_text.Length == (ShowSeconds ? 8 : 5) && TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t))
             await Commit(t);
     }
 
@@ -172,24 +239,27 @@
     {
         _text = MaskTime(e.Value?.ToString());
         if (string.IsNullOrEmpty(_text)) { await Commit(null); return; }
-        if (TimeOnly.TryParseExact(_text, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var t) ||
+        if (TimeOnly.TryParseExact(_text, _timeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var t) ||
             TimeOnly.TryParse(_text, CultureInfo.CurrentUICulture, DateTimeStyles.None, out t))
         {
-            _text = t.ToString("HH:mm");
+            _text = t.ToString(_timeFormat);
             await Commit(t);
         }
     }
 
-    private static string MaskTime(string? raw)
+    private string MaskTime(string? raw)
     {
         if (string.IsNullOrEmpty(raw)) return string.Empty;
-        var digits = new string(raw.Where(char.IsDigit).Take(4).ToArray());
+        var digits = new string(raw.Where(char.IsDigit).Take(ShowSeconds ? 6 : 4).ToArray());
         if (digits.Length <= 2) return digits;
         var hh = digits[..2];
-        var mm = digits[2..];
         if (int.TryParse(hh, out var h) && h > 23) hh = "23";
+        var mm = digits.Length <= 4 ? digits[2..] : digits[2..4];
         if (mm.Length == 2 && int.TryParse(mm, out var m) && m > 59) mm = "59";
-        return $"{hh}:{mm}";
+        if (digits.Length <= 4) return $"{hh}:{mm}";
+        var ss = digits[4..];
+        if (ss.Length == 2 && int.TryParse(ss, out var s) && s > 59) ss = "59";
+        return $"{hh}:{mm}:{ss}";
     }
 
     private ElementReference _dropRef;
@@ -197,18 +267,36 @@
     private string _dropBuf = string.Empty;
     private bool _focusDrop;
 
-    private void Toggle()
+    private async Task Toggle()
     {
         if (Disabled || ReadOnly) return;
         if (!_open)
         {
             _tempHour = Value?.Hour ?? 0;
             _tempMinute = Value?.Minute ?? 0;
+            _tempSecond = Value?.Second ?? 0;
+            ClampTemp();
             _dropActive = 0;
             _dropBuf = string.Empty;
             _focusDrop = PopupVariant == TimePickerVariant.Dropdown;
+            _open = true;
+            await Opened.InvokeAsync();
         }
-        _open = !_open;
+        else
+        {
+            _open = false;
+            await Closed.InvokeAsync();
+        }
+        StateHasChanged();
+    }
+
+    private void ClampTemp()
+    {
+        var t = new TimeOnly(_tempHour, _tempMinute, _tempSecond);
+        var clamp = Min.HasValue && t < Min.Value ? Min.Value
+                  : Max.HasValue && t > Max.Value ? Max.Value
+                  : (TimeOnly?)null;
+        if (clamp is { } c) { _tempHour = c.Hour; _tempMinute = c.Minute; _tempSecond = c.Second; }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -258,18 +346,25 @@
         else if (key == "Backspace") { _dropBuf = string.Empty; }
     }
 
-    private void Close() => _open = false;
+    private async Task Close()
+    {
+        if (!_open) return;
+        _open = false;
+        await Closed.InvokeAsync();
+        StateHasChanged();
+    }
 
     private async Task Confirm()
     {
         _open = false;
-        await Commit(new TimeOnly(_tempHour, _tempMinute));
+        await Closed.InvokeAsync();
+        await Commit(new TimeOnly(_tempHour, _tempMinute, ShowSeconds ? _tempSecond : 0));
     }
 
     private async Task Commit(TimeOnly? value)
     {
         _syncedValue = value;
-        _text = value?.ToString("HH:mm") ?? string.Empty;
+        _text = value?.ToString(_timeFormat) ?? string.Empty;
         await ValueChanged.InvokeAsync(value);
         NotifyFieldChanged();
     }

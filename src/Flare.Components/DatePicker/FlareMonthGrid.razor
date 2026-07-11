@@ -7,30 +7,44 @@
    host through DayClass; disabled/keyboard/hover are optional hooks so each picker keeps its own
    behaviour while the markup + date generation (CalendarMath) live here once. *@
 
-<div class="@Css.Classes.Picker.DayHeaders">
-    @foreach (var h in CalendarMath.DayHeaders(_culture))
+<div class="@Css.Classes.Picker.DayHeaders @(ShowWeekNumbers ? Css.Classes.Picker.DayHeadersWeeks : null)">
+    @if (ShowWeekNumbers)
+    {
+        <span class="@Css.Classes.Picker.WeekNum" aria-hidden="true"></span>
+    }
+    @foreach (var h in CalendarMath.DayHeaders(_culture, _firstDayOfWeek))
     {
         <span>@h</span>
     }
 </div>
-<div class="@Css.Classes.Picker.Grid" role="grid" aria-label="@AriaLabel"
+<div class="@Css.Classes.Picker.Grid @(ShowWeekNumbers ? Css.Classes.Picker.GridWeeks : null)" role="grid" aria-label="@AriaLabel"
      @onkeydown="OnKeyDown" @onkeydown:stopPropagation>
-    @foreach (var date in CalendarMath.MonthGrid(ViewYear, ViewMonth, _culture.DateTimeFormat.FirstDayOfWeek))
+    @foreach (var week in _weeks)
     {
-        var day = date;
-        var outside = day.Month != ViewMonth;
-        var disabled = Disabled?.Invoke(day) ?? false;
-        <button type="button"
-                role="gridcell"
-                aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
-                aria-current="@(day == Today ? "date" : null)"
-                class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
-                disabled="@disabled"
-                @onclick="@(() => OnDayClick.InvokeAsync(day))"
-                @onclick:stopPropagation
-                @onmouseenter="@(() => OnDayHover.InvokeAsync(day))">
-            @day.Day
-        </button>
+        @if (ShowWeekNumbers)
+        {
+            <span class="@Css.Classes.Picker.WeekNum" role="rowheader"
+                  aria-label="@string.Format(FlareStrings.Picker_WeekNumber, CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek))">
+                @CalendarMath.WeekOfYear(week[0], _culture, _firstDayOfWeek)
+            </span>
+        }
+        @foreach (var date in week)
+        {
+            var day = date;
+            var outside = day.Month != ViewMonth;
+            var disabled = Disabled?.Invoke(day) ?? false;
+            <button type="button"
+                    role="gridcell"
+                    aria-selected="@((Selected?.Invoke(day) ?? false) ? "true" : "false")"
+                    aria-current="@(day == Today ? "date" : null)"
+                    class="@Css.Classes.Picker.Day @(outside ? Css.Classes.Picker.DayOutside : "") @(day == Today ? Css.Classes.Picker.DayToday : "") @(disabled ? Css.Classes.Picker.DayDisabled : "") @(DayClass?.Invoke(day))"
+                    disabled="@disabled"
+                    @onclick="@(() => OnDayClick.InvokeAsync(day))"
+                    @onclick:stopPropagation
+                    @onmouseenter="@(() => OnDayHover.InvokeAsync(day))">
+                @day.Day
+            </button>
+        }
     }
 </div>
 
@@ -41,6 +55,10 @@
     [Parameter, EditorRequired] public int ViewMonth { get; set; }
     /// <summary>Culture for the weekday headers and first-day-of-week. Defaults to the current UI culture.</summary>
     [Parameter] public CultureInfo? Culture { get; set; }
+    /// <summary>Overrides the culture's first day of week when set (null = use the culture's).</summary>
+    [Parameter] public DayOfWeek? FirstDayOfWeek { get; set; }
+    /// <summary>Shows a leading week-of-year number column.</summary>
+    [Parameter] public bool ShowWeekNumbers { get; set; }
     /// <summary>Today's date, marked with the today indicator.</summary>
     [Parameter] public DateOnly Today { get; set; }
     /// <summary>Predicate marking a day <c>aria-selected</c>; the visible selection style is supplied via <see cref="DayClass"/>.</summary>
@@ -59,4 +77,7 @@
     [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
 
     private CultureInfo _culture => Culture ?? CultureInfo.CurrentUICulture;
+    private DayOfWeek _firstDayOfWeek => FirstDayOfWeek ?? _culture.DateTimeFormat.FirstDayOfWeek;
+    // The 42-day grid grouped into 6 rows of 7 (so an optional week-number cell can lead each row).
+    private DateOnly[][] _weeks => CalendarMath.MonthGrid(ViewYear, ViewMonth, _firstDayOfWeek).Chunk(7).ToArray();
 }
