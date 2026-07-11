@@ -297,6 +297,13 @@
     aspect-ratio: 1 / 1;
 }
 
+/* An icon-only button has no label for the leading/trailing optical tuck to balance against, so the
+   lone glyph would sit ~2px off-center. Neutralize the tuck when there is no label. */
+.flare-btn--icon-only .flare-btn__icon--leading,
+.flare-btn--icon-only .flare-btn__icon--trailing {
+    margin-inline: 0;
+}
+
 .flare-btn--loading {
     cursor: not-allowed;
     opacity: var(--flare-btn-loading-opacity, 0.8);
