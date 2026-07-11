@@ -1,0 +1,26 @@
+@page "/changelog"
+@inherits LocalizedPage
+@inject Flare.Gallery.Services.ChangelogService Changelog
+
+<PageTitle>@GalleryStrings.Changelog_Title - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Changelog_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Changelog_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<FlareStack Gap="FlareSpacing.Large">
+    @foreach (var entry in Changelog.Entries())
+    {
+        <FlareCard Variant="CardVariant.Outlined">
+            <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="margin-bottom:0.5rem;">
+                <FlareBadge Text="@($"v{entry.Version}")" Standalone="true" Color="FlareColor.Secondary" />
+                @if (entry.Date is not null)
+                {
+                    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@entry.Date</FlareText>
+                }
+            </FlareStack>
+            <FlareMarkdown Value="@entry.Markdown" />
+        </FlareCard>
+    }
+</FlareStack>

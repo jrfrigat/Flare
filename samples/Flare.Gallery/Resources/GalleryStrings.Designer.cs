@@ -122,7 +122,43 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("About_ViewOnGitHub", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to View full changelog.
+        /// </summary>
+        public static string About_FullChangelog {
+            get {
+                return ResourceManager.GetString("About_FullChangelog", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Changelog.
+        /// </summary>
+        public static string Nav_Changelog {
+            get {
+                return ResourceManager.GetString("Nav_Changelog", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Changelog.
+        /// </summary>
+        public static string Changelog_Title {
+            get {
+                return ResourceManager.GetString("Changelog_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Every release of Flare, newest first.
+        /// </summary>
+        public static string Changelog_Subtitle {
+            get {
+                return ResourceManager.GetString("Changelog_Subtitle", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на What&apos;s New.
         /// </summary>

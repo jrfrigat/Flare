@@ -1848,6 +1848,18 @@
   <data name="About_ViewOnGitHub" xml:space="preserve">
     <value>View on GitHub</value>
   </data>
+  <data name="About_FullChangelog" xml:space="preserve">
+    <value>View full changelog</value>
+  </data>
+  <data name="Nav_Changelog" xml:space="preserve">
+    <value>Changelog</value>
+  </data>
+  <data name="Changelog_Title" xml:space="preserve">
+    <value>Changelog</value>
+  </data>
+  <data name="Changelog_Subtitle" xml:space="preserve">
+    <value>Every release of Flare, newest first.</value>
+  </data>
   <data name="Nav_Comparison" xml:space="preserve">
     <value>Comparison</value>
   </data>

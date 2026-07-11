@@ -59,6 +59,14 @@
 		<ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
 	</ItemGroup>
 
+	<!-- Single source of truth for release notes: the repo CHANGELOG(.ru) is embedded and parsed at
+	     runtime (ChangelogService) so the version badge, the About "What's New" and the /changelog
+	     page all read one file - no per-release edits to About/resx/MainLayout. -->
+	<ItemGroup>
+		<EmbeddedResource Include="..\..\CHANGELOG.md" LogicalName="CHANGELOG.md" />
+		<EmbeddedResource Include="..\..\CHANGELOG.ru.md" LogicalName="CHANGELOG.ru.md" />
+	</ItemGroup>
+
 	<!--
 		Opt-in API documentation generation. Runs the Flare.ApiDocGen tool to (re)generate
 		Api/ComponentApiRegistry.g.cs from reflection + XML docs. Disabled by default so normal

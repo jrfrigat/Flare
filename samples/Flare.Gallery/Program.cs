@@ -62,6 +62,7 @@ builder.Services.AddLocalization();
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<RailLabelService>();
 builder.Services.AddSingleton<GallerySearchService>();
+builder.Services.AddSingleton<ChangelogService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 var host = builder.Build();
