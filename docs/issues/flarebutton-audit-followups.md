@@ -22,38 +22,30 @@ The items below were judged lower value and deferred.
 alongside the existing `RenderFragment` slots (the fragment wins when both are set). Purely additive.
 Consider applying the same to the family (IconButton already takes an icon).
 
-## 5. Dirty-flag class-string cache (perf parity) - LOW
+## 5. Dirty-flag class-string cache (perf parity) - WON'T DO (measured)
 
-**Gap:** `FlareButton` recomputes its class string (`BuildCssClass(...)` over ~8 computed properties) on
-every render. Blazorise caches the class string and only rebuilds when a parameter changes (dirty-flag
-`ClassBuilder`). Flare is still cheap (no JS, plain string ops) but not free.
+**Measured** 2026-07-11 (net10 Release, file-based micro-benchmark of the exact `BuildCssClass` slow path -
+params array + `List<string>` + `string.Join` over 8 modifier classes):
+- **~39 ns/op and ~328 bytes/op** per button render; a cached read is ~1 ns / 0 bytes.
+- A button re-renders only when its parameters/state change (not per frame), so the realistic frequency is
+  low, and 39 ns is dwarfed by Blazor's own render-tree build/diff for the element.
+- Even the pathological "1000 buttons re-rendering every frame" is only ~19 MB/s / ~2.3 ms/s CPU - and there
+  the render-tree diffing, not the class string, is the bottleneck.
 
-**Proposal:** cache the composed class/style in `OnParametersSet` and reuse it in the render, invalidating
-only on parameter change. Would benefit the whole component base, not just Button - evaluate at the
-`FlareComponentBase` level. Measure first; may not be worth the added state.
+**Conclusion:** a dirty-flag cache would add per-instance state + invalidation complexity (stale-cache risk)
+for no perceptible gain. Not worth it.
 
-## 6. Opt-in expanding ripple (CSS-only) - LOW
+## 6. Opt-in expanding ripple (CSS-only) - LOW (NOT the same as PressMorph)
 
-**Gap:** Flare uses a pure-CSS state layer (`::before` opacity for hover/focus/press) and deliberately has
-**no** expanding ripple - MudBlazor's ripple costs a document-level JS listener (`mudRipple.js`). Some users
-expect the Material "ink" ripple on press.
+**This is not `PressMorph`.** Flare already has TWO press-feedback effects:
+- the always-on **state layer** (a `::before` that raises OPACITY on hover/focus/`:active` - a flat tint), and
+- the opt-in **`PressMorph`** (animates the corner RADIUS on `:active` - a shape/squircle morph).
 
-**Proposal:** an opt-in ripple that stays **JS-free** - a CSS-only approximation on `:active` (e.g. a radial
-`::after` that scales/fades via `@keyframes`, respecting `prefers-reduced-motion`). Keep it off by default so
-the zero-JS, zero-DOM-churn default is preserved. Note: a CSS-only ripple cannot originate at the exact
-pointer coordinates (that needs JS); document the limitation.
+The **ripple** is a THIRD, distinct effect: an expanding circular "ink" blob radiating from the click point
+(Material touch ripple). Flare deliberately omits it to stay JS-free (a true pointer-anchored ripple needs
+JS to place the origin).
 
-## 7. MVVM `Command` / `CommandParameter` (niche) - LOW
-
-**Gap:** Blazorise binds `ICommand` (WPF/Prism-style) and reflects `CanExecute` into the disabled state.
-Rare in idiomatic Blazor (`OnClick` + `Disabled` cover it).
-
-**Proposal:** only if a consumer asks. Low idiomatic value.
-
----
-
-## Cross-cutting: extend 1-3 to the button family
-
-`FocusAsync()` and the `rel`/`_blank` default are currently on `FlareButton` only. IconButton, FAB,
-SplitButton and ToggleButton should get the same treatment for consistency (IconButton/SplitButton already
-compose `FlareButton`, so some of this flows through; verify and fill the gaps).
+**Proposal (if wanted):** an opt-in, JS-free CSS approximation on `:active` (a radial `::after` that
+scales/fades via `@keyframes`, respecting `prefers-reduced-motion`), off by default. Limitation: cannot
+start at the exact pointer coordinates. LOW value given press feedback already exists (state layer +
+`PressMorph`).
