@@ -31,7 +31,7 @@ public static class GallerySections
         if (p.StartsWith("/components")) return GallerySection.Components;
         if (p.StartsWith("/services")) return GallerySection.Services;
         if (p == "/api" || p.StartsWith("/api/")) return GallerySection.Api;
-        if (p is "/getting-started" or "/changelog" or "/about") return GallerySection.Guide;
+        if (p is "/getting-started" or "/changelog") return GallerySection.Guide;
         return p is "/theming" or "/color" or "/custom-theme" ? GallerySection.Themes : GallerySection.None;
     }
 }

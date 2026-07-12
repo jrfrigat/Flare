@@ -97,7 +97,6 @@ public sealed class GallerySearchService
         AddKeyed(list, "/color", "Nav_Color", SearchKind.Page, "format_color_fill");
         // Custom Theme has no localized nav label (English-only literal in the menu).
         AddLiteral(list, "/custom-theme", "Custom Theme", SearchKind.Page, "tune");
-        AddKeyed(list, "/about", "Nav_About", SearchKind.Page, "info");
 
         // -- Components (English name from the catalog; RU/EN titles from resources). --
         foreach (var c in ComponentCatalog.All)
