@@ -1872,21 +1872,6 @@
   <data name="DataTree_SimulatedAsync" xml:space="preserve">
     <value>Имитация асинхронной загрузки (спиннер 300 мс)</value>
   </data>
-  <data name="About_Title" xml:space="preserve">
-    <value>О Flare</value>
-  </data>
-  <data name="About_Version" xml:space="preserve">
-    <value>Версия</value>
-  </data>
-  <data name="About_WhatsNew" xml:space="preserve">
-    <value>Что нового</value>
-  </data>
-  <data name="About_ViewOnGitHub" xml:space="preserve">
-    <value>Посмотреть на GitHub</value>
-  </data>
-  <data name="About_FullChangelog" xml:space="preserve">
-    <value>Весь список изменений</value>
-  </data>
   <data name="Nav_Changelog" xml:space="preserve">
     <value>Изменения</value>
   </data>
@@ -1910,9 +1895,6 @@
   </data>
   <data name="Nav_Theming" xml:space="preserve">
     <value>Темы оформления</value>
-  </data>
-  <data name="Nav_About" xml:space="preserve">
-    <value>О библиотеке</value>
   </data>
   <data name="Nav_Color" xml:space="preserve">
     <value>Цвет</value>
@@ -2552,18 +2534,6 @@
   </data>
   <data name="Common_HideCode" xml:space="preserve">
     <value>Скрыть код</value>
-  </data>
-  <data name="About_Subtitle" xml:space="preserve">
-    <value>Blazor UI · .NET 10 · 116+ компонентов</value>
-  </data>
-  <data name="About_Intro" xml:space="preserve">
-    <value>Flare - не зависящая от тем библиотека компонентов Blazor с открытым исходным кодом на .NET 10: движок на семантических токенах для создания собственной дизайн-системы. Семь готовых дизайн-систем поставляются как независимые, необязательные пакеты.</value>
-  </data>
-  <data name="About_Components" xml:space="preserve">
-    <value>Компонентов</value>
-  </data>
-  <data name="About_Themes" xml:space="preserve">
-    <value>Готовые темы</value>
   </data>
 
   <!-- Comparison -->

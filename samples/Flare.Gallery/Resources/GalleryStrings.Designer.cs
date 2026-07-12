@@ -61,78 +61,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Components.
-        /// </summary>
-        public static string About_Components {
-            get {
-                return ResourceManager.GetString("About_Components", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Flare is a theme-agnostic, open-source Blazor component library for .NET 10 - a token-driven engine for building your own design system. Seven production-ready preset design systems ship as independent, optional packages..
-        /// </summary>
-        public static string About_Intro {
-            get {
-                return ResourceManager.GetString("About_Intro", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Blazor UI · .NET 10 · 116+ components.
-        /// </summary>
-        public static string About_Subtitle {
-            get {
-                return ResourceManager.GetString("About_Subtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Preset themes.
-        /// </summary>
-        public static string About_Themes {
-            get {
-                return ResourceManager.GetString("About_Themes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на About Flare.
-        /// </summary>
-        public static string About_Title {
-            get {
-                return ResourceManager.GetString("About_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Version.
-        /// </summary>
-        public static string About_Version {
-            get {
-                return ResourceManager.GetString("About_Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на View on GitHub.
-        /// </summary>
-        public static string About_ViewOnGitHub {
-            get {
-                return ResourceManager.GetString("About_ViewOnGitHub", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to View full changelog.
-        /// </summary>
-        public static string About_FullChangelog {
-            get {
-                return ResourceManager.GetString("About_FullChangelog", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Changelog.
         /// </summary>
         public static string Nav_Changelog {
@@ -159,15 +87,6 @@ namespace Flare.Gallery.Resources {
             }
         }
 
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на What&apos;s New.
-        /// </summary>
-        public static string About_WhatsNew {
-            get {
-                return ResourceManager.GetString("About_WhatsNew", resourceCulture);
-            }
-        }
-        
         /// <summary>
         ///   Ищет локализованную строку, похожую на Basic (single expand).
         /// </summary>
@@ -5520,15 +5439,6 @@ namespace Flare.Gallery.Resources {
         public static string MultiSelect_WithHelperText {
             get {
                 return ResourceManager.GetString("MultiSelect_WithHelperText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на About.
-        /// </summary>
-        public static string Nav_About {
-            get {
-                return ResourceManager.GetString("Nav_About", resourceCulture);
             }
         }
         
