@@ -60,8 +60,10 @@ internal static class QrCodeGenerator
             byte factor = (byte)(b ^ rem[0]);
             Array.Copy(rem, 1, rem, 0, ecCount - 1);
             rem[ecCount - 1] = 0;
+            // gen has ecCount+1 coefficients [1, g1, ..., g_ec]; the systematic
+            // division feedback multiplies by g1..g_ec (skip the leading 1).
             for (int i = 0; i < ecCount; i++)
-                rem[i] ^= GfMul(gen[i], factor);
+                rem[i] ^= GfMul(gen[i + 1], factor);
         }
         return rem;
     }
@@ -74,9 +76,9 @@ internal static class QrCodeGenerator
         // L
         [(21, 19, 7, 1), (25, 34, 10, 1), (29, 55, 15, 1), (33, 80, 20, 1)],
         // M
-        [(21, 16, 10, 1), (25, 28, 16, 1), (29, 22, 13, 2), (33, 32, 18, 2)],
+        [(21, 16, 10, 1), (25, 28, 16, 1), (29, 44, 26, 1), (33, 32, 18, 2)],
         // Q
-        [(21, 13, 13, 1), (25, 22, 22, 1), (29, 17, 18, 2), (33, 12, 13, 4)],
+        [(21, 13, 13, 1), (25, 22, 22, 1), (29, 17, 18, 2), (33, 24, 26, 2)],
         // H
         [(21, 9, 17, 1),  (25, 16, 28, 1), (29, 13, 22, 2), (33, 9, 16, 4)],
     ];
@@ -110,7 +112,7 @@ internal static class QrCodeGenerator
         // Q
         [0x355F, 0x3068, 0x3F31, 0x3A06, 0x24B4, 0x2183, 0x2EDA, 0x2BED],
         // H
-        [0x1689, 0x13BE, 0x1CE7, 0x19D0, 0x0762, 0x0455, 0x0B0C, 0x0E3B],
+        [0x1689, 0x13BE, 0x1CE7, 0x19D0, 0x0762, 0x0255, 0x0D0C, 0x083B],
     ];
 
     /// <summary>Generates a QR code matrix. Returns null if text exceeds version 4 capacity.</summary>
