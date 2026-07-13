@@ -17,4 +17,10 @@ public static class FluentCssVars
     public const string FocusStrokeColor = "--flare-fluent-focus-stroke-color";
     /// <summary>Outer focus-stroke color.</summary>
     public const string FocusStrokeOuter = "--flare-fluent-focus-stroke-outer";
+    /// <summary>Flat disabled background (colorNeutralBackgroundDisabled).</summary>
+    public const string DisabledBg = "--flare-fluent-disabled-bg";
+    /// <summary>Flat disabled foreground (colorNeutralForegroundDisabled).</summary>
+    public const string DisabledFg = "--flare-fluent-disabled-fg";
+    /// <summary>Flat disabled stroke (colorNeutralStrokeDisabled).</summary>
+    public const string DisabledBorder = "--flare-fluent-disabled-border";
 }

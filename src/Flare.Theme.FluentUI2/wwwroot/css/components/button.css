@@ -92,13 +92,13 @@
     */
     .flare-btn:disabled, .flare-btn[disabled] {
         opacity: 1 !important;
-        color: var(--flare-fluent-disabled-fg) !important;
+        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }
     .flare-btn--filled:disabled, .flare-btn--tonal:disabled, .flare-btn--elevated:disabled,
     .flare-btn--filled[disabled], .flare-btn--tonal[disabled], .flare-btn--elevated[disabled] {
-        background-color: var(--flare-fluent-disabled-bg) !important;
+        background-color: var(--flare-fluent-disabled-bg, #F0F0F0) !important;
     }
     .flare-btn--outlined:disabled, .flare-btn--outlined[disabled] {
-        border-color: var(--flare-fluent-disabled-border) !important;
+        border-color: var(--flare-fluent-disabled-border, #E0E0E0) !important;
     }
 }

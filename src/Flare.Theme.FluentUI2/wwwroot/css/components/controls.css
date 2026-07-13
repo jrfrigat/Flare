@@ -23,19 +23,19 @@
     /* Disabled: flat Fluent disabled palette instead of the element-opacity fade. */
     .flare-checkbox--disabled, .flare-radio--disabled {
         opacity: 1 !important;
-        color: var(--flare-fluent-disabled-fg) !important;   /* label text (inherited) */
+        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;   /* label text (inherited) */
     }
     .flare-checkbox--disabled .flare-checkbox__indicator,
     .flare-radio--disabled .flare-radio__indicator {
-        border-color: var(--flare-fluent-disabled-border) !important;
+        border-color: var(--flare-fluent-disabled-border, #E0E0E0) !important;
     }
     .flare-checkbox--disabled .flare-checkbox__input:checked + .flare-checkbox__indicator {
-        background-color: var(--flare-fluent-disabled-bg) !important;
+        background-color: var(--flare-fluent-disabled-bg, #F0F0F0) !important;
     }
     .flare-checkbox--disabled .flare-checkbox__input:checked + .flare-checkbox__indicator::after {
-        border-color: var(--flare-fluent-disabled-fg) !important;   /* checkmark */
+        border-color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;   /* checkmark */
     }
     .flare-radio--disabled .flare-radio__input:checked + .flare-radio__indicator::after {
-        background: var(--flare-fluent-disabled-fg) !important;      /* selected dot */
+        background: var(--flare-fluent-disabled-fg, #BDBDBD) !important;      /* selected dot */
     }
 }

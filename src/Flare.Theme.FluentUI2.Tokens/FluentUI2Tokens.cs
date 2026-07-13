@@ -461,9 +461,9 @@ public class FluentUI2Tokens
         HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
         HoverShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
         // Fluent flat disabled palette (was MD3-style on-surface opacity mixes).
-        DisabledTrackBg = "var(--flare-fluent-disabled-bg)",
-        DisabledTrackBorder = "var(--flare-fluent-disabled-border)",
-        DisabledHandleBg = "var(--flare-fluent-disabled-fg)",
+        DisabledTrackBg = "var(--flare-fluent-disabled-bg, #F0F0F0)",
+        DisabledTrackBorder = "var(--flare-fluent-disabled-border, #E0E0E0)",
+        DisabledHandleBg = "var(--flare-fluent-disabled-fg, #BDBDBD)",
     };
 
     /// <summary>
@@ -481,9 +481,9 @@ public class FluentUI2Tokens
         // Fluent disabled palette (colorNeutralBackgroundDisabled / ...ForegroundDisabled /
         // ...StrokeDisabled). Fluent uses a flat discrete disabled look, not element opacity.
         // No semantic role maps to these exact greys, so they live here (dark values in DarkExtended).
-        ["--flare-fluent-disabled-bg"] = "#F0F0F0",
-        ["--flare-fluent-disabled-fg"] = "#BDBDBD",
-        ["--flare-fluent-disabled-border"] = "#E0E0E0",
+        [FluentCssVars.DisabledBg] = "#F0F0F0",
+        [FluentCssVars.DisabledFg] = "#BDBDBD",
+        [FluentCssVars.DisabledBorder] = "#E0E0E0",
 
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
@@ -1029,9 +1029,9 @@ public class FluentUI2Tokens
             ["--flare-switch-track-hover-off-bg"] = "var(--flare-color-surface-container)",
             ["--flare-switch-track-hover-on-bg"] = "#2886D4",
             // Fluent dark disabled palette.
-            ["--flare-fluent-disabled-bg"] = "#141414",
-            ["--flare-fluent-disabled-fg"] = "#5C5C5C",
-            ["--flare-fluent-disabled-border"] = "#424242",
+            [FluentCssVars.DisabledBg] = "#141414",
+            [FluentCssVars.DisabledFg] = "#5C5C5C",
+            [FluentCssVars.DisabledBorder] = "#424242",
         };
         return dict;
     }
