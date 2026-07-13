@@ -19,4 +19,23 @@
         .flare-radio__input:not(:checked) + .flare-radio__indicator {
         border-color: var(--flare-color-on-surface);
     }
+
+    /* Disabled: flat Fluent disabled palette instead of the element-opacity fade. */
+    .flare-checkbox--disabled, .flare-radio--disabled {
+        opacity: 1 !important;
+        color: var(--flare-fluent-disabled-fg) !important;   /* label text (inherited) */
+    }
+    .flare-checkbox--disabled .flare-checkbox__indicator,
+    .flare-radio--disabled .flare-radio__indicator {
+        border-color: var(--flare-fluent-disabled-border) !important;
+    }
+    .flare-checkbox--disabled .flare-checkbox__input:checked + .flare-checkbox__indicator {
+        background-color: var(--flare-fluent-disabled-bg) !important;
+    }
+    .flare-checkbox--disabled .flare-checkbox__input:checked + .flare-checkbox__indicator::after {
+        border-color: var(--flare-fluent-disabled-fg) !important;   /* checkmark */
+    }
+    .flare-radio--disabled .flare-radio__input:checked + .flare-radio__indicator::after {
+        background: var(--flare-fluent-disabled-fg) !important;      /* selected dot */
+    }
 }

@@ -460,9 +460,10 @@ public class FluentUI2Tokens
         TrackHoverOnBg = "var(--flare-switch-track-on-bg)",
         HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
         HoverShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
-        DisabledTrackBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        DisabledTrackBorder = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        DisabledHandleBg = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
+        // Fluent flat disabled palette (was MD3-style on-surface opacity mixes).
+        DisabledTrackBg = "var(--flare-fluent-disabled-bg)",
+        DisabledTrackBorder = "var(--flare-fluent-disabled-border)",
+        DisabledHandleBg = "var(--flare-fluent-disabled-fg)",
     };
 
     /// <summary>
