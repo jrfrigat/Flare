@@ -64,6 +64,22 @@ REMAINING P1:
 2. FluentUI2 discretisation: set FUI2's `-layer` tokens to its discrete subtle fills (globally and/or
    per-variant, e.g. `.flare-btn--filled { --flare-state-hover-layer: <darkened brand> }`), at effectively
    opacity 1. `currentColor` in a custom prop resolves at the `::before` use-site, so MD3 stays correct.
+   - Exact value map for FUI2 button (verified equivalent): filled hover = `color-mix(in srgb, #000 13%,
+     transparent)`, pressed = `color-mix(in srgb, #000 48%, transparent)` (a black overlay composites to
+     brand*0.87/0.52 + black - identical to today's `color-mix(brand 87%/52%, #000)`); text hover/pressed
+     = `--flare-fluent-subtle-hover/-pressed`; outlined hover/pressed = `transparent` (keep the
+     `border-color` stroke rule - a fill token can't darken a border); tonal/elevated stay on the
+     currentColor wash (default). Then delete the `::before { opacity: 0 !important }` suppressions + the
+     filled/text `background-color` repaints from FUI2 button.css.
+   - **OPEN SUBTLETY (state precedence) - decide before coding:** the core orders the state `::before`
+     rules hover -> focus -> active (equal specificity, last-in-source wins), so `:focus-visible` overrides
+     `:hover` when both apply. Today FUI2 filled paints the hover darken on the ELEMENT, so it persists
+     under focus. Routing it through the layer token means a per-variant `--flare-state-focus-layer:
+     transparent` (to keep focus-alone ring-only, the Fluent look) makes the focus+hover case lose the
+     darken. Options: (a) accept the edge case; (b) set focus-layer = the hover value (focus-alone then
+     shows a slight fill - minor divergence); (c) make the core state precedence configurable (hover could
+     win) - a core change affecting all themes. Needs a call + dual-mode Gallery verification. This is why
+     FUI2 button discretisation was NOT rushed - avoid regressing the FUI2 fidelity.
 3. Remove the now-redundant FluentUI2 override CSS (button/controls/fields/surfaces hover-pressed subtle
    fills) that only suppressed `::before` + repainted - now a pure token assignment.
 4. Verify BOTH themes per component (hover/focus/pressed, light+dark) in the Gallery.
