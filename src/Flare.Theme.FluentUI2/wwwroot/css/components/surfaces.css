@@ -12,7 +12,11 @@
     .flare-tabs__tab:disabled, .flare-tabs__tab--disabled,
     .flare-tabs__scroll:disabled,
     .flare-pagination__btn:disabled,
-    .flare-toggle-btn:disabled, .flare-toggle-btn[disabled] {
+    .flare-toggle-btn:disabled, .flare-toggle-btn[disabled],
+    .flare-link--disabled,
+    .flare-bottom-nav-item--disabled,
+    .flare-accordion-panel--disabled .flare-accordion-panel__header,
+    .flare-collapse--disabled .flare-collapse__header {
         opacity: 1 !important;
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }
