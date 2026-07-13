@@ -123,14 +123,41 @@
     height: var(--_trk-height);
     transform: translateY(-50%);
     pointer-events: none;
+    /* Own stacking context so the zone layering (inactive < zone < active) stays scoped to the
+       rail and does not fight the ticks / thumb / bubble that sit above the whole rail. */
+    isolation: isolate;
 }
 .flare-slider__seg {
     position: absolute;
     top: 0;
     height: 100%;
 }
-.flare-slider__seg--active   { background: var(--_active); }
-.flare-slider__seg--inactive { background: var(--_inactive); }
+/* Layer order inside the rail: inactive track (1) < colored zones (2) < active fill (3). */
+.flare-slider__seg--active   { background: var(--_active); z-index: 3; }
+.flare-slider__seg--inactive { background: var(--_inactive); z-index: 1; }
+
+/* Colored scale zones (declared via <FlareSliderZone>): static [start,end] bands that annotate the
+   track (safe/warning/danger ranges, media buffer, step coloring). Painted on top of the inactive
+   track but under the active fill, so the accent fill always shows the current value on top. The
+   color comes from --fc-main (role class or inline custom token on the span). */
+.flare-slider__zone {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: var(--_z0, 0%);
+    right: calc(100% - var(--_z1, 0%));
+    z-index: 2;
+    background: var(--fc-main, var(--flare-color-primary));
+    pointer-events: none;
+}
+/* Vertical: zones run bottom(start) -> top(end) along the block axis. */
+.flare-slider--vertical .flare-slider__zone {
+    left: 0;
+    right: 0;
+    height: auto;
+    bottom: var(--_z0, 0%);
+    top: calc(100% - var(--_z1, 0%));
+}
 
 .flare-slider__input {
     -webkit-appearance: none;

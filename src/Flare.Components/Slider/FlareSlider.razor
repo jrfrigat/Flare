@@ -32,6 +32,10 @@
                         <span class="@(seg.Active ? $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegActive}" : $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegInactive}")"
                               style="@seg.Style"></span>
                     }
+                    @foreach (var z in _zoneBands)
+                    {
+                        <span class="@z.CssClass" style="@z.Style"></span>
+                    }
                 </div>
 
                 @if (Range)
@@ -116,6 +120,12 @@
     {
         <span class="@Css.Classes.Slider.Helper">@HelperText</span>
     }
+    @* Zones register themselves via the cascaded slider and render no DOM of their own; the rail
+       above draws their bands. IsFixed: this instance never changes identity. *@
+    @if (Zones is not null)
+    {
+        <CascadingValue Value="this" IsFixed="true">@Zones</CascadingValue>
+    }
 </div>
 
 @code {
@@ -127,6 +137,13 @@
     [Parameter] public bool Range { get; set; }
     /// <summary>Upper bound of the selected range (range mode only).</summary>
     [Parameter] public double ValueEnd { get; set; } = 100;
+    /// <summary>
+    /// Declarative colored zones on the track: one or more <see cref="FlareSliderZone"/> children, each a
+    /// static <c>[Start,End]</c> region in its own color. Zones are read-only scale annotations
+    /// (safe/warning/danger ranges, a media buffer band, per-step coloring) drawn on top of the inactive
+    /// track but under the active fill, so the accent fill always shows the current value on top.
+    /// </summary>
+    [Parameter] public RenderFragment? Zones { get; set; }
     /// <summary>Callback invoked when <see cref="ValueEnd"/> changes.</summary>
     [Parameter] public EventCallback<double> ValueEndChanged { get; set; }
     /// <summary>Minimum value of the slider range.</summary>
@@ -231,6 +248,47 @@
     private double _highPct => _pctOf(_effHigh);
     private double _initValue => Math.Clamp(Init ?? _safeMin, _safeMin, _safeMax);
     private double _initPercent => _pctOf(_initValue);
+
+    // ---- Declarative colored zones (child FlareSliderZone components register here) ----
+    private readonly List<FlareSliderZone> _zones = new();
+
+    /// <summary>Registers a child zone. Called by <see cref="FlareSliderZone"/> on init.</summary>
+    internal void RegisterZone(FlareSliderZone zone)
+    {
+        if (_zones.Contains(zone)) return;
+        _zones.Add(zone);
+        StateHasChanged();
+    }
+
+    /// <summary>Removes a child zone. Called by <see cref="FlareSliderZone"/> on dispose.</summary>
+    internal void UnregisterZone(FlareSliderZone zone)
+    {
+        if (_zones.Remove(zone)) StateHasChanged();
+    }
+
+    /// <summary>Re-renders the track when a registered zone's parameters change.</summary>
+    internal void NotifyZoneChanged() => StateHasChanged();
+
+    // Renderable band per zone: percent-positioned via --_z0/--_z1 CSS vars (the CSS maps them to
+    // left/right horizontally or bottom/top vertically). Empty/invalid zones are dropped.
+    private IEnumerable<(string CssClass, string Style)> _zoneBands
+    {
+        get
+        {
+            var inv = CultureInfo.InvariantCulture;
+            foreach (var z in _zones)
+            {
+                var lo = _pctOf(Math.Min(z.Start, z.End));
+                var hi = _pctOf(Math.Max(z.Start, z.End));
+                if (hi - lo <= 0.001) continue;
+                var cls = string.IsNullOrEmpty(z.Color.CssClass)
+                    ? Css.Classes.Slider.Zone
+                    : $"{Css.Classes.Slider.Zone} {z.Color.CssClass}";
+                var style = $"--_z0:{lo.ToString("F2", inv)}%;--_z1:{hi.ToString("F2", inv)}%;{z.Color.StyleMain()}";
+                yield return (cls, style);
+            }
+        }
+    }
 
     // Filled span [lo,hi]: range -> [low,high]; single -> [Init,Value].
     private double _spanLoPct => Range ? _lowPct : Math.Min(_lowPct, _initPercent);

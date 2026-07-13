@@ -37,6 +37,8 @@
                                DebounceInterval="DebounceInterval"
                                OnFocus="OnFocus"
                                OnBlur="OnBlur"
+                               OnKeyDown="OnKeyDown"
+                               OnKeyUp="OnKeyUp"
                                Style="@_controlStyle"
                                AdditionalAttributes="AdditionalAttributes" />
             @if (Clearable && !string.IsNullOrEmpty(Value) && !Disabled && !ReadOnly)
@@ -92,6 +94,10 @@
     [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
     /// <summary>Invoked when the textarea loses focus.</summary>
     [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+    /// <summary>Invoked on keydown in the textarea (e.g. to handle Ctrl+Enter submit shortcuts).</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+    /// <summary>Invoked on keyup in the textarea.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
     /// <summary>Invoked when the clear (x) button is clicked, after the value has been reset.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClearButtonClick { get; set; }
 

@@ -32,6 +32,8 @@
                                AriaDescribedBy="@SupportDescribedBy"
                                OnFocus="OnFocus"
                                OnBlur="OnBlur"
+                               OnKeyDown="OnKeyDown"
+                               OnKeyUp="OnKeyUp"
                                Style="@_typoStyle"
                                AdditionalAttributes="AdditionalAttributes" />
             @if (Clearable && !string.IsNullOrEmpty(_display) && !Disabled && !ReadOnly)
@@ -74,6 +76,10 @@
     [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
     /// <summary>Invoked when the input loses focus.</summary>
     [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+    /// <summary>Invoked on keydown in the input (e.g. to submit the form on Enter).</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+    /// <summary>Invoked on keyup in the input.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
     /// <summary>Invoked when the clear (x) button is clicked, after the value has been reset.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClearButtonClick { get; set; }
 
