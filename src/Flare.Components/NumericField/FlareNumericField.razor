@@ -45,7 +45,8 @@
                    @onchange="HandleChange"
                    @oninput="HandleInput"
                    @onblur="HandleBlur"
-                   @onkeydown="HandleKeyDown" />
+                   @onkeydown="HandleKeyDown"
+                   @onkeyup="OnKeyUp" />
             @if (!string.IsNullOrEmpty(Suffix))
             {
                 <span class="@Css.Classes.Numericfield.Suffix">@Suffix</span>
@@ -117,6 +118,10 @@
     [Parameter] public EventCallback<FocusEventArgs> OnFocus { get; set; }
     /// <summary>Invoked when the input loses focus.</summary>
     [Parameter] public EventCallback<FocusEventArgs> OnBlur { get; set; }
+    /// <summary>Invoked on keydown in the input, after the built-in ArrowUp/ArrowDown stepping (e.g. to submit the form on Enter).</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyDown { get; set; }
+    /// <summary>Invoked on keyup in the input.</summary>
+    [Parameter] public EventCallback<KeyboardEventArgs> OnKeyUp { get; set; }
     /// <summary>Invoked when the clear (x) button is clicked, after the value has been reset.</summary>
     [Parameter] public EventCallback<MouseEventArgs> OnClearButtonClick { get; set; }
 
@@ -188,9 +193,14 @@
 
     private async Task HandleKeyDown(KeyboardEventArgs e)
     {
-        if (ReadOnly || Disabled) return;
-        if (e.Key == "ArrowUp") await StepBy(Step ?? 1);
-        else if (e.Key == "ArrowDown") await StepBy(-(Step ?? 1));
+        // Built-in stepping runs first (editable only); the consumer's handler always fires so
+        // patterns like "Enter to submit" work directly on the numeric field.
+        if (!ReadOnly && !Disabled)
+        {
+            if (e.Key == "ArrowUp") await StepBy(Step ?? 1);
+            else if (e.Key == "ArrowDown") await StepBy(-(Step ?? 1));
+        }
+        await OnKeyDown.InvokeAsync(e);
     }
 
     private async Task StepBy(double delta)

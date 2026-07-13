@@ -1504,6 +1504,77 @@ public class C_FlareSliderMarksTests : FlareTestContext
     }
 }
 
+public class C_FlareSliderZonesTests : FlareTestContext
+{
+    private static RenderFragment Zones(RenderFragment body) => body;
+
+    [Fact]
+    public void Zones_RenderBands_WithRoleColorClassAndPercents()
+    {
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.Min, 0)
+            .Add(x => x.Max, 100)
+            .Add(x => x.Value, 40)
+            .Add(x => x.Zones, Zones(b =>
+            {
+                b.OpenComponent<FlareSliderZone>(0);
+                b.AddAttribute(1, nameof(FlareSliderZone.Start), 0d);
+                b.AddAttribute(2, nameof(FlareSliderZone.End), 60d);
+                b.AddAttribute(3, nameof(FlareSliderZone.Color), FlareColor.Success);
+                b.CloseComponent();
+                b.OpenComponent<FlareSliderZone>(4);
+                b.AddAttribute(5, nameof(FlareSliderZone.Start), 60d);
+                b.AddAttribute(6, nameof(FlareSliderZone.End), 100d);
+                b.AddAttribute(7, nameof(FlareSliderZone.Color), FlareColor.Error);
+                b.CloseComponent();
+            })));
+
+        var bands = cut.FindAll(".flare-slider__zone");
+        Assert.Equal(2, bands.Count);
+        Assert.Contains(bands, z => z.ClassName.Contains("flare-color-success"));
+        Assert.Contains(bands, z => z.ClassName.Contains("flare-color-error"));
+        // First zone spans 0% -> 60% of the scale.
+        Assert.Contains(bands, z => z.GetAttribute("style")!.Contains("--_z1:60.00%"));
+    }
+
+    [Fact]
+    public void Zone_CustomColor_InlinesLocalToken()
+    {
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.Min, 0)
+            .Add(x => x.Max, 100)
+            .Add(x => x.Zones, Zones(b =>
+            {
+                b.OpenComponent<FlareSliderZone>(0);
+                b.AddAttribute(1, nameof(FlareSliderZone.Start), 10d);
+                b.AddAttribute(2, nameof(FlareSliderZone.End), 50d);
+                b.AddAttribute(3, nameof(FlareSliderZone.Color), FlareColor.Custom("#ff0000"));
+                b.CloseComponent();
+            })));
+
+        var band = cut.Find(".flare-slider__zone");
+        Assert.DoesNotContain("flare-color-", band.ClassName);
+        Assert.Contains("--fc-main", band.GetAttribute("style"));
+    }
+
+    [Fact]
+    public void Zone_ZeroWidth_IsDropped()
+    {
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.Min, 0)
+            .Add(x => x.Max, 100)
+            .Add(x => x.Zones, Zones(b =>
+            {
+                b.OpenComponent<FlareSliderZone>(0);
+                b.AddAttribute(1, nameof(FlareSliderZone.Start), 50d);
+                b.AddAttribute(2, nameof(FlareSliderZone.End), 50d);
+                b.CloseComponent();
+            })));
+
+        Assert.Empty(cut.FindAll(".flare-slider__zone"));
+    }
+}
+
 public class C_FlareTagFieldSuggestionsTests : FlareTestContext
 {
     [Fact]

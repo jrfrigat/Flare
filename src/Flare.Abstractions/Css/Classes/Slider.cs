@@ -63,6 +63,8 @@ public static class Slider
     public const string SegActive = "flare-slider__seg--active";
     /// <summary>The <c>flare-slider__seg--inactive</c> CSS class.</summary>
     public const string SegInactive = "flare-slider__seg--inactive";
+    /// <summary>The <c>flare-slider__zone</c> CSS class (a colored scale region drawn under the active fill).</summary>
+    public const string Zone = "flare-slider__zone";
     /// <summary>The <c>flare-slider__tick</c> CSS class.</summary>
     public const string Tick = "flare-slider__tick";
     /// <summary>The <c>flare-slider__tick--active</c> CSS class.</summary>

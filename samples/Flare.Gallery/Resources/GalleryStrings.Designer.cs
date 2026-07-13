@@ -7484,7 +7484,16 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Slider_Marks", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Colored zones.
+        /// </summary>
+        public static string Slider_Zones {
+            get {
+                return ResourceManager.GetString("Slider_Zones", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Range (two handles).
         /// </summary>

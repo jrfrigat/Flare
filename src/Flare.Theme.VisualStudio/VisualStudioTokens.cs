@@ -239,6 +239,21 @@ internal class VisualStudioTokens
         StopSize = "2px",
     };
 
+    // Switch - the Fluent-derived record carries the MD3 grow-on-check thumb (16 -> 24px) that only
+    // the Fluent Extended dict corrects; VS supplies its own Extended, so that correction was lost and
+    // the 24px "on" thumb overflowed the compact 40x20 (2.5rem x 1.25rem) Fluent rail. Set the authentic
+    // Visual Studio 2026 / Fluent v9 toggle here: a 14px thumb, the same size checked and unchecked, that
+    // fits the 20px rail (a subtle grow to 16px on press, still inside the rail).
+    internal static readonly SwitchTokens Switch = FluentUI2Tokens.Design.Switch with
+    {
+        ThumbOffSize = "0.875rem",              // 14px
+        ThumbOnSize = "0.875rem",               // 14px - does not grow on check
+        ThumbPressedOffSize = "1rem",           // 16px press grow, still < 20px rail
+        ThumbPressedOnSize = "1rem",
+        ThumbOffLeft = "0.1875rem",             // 3px from the leading edge
+        ThumbOnLeft = "calc(100% - 1.0625rem)", // 14px thumb + 3px trailing margin
+    };
+
     // Flat VS shadows; color comes from the active ColorScheme shadow vars.
     internal static readonly ElevationTokens Elevation = new()
     {
@@ -345,6 +360,7 @@ internal class VisualStudioTokens
         Chip = Chip,
         Tabs = Tabs,
         Slider = Slider,
+        Switch = Switch,
         Card = Card,
         Input = Input,
         Progress = Progress,
