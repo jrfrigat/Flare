@@ -1,0 +1,19 @@
+/* ==========================================================================
+   FLUENT UI 2 - MENU / LIST / NAV / TABS / PAGINATION / TOGGLE DISABLED [specs]
+   These are transparent-surface interactive items that fade at --flare-state-disabled-opacity.
+   Fluent renders them flat: the item text/icon takes the disabled foreground at full opacity,
+   no 40% element fade.
+   ========================================================================== */
+@scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
+
+    .flare-menu-item--disabled, .flare-menu-item:disabled,
+    .flare-list-item--disabled,
+    .flare-nav-link--disabled,
+    .flare-tabs__tab:disabled, .flare-tabs__tab--disabled,
+    .flare-tabs__scroll:disabled,
+    .flare-pagination__btn:disabled,
+    .flare-toggle-btn:disabled, .flare-toggle-btn[disabled] {
+        opacity: 1 !important;
+        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+    }
+}

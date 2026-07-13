@@ -388,8 +388,9 @@ public class FluentUI2Tokens
         HoverStateLayer = "none",
         Padding = "0.75rem 1rem",
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
-        DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
-        DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
+        // Fluent flat disabled: grey field + disabled stroke (was MD3 on-surface opacity mixes).
+        DisabledBg = "var(--flare-fluent-disabled-bg, #F0F0F0)",
+        DisabledIndicator = "var(--flare-fluent-disabled-border, #E0E0E0)",
         ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
     };
 

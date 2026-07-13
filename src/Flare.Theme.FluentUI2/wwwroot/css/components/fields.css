@@ -1,0 +1,31 @@
+/* ==========================================================================
+   FLUENT UI 2 - INPUT-FAMILY DISABLED (flat palette, not element opacity) [specs]
+   The shared flare-input chrome (TextField / TextArea / NumericField / Select / MultiSelect)
+   fades its text/label/icon slots at --flare-state-disabled-opacity. Fluent renders disabled
+   controls flat: the field takes the disabled fill + stroke (via InputTokens), and the text
+   slots take the disabled foreground at full opacity instead of a 40% fade.
+   ========================================================================== */
+@scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
+
+    .flare-input--disabled :where(
+        .flare-input__control,
+        .flare-input__label,
+        .flare-input__label--floating,
+        .flare-input__helper,
+        .flare-input__adornment,
+        .flare-input__icon,
+        .flare-input__arrow,
+        .flare-input__placeholder,
+        .flare-select__value,
+        .flare-multiselect__value) {
+        opacity: 1 !important;
+        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+    }
+
+    /* Numeric stepper buttons. */
+    .flare-input--disabled .flare-numericfield__step,
+    .flare-numericfield__step:disabled {
+        opacity: 1 !important;
+        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+    }
+}
