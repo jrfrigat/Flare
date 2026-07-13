@@ -20,12 +20,13 @@
         box-shadow: 0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF) !important;
     }
 
-    /* Outlined and text buttons (Standard / Subtle): inner focus BLUE (Primary) [specs] */
+    /* Standard / Subtle buttons: Fluent uses the SAME neutral focus stroke (colorStrokeFocus2)
+       for every appearance, not a brand-coloured ring. [specs: react-button colorStrokeFocus2] */
     .flare-btn--outlined:focus-visible,
     .flare-btn--tonal:focus-visible,
     .flare-btn--elevated:focus-visible,
     .flare-btn--text:focus-visible {
-        outline: 2px solid var(--flare-color-primary) !important;
+        outline: 2px solid var(--flare-fluent-focus-stroke-color, #000000) !important;
         box-shadow: 0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF) !important;
     }
 

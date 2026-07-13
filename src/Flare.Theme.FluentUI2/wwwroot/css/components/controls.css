@@ -1,0 +1,22 @@
+/* ==========================================================================
+   FLUENT UI 2 - CHECKBOX / RADIO HOVER FEEDBACK [specs]
+   Fluent has no MD3 state-layer halo (the typed tokens set it transparent), but
+   Fluent DOES darken the control's own stroke on hover (colorNeutralStrokeAccessibleHover).
+   The base engine only drives the (suppressed) halo, so add the discrete border darken here.
+
+   Scoped so it applies only inside a .flare-theme-fluent2 root.
+   ========================================================================== */
+@scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
+
+    /* Checkbox: rest stroke is the light outline (#D1D1D1); hover -> accessible medium stroke. */
+    .flare-checkbox:not(.flare-checkbox--disabled):hover
+        .flare-checkbox__input:not(:checked) + .flare-checkbox__indicator {
+        border-color: var(--flare-color-on-surface-variant);
+    }
+
+    /* Radio: rest stroke is already the accessible medium stroke (#616161); hover -> darker. */
+    .flare-radio:not(.flare-radio--disabled):hover
+        .flare-radio__input:not(:checked) + .flare-radio__indicator {
+        border-color: var(--flare-color-on-surface);
+    }
+}
