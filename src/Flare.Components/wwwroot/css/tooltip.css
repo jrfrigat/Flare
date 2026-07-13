@@ -34,11 +34,15 @@
               visibility var(--flare-motion-duration-short1);
 }
 
-/* Rich tooltip: surface container, on-surface text, elevation 3, wraps. */
+/* Rich tooltip: surface container, on-surface text, elevation, medium shape, wraps. Unlike the plain
+   tooltip it is interactive (may hold a subhead + action), so it re-enables pointer events that the
+   base bubble suppresses -- otherwise its actions are unclickable. */
 .flare-tooltip__content--rich {
   background: var(--flare-color-surface-container);
   color: var(--flare-color-on-surface);
   box-shadow: var(--flare-elevation-3);
+  border-radius: var(--flare-shape-medium);
+  pointer-events: auto;
   white-space: normal;
   max-width: var(--flare-tooltip-max-width);
   padding: var(--flare-spacing-6) var(--flare-spacing-8);

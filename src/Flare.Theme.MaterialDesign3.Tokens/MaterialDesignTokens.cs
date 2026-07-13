@@ -339,7 +339,7 @@ public class MaterialDesignTokens
         FocusBorder = "none",
         FocusBorderBottom = "3px solid var(--flare-color-primary)",
         // Focus = a 2px primary active indicator drawn as a layout-neutral inset shadow (no jump).
-        FocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
+        FocusRing = "inset 0 -3px 0 0 var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",
         FocusOutlineOffset = "0",
         HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
@@ -389,7 +389,7 @@ public class MaterialDesignTokens
 
     internal static readonly NavTokens Nav = new()
     {
-        ActiveWeight = "600",
+        ActiveWeight = "700",
         BadgeWeight = "600",
         RailLabelLineHeight = "1.15",
         ItemRadius = "var(--flare-shape-extra-small)",
@@ -822,7 +822,7 @@ public class MaterialDesignTokens
         Card = new()
         {
             ElevationHover = "var(--flare-elevation-3)",
-            OutlinedBorder = "1px solid var(--flare-color-outline)",
+            OutlinedBorder = "1px solid var(--flare-color-outline-variant)",
             PaddingTop = "16px",
             PaddingRight = "16px",
             PaddingBottom = "16px",
