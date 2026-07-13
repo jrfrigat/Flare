@@ -30,23 +30,34 @@ deferred - see `core-theme-decoupling-p3-p4.md`.
   per-component `::before` (button, menuitem, ... ) - each must be swept. checkbox/radio use a 40dp
   state-CIRCLE `::before`, switch uses hover shadows - different mechanisms, sweep each on its own terms.
 
-## P1 - state-layer paint tokens (clean, high-leverage; do first)
+## P1 - state-layer paint tokens
 
-Add per-state COLOR tokens so the overlay's paint (not just its opacity) is theme-chosen:
-`--flare-state-hover-color / -focus-color / -pressed-color / -dragged-color / -selected-color`.
+DESIGN (refined from the original separate-colour idea): use ONE combined per-state token that carries the
+full overlay background value **colour incl. alpha** - `--flare-state-{hover,focus,pressed,dragged,selected}
+-layer` - consumed at `opacity:1`. This avoids the transitional hazard of the separate colour+opacity split
+(opacity is a single global token; flipping it to 1 for one theme would blow out every not-yet-swept
+currentColor overlay). With the combined token, MD3 sets `color-mix(in srgb, currentColor
+calc(var(--flare-state-<state>-opacity) * 100%), transparent)` (== today), Fluent sets its discrete fill;
+core `::before` is always `background: var(--flare-state-<state>-layer); opacity: 1` with an opacity-0 base
+so the fade is preserved. Verified on a live build: resolves to currentColor at the state opacity.
 
-1. `Css.Tokens.State`: add 5 const var-name strings.
-2. `StateTokens` record: add 5 `required` members with `[CssVar(...)]`.
-3. `CssVarMap`: add 5 flatten lines.
-4. Themes: MD3 / MD2 / Aero / LiquidGlass / VisualStudio set each `= "currentColor"` (keeps today's look);
-   FluentUI2 sets discrete per-state neutrals (its existing `--flare-fluent-subtle-*` values) at opacity 1.
-5. Core CSS: every state `::before` becomes `background: var(--flare-state-<state>-color)` (NO fallback) +
-   `opacity: var(--flare-state-<state>-opacity)`. Sweep `state-layer.css` + each component's `::before`.
-6. Remove the now-redundant FluentUI2 override CSS that only suppressed `::before` + repainted (button/text/
-   outlined hover-pressed, menu/list/tabs/listbox subtle fills) - those become pure token assignments.
-7. Per-variant note: filled buttons want a darkened-brand hover, not a grey overlay - the theme sets
-   `--flare-state-hover-color` per variant scope (e.g. `.flare-btn--filled { --flare-state-hover-color: ... }`).
-   `currentColor` in a custom prop resolves at the `::before` use-site, so MD3's `currentColor` works.
+**FOUNDATION DONE** (commit `0f1ef3e`): the 4 hover/focus/pressed/dragged `-layer` tokens exist (record +
+Css.Tokens + CssVarMap, all 6 themes set the currentColor wash) and the shared `state-layer.css` utility
+consumes them. Zero visual change. `-selected-layer` was NOT added yet (CssAudit `check` fails on an unused
+const - add it in the same commit as the first component that uses a selected state layer).
+
+REMAINING P1:
+1. Per-component `::before` sweep: change each component's own overlay (button, menuitem, list, tabs, chip
+   direct rules, nav, bottomnav, pagination, togglebutton, accordion/collapse, listbox/select) from
+   `background: currentColor; opacity: var(--flare-state-<state>-opacity)` to
+   `background: var(--flare-state-<state>-layer); opacity: 1` (base transparent, opacity 0). Add
+   `-selected-layer` when the first selected-state component is swept.
+2. FluentUI2 discretisation: set FUI2's `-layer` tokens to its discrete subtle fills (globally and/or
+   per-variant, e.g. `.flare-btn--filled { --flare-state-hover-layer: <darkened brand> }`), at effectively
+   opacity 1. `currentColor` in a custom prop resolves at the `::before` use-site, so MD3 stays correct.
+3. Remove the now-redundant FluentUI2 override CSS (button/controls/fields/surfaces hover-pressed subtle
+   fills) that only suppressed `::before` + repainted - now a pure token assignment.
+4. Verify BOTH themes per component (hover/focus/pressed, light+dark) in the Gallery.
 
 ## P2 - disabled model (has a genuine two-model wrinkle - design before coding)
 
