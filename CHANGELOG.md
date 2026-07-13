@@ -3,6 +3,24 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-07-13
+
+A correctness patch for the optional `Flare.Components.QrCode` package: it generated QR codes that looked
+valid but did not scan on any conforming reader, for every input. Three encoder defects are fixed and the
+generator is now covered by a scannability regression suite.
+
+### Fixed
+- **`FlareQrCode` produced unscannable codes**: three independent bugs in the pure-C# encoder, each on its
+  own enough to break decoding on a standard reader:
+  - Reed-Solomon error-correction codewords were computed with an off-by-one in the systematic division
+    (the generator's leading coefficient was not skipped), corrupting the EC of every code.
+  - The error-correction block structure was wrong for two version/level combinations (version 3 at level
+    M, version 4 at level Q), so a reader de-interleaving by the standard structure failed.
+  - The level-H format-information constants for masks 5, 6 and 7 were wrong, so the recorded mask did not
+    match the applied mask and the reader could not un-mask the data.
+  Codes now decode correctly across all error-correction levels (L/M/Q/H) and supported versions (1-4),
+  verified by an independent Reed-Solomon round-trip decoder.
+
 ## [0.2.0] - 2026-07-13
 
 A fields, slider and theme-fidelity release: gaps found while building real apps on Flare (the Weir admin
