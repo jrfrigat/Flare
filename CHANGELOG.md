@@ -20,9 +20,9 @@ focus/visibility fixes.
   `FlareNumericField` raises them after its built-in ArrowUp/ArrowDown stepping.
 
 ### Changed
-- **Theme authoring**: `InputTokens` gains a required `FocusRing` field (the field focus-ring box-shadow,
-  CSS `--flare-input-focus-ring`). Custom themes that construct `InputTokens` directly must supply it;
-  themes derived from the in-box themes via `with` inherit it.
+- **Theme authoring**: `InputTokens` gains required `FocusRing`, `FocusOutline` and `FocusOutlineOffset`
+  fields - the field focus indicator, either a box-shadow ring or a real CSS outline. Custom themes that
+  construct `InputTokens` directly must supply them; themes derived from the in-box themes via `with` inherit them.
 
 ### Fixed
 - **`FlareSwitch` in the Visual Studio 2026 theme** rendered with the "on" thumb overflowing the rail:
@@ -30,9 +30,10 @@ focus/visibility fixes.
   Fluent v9 geometry - a 14px thumb, the same size in both states, that fits the rail.
 - **Field focus indicator restored**: every `FlareField`-based control (`FlareField`, `FlarePasswordField`,
   `FlareTextArea`, `FlareNumericField`, `FlareSelect`, the pickers) had no focus affordance on mouse or
-  keyboard. A layout-neutral, token-driven ring is now drawn on `:focus-within` (theme token
-  `--flare-input-focus-ring`; the filled/outlined variants override it). Invalid fields get an
-  error-colored ring.
+  keyboard. A layout-neutral, token-driven indicator is now drawn on `:focus-within`, configurable per theme
+  and per variant - a box-shadow ring (a bottom active indicator or a full ring) or a real CSS outline. MD3
+  and Fluent use the ring; Visual Studio uses an outline; the filled/outlined variants pick their own.
+  Invalid fields get an error-colored ring.
 
 ## [0.1.9] - 2026-07-12
 
