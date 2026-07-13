@@ -125,7 +125,8 @@
 }
 
 .flare-snackbar__action-btn:hover {
-  background: color-mix(in srgb, var(--_snackbar-action-color, var(--flare-color-inverse-primary)) 12%, transparent);
+  /* Drive the action state layer from the theme's hover opacity (MD3 = 0.08) instead of a literal. */
+  background: color-mix(in srgb, var(--_snackbar-action-color, var(--flare-color-inverse-primary)) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-snackbar__close-btn {

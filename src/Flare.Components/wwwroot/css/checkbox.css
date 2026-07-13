@@ -59,7 +59,8 @@
     height: var(--_cb-size);
     /* Default checkbox corner = 2dp; override via --flare-checkbox-radius */
     border-radius: var(--flare-checkbox-radius, 2px);
-    border: var(--flare-checkbox-border-width, 2px) solid var(--flare-color-outline);
+    /* Rest outline = on-surface-variant (matches radio + the MD3 spec; was the lighter `outline`). */
+    border: var(--flare-checkbox-border-width, 2px) solid var(--flare-color-on-surface-variant);
     background-color: transparent;
     transition:
         background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
