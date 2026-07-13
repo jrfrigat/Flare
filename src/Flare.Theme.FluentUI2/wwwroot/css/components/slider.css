@@ -1,0 +1,25 @@
+/* ==========================================================================
+   FLUENT UI 2 - SLIDER DISABLED (flat palette) [specs]
+   The base disabled slider tints its rail/track/thumb with MD3 on-surface opacity mixes and
+   fades the labels. Fluent uses the flat disabled palette: filled track + thumb take the
+   disabled foreground, the rail the disabled stroke, and the labels drop the fade.
+   ========================================================================== */
+@scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
+
+    .flare-slider--disabled {
+        --_active: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+        --_inactive: var(--flare-fluent-disabled-border, #E0E0E0) !important;
+    }
+    .flare-slider--disabled .flare-slider__input::-webkit-slider-thumb {
+        background: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+    }
+    .flare-slider--disabled .flare-slider__input::-moz-range-thumb {
+        background: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+    }
+    .flare-slider--disabled .flare-slider__label,
+    .flare-slider--disabled .flare-slider__value,
+    .flare-slider--disabled .flare-slider__icon {
+        opacity: 1 !important;
+        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+    }
+}
