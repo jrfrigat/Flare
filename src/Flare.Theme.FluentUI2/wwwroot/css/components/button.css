@@ -95,6 +95,13 @@
     .flare-btn--text:hover  { background-color: var(--flare-fluent-subtle-hover, #F5F5F5); }
     .flare-btn--text:active { background-color: var(--flare-fluent-subtle-pressed, #E0E0E0); }
 
+    /* Outline hover/pressed: Fluent keeps the fill transparent and darkens only the stroke -
+       suppress the currentColor wash and step the border through the neutral stroke tokens. */
+    .flare-btn--outlined:hover::before,
+    .flare-btn--outlined:active::before { opacity: 0 !important; }
+    .flare-btn--outlined:hover  { border-color: var(--flare-fluent-stroke-hover, #C7C7C7); }
+    .flare-btn--outlined:active { border-color: var(--flare-fluent-stroke-pressed, #B3B3B3); }
+
     /*
        6. DISABLED: FLAT FLUENT PALETTE (not element opacity) [specs]
        Fluent renders disabled controls with discrete flat colors (colorNeutralBackgroundDisabled /

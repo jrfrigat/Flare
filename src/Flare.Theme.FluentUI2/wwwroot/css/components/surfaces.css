@@ -13,6 +13,8 @@
     .flare-menu-item:hover:not(:disabled)  { background-color: var(--flare-fluent-subtle-hover, #F5F5F5); }
     .flare-menu-item:active:not(:disabled) { background-color: var(--flare-fluent-subtle-pressed, #E0E0E0); }
     .flare-list-item--clickable:hover { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
+    .flare-tabs__tab:hover:not(:disabled) { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
+    .flare-listbox__option:hover { background-color: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
 
     .flare-menu-item--disabled, .flare-menu-item:disabled,
     .flare-list-item--disabled,
