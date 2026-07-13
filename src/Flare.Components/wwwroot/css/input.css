@@ -71,11 +71,11 @@
 .flare-input__field {
     display: flex;
     align-items: center;
-    background-color: var(--flare-input-bg, var(--flare-color-surface-container-highest));
+    background-color: var(--flare-input-bg);
     background-image: none;
-    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0);
-    border: var(--flare-input-border, none);
-    border-bottom: var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant));
+    border-radius: var(--flare-input-radius);
+    border: var(--flare-input-border);
+    border-bottom: var(--flare-input-border-bottom);
     transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
                 box-shadow var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
                 background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
@@ -84,8 +84,8 @@
 /* Hover: a theme can recolor the active indicator and add a state layer over the container.
    Themes opt in via the tokens; default leaves the rest indicator unchanged. */
 .flare-input__field:hover {
-    background-image: var(--flare-input-hover-state-layer, none);
-    border-bottom: var(--flare-input-hover-border-bottom, var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant)));
+    background-image: var(--flare-input-hover-state-layer);
+    border-bottom: var(--flare-input-hover-border-bottom);
 }
 
 /* Field focus indicator: layout-neutral, on focus (mouse OR keyboard, via :focus-within, matching common
@@ -94,9 +94,9 @@
    real --flare-input-focus-outline (a browser-native focus rectangle). The theme sets one, the other stays
    none; the filled/outlined variant classes override the ring and clear the outline. */
 .flare-input__field:focus-within {
-    box-shadow: var(--flare-input-focus-ring, none);
-    outline: var(--flare-input-focus-outline, none);
-    outline-offset: var(--flare-input-focus-outline-offset, 0);
+    box-shadow: var(--flare-input-focus-ring);
+    outline: var(--flare-input-focus-outline);
+    outline-offset: var(--flare-input-focus-outline-offset);
 }
 /* Invalid field: the focus indicator follows the error color instead of the accent. */
 .flare-input--error .flare-input__field:focus-within {
@@ -110,7 +110,7 @@
     border: none;
     outline: none;
     /* Block padding drives the field height (default ~56dp via 1rem + 24px line). */
-    padding: var(--flare-input-padding, 0.75rem 1rem);
+    padding: var(--flare-input-padding);
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);
@@ -141,7 +141,7 @@
    the .flare-input__placeholder class is the equivalent <span> for the combobox triggers (Select/
    MultiSelect), which have no native input. */
 .flare-input__control::placeholder {
-    color: var(--flare-input-placeholder-color, var(--flare-color-on-surface-variant));
+    color: var(--flare-input-placeholder-color);
     opacity: 1;
 }
 .flare-input__placeholder { color: var(--flare-color-on-surface-variant); }
@@ -245,18 +245,15 @@
 /* Error hover: the indicator darkens (blend error with 8% on-surface, so darker in light /
    lighter in dark). The 8% state layer itself already shows via the generic :hover rule. */
 .flare-input--error .flare-input__field:hover {
-  border-bottom-color: var(--flare-input-error-hover-indicator,
-    color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error)));
+  border-bottom-color: var(--flare-input-error-hover-indicator);
 }
 
 /* Disabled: container at 4% on-surface, active indicator at 38%, content at 38%
    (separate, not one blanket opacity). */
 .flare-input--disabled { pointer-events: none; }
 .flare-input--disabled .flare-input__field {
-    background: var(--flare-input-disabled-bg,
-        color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent));
-    border-bottom-color: var(--flare-input-disabled-indicator,
-        color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent));
+    background: var(--flare-input-disabled-bg);
+    border-bottom-color: var(--flare-input-disabled-indicator);
 }
 .flare-input--disabled .flare-input__control,
 .flare-input--disabled .flare-input__label,

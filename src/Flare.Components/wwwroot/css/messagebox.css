@@ -4,7 +4,7 @@
 .flare-msgbox {
     background: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
-    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    border-radius: var(--flare-dialog-radius);
     min-width: 17.5rem;
     max-width: 30rem;
     width: 100%;
@@ -42,7 +42,7 @@
     width: 100%;
     padding: var(--flare-spacing-5) var(--flare-spacing-6);
     border: 1px solid var(--flare-color-outline);
-    border-radius: var(--flare-input-radius, var(--flare-shape-extra-small));
+    border-radius: var(--flare-input-radius);
     background: var(--flare-color-surface);
     color: var(--flare-color-on-surface);
     font-size: var(--flare-typescale-body-medium-size);
@@ -65,7 +65,7 @@
 
 .flare-msgbox__btn {
     padding: var(--flare-spacing-4) var(--flare-spacing-10);
-    border-radius: var(--flare-btn-radius, var(--flare-shape-full));
+    border-radius: var(--flare-btn-radius);
     border: none;
     cursor: pointer;
     font-size: var(--flare-typescale-label-large-size);

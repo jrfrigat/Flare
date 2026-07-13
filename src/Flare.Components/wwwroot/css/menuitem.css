@@ -10,34 +10,34 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    gap: var(--flare-menu-item-gap, 0.75rem);
+    gap: var(--flare-menu-item-gap);
     width: 100%;
     box-sizing: border-box;
-    min-height: var(--flare-menu-item-height, 0);
-    padding: var(--flare-menu-item-padding-block, 0.625rem) var(--flare-menu-item-padding-inline, 1rem);
+    min-height: var(--flare-menu-item-height);
+    padding: var(--flare-menu-item-padding-block) var(--flare-menu-item-padding-inline);
     background: transparent;
     border: none;
-    border-radius: var(--flare-menu-item-radius, 0);
+    border-radius: var(--flare-menu-item-radius);
     text-align: left;
     text-decoration: none;
-    font-family: var(--flare-menu-item-label-font, var(--flare-typescale-body-large-font));
-    font-weight: var(--flare-menu-item-label-weight, var(--flare-typescale-body-large-weight));
-    font-size: var(--flare-menu-item-label-size, var(--flare-typescale-body-large-size));
-    line-height: var(--flare-menu-item-label-height, var(--flare-typescale-body-large-height));
-    letter-spacing: var(--flare-menu-item-label-spacing, var(--flare-typescale-body-large-spacing));
+    font-family: var(--flare-menu-item-label-font);
+    font-weight: var(--flare-menu-item-label-weight);
+    font-size: var(--flare-menu-item-label-size);
+    line-height: var(--flare-menu-item-label-height);
+    letter-spacing: var(--flare-menu-item-label-spacing);
     color: var(--flare-color-on-surface);
     cursor: pointer;
 }
 
 /* End items mirror the container shape (outer corners are larger) */
 .flare-menu-item:first-child {
-    border-top-left-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
-    border-top-right-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
+    border-top-left-radius: var(--flare-menu-item-radius-end);
+    border-top-right-radius: var(--flare-menu-item-radius-end);
 }
 
 .flare-menu-item:last-child {
-    border-bottom-left-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
-    border-bottom-right-radius: var(--flare-menu-item-radius-end, var(--flare-menu-item-radius, 0));
+    border-bottom-left-radius: var(--flare-menu-item-radius-end);
+    border-bottom-right-radius: var(--flare-menu-item-radius-end);
 }
 
 /* State layer: hover 8% / focus 10% / pressed 10% */
@@ -71,12 +71,12 @@
 /* Focus ring (focus indicator) */
 .flare-menu-item:focus-visible,
 .flare-menu-item--focused {
-    outline: var(--flare-menu-item-focus-ring-thickness, 3px) solid var(--flare-menu-item-focus-ring-color, var(--flare-color-secondary));
-    outline-offset: var(--flare-menu-item-focus-ring-offset, -3px);
+    outline: var(--flare-menu-item-focus-ring-thickness) solid var(--flare-menu-item-focus-ring-color);
+    outline-offset: var(--flare-menu-item-focus-ring-offset);
 }
 
 .flare-menu-item__icon {
-    font-size: var(--flare-menu-item-icon-size, 1.25rem);
+    font-size: var(--flare-menu-item-icon-size);
     /* IconColor (role class or inline) sets --fc-main; default stays the neutral icon color. */
     color: var(--fc-main, var(--flare-color-on-surface-variant));
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;

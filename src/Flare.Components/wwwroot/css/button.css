@@ -105,7 +105,7 @@
 .flare-btn--text {
     background-color: transparent;
     color: var(--fc-main, var(--flare-color-primary));
-    --_flare-btn-padding-inline: var(--flare-btn-text-padding-inline, 0.75rem);
+    --_flare-btn-padding-inline: var(--flare-btn-text-padding-inline);
 }
 
 .flare-btn--elevated {
@@ -310,7 +310,7 @@
 
 .flare-btn--loading {
     cursor: not-allowed;
-    opacity: var(--flare-btn-loading-opacity, 0.8);
+    opacity: var(--flare-btn-loading-opacity);
 }
 
 .flare-btn__spinner {

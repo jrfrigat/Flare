@@ -3,15 +3,15 @@
     flex-direction: column;
     gap: var(--flare-spacing-2);
     /* Single source for the star size; size classes below override --_rt-size. */
-    --_rt-size: var(--flare-rating-size, 1.5rem);
+    --_rt-size: var(--flare-rating-size);
 }
 
 /* Size grid (Xs..Xl): scales the star glyph. The theme token --flare-rating-size (when a theme sets
    it) overrides every size uniformly; otherwise each size class supplies its own fallback. */
-.flare-rating--xs { --_rt-size: var(--flare-rating-size, 1rem); }
-.flare-rating--sm { --_rt-size: var(--flare-rating-size, 1.25rem); }
-.flare-rating--lg { --_rt-size: var(--flare-rating-size, 2rem); }
-.flare-rating--xl { --_rt-size: var(--flare-rating-size, 2.5rem); }
+.flare-rating--xs { --_rt-size: var(--flare-rating-size); }
+.flare-rating--sm { --_rt-size: var(--flare-rating-size); }
+.flare-rating--lg { --_rt-size: var(--flare-rating-size); }
+.flare-rating--xl { --_rt-size: var(--flare-rating-size); }
 
 .flare-rating__label {
     font-family: var(--flare-typescale-label-medium-font);
@@ -31,19 +31,19 @@
     cursor: pointer;
     font-size: var(--_rt-size);
     line-height: 1;
-    color: var(--flare-rating-empty-color, var(--flare-color-outline-variant));
+    color: var(--flare-rating-empty-color);
     transition: color var(--flare-motion-duration-short1), transform var(--flare-motion-duration-short1);
 }
 
 .flare-rating__star:hover:not(:disabled) {
-    transform: scale(var(--flare-rating-hover-scale, 1.15));
+    transform: scale(var(--flare-rating-hover-scale));
 }
 
-.flare-rating__star--filled { color: var(--fc-main, var(--flare-rating-filled-color, var(--flare-color-primary))); }
+.flare-rating__star--filled { color: var(--fc-main, var(--flare-rating-filled-color)); }
 
 /* Half-star: glyph filled 50% via background-clip text */
 .flare-rating__star--half {
-    background: linear-gradient(90deg, var(--fc-main, var(--flare-rating-filled-color, var(--flare-color-primary))) 50%, var(--flare-rating-empty-color, var(--flare-color-outline-variant)) 50%);
+    background: linear-gradient(90deg, var(--fc-main, var(--flare-rating-filled-color)) 50%, var(--flare-rating-empty-color) 50%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

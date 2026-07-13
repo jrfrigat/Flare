@@ -5,7 +5,7 @@
     cursor: pointer;
     user-select: none;
     /* Single source for the box dimension; size classes below override --_cb-size. */
-    --_cb-size: var(--flare-checkbox-size, 1.125rem);
+    --_cb-size: var(--flare-checkbox-size);
 }
 
 /* Label before the checkbox */
@@ -31,14 +31,12 @@
 
 /* State layer is token-gated - set these tokens to transparent for no halo */
 .flare-checkbox:not(.flare-checkbox--disabled):hover .flare-checkbox__container::before {
-    background: var(--flare-checkbox-state-layer-hover,
-        color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent));
+    background: var(--flare-checkbox-state-layer-hover);
 }
 
 /* When checked - use primary tint for the state layer */
 .flare-checkbox:not(.flare-checkbox--disabled):has(.flare-checkbox__input:checked):hover .flare-checkbox__container::before {
-    background: var(--flare-checkbox-state-layer-hover-checked,
-        color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) calc(var(--flare-state-hover-opacity) * 100%), transparent));
+    background: var(--flare-checkbox-state-layer-hover-checked);
 }
 
 .flare-checkbox__input {
@@ -58,9 +56,9 @@
     width: var(--_cb-size);
     height: var(--_cb-size);
     /* Default checkbox corner = 2dp; override via --flare-checkbox-radius */
-    border-radius: var(--flare-checkbox-radius, 2px);
+    border-radius: var(--flare-checkbox-radius);
     /* Rest outline = on-surface-variant role (matches radio; was the lighter `outline` role). */
-    border: var(--flare-checkbox-border-width, 2px) solid var(--flare-color-on-surface-variant);
+    border: var(--flare-checkbox-border-width) solid var(--flare-color-on-surface-variant);
     background-color: transparent;
     transition:
         background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
@@ -107,9 +105,9 @@
 
 /* Focus-visible ring (a11y) - default secondary 3dp; a theme can set an inner+outer double ring */
 .flare-checkbox__input:focus-visible + .flare-checkbox__indicator {
-    outline: var(--flare-checkbox-focus-outline, 3px solid var(--flare-color-secondary));
-    outline-offset: var(--flare-checkbox-focus-outline-offset, 2px);
-    box-shadow: var(--flare-checkbox-focus-shadow, none);
+    outline: var(--flare-checkbox-focus-outline);
+    outline-offset: var(--flare-checkbox-focus-outline-offset);
+    box-shadow: var(--flare-checkbox-focus-shadow);
 }
 
 /* Shared control label (selection controls + dropzone): identical body-large style. */

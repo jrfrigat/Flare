@@ -18,25 +18,25 @@
     z-index: 200;
     display: flex;
     flex-direction: column;
-    gap: var(--flare-menu-item-gap-between, 0);
-    min-width: var(--flare-menu-panel-min-width, 10rem);
-    background: var(--flare-menu-panel-bg, var(--flare-color-surface-container));
-    border-radius: var(--flare-menu-panel-radius, var(--flare-popover-radius, var(--flare-shape-small)));
-    box-shadow: var(--flare-menu-panel-shadow, var(--flare-elevation-2));
-    padding: var(--flare-menu-panel-padding-block, 0.25rem) var(--flare-menu-panel-padding-inline, 0);
-    animation: var(--flare-menu-panel-enter-animation, flare-menu-in) var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
+    gap: var(--flare-menu-item-gap-between);
+    min-width: var(--flare-menu-panel-min-width);
+    background: var(--flare-menu-panel-bg);
+    border-radius: var(--flare-menu-panel-radius);
+    box-shadow: var(--flare-menu-panel-shadow);
+    padding: var(--flare-menu-panel-padding-block) var(--flare-menu-panel-padding-inline);
+    animation: var(--flare-menu-panel-enter-animation) var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate);
 }
 
 /* When the menu is split into groups, the panel can become a transparent
    container so the groups read as separate floating "islands" with no backing behind them.
    Themes opt in via tokens; otherwise the panel keeps its normal surface. */
 .flare-menu__panel:has(.flare-menu-group) {
-    background: var(--flare-menu-grouped-panel-bg, var(--flare-menu-panel-bg, var(--flare-color-surface-container)));
-    box-shadow: var(--flare-menu-grouped-panel-shadow, var(--flare-menu-panel-shadow, var(--flare-elevation-2)));
+    background: var(--flare-menu-grouped-panel-bg);
+    box-shadow: var(--flare-menu-grouped-panel-shadow);
 }
 
 /* Each group can carry its own elevation so the islands visibly float. */
-.flare-menu-group { box-shadow: var(--flare-menu-group-shadow, none); }
+.flare-menu-group { box-shadow: var(--flare-menu-group-shadow); }
 
 /* Default: scale + fade (expand from the anchor corner) */
 @keyframes flare-menu-in {
@@ -90,11 +90,11 @@
 .flare-submenu__panel {
     position: absolute;
     z-index: 201;
-    min-width: var(--flare-menu-panel-min-width, 10rem);
-    background: var(--flare-menu-panel-bg, var(--flare-color-surface-container));
-    border-radius: var(--flare-menu-panel-radius, var(--flare-popover-radius, var(--flare-shape-small)));
-    box-shadow: var(--flare-menu-panel-shadow, var(--flare-elevation-2));
-    padding: var(--flare-menu-panel-padding-block, 0.25rem) var(--flare-menu-panel-padding-inline, 0);
+    min-width: var(--flare-menu-panel-min-width);
+    background: var(--flare-menu-panel-bg);
+    border-radius: var(--flare-menu-panel-radius);
+    box-shadow: var(--flare-menu-panel-shadow);
+    padding: var(--flare-menu-panel-padding-block) var(--flare-menu-panel-padding-inline);
 }
 
 /* Submenu placement variants */

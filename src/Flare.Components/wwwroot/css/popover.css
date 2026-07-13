@@ -17,7 +17,7 @@
     max-width: 24rem;
     background: var(--flare-color-surface-container);
     color: var(--flare-color-on-surface);
-    border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
+    border-radius: var(--flare-popover-radius);
     box-shadow: var(--flare-elevation-2);
     overflow: auto;
     animation: flare-popover-in var(--flare-motion-duration-short3) var(--flare-motion-easing-decelerate);

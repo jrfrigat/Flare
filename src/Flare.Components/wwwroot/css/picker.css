@@ -19,7 +19,7 @@
     position: fixed;
     z-index: var(--flare-z-dropdown, 1000);
     background: var(--flare-color-surface-container-high);
-    border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
+    border-radius: var(--flare-popover-radius);
     box-shadow: var(--flare-elevation-3);
     padding: var(--flare-spacing-6);
 }
@@ -59,7 +59,7 @@
     min-width: 1.5rem;
     font-size: 0.7rem;
     color: var(--flare-color-on-surface-variant);
-    opacity: var(--flare-picker-weeknum-opacity, 0.7);
+    opacity: var(--flare-picker-weeknum-opacity);
 }
 .flare-picker__day {
     aspect-ratio: 1;
@@ -80,7 +80,7 @@
 }
 .flare-picker__day--outside {
     color: var(--flare-color-on-surface-variant);
-    opacity: var(--flare-picker-outside-opacity,0.4);
+    opacity: var(--flare-picker-outside-opacity);
 }
 /* --today before --selected so a today-and-selected day reads as selected (on-primary). */
 .flare-picker__day--today {
@@ -95,6 +95,6 @@
     background: var(--flare-color-primary);
 }
 .flare-picker__day--disabled {
-    opacity: var(--flare-picker-disabled-opacity,0.3);
+    opacity: var(--flare-picker-disabled-opacity);
     cursor: not-allowed;
 }

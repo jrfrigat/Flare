@@ -75,43 +75,43 @@
 
 /* Sizes - with label */
 .flare-toggle-btn--sm {
-    height: var(--flare-toggle-btn-height-sm, 2rem);
+    height: var(--flare-toggle-btn-height-sm);
     padding: 0 var(--flare-toggle-btn-padding-sm, 0.75rem);
     font-size: 0.8125rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-sm, var(--flare-shape-medium));
 }
 .flare-toggle-btn--md {
-    height: var(--flare-toggle-btn-height-md, 2.5rem);
+    height: var(--flare-toggle-btn-height-md);
     padding: 0 var(--flare-toggle-btn-padding-md, 1rem);
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-md, var(--flare-shape-medium));
 }
 .flare-toggle-btn--lg {
-    height: var(--flare-toggle-btn-height-lg, 3rem);
+    height: var(--flare-toggle-btn-height-lg);
     padding: 0 var(--flare-toggle-btn-padding-lg, 1.5rem);
     font-size: 1rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-lg, 1rem);
 }
 
 .flare-toggle-btn--xs {
-    height: var(--flare-toggle-btn-height-xs, 1.75rem);
-    padding: 0 var(--flare-toggle-btn-padding-xs, 0.5rem);
+    height: var(--flare-toggle-btn-height-xs);
+    padding: 0 var(--flare-toggle-btn-padding-xs);
     font-size: 0.75rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xs, 0.5rem);
 }
 
 .flare-toggle-btn--xl {
-    height: var(--flare-toggle-btn-height-xl, 3.5rem);
-    padding: 0 var(--flare-toggle-btn-padding-xl, 2rem);
+    height: var(--flare-toggle-btn-height-xl);
+    padding: 0 var(--flare-toggle-btn-padding-xl);
     font-size: 1.125rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xl, 1.25rem);
 }
 
 /* Icon-only - square */
-.flare-toggle-btn--icon-only.flare-toggle-btn--xs { width: var(--flare-toggle-btn-height-xs, 1.75rem); padding: 0; }
-.flare-toggle-btn--icon-only.flare-toggle-btn--sm { width: var(--flare-toggle-btn-height-sm, 2rem);    padding: 0; }
-.flare-toggle-btn--icon-only.flare-toggle-btn--md { width: var(--flare-toggle-btn-height-md, 2.5rem);  padding: 0; }
-.flare-toggle-btn--icon-only.flare-toggle-btn--lg { width: var(--flare-toggle-btn-height-lg, 3rem);    padding: 0; }
-.flare-toggle-btn--icon-only.flare-toggle-btn--xl { width: var(--flare-toggle-btn-height-xl, 3.5rem);  padding: 0; }
+.flare-toggle-btn--icon-only.flare-toggle-btn--xs { width: var(--flare-toggle-btn-height-xs); padding: 0; }
+.flare-toggle-btn--icon-only.flare-toggle-btn--sm { width: var(--flare-toggle-btn-height-sm);    padding: 0; }
+.flare-toggle-btn--icon-only.flare-toggle-btn--md { width: var(--flare-toggle-btn-height-md);  padding: 0; }
+.flare-toggle-btn--icon-only.flare-toggle-btn--lg { width: var(--flare-toggle-btn-height-lg);    padding: 0; }
+.flare-toggle-btn--icon-only.flare-toggle-btn--xl { width: var(--flare-toggle-btn-height-xl);  padding: 0; }
 
 .flare-toggle-btn__icon {
     display: inline-flex;

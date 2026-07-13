@@ -15,12 +15,12 @@
 
 .flare-badge__indicator {
     position: absolute;
-    top: calc(-1 * var(--flare-badge-offset, 0.375rem));
-    right: calc(-1 * var(--flare-badge-offset, 0.375rem));
-    min-width: var(--flare-badge-min-width, 1rem);
-    height: var(--flare-badge-height, 1rem);
-    padding: 0 var(--flare-badge-padding-x, 0.25rem);
-    border-radius: var(--flare-badge-radius, var(--flare-shape-full));
+    top: calc(-1 * var(--flare-badge-offset));
+    right: calc(-1 * var(--flare-badge-offset));
+    min-width: var(--flare-badge-min-width);
+    height: var(--flare-badge-height);
+    padding: 0 var(--flare-badge-padding-x);
+    border-radius: var(--flare-badge-radius);
     /* Role class sets --fc-main/--fc-on; custom inlines them; default falls back to error. */
     background-color: var(--fc-main, var(--flare-color-error));
     color: var(--fc-on, var(--flare-color-on-error));
@@ -36,12 +36,12 @@
 }
 
 .flare-badge__indicator--dot {
-    min-width: var(--flare-badge-dot-size, 0.375rem);
-    width: var(--flare-badge-dot-size, 0.375rem);
-    height: var(--flare-badge-dot-size, 0.375rem);
+    min-width: var(--flare-badge-dot-size);
+    width: var(--flare-badge-dot-size);
+    height: var(--flare-badge-dot-size);
     padding: 0;
-    top: var(--flare-badge-dot-offset, 0);
-    right: var(--flare-badge-dot-offset, 0);
+    top: var(--flare-badge-dot-offset);
+    right: var(--flare-badge-dot-offset);
 }
 
 

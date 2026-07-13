@@ -24,27 +24,27 @@
 
 /* ---- Resolved presentation vars (theme token -> per-size/default fallback) ---- */
 .flare-slider {
-    --_trk-height:  var(--flare-slider-track-height, var(--_trk-h, 16px));
-    --_trk-radius:  var(--flare-slider-track-radius, var(--_trk-r, 8px));
-    --_gap-radius:  var(--flare-slider-gap-radius, 2px);
-    --_gap:         var(--flare-slider-gap, 6px);
-    --_hnd-height:  var(--flare-slider-handle-height, var(--_hnd-h, 44px));
-    --_hnd-width:   var(--flare-slider-handle-width, 4px);
-    --_hnd-width-pressed: var(--flare-slider-handle-pressed-width, 2px);
-    --_hnd-radius:  var(--flare-slider-handle-radius, var(--flare-shape-full));
-    --_hnd-clip:    var(--flare-slider-handle-clip, none);
-    --_hnd-border-w: var(--flare-slider-handle-border-width, 0px);
+    --_trk-height:  var(--flare-slider-track-height);
+    --_trk-radius:  var(--flare-slider-track-radius);
+    --_gap-radius:  var(--flare-slider-gap-radius);
+    --_gap:         var(--flare-slider-gap);
+    --_hnd-height:  var(--flare-slider-handle-height);
+    --_hnd-width:   var(--flare-slider-handle-width);
+    --_hnd-width-pressed: var(--flare-slider-handle-pressed-width);
+    --_hnd-radius:  var(--flare-slider-handle-radius);
+    --_hnd-clip:    var(--flare-slider-handle-clip);
+    --_hnd-border-w: var(--flare-slider-handle-border-width);
     /* accent: per-instance Color (--fc-main) wins, then theme token, then default */
-    --_active:      var(--fc-main, var(--flare-slider-active-color, var(--flare-color-primary)));
-    --_hnd-color:   var(--flare-slider-handle-fill, var(--_active));
-    --_inactive:    var(--flare-slider-inactive-color, var(--flare-color-secondary-container));
-    --_sl-size:     var(--flare-slider-state-layer-size, 40px);
-    --_sl-hover:    var(--flare-slider-state-hover-opacity, 0.08);
-    --_sl-pressed:  var(--flare-slider-state-pressed-opacity, 0.10);
-    --_stop:        var(--flare-slider-stop-color, var(--flare-color-on-secondary-container));
-    --_stop-sel:    var(--flare-slider-stop-color-selected, var(--flare-color-on-primary));
-    --_value-bg:    var(--flare-slider-value-bg, var(--flare-color-inverse-surface));
-    --_value-color: var(--flare-slider-value-color, var(--flare-color-inverse-on-surface));
+    --_active:      var(--fc-main, var(--flare-slider-active-color));
+    --_hnd-color:   var(--flare-slider-handle-fill);
+    --_inactive:    var(--flare-slider-inactive-color);
+    --_sl-size:     var(--flare-slider-state-layer-size);
+    --_sl-hover:    var(--flare-slider-state-hover-opacity);
+    --_sl-pressed:  var(--flare-slider-state-pressed-opacity);
+    --_stop:        var(--flare-slider-stop-color);
+    --_stop-sel:    var(--flare-slider-stop-color-selected);
+    --_value-bg:    var(--flare-slider-value-bg);
+    --_value-color: var(--flare-slider-value-color);
 }
 
 .flare-slider__label-row {
@@ -243,8 +243,8 @@
     position: absolute;
     top: 0;
     transform: translate(-50%, -50%);
-    width: var(--flare-slider-stop-size, 4px);
-    height: var(--flare-slider-stop-size, 4px);
+    width: var(--flare-slider-stop-size);
+    height: var(--flare-slider-stop-size);
     border-radius: 50%;
     background: var(--_stop);
 }

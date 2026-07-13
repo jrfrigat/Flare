@@ -4,7 +4,7 @@
 
 .flare-shortcuts-help {
     background: var(--flare-color-surface-container-high);
-    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    border-radius: var(--flare-dialog-radius);
     box-shadow: var(--flare-elevation-3);
     padding: var(--flare-spacing-12);
     min-width: 320px;

@@ -8,7 +8,7 @@
   display: flex;
   align-items: stretch;
   gap: 0;
-  border-bottom: 1px solid var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
+  border-bottom: 1px solid var(--flare-tabs-divider-color);
 }
 
 /* Each item (FlareLinkTab) is an <a> that reuses FlareTabs' item classes directly - flare-tabs__tab,

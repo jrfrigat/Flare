@@ -8,10 +8,10 @@
   display: flex;
   align-items: stretch;
   width: 100%;
-  height: var(--flare-bottom-nav-bar-height, 5rem);
-  padding-bottom: var(--flare-bottom-nav-safe-area-padding, env(safe-area-inset-bottom, 0px));
-  background: var(--flare-bottom-nav-bar-bg, var(--flare-color-surface-container));
-  border-top: 1px solid var(--flare-bottom-nav-border-color, var(--flare-color-surface-variant));
+  height: var(--flare-bottom-nav-bar-height);
+  padding-bottom: var(--flare-bottom-nav-safe-area-padding);
+  background: var(--flare-bottom-nav-bar-bg);
+  border-top: 1px solid var(--flare-bottom-nav-border-color);
   box-sizing: border-box;
 }
 
@@ -26,13 +26,13 @@
   gap: var(--flare-spacing-1);
   padding: var(--flare-spacing-3) var(--flare-spacing-1);
   text-decoration: none;
-  color: var(--flare-bottom-nav-inactive-color, var(--flare-color-on-surface-variant));
+  color: var(--flare-bottom-nav-inactive-color);
   -webkit-tap-highlight-color: transparent;
   transition: color var(--flare-motion-duration-short1);
 }
 
 .flare-bottom-nav-item:hover {
-  color: var(--flare-bottom-nav-active-color, var(--flare-color-on-secondary-container));
+  color: var(--flare-bottom-nav-active-color);
 }
 
 /* Pill-shaped indicator drawn behind the icon; transparent and unsized until the item is active. */
@@ -40,16 +40,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--flare-bottom-nav-indicator-radius, var(--flare-shape-full));
+  border-radius: var(--flare-bottom-nav-indicator-radius);
   padding-inline: var(--flare-spacing-6);
-  height: var(--flare-bottom-nav-indicator-size, 2rem);
+  height: var(--flare-bottom-nav-indicator-size);
   background: transparent;
   transition: background-color var(--flare-motion-duration-short1);
 }
 
 .flare-bottom-nav-item__icon {
   display: inline-flex;
-  font-size: var(--flare-bottom-nav-icon-size, 1.5rem);
+  font-size: var(--flare-bottom-nav-icon-size);
   line-height: 1;
 }
 
@@ -59,21 +59,21 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: var(--flare-typescale-label-medium-font);
-  font-size: var(--flare-bottom-nav-label-font-size, var(--flare-typescale-label-medium-size));
-  font-weight: var(--flare-bottom-nav-label-font-weight, 500);
+  font-size: var(--flare-bottom-nav-label-font-size);
+  font-weight: var(--flare-bottom-nav-label-font-weight);
   line-height: 1.15;
 }
 
 .flare-bottom-nav-item--active {
-  color: var(--flare-bottom-nav-active-color, var(--flare-color-on-secondary-container));
+  color: var(--flare-bottom-nav-active-color);
 }
 
 .flare-bottom-nav-item--active .flare-bottom-nav-item__indicator {
-  background: var(--flare-bottom-nav-indicator-bg, var(--flare-color-secondary-container));
+  background: var(--flare-bottom-nav-indicator-bg);
 }
 
 .flare-bottom-nav-item--active .flare-bottom-nav-item__label {
-  font-weight: var(--flare-bottom-nav-label-font-weight-active, 700);
+  font-weight: var(--flare-bottom-nav-label-font-weight-active);
 }
 
 .flare-bottom-nav-item--disabled {

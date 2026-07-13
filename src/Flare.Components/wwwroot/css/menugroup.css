@@ -1,16 +1,16 @@
 .flare-menu-group {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-menu-item-gap-between, 0);
-    padding: var(--flare-menu-group-padding, 0);
-    border-radius: var(--flare-menu-group-radius, 0);
+    gap: var(--flare-menu-item-gap-between);
+    padding: var(--flare-menu-group-padding);
+    border-radius: var(--flare-menu-group-radius);
     /* A group can be a rounded "island" surface. Default themes keep it transparent. */
-    background: var(--flare-menu-group-bg, transparent);
+    background: var(--flare-menu-group-bg);
 }
 
 /* Section header: title-small typography, on-surface-variant color */
 .flare-menu-group__label {
-    padding: var(--flare-menu-item-padding-block, 0.5rem) var(--flare-menu-item-padding-inline, 1rem);
+    padding: var(--flare-menu-item-padding-block) var(--flare-menu-item-padding-inline);
     font-family: var(--flare-typescale-title-small-font);
     font-weight: var(--flare-typescale-title-small-weight);
     font-size: var(--flare-typescale-title-small-size);
@@ -22,12 +22,12 @@
 /* Adjacent groups are separated by a gap (two distinct "islands").
    An optional divider line can be enabled per theme via --flare-menu-group-divider. */
 .flare-menu-group + .flare-menu-group {
-    margin-top: var(--flare-menu-group-gap, 0.5rem);
-    border-top: var(--flare-menu-group-divider, none);
+    margin-top: var(--flare-menu-group-gap);
+    border-top: var(--flare-menu-group-divider);
 }
 
 /* Inside a group, items do not repeat the panel container shape (outer corners = normal) */
 .flare-menu-group .flare-menu-item:first-child,
 .flare-menu-group .flare-menu-item:last-child {
-    border-radius: var(--flare-menu-item-radius, 0);
+    border-radius: var(--flare-menu-item-radius);
 }

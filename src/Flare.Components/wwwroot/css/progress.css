@@ -5,9 +5,9 @@
 
 /* Linear */
 .flare-progress--linear {
-  height: var(--flare-progress-linear-height, 4px);
+  height: var(--flare-progress-linear-height);
   background: var(--flare-color-secondary-container);
-  border-radius: var(--flare-progress-track-radius, var(--flare-shape-full));
+  border-radius: var(--flare-progress-track-radius);
   overflow: hidden;
   position: relative;
 }
@@ -15,7 +15,7 @@
 .flare-progress--linear .flare-progress__bar {
   height: 100%;
   background: var(--fc-main, var(--flare-color-primary));
-  border-radius: var(--flare-progress-track-radius, var(--flare-shape-full));
+  border-radius: var(--flare-progress-track-radius);
   transition: width 0.3s var(--flare-motion-easing-standard);
 }
 
@@ -24,7 +24,7 @@
 .flare-progress--linear.flare-progress--split {
   display: flex;
   align-items: center;
-  gap: var(--flare-progress-gap, 0);
+  gap: var(--flare-progress-gap);
   background: transparent;
 }
 
@@ -38,10 +38,10 @@
   min-width: 0;
   height: 100%;
   background: var(--flare-color-secondary-container);
-  border-radius: var(--flare-progress-track-radius, var(--flare-shape-full));
+  border-radius: var(--flare-progress-track-radius);
   /* Leave a gap before the trailing stop indicator so the track does not
      run under the dot. Reserves gap + dot-size on the right (0 when the dot is off). */
-  margin-right: calc(var(--flare-progress-gap, 0) + var(--flare-progress-stop-size, 0px));
+  margin-right: calc(var(--flare-progress-gap) + var(--flare-progress-stop-size));
 }
 
 /* Trailing stop-indicator dot (token-gated; set size to 0 to hide).
@@ -50,12 +50,12 @@
   content: "";
   position: absolute;
   top: 50%;
-  right: var(--flare-progress-stop-inset, 0px);
+  right: var(--flare-progress-stop-inset);
   transform: translateY(-50%);
-  width: var(--flare-progress-stop-size, 0px);
-  height: var(--flare-progress-stop-size, 0px);
+  width: var(--flare-progress-stop-size);
+  height: var(--flare-progress-stop-size);
   border-radius: 50%;
-  background: var(--flare-progress-stop-color, var(--fc-main, var(--flare-color-primary)));
+  background: var(--flare-progress-stop-color);
 }
 
 .flare-progress--linear.flare-progress--indeterminate .flare-progress__bar {
@@ -73,7 +73,7 @@
    wavy-height (with-wave height), wave-length, wave-amplitude, wave-speed.
    ========================================================================== */
 .flare-progress--wavy.flare-progress--linear {
-  height: var(--flare-progress-wavy-height, 10px);
+  height: var(--flare-progress-wavy-height);
   background: transparent;
 }
 
@@ -88,17 +88,17 @@
 .flare-progress__wave {
   display: block;
   height: 100%;
-  animation: flare-progress-wave var(--flare-progress-wave-speed, 1s) linear infinite;
+  animation: flare-progress-wave var(--flare-progress-wave-speed) linear infinite;
 }
 
 /* Remaining track is a thin flat line, vertically centred in the taller wavy track. */
 .flare-progress--wavy.flare-progress--linear .flare-progress__remain {
-  height: var(--flare-progress-linear-height, 4px);
+  height: var(--flare-progress-linear-height);
 }
 
 /* Flow: shift the wave by exactly one wavelength for a seamless loop. */
 @keyframes flare-progress-wave {
-  to { transform: translateX(calc(-1 * var(--flare-progress-wave-length, 40px))); }
+  to { transform: translateX(calc(-1 * var(--flare-progress-wave-length))); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -119,7 +119,7 @@
 .flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
   transform-box: fill-box;
   transform-origin: center;
-  animation: flare-progress-ring-wave var(--flare-progress-wave-speed, 1s) linear infinite;
+  animation: flare-progress-ring-wave var(--flare-progress-wave-speed) linear infinite;
 }
 @keyframes flare-progress-ring-wave {
   from { rotate: 0deg;   stroke-dashoffset: 0;   }
@@ -139,19 +139,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--flare-progress-circular-size,40px);
-  height: var(--flare-progress-circular-size,40px);
+  width: var(--flare-progress-circular-size);
+  height: var(--flare-progress-circular-size);
 }
 
 .flare-progress__svg { width: 100%; height: 100%; }
 .flare-progress__track {
   stroke: var(--flare-color-secondary-container);
-  stroke-width: var(--flare-progress-circular-width, 4px);
+  stroke-width: var(--flare-progress-circular-width);
 }
 .flare-progress__indicator {
   stroke: var(--fc-main, var(--flare-color-primary));
-  stroke-width: var(--flare-progress-circular-width, 4px);
-  stroke-linecap: var(--flare-progress-circular-cap, butt);
+  stroke-width: var(--flare-progress-circular-width);
+  stroke-linecap: var(--flare-progress-circular-cap);
   transition: stroke-dasharray 0.3s var(--flare-motion-easing-standard);
 }
 
@@ -174,7 +174,7 @@
 .flare-progress--buffer .flare-progress__track { background: transparent; }
 .flare-progress__buffer-fill {
     position: absolute; left: 0; top: 0; height: 100%;
-    background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) var(--flare-progress-buffer-opacity,30%), transparent);
+    background: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) var(--flare-progress-buffer-opacity), transparent);
     transition: width 0.3s ease;
 }
 

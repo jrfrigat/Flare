@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     background: var(--flare-color-surface);
-    border-radius: var(--flare-card-radius, var(--flare-shape-medium));
+    border-radius: var(--flare-card-radius);
     overflow: hidden;
 }
 

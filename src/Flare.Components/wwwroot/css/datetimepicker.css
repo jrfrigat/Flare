@@ -98,14 +98,14 @@
 .flare-datetimepicker__panes {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--flare-datetimepicker-panel-gap, 1rem);
+  gap: var(--flare-datetimepicker-panel-gap);
   align-items: flex-start;
 }
 .flare-datetimepicker__panel--split .flare-datetimepicker__pane {
   flex: 1 1 14rem;
   min-width: 0;
   background: var(--flare-color-surface-container-high);
-  border-radius: var(--flare-popover-radius, var(--flare-shape-medium));
+  border-radius: var(--flare-popover-radius);
   box-shadow: var(--flare-elevation-3);
   padding: var(--flare-spacing-6);
 }

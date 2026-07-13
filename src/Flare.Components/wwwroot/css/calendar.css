@@ -4,7 +4,7 @@
     border: 1px solid var(--flare-color-outline-variant);
     overflow: hidden;
     width: 100%;
-    max-width: var(--flare-calendar-max-width, 400px);
+    max-width: var(--flare-calendar-max-width);
 }
 
 /* Top navigation bar (prev / next month). */
@@ -23,7 +23,7 @@
     flex-wrap: wrap;
 }
 
-.flare-calendar__month { flex: 1 1 0; min-width: var(--flare-calendar-month-min-width, 16rem); }
+.flare-calendar__month { flex: 1 1 0; min-width: var(--flare-calendar-month-min-width); }
 
 /* Multi-month mode lifts the single-month width cap. */
 .flare-calendar--multi { max-width: none; }
@@ -44,8 +44,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--flare-calendar-nav-btn-size, 2rem);
-    height: var(--flare-calendar-nav-btn-size, 2rem);
+    width: var(--flare-calendar-nav-btn-size);
+    height: var(--flare-calendar-nav-btn-size);
     border: none;
     background: transparent;
     border-radius: var(--flare-shape-full);
@@ -74,7 +74,7 @@
 }
 
 .flare-calendar__cell {
-    min-height: var(--flare-calendar-cell-min-height, 3rem);
+    min-height: var(--flare-calendar-cell-min-height);
     padding: var(--flare-spacing-2);
     border-radius: var(--flare-shape-extra-small);
     cursor: pointer;
@@ -89,17 +89,17 @@
 }
 
 .flare-calendar__cell--other {
-    opacity: var(--flare-calendar-other-month-opacity, 0.3);
+    opacity: var(--flare-calendar-other-month-opacity);
     cursor: default;
     pointer-events: none;
 }
 
 .flare-calendar__cell--today .flare-calendar__day-num {
-    background: var(--flare-calendar-today-bg, var(--flare-color-primary));
-    color: var(--flare-calendar-today-color, var(--flare-color-on-primary));
+    background: var(--flare-calendar-today-bg);
+    color: var(--flare-calendar-today-color);
     border-radius: var(--flare-shape-full);
-    width: var(--flare-calendar-day-num-size, 1.5rem);
-    height: var(--flare-calendar-day-num-size, 1.5rem);
+    width: var(--flare-calendar-day-num-size);
+    height: var(--flare-calendar-day-num-size);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -107,14 +107,14 @@
 }
 
 .flare-calendar__cell--selected {
-    background: var(--flare-calendar-selected-bg, color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface)));
+    background: var(--flare-calendar-selected-bg);
 }
 
 .flare-calendar__day-num {
     font-size: var(--flare-typescale-body-small-size);
     color: var(--flare-color-on-surface);
-    width: var(--flare-calendar-day-num-size, 1.5rem);
-    height: var(--flare-calendar-day-num-size, 1.5rem);
+    width: var(--flare-calendar-day-num-size);
+    height: var(--flare-calendar-day-num-size);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,7 +126,7 @@
     color: var(--fc-on-container, var(--flare-color-on-primary-container));
     border-radius: var(--flare-shape-extra-small);
     font-size: var(--flare-typescale-label-small-size);
-    padding: var(--flare-calendar-event-pad-y,0.0625rem) var(--flare-spacing-2);
+    padding: var(--flare-calendar-event-pad-y) var(--flare-spacing-2);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

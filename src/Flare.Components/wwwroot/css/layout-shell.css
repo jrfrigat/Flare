@@ -35,7 +35,7 @@
     align-items: center;
     gap: var(--flare-spacing-6);
     padding: 0 var(--flare-spacing-8);
-    height: var(--flare-layout-appbar-height, 64px);
+    height: var(--flare-layout-appbar-height);
     background: var(--flare-layout-appbar-bg);
     border-bottom: 1px solid var(--flare-color-outline-variant);
     z-index: 100;
@@ -96,7 +96,7 @@
 .flare-layout-drawer--floating,
 .flare-layout-drawer--temporary {
     position: fixed;
-    top: var(--flare-layout-appbar-height, 64px);
+    top: var(--flare-layout-appbar-height);
     bottom: 0;
     left: 0;
     width: var(--fld-w, var(--flare-layout-drawer-width));
@@ -146,11 +146,11 @@
 .flare-layout-content {
     overflow: auto;
     min-width: 0;
-    padding: var(--flare-layout-content-padding, 1.5rem 2rem);
+    padding: var(--flare-layout-content-padding);
 }
 /* Tighter padding on mobile, where the content owns the full width. */
 .flare-layout--mobile .flare-layout-content {
-    padding: var(--flare-layout-content-padding-mobile, 1rem);
+    padding: var(--flare-layout-content-padding-mobile);
 }
 
 /* Content frame: full width by default; the size modifiers cap and center it while the scrollbar
@@ -215,7 +215,7 @@
 .flare-layout--scrim-open .flare-layout__scrim {
     display: block;
     position: fixed;
-    inset: var(--flare-layout-appbar-height, 64px) 0 0 0;
+    inset: var(--flare-layout-appbar-height) 0 0 0;
     z-index: 180;
     background: var(--flare-color-scrim);
     opacity: 0.45;

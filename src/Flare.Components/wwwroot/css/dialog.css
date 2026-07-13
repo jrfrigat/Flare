@@ -1,7 +1,7 @@
 .flare-dialog-scrim {
     position: fixed;
     inset: 0;
-    background-color: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity, 0.32) * 100%), transparent);
+    background-color: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity) * 100%), transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -12,7 +12,7 @@
     position: relative;
     background-color: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
-    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    border-radius: var(--flare-dialog-radius);
     min-width: 17.5rem;
     max-width: 35rem;
     width: 100%;
@@ -74,7 +74,7 @@
     display: flex;
     justify-content: center;
     color: var(--flare-color-secondary);
-    font-size: var(--flare-dialog-icon-size,1.5rem);
+    font-size: var(--flare-dialog-icon-size);
     padding: var(--flare-spacing-12) var(--flare-spacing-12) 0;
 }
 
@@ -138,7 +138,7 @@
     .flare-dialog {
         max-width: calc(100vw - 2rem) !important;
         max-height: calc(100vh - 2rem) !important;
-        border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+        border-radius: var(--flare-dialog-radius);
     }
     .flare-dialog-scrim {
         align-items: flex-end;
@@ -158,8 +158,8 @@
 
 .flare-dialog--bottom {
     width: 100%;
-    border-start-start-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
-    border-start-end-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    border-start-start-radius: var(--flare-dialog-radius);
+    border-start-end-radius: var(--flare-dialog-radius);
     border-end-start-radius: 0;
     border-end-end-radius: 0;
     padding-bottom: env(safe-area-inset-bottom, 0px);

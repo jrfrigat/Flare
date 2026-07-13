@@ -8,8 +8,8 @@
 
 .flare-switch__track {
     position: relative;
-    width: var(--flare-switch-track-width, 3.25rem);
-    height: var(--flare-switch-track-height, 2rem);
+    width: var(--flare-switch-track-width);
+    height: var(--flare-switch-track-height);
     flex-shrink: 0;
 }
 
@@ -26,11 +26,11 @@
 /* The pill-shaped track */
 .flare-switch__thumb {
     display: block;
-    width: var(--flare-switch-track-width, 3.25rem);
-    height: var(--flare-switch-track-height, 2rem);
+    width: var(--flare-switch-track-width);
+    height: var(--flare-switch-track-height);
     border-radius: var(--flare-shape-full);
-    border: var(--flare-switch-track-border, 2px solid var(--flare-color-outline));
-    background: var(--flare-switch-track-off-bg, var(--flare-color-surface-container-highest));
+    border: var(--flare-switch-track-border);
+    background: var(--flare-switch-track-off-bg);
     position: relative;
     transition:
         background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
@@ -41,17 +41,17 @@
 .flare-switch__handle {
     position: absolute;
     top: 50%;
-    left: var(--flare-switch-thumb-off-left, 0.25rem);
+    left: var(--flare-switch-thumb-off-left);
     transform: translateY(-50%);
-    width: var(--flare-switch-thumb-off-size, 1rem);
-    height: var(--flare-switch-thumb-off-size, 1rem);
+    width: var(--flare-switch-thumb-off-size);
+    height: var(--flare-switch-thumb-off-size);
     border-radius: 50%;
-    background: var(--flare-switch-thumb-off-color, var(--flare-color-outline));
+    background: var(--flare-switch-thumb-off-color);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     /* Unselected icon color (surface-container-highest on the outline handle). */
-    color: var(--flare-switch-icon-off-color, var(--flare-color-surface-container-highest));
+    color: var(--flare-switch-icon-off-color);
     transition:
         left var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
         width var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
@@ -63,75 +63,70 @@
 /* Handle icon size (default 16dp). */
 .flare-switch__handle .flare-icon,
 .flare-switch__handle .material-symbols-rounded {
-    font-size: var(--flare-switch-icon-size, 1rem);
+    font-size: var(--flare-switch-icon-size);
     width: 1em;
     height: 1em;
 }
 
 /* With-icon: the handle is 24dp in both states so the icon fits. */
 .flare-switch--with-icon .flare-switch__handle {
-    width: var(--flare-switch-thumb-on-size, 1.5rem);
-    height: var(--flare-switch-thumb-on-size, 1.5rem);
+    width: var(--flare-switch-thumb-on-size);
+    height: var(--flare-switch-thumb-on-size);
 }
 
 /* Checked/ON state - track (accent = --fc-main, default primary; theme may override the token) */
 .flare-switch__input:checked + .flare-switch__thumb {
-    background: var(--flare-switch-track-on-bg, var(--fc-main, var(--flare-color-primary)));
-    border-color: var(--flare-switch-track-on-bg, var(--fc-main, var(--flare-color-primary)));
+    background: var(--flare-switch-track-on-bg);
+    border-color: var(--flare-switch-track-on-bg);
 }
 
 /* Checked/ON state - thumb ball */
 .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle {
     /* 24dp handle, 4dp from the right edge of the 52dp track (was 1.375rem -> 2px overflow). */
-    left: var(--flare-switch-thumb-on-left, calc(100% - 1.75rem));
-    width: var(--flare-switch-thumb-on-size, 1.5rem);
-    height: var(--flare-switch-thumb-on-size, 1.5rem);
-    background: var(--flare-switch-thumb-on-color, var(--flare-color-on-primary));
+    left: var(--flare-switch-thumb-on-left);
+    width: var(--flare-switch-thumb-on-size);
+    height: var(--flare-switch-thumb-on-size);
+    background: var(--flare-switch-thumb-on-color);
     /* Selected icon color (primary on the on-primary handle). */
-    color: var(--flare-switch-icon-on-color, var(--flare-color-primary));
+    color: var(--flare-switch-icon-on-color);
 }
 
 /* Pressed: the handle grows to 28dp. Token-gated so a theme that doesn't resize on
    press neutralizes it by setting the pressed sizes to its normal handle sizes. */
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__thumb .flare-switch__handle {
-    width: var(--flare-switch-thumb-pressed-off-size, 1.75rem);
-    height: var(--flare-switch-thumb-pressed-off-size, 1.75rem);
+    width: var(--flare-switch-thumb-pressed-off-size);
+    height: var(--flare-switch-thumb-pressed-off-size);
 }
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle {
-    width: var(--flare-switch-thumb-pressed-on-size, 1.75rem);
-    height: var(--flare-switch-thumb-pressed-on-size, 1.75rem);
+    width: var(--flare-switch-thumb-pressed-on-size);
+    height: var(--flare-switch-thumb-pressed-on-size);
 }
 
 /* Hover - track background (a theme may add a subtle fill on OFF hover; default = no change) */
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__thumb {
-    background: var(--flare-switch-track-hover-off-bg,
-        var(--flare-switch-track-off-bg, var(--flare-color-surface-container-highest)));
-    border-color: var(--flare-switch-track-hover-border-color, var(--flare-color-outline));
+    background: var(--flare-switch-track-hover-off-bg);
+    border-color: var(--flare-switch-track-hover-border-color);
 }
 
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__input:checked + .flare-switch__thumb {
-    background: var(--flare-switch-track-hover-on-bg,
-        var(--flare-switch-track-on-bg, var(--flare-color-primary)));
-    border-color: var(--flare-switch-track-hover-on-bg,
-        var(--flare-switch-track-on-bg, var(--flare-color-primary)));
+    background: var(--flare-switch-track-hover-on-bg);
+    border-color: var(--flare-switch-track-hover-on-bg);
 }
 
 /* Hover - state layer around thumb ball (token-gated; a theme can disable it by setting these vars to none) */
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__thumb .flare-switch__handle {
-    box-shadow: var(--flare-switch-hover-shadow-off,
-        0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent));
+    box-shadow: var(--flare-switch-hover-shadow-off);
 }
 
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle {
-    box-shadow: var(--flare-switch-hover-shadow-on,
-        0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent));
+    box-shadow: var(--flare-switch-hover-shadow-on);
 }
 
 /* Focus-visible ring (default 3dp secondary indicator, 2dp offset). */
 .flare-switch__input:focus-visible + .flare-switch__thumb {
-    outline: var(--flare-switch-focus-outline, 3px solid var(--flare-color-secondary));
-    outline-offset: var(--flare-switch-focus-outline-offset, 2px);
-    box-shadow: var(--flare-switch-focus-shadow, none);
+    outline: var(--flare-switch-focus-outline);
+    outline-offset: var(--flare-switch-focus-outline-offset);
+    box-shadow: var(--flare-switch-focus-shadow);
 }
 
 /* Handle color by interaction state: unselected -> on-surface-variant,
@@ -139,12 +134,12 @@
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__handle,
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__handle,
 .flare-switch__input:focus-visible + .flare-switch__thumb .flare-switch__handle {
-    background: var(--flare-switch-thumb-state-off-color, var(--flare-color-on-surface-variant));
+    background: var(--flare-switch-thumb-state-off-color);
 }
 .flare-switch:not(.flare-switch--disabled):hover .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle,
 .flare-switch:not(.flare-switch--disabled):active .flare-switch__input:checked + .flare-switch__thumb .flare-switch__handle,
 .flare-switch__input:checked:focus-visible + .flare-switch__thumb .flare-switch__handle {
-    background: var(--flare-switch-thumb-state-on-color, var(--flare-color-primary-container));
+    background: var(--flare-switch-thumb-state-on-color);
 }
 
 /* Focus state layer (~10%), in addition to the focus ring. */
@@ -218,14 +213,11 @@
 
 .flare-switch--disabled { pointer-events: none; }
 .flare-switch--disabled .flare-switch__thumb {
-    background: var(--flare-switch-disabled-track-bg,
-        color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent));
-    border-color: var(--flare-switch-disabled-track-border,
-        color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent));
+    background: var(--flare-switch-disabled-track-bg);
+    border-color: var(--flare-switch-disabled-track-border);
 }
 .flare-switch--disabled .flare-switch__handle {
-    background: var(--flare-switch-disabled-handle-bg,
-        color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent));
+    background: var(--flare-switch-disabled-handle-bg);
 }
 .flare-switch--disabled .flare-switch__label {
     opacity: var(--flare-state-disabled-opacity);

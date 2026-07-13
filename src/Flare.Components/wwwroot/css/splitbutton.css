@@ -8,7 +8,7 @@
 .flare-split-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--flare-split-btn-gap, 0.125rem);
+    gap: var(--flare-split-btn-gap);
 }
 
 .flare-split-btn__menu {
@@ -39,7 +39,7 @@
     border-bottom-right-radius: var(--flare-split-btn-trigger-radius-md-bottom-right) !important;
     border-bottom-left-radius: var(--flare-split-btn-trigger-radius-md-bottom-left) !important;
     /* Trigger width: default = height (square); a theme can fix a width via the token */
-    width: var(--flare-split-btn-trigger-width, var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)));
+    width: var(--flare-split-btn-trigger-width);
     padding-inline: 0 !important;
 }
 
