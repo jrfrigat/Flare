@@ -82,4 +82,23 @@
        every color (the old per-color .flare-btn--<color> selectors are no longer rendered). */
     .flare-btn--filled:hover  { background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 87%, #000); }
     .flare-btn--filled:active { background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 52%, #000); }
+
+    /*
+       5. DISABLED: FLAT FLUENT PALETTE (not element opacity) [specs]
+       Fluent renders disabled controls with discrete flat colors (colorNeutralBackgroundDisabled /
+       ForegroundDisabled / StrokeDisabled), NOT a 40%-faded copy of the enabled look. Solid variants
+       take the disabled grey fill; outlined keeps a transparent fill + disabled stroke; text stays
+       transparent. All take the disabled foreground and drop the element-opacity fade.
+    */
+    .flare-btn:disabled, .flare-btn[disabled] {
+        opacity: 1 !important;
+        color: var(--flare-fluent-disabled-fg) !important;
+    }
+    .flare-btn--filled:disabled, .flare-btn--tonal:disabled, .flare-btn--elevated:disabled,
+    .flare-btn--filled[disabled], .flare-btn--tonal[disabled], .flare-btn--elevated[disabled] {
+        background-color: var(--flare-fluent-disabled-bg) !important;
+    }
+    .flare-btn--outlined:disabled, .flare-btn--outlined[disabled] {
+        border-color: var(--flare-fluent-disabled-border) !important;
+    }
 }

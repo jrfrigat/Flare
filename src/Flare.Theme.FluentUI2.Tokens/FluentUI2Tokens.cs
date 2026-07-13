@@ -477,6 +477,13 @@ public class FluentUI2Tokens
         [FluentCssVars.FocusStrokeColor] = "#000000",
         [FluentCssVars.FocusStrokeOuter] = "#FFFFFF",
 
+        // Fluent disabled palette (colorNeutralBackgroundDisabled / ...ForegroundDisabled /
+        // ...StrokeDisabled). Fluent uses a flat discrete disabled look, not element opacity.
+        // No semantic role maps to these exact greys, so they live here (dark values in DarkExtended).
+        ["--flare-fluent-disabled-bg"] = "#F0F0F0",
+        ["--flare-fluent-disabled-fg"] = "#BDBDBD",
+        ["--flare-fluent-disabled-border"] = "#E0E0E0",
+
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
         ["--flare-switch-track-off-bg"] = "transparent",
@@ -1020,6 +1027,10 @@ public class FluentUI2Tokens
             [FluentCssVars.FocusStrokeOuter] = "#000000",
             ["--flare-switch-track-hover-off-bg"] = "var(--flare-color-surface-container)",
             ["--flare-switch-track-hover-on-bg"] = "#2886D4",
+            // Fluent dark disabled palette.
+            ["--flare-fluent-disabled-bg"] = "#141414",
+            ["--flare-fluent-disabled-fg"] = "#5C5C5C",
+            ["--flare-fluent-disabled-border"] = "#424242",
         };
         return dict;
     }
