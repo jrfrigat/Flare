@@ -23,4 +23,8 @@ public static class FluentCssVars
     public const string DisabledFg = "--flare-fluent-disabled-fg";
     /// <summary>Flat disabled stroke (colorNeutralStrokeDisabled).</summary>
     public const string DisabledBorder = "--flare-fluent-disabled-border";
+    /// <summary>Subtle hover fill (colorSubtleBackgroundHover).</summary>
+    public const string SubtleHover = "--flare-fluent-subtle-hover";
+    /// <summary>Subtle pressed fill (colorSubtleBackgroundPressed).</summary>
+    public const string SubtlePressed = "--flare-fluent-subtle-pressed";
 }

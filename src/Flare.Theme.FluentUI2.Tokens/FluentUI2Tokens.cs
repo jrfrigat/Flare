@@ -485,6 +485,10 @@ public class FluentUI2Tokens
         [FluentCssVars.DisabledBg] = "#F0F0F0",
         [FluentCssVars.DisabledFg] = "#BDBDBD",
         [FluentCssVars.DisabledBorder] = "#E0E0E0",
+        // Subtle button/item hover+pressed fill (colorSubtleBackgroundHover/Pressed). Explicit per-mode
+        // because the surface-container role scale inverts between light and dark.
+        [FluentCssVars.SubtleHover] = "#F5F5F5",
+        [FluentCssVars.SubtlePressed] = "#E0E0E0",
 
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
@@ -1033,6 +1037,9 @@ public class FluentUI2Tokens
             [FluentCssVars.DisabledBg] = "#141414",
             [FluentCssVars.DisabledFg] = "#5C5C5C",
             [FluentCssVars.DisabledBorder] = "#424242",
+            // Fluent dark subtle hover/pressed.
+            [FluentCssVars.SubtleHover] = "#383838",
+            [FluentCssVars.SubtlePressed] = "#2E2E2E",
         };
         return dict;
     }

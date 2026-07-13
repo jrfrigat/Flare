@@ -84,7 +84,19 @@
     .flare-btn--filled:active { background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 52%, #000); }
 
     /*
-       5. DISABLED: FLAT FLUENT PALETTE (not element opacity) [specs]
+       5. SUBTLE (--text) HOVER/PRESSED: discrete neutral fill, not a currentColor overlay [specs]
+       Fluent's subtle button fills with colorSubtleBackgroundHover / ...Pressed (the neutral
+       surface-container greys) instead of a translucent state layer. Suppress the ::before wash and
+       set the discrete fill (the surface-container roles map to the subtle greys in both modes).
+    */
+    .flare-btn--text:hover::before,
+    .flare-btn--text:focus-visible::before,
+    .flare-btn--text:active::before { opacity: 0 !important; }
+    .flare-btn--text:hover  { background-color: var(--flare-fluent-subtle-hover, #F5F5F5); }
+    .flare-btn--text:active { background-color: var(--flare-fluent-subtle-pressed, #E0E0E0); }
+
+    /*
+       6. DISABLED: FLAT FLUENT PALETTE (not element opacity) [specs]
        Fluent renders disabled controls with discrete flat colors (colorNeutralBackgroundDisabled /
        ForegroundDisabled / StrokeDisabled), NOT a 40%-faded copy of the enabled look. Solid variants
        take the disabled grey fill; outlined keeps a transparent fill + disabled stroke; text stays
