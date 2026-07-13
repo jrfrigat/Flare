@@ -1,0 +1,13 @@
+{
+  "name": "fui2-spec-parser",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Generates the Fluent UI 2 foundation + palette specs under docs/spec from @fluentui/tokens.",
+  "scripts": {
+    "generate": "node generate.mjs"
+  },
+  "dependencies": {
+    "@fluentui/tokens": "1.0.0-alpha.23"
+  }
+}
