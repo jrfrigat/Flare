@@ -184,7 +184,11 @@ public class TokenParityTests
                 PressedOpacity = "0.12",
                 DraggedOpacity = "0.16",
                 DisabledOpacity = "0.38",
-                DisabledContainerOpacity = "0.12"
+                DisabledContainerOpacity = "0.12",
+                HoverLayer = "currentColor",
+                FocusLayer = "currentColor",
+                PressedLayer = "currentColor",
+                DraggedLayer = "currentColor"
             },
         };
     }

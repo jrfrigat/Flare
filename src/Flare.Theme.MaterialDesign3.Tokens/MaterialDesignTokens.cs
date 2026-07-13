@@ -79,6 +79,11 @@ public class MaterialDesignTokens
         DraggedOpacity = "0.16",
         DisabledOpacity = "0.38",
         DisabledContainerOpacity = "0.12",
+        // State-layer paint = a translucent currentColor wash at each state's opacity (the Material model).
+        HoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        FocusLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        PressedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-pressed-opacity) * 100%), transparent)",
+        DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
     };
 
     internal static readonly BadgeTokens Badge = new()

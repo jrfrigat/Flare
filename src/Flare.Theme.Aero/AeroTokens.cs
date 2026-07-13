@@ -71,6 +71,10 @@ internal class AeroTokens
         DraggedOpacity = "0.10",
         DisabledOpacity = "0.4",
         DisabledContainerOpacity = "0.12",
+        HoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        FocusLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        PressedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-pressed-opacity) * 100%), transparent)",
+        DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
     };
 
     internal static readonly BadgeTokens Badge = new()
