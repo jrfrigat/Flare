@@ -10,7 +10,7 @@
 .flare-list-item {
     display: flex;
     align-items: center;
-    /* MD3 list-item heights by line count: one-line 56dp here; two-line 72dp via :has() below. */
+    /* Line-count item heights: one-line here; a two-line item (has supporting text) grows via :has() below. */
     min-height: 3.5rem;
     padding: var(--flare-spacing-6) var(--flare-spacing-8);
     gap: var(--flare-spacing-8);
@@ -23,7 +23,7 @@
 
 .flare-list-item:last-child { border-bottom: none; }
 
-/* A two-line item (has supporting text) grows to the MD3 two-line height (72dp). */
+/* A two-line item (has supporting text) grows to the two-line height. */
 .flare-list-item:has(.flare-list-item__secondary) { min-height: 4.5rem; }
 
 .flare-list-item__leading {
@@ -60,9 +60,8 @@
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
 }
 
-/* MD3 selected list item: secondary-container fill + on-secondary-container label (was a primary tint).
-   secondary-container maps to the per-theme selected surface (e.g. Fluent's neutral selected), so this
-   is correct across themes, not just MD3. */
+/* Selected item: secondary-container fill + on-secondary-container label (was a primary tint). The
+   secondary-container role maps to each theme's own selected surface, so this reads correctly under any theme. */
 .flare-list-item--selected {
     background: var(--flare-color-secondary-container);
     color: var(--flare-color-on-secondary-container);
