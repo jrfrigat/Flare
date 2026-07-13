@@ -27,6 +27,14 @@ public sealed record InputTokens
     /// <summary>Focus bottom border for the filled variant.</summary>
     [CssVar(InputField.FocusBorderBottom)] public required string FocusBorderBottom { get; init; }
 
+    /// <summary>
+    /// Focus indicator drawn as a <c>box-shadow</c> on the field well when focused (mouse or keyboard).
+    /// A <c>box-shadow</c> is used so the indicator is layout-neutral (the field never grows/jumps): e.g.
+    /// <c>inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))</c> for a bottom active indicator, or
+    /// <c>inset 0 0 0 1px ...</c> for a full ring. The filled/outlined per-variant classes override it.
+    /// </summary>
+    [CssVar(InputField.FocusRing)] public required string FocusRing { get; init; }
+
     /// <summary>Hover bottom border for the filled variant.</summary>
     [CssVar(InputField.HoverBorderBottom)] public required string HoverBorderBottom { get; init; }
 

@@ -84,11 +84,17 @@
     border-bottom: var(--flare-input-hover-border-bottom, var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant)));
 }
 
-/* Field focus ring intentionally disabled for now (to be redesigned as keyboard-only later).
-   It previously recoloured the border + drew an inset box-shadow on :focus-visible / :has(:focus-visible),
-   but that also fired on a mouse click for text inputs (which are always :focus-visible while focused),
-   so a click drew the ring too. NOTE: with this removed, fields have no visible focus indicator until a
-   keyboard-only ring is re-added. The --flare-input-focus-ring token is kept for that. */
+/* Field focus indicator: a layout-neutral inset ring on focus (mouse OR keyboard, via :focus-within,
+   matching common text-field behavior). Token-driven - the active theme sets --flare-input-focus-ring
+   (a bottom active indicator or a full ring), and the filled/outlined variant classes override it.
+   A box-shadow (not a border change) is used so the field never grows / "jumps" on focus. */
+.flare-input__field:focus-within {
+    box-shadow: var(--flare-input-focus-ring, none);
+}
+/* Invalid field: the focus ring follows the error color instead of the accent. */
+.flare-input--error .flare-input__field:focus-within {
+    box-shadow: inset 0 -2px 0 0 var(--flare-color-error);
+}
 
 .flare-input__control {
     flex: 1;

@@ -295,6 +295,8 @@ internal class VisualStudioTokens
         FilledBorderBottom = "1px solid var(--flare-color-outline)",
         FocusBorder = "1px solid var(--flare-color-primary)",
         FocusBorderBottom = "1px solid var(--flare-color-primary)",
+        // VS focuses with a full 1px blue border; a full inset ring (not just a bottom accent) matches.
+        FocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
     };
 
     // Progress - thin VS bar (derives Fluent's already-flat progress).

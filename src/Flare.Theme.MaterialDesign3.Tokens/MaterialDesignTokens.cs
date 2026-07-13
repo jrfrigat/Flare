@@ -338,6 +338,8 @@ public class MaterialDesignTokens
         FilledBorderBottom = "1px solid var(--flare-color-on-surface-variant)",
         FocusBorder = "none",
         FocusBorderBottom = "3px solid var(--flare-color-primary)",
+        // Focus = a 2px primary active indicator drawn as a layout-neutral inset shadow (no jump).
+        FocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
         HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
         HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
         Padding = "1rem 1rem",
