@@ -296,7 +296,7 @@ public class MaterialDesignTokens
         PanelShadow = "var(--flare-elevation-3)",     // elevation 3
         PanelPaddingInline = "0.125rem",              // group padding 2dp
         PanelPaddingBlock = "0.125rem",               // 2dp
-        ItemHeight = "2.75rem",                       // item height 44dp
+        ItemHeight = "3rem",                          // item height 48dp (MD3 list-item)
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
         ItemGapBetween = "0.125rem",                  // gap between items 2dp
         ItemRadius = "var(--flare-shape-extra-small)",// 4dp
