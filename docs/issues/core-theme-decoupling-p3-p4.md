@@ -5,6 +5,18 @@ first, keep these as tracked scope.
 
 ## P3 - sweep literal visual fallbacks out of core component CSS
 
+**STATUS: substantially DONE** (commit `082b1f3`): 515 dead `var(--flare-X, <literal>)` fallbacks stripped
+from 53 core CSS files, for tokens that are typed `[CssVar]` record members (emitted by EVERY theme, so
+the fallback never rendered). Safe-by-construction; verified in MD3 that the stripped tokens resolve to the
+theme's real values (switch-track-width -> 52px etc.) and that KEPT fallbacks (component-internal opt-in
+vars not theme-emitted) still resolve. Tooling in scratchpad: `typed-tokens.mjs` (derives the all-theme
+typed set from source) + `strip-fallbacks.mjs` (paren-aware stripper). REMAINING P3: (a) ~52 nested-class
+tokens (Button.Gap/Height/Radius, SplitButton.*) whose `[CssVar]` refs the extractor didn't resolve, so
+their fallbacks were conservatively kept - finish the nested-class resolver to strip them; (b) formalise
+the two scripts as a tool + add the guard test below.
+
+## P3 - remaining detail
+
 The token-default guard (`AbstractionsTokenRecords_ShipNoLiteralDefaults`) forbids literal defaults in the
 token RECORDS, but NOT in the component CSS. Core `wwwroot/css/*.css` still carries `var(--x, <literal>)`
 fallbacks that encode one theme's visual default: opacities (`var(--x, 0.08)`), radii (`var(--x, 2px)`),
