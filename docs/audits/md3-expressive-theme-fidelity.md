@@ -15,8 +15,17 @@ parallel auditors). Analysis only - no fixes applied yet.
 ## 0. Method & sources
 
 - Theme tokens: `src/Flare.Theme.MaterialDesign3.Tokens/MaterialDesignTokens.cs` (one file: per-component
-  `XxxTokens` records + `LightColors`/`DarkColors`). The `Flare.Theme.MaterialDesign3` project itself
-  has **no `wwwroot/css`** - confirmed via glob. So the theme = values only.
+  `XxxTokens` records + `LightColors`/`DarkColors`). This is the shared BASE the Material-lineage themes
+  derive from via `with`.
+- **CORRECTION (important):** the shipping theme is `Flare.Theme.MaterialDesign3Expressive`
+  (`Md3Theme`, id `md3-expressive`). It is NOT pure tokens - it derives the base tokens
+  `with { ButtonGroup = <separated Expressive bundle> }` AND ships its own scoped override CSS for the
+  **button family**: `wwwroot/css/components/{button,split-button,button-group}.css` (aggregated by
+  `md3-base.css`), all `@scope (.flare-theme-md3-expressive)`. The override surface is EXACTLY the button
+  family - every other component renders from pure core CSS + tokens. An earlier draft of this audit (and
+  the per-component auditors) were told "the MD3 theme has no override CSS" - that was wrong for the button
+  family, so the buttons-family GAP/NOT-IMPL findings below were re-verified against the real theme CSS
+  and corrected. All non-button findings stand (those components have no theme override).
 - Core render CSS: `src/Flare.Components/wwwroot/css/<comp>.css` (global bundle, MD3-shaped).
 - Core state engine: `src/Flare.Components/wwwroot/css/state-layer.css` + per-component `::before`.
 - Specs: `docs/spec/<comp>/md3-expressive-spec.md` (+ `_pallete`, `_foundation`).
@@ -65,18 +74,24 @@ This is the root of several per-component NOT-IMPL findings below and is a candi
 Verdict legend: MATCH / MINOR (cosmetic drift) / GAP (real divergence) / NOT-IMPL (Expressive behavior
 absent) / DELIBERATE (intentional deviation). Only non-MATCH axes listed; unlisted axes match spec.
 
-### Buttons family
-- **Button** - GAP heights md/lg/xl = 48/56/64dp vs spec 56/96/136 (xs/sm match); GAP press shape-morph
-  is opt-in (`PressMorph` default off) + wrong targets + no spring; MINOR outline width 1px all vs
-  1/1/1/2/3; MINOR "Square" variant = 0dp vs spec square = rounded-rect. Icon/label/typo/state opacities
-  /elevation MATCH. (Heights are a DELIBERATE practicality cap - see decisions.)
-- **Split-button** - GAP inner-corner hover/press morph (grow) + trigger-round-when-open not implemented
-  (only caret rotates). Rest inner corners 4/4/4/8/12dp MATCH; inherits button height gap.
-- **Button-group** - GAP renders the legacy connected segmented row (flat interior, -1px border overlap,
-  8dp outer) instead of the Expressive gapped-pill Connected + Standard variants; press/select corner
-  morph + standard width-grow NOT-IMPL.
-- **FAB** - GAP padding-sized (sm/md/lg) instead of fixed 40/56/80/96dp diameters; Medium (80dp) size
-  missing. Container color/elevation (6/8dp)/states MATCH.
+### Buttons family (re-verified against the theme's own override CSS - several agent findings were false)
+- **Button** - the Expressive `button.css` DOES implement shape morph: hover -> radius 33% of height,
+  and press -> per-size spec corners (xs/sm 8dp, md 12dp, lg/xl 16dp), plus the ripple/tonal-lift/
+  outlined-tint and 150/50ms timing. So the agent's "press-morph opt-in / wrong targets" was a FALSE
+  POSITIVE (it read core `PressMorph` and missed the theme). Remaining: MINOR outline width 1px vs
+  1/1/1/2/3; DELIBERATE heights md/lg/xl 48/56/64 vs 56/96/136 (issue `md3e-button-expressive-sizes`);
+  and the morph eases with cubic-bezier not a spring (the only true Expressive miss -> C1 spring).
+- **Split-button** - the Expressive `split-button.css` DOES morph the inner (seam) corner on hover/press
+  (hovered half -> full capsule) and rounds the trigger fully when open, with the pill-radius-scaling-trap
+  fix (calc(height/2), not 9999px). Agent's "not implemented (only caret rotates)" was a FALSE POSITIVE.
+  Remaining: spring easing only (C1); inherits the deliberate height cap.
+- **Button-group** - the Expressive theme overrides `ButtonGroup` to the separated gapped-pill Connected
+  bundle (2dp gap, no overlap, capsule ends, 8dp inner) + `button-group.css` morphs a segment to a full
+  capsule on hover/press. So the Expressive flavor is ALREADY implemented - agent's "legacy segmented row"
+  was a FALSE POSITIVE. Remaining: the separate **Standard** variant (large gaps + press width-grow) is
+  not modeled, and spring easing (C1). Inherits the height cap.
+- **FAB** - (no theme override - core-rendered) GAP padding-sized (sm/md/lg) instead of fixed
+  40/56/80/96dp diameters; Medium (80dp) size missing. Container color/elevation (6/8dp)/states MATCH.
 - **Badge** - MATCH (spec-complete). No action.
 
 ### Selection controls
@@ -178,9 +193,10 @@ Each needs a token the core reads (so it stays theme-set) or is a genuine cross-
 Cannot be done as pure token edits; several are net-new components or need a new core primitive.
 - **C1 spring motion primitive (F1)** - a `linear()` spring-approximation easing token. Unlocks button
   press-morph, switch thumb-morph, slider handle-morph springiness at once. **Core token addition.**
-- **C2 interaction shape-morph** - button press-morph (default-on, per-size targets), split-button inner
-  corners, button-group corners, list per-state container morph. Needs a core mechanism to animate
-  `border-radius` per size/state (+ C1). **Core capability.**
+- **C2 interaction shape-morph** - ALREADY DONE for the button family (button hover/press, split-button
+  seam, button-group segment) in the Expressive theme's override CSS, per-size spec targets. Remaining:
+  **list** per-state container morph (4->12->16dp). Uses discrete radii + a `transition: border-radius`;
+  the springiness is C1.
 - **C3 progress indeterminate wavy** - the most-used loading state. Core-CSS + a wavelength token.
 - **C4 carousel** MD3E layouts (multi-browse / hero) - **new capability** (separate package).
 - **C5 dialog** true full-screen variant - **new capability.**
@@ -193,7 +209,8 @@ Cannot be done as pure token edits; several are net-new components or need a new
   are very large). Cascades to split-button + button-group.
 - **D2 Slider default size**: keep 40/52dp Medium, or retune so Medium == the 16/44dp MD3E canonical
   (currently parked at XS).
-- **D3 Button-group** flavor: adopt the Expressive gapped-pill Connected look, or keep the legacy segmented row.
+- **D3 Button-group** flavor: RESOLVED - the Expressive gapped-pill Connected look is already shipped (the
+  audit's "legacy segmented row" was a false positive). Only the separate Standard variant is unbuilt.
 - **D4 Search / Toolbar / Carousel-layouts**: build the net-new Expressive components, or accept the gap.
 
 ---
