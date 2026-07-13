@@ -27,4 +27,8 @@ public static class FluentCssVars
     public const string SubtleHover = "--flare-fluent-subtle-hover";
     /// <summary>Subtle pressed fill (colorSubtleBackgroundPressed).</summary>
     public const string SubtlePressed = "--flare-fluent-subtle-pressed";
+    /// <summary>Neutral stroke on hover (colorNeutralStroke1Hover).</summary>
+    public const string StrokeHover = "--flare-fluent-stroke-hover";
+    /// <summary>Neutral stroke on press (colorNeutralStroke1Pressed).</summary>
+    public const string StrokePressed = "--flare-fluent-stroke-pressed";
 }

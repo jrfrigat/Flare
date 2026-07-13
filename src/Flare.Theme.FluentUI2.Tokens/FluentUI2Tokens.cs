@@ -384,7 +384,7 @@ public class FluentUI2Tokens
         FocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",
         FocusOutlineOffset = "0",
-        HoverBorderBottom = "var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant))",
+        HoverBorderBottom = "1px solid var(--flare-fluent-stroke-hover, #C7C7C7)",
         HoverStateLayer = "none",
         Padding = "0.75rem 1rem",
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
@@ -489,6 +489,9 @@ public class FluentUI2Tokens
         // because the surface-container role scale inverts between light and dark.
         [FluentCssVars.SubtleHover] = "#F5F5F5",
         [FluentCssVars.SubtlePressed] = "#E0E0E0",
+        // Neutral stroke hover/pressed (colorNeutralStroke1Hover/Pressed) - subtle border darken.
+        [FluentCssVars.StrokeHover] = "#C7C7C7",
+        [FluentCssVars.StrokePressed] = "#B3B3B3",
 
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
@@ -1040,6 +1043,9 @@ public class FluentUI2Tokens
             // Fluent dark subtle hover/pressed.
             [FluentCssVars.SubtleHover] = "#383838",
             [FluentCssVars.SubtlePressed] = "#2E2E2E",
+            // Fluent dark neutral stroke hover/pressed.
+            [FluentCssVars.StrokeHover] = "#757575",
+            [FluentCssVars.StrokePressed] = "#6B6B6B",
         };
         return dict;
     }
