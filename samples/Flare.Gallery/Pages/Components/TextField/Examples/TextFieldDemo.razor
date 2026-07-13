@@ -3,7 +3,10 @@
     <FlareTextField @bind-Value="_email" Label="Email" Placeholder="name@example.com" HelperText="We won't share your email.">
         <LeadingIcon><FlareIcon Name="email" /></LeadingIcon>
     </FlareTextField>
-    <FlareTextField @bind-Value="_outlined" Label="Outlined variant" Variant="InputVariant.Outlined" Placeholder="Outlined regardless of theme" />
+    <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Variant (theme-independent)</FlareText>
+    <FlareTextField @bind-Value="_vDefault" Label="Default variant" Variant="InputVariant.Default" Placeholder="Uses the active theme's field style" HelperText="Default: follows the theme." />
+    <FlareTextField @bind-Value="_vFilled" Label="Filled variant" Variant="InputVariant.Filled" Placeholder="Filled regardless of theme" HelperText="Filled: surface container + bottom indicator." />
+    <FlareTextField @bind-Value="_outlined" Label="Outlined variant" Variant="InputVariant.Outlined" Placeholder="Outlined regardless of theme" HelperText="Outlined: full border, brand outline on focus." />
     <FlareTextField @bind-Value="_live" Label="Immediate + debounce 300ms" Immediate="true" DebounceInterval="300" HelperText="@($"Live value: {_live}")" />
     <FlareTextField Label="Error example" Placeholder="Required field" ErrorText="This field is required." />
     <FlareTextField @bind-Value="_readonly" Label="Read-only" ReadOnly="true" />
@@ -14,6 +17,8 @@
 @code {
     private string? _name;
     private string? _email;
+    private string? _vDefault;
+    private string? _vFilled;
     private string? _outlined;
     private string? _live;
     private string? _readonly = "Readonly value";

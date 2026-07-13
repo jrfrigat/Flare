@@ -20,15 +20,14 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddFlare(opts =>
 {
     opts.DefaultTheme = new Md3Theme();
-    // Open with Material Design 3 Expressive + the Dynamic Color palette by default. The dynamic
-    // palette derives from the OS/browser accent color (Windows/macOS accent, Android Material You)
-    // via the active theme's generator -- this works in browsers that expose the real accent (e.g.
-    // Firefox). Chrome/Edge do NOT expose the genuine OS accent on the open web (they return a fixed
-    // placeholder to mitigate fingerprinting), so there the Dynamic palette uses the fallback below:
-    // the curated MD3 Violet palette, rather than an arbitrary blue.
+    // A theme is not bound to a palette. Until the user picks one, use each theme's OWN default
+    // palette (ThemePaletteFollower keeps it in sync on theme switches, e.g. Fluent -> Fluent blue).
+    // The Dynamic Color palette stays registered and selectable (it derives from the OS/browser
+    // accent via the active theme's generator; Chrome/Edge hide the real accent to avoid
+    // fingerprinting, so it degrades to the curated MD3 Violet fallback), just not forced as default.
     opts.UseDynamicPalette = true;
     opts.DynamicFallbackPalette = Md3Palettes.Violet;
-    opts.DefaultPaletteId = Palette.DynamicId;
+    opts.DefaultPaletteId = Md3Palettes.Violet.Id; // default theme (MD3 Expressive) own palette
     // Every theme below is registered explicitly, so skip the reflection-based auto-discovery. That
     // avoids force-loading the whole assembly graph (Assembly.Load + GetTypes over every referenced
     // assembly) at startup and keeps the path trim/AOT-friendly.
@@ -63,6 +62,10 @@ builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<RailLabelService>();
 builder.Services.AddSingleton<GallerySearchService>();
 builder.Services.AddSingleton<ChangelogService>();
+// A theme is not bound to a palette; when the user switches theme without having pinned a palette,
+// follow the new theme's own default palette (e.g. Fluent -> Fluent blue). Activated after build.
+// Scoped: it depends on the scoped IThemeService (a singleton here would fail DI validation).
+builder.Services.AddScoped<ThemePaletteFollower>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 var host = builder.Build();
@@ -75,5 +78,8 @@ await languageService.InitializeCultureAsync();
 // preferred variant (no flash from the default).
 var railLabelService = host.Services.GetRequiredService<RailLabelService>();
 await railLabelService.InitializeAsync();
+
+// Activate the palette follower so it subscribes to theme changes before the first user switch.
+_ = host.Services.GetRequiredService<ThemePaletteFollower>();
 
 await host.RunAsync();

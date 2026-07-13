@@ -460,9 +460,10 @@ public class FluentUI2Tokens
         TrackHoverOnBg = "var(--flare-switch-track-on-bg)",
         HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
         HoverShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
-        DisabledTrackBg = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        DisabledTrackBorder = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
-        DisabledHandleBg = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
+        // Fluent flat disabled palette (was MD3-style on-surface opacity mixes).
+        DisabledTrackBg = "var(--flare-fluent-disabled-bg, #F0F0F0)",
+        DisabledTrackBorder = "var(--flare-fluent-disabled-border, #E0E0E0)",
+        DisabledHandleBg = "var(--flare-fluent-disabled-fg, #BDBDBD)",
     };
 
     /// <summary>
@@ -476,6 +477,13 @@ public class FluentUI2Tokens
         [FluentCssVars.FocusStrokeWidth] = "2px",
         [FluentCssVars.FocusStrokeColor] = "#000000",
         [FluentCssVars.FocusStrokeOuter] = "#FFFFFF",
+
+        // Fluent disabled palette (colorNeutralBackgroundDisabled / ...ForegroundDisabled /
+        // ...StrokeDisabled). Fluent uses a flat discrete disabled look, not element opacity.
+        // No semantic role maps to these exact greys, so they live here (dark values in DarkExtended).
+        [FluentCssVars.DisabledBg] = "#F0F0F0",
+        [FluentCssVars.DisabledFg] = "#BDBDBD",
+        [FluentCssVars.DisabledBorder] = "#E0E0E0",
 
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
@@ -1020,6 +1028,10 @@ public class FluentUI2Tokens
             [FluentCssVars.FocusStrokeOuter] = "#000000",
             ["--flare-switch-track-hover-off-bg"] = "var(--flare-color-surface-container)",
             ["--flare-switch-track-hover-on-bg"] = "#2886D4",
+            // Fluent dark disabled palette.
+            [FluentCssVars.DisabledBg] = "#141414",
+            [FluentCssVars.DisabledFg] = "#5C5C5C",
+            [FluentCssVars.DisabledBorder] = "#424242",
         };
         return dict;
     }
