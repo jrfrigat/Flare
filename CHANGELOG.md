@@ -3,6 +3,37 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-07-13
+
+A fields + slider release: gaps found while building real apps on Flare (the Weir admin and the
+PlaylistShared / Deka player) - colored slider zones, keyboard events across the field family, and two
+focus/visibility fixes.
+
+### Added
+- **`FlareSlider` colored zones**: a declarative `<Zones>` slot with `<FlareSliderZone Start End Color />`
+  children - static colored regions on the track (safe/warning/danger gauges, a media-buffer band, or
+  per-step coloring), each in its own `FlareColor`. Zones are drawn under the active fill (which always
+  shows the current value on top) and work in single, range and vertical modes.
+- **Keyboard events on the field family**: `OnKeyDown` / `OnKeyUp` on `FlarePasswordField`,
+  `FlareMaskedField`, `FlareTextArea` and `FlareNumericField` (forwarded to the inner input), so patterns
+  like "press Enter in the password field to submit the form" work without a wrapper handler.
+  `FlareNumericField` raises them after its built-in ArrowUp/ArrowDown stepping.
+
+### Changed
+- **Theme authoring**: `InputTokens` gains a required `FocusRing` field (the field focus-ring box-shadow,
+  CSS `--flare-input-focus-ring`). Custom themes that construct `InputTokens` directly must supply it;
+  themes derived from the in-box themes via `with` inherit it.
+
+### Fixed
+- **`FlareSwitch` in the Visual Studio 2026 theme** rendered with the "on" thumb overflowing the rail:
+  the theme carried Material Design 3 thumb sizes (a 24px thumb) on a compact 40x20 rail. It now uses the
+  Fluent v9 geometry - a 14px thumb, the same size in both states, that fits the rail.
+- **Field focus indicator restored**: every `FlareField`-based control (`FlareField`, `FlarePasswordField`,
+  `FlareTextArea`, `FlareNumericField`, `FlareSelect`, the pickers) had no focus affordance on mouse or
+  keyboard. A layout-neutral, token-driven ring is now drawn on `:focus-within` (theme token
+  `--flare-input-focus-ring`; the filled/outlined variants override it). Invalid fields get an
+  error-colored ring.
+
 ## [0.1.9] - 2026-07-12
 
 A polish release: gap follow-ups surfaced while building real apps on Flare (the Weir dashboard and the
