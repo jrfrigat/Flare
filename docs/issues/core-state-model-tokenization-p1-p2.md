@@ -46,12 +46,21 @@ Css.Tokens + CssVarMap, all 6 themes set the currentColor wash) and the shared `
 consumes them. Zero visual change. `-selected-layer` was NOT added yet (CssAudit `check` fails on an unused
 const - add it in the same commit as the first component that uses a selected state layer).
 
+Two distinct core patterns were found (grep `state-<x>-opacity` in wwwroot/css):
+- **Pattern A - `::before` currentColor overlay** (the canonical MD3 state layer): button, menuitem,
+  togglebutton + the shared state-layer.css utility (chip). These map 1:1 onto the layer token.
+- **Pattern B - direct `background: color-mix(<role> X%, <base>)` on `:hover`/`--selected`** (list, tabs,
+  nav, accordion, collapse, breadcrumb, datagrid, datepicker, calendar, input/numeric, listbox, pagination,
+  stepper, table, timepicker, tree, virtualtree, colormodetoggle, colorpicker, confirmdialog, messagebox,
+  scrolltop). These bake a SPECIFIC role (on-surface / primary / on-primary) + the state opacity into a
+  solid hover bg - a SOFTER coupling (semantic roles are mandate-allowed), NOT the currentColor overlay.
+
 REMAINING P1:
-1. Per-component `::before` sweep: change each component's own overlay (button, menuitem, list, tabs, chip
-   direct rules, nav, bottomnav, pagination, togglebutton, accordion/collapse, listbox/select) from
-   `background: currentColor; opacity: var(--flare-state-<state>-opacity)` to
-   `background: var(--flare-state-<state>-layer); opacity: 1` (base transparent, opacity 0). Add
-   `-selected-layer` when the first selected-state component is swept.
+1. **Pattern A sweep DONE** (commit `ff4b770`): button/menuitem/togglebutton `::before` now paint
+   `var(--flare-state-<state>-layer)` at opacity:1 (base transparent). Zero visual change. So the core no
+   longer bakes the state MODEL for the overlay components. Add `-selected-layer` when the first
+   selected-state overlay is swept. **Pattern B tokenization is a separate follow-up** (decide whether to
+   route those through the layer token too, or accept the semantic-role coupling).
 2. FluentUI2 discretisation: set FUI2's `-layer` tokens to its discrete subtle fills (globally and/or
    per-variant, e.g. `.flare-btn--filled { --flare-state-hover-layer: <darkened brand> }`), at effectively
    opacity 1. `currentColor` in a custom prop resolves at the `::before` use-site, so MD3 stays correct.
