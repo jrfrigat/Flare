@@ -477,6 +477,8 @@ public static class CssVarMap
         v[Css.Tokens.InputField.FocusBorder] = t.Input.FocusBorder;
         v[Css.Tokens.InputField.FocusBorderBottom] = t.Input.FocusBorderBottom;
         v[Css.Tokens.InputField.FocusRing] = t.Input.FocusRing;
+        v[Css.Tokens.InputField.FocusOutline] = t.Input.FocusOutline;
+        v[Css.Tokens.InputField.FocusOutlineOffset] = t.Input.FocusOutlineOffset;
         v[Css.Tokens.InputField.HoverBorderBottom] = t.Input.HoverBorderBottom;
         v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
         v[Css.Tokens.InputField.Padding] = t.Input.Padding;

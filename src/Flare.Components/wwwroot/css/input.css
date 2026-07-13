@@ -34,6 +34,8 @@
     /* Focus emphasis = an inset box-shadow (layout-neutral), so the field never grows / "jumps"
        when focused. The 1px border stays; the shadow adds the second accent pixel at the bottom. */
     --flare-input-focus-ring: inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary));
+    /* An explicit variant defines its own focus (a ring); clear any theme-level focus outline. */
+    --flare-input-focus-outline: none;
 }
 .flare-input-variant--outlined {
     --flare-input-bg: transparent;
@@ -44,6 +46,8 @@
     --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
     /* Inset ring on all four sides -> reads as a 2px accent border without a layout shift. */
     --flare-input-focus-ring: inset 0 0 0 1px var(--fc-main, var(--flare-color-primary));
+    /* An explicit variant defines its own focus (a ring); clear any theme-level focus outline. */
+    --flare-input-focus-outline: none;
 }
 
 .flare-input__label {
@@ -84,16 +88,20 @@
     border-bottom: var(--flare-input-hover-border-bottom, var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant)));
 }
 
-/* Field focus indicator: a layout-neutral inset ring on focus (mouse OR keyboard, via :focus-within,
-   matching common text-field behavior). Token-driven - the active theme sets --flare-input-focus-ring
-   (a bottom active indicator or a full ring), and the filled/outlined variant classes override it.
-   A box-shadow (not a border change) is used so the field never grows / "jumps" on focus. */
+/* Field focus indicator: layout-neutral, on focus (mouse OR keyboard, via :focus-within, matching common
+   text-field behavior). Two token-driven mechanisms so each theme / variant picks its own look without a
+   layout shift: a box-shadow --flare-input-focus-ring (a bottom active indicator or a full ring) AND/OR a
+   real --flare-input-focus-outline (a browser-native focus rectangle). The theme sets one, the other stays
+   none; the filled/outlined variant classes override the ring and clear the outline. */
 .flare-input__field:focus-within {
     box-shadow: var(--flare-input-focus-ring, none);
+    outline: var(--flare-input-focus-outline, none);
+    outline-offset: var(--flare-input-focus-outline-offset, 0);
 }
-/* Invalid field: the focus ring follows the error color instead of the accent. */
+/* Invalid field: the focus indicator follows the error color instead of the accent. */
 .flare-input--error .flare-input__field:focus-within {
-    box-shadow: inset 0 -2px 0 0 var(--flare-color-error);
+    box-shadow: inset 0 0 0 1px var(--flare-color-error);
+    outline: none;
 }
 
 .flare-input__control {

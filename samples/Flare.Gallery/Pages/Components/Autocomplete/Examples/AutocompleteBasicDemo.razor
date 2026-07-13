@@ -1,19 +1,21 @@
 <FlareStack Gap="FlareSpacing.Medium">
+    @* Local list: options show as soon as the field is focused and filter as you type. *@
     <FlareCombobox TValue="string"
                        @bind-Value="_selectedCity"
                        Label="City"
-                       Placeholder="Type to search…"
-                       SearchFunc="SearchCities"
-                       MinChars="1"
+                       Placeholder="Select or type to filter"
+                       Items="_cities"
                        Clearable="true"
                        Style="max-width:24rem;" />
+    @* Async source: a cancelable SearchFunc for remote data - type to search (MinChars gates the query). *@
     <FlareCombobox TValue="string"
                        @bind-Value="_selectedCity"
-                       Label="City (Large - Xs..Xl grid)"
-                       Placeholder="Type to search…"
+                       Label="City (async search)"
+                       Placeholder="Type to search..."
                        SearchFunc="SearchCities"
                        MinChars="1"
-                       Size="FieldSize.Lg"
+                       HelperText="Async SearchFunc: results load as you type (the remote-source pattern)."
+                       Clearable="true"
                        Style="max-width:24rem;" />
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Selected: @_selectedCity</FlareText>
 </FlareStack>
