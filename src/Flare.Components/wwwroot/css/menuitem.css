@@ -45,23 +45,27 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-color: currentColor;
+    /* Base invisible; each state paints its own layer token (theme owns the paint). */
+    background: transparent;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
 .flare-menu-item:hover:not(:disabled)::before {
-    opacity: var(--flare-state-hover-opacity);
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
 
 .flare-menu-item:focus-visible:not(:disabled)::before,
 .flare-menu-item--focused:not(:disabled)::before {
-    opacity: var(--flare-state-focus-opacity);
+    background: var(--flare-state-focus-layer);
+    opacity: 1;
 }
 
 .flare-menu-item:active:not(:disabled)::before {
-    opacity: var(--flare-state-pressed-opacity);
+    background: var(--flare-state-pressed-layer);
+    opacity: 1;
 }
 
 /* Focus ring (focus indicator) */

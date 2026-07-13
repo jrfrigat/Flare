@@ -38,13 +38,14 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background-color: currentColor;
+    /* Base invisible; each state paints its own layer token (theme owns the paint). */
+    background: transparent;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-toggle-btn:hover::before  { opacity: var(--flare-state-hover-opacity); }
+.flare-toggle-btn:hover::before  { background: var(--flare-state-hover-layer); opacity: 1; }
 /* Focus ring reads the shared button focus tokens (consistency with .flare-btn) - themes tune the
    whole button family's focus in one place; the literals stay as fallbacks. */
 .flare-toggle-btn:focus-visible  {
@@ -52,8 +53,8 @@
     outline-offset: var(--flare-btn-focus-outline-offset, 2px);
     box-shadow: var(--flare-btn-focus-shadow, none);
 }
-.flare-toggle-btn:focus-visible::before  { opacity: var(--flare-state-focus-opacity); }
-.flare-toggle-btn:active::before { opacity: var(--flare-state-pressed-opacity); }
+.flare-toggle-btn:focus-visible::before  { background: var(--flare-state-focus-layer); opacity: 1; }
+.flare-toggle-btn:active::before { background: var(--flare-state-pressed-layer); opacity: 1; }
 
 /* Pressed/active (selected) - the round -> squircle shape morph is driven by a size token. The local
    --_toggle-radius-selected var is switched by the size classes below. */
