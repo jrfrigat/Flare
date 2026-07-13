@@ -3,13 +3,15 @@
     margin: 0;
     padding: 0;
     background: var(--flare-color-surface);
-    border-radius: var(--flare-card-radius, var(--flare-shape-medium));
+    border-radius: var(--flare-card-radius);
     overflow: hidden;
 }
 
 .flare-list-item {
     display: flex;
     align-items: center;
+    /* Line-count item heights: one-line here; a two-line item (has supporting text) grows via :has() below. */
+    min-height: 3.5rem;
     padding: var(--flare-spacing-6) var(--flare-spacing-8);
     gap: var(--flare-spacing-8);
     color: var(--flare-color-on-surface);
@@ -20,6 +22,9 @@
 }
 
 .flare-list-item:last-child { border-bottom: none; }
+
+/* A two-line item (has supporting text) grows to the two-line height. */
+.flare-list-item:has(.flare-list-item__secondary) { min-height: 4.5rem; }
 
 .flare-list-item__leading {
     display: flex;
@@ -55,16 +60,20 @@
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
 }
 
+/* Selected item: secondary-container fill + on-secondary-container label (was a primary tint). The
+   secondary-container role maps to each theme's own selected surface, so this reads correctly under any theme. */
 .flare-list-item--selected {
-    background: color-mix(in srgb, var(--flare-color-primary) 16%, var(--flare-color-surface));
-    color: var(--flare-color-primary);
+    background: var(--flare-color-secondary-container);
+    color: var(--flare-color-on-secondary-container);
 }
 
-.flare-list-item--selected .flare-list-item__primary { color: var(--flare-color-primary); }
+.flare-list-item--selected .flare-list-item__primary { color: var(--flare-color-on-secondary-container); }
 
 .flare-list-item--disabled {
     opacity: var(--flare-state-disabled-opacity);
     pointer-events: none;
 }
 
-.flare-list--dense .flare-list-item { padding: var(--flare-spacing-3) var(--flare-spacing-8); }
+/* Dense stays compact: shorter min-height + padding so the 56/72dp defaults do not force it tall. */
+.flare-list--dense .flare-list-item { min-height: 3rem; padding: var(--flare-spacing-3) var(--flare-spacing-8); }
+.flare-list--dense .flare-list-item:has(.flare-list-item__secondary) { min-height: 3.5rem; }

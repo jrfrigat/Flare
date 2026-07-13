@@ -4,16 +4,16 @@
 .flare-toc {
   font-family: var(--flare-typescale-body-medium-font);
   font-size: var(--flare-typescale-body-small-size);
-  line-height: var(--flare-toc-line-height,1.4);
+  line-height: var(--flare-toc-line-height);
 }
 
 .flare-toc__title {
   margin-bottom: var(--flare-spacing-4);
-  color: var(--flare-toc-title-color, var(--flare-color-on-surface-variant));
+  color: var(--flare-toc-title-color);
   font-size: var(--flare-typescale-label-large-size);
-  font-weight: var(--flare-toc-title-weight,600);
+  font-weight: var(--flare-toc-title-weight);
   text-transform: uppercase;
-  letter-spacing: var(--flare-toc-title-tracking,0.05em);
+  letter-spacing: var(--flare-toc-title-tracking);
 }
 
 .flare-toc__list {
@@ -24,25 +24,25 @@
   flex-direction: column;
   gap: 0.125rem;
   /* Rail: a vertical line beside the links (width/colour 0/transparent for no rail). */
-  border-inline-start: var(--flare-toc-rail-width, 0) solid var(--flare-toc-rail-color, transparent);
+  border-inline-start: var(--flare-toc-rail-width) solid var(--flare-toc-rail-color);
 }
 
 .flare-toc__item {
   margin: 0;
   /* Depth is set inline (--flare-toc-depth) from the heading level. */
-  padding-inline-start: calc(var(--flare-toc-indent, 0.75rem) * var(--flare-toc-depth, 0));
+  padding-inline-start: calc(var(--flare-toc-indent) * var(--flare-toc-depth, 0));
 }
 
 .flare-toc__link {
   display: block;
   position: relative;
   padding-block: var(--flare-spacing-2);
-  padding-inline: var(--flare-toc-link-pad-x, 0.75rem);
+  padding-inline: var(--flare-toc-link-pad-x);
   /* Left marker bar; pulled over the rail line. 0-width for the pill look. */
-  margin-inline-start: calc(-1 * var(--flare-toc-marker-width, 0));
-  border-inline-start: var(--flare-toc-marker-width, 0) solid transparent;
-  border-radius: var(--flare-toc-active-radius, var(--flare-shape-full));
-  color: var(--flare-toc-inactive-color, var(--flare-color-on-surface-variant));
+  margin-inline-start: calc(-1 * var(--flare-toc-marker-width));
+  border-inline-start: var(--flare-toc-marker-width) solid transparent;
+  border-radius: var(--flare-toc-active-radius);
+  color: var(--flare-toc-inactive-color);
   text-decoration: none;
   transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
               background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
@@ -50,13 +50,13 @@
 }
 
 .flare-toc__link:hover {
-  color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
-  background: color-mix(in srgb, var(--flare-toc-active-bg, var(--flare-color-secondary-container)) var(--flare-toc-hover-bg-opacity,40%), transparent);
+  color: var(--flare-toc-active-color);
+  background: color-mix(in srgb, var(--flare-toc-active-bg) var(--flare-toc-hover-bg-opacity), transparent);
 }
 
 .flare-toc__link--active {
-  color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
-  background: var(--flare-toc-active-bg, var(--flare-color-secondary-container));
-  border-inline-start-color: var(--flare-toc-active-color, var(--flare-color-on-secondary-container));
-  font-weight: var(--flare-toc-active-weight,600);
+  color: var(--flare-toc-active-color);
+  background: var(--flare-toc-active-bg);
+  border-inline-start-color: var(--flare-toc-active-color);
+  font-weight: var(--flare-toc-active-weight);
 }

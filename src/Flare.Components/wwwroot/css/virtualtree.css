@@ -15,7 +15,7 @@
     /* Depth indentation supplied per-node as a CSS variable. */
     padding-left: var(--flare-vtree-indent, 0);
     cursor: pointer;
-    border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
+    border-radius: var(--flare-nav-item-radius);
     transition: background var(--flare-motion-duration-short2);
 }
 
@@ -31,7 +31,7 @@
     display: flex;
     align-items: center;
     color: var(--flare-color-on-surface-variant);
-    border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
+    border-radius: var(--flare-nav-item-radius);
 }
 
 .flare-vtree__expand-btn:hover {

@@ -80,7 +80,7 @@
   cursor: pointer;
   width: 100%;
   text-align: left;
-  border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
+  border-radius: var(--flare-nav-item-radius);
   transition: background-color var(--flare-motion-duration-short1);
 }
 
@@ -131,7 +131,7 @@
   align-items: center;
   gap: var(--flare-spacing-6);
   padding: var(--flare-spacing-5) var(--flare-spacing-8);
-  border-radius: var(--flare-nav-item-radius, var(--flare-shape-extra-small));
+  border-radius: var(--flare-nav-item-radius);
   text-decoration: none;
   color: var(--flare-color-on-surface-variant);
   font-family: var(--flare-typescale-label-large-font);
@@ -146,15 +146,15 @@
 }
 
 .flare-nav-link--active {
-  background: var(--flare-nav-active-indicator, var(--flare-color-secondary-container));
-  border-radius: var(--flare-nav-indicator-radius, var(--flare-shape-full));
-  border-left: var(--flare-nav-active-left-bar, none);
+  background: var(--flare-nav-active-indicator);
+  border-radius: var(--flare-nav-indicator-radius);
+  border-left: var(--flare-nav-active-left-bar);
   color: var(--flare-color-on-secondary-container);
-  font-weight: var(--flare-nav-active-weight, 600);
+  font-weight: var(--flare-nav-active-weight);
 }
 
 .flare-nav-link--active:hover {
-  background: var(--flare-nav-active-indicator, var(--flare-color-secondary-container));
+  background: var(--flare-nav-active-indicator);
 }
 
 .flare-nav-link--disabled {
@@ -169,7 +169,7 @@
   color: var(--flare-color-on-error);
   border-radius: var(--flare-shape-full);
   font-size: 0.75rem;
-  font-weight: var(--flare-nav-badge-weight, 600);
+  font-weight: var(--flare-nav-badge-weight);
   padding: var(--flare-spacing-1) var(--flare-spacing-4);
   min-width: 1.25rem;
   text-align: center;
@@ -226,6 +226,6 @@
   white-space: nowrap;
   font-family: var(--flare-typescale-label-small-font);
   font-size: var(--flare-typescale-label-small-size);
-  line-height: var(--flare-nav-rail-label-line-height, 1.15);
+  line-height: var(--flare-nav-rail-label-line-height);
 }
 

@@ -24,7 +24,7 @@
   transition: opacity var(--flare-motion-duration-short1);
 }
 
-.flare-breadcrumb__link:hover { opacity: var(--flare-breadcrumb-link-hover-opacity,0.8); text-decoration: underline; }
+.flare-breadcrumb__link:hover { opacity: var(--flare-breadcrumb-link-hover-opacity); text-decoration: underline; }
 
 .flare-breadcrumb__text { color: var(--flare-color-on-surface-variant); }
 
@@ -35,7 +35,7 @@
 
 .flare-breadcrumb__separator {
   color: var(--flare-color-on-surface-variant);
-  opacity: var(--flare-breadcrumb-separator-opacity,0.5);
+  opacity: var(--flare-breadcrumb-separator-opacity);
   user-select: none;
 }
 

@@ -20,7 +20,7 @@
 }
 
 /* FlareForm layout variants */
-.flare-form--horizontal { display: grid; grid-template-columns: var(--flare-form-horizontal-columns, auto 1fr); align-items: start; }
+.flare-form--horizontal { display: grid; grid-template-columns: var(--flare-form-horizontal-columns); align-items: start; }
 .flare-form--inline { flex-direction: row; flex-wrap: wrap; align-items: flex-end; }
 .flare-form--dense { gap: var(--flare-spacing-4); }
 

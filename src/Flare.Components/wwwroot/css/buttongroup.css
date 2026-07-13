@@ -11,7 +11,7 @@
 .flare-btn-group {
     display: inline-flex;
     box-sizing: border-box;
-    gap: var(--flare-btn-group-gap, 0);
+    gap: var(--flare-btn-group-gap);
 }
 
 .flare-btn-group--full {
@@ -27,17 +27,17 @@
    neighbour so two 1px borders collapse into one seam. Default 0 = separated / no overlap. Logical
    properties -> correct in both LTR and RTL and for vertical stacks. */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
-    margin-inline-start: var(--flare-btn-group-overlap, 0);
+    margin-inline-start: var(--flare-btn-group-overlap);
 }
 .flare-btn-group--vertical .flare-btn:not(:first-child) {
-    margin-block-start: var(--flare-btn-group-overlap, 0);
+    margin-block-start: var(--flare-btn-group-overlap);
 }
 
 /* Raise the hovered/focused segment so its border + focus ring are not clipped by an overlapping
    neighbour. Only matters in the connected (overlapping) mode; harmless when separated. */
 .flare-btn-group .flare-btn:hover,
 .flare-btn-group .flare-btn:focus-visible {
-    z-index: var(--flare-btn-group-z-active, 1);
+    z-index: var(--flare-btn-group-z-active);
 }
 
 /* ==========================================================================
@@ -48,25 +48,25 @@
 
 /* Every segment: all four corners default to the interior radius. */
 .flare-btn-group .flare-btn {
-    border-radius: var(--flare-btn-group-inner-radius, 0);
+    border-radius: var(--flare-btn-group-inner-radius);
 }
 
 /* Horizontal: first segment rounds its LEADING (start) end, last segment its TRAILING (end) end. */
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
-    border-start-start-radius: var(--flare-btn-group-outer-radius, 0);
-    border-end-start-radius: var(--flare-btn-group-outer-radius, 0);
+    border-start-start-radius: var(--flare-btn-group-outer-radius);
+    border-end-start-radius: var(--flare-btn-group-outer-radius);
 }
 .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
-    border-start-end-radius: var(--flare-btn-group-outer-radius, 0);
-    border-end-end-radius: var(--flare-btn-group-outer-radius, 0);
+    border-start-end-radius: var(--flare-btn-group-outer-radius);
+    border-end-end-radius: var(--flare-btn-group-outer-radius);
 }
 
 /* Vertical: first segment rounds its TOP corners, last segment its BOTTOM corners. */
 .flare-btn-group--vertical .flare-btn:first-child {
-    border-start-start-radius: var(--flare-btn-group-outer-radius, 0);
-    border-start-end-radius: var(--flare-btn-group-outer-radius, 0);
+    border-start-start-radius: var(--flare-btn-group-outer-radius);
+    border-start-end-radius: var(--flare-btn-group-outer-radius);
 }
 .flare-btn-group--vertical .flare-btn:last-child {
-    border-end-start-radius: var(--flare-btn-group-outer-radius, 0);
-    border-end-end-radius: var(--flare-btn-group-outer-radius, 0);
+    border-end-start-radius: var(--flare-btn-group-outer-radius);
+    border-end-end-radius: var(--flare-btn-group-outer-radius);
 }

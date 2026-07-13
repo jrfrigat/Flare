@@ -1,6 +1,6 @@
 .flare-accordion {
   border: 1px solid var(--flare-color-outline-variant);
-  border-radius: var(--flare-card-radius, var(--flare-shape-medium));
+  border-radius: var(--flare-card-radius);
   overflow: hidden;
 }
 

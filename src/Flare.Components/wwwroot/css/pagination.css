@@ -16,11 +16,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--flare-pagination-size, 2.25rem);
-  height: var(--flare-pagination-size, 2.25rem);
+  min-width: var(--flare-pagination-size);
+  height: var(--flare-pagination-size);
   padding: 0 var(--flare-spacing-4);
-  border: 1px solid var(--flare-pagination-border-color, var(--flare-color-outline-variant));
-  border-radius: var(--flare-pagination-radius, var(--flare-shape-extra-small));
+  border: 1px solid var(--flare-pagination-border-color);
+  border-radius: var(--flare-pagination-radius);
   background: transparent;
   color: var(--flare-color-on-surface);
   font-family: var(--flare-typescale-label-large-font);
@@ -38,13 +38,13 @@
 
 /* Active page: role class sets --fc-main/--fc-on; custom inlines them; default = the active token. */
 .flare-pagination__btn--active {
-  background: var(--fc-main, var(--flare-pagination-active-color, var(--flare-color-primary)));
-  border-color: var(--fc-main, var(--flare-pagination-active-color, var(--flare-color-primary)));
+  background: var(--fc-main, var(--flare-pagination-active-color));
+  border-color: var(--fc-main, var(--flare-pagination-active-color));
   color: var(--fc-on, var(--flare-color-on-primary));
 }
 
 .flare-pagination__btn--active:hover {
-  background: var(--fc-main, var(--flare-pagination-active-color, var(--flare-color-primary))) !important;
+  background: var(--fc-main, var(--flare-pagination-active-color)) !important;
 }
 
 .flare-pagination__btn--nav {
@@ -58,8 +58,8 @@
 }
 
 .flare-pagination__ellipsis {
-  min-width: var(--flare-pagination-size, 2.25rem);
-  height: var(--flare-pagination-size, 2.25rem);
+  min-width: var(--flare-pagination-size);
+  height: var(--flare-pagination-size);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,10 +80,10 @@
   white-space: nowrap;
 }
 .flare-pagination__rows-select {
-  height: var(--flare-pagination-size, 2.25rem);
+  height: var(--flare-pagination-size);
   padding: 0 var(--flare-spacing-4);
-  border: 1px solid var(--flare-pagination-border-color, var(--flare-color-outline-variant));
-  border-radius: var(--flare-pagination-radius, var(--flare-shape-extra-small));
+  border: 1px solid var(--flare-pagination-border-color);
+  border-radius: var(--flare-pagination-radius);
   background: var(--flare-color-surface);
   color: var(--flare-color-on-surface);
   font-family: var(--flare-typescale-body-medium-font);
@@ -94,15 +94,15 @@
 /* Size variants (Xs..Xl; Md is the unmodified default) */
 .flare-pagination--xs .flare-pagination__btn,
 .flare-pagination--xs .flare-pagination__ellipsis,
-.flare-pagination--xs .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 1.5rem); height: var(--flare-pagination-size, 1.5rem); font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--xs .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-label-small-size); }
 .flare-pagination--sm .flare-pagination__btn,
 .flare-pagination--sm .flare-pagination__ellipsis,
-.flare-pagination--sm .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 1.75rem); height: var(--flare-pagination-size, 1.75rem); font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--sm .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-label-small-size); }
 .flare-pagination--lg .flare-pagination__btn,
 .flare-pagination--lg .flare-pagination__ellipsis,
-.flare-pagination--lg .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 2.75rem); height: var(--flare-pagination-size, 2.75rem); font-size: var(--flare-typescale-title-medium-size); }
+.flare-pagination--lg .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-title-medium-size); }
 .flare-pagination--xl .flare-pagination__btn,
 .flare-pagination--xl .flare-pagination__ellipsis,
-.flare-pagination--xl .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 3.25rem); height: var(--flare-pagination-size, 3.25rem); font-size: var(--flare-typescale-title-large-size); }
+.flare-pagination--xl .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-title-large-size); }
 
 /* Semantic color of the active page button */

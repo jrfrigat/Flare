@@ -19,4 +19,14 @@ public sealed record StateTokens
     [CssVar(State.DisabledOpacity)] public required string DisabledOpacity { get; init; }
     /// <summary>Disabled container opacity token.</summary>
     [CssVar(State.DisabledContainerOpacity)] public required string DisabledContainerOpacity { get; init; }
+
+    /// <summary>Hover state-layer paint (full background value incl. alpha). Lets a theme pick the state
+    /// model - translucent currentColor wash or a discrete fill - instead of the core baking one.</summary>
+    [CssVar(State.HoverLayer)] public required string HoverLayer { get; init; }
+    /// <summary>Focus state-layer paint (full background value incl. alpha).</summary>
+    [CssVar(State.FocusLayer)] public required string FocusLayer { get; init; }
+    /// <summary>Pressed state-layer paint (full background value incl. alpha).</summary>
+    [CssVar(State.PressedLayer)] public required string PressedLayer { get; init; }
+    /// <summary>Dragged state-layer paint (full background value incl. alpha).</summary>
+    [CssVar(State.DraggedLayer)] public required string DraggedLayer { get; init; }
 }

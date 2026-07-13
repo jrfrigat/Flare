@@ -32,7 +32,7 @@
 }
 
 .flare-table thead th {
-    padding: var(--flare-table-cell-padding-v, 0.75rem) var(--flare-table-cell-padding-h, 1rem);
+    padding: var(--flare-table-cell-padding-v) var(--flare-table-cell-padding-h);
     text-align: left;
     font-family: var(--flare-typescale-label-large-font);
     font-size: var(--flare-typescale-label-large-size);
@@ -44,7 +44,7 @@
 }
 
 .flare-table tbody td {
-    padding: var(--flare-table-cell-padding-v, 0.75rem) var(--flare-table-cell-padding-h, 1rem);
+    padding: var(--flare-table-cell-padding-v) var(--flare-table-cell-padding-h);
     border-bottom: 1px solid var(--flare-color-outline-variant);
     vertical-align: middle;
 }
@@ -56,7 +56,7 @@
 }
 
 .flare-table--striped tbody tr:nth-child(even) td {
-    background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-table-stripe-opacity, 4%), var(--flare-color-surface));
+    background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-table-stripe-opacity), var(--flare-color-surface));
 }
 
 .flare-table--bordered thead th,

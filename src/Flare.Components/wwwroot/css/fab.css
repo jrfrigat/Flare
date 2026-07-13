@@ -6,7 +6,7 @@
 .flare-fab {
     height: auto;
     gap: var(--flare-fab-gap, 0.75rem);
-    padding: var(--flare-fab-padding-md, 1rem);
+    padding: var(--flare-fab-padding-md);
     border: none;
     border-radius: var(--flare-fab-radius, var(--flare-shape-large));
     /* Tonal colour via the shared role tokens (--fc-*); default primary-container.
@@ -25,12 +25,12 @@
     }
 
 .flare-fab--sm {
-    padding: var(--flare-fab-padding-sm, 0.5rem);
+    padding: var(--flare-fab-padding-sm);
     border-radius: var(--flare-fab-radius-sm, var(--flare-shape-medium));
 }
 
 .flare-fab--lg {
-    padding: var(--flare-fab-padding-lg, 1.75rem);
+    padding: var(--flare-fab-padding-lg);
     border-radius: var(--flare-fab-radius-lg, var(--flare-shape-extra-large));
 }
 

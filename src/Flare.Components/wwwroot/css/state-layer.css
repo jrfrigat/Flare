@@ -15,17 +15,19 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-color: currentcolor;
+    /* Base is invisible (opacity 0); each state below paints its own layer token and fades it in. The
+       theme owns the paint (a translucent currentColor wash, a discrete fill, ...) - the core bakes none. */
+    background: transparent;
     opacity: 0;
     pointer-events: none;
     border-radius: inherit;
     transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-state-layer-hover:hover::before { opacity: var(--flare-state-hover-opacity); }
-.flare-state-layer-focus:focus-visible::before { opacity: var(--flare-state-focus-opacity); }
-.flare-state-layer-pressed:active::before { opacity: var(--flare-state-pressed-opacity); }
-.flare-state-layer-dragged[aria-grabbed="true"]::before { opacity: var(--flare-state-dragged-opacity); }
+.flare-state-layer-hover:hover::before { background: var(--flare-state-hover-layer); opacity: 1; }
+.flare-state-layer-focus:focus-visible::before { background: var(--flare-state-focus-layer); opacity: 1; }
+.flare-state-layer-pressed:active::before { background: var(--flare-state-pressed-layer); opacity: 1; }
+.flare-state-layer-dragged[aria-grabbed="true"]::before { background: var(--flare-state-dragged-layer); opacity: 1; }
 
 /* Disabled helpers: dim the element (and a lower-emphasis container variant). */
 .flare-state-disabled {

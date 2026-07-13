@@ -4,8 +4,8 @@
     gap: var(--flare-spacing-4);
     padding: var(--flare-spacing-3) var(--flare-spacing-8);
     box-sizing: border-box;
-    min-height: var(--flare-chip-height, 2rem); /* default chip height 32dp */
-    border-radius: var(--flare-chip-radius, var(--flare-shape-small));
+    min-height: var(--flare-chip-height); /* default chip height 32dp */
+    border-radius: var(--flare-chip-radius);
     /* Color via shared role tokens (--fc-*); default is neutral.
        Role -> flare-color-* class; custom -> inline --fc-main/--fc-on. */
     border: 1px solid var(--fc-main, var(--flare-color-outline));

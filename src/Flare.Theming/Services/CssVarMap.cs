@@ -99,6 +99,10 @@ public static class CssVarMap
         v[Css.Tokens.State.DraggedOpacity] = t.State.DraggedOpacity;
         v[Css.Tokens.State.DisabledOpacity] = t.State.DisabledOpacity;
         v[Css.Tokens.State.DisabledContainerOpacity] = t.State.DisabledContainerOpacity;
+        v[Css.Tokens.State.HoverLayer] = t.State.HoverLayer;
+        v[Css.Tokens.State.FocusLayer] = t.State.FocusLayer;
+        v[Css.Tokens.State.PressedLayer] = t.State.PressedLayer;
+        v[Css.Tokens.State.DraggedLayer] = t.State.DraggedLayer;
 
         #region BADGE
         v[Css.Tokens.Badge.Radius] = t.Badge.Radius;

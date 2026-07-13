@@ -88,6 +88,10 @@ internal static class MaterialDesign2Tokens
         DraggedOpacity = "0.08",
         DisabledOpacity = "0.38",
         DisabledContainerOpacity = "0.12",
+        HoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        FocusLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        PressedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-pressed-opacity) * 100%), transparent)",
+        DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
     };
 
     // ---- Components: only the tokens that differ from the defaults to read as MD2. ----

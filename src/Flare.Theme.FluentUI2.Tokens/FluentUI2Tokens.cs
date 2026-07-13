@@ -73,6 +73,12 @@ public class FluentUI2Tokens
         DraggedOpacity = "0.1",
         DisabledOpacity = "0.4",
         DisabledContainerOpacity = "0.1",
+        // Foundation: currentColor wash at each state's opacity (identical to today). A later pass switches
+        // these to Fluent's discrete per-state fills so the button/menu/list override CSS can be dropped.
+        HoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        FocusLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        PressedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-pressed-opacity) * 100%), transparent)",
+        DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
     };
 
     internal static readonly BadgeTokens Badge = new()

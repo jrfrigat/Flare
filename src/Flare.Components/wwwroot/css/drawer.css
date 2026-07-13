@@ -1,7 +1,7 @@
 .flare-drawer-scrim {
   position: fixed;
   inset: 0;
-  background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity, 0.32) * 100%), transparent);
+  background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity) * 100%), transparent);
   z-index: 400;
   animation: flare-scrim-in var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
 }
@@ -65,13 +65,13 @@
   visibility: visible !important;
   box-shadow: none;
   border-right: 1px solid var(--flare-color-outline-variant);
-  width: var(--flare-drawer-mini-width, 3.5rem);
+  width: var(--flare-drawer-mini-width);
   z-index: auto;
   transition: width var(--flare-motion-duration-medium2) var(--flare-motion-easing-standard);
 }
 
 .flare-drawer--mini:hover {
-  width: var(--flare-drawer-width, 16rem);
+  width: var(--flare-drawer-width);
 }
 
 /* AutoCloseBelow - pre-compiled breakpoint hide classes */

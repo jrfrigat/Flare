@@ -1,9 +1,9 @@
 .flare-appbar {
     display: flex;
     align-items: center;
-    gap: var(--flare-appbar-gap, 0.25rem);
-    padding: 0 var(--flare-appbar-padding-x, 0.25rem);
-    min-height: var(--flare-appbar-height, 4rem);
+    gap: var(--flare-appbar-gap);
+    padding: 0 var(--flare-appbar-padding-x);
+    min-height: var(--flare-appbar-height);
     background-color: var(--flare-color-surface);
     color: var(--flare-color-on-surface);
     box-shadow: var(--flare-elevation-0);
@@ -24,20 +24,20 @@
 .flare-appbar--elevation-5 { box-shadow: var(--flare-elevation-5); }
 
 .flare-appbar--dense {
-    min-height: var(--flare-appbar-height-dense, 3rem);
+    min-height: var(--flare-appbar-height-dense);
 }
 
 .flare-appbar__leading,
 .flare-appbar__trailing {
     display: flex;
     align-items: center;
-    gap: var(--flare-appbar-gap, 0.25rem);
+    gap: var(--flare-appbar-gap);
     flex-shrink: 0;
 }
 
 .flare-appbar__title {
     flex: 1;
-    padding: 0 var(--flare-appbar-title-padding-x, 0.75rem);
+    padding: 0 var(--flare-appbar-title-padding-x);
     font-family: var(--flare-typescale-title-large-font);
     font-size: var(--flare-typescale-title-large-size);
     font-weight: var(--flare-typescale-title-large-weight);

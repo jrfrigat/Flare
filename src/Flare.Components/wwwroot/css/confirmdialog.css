@@ -5,7 +5,7 @@
 .flare-shortcuts-help__scrim {
     position: fixed;
     inset: 0;
-    background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity, 0.32) * 100%), transparent);
+    background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity) * 100%), transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,7 +14,7 @@
 
 .flare-confirmdialog {
     background: var(--flare-color-surface-container-high);
-    border-radius: var(--flare-dialog-radius, var(--flare-shape-extra-large));
+    border-radius: var(--flare-dialog-radius);
     box-shadow: var(--flare-elevation-3);
     padding: var(--flare-spacing-12);
     min-width: 280px;
@@ -40,7 +40,7 @@
 .flare-confirmdialog__btn {
     border: none;
     padding: var(--flare-spacing-4) var(--flare-spacing-10);
-    border-radius: var(--flare-btn-radius, var(--flare-shape-full));
+    border-radius: var(--flare-btn-radius);
     cursor: pointer;
     font-family: var(--flare-typescale-label-large-font);
     font-size: var(--flare-typescale-label-large-size);

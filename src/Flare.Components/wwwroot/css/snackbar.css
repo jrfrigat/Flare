@@ -12,14 +12,14 @@
 /* Default: bottom-center */
 .flare-snackbar-provider,
 .flare-snackbar-provider--bottom-center {
-  bottom: var(--flare-snackbar-provider-inset,1.5rem);
+  bottom: var(--flare-snackbar-provider-inset);
   left: 50%;
   transform: translateX(-50%);
   align-items: center;
 }
 
 .flare-snackbar-provider--top-center {
-  top: var(--flare-snackbar-provider-inset,1.5rem);
+  top: var(--flare-snackbar-provider-inset);
   bottom: auto;
   left: 50%;
   transform: translateX(-50%);
@@ -28,25 +28,25 @@
 }
 
 .flare-snackbar-provider--bottom-left {
-  bottom: var(--flare-snackbar-provider-inset,1.5rem);
-  left: var(--flare-snackbar-provider-inset,1.5rem);
+  bottom: var(--flare-snackbar-provider-inset);
+  left: var(--flare-snackbar-provider-inset);
   right: auto;
   transform: none;
   align-items: flex-start;
 }
 
 .flare-snackbar-provider--bottom-right {
-  bottom: var(--flare-snackbar-provider-inset,1.5rem);
-  right: var(--flare-snackbar-provider-inset,1.5rem);
+  bottom: var(--flare-snackbar-provider-inset);
+  right: var(--flare-snackbar-provider-inset);
   left: auto;
   transform: none;
   align-items: flex-end;
 }
 
 .flare-snackbar-provider--top-left {
-  top: var(--flare-snackbar-provider-inset,1.5rem);
+  top: var(--flare-snackbar-provider-inset);
   bottom: auto;
-  left: var(--flare-snackbar-provider-inset,1.5rem);
+  left: var(--flare-snackbar-provider-inset);
   right: auto;
   transform: none;
   flex-direction: column;
@@ -54,9 +54,9 @@
 }
 
 .flare-snackbar-provider--top-right {
-  top: var(--flare-snackbar-provider-inset,1.5rem);
+  top: var(--flare-snackbar-provider-inset);
   bottom: auto;
-  right: var(--flare-snackbar-provider-inset,1.5rem);
+  right: var(--flare-snackbar-provider-inset);
   left: auto;
   transform: none;
   flex-direction: column;
@@ -71,9 +71,9 @@
   min-width: 20rem;
   max-width: 36rem;
   /* Single-line 48dp, two-line grows to ~68dp via wrapping content */
-  min-height: var(--flare-snackbar-min-height, 3rem);
-  padding: var(--flare-snackbar-padding-block,0.875rem) var(--flare-spacing-10);
-  border-radius: var(--flare-snackbar-radius, var(--flare-shape-extra-small));
+  min-height: var(--flare-snackbar-min-height);
+  padding: var(--flare-snackbar-padding-block) var(--flare-spacing-10);
+  border-radius: var(--flare-snackbar-radius);
   background: var(--flare-color-inverse-surface);
   color: var(--flare-color-inverse-on-surface);
   font-family: var(--flare-typescale-body-medium-font);
@@ -125,7 +125,8 @@
 }
 
 .flare-snackbar__action-btn:hover {
-  background: color-mix(in srgb, var(--_snackbar-action-color, var(--flare-color-inverse-primary)) 12%, transparent);
+  /* Drive the action state layer from the theme's hover-opacity token instead of a literal. */
+  background: color-mix(in srgb, var(--_snackbar-action-color, var(--flare-color-inverse-primary)) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
 .flare-snackbar__close-btn {
@@ -136,7 +137,7 @@
   padding: var(--flare-spacing-2);
   border-radius: var(--flare-shape-full);
   line-height: 1;
-  opacity: var(--flare-snackbar-close-opacity,0.75);
+  opacity: var(--flare-snackbar-close-opacity);
 }
 
 .flare-snackbar__close-btn:hover {

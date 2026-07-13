@@ -1,17 +1,17 @@
 .flare-card {
     /* Per-card knobs (overridden by size modifiers). Defaults map to the theme's CardTokens. */
-    --_card-radius: var(--flare-card-radius, var(--flare-shape-medium));
-    --_card-actions-gap: var(--flare-card-actions-gap, 0.5rem);
+    --_card-radius: var(--flare-card-radius);
+    --_card-actions-gap: var(--flare-card-actions-gap);
 
     position: relative;
     border-radius: var(--_card-radius);
     overflow: hidden;
     color: var(--flare-color-on-surface);
     transition:
-        box-shadow var(--flare-card-transition-duration, var(--flare-motion-duration-short2))
-                   var(--flare-card-transition-easing, var(--flare-motion-easing-standard)),
-        border-color var(--flare-card-transition-duration, var(--flare-motion-duration-short2))
-                   var(--flare-card-transition-easing, var(--flare-motion-easing-standard));
+        box-shadow var(--flare-card-transition-duration)
+                   var(--flare-card-transition-easing),
+        border-color var(--flare-card-transition-duration)
+                   var(--flare-card-transition-easing);
 }
 
 /* Inner padding for raw-content cards (those NOT composed from the structured sub-parts). The
@@ -20,42 +20,42 @@
    __content/__footer/__actions, so the :has() guard skips them to avoid double padding. */
 .flare-card:not(:has(> .flare-card__media, > .flare-card__header, > .flare-card__content, > .flare-card__footer, > .flare-card__actions)) {
     padding:
-        var(--flare-card-padding-top, 0)
-        var(--flare-card-padding-right, 0)
-        var(--flare-card-padding-bottom, 0)
-        var(--flare-card-padding-left, 0);
+        var(--flare-card-padding-top)
+        var(--flare-card-padding-right)
+        var(--flare-card-padding-bottom)
+        var(--flare-card-padding-left);
 }
 
 /* ----- Variants (theme-independent; each theme reskins via CardTokens) ----- */
 .flare-card--elevated {
-    background-color: var(--flare-card-elevated-bg, var(--flare-color-surface-container-low));
-    box-shadow: var(--flare-card-elevation, var(--flare-elevation-1));
+    background-color: var(--flare-card-elevated-bg);
+    box-shadow: var(--flare-card-elevation);
     border: none;
 }
 
 .flare-card--filled {
-    background-color: var(--flare-card-filled-bg, var(--flare-color-surface-container-highest));
-    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
-    border: var(--flare-card-filled-border, none);
+    background-color: var(--flare-card-filled-bg);
+    box-shadow: var(--flare-card-elevation);
+    border: var(--flare-card-filled-border);
 }
 
 .flare-card--outlined {
-    background-color: var(--flare-card-outlined-bg, var(--flare-color-surface));
-    border: var(--flare-card-outlined-border, 1px solid var(--flare-color-outline-variant));
-    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
+    background-color: var(--flare-card-outlined-bg);
+    border: var(--flare-card-outlined-border);
+    box-shadow: var(--flare-card-elevation);
 }
 
 .flare-card--tonal {
-    background-color: var(--flare-card-tonal-bg, var(--flare-color-secondary-container));
-    color: var(--flare-card-tonal-color, var(--flare-color-on-secondary-container));
-    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
+    background-color: var(--flare-card-tonal-bg);
+    color: var(--flare-card-tonal-color);
+    box-shadow: var(--flare-card-elevation);
     border: none;
 }
 
 .flare-card--text {
     background-color: transparent;
-    color: var(--flare-card-text-color, var(--flare-color-on-surface));
-    box-shadow: var(--flare-card-elevation, var(--flare-elevation-0));
+    color: var(--flare-card-text-color);
+    box-shadow: var(--flare-card-elevation);
     border: none;
 }
 
@@ -65,8 +65,8 @@
     --_card-actions-gap: var(--flare-spacing-2);
 }
 .flare-card--md {
-    --_card-radius: var(--flare-card-radius, var(--flare-shape-medium));
-    --_card-actions-gap: var(--flare-card-actions-gap, 0.5rem);
+    --_card-radius: var(--flare-card-radius);
+    --_card-actions-gap: var(--flare-card-actions-gap);
 }
 .flare-card--lg {
     --_card-radius: var(--flare-shape-large);
@@ -86,7 +86,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: color-mix(in srgb, var(--flare-card-state-layer, var(--flare-color-on-surface)) 8%, transparent);
+    background: color-mix(in srgb, var(--flare-card-state-layer) 8%, transparent);
 }
 .flare-card--clickable:focus-visible {
     outline: 3px solid var(--flare-color-secondary);
@@ -94,14 +94,14 @@
 }
 /* Only interactive elevated cards lift on hover (static cards must not move). */
 .flare-card--elevated.flare-card--clickable:hover {
-    box-shadow: var(--flare-card-elevation-hover, var(--flare-elevation-2));
+    box-shadow: var(--flare-card-elevation-hover);
 }
 
 /* ----- Selectable: accent ring on selection (no explicit checkbox) ----- */
 .flare-card--selectable { cursor: pointer; }
 .flare-card--selected {
-    border: var(--flare-card-selected-border, 2px solid var(--flare-color-primary));
-    background-color: var(--flare-card-selected-bg, color-mix(in srgb, var(--flare-color-primary) 8%, transparent));
+    border: var(--flare-card-selected-border);
+    background-color: var(--flare-card-selected-bg);
 }
 
 /* ----- Compact: horizontal layout (media leading, content beside) ----- */
@@ -125,32 +125,32 @@
     display: block;
     width: 100%;
     object-fit: cover;
-    border-radius: var(--flare-card-media-radius, 0);
+    border-radius: var(--flare-card-media-radius);
 }
 .flare-card__header {
     display: flex;
     align-items: center;
     gap: var(--flare-spacing-8);
-    padding: var(--flare-card-header-padding, 16px 16px 0 16px);
+    padding: var(--flare-card-header-padding);
 }
 .flare-card__header-avatar { display: inline-flex; flex-shrink: 0; }
 .flare-card__header-text { flex: 1; min-width: 0; }
 .flare-card__header-action { display: inline-flex; flex-shrink: 0; }
 .flare-card__title {
-    font-family: var(--flare-card-title-font-family, var(--flare-typescale-title-medium-font));
-    font-size: var(--flare-card-title-font-size, var(--flare-typescale-title-medium-size));
+    font-family: var(--flare-card-title-font-family);
+    font-size: var(--flare-card-title-font-size);
     font-weight: var(--flare-typescale-title-medium-weight);
-    color: var(--flare-card-title-color, var(--flare-color-on-surface));
+    color: var(--flare-card-title-color);
 }
 .flare-card__subtitle {
-    font-family: var(--flare-card-subtitle-font-family, var(--flare-typescale-body-medium-font));
-    font-size: var(--flare-card-subtitle-font-size, var(--flare-typescale-body-medium-size));
-    color: var(--flare-card-subtitle-color, var(--flare-color-on-surface-variant));
+    font-family: var(--flare-card-subtitle-font-family);
+    font-size: var(--flare-card-subtitle-font-size);
+    color: var(--flare-card-subtitle-color);
 }
-.flare-card__content { padding: var(--flare-card-content-padding, 16px); }
+.flare-card__content { padding: var(--flare-card-content-padding); }
 .flare-card__header + .flare-card__content { padding-top: 0; }
 .flare-card__footer {
-    padding: var(--flare-card-footer-padding, 8px 16px 16px 16px);
+    padding: var(--flare-card-footer-padding);
     color: var(--flare-color-on-surface-variant);
 }
 .flare-card__content + .flare-card__footer { padding-top: 0; }
@@ -158,7 +158,7 @@
     display: flex;
     align-items: center;
     gap: var(--_card-actions-gap);
-    padding: var(--flare-card-actions-padding, 8px 16px 16px 16px);
+    padding: var(--flare-card-actions-padding);
 }
 .flare-card__actions--end { justify-content: flex-end; }
 .flare-card__actions--between { justify-content: space-between; }

@@ -7,7 +7,7 @@
 .flare-tabs__bar-wrap {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
+  border-bottom: 1px solid var(--flare-tabs-divider-color);
 }
 
 /* Start/end zones for arbitrary content (titles, buttons) beside the tabs. The bar (flex:1)
@@ -63,10 +63,10 @@
 /* Directional scroll buttons: a soft edge shadow cast over the adjacent tabs hints that more
    tabs scroll beneath the arrow. Shown only while the button is enabled (there is overflow that way). */
 .flare-tabs__scroll--prev:not(:disabled) {
-  box-shadow: 4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) var(--flare-tabs-scroll-shadow-opacity,35%), transparent);
+  box-shadow: 4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) var(--flare-tabs-scroll-shadow-opacity), transparent);
 }
 .flare-tabs__scroll--next:not(:disabled) {
-  box-shadow: -4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) var(--flare-tabs-scroll-shadow-opacity,35%), transparent);
+  box-shadow: -4px 0 6px -4px color-mix(in srgb, var(--flare-color-shadow) var(--flare-tabs-scroll-shadow-opacity), transparent);
 }
 
 /* The vertical bar keeps its own layout; arrows are horizontal-only. Header zones stack
@@ -81,14 +81,14 @@
   border: none;
   text-decoration: none;  /* FlareLinkTab reuses this class on its <a> items. */
   /* Active-indicator height 3dp; inactive label = on-surface */
-  border-bottom: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
+  border-bottom: var(--flare-tabs-indicator-thickness) solid transparent;
   margin-bottom: -1px;
   background: transparent;
-  color: var(--flare-tabs-inactive-color, var(--flare-color-on-surface));
+  color: var(--flare-tabs-inactive-color);
   /* Label font tokens are overridable via the Typo parameter (--flare-tabs-label-*). */
-  font-family: var(--flare-tabs-label-font, var(--flare-typescale-label-large-font));
-  font-size: var(--flare-tabs-label-size, var(--flare-typescale-label-large-size));
-  font-weight: var(--flare-tabs-label-weight, var(--flare-typescale-label-large-weight));
+  font-family: var(--flare-tabs-label-font);
+  font-size: var(--flare-tabs-label-size);
+  font-weight: var(--flare-tabs-label-weight);
   cursor: pointer;
   white-space: nowrap;
   transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
@@ -101,17 +101,17 @@
 
 /* Active-tab color (FlareLinkTab reuses this class on its route links). */
 .flare-tabs__tab--active {
-  color: var(--flare-tabs-active-color, var(--flare-color-primary));
-  border-bottom-color: var(--flare-tabs-active-color, var(--flare-color-primary));
+  color: var(--flare-tabs-active-color);
+  border-bottom-color: var(--flare-tabs-active-color);
 }
 
 /* Underline variant: active tab marked by a bottom indicator. The base already looks like
    this; the explicit rule keeps the variant underlined even if a theme restyles default tabs. */
 .flare-tabs--underline .flare-tabs__tab {
-  border-bottom: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
+  border-bottom: var(--flare-tabs-indicator-thickness) solid transparent;
 }
 .flare-tabs--underline .flare-tabs__tab--active {
-  border-bottom-color: var(--flare-tabs-active-color, var(--flare-color-primary));
+  border-bottom-color: var(--flare-tabs-active-color);
 }
 
 /* Primary tabs: content-hugging active indicator with rounded top corners.
@@ -124,8 +124,8 @@
   left: 1.25rem;
   right: 1.25rem;
   bottom: 0;
-  height: var(--flare-tabs-indicator-thickness, 3px);
-  background: var(--flare-tabs-active-color, var(--flare-color-primary));
+  height: var(--flare-tabs-indicator-thickness);
+  background: var(--flare-tabs-active-color);
   border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
 }
 
@@ -137,7 +137,7 @@
 /* Text: no persistent indicator - active tab is colour + weight, hover is a subtle wash. */
 .flare-tabs--text .flare-tabs__bar-wrap { border-bottom: none; }
 .flare-tabs--text .flare-tabs__tab { border-bottom-color: transparent; }
-.flare-tabs--text .flare-tabs__tab--active { border-bottom-color: transparent; font-weight: var(--flare-tabs-active-weight,700); }
+.flare-tabs--text .flare-tabs__tab--active { border-bottom-color: transparent; font-weight: var(--flare-tabs-active-weight); }
 .flare-tabs--text .flare-tabs__tab--active::after { display: none; }
 
 /* Tonal / Filled: rounded pill tabs in an optional track (segmented control), no divider. */
@@ -153,8 +153,8 @@
 .flare-link-tabs--filled {
   gap: var(--flare-spacing-2);
   padding: var(--flare-spacing-2);
-  background: var(--flare-tabs-track-bg, transparent);
-  border-radius: var(--flare-tabs-pill-radius, var(--flare-shape-full));
+  background: var(--flare-tabs-track-bg);
+  border-radius: var(--flare-tabs-pill-radius);
 }
 
 .flare-tabs--tonal .flare-tabs__tab,
@@ -163,7 +163,7 @@
 .flare-link-tabs--filled .flare-tabs__tab {
   border-bottom: none;
   margin-bottom: 0;
-  border-radius: var(--flare-tabs-pill-radius, var(--flare-shape-full));
+  border-radius: var(--flare-tabs-pill-radius);
 }
 .flare-tabs--tonal .flare-tabs__tab--active::after,
 .flare-tabs--filled .flare-tabs__tab--active::after { display: none; }
@@ -173,28 +173,28 @@
 .flare-tabs--tonal .flare-tabs__tab--active:hover,
 .flare-link-tabs--tonal .flare-tabs__tab--active,
 .flare-link-tabs--tonal .flare-tabs__tab--active:hover {
-  background: var(--flare-tabs-selected-bg, var(--flare-color-secondary-container));
-  color: var(--flare-tabs-selected-fg, var(--flare-color-on-secondary-container));
+  background: var(--flare-tabs-selected-bg);
+  color: var(--flare-tabs-selected-fg);
   border-bottom-color: transparent;
 }
 .flare-tabs--filled .flare-tabs__tab--active,
 .flare-tabs--filled .flare-tabs__tab--active:hover,
 .flare-link-tabs--filled .flare-tabs__tab--active,
 .flare-link-tabs--filled .flare-tabs__tab--active:hover {
-  background: var(--flare-tabs-filled-bg, var(--flare-color-primary));
-  color: var(--flare-tabs-filled-fg, var(--flare-color-on-primary));
+  background: var(--flare-tabs-filled-bg);
+  color: var(--flare-tabs-filled-fg);
   border-bottom-color: transparent;
 }
 
 /* Outlined: card / folder tabs that connect to the panel border below. */
 .flare-tabs--outlined .flare-tabs__bar { gap: var(--flare-spacing-2); }
 .flare-tabs--outlined .flare-tabs__tab {
-  border: 1px solid var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
+  border: 1px solid var(--flare-tabs-divider-color);
   border-radius: var(--flare-shape-small) var(--flare-shape-small) 0 0;
   margin-bottom: -1px;
 }
 .flare-tabs--outlined .flare-tabs__tab--active {
-  border-color: var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
+  border-color: var(--flare-tabs-divider-color);
   border-bottom-color: var(--flare-color-surface);
   background: var(--flare-color-surface);
 }
@@ -245,7 +245,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
-  opacity: var(--flare-tabs-close-opacity,0.6);
+  opacity: var(--flare-tabs-close-opacity);
   transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
               background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
@@ -267,7 +267,7 @@
 .flare-tabs--vertical .flare-tabs__bar {
   flex-direction: column;
   border-bottom: none;
-  border-right: 1px solid var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
+  border-right: 1px solid var(--flare-tabs-divider-color);
   overflow-x: unset;
   overflow-y: auto;
   min-width: 10rem;
@@ -276,14 +276,14 @@
 .flare-tabs--vertical .flare-tabs__tab {
   justify-content: flex-start;
   border-bottom: none;
-  border-right: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
+  border-right: var(--flare-tabs-indicator-thickness) solid transparent;
   margin-bottom: 0;
   border-radius: var(--flare-shape-small) 0 0 var(--flare-shape-small);
   width: 100%;
 }
 
 .flare-tabs--vertical .flare-tabs__tab--active {
-  border-right-color: var(--flare-tabs-active-color, var(--flare-color-primary));
+  border-right-color: var(--flare-tabs-active-color);
   background-color: color-mix(in srgb, var(--flare-color-primary) 8%, transparent);
 }
 
@@ -297,14 +297,14 @@
 .flare-tabs--bottom { flex-direction: column-reverse; }
 .flare-tabs--bottom .flare-tabs__bar-wrap {
   border-bottom: none;
-  border-top: 1px solid var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
+  border-top: 1px solid var(--flare-tabs-divider-color);
 }
 .flare-tabs--bottom .flare-tabs__tab {
   border-bottom: none;
-  border-top: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
+  border-top: var(--flare-tabs-indicator-thickness) solid transparent;
 }
 .flare-tabs--bottom .flare-tabs__tab--active {
-  border-top-color: var(--flare-tabs-active-color, var(--flare-color-primary));
+  border-top-color: var(--flare-tabs-active-color);
 }
 .flare-tabs--bottom .flare-tabs__panels { padding-top: 0; padding-bottom: var(--flare-spacing-8); }
 
@@ -312,15 +312,15 @@
 .flare-tabs--vertical.flare-tabs--right { flex-direction: row-reverse; }
 .flare-tabs--vertical.flare-tabs--right .flare-tabs__bar {
   border-right: none;
-  border-left: 1px solid var(--flare-tabs-divider-color, var(--flare-color-surface-variant));
+  border-left: 1px solid var(--flare-tabs-divider-color);
 }
 .flare-tabs--vertical.flare-tabs--right .flare-tabs__tab {
   border-right: none;
-  border-left: var(--flare-tabs-indicator-thickness, 3px) solid transparent;
+  border-left: var(--flare-tabs-indicator-thickness) solid transparent;
   border-radius: 0 var(--flare-shape-small) var(--flare-shape-small) 0;
 }
 .flare-tabs--vertical.flare-tabs--right .flare-tabs__tab--active {
-  border-left-color: var(--flare-tabs-active-color, var(--flare-color-primary));
+  border-left-color: var(--flare-tabs-active-color);
 }
 .flare-tabs--vertical.flare-tabs--right .flare-tabs__panels {
   padding-left: 0;

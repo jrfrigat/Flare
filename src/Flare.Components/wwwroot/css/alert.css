@@ -1,10 +1,10 @@
 .flare-alert {
   display: flex;
   align-items: flex-start;
-  gap: var(--flare-alert-gap, 0.75rem);
-  padding: var(--flare-alert-padding, 0.875rem 1rem);
-  border-radius: var(--flare-alert-radius, var(--flare-shape-small));
-  border-width: var(--flare-alert-border-width, 0);
+  gap: var(--flare-alert-gap);
+  padding: var(--flare-alert-padding);
+  border-radius: var(--flare-alert-radius);
+  border-width: var(--flare-alert-border-width);
   border-style: solid;
   font-family: var(--flare-typescale-body-medium-font);
   font-size: var(--flare-typescale-body-medium-size);
@@ -102,7 +102,7 @@
   margin-bottom: var(--flare-spacing-2);
 }
 
-.flare-alert__body { opacity: var(--flare-alert-body-opacity,0.9); }
+.flare-alert__body { opacity: var(--flare-alert-body-opacity); }
 
 .flare-alert__close {
   background: none;
@@ -110,7 +110,7 @@
   cursor: pointer;
   padding: var(--flare-spacing-1) var(--flare-spacing-2);
   border-radius: var(--flare-shape-extra-small);
-  opacity: var(--flare-alert-close-opacity,0.7);
+  opacity: var(--flare-alert-close-opacity);
   font-size: 1rem;
   line-height: 1;
   color: inherit;
