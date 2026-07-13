@@ -32,8 +32,12 @@ public static class InputField
     public const string DisabledIndicator = "--flare-input-disabled-indicator";
     /// <summary>CSS custom-property name for the errored-field hover bottom-border color.</summary>
     public const string ErrorHoverIndicator = "--flare-input-error-hover-indicator";
-    /// <summary>CSS custom-property name for the computed keyboard focus ring (defined per-variant in CSS).</summary>
+    /// <summary>CSS custom-property name for the focus indicator box-shadow (a ring or an inset bar).</summary>
     public const string FocusRing = "--flare-input-focus-ring";
+    /// <summary>CSS custom-property name for the focus indicator outline (a real CSS <c>outline</c>).</summary>
+    public const string FocusOutline = "--flare-input-focus-outline";
+    /// <summary>CSS custom-property name for the focus outline offset.</summary>
+    public const string FocusOutlineOffset = "--flare-input-focus-outline-offset";
 }
 
 /// <summary>CSS variable tokens for the dialog panel.</summary>

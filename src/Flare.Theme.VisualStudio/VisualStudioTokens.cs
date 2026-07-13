@@ -295,8 +295,11 @@ internal class VisualStudioTokens
         FilledBorderBottom = "1px solid var(--flare-color-outline)",
         FocusBorder = "1px solid var(--flare-color-primary)",
         FocusBorderBottom = "1px solid var(--flare-color-primary)",
-        // VS focuses with a full 1px blue border; a full inset ring (not just a bottom accent) matches.
-        FocusRing = "inset 0 0 0 1px var(--fc-main, var(--flare-color-primary))",
+        // VS/Windows focuses with a rectangle around the control - a real outline (not a shadow ring),
+        // so this theme exercises the outline mechanism while MD3/Fluent use the box-shadow ring.
+        FocusRing = "none",
+        FocusOutline = "2px solid var(--fc-main, var(--flare-color-primary))",
+        FocusOutlineOffset = "1px",
     };
 
     // Progress - thin VS bar (derives Fluent's already-flat progress).

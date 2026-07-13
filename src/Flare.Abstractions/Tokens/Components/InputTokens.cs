@@ -31,9 +31,20 @@ public sealed record InputTokens
     /// Focus indicator drawn as a <c>box-shadow</c> on the field well when focused (mouse or keyboard).
     /// A <c>box-shadow</c> is used so the indicator is layout-neutral (the field never grows/jumps): e.g.
     /// <c>inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))</c> for a bottom active indicator, or
-    /// <c>inset 0 0 0 1px ...</c> for a full ring. The filled/outlined per-variant classes override it.
+    /// <c>inset 0 0 0 1px ...</c> for a full ring. Set to <c>none</c> when the theme uses <see cref="FocusOutline"/>
+    /// instead. The filled/outlined per-variant classes override it.
     /// </summary>
     [CssVar(InputField.FocusRing)] public required string FocusRing { get; init; }
+
+    /// <summary>
+    /// Focus indicator drawn as a real CSS <c>outline</c> on the field well when focused - an alternative to
+    /// <see cref="FocusRing"/> for themes that want a browser-native focus rectangle:
+    /// <c>2px solid var(--fc-main, var(--flare-color-primary))</c>. Use <c>none</c> to opt out (ring-only themes).
+    /// </summary>
+    [CssVar(InputField.FocusOutline)] public required string FocusOutline { get; init; }
+
+    /// <summary>Offset of the focus <see cref="FocusOutline"/> from the field edge (CSS <c>outline-offset</c>).</summary>
+    [CssVar(InputField.FocusOutlineOffset)] public required string FocusOutlineOffset { get; init; }
 
     /// <summary>Hover bottom border for the filled variant.</summary>
     [CssVar(InputField.HoverBorderBottom)] public required string HoverBorderBottom { get; init; }

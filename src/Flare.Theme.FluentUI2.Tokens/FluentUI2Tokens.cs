@@ -382,6 +382,8 @@ public class FluentUI2Tokens
         FocusBorderBottom = "2px solid var(--flare-color-primary)",
         // Fluent focus = a 2px brand accent under the field, as a layout-neutral inset shadow (no jump).
         FocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
+        FocusOutline = "none",
+        FocusOutlineOffset = "0",
         HoverBorderBottom = "var(--flare-input-border-bottom, 1px solid var(--flare-color-on-surface-variant))",
         HoverStateLayer = "none",
         Padding = "0.75rem 1rem",
