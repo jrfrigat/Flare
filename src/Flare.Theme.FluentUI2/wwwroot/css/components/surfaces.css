@@ -6,6 +6,14 @@
    ========================================================================== */
 @scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
 
+    /* Subtle hover/pressed: discrete neutral fill (colorSubtleBackgroundHover/Pressed) instead of
+       the translucent currentColor state layer. surface-container-low/high map to the subtle greys. */
+    .flare-menu-item:hover:not(:disabled)::before,
+    .flare-menu-item:active:not(:disabled)::before { opacity: 0 !important; }
+    .flare-menu-item:hover:not(:disabled)  { background-color: var(--flare-fluent-subtle-hover, #F5F5F5); }
+    .flare-menu-item:active:not(:disabled) { background-color: var(--flare-fluent-subtle-pressed, #E0E0E0); }
+    .flare-list-item--clickable:hover { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
+
     .flare-menu-item--disabled, .flare-menu-item:disabled,
     .flare-list-item--disabled,
     .flare-nav-link--disabled,
