@@ -5,9 +5,10 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.2.0] - 2026-07-13
 
-A fields + slider release: gaps found while building real apps on Flare (the Weir admin and the
-PlaylistShared / Deka player) - colored slider zones, keyboard events across the field family, and two
-focus/visibility fixes.
+A fields, slider and theme-fidelity release: gaps found while building real apps on Flare (the Weir admin
+and the PlaylistShared / Deka player) - colored slider zones, keyboard events across the field family, and
+focus/visibility fixes - plus a pass over the in-box FluentUI2 and Material Design 3 Expressive themes so
+they render faithfully, and a first step to decouple the core engine from any one theme's model.
 
 ### Added
 - **`FlareSlider` colored zones**: a declarative `<Zones>` slot with `<FlareSliderZone Start End Color />`
@@ -23,6 +24,12 @@ focus/visibility fixes.
 - **Theme authoring**: `InputTokens` gains required `FocusRing`, `FocusOutline` and `FocusOutlineOffset`
   fields - the field focus indicator, either a box-shadow ring or a real CSS outline. Custom themes that
   construct `InputTokens` directly must supply them; themes derived from the in-box themes via `with` inherit them.
+- **Theme-agnostic state layer**: `StateTokens` gains required `HoverLayer`, `FocusLayer`, `PressedLayer`
+  and `DraggedLayer` fields - the paint (colour + alpha) of the hover / focus / pressed / dragged overlay.
+  The core no longer bakes a translucent-currentColor state layer; each theme now chooses its state model
+  (a Material wash, or a discrete Fluent fill). Custom themes that construct `StateTokens` directly must
+  supply them; themes derived via `with` inherit them. Component CSS also no longer carries baked literal
+  fallbacks - every visual value now comes from the theme's tokens, so the core carries no theme opinion.
 
 ### Fixed
 - **`FlareSwitch` in the Visual Studio 2026 theme** rendered with the "on" thumb overflowing the rail:
@@ -34,6 +41,18 @@ focus/visibility fixes.
   and per variant - a box-shadow ring (a bottom active indicator or a full ring) or a real CSS outline. MD3
   and Fluent use the ring; Visual Studio uses an outline; the filled/outlined variants pick their own.
   Invalid fields get an error-colored ring.
+- **FluentUI2 theme fidelity**: disabled controls now use Fluent's flat disabled palette (a discrete grey
+  fill / foreground / stroke) instead of a 40%-faded copy of the enabled look; hover and pressed use
+  Fluent's discrete fills (the neutral subtle greys, a darkened brand on filled buttons, a darkened stroke
+  on outlined) instead of a translucent Material state layer; non-filled buttons get Fluent's neutral
+  double focus ring. In the gallery the palette follows the active theme's own default, so Fluent shows its blue.
+- **Material Design 3 Expressive theme fidelity**: outlined cards use the outline-variant role; the field
+  focus indicator is the Expressive 3dp active indicator (was 2dp); the navigation active label uses weight
+  700; the checkbox rest outline uses on-surface-variant (matching radio); list items take the one/two-line
+  heights (56 / 72dp) and the selected item uses the secondary-container role; menu item height is 48dp.
+- **Rich tooltips were unclickable** (every theme): the tooltip surface suppressed pointer events and never
+  re-enabled them for the rich variant, so its actions could not be clicked. Rich tooltips are now
+  interactive and use the medium shape.
 
 ## [0.1.9] - 2026-07-12
 
