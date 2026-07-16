@@ -7,6 +7,7 @@
    The flare-clipboard / flare-clipboard--copied classes are kept for styling and tests. *@
 <FlareButton Variant="@Variant"
              Size="@Size"
+             Color="@Color"
              Class="@_clipboardClass"
              Style="@Style"
              OnClick="CopyAsync"
@@ -43,6 +44,10 @@
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Outlined;
     /// <summary>Button size of the copy control. Default Sm.</summary>
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Sm;
+    /// <summary>Semantic color of the copy control, forwarded to the inner button. Lets the copy button be
+    /// emphasized (e.g. a filled Primary "copy your new secret" call-to-action). Default keeps the button's
+    /// own default color.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
 
     protected override string ComponentCssClass => Css.Classes.Clipboard.Root;
 
