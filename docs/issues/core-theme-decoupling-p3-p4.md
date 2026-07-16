@@ -27,8 +27,9 @@ invalid at computed-value time.
 
 Commit `082b1f3` did exactly that and **shipped broken geometry in v0.2.0, v0.2.1 and v0.3.0** under
 MaterialDesign3 (the default theme): the slider rail collapsed to 0px at every size, `FlarePagination` lost
-its button size + ramp, `FlareRating` lost its star ramp. Fixed in 0.3.1 by restoring those fallbacks
-verbatim.
+its button size + ramp, `FlareRating` lost its star ramp. Fixed in 0.4.0 - not by restoring the fallbacks
+(that would just put the theme's ramp back in the core), but by giving each size its own token so the ramp
+lives in the theme and the component CSS holds no geometry at all.
 
 **Consequences for the remaining P3 work:**
 - The stripper (`scratchpad/strip-fallbacks.mjs`, to be formalised below) MUST exclude any token that ANY

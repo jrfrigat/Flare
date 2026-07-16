@@ -49,6 +49,6 @@ Prefer a token/opt-in solution over a new component, and reuse what exists:
 - **Accessibility caveat:** a hover-only handle must stay keyboard-reachable and must not shrink the touch
   target below the 44dp guidance on coarse pointers - gate the hiding on `(hover: hover)`.
 
-**See also:** the per-size geometry was broken under MD3 (rail 0px) and is fixed in 0.3.1; any hairline-track
+**See also:** the per-size geometry was broken under MD3 (rail 0px) and is fixed in 0.4.0; any hairline-track
 work builds on those restored geometry tokens. The fallback contract is documented in
 [core-theme-decoupling-p3-p4.md](core-theme-decoupling-p3-p4.md).

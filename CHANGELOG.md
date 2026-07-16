@@ -3,12 +3,19 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.3.1] - 2026-07-16
+## [0.4.0] - 2026-07-16
 
-A fast-follow correction to the 0.3.0 zone model. 0.3.0 unified the slider / progress / meter band into one
-`FlareZone` whose meaning depended on its parent - which meant half its parameters were dead in any given
-host, and a mismatched one was silently dropped. The mechanism stays shared; the two kinds of band are now
-separate types, each carrying only what applies to it.
+Two corrections, both about a value living in the wrong place.
+
+**The zone model** (from 0.3.0): the slider / progress / meter band was unified into one `FlareZone` whose
+meaning depended on its parent - so half its parameters were dead in any given host, and a mismatched one
+was silently dropped. The mechanism stays shared; the two kinds of band are now separate types, each
+carrying only what applies to it.
+
+**Component geometry** (broken since 0.2.0): the slider, pagination and rating lost their sizing under
+Material Design 3 - the default theme - because a theme cannot express a per-size ramp through a single
+token, so it punted the values into the component CSS, where a later cleanup removed them as "dead". Every
+size ramp now lives in the theme, one token per size, and a guard keeps it that way.
 
 ### Changed
 - **BREAKING: `FlareZone` and meter parts are now separate types.** A zone and a meter part are not the
