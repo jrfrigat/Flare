@@ -181,13 +181,21 @@
     // Built-in anchor handler for Trigger="Click".
     private async Task ToggleAsync() => await OpenChanged.InvokeAsync(!Open);
 
-    // Hover trigger: open after Delay, close after HideDelay. The generation guard discards a delayed
-    // action if another enter/leave happened meanwhile (debounce). mouseleave does not fire while the
-    // pointer is over the panel because the panel is a DOM descendant of this root.
+    // Hover trigger: open after Delay, close after HideDelay. Bumping _hoverGen is what discards a delayed
+    // action that a later enter/leave has overtaken - it is the only cancellation there is, so every enter
+    // must bump it even when there is nothing to open.
+    //
+    // The panel is a DOM descendant of this root, so crossing from the anchor into it does not fire
+    // mouseleave - EXCEPT across the Offset gap: the panel is absolutely positioned and adds nothing to the
+    // root's box, so the dead band between them is outside every element here and the leave is real. That is
+    // precisely the case HideDelay exists to survive, and it can only survive it if the re-entry cancels.
     private async Task HandleMouseEnter()
     {
-        if (Trigger != PopoverTrigger.Hover || Open) return;
+        if (Trigger != PopoverTrigger.Hover) return;
+        // Always, and before the redundant-open guard below: re-entering an OPEN popover is exactly the
+        // case that has to cancel a pending hide.
         var gen = ++_hoverGen;
+        if (Open) return;
         if (Delay > 0)
         {
             await Task.Delay(Delay);
@@ -198,8 +206,11 @@
 
     private async Task HandleMouseLeave()
     {
-        if (Trigger != PopoverTrigger.Hover || !Open) return;
+        if (Trigger != PopoverTrigger.Hover) return;
+        // Same order as above, for the mirrored reason: while the open delay runs the popover is still
+        // CLOSED, so guarding on !Open first would let a pointer that merely passed through open it anyway.
         var gen = ++_hoverGen;
+        if (!Open) return;
         if (HideDelay > 0)
         {
             await Task.Delay(HideDelay);
