@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.6.0] - 2026-07-16
+## [0.6.0] - 2026-07-17
 
 ### Changed
 - **BREAKING: `FlareSlider`, `FlareProgress` and `FlareMeter` now share one size scale, `TrackSize`.** The
@@ -80,6 +80,17 @@ All notable changes to Flare are documented here. This project adheres to
   pointer, not a claim. Pointed at the whole token model rather than the records that were known to be
   wrong, it found violations in `SpacingTokens`, `RadioTokens` and `ButtonGroupTokens` that the manual pass
   had missed; those are fixed too.
+- **A guard against a length token spelled without its unit** (`LengthTokenUnitTests`), which is what made the
+  MD2 slider below invisible. For each in-box theme it fails any token whose value is a bare number while some
+  `calc()` adds or subtracts it from a length or a percentage.
+
+  The requirement is *derived from the consuming expression*, not declared on the token. Annotating every
+  `[CssVar]` with a CSS type would have been hundreds of edits that then rot as the CSS moves; the calc sites
+  already state it exactly, and reading them keeps the guard honest for calc sites nobody has written yet.
+  Two details decide whether it works at all: it scans component `.razor` as well as stylesheets (the slider
+  builds its geometry inline in C#, so a CSS-only scan misses the very case that shipped), and it resolves the
+  private `--_gap` alias back to the theme token (matching on the token's own name finds nothing).
+  Multiplication (`calc(-1 * var(--x))`) is deliberately out of scope - see the test for why.
 
 ### Fixed
 - **The Material Design 2 slider had no visible rail - at every size, in every release that shipped the
@@ -95,17 +106,8 @@ All notable changes to Flare are documented here. This project adheres to
   value was supplied, and this is the question after it: whether the value is the CSS *type* the declaration
   substitutes it into. The debugging trail actively misleads, too: `getComputedStyle` reports
   `right: 464px` on the collapsed segment, which reads like a deliberate position but is only the used value
-  implied by `width: 0`, while the rail height and fill colour both measure correct.
-- **A guard against exactly that** (`LengthTokenUnitTests`): for each in-box theme it fails any token whose
-  value is a bare number while some `calc()` adds or subtracts it from a length or percentage.
-
-  The requirement is *derived from the consuming expression*, not declared on the token. Annotating every
-  `[CssVar]` with a CSS type would have been hundreds of edits that then rot as the CSS moves; the calc sites
-  already state it exactly, and reading them keeps the guard honest for calc sites nobody has written yet.
-  Two details decide whether it works at all: it scans component `.razor` as well as stylesheets (the slider
-  builds its geometry inline in C#, so a CSS-only scan misses the very case that shipped), and it resolves
-  the private `--_gap` alias back to the theme token (matching on the token's own name finds nothing).
-  Multiplication (`calc(-1 * var(--x))`) is deliberately out of scope - see the test for why.
+  implied by `width: 0`, while the rail height and fill colour both measure correct. The
+  `LengthTokenUnitTests` guard above now fails any theme that spells one of these without its unit.
 - **The docs shipped a `Program.cs` that no longer compiles, straight to NuGet.** The repo README still
   opened with `new Md3Theme()`, and it is the packaged readme for the seven packages that have no readme of
   their own (`Flare.Abstractions`, `Flare.Theming`, `Flare.Infrastructure`, `Flare.Theme.MaterialDesign3`,

@@ -9,7 +9,7 @@ That report asked for three things; two are now done, this file tracks the remai
 
 - **Buffered / loaded band** - the essential part. Expressed as a plain zone, no dedicated parameter:
   ```razor
-  <FlareSlider @bind-Value="_played" Min="0" Max="100" Size="SliderSize.Xs" MouseWheel="true">
+  <FlareSlider @bind-Value="_played" Min="0" Max="100" Size="TrackSize.Xs" MouseWheel="true">
       <Zones>
           <FlareZone Start="0" End="@_buffered" Color="FlareColor.OnSurfaceVariant" />
       </Zones>
@@ -23,7 +23,7 @@ That report asked for three things; two are now done, this file tracks the remai
 ## What is still missing
 
 1. **A hairline track.** The original report wants a ~4dp seek bar. The thinnest built-in size is
-   `SliderSize.Xs` = **16dp** track / 44dp handle (`slider.css`, the `--flare-slider--xs` size class).
+   `TrackSize.Xs` = **16dp** track / 44dp handle (`slider.css`, the `--flare-slider--xs` size class).
    A consumer *can* override the theme token per instance (e.g. `Style="--flare-slider-track-height:4px"`),
    but that is undocumented, and it does not shrink the handle or the 44dp hit area to match.
 2. **A hover-only handle.** A player scrubber shows no thumb at rest and reveals it on hover/focus of the
@@ -45,7 +45,7 @@ Prefer a token/opt-in solution over a new component, and reuse what exists:
     `:hover`/`:focus-within` of the track - a few CSS rules, honouring `prefers-reduced-motion`.
   - (b) Document the existing per-instance geometry-token override as the supported way to get a hairline
     track, and make the handle/hit-area follow the track height so a 4px track does not keep a 44dp thumb.
-  - (c) A dedicated `SliderSize.Hairline` preset that sets a consistent thin track + small handle.
+  - (c) A dedicated `TrackSize.Hairline` preset that sets a consistent thin track + small handle.
 - **Accessibility caveat:** a hover-only handle must stay keyboard-reachable and must not shrink the touch
   target below the 44dp guidance on coarse pointers - gate the hiding on `(hover: hover)`.
 

@@ -452,7 +452,11 @@ public class MaterialDesignTokens
         RailWidth = "0",
         ActiveBg = "var(--flare-color-secondary-container)",
         ActiveRadius = "var(--flare-shape-full)",
-        MarkerWidth = "0",
+        // "0px", not "0": the marker is also pulled over the rail with calc(-1 * var(--flare-toc-marker-width)),
+        // and a unitless value there yields a <number>, which margin rejects. At zero the dropped declaration
+        // happens to compute the same margin, so nothing shows - but the trap is real the moment it is read
+        // as anything other than a length, and the sibling themes already write the unit.
+        MarkerWidth = "0px",
         LinkPadX = "0.75rem",
         Indent = "0.75rem",
     };
