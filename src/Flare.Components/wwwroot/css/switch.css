@@ -45,6 +45,12 @@
     transform: translateY(-50%);
     width: var(--flare-switch-thumb-off-size);
     height: var(--flare-switch-thumb-off-size);
+    /* Never let the ball grow taller/wider than the rail. A theme that mixes a compact rail with a
+       larger thumb (e.g. a Fluent-size track kept with the MD3 grow-on-check thumb) would otherwise
+       bulge out of the track; this caps every state (off/on/pressed/with-icon) in one place. It is a
+       no-op for all built-in sizes, whose thumbs are already smaller than their rail. */
+    max-width: var(--flare-switch-track-height);
+    max-height: var(--flare-switch-track-height);
     border-radius: 50%;
     background: var(--flare-switch-thumb-off-color);
     display: inline-flex;
