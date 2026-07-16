@@ -10,6 +10,20 @@ All notable changes to Flare are documented here. This project adheres to
 now carries no default that belongs to a theme, and a test keeps it that way.**
 
 ### Fixed
+- **`FlareMeter` under-filled its track whenever the segment values summed to less than 1.** The raw value
+  went straight into `flex-grow`, but flex only distributes *all* the free space when the grow factors sum
+  to at least 1 (CSS Flexbox 1, 7.1.1); below that each segment takes only its own fraction and the bar
+  stops early - in correct proportions, which is what made it easy to miss. That is not an edge case for a
+  component fed raw measurements: it is the whole sub-1 range of any unit (fractions of a millisecond,
+  ratios, bytes under a byte). A real 0.3955 ms call filled 40% of its track. The factors are now scaled to
+  a fixed total inside the component, so raw values stay declarable as-is and the browser still does the
+  division - one factor per segment, no rounding gaps.
+- **`FlareMeter` announced values that `ShowValues` was hiding, at full round-trip precision.** The
+  `aria-label` was built from every segment's value unconditionally, so a meter that deliberately hid its
+  numbers still read them out - and the `"G"` default format meant a 0.0627 ms slice was announced as
+  `0.06269999999999998`. Values in the label now follow `ShowValues`, exactly as the legend and tooltip
+  already did, and `Format` defaults to a bounded `0.##`. Segments are joined with `"; "` so a decimal-comma
+  culture does not use the same character for both separators.
 - **89 dead fallbacks removed from the component CSS** (`button`, `togglebutton`, `fab`, `a11y`,
   `datagrid`, `timepicker`, `datepicker`, `splitter`, `splitbutton`, `input`, `breadcrumb`). Each sat on a
   token every theme is required to supply - `var(--flare-btn-gap-xs, 0.25rem)` - so it could never render:

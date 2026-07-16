@@ -20,6 +20,16 @@
         </FlareMeter>
     </FlareStack>
 
+    @* Raw sub-millisecond values: the parts are scaled internally, so a total below 1 still fills the
+       track and the values stay as measured. *@
+    <FlareStack Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.LabelLarge">Fast call (0.4 ms total)</FlareText>
+        <FlareMeter ShowLegend="true" ShowValues="true" Format="0.###">
+            <FlareMeterSegment Value="0.3155" Color="FlareColor.Error" Label="DB" />
+            <FlareMeterSegment Value="0.0797" Color="FlareColor.OnSurfaceVariant" Label="Other" />
+        </FlareMeter>
+    </FlareStack>
+
     @* Storage quota with a custom color. *@
     <FlareStack Gap="FlareSpacing.Small">
         <FlareText Typo="TypographyScale.LabelLarge">Storage</FlareText>

@@ -45,9 +45,14 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Shows a key below the track: one entry per segment (color swatch + label). Default false.</summary>
     [Parameter] public bool ShowLegend { get; set; }
-    /// <summary>Shows each segment's numeric value in the legend (and in the hover tooltip). Default false.</summary>
+    /// <summary>Shows each segment's numeric value - in the legend, the hover tooltip and the accessible
+    /// label alike. Default false.</summary>
     [Parameter] public bool ShowValues { get; set; }
-    /// <summary>Format string applied to segment values shown in the legend / tooltip (e.g. <c>"N1"</c>).</summary>
+    /// <summary>
+    /// Format string applied to segment values wherever they are shown (e.g. <c>"N1"</c>). Defaults to a
+    /// bounded two-decimal format: a meter is fed raw measurements, and the round-trip <c>"G"</c> default
+    /// would read a 0.0627 ms slice out as <c>0.06269999999999998</c>.
+    /// </summary>
     [Parameter] public string? Format { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Meter.Root;
@@ -59,8 +64,13 @@
 
     private string _emptyClass => _views.Count == 0 ? Css.Classes.Meter.Empty : string.Empty;
 
-    // Only positive segments contribute; flex-grow carries the raw value so the row fills the track
-    // in proportion to the sum, with no per-segment percentage rounding gaps.
+    // Values are shown with a bounded default: "G" round-trips a double to full precision, which is right
+    // for storing one and wrong for reading one out.
+    private const string DefaultFormat = "0.##";
+
+    // The grow factors are scaled to sum to this rather than passed through raw - see _views.
+    private const double GrowTotal = 100d;
+
     private readonly struct SegView
     {
         public string SegClass { get; init; }
@@ -77,22 +87,35 @@
         get
         {
             var inv = CultureInfo.InvariantCulture;
-            var list = new List<SegView>(_zones.Count);
-            foreach (var s in _zones.Typed<FlareMeterSegment>(nameof(FlareMeter), "<FlareMeterSegment Value=\"..\" /> children"))
+            var parts = _zones
+                .Typed<FlareMeterSegment>(nameof(FlareMeter), "<FlareMeterSegment Value=\"..\" /> children")
+                .Where(s => (s.Value ?? 0) > 0)
+                .ToList();
+            // Sum first: the grow factors have to be scaled against the whole before any is emitted.
+            var total = parts.Sum(s => s.Value ?? 0);
+
+            var list = new List<SegView>(parts.Count);
+            foreach (var s in parts)
             {
                 var value = s.Value ?? 0;
-                if (value <= 0) continue;
-                var display = value.ToString(Format ?? "G", CultureInfo.CurrentCulture);
+                var display = value.ToString(Format ?? DefaultFormat, CultureInfo.CurrentCulture);
                 var colorStyle = s.Color.StyleMain();
                 var title = s.Label is { Length: > 0 } lbl
                     ? (ShowValues ? $"{lbl}: {display}" : lbl)
                     : display;
+                // Scale the factors to a fixed total instead of passing the raw value through. Flex only
+                // distributes ALL the free space when the grow factors sum to >= 1 (CSS Flexbox 1, 7.1.1);
+                // below that each item takes just its own fraction and the track ends early - in correct
+                // proportions, which is what makes it easy to miss. Raw sub-1 values are ordinary for a meter
+                // (fractions of a millisecond, ratios), so normalizing here keeps "declare raw values" true
+                // while still leaving the division to the browser - one factor per segment, no rounding gaps.
+                var grow = value / total * GrowTotal;
                 list.Add(new SegView
                 {
                     SegClass = string.IsNullOrEmpty(s.Color.CssClass)
                         ? Css.Classes.Meter.Seg
                         : $"{Css.Classes.Meter.Seg} {s.Color.CssClass}",
-                    SegStyle = $"flex-grow:{value.ToString("G", inv)};{colorStyle}",
+                    SegStyle = $"flex-grow:{grow.ToString("G", inv)};{colorStyle}",
                     SwatchClass = string.IsNullOrEmpty(s.Color.CssClass)
                         ? Css.Classes.Meter.LegendSwatch
                         : $"{Css.Classes.Meter.LegendSwatch} {s.Color.CssClass}",
@@ -106,13 +129,19 @@
         }
     }
 
-    // Screen-reader summary: the parts joined together (label + value when available).
+    // Screen-reader summary: the same information a sighted user gets, so the values follow ShowValues just
+    // as the legend and the tooltip do - a meter that deliberately hides them must not announce them. With
+    // no label there is nothing else to say, so the value stands in regardless.
+    // Segments are joined with "; " because a culture that uses the decimal comma (ru: "0,25") would
+    // otherwise separate values and segments with the same character.
     private string? _ariaLabel
     {
         get
         {
-            var parts = _views.Select(v => string.IsNullOrEmpty(v.Label) ? v.DisplayValue : $"{v.Label} {v.DisplayValue}");
-            var joined = string.Join(", ", parts);
+            var parts = _views.Select(v => string.IsNullOrEmpty(v.Label)
+                ? v.DisplayValue
+                : ShowValues ? $"{v.Label} {v.DisplayValue}" : v.Label!);
+            var joined = string.Join("; ", parts);
             return string.IsNullOrEmpty(joined) ? null : joined;
         }
     }
