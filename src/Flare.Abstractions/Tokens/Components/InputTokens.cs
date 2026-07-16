@@ -29,17 +29,17 @@ public sealed record InputTokens
 
     /// <summary>
     /// Focus indicator drawn as a <c>box-shadow</c> on the field well when focused (mouse or keyboard).
-    /// A <c>box-shadow</c> is used so the indicator is layout-neutral (the field never grows/jumps): e.g.
-    /// <c>inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))</c> for a bottom active indicator, or
-    /// <c>inset 0 0 0 1px ...</c> for a full ring. Set to <c>none</c> when the theme uses <see cref="FocusOutline"/>
-    /// instead. The filled/outlined per-variant classes override it.
+    /// A <c>box-shadow</c> is used so the indicator is layout-neutral (the field never grows/jumps): an
+    /// <c>inset</c> shadow offset onto the bottom edge gives a bottom active indicator, and a spread-only
+    /// <c>inset</c> shadow gives a full ring. Set to <c>none</c> when the theme uses
+    /// <see cref="FocusOutline"/> instead. The filled/outlined per-variant classes override it.
     /// </summary>
     [CssVar(InputField.FocusRing)] public required string FocusRing { get; init; }
 
     /// <summary>
     /// Focus indicator drawn as a real CSS <c>outline</c> on the field well when focused - an alternative to
-    /// <see cref="FocusRing"/> for themes that want a browser-native focus rectangle:
-    /// <c>2px solid var(--fc-main, var(--flare-color-primary))</c>. Use <c>none</c> to opt out (ring-only themes).
+    /// <see cref="FocusRing"/> for themes that want a browser-native focus rectangle, as an <c>outline</c>
+    /// shorthand. Use <c>none</c> to opt out (ring-only themes).
     /// </summary>
     [CssVar(InputField.FocusOutline)] public required string FocusOutline { get; init; }
 

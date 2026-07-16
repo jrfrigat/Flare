@@ -16,8 +16,9 @@ public sealed record ButtonGroupTokens
     /// <summary>Gap between segments (positive = separated). Connected themes use <c>0</c>.</summary>
     [CssVar(ButtonGroup.Gap)] public required string Gap { get; init; }
 
-    /// <summary>Segment overlap: a (usually negative) margin on non-first segments that collapses two
-    /// adjacent 1px borders into one shared seam. <c>0</c> = no overlap (separated).</summary>
+    /// <summary>Segment overlap: a (usually negative) margin on non-first segments that pulls each one back
+    /// onto its neighbour, collapsing the two adjacent borders into a single shared seam. <c>0</c> = no
+    /// overlap (separated segments, each keeping its own border).</summary>
     [CssVar(ButtonGroup.Overlap)] public required string Overlap { get; init; }
 
     /// <summary>Outer (leading/trailing group-end) corner radius.</summary>
