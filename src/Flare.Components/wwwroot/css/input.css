@@ -51,7 +51,7 @@
 }
 
 .flare-input__label {
-    font-family: var(--flare-typescale-label-medium-font, var(--flare-typescale-label-large-font));
+    font-family: var(--flare-typescale-label-medium-font);
     font-size: var(--flare-typescale-label-medium-size);
     font-weight: var(--flare-typescale-label-medium-weight);
     color: var(--flare-color-on-surface-variant);

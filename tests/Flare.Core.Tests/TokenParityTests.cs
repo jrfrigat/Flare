@@ -15,6 +15,15 @@ public class TokenParityTests
     private static Dictionary<string, string> Flat() =>
         CreateDefaultDesignTokens().Flatten(CreateDefaultColorScheme());
 
+    /// <summary>
+    /// Every <c>--flare-*</c> variable a THEME emits (design tokens + colour roles). The names are
+    /// theme-independent - the records are `required`, so every theme emits exactly this key set - which
+    /// makes it the authority for "is this var supplied by the theme, or is it a per-instance var the
+    /// consumer sets?". Shared with <c>DeadFallbackTests</c>.
+    /// </summary>
+    internal static HashSet<string> ThemeEmittedTokenNames() =>
+        Flat().Keys.ToHashSet(StringComparer.Ordinal);
+
     [Fact]
     public void CssVarMap_Flatten_Should_Produce_AtLeast_200_Vars()
     {

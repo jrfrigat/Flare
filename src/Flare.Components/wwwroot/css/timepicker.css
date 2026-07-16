@@ -106,8 +106,8 @@
   font-size: var(--flare-typescale-label-large-size);
 }
 .flare-timepicker__period-btn--selected {
-  background: var(--flare-color-tertiary-container, var(--flare-color-primary-container));
-  color: var(--flare-color-on-tertiary-container, var(--flare-color-on-primary-container));
+  background: var(--flare-color-tertiary-container);
+  color: var(--flare-color-on-tertiary-container);
 }
 
 .flare-timepicker__dial {

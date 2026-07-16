@@ -5,15 +5,15 @@
    padded glyph (a circle/rounded-square), not the button height grid. */
 .flare-fab {
     height: auto;
-    gap: var(--flare-fab-gap, 0.75rem);
+    gap: var(--flare-fab-gap);
     padding: var(--flare-fab-padding-md);
     border: none;
-    border-radius: var(--flare-fab-radius, var(--flare-shape-large));
+    border-radius: var(--flare-fab-radius);
     /* Tonal colour via the shared role tokens (--fc-*); default primary-container.
        Role -> flare-color-* class; custom -> inline --fc-container/--fc-on-container. */
     background-color: var(--fc-container, var(--flare-color-primary-container));
     color: var(--fc-on-container, var(--flare-color-on-primary-container));
-    box-shadow: var(--flare-fab-shadow, var(--flare-elevation-3));
+    box-shadow: var(--flare-fab-shadow);
     font-family: var(--flare-typescale-label-large-font);
     font-size: var(--flare-typescale-label-large-size);
     font-weight: var(--flare-typescale-label-large-weight);
@@ -21,17 +21,17 @@
 
     /* Elevation lift on hover (FAB-specific; the hover state layer + transition come from .flare-btn). */
     .flare-fab:hover {
-        box-shadow: var(--flare-fab-hover-shadow, var(--flare-elevation-4));
+        box-shadow: var(--flare-fab-hover-shadow);
     }
 
 .flare-fab--sm {
     padding: var(--flare-fab-padding-sm);
-    border-radius: var(--flare-fab-radius-sm, var(--flare-shape-medium));
+    border-radius: var(--flare-fab-radius-sm);
 }
 
 .flare-fab--lg {
     padding: var(--flare-fab-padding-lg);
-    border-radius: var(--flare-fab-radius-lg, var(--flare-shape-extra-large));
+    border-radius: var(--flare-fab-radius-lg);
 }
 
 /* Surface variant: used by the small action FABs inside a FAB menu. */
@@ -59,11 +59,11 @@
 }
 
 .flare-fab-anchor--bottom-right {
-    bottom: var(--flare-fab-anchor-offset, 1.5rem);
-    right: var(--flare-fab-anchor-offset, 1.5rem);
+    bottom: var(--flare-fab-anchor-offset);
+    right: var(--flare-fab-anchor-offset);
 }
 
 .flare-fab-anchor--bottom-left {
-    bottom: var(--flare-fab-anchor-offset, 1.5rem);
-    left: var(--flare-fab-anchor-offset, 1.5rem);
+    bottom: var(--flare-fab-anchor-offset);
+    left: var(--flare-fab-anchor-offset);
 }

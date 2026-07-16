@@ -11,27 +11,27 @@
        transition on outline-color would stretch the brief focus-visible flip (after a mouse-click
        re-render) into a visible "blink". The ring appears instantly and only on :focus-visible (keyboard/Tab). */
     outline: 3px solid transparent;
-    outline-offset: var(--flare-btn-focus-outline-offset, 2px);
+    outline-offset: var(--flare-btn-focus-outline-offset);
     cursor: pointer;
     text-decoration: none;
     user-select: none;
     vertical-align: middle;
     /* Tokenized via local properties, defaulting to Medium */
-    height: var(--_flare-btn-height, var(--flare-btn-height-md, 3rem));
-    padding-inline: var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md, 1.5rem));
+    height: var(--_flare-btn-height, var(--flare-btn-height-md));
+    padding-inline: var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md));
     /* Adaptive gap default is tied to Medium */
-    gap: var(--flare-btn-gap-md, 0.5rem);
+    gap: var(--flare-btn-gap-md);
     /* BASE PER-CORNER SYSTEM: listens to the C# corner constants */
-    border-top-left-radius: var(--flare-btn-radius-md-top-left, var(--flare-shape-full));
-    border-top-right-radius: var(--flare-btn-radius-md-top-right, var(--flare-shape-full));
-    border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right, var(--flare-shape-full));
-    border-bottom-left-radius: var(--flare-btn-radius-md-bottom-left, var(--flare-shape-full));
+    border-top-left-radius: var(--flare-btn-radius-md-top-left);
+    border-top-right-radius: var(--flare-btn-radius-md-top-right);
+    border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right);
+    border-bottom-left-radius: var(--flare-btn-radius-md-bottom-left);
     /* Default fonts (Medium - set by the theme via --flare-btn-label-md-*) */
-    font-family: var(--flare-btn-label-md-font, var(--flare-typescale-title-medium-font));
-    font-weight: var(--flare-btn-label-md-weight, var(--flare-typescale-title-medium-weight));
-    font-size: var(--flare-btn-label-md-size, var(--flare-typescale-title-medium-size));
-    line-height: var(--flare-btn-label-md-height, var(--flare-typescale-title-medium-height));
-    letter-spacing: var(--flare-btn-label-md-spacing, var(--flare-typescale-title-medium-spacing));
+    font-family: var(--flare-btn-label-md-font);
+    font-weight: var(--flare-btn-label-md-weight);
+    font-size: var(--flare-btn-label-md-size);
+    line-height: var(--flare-btn-label-md-height);
+    letter-spacing: var(--flare-btn-label-md-spacing);
     /* UNIFIED TRANSITION: controls the visuals and all 4 corners */
     /* NB: border-radius is intentionally NOT transitioned. Corner radii come from per-theme
        tokens, so animating them would morph every button's geometry on a theme switch (the
@@ -77,9 +77,9 @@
     }
 
     .flare-btn:focus-visible {
-        outline: var(--flare-btn-focus-outline, 2px solid var(--flare-color-primary));
-        outline-offset: var(--flare-btn-focus-outline-offset, 2px);
-        box-shadow: var(--flare-btn-focus-shadow, none);
+        outline: var(--flare-btn-focus-outline);
+        outline-offset: var(--flare-btn-focus-outline-offset);
+        box-shadow: var(--flare-btn-focus-shadow);
     }
 
 /* ==========================================================================
@@ -92,7 +92,7 @@
 }
 
     .flare-btn--filled:hover {
-        box-shadow: var(--flare-btn-filled-hover-shadow, var(--flare-elevation-1));
+        box-shadow: var(--flare-btn-filled-hover-shadow);
     }
 
 .flare-btn--outlined {
@@ -140,10 +140,10 @@
    ADAPTIVE SIZE GRID
    ========================================================================== */
 .flare-btn--xs {
-    gap: var(--flare-btn-gap-xs, 0.25rem);
-    --_flare-btn-height: var(--flare-btn-height-xs, 2rem);
-    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xs, 0.75rem);
-    --_flare-icon-size: var(--flare-btn-icon-size-xs, 1.25rem);
+    gap: var(--flare-btn-gap-xs);
+    --_flare-btn-height: var(--flare-btn-height-xs);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xs);
+    --_flare-icon-size: var(--flare-btn-icon-size-xs);
     border-top-left-radius: var(--flare-btn-radius-xs-top-left);
     border-top-right-radius: var(--flare-btn-radius-xs-top-right);
     border-bottom-right-radius: var(--flare-btn-radius-xs-bottom-right);
@@ -156,10 +156,10 @@
 }
 
 .flare-btn--sm {
-    gap: var(--flare-btn-gap-sm, 0.375rem);
-    --_flare-btn-height: var(--flare-btn-height-sm, 2.5rem);
-    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-sm, 1rem);
-    --_flare-icon-size: var(--flare-btn-icon-size-sm, 1.25rem);
+    gap: var(--flare-btn-gap-sm);
+    --_flare-btn-height: var(--flare-btn-height-sm);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-sm);
+    --_flare-icon-size: var(--flare-btn-icon-size-sm);
     border-top-left-radius: var(--flare-btn-radius-sm-top-left);
     border-top-right-radius: var(--flare-btn-radius-sm-top-right);
     border-bottom-right-radius: var(--flare-btn-radius-sm-bottom-right);
@@ -172,10 +172,10 @@
 }
 
 .flare-btn--md {
-    gap: var(--flare-btn-gap-md, 0.5rem);
-    --_flare-btn-height: var(--flare-btn-height-md, 3rem);
-    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-md, 1.5rem);
-    --_flare-icon-size: var(--flare-btn-icon-size-md, 1.5rem);
+    gap: var(--flare-btn-gap-md);
+    --_flare-btn-height: var(--flare-btn-height-md);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-md);
+    --_flare-icon-size: var(--flare-btn-icon-size-md);
     border-top-left-radius: var(--flare-btn-radius-md-top-left);
     border-top-right-radius: var(--flare-btn-radius-md-top-right);
     border-bottom-right-radius: var(--flare-btn-radius-md-bottom-right);
@@ -188,10 +188,10 @@
 }
 
 .flare-btn--lg {
-    gap: var(--flare-btn-gap-lg, 0.5rem);
-    --_flare-btn-height: var(--flare-btn-height-lg, 3.5rem);
-    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-lg, 2rem);
-    --_flare-icon-size: var(--flare-btn-icon-size-lg, 2rem);
+    gap: var(--flare-btn-gap-lg);
+    --_flare-btn-height: var(--flare-btn-height-lg);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-lg);
+    --_flare-icon-size: var(--flare-btn-icon-size-lg);
     border-top-left-radius: var(--flare-btn-radius-lg-top-left);
     border-top-right-radius: var(--flare-btn-radius-lg-top-right);
     border-bottom-right-radius: var(--flare-btn-radius-lg-bottom-right);
@@ -204,10 +204,10 @@
 }
 
 .flare-btn--xl {
-    gap: var(--flare-btn-gap-xl, 0.75rem);
-    --_flare-btn-height: var(--flare-btn-height-xl, 4rem);
-    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xl, 2.5rem);
-    --_flare-icon-size: var(--flare-btn-icon-size-xl, 2.5rem);
+    gap: var(--flare-btn-gap-xl);
+    --_flare-btn-height: var(--flare-btn-height-xl);
+    --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xl);
+    --_flare-icon-size: var(--flare-btn-icon-size-xl);
     border-top-left-radius: var(--flare-btn-radius-xl-top-left);
     border-top-right-radius: var(--flare-btn-radius-xl-top-right);
     border-bottom-right-radius: var(--flare-btn-radius-xl-bottom-right);
@@ -297,7 +297,7 @@
     --_flare-btn-padding-inline: 0;
     padding-inline: 0;
     gap: 0;
-    width: var(--_flare-btn-height, var(--flare-btn-height-md, 3rem));
+    width: var(--_flare-btn-height, var(--flare-btn-height-md));
     aspect-ratio: 1 / 1;
 }
 

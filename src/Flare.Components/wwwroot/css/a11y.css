@@ -14,7 +14,7 @@
 /* Global focus ring - uses theme token so it adapts per theme. Shown only for keyboard
    (and other non-pointer) focus via :focus-visible. */
 :focus-visible {
-    outline: var(--flare-focus-ring, 2px solid currentColor);
+    outline: var(--flare-focus-ring);
     outline-offset: 2px;
 }
 
@@ -56,7 +56,7 @@ h6[tabindex="-1"]:focus {
 .flare-stepper__step:focus-visible,
 .flare-tree-item__toggle:focus-visible,
 .flare-tree-item__row:focus-visible {
-    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline: var(--flare-focus-ring);
     outline-offset: 2px;
 }
 
@@ -94,12 +94,12 @@ h6[tabindex="-1"]:focus {
 [role="tab"]:focus-visible,
 [role="menuitem"]:focus-visible,
 [role="treeitem"]:focus-visible {
-    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline: var(--flare-focus-ring);
     outline-offset: 2px;
 }
 
 [role="tablist"] [role="tab"][tabindex="0"]:focus-visible,
 [role="menu"] [role="menuitem"][tabindex="0"]:focus-visible {
-    outline: var(--flare-focus-ring, 2px solid var(--flare-color-primary));
+    outline: var(--flare-focus-ring);
     outline-offset: 2px;
 }

@@ -54,7 +54,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--_caret-size, var(--flare-split-btn-caret-size-md, 1.25rem));
+    font-size: var(--_caret-size, var(--flare-split-btn-caret-size-md));
     line-height: 1;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     transition: transform var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);

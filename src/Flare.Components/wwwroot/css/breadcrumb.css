@@ -48,7 +48,7 @@
   padding: 0 var(--flare-spacing-3);
   border: none;
   border-radius: var(--flare-shape-small);
-  background: var(--flare-color-surface-container-high, var(--flare-color-surface-variant));
+  background: var(--flare-color-surface-container-high);
   color: var(--flare-color-on-surface-variant);
   font: inherit;
   line-height: 1;

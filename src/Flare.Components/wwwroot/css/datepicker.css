@@ -98,7 +98,7 @@
 }
 
 .flare-daterangepicker__preset {
-  border: 1px solid var(--flare-color-outline-variant, var(--flare-color-outline));
+  border: 1px solid var(--flare-color-outline-variant);
   background: transparent;
   color: var(--flare-color-on-surface-variant);
   border-radius: var(--flare-shape-full);
