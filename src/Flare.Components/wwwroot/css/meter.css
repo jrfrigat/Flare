@@ -9,6 +9,16 @@
     width: 100%;
 }
 
+/* ---- Size steps ----------------------------------------------------------
+   Deliberately the PROGRESS linear ramp, not a meter-owned one: a meter is the same rule of track as a
+   linear progress bar, so at a given size the two match because they read one token - not because two
+   themes were kept in agreement by hand. */
+.flare-meter--xs { --_lin-height: var(--flare-progress-linear-height-xs); }
+.flare-meter--sm { --_lin-height: var(--flare-progress-linear-height-sm); }
+.flare-meter--md { --_lin-height: var(--flare-progress-linear-height-md); }
+.flare-meter--lg { --_lin-height: var(--flare-progress-linear-height-lg); }
+.flare-meter--xl { --_lin-height: var(--flare-progress-linear-height-xl); }
+
 /* State hook: no renderable segments. Declared (empty) so it is part of the public CSS contract and
    consumers can target an empty meter; the bare track already reads as "nothing yet". */
 .flare-meter--empty { /* marker hook - no own styling */ }
@@ -18,7 +28,7 @@
 .flare-meter__track {
     display: flex;
     width: 100%;
-    height: var(--flare-progress-linear-height);
+    height: var(--_lin-height);
     background: var(--flare-color-secondary-container);
     border-radius: var(--flare-progress-track-radius);
     overflow: hidden;

@@ -9,7 +9,7 @@
    scale). The track's rounded ends and resting background reuse the FlareProgress linear-track tokens so a
    meter and a progress bar line up visually. *@
 
-<div class="@BuildCssClass(_emptyClass)" role="img" aria-label="@_ariaLabel" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_sizeClass, _emptyClass)" role="img" aria-label="@_ariaLabel" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Meter.Track">
         @foreach (var v in _views)
         {
@@ -43,6 +43,12 @@
 @code {
     /// <summary>The parts, declared as <see cref="FlareMeterSegment"/> children (each with a <c>Value</c> weight).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>
+    /// Track thickness, as a step on the shared <see cref="TrackSize"/> scale used by
+    /// <see cref="FlareSlider"/> and <see cref="FlareProgress"/>. A meter reads the same per-size tokens as
+    /// a linear progress bar, so the two are the same thickness at the same step.
+    /// </summary>
+    [Parameter] public TrackSize Size { get; set; } = TrackSize.Md;
     /// <summary>Shows a key below the track: one entry per segment (color swatch + label). Default false.</summary>
     [Parameter] public bool ShowLegend { get; set; }
     /// <summary>Shows each segment's numeric value - in the legend, the hover tooltip and the accessible
@@ -56,6 +62,16 @@
     [Parameter] public string? Format { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Meter.Root;
+
+    // The size class only selects which per-size theme token the CSS reads; it carries no geometry itself.
+    private string _sizeClass => Size switch
+    {
+        TrackSize.Sm => Css.Classes.Meter.Sm,
+        TrackSize.Md => Css.Classes.Meter.Md,
+        TrackSize.Lg => Css.Classes.Meter.Lg,
+        TrackSize.Xl => Css.Classes.Meter.Xl,
+        _ => Css.Classes.Meter.Xs,
+    };
 
     // Shared zone registration; the collection pokes StateHasChanged when segments change.
     private readonly ZoneCollection _zones;

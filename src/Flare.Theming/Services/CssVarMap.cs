@@ -612,15 +612,27 @@ public static class CssVarMap
         #endregion
 
         #region PROGRESS
-        v[Css.Tokens.ProgressField.LinearHeight] = t.Progress.LinearHeight;
+        v[Css.Tokens.ProgressField.LinearHeight.Xs] = t.Progress.LinearHeightXs;
+        v[Css.Tokens.ProgressField.LinearHeight.Sm] = t.Progress.LinearHeightSm;
+        v[Css.Tokens.ProgressField.LinearHeight.Md] = t.Progress.LinearHeightMd;
+        v[Css.Tokens.ProgressField.LinearHeight.Lg] = t.Progress.LinearHeightLg;
+        v[Css.Tokens.ProgressField.LinearHeight.Xl] = t.Progress.LinearHeightXl;
         v[Css.Tokens.ProgressField.TrackRadius] = t.Progress.TrackRadius;
         v[Css.Tokens.ProgressField.Gap] = t.Progress.Gap;
         v[Css.Tokens.ProgressField.StopSize] = t.Progress.StopSize;
         v[Css.Tokens.ProgressField.StopInset] = t.Progress.StopInset;
         v[Css.Tokens.ProgressField.StopColor] = t.Progress.StopColor;
         v[Css.Tokens.ProgressField.BufferOpacity] = t.Progress.BufferOpacity;
-        v[Css.Tokens.ProgressField.CircularSize] = t.Progress.CircularSize;
-        v[Css.Tokens.ProgressField.CircularWidth] = t.Progress.CircularWidth;
+        v[Css.Tokens.ProgressField.CircularSize.Xs] = t.Progress.CircularSizeXs;
+        v[Css.Tokens.ProgressField.CircularSize.Sm] = t.Progress.CircularSizeSm;
+        v[Css.Tokens.ProgressField.CircularSize.Md] = t.Progress.CircularSizeMd;
+        v[Css.Tokens.ProgressField.CircularSize.Lg] = t.Progress.CircularSizeLg;
+        v[Css.Tokens.ProgressField.CircularSize.Xl] = t.Progress.CircularSizeXl;
+        v[Css.Tokens.ProgressField.CircularWidth.Xs] = t.Progress.CircularWidthXs;
+        v[Css.Tokens.ProgressField.CircularWidth.Sm] = t.Progress.CircularWidthSm;
+        v[Css.Tokens.ProgressField.CircularWidth.Md] = t.Progress.CircularWidthMd;
+        v[Css.Tokens.ProgressField.CircularWidth.Lg] = t.Progress.CircularWidthLg;
+        v[Css.Tokens.ProgressField.CircularWidth.Xl] = t.Progress.CircularWidthXl;
         v[Css.Tokens.ProgressField.CircularCap] = t.Progress.CircularCap;
         v[Css.Tokens.ProgressField.CircularGap] = t.Progress.CircularGap;
         v[Css.Tokens.ProgressField.WavyEnabled] = t.Progress.WavyEnabled;

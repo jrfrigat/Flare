@@ -25,7 +25,7 @@
         <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
             @if (_updating)
             {
-                <FlareProgress Variant="ProgressVariant.Circular" Size="20" Color="FlareColor.Primary" />
+                <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Xs" Color="FlareColor.Primary" />
                 <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckUpdating</FlareText>
             }
             else if (_detected is not null)
@@ -35,7 +35,7 @@
             }
             else if (_checking)
             {
-                <FlareProgress Variant="ProgressVariant.Circular" Size="20" Color="FlareColor.Primary" />
+                <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Xs" Color="FlareColor.Primary" />
                 <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckChecking</FlareText>
             }
             else

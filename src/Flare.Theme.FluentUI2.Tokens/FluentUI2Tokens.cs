@@ -424,15 +424,35 @@ public class FluentUI2Tokens
     // off (WavyEnabled stays at the default 0) so FlareProgress renders a plain bar/ring.
     internal static readonly ProgressTokens Progress = new()
     {
-        LinearHeight = "2px",
+        // Size ramp, anchored at Md (the default) and running both ways. Fluent names two bar thicknesses -
+        // 2px (medium, the default) and 4px (large) - which pin Md and Xl.
+        LinearHeightXs = "1px",
+        LinearHeightSm = "1.5px",
+        LinearHeightMd = "2px",   // spec: bar thickness (medium, the default)
+        LinearHeightLg = "3px",
+        LinearHeightXl = "4px",   // spec: bar thickness (large)
         TrackRadius = "var(--flare-shape-extra-small)",
         Gap = "0px",
         StopSize = "0px",
         StopInset = "0px",
         StopColor = "var(--fc-main, var(--flare-color-primary))",
         BufferOpacity = "30%",
-        CircularSize = "40px",
-        CircularWidth = "3px",
+        // Fluent's spinner scale runs 16..44px in eight steps, so four of these five land on it exactly.
+        // Md stays 40px - the value this theme has always declared - rather than dropping to Fluent's own
+        // 32px "medium" default, which would silently resize every existing spinner. That this theme sits a
+        // step above its spec default is a pre-existing fidelity question, tracked separately; it is not
+        // something to settle under a sizing refactor.
+        CircularSizeXs = "24px",  // spec: spinner (extra-small)
+        CircularSizeSm = "32px",  // spec: spinner (medium)
+        CircularSizeMd = "40px",  // spec: spinner (extra-large)
+        CircularSizeLg = "44px",  // spec: spinner (huge)
+        CircularSizeXl = "56px",
+        // Spec: 2px stroke up to the small spinner, 3px from medium up.
+        CircularWidthXs = "2px",  // spec: strokeWidthThick
+        CircularWidthSm = "3px",  // spec: strokeWidthThicker
+        CircularWidthMd = "3px",
+        CircularWidthLg = "3px",
+        CircularWidthXl = "4px",
         CircularCap = "butt",
         CircularGap = "0px",
         WavyEnabled = "0",

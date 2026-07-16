@@ -1477,7 +1477,7 @@
     <value>Query (Reverse Indeterminate)</value>
   </data>
   <data name="Progress_Sizes" xml:space="preserve">
-    <value>Sizes (Circular)</value>
+    <value>Sizes</value>
   </data>
   <data name="Progress_Colors" xml:space="preserve">
     <value>Colors</value>
@@ -1625,6 +1625,9 @@
   </data>
   <data name="Meter_Basic" xml:space="preserve">
     <value>Timing breakdown, test ribbon &amp; quota</value>
+  </data>
+  <data name="Meter_Sizes" xml:space="preserve">
+    <value>Sizes</value>
   </data>
   <data name="SpeedDial_Title" xml:space="preserve">
     <value>Speed Dial</value>

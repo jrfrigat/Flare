@@ -1,0 +1,37 @@
+@* Size is a step on the shared TrackSize scale - the same one FlareSlider and FlareProgress use. A meter
+   reads the PROGRESS per-size track tokens, so a meter and a linear progress bar at the same step are the
+   same thickness by construction. Md is the default, and the ramp runs both ways from it. *@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
+    @foreach (var step in _steps)
+    {
+        <FlareStack Gap="FlareSpacing.XSmall">
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@step.Label</FlareText>
+            <FlareMeter Size="@step.Size">
+                <FlareMeterSegment Value="12.4" Color="FlareColor.Error" Label="DB" />
+                <FlareMeterSegment Value="3.4" Color="FlareColor.Warning" Label="Serialize" />
+                <FlareMeterSegment Value="3.1" Color="FlareColor.OnSurfaceVariant" Label="Other" />
+            </FlareMeter>
+        </FlareStack>
+    }
+
+    @* Same step, both components: the pair lines up because they read one token, not two. *@
+    <FlareStack Gap="FlareSpacing.XSmall">
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Lg, next to a progress bar</FlareText>
+        <FlareMeter Size="TrackSize.Lg">
+            <FlareMeterSegment Value="68" Color="FlareColor.Primary" Label="Used" />
+            <FlareMeterSegment Value="32" Color="FlareColor.OnSurfaceVariant" Label="Free" />
+        </FlareMeter>
+        <FlareProgress Size="TrackSize.Lg" Value="68" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private readonly (TrackSize Size, string Label)[] _steps =
+    [
+        (TrackSize.Xs, "Xs"),
+        (TrackSize.Sm, "Sm"),
+        (TrackSize.Md, "Md (default)"),
+        (TrackSize.Lg, "Lg"),
+        (TrackSize.Xl, "Xl"),
+    ];
+}

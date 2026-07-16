@@ -164,11 +164,28 @@ public static class AvatarField
 /// <summary>CSS variable tokens for progress field.</summary>
 public static class ProgressField
 {
-    // Colors, the sm/lg size+stroke variants, indeterminate timing and buffer-color are gone: progress.css
-    // reuses the shared color/motion scales and its own size classes directly. What remains is the geometry
-    // the component reads - in CSS, and (for the wavy variant) in C# via ReadToken.
-    /// <summary>CSS custom-property name for the linear track/indicator height.</summary>
-    public const string LinearHeight = "--flare-progress-linear-height";
+    // Colors, indeterminate timing and buffer-color are gone: progress.css reuses the shared color/motion
+    // scales directly. What remains is the geometry the component reads - in CSS, and (for the wavy variant)
+    // in C# via ReadToken.
+
+    /// <summary>CSS custom-property names for the linear track/indicator height, one per size step. The
+    /// theme emits all five on <c>:root</c> and the component's size class reads the matching one, so the
+    /// ramp lives in the theme instead of being hardcoded in the component CSS. <c>FlareMeter</c> reads the
+    /// same tokens, so a meter and a progress bar of the same size share one track geometry.</summary>
+    public static class LinearHeight
+    {
+        /// <summary>CSS custom-property name for the xs linear height token.</summary>
+        public const string Xs = "--flare-progress-linear-height-xs";
+        /// <summary>CSS custom-property name for the sm linear height token.</summary>
+        public const string Sm = "--flare-progress-linear-height-sm";
+        /// <summary>CSS custom-property name for the md linear height token.</summary>
+        public const string Md = "--flare-progress-linear-height-md";
+        /// <summary>CSS custom-property name for the lg linear height token.</summary>
+        public const string Lg = "--flare-progress-linear-height-lg";
+        /// <summary>CSS custom-property name for the xl linear height token.</summary>
+        public const string Xl = "--flare-progress-linear-height-xl";
+    }
+
     /// <summary>CSS custom-property name for the linear track corner radius.</summary>
     public const string TrackRadius = "--flare-progress-track-radius";
     /// <summary>CSS custom-property name for the gap between indicator and remaining track.</summary>
@@ -181,10 +198,37 @@ public static class ProgressField
     public const string StopColor = "--flare-progress-stop-color";
     /// <summary>CSS custom-property name for the buffer track opacity.</summary>
     public const string BufferOpacity = "--flare-progress-buffer-opacity";
-    /// <summary>CSS custom-property name for the circular variant diameter.</summary>
-    public const string CircularSize = "--flare-progress-circular-size";
-    /// <summary>CSS custom-property name for the circular indicator stroke width.</summary>
-    public const string CircularWidth = "--flare-progress-circular-width";
+    /// <summary>CSS custom-property names for the circular variant diameter, one per size step.</summary>
+    public static class CircularSize
+    {
+        /// <summary>CSS custom-property name for the xs circular diameter token.</summary>
+        public const string Xs = "--flare-progress-circular-size-xs";
+        /// <summary>CSS custom-property name for the sm circular diameter token.</summary>
+        public const string Sm = "--flare-progress-circular-size-sm";
+        /// <summary>CSS custom-property name for the md circular diameter token.</summary>
+        public const string Md = "--flare-progress-circular-size-md";
+        /// <summary>CSS custom-property name for the lg circular diameter token.</summary>
+        public const string Lg = "--flare-progress-circular-size-lg";
+        /// <summary>CSS custom-property name for the xl circular diameter token.</summary>
+        public const string Xl = "--flare-progress-circular-size-xl";
+    }
+
+    /// <summary>CSS custom-property names for the circular indicator stroke width, one per size step. It
+    /// ramps separately from the diameter because a stroke that scaled with the circle would read as a
+    /// different weight at each step.</summary>
+    public static class CircularWidth
+    {
+        /// <summary>CSS custom-property name for the xs circular stroke width token.</summary>
+        public const string Xs = "--flare-progress-circular-width-xs";
+        /// <summary>CSS custom-property name for the sm circular stroke width token.</summary>
+        public const string Sm = "--flare-progress-circular-width-sm";
+        /// <summary>CSS custom-property name for the md circular stroke width token.</summary>
+        public const string Md = "--flare-progress-circular-width-md";
+        /// <summary>CSS custom-property name for the lg circular stroke width token.</summary>
+        public const string Lg = "--flare-progress-circular-width-lg";
+        /// <summary>CSS custom-property name for the xl circular stroke width token.</summary>
+        public const string Xl = "--flare-progress-circular-width-xl";
+    }
     /// <summary>CSS custom-property name for the circular indicator line cap.</summary>
     public const string CircularCap = "--flare-progress-circular-cap";
     /// <summary>CSS custom-property name for the circular indicator/track gap.</summary>

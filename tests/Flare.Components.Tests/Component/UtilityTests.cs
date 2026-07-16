@@ -449,12 +449,12 @@ public class C_FlareSliderTests : FlareTestContext
     }
 
     [Theory]
-    [InlineData(SliderSize.Xs, "flare-slider--xs")]
-    [InlineData(SliderSize.Sm, "flare-slider--sm")]
-    [InlineData(SliderSize.Md, "flare-slider--md")]
-    [InlineData(SliderSize.Lg, "flare-slider--lg")]
-    [InlineData(SliderSize.Xl, "flare-slider--xl")]
-    public void Size_AppliesSizeClass(SliderSize size, string expected)
+    [InlineData(TrackSize.Xs, "flare-slider--xs")]
+    [InlineData(TrackSize.Sm, "flare-slider--sm")]
+    [InlineData(TrackSize.Md, "flare-slider--md")]
+    [InlineData(TrackSize.Lg, "flare-slider--lg")]
+    [InlineData(TrackSize.Xl, "flare-slider--xl")]
+    public void Size_AppliesSizeClass(TrackSize size, string expected)
     {
         var cut = Render<FlareSlider>(p => p.Add(x => x.Size, size));
 

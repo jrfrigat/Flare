@@ -1,7 +1,7 @@
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
     @* Safe / warning / danger gauge: static colored ranges on the scale. A slider is a SCALE zone host,
        so each zone is an absolute [Start, End] range on Min..Max. *@
-    <FlareSlider @bind-Value="_level" Label="Output level" Min="0" Max="100" ShowValue="true" Size="SliderSize.Sm">
+    <FlareSlider @bind-Value="_level" Label="Output level" Min="0" Max="100" ShowValue="true" Size="TrackSize.Sm">
         <Zones>
             <FlareZone Start="0" End="70" Color="FlareColor.Success" />
             <FlareZone Start="70" End="90" Color="FlareColor.Warning" />
@@ -12,7 +12,7 @@
     @* Media seek bar: the "buffered" band is just a zone from the track start to the loaded point -
        no dedicated buffer parameter needed. *@
     <FlareSlider @bind-Value="_played" Label="Now playing" Min="0" Max="100" ShowValue="true"
-                 Size="SliderSize.Xs" StartIcon="play_arrow" MouseWheel="true">
+                 Size="TrackSize.Xs" StartIcon="play_arrow" MouseWheel="true">
         <Zones>
             <FlareZone Start="0" End="@_buffered" Color="FlareColor.OnSurfaceVariant" />
         </Zones>

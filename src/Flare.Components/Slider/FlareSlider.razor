@@ -160,7 +160,7 @@
     /// </summary>
     [Parameter] public double? Init { get; set; }
     /// <summary>Size variant (XSmall-XLarge). Controls track thickness and handle height.</summary>
-    [Parameter] public SliderSize Size { get; set; } = SliderSize.Xs;
+    [Parameter] public TrackSize Size { get; set; } = TrackSize.Xs;
     /// <summary>Accent color of the active track and handle. Role (<c>FlareColor.Primary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token. Default uses the theme primary.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Material Symbols icon name shown before the track (e.g. "volume_mute").</summary>
@@ -221,10 +221,10 @@
 
     private string _sizeClass => Size switch
     {
-        SliderSize.Sm  => Css.Classes.Slider.Sm,
-        SliderSize.Md => Css.Classes.Slider.Md,
-        SliderSize.Lg  => Css.Classes.Slider.Lg,
-        SliderSize.Xl => Css.Classes.Slider.Xl,
+        TrackSize.Sm  => Css.Classes.Slider.Sm,
+        TrackSize.Md => Css.Classes.Slider.Md,
+        TrackSize.Lg  => Css.Classes.Slider.Lg,
+        TrackSize.Xl => Css.Classes.Slider.Xl,
         _                 => Css.Classes.Slider.Xs,
     };
 

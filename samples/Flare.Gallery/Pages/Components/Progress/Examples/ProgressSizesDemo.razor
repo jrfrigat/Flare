@@ -1,23 +1,37 @@
-@* Size sets the diameter (px) of the circular variant. *@
-<FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
-    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="65" Size="24" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">24px</FlareText>
+@* Size is one step on the shared TrackSize scale - the same one FlareSlider and FlareMeter use. A single
+   step drives BOTH variants: the circular diameter (and its stroke) and the linear track thickness. The
+   steps are labels, not measurements: the theme owns what each is worth, so switching the theme rescales
+   these. Md is the default, and the ramp runs both ways from it - a progress indicator wants room to go
+   finer (an inline spinner in a table row) as readily as heavier. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row Gap="FlareSpacing.Large" Wrap Align="FlareAlignItems.Center">
+        @foreach (var step in _steps)
+        {
+            <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
+                <FlareProgress Variant="ProgressVariant.Circular" Value="65" Size="@step.Size" />
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@step.Label</FlareText>
+            </FlareStack>
+        }
     </FlareStack>
-    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="65" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">40px (default)</FlareText>
-    </FlareStack>
-    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="65" Size="56" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">56px</FlareText>
-    </FlareStack>
-    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Value="65" Size="80" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">80px</FlareText>
-    </FlareStack>
-    <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-        <FlareProgress Variant="ProgressVariant.Circular" Size="80" />
-        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">80px indeterminate</FlareText>
+
+    <FlareStack Gap="FlareSpacing.Medium" Style="max-width:30rem;">
+        @foreach (var step in _steps)
+        {
+            <FlareStack Gap="FlareSpacing.XSmall">
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@step.Label</FlareText>
+                <FlareProgress Value="65" Size="@step.Size" />
+            </FlareStack>
+        }
     </FlareStack>
 </FlareStack>
+
+@code {
+    private readonly (TrackSize Size, string Label)[] _steps =
+    [
+        (TrackSize.Xs, "Xs"),
+        (TrackSize.Sm, "Sm"),
+        (TrackSize.Md, "Md (default)"),
+        (TrackSize.Lg, "Lg"),
+        (TrackSize.Xl, "Xl"),
+    ];
+}

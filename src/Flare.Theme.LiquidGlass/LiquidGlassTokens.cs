@@ -307,7 +307,12 @@ internal class LiquidGlassTokens
     internal static readonly ProgressTokens Progress = MaterialDesignTokens.Design.Progress with
     {
         TrackRadius = "var(--flare-shape-full)",
-        LinearHeight = "0.375rem",
+        // Md is the thickness Liquid Glass has always drawn; the ramp runs both ways from it.
+        LinearHeightXs = "0.25rem",
+        LinearHeightSm = "0.3125rem",
+        LinearHeightMd = "0.375rem",
+        LinearHeightLg = "0.5rem",
+        LinearHeightXl = "0.75rem",
         Gap = "0px",
         StopSize = "0px",
         CircularCap = "butt",

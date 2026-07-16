@@ -253,7 +253,13 @@ internal class AeroTokens
     internal static readonly ProgressTokens Progress = MaterialDesignTokens.Design.Progress with
     {
         TrackRadius = "var(--flare-shape-extra-small)",
-        LinearHeight = "0.75rem",
+        // Aero's glossy capsule bar is chunky by design, so the whole ramp sits above MD3's.
+        // Md is the thickness Aero has always drawn.
+        LinearHeightXs = "0.375rem",
+        LinearHeightSm = "0.5rem",
+        LinearHeightMd = "0.75rem",
+        LinearHeightLg = "1rem",
+        LinearHeightXl = "1.25rem",
         Gap = "0px",
         StopSize = "0px",
         CircularCap = "butt",

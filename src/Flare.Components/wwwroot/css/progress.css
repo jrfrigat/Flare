@@ -3,9 +3,40 @@
   width: 100%;
 }
 
+/* ---- Size steps ----------------------------------------------------------
+   Each step only SELECTS which per-size theme token feeds the private vars below; the values live in the
+   theme. The linear ramp is shared with FlareMeter, so a meter and a bar of the same size match by
+   construction. Must stay ahead of the rules that read --_lin-height / --_circ-* only in source order -
+   they are plain custom-property declarations, so no specificity fight is possible. */
+.flare-progress--xs {
+  --_lin-height: var(--flare-progress-linear-height-xs);
+  --_circ-size: var(--flare-progress-circular-size-xs);
+  --_circ-width: var(--flare-progress-circular-width-xs);
+}
+.flare-progress--sm {
+  --_lin-height: var(--flare-progress-linear-height-sm);
+  --_circ-size: var(--flare-progress-circular-size-sm);
+  --_circ-width: var(--flare-progress-circular-width-sm);
+}
+.flare-progress--md {
+  --_lin-height: var(--flare-progress-linear-height-md);
+  --_circ-size: var(--flare-progress-circular-size-md);
+  --_circ-width: var(--flare-progress-circular-width-md);
+}
+.flare-progress--lg {
+  --_lin-height: var(--flare-progress-linear-height-lg);
+  --_circ-size: var(--flare-progress-circular-size-lg);
+  --_circ-width: var(--flare-progress-circular-width-lg);
+}
+.flare-progress--xl {
+  --_lin-height: var(--flare-progress-linear-height-xl);
+  --_circ-size: var(--flare-progress-circular-size-xl);
+  --_circ-width: var(--flare-progress-circular-width-xl);
+}
+
 /* Linear */
 .flare-progress--linear {
-  height: var(--flare-progress-linear-height);
+  height: var(--_lin-height);
   background: var(--flare-color-secondary-container);
   border-radius: var(--flare-progress-track-radius);
   overflow: hidden;
@@ -117,7 +148,7 @@
 
 /* Remaining track is a thin flat line, vertically centred in the taller wavy track. */
 .flare-progress--wavy.flare-progress--linear .flare-progress__remain {
-  height: var(--flare-progress-linear-height);
+  height: var(--_lin-height);
 }
 
 /* Flow: shift the wave by exactly one wavelength for a seamless loop. */
@@ -163,18 +194,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--flare-progress-circular-size);
-  height: var(--flare-progress-circular-size);
+  width: var(--_circ-size);
+  height: var(--_circ-size);
 }
 
 .flare-progress__svg { width: 100%; height: 100%; }
 .flare-progress__track {
   stroke: var(--flare-color-secondary-container);
-  stroke-width: var(--flare-progress-circular-width);
+  stroke-width: var(--_circ-width);
 }
 .flare-progress__indicator {
   stroke: var(--fc-main, var(--flare-color-primary));
-  stroke-width: var(--flare-progress-circular-width);
+  stroke-width: var(--_circ-width);
   stroke-linecap: var(--flare-progress-circular-cap);
   transition: stroke-dasharray 0.3s var(--flare-motion-easing-standard);
 }

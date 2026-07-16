@@ -7,6 +7,16 @@ public static class Progress
     public const string Root = "flare-progress";
     /// <summary>The <c>flare-progress--linear</c> CSS class.</summary>
     public const string Linear = "flare-progress--linear";
+    /// <summary>The <c>flare-progress--xs</c> CSS class (size step: linear thickness + circular diameter).</summary>
+    public const string Xs = "flare-progress--xs";
+    /// <summary>The <c>flare-progress--sm</c> CSS class (size step: linear thickness + circular diameter).</summary>
+    public const string Sm = "flare-progress--sm";
+    /// <summary>The <c>flare-progress--md</c> CSS class (size step: linear thickness + circular diameter).</summary>
+    public const string Md = "flare-progress--md";
+    /// <summary>The <c>flare-progress--lg</c> CSS class (size step: linear thickness + circular diameter).</summary>
+    public const string Lg = "flare-progress--lg";
+    /// <summary>The <c>flare-progress--xl</c> CSS class (size step: linear thickness + circular diameter).</summary>
+    public const string Xl = "flare-progress--xl";
     /// <summary>The <c>flare-progress--circular</c> CSS class.</summary>
     public const string Circular = "flare-progress--circular";
     /// <summary>The <c>flare-progress--indeterminate</c> CSS class.</summary>
