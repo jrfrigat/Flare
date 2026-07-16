@@ -259,32 +259,27 @@
     // Renderable band per zone: percent-positioned via --_z0/--_z1 CSS vars (the CSS maps them to
     // left/right horizontally or bottom/top vertically). Empty/invalid zones are dropped. A slider is a
     // scale host, so zones are read as an absolute [Start, End] range (a missing bound clamps to Min).
+    // A zone is a band on the SAME rail as the active/inactive segments, so it is cut by the same notches
+    // and shaped by the same tokens: a zone under the handle shows the notch gap instead of painting
+    // through it, an edge on the track's outer end keeps the full track radius, and any interior edge takes
+    // the gap radius + notch inset. A zone that spans a notch therefore renders as several spans.
     private IEnumerable<(string CssClass, string Style)> _zoneBands
     {
         get
         {
+            var notches = _notchCenters;
             foreach (var z in _zones.Typed<FlareZone>(nameof(FlareSlider), "<FlareZone Start=\"..\" End=\"..\" /> children"))
             {
                 var lo = _pctOf(Math.Min(z.Start ?? _safeMin, z.End ?? _safeMin));
                 var hi = _pctOf(Math.Max(z.Start ?? _safeMin, z.End ?? _safeMin));
                 if (hi - lo <= 0.001) continue;
 
-                // A zone is a band on the same rail as the active/inactive segments, so it obeys the same
-                // shape language: an edge sitting on the track's outer end keeps the full track radius, an
-                // interior edge is inset by the notch gap and takes the small gap radius. Without this a
-                // zone would be a raw rectangle that paints over the track's rounded ends, and adjacent
-                // zones would butt together with no separation.
-                var startOuter = lo <= 0.001;
-                var endOuter = hi >= 99.999;
-                var start = startOuter ? "0" : $"calc({_pctText(lo)} + var(--_gap))";
-                var end = endOuter ? "0" : $"calc(100% - {_pctText(hi)} + var(--_gap))";
-
                 var cls = string.IsNullOrEmpty(z.Color.CssClass)
                     ? Css.Classes.Slider.Zone
                     : $"{Css.Classes.Slider.Zone} {z.Color.CssClass}";
-                var style = _band(start, end, startOuter ? TrackRadius : GapRadius, endOuter ? TrackRadius : GapRadius)
-                    + z.Color.StyleMain();
-                yield return (cls, style);
+                var colorStyle = z.Color.StyleMain();
+                foreach (var piece in _bandPieces(lo, hi, notches))
+                    yield return (cls, piece + colorStyle);
             }
         }
     }
@@ -294,30 +289,11 @@
 
     private string _pctText(double d) => d.ToString("F2", CultureInfo.InvariantCulture) + "%";
 
-    // One painted band on the rail. The track runs start -> end: horizontal = left -> right, vertical =
-    // bottom -> top. Shared by the active/inactive segments and the colored zones so every band on the rail
-    // is shaped by the same theme tokens.
-    private string _band(string start, string end, string rStart, string rEnd) => Vertical
-        ? $"bottom:{start};top:{end};border-radius:{rEnd} {rEnd} {rStart} {rStart};"
-        : $"left:{start};right:{end};border-radius:{rStart} {rEnd} {rEnd} {rStart};";
-
-    // Filled span [lo,hi]: range -> [low,high]; single -> [Init,Value].
-    private double _spanLoPct => Range ? _lowPct : Math.Min(_lowPct, _initPercent);
-    private double _spanHiPct => Range ? _highPct : Math.Max(_lowPct, _initPercent);
-
-    // Track segments split by notches (gaps): around each handle, plus the Init anchor (single
-    // mode, when strictly interior). Outer ends (0%/100%) use the full track radius; notch-facing
-    // edges use the small gap radius. A segment is "active" when its midpoint is within the span.
-    private IEnumerable<(bool Active, string Style)> _segments
+    // Where the rail is cut: around each handle, plus the Init anchor (single mode, when strictly interior).
+    private List<double> _notchCenters
     {
         get
         {
-            var lo = _spanLoPct;
-            var hi = _spanHiPct;
-            const string trk = TrackRadius;
-            const string gpr = GapRadius;
-            string Pct(double d) => d.ToString("F2", CultureInfo.InvariantCulture);
-
             var centers = new List<double>();
             if (Range)
             {
@@ -331,6 +307,59 @@
                     centers.Add(_initPercent);
             }
             centers.Sort();
+            return centers;
+        }
+    }
+
+    // Splits the band [lo,hi] at every notch that falls strictly inside it, emitting one style per piece.
+    // An edge on the track's outer end (0%/100%) is flush and keeps the full track radius; every other edge
+    // is inset by the notch gap and takes the small gap radius. Shared by the rail segments and the zones so
+    // both are cut at the same places, by the same theme tokens.
+    private IEnumerable<string> _bandPieces(double lo, double hi, List<double> notches)
+    {
+        var startPct = lo;
+        var startOuter = lo <= 0.001;
+
+        foreach (var c in notches)
+        {
+            if (c <= startPct + 0.001 || c >= hi - 0.001) continue;
+            yield return _band(
+                startOuter ? "0" : $"calc({_pctText(startPct)} + var(--_gap))",
+                $"calc(100% - {_pctText(c)} + var(--_gap))",
+                startOuter ? TrackRadius : GapRadius,
+                GapRadius);
+            startPct = c;
+            startOuter = false;
+        }
+
+        var endOuter = hi >= 99.999;
+        yield return _band(
+            startOuter ? "0" : $"calc({_pctText(startPct)} + var(--_gap))",
+            endOuter ? "0" : $"calc(100% - {_pctText(hi)} + var(--_gap))",
+            startOuter ? TrackRadius : GapRadius,
+            endOuter ? TrackRadius : GapRadius);
+    }
+
+    // One painted band on the rail. The track runs start -> end: horizontal = left -> right, vertical =
+    // bottom -> top. Shared by the active/inactive segments and the colored zones so every band on the rail
+    // is shaped by the same theme tokens.
+    private string _band(string start, string end, string rStart, string rEnd) => Vertical
+        ? $"bottom:{start};top:{end};border-radius:{rEnd} {rEnd} {rStart} {rStart};"
+        : $"left:{start};right:{end};border-radius:{rStart} {rEnd} {rEnd} {rStart};";
+
+    // Filled span [lo,hi]: range -> [low,high]; single -> [Init,Value].
+    private double _spanLoPct => Range ? _lowPct : Math.Min(_lowPct, _initPercent);
+    private double _spanHiPct => Range ? _highPct : Math.Max(_lowPct, _initPercent);
+
+    // The whole track, cut by the notches. A segment is "active" when its midpoint is within the filled
+    // span. Uses the same splitter as the zones, so the rail and its zones are always cut alike.
+    private IEnumerable<(bool Active, string Style)> _segments
+    {
+        get
+        {
+            var lo = _spanLoPct;
+            var hi = _spanHiPct;
+            var notches = _notchCenters;
 
             bool IsActive(double a, double b)
             {
@@ -338,20 +367,17 @@
                 return hi - lo > 0.001 && mid > lo - 0.001 && mid < hi + 0.001;
             }
 
-            var startPct = 0.0;
-            var startOuter = true;
-            foreach (var c in centers)
+            // Bounds of each piece, to decide activity: the track start, every interior notch, the end.
+            var bounds = new List<double> { 0.0 };
+            bounds.AddRange(notches.Where(c => c > 0.001 && c < 99.999));
+            bounds.Add(100.0);
+
+            var i = 0;
+            foreach (var piece in _bandPieces(0, 100, notches))
             {
-                var start = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))";
-                var end = $"calc(100% - {Pct(c)}% + var(--_gap))";
-                var rStart = startOuter ? trk : gpr;
-                yield return (IsActive(startPct, c), _band(start, end, rStart, gpr));
-                startPct = c;
-                startOuter = false;
+                yield return (IsActive(bounds[i], bounds[i + 1]), piece);
+                i++;
             }
-            var fStart = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))"; //-V3022
-            var fRStart = startOuter ? trk : gpr; //-V3022
-            yield return (IsActive(startPct, 100), _band(fStart, "0", fRStart, trk));
         }
     }
 

@@ -1533,13 +1533,43 @@ public class C_FlareSliderZonesTests : FlareTestContext
             })));
 
         var bands = cut.FindAll(".flare-slider__zone");
-        Assert.Equal(2, bands.Count);
+        // The handle sits at 40%, inside the first zone, so that zone is cut by the notch into two spans
+        // (0-40 and 40-60) exactly like the rail underneath it - three spans in total with the second zone.
+        Assert.Equal(3, bands.Count);
         Assert.Contains(bands, z => z.ClassName.Contains("flare-color-success"));
         Assert.Contains(bands, z => z.ClassName.Contains("flare-color-error"));
-        // First zone spans 0% -> 60%: it sits on the track start, so that edge keeps the full track radius
-        // and no inset, while the interior 60% edge is inset by the notch gap and takes the gap radius.
+        // First span starts flush on the track start with the full track radius.
         Assert.Contains(bands, z => z.GetAttribute("style")!.Contains("left:0")
-            && z.GetAttribute("style")!.Contains("right:calc(100% - 60.00% + var(--_gap))"));
+            && z.GetAttribute("style")!.Contains("right:calc(100% - 40.00% + var(--_gap))"));
+    }
+
+    // The bug this pins: a zone used to paint straight through the handle, filling the notch gap that the
+    // rail leaves - so the slider lost its gap wherever a zone sat under the handle.
+    [Fact]
+    public void Zone_UnderTheHandle_IsCutByTheNotch_LikeTheRail()
+    {
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.Min, 0)
+            .Add(x => x.Max, 100)
+            .Add(x => x.Value, 40)
+            .Add(x => x.Zones, Zones(b =>
+            {
+                b.OpenComponent<FlareZone>(0);
+                b.AddAttribute(1, nameof(FlareZone.Start), (double?)0d);
+                b.AddAttribute(2, nameof(FlareZone.End), (double?)100d);
+                b.CloseComponent();
+            })));
+
+        // One declared zone spanning the whole scale -> two spans, split at the 40% handle.
+        var bands = cut.FindAll(".flare-slider__zone");
+        Assert.Equal(2, bands.Count);
+
+        // Both sides of the notch are inset by the gap and take the gap radius, so the handle's gap shows
+        // through the zone instead of being painted over.
+        Assert.Contains("right:calc(100% - 40.00% + var(--_gap))", bands[0].GetAttribute("style")!);
+        Assert.Contains("left:calc(40.00% + var(--_gap))", bands[1].GetAttribute("style")!);
+        Assert.Contains("border-radius:var(--_trk-radius) var(--_gap-radius) var(--_gap-radius) var(--_trk-radius)", bands[0].GetAttribute("style")!);
+        Assert.Contains("border-radius:var(--_gap-radius) var(--_trk-radius) var(--_trk-radius) var(--_gap-radius)", bands[1].GetAttribute("style")!);
     }
 
     // A zone is a band on the same rail as the active/inactive segments, so it must speak the same shape
