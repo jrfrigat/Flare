@@ -9,6 +9,10 @@
     width: 100%;
 }
 
+/* State hook: no renderable segments. Declared (empty) so it is part of the public CSS contract and
+   consumers can target an empty meter; the bare track already reads as "nothing yet". */
+.flare-meter--empty { /* marker hook - no own styling */ }
+
 /* The bar. Rounded ends + resting background come from the shared progress track tokens; overflow
    hidden clips the segment row to the rounded corners so the first/last segments get the round ends. */
 .flare-meter__track {
