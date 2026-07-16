@@ -41,38 +41,37 @@
 }
 
 /* ---- Size selection ----
-   These only re-point the resolved vars at the theme's token for that size, so no geometry value lives
-   here. They must stay AFTER the block above: same specificity, so source order decides.
-   --_icon is the flanking start/end icon, not slider geometry. */
+   These only re-point the resolved vars at the theme's token for that size, so no value lives here.
+   They must stay AFTER the block above: same specificity, so source order decides. */
 .flare-slider--xs {
     --_trk-height: var(--flare-slider-track-height-xs);
     --_trk-radius: var(--flare-slider-track-radius-xs);
     --_hnd-height: var(--flare-slider-handle-height-xs);
-    --_icon: 20px;
+    --_icon: var(--flare-slider-icon-size-xs);
 }
 .flare-slider--sm {
     --_trk-height: var(--flare-slider-track-height-sm);
     --_trk-radius: var(--flare-slider-track-radius-sm);
     --_hnd-height: var(--flare-slider-handle-height-sm);
-    --_icon: 22px;
+    --_icon: var(--flare-slider-icon-size-sm);
 }
 .flare-slider--md {
     --_trk-height: var(--flare-slider-track-height-md);
     --_trk-radius: var(--flare-slider-track-radius-md);
     --_hnd-height: var(--flare-slider-handle-height-md);
-    --_icon: 24px;
+    --_icon: var(--flare-slider-icon-size-md);
 }
 .flare-slider--lg {
     --_trk-height: var(--flare-slider-track-height-lg);
     --_trk-radius: var(--flare-slider-track-radius-lg);
     --_hnd-height: var(--flare-slider-handle-height-lg);
-    --_icon: 24px;
+    --_icon: var(--flare-slider-icon-size-lg);
 }
 .flare-slider--xl {
     --_trk-height: var(--flare-slider-track-height-xl);
     --_trk-radius: var(--flare-slider-track-radius-xl);
     --_hnd-height: var(--flare-slider-handle-height-xl);
-    --_icon: 32px;
+    --_icon: var(--flare-slider-icon-size-xl);
 }
 
 .flare-slider__label-row {
@@ -106,7 +105,7 @@
     align-items: center;
     justify-content: center;
     color: var(--flare-color-on-surface-variant);
-    font-size: var(--_icon, 24px);
+    font-size: var(--_icon);
     flex-shrink: 0;
 }
 .flare-slider__icon .flare-icon { font-size: inherit; }
@@ -381,8 +380,9 @@
 /* ==========================================================================
    Vertical orientation - a real vertical layout (NO rotate). The native input uses
    writing-mode:vertical-rl (min at bottom, max at top, ArrowUp increases); the rail
-   segments / ticks are laid out along the block (top<->bottom) axis. Length is set via
-   --flare-slider-length (default 12rem).
+   segments / ticks are laid out along the block (top<->bottom) axis. A horizontal slider fills its
+   container, but a vertical one has no height to fill, so its length comes from the theme's
+   --flare-slider-length; a consumer overrides it per instance with an inline value on the root.
    ========================================================================== */
 .flare-slider--vertical .flare-slider__row {
     flex-direction: column-reverse;   /* DOM start/end icons -> bottom/top */
@@ -392,7 +392,7 @@
 .flare-slider--vertical .flare-slider__track-area {
     flex: 0 0 auto;
     width: var(--_hnd-height);
-    height: var(--flare-slider-length, 12rem);
+    height: var(--flare-slider-length);
 }
 .flare-slider--vertical .flare-slider__track-wrap {
     width: 100%;

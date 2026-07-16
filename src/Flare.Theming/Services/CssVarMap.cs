@@ -384,6 +384,12 @@ public static class CssVarMap
         v[Css.Tokens.Slider.HandleHeight.Md] = t.Slider.HandleHeightMd;
         v[Css.Tokens.Slider.HandleHeight.Lg] = t.Slider.HandleHeightLg;
         v[Css.Tokens.Slider.HandleHeight.Xl] = t.Slider.HandleHeightXl;
+        v[Css.Tokens.Slider.IconSize.Xs] = t.Slider.IconSizeXs;
+        v[Css.Tokens.Slider.IconSize.Sm] = t.Slider.IconSizeSm;
+        v[Css.Tokens.Slider.IconSize.Md] = t.Slider.IconSizeMd;
+        v[Css.Tokens.Slider.IconSize.Lg] = t.Slider.IconSizeLg;
+        v[Css.Tokens.Slider.IconSize.Xl] = t.Slider.IconSizeXl;
+        v[Css.Tokens.Slider.Length] = t.Slider.Length;
         v[Css.Tokens.Slider.GapRadius] = t.Slider.GapRadius;
         v[Css.Tokens.Slider.Gap] = t.Slider.Gap;
         v[Css.Tokens.Slider.HandleWidth] = t.Slider.HandleWidth;

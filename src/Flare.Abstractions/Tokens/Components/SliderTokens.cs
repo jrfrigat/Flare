@@ -47,7 +47,25 @@ public sealed record SliderTokens
     /// <summary>Handle height at the xl size.</summary>
     [CssVar(Slider.HandleHeight.Xl)] public required string HandleHeightXl { get; init; }
 
+    /// <summary>Size of the icons flanking the track at the xs size.</summary>
+    [CssVar(Slider.IconSize.Xs)] public required string IconSizeXs { get; init; }
+    /// <summary>Size of the icons flanking the track at the sm size.</summary>
+    [CssVar(Slider.IconSize.Sm)] public required string IconSizeSm { get; init; }
+    /// <summary>Size of the icons flanking the track at the md (default) size.</summary>
+    [CssVar(Slider.IconSize.Md)] public required string IconSizeMd { get; init; }
+    /// <summary>Size of the icons flanking the track at the lg size.</summary>
+    [CssVar(Slider.IconSize.Lg)] public required string IconSizeLg { get; init; }
+    /// <summary>Size of the icons flanking the track at the xl size.</summary>
+    [CssVar(Slider.IconSize.Xl)] public required string IconSizeXl { get; init; }
+
     // ---- Size-independent geometry ----
+
+    /// <summary>
+    /// Default length of a VERTICAL slider (a horizontal one fills its container, but a vertical one has no
+    /// height to fill). This is the theme's default; a consumer overrides it per instance with an inline
+    /// <c>--flare-slider-length</c>, which wins over the theme's value.
+    /// </summary>
+    [CssVar(Slider.Length)] public required string Length { get; init; }
 
     /// <summary>Corner radius of the track edges facing a notch (handle / interior anchor); 0 for a square cut.</summary>
     [CssVar(Slider.GapRadius)] public required string GapRadius { get; init; }

@@ -370,6 +370,13 @@ public class FluentUI2Tokens
         HandleHeightMd = "20px",
         HandleHeightLg = "20px",
         HandleHeightXl = "20px",
+        // Flanking StartIcon/EndIcon ramp.
+        IconSizeXs = "20px",
+        IconSizeSm = "22px",
+        IconSizeMd = "24px",
+        IconSizeLg = "24px",
+        IconSizeXl = "32px",
+        Length = "12rem",
         GapRadius = "0px",
         Gap = "0px",
         HandleWidth = "20px",

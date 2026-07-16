@@ -50,6 +50,25 @@ public static class Slider
         public const string Xl = "--flare-slider-handle-height-xl";
     }
 
+    /// <summary>Per-size size tokens for the icons flanking the track (<c>StartIcon</c>/<c>EndIcon</c>).</summary>
+    public static class IconSize
+    {
+        /// <summary>CSS custom-property name for the xs flanking-icon size token.</summary>
+        public const string Xs = "--flare-slider-icon-size-xs";
+        /// <summary>CSS custom-property name for the sm flanking-icon size token.</summary>
+        public const string Sm = "--flare-slider-icon-size-sm";
+        /// <summary>CSS custom-property name for the md flanking-icon size token.</summary>
+        public const string Md = "--flare-slider-icon-size-md";
+        /// <summary>CSS custom-property name for the lg flanking-icon size token.</summary>
+        public const string Lg = "--flare-slider-icon-size-lg";
+        /// <summary>CSS custom-property name for the xl flanking-icon size token.</summary>
+        public const string Xl = "--flare-slider-icon-size-xl";
+    }
+
+    /// <summary>CSS custom-property name for the vertical-slider length token. A consumer can override it
+    /// per instance (it is read on the component root, so an inline style wins over the theme's value).</summary>
+    public const string Length = "--flare-slider-length";
+
     /// <summary>CSS custom-property name for the gap radius token.</summary>
     public const string GapRadius = "--flare-slider-gap-radius";
     /// <summary>CSS custom-property name for the gap token.</summary>

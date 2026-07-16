@@ -499,6 +499,13 @@ public class MaterialDesignTokens
         HandleHeightMd = "3.25rem",
         HandleHeightLg = "4.25rem",
         HandleHeightXl = "6.75rem",
+        // Flanking StartIcon/EndIcon ramp.
+        IconSizeXs = "20px",
+        IconSizeSm = "22px",
+        IconSizeMd = "24px",
+        IconSizeLg = "24px",
+        IconSizeXl = "32px",
+        Length = "12rem",
         GapRadius = "2px",
         Gap = "6px",
         HandleWidth = "4px",

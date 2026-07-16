@@ -43,11 +43,13 @@ separate types, each carrying only what applies to it.
   declaration is invalid at computed-value time.
 
   Fixed properly: size-dependent geometry is now **one token per size** - `--flare-slider-track-height-xs`
-  ... `-xl` (likewise track radius, handle height, `--flare-rating-size-*` and `--flare-pagination-size-*`),
-  the shape `FlareButton` already used for its per-size gaps and heights. The theme emits all five and the
-  component's size class only selects which to read, so the ramp lives in the theme, the component CSS holds
-  no geometry values at all, and a theme can now express a real ramp instead of one flat value. Rendering is
-  unchanged in every theme.
+  ... `-xl` (likewise track radius, handle height, the flanking `--flare-slider-icon-size-*`,
+  `--flare-rating-size-*` and `--flare-pagination-size-*`), the shape `FlareButton` already used for its
+  per-size gaps and heights. The theme emits all five and the component's size class only selects which to
+  read, so the ramp lives in the theme, the component CSS holds no geometry values at all, and a theme can
+  now express a real ramp instead of one flat value. The vertical slider's default length moved to
+  `--flare-slider-length` for the same reason - a consumer still overrides it per instance with an inline
+  value, which wins over the theme's. Rendering is unchanged in every theme.
 - **`FlareSlider` zones squared off the track and butted together.** A zone was painted as a raw rectangle:
   it had no radius and no notch inset, so a zone sitting on the track end covered the rail's rounded corner
   (the track looked square wherever zones reached the edge - i.e. always, for a full-scale gauge), and
