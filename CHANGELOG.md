@@ -3,6 +3,47 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-07-16
+
+A consolidation release around one idea: **a colored band on a track is one concept**. The slider's zones
+grow into a single `FlareZone` shared by the slider, the progress bar and a new segmented `FlareMeter`, so
+the three no longer each reinvent the same band. Plus a new part-to-whole meter, and hardening that keeps a
+theme's token mismatch from breaking a control.
+
+### Added
+- **`FlareMeter`**: a segmented part-to-whole bar - how a whole divides into proportional colored parts
+  (a request-timing breakdown, a storage quota, a pass/fail/skip test ribbon). Non-interactive. Parts are
+  `<FlareZone Value="..." Color="..." Label="..." />` children, sized in proportion to their sum, with an
+  optional legend (`ShowLegend`, `ShowValues`, `Format`). Its track reuses the `FlareProgress` linear-track
+  tokens (height, rounded ends, resting background), so a meter and a progress bar line up visually.
+- **One `FlareZone` for the whole track family**: the slider-only `FlareSliderZone` is generalized into a
+  single `FlareZone` that works in `FlareSlider`, `FlareProgress` and `FlareMeter`. The host decides how a
+  zone is read: a **scale** host (slider / progress) takes an absolute `Start`/`End` range on its own scale,
+  while a **proportional** host (meter) takes a `Value` weight. `Color` and `Label` are shared. The new
+  `IFlareZoneHost` contract lets any component host zones with one shared registration path.
+- **`FlareProgress` colored zones**: a declarative `<Zones>` slot for static bands on the 0-100 track
+  (threshold / danger ranges, a loaded-so-far band), drawn under the active bar - the same layering the
+  slider uses. Because zones need an uninterrupted track, using them renders a continuous track instead of
+  the split (gap + trailing stop dot) one.
+- **`FlareClipboard.Color`**: the copy control forwards a semantic color to its inner button, so it can be
+  an emphasized call-to-action (e.g. a filled Primary "copy your new secret"). It previously forwarded only
+  `Variant` and `Size` and silently dropped the color.
+- **`IFlareButton.Color`**: the shared button contract now carries the semantic color alongside
+  `Variant`/`Size`, so button wrappers forward the full appearance surface instead of dropping part of it.
+
+### Changed
+- **`FlareSliderZone` is deprecated** in favour of `FlareZone`. It still works - it is now a thin subclass
+  of `FlareZone` - so existing `<FlareSliderZone Start End Color />` markup keeps compiling; it just warns.
+  A media "buffered" band is expressed as a plain zone from the track start to the loaded point, so no
+  dedicated buffer parameter is needed on the slider.
+
+### Fixed
+- **`FlareSwitch` thumb can no longer overflow its rail in any theme**: the handle is now clamped to the
+  track height in the core CSS, so a theme that pairs a compact rail with a larger grow-on-check thumb
+  degrades gracefully instead of rendering a ball bulging out of the track. This is a no-op for every
+  built-in size (their thumbs already fit) and complements the Visual Studio theme's own token fix in 0.2.0
+  by protecting any future theme from the same class of mismatch.
+
 ## [0.2.1] - 2026-07-13
 
 A correctness patch for the optional `Flare.Components.QrCode` package: it generated QR codes that looked
