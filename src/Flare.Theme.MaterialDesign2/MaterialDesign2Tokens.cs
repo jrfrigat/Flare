@@ -172,8 +172,11 @@ internal static class MaterialDesign2Tokens
         TrackRadiusLg = "9999px", TrackRadiusXl = "9999px",
         HandleHeightXs = "20px", HandleHeightSm = "20px", HandleHeightMd = "20px",
         HandleHeightLg = "20px", HandleHeightXl = "20px",
-        Gap = "0",
-        GapRadius = "0",
+        // "0px", not "0": the component builds the rail with calc(100% - <pct> + var(--flare-slider-gap)),
+        // and inside a calc a unitless zero is a <number>, not a <length> - the whole declaration would be
+        // dropped and the rail would vanish. MD2 wants no gap, but it has to say so in a length.
+        Gap = "0px",
+        GapRadius = "0px",
         HandleWidth = "20px",
         HandlePressedWidth = "20px",
         HandleRadius = "9999px",
