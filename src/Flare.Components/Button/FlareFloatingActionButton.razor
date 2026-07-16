@@ -32,7 +32,8 @@ else
     /// <summary>Accessible label forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
-    /// <summary>Size of the FAB (Sm 40dp, Md 56dp baseline, Lg 96dp).</summary>
+    /// <summary>Size of the FAB; <c>Md</c> is the baseline and the default. Each theme decides what a step
+    /// measures.</summary>
     [Parameter] public FabSize Size { get; set; } = FabSize.Md;
 
     /// <summary>Color of the FAB (tonal container). Role -> shared color class; custom -> inline tokens. Default = theme default (primary-container).</summary>

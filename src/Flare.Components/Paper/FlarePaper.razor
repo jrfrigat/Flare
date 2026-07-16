@@ -14,7 +14,8 @@
     [Parameter] public int Elevation { get; set; } = 1;
     /// <summary>When true, removes border-radius for a flat rectangular shape.</summary>
     [Parameter] public bool Square { get; set; }
-    /// <summary>When true, uses a 1dp outline instead of a shadow (elevation is ignored).</summary>
+    /// <summary>When true, the surface is outlined rather than raised with a shadow (elevation is ignored).
+    /// The outline's own weight and colour come from the theme.</summary>
     [Parameter] public bool Outlined { get; set; }
     /// <summary>Padding applied inside the paper surface using design-token values.</summary>
     [Parameter] public FlareSpacing Padding { get; set; } = FlareSpacing.None;

@@ -54,7 +54,8 @@
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
     /// <summary>Label position relative to the checkbox (End = after, Start = before). Default End.</summary>
     [Parameter] public LabelPlacement LabelPlacement { get; set; } = LabelPlacement.End;
-    /// <summary>Control size (Xs..Xl), shared scale. Medium is the default 18dp box.</summary>
+    /// <summary>Control size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what a
+    /// step measures.</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
     /// <summary>Custom icon shown when checked (replaces the default check mark).</summary>
     [Parameter] public RenderFragment? CheckedIcon { get; set; }

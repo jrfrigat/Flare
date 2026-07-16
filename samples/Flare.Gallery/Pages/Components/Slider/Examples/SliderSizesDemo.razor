@@ -1,10 +1,13 @@
-@* Size scales the MD3 Expressive track thickness (XS 16dp … XL 96dp). *@
+@* Size is a step on the shared TrackSize scale, the same one FlareProgress and FlareMeter use. The steps are
+   labels, not measurements: each theme maps them onto its own track and handle tokens. Switch the theme to
+   see it - MD3 Expressive ramps the track right up, while FluentUI2 deliberately draws one geometry at every
+   step, so these five sliders are identical there. That is the theme's call to make, not the scale's. *@
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
-    <FlareSlider @bind-Value="_v" Size="TrackSize.Xs" Label="XSmall (16dp)" />
-    <FlareSlider @bind-Value="_v" Size="TrackSize.Sm" Label="Small (24dp)" />
-    <FlareSlider @bind-Value="_v" Size="TrackSize.Md" Label="Medium (40dp)" />
-    <FlareSlider @bind-Value="_v" Size="TrackSize.Lg" Label="Large (56dp)" />
-    <FlareSlider @bind-Value="_v" Size="TrackSize.Xl" Label="XLarge (96dp)" />
+    <FlareSlider @bind-Value="_v" Size="TrackSize.Xs" Label="XSmall (default)" />
+    <FlareSlider @bind-Value="_v" Size="TrackSize.Sm" Label="Small" />
+    <FlareSlider @bind-Value="_v" Size="TrackSize.Md" Label="Medium" />
+    <FlareSlider @bind-Value="_v" Size="TrackSize.Lg" Label="Large" />
+    <FlareSlider @bind-Value="_v" Size="TrackSize.Xl" Label="XLarge" />
 </FlareStack>
 
 @code {

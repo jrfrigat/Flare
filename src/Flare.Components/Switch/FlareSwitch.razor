@@ -39,7 +39,8 @@
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Accent color of the selected track (role -> shared class, custom -> inline token). Default = primary.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
-    /// <summary>Switch size (Sm or Md). Default Md (52x32dp).</summary>
+    /// <summary>Switch size (Xs..Xl) on the shared scale; <c>Md</c> is the default. Each theme decides what
+    /// a step measures.</summary>
     [Parameter] public SwitchSize Size { get; set; } = SwitchSize.Md;
     /// <summary>Label position relative to the switch (End = after, Start = before). Default End.</summary>
     [Parameter] public LabelPlacement LabelPlacement { get; set; } = LabelPlacement.End;

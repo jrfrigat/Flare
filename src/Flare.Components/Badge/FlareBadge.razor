@@ -40,7 +40,8 @@
     [Parameter] public BadgeOrigin Origin { get; set; } = BadgeOrigin.TopRight;
     /// <summary>Semantic color of the badge indicator.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
-    /// <summary>Indicator size (Xs..Xl). Medium is the default 16dp indicator.</summary>
+    /// <summary>Indicator size (Xs..Xl) on the shared scale; medium is the default. Each theme decides what
+    /// a step measures.</summary>
     [Parameter] public FieldSize Size { get; set; } = FieldSize.Md;
 
     protected override string ComponentCssClass => Css.Classes.Badge.Root;
