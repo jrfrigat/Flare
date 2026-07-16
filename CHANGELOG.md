@@ -6,6 +6,39 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.6.0] - 2026-07-16
 
 ### Changed
+- **BREAKING: `FlareSlider`, `FlareProgress` and `FlareMeter` now share one size scale, `TrackSize`.** The
+  three are one family - a meter already read the progress track tokens - but sizing them was three different
+  stories: the slider took a `SliderSize` enum, progress took an `int` of pixels, and a meter had no size at
+  all. Progress's `int` was the only pixel-valued `Size` in the library (every other component uses an enum),
+  and it meant two things at once: a diameter for the circular variant, while the linear thickness lived in a
+  separate `Thickness` parameter.
+
+  - **`SliderSize` -> `TrackSize`.** Same members (`Xs`..`Xl`), same behaviour; replace the type name.
+  - **`FlareProgress.Size` is now `TrackSize`, not `int`.** One step drives both variants - linear thickness
+    and circular diameter + stroke.
+  - **`FlareProgress.Thickness` is removed.** It set the linear height in pixels; `Size` covers it, and the
+    theme owns the values.
+  - **`FlareMeter.Size` is new**, reading the progress ramp so a meter and a bar at the same step match by
+    construction rather than by two themes agreeing.
+
+  Migration: `Size="40"` -> `Size="TrackSize.Md"` (the old default), `Size="24"` -> `TrackSize.Xs`,
+  `Thickness="8"` -> the nearest step. **Nothing moves at the default**: every theme's `Md` is exactly what it
+  drew before, verified against the rendered values in MD3 and Fluent.
+
+  Progress and meter default to `Md`, not `Xs` like the slider: their ramp runs both ways, because an inline
+  spinner in a table row needs to go finer than the resting size as much as a hero bar needs to go heavier.
+  Flare's own `FlareDataGrid` proved the point - it was asking for 28px and 36px spinners, below the 40px
+  default, and a scale that only climbed would have had nothing to offer it.
+
+  The steps are labels, not measurements: each theme maps them onto its own ramp. Only two steps of each ramp
+  are anchored in a spec (MD3 names a 4dp bar with an 8dp "thick", and a 40dp ring with a 52dp "thick";
+  Fluent names a 2px bar with a 4px "large", and eight spinner sizes). The rest is each theme's own
+  interpolation, and the token comments say which is which.
+- **Fixed as a side effect: the `CircularSize` theme token never rendered.** `FlareProgress` wrote
+  `width:{Size}px;height:{Size}px` inline on every circular spinner, and inline style beats the stylesheet -
+  so `--flare-progress-circular-size` was dead and the core's hardcoded `40` overrode whatever a theme asked
+  for. It went unnoticed because both reference themes happen to say 40px. The geometry is now entirely the
+  theme's, and a test asserts the component writes no inline width/height.
 - **Token docs no longer state what a theme sets the token to.** Core token records documented their members
   by quoting a value - `/// <summary>Gap xs token (0.25rem).</summary>` - across `ButtonTokens`, `FabTokens`,
   `MenuTokens`, `SplitButtonTokens`, `ToggleButtonTokens`, `InputTokens` and `SpacingTokens`. The core owns no

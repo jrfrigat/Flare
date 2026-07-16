@@ -1085,7 +1085,7 @@ public class C_SizeGridUnificationTests : FlareTestContext
     [Fact]
     public void Slider_Xl_AppliesModifier()
     {
-        var cut = Render<FlareSlider>(p => p.Add(x => x.Size, SliderSize.Xl));
+        var cut = Render<FlareSlider>(p => p.Add(x => x.Size, TrackSize.Xl));
         Assert.Contains("flare-slider--xl", cut.Find(".flare-slider").ClassName);
     }
 }
@@ -1326,21 +1326,107 @@ public class C_FlareProgressWavyTests : FlareTestContext
     }
 }
 
-public class C_FlareProgressThicknessTests : FlareTestContext
+// FlareProgress sizing: one TrackSize step drives the linear thickness AND the circular diameter, and every
+// value behind it belongs to the theme. The component's only job is to say WHICH step is in play.
+public class C_FlareProgressSizeTests : FlareTestContext
 {
-    [Fact]
-    public void Thickness_SetsLinearHeightToken()
+    [Theory]
+    [InlineData(TrackSize.Xs, "flare-progress--xs")]
+    [InlineData(TrackSize.Sm, "flare-progress--sm")]
+    [InlineData(TrackSize.Md, "flare-progress--md")]
+    [InlineData(TrackSize.Lg, "flare-progress--lg")]
+    [InlineData(TrackSize.Xl, "flare-progress--xl")]
+    public void Size_AppliesSizeClass_OnLinear(TrackSize size, string expected)
     {
-        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 50d).Add(x => x.Thickness, 10));
-        Assert.Contains("--flare-progress-linear-height:10px", cut.Find(".flare-progress").GetAttribute("style"));
+        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, size));
+
+        Assert.Contains(expected, cut.Find(".flare-progress").ClassName);
+    }
+
+    // The same step has to reach the circular variant too, or one Size would mean two different things.
+    [Theory]
+    [InlineData(TrackSize.Xs, "flare-progress--xs")]
+    [InlineData(TrackSize.Xl, "flare-progress--xl")]
+    public void Size_AppliesSizeClass_OnCircular(TrackSize size, string expected)
+    {
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Variant, ProgressVariant.Circular)
+            .Add(x => x.Value, 50d)
+            .Add(x => x.Size, size));
+
+        Assert.Contains(expected, cut.Find(".flare-progress").ClassName);
     }
 
     [Fact]
-    public void NoThicknessToken_ByDefault()
+    public void DefaultSize_IsMd()
     {
         var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 50d));
+
+        Assert.Contains("flare-progress--md", cut.Find(".flare-progress").ClassName);
+    }
+
+    // Regression: the circular variant used to write width/height px inline from an int Size that defaulted
+    // to 40. Inline style beats the stylesheet, so --flare-progress-circular-size never rendered and a theme
+    // that set its own diameter was silently ignored - the core's 40 always won. Nothing about the geometry
+    // may come back inline; the size class picks a theme token and the theme decides the number.
+    [Fact]
+    public void Circular_WritesNoInlineGeometry_SoTheThemeTokenDecides()
+    {
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Variant, ProgressVariant.Circular)
+            .Add(x => x.Value, 50d)
+            .Add(x => x.Size, TrackSize.Xl));
+
+        var style = cut.Find(".flare-progress").GetAttribute("style") ?? "";
+        Assert.DoesNotContain("width:", style);
+        Assert.DoesNotContain("height:", style);
+    }
+
+    // The linear track thickness is a theme token as well - no inline override survives from the old
+    // pixel-valued Thickness parameter.
+    [Fact]
+    public void Linear_WritesNoInlineHeight()
+    {
+        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 50d).Add(x => x.Size, TrackSize.Xl));
+
         var style = cut.Find(".flare-progress").GetAttribute("style") ?? "";
         Assert.DoesNotContain("--flare-progress-linear-height", style);
+        Assert.DoesNotContain("height:", style);
+    }
+}
+
+// FlareMeter rides the same scale, and deliberately the same tokens: a meter is the same rule of track as a
+// linear progress bar, so they must not be able to drift apart.
+public class C_FlareMeterSizeTests : FlareTestContext
+{
+    private static RenderFragment OneSegment => b =>
+    {
+        b.OpenComponent<FlareMeterSegment>(0);
+        b.AddAttribute(1, nameof(FlareMeterSegment.Value), (double?)1.0);
+        b.CloseComponent();
+    };
+
+    [Theory]
+    [InlineData(TrackSize.Xs, "flare-meter--xs")]
+    [InlineData(TrackSize.Sm, "flare-meter--sm")]
+    [InlineData(TrackSize.Md, "flare-meter--md")]
+    [InlineData(TrackSize.Lg, "flare-meter--lg")]
+    [InlineData(TrackSize.Xl, "flare-meter--xl")]
+    public void Size_AppliesSizeClass(TrackSize size, string expected)
+    {
+        var cut = Render<FlareMeter>(p => p.Add(x => x.Size, size).Add(x => x.ChildContent, OneSegment));
+
+        Assert.Contains(expected, cut.Find(".flare-meter").ClassName);
+    }
+
+    [Fact]
+    public void DefaultSize_IsMd_MatchingProgress()
+    {
+        var meter = Render<FlareMeter>(p => p.Add(x => x.ChildContent, OneSegment));
+        var progress = Render<FlareProgress>(p => p.Add(x => x.Value, 50d));
+
+        Assert.Contains("flare-meter--md", meter.Find(".flare-meter").ClassName);
+        Assert.Contains("flare-progress--md", progress.Find(".flare-progress").ClassName);
     }
 }
 

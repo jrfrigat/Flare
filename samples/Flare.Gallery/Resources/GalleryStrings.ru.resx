@@ -1477,7 +1477,7 @@
     <value>Запросный (обратная анимация)</value>
   </data>
   <data name="Progress_Sizes" xml:space="preserve">
-    <value>Размеры (круговой)</value>
+    <value>Размеры</value>
   </data>
   <data name="Progress_Colors" xml:space="preserve">
     <value>Цвета</value>
@@ -1625,6 +1625,9 @@
   </data>
   <data name="Meter_Basic" xml:space="preserve">
     <value>Разбивка по времени, лента тестов и квота</value>
+  </data>
+  <data name="Meter_Sizes" xml:space="preserve">
+    <value>Размеры</value>
   </data>
   <data name="SpeedDial_Title" xml:space="preserve">
     <value>Быстрый набор</value>

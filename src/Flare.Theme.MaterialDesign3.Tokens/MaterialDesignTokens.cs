@@ -360,15 +360,33 @@ public class MaterialDesignTokens
     // circular caps, and the opt-in wavy determinate track (with-wave 10dp, amplitude 3dp, wavelength 40dp).
     internal static readonly ProgressTokens Progress = new()
     {
-        LinearHeight = "4px",
+        // Size ramp. The spec names two steps of each - linear 4dp with an 8dp "thick", circular 40dp with a
+        // 52dp "thick" - and they anchor Md (the default) and the step above it. The ramp runs BOTH ways
+        // from Md because a progress indicator's natural default sits mid-scale, not at the bottom: the
+        // hairline steps below it are what an inline spinner or a dense table row needs.
+        LinearHeightXs = "2px",
+        LinearHeightSm = "3px",
+        LinearHeightMd = "4px",   // spec: linear height (the default)
+        LinearHeightLg = "6px",
+        LinearHeightXl = "8px",   // spec: linear thick height
         TrackRadius = "var(--flare-shape-full)",
         Gap = "4px",
         StopSize = "4px",
         StopInset = "0px",
         StopColor = "var(--fc-main, var(--flare-color-primary))",
         BufferOpacity = "30%",
-        CircularSize = "40px",
-        CircularWidth = "4px",
+        CircularSizeXs = "24px",
+        CircularSizeSm = "32px",
+        CircularSizeMd = "40px",  // spec: circular size (the default)
+        CircularSizeLg = "52px",  // spec: circular thick size
+        CircularSizeXl = "64px",
+        // The spec pins the circular stroke at 4dp for both the default and the thick ring, so it holds
+        // flat across md..lg and only moves where the spec stops speaking.
+        CircularWidthXs = "3px",
+        CircularWidthSm = "3px",
+        CircularWidthMd = "4px",  // spec: circular active-indicator thickness
+        CircularWidthLg = "4px",  // spec: same 4dp on the thick ring
+        CircularWidthXl = "5px",
         CircularCap = "round",
         CircularGap = "4px",
         WavyEnabled = "1",

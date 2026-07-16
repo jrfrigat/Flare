@@ -7,12 +7,12 @@
     @* Wavy ring: ONLY the active indicator is wavy; the remaining track is a
        normal smooth circle. The active arc is a wavy path whose phase is animated (SMIL d-morph) so
        the crests travel around the ring. pathLength=100 keeps the active-arc dash in percent units. *@
-    <div class="@BuildCssClass(Css.Classes.Progress.Circular, Css.Classes.Progress.Wavy, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Circular, Css.Classes.Progress.Wavy, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@_clampedValue.ToString("F0")"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"width:{Size}px;height:{Size}px;{_colorTokens}{Style}")"
+         style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         @* -90deg start offset on the group; the wavy indicator flows via a CSS rotation synced with
            stroke-dashoffset (the fill window stays put while the wave crests travel around). *@
@@ -28,12 +28,12 @@
 }
 else if (Variant == ProgressVariant.Circular)
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Circular, _indeterminate ? Css.Classes.Progress.Indeterminate : null, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Circular, _indeterminate ? Css.Classes.Progress.Indeterminate : null, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"width:{Size}px;height:{Size}px;{_colorTokens}{Style}")"
+         style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         <svg viewBox="0 0 44 44" class="@Css.Classes.Progress.Svg">
             <circle class="@Css.Classes.Progress.Track" cx="22" cy="22" r="18" fill="none" stroke-width="4"
@@ -51,12 +51,12 @@ else if (Variant == ProgressVariant.Linear && _wavyActive)
        trailing stop indicator). The active bar holds a continuous sine path (constant wavelength,
        amplitude and speed from theme tokens) that is clipped to the bar and translated one
        wavelength per cycle for a seamless flow. The remaining track stays a flat line. *@
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Wavy, Css.Classes.Progress.Split, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Wavy, Css.Classes.Progress.Split, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@_clampedValue.ToString("F0")"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"{_colorTokens}{_thicknessToken}{Style}")"
+         style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         <div class="@Css.Classes.Progress.Bar" style="width:@(_clampedValue.ToString("F0", System.Globalization.CultureInfo.InvariantCulture))%">
             <svg class="@Css.Classes.Progress.Wave" width="@_inv(_linWaveWidth)" height="@_inv(_wavyHeightPx)"
@@ -69,12 +69,12 @@ else if (Variant == ProgressVariant.Linear && _wavyActive)
 }
 else if (Variant == ProgressVariant.Buffer)
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Buffer, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Buffer, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"{_colorTokens}{_thicknessToken}{Style}")"
+         style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         <div class="@Css.Classes.Progress.BufferFill" style="width:@(_clampedBufferValue.ToString("F0"))%"></div>
         <div class="@Css.Classes.Progress.Bar" style="width:@(_clampedValue.ToString("F0"))%"></div>
@@ -82,23 +82,23 @@ else if (Variant == ProgressVariant.Buffer)
 }
 else if (Variant == ProgressVariant.Query)
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Query, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, Css.Classes.Progress.Query, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"{_colorTokens}{_thicknessToken}{Style}")"
+         style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         <div class="@Css.Classes.Progress.Bar"></div>
     </div>
 }
 else
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, _trackClass, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, _trackClass, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
-         style="@($"{_colorTokens}{_thicknessToken}{Style}")"
+         style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         @foreach (var z in _zoneBands)
         {
@@ -124,10 +124,12 @@ else
     [Parameter] public double? Value { get; set; }
     /// <summary>Display style: Linear bar, Circular spinner, Buffer, or Query.</summary>
     [Parameter] public ProgressVariant Variant { get; set; } = ProgressVariant.Linear;
-    /// <summary>Pixel size (width and height) used when Variant is Circular. Defaults to 40.</summary>
-    [Parameter] public int Size { get; set; } = 40;
-    /// <summary>Track thickness in pixels for the linear variants (Linear/Buffer/Query). 0 = theme default (4px).</summary>
-    [Parameter] public int Thickness { get; set; }
+    /// <summary>
+    /// Size step on the shared <see cref="TrackSize"/> scale, the same one <see cref="FlareSlider"/> and
+    /// <see cref="FlareMeter"/> use. It drives the linear track thickness AND the circular diameter and
+    /// stroke, so one step means one size whichever variant is rendered, and the theme owns every value.
+    /// </summary>
+    [Parameter] public TrackSize Size { get; set; } = TrackSize.Md;
     /// <summary>Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.</summary>
     [Parameter] public bool Wavy { get; set; }
     /// <summary>
@@ -194,8 +196,15 @@ else
     // Role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main token.
     private string _colorClass => Color.CssClass ?? string.Empty;
     private string _colorTokens => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : string.Empty;
-    // Linear track thickness override (px). Empty when Thickness is unset -> CSS default applies.
-    private string _thicknessToken => Thickness > 0 ? $"--flare-progress-linear-height:{Thickness}px;" : string.Empty;
+    // The size class only selects which per-size theme token the CSS reads; it carries no geometry itself.
+    private string _sizeClass => Size switch
+    {
+        TrackSize.Sm => Css.Classes.Progress.Sm,
+        TrackSize.Md => Css.Classes.Progress.Md,
+        TrackSize.Lg => Css.Classes.Progress.Lg,
+        TrackSize.Xl => Css.Classes.Progress.Xl,
+        _ => Css.Classes.Progress.Xs,
+    };
 
     // Both circular arcs are expressed as plain numeric dash patterns so SVG renders
     // them reliably (no CSS calc() in stroke-dasharray). The leading "0 <space>" pair

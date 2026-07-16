@@ -7531,6 +7531,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Sizes.
+        /// </summary>
+        public static string Meter_Sizes {
+            get {
+                return ResourceManager.GetString("Meter_Sizes", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Range (two handles).
         /// </summary>
         public static string Slider_Range {
