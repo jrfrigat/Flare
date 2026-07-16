@@ -21,6 +21,27 @@ All notable changes to Flare are documented here. This project adheres to
   `ChangelogService.LatestVersion`, a property nothing read.
 
 ### Fixed
+- **Core docs stated a design system's measurements, and were already wrong.** `SwitchSize.Md` was documented
+  as the "52x32dp" switch - Material Design 3's number - while FluentUI2 draws it 40x20, so the doc lied under
+  a shipped theme. `FabSize` promised a "40dp / 56dp / 96dp container" for a component that has no size token
+  at all: a FAB is sized by the padding around its glyph. `FlareBadge`, `FlareCheckbox` and `FlarePaper` did
+  the same, and `FlareSwitch.Size` additionally claimed the enum had two members when it has five.
+
+  This is 0.6.0's token-doc fix applied where it was still missing - the components' own `[Parameter]` and
+  enum docs. A size step is a *label*: each theme maps it onto its own tokens, so a doc that pins a number to
+  it is unowned prose that goes stale. The docs now say what a step is for and leave the geometry to the
+  theme.
+- **A guard so it cannot come back** (`CoreDocSpecUnitTests`): no core doc may quote a `dp` measurement.
+  `dp` is the exact signal - a design-spec unit that appears in no C# and no CSS, so it can only turn up in
+  the core when someone is quoting a design system. That precision is what lets the guard stay out of the
+  way of numbers the core legitimately owns: a debounce (`Default: 300ms`), or an example of a value the
+  caller passes (`e.g. "48px"`). Theme packages are out of scope - quoting the spec they implement is what
+  their comments are for.
+- **The Gallery's slider size demo was labelled in MD3's dp**, which is wrong under four of the seven themes -
+  FluentUI2 in particular draws one slider geometry at every step, so the demo renders five identical sliders
+  there while the labels claim 16dp through 96dp. The labels now name the step, and the demo says why the
+  same step looks different per theme.
+
 - **The Gallery's API pages still described the pre-0.6.0 progress API** - `Size` as an `int` of pixels, plus
   a `Thickness` parameter that 0.6.0 had removed - and listed no `Size` on `FlareMeter`. The generated API
   registry had not been regenerated after that change, so the reference documented an API the release no
