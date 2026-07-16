@@ -106,7 +106,7 @@ tests/*                      -> Abstractions + Theming + Components + Infrastruc
 | `Flare.Theme.MaterialDesign3Expressive` | `MaterialDesign3ExpressiveTheme` | `md3-expressive` | Violet | 5 |
 | `Flare.Theme.MaterialDesign3` | `MaterialDesign3Theme` | `md3` | Violet | (общие с MD3) |
 | `Flare.Theme.MaterialDesign2` | `MaterialDesign2Theme` | `md2` | Purple | 6 |
-| `Flare.Theme.FluentUI2` | `Fluent2Theme` | `fluent2` | Blue | 7 |
+| `Flare.Theme.FluentUI2` | `FluentUI2Theme` | `fluent2` | Blue | 7 |
 | `Flare.Theme.Aero` | `AeroTheme` | `aero` | Blue | 5 |
 | `Flare.Theme.LiquidGlass` | `LiquidGlassTheme` | `liquid-glass` | Blue | 6 |
 | `Flare.Theme.VisualStudio` | `VisualStudioTheme` | `visualstudio` | Blue | 5 |

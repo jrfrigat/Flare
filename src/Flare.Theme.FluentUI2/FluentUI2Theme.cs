@@ -6,7 +6,7 @@ using Flare.Theme.FluentUI2.Tokens;
 namespace Flare.Theme.FluentUI2;
 
 /// <summary>Fluent UI 2 theme (design tokens). Light/dark is a mode; colors come from a palette.</summary>
-public sealed class Fluent2Theme : ITheme
+public sealed class FluentUI2Theme : ITheme
 {
     /// <summary>The stable theme id - use this constant to switch themes without a magic string.</summary>
 

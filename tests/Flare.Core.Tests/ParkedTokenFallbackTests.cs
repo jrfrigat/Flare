@@ -42,7 +42,7 @@ public sealed class ParkedTokenFallbackTests
     private static readonly Func<ITheme>[] Factories =
     [
         () => new AeroTheme(),
-        () => new Fluent2Theme(),
+        () => new FluentUI2Theme(),
         () => new LiquidGlassTheme(),
         () => new MaterialDesign2Theme(),
         () => new MaterialDesign3Theme(),
@@ -91,7 +91,7 @@ public sealed class ParkedTokenFallbackTests
 
         var all = new[]
             {
-                typeof(AeroTheme), typeof(Fluent2Theme), typeof(LiquidGlassTheme), typeof(MaterialDesign2Theme),
+                typeof(AeroTheme), typeof(FluentUI2Theme), typeof(LiquidGlassTheme), typeof(MaterialDesign2Theme),
                 typeof(MaterialDesign3Theme), typeof(MaterialDesign3ExpressiveTheme), typeof(VisualStudioTheme),
             }
             .Select(t => t.Assembly).Distinct()

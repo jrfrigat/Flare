@@ -17,13 +17,24 @@
   the icon and the label at the xs size", - а значение оставлено темам: только там оно и верно. Называть
   *особое* значение по смыслу по-прежнему можно и по-прежнему делается ("тема с плоскими залитыми кнопками
   паркует это в `none`"), потому что это описывает контракт самого токена, а не вкус конкретной темы.
-- **ЛОМАЮЩЕЕ: класс темы Material Design 3 Expressive теперь `MaterialDesign3ExpressiveTheme`**, а не
-  `Md3Theme`. Все остальные встроенные темы названы по своему пакету - `AeroTheme`, `MaterialDesign2Theme`,
-  `MaterialDesign3Theme`, `VisualStudioTheme`, - а `Md3Theme` и выбивался из этого, и читался как *базовая*
-  MD3-тема, лежащая рядом. Файл при этом уже назывался `MaterialDesign3ExpressiveTheme.cs`.
+- **ЛОМАЮЩЕЕ: каждый встроенный класс темы теперь назван по своему пакету.** Из правила выбивались две темы
+  из семи, и ровно они мешали читателю угадать имя:
+  - `Md3Theme` -> **`MaterialDesign3ExpressiveTheme`** (пакет `Flare.Theme.MaterialDesign3Expressive`).
+    Вдобавок он читался как *базовая* MD3-тема, которая лежит рядом под именем `MaterialDesign3Theme`.
+  - `Fluent2Theme` -> **`FluentUI2Theme`** (пакет `Flare.Theme.FluentUI2`).
 
-  Миграция: заменить `new Md3Theme()` на `new MaterialDesign3ExpressiveTheme()`. Больше ничего не меняется -
-  тот же id (`md3-expressive`), те же токены, те же палитры.
+  Оба класса и так лежали в файлах с новыми именами (`MaterialDesign3ExpressiveTheme.cs`,
+  `FluentUI2Theme.cs`) - не совпадали только имена типов. После этих двух правок правило выполняется без
+  исключений: `AeroTheme`, `FluentUI2Theme`, `LiquidGlassTheme`, `MaterialDesign2Theme`,
+  `MaterialDesign3Theme`, `MaterialDesign3ExpressiveTheme`, `VisualStudioTheme`.
+
+  Миграция: заменить `new Md3Theme()` на `new MaterialDesign3ExpressiveTheme()`, а `new Fluent2Theme()` на
+  `new FluentUI2Theme()`. Больше ничего не меняется - те же id (`md3-expressive`, `fluent2`), те же токены,
+  те же палитры. Id намеренно не тронуты, поэтому сохранённый выбор темы у пользователя переживёт обновление.
+
+  Классы `Md3Palettes` / `Fluent2Palettes` **не** переименованы. У имён палитр сегодня нет конвенции вообще
+  (`Md2Palettes` и `Md3Palettes` короткие, `AeroPalettes` и `VisualStudioPalettes` - по пакету), и решать
+  это - отдельный вопрос, а не то, что стоит протаскивать под видом переименования темы.
 - **`Microsoft.Extensions.Localization` поднят до 10.0.10** - в тон остальным пакетам ASP.NET Core 10.0.10,
   подтянутым в 0.5.0.
 

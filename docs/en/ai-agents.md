@@ -81,7 +81,7 @@ builder.Services.AddFlare(opts =>
 });
 
 // Register any additional themes you want available at runtime:
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 `AddFlare` also registers `IDialogService`, `ISnackbarService` and `IMessageBoxService` - no extra
 registration needed. Other entry points: `AddFlareTheme`, `AddFlarePalette`, `AddFlareIde`,

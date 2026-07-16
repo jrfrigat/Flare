@@ -76,7 +76,7 @@ builder.Services.AddFlare(opts =>
 // theme assembly to load, which a bare reference does not in a trimmed/WASM app -- so prefer
 // it over relying on FlareOptions.RegisterAllBuiltInThemes auto-discovery. Each theme brings
 // its own palettes via ITheme.Palettes.
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 
 **`index.html` / `App.razor` `<head>`:**
