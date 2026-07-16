@@ -3,6 +3,9 @@
   align-items: center;
   gap: var(--flare-spacing-2);
   flex-wrap: wrap;
+  /* Control square: md is the default; the size classes below re-point it. The theme owns every value,
+     so no size is hardcoded in this file. */
+  --_pg-size: var(--flare-pagination-size-md);
 }
 
 /* "X-Y of Z" info text: muted secondary text, matching the rows-per-page label. */
@@ -16,8 +19,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--flare-pagination-size, 2.25rem);
-  height: var(--flare-pagination-size, 2.25rem);
+  min-width: var(--_pg-size);
+  height: var(--_pg-size);
   padding: 0 var(--flare-spacing-4);
   border: 1px solid var(--flare-pagination-border-color);
   border-radius: var(--flare-pagination-radius);
@@ -58,8 +61,8 @@
 }
 
 .flare-pagination__ellipsis {
-  min-width: var(--flare-pagination-size, 2.25rem);
-  height: var(--flare-pagination-size, 2.25rem);
+  min-width: var(--_pg-size);
+  height: var(--_pg-size);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,7 +83,7 @@
   white-space: nowrap;
 }
 .flare-pagination__rows-select {
-  height: var(--flare-pagination-size, 2.25rem);
+  height: var(--_pg-size);
   padding: 0 var(--flare-spacing-4);
   border: 1px solid var(--flare-pagination-border-color);
   border-radius: var(--flare-pagination-radius);
@@ -91,18 +94,26 @@
   cursor: pointer;
 }
 
-/* Size variants (Xs..Xl; Md is the unmodified default) */
+/* Size variants (Xs..Xl; Md is the unmodified default).
+   Each class only re-points --_pg-size at the theme's token for that size - the btn / ellipsis /
+   rows-select all read --_pg-size - so no size value is hardcoded here. Must stay AFTER the base rule
+   (same specificity). Only the type scale is per-size in its own right. */
+.flare-pagination--xs { --_pg-size: var(--flare-pagination-size-xs); }
+.flare-pagination--sm { --_pg-size: var(--flare-pagination-size-sm); }
+.flare-pagination--lg { --_pg-size: var(--flare-pagination-size-lg); }
+.flare-pagination--xl { --_pg-size: var(--flare-pagination-size-xl); }
+
 .flare-pagination--xs .flare-pagination__btn,
 .flare-pagination--xs .flare-pagination__ellipsis,
-.flare-pagination--xs .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 1.5rem); height: var(--flare-pagination-size, 1.5rem); font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--xs .flare-pagination__rows-select { font-size: var(--flare-typescale-label-small-size); }
 .flare-pagination--sm .flare-pagination__btn,
 .flare-pagination--sm .flare-pagination__ellipsis,
-.flare-pagination--sm .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 1.75rem); height: var(--flare-pagination-size, 1.75rem); font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--sm .flare-pagination__rows-select { font-size: var(--flare-typescale-label-small-size); }
 .flare-pagination--lg .flare-pagination__btn,
 .flare-pagination--lg .flare-pagination__ellipsis,
-.flare-pagination--lg .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 2.75rem); height: var(--flare-pagination-size, 2.75rem); font-size: var(--flare-typescale-title-medium-size); }
+.flare-pagination--lg .flare-pagination__rows-select { font-size: var(--flare-typescale-title-medium-size); }
 .flare-pagination--xl .flare-pagination__btn,
 .flare-pagination--xl .flare-pagination__ellipsis,
-.flare-pagination--xl .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 3.25rem); height: var(--flare-pagination-size, 3.25rem); font-size: var(--flare-typescale-title-large-size); }
+.flare-pagination--xl .flare-pagination__rows-select { font-size: var(--flare-typescale-title-large-size); }
 
 /* Semantic color of the active page button */

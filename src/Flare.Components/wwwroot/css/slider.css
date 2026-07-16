@@ -1,12 +1,12 @@
 /* ==========================================================================
-   FlareSlider - default geometry / theme-overridable
-   Per-size geometry lives in --_trk-* / --_hnd-* vars on the size classes.
-   Presentation resolves as var(--flare-slider-X, <size/default>) so a theme can
-   override ANY aspect via plain tokens (thin rail, circular thumb, even a clip-path
-   shape) without being limited to a fixed set of shapes. Empty theme tokens are not
-   emitted, so the component keeps its per-size geometry from the size classes.
-   The visual track is drawn as rounded rail segments; the native <input type=range>
-   sits transparently on top for interaction + thumb.
+   FlareSlider - fully theme-driven geometry.
+   The THEME owns every value; this file carries no defaults. Size-dependent geometry (track height /
+   radius, handle height) is one token per size - the theme emits all five and the size class below only
+   selects which to read - so a theme can express a real ramp or pin one value for every size. Everything
+   else (gap, handle width/radius/clip/border, colors) is a single token. A theme can therefore reshape
+   the slider completely (thin rail, circular thumb, even a clip-path shape) through plain tokens.
+   The visual track is drawn as rounded rail segments; the native <input type=range> sits transparently
+   on top for interaction + thumb.
    ========================================================================== */
 .flare-slider {
     display: flex;
@@ -14,34 +14,22 @@
     gap: var(--flare-spacing-2);
 }
 
-/* ---- Size geometry (dp -> rem) ----
-   track 16/24/40/56/96dp - handle 44/44/52/68/108dp - track-shape 8/8/12/16/28dp */
-.flare-slider--xs { --_trk-h: 1rem;   --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 20px; }
-.flare-slider--sm { --_trk-h: 1.5rem; --_hnd-h: 2.75rem; --_trk-r: 0.5rem;  --_icon: 22px; }
-.flare-slider--md { --_trk-h: 2.5rem; --_hnd-h: 3.25rem; --_trk-r: 0.75rem; --_icon: 24px; }
-.flare-slider--lg { --_trk-h: 3.5rem; --_hnd-h: 4.25rem; --_trk-r: 1rem;    --_icon: 24px; }
-.flare-slider--xl { --_trk-h: 6rem;   --_hnd-h: 6.75rem; --_trk-r: 1.75rem; --_icon: 32px; }
-
-/* ---- Resolved presentation vars (theme token -> per-size/default fallback) ----
-   The GEOMETRY fallbacks below are NOT dead code: a theme may park a token at `initial` to mean "I do not
-   override this - use the component's own per-size ramp". `initial` is the guaranteed-invalid value for a
-   custom property, so `var(--token, <fallback>)` deliberately skips it and takes the fallback. Drop the
-   fallback and the whole property becomes invalid at computed-value time, collapsing the rail to 0px.
-   Keep them until a theme actually supplies real values for every size. */
+/* ---- Resolved presentation vars (the theme supplies every value; this file carries no defaults) ---- */
 .flare-slider {
-    --_trk-height:  var(--flare-slider-track-height, var(--_trk-h, 16px));
-    --_trk-radius:  var(--flare-slider-track-radius, var(--_trk-r, 8px));
-    --_gap-radius:  var(--flare-slider-gap-radius, 2px);
-    --_gap:         var(--flare-slider-gap, 6px);
-    --_hnd-height:  var(--flare-slider-handle-height, var(--_hnd-h, 44px));
-    --_hnd-width:   var(--flare-slider-handle-width, 4px);
-    --_hnd-width-pressed: var(--flare-slider-handle-pressed-width, 2px);
-    --_hnd-radius:  var(--flare-slider-handle-radius, var(--flare-shape-full));
-    --_hnd-clip:    var(--flare-slider-handle-clip, none);
-    --_hnd-border-w: var(--flare-slider-handle-border-width, 0px);
-    /* accent: per-instance Color (--fc-main) wins, then theme token, then default */
+    /* md is the default when no size class is present; the size classes below re-point these. */
+    --_trk-height:  var(--flare-slider-track-height-md);
+    --_trk-radius:  var(--flare-slider-track-radius-md);
+    --_hnd-height:  var(--flare-slider-handle-height-md);
+    --_gap-radius:  var(--flare-slider-gap-radius);
+    --_gap:         var(--flare-slider-gap);
+    --_hnd-width:   var(--flare-slider-handle-width);
+    --_hnd-width-pressed: var(--flare-slider-handle-pressed-width);
+    --_hnd-radius:  var(--flare-slider-handle-radius);
+    --_hnd-clip:    var(--flare-slider-handle-clip);
+    --_hnd-border-w: var(--flare-slider-handle-border-width);
+    /* accent: per-instance Color (--fc-main) wins, then the theme token */
     --_active:      var(--fc-main, var(--flare-slider-active-color));
-    --_hnd-color:   var(--flare-slider-handle-fill, var(--_active));
+    --_hnd-color:   var(--flare-slider-handle-fill);
     --_inactive:    var(--flare-slider-inactive-color);
     --_sl-size:     var(--flare-slider-state-layer-size);
     --_sl-hover:    var(--flare-slider-state-hover-opacity);
@@ -50,6 +38,41 @@
     --_stop-sel:    var(--flare-slider-stop-color-selected);
     --_value-bg:    var(--flare-slider-value-bg);
     --_value-color: var(--flare-slider-value-color);
+}
+
+/* ---- Size selection ----
+   These only re-point the resolved vars at the theme's token for that size, so no geometry value lives
+   here. They must stay AFTER the block above: same specificity, so source order decides.
+   --_icon is the flanking start/end icon, not slider geometry. */
+.flare-slider--xs {
+    --_trk-height: var(--flare-slider-track-height-xs);
+    --_trk-radius: var(--flare-slider-track-radius-xs);
+    --_hnd-height: var(--flare-slider-handle-height-xs);
+    --_icon: 20px;
+}
+.flare-slider--sm {
+    --_trk-height: var(--flare-slider-track-height-sm);
+    --_trk-radius: var(--flare-slider-track-radius-sm);
+    --_hnd-height: var(--flare-slider-handle-height-sm);
+    --_icon: 22px;
+}
+.flare-slider--md {
+    --_trk-height: var(--flare-slider-track-height-md);
+    --_trk-radius: var(--flare-slider-track-radius-md);
+    --_hnd-height: var(--flare-slider-handle-height-md);
+    --_icon: 24px;
+}
+.flare-slider--lg {
+    --_trk-height: var(--flare-slider-track-height-lg);
+    --_trk-radius: var(--flare-slider-track-radius-lg);
+    --_hnd-height: var(--flare-slider-handle-height-lg);
+    --_icon: 24px;
+}
+.flare-slider--xl {
+    --_trk-height: var(--flare-slider-track-height-xl);
+    --_trk-radius: var(--flare-slider-track-radius-xl);
+    --_hnd-height: var(--flare-slider-handle-height-xl);
+    --_icon: 32px;
 }
 
 .flare-slider__label-row {

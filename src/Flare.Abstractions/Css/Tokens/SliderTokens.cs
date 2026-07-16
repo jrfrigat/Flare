@@ -3,16 +3,57 @@ namespace Flare.Css.Tokens;
 /// <summary>CSS variable tokens for slider.</summary>
 public static class Slider
 {
-    /// <summary>CSS custom-property name for the track height token.</summary>
-    public const string TrackHeight = "--flare-slider-track-height";
-    /// <summary>CSS custom-property name for the track radius token.</summary>
-    public const string TrackRadius = "--flare-slider-track-radius";
+    /// <summary>Per-size track thickness tokens. Size-dependent geometry gets one token per size (the
+    /// theme emits all five on <c>:root</c> and the component's size class reads the matching one), so the
+    /// ramp lives in the theme instead of being hardcoded in the component CSS.</summary>
+    public static class TrackHeight
+    {
+        /// <summary>CSS custom-property name for the xs track height token.</summary>
+        public const string Xs = "--flare-slider-track-height-xs";
+        /// <summary>CSS custom-property name for the sm track height token.</summary>
+        public const string Sm = "--flare-slider-track-height-sm";
+        /// <summary>CSS custom-property name for the md track height token.</summary>
+        public const string Md = "--flare-slider-track-height-md";
+        /// <summary>CSS custom-property name for the lg track height token.</summary>
+        public const string Lg = "--flare-slider-track-height-lg";
+        /// <summary>CSS custom-property name for the xl track height token.</summary>
+        public const string Xl = "--flare-slider-track-height-xl";
+    }
+
+    /// <summary>Per-size track corner-radius tokens.</summary>
+    public static class TrackRadius
+    {
+        /// <summary>CSS custom-property name for the xs track radius token.</summary>
+        public const string Xs = "--flare-slider-track-radius-xs";
+        /// <summary>CSS custom-property name for the sm track radius token.</summary>
+        public const string Sm = "--flare-slider-track-radius-sm";
+        /// <summary>CSS custom-property name for the md track radius token.</summary>
+        public const string Md = "--flare-slider-track-radius-md";
+        /// <summary>CSS custom-property name for the lg track radius token.</summary>
+        public const string Lg = "--flare-slider-track-radius-lg";
+        /// <summary>CSS custom-property name for the xl track radius token.</summary>
+        public const string Xl = "--flare-slider-track-radius-xl";
+    }
+
+    /// <summary>Per-size handle height tokens.</summary>
+    public static class HandleHeight
+    {
+        /// <summary>CSS custom-property name for the xs handle height token.</summary>
+        public const string Xs = "--flare-slider-handle-height-xs";
+        /// <summary>CSS custom-property name for the sm handle height token.</summary>
+        public const string Sm = "--flare-slider-handle-height-sm";
+        /// <summary>CSS custom-property name for the md handle height token.</summary>
+        public const string Md = "--flare-slider-handle-height-md";
+        /// <summary>CSS custom-property name for the lg handle height token.</summary>
+        public const string Lg = "--flare-slider-handle-height-lg";
+        /// <summary>CSS custom-property name for the xl handle height token.</summary>
+        public const string Xl = "--flare-slider-handle-height-xl";
+    }
+
     /// <summary>CSS custom-property name for the gap radius token.</summary>
     public const string GapRadius = "--flare-slider-gap-radius";
     /// <summary>CSS custom-property name for the gap token.</summary>
     public const string Gap = "--flare-slider-gap";
-    /// <summary>CSS custom-property name for the handle height token.</summary>
-    public const string HandleHeight = "--flare-slider-handle-height";
     /// <summary>CSS custom-property name for the handle width token.</summary>
     public const string HandleWidth = "--flare-slider-handle-width";
     /// <summary>CSS custom-property name for the handle pressed width token.</summary>

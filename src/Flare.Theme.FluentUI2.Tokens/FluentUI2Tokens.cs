@@ -354,11 +354,24 @@ public class FluentUI2Tokens
     // Geometry is set via plain constant tokens (no dependency on size).
     internal static readonly SliderTokens Slider = new()
     {
-        TrackHeight = "4px",
-        TrackRadius = "var(--flare-shape-full, 9999px)",
+        // Fluent's slider is one fixed geometry at every size: a 4px rail with a 20px round thumb.
+        TrackHeightXs = "4px",
+        TrackHeightSm = "4px",
+        TrackHeightMd = "4px",
+        TrackHeightLg = "4px",
+        TrackHeightXl = "4px",
+        TrackRadiusXs = "var(--flare-shape-full, 9999px)",
+        TrackRadiusSm = "var(--flare-shape-full, 9999px)",
+        TrackRadiusMd = "var(--flare-shape-full, 9999px)",
+        TrackRadiusLg = "var(--flare-shape-full, 9999px)",
+        TrackRadiusXl = "var(--flare-shape-full, 9999px)",
+        HandleHeightXs = "20px",
+        HandleHeightSm = "20px",
+        HandleHeightMd = "20px",
+        HandleHeightLg = "20px",
+        HandleHeightXl = "20px",
         GapRadius = "0px",
         Gap = "0px",
-        HandleHeight = "20px",
         HandleWidth = "20px",
         HandlePressedWidth = "20px",
         HandleRadius = "var(--flare-shape-full, 9999px)",
@@ -372,7 +385,7 @@ public class FluentUI2Tokens
         StopColor = "var(--flare-color-outline)",
         StopColorSelected = "var(--flare-color-on-primary)",
         StopSize = "2px",
-        HandleClipPath = "initial",
+        HandleClipPath = "none",
         ValueBg = "var(--flare-color-inverse-surface)",
         ValueColor = "var(--flare-color-inverse-on-surface)",
     };
@@ -542,7 +555,12 @@ public class FluentUI2Tokens
     // Rating: same neutral baseline (Size defers to the size classes; filled = primary via --fc-main).
     internal static readonly RatingTokens Rating = new()
     {
-        Size = "initial",
+        // Star ramp: 1 / 1.25 / 1.5 / 2 / 2.5rem.
+        SizeXs = "1rem",
+        SizeSm = "1.25rem",
+        SizeMd = "1.5rem",
+        SizeLg = "2rem",
+        SizeXl = "2.5rem",
         EmptyColor = "var(--flare-color-outline-variant)",
         FilledColor = "var(--flare-color-primary)",
         HoverScale = "1.15",
@@ -606,7 +624,12 @@ public class FluentUI2Tokens
     // Pagination: same neutral baseline (Size defers to the size classes; primary active fill).
     internal static readonly PaginationTokens Pagination = new()
     {
-        Size = "initial",
+        // Button square ramp: 1.5 / 1.75 / 2.25 / 2.75 / 3.25rem.
+        SizeXs = "1.5rem",
+        SizeSm = "1.75rem",
+        SizeMd = "2.25rem",
+        SizeLg = "2.75rem",
+        SizeXl = "3.25rem",
         Radius = "var(--flare-shape-extra-small)",
         BorderColor = "var(--flare-color-outline-variant)",
         ActiveColor = "var(--flare-color-primary)",

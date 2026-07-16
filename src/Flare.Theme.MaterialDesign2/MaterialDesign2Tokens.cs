@@ -165,11 +165,15 @@ internal static class MaterialDesign2Tokens
     // MD2 slider: thin 4px rail with a round 20dp thumb (no MD3 Expressive bar handle).
     internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
     {
-        TrackHeight = "4px",
-        TrackRadius = "9999px",
+        // One fixed geometry at every size: a 4px pill rail with a 20px round thumb.
+        TrackHeightXs = "4px", TrackHeightSm = "4px", TrackHeightMd = "4px",
+        TrackHeightLg = "4px", TrackHeightXl = "4px",
+        TrackRadiusXs = "9999px", TrackRadiusSm = "9999px", TrackRadiusMd = "9999px",
+        TrackRadiusLg = "9999px", TrackRadiusXl = "9999px",
+        HandleHeightXs = "20px", HandleHeightSm = "20px", HandleHeightMd = "20px",
+        HandleHeightLg = "20px", HandleHeightXl = "20px",
         Gap = "0",
         GapRadius = "0",
-        HandleHeight = "20px",
         HandleWidth = "20px",
         HandlePressedWidth = "20px",
         HandleRadius = "9999px",

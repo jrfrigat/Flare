@@ -200,11 +200,16 @@ internal class AeroTokens
 
     internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
     {
-        TrackHeight = "4px",
-        TrackRadius = "var(--flare-shape-full, 9999px)",
+        // One fixed geometry at every size: a 4px pill rail with a 16px round thumb.
+        TrackHeightXs = "4px", TrackHeightSm = "4px", TrackHeightMd = "4px",
+        TrackHeightLg = "4px", TrackHeightXl = "4px",
+        TrackRadiusXs = "var(--flare-shape-full, 9999px)", TrackRadiusSm = "var(--flare-shape-full, 9999px)",
+        TrackRadiusMd = "var(--flare-shape-full, 9999px)", TrackRadiusLg = "var(--flare-shape-full, 9999px)",
+        TrackRadiusXl = "var(--flare-shape-full, 9999px)",
+        HandleHeightXs = "16px", HandleHeightSm = "16px", HandleHeightMd = "16px",
+        HandleHeightLg = "16px", HandleHeightXl = "16px",
         GapRadius = "0px",
         Gap = "0px",
-        HandleHeight = "16px",
         HandleWidth = "16px",
         HandlePressedWidth = "16px",
         HandleRadius = "var(--flare-shape-full, 9999px)",

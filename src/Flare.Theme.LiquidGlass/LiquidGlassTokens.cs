@@ -217,11 +217,16 @@ internal class LiquidGlassTokens
 
     internal static readonly SliderTokens Slider = MaterialDesignTokens.Design.Slider with
     {
-        TrackHeight = "4px",
-        TrackRadius = "var(--flare-shape-full, 9999px)",
+        // One fixed geometry at every size: a 4px pill rail with a 28px round thumb.
+        TrackHeightXs = "4px", TrackHeightSm = "4px", TrackHeightMd = "4px",
+        TrackHeightLg = "4px", TrackHeightXl = "4px",
+        TrackRadiusXs = "var(--flare-shape-full, 9999px)", TrackRadiusSm = "var(--flare-shape-full, 9999px)",
+        TrackRadiusMd = "var(--flare-shape-full, 9999px)", TrackRadiusLg = "var(--flare-shape-full, 9999px)",
+        TrackRadiusXl = "var(--flare-shape-full, 9999px)",
+        HandleHeightXs = "28px", HandleHeightSm = "28px", HandleHeightMd = "28px",
+        HandleHeightLg = "28px", HandleHeightXl = "28px",
         GapRadius = "0px",
         Gap = "0px",
-        HandleHeight = "28px",
         HandleWidth = "28px",
         HandlePressedWidth = "28px",
         HandleRadius = "var(--flare-shape-full, 9999px)",

@@ -1,73 +1,61 @@
-using System.Text.RegularExpressions;
+using Flare.Theme.FluentUI2.Tokens;
 using Flare.Theme.MaterialDesign3.Tokens;
 using Flare.Theming;
 
 namespace Flare.Core.Tests;
 
 /// <summary>
-/// Guards the "parked token" contract. A theme may set a geometry token to <c>initial</c> to mean "I do not
-/// override this - use the component's own per-size default"; <c>CssVarMap</c> emits it verbatim so a theme
-/// switch deterministically overwrites the previous theme's value. That works ONLY because <c>initial</c> is
-/// the guaranteed-invalid value for a custom property: <c>var(--token, &lt;fallback&gt;)</c> skips it and takes
-/// the fallback. If core CSS reads a parked token WITHOUT a fallback, the substitution yields nothing, the
-/// whole declaration becomes invalid at computed-value time, and the component silently loses that geometry.
+/// Enforces the token mandate at its weakest point: <b>a theme must supply a real value for every token</b>,
+/// because the component CSS is not allowed to carry defaults of its own.
 ///
-/// This shipped: the P3 pass stripped the slider's fallbacks as "dead" (on the premise that every theme emits
-/// the token), which collapsed the slider rail to 0px under MaterialDesign3 / MD3-Expressive - the default
-/// theme - across v0.2.0, v0.2.1 and v0.3.0. CssAudit compares NAMES, so it cannot see this; only the pairing
-/// of "parked value" + "no fallback" reveals it.
+/// The tempting shortcut is to "park" a token at <c>initial</c>, meaning "I do not override this - use the
+/// component's own default". It even looks harmless, because <c>initial</c> is the guaranteed-invalid value
+/// for a custom property, so <c>var(--token, &lt;fallback&gt;)</c> skips it and takes the fallback. But that
+/// only works if the component CSS holds the value - i.e. the theme has pushed its own opinion into the core,
+/// which is exactly what the mandate forbids. And the moment someone strips those fallbacks as "dead code"
+/// (they look dead: every theme emits the token), the substitution yields nothing, the declaration is invalid
+/// at computed-value time, and the geometry silently disappears.
+///
+/// That is not hypothetical: it shipped in v0.2.0-v0.3.0. The slider rail collapsed to 0px at every size,
+/// FlarePagination lost its button ramp and FlareRating lost its star ramp - under MaterialDesign3, the
+/// default theme. Name-level auditing (CssAudit) cannot see it, because every name is present and in sync.
+///
+/// Size-dependent geometry is what drove themes to park in the first place: a single <c>:root</c> token
+/// cannot hold five per-size values. The answer is one token per size (see <c>SliderTokens</c>,
+/// <c>RatingTokens</c>, <c>PaginationTokens</c>, and <c>ButtonTokens</c> before them) - the theme emits all
+/// five and the component's size class only selects which to read.
 /// </summary>
 public sealed class ParkedTokenFallbackTests
 {
-    // MaterialDesign3 is the theme that uses the parked idiom (the others supply real values), so its token
-    // set defines the contract to check.
-    private static IEnumerable<string> ParkedTokens() =>
-        MaterialDesignTokens.Design.FlattenDesign()
-            .Where(kv => IsParked(kv.Value))
-            .Select(kv => kv.Key);
+    public static TheoryData<string> ReferenceThemes() => new() { "MaterialDesign3", "FluentUI2" };
 
+    private static IReadOnlyDictionary<string, string> Flatten(string theme) => theme switch
+    {
+        "MaterialDesign3" => MaterialDesignTokens.Design.FlattenDesign(),
+        "FluentUI2" => FluentUI2Tokens.Design.FlattenDesign(),
+        _ => throw new ArgumentOutOfRangeException(nameof(theme), theme, "Unknown reference theme."),
+    };
+
+    // `initial` on a custom property is guaranteed-invalid, so it never reaches the page as a value - it only
+    // makes var() fall back. An empty value is not emitted at all. Either way the theme supplied nothing.
     private static bool IsParked(string? value) =>
         string.IsNullOrWhiteSpace(value) || value.Trim() == "initial";
 
-    [Fact]
-    public void EveryParkedToken_IsReadWithAFallbackInCoreCss()
+    [Theory]
+    [MemberData(nameof(ReferenceThemes))]
+    public void ReferenceTheme_SuppliesARealValueForEveryToken(string theme)
     {
-        var cssDir = Path.Combine(FindRepoRoot(), "src", "Flare.Components", "wwwroot", "css");
-        Assert.True(Directory.Exists(cssDir), $"Core CSS folder not found: {cssDir}");
+        var parked = Flatten(theme)
+            .Where(kv => IsParked(kv.Value))
+            .Select(kv => $"{kv.Key} = '{kv.Value}'")
+            .OrderBy(s => s, StringComparer.Ordinal)
+            .ToList();
 
-        var parked = ParkedTokens().ToList();
-        Assert.NotEmpty(parked); // the idiom must still exist, or this guard is silently vacuous
-
-        var offenders = new List<string>();
-        foreach (var file in Directory.EnumerateFiles(cssDir, "*.css"))
-        {
-            var text = File.ReadAllText(file);
-            foreach (var token in parked)
-            {
-                // A read with no fallback is literally `var(--token)` - the closing paren anchors the name,
-                // so a longer token that merely starts with the same text cannot match.
-                var noFallback = new Regex($@"var\(\s*{Regex.Escape(token)}\s*\)");
-                if (noFallback.IsMatch(text))
-                    offenders.Add($"{Path.GetFileName(file)}: var({token}) has no fallback, but a theme parks it at 'initial'");
-            }
-        }
-
-        Assert.True(offenders.Count == 0,
-            "A theme parks these tokens at 'initial' (= use the component default), but core CSS reads them "
-            + "without a fallback, so they resolve to nothing and the declaration is dropped:\n  "
-            + string.Join("\n  ", offenders));
-    }
-
-    // Walk up to the folder that contains src/Flare.Components (the test runs from bin/).
-    private static string FindRepoRoot()
-    {
-        var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir is not null)
-        {
-            if (Directory.Exists(Path.Combine(dir.FullName, "src", "Flare.Components")))
-                return dir.FullName;
-            dir = dir.Parent;
-        }
-        throw new DirectoryNotFoundException("Could not locate the repo root (a folder containing src/Flare.Components).");
+        Assert.True(parked.Count == 0,
+            $"The {theme} theme parks these tokens instead of supplying a value, which forces the component "
+            + "CSS to carry the default - the token mandate forbids that, and it silently breaks the moment "
+            + "the fallback is stripped. Give the theme a real value; if the value is size-dependent, add one "
+            + "token per size (see SliderTokens / ButtonTokens) instead of parking:\n  "
+            + string.Join("\n  ", parked));
     }
 }

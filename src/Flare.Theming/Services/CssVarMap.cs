@@ -367,13 +367,25 @@ public static class CssVarMap
         v[Css.Tokens.TableOfContents.LinkPadX] = t.TableOfContents.LinkPadX;
         v[Css.Tokens.TableOfContents.Indent] = t.TableOfContents.Indent;
 
-        // Geometry tokens are always emitted ("initial" -> component per-size fallback),
-        // so a theme switch deterministically overwrites the previous theme's values.
-        v[Css.Tokens.Slider.TrackHeight] = t.Slider.TrackHeight;
-        v[Css.Tokens.Slider.TrackRadius] = t.Slider.TrackRadius;
+        // Size-dependent geometry is emitted as one token per size; the component's size class reads the
+        // matching one. The theme owns every value, so the component CSS needs no defaults of its own.
+        v[Css.Tokens.Slider.TrackHeight.Xs] = t.Slider.TrackHeightXs;
+        v[Css.Tokens.Slider.TrackHeight.Sm] = t.Slider.TrackHeightSm;
+        v[Css.Tokens.Slider.TrackHeight.Md] = t.Slider.TrackHeightMd;
+        v[Css.Tokens.Slider.TrackHeight.Lg] = t.Slider.TrackHeightLg;
+        v[Css.Tokens.Slider.TrackHeight.Xl] = t.Slider.TrackHeightXl;
+        v[Css.Tokens.Slider.TrackRadius.Xs] = t.Slider.TrackRadiusXs;
+        v[Css.Tokens.Slider.TrackRadius.Sm] = t.Slider.TrackRadiusSm;
+        v[Css.Tokens.Slider.TrackRadius.Md] = t.Slider.TrackRadiusMd;
+        v[Css.Tokens.Slider.TrackRadius.Lg] = t.Slider.TrackRadiusLg;
+        v[Css.Tokens.Slider.TrackRadius.Xl] = t.Slider.TrackRadiusXl;
+        v[Css.Tokens.Slider.HandleHeight.Xs] = t.Slider.HandleHeightXs;
+        v[Css.Tokens.Slider.HandleHeight.Sm] = t.Slider.HandleHeightSm;
+        v[Css.Tokens.Slider.HandleHeight.Md] = t.Slider.HandleHeightMd;
+        v[Css.Tokens.Slider.HandleHeight.Lg] = t.Slider.HandleHeightLg;
+        v[Css.Tokens.Slider.HandleHeight.Xl] = t.Slider.HandleHeightXl;
         v[Css.Tokens.Slider.GapRadius] = t.Slider.GapRadius;
         v[Css.Tokens.Slider.Gap] = t.Slider.Gap;
-        v[Css.Tokens.Slider.HandleHeight] = t.Slider.HandleHeight;
         v[Css.Tokens.Slider.HandleWidth] = t.Slider.HandleWidth;
         v[Css.Tokens.Slider.HandlePressedWidth] = t.Slider.HandlePressedWidth;
         v[Css.Tokens.Slider.HandleRadius] = t.Slider.HandleRadius;
@@ -391,12 +403,20 @@ public static class CssVarMap
         v[Css.Tokens.Slider.ValueBg] = t.Slider.ValueBg;
         v[Css.Tokens.Slider.ValueColor] = t.Slider.ValueColor;
 
-        v[Css.Tokens.Rating.Size] = t.Rating.Size;
+        v[Css.Tokens.Rating.Size.Xs] = t.Rating.SizeXs;
+        v[Css.Tokens.Rating.Size.Sm] = t.Rating.SizeSm;
+        v[Css.Tokens.Rating.Size.Md] = t.Rating.SizeMd;
+        v[Css.Tokens.Rating.Size.Lg] = t.Rating.SizeLg;
+        v[Css.Tokens.Rating.Size.Xl] = t.Rating.SizeXl;
         v[Css.Tokens.Rating.EmptyColor] = t.Rating.EmptyColor;
         v[Css.Tokens.Rating.FilledColor] = t.Rating.FilledColor;
         v[Css.Tokens.Rating.HoverScale] = t.Rating.HoverScale;
 
-        v[Css.Tokens.Pagination.Size] = t.Pagination.Size;
+        v[Css.Tokens.Pagination.Size.Xs] = t.Pagination.SizeXs;
+        v[Css.Tokens.Pagination.Size.Sm] = t.Pagination.SizeSm;
+        v[Css.Tokens.Pagination.Size.Md] = t.Pagination.SizeMd;
+        v[Css.Tokens.Pagination.Size.Lg] = t.Pagination.SizeLg;
+        v[Css.Tokens.Pagination.Size.Xl] = t.Pagination.SizeXl;
         v[Css.Tokens.Pagination.Radius] = t.Pagination.Radius;
         v[Css.Tokens.Pagination.BorderColor] = t.Pagination.BorderColor;
         v[Css.Tokens.Pagination.ActiveColor] = t.Pagination.ActiveColor;

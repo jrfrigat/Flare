@@ -33,16 +33,32 @@ separate types, each carrying only what applies to it.
   (the default theme), since 0.2.0. The slider's visual rail collapsed to **0px** at every size, pagination
   buttons lost their fixed size and size ramp, and the rating star lost its size ramp.
 
-  A theme sets a geometry token to `initial` to mean "I do not override this - use the component's own
-  per-size default", and `var(--token, <fallback>)` then deliberately skips it and takes the fallback,
-  because `initial` is the guaranteed-invalid value for a custom property. The 0.2.0 pass that stripped
-  "dead" literal fallbacks removed exactly those, on the premise that a token every theme emits can never
-  fall back - which does not hold for a parked token. Without the fallback the substitution yields nothing,
-  the declaration is invalid at computed-value time, and the geometry silently disappears. The fallbacks are
-  restored (identical to their pre-strip values) and the resolver documents why they must stay.
-- **A guard now pins the contract**: a new test fails when a token any theme parks at `initial` is read by
-  core CSS without a fallback. Name-level auditing could not see this class of bug - it needs the pairing of
-  "parked value" plus "no fallback" - which is why it shipped in three releases.
+  The root cause was a token-model gap, not a missing fallback. A single `:root` token cannot hold five
+  per-size values, so these themes "parked" their geometry tokens at `initial` - meaning "I do not override
+  this; use the component's own per-size default" - which pushed the ramp into the component CSS as literal
+  fallbacks. That contradicts the token mandate (the theme supplies every value; the core carries no
+  defaults), and it broke outright when the 0.2.0 pass stripped those fallbacks as "dead code": they look
+  dead because every theme emits the token, but `initial` is the guaranteed-invalid value for a custom
+  property, so the fallback was the live path. Without it the substitution yields nothing and the whole
+  declaration is invalid at computed-value time.
+
+  Fixed properly: size-dependent geometry is now **one token per size** - `--flare-slider-track-height-xs`
+  ... `-xl` (likewise track radius, handle height, `--flare-rating-size-*` and `--flare-pagination-size-*`),
+  the shape `FlareButton` already used for its per-size gaps and heights. The theme emits all five and the
+  component's size class only selects which to read, so the ramp lives in the theme, the component CSS holds
+  no geometry values at all, and a theme can now express a real ramp instead of one flat value. Rendering is
+  unchanged in every theme.
+- **A guard now pins the mandate**: a new test fails when a reference theme parks any token at `initial`
+  instead of supplying a value. Name-level auditing cannot see this - every name is present and in sync -
+  which is why it shipped in three releases.
+
+### Changed (theme authors)
+- **`SliderTokens`, `RatingTokens` and `PaginationTokens` gained per-size members.** `SliderTokens.TrackHeight`
+  / `TrackRadius` / `HandleHeight` are replaced by `TrackHeightXs..Xl` / `TrackRadiusXs..Xl` /
+  `HandleHeightXs..Xl`; `RatingTokens.Size` and `PaginationTokens.Size` by `SizeXs..Xl`. A theme that wants
+  one value for every size sets the same value five times. Themes deriving from the in-box reference themes
+  via `with` are unaffected unless they override these members. Parking a token at `initial` is no longer
+  supported - supply a real value.
 
 ## [0.3.0] - 2026-07-16
 

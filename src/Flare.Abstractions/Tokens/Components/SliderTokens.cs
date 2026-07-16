@@ -3,53 +3,77 @@ using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
-/// Per-theme tokens for <c>FlareSlider</c>. Geometry tokens default to the keyword <c>initial</c>,
-/// which makes <c>var(--flare-slider-X, &lt;fallback&gt;)</c> use the component's built-in per-size
-/// fallback (the per-size <c>--_trk-h</c>/<c>--_hnd-h</c>... vars set by the size classes). Because every
-/// theme always emits these keys, switching themes deterministically overwrites the previous theme's
-/// values (no reliance on stale-token clearing). A theme overrides only what it wants with plain
-/// constants - e.g. a thin rail + circular thumb, or setting
-/// <see cref="HandleClipPath"/> to a triangle. Geometry is intentionally NOT size-dependent at the theme
-/// level (theme tokens live on <c>:root</c> where the per-size vars are out of scope); size variation
-/// comes from the component's size classes.
+/// Per-theme tokens for <c>FlareSlider</c>. The theme supplies every value; the component CSS carries no
+/// defaults of its own. Size-dependent geometry (track thickness / radius, handle height) therefore gets
+/// ONE TOKEN PER SIZE: the theme emits all five on <c>:root</c> and the component's size class reads the
+/// matching one, the same shape <c>FlareButton</c> uses for its per-size gaps and heights. A theme that
+/// wants a single value for every size simply sets the same value five times; a theme that wants a real
+/// ramp can express it - which a single <c>:root</c> token never could.
 /// </summary>
 public sealed record SliderTokens
 {
-    // ---- Geometry ("initial" = use the component's per-size fallback) ----
+    // ---- Size-dependent geometry (one token per size; the size class picks which one to read) ----
 
-    /// <summary>Track thickness. <c>initial</c> = size-driven (16-96dp per size class); a theme can pin a thin fixed rail.</summary>
-    [CssVar(Slider.TrackHeight)] public required string TrackHeight { get; init; }
+    /// <summary>Track thickness at the xs size.</summary>
+    [CssVar(Slider.TrackHeight.Xs)] public required string TrackHeightXs { get; init; }
+    /// <summary>Track thickness at the sm size.</summary>
+    [CssVar(Slider.TrackHeight.Sm)] public required string TrackHeightSm { get; init; }
+    /// <summary>Track thickness at the md (default) size.</summary>
+    [CssVar(Slider.TrackHeight.Md)] public required string TrackHeightMd { get; init; }
+    /// <summary>Track thickness at the lg size.</summary>
+    [CssVar(Slider.TrackHeight.Lg)] public required string TrackHeightLg { get; init; }
+    /// <summary>Track thickness at the xl size.</summary>
+    [CssVar(Slider.TrackHeight.Xl)] public required string TrackHeightXl { get; init; }
 
-    /// <summary>Track corner radius. <c>initial</c> = size-driven; a theme can pin it (e.g. full).</summary>
-    [CssVar(Slider.TrackRadius)] public required string TrackRadius { get; init; }
+    /// <summary>Track corner radius at the xs size.</summary>
+    [CssVar(Slider.TrackRadius.Xs)] public required string TrackRadiusXs { get; init; }
+    /// <summary>Track corner radius at the sm size.</summary>
+    [CssVar(Slider.TrackRadius.Sm)] public required string TrackRadiusSm { get; init; }
+    /// <summary>Track corner radius at the md (default) size.</summary>
+    [CssVar(Slider.TrackRadius.Md)] public required string TrackRadiusMd { get; init; }
+    /// <summary>Track corner radius at the lg size.</summary>
+    [CssVar(Slider.TrackRadius.Lg)] public required string TrackRadiusLg { get; init; }
+    /// <summary>Track corner radius at the xl size.</summary>
+    [CssVar(Slider.TrackRadius.Xl)] public required string TrackRadiusXl { get; init; }
 
-    /// <summary>Corner radius of the track edges facing a notch (handle / interior anchor). <c>initial</c> = 2px; a theme can set 0.</summary>
+    /// <summary>Handle height at the xs size.</summary>
+    [CssVar(Slider.HandleHeight.Xs)] public required string HandleHeightXs { get; init; }
+    /// <summary>Handle height at the sm size.</summary>
+    [CssVar(Slider.HandleHeight.Sm)] public required string HandleHeightSm { get; init; }
+    /// <summary>Handle height at the md (default) size.</summary>
+    [CssVar(Slider.HandleHeight.Md)] public required string HandleHeightMd { get; init; }
+    /// <summary>Handle height at the lg size.</summary>
+    [CssVar(Slider.HandleHeight.Lg)] public required string HandleHeightLg { get; init; }
+    /// <summary>Handle height at the xl size.</summary>
+    [CssVar(Slider.HandleHeight.Xl)] public required string HandleHeightXl { get; init; }
+
+    // ---- Size-independent geometry ----
+
+    /// <summary>Corner radius of the track edges facing a notch (handle / interior anchor); 0 for a square cut.</summary>
     [CssVar(Slider.GapRadius)] public required string GapRadius { get; init; }
 
-    /// <summary>Notch width on each side of the handle. <c>initial</c> = 6px; a theme can set 0.</summary>
+    /// <summary>Notch width on each side of the handle; 0 for a continuous track.</summary>
     [CssVar(Slider.Gap)] public required string Gap { get; init; }
 
-    /// <summary>Handle height. <c>initial</c> = size-driven bar (44-108dp); a theme can set a circle diameter.</summary>
-    [CssVar(Slider.HandleHeight)] public required string HandleHeight { get; init; }
-
-    /// <summary>Handle width at rest. <c>initial</c> = 4px bar; a theme can set a circle diameter.</summary>
+    /// <summary>Handle width at rest (a bar handle is narrow; a circular handle sets its diameter).</summary>
     [CssVar(Slider.HandleWidth)] public required string HandleWidth { get; init; }
 
-    /// <summary>Handle width while pressed/focused. <c>initial</c> = 2px (the bar narrows); a theme can set a circle diameter.</summary>
+    /// <summary>Handle width while pressed/focused (a bar handle narrows).</summary>
     [CssVar(Slider.HandlePressedWidth)] public required string HandlePressedWidth { get; init; }
 
-    /// <summary>Handle corner radius. <c>initial</c> = full (circular). A theme could set 0 for a square/triangle handle.</summary>
+    /// <summary>Handle corner radius (full = circular/pill; 0 for a square or clipped handle).</summary>
     [CssVar(Slider.HandleRadius)] public required string HandleRadius { get; init; }
 
-    /// <summary>Handle <c>clip-path</c> for arbitrary shapes (e.g. a triangle). <c>initial</c> = none.</summary>
+    /// <summary>Handle <c>clip-path</c> for arbitrary shapes (e.g. a triangle); <c>none</c> for no clipping.</summary>
     [CssVar(Slider.HandleClipPath)] public required string HandleClipPath { get; init; }
 
-    /// <summary>Handle outline width (drawn in the accent color). <c>initial</c> = 0 (bar handle); a theme can set a brand ring (e.g. 2px).</summary>
+    /// <summary>Handle outline width, drawn in the accent color; 0 for a plain bar handle.</summary>
     [CssVar(Slider.HandleBorderWidth)] public required string HandleBorderWidth { get; init; }
 
     /// <summary>
-    /// Handle fill override. <c>initial</c> = handle follows the accent (active) color; a theme can set
-    /// a surface color so the thumb is a circle with a brand outline.
+    /// Handle fill. To keep the handle following the per-instance <c>Color</c>, reference the local accent
+    /// (<c>var(--fc-main, ...)</c>) rather than a fixed color; a theme that wants a surface-filled thumb
+    /// with a brand outline sets a surface color here instead.
     /// </summary>
     [CssVar(Slider.HandleFill)] public required string HandleFill { get; init; }
 

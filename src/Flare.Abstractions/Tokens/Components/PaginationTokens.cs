@@ -4,15 +4,24 @@ namespace Flare.Abstractions.Tokens.Components;
 
 /// <summary>
 /// Per-theme tokens for <c>FlarePagination</c> (page buttons, ellipsis and rows-per-page select).
-/// Following the <c>SliderTokens</c> model, <see cref="Size"/> defaults (in the reference themes) to
-/// <c>initial</c> so the component's size classes (Xs..Xl) drive the button square; a theme may pin
-/// one size. Gap, typography and padding reuse the shared spacing/typescale tokens, and the hover
-/// overlay reuses the shared <c>--flare-state-hover-opacity</c> rather than re-baking a percentage.
+/// Following the <c>SliderTokens</c> model, the button square is ONE TOKEN PER SIZE: the theme emits all
+/// five and the component's size class reads the matching one, so the ramp lives in the theme and the
+/// component CSS carries no size of its own. A theme that wants one uniform size sets the same value five
+/// times. Gap, typography and padding reuse the shared spacing/typescale tokens, and the hover overlay
+/// reuses the shared <c>--flare-state-hover-opacity</c> rather than re-baking a percentage.
 /// </summary>
 public sealed record PaginationTokens
 {
-    /// <summary>Page-button square size (min-width and height). <c>initial</c> = size-class driven.</summary>
-    [CssVar(Pagination.Size)] public required string Size { get; init; }
+    /// <summary>Page-button square size (min-width and height) at the xs size.</summary>
+    [CssVar(Pagination.Size.Xs)] public required string SizeXs { get; init; }
+    /// <summary>Page-button square size at the sm size.</summary>
+    [CssVar(Pagination.Size.Sm)] public required string SizeSm { get; init; }
+    /// <summary>Page-button square size at the md (default) size.</summary>
+    [CssVar(Pagination.Size.Md)] public required string SizeMd { get; init; }
+    /// <summary>Page-button square size at the lg size.</summary>
+    [CssVar(Pagination.Size.Lg)] public required string SizeLg { get; init; }
+    /// <summary>Page-button square size at the xl size.</summary>
+    [CssVar(Pagination.Size.Xl)] public required string SizeXl { get; init; }
 
     /// <summary>Page-button / rows-select corner radius.</summary>
     [CssVar(Pagination.Radius)] public required string Radius { get; init; }

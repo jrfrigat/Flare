@@ -483,17 +483,31 @@ public class MaterialDesignTokens
 
     internal static readonly SliderTokens Slider = new()
     {
-        TrackHeight = "initial",
-        TrackRadius = "initial",
-        GapRadius = "initial",
-        Gap = "initial",
-        HandleHeight = "initial",
-        HandleWidth = "initial",
-        HandlePressedWidth = "initial",
-        HandleRadius = "initial",
-        HandleClipPath = "initial",
-        HandleBorderWidth = "initial",
-        HandleFill = "initial",
+        // Size ramp: track 16/24/40/56/96dp, handle 44/44/52/68/108dp, track shape 8/8/12/16/28dp.
+        TrackHeightXs = "1rem",
+        TrackHeightSm = "1.5rem",
+        TrackHeightMd = "2.5rem",
+        TrackHeightLg = "3.5rem",
+        TrackHeightXl = "6rem",
+        TrackRadiusXs = "0.5rem",
+        TrackRadiusSm = "0.5rem",
+        TrackRadiusMd = "0.75rem",
+        TrackRadiusLg = "1rem",
+        TrackRadiusXl = "1.75rem",
+        HandleHeightXs = "2.75rem",
+        HandleHeightSm = "2.75rem",
+        HandleHeightMd = "3.25rem",
+        HandleHeightLg = "4.25rem",
+        HandleHeightXl = "6.75rem",
+        GapRadius = "2px",
+        Gap = "6px",
+        HandleWidth = "4px",
+        HandlePressedWidth = "2px",
+        HandleRadius = "var(--flare-shape-full)",
+        HandleClipPath = "none",
+        HandleBorderWidth = "0px",
+        // Follow the per-instance Color: --fc-main is the local accent, falling back to the role.
+        HandleFill = "var(--fc-main, var(--flare-color-primary))",
         ActiveColor = "var(--flare-color-primary)",
         InactiveColor = "var(--flare-color-secondary-container)",
         StateLayerSize = "40px",
@@ -542,7 +556,12 @@ public class MaterialDesignTokens
     // filled default = primary (the Color parameter overrides via --fc-main), hover scale 1.15.
     internal static readonly RatingTokens Rating = new()
     {
-        Size = "initial",
+        // Star ramp: 1 / 1.25 / 1.5 / 2 / 2.5rem.
+        SizeXs = "1rem",
+        SizeSm = "1.25rem",
+        SizeMd = "1.5rem",
+        SizeLg = "2rem",
+        SizeXl = "2.5rem",
         EmptyColor = "var(--flare-color-outline-variant)",
         FilledColor = "var(--flare-color-primary)",
         HoverScale = "1.15",
@@ -609,7 +628,12 @@ public class MaterialDesignTokens
     // border, primary active fill (the Color parameter overrides via --fc-main).
     internal static readonly PaginationTokens Pagination = new()
     {
-        Size = "initial",
+        // Button square ramp: 1.5 / 1.75 / 2.25 / 2.75 / 3.25rem.
+        SizeXs = "1.5rem",
+        SizeSm = "1.75rem",
+        SizeMd = "2.25rem",
+        SizeLg = "2.75rem",
+        SizeXl = "3.25rem",
         Radius = "var(--flare-shape-extra-small)",
         BorderColor = "var(--flare-color-outline-variant)",
         ActiveColor = "var(--flare-color-primary)",
