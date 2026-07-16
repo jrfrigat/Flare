@@ -1,11 +1,12 @@
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
-    @* Request timing breakdown: how a total splits into parts (the Weir use case). *@
+    @* Request timing breakdown: how a total splits into parts. A meter is a proportional zone host,
+       so each part is a <FlareZone Value="..."> - the same zone component the slider uses. *@
     <FlareStack Gap="FlareSpacing.Small">
         <FlareText Typo="TypographyScale.LabelLarge">Request timing (18.9 ms)</FlareText>
         <FlareMeter ShowLegend="true" ShowValues="true" Format="N1">
-            <FlareMeterSegment Value="12.4" Color="FlareColor.Error" Label="DB" />
-            <FlareMeterSegment Value="3.4" Color="FlareColor.Warning" Label="Serialize" />
-            <FlareMeterSegment Value="3.1" Color="FlareColor.OnSurfaceVariant" Label="Other" />
+            <FlareZone Value="12.4" Color="FlareColor.Error" Label="DB" />
+            <FlareZone Value="3.4" Color="FlareColor.Warning" Label="Serialize" />
+            <FlareZone Value="3.1" Color="FlareColor.OnSurfaceVariant" Label="Other" />
         </FlareMeter>
     </FlareStack>
 
@@ -13,9 +14,9 @@
     <FlareStack Gap="FlareSpacing.Small">
         <FlareText Typo="TypographyScale.LabelLarge">Test run</FlareText>
         <FlareMeter ShowLegend="true" ShowValues="true">
-            <FlareMeterSegment Value="182" Color="FlareColor.Success" Label="Passed" />
-            <FlareMeterSegment Value="7" Color="FlareColor.Error" Label="Failed" />
-            <FlareMeterSegment Value="11" Color="FlareColor.OnSurfaceVariant" Label="Skipped" />
+            <FlareZone Value="182" Color="FlareColor.Success" Label="Passed" />
+            <FlareZone Value="7" Color="FlareColor.Error" Label="Failed" />
+            <FlareZone Value="11" Color="FlareColor.OnSurfaceVariant" Label="Skipped" />
         </FlareMeter>
     </FlareStack>
 
@@ -23,8 +24,8 @@
     <FlareStack Gap="FlareSpacing.Small">
         <FlareText Typo="TypographyScale.LabelLarge">Storage</FlareText>
         <FlareMeter>
-            <FlareMeterSegment Value="68" Color="FlareColor.Primary" Label="Used" />
-            <FlareMeterSegment Value="32" Color="_free" Label="Free" />
+            <FlareZone Value="68" Color="FlareColor.Primary" Label="Used" />
+            <FlareZone Value="32" Color="_free" Label="Free" />
         </FlareMeter>
     </FlareStack>
 </FlareStack>

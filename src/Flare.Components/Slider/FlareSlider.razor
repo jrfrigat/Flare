@@ -32,10 +32,6 @@
                         <span class="@(seg.Active ? $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegActive}" : $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegInactive}")"
                               style="@seg.Style"></span>
                     }
-                    @if (_bufferBandStyle is { } bufStyle)
-                    {
-                        <span class="@Css.Classes.Slider.Zone @Css.Classes.Slider.ZoneBuffer" style="@bufStyle"></span>
-                    }
                     @foreach (var z in _zoneBands)
                     {
                         <span class="@z.CssClass" style="@z.Style"></span>
@@ -124,11 +120,11 @@
     {
         <span class="@Css.Classes.Slider.Helper">@HelperText</span>
     }
-    @* Zones register themselves via the cascaded slider and render no DOM of their own; the rail
-       above draws their bands. IsFixed: this instance never changes identity. *@
+    @* Zones register via the cascaded collection and render no DOM of their own; the rail above draws
+       their bands. IsFixed: the collection instance never changes identity. *@
     @if (Zones is not null)
     {
-        <CascadingValue Value="this" IsFixed="true">@Zones</CascadingValue>
+        <CascadingValue TValue="IFlareZoneHost" Value="_zones" IsFixed="true">@Zones</CascadingValue>
     }
 </div>
 
@@ -148,13 +144,6 @@
     /// track but under the active fill, so the accent fill always shows the current value on top.
     /// </summary>
     [Parameter] public RenderFragment? Zones { get; set; }
-    /// <summary>
-    /// Optional read-only buffered/secondary position (in <see cref="Min"/>..<see cref="Max"/> units), drawn
-    /// as a neutral band from the track start up to this value, behind the active fill. This is the media
-    /// "loaded so far" band of an audio/video seek bar (the active fill stays the playback position). Null
-    /// (default) hides it. It does not move the handle and is not interactive.
-    /// </summary>
-    [Parameter] public double? BufferValue { get; set; }
     /// <summary>Callback invoked when <see cref="ValueEnd"/> changes.</summary>
     [Parameter] public EventCallback<double> ValueEndChanged { get; set; }
     /// <summary>Minimum value of the slider range.</summary>
@@ -260,37 +249,24 @@
     private double _initValue => Math.Clamp(Init ?? _safeMin, _safeMin, _safeMax);
     private double _initPercent => _pctOf(_initValue);
 
-    // ---- Declarative colored zones (child FlareSliderZone components register here) ----
-    private readonly List<FlareSliderZone> _zones = new();
+    // ---- Declarative colored zones (child FlareZone components register here) ----
+    // Shared registration; the collection pokes StateHasChanged when zones change.
+    private readonly ZoneCollection _zones;
 
-    /// <summary>Registers a child zone. Called by <see cref="FlareSliderZone"/> on init.</summary>
-    internal void RegisterZone(FlareSliderZone zone)
-    {
-        if (_zones.Contains(zone)) return;
-        _zones.Add(zone);
-        StateHasChanged();
-    }
-
-    /// <summary>Removes a child zone. Called by <see cref="FlareSliderZone"/> on dispose.</summary>
-    internal void UnregisterZone(FlareSliderZone zone)
-    {
-        if (_zones.Remove(zone)) StateHasChanged();
-    }
-
-    /// <summary>Re-renders the track when a registered zone's parameters change.</summary>
-    internal void NotifyZoneChanged() => StateHasChanged();
+    public FlareSlider() => _zones = new ZoneCollection(StateHasChanged);
 
     // Renderable band per zone: percent-positioned via --_z0/--_z1 CSS vars (the CSS maps them to
-    // left/right horizontally or bottom/top vertically). Empty/invalid zones are dropped.
+    // left/right horizontally or bottom/top vertically). Empty/invalid zones are dropped. A slider is a
+    // scale host, so zones are read as an absolute [Start, End] range (a missing bound clamps to Min).
     private IEnumerable<(string CssClass, string Style)> _zoneBands
     {
         get
         {
             var inv = CultureInfo.InvariantCulture;
-            foreach (var z in _zones)
+            foreach (var z in _zones.Zones)
             {
-                var lo = _pctOf(Math.Min(z.Start, z.End));
-                var hi = _pctOf(Math.Max(z.Start, z.End));
+                var lo = _pctOf(Math.Min(z.Start ?? _safeMin, z.End ?? _safeMin));
+                var hi = _pctOf(Math.Max(z.Start ?? _safeMin, z.End ?? _safeMin));
                 if (hi - lo <= 0.001) continue;
                 var cls = string.IsNullOrEmpty(z.Color.CssClass)
                     ? Css.Classes.Slider.Zone
@@ -298,19 +274,6 @@
                 var style = $"--_z0:{lo.ToString("F2", inv)}%;--_z1:{hi.ToString("F2", inv)}%;{z.Color.StyleMain()}";
                 yield return (cls, style);
             }
-        }
-    }
-
-    // Buffered/secondary band: a neutral read-only region from the track start (0%) to BufferValue,
-    // painted under the active fill (media "loaded so far"). Null when unset or the value collapses to 0.
-    private string? _bufferBandStyle
-    {
-        get
-        {
-            if (BufferValue is not { } bv) return null;
-            var hi = _pctOf(bv);
-            if (hi <= 0.001) return null;
-            return $"--_z0:0%;--_z1:{hi.ToString("F2", CultureInfo.InvariantCulture)}%";
         }
     }
 

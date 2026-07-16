@@ -1,0 +1,26 @@
+<FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
+    @* Threshold zones on the track: the same FlareZone component the slider and meter use. Progress is a
+       scale host on the fixed 0-100 range, so a zone is an absolute [Start, End] band drawn under the bar.
+       Zones need an uninterrupted track, so the split gap + stop dot are dropped automatically. *@
+    <FlareStack Gap="FlareSpacing.Small">
+        <FlareText Typo="TypographyScale.LabelLarge">Disk usage: @_used%</FlareText>
+        <FlareProgress Value="_used">
+            <Zones>
+                <FlareZone Start="0" End="75" Color="FlareColor.Success" />
+                <FlareZone Start="75" End="90" Color="FlareColor.Warning" />
+                <FlareZone Start="90" End="100" Color="FlareColor.Error" />
+            </Zones>
+        </FlareProgress>
+    </FlareStack>
+
+    <FlareStack Row Gap="FlareSpacing.Small">
+        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+                     OnClick="@(() => _used = Math.Max(0, _used - 10))">Free up</FlareButton>
+        <FlareButton Size="ButtonSize.Sm" Variant="ButtonVariant.Outlined"
+                     OnClick="@(() => _used = Math.Min(100, _used + 10))">Fill up</FlareButton>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private double _used = 42;
+}

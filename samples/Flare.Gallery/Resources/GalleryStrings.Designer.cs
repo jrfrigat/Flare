@@ -7495,11 +7495,11 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Buffered band (media seek).
+        ///   Ищет локализованную строку, похожую на Colored zones.
         /// </summary>
-        public static string Slider_Buffer {
+        public static string Progress_Zones {
             get {
-                return ResourceManager.GetString("Slider_Buffer", resourceCulture);
+                return ResourceManager.GetString("Progress_Zones", resourceCulture);
             }
         }
 

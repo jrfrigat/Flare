@@ -1470,6 +1470,9 @@
   <data name="Progress_Buffer" xml:space="preserve">
     <value>Buffer</value>
   </data>
+  <data name="Progress_Zones" xml:space="preserve">
+    <value>Colored zones</value>
+  </data>
   <data name="Progress_Query" xml:space="preserve">
     <value>Query (Reverse Indeterminate)</value>
   </data>
@@ -1613,9 +1616,6 @@
   </data>
   <data name="Slider_Zones" xml:space="preserve">
     <value>Colored zones</value>
-  </data>
-  <data name="Slider_Buffer" xml:space="preserve">
-    <value>Buffered band (media seek)</value>
   </data>
   <data name="Meter_Title" xml:space="preserve">
     <value>Meter</value>

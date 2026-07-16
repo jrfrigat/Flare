@@ -159,14 +159,6 @@
     top: calc(100% - var(--_z1, 0%));
 }
 
-/* Buffered/secondary band (BufferValue): the "loaded so far" bar of a media seek slider. It reuses the
-   zone positioning but is drawn in a neutral tone (not the accent), so it reads as a background progress
-   distinct from both the inactive track and the active fill. Same layer as zones (under the active fill).
-   The neutral color-mix mirrors the disabled-track paint below - no extra token needed. */
-.flare-slider__zone--buffer {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 30%, transparent);
-}
-
 .flare-slider__input {
     -webkit-appearance: none;
     appearance: none;

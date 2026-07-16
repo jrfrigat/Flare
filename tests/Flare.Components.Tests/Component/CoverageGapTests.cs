@@ -1504,6 +1504,9 @@ public class C_FlareSliderMarksTests : FlareTestContext
     }
 }
 
+// Intentionally exercises the DEPRECATED FlareSliderZone alias (now a thin subclass of FlareZone), so the
+// back-compat path stays covered. New zone coverage lives in MeterTests / the FlareZone tests.
+#pragma warning disable CS0618 // Type or member is obsolete
 public class C_FlareSliderZonesTests : FlareTestContext
 {
     private static RenderFragment Zones(RenderFragment body) => body;
@@ -1574,6 +1577,7 @@ public class C_FlareSliderZonesTests : FlareTestContext
         Assert.Empty(cut.FindAll(".flare-slider__zone"));
     }
 }
+#pragma warning restore CS0618
 
 public class C_FlareTagFieldSuggestionsTests : FlareTestContext
 {
