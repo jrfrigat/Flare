@@ -3,30 +3,49 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.3.0] - 2026-07-16
+## [0.3.1] - 2026-07-16
 
-A consolidation release around one idea: **a colored band on a track is one mechanism**. The slider's zones
-grow into a model shared by the slider, the progress bar and a new `FlareMeter`, so the three no longer each
-reinvent the same band - while the two kinds of band stay distinct types, because a range on a host's scale
-and a weight that defines the scale are not the same thing. Plus a new part-to-whole meter, and hardening
-that keeps a theme's token mismatch from breaking a control.
+A fast-follow correction to the 0.3.0 zone model. 0.3.0 unified the slider / progress / meter band into one
+`FlareZone` whose meaning depended on its parent - which meant half its parameters were dead in any given
+host, and a mismatched one was silently dropped. The mechanism stays shared; the two kinds of band are now
+separate types, each carrying only what applies to it.
+
+### Changed
+- **BREAKING: `FlareZone` and meter parts are now separate types.** A zone and a meter part are not the
+  same thing: a zone is an absolute range on a scale the **host owns** (`FlareSlider`'s Min..Max,
+  `FlareProgress`'s 0-100), while a meter part is a weight that helps **define** the scale. So:
+  - `FlareZone` keeps `Start`/`End`/`Color` and is for `FlareSlider` / `FlareProgress`. Its `Value` and
+    `Label` parameters are **gone**.
+  - New **`FlareMeterSegment`** (`Value`/`Label`/`Color`) is what `FlareMeter` takes.
+
+  Migration: inside a `FlareMeter`, replace `<FlareZone Value="12.4" Label="DB" />` with
+  `<FlareMeterSegment Value="12.4" Label="DB" />`. Slider and progress markup is unchanged.
+- **A mismatched band now fails loudly.** Putting the wrong kind inside a host previously rendered nothing
+  at all, with no explanation; it now throws with a message naming the host and the type it expects.
 
 ### Added
-- **`FlareMeter`**: a part-to-whole bar - how a whole divides into proportional colored parts (a
-  request-timing breakdown, a storage quota, a pass/fail/skip test ribbon). Non-interactive. Parts are
-  `<FlareMeterSegment Value="..." Color="..." Label="..." />` children, sized in proportion to their sum,
-  with an optional legend (`ShowLegend`, `ShowValues`, `Format`). Its track reuses the `FlareProgress`
-  linear-track tokens (height, rounded ends, resting background), so a meter and a progress bar line up
-  visually.
-- **`FlareZone` now works on `FlareProgress` too**: the slider-only `FlareSliderZone` is generalized into
-  `FlareZone`, an absolute `[Start, End]` range usable in both `FlareSlider` and `FlareProgress` - the two
-  hosts that own their scale.
-- **One shared mechanism behind both kinds**: `FlareZone` and `FlareMeterSegment` derive from
-  `FlareZoneBase` and register through the same `IFlareZoneHost` contract, so all three hosts reuse one
-  registration path and one band model. They stay **separate types on purpose**: a zone is a range on a
-  scale the host owns, whereas a meter part is a weight that helps *define* the scale - so each type carries
-  only the parameters that mean something for it, and putting the wrong one inside a host now raises a clear
-  error instead of silently rendering nothing.
+- **`FlareZoneBase` / `IFlareZoneHost`**: both kinds derive from one base and register through one host
+  contract, so all three hosts keep sharing a single registration path and band model - the 0.3.0
+  consolidation is intact, only the author-facing surface split.
+
+## [0.3.0] - 2026-07-16
+
+A consolidation release around one idea: **a colored band on a track is one concept**. The slider's zones
+grow into a single `FlareZone` shared by the slider, the progress bar and a new segmented `FlareMeter`, so
+the three no longer each reinvent the same band. Plus a new part-to-whole meter, and hardening that keeps a
+theme's token mismatch from breaking a control.
+
+### Added
+- **`FlareMeter`**: a segmented part-to-whole bar - how a whole divides into proportional colored parts
+  (a request-timing breakdown, a storage quota, a pass/fail/skip test ribbon). Non-interactive. Parts are
+  `<FlareZone Value="..." Color="..." Label="..." />` children, sized in proportion to their sum, with an
+  optional legend (`ShowLegend`, `ShowValues`, `Format`). Its track reuses the `FlareProgress` linear-track
+  tokens (height, rounded ends, resting background), so a meter and a progress bar line up visually.
+- **One `FlareZone` for the whole track family**: the slider-only `FlareSliderZone` is generalized into a
+  single `FlareZone` that works in `FlareSlider`, `FlareProgress` and `FlareMeter`. The host decides how a
+  zone is read: a **scale** host (slider / progress) takes an absolute `Start`/`End` range on its own scale,
+  while a **proportional** host (meter) takes a `Value` weight. `Color` and `Label` are shared. The new
+  `IFlareZoneHost` contract lets any component host zones with one shared registration path.
 - **`FlareProgress` colored zones**: a declarative `<Zones>` slot for static bands on the 0-100 track
   (threshold / danger ranges, a loaded-so-far band), drawn under the active bar - the same layering the
   slider uses. Because zones need an uninterrupted track, using them renders a continuous track instead of
