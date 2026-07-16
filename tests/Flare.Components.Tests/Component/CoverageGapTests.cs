@@ -1590,9 +1590,9 @@ public class C_FlareSliderMarksTests : FlareTestContext
     }
 }
 
-// Intentionally exercises the DEPRECATED FlareSliderZone alias (now a thin subclass of FlareZone), so the
-// back-compat path stays covered. New zone coverage lives in MeterTests / the FlareZone tests.
-#pragma warning disable CS0618 // Type or member is obsolete
+// FlareZone on a slider: the ranged band read against the host's own Min..Max scale. This is the only place
+// the slider's zone geometry is covered - the notch cut under the handle in particular - so these stay even
+// though FlareProgress zones are exercised separately in MeterTests.
 public class C_FlareSliderZonesTests : FlareTestContext
 {
     private static RenderFragment Zones(RenderFragment body) => body;
@@ -1606,15 +1606,15 @@ public class C_FlareSliderZonesTests : FlareTestContext
             .Add(x => x.Value, 40)
             .Add(x => x.Zones, Zones(b =>
             {
-                b.OpenComponent<FlareSliderZone>(0);
-                b.AddAttribute(1, nameof(FlareSliderZone.Start), 0d);
-                b.AddAttribute(2, nameof(FlareSliderZone.End), 60d);
-                b.AddAttribute(3, nameof(FlareSliderZone.Color), FlareColor.Success);
+                b.OpenComponent<FlareZone>(0);
+                b.AddAttribute(1, nameof(FlareZone.Start), 0d);
+                b.AddAttribute(2, nameof(FlareZone.End), 60d);
+                b.AddAttribute(3, nameof(FlareZone.Color), FlareColor.Success);
                 b.CloseComponent();
-                b.OpenComponent<FlareSliderZone>(4);
-                b.AddAttribute(5, nameof(FlareSliderZone.Start), 60d);
-                b.AddAttribute(6, nameof(FlareSliderZone.End), 100d);
-                b.AddAttribute(7, nameof(FlareSliderZone.Color), FlareColor.Error);
+                b.OpenComponent<FlareZone>(4);
+                b.AddAttribute(5, nameof(FlareZone.Start), 60d);
+                b.AddAttribute(6, nameof(FlareZone.End), 100d);
+                b.AddAttribute(7, nameof(FlareZone.Color), FlareColor.Error);
                 b.CloseComponent();
             })));
 
@@ -1701,10 +1701,10 @@ public class C_FlareSliderZonesTests : FlareTestContext
             .Add(x => x.Max, 100)
             .Add(x => x.Zones, Zones(b =>
             {
-                b.OpenComponent<FlareSliderZone>(0);
-                b.AddAttribute(1, nameof(FlareSliderZone.Start), 10d);
-                b.AddAttribute(2, nameof(FlareSliderZone.End), 50d);
-                b.AddAttribute(3, nameof(FlareSliderZone.Color), FlareColor.Custom("#ff0000"));
+                b.OpenComponent<FlareZone>(0);
+                b.AddAttribute(1, nameof(FlareZone.Start), 10d);
+                b.AddAttribute(2, nameof(FlareZone.End), 50d);
+                b.AddAttribute(3, nameof(FlareZone.Color), FlareColor.Custom("#ff0000"));
                 b.CloseComponent();
             })));
 
@@ -1721,16 +1721,15 @@ public class C_FlareSliderZonesTests : FlareTestContext
             .Add(x => x.Max, 100)
             .Add(x => x.Zones, Zones(b =>
             {
-                b.OpenComponent<FlareSliderZone>(0);
-                b.AddAttribute(1, nameof(FlareSliderZone.Start), 50d);
-                b.AddAttribute(2, nameof(FlareSliderZone.End), 50d);
+                b.OpenComponent<FlareZone>(0);
+                b.AddAttribute(1, nameof(FlareZone.Start), 50d);
+                b.AddAttribute(2, nameof(FlareZone.End), 50d);
                 b.CloseComponent();
             })));
 
         Assert.Empty(cut.FindAll(".flare-slider__zone"));
     }
 }
-#pragma warning restore CS0618
 
 public class C_FlareTagFieldSuggestionsTests : FlareTestContext
 {

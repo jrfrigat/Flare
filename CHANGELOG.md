@@ -3,6 +3,29 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] - 2026-07-17
+
+### Changed
+- **BREAKING: `FlareSliderZone` is removed.** It had been an `[Obsolete]` alias since 0.3.0 - a thin subclass
+  of `FlareZone` kept so existing `<FlareSliderZone Start End Color />` markup would still compile while
+  callers moved over. 0.6.0 then dropped `SliderSize` and `FlareProgress.Thickness` outright, so keeping one
+  deprecation shim while breaking its neighbours only made the surface harder to reason about.
+
+  Migration: replace `<FlareSliderZone .../>` with `<FlareZone .../>`. Identical parameters and behaviour -
+  the alias never did anything of its own - and `FlareZone` additionally works inside `FlareProgress`.
+
+### Removed
+- **43 dead strings from the Gallery's resources**, left behind by the rewritten Getting Started page and the
+  removed About page. They were still shipping: a resx string is embedded in the assembly *and* in the
+  Russian satellite, so they cost download size in a WASM app for nothing. Also dropped
+  `ChangelogService.LatestVersion`, a property nothing read.
+
+### Fixed
+- **The Gallery's API pages still described the pre-0.6.0 progress API** - `Size` as an `int` of pixels, plus
+  a `Thickness` parameter that 0.6.0 had removed - and listed no `Size` on `FlareMeter`. The generated API
+  registry had not been regenerated after that change, so the reference documented an API the release no
+  longer had. (Gallery only: the registry drives the demo site's API pages, not any shipped package.)
+
 ## [0.6.0] - 2026-07-17
 
 ### Changed

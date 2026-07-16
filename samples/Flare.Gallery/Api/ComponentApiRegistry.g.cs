@@ -3281,6 +3281,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Format", @"string?", null, @"Format string applied to segment values wherever they are shown (e.g. ""N1""). Defaults to a bounded two-decimal format: a meter is fed raw measurements, and the round-trip ""G"" default would read a 0.0627 ms slice out as 0.06269999999999998.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"ShowLegend", @"bool", @"false", @"Shows a key below the track: one entry per segment (color swatch + label). Default false.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"ShowValues", @"bool", @"false", @"Shows each segment's numeric value - in the legend, the hover tooltip and the accessible label alike. Default false.", null, false, false, false, @"FlareMeter"),
+                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Track thickness, as a step on the shared TrackSize scale used by FlareSlider and FlareProgress. A meter reads the same per-size tokens as a linear progress bar, so the two are the same thickness at the same step.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -3889,8 +3890,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Variant=Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Size", @"int", @"40", @"Pixel size (width and height) used when Variant is Circular. Defaults to 40.", null, false, false, false, @"FlareProgress"),
-                new ApiParameterInfo(@"Thickness", @"int", @"0", @"Track thickness in pixels for the linear variants (Linear/Buffer/Query). 0 = theme default (4px).", null, false, false, false, @"FlareProgress"),
+                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Md", @"Size step on the shared TrackSize scale, the same one FlareSlider and FlareMeter use. It drives the linear track thickness AND the circular diameter and stroke, so one step means one size whichever variant is rendered, and the theme owns every value.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Value", @"double?", null, @"Percentage value (0-100); null for indeterminate mode.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Variant", @"ProgressVariant", @"ProgressVariant.Linear", @"Display style: Linear bar, Circular spinner, Buffer, or Query.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Wavy", @"bool", @"false", @"Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.", null, false, false, false, @"FlareProgress"),
@@ -4521,7 +4521,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"MouseWheel", @"bool", @"false", @"When true, hovering the slider and turning the mouse wheel adjusts Value: each notch moves by Step (scroll up increases, down decreases) and page scrolling is suppressed over the track. In range mode a plain wheel moves the low handle (Value) and Ctrl+wheel moves the high handle (ValueEnd); neither handle can cross the other. No effect when Disabled.", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Range", @"bool", @"false", @"Enables a two-handle range slider (Value = low, ValueEnd = high).", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"ShowValue", @"bool", @"true", @"Shows the current value (or low-high range) next to the label when true.", null, false, false, false, @"FlareSlider"),
-                new ApiParameterInfo(@"Size", @"SliderSize", @"SliderSize.Xs", @"Size variant (XSmall-XLarge). Controls track thickness and handle height.", null, false, false, false, @"FlareSlider"),
+                new ApiParameterInfo(@"Size", @"TrackSize", @"TrackSize.Xs", @"Size variant (XSmall-XLarge). Controls track thickness and handle height.", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"StartIcon", @"string?", null, @"Material Symbols icon name shown before the track (e.g. ""volume_mute"").", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Step", @"double", @"1", @"Increment step between slider positions. Defaults to 1; any positive decimal step is allowed.", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Stepper", @"bool", @"false", @"Shows step (stop) indicators along the track at each Step position.", null, false, false, false, @"FlareSlider"),
@@ -7351,25 +7351,6 @@ public static class ComponentApiRegistry
                 @"FlareSkeleton",
             });
 
-        e[@"SliderSize"] = new ApiEnumInfo(
-            @"SliderSize",
-            @"Flare.Components.SliderSize",
-            @"Flare.Components",
-            @"Size of FlareSlider (track thickness 16/24/40/56/96dp). Larger sizes also grow the handle and icons. Uses the shared Xs..Xl scale; Xs is the default.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Xs", @"0", @"Extra small - 16dp track, 44dp handle (the default)."),
-                new ApiEnumMember(@"Sm", @"1", @"Small - 24dp track, 44dp handle."),
-                new ApiEnumMember(@"Md", @"2", @"Medium - 40dp track, 52dp handle; supports start/end icons."),
-                new ApiEnumMember(@"Lg", @"3", @"Large - 56dp track, 68dp handle; supports start/end icons."),
-                new ApiEnumMember(@"Xl", @"4", @"Extra large - 96dp track, 108dp handle; supports start/end icons."),
-            },
-            new string[]
-            {
-                @"FlareSlider",
-            });
-
         e[@"SnackbarPosition"] = new ApiEnumInfo(
             @"SnackbarPosition",
             @"Flare.Abstractions.SnackbarPosition",
@@ -7694,6 +7675,27 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareTooltip",
+            });
+
+        e[@"TrackSize"] = new ApiEnumInfo(
+            @"TrackSize",
+            @"Flare.Components.TrackSize",
+            @"Flare.Components",
+            @"The size step of a track-based indicator - FlareSlider, FlareProgress and FlareMeter - on the shared Xs..Xl scale. The scale is a set of LABELS, not measurements: each component maps a step onto its own per-size tokens, and each theme decides what those are worth. A slider's Md is a chunky drag target while a progress bar's Md is a few pixels of rule - the same step, deliberately different geometry. What the shared scale does guarantee is that the three stay in step with each other within one theme, and that a caller learns one vocabulary instead of three. The DEFAULT step is per component, because the components' natural sizes sit at different points of their own ranges: a slider defaults to Xs (its canonical thin-track form), while a progress bar and a meter default to Md - a rule and a spinner want room to go finer as well as heavier, so their resting size sits mid-scale rather than at the floor.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Xs", @"0", @"Extra small - the finest step."),
+                new ApiEnumMember(@"Sm", @"1", @"Small."),
+                new ApiEnumMember(@"Md", @"2", @"Medium."),
+                new ApiEnumMember(@"Lg", @"3", @"Large."),
+                new ApiEnumMember(@"Xl", @"4", @"Extra large - the heaviest step."),
+            },
+            new string[]
+            {
+                @"FlareMeter",
+                @"FlareProgress",
+                @"FlareSlider",
             });
 
         e[@"TreeDropPosition"] = new ApiEnumInfo(
