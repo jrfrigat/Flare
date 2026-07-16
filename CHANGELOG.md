@@ -3,11 +3,18 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.5.0] - 2026-07-16
+## [0.6.0] - 2026-07-16
 
-0.4.0 moved the slider / pagination / rating ramps into the themes and banned "parking" a token at
-`initial`. That made an old assumption safe at last, so this release finishes the job: **the component CSS
-now carries no default that belongs to a theme, and a test keeps it that way.**
+### Changed
+- **BREAKING: the Material Design 3 Expressive theme class is now `MaterialDesign3ExpressiveTheme`**, not
+  `Md3Theme`. Every other in-box theme is named after its package - `AeroTheme`, `MaterialDesign2Theme`,
+  `MaterialDesign3Theme`, `VisualStudioTheme` - and `Md3Theme` both broke that and read like the *base* MD3
+  theme sitting next to it. Its own file was already called `MaterialDesign3ExpressiveTheme.cs`.
+
+  Migration: replace `new Md3Theme()` with `new MaterialDesign3ExpressiveTheme()`. Nothing else changes -
+  same id (`md3-expressive`), same tokens, same palettes.
+- **`Microsoft.Extensions.Localization` bumped to 10.0.10**, matching the rest of the ASP.NET Core 10.0.10
+  packages picked up in 0.5.0.
 
 ### Fixed
 - **`FlareMeter` under-filled its track whenever the segment values summed to less than 1.** The raw value
@@ -24,6 +31,17 @@ now carries no default that belongs to a theme, and a test keeps it that way.**
   `0.06269999999999998`. Values in the label now follow `ShowValues`, exactly as the legend and tooltip
   already did, and `Format` defaults to a bounded `0.##`. Segments are joined with `"; "` so a decimal-comma
   culture does not use the same character for both separators.
+
+  Note for callers that relied on the old default: values shown with no explicit `Format` now render as
+  `0.##` rather than `"G"` round-trip precision. Pass `Format` to choose your own.
+
+## [0.5.0] - 2026-07-16
+
+0.4.0 moved the slider / pagination / rating ramps into the themes and banned "parking" a token at
+`initial`. That made an old assumption safe at last, so this release finishes the job: **the component CSS
+now carries no default that belongs to a theme, and a test keeps it that way.**
+
+### Fixed
 - **89 dead fallbacks removed from the component CSS** (`button`, `togglebutton`, `fab`, `a11y`,
   `datagrid`, `timepicker`, `datepicker`, `splitter`, `splitbutton`, `input`, `breadcrumb`). Each sat on a
   token every theme is required to supply - `var(--flare-btn-gap-xs, 0.25rem)` - so it could never render:
