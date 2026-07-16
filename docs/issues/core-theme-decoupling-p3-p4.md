@@ -5,7 +5,7 @@ first, keep these as tracked scope.
 
 ## P3 - sweep literal visual fallbacks out of core component CSS
 
-**STATUS: substantially DONE** (commit `082b1f3`): 515 dead `var(--flare-X, <literal>)` fallbacks stripped
+**STATUS: DONE** (commits `082b1f3`, then `f260e95` in 0.5.0): 515 dead `var(--flare-X, <literal>)` fallbacks stripped
 from 53 core CSS files, for tokens that are typed `[CssVar]` record members (emitted by EVERY theme, so
 the fallback never rendered). Safe-by-construction; verified in MD3 that the stripped tokens resolve to the
 theme's real values (switch-track-width -> 52px etc.) and that KEPT fallbacks (component-internal opt-in
@@ -14,6 +14,13 @@ typed set from source) + `strip-fallbacks.mjs` (paren-aware stripper). REMAINING
 tokens (Button.Gap/Height/Radius, SplitButton.*) whose `[CssVar]` refs the extractor didn't resolve, so
 their fallbacks were conservatively kept - finish the nested-class resolver to strip them; (b) formalise
 the two scripts as a tool + add the guard test below.
+
+**UPDATE (0.5.0): both remaining items are closed.** (a) The nested-class resolver was finished and stripped
+the last 89 dead fallbacks (Button.Gap/Height/Radius, SplitButton.*), while correctly KEEPING the 38 live
+consumer fallbacks (per-instance vars a theme never emits - `--flare-col-span`, `--flare-slider-length`,
+`--flare-ide-*`). (b) The guard landed as `tests/Flare.Core.Tests/DeadFallbackTests.cs`, which keys off the
+theme-emitted name set rather than the `--flare-` prefix, so it makes the distinction the blanket sweep got
+wrong. A one-off script is no longer needed: the guard names every offender on failure.
 
 ## P3 - CORRECTION: the strip premise was wrong for "parked" tokens (a regression shipped)
 

@@ -6,6 +6,16 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.6.0] - 2026-07-16
 
 ### Changed
+- **Token docs no longer state what a theme sets the token to.** Core token records documented their members
+  by quoting a value - `/// <summary>Gap xs token (0.25rem).</summary>` - across `ButtonTokens`, `FabTokens`,
+  `MenuTokens`, `SplitButtonTokens`, `ToggleButtonTokens`, `InputTokens` and `SpacingTokens`. The core owns no
+  value, so such a doc is unowned prose that drifts the moment either side is edited, and it had drifted:
+  **27 of the 84 quoting docs contradicted the shipping MD3 theme** (that one said `0.25rem` while the theme
+  used `0.5rem`; `MenuTokens.ItemHeight` said `0` while the theme used `3rem`). The summaries also restated
+  the member name instead of explaining it. Each now says what the token is *for* - "Space between the icon
+  and the label at the xs size" - and the value is left to the themes, which are the only place it is true.
+  Naming a *special* value semantically is still fine and still done ("a theme with flat filled buttons parks
+  this at `none`"), because that describes the token's own contract rather than one theme's taste.
 - **BREAKING: the Material Design 3 Expressive theme class is now `MaterialDesign3ExpressiveTheme`**, not
   `Md3Theme`. Every other in-box theme is named after its package - `AeroTheme`, `MaterialDesign2Theme`,
   `MaterialDesign3Theme`, `VisualStudioTheme` - and `Md3Theme` both broke that and read like the *base* MD3
@@ -15,6 +25,17 @@ All notable changes to Flare are documented here. This project adheres to
   same id (`md3-expressive`), same tokens, same palettes.
 - **`Microsoft.Extensions.Localization` bumped to 10.0.10**, matching the rest of the ASP.NET Core 10.0.10
   packages picked up in 0.5.0.
+
+### Added
+- **A guard against token docs that state a theme's value** (`TokenDocLiteralTests`), completing the set that
+  keeps theme opinion out of the core: one guard already forbids a literal default on the token member, one
+  forbids a theme default hiding in a CSS fallback, and this one covers the prose. It fails a `[CssVar]`
+  member whose summary carries a CSS dimension (`0.25rem`, `2px`), or a trailing `(<c>value</c>).` claim -
+  the second rule catches the digit-free quotes like `(<c>var(--flare-elevation-2)</c>)` that a literal
+  check alone misses. Mid-sentence references stay legal, since naming the selector a token applies at is a
+  pointer, not a claim. Pointed at the whole token model rather than the records that were known to be
+  wrong, it found violations in `SpacingTokens`, `RadioTokens` and `ButtonGroupTokens` that the manual pass
+  had missed; those are fixed too.
 
 ### Fixed
 - **`FlareMeter` under-filled its track whenever the segment values summed to less than 1.** The raw value
