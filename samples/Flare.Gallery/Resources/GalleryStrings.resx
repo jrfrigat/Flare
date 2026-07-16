@@ -1470,6 +1470,9 @@
   <data name="Progress_Buffer" xml:space="preserve">
     <value>Buffer</value>
   </data>
+  <data name="Progress_Zones" xml:space="preserve">
+    <value>Colored zones</value>
+  </data>
   <data name="Progress_Query" xml:space="preserve">
     <value>Query (Reverse Indeterminate)</value>
   </data>

@@ -72,3 +72,70 @@ public class C_FlareMeterTests : FlareTestContext
         Assert.Contains("DB", cut.Find(".flare-meter__legend").TextContent);
     }
 }
+
+// FlareProgress is a SCALE zone host on the fixed 0-100 range - the same FlareZone child, read as an
+// absolute [Start, End] band. Zones force a continuous track (no split gap / stop dot).
+public class C_FlareProgressZonesTests : FlareTestContext
+{
+    private static RenderFragment DangerZone => b =>
+    {
+        b.OpenComponent<FlareZone>(0);
+        b.AddAttribute(1, nameof(FlareZone.Start), (double?)90.0);
+        b.AddAttribute(2, nameof(FlareZone.End), (double?)100.0);
+        b.AddAttribute(3, nameof(FlareZone.Color), FlareColor.Error);
+        b.CloseComponent();
+    };
+
+    [Fact]
+    public void Zones_RenderBand_WithPercentsAndRoleColor()
+    {
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Value, 40d)
+            .Add(x => x.Zones, DangerZone));
+
+        var band = cut.Find(".flare-progress__zone");
+        Assert.Contains("--_z0:90.00%", band.GetAttribute("style"));
+        Assert.Contains("--_z1:100.00%", band.GetAttribute("style"));
+        Assert.Contains("flare-color-error", band.ClassName);
+    }
+
+    [Fact]
+    public void Zones_SwitchTrackToContinuous_NotSplit()
+    {
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Value, 40d)
+            .Add(x => x.Zones, DangerZone));
+
+        var root = cut.Find(".flare-progress--linear");
+        Assert.Contains("flare-progress--with-zones", root.ClassName);
+        Assert.DoesNotContain("flare-progress--split", root.ClassName);
+        Assert.Empty(cut.FindAll(".flare-progress__remain"));
+    }
+
+    [Fact]
+    public void NoZones_KeepsSplitTrack()
+    {
+        var cut = Render<FlareProgress>(p => p.Add(x => x.Value, 40d));
+
+        var root = cut.Find(".flare-progress--linear");
+        Assert.Contains("flare-progress--split", root.ClassName);
+        Assert.DoesNotContain("flare-progress--with-zones", root.ClassName);
+        Assert.Empty(cut.FindAll(".flare-progress__zone"));
+    }
+
+    [Fact]
+    public void ZeroWidthZone_IsDropped()
+    {
+        var cut = Render<FlareProgress>(p => p
+            .Add(x => x.Value, 40d)
+            .Add(x => x.Zones, b =>
+            {
+                b.OpenComponent<FlareZone>(0);
+                b.AddAttribute(1, nameof(FlareZone.Start), (double?)50.0);
+                b.AddAttribute(2, nameof(FlareZone.End), (double?)50.0);
+                b.CloseComponent();
+            }));
+
+        Assert.Empty(cut.FindAll(".flare-progress__zone"));
+    }
+}

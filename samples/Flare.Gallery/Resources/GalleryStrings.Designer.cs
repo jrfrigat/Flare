@@ -7495,6 +7495,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Colored zones.
+        /// </summary>
+        public static string Progress_Zones {
+            get {
+                return ResourceManager.GetString("Progress_Zones", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Meter.
         /// </summary>
         public static string Meter_Title {

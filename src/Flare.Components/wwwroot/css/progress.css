@@ -44,9 +44,33 @@
   margin-right: calc(var(--flare-progress-gap) + var(--flare-progress-stop-size));
 }
 
+/* Colored scale zones (declared via <FlareZone Start End>): static [start,end] bands that annotate the
+   track (threshold/danger ranges, a loaded-so-far band). Painted on the continuous track but under the
+   active bar, so the bar always shows the current value on top - the same layering the slider uses.
+   Zones need an uninterrupted track, so --with-zones opts out of the split gap + stop dot below. */
+.flare-progress--with-zones {
+  display: block;
+  background: var(--flare-color-secondary-container);
+}
+.flare-progress__zone {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: var(--_z0, 0%);
+  right: calc(100% - var(--_z1, 0%));
+  z-index: 1;
+  background: var(--fc-main, var(--flare-color-primary));
+  pointer-events: none;
+}
+/* The active bar paints above the zones (in-flow content would otherwise sit under a positioned zone). */
+.flare-progress--with-zones .flare-progress__bar {
+  position: relative;
+  z-index: 2;
+}
+
 /* Trailing stop-indicator dot (token-gated; set size to 0 to hide).
-   Scoped to the plain determinate linear bar - not buffer/query/indeterminate. */
-.flare-progress--linear:not(.flare-progress--buffer):not(.flare-progress--query):not(.flare-progress--indeterminate)::after {
+   Scoped to the plain determinate linear bar - not buffer/query/indeterminate/zoned. */
+.flare-progress--linear:not(.flare-progress--buffer):not(.flare-progress--query):not(.flare-progress--indeterminate):not(.flare-progress--with-zones)::after {
   content: "";
   position: absolute;
   top: 50%;

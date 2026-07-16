@@ -1470,6 +1470,9 @@
   <data name="Progress_Buffer" xml:space="preserve">
     <value>Буферный</value>
   </data>
+  <data name="Progress_Zones" xml:space="preserve">
+    <value>Цветные зоны</value>
+  </data>
   <data name="Progress_Query" xml:space="preserve">
     <value>Запросный (обратная анимация)</value>
   </data>

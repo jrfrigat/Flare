@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@using System.Globalization
 
 @if (Variant == ProgressVariant.Circular && _wavyActive)
 {
@@ -92,18 +93,28 @@ else if (Variant == ProgressVariant.Query)
 }
 else
 {
-    <div class="@BuildCssClass(Css.Classes.Progress.Linear, _indeterminate ? Css.Classes.Progress.Indeterminate : Css.Classes.Progress.Split, _colorClass)"
+    <div class="@BuildCssClass(Css.Classes.Progress.Linear, _trackClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@(_indeterminate ? null : _clampedValue.ToString("F0"))"
          aria-valuemin="0"
          aria-valuemax="100"
          style="@($"{_colorTokens}{_thicknessToken}{Style}")"
          @attributes="AdditionalAttributes">
+        @foreach (var z in _zoneBands)
+        {
+            <span class="@z.CssClass" style="@z.Style"></span>
+        }
         <div class="@Css.Classes.Progress.Bar"
              style="@(_indeterminate ? null : $"width:{_clampedValue:F0}%")"></div>
-        @if (!_indeterminate)
+        @if (!_indeterminate && !_hasZones)
         {
             <div class="@Css.Classes.Progress.Remain"></div>
+        }
+        @* Zones register via the cascaded collection and render no DOM of their own; the bands above
+           draw them. IsFixed: the collection instance never changes identity. *@
+        @if (Zones is not null)
+        {
+            <CascadingValue TValue="IFlareZoneHost" Value="_zones" IsFixed="true">@Zones</CascadingValue>
         }
     </div>
 }
@@ -123,8 +134,49 @@ else
     [Parameter] public double BufferValue { get; set; }
     /// <summary>Semantic color applied to the progress indicator.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>
+    /// Declarative colored zones on the track: one or more <see cref="FlareZone"/> children, each an
+    /// absolute <c>[Start, End]</c> region on the 0-100 scale in its own color (threshold/danger ranges,
+    /// a loaded-so-far band). Zones are read-only annotations drawn under the active bar. Applies to the
+    /// determinate linear bar; because zones need an uninterrupted track, using them renders a continuous
+    /// track instead of the split (gap + trailing stop dot) one.
+    /// </summary>
+    [Parameter] public RenderFragment? Zones { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Progress.Root;
+
+    // Shared zone registration; the collection pokes StateHasChanged when zones change.
+    private readonly ZoneCollection _zones;
+
+    public FlareProgress() => _zones = new ZoneCollection(StateHasChanged);
+
+    private bool _hasZones => _zones.Zones.Count > 0;
+
+    // Indeterminate wins; zones force a continuous track; otherwise the default split track.
+    private string _trackClass => _indeterminate
+        ? Css.Classes.Progress.Indeterminate
+        : _hasZones ? Css.Classes.Progress.WithZones : Css.Classes.Progress.Split;
+
+    // Renderable band per zone: percent-positioned via --_z0/--_z1 CSS vars. Progress is a scale host on
+    // the fixed 0-100 range, so a zone is read as an absolute [Start, End]. Empty/invalid zones are dropped.
+    private IEnumerable<(string CssClass, string Style)> _zoneBands
+    {
+        get
+        {
+            var inv = CultureInfo.InvariantCulture;
+            foreach (var z in _zones.Zones)
+            {
+                var lo = Math.Clamp(Math.Min(z.Start ?? 0, z.End ?? 0), 0, 100);
+                var hi = Math.Clamp(Math.Max(z.Start ?? 0, z.End ?? 0), 0, 100);
+                if (hi - lo <= 0.001) continue;
+                var cls = string.IsNullOrEmpty(z.Color.CssClass)
+                    ? Css.Classes.Progress.Zone
+                    : $"{Css.Classes.Progress.Zone} {z.Color.CssClass}";
+                var style = $"--_z0:{lo.ToString("F2", inv)}%;--_z1:{hi.ToString("F2", inv)}%;{z.Color.StyleMain()}";
+                yield return (cls, style);
+            }
+        }
+    }
 
     private const double _circumference = 2 * Math.PI * 18;
     private bool _indeterminate => Value is null;

@@ -33,4 +33,8 @@ public static class Progress
     public const string Remain = "flare-progress__remain";
     /// <summary>The <c>flare-progress--split</c> CSS class.</summary>
     public const string Split = "flare-progress--split";
+    /// <summary>The <c>flare-progress__zone</c> CSS class (a colored scale region drawn under the active bar).</summary>
+    public const string Zone = "flare-progress__zone";
+    /// <summary>The <c>flare-progress--with-zones</c> CSS class (continuous track hosting colored zones).</summary>
+    public const string WithZones = "flare-progress--with-zones";
 }
