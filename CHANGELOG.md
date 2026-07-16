@@ -82,6 +82,30 @@ All notable changes to Flare are documented here. This project adheres to
   had missed; those are fixed too.
 
 ### Fixed
+- **The Material Design 2 slider had no visible rail - at every size, in every release that shipped the
+  theme.** Only the handle drew; the track and the fill were both absent. The cause was one missing unit:
+  the theme set `SliderTokens.Gap = "0"` where every other theme writes `"0px"`. `FlareSlider` builds each
+  rail segment with `calc(100% - <pct> + var(--flare-slider-gap))`, and inside a `calc()` a bare `0` is a
+  `<number>`, not a `<length>` - the "zero needs no unit" leniency only applies to a literal written straight
+  into a property. So the sum was `<percentage> + <number>`, invalid at computed-value time, and the browser
+  dropped the whole declaration: `right` fell back to `auto` and an empty absolutely-positioned box
+  shrink-to-fits to width 0.
+
+  The value was present, non-empty and not parked, so it passed every guard 0.5.0 added - those ask whether a
+  value was supplied, and this is the question after it: whether the value is the CSS *type* the declaration
+  substitutes it into. The debugging trail actively misleads, too: `getComputedStyle` reports
+  `right: 464px` on the collapsed segment, which reads like a deliberate position but is only the used value
+  implied by `width: 0`, while the rail height and fill colour both measure correct.
+- **A guard against exactly that** (`LengthTokenUnitTests`): for each in-box theme it fails any token whose
+  value is a bare number while some `calc()` adds or subtracts it from a length or percentage.
+
+  The requirement is *derived from the consuming expression*, not declared on the token. Annotating every
+  `[CssVar]` with a CSS type would have been hundreds of edits that then rot as the CSS moves; the calc sites
+  already state it exactly, and reading them keeps the guard honest for calc sites nobody has written yet.
+  Two details decide whether it works at all: it scans component `.razor` as well as stylesheets (the slider
+  builds its geometry inline in C#, so a CSS-only scan misses the very case that shipped), and it resolves
+  the private `--_gap` alias back to the theme token (matching on the token's own name finds nothing).
+  Multiplication (`calc(-1 * var(--x))`) is deliberately out of scope - see the test for why.
 - **The docs shipped a `Program.cs` that no longer compiles, straight to NuGet.** The repo README still
   opened with `new Md3Theme()`, and it is the packaged readme for the seven packages that have no readme of
   their own (`Flare.Abstractions`, `Flare.Theming`, `Flare.Infrastructure`, `Flare.Theme.MaterialDesign3`,
