@@ -72,24 +72,3 @@ public class C_FlareMeterTests : FlareTestContext
         Assert.Contains("DB", cut.Find(".flare-meter__legend").TextContent);
     }
 }
-
-// FlareSlider buffered/secondary band (media "loaded so far").
-public class C_FlareSliderBufferTests : FlareTestContext
-{
-    [Fact]
-    public void BufferValue_RendersBufferBand()
-    {
-        var cut = Render<FlareSlider>(p => p.Add(x => x.BufferValue, 60.0));
-
-        var band = cut.Find(".flare-slider__zone--buffer");
-        Assert.Contains("--_z1:60.00%", band.GetAttribute("style"));
-    }
-
-    [Fact]
-    public void NoBufferValue_RendersNoBand()
-    {
-        var cut = Render<FlareSlider>();
-
-        Assert.Empty(cut.FindAll(".flare-slider__zone--buffer"));
-    }
-}

@@ -7495,15 +7495,6 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Buffered band (media seek).
-        /// </summary>
-        public static string Slider_Buffer {
-            get {
-                return ResourceManager.GetString("Slider_Buffer", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Meter.
         /// </summary>
         public static string Meter_Title {

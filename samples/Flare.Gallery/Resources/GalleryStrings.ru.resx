@@ -1614,9 +1614,6 @@
   <data name="Slider_Zones" xml:space="preserve">
     <value>Цветные зоны</value>
   </data>
-  <data name="Slider_Buffer" xml:space="preserve">
-    <value>Полоса буфера (перемотка медиа)</value>
-  </data>
   <data name="Meter_Title" xml:space="preserve">
     <value>Индикатор (Meter)</value>
   </data>
