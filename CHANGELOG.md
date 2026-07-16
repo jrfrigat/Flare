@@ -21,6 +21,23 @@ All notable changes to Flare are documented here. This project adheres to
   `ChangelogService.LatestVersion`, a property nothing read.
 
 ### Fixed
+- **A hover popover closed under the cursor the moment you reached its content.** Any interactive panel - a
+  volume slider, a menu, a form - was unusable: crossing the `Offset` gap between anchor and panel started the
+  `HideDelay` countdown, and arriving inside the panel did not stop it, so the popover vanished under the
+  pointer. Raising `HideDelay` only postponed that.
+
+  The generation counter is the only cancellation there is, and `HandleMouseEnter` returned on its
+  `|| Open` guard *before* bumping it - so the one case that must cancel a pending hide, re-entering an open
+  popover, was exactly the case that never did. The guard was right; its position was not. `HideDelay`'s own
+  documentation calls it "a short grace period so brief gaps between anchor and panel do not close it", which
+  is the behaviour it could not deliver.
+- **The same mistake, mirrored: a pointer passing straight over an anchor still opened the popover.** With a
+  hover `Delay` set, leaving during the delay could not cancel the pending open, because while that delay runs
+  the popover is still closed and `HandleMouseLeave`'s `!Open` guard also sat before the generation bump. So
+  `Delay` did not prevent a pass-through from opening the panel - it only delayed it, onto a pointer that was
+  already gone.
+
+  Both handlers now bump the generation first and guard afterwards; the two regressions are pinned by tests.
 - **Core docs stated a design system's measurements, and were already wrong.** `SwitchSize.Md` was documented
   as the "52x32dp" switch - Material Design 3's number - while FluentUI2 draws it 40x20, so the doc lied under
   a shipped theme. `FabSize` promised a "40dp / 56dp / 96dp container" for a component that has no size token
