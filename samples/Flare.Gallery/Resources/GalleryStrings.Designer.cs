@@ -7495,6 +7495,42 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Buffered band (media seek).
+        /// </summary>
+        public static string Slider_Buffer {
+            get {
+                return ResourceManager.GetString("Slider_Buffer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Meter.
+        /// </summary>
+        public static string Meter_Title {
+            get {
+                return ResourceManager.GetString("Meter_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на FlareMeter - a segmented bar that shows how a whole divides into parts.
+        /// </summary>
+        public static string Meter_Subtitle {
+            get {
+                return ResourceManager.GetString("Meter_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Timing breakdown, test ribbon &amp; quota.
+        /// </summary>
+        public static string Meter_Basic {
+            get {
+                return ResourceManager.GetString("Meter_Basic", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Range (two handles).
         /// </summary>
         public static string Slider_Range {

@@ -1,0 +1,130 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+
+@* Segmented "meter" bar: shows how a whole divides into proportional colored parts - a latency
+   breakdown (DB vs network), a quota bar (used vs free), a pass/fail/skip ribbon. Non-interactive.
+   Parts are declared as <FlareMeterSegment> children; the track's rounded ends and resting background
+   reuse the FlareProgress linear-track tokens so a meter and a progress bar line up visually. *@
+
+<div class="@BuildCssClass(_emptyClass)" role="img" aria-label="@_ariaLabel" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.Meter.Track">
+        @foreach (var v in _views)
+        {
+            <span class="@v.SegClass" style="@v.SegStyle" title="@v.Title"></span>
+        }
+    </div>
+    @if (ShowLegend)
+    {
+        <div class="@Css.Classes.Meter.Legend">
+            @foreach (var v in _views)
+            {
+                <span class="@Css.Classes.Meter.LegendItem">
+                    <span class="@v.SwatchClass" style="@v.SwatchStyle" aria-hidden="true"></span>
+                    @if (!string.IsNullOrEmpty(v.Label))
+                    {
+                        <span class="@Css.Classes.Meter.LegendLabel">@v.Label</span>
+                    }
+                    @if (ShowValues)
+                    {
+                        <span class="@Css.Classes.Meter.LegendValue">@v.DisplayValue</span>
+                    }
+                </span>
+            }
+        </div>
+    }
+    @* Segments register via the cascaded meter and render no DOM of their own. IsFixed: this
+       instance never changes identity. *@
+    <CascadingValue Value="this" IsFixed="true">@ChildContent</CascadingValue>
+</div>
+
+@code {
+    /// <summary>The segments, declared as <see cref="FlareMeterSegment"/> children.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Shows a key below the track: one entry per segment (color swatch + label). Default false.</summary>
+    [Parameter] public bool ShowLegend { get; set; }
+    /// <summary>Shows each segment's numeric value in the legend (and in the hover tooltip). Default false.</summary>
+    [Parameter] public bool ShowValues { get; set; }
+    /// <summary>Format string applied to segment values shown in the legend / tooltip (e.g. <c>"N1"</c>).</summary>
+    [Parameter] public string? Format { get; set; }
+
+    protected override string ComponentCssClass => Css.Classes.Meter.Root;
+
+    private readonly List<FlareMeterSegment> _segments = new();
+
+    /// <summary>Registers a child segment. Called by <see cref="FlareMeterSegment"/> on init.</summary>
+    internal void RegisterSegment(FlareMeterSegment segment)
+    {
+        if (_segments.Contains(segment)) return;
+        _segments.Add(segment);
+        StateHasChanged();
+    }
+
+    /// <summary>Removes a child segment. Called by <see cref="FlareMeterSegment"/> on dispose.</summary>
+    internal void UnregisterSegment(FlareMeterSegment segment)
+    {
+        if (_segments.Remove(segment)) StateHasChanged();
+    }
+
+    /// <summary>Re-renders the track when a registered segment's parameters change.</summary>
+    internal void NotifySegmentChanged() => StateHasChanged();
+
+    private string _emptyClass => _views.Count == 0 ? Css.Classes.Meter.Empty : string.Empty;
+
+    // Only positive segments contribute; flex-grow carries the raw value so the row fills the track
+    // in proportion to the sum, with no per-segment percentage rounding gaps.
+    private readonly struct SegView
+    {
+        public string SegClass { get; init; }
+        public string SegStyle { get; init; }
+        public string SwatchClass { get; init; }
+        public string? SwatchStyle { get; init; }
+        public string? Title { get; init; }
+        public string? Label { get; init; }
+        public string DisplayValue { get; init; }
+    }
+
+    private IReadOnlyList<SegView> _views
+    {
+        get
+        {
+            var inv = CultureInfo.InvariantCulture;
+            var list = new List<SegView>(_segments.Count);
+            foreach (var s in _segments)
+            {
+                if (s.Value <= 0) continue;
+                var display = s.Value.ToString(Format ?? "G", CultureInfo.CurrentCulture);
+                var colorStyle = s.Color.StyleMain();
+                var title = s.Label is { Length: > 0 } lbl
+                    ? (ShowValues ? $"{lbl}: {display}" : lbl)
+                    : display;
+                list.Add(new SegView
+                {
+                    SegClass = string.IsNullOrEmpty(s.Color.CssClass)
+                        ? Css.Classes.Meter.Seg
+                        : $"{Css.Classes.Meter.Seg} {s.Color.CssClass}",
+                    SegStyle = $"flex-grow:{s.Value.ToString("G", inv)};{colorStyle}",
+                    SwatchClass = string.IsNullOrEmpty(s.Color.CssClass)
+                        ? Css.Classes.Meter.LegendSwatch
+                        : $"{Css.Classes.Meter.LegendSwatch} {s.Color.CssClass}",
+                    SwatchStyle = colorStyle,
+                    Title = title,
+                    Label = s.Label,
+                    DisplayValue = display,
+                });
+            }
+            return list;
+        }
+    }
+
+    // Screen-reader summary: the parts joined together (label + value when available).
+    private string? _ariaLabel
+    {
+        get
+        {
+            var parts = _views.Select(v => string.IsNullOrEmpty(v.Label) ? v.DisplayValue : $"{v.Label} {v.DisplayValue}");
+            var joined = string.Join(", ", parts);
+            return string.IsNullOrEmpty(joined) ? null : joined;
+        }
+    }
+}

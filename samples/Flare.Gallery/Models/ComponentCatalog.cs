@@ -182,6 +182,7 @@ public static class ComponentCatalog
         new ComponentEntry("/components/empty-state",       "Empty State",             "EmptyState_Title",      ComponentGroup.Feedback),
         new ComponentEntry("/components/overlay",           "Overlay",                 "Overlay_Title",         ComponentGroup.Feedback),
         new ComponentEntry("/components/popover",           "Popover",                 "Popover_Title",         ComponentGroup.Feedback),
+        new ComponentEntry("/components/meter",             "Meter",                   "Meter_Title",           ComponentGroup.Feedback),
         new ComponentEntry("/components/progress",          "Progress",                "Progress_Title",        ComponentGroup.Feedback),
         new ComponentEntry("/components/skeleton",          "Skeleton",                "Skeleton_Title",        ComponentGroup.Feedback),
         new ComponentEntry("/components/snackbar",          "Snackbar",                "Snackbar_Title",        ComponentGroup.Feedback),
