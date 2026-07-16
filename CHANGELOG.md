@@ -66,12 +66,19 @@ separate types, each carrying only what applies to it.
   which is why it shipped in three releases.
 
 ### Changed (theme authors)
-- **`SliderTokens`, `RatingTokens` and `PaginationTokens` gained per-size members.** `SliderTokens.TrackHeight`
-  / `TrackRadius` / `HandleHeight` are replaced by `TrackHeightXs..Xl` / `TrackRadiusXs..Xl` /
-  `HandleHeightXs..Xl`; `RatingTokens.Size` and `PaginationTokens.Size` by `SizeXs..Xl`. A theme that wants
-  one value for every size sets the same value five times. Themes deriving from the in-box reference themes
-  via `with` are unaffected unless they override these members. Parking a token at `initial` is no longer
-  supported - supply a real value.
+- **`SliderTokens`, `RatingTokens` and `PaginationTokens` gained per-size members.**
+  - Replaced: `SliderTokens.TrackHeight` / `TrackRadius` / `HandleHeight` by `TrackHeightXs..Xl` /
+    `TrackRadiusXs..Xl` / `HandleHeightXs..Xl`; `RatingTokens.Size` and `PaginationTokens.Size` by
+    `SizeXs..Xl`.
+  - New required members on `SliderTokens`: `IconSizeXs..Xl` (the icons flanking the track) and `Length`
+    (a vertical slider's default length) - both previously hardcoded in the component CSS.
+
+  A theme that wants one value for every size sets the same value five times. Parking a token at `initial`
+  is no longer supported - supply a real value; a guard test enforces it.
+
+  Themes that derive from the in-box reference themes via `with` are unaffected unless they override these
+  members. A theme that constructs `SliderTokens` / `RatingTokens` / `PaginationTokens` directly must set
+  the new members (they are `required`, so the compiler points at every one).
 
 ## [0.3.0] - 2026-07-16
 

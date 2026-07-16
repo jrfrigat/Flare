@@ -70,11 +70,18 @@
 
 ### Изменено (для авторов тем)
 - **У `SliderTokens`, `RatingTokens` и `PaginationTokens` появились пер-размерные члены.**
-  `SliderTokens.TrackHeight` / `TrackRadius` / `HandleHeight` заменены на `TrackHeightXs..Xl` /
-  `TrackRadiusXs..Xl` / `HandleHeightXs..Xl`; `RatingTokens.Size` и `PaginationTokens.Size` - на `SizeXs..Xl`.
-  Теме, которой нужно одно значение на все размеры, достаточно задать его пять раз. Темы, наследующие
-  встроенные reference-темы через `with`, не затронуты, если не переопределяли эти члены. Парковка токена в
-  `initial` больше не поддерживается - задавайте реальное значение.
+  - Заменено: `SliderTokens.TrackHeight` / `TrackRadius` / `HandleHeight` на `TrackHeightXs..Xl` /
+    `TrackRadiusXs..Xl` / `HandleHeightXs..Xl`; `RatingTokens.Size` и `PaginationTokens.Size` - на
+    `SizeXs..Xl`.
+  - Новые обязательные члены `SliderTokens`: `IconSizeXs..Xl` (иконки по бокам трека) и `Length` (длина
+    вертикального слайдера по умолчанию) - и то, и другое раньше было захардкожено в CSS компонента.
+
+  Теме, которой нужно одно значение на все размеры, достаточно задать его пять раз. Парковка токена в
+  `initial` больше не поддерживается - задавайте реальное значение, это проверяется guard-тестом.
+
+  Темы, наследующие встроенные reference-темы через `with`, не затронуты, если не переопределяли эти члены.
+  Тема, конструирующая `SliderTokens` / `RatingTokens` / `PaginationTokens` напрямую, обязана задать новые
+  члены (они `required`, поэтому компилятор укажет на каждый).
 
 ## [0.3.0] - 2026-07-16
 
