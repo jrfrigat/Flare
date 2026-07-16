@@ -1899,9 +1899,6 @@
   <data name="Changelog_Subtitle" xml:space="preserve">
     <value>Every release of Flare, newest first.</value>
   </data>
-  <data name="Nav_Comparison" xml:space="preserve">
-    <value>Comparison</value>
-  </data>
   <data name="Nav_Overview" xml:space="preserve">
     <value>Overview</value>
   </data>
@@ -1976,9 +1973,6 @@
   </data>
   <data name="Color_AppliedTitle" xml:space="preserve">
     <value>Applied to components</value>
-  </data>
-  <data name="Theme_Settings" xml:space="preserve">
-    <value>Theme settings</value>
   </data>
   <data name="Settings_Title" xml:space="preserve">
     <value>Settings</value>
@@ -2138,9 +2132,6 @@
   </data>
   <data name="GettingStarted_DockerDesc" xml:space="preserve">
     <value>Run the Gallery PWA in a container.</value>
-  </data>
-  <data name="GettingStarted_TipTitle" xml:space="preserve">
-    <value>Tip</value>
   </data>
   <data name="Theming_Title" xml:space="preserve">
     <value>Theming</value>
@@ -2379,101 +2370,8 @@
   <data name="GettingStarted_Installation_Alert" xml:space="preserve">
     <value>Flare targets .NET 10. Make sure your project targets net10.0.</value>
   </data>
-  <data name="GettingStarted_Installation_Imports" xml:space="preserve">
-    <value>Add CSS links &amp; _Imports.razor</value>
-  </data>
-  <data name="GettingStarted_Installation_ImportsDesc" xml:space="preserve">
-    <value>Add the Material Symbols font and Flare CSS to App.razor, then import namespaces in _Imports.razor.</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup" xml:space="preserve">
-    <value>Theme Setup</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup_Provider" xml:space="preserve">
-    <value>FlareThemeProvider</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup_ProviderDesc" xml:space="preserve">
-    <value>Wrap your app in FlareThemeProvider. It applies the active theme CSS and responds to system color-scheme changes.</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup_LiveHint" xml:space="preserve">
-    <value>Try toggling the color mode live:</value>
-  </data>
   <data name="GettingStarted_FirstComponent" xml:space="preserve">
     <value>Your First Component</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_Button" xml:space="preserve">
-    <value>FlareButton</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_ButtonDesc" xml:space="preserve">
-    <value>FlareButton supports Filled, Outlined, Text, Tonal and Elevated variants.</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_ClickMe" xml:space="preserve">
-    <value>Click me</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_TextField" xml:space="preserve">
-    <value>FlareField with binding</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_TextFieldDesc" xml:space="preserve">
-    <value>Use @bind-Value for two-way data binding. HelperText appears below the field.</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_NameLabel" xml:space="preserve">
-    <value>Your name</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_NameHelper" xml:space="preserve">
-    <value>Enter your full name</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_Submit" xml:space="preserve">
-    <value>Submit</value>
-  </data>
-  <data name="GettingStarted_Architecture" xml:space="preserve">
-    <value>Architecture</value>
-  </data>
-  <data name="GettingStarted_Architecture_Base" xml:space="preserve">
-    <value>FlareComponentBase</value>
-  </data>
-  <data name="GettingStarted_Architecture_BaseDesc" xml:space="preserve">
-    <value>All Flare components inherit FlareComponentBase which provides Class, Style, Id and AdditionalAttributes pass-through.</value>
-  </data>
-  <data name="GettingStarted_Architecture_Tokens" xml:space="preserve">
-    <value>Design Tokens</value>
-  </data>
-  <data name="GettingStarted_Architecture_TokensDesc" xml:space="preserve">
-    <value>Flare exposes all visual values as CSS custom properties. Switching themes swaps the token values - no re-render required.</value>
-  </data>
-  <data name="GettingStarted_Accessibility" xml:space="preserve">
-    <value>Accessibility</value>
-  </data>
-  <data name="GettingStarted_Accessibility_Aria" xml:space="preserve">
-    <value>Accessible Icon Buttons</value>
-  </data>
-  <data name="GettingStarted_Accessibility_AriaDesc" xml:space="preserve">
-    <value>Always provide AriaLabel for icon-only controls. Decorative icons auto-receive aria-hidden="true".</value>
-  </data>
-  <data name="GettingStarted_Accessibility_AriaSettings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="GettingStarted_Accessibility_AriaDelete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="GettingStarted_Icons" xml:space="preserve">
-    <value>Icons Guide</value>
-  </data>
-  <data name="GettingStarted_Icons_Basic" xml:space="preserve">
-    <value>Using FlareIcon</value>
-  </data>
-  <data name="GettingStarted_Icons_BasicDesc" xml:space="preserve">
-    <value>FlareIcon checks the built-in SVG pack first, then falls back to Material Symbols via the Google Fonts CDN.</value>
-  </data>
-  <data name="GettingStarted_Icons_Sizes" xml:space="preserve">
-    <value>Icon Sizes</value>
-  </data>
-  <data name="GettingStarted_Icons_SizesDesc" xml:space="preserve">
-    <value>Use SizePx (int) for SVG pack icons or Size (CSS string) for Material Symbols.</value>
-  </data>
-  <data name="GettingStarted_Icons_FallbackTip" xml:space="preserve">
-    <value>Unknown icon names automatically fall back to Material Symbols - no extra configuration needed.</value>
   </data>
   <data name="Icons_Title" xml:space="preserve">
     <value>Icons</value>
@@ -2555,13 +2453,6 @@
   </data>
 
   <!-- Comparison -->
-  <data name="Comparison_Title" xml:space="preserve"><value>Library Comparison</value></data>
-  <data name="Comparison_Subtitle" xml:space="preserve"><value>How Flare compares to other Blazor component libraries</value></data>
-  <data name="Comparison_Criteria" xml:space="preserve"><value>Criteria</value></data>
-  <data name="Comparison_WhenFlare" xml:space="preserve"><value>When to choose Flare</value></data>
-  <data name="Comparison_WhenMud" xml:space="preserve"><value>When to choose MudBlazor</value></data>
-  <data name="Comparison_WhenBlazorise" xml:space="preserve"><value>When to choose Blazorise</value></data>
-  <data name="Comparison_WhenFluent" xml:space="preserve"><value>When to choose FluentUI Blazor</value></data>
   <data name="IconButton_Title" xml:space="preserve"><value>Icon Button</value></data>
   <data name="IconButton_Subtitle" xml:space="preserve"><value>Compact, icon-only buttons in standard, filled, tonal and outlined variants.</value></data>
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Button Group</value></data>
@@ -2648,7 +2539,6 @@
   <data name="Services_VersionCheckTitle" xml:space="preserve"><value>Version check service</value></data>
   <data name="Services_VersionCheckSubtitle" xml:space="preserve"><value>IVersionCheckService polls for a newer app version on a configurable interval and raises an event - it renders nothing itself.</value></data>
   <data name="Services_VersionCheckBody" xml:space="preserve"><value>Register it with AddFlareVersionCheck (interval, current version, how to fetch the latest), subscribe to NewVersionAvailable in your layout and surface the update however you like - here it shows a toast.</value></data>
-  <data name="Services_VersionCheckWaiting" xml:space="preserve"><value>Waiting for the first check...</value></data>
   <data name="Services_VersionCheckDetected" xml:space="preserve"><value>Latest version detected:</value></data>
   <data name="Services_VersionCheckNote" xml:space="preserve"><value>This demo polls every 10 seconds in service-worker mode: a toast appears only after you publish a newer build (the deployed assets-manifest version changes).</value></data>
   <data name="Services_VersionCheckCurrent" xml:space="preserve"><value>Current version</value></data>
@@ -2710,7 +2600,6 @@
   <data name="Responsive_Portrait" xml:space="preserve"><value>Portrait</value></data>
   <data name="Responsive_Landscape" xml:space="preserve"><value>Landscape</value></data>
   <data name="Responsive_PortraitQuery" xml:space="preserve"><value>matches (orientation: portrait):</value></data>
-  <data name="Responsive_ElementObserverTitle" xml:space="preserve"><value>Element resize observer</value></data>
   <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync tracks a single element's own size via the browser ResizeObserver. Drag the bottom-right corner to resize the box:</value></data>
   <data name="Responsive_ElementSize" xml:space="preserve"><value>Observed element size:</value></data>
   <data name="Chip_Variants" xml:space="preserve"><value>Variants</value></data>
