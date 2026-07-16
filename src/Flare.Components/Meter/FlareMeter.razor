@@ -4,9 +4,10 @@
 
 @* Segmented "meter" bar: shows how a whole divides into proportional colored parts - a latency
    breakdown (DB vs network), a quota bar (used vs free), a pass/fail/skip ribbon. Non-interactive.
-   Parts are declared as <FlareZone Value="..."> children (the meter is a PROPORTIONAL zone host, so it
-   reads each zone's Value weight rather than a Start/End range); the track's rounded ends and resting
-   background reuse the FlareProgress linear-track tokens so a meter and a progress bar line up visually. *@
+   Parts are declared as <FlareMeterSegment Value="..."> children: a meter owns no external scale, so the
+   parts themselves define the whole (unlike a slider/progress zone, which is a range on a host-owned
+   scale). The track's rounded ends and resting background reuse the FlareProgress linear-track tokens so a
+   meter and a progress bar line up visually. *@
 
 <div class="@BuildCssClass(_emptyClass)" role="img" aria-label="@_ariaLabel" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Meter.Track">
@@ -40,7 +41,7 @@
 </div>
 
 @code {
-    /// <summary>The segments, declared as <see cref="FlareZone"/> children (each with a <c>Value</c> weight).</summary>
+    /// <summary>The parts, declared as <see cref="FlareMeterSegment"/> children (each with a <c>Value</c> weight).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Shows a key below the track: one entry per segment (color swatch + label). Default false.</summary>
     [Parameter] public bool ShowLegend { get; set; }
@@ -76,8 +77,8 @@
         get
         {
             var inv = CultureInfo.InvariantCulture;
-            var list = new List<SegView>(_zones.Zones.Count);
-            foreach (var s in _zones.Zones)
+            var list = new List<SegView>(_zones.Count);
+            foreach (var s in _zones.Typed<FlareMeterSegment>(nameof(FlareMeter), "<FlareMeterSegment Value=\"..\" /> children"))
             {
                 var value = s.Value ?? 0;
                 if (value <= 0) continue;

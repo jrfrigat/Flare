@@ -1,0 +1,19 @@
+@namespace Flare.Components
+@inherits FlareZoneBase
+
+@* One part of a FlareMeter. A meter has no external scale - the parts DEFINE the whole - so a segment
+   carries a Value weight and is sized in proportion to the sum of all of them. That keeps raw measurements
+   (12.4 ms, 3.4 ms) declarable as-is, with no hand-computed cumulative boundaries. Registers itself with the
+   meter and renders no DOM of its own.
+   For an absolute range on a host-owned scale (slider / progress), use <FlareZone Start End> instead. *@
+
+@code {
+    /// <summary>This part's weight. Segments are sized in proportion to the sum of all segment values, so the
+    /// unit is arbitrary (milliseconds, bytes, counts). Zero or negative parts are dropped.</summary>
+    [Parameter] public double? Value { get; set; }
+    /// <summary>Optional label for the hover tooltip and the meter's legend entry.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <inheritdoc />
+    protected override object Signature => (Value, Label, Color);
+}

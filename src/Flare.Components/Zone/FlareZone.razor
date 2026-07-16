@@ -1,52 +1,19 @@
 @namespace Flare.Components
-@implements IDisposable
+@inherits FlareZoneBase
 
-@* A colored zone on a track-band host (FlareSlider, FlareProgress, FlareMeter). Registers itself with the
-   nearest host and renders no DOM of its own - the host draws the band. How the zone is positioned depends
-   on the host: a SCALE host (slider / progress) reads the absolute [Start, End] range on its own Min..Max
-   scale; a PROPORTIONAL host (meter) reads Value as this part's weight of the whole. Color and Label are
-   shared by both. *@
+@* A colored region on a SCALE host - FlareSlider or FlareProgress, whose scale is owned by the host
+   (Min..Max, or 0-100). A zone is an absolute [Start, End] range: thresholds read naturally as boundaries
+   ("danger starts at 90") and each zone is independent of the others. Registers itself with the host and
+   renders no DOM of its own - the host draws the band on the inactive track, under the active fill.
+   For a part-to-whole breakdown, where the parts themselves define the scale, use <FlareMeterSegment>. *@
 
 @code {
-    [CascadingParameter] private IFlareZoneHost? Host { get; set; }
-
-    /// <summary>Start of the band on the host's scale (scale hosts: slider / progress). The
-    /// <see cref="Start"/>/<see cref="End"/> pair is ordered, so Start may exceed End. Ignored by
-    /// proportional hosts (meter).</summary>
+    /// <summary>Start of the range on the host's scale. The <see cref="Start"/>/<see cref="End"/> pair is
+    /// ordered, so Start may exceed End. A missing bound collapses the zone, which is then dropped.</summary>
     [Parameter] public double? Start { get; set; }
-    /// <summary>End of the band on the host's scale (scale hosts). Ignored by proportional hosts.</summary>
+    /// <summary>End of the range on the host's scale.</summary>
     [Parameter] public double? End { get; set; }
-    /// <summary>This zone's weight in a proportional host (meter): segments are sized in proportion to the
-    /// sum of all zone values. Ignored by scale hosts (slider / progress).</summary>
-    [Parameter] public double? Value { get; set; }
-    /// <summary>Zone fill color. Role (e.g. <see cref="FlareColor.Success"/>) -> shared class; custom
-    /// (<c>FlareColor.Custom("#...")</c>) -> inline token. Defaults to <see cref="FlareColor.Primary"/>.</summary>
-    [Parameter] public FlareColor Color { get; set; } = FlareColor.Primary;
-    /// <summary>Optional label used for the hover tooltip and the legend entry in hosts that show one (meter).</summary>
-    [Parameter] public string? Label { get; set; }
-
-    private bool _registered;
-    private (double? Start, double? End, double? Value, FlareColor Color, string? Label)? _last;
 
     /// <inheritdoc />
-    protected override void OnInitialized()
-    {
-        Host?.RegisterZone(this);
-        _registered = Host is not null;
-        _last = (Start, End, Value, Color, Label);
-    }
-
-    // Poke the host to repaint only when this zone's values actually change, so the host's re-render
-    // (which re-runs this with identical params) does not loop.
-    /// <inheritdoc />
-    protected override void OnParametersSet()
-    {
-        var sig = (Start, End, Value, Color, Label);
-        if (_registered && _last is { } prev && !prev.Equals(sig))
-            Host?.NotifyZoneChanged();
-        _last = sig;
-    }
-
-    /// <inheritdoc />
-    public void Dispose() => Host?.UnregisterZone(this);
+    protected override object Signature => (Start, End, Color);
 }
