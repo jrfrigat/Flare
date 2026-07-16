@@ -29,6 +29,16 @@
     <!-- A concrete reference DesignTokens for the FlareThemeBuilder tests (the core ships no baseline). -->
     <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3.Tokens\Flare.Theme.MaterialDesign3.Tokens.csproj" />
     <ProjectReference Include="..\..\src\Flare.Theme.FluentUI2.Tokens\Flare.Theme.FluentUI2.Tokens.csproj" />
+    <!-- Every in-box theme, so ParkedTokenFallbackTests can check them all by reflecting over ITheme
+         rather than a hand-kept list (each theme package builds its own records, not just the two
+         reference token packages). -->
+    <ProjectReference Include="..\..\src\Flare.Theme.Aero\Flare.Theme.Aero.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theme.FluentUI2\Flare.Theme.FluentUI2.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theme.LiquidGlass\Flare.Theme.LiquidGlass.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign2\Flare.Theme.MaterialDesign2.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3\Flare.Theme.MaterialDesign3.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\Flare.Theme.MaterialDesign3Expressive.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Theme.VisualStudio\Flare.Theme.VisualStudio.csproj" />
     <!-- Reusable audit logic for the CssClasses/CSS/theme in-sync guard test. -->
     <ProjectReference Include="..\..\tools\Flare.CssAudit\Flare.CssAudit.csproj" />
   </ItemGroup>
