@@ -130,7 +130,12 @@ else
     [Parameter] public int Thickness { get; set; }
     /// <summary>Wavy active indicator (determinate linear only). The active portion renders as an animated sine wave.</summary>
     [Parameter] public bool Wavy { get; set; }
-    /// <summary>Secondary buffer fill percentage (0-100), used only with Variant=Buffer.</summary>
+    /// <summary>
+    /// Secondary buffer fill percentage (0-100), used only with Variant=Buffer. This is shorthand for the
+    /// common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent.
+    /// For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's
+    /// <c>TimeRanges</c>) - use <see cref="Zones"/> with explicit <see cref="FlareZone"/> bands instead.
+    /// </summary>
     [Parameter] public double BufferValue { get; set; }
     /// <summary>Semantic color applied to the progress indicator.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;

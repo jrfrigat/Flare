@@ -64,7 +64,10 @@
 	     page all read one file - no per-release edits to About/resx/MainLayout. -->
 	<ItemGroup>
 		<EmbeddedResource Include="..\..\CHANGELOG.md" LogicalName="CHANGELOG.md" />
-		<EmbeddedResource Include="..\..\CHANGELOG.ru.md" LogicalName="CHANGELOG.ru.md" />
+		<!-- WithCulture=false is REQUIRED: MSBuild infers a culture from the ".ru." infix and would route
+		     this into the ru satellite assembly, where ChangelogService (which reads the MAIN assembly's
+		     manifest) could never find it - silently falling every entry back to English. -->
+		<EmbeddedResource Include="..\..\CHANGELOG.ru.md" LogicalName="CHANGELOG.ru.md" WithCulture="false" />
 	</ItemGroup>
 
 	<!--
