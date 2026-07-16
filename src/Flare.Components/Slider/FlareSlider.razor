@@ -263,20 +263,43 @@
     {
         get
         {
-            var inv = CultureInfo.InvariantCulture;
             foreach (var z in _zones.Typed<FlareZone>(nameof(FlareSlider), "<FlareZone Start=\"..\" End=\"..\" /> children"))
             {
                 var lo = _pctOf(Math.Min(z.Start ?? _safeMin, z.End ?? _safeMin));
                 var hi = _pctOf(Math.Max(z.Start ?? _safeMin, z.End ?? _safeMin));
                 if (hi - lo <= 0.001) continue;
+
+                // A zone is a band on the same rail as the active/inactive segments, so it obeys the same
+                // shape language: an edge sitting on the track's outer end keeps the full track radius, an
+                // interior edge is inset by the notch gap and takes the small gap radius. Without this a
+                // zone would be a raw rectangle that paints over the track's rounded ends, and adjacent
+                // zones would butt together with no separation.
+                var startOuter = lo <= 0.001;
+                var endOuter = hi >= 99.999;
+                var start = startOuter ? "0" : $"calc({_pctText(lo)} + var(--_gap))";
+                var end = endOuter ? "0" : $"calc(100% - {_pctText(hi)} + var(--_gap))";
+
                 var cls = string.IsNullOrEmpty(z.Color.CssClass)
                     ? Css.Classes.Slider.Zone
                     : $"{Css.Classes.Slider.Zone} {z.Color.CssClass}";
-                var style = $"--_z0:{lo.ToString("F2", inv)}%;--_z1:{hi.ToString("F2", inv)}%;{z.Color.StyleMain()}";
+                var style = _band(start, end, startOuter ? TrackRadius : GapRadius, endOuter ? TrackRadius : GapRadius)
+                    + z.Color.StyleMain();
                 yield return (cls, style);
             }
         }
     }
+
+    private const string TrackRadius = "var(--_trk-radius)";
+    private const string GapRadius = "var(--_gap-radius)";
+
+    private string _pctText(double d) => d.ToString("F2", CultureInfo.InvariantCulture) + "%";
+
+    // One painted band on the rail. The track runs start -> end: horizontal = left -> right, vertical =
+    // bottom -> top. Shared by the active/inactive segments and the colored zones so every band on the rail
+    // is shaped by the same theme tokens.
+    private string _band(string start, string end, string rStart, string rEnd) => Vertical
+        ? $"bottom:{start};top:{end};border-radius:{rEnd} {rEnd} {rStart} {rStart};"
+        : $"left:{start};right:{end};border-radius:{rStart} {rEnd} {rEnd} {rStart};";
 
     // Filled span [lo,hi]: range -> [low,high]; single -> [Init,Value].
     private double _spanLoPct => Range ? _lowPct : Math.Min(_lowPct, _initPercent);
@@ -289,12 +312,11 @@
     {
         get
         {
-            var inv = CultureInfo.InvariantCulture;
             var lo = _spanLoPct;
             var hi = _spanHiPct;
-            const string trk = "var(--_trk-radius)";
-            const string gpr = "var(--_gap-radius)";
-            string Pct(double d) => d.ToString("F2", inv);
+            const string trk = TrackRadius;
+            const string gpr = GapRadius;
+            string Pct(double d) => d.ToString("F2", CultureInfo.InvariantCulture);
 
             var centers = new List<double>();
             if (Range)
@@ -316,11 +338,6 @@
                 return hi - lo > 0.001 && mid > lo - 0.001 && mid < hi + 0.001;
             }
 
-            // The track runs start->end: horizontal = left->right; vertical = bottom->top.
-            string Style(string start, string end, string rStart, string rEnd) => Vertical
-                ? $"bottom:{start};top:{end};border-radius:{rEnd} {rEnd} {rStart} {rStart};"
-                : $"left:{start};right:{end};border-radius:{rStart} {rEnd} {rEnd} {rStart};";
-
             var startPct = 0.0;
             var startOuter = true;
             foreach (var c in centers)
@@ -328,13 +345,13 @@
                 var start = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))";
                 var end = $"calc(100% - {Pct(c)}% + var(--_gap))";
                 var rStart = startOuter ? trk : gpr;
-                yield return (IsActive(startPct, c), Style(start, end, rStart, gpr));
+                yield return (IsActive(startPct, c), _band(start, end, rStart, gpr));
                 startPct = c;
                 startOuter = false;
             }
             var fStart = startOuter ? "0" : $"calc({Pct(startPct)}% + var(--_gap))"; //-V3022
             var fRStart = startOuter ? trk : gpr; //-V3022
-            yield return (IsActive(startPct, 100), Style(fStart, "0", fRStart, trk));
+            yield return (IsActive(startPct, 100), _band(fStart, "0", fRStart, trk));
         }
     }
 

@@ -1536,8 +1536,45 @@ public class C_FlareSliderZonesTests : FlareTestContext
         Assert.Equal(2, bands.Count);
         Assert.Contains(bands, z => z.ClassName.Contains("flare-color-success"));
         Assert.Contains(bands, z => z.ClassName.Contains("flare-color-error"));
-        // First zone spans 0% -> 60% of the scale.
-        Assert.Contains(bands, z => z.GetAttribute("style")!.Contains("--_z1:60.00%"));
+        // First zone spans 0% -> 60%: it sits on the track start, so that edge keeps the full track radius
+        // and no inset, while the interior 60% edge is inset by the notch gap and takes the gap radius.
+        Assert.Contains(bands, z => z.GetAttribute("style")!.Contains("left:0")
+            && z.GetAttribute("style")!.Contains("right:calc(100% - 60.00% + var(--_gap))"));
+    }
+
+    // A zone is a band on the same rail as the active/inactive segments, so it must speak the same shape
+    // language: outer ends keep the track radius, interior edges get the gap radius + notch inset. Without
+    // this a zone is a raw rectangle that paints over the track's rounded ends (and adjacent zones butt
+    // together with no separation).
+    [Fact]
+    public void Zone_TakesTrackRadiusOnOuterEnds_AndGapRadiusInside()
+    {
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.Min, 0)
+            .Add(x => x.Max, 100)
+            .Add(x => x.Zones, Zones(b =>
+            {
+                b.OpenComponent<FlareZone>(0);
+                b.AddAttribute(1, nameof(FlareZone.Start), (double?)0d);
+                b.AddAttribute(2, nameof(FlareZone.End), (double?)70d);
+                b.CloseComponent();
+                b.OpenComponent<FlareZone>(3);
+                b.AddAttribute(4, nameof(FlareZone.Start), (double?)70d);
+                b.AddAttribute(5, nameof(FlareZone.End), (double?)100d);
+                b.CloseComponent();
+            })));
+
+        var bands = cut.FindAll(".flare-slider__zone");
+        var first = bands[0].GetAttribute("style")!;
+        var second = bands[1].GetAttribute("style")!;
+
+        // [0,70]: outer start (track radius, flush), interior end (gap radius, inset).
+        Assert.Contains("left:0", first);
+        Assert.Contains("border-radius:var(--_trk-radius) var(--_gap-radius) var(--_gap-radius) var(--_trk-radius)", first);
+        // [70,100]: interior start (inset by the gap -> a visible gap from the first zone), outer end.
+        Assert.Contains("left:calc(70.00% + var(--_gap))", second);
+        Assert.Contains("right:0", second);
+        Assert.Contains("border-radius:var(--_gap-radius) var(--_trk-radius) var(--_trk-radius) var(--_gap-radius)", second);
     }
 
     [Fact]

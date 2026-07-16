@@ -48,6 +48,15 @@ separate types, each carrying only what applies to it.
   component's size class only selects which to read, so the ramp lives in the theme, the component CSS holds
   no geometry values at all, and a theme can now express a real ramp instead of one flat value. Rendering is
   unchanged in every theme.
+- **`FlareSlider` zones squared off the track and butted together.** A zone was painted as a raw rectangle:
+  it had no radius and no notch inset, so a zone sitting on the track end covered the rail's rounded corner
+  (the track looked square wherever zones reached the edge - i.e. always, for a full-scale gauge), and
+  adjacent zones touched with no separation. A zone is a band on the same rail as the active/inactive
+  segments, so it now speaks the same shape language, from the same theme tokens: an edge on the track's
+  outer end keeps the full track radius, an interior edge takes the gap radius and is inset by the notch
+  gap. Zones are consequently separated in themes that define a notch gap (Material Design 3 / Expressive
+  now show the same 2x`--flare-slider-gap` separation the active/inactive split uses) and stay flush in
+  themes that set the gap to 0 (FluentUI2, Visual Studio) - no per-theme CSS.
 - **A guard now pins the mandate**: a new test fails when a reference theme parks any token at `initial`
   instead of supplying a value. Name-level auditing cannot see this - every name is present and in sync -
   which is why it shipped in three releases.
