@@ -155,7 +155,7 @@ else
 
     public FlareProgress() => _zones = new ZoneCollection(StateHasChanged);
 
-    private bool _hasZones => _zones.Zones.Count > 0;
+    private bool _hasZones => _zones.Count > 0;
 
     // Indeterminate wins; zones force a continuous track; otherwise the default split track.
     private string _trackClass => _indeterminate
@@ -169,7 +169,7 @@ else
         get
         {
             var inv = CultureInfo.InvariantCulture;
-            foreach (var z in _zones.Zones)
+            foreach (var z in _zones.Typed<FlareZone>(nameof(FlareProgress), "<FlareZone Start=\"..\" End=\"..\" /> children"))
             {
                 var lo = Math.Clamp(Math.Min(z.Start ?? 0, z.End ?? 0), 0, 100);
                 var hi = Math.Clamp(Math.Max(z.Start ?? 0, z.End ?? 0), 0, 100);

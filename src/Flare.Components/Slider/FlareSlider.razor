@@ -138,10 +138,11 @@
     /// <summary>Upper bound of the selected range (range mode only).</summary>
     [Parameter] public double ValueEnd { get; set; } = 100;
     /// <summary>
-    /// Declarative colored zones on the track: one or more <see cref="FlareSliderZone"/> children, each a
-    /// static <c>[Start,End]</c> region in its own color. Zones are read-only scale annotations
-    /// (safe/warning/danger ranges, a media buffer band, per-step coloring) drawn on top of the inactive
-    /// track but under the active fill, so the accent fill always shows the current value on top.
+    /// Declarative colored zones on the track: one or more <see cref="FlareZone"/> children, each a static
+    /// <c>[Start,End]</c> range on the <see cref="Min"/>..<see cref="Max"/> scale in its own color. Zones are
+    /// read-only scale annotations (safe/warning/danger ranges, a media buffer band, per-step coloring) drawn
+    /// on top of the inactive track but under the active fill, so the accent fill always shows the current
+    /// value on top.
     /// </summary>
     [Parameter] public RenderFragment? Zones { get; set; }
     /// <summary>Callback invoked when <see cref="ValueEnd"/> changes.</summary>
@@ -263,7 +264,7 @@
         get
         {
             var inv = CultureInfo.InvariantCulture;
-            foreach (var z in _zones.Zones)
+            foreach (var z in _zones.Typed<FlareZone>(nameof(FlareSlider), "<FlareZone Start=\"..\" End=\"..\" /> children"))
             {
                 var lo = _pctOf(Math.Min(z.Start ?? _safeMin, z.End ?? _safeMin));
                 var hi = _pctOf(Math.Max(z.Start ?? _safeMin, z.End ?? _safeMin));
