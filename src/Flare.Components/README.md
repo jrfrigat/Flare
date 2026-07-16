@@ -1,6 +1,6 @@
 # Flare.Components
 
-100+ production-ready Blazor UI components - inputs, buttons, layout, navigation, data display,
+130+ production-ready Blazor UI components - inputs, buttons, layout, navigation, data display,
 feedback and overlays - with runtime theme switching and zero third-party CSS dependencies.
 
 ## Install

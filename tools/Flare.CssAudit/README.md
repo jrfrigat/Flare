@@ -1,11 +1,11 @@
 # Flare.CssAudit
 
-Internal CLI that keeps `Flare.Core/CssClasses.cs` in sync with the component CSS.
+Internal CLI that keeps `Flare.Abstractions/CssClasses.cs` in sync with the component CSS.
 
 ## What it does
 
 - Collects every `flare-*` class from `src/Flare.Components/wwwroot/css/*.css`.
-- Parses the constants in `src/Flare.Core/CssClasses.cs` (value + declaring nested class).
+- Parses the constants in `src/Flare.Abstractions/CssClasses.cs` (value + declaring nested class).
 - Compares both directions and reports:
   - `[+]` classes that exist in CSS but are **missing from CssClasses** (with the CSS file).
   - `[-]` constants in CssClasses that have **no matching CSS rule** (with the `CssClasses.X.Y` location).
@@ -25,7 +25,7 @@ dotnet run --project tools/Flare.CssAudit -- generate
 `generate` prints the suggested nested classes and can write them to
 `tools/Flare.CssAudit/generated-cssclasses.txt` for review before merging into `CssClasses.cs`.
 
-> Note: a `[-]` constant may legitimately reference CSS that lives in `Flare.Core` (not scanned),
+> Note: a `[-]` constant may legitimately reference CSS that lives outside `Flare.Components` (not scanned),
 > or a base class that only has modifier rules (e.g. `__display-part` styled only via `--active`).
 
 ## Roadmap

@@ -275,7 +275,7 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// The assemblies that may contain a theme/palette provider: Flare.Core's own assembly plus any
+    /// The assemblies that may contain a theme/palette provider: Flare's own assembly plus any
     /// assembly that references it. Referenced theme packages whose types are never touched in code are
     /// not loaded into the (WASM) AppDomain on their own, so we first force-load the whole reference
     /// graph; otherwise auto-discovery would only see themes the app happens to use statically.

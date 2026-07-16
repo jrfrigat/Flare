@@ -249,7 +249,7 @@ internal static class Program
             Console.WriteLine($"--- {missingInCss.Count} constant(s) in CssClasses but MISSING from CSS ---");
             foreach (var v in missingInCss)
                 Console.WriteLine($"  [-] {v}   ({constants.LocationOf(v)})");
-            Console.WriteLine("      (note: a constant may reference CSS that lives in Flare.Core, not Flare.Components)");
+            Console.WriteLine("      (note: a constant may reference CSS that lives outside Flare.Components)");
             Console.WriteLine();
         }
 

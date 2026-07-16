@@ -19,13 +19,13 @@ A production-ready, **theme-agnostic** Blazor component library - **.NET 10**-fi
 
 **[Live demo / component gallery ->](https://flare.frigat.duckdns.org/)**
 
-**100+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
+**130+ components - build your own theme with semantic tokens - 7 optional preset design systems x 30+ palettes (+ Dynamic Color) x light/dark/auto - zero third-party CSS dependencies - Docker-ready Gallery**
 
 ---
 
 ## Features
 
-- **100+ production-ready components** across inputs, layout, navigation, data display, feedback, and utilities
+- **130+ production-ready components** across inputs, layout, navigation, data display, feedback, and utilities
 - **Three independent theme axes** - swap the design system (MD3 Expressive / MD3 / MD2 / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026), the color palette, and light/dark/auto separately, at runtime
 - **Seven design systems, shipped as independent packages** - reference only the themes you use; the umbrella `Flare.Blazor` package ships no themes of its own
 - **Class-toggle delivery** - switching is a class swap on `<html>` (no per-switch CSS-var injection); `ThemeDelivery.Inject` available as a fallback
@@ -67,9 +67,9 @@ using Flare.Theme.FluentUI2;
 
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme = new Md3Theme();        // design system (a theme = design tokens)
-    opts.DefaultPalette = Md3Palettes.Violet;  // colors (a palette carries light + dark)
-    opts.DefaultMode = ThemeMode.Auto;         // Light / Dark / Auto
+    opts.DefaultTheme = new MaterialDesign3ExpressiveTheme();  // design system (a theme = design tokens)
+    opts.DefaultPalette = Md3Palettes.Violet;                  // colors (a palette carries light + dark)
+    opts.DefaultMode = ThemeMode.Auto;                         // Light / Dark / Auto
 });
 
 // Register every other theme you want selectable at runtime. AddFlareTheme also forces the

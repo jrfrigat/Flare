@@ -11,7 +11,7 @@ comments of every public type in the Flare libraries.
 | `Flare.Abstractions` | `Flare.Abstractions`, `Flare.Css` | Contracts, design tokens and CSS class/token registries, service interfaces. |
 | `Flare.Theming` | `Flare.Theming` | Theme engine, palettes and color generators. |
 | `Flare.Infrastructure` | `Flare.Components.Services` | Default JS-interop and feedback service implementations. |
-| `Flare.Components` | `Flare.Components` | The 100+ UI components and their parameter enums. |
+| `Flare.Components` | `Flare.Components` | The 130+ UI components and their parameter enums. |
 | `Flare.Components.*` | `Flare.Components.*` | Opt-in heavy components (Kanban, Media, RichTextEditor, Carousel, Transfer, QrCode, IDE). |
 | `Flare.Theme.*` | `Flare.Theme.*` | Design-system theme packages (MD3 Expressive, Fluent UI 2, Aero, Liquid Glass, Visual Studio). |
 

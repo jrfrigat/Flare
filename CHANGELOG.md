@@ -38,6 +38,22 @@ All notable changes to Flare are documented here. This project adheres to
   had missed; those are fixed too.
 
 ### Fixed
+- **The docs shipped a `Program.cs` that no longer compiles, straight to NuGet.** The repo README still
+  opened with `new Md3Theme()`, and it is the packaged readme for the seven packages that have no readme of
+  their own (`Flare.Abstractions`, `Flare.Theming`, `Flare.Infrastructure`, `Flare.Theme.MaterialDesign3`,
+  `Flare.Theme.MaterialDesign2`, and the two token packages) - so the rename above would have landed on
+  nuget.org next to a quick-start that fails to build. Fixed in both languages.
+- **Component counts were wrong everywhere, in two directions.** `Flare.Components` advertised
+  **67 components** on NuGet while its own readme next to it said 100+; the real figure from the project's
+  own `ApiDocGen` is **131** in that package (159 across all Flare packages), so the headline number
+  undersold the library by half. Everything now reads `130+`, consistently: both readmes, `index.md`, the
+  `api/` index, the getting-started and ai-agents docs (EN + RU), the two package descriptions, and the
+  Gallery's home stat. The `+` form is deliberate - an exact count is what rotted into `67`.
+- **Docs pointed at `Flare.Core`, a package that does not exist** (it was retired in 0.1.0 when the rings
+  were split). The Gallery's install snippet named it as the home of the abstractions, and the CssAudit
+  readme and tool output pointed at `Flare.Core/CssClasses.cs`; the file lives in `Flare.Abstractions`.
+- **The Gallery's API pages were missing every component added since 12 July** (`FlareMeter`,
+  `FlareMeterSegment`, `FlareZone`), because the generated API registry had not been regenerated since.
 - **`FlareMeter` under-filled its track whenever the segment values summed to less than 1.** The raw value
   went straight into `flex-grow`, but flex only distributes *all* the free space when the grow factors sum
   to at least 1 (CSS Flexbox 1, 7.1.1); below that each segment takes only its own fraction and the bar

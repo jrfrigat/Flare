@@ -3277,10 +3277,10 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The segments, declared as FlareZone children (each with a Value weight).", null, false, false, false, @"FlareMeter"),
-                new ApiParameterInfo(@"Format", @"string?", null, @"Format string applied to segment values shown in the legend / tooltip (e.g. ""N1"").", null, false, false, false, @"FlareMeter"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The parts, declared as FlareMeterSegment children (each with a Value weight).", null, false, false, false, @"FlareMeter"),
+                new ApiParameterInfo(@"Format", @"string?", null, @"Format string applied to segment values wherever they are shown (e.g. ""N1""). Defaults to a bounded two-decimal format: a meter is fed raw measurements, and the round-trip ""G"" default would read a 0.0627 ms slice out as 0.06269999999999998.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"ShowLegend", @"bool", @"false", @"Shows a key below the track: one entry per segment (color swatch + label). Default false.", null, false, false, false, @"FlareMeter"),
-                new ApiParameterInfo(@"ShowValues", @"bool", @"false", @"Shows each segment's numeric value in the legend (and in the hover tooltip). Default false.", null, false, false, false, @"FlareMeter"),
+                new ApiParameterInfo(@"ShowValues", @"bool", @"false", @"Shows each segment's numeric value - in the legend, the hover tooltip and the accessible label alike. Default false.", null, false, false, false, @"FlareMeter"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -3887,7 +3887,7 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Variant=Buffer.", null, false, false, false, @"FlareProgress"),
+                new ApiParameterInfo(@"BufferValue", @"double", @"0", @"Secondary buffer fill percentage (0-100), used only with Variant=Buffer. This is shorthand for the common case: a SINGLE buffered range anchored at the track start, auto-painted as a muted accent. For anything richer - several buffered ranges, or a range that does not start at 0 (a media player's TimeRanges) - use Zones with explicit FlareZone bands instead.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color applied to the progress indicator.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Size", @"int", @"40", @"Pixel size (width and height) used when Variant is Circular. Defaults to 40.", null, false, false, false, @"FlareProgress"),
                 new ApiParameterInfo(@"Thickness", @"int", @"0", @"Track thickness in pixels for the linear variants (Linear/Buffer/Query). 0 = theme default (4px).", null, false, false, false, @"FlareProgress"),
@@ -4530,7 +4530,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ValueEnd", @"double", @"100", @"Upper bound of the selected range (range mode only).", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"ValueEndChanged", @"EventCallback<double>", null, @"Callback invoked when ValueEnd changes.", null, false, true, false, @"FlareSlider"),
                 new ApiParameterInfo(@"Vertical", @"bool", @"false", @"Renders the slider vertically (value increases upward). Length is set via the --flare-slider-length CSS var (default 12rem).", null, false, false, false, @"FlareSlider"),
-                new ApiParameterInfo(@"Zones", @"RenderFragment?", null, @"Declarative colored zones on the track: one or more FlareSliderZone children, each a static [Start,End] region in its own color. Zones are read-only scale annotations (safe/warning/danger ranges, a media buffer band, per-step coloring) drawn on top of the inactive track but under the active fill, so the accent fill always shows the current value on top.", null, false, false, false, @"FlareSlider"),
+                new ApiParameterInfo(@"Zones", @"RenderFragment?", null, @"Declarative colored zones on the track: one or more FlareZone children, each a static [Start,End] range on the Min..Max scale in its own color. Zones are read-only scale annotations (safe/warning/danger ranges, a media buffer band, per-step coloring) drawn on top of the inactive track but under the active fill, so the accent fill always shows the current value on top.", null, false, false, false, @"FlareSlider"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),

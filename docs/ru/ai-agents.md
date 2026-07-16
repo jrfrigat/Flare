@@ -11,7 +11,7 @@
 ## 1. Что такое Flare
 
 - UI-библиотека для **.NET 8 / 9 / 10 Blazor** (приоритет net10). Работает и в Blazor WebAssembly, и в Blazor Server.
-- **100+ компонентов**, все с префиксом `Flare*` (например `FlareButton`, `FlareDataGrid`).
+- **130+ компонентов**, все с префиксом `Flare*` (например `FlareButton`, `FlareDataGrid`).
 - **Темизация на токенах - дизайн-система в ваших руках.** Компоненты не содержат вшитых стилей; каждый
   цвет, форма, размер и анимация берутся из темы через единый API семантических токенов. Семь готовых
   дизайн-систем (Material Design 3 Expressive, MD3, MD2, Fluent UI 2, Aero, Liquid Glass, Visual Studio)
@@ -43,7 +43,7 @@
 ## 3. Установка
 
 ```sh
-# Ядро (тянет Flare.Components (+ кольца Abstractions/Theming/Infrastructure), 100+ компонентов):
+# Ядро (тянет Flare.Components (+ кольца Abstractions/Theming/Infrastructure), 130+ компонентов):
 dotnet add package Flare.Blazor
 
 # Тема - подключите preset-пакет ниже или создайте свою (docs/ru/theme-creation-guide.md):

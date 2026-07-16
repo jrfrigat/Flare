@@ -21,7 +21,7 @@ dotnet add package Flare.Blazor
 This pulls in the core:
 - `Flare.Abstractions` - ports + design-token model (dependency-free)
 - `Flare.Theming` - theme engine; `Flare.Infrastructure` - browser/host adapters
-- `Flare.Components` - 100+ UI components
+- `Flare.Components` - 130+ UI components
 
 Flare ships **no themes** - each design system is a separate package. Add the ones you need:
 

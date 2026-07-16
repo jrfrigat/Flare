@@ -1,6 +1,6 @@
 # Flare.Blazor
 
-Blazor component library with runtime theme switching, 100+ components and zero third-party CSS
+Blazor component library with runtime theme switching, 130+ components and zero third-party CSS
 dependencies. This is the convenience meta-package: it pulls in `Flare.Components` (the UI components)
 and `Flare.Infrastructure` (the JS-interop and service adapters) and adds the `AddFlare` DI entry point.
 Themes ship as separate `Flare.Theme.*` packages, so your app only carries the ones it uses.

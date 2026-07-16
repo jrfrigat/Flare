@@ -19,13 +19,13 @@
 
 **[Живое демо / галерея компонентов ->](https://flare.frigat.duckdns.org/)**
 
-**100+ компонентов - своя тема на семантических токенах - 7 необязательных preset-дизайн-систем x 30+ палитр (+ Dynamic Color) x светлая/тёмная/авто - нет зависимостей от сторонних CSS - Docker-готовая галерея**
+**130+ компонентов - своя тема на семантических токенах - 7 необязательных preset-дизайн-систем x 30+ палитр (+ Dynamic Color) x светлая/тёмная/авто - нет зависимостей от сторонних CSS - Docker-готовая галерея**
 
 ---
 
 ## Возможности
 
-- **100+ готовых к production компонентов** - ввод данных, макет, навигация, отображение данных, обратная связь, утилиты
+- **130+ готовых к production компонентов** - ввод данных, макет, навигация, отображение данных, обратная связь, утилиты
 - **Три независимые оси темы** - отдельно переключаются дизайн-система (MD3 Expressive / MD3 / MD2 / Fluent UI 2 / Aero / Liquid Glass / Visual Studio 2026), палитра и режим светлая/тёмная/авто, во время выполнения
 - **Семь дизайн-систем отдельными пакетами** - подключаете только нужные темы; umbrella-пакет `Flare.Blazor` не содержит собственных тем
 - **Доставка class-toggle** - переключение это смена классов на `<html>` (без переинъекции CSS-переменных на каждом переключении); есть запасной `ThemeDelivery.Inject`
@@ -67,9 +67,9 @@ using Flare.Theme.FluentUI2;
 
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme = new Md3Theme();        // дизайн-система (тема = дизайн-токены)
-    opts.DefaultPalette = Md3Palettes.Violet;  // цвета (палитра несёт light + dark)
-    opts.DefaultMode = ThemeMode.Auto;         // Light / Dark / Auto
+    opts.DefaultTheme = new MaterialDesign3ExpressiveTheme();  // дизайн-система (тема = дизайн-токены)
+    opts.DefaultPalette = Md3Palettes.Violet;                  // цвета (палитра несёт light + dark)
+    opts.DefaultMode = ThemeMode.Auto;                         // Light / Dark / Auto
 });
 
 // Зарегистрируйте остальные темы, которые должны быть доступны в рантайме. AddFlareTheme также

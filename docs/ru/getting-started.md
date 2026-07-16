@@ -21,7 +21,7 @@ dotnet add package Flare.Blazor
 Это подключит ядро:
 - `Flare.Abstractions` - порты + модель дизайн-токенов (без зависимостей)
 - `Flare.Theming` - движок тем; `Flare.Infrastructure` - адаптеры браузера/хоста
-- `Flare.Components` - 100+ UI-компонентов
+- `Flare.Components` - 130+ UI-компонентов
 
 Flare **не содержит тем** - каждая дизайн-система это отдельный пакет. Подключите нужные:
 
