@@ -28,6 +28,22 @@ separate types, each carrying only what applies to it.
   contract, so all three hosts keep sharing a single registration path and band model - the 0.3.0
   consolidation is intact, only the author-facing surface split.
 
+### Fixed
+- **`FlareSlider`, `FlarePagination` and `FlareRating` lost their geometry under Material Design 3**
+  (the default theme), since 0.2.0. The slider's visual rail collapsed to **0px** at every size, pagination
+  buttons lost their fixed size and size ramp, and the rating star lost its size ramp.
+
+  A theme sets a geometry token to `initial` to mean "I do not override this - use the component's own
+  per-size default", and `var(--token, <fallback>)` then deliberately skips it and takes the fallback,
+  because `initial` is the guaranteed-invalid value for a custom property. The 0.2.0 pass that stripped
+  "dead" literal fallbacks removed exactly those, on the premise that a token every theme emits can never
+  fall back - which does not hold for a parked token. Without the fallback the substitution yields nothing,
+  the declaration is invalid at computed-value time, and the geometry silently disappears. The fallbacks are
+  restored (identical to their pre-strip values) and the resolver documents why they must stay.
+- **A guard now pins the contract**: a new test fails when a token any theme parks at `initial` is read by
+  core CSS without a fallback. Name-level auditing could not see this class of bug - it needs the pairing of
+  "parked value" plus "no fallback" - which is why it shipped in three releases.
+
 ## [0.3.0] - 2026-07-16
 
 A consolidation release around one idea: **a colored band on a track is one concept**. The slider's zones

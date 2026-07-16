@@ -15,6 +15,30 @@ tokens (Button.Gap/Height/Radius, SplitButton.*) whose `[CssVar]` refs the extra
 their fallbacks were conservatively kept - finish the nested-class resolver to strip them; (b) formalise
 the two scripts as a tool + add the guard test below.
 
+## P3 - CORRECTION: the strip premise was wrong for "parked" tokens (a regression shipped)
+
+**The rule "a `[CssVar]` record member is emitted by EVERY theme, so its fallback never rendered" is FALSE**
+for a token a theme sets to **`initial`**. `initial` is the *guaranteed-invalid* value for a custom property,
+so `var(--token, <fallback>)` deliberately skips it and takes the fallback - which is exactly how a theme says
+"I do not override this; use the component's own per-size default". `CssVarMap` even documents the idiom
+("Geometry tokens are always emitted (`initial` -> component per-size fallback)"). Stripping those fallbacks
+removed the *live* path, not dead code: the substitution then yields nothing and the whole declaration is
+invalid at computed-value time.
+
+Commit `082b1f3` did exactly that and **shipped broken geometry in v0.2.0, v0.2.1 and v0.3.0** under
+MaterialDesign3 (the default theme): the slider rail collapsed to 0px at every size, `FlarePagination` lost
+its button size + ramp, `FlareRating` lost its star ramp. Fixed in 0.3.1 by restoring those fallbacks
+verbatim.
+
+**Consequences for the remaining P3 work:**
+- The stripper (`scratchpad/strip-fallbacks.mjs`, to be formalised below) MUST exclude any token that ANY
+  theme sets to `initial`/empty. Do not re-run it until it does.
+- A guard now enforces this: `tests/Flare.Core.Tests/ParkedTokenFallbackTests.cs` fails when a parked token
+  is read without a fallback. It found the pagination + rating cases that manual review had missed, so run it
+  after any fallback change.
+- When classifying STRUCTURAL vs VISUAL-OPINION below, note that a fallback pointing at the component's own
+  per-size ramp (`var(--_trk-h)`) is *structural*, not a theme opinion - the size ramp is core's own.
+
 ## P3 - remaining detail
 
 The token-default guard (`AbstractionsTokenRecords_ShipNoLiteralDefaults`) forbids literal defaults in the

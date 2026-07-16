@@ -22,21 +22,26 @@
 .flare-slider--lg { --_trk-h: 3.5rem; --_hnd-h: 4.25rem; --_trk-r: 1rem;    --_icon: 24px; }
 .flare-slider--xl { --_trk-h: 6rem;   --_hnd-h: 6.75rem; --_trk-r: 1.75rem; --_icon: 32px; }
 
-/* ---- Resolved presentation vars (theme token -> per-size/default fallback) ---- */
+/* ---- Resolved presentation vars (theme token -> per-size/default fallback) ----
+   The GEOMETRY fallbacks below are NOT dead code: a theme may park a token at `initial` to mean "I do not
+   override this - use the component's own per-size ramp". `initial` is the guaranteed-invalid value for a
+   custom property, so `var(--token, <fallback>)` deliberately skips it and takes the fallback. Drop the
+   fallback and the whole property becomes invalid at computed-value time, collapsing the rail to 0px.
+   Keep them until a theme actually supplies real values for every size. */
 .flare-slider {
-    --_trk-height:  var(--flare-slider-track-height);
-    --_trk-radius:  var(--flare-slider-track-radius);
-    --_gap-radius:  var(--flare-slider-gap-radius);
-    --_gap:         var(--flare-slider-gap);
-    --_hnd-height:  var(--flare-slider-handle-height);
-    --_hnd-width:   var(--flare-slider-handle-width);
-    --_hnd-width-pressed: var(--flare-slider-handle-pressed-width);
-    --_hnd-radius:  var(--flare-slider-handle-radius);
-    --_hnd-clip:    var(--flare-slider-handle-clip);
-    --_hnd-border-w: var(--flare-slider-handle-border-width);
+    --_trk-height:  var(--flare-slider-track-height, var(--_trk-h, 16px));
+    --_trk-radius:  var(--flare-slider-track-radius, var(--_trk-r, 8px));
+    --_gap-radius:  var(--flare-slider-gap-radius, 2px);
+    --_gap:         var(--flare-slider-gap, 6px);
+    --_hnd-height:  var(--flare-slider-handle-height, var(--_hnd-h, 44px));
+    --_hnd-width:   var(--flare-slider-handle-width, 4px);
+    --_hnd-width-pressed: var(--flare-slider-handle-pressed-width, 2px);
+    --_hnd-radius:  var(--flare-slider-handle-radius, var(--flare-shape-full));
+    --_hnd-clip:    var(--flare-slider-handle-clip, none);
+    --_hnd-border-w: var(--flare-slider-handle-border-width, 0px);
     /* accent: per-instance Color (--fc-main) wins, then theme token, then default */
     --_active:      var(--fc-main, var(--flare-slider-active-color));
-    --_hnd-color:   var(--flare-slider-handle-fill);
+    --_hnd-color:   var(--flare-slider-handle-fill, var(--_active));
     --_inactive:    var(--flare-slider-inactive-color);
     --_sl-size:     var(--flare-slider-state-layer-size);
     --_sl-hover:    var(--flare-slider-state-hover-opacity);

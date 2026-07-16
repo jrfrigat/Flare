@@ -16,8 +16,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--flare-pagination-size);
-  height: var(--flare-pagination-size);
+  min-width: var(--flare-pagination-size, 2.25rem);
+  height: var(--flare-pagination-size, 2.25rem);
   padding: 0 var(--flare-spacing-4);
   border: 1px solid var(--flare-pagination-border-color);
   border-radius: var(--flare-pagination-radius);
@@ -58,8 +58,8 @@
 }
 
 .flare-pagination__ellipsis {
-  min-width: var(--flare-pagination-size);
-  height: var(--flare-pagination-size);
+  min-width: var(--flare-pagination-size, 2.25rem);
+  height: var(--flare-pagination-size, 2.25rem);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -80,7 +80,7 @@
   white-space: nowrap;
 }
 .flare-pagination__rows-select {
-  height: var(--flare-pagination-size);
+  height: var(--flare-pagination-size, 2.25rem);
   padding: 0 var(--flare-spacing-4);
   border: 1px solid var(--flare-pagination-border-color);
   border-radius: var(--flare-pagination-radius);
@@ -94,15 +94,15 @@
 /* Size variants (Xs..Xl; Md is the unmodified default) */
 .flare-pagination--xs .flare-pagination__btn,
 .flare-pagination--xs .flare-pagination__ellipsis,
-.flare-pagination--xs .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--xs .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 1.5rem); height: var(--flare-pagination-size, 1.5rem); font-size: var(--flare-typescale-label-small-size); }
 .flare-pagination--sm .flare-pagination__btn,
 .flare-pagination--sm .flare-pagination__ellipsis,
-.flare-pagination--sm .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-label-small-size); }
+.flare-pagination--sm .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 1.75rem); height: var(--flare-pagination-size, 1.75rem); font-size: var(--flare-typescale-label-small-size); }
 .flare-pagination--lg .flare-pagination__btn,
 .flare-pagination--lg .flare-pagination__ellipsis,
-.flare-pagination--lg .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-title-medium-size); }
+.flare-pagination--lg .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 2.75rem); height: var(--flare-pagination-size, 2.75rem); font-size: var(--flare-typescale-title-medium-size); }
 .flare-pagination--xl .flare-pagination__btn,
 .flare-pagination--xl .flare-pagination__ellipsis,
-.flare-pagination--xl .flare-pagination__rows-select { min-width: var(--flare-pagination-size); height: var(--flare-pagination-size); font-size: var(--flare-typescale-title-large-size); }
+.flare-pagination--xl .flare-pagination__rows-select { min-width: var(--flare-pagination-size, 3.25rem); height: var(--flare-pagination-size, 3.25rem); font-size: var(--flare-typescale-title-large-size); }
 
 /* Semantic color of the active page button */
