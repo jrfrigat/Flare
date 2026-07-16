@@ -1899,9 +1899,6 @@
   <data name="Changelog_Subtitle" xml:space="preserve">
     <value>Каждый релиз Flare, новые сверху.</value>
   </data>
-  <data name="Nav_Comparison" xml:space="preserve">
-    <value>Сравнение</value>
-  </data>
   <data name="Nav_Overview" xml:space="preserve">
     <value>Обзор</value>
   </data>
@@ -1976,9 +1973,6 @@
   </data>
   <data name="Color_AppliedTitle" xml:space="preserve">
     <value>Применено к компонентам</value>
-  </data>
-  <data name="Theme_Settings" xml:space="preserve">
-    <value>Настройки темы</value>
   </data>
   <data name="Settings_Title" xml:space="preserve">
     <value>Настройки</value>
@@ -2138,9 +2132,6 @@
   </data>
   <data name="GettingStarted_DockerDesc" xml:space="preserve">
     <value>Запуск Gallery PWA в контейнере.</value>
-  </data>
-  <data name="GettingStarted_TipTitle" xml:space="preserve">
-    <value>Совет</value>
   </data>
   <data name="Theming_Title" xml:space="preserve">
     <value>Темы оформления</value>
@@ -2379,101 +2370,8 @@
   <data name="GettingStarted_Installation_Alert" xml:space="preserve">
     <value>Flare требует .NET 10. Убедитесь, что ваш проект нацелен на net10.0.</value>
   </data>
-  <data name="GettingStarted_Installation_Imports" xml:space="preserve">
-    <value>CSS-ссылки и _Imports.razor</value>
-  </data>
-  <data name="GettingStarted_Installation_ImportsDesc" xml:space="preserve">
-    <value>Добавьте шрифт Material Symbols и CSS Flare в App.razor, затем подключите пространства имён в _Imports.razor.</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup" xml:space="preserve">
-    <value>Настройка темы</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup_Provider" xml:space="preserve">
-    <value>FlareThemeProvider</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup_ProviderDesc" xml:space="preserve">
-    <value>Оберните приложение в FlareThemeProvider. Он применяет CSS активной темы и реагирует на системные изменения цветовой схемы.</value>
-  </data>
-  <data name="GettingStarted_ThemeSetup_LiveHint" xml:space="preserve">
-    <value>Попробуйте переключить цветовой режим прямо сейчас:</value>
-  </data>
   <data name="GettingStarted_FirstComponent" xml:space="preserve">
     <value>Первый компонент</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_Button" xml:space="preserve">
-    <value>FlareButton</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_ButtonDesc" xml:space="preserve">
-    <value>FlareButton поддерживает варианты Filled, Outlined, Text, Tonal и Elevated.</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_ClickMe" xml:space="preserve">
-    <value>Нажми меня</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_Cancel" xml:space="preserve">
-    <value>Отмена</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_TextField" xml:space="preserve">
-    <value>FlareField с привязкой данных</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_TextFieldDesc" xml:space="preserve">
-    <value>Используйте @bind-Value для двусторонней привязки. HelperText отображается под полем.</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_NameLabel" xml:space="preserve">
-    <value>Ваше имя</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_NameHelper" xml:space="preserve">
-    <value>Введите ваше полное имя</value>
-  </data>
-  <data name="GettingStarted_FirstComponent_Submit" xml:space="preserve">
-    <value>Отправить</value>
-  </data>
-  <data name="GettingStarted_Architecture" xml:space="preserve">
-    <value>Архитектура</value>
-  </data>
-  <data name="GettingStarted_Architecture_Base" xml:space="preserve">
-    <value>FlareComponentBase</value>
-  </data>
-  <data name="GettingStarted_Architecture_BaseDesc" xml:space="preserve">
-    <value>Все компоненты Flare наследуют FlareComponentBase, который предоставляет проброс Class, Style, Id и AdditionalAttributes.</value>
-  </data>
-  <data name="GettingStarted_Architecture_Tokens" xml:space="preserve">
-    <value>Дизайн-токены</value>
-  </data>
-  <data name="GettingStarted_Architecture_TokensDesc" xml:space="preserve">
-    <value>Flare использует CSS-переменные для всех визуальных значений. Смена темы меняет значения токенов - без перерисовки компонентов.</value>
-  </data>
-  <data name="GettingStarted_Accessibility" xml:space="preserve">
-    <value>Доступность</value>
-  </data>
-  <data name="GettingStarted_Accessibility_Aria" xml:space="preserve">
-    <value>Доступные кнопки с иконками</value>
-  </data>
-  <data name="GettingStarted_Accessibility_AriaDesc" xml:space="preserve">
-    <value>Всегда указывайте AriaLabel для кнопок только с иконкой. Декоративные иконки автоматически получают aria-hidden="true".</value>
-  </data>
-  <data name="GettingStarted_Accessibility_AriaSettings" xml:space="preserve">
-    <value>Настройки</value>
-  </data>
-  <data name="GettingStarted_Accessibility_AriaDelete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="GettingStarted_Icons" xml:space="preserve">
-    <value>Руководство по иконкам</value>
-  </data>
-  <data name="GettingStarted_Icons_Basic" xml:space="preserve">
-    <value>Использование FlareIcon</value>
-  </data>
-  <data name="GettingStarted_Icons_BasicDesc" xml:space="preserve">
-    <value>FlareIcon сначала проверяет встроенный SVG-пакет, затем использует Material Symbols через Google Fonts CDN.</value>
-  </data>
-  <data name="GettingStarted_Icons_Sizes" xml:space="preserve">
-    <value>Размеры иконок</value>
-  </data>
-  <data name="GettingStarted_Icons_SizesDesc" xml:space="preserve">
-    <value>Используйте SizePx (int) для SVG-иконок или Size (строка CSS) для Material Symbols.</value>
-  </data>
-  <data name="GettingStarted_Icons_FallbackTip" xml:space="preserve">
-    <value>Неизвестные названия иконок автоматически используют Material Symbols - дополнительная настройка не требуется.</value>
   </data>
   <data name="Icons_Title" xml:space="preserve">
     <value>Иконки</value>
@@ -2555,13 +2453,6 @@
   </data>
 
   <!-- Comparison -->
-  <data name="Comparison_Title" xml:space="preserve"><value>Сравнение библиотек</value></data>
-  <data name="Comparison_Subtitle" xml:space="preserve"><value>Как Flare соотносится с другими Blazor-библиотеками компонентов</value></data>
-  <data name="Comparison_Criteria" xml:space="preserve"><value>Критерий</value></data>
-  <data name="Comparison_WhenFlare" xml:space="preserve"><value>Когда выбрать Flare</value></data>
-  <data name="Comparison_WhenMud" xml:space="preserve"><value>Когда выбрать MudBlazor</value></data>
-  <data name="Comparison_WhenBlazorise" xml:space="preserve"><value>Когда выбрать Blazorise</value></data>
-  <data name="Comparison_WhenFluent" xml:space="preserve"><value>Когда выбрать FluentUI Blazor</value></data>
   <data name="IconButton_Title" xml:space="preserve"><value>Кнопка-иконка</value></data>
   <data name="IconButton_Subtitle" xml:space="preserve"><value>Компактные кнопки только с иконкой: standard, filled, tonal и outlined.</value></data>
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Группа кнопок</value></data>
@@ -2648,7 +2539,6 @@
   <data name="Services_VersionCheckTitle" xml:space="preserve"><value>Сервис проверки версии</value></data>
   <data name="Services_VersionCheckSubtitle" xml:space="preserve"><value>IVersionCheckService периодически проверяет выход новой версии приложения и поднимает событие - сам он ничего не отображает.</value></data>
   <data name="Services_VersionCheckBody" xml:space="preserve"><value>Зарегистрируйте через AddFlareVersionCheck (периодичность, текущая версия, способ получения последней), подпишитесь на NewVersionAvailable в layout и выводите уведомление как угодно - здесь это toast.</value></data>
-  <data name="Services_VersionCheckWaiting" xml:space="preserve"><value>Ожидание первой проверки...</value></data>
   <data name="Services_VersionCheckDetected" xml:space="preserve"><value>Обнаружена последняя версия:</value></data>
   <data name="Services_VersionCheckNote" xml:space="preserve"><value>В этом демо проверка идёт каждые 10 секунд в режиме service worker: toast появится только после публикации новой сборки (меняется версия в assets-манифесте).</value></data>
   <data name="Services_VersionCheckCurrent" xml:space="preserve"><value>Текущая версия</value></data>
@@ -2710,7 +2600,6 @@
   <data name="Responsive_Portrait" xml:space="preserve"><value>Портретная</value></data>
   <data name="Responsive_Landscape" xml:space="preserve"><value>Альбомная</value></data>
   <data name="Responsive_PortraitQuery" xml:space="preserve"><value>соответствует (orientation: portrait):</value></data>
-  <data name="Responsive_ElementObserverTitle" xml:space="preserve"><value>Наблюдатель размера элемента</value></data>
   <data name="Responsive_ElementObserverDesc" xml:space="preserve"><value>ObserveElementAsync отслеживает собственный размер отдельного элемента через браузерный ResizeObserver. Потяните за нижний правый угол, чтобы изменить размер блока:</value></data>
   <data name="Responsive_ElementSize" xml:space="preserve"><value>Размер наблюдаемого элемента:</value></data>
   <data name="Chip_Variants" xml:space="preserve"><value>Варианты</value></data>

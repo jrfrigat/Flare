@@ -2104,69 +2104,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Criteria.
-        /// </summary>
-        public static string Comparison_Criteria {
-            get {
-                return ResourceManager.GetString("Comparison_Criteria", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на How Flare compares to other Blazor component libraries.
-        /// </summary>
-        public static string Comparison_Subtitle {
-            get {
-                return ResourceManager.GetString("Comparison_Subtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Library Comparison.
-        /// </summary>
-        public static string Comparison_Title {
-            get {
-                return ResourceManager.GetString("Comparison_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на When to choose Blazorise.
-        /// </summary>
-        public static string Comparison_WhenBlazorise {
-            get {
-                return ResourceManager.GetString("Comparison_WhenBlazorise", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на When to choose Flare.
-        /// </summary>
-        public static string Comparison_WhenFlare {
-            get {
-                return ResourceManager.GetString("Comparison_WhenFlare", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на When to choose FluentUI Blazor.
-        /// </summary>
-        public static string Comparison_WhenFluent {
-            get {
-                return ResourceManager.GetString("Comparison_WhenFluent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на When to choose MudBlazor.
-        /// </summary>
-        public static string Comparison_WhenMud {
-            get {
-                return ResourceManager.GetString("Comparison_WhenMud", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Awaitable confirm (title, message, labels).
         /// </summary>
         public static string Confirm_Basic {
@@ -3544,96 +3481,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Accessibility.
-        /// </summary>
-        public static string GettingStarted_Accessibility {
-            get {
-                return ResourceManager.GetString("GettingStarted_Accessibility", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Accessible Icon Buttons.
-        /// </summary>
-        public static string GettingStarted_Accessibility_Aria {
-            get {
-                return ResourceManager.GetString("GettingStarted_Accessibility_Aria", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Delete.
-        /// </summary>
-        public static string GettingStarted_Accessibility_AriaDelete {
-            get {
-                return ResourceManager.GetString("GettingStarted_Accessibility_AriaDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Always provide AriaLabel for icon-only controls. Decorative icons auto-receive aria-hidden=&quot;true&quot;..
-        /// </summary>
-        public static string GettingStarted_Accessibility_AriaDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_Accessibility_AriaDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Settings.
-        /// </summary>
-        public static string GettingStarted_Accessibility_AriaSettings {
-            get {
-                return ResourceManager.GetString("GettingStarted_Accessibility_AriaSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Architecture.
-        /// </summary>
-        public static string GettingStarted_Architecture {
-            get {
-                return ResourceManager.GetString("GettingStarted_Architecture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareComponentBase.
-        /// </summary>
-        public static string GettingStarted_Architecture_Base {
-            get {
-                return ResourceManager.GetString("GettingStarted_Architecture_Base", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на All Flare components inherit FlareComponentBase which provides Class, Style, Id and AdditionalAttributes pass-through..
-        /// </summary>
-        public static string GettingStarted_Architecture_BaseDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_Architecture_BaseDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Design Tokens.
-        /// </summary>
-        public static string GettingStarted_Architecture_Tokens {
-            get {
-                return ResourceManager.GetString("GettingStarted_Architecture_Tokens", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Flare exposes all visual values as CSS custom properties. Switching themes swaps the token values - no re-render required..
-        /// </summary>
-        public static string GettingStarted_Architecture_TokensDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_Architecture_TokensDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Dialog and Snackbar.
         /// </summary>
         public static string GettingStarted_DialogSnackbar {
@@ -3697,42 +3544,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareButton.
-        /// </summary>
-        public static string GettingStarted_FirstComponent_Button {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_Button", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareButton supports Filled, Outlined, Text, Tonal and Elevated variants..
-        /// </summary>
-        public static string GettingStarted_FirstComponent_ButtonDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_ButtonDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Cancel.
-        /// </summary>
-        public static string GettingStarted_FirstComponent_Cancel {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Click me.
-        /// </summary>
-        public static string GettingStarted_FirstComponent_ClickMe {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_ClickMe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Current theme.
         /// </summary>
         public static string GettingStarted_FirstComponent_Current {
@@ -3742,56 +3553,11 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Enter your full name.
-        /// </summary>
-        public static string GettingStarted_FirstComponent_NameHelper {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_NameHelper", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Your name.
-        /// </summary>
-        public static string GettingStarted_FirstComponent_NameLabel {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_NameLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Submit.
-        /// </summary>
-        public static string GettingStarted_FirstComponent_Submit {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_Submit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Switch theme.
         /// </summary>
         public static string GettingStarted_FirstComponent_SwitchTheme {
             get {
                 return ResourceManager.GetString("GettingStarted_FirstComponent_SwitchTheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareField with binding.
-        /// </summary>
-        public static string GettingStarted_FirstComponent_TextField {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_TextField", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Use @bind-Value for two-way data binding. HelperText appears below the field..
-        /// </summary>
-        public static string GettingStarted_FirstComponent_TextFieldDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_FirstComponent_TextFieldDesc", resourceCulture);
             }
         }
         
@@ -3823,60 +3589,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Icons Guide.
-        /// </summary>
-        public static string GettingStarted_Icons {
-            get {
-                return ResourceManager.GetString("GettingStarted_Icons", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Using FlareIcon.
-        /// </summary>
-        public static string GettingStarted_Icons_Basic {
-            get {
-                return ResourceManager.GetString("GettingStarted_Icons_Basic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareIcon checks the built-in SVG pack first, then falls back to Material Symbols via the Google Fonts CDN..
-        /// </summary>
-        public static string GettingStarted_Icons_BasicDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_Icons_BasicDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Unknown icon names automatically fall back to Material Symbols - no extra configuration needed..
-        /// </summary>
-        public static string GettingStarted_Icons_FallbackTip {
-            get {
-                return ResourceManager.GetString("GettingStarted_Icons_FallbackTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Icon Sizes.
-        /// </summary>
-        public static string GettingStarted_Icons_Sizes {
-            get {
-                return ResourceManager.GetString("GettingStarted_Icons_Sizes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Use SizePx (int) for SVG pack icons or Size (CSS string) for Material Symbols..
-        /// </summary>
-        public static string GettingStarted_Icons_SizesDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_Icons_SizesDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Installation.
         /// </summary>
         public static string GettingStarted_Installation {
@@ -3891,24 +3603,6 @@ namespace Flare.Gallery.Resources {
         public static string GettingStarted_Installation_Alert {
             get {
                 return ResourceManager.GetString("GettingStarted_Installation_Alert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Add CSS links &amp; _Imports.razor.
-        /// </summary>
-        public static string GettingStarted_Installation_Imports {
-            get {
-                return ResourceManager.GetString("GettingStarted_Installation_Imports", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Add the Material Symbols font and Flare CSS to App.razor, then import namespaces in _Imports.razor..
-        /// </summary>
-        public static string GettingStarted_Installation_ImportsDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_Installation_ImportsDesc", resourceCulture);
             }
         }
         
@@ -3994,56 +3688,11 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Theme Setup.
-        /// </summary>
-        public static string GettingStarted_ThemeSetup {
-            get {
-                return ResourceManager.GetString("GettingStarted_ThemeSetup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Try toggling the color mode live:.
-        /// </summary>
-        public static string GettingStarted_ThemeSetup_LiveHint {
-            get {
-                return ResourceManager.GetString("GettingStarted_ThemeSetup_LiveHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareThemeProvider.
-        /// </summary>
-        public static string GettingStarted_ThemeSetup_Provider {
-            get {
-                return ResourceManager.GetString("GettingStarted_ThemeSetup_Provider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Wrap your app in FlareThemeProvider. It applies the active theme CSS and responds to system color-scheme changes..
-        /// </summary>
-        public static string GettingStarted_ThemeSetup_ProviderDesc {
-            get {
-                return ResourceManager.GetString("GettingStarted_ThemeSetup_ProviderDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Theme switcher.
         /// </summary>
         public static string GettingStarted_ThemeSwitcher {
             get {
                 return ResourceManager.GetString("GettingStarted_ThemeSwitcher", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Tip.
-        /// </summary>
-        public static string GettingStarted_TipTitle {
-            get {
-                return ResourceManager.GetString("GettingStarted_TipTitle", resourceCulture);
             }
         }
         
@@ -5470,15 +5119,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Comparison.
-        /// </summary>
-        public static string Nav_Comparison {
-            get {
-                return ResourceManager.GetString("Nav_Comparison", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Components.
         /// </summary>
         public static string Nav_Components {
@@ -6523,15 +6163,6 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Element resize observer.
-        /// </summary>
-        public static string Responsive_ElementObserverTitle {
-            get {
-                return ResourceManager.GetString("Responsive_ElementObserverTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to ObserveElementAsync tracks a single element's own size via the browser ResizeObserver.
         /// </summary>
         public static string Responsive_ElementObserverDesc {
@@ -7248,15 +6879,6 @@ namespace Flare.Gallery.Resources {
         public static string Services_VersionCheckUpToDate {
             get {
                 return ResourceManager.GetString("Services_VersionCheckUpToDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Waiting for the first check....
-        /// </summary>
-        public static string Services_VersionCheckWaiting {
-            get {
-                return ResourceManager.GetString("Services_VersionCheckWaiting", resourceCulture);
             }
         }
         
@@ -8202,15 +7824,6 @@ namespace Flare.Gallery.Resources {
         public static string Theme_PaletteOther {
             get {
                 return ResourceManager.GetString("Theme_PaletteOther", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Theme settings.
-        /// </summary>
-        public static string Theme_Settings {
-            get {
-                return ResourceManager.GetString("Theme_Settings", resourceCulture);
             }
         }
         

@@ -12,9 +12,8 @@ public sealed record ChangelogEntry(string Version, string? Date, string Markdow
 
 /// <summary>
 /// Single source of truth for release notes. Reads the embedded <c>CHANGELOG.md</c> (and
-/// <c>CHANGELOG.ru.md</c>) once, parses them into per-version entries, and serves the version badge,
-/// the About "What's New" section and the /changelog page - so a release only touches the changelog
-/// file(s) and the git tag, not About/MainLayout/resx.
+/// <c>CHANGELOG.ru.md</c>) once, parses them into per-version entries, and serves the /changelog page - so a
+/// release only touches the changelog file(s) and the git tag, not a page or a resx.
 /// </summary>
 public sealed class ChangelogService
 {
@@ -26,9 +25,6 @@ public sealed class ChangelogService
         _en = Parse(ReadEmbedded("CHANGELOG.md"));
         _ru = Parse(ReadEmbedded("CHANGELOG.ru.md")).ToDictionary(e => e.Version);
     }
-
-    /// <summary>The newest release version (e.g. "0.1.7"), taken from the top of the changelog.</summary>
-    public string LatestVersion => _en.Count > 0 ? _en[0].Version : "0.0.0";
 
     /// <summary>All release entries, newest first, in the given culture. Russian entries fall back to
     /// English for versions that have not been translated.</summary>
