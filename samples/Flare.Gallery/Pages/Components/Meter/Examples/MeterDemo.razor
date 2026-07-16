@@ -24,7 +24,11 @@
         <FlareText Typo="TypographyScale.LabelLarge">Storage</FlareText>
         <FlareMeter>
             <FlareMeterSegment Value="68" Color="FlareColor.Primary" Label="Used" />
-            <FlareMeterSegment Value="32" Color="@FlareColor.Custom("#c7c7cc")" Label="Free" />
+            <FlareMeterSegment Value="32" Color="_free" Label="Free" />
         </FlareMeter>
     </FlareStack>
 </FlareStack>
+
+@code {
+    private readonly FlareColor _free = FlareColor.Custom("#c7c7cc");
+}
