@@ -2,20 +2,20 @@ using Microsoft.AspNetCore.Components;
 
 namespace Flare.Components.Tests.Component;
 
-// FlareMeter: a segmented part-to-whole bar. Segments are declared as FlareMeterSegment children and
-// sized in proportion to their values via flex-grow.
+// FlareMeter: a segmented part-to-whole bar. It is a PROPORTIONAL zone host - parts are declared as
+// FlareZone children carrying a Value weight, and sized in proportion to their sum via flex-grow.
 public class C_FlareMeterTests : FlareTestContext
 {
     private static RenderFragment TwoSegments => b =>
     {
-        b.OpenComponent<FlareMeterSegment>(0);
-        b.AddAttribute(1, nameof(FlareMeterSegment.Value), 75.0);
-        b.AddAttribute(2, nameof(FlareMeterSegment.Color), FlareColor.Error);
-        b.AddAttribute(3, nameof(FlareMeterSegment.Label), "DB");
+        b.OpenComponent<FlareZone>(0);
+        b.AddAttribute(1, nameof(FlareZone.Value), (double?)75.0);
+        b.AddAttribute(2, nameof(FlareZone.Color), FlareColor.Error);
+        b.AddAttribute(3, nameof(FlareZone.Label), "DB");
         b.CloseComponent();
-        b.OpenComponent<FlareMeterSegment>(4);
-        b.AddAttribute(5, nameof(FlareMeterSegment.Value), 25.0);
-        b.AddAttribute(6, nameof(FlareMeterSegment.Label), "Other");
+        b.OpenComponent<FlareZone>(4);
+        b.AddAttribute(5, nameof(FlareZone.Value), (double?)25.0);
+        b.AddAttribute(6, nameof(FlareZone.Label), "Other");
         b.CloseComponent();
     };
 
@@ -50,8 +50,8 @@ public class C_FlareMeterTests : FlareTestContext
     {
         RenderFragment zero = b =>
         {
-            b.OpenComponent<FlareMeterSegment>(0);
-            b.AddAttribute(1, nameof(FlareMeterSegment.Value), 0.0);
+            b.OpenComponent<FlareZone>(0);
+            b.AddAttribute(1, nameof(FlareZone.Value), (double?)0.0);
             b.CloseComponent();
         };
 
