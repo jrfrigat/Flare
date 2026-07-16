@@ -19,7 +19,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme = new Md3Theme();
+    opts.DefaultTheme = new MaterialDesign3ExpressiveTheme();
     // A theme is not bound to a palette. Until the user picks one, use each theme's OWN default
     // palette (ThemePaletteFollower keeps it in sync on theme switches, e.g. Fluent -> Fluent blue).
     // The Dynamic Color palette stays registered and selectable (it derives from the OS/browser

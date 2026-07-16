@@ -18,7 +18,7 @@ dotnet add package Flare.Theme.MaterialDesign3Expressive   # pick at least one t
 // Program.cs
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme   = new Md3Theme();
+    opts.DefaultTheme   = new MaterialDesign3ExpressiveTheme();
     opts.DefaultPalette = Md3Palettes.Violet;
     opts.DefaultMode    = ThemeMode.Auto;        // Light / Dark / Auto
 });

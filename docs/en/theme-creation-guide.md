@@ -189,7 +189,7 @@ Enable it once in `AddFlare`:
 ```csharp
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme = new Md3Theme();
+    opts.DefaultTheme = new MaterialDesign3ExpressiveTheme();
     opts.UseDynamicPalette = true;                  // registers the "dynamic" palette
     opts.DynamicFallbackPalette = Md3Palettes.Violet; // curated palette when the OS accent is unavailable
 });

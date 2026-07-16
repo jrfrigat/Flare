@@ -18,7 +18,7 @@ parallel auditors). Analysis only - no fixes applied yet.
   `XxxTokens` records + `LightColors`/`DarkColors`). This is the shared BASE the Material-lineage themes
   derive from via `with`.
 - **CORRECTION (important):** the shipping theme is `Flare.Theme.MaterialDesign3Expressive`
-  (`Md3Theme`, id `md3-expressive`). It is NOT pure tokens - it derives the base tokens
+  (`MaterialDesign3ExpressiveTheme`, id `md3-expressive`). It is NOT pure tokens - it derives the base tokens
   `with { ButtonGroup = <separated Expressive bundle> }` AND ships its own scoped override CSS for the
   **button family**: `wwwroot/css/components/{button,split-button,button-group}.css` (aggregated by
   `md3-base.css`), all `@scope (.flare-theme-md3-expressive)`. The override surface is EXACTLY the button

@@ -189,7 +189,7 @@ Flare умеет в рантайме строить полную светлую 
 ```csharp
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme = new Md3Theme();
+    opts.DefaultTheme = new MaterialDesign3ExpressiveTheme();
     opts.UseDynamicPalette = true;                  // регистрирует палитру "dynamic"
     opts.DynamicFallbackPalette = Md3Palettes.Violet; // готовая палитра, если акцент ОС недоступен
 });

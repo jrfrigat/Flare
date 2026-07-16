@@ -7,7 +7,7 @@ using Flare.Theme.MaterialDesign3.Tokens;
 namespace Flare.Theme.MaterialDesign3Expressive;
 
 /// <summary>Material Design 3 Expressive theme (design tokens). Light/dark is a mode; colors come from a palette.</summary>
-public sealed class Md3Theme : ITheme
+public sealed class MaterialDesign3ExpressiveTheme : ITheme
 {
     /// <summary>The stable theme id - use this constant to switch themes without a magic string.</summary>
 

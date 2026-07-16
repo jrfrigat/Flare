@@ -36,7 +36,7 @@ builder.Services.AddFlare(opts =>
 // Explicitly register every theme (instantiating forces its assembly into the WASM boot set) so the
 // Settings page can switch between them - including the custom Legacy theme.
 builder.Services.AddFlareTheme(LegacyTheme.Instance);
-builder.Services.AddFlareTheme(new Md3Theme());
+builder.Services.AddFlareTheme(new MaterialDesign3ExpressiveTheme());
 builder.Services.AddFlareTheme(new Fluent2Theme());
 builder.Services.AddFlareTheme(new AeroTheme());
 builder.Services.AddFlareTheme(new LiquidGlassTheme());

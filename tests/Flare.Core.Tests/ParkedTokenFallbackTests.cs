@@ -46,7 +46,7 @@ public sealed class ParkedTokenFallbackTests
         () => new LiquidGlassTheme(),
         () => new MaterialDesign2Theme(),
         () => new MaterialDesign3Theme(),
-        () => new Md3Theme(),                 // Material Design 3 Expressive
+        () => new MaterialDesign3ExpressiveTheme(),                 // Material Design 3 Expressive
         () => new VisualStudioTheme(),
     ];
 
@@ -92,7 +92,7 @@ public sealed class ParkedTokenFallbackTests
         var all = new[]
             {
                 typeof(AeroTheme), typeof(Fluent2Theme), typeof(LiquidGlassTheme), typeof(MaterialDesign2Theme),
-                typeof(MaterialDesign3Theme), typeof(Md3Theme), typeof(VisualStudioTheme),
+                typeof(MaterialDesign3Theme), typeof(MaterialDesign3ExpressiveTheme), typeof(VisualStudioTheme),
             }
             .Select(t => t.Assembly).Distinct()
             .SelectMany(SafeTypes)

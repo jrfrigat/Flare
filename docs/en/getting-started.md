@@ -45,7 +45,7 @@ using Flare.Theme.FluentUI2;
 
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme = new Md3Theme();        // default design system
+    opts.DefaultTheme = new MaterialDesign3ExpressiveTheme();        // default design system
     opts.DefaultPalette = Md3Palettes.Violet;  // default palette
     opts.DefaultMode = ThemeMode.Auto;         // Light / Dark / Auto
 });

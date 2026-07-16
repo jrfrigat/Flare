@@ -37,7 +37,7 @@ using Flare.Theme.MaterialDesign3Expressive;
 
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme   = new Md3Theme();
+    opts.DefaultTheme   = new MaterialDesign3ExpressiveTheme();
     opts.DefaultPalette = Md3Palettes.Violet;
     opts.DefaultMode    = ThemeMode.Auto;
 });

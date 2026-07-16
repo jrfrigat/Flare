@@ -14,7 +14,7 @@ dotnet add package Flare.Theme.MaterialDesign3Expressive   # a theme is required
 
 ```csharp
 // Program.cs
-builder.Services.AddFlare(opts => opts.DefaultTheme = new Md3Theme());
+builder.Services.AddFlare(opts => opts.DefaultTheme = new MaterialDesign3ExpressiveTheme());
 ```
 ```html
 <!-- host page <head> -->

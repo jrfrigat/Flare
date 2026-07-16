@@ -12,11 +12,11 @@ dotnet add package Flare.Theme.MaterialDesign3Expressive
 // as the default theme...
 builder.Services.AddFlare(opts =>
 {
-    opts.DefaultTheme   = new Md3Theme();
+    opts.DefaultTheme   = new MaterialDesign3ExpressiveTheme();
     opts.DefaultPalette = Md3Palettes.Violet;
 });
 // ...or register alongside others, then switch at runtime:
-builder.Services.AddFlareTheme(new Md3Theme());
+builder.Services.AddFlareTheme(new MaterialDesign3ExpressiveTheme());
 // await ThemeService.SetThemeAsync("md3-expressive");
 ```
 
