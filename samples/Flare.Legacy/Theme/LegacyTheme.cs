@@ -15,8 +15,8 @@ public static class LegacyTheme
     /// <summary>The stable theme id - use this constant to select the Legacy theme.</summary>
     public const string ThemeId = "legacy";
 
-    /// <summary>The Legacy theme, derived from <see cref="Fluent2Theme"/>.</summary>
-    public static readonly Flare.Abstractions.ITheme Instance = new Fluent2Theme().Derive(
+    /// <summary>The Legacy theme, derived from <see cref="FluentUI2Theme"/>.</summary>
+    public static readonly Flare.Abstractions.ITheme Instance = new FluentUI2Theme().Derive(
         id: ThemeId,
         displayName: "Legacy",
         design: BuildDesign,

@@ -39,7 +39,7 @@ builder.Services.AddFlare(opts =>
 // trimmed/WASM app). Each theme brings its own palettes via ITheme.Palettes.
 builder.Services.AddFlareTheme(new MaterialDesign3Theme());
 builder.Services.AddFlareTheme(new MaterialDesign2Theme());
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 builder.Services.AddFlareTheme(new AeroTheme());
 builder.Services.AddFlareTheme(new LiquidGlassTheme());
 builder.Services.AddFlareTheme(new VisualStudioTheme());

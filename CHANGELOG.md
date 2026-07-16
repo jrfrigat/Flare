@@ -16,13 +16,24 @@ All notable changes to Flare are documented here. This project adheres to
   and the label at the xs size" - and the value is left to the themes, which are the only place it is true.
   Naming a *special* value semantically is still fine and still done ("a theme with flat filled buttons parks
   this at `none`"), because that describes the token's own contract rather than one theme's taste.
-- **BREAKING: the Material Design 3 Expressive theme class is now `MaterialDesign3ExpressiveTheme`**, not
-  `Md3Theme`. Every other in-box theme is named after its package - `AeroTheme`, `MaterialDesign2Theme`,
-  `MaterialDesign3Theme`, `VisualStudioTheme` - and `Md3Theme` both broke that and read like the *base* MD3
-  theme sitting next to it. Its own file was already called `MaterialDesign3ExpressiveTheme.cs`.
+- **BREAKING: every in-box theme class is now named after its package.** Two broke the rule the other five
+  followed, and both were the only thing standing between a reader and a guessable name:
+  - `Md3Theme` -> **`MaterialDesign3ExpressiveTheme`** (package `Flare.Theme.MaterialDesign3Expressive`).
+    It also read like the *base* MD3 theme, which sits right next to it as `MaterialDesign3Theme`.
+  - `Fluent2Theme` -> **`FluentUI2Theme`** (package `Flare.Theme.FluentUI2`).
 
-  Migration: replace `new Md3Theme()` with `new MaterialDesign3ExpressiveTheme()`. Nothing else changes -
-  same id (`md3-expressive`), same tokens, same palettes.
+  Both classes already lived in files with the new names (`MaterialDesign3ExpressiveTheme.cs`,
+  `FluentUI2Theme.cs`), so only the type names were out of step. With these two fixed, the rule now holds
+  with no exceptions: `AeroTheme`, `FluentUI2Theme`, `LiquidGlassTheme`, `MaterialDesign2Theme`,
+  `MaterialDesign3Theme`, `MaterialDesign3ExpressiveTheme`, `VisualStudioTheme`.
+
+  Migration: replace `new Md3Theme()` with `new MaterialDesign3ExpressiveTheme()`, and `new Fluent2Theme()`
+  with `new FluentUI2Theme()`. Nothing else changes - same ids (`md3-expressive`, `fluent2`), same tokens,
+  same palettes. The ids are deliberately untouched, so a user's saved theme choice survives the upgrade.
+
+  The `Md3Palettes` / `Fluent2Palettes` classes are **not** renamed. Palette class names have no convention
+  today (`Md2Palettes` and `Md3Palettes` are short, `AeroPalettes` and `VisualStudioPalettes` follow the
+  package), and settling that is a separate decision - not one to smuggle in under a theme rename.
 - **`Microsoft.Extensions.Localization` bumped to 10.0.10**, matching the rest of the ASP.NET Core 10.0.10
   packages picked up in 0.5.0.
 

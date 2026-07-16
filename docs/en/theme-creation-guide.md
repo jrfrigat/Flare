@@ -57,7 +57,7 @@ theme auto-discovery and `with`-based override model clean):
 using Flare.Theming;
 using Flare.Theme.FluentUI2;
 
-var myFluent = new Fluent2Theme().Derive(
+var myFluent = new FluentUI2Theme().Derive(
     id: "my-fluent",                 // required: a distinct id
     displayName: "My Fluent",
     design: d => d with { Shape = d.Shape with { Medium = "6px" } });

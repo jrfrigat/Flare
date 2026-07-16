@@ -52,7 +52,7 @@ builder.Services.AddFlare(opts =>
 
 // Register the other themes that should be available at runtime.
 // AddFlareTheme also force-loads the theme assembly (important for trimmed/WASM builds).
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 
 > `AddFlare` registers `ISnackbarService`, `IDialogService` and `IMessageBoxService` itself -
@@ -211,7 +211,7 @@ To switch a **specific** theme or palette without remembering its id string, eac
 constants - `<Theme>.ThemeId` and `<Palettes>.<Name>Id`:
 
 ```csharp
-await ThemeService.SetThemeAsync(Fluent2Theme.ThemeId);     // "fluent2"
+await ThemeService.SetThemeAsync(FluentUI2Theme.ThemeId);     // "fluent2"
 await ThemeService.SetPaletteAsync(Fluent2Palettes.BlueId); // "fluent-blue"
 ```
 

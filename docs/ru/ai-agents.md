@@ -81,7 +81,7 @@ builder.Services.AddFlare(opts =>
 });
 
 // Регистрируем дополнительные темы, доступные в рантайме:
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 `AddFlare` также регистрирует `IDialogService`, `ISnackbarService` и `IMessageBoxService` -
 отдельная регистрация не нужна. Другие точки входа: `AddFlareTheme`, `AddFlarePalette`, `AddFlareIde`,

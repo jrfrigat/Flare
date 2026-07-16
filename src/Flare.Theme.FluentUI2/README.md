@@ -9,9 +9,9 @@ dotnet add package Flare.Theme.FluentUI2
 
 ```csharp
 // default theme...
-builder.Services.AddFlare(opts => opts.DefaultTheme = new Fluent2Theme());
+builder.Services.AddFlare(opts => opts.DefaultTheme = new FluentUI2Theme());
 // ...or register and switch at runtime:
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 // await ThemeService.SetThemeAsync("fluent2");
 ```
 

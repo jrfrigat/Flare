@@ -52,7 +52,7 @@ builder.Services.AddFlare(opts =>
 
 // Зарегистрируйте остальные темы, которые должны быть доступны в рантайме.
 // AddFlareTheme также принудительно загружает сборку темы (важно для trimmed/WASM).
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 
 > `AddFlare` сам регистрирует `ISnackbarService`, `IDialogService` и `IMessageBoxService` -
@@ -211,7 +211,7 @@ window.addEventListener('flare:ready', () => { /* спрятать свой сп
 экспортирует константы - `<Theme>.ThemeId` и `<Palettes>.<Name>Id`:
 
 ```csharp
-await ThemeService.SetThemeAsync(Fluent2Theme.ThemeId);     // "fluent2"
+await ThemeService.SetThemeAsync(FluentUI2Theme.ThemeId);     // "fluent2"
 await ThemeService.SetPaletteAsync(Fluent2Palettes.BlueId); // "fluent-blue"
 ```
 

@@ -76,7 +76,7 @@ builder.Services.AddFlare(opts =>
 // принудительно загружает сборку темы (чего не делает простая ссылка в trimmed/WASM-приложении),
 // поэтому он предпочтительнее автодискавери FlareOptions.RegisterAllBuiltInThemes. Каждая тема
 // приносит свои палитры через ITheme.Palettes.
-builder.Services.AddFlareTheme(new Fluent2Theme());
+builder.Services.AddFlareTheme(new FluentUI2Theme());
 ```
 
 **`index.html` / `App.razor` `<head>`:**
