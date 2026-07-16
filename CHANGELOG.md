@@ -3,6 +3,43 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.5.0] - 2026-07-16
+
+0.4.0 moved the slider / pagination / rating ramps into the themes and banned "parking" a token at
+`initial`. That made an old assumption safe at last, so this release finishes the job: **the component CSS
+now carries no default that belongs to a theme, and a test keeps it that way.**
+
+### Fixed
+- **89 dead fallbacks removed from the component CSS** (`button`, `togglebutton`, `fab`, `a11y`,
+  `datagrid`, `timepicker`, `datepicker`, `splitter`, `splitbutton`, `input`, `breadcrumb`). Each sat on a
+  token every theme is required to supply - `var(--flare-btn-gap-xs, 0.25rem)` - so it could never render:
+  dead code that quietly kept a theme's opinion inside the core, and let a theme get away with not
+  supplying a value. Rendering is unchanged (that is what "dead" means); verified by measuring every button,
+  toggle, FAB and toggle-group size against the theme's own values.
+
+  Notably the sweep is **not** "strip every `var(--flare-*, ...)`": 38 fallbacks were deliberately kept.
+  A `--flare-*` var is not automatically a theme token - `--flare-col-span` on a grid cell,
+  `--flare-slider-length` on a vertical slider and the `--flare-ide-*` pane sizes are set by the CONSUMER,
+  never by a theme, so their fallback is the real default. Removing those would have broken the grid.
+
+### Added
+- **A guard for each half of the mandate**, so "no defaults in the core" is now enforced rather than
+  intended:
+  - a fallback on a token the theme supplies fails the build (`DeadFallbackTests`) - it keys off the
+    theme-emitted name set, so consumer-set vars keep their defaults;
+  - no theme may park a token at `initial` (`ParkedTokenFallbackTests`), now covering **all seven** in-box
+    themes rather than the two reference token packages, with a completeness check that fails if a new theme
+    is not added to it.
+
+  The pair is what makes either rule safe: parking is what made "the fallback is dead" a false premise in
+  0.2.0, and that premise shipped broken geometry for three releases.
+
+### Changed (theme authors)
+- **A custom theme may no longer rely on a component default.** With the fallbacks gone, a theme that parks
+  a token at `initial` (or leaves it empty) now renders nothing for that property instead of quietly getting
+  the core's value. Supply a real value for every token; if it is size-dependent, set the per-size members.
+  In-box and derived themes are unaffected - this only bites a theme that was leaning on the core.
+
 ## [0.4.0] - 2026-07-16
 
 Two corrections, both about a value living in the wrong place.

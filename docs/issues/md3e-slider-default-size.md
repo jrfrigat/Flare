@@ -24,5 +24,18 @@ Expressive reference; you only get the spec proportions by explicitly choosing X
 - **Retune** so Medium == the 16/44dp canonical, and rebalance the other steps around it (this shifts the
   default look of every existing slider, so it is a visible change).
 
-The geometry is driven by the core size classes in `slider.css` (the theme parks most slider geometry at
-`initial`, deferring to those classes), so this is a core-CSS retune, not a token or capability change.
+**UPDATE (0.4.0) - this is now a pure token change, and the old numbers were measured on a broken build.**
+
+This file used to say "the geometry is driven by the core size classes in `slider.css` (the theme parks most
+slider geometry at `initial`, deferring to those classes), so this is a core-CSS retune, not a token or
+capability change". Both halves are obsolete:
+
+- **It is a token change now.** 0.4.0 moved the ramp out of the core: the theme supplies
+  `--flare-slider-track-height-xs..-xl` (and track radius / handle height / icon size). Retuning Medium is
+  editing `MaterialDesignTokens.Slider` - no core CSS, no capability work.
+- **Re-measure before deciding.** The 40/52dp figure predates the regression fixed in 0.4.0, during which the
+  slider rail computed to **0px at every size** under MD3. Any number recorded while that was live is
+  suspect; take fresh measurements first.
+
+The decision itself (keep the ramp vs retune Medium to the canonical 16/44dp) is unchanged and still needs a
+product call - it shifts the default look of every existing slider.
