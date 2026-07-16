@@ -1,0 +1,59 @@
+/* ==========================================================================
+   FlareMeter - a segmented "meter" bar that shows how a whole divides into parts
+   (latency breakdown, quota bar, pass/fail/skip ribbon). Non-interactive.
+   The track geometry (height, rounded ends, resting background) reuses the
+   FlareProgress linear-track tokens so a meter and a progress bar match visually.
+   ========================================================================== */
+.flare-meter {
+    display: block;
+    width: 100%;
+}
+
+/* State hook: no renderable segments. Declared (empty) so it is part of the public CSS contract and
+   consumers can target an empty meter; the bare track already reads as "nothing yet". */
+.flare-meter--empty { /* marker hook - no own styling */ }
+
+/* The bar. Rounded ends + resting background come from the shared progress track tokens; overflow
+   hidden clips the segment row to the rounded corners so the first/last segments get the round ends. */
+.flare-meter__track {
+    display: flex;
+    width: 100%;
+    height: var(--flare-progress-linear-height);
+    background: var(--flare-color-secondary-container);
+    border-radius: var(--flare-progress-track-radius);
+    overflow: hidden;
+}
+
+/* One proportional segment. flex-grow carries the segment's value (inline), so the row always fills
+   the whole track and the parts stay proportional to their sum without per-segment percentage math. */
+.flare-meter__seg {
+    flex-basis: 0;
+    min-width: 0;
+    height: 100%;
+    background: var(--fc-main, var(--flare-color-primary));
+}
+
+/* ---- Optional legend ---- */
+.flare-meter__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--flare-spacing-4);
+    margin-top: var(--flare-spacing-3);
+}
+.flare-meter__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--flare-spacing-2);
+    font-family: var(--flare-typescale-label-medium-font);
+    font-size: var(--flare-typescale-label-medium-size);
+    color: var(--flare-color-on-surface-variant);
+}
+.flare-meter__legend-swatch {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: var(--flare-shape-extra-small);
+    background: var(--fc-main, var(--flare-color-primary));
+    flex-shrink: 0;
+}
+.flare-meter__legend-label { color: var(--flare-color-on-surface); }
+.flare-meter__legend-value { color: var(--flare-color-on-surface-variant); font-weight: 500; }

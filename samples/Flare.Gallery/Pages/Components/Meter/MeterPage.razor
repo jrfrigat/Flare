@@ -1,0 +1,11 @@
+@page "/components/meter"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Meter_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareMeter">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Meter_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Meter_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Meter_Basic" DemoType="typeof(Examples.MeterDemo)" />

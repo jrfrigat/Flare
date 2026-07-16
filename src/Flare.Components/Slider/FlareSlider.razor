@@ -32,6 +32,10 @@
                         <span class="@(seg.Active ? $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegActive}" : $"{Css.Classes.Slider.Seg} {Css.Classes.Slider.SegInactive}")"
                               style="@seg.Style"></span>
                     }
+                    @if (_bufferBandStyle is { } bufStyle)
+                    {
+                        <span class="@Css.Classes.Slider.Zone @Css.Classes.Slider.ZoneBuffer" style="@bufStyle"></span>
+                    }
                     @foreach (var z in _zoneBands)
                     {
                         <span class="@z.CssClass" style="@z.Style"></span>
@@ -144,6 +148,13 @@
     /// track but under the active fill, so the accent fill always shows the current value on top.
     /// </summary>
     [Parameter] public RenderFragment? Zones { get; set; }
+    /// <summary>
+    /// Optional read-only buffered/secondary position (in <see cref="Min"/>..<see cref="Max"/> units), drawn
+    /// as a neutral band from the track start up to this value, behind the active fill. This is the media
+    /// "loaded so far" band of an audio/video seek bar (the active fill stays the playback position). Null
+    /// (default) hides it. It does not move the handle and is not interactive.
+    /// </summary>
+    [Parameter] public double? BufferValue { get; set; }
     /// <summary>Callback invoked when <see cref="ValueEnd"/> changes.</summary>
     [Parameter] public EventCallback<double> ValueEndChanged { get; set; }
     /// <summary>Minimum value of the slider range.</summary>
@@ -287,6 +298,19 @@
                 var style = $"--_z0:{lo.ToString("F2", inv)}%;--_z1:{hi.ToString("F2", inv)}%;{z.Color.StyleMain()}";
                 yield return (cls, style);
             }
+        }
+    }
+
+    // Buffered/secondary band: a neutral read-only region from the track start (0%) to BufferValue,
+    // painted under the active fill (media "loaded so far"). Null when unset or the value collapses to 0.
+    private string? _bufferBandStyle
+    {
+        get
+        {
+            if (BufferValue is not { } bv) return null;
+            var hi = _pctOf(bv);
+            if (hi <= 0.001) return null;
+            return $"--_z0:0%;--_z1:{hi.ToString("F2", CultureInfo.InvariantCulture)}%";
         }
     }
 

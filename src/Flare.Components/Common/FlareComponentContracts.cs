@@ -59,6 +59,9 @@ public interface IFlareButton
     ButtonVariant Variant { get; set; }
     /// <summary>Size scale (Xs..Xl).</summary>
     ButtonSize Size { get; set; }
+    /// <summary>Semantic color of the button. Part of the shared appearance surface so button wrappers
+    /// (clipboard, split button, ...) forward it consistently instead of silently dropping it.</summary>
+    FlareColor Color { get; set; }
     /// <summary>Disables the button.</summary>
     bool Disabled { get; set; }
     /// <summary>Raised when the button is activated.</summary>

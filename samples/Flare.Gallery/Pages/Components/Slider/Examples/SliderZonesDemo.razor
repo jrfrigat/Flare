@@ -7,18 +7,8 @@
             <FlareSliderZone Start="90" End="100" Color="FlareColor.Error" />
         </Zones>
     </FlareSlider>
-
-    @* Media seek bar: the "buffered" band is just a zone from the playback value to the loaded point. *@
-    <FlareSlider @bind-Value="_played" Label="Now playing" Min="0" Max="100" ShowValue="true"
-                 Size="SliderSize.Xs" StartIcon="play_arrow">
-        <Zones>
-            <FlareSliderZone Start="@_played" End="@_buffered" Color="FlareColor.OnSurfaceVariant" />
-        </Zones>
-    </FlareSlider>
 </FlareStack>
 
 @code {
     private double _level = 55;
-    private double _played = 30;
-    private double _buffered = 65;
 }
