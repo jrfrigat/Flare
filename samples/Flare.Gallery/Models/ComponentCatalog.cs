@@ -106,7 +106,6 @@ public static class ComponentCatalog
         new ComponentEntry("/components/transfer",          "Transfer / Dual List",    "Transfer_Title",        ComponentGroup.Input),
 
         // -- Files ----------------------------------------------------------------
-        new ComponentEntry("/components/dropzone",          "Drop Zone",               "FileUpload_DropZone",   ComponentGroup.Files),
         new ComponentEntry("/components/fileupload",        "File Upload",             "FileUpload_Title",      ComponentGroup.Files),
 
         // -- Forms ----------------------------------------------------------------

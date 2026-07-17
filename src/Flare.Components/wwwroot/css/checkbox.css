@@ -114,7 +114,7 @@
 .flare-checkbox__label,
 .flare-radio__label,
 .flare-switch__label,
-.flare-dropzone__label {
+.flare-file-upload__primary {
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);

@@ -3,9 +3,14 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 @* A drop region: it owns its footprint, so it takes no button vocabulary. The button-in-a-row form is a
-   separate component, FlareFileUploadButton. *@
+   separate component, FlareFileUploadButton.
+
+   This absorbed the old FlareDropZone, which was the same component written twice - same hidden input, same
+   drag state, same default upload glyph + label + accept hint - down to being demoed on this very page
+   beside it. ChildContent and MaxFileSize came across from it. *@
 <div class="@BuildCssClass(_draggingClass, _disabledClass)"
      style="@Style"
+     aria-label="@(AriaLabel ?? FlareStrings.DropZone_Label)"
      @ondragover:preventDefault="true"
      @ondragenter:preventDefault="true"
      @ondragover="@(() => _isDragging = true)"
@@ -14,18 +19,25 @@
      @attributes="AdditionalAttributes">
     <div class="@Css.Classes.FileUpload.DropWrap">
         <label class="@Css.Classes.FileUpload.Zone" for="@InputId">
-            @if (Icon is not null)
+            @if (ChildContent is not null)
             {
-                <span class="@Css.Classes.FileUpload.Icon">@Icon</span>
+                @ChildContent
             }
             else
             {
-                <span class="@Css.Classes.FileUpload.Icon material-symbols-rounded" aria-hidden="true">upload_file</span>
-            }
-            <span class="@Css.Classes.FileUpload.Primary">@(DropText ?? FlareStrings.FileUpload_DropText)</span>
-            @if (!string.IsNullOrEmpty(Accept))
-            {
-                <span class="@Css.Classes.FileUpload.Hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
+                @if (Icon is not null)
+                {
+                    <span class="@Css.Classes.FileUpload.Icon">@Icon</span>
+                }
+                else
+                {
+                    <span class="@Css.Classes.FileUpload.Icon material-symbols-rounded" aria-hidden="true">upload_file</span>
+                }
+                <span class="@Css.Classes.FileUpload.Primary">@(_isDragging ? FlareStrings.DropZone_DropFiles : (DropText ?? FlareStrings.FileUpload_DropText))</span>
+                @if (!string.IsNullOrEmpty(Accept))
+                {
+                    <span class="@Css.Classes.FileUpload.Hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
+                }
             }
         </label>
         <InputFile id="@InputId"
@@ -52,10 +64,16 @@
 
 @code {
     /// <summary>Instructional text shown inside the drop zone. Defaults to the localized
-    /// "FileUpload_DropText" string.</summary>
+    /// "FileUpload_DropText" string. Ignored when <see cref="ChildContent"/> is set.</summary>
     [Parameter] public string? DropText { get; set; }
-    /// <summary>Icon shown above the instructional text. Defaults to an upload glyph.</summary>
+    /// <summary>Icon shown above the instructional text. Defaults to an upload glyph. Ignored when
+    /// <see cref="ChildContent"/> is set.</summary>
     [Parameter] public RenderFragment? Icon { get; set; }
+    /// <summary>Replaces the zone's whole default body (icon, text and accept hint) with your own content -
+    /// for an avatar dropper, a preview grid, anything the built-in look does not cover.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Accessible label for the zone. Defaults to the localized "File drop zone" string.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.FileUpload.Root;
 

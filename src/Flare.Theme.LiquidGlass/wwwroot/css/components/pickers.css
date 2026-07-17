@@ -42,13 +42,13 @@
         background-color: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
     }
 
-    /* ---- Dropzone: translucent surface; accent tint while dragging ---- */
-    .flare-dropzone {
+    /* ---- File upload drop zone: translucent surface; accent tint while dragging ---- */
+    .flare-file-upload__zone {
         background-color: var(--flare-liquid-tint);
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 60%);
         box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
     }
-    .flare-dropzone--dragging {
+    .flare-file-upload--dragging .flare-file-upload__zone {
         background-color: color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-liquid-tint-strong)) !important;
         box-shadow:
             inset 0 1px 0.5px var(--flare-liquid-rim),

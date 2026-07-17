@@ -967,7 +967,7 @@
     <value>File Upload</value>
   </data>
   <data name="FileUpload_Subtitle" xml:space="preserve">
-    <value>FlareFileUpload and FlareDropZone for file input with drag &amp; drop support.</value>
+    <value>FlareFileUploadZone and FlareFileUploadButton for file input with drag &amp; drop support.</value>
   </data>
   <data name="FileUpload_DropZone" xml:space="preserve">
     <value>Drop Zone</value>
@@ -2399,18 +2399,6 @@
   </data>
   <data name="AvatarGroup_Title" xml:space="preserve">
     <value>Avatar Group</value>
-  </data>
-  <data name="DropZone_Subtitle" xml:space="preserve">
-    <value>FlareDropZone - drag &amp;amp; drop file upload area with customizable styling.</value>
-  </data>
-  <data name="DropZone_Basic" xml:space="preserve">
-    <value>Basic Drop Zone</value>
-  </data>
-  <data name="DropZone_AcceptFilter" xml:space="preserve">
-    <value>Accept Filter (PDF, Images)</value>
-  </data>
-  <data name="DropZone_CustomContent" xml:space="preserve">
-    <value>Custom Content</value>
   </data>
   <data name="Paper_Title" xml:space="preserve">
     <value>Paper</value>
