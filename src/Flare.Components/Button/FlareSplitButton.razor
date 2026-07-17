@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@implements IFlareButton
 
 <div class="@BuildCssClass(_sizeClass, _openedClass, _fullClass)" style="@Style" @attributes="AdditionalAttributes">
     <FlareButton @ref="_main" Class="@Css.Classes.SplitButton.Main"

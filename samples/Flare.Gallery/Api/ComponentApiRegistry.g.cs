@@ -865,7 +865,10 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Custom content shown inside the button (replaces the default copy icon).", null, false, false, false, @"FlareClipboard"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color of the copy control, forwarded to the inner button. Lets the copy button be emphasized (e.g. a filled Primary ""copy your new secret"" call-to-action). Default keeps the button's own default color.", null, false, false, false, @"FlareClipboard"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the copy control.", null, false, false, false, @"FlareClipboard"),
                 new ApiParameterInfo(@"FeedbackContent", @"RenderFragment?", null, @"Content shown for the brief ""copied"" confirmation (replaces the check icon).", null, false, false, false, @"FlareClipboard"),
+                new ApiParameterInfo(@"FeedbackDurationMs", @"int", @"2000", @"How long the copied confirmation stays up, in milliseconds. Default 2000.", null, false, false, false, @"FlareClipboard"),
+                new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a busy state and blocks copying - for a caller that is still producing Text (fetching the secret, rendering the snippet).", null, false, false, false, @"FlareClipboard"),
                 new ApiParameterInfo(@"OnCopied", @"EventCallback", null, @"Raised after the text is copied.", null, false, true, false, @"FlareClipboard"),
                 new ApiParameterInfo(@"ShowFeedback", @"bool", @"true", @"Shows the brief copied confirmation (icon/text swap) after copying. Default true.", null, false, false, false, @"FlareClipboard"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Sm", @"Button size of the copy control. Default Sm.", null, false, false, false, @"FlareClipboard"),
@@ -1263,7 +1266,8 @@ public static class ComponentApiRegistry
                 @"FlareEmptyState",
                 @"FlareField",
                 @"FlareFieldChrome",
-                @"FlareFileUpload",
+                @"FlareFileUploadButton",
+                @"FlareFileUploadZone",
                 @"FlareFloatingActionButton",
                 @"FlareFloatingActionMenu",
                 @"FlareFloatingActionMenuItem",
@@ -1990,7 +1994,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the drawer is visible.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback fired when the drawer open state changes.", null, false, true, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Variant", @"DrawerVariant", @"DrawerVariant.Temporary", @"Drawer variant - temporary (slides in/out, default), permanent (always visible), or mini (icon-only, expands on hover).", null, false, false, false, @"FlareDrawer"),
-                new ApiParameterInfo(@"Width", @"string", @"""280px""", @"Width applied to left/right anchored drawers.", null, false, false, false, @"FlareDrawer"),
+                new ApiParameterInfo(@"Width", @"string?", null, @"Width applied to left/right anchored drawers. null (the default) takes the theme's own width; set it to override that for one drawer.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -2189,29 +2193,72 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
-        c[@"FlareFileUpload"] = new ApiComponentInfo(
-            @"FlareFileUpload",
-            @"Flare.Components.FlareFileUpload",
+        c[@"FlareFileUploadButton"] = new ApiComponentInfo(
+            @"FlareFileUploadButton",
+            @"Flare.Components.FlareFileUploadButton",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            @"What FlareFileUploadZone and FlareFileUploadButton share: the hidden file input, the accept/multiple/limit rules, the selected-file list and the change callback. Only the trigger - a drop region or a button in a row - differs, and each subclass owns just that.",
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types as a MIME or extension filter string.", null, false, false, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"ButtonText", @"string?", null, @"Label for the Button trigger. Defaults to the localized ""choose file"" text.", null, false, false, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the upload zone when true.", null, false, false, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"DropText", @"string?", null, @"Instructional text shown inside the drop zone. Defaults to the localized ""FileUpload_DropText"" string.", null, false, false, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUpload"),
-                new ApiParameterInfo(@"Variant", @"FileUploadVariant", @"FileUploadVariant.DropZone", @"The visual form of the trigger - a drag-and-drop zone (default) or a compact button.", null, false, false, false, @"FlareFileUpload"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the trigger.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Button content, replacing Text.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Semantic color of the button.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"FullWidth", @"bool", @"false", @"Stretches the button to the full width of its container.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon before the label. Defaults to an upload glyph; set it to say what the button imports.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"Loading", @"bool", @"false", @"Shows a busy state and blocks the picker - for a caller that is still reading or posting the previous selection.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"LoadingText", @"RenderFragment?", null, @"Label shown while Loading. Null keeps the normal label.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"PressMorph", @"bool", @"false", @"Enables the press morph, as on FlareButton.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size scale, exactly as on FlareButton - so an upload button lines up with the buttons beside it in a toolbar. Default medium.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"Text", @"string?", null, @"Button label. Defaults to the localized ""choose file"" text; ChildContent overrides it.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"TrailingIcon", @"RenderFragment?", null, @"Icon after the label.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Outlined", @"Visual variant, exactly as on FlareButton. Default outlined.", null, false, false, false, @"FlareFileUploadButton"),
+                new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types as a MIME or extension filter string.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control - the trigger stops opening the file picker.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"ShowFileList", @"bool", @"true", @"Shows the list of selected files under the trigger. Default true.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareFileUploadBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareFileUploadZone"] = new ApiComponentInfo(
+            @"FlareFileUploadZone",
+            @"Flare.Components.FlareFileUploadZone",
+            @"Flare.Components",
+            @"What FlareFileUploadZone and FlareFileUploadButton share: the hidden file input, the accept/multiple/limit rules, the selected-file list and the change callback. Only the trigger - a drop region or a button in a row - differs, and each subclass owns just that.",
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"DropText", @"string?", null, @"Instructional text shown inside the drop zone. Defaults to the localized ""FileUpload_DropText"" string.", null, false, false, false, @"FlareFileUploadZone"),
+                new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"Icon shown above the instructional text. Defaults to an upload glyph.", null, false, false, false, @"FlareFileUploadZone"),
+                new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types as a MIME or extension filter string.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control - the trigger stops opening the file picker.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"ShowFileList", @"bool", @"true", @"Shows the list of selected files under the trigger. Default true.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareFileUploadBase",
                 @"FlareComponentBase",
                 @"ComponentBase",
                 @"object",
@@ -5978,6 +6025,7 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareButton",
+                @"FlareFileUploadButton",
                 @"FlareIconButton",
             });
 
@@ -6000,6 +6048,7 @@ public static class ComponentApiRegistry
                 @"FlareButton",
                 @"FlareButtonGroup",
                 @"FlareClipboard",
+                @"FlareFileUploadButton",
                 @"FlareIconButton",
                 @"FlareSplitButton",
                 @"FlareToggleButton",
@@ -6043,6 +6092,7 @@ public static class ComponentApiRegistry
                 @"FlareButton",
                 @"FlareButtonGroup",
                 @"FlareClipboard",
+                @"FlareFileUploadButton",
                 @"FlareIconButton",
                 @"FlareSplitButton",
             });
@@ -6691,22 +6741,6 @@ public static class ComponentApiRegistry
                 @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTimePicker",
-            });
-
-        e[@"FileUploadVariant"] = new ApiEnumInfo(
-            @"FileUploadVariant",
-            @"Flare.Components.FileUploadVariant",
-            @"Flare.Components",
-            @"The visual form a FlareFileUpload presents.",
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"DropZone", @"0", @"A large dashed drag-and-drop area that also opens the file dialog on click (default)."),
-                new ApiEnumMember(@"Button", @"1", @"A single compact button that opens the OS file dialog - no drop area."),
-            },
-            new string[]
-            {
-                @"FlareFileUpload",
             });
 
         e[@"FilterOperator"] = new ApiEnumInfo(

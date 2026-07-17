@@ -92,33 +92,16 @@
     flex-shrink: 0;
 }
 
-/* Button variant: a single compact pill that opens the file dialog (no drop area). The input overlays
-   just the button because the wrap shrinks to it. */
+/* FlareFileUploadButton: the trigger is a <label for> wearing the real flare-btn classes, so every rule
+   below that used to redraw a button here - border, radius, padding, label typography, hover - is gone. The
+   button family's own CSS supplies them, which is what makes the upload button line up with a FlareButton
+   next to it and follow the theme's button tokens for free.
+   Only two things remain, because they are about the file input rather than the button. */
+
+/* Shrink the wrap to the button so the hidden input overlays the button alone, not a full-width strip. */
 .flare-file-upload--button .flare-file-upload__drop-wrap { display: inline-block; }
 
-.flare-file-upload__button {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--flare-spacing-4, 0.5rem);
-    padding: var(--flare-spacing-4, 0.5rem) var(--flare-spacing-12, 1.5rem);
-    border: 1px solid var(--flare-color-outline);
-    border-radius: var(--flare-shape-full, 9999px);
-    background: var(--flare-color-surface);
-    color: var(--flare-color-primary);
-    cursor: pointer;
-    font-family: var(--flare-typescale-label-large-font);
-    font-size: var(--flare-typescale-label-large-size);
-    font-weight: var(--flare-typescale-label-large-weight);
-    transition: background var(--flare-motion-duration-short2, 150ms);
-}
-
-.flare-file-upload__button:hover {
-    background: color-mix(in srgb, var(--flare-color-primary) 8%, var(--flare-color-surface));
-}
-
-.flare-file-upload__button-icon {
-    font-size: 1.125rem;
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
+/* The label is the button, so it must not also be a block. */
+.flare-file-upload__button { cursor: pointer; }
 
 .flare-file-upload--disabled { opacity: var(--flare-state-disabled-opacity, 0.38); pointer-events: none; }

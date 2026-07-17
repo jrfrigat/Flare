@@ -88,6 +88,37 @@ public class C_FlareClipboardTests : FlareTestContext
 
         Assert.Empty(cut.FindAll("#feedback-content"));
     }
+
+    [Fact]
+    public async Task OnCopied_IsNotHeldBackByTheFeedbackAnimation()
+    {
+        // It used to be raised AFTER the confirmation delay, so a caller learned the copy had succeeded a
+        // full two seconds late. A long delay here means the test only passes if OnCopied runs before it.
+        var copied = false;
+        var cut = Render<FlareClipboard>(p => p
+            .Add(x => x.Text, "hello")
+            .Add(x => x.FeedbackDurationMs, 30_000)
+            .Add(x => x.OnCopied, EventCallback.Factory.Create(this, () => copied = true)));
+
+        _ = cut.Find("button.flare-clipboard").ClickAsync(new MouseEventArgs());
+
+        // Let the copy + callback run, but nowhere near the 30s confirmation.
+        await Task.Delay(200);
+        Assert.True(copied);
+    }
+
+    [Fact]
+    public void DisabledAndLoading_ReachTheInnerButton()
+    {
+        var cut = Render<FlareClipboard>(p => p
+            .Add(x => x.Text, "hello")
+            .Add(x => x.Disabled, true)
+            .Add(x => x.Loading, true));
+
+        var button = cut.Find("button.flare-clipboard");
+        Assert.True(button.HasAttribute("disabled"));
+        Assert.Contains("flare-btn--loading", button.ClassList);
+    }
 }
 
 // ------------------------------------------------------------------------------

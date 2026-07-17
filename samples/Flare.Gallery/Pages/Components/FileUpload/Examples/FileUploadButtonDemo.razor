@@ -1,7 +1,19 @@
-@* Button variant: a compact trigger that opens the OS file dialog - for an "Import" action where a
-   full drop zone would be overkill. *@
+@* FlareFileUploadButton: opens the OS file dialog from a button in a row, where a full drop zone would be
+   overkill. It takes FlareButton's own Variant/Size/Color/Shape, so it lines up with the buttons beside it
+   instead of standing out - which is the whole point of it being a separate component from the zone. *@
 <FlareStack Style="max-width:32rem;">
-    <FlareFileUpload Variant="FileUploadVariant.Button" Accept=".json" OnFilesChanged="HandleImport" />
+    <FlareStack Row="true" Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareFileUploadButton Variant="ButtonVariant.Outlined"
+                               Size="ButtonSize.Sm"
+                               Accept=".json"
+                               ShowFileList="false"
+                               Text="Import"
+                               OnFilesChanged="HandleImport">
+            <LeadingIcon><FlareIcon Name="publish" /></LeadingIcon>
+        </FlareFileUploadButton>
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm">Export</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">New endpoint</FlareButton>
+    </FlareStack>
     @if (_name is not null)
     {
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Selected: @_name</FlareText>
