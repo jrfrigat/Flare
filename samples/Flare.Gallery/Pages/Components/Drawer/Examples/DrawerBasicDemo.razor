@@ -1,8 +1,14 @@
+@* The two drawers show why ContentPadding is the caller's call. A drawer cannot know what it holds, so its
+   content is full-bleed by default: the nav drawer on the left needs that, or the highlight behind an item
+   would stop short of the panel edge. The settings drawer on the right holds a form, which wants to sit off
+   the edge and line up with the header - so it asks for the inset. The steps are the shared FlareSpacing
+   scale, the same one Gap uses, so the theme owns the actual value. *@
 <FlareStack Row Gap="FlareSpacing.Small">
     <FlareButton OnClick="@(() => _leftOpen = true)">Open Left</FlareButton>
     <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _rightOpen = true)">Open Right</FlareButton>
 </FlareStack>
 
+@* Nav: default (full-bleed), so each item's highlight spans the whole panel. *@
 <FlareDrawer @bind-Open="_leftOpen" Anchor="DrawerAnchor.Left">
     <Header>Navigation</Header>
     <ChildContent>
@@ -20,10 +26,11 @@
     </ChildContent>
 </FlareDrawer>
 
-<FlareDrawer @bind-Open="_rightOpen" Anchor="DrawerAnchor.Right">
+@* Form: ContentPadding insets the content to the header's own inset - no hand-written padding needed. *@
+<FlareDrawer @bind-Open="_rightOpen" Anchor="DrawerAnchor.Right" ContentPadding="FlareSpacing.Large">
     <Header>Settings</Header>
     <ChildContent>
-        <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
+        <FlareStack Gap="FlareSpacing.Medium">
             <FlareSwitch Label="Notifications" Value="true" />
             <FlareSwitch Label="Dark mode" />
             <FlareSelect TValue="string" Label="Language">
