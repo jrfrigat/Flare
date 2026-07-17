@@ -63,6 +63,18 @@ All notable changes to Flare are documented here. This project adheres to
   `OnFilesChanged` are unchanged on both. `DropText` stays on the zone; `ButtonText` is now `Text`.
 
 ### Fixed
+- **`FlareFileUploadButton` had no hover, no press and no focus ring.** Its hidden file input was stretched
+  over the whole trigger, so the pointer landed on the input and never on the label wearing the button
+  classes - everything `.flare-btn` draws through `:hover` / `:active` was unreachable, and beside a real
+  `FlareButton` it looked inert. The overlay was never needed here: `<label for>` opens the picker on its
+  own. The input is now hidden out of the way, and keyboard focus (which still lands on it) paints the ring
+  on the button the user sees. The drop zone keeps its overlay - that is what carries drag-and-drop.
+- **The drop zone's hover was dead too.** `FlareDropZone` hung `:hover` on its root, an ancestor of the
+  overlaying input, so hovering the input lit it. Folding it into `FlareFileUploadZone` moved that rule onto
+  the label - the input's *sibling*, which the pointer never reaches. Hover hangs off the wrap again.
+- **`.flare-btn` no longer borrows its look from being a `<button>`.** It leaned on the UA stylesheet for
+  `text-align: center` and the block-padding reset, so the same classes on a `<label>` - which
+  `FlareFileUploadButton` has to use - rendered left-aligned with different padding. Both are declared now.
 - **`FlareClipboard.OnCopied` no longer waits for the confirmation animation.** It was raised after the
   two-second "copied" feedback, so a caller was told the copy had succeeded two seconds late - the callback
   was locked behind a purely decorative delay. It now fires as soon as the text is on the clipboard.

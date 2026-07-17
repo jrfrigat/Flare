@@ -24,6 +24,18 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
     }
 
     [Fact]
+    public void RootCarriesTheButtonModifier_SoTheInputIsNotAnOverlay()
+    {
+        // The zone overlays its label with the input - that overlay is what gives it drag-and-drop. The
+        // button must NOT: while it did, the pointer landed on the input instead of the label, so hover,
+        // press and the whole state layer were unreachable and the button looked dead next to a FlareButton.
+        // The CSS that lifts the overlay keys off this modifier, so its absence is the bug coming back.
+        var cut = Render<FlareFileUploadButton>();
+
+        Assert.Contains("flare-file-upload--button", cut.Find("div.flare-file-upload").ClassList);
+    }
+
+    [Fact]
     public void WearsTheRealButtonClasses()
     {
         var cut = Render<FlareFileUploadButton>();
