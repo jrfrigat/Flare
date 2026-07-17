@@ -80,10 +80,16 @@ internal class AeroTokens
     internal static readonly BadgeTokens Badge = new()
     {
         Radius = "var(--flare-shape-extra-small)",
-        MinWidth = "1rem",
-        Height = "1rem",
-        DotSize = "0.375rem",
-        PaddingX = "0.25rem",
+        // Per-size ramp; the four non-default steps used to be literals in badge.css. Values unchanged.
+        MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
+        HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
+        DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.375rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
+        PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.25rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
+        LabelSizeXs = "0.5625rem",
+        LabelSizeSm = "0.625rem",
+        LabelSizeMd = "var(--flare-typescale-label-small-size)",
+        LabelSizeLg = "var(--flare-typescale-label-medium-size)",
+        LabelSizeXl = "var(--flare-typescale-label-large-size)",
         Offset = "0.375rem",
         DotOffset = "0",
     };

@@ -5,6 +5,20 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING: `BadgeTokens` gains a per-size ramp.** `MinWidth`, `Height`, `DotSize` and `PaddingX` become
+  `*Xs`/`*Sm`/`*Md`/`*Lg`/`*Xl`, and the indicator's font size joins them as `LabelSize*` - the same shape
+  `ButtonTokens` already uses.
+
+  It was one set. The theme named the default size and `badge.css` hardcoded the other four in literals, so
+  four of the five sizes were core's opinion and no theme could reach them - a badge simply could not be
+  resized by a theme. Measured after: xs/sm/md/lg/xl still paint 12/14/16/20/24px with a 4/5/6/8/10px dot
+  and a 9/10/11/12/14px label, identical to the literals they replace; and setting
+  `--flare-badge-height-xs` from a theme now moves the box, which it never did before.
+
+  Migration: `Badge = ... with { Height = "1rem" }` -> name the step you mean (`HeightMd = "1rem"`), or all
+  five. `Radius`, `Offset` and `DotOffset` are unchanged - they do not vary by size.
+
 ### Fixed
 - **The layout's geometry was a core default, not the theme's.** `layout-shell.css` opened with a `:root`
   block setting `--flare-layout-drawer-width`, `-drawer-rail-width`, `-appbar-height`,
