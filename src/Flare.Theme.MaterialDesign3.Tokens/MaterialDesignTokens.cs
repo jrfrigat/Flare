@@ -761,6 +761,8 @@ public class MaterialDesignTokens
     internal static readonly LayoutTokens Layout = new()
     {
         AppBarHeight = "64px",
+        AppBarHeightDense = "3rem",              // MD3 dense top app bar = 48dp
+        AppBarBg = "var(--flare-color-surface)",
         ContentPadding = "1.5rem 2rem",
         ContentPaddingMobile = "1rem",
         DrawerRailWidth = "3.5rem",

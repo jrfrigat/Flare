@@ -3,6 +3,32 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- **The layout's geometry was a core default, not the theme's.** `layout-shell.css` opened with a `:root`
+  block setting `--flare-layout-drawer-width`, `-drawer-rail-width`, `-appbar-height`,
+  `-appbar-height-dense` and `-appbar-bg` to literals. That is a default baked into core, which the token
+  mandate forbids - and a `:root` declaration can out-rank the theme's own block, so the theme's value need
+  never render.
+
+  Two of the five had no route out of core at all: `-appbar-height-dense` and `-appbar-bg` had a name in the
+  registry, no `LayoutTokens` member and nothing emitting them, so the core literal was their only source
+  and **no theme could change them**. Both are proper `LayoutTokens` members now (`AppBarHeightDense`,
+  `AppBarBg`), wired through `CssVarMap` and supplied by the reference packages. Values are unchanged.
+
+### Added
+- **A guard against the same thing coming back**: `DeadFallbackTests.CoreCss_DoesNotDeclareATokenTheThemeSupplies`.
+  Its sibling already banned a core *fallback* on a theme token; this bans a core *declaration* of one, which
+  is the more dangerous half - a fallback that never renders is dead code, but a declaration nearer the
+  element than the theme's silently wins.
+
+  It follows the mandate's own line: pointing a token at another semantic token is fine, a hardcoded `16px`
+  is not. Its first run found more than the layout shell - `badge.css`, `switch.css` and `menuitem.css`
+  hardcode geometry over the theme's, and `datagrid.css` re-declares what `.flare-input-variant--outlined`
+  already says. Those are named in the test as known debt so the guard holds every other stylesheet clean
+  while they come out one at a time.
+
 ## [0.8.0] - 2026-07-17
 
 ### Changed

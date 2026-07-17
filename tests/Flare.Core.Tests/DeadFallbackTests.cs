@@ -56,6 +56,73 @@ public sealed class DeadFallbackTests
             + string.Join("\n  ", offenders));
     }
 
+    // --flare-x: <value>   at the start of a declaration -- the core DECLARING a token, not reading one.
+    private static readonly Regex _tokenDeclaration =
+        new(@"(^|[;{])\s*(--flare-[a-z0-9-]+)\s*:\s*([^;}]*)", RegexOptions.Compiled);
+
+    // A literal dimension in the value. The mandate draws the line exactly here: pointing a token at
+    // another SEMANTIC token is allowed, a hardcoded 16px is not.
+    private static readonly Regex _literalDimension =
+        new(@"(^|[\s(,])-?\d+(\.\d+)?(px|rem|em|ch|vh|vw)\b", RegexOptions.Compiled);
+
+    // The debt this guard found on its first run, named rather than silently tolerated. It is a ratchet:
+    // every other core stylesheet is clean and must stay clean; these come out one at a time, and a file
+    // leaves this list for good once it does.
+    //   badge.css     - the --xs/--sm/--lg/--xl classes hardcode the badge box, so a theme owns only the
+    //                   default size. Needs a per-size ramp in BadgeTokens, like the button's.
+    //   switch.css    - same shape: a size class hardcodes track/thumb geometry over the theme's.
+    //   menuitem.css  - hardcodes the item's padding and gap over MenuTokens.
+    //   datagrid.css  - the filter editors re-declare what .flare-input-variant--outlined already says;
+    //                   they should wear that class instead of copying it.
+    //   input.css     - the variant classes (.flare-input-variant--filled/--outlined) hardcode 1px borders.
+    //                   Arguable rather than clearly wrong: the variant exists to define a look INDEPENDENT
+    //                   of the theme, and a 1px edge is part of what "outlined" means. Decide before fixing.
+    private static readonly string[] _knownDebt =
+        ["badge.css", "switch.css", "menuitem.css", "datagrid.css", "input.css"];
+
+    [Fact]
+    public void CoreCss_DoesNotDeclareATokenTheThemeSupplies()
+    {
+        // The same mandate as the fallback rule above, from the other side. A fallback hides a default
+        // inside a read; this hides one inside a WRITE, and it is the more dangerous of the two: a
+        // declaration on :root or a component root sits nearer the element than the theme's own
+        // .flare-theme-* block, so the core value can win outright and the theme's is simply never seen.
+        //
+        // History: layout-shell.css opened with a :root block setting --flare-layout-drawer-width and four
+        // neighbours to literals. Two of them (-appbar-height-dense, -appbar-bg) had no other source at all -
+        // a name in the registry, no record member, nothing emitting them - so no theme could reach them.
+        //
+        // Setting a LOCAL (--_x: var(--flare-x)) is the correct pattern and is untouched here: this only
+        // fires on writing a name a theme emits.
+        var emitted = TokenParityTests.ThemeEmittedTokenNames();
+        var cssDir = Path.Combine(FindRepoRoot(), "src", "Flare.Components", "wwwroot", "css");
+        Assert.True(Directory.Exists(cssDir), $"Core CSS folder not found: {cssDir}");
+
+        var offenders = new List<string>();
+        foreach (var file in Directory.EnumerateFiles(cssDir, "*.css").OrderBy(f => f, StringComparer.Ordinal))
+        {
+            var name0 = Path.GetFileName(file);
+            if (_knownDebt.Contains(name0)) continue;
+            var lines = File.ReadAllLines(file);
+            for (var i = 0; i < lines.Length; i++)
+            {
+                foreach (Match m in _tokenDeclaration.Matches(lines[i]))
+                {
+                    var name = m.Groups[2].Value;
+                    if (!emitted.Contains(name)) continue;                       // a per-instance var the consumer owns
+                    if (!_literalDimension.IsMatch(m.Groups[3].Value)) continue; // points at another token: allowed
+                    offenders.Add($"{name0}:{i + 1}  {name}: {m.Groups[3].Value.Trim()}");
+                }
+            }
+        }
+
+        Assert.True(offenders.Count == 0,
+            "The core CSS declares tokens the themes emit. A declaration in core can out-rank the theme's "
+            + "own, so the theme's value never renders - and the literal is a default baked into core, which "
+            + "the mandate forbids. Move the value into the token records and let the theme supply it:\n  "
+            + string.Join("\n  ", offenders));
+    }
+
     // Walk up to the folder that contains src/Flare.Components (the test runs from bin/).
     private static string FindRepoRoot()
     {
