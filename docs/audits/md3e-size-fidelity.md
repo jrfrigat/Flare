@@ -48,8 +48,22 @@ produces at least six spec misses at once:
 | Card icon | 24dp | 22px | not expressed |
 
 Note the shape of it: the two ends of a single chip currently render at 22px and ~14px against a spec that
-pins both at 18dp. Components that DO pin a size (dialog 24dp, menu item 20dp, button ramp 20/20/24/32/40)
-are all spec-exact - so the pattern to copy already exists in-house.
+pins both at 18dp.
+
+> **CORRECTION (2026-07-18).** This section originally claimed that "components that DO pin a size (dialog
+> 24dp, menu item 20dp, button ramp 20/20/24/32/40) are all spec-exact". That was wrong for dialog and for
+> the button ramp: those readings measured the wrapper `<span>`/`<div>`, not the glyph. Re-measured, the
+> glyph in all three rendered **22px flat** - the leak, not the token.
+>
+> The reason is structural. `icon.css` sets `font-size` **on the icon element**, and a declaration on an
+> element always beats what it would inherit, so styling the wrapper's `font-size` sized nothing. Only
+> components that render their own raw `material-symbols` span (menu item, dropzone, splitter, tree, switch,
+> stepper, timeline) were ever really pinning a size - and menu item's 20dp does hold.
+>
+> Fixed in 0.8.0: the size now travels into the icon as `--_flare-icon-size`, a custom property, which
+> cascades instead of competing. Measured after: button 20/24/40 (xs/md/xl) and dialog 24px - the theme's
+> spec-exact ramp, finally painting. The rows below for chip, snackbar, FAB, text-field, tabs and card are
+> unaffected by that fix: those components declare no icon size at all, so they still inherit the baseline.
 
 ### B. Tokens that never reach the paint
 

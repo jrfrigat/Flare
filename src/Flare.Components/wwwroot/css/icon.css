@@ -3,8 +3,16 @@
     align-items: center;
     justify-content: center;
     color: var(--fc-main, inherit);
-    /* Use title-large token as icon size baseline (~1.375rem / 22px; a theme can scale it) */
-    font-size: var(--flare-typescale-title-large-size);
+    /* Size comes from the host component through --_flare-icon-size, falling back to the theme's title-large
+       token as the baseline (a theme can scale it).
+
+       It has to travel as a custom property, not as font-size on the wrapper: this rule sets font-size ON the
+       icon, and a declaration on the element always beats what it would inherit from a parent. So a component
+       that wraps a caller-supplied <FlareIcon> and styles the wrapper's font-size sizes nothing at all - the
+       glyph keeps the baseline. A custom property cascades INTO the icon instead, so one declaration on any
+       ancestor reaches the glyph without a specificity war. Components that render their own raw
+       material-symbols span are unaffected either way (no font-size of their own to override). */
+    font-size: var(--_flare-icon-size, var(--flare-typescale-title-large-size));
     width: 1em;
     height: 1em;
     flex-shrink: 0;
