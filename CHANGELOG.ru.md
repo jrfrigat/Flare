@@ -45,11 +45,15 @@
   есть размер, вариант и цвет. Теперь это два компонента с общей базой: инпут, правила accept/multiple/лимита
   и список файлов у них одни.
 
-  `FlareFileUploadButton` берёт словарь самого `FlareButton` - `Variant`, `Size`, `Color`, `Shape`,
-  `PressMorph`, `FullWidth`, `Loading`, `LoadingText`, `LeadingIcon`, `TrailingIcon`, `ChildContent`,
-  `AriaLabel` - с теми же именами, типами и умолчаниями. Замерено: теперь он совпадает с соседним
-  `FlareButton` на всех ступенях (32/40/48/56/64px для xs..xl); раньше у него была одна фиксированная
-  высота, не совпадавшая ни с чем.
+  `FlareFileUploadButton` берёт словарь самого `FlareButton` - `Variant`, `Size`, `Color`, `OnColor`,
+  `Shape`, `PressMorph`, `Typo`, `FullWidth`, `Loading`, `LoadingText`, `LoadingTemplate`, `LeadingIcon`,
+  `TrailingIcon`, `ChildContent`, `AriaLabel` - с теми же именами, типами и умолчаниями. Замерено: теперь он
+  совпадает с соседним `FlareButton` на всех ступенях (32/40/48/56/64px для xs..xl); раньше у него была одна
+  фиксированная высота, не совпадавшая ни с чем.
+
+  `ButtonText` теперь `Text`. Старое имя алиасом не оставлено: тег всё равно переписывать (мигрировать
+  больше не от чего - `FlareFileUpload` удалён), так что устаревший параметр появился бы у нового
+  компонента в первый же день - по той же причине, по которой в 0.7.0 убрали шим `FlareSliderZone`.
 
   `OnClick` он не берёт: клик лишь открывает диалог, а `OnFilesChanged` несёт файлы и приходит только после
   подтверждения пользователем. `Href`/`Target`/`Rel`/`Type` также отсутствуют - он открывает диалог выбора,

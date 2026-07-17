@@ -15,31 +15,38 @@
 <div class="@BuildCssClass(Css.Classes.FileUpload.Button, _disabledClass)" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.FileUpload.DropWrap">
         <label class="@_labelClass" style="@_labelStyle" for="@InputId" aria-label="@AriaLabel">
-            @if (Loading)
+            @if (Loading && LoadingTemplate is not null)
             {
-                <span class="@Css.Classes.Button.Spinner" aria-hidden="true"></span>
+                @LoadingTemplate
             }
-            else if (LeadingIcon is not null)
+            else
             {
-                <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconLeading">@LeadingIcon</span>
-            }
-            <span class="@Css.Classes.Button.Label">
-                @if (Loading && LoadingText is not null)
+                @if (Loading)
                 {
-                    @LoadingText
+                    <span class="@Css.Classes.Button.Spinner" aria-hidden="true"></span>
                 }
-                else if (ChildContent is not null)
+                else if (LeadingIcon is not null)
                 {
-                    @ChildContent
+                    <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconLeading">@LeadingIcon</span>
                 }
-                else
+                <span class="@Css.Classes.Button.Label @_typoClass">
+                    @if (Loading && LoadingText is not null)
+                    {
+                        @LoadingText
+                    }
+                    else if (ChildContent is not null)
+                    {
+                        @ChildContent
+                    }
+                    else
+                    {
+                        @(Text ?? FlareStrings.FileUpload_ButtonText)
+                    }
+                </span>
+                @if (!Loading && TrailingIcon is not null)
                 {
-                    @(Text ?? FlareStrings.FileUpload_ButtonText)
+                    <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconTrailing">@TrailingIcon</span>
                 }
-            </span>
-            @if (!Loading && TrailingIcon is not null)
-            {
-                <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconTrailing">@TrailingIcon</span>
             }
         </label>
         <InputFile id="@InputId"
@@ -72,6 +79,11 @@
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
     /// <summary>Semantic color of the button.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Optional foreground color for the filled variant when <see cref="Color"/> is a custom color.</summary>
+    [Parameter] public string? OnColor { get; set; }
+    /// <summary>Optional label type-scale override, as on <see cref="FlareButton"/>. Null keeps the
+    /// size-based typography.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Corner shape of the button.</summary>
     [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
     /// <summary>Enables the press morph, as on <see cref="FlareButton"/>.</summary>
@@ -83,6 +95,9 @@
     [Parameter] public bool Loading { get; set; }
     /// <summary>Label shown while <see cref="Loading"/>. Null keeps the normal label.</summary>
     [Parameter] public RenderFragment? LoadingText { get; set; }
+    /// <summary>Custom content shown while <see cref="Loading"/> is true, replacing the default spinner
+    /// (and <see cref="LoadingText"/>). Use it for a bespoke loading indicator.</summary>
+    [Parameter] public RenderFragment? LoadingTemplate { get; set; }
     /// <summary>Icon before the label. Defaults to an upload glyph; set it to say what the button imports.</summary>
     [Parameter] public RenderFragment? LeadingIcon { get; set; }
     /// <summary>Icon after the label.</summary>
@@ -113,6 +128,10 @@
         FullWidth ? Css.Classes.Button.Full : string.Empty,
     }.Where(c => !string.IsNullOrEmpty(c)));
 
-    // Custom colors travel as inline tokens, the same route FlareButton uses for FlareColor.Custom.
-    private string? _labelStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : null;
+    private string? _typoClass => FlareTypography.CssClass(Typo);
+
+    // StyleFull is the button family's own colour path, not a hand-rolled one: it covers the Dynamic
+    // palette as well as Custom, and auto-contrasts the filled label - which setting --fc-main alone,
+    // as this used to, does not.
+    private string? _labelStyle => Color.StyleFull(OnColor);
 }

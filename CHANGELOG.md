@@ -43,10 +43,15 @@ All notable changes to Flare are documented here. This project adheres to
   row, and a row has a size, a variant and a colour. They are now two components, sharing the input, the
   accept/multiple/limit rules and the file list through a common base.
 
-  `FlareFileUploadButton` takes `FlareButton`'s own vocabulary - `Variant`, `Size`, `Color`, `Shape`,
-  `PressMorph`, `FullWidth`, `Loading`, `LoadingText`, `LeadingIcon`, `TrailingIcon`, `ChildContent`,
-  `AriaLabel` - under the same names, types and defaults. Measured: it now matches a `FlareButton` beside it
-  at every size (32/40/48/56/64px for xs..xl); it used to be one fixed height that matched nothing.
+  `FlareFileUploadButton` takes `FlareButton`'s own vocabulary - `Variant`, `Size`, `Color`, `OnColor`,
+  `Shape`, `PressMorph`, `Typo`, `FullWidth`, `Loading`, `LoadingText`, `LoadingTemplate`, `LeadingIcon`,
+  `TrailingIcon`, `ChildContent`, `AriaLabel` - under the same names, types and defaults. Measured: it now
+  matches a `FlareButton` beside it at every size (32/40/48/56/64px for xs..xl); it used to be one fixed
+  height that matched nothing.
+
+  `ButtonText` is now `Text`. The old name is not kept as an alias: the tag has to be rewritten anyway
+  (there is no `FlareFileUpload` left to migrate from), so a deprecated parameter would ship on a brand-new
+  component's first day - the same reasoning that removed the `FlareSliderZone` shim in 0.7.0.
 
   It does not take `OnClick`: the click only opens the picker, while `OnFilesChanged` carries the files and
   arrives only once the user confirms. `Href`/`Target`/`Rel`/`Type` are likewise absent - it opens a picker,
