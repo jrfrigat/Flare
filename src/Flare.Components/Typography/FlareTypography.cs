@@ -17,6 +17,32 @@ internal static class FlareTypography
              + $"line-height:var(--flare-typescale-{s}-height)";
     }
 
+    /// <summary>
+    /// The shared <c>flare-text--*</c> utility class for a type scale, or <c>null</c> when the scale is
+    /// unset. Every component that lets a caller override its label typography reads this, so the mapping
+    /// lives once: it was copied out three times before (FlareText, FlareTypography's own callers and
+    /// FlareButton), and a fourth copy in FlareFileUploadButton is what prompted pulling it together.
+    /// </summary>
+    public static string? CssClass(TypographyScale? scale) => scale switch
+    {
+        TypographyScale.DisplayLarge => Css.Classes.Text.DisplayLarge,
+        TypographyScale.DisplayMedium => Css.Classes.Text.DisplayMedium,
+        TypographyScale.DisplaySmall => Css.Classes.Text.DisplaySmall,
+        TypographyScale.HeadlineLarge => Css.Classes.Text.HeadlineLarge,
+        TypographyScale.HeadlineMedium => Css.Classes.Text.HeadlineMedium,
+        TypographyScale.HeadlineSmall => Css.Classes.Text.HeadlineSmall,
+        TypographyScale.TitleLarge => Css.Classes.Text.TitleLarge,
+        TypographyScale.TitleMedium => Css.Classes.Text.TitleMedium,
+        TypographyScale.TitleSmall => Css.Classes.Text.TitleSmall,
+        TypographyScale.BodyLarge => Css.Classes.Text.BodyLarge,
+        TypographyScale.BodyMedium => Css.Classes.Text.BodyMedium,
+        TypographyScale.BodySmall => Css.Classes.Text.BodySmall,
+        TypographyScale.LabelLarge => Css.Classes.Text.LabelLarge,
+        TypographyScale.LabelMedium => Css.Classes.Text.LabelMedium,
+        TypographyScale.LabelSmall => Css.Classes.Text.LabelSmall,
+        _ => null,
+    };
+
     /// <summary>Maps a type scale to its kebab-case token slug (e.g. <c>BodySmall</c> -> <c>body-small</c>).</summary>
     public static string Slug(TypographyScale scale) => scale switch
     {

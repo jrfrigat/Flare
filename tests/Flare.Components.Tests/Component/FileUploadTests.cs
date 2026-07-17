@@ -111,6 +111,45 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
 
         Assert.Empty(cut.FindAll("ul.flare-file-upload__list"));
     }
+
+    [Fact]
+    public void Typo_OverridesTheLabelScale_TheSameWayFlareButtonDoes()
+    {
+        var upload = Render<FlareFileUploadButton>(p => p
+            .Add(x => x.Typo, TypographyScale.TitleLarge).AddChildContent("Import"));
+        var button = Render<FlareButton>(p => p
+            .Add(x => x.Typo, TypographyScale.TitleLarge).AddChildContent("Import"));
+
+        var uploadLabel = upload.Find("span.flare-btn__label").ClassList.Single(c => c.StartsWith("flare-text--"));
+        var buttonLabel = button.Find("span.flare-btn__label").ClassList.Single(c => c.StartsWith("flare-text--"));
+        Assert.Equal(buttonLabel, uploadLabel);
+    }
+
+    [Fact]
+    public void LoadingTemplate_ReplacesTheSpinnerAndLabel()
+    {
+        var cut = Render<FlareFileUploadButton>(p => p
+            .Add(x => x.Loading, true)
+            .Add(x => x.Text, "Import")
+            .Add<RenderFragment>(x => x.LoadingTemplate, b => b.AddMarkupContent(0, "<span id=\"mine\">Reading...</span>")));
+
+        Assert.NotEmpty(cut.FindAll("#mine"));
+        Assert.Empty(cut.FindAll("span.flare-btn__spinner"));
+        Assert.DoesNotContain("Import", cut.Markup);
+    }
+
+    [Fact]
+    public void CustomColor_TakesTheSameInlineTokensFlareButtonDoes()
+    {
+        // It used to set --fc-main by hand, which skipped the Dynamic palette and the filled label's
+        // auto-contrast. Both components must resolve a custom colour through the same path.
+        var upload = Render<FlareFileUploadButton>(p => p.Add(x => x.Color, FlareColor.Custom("#FF0000")));
+        var button = Render<FlareButton>(p => p.Add(x => x.Color, FlareColor.Custom("#FF0000")));
+
+        var uploadStyle = upload.Find("label.flare-file-upload__button").GetAttribute("style");
+        var buttonStyle = button.Find("button.flare-btn").GetAttribute("style");
+        Assert.Equal(buttonStyle, uploadStyle);
+    }
 }
 
 public class C_FlareFileUploadZoneTests : FlareTestContext

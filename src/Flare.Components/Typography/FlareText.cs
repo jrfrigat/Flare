@@ -78,25 +78,8 @@ public sealed class FlareText : FlareComponentBase
         builder.CloseElement();
     }
 
-    private string _scaleClass => Typo switch
-    {
-        TypographyScale.DisplayLarge => Css.Classes.Text.DisplayLarge,
-        TypographyScale.DisplayMedium => Css.Classes.Text.DisplayMedium,
-        TypographyScale.DisplaySmall => Css.Classes.Text.DisplaySmall,
-        TypographyScale.HeadlineLarge => Css.Classes.Text.HeadlineLarge,
-        TypographyScale.HeadlineMedium => Css.Classes.Text.HeadlineMedium,
-        TypographyScale.HeadlineSmall => Css.Classes.Text.HeadlineSmall,
-        TypographyScale.TitleLarge => Css.Classes.Text.TitleLarge,
-        TypographyScale.TitleMedium => Css.Classes.Text.TitleMedium,
-        TypographyScale.TitleSmall => Css.Classes.Text.TitleSmall,
-        TypographyScale.BodyLarge => Css.Classes.Text.BodyLarge,
-        TypographyScale.BodyMedium => Css.Classes.Text.BodyMedium,
-        TypographyScale.BodySmall => Css.Classes.Text.BodySmall,
-        TypographyScale.LabelLarge => Css.Classes.Text.LabelLarge,
-        TypographyScale.LabelMedium => Css.Classes.Text.LabelMedium,
-        TypographyScale.LabelSmall => Css.Classes.Text.LabelSmall,
-        _ => Css.Classes.Text.BodyMedium,
-    };
+    // Text always paints a scale, so an unset Typo falls back to body-medium here rather than in the map.
+    private string _scaleClass => FlareTypography.CssClass(Typo) ?? Css.Classes.Text.BodyMedium;
 
     private string? _weightClass => Weight switch
     {
