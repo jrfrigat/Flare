@@ -16,6 +16,13 @@
     text-decoration: none;
     user-select: none;
     vertical-align: middle;
+    /* Say what a button looks like rather than inheriting it from being a <button>. FlareFileUploadButton
+       wears these classes on a <label> - it has to, since a <button> inside its <label for> would not open
+       the file picker - and a label brings none of the UA button defaults, so it used to render with
+       text-align:start and no block padding reset while a real button next to it did not. */
+    appearance: none;
+    text-align: center;
+    padding-block: 0;
     /* Tokenized via local properties, defaulting to Medium */
     height: var(--_flare-btn-height, var(--flare-btn-height-md));
     padding-inline: var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md));

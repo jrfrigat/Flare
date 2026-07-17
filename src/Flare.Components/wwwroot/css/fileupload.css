@@ -31,7 +31,11 @@
                 background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
-.flare-file-upload__zone:hover {
+/* Hover hangs off the WRAP, not the zone. The input covers the zone (that is what carries the browser's
+   own drag-and-drop), so the pointer is never over the label - :hover on it would never fire. The wrap is
+   an ancestor of the input, so hovering the input lights it. The old dropzone.css put :hover on its root
+   for the same reason; a straight port onto the label silently lost it. */
+.flare-file-upload__drop-wrap:hover .flare-file-upload__zone {
     border-color: var(--flare-color-primary);
     background: var(--flare-file-upload-hover-bg);
 }
@@ -100,15 +104,33 @@
 }
 
 /* FlareFileUploadButton: the trigger is a <label for> wearing the real flare-btn classes, so every rule
-   below that used to redraw a button here - border, radius, padding, label typography, hover - is gone. The
+   that used to redraw a button here - border, radius, padding, label typography, hover - is gone. The
    button family's own CSS supplies them, which is what makes the upload button line up with a FlareButton
-   next to it and follow the theme's button tokens for free.
-   Only two things remain, because they are about the file input rather than the button. */
+   next to it and follow the theme's button tokens for free. */
 
-/* Shrink the wrap to the button so the hidden input overlays the button alone, not a full-width strip. */
+/* Shrink the wrap to the button so the component sits in a toolbar row as one control. */
 .flare-file-upload--button .flare-file-upload__drop-wrap { display: inline-block; }
 
-/* The label is the button, so it must not also be a block. */
-.flare-file-upload__button { cursor: pointer; }
+/* The button does NOT overlay itself with the input. The zone has to - that overlay is what gives it the
+   browser's drag-and-drop - but a button only needs a click, and <label for> already delivers that. While
+   the input covered it, the pointer landed on the input instead of the label, so the button had no hover,
+   no press and no state layer at all: everything .flare-btn draws through :hover/:active was unreachable.
+   Hidden rather than display:none so it stays focusable and reachable by assistive tech. */
+.flare-file-upload--button .flare-file-upload__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    inset: auto;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Keyboard focus lands on the hidden input; paint the ring on the button the user actually sees. Mirrors
+   .flare-btn:focus-visible, and :has() keeps it to keyboard focus rather than every click. */
+.flare-file-upload__drop-wrap:has(.flare-file-upload__input:focus-visible) .flare-file-upload__button {
+    outline: var(--flare-btn-focus-outline);
+    outline-offset: var(--flare-btn-focus-outline-offset);
+    box-shadow: var(--flare-btn-focus-shadow);
+}
 
 .flare-file-upload--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
