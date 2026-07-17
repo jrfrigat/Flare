@@ -43,6 +43,11 @@ All notable changes to Flare are documented here. This project adheres to
   `transparent`).
 
 ### Fixed
+- **The Fluent theme's switch sizes were out of order.** Fluent overrode only its md switch to a compact
+  thumb but let xs/sm/lg/xl inherit the Material ramp, so the on-thumb went 15/18/**14**/30/36px across
+  xs..xl - md smaller than sm, and lg/xl a big Material ball on a Fluent switch. Fluent has its own compact
+  ramp now (2:1 track, small thumb, scaled monotonically around its 40x20 md): 10/12/14/17/20px, md
+  unchanged. Visual Studio, which derives from Fluent, follows it and is monotonic too.
 - **A field changed height between its filled and outlined variants.** Filled drew a bottom border only,
   outlined drew all four - and since the field's height is content-driven, the extra top+bottom border made
   an outlined field 1px taller (measured 52px vs 53px under Material). The border width is reserved on every
