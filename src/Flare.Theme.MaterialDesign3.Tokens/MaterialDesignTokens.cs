@@ -309,6 +309,10 @@ public class MaterialDesignTokens
         PanelPaddingBlock = "0.125rem",               // 2dp
         ItemHeight = "3rem",                          // item height 48dp (MD3 list-item)
         ItemPaddingBlock = "0.5rem",                  // top/bottom 8dp
+        // Dense: the value core used to hardcode in menuitem.css, so a theme could style a normal menu
+        // but never a dense one. Unchanged.
+        ItemPaddingBlockDense = "0.375rem",
+        ItemGapDense = "0.5rem",
         ItemGapBetween = "0.125rem",                  // gap between items 2dp
         ItemRadius = "var(--flare-shape-extra-small)",// 4dp
         ItemRadiusEnd = "var(--flare-shape-extra-small)", // 4dp

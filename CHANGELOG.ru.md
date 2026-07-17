@@ -21,6 +21,10 @@
   пять. `Radius`, `Offset` и `DotOffset` не изменились - они не зависят от размера.
 
 ### Исправлено
+- **Тема могла настроить обычное меню, но не плотное.** `menuitem.css` зашивал у dense-пункта вертикальный
+  паддинг и gap, то есть `FlareMenu.Dense` целиком принадлежал ядру. `MenuTokens` получает
+  `ItemPaddingBlockDense` и `ItemGapDense`; замерено после - dense по-прежнему рисуется 6px/8px, но теперь
+  тема может это изменить.
 - **Геометрия layout была дефолтом ядра, а не темы.** `layout-shell.css` начинался с `:root`-блока, где
   литералами задавались `--flare-layout-drawer-width`, `-drawer-rail-width`, `-appbar-height`,
   `-appbar-height-dense` и `-appbar-bg`. Это дефолт, зашитый в ядро, - ровно то, что запрещает мандат
