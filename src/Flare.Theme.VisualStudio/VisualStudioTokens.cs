@@ -306,8 +306,8 @@ internal class VisualStudioTokens
     {
         FilledBg = "var(--flare-color-surface)",
         OutlinedRadius = "var(--flare-shape-extra-small)",
-        OutlinedBorder = "1px solid var(--flare-color-outline)",
-        FilledBorderBottom = "1px solid var(--flare-color-outline)",
+        BorderColor = "var(--flare-color-outline)",
+        BorderBottomColor = "var(--flare-color-outline)",
         // VS/Windows focuses with a rectangle around the control - a real outline (not a shadow ring),
         // so this theme exercises the outline mechanism while MD3/Fluent use the box-shadow ring.
         FocusRing = "none",

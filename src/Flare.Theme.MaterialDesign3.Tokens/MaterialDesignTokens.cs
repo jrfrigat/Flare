@@ -348,14 +348,14 @@ public class MaterialDesignTokens
     internal static readonly InputTokens Input = new()
     {
         FilledBg = "var(--flare-color-surface-container-highest)",
-        OutlinedBorder = "none",
+        BorderColor = "transparent",                  // filled default: no side border, colour only
         OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
-        FilledBorderBottom = "1px solid var(--flare-color-on-surface-variant)",
+        BorderBottomColor = "var(--flare-color-on-surface-variant)",
         // Focus = a 2px primary active indicator drawn as a layout-neutral inset shadow (no jump).
         FocusRing = "inset 0 -3px 0 0 var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",
         FocusOutlineOffset = "0",
-        HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
+        HoverBorderBottomColor = "var(--flare-color-on-surface)",
         HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
         Padding = "1rem 1rem",
         IconSize = "1.5rem",                          // leading/trailing icon 24dp

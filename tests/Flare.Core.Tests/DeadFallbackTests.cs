@@ -72,9 +72,12 @@ public sealed class DeadFallbackTests
     //                   had before it got its per-size ramp in BadgeTokens; the fix is the same. Note
     //                   ThumbOffLeft/ThumbOnLeft are derived from thumb size + track height, so they should
     //                   be computed in CSS, not ramped - which puts two coefficients into core to decide.
-    //   input.css     - the variant classes (.flare-input-variant--filled/--outlined) hardcode 1px borders.
-    //                   Arguable rather than clearly wrong: the variant exists to define a look INDEPENDENT
-    //                   of the theme, and a 1px edge is part of what "outlined" means. Decide before fixing.
+    //   input.css     - the border half is fixed: the width is reserved as `border: 1px solid transparent`
+    //                   on the base and the variant classes carry only a colour, so filled and outlined no
+    //                   longer differ in height. What remains is the two focus-ring box-shadows
+    //                   (inset 0 -1px ... / inset 0 0 0 1px ...): a box-shadow has no colour sub-property to
+    //                   split the geometry from, so the offset/spread is structural indicator shape, not a
+    //                   theme default - defensibly a component literal, left until decided.
     private static readonly string[] _knownDebt =
         ["switch.css", "input.css"];
 

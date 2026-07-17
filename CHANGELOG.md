@@ -19,7 +19,24 @@ All notable changes to Flare are documented here. This project adheres to
   Migration: `Badge = ... with { Height = "1rem" }` -> name the step you mean (`HeightMd = "1rem"`), or all
   five. `Radius`, `Offset` and `DotOffset` are unchanged - they do not vary by size.
 
+### Changed
+- **BREAKING: the field's border tokens now carry a colour, not a border shorthand.**
+  `InputTokens.OutlinedBorder`, `FilledBorderBottom` and `HoverBorderBottom` become `BorderColor`,
+  `BorderBottomColor` and `HoverBorderBottomColor` (`--flare-input-border` -> `--flare-input-border-color`,
+  and likewise for the other two). A theme sets `BorderColor = "var(--flare-color-outline)"` now, not
+  `"1px solid var(--flare-color-outline)"`; `none` becomes `transparent`.
+
+  The width moved into the component CSS as `border: 1px solid transparent`, reserved on every variant. That
+  is what fixes the bug below, and it takes the `1px solid` literals out of the variant classes so the token
+  mandate holds. Migration: drop the `1px solid` from your three values (and turn `none` into
+  `transparent`).
+
 ### Fixed
+- **A field changed height between its filled and outlined variants.** Filled drew a bottom border only,
+  outlined drew all four - and since the field's height is content-driven, the extra top+bottom border made
+  an outlined field 1px taller (measured 52px vs 53px under Material). The border width is reserved on every
+  variant now, so both are the same height (measured 53px/53px under Material, 47px/47px under Fluent); only
+  the colour differs, so filled still shows a bottom bar and outlined a full box.
 - **A data-grid filter editor looked outlined but kept the theme's own focus treatment.** `datagrid.css`
   copied four of the six declarations that `.flare-input-variant--outlined` makes and dropped the two focus
   ones, so under a filled theme a filter editor drew an outlined box with a bottom-bar focus. The filter row

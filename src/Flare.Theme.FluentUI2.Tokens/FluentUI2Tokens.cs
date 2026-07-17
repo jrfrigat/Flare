@@ -411,14 +411,14 @@ public class FluentUI2Tokens
     internal static readonly InputTokens Input = new()
     {
         FilledBg = "var(--flare-color-surface)",
-        OutlinedBorder = "1px solid var(--flare-color-outline)",
+        BorderColor = "var(--flare-color-outline)",
         OutlinedRadius = "var(--flare-shape-small)",
-        FilledBorderBottom = "1px solid var(--flare-color-outline)",
+        BorderBottomColor = "var(--flare-color-outline)",
         // Fluent focus = a 2px brand accent under the field, as a layout-neutral inset shadow (no jump).
         FocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",
         FocusOutlineOffset = "0",
-        HoverBorderBottom = "1px solid var(--flare-fluent-stroke-hover, #C7C7C7)",
+        HoverBorderBottomColor = "var(--flare-fluent-stroke-hover, #C7C7C7)",
         HoverStateLayer = "none",
         Padding = "0.75rem 1rem",
         IconSize = "1.25rem",                         // medium input icon 20px

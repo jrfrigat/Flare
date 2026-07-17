@@ -20,7 +20,23 @@
   Миграция: `Badge = ... with { Height = "1rem" }` -> назовите нужную ступень (`HeightMd = "1rem"`) или все
   пять. `Radius`, `Offset` и `DotOffset` не изменились - они не зависят от размера.
 
+### Изменено
+- **ЛОМАЮЩЕЕ: токены рамки поля теперь держат цвет, а не шорткат рамки.** `InputTokens.OutlinedBorder`,
+  `FilledBorderBottom` и `HoverBorderBottom` становятся `BorderColor`, `BorderBottomColor` и
+  `HoverBorderBottomColor` (`--flare-input-border` -> `--flare-input-border-color` и так далее). Тема теперь
+  задаёт `BorderColor = "var(--flare-color-outline)"`, а не `"1px solid var(--flare-color-outline)"`; `none`
+  превращается в `transparent`.
+
+  Ширина переехала в CSS компонента как `border: 1px solid transparent`, зарезервированная на каждом
+  варианте. Именно это чинит баг ниже и убирает литералы `1px solid` из классов вариантов, соблюдая мандат
+  токенов. Миграция: уберите `1px solid` из трёх значений (а `none` смените на `transparent`).
+
 ### Исправлено
+- **Поле меняло высоту между вариантами filled и outlined.** filled рисовал только нижнюю рамку, outlined -
+  все четыре, а так как высота поля растёт по содержимому, лишняя рамка сверху+снизу делала outlined-поле на
+  1px выше (замерено 52px против 53px под Material). Теперь ширина рамки зарезервирована на каждом варианте,
+  поэтому высоты равны (замерено 53px/53px под Material, 47px/47px под Fluent); отличается только цвет -
+  filled по-прежнему показывает нижнюю полосу, outlined - полную коробку.
 - **Редактор фильтра в таблице выглядел outlined, но сохранял фокус темы.** `datagrid.css` копировал четыре
   из шести объявлений, которые делает `.flare-input-variant--outlined`, и терял два про фокус - поэтому под
   filled-темой редактор фильтра рисовал outlined-коробку с нижней полосой фокуса. Строка фильтра и

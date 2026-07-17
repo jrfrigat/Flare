@@ -12,14 +12,19 @@ public sealed record InputTokens
     /// <summary>Background color of the filled variant control.</summary>
     [CssVar(InputField.FilledBg)] public required string FilledBg { get; init; }
 
-    /// <summary>Border for the outlined variant.</summary>
-    [CssVar(InputField.OutlinedBorder)] public required string OutlinedBorder { get; init; }
+    /// <summary>
+    /// Colour of the control-well border on all four sides. The border width is reserved on every variant
+    /// in the CSS, so the field's height never shifts between filled and outlined; the theme sets only the
+    /// colour, and <c>transparent</c> hides a side (the filled variant's top/left/right).
+    /// </summary>
+    [CssVar(InputField.BorderColor)] public required string BorderColor { get; init; }
 
     /// <summary>Border radius of the control well (rounded-top for the filled variant).</summary>
     [CssVar(InputField.OutlinedRadius)] public required string OutlinedRadius { get; init; }
 
-    /// <summary>Resting bottom border for the filled variant.</summary>
-    [CssVar(InputField.FilledBorderBottom)] public required string FilledBorderBottom { get; init; }
+    /// <summary>Resting bottom-border colour (the filled variant's active indicator). Overrides
+    /// <see cref="BorderColor"/> on the bottom edge only.</summary>
+    [CssVar(InputField.BorderBottomColor)] public required string BorderBottomColor { get; init; }
 
     /// <summary>
     /// Focus indicator drawn as a <c>box-shadow</c> on the field well when focused (mouse or keyboard).
@@ -40,8 +45,8 @@ public sealed record InputTokens
     /// <summary>Offset of the focus <see cref="FocusOutline"/> from the field edge (CSS <c>outline-offset</c>).</summary>
     [CssVar(InputField.FocusOutlineOffset)] public required string FocusOutlineOffset { get; init; }
 
-    /// <summary>Hover bottom border for the filled variant.</summary>
-    [CssVar(InputField.HoverBorderBottom)] public required string HoverBorderBottom { get; init; }
+    /// <summary>Hover bottom-border colour.</summary>
+    [CssVar(InputField.HoverBorderBottomColor)] public required string HoverBorderBottomColor { get; init; }
 
     /// <summary>Hover state-layer overlay for the filled variant.</summary>
     [CssVar(InputField.HoverStateLayer)] public required string HoverStateLayer { get; init; }

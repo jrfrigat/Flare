@@ -249,8 +249,8 @@ internal class AeroTokens
     {
         FilledBg = "var(--flare-color-surface)",
         OutlinedRadius = "var(--flare-shape-extra-small)",
-        OutlinedBorder = "1px solid var(--flare-color-outline)",
-        FilledBorderBottom = "1px solid var(--flare-color-outline)",
+        BorderColor = "var(--flare-color-outline)",
+        BorderBottomColor = "var(--flare-color-outline)",
     };
 
     // Progress - thin classic bar; flat (no MD3 Expressive wavy/round-cap indicator).
