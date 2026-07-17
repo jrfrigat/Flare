@@ -24,6 +24,16 @@ All notable changes to Flare are documented here. This project adheres to
 
   A theme can now size any icon from any ancestor by setting `--_flare-icon-size`, without a specificity war.
 
+### Added
+- **`InputTokens.IconSize`** (`--flare-input-icon-size`) - the size of a field's leading/trailing icons. It
+  also drives the expand toggle that `FlareDatePicker`, `FlareDateTimePicker` and `FlareTimePicker` put in
+  the trailing slot: that toggle is the same field affordance, so it reuses the field's token rather than
+  inventing one. In-box values: 24px (Material Design 3), 20px (Fluent UI 2) - each taken from its own spec.
+
+  Those three pickers previously hardcoded `font-size:1.25rem` inline in their markup, which no theme could
+  reach; that was the last inline dimension left in any component's markup. Field icons move 22px -> 24px
+  under Material Design 3, and the picker toggles 20px -> 24px.
+
 ## [0.7.0] - 2026-07-17
 
 ### Changed

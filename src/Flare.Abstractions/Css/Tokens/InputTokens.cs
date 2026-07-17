@@ -20,6 +20,8 @@ public static class InputField
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
     /// <summary>CSS custom-property name for the control padding.</summary>
     public const string Padding = "--flare-input-padding";
+    /// <summary>CSS custom-property name for the leading/trailing icon size.</summary>
+    public const string IconSize = "--flare-input-icon-size";
     /// <summary>CSS custom-property name for the placeholder color.</summary>
     public const string PlaceholderColor = "--flare-input-placeholder-color";
     /// <summary>CSS custom-property name for the disabled background.</summary>

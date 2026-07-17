@@ -49,6 +49,12 @@ public sealed record InputTokens
     /// <summary>Padding inside the control.</summary>
     [CssVar(InputField.Padding)] public required string Padding { get; init; }
 
+    /// <summary>
+    /// Size of the leading/trailing icons, including the expand toggle the date and time pickers put in the
+    /// trailing slot - they are the same field affordance, so one token drives all of them.
+    /// </summary>
+    [CssVar(InputField.IconSize)] public required string IconSize { get; init; }
+
     /// <summary>Color of the placeholder text.</summary>
     [CssVar(InputField.PlaceholderColor)] public required string PlaceholderColor { get; init; }
 

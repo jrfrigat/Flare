@@ -348,6 +348,7 @@ public class MaterialDesignTokens
         HoverBorderBottom = "1px solid var(--flare-color-on-surface)",
         HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
         Padding = "1rem 1rem",
+        IconSize = "1.5rem",                          // leading/trailing icon 24dp
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
