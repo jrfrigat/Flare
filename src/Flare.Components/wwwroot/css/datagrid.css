@@ -302,15 +302,11 @@
   border-bottom: 1px solid var(--flare-color-outline-variant);
 }
 
-/* Filter editors (row + advanced builder) use the outlined field variant regardless of theme.
-   The shared --flare-input-* tokens cascade into every nested FlareInput/Select/MultiSelect. */
-.flare-datagrid__filter-row,
-.flare-datagrid__filter-builder-panel {
-  --flare-input-bg: transparent;
-  --flare-input-border: 1px solid var(--flare-color-outline);
-  --flare-input-border-bottom: 1px solid var(--flare-color-outline);
-  --flare-input-radius: var(--flare-shape-extra-small);
-}
+/* Filter editors (row + advanced builder) use the outlined field variant regardless of theme. They wear
+   .flare-input-variant--outlined for it now, rather than copying its declarations: the copy carried four
+   of the variant's six and dropped --flare-input-focus-ring and --flare-input-focus-outline, so a filter
+   editor looked outlined but kept whatever focus treatment the theme's own variant brought - a filled
+   theme's bottom bar under an outlined box. */
 
 /* -- Advanced filter builder -------------------------------------------- */
 .flare-datagrid__filter-builder {
