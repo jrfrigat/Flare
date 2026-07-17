@@ -178,7 +178,7 @@ The multi-stage `Dockerfile` produces an `nginx:alpine` image serving the static
 | **Data Display** | 14 | DataGrid, Column, Table, VirtualList, InfiniteScroll, TreeView, DataTree, List, Timeline, Chart, Calendar, Kanban, Transfer, Carousel |
 | **Feedback** | 9 | Dialog, DialogProvider, MessageBoxProvider, Alert, Snackbar, Progress, Skeleton, Tooltip, Overlay |
 | **Display** | 9 | Typography (FlareText), Avatar, Badge, Chip, Icon, Image, Link, Popover, ScrollTop |
-| **Utilities** | 5 | Menu, MenuItem, SpeedDial, SpeedDialAction, DropZone, RichTextEditor |
+| **Utilities** | 5 | Menu, MenuItem, SpeedDial, SpeedDialAction, Clipboard, RichTextEditor |
 | **IDE** *(separate package)* | 6 | Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar |
 
 ---
@@ -196,7 +196,7 @@ Flare.Components.Kanban          <- Kanban board
 Flare.Components.Transfer        <- Transfer (dual list)
 Flare.Components.QrCode          <- QR code
 Flare.Components.RichTextEditor  <- Rich text editor
-Flare.Components.Media           <- SignaturePad, VideoPlayer, FileUpload
+Flare.Components.Media           <- SignaturePad, VideoPlayer
 Flare.Components.IDE             <- IDE layout: Ribbon, DocumentTabs, ToolPanel, Splitter, StatusBar, MenuBar
 Flare.Theme.MaterialDesign3Expressive <- MD3 design tokens + Material palettes + tonal generator
 Flare.Theme.MaterialDesign3 <- baseline MD3 (non-Expressive); shares the MD3 color system

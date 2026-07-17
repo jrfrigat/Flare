@@ -1,8 +1,10 @@
 # Flare.Components.Media
 
 Media components for the [Flare](https://github.com/jrfrigat/Flare) Blazor component library:
-`FlareVideoPlayer`, `FlareSignaturePad` and `FlareFileUpload`. Add-on package that extends
-`Flare.Components`.
+`FlareVideoPlayer` and `FlareSignaturePad`. Add-on package that extends `Flare.Components`.
+
+File upload lives in `Flare.Components` since 0.8.0 - it takes any file, so it was never a media
+component; you no longer need this package to reach it.
 
 ```sh
 dotnet add package Flare.Components.Media

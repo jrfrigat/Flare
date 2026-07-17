@@ -8,7 +8,20 @@ MD3 baseline rather than this theme's result. Specs are `docs/spec/*/md3-express
 Scope: SIZES only (heights, widths, icon sizes, paddings, radii, thicknesses). Colour, motion and elevation
 are out of scope.
 
-**Nothing in this report has been changed in code.** It is a decision document.
+It is a decision document: it was written before any of it was acted on. Since then, some has been.
+
+**Status as of 0.8.0** - what is fixed, so the rest is not read as still open:
+
+| | Status |
+|---|---|
+| **A** - the icon default leaking | Mechanism fixed (icons take their size through `--_flare-icon-size`), and the field row with it. Chip, snackbar, FAB, tabs and card still declare no icon size: **open**. |
+| **B1** - dead `--flare-drawer-width` | Fixed in 0.7.0. |
+| **B2** - dead split-button seam ramp | Fixed in 0.7.0. |
+| **B3** - circular progress reading px as SVG user units | **Open.** Three approaches tried and rejected by measurement; needs the geometry model reworked. |
+| **B4** - unread `--flare-input-focus-border*` | Fixed in 0.7.0 (tokens deleted). |
+| **C** - the pickers' inline `font-size` | Fixed in 0.8.0. Nav (`1.25rem`) and submenu (`1.125rem`) literals: **open**. |
+| **D** - the un-tokenized carousel | **Open.** |
+| **3** - Expressive-vs-baseline | Untouched by design: a product decision, not a bug. |
 
 ---
 
@@ -50,7 +63,7 @@ produces at least six spec misses at once:
 Note the shape of it: the two ends of a single chip currently render at 22px and ~14px against a spec that
 pins both at 18dp.
 
-> **CORRECTION (2026-07-18).** This section originally claimed that "components that DO pin a size (dialog
+> **CORRECTION (2026-07-17).** This section originally claimed that "components that DO pin a size (dialog
 > 24dp, menu item 20dp, button ramp 20/20/24/32/40) are all spec-exact". That was wrong for dialog and for
 > the button ramp: those readings measured the wrapper `<span>`/`<div>`, not the glyph. Re-measured, the
 > glyph in all three rendered **22px flat** - the leak, not the token.
