@@ -3,6 +3,37 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- **Icon sizes set by a theme now actually reach the icon.** A component that takes an icon as a fragment
+  (`FlareButton.LeadingIcon`, `FlareDialog.Icon`, `FlareBottomNavItem.Icon`) wraps it in its own element and
+  styled that wrapper's `font-size`. But `FlareIcon` sets `font-size` on itself, and a declaration on an
+  element always beats what it would inherit - so the wrapper sized nothing and every such icon painted at
+  the `title-large` baseline (22px) regardless of what the theme asked for.
+
+  The size now travels as `--_flare-icon-size`, a custom property, which cascades **into** the icon instead
+  of competing with it. Three sets of theme tokens that had never rendered come alive:
+  `--flare-btn-icon-size-{xs..xl}`, `--flare-dialog-icon-size` and `--flare-bottom-nav-icon-size`.
+
+  Visible change under the in-box themes: button icons ramp 20/20/24/32/40px with the button size (they were
+  a flat 22px, and overflowed their own 20px box at `xs`), and the dialog and bottom-nav icons move 22px ->
+  24px. All of those are the values the themes were already declaring. An icon with no host asking for a
+  size still renders at the baseline, unchanged. Components that render their own raw icon glyph (menu item,
+  tree, switch, stepper, timeline, dropzone, splitter) were never affected and are untouched.
+
+  A theme can now size any icon from any ancestor by setting `--_flare-icon-size`, without a specificity war.
+
+### Added
+- **`InputTokens.IconSize`** (`--flare-input-icon-size`) - the size of a field's leading/trailing icons. It
+  also drives the expand toggle that `FlareDatePicker`, `FlareDateTimePicker` and `FlareTimePicker` put in
+  the trailing slot: that toggle is the same field affordance, so it reuses the field's token rather than
+  inventing one. In-box values: 24px (Material Design 3), 20px (Fluent UI 2) - each taken from its own spec.
+
+  Those three pickers previously hardcoded `font-size:1.25rem` inline in their markup, which no theme could
+  reach; that was the last inline dimension left in any component's markup. Field icons move 22px -> 24px
+  under Material Design 3, and the picker toggles 20px -> 24px.
+
 ## [0.7.0] - 2026-07-17
 
 ### Changed

@@ -510,6 +510,7 @@ public static class CssVarMap
         v[Css.Tokens.InputField.HoverBorderBottom] = t.Input.HoverBorderBottom;
         v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
         v[Css.Tokens.InputField.Padding] = t.Input.Padding;
+        v[Css.Tokens.InputField.IconSize] = t.Input.IconSize;
         v[Css.Tokens.InputField.PlaceholderColor] = t.Input.PlaceholderColor;
         v[Css.Tokens.InputField.DisabledBg] = t.Input.DisabledBg;
         v[Css.Tokens.InputField.DisabledIndicator] = t.Input.DisabledIndicator;

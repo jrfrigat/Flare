@@ -142,7 +142,9 @@
 }
 .flare-input__placeholder { color: var(--flare-color-on-surface-variant); }
 
-.flare-input__icon { display: inline-flex; align-items: center; padding: 0 var(--flare-spacing-4); color: var(--flare-color-on-surface-variant); }
+/* Leading/trailing icons are caller-supplied fragments, so the size travels as --_flare-icon-size (see
+   .flare-dialog__icon). This also covers the pickers' expand toggle, which sits in the trailing slot. */
+.flare-input__icon { display: inline-flex; align-items: center; padding: 0 var(--flare-spacing-4); color: var(--flare-color-on-surface-variant); --_flare-icon-size: var(--flare-input-icon-size); font-size: var(--_flare-icon-size); }
 .flare-input__icon--leading  { order: -1; }
 .flare-input__icon--trailing { order: 1; }
 

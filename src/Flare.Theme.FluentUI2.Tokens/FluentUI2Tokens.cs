@@ -411,6 +411,7 @@ public class FluentUI2Tokens
         HoverBorderBottom = "1px solid var(--flare-fluent-stroke-hover, #C7C7C7)",
         HoverStateLayer = "none",
         Padding = "0.75rem 1rem",
+        IconSize = "1.25rem",                         // medium input icon 20px
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
         // Fluent flat disabled: grey field + disabled stroke (was MD3 on-surface opacity mixes).
         DisabledBg = "var(--flare-fluent-disabled-bg, #F0F0F0)",
