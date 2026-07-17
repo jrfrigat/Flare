@@ -20,6 +20,10 @@ All notable changes to Flare are documented here. This project adheres to
   five. `Radius`, `Offset` and `DotOffset` are unchanged - they do not vary by size.
 
 ### Fixed
+- **A theme could style a normal menu but never a dense one.** `menuitem.css` hardcoded the dense item's
+  block padding and gap, so `FlareMenu.Dense` was core's opinion outright. `MenuTokens` gains
+  `ItemPaddingBlockDense` and `ItemGapDense`; measured after, dense still paints 6px/8px and the theme can
+  now move it.
 - **The layout's geometry was a core default, not the theme's.** `layout-shell.css` opened with a `:root`
   block setting `--flare-layout-drawer-width`, `-drawer-rail-width`, `-appbar-height`,
   `-appbar-height-dense` and `-appbar-bg` to literals. That is a default baked into core, which the token

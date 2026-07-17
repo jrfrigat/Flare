@@ -70,14 +70,13 @@ public sealed class DeadFallbackTests
     // leaves this list for good once it does.
     //   switch.css    - a size class hardcodes track/thumb geometry over the theme's. Same shape badge.css
     //                   had before it got its per-size ramp in BadgeTokens; the fix is the same.
-    //   menuitem.css  - hardcodes the item's padding and gap over MenuTokens.
     //   datagrid.css  - the filter editors re-declare what .flare-input-variant--outlined already says;
     //                   they should wear that class instead of copying it.
     //   input.css     - the variant classes (.flare-input-variant--filled/--outlined) hardcode 1px borders.
     //                   Arguable rather than clearly wrong: the variant exists to define a look INDEPENDENT
     //                   of the theme, and a 1px edge is part of what "outlined" means. Decide before fixing.
     private static readonly string[] _knownDebt =
-        ["switch.css", "menuitem.css", "datagrid.css", "input.css"];
+        ["switch.css", "datagrid.css", "input.css"];
 
     [Fact]
     public void CoreCss_DoesNotDeclareATokenTheThemeSupplies()

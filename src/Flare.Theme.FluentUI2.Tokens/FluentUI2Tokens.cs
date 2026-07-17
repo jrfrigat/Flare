@@ -263,6 +263,10 @@ public class FluentUI2Tokens
         PanelPaddingInline = "0.25rem",
         ItemHeight = "0",
         ItemPaddingBlock = "0.625rem",
+        // Dense: carried over from the value core used to hardcode in menuitem.css - a theme could style a
+        // normal menu but never a dense one. Unchanged; a Fluent-native dense step is a separate decision.
+        ItemPaddingBlockDense = "0.375rem",
+        ItemGapDense = "0.5rem",
         ItemPaddingInline = "1rem",
         ItemGap = "0.75rem",
         ItemGapBetween = "0rem",

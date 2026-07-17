@@ -498,7 +498,9 @@ public static class CssVarMap
         v[Css.Tokens.MenuPanel.ItemHeight] = t.Menu.ItemHeight;
         v[Css.Tokens.MenuPanel.ItemPaddingBlock] = t.Menu.ItemPaddingBlock;
         v[Css.Tokens.MenuPanel.ItemPaddingInline] = t.Menu.ItemPaddingInline;
+        v[Css.Tokens.MenuPanel.ItemPaddingBlockDense] = t.Menu.ItemPaddingBlockDense;
         v[Css.Tokens.MenuPanel.ItemGap] = t.Menu.ItemGap;
+        v[Css.Tokens.MenuPanel.ItemGapDense] = t.Menu.ItemGapDense;
         v[Css.Tokens.MenuPanel.ItemGapBetween] = t.Menu.ItemGapBetween;
         v[Css.Tokens.MenuPanel.ItemIconSize] = t.Menu.ItemIconSize;
         v[Css.Tokens.MenuPanel.ItemRadius] = t.Menu.ItemRadius;

@@ -26,8 +26,12 @@ public static class MenuPanel
     public const string ItemPaddingBlock = "--flare-menu-item-padding-block";
     /// <summary>CSS custom-property name for the item padding inline token.</summary>
     public const string ItemPaddingInline = "--flare-menu-item-padding-inline";
+    /// <summary>CSS custom-property name for the dense-menu item padding block token.</summary>
+    public const string ItemPaddingBlockDense = "--flare-menu-item-padding-block-dense";
     /// <summary>CSS custom-property name for the item gap token.</summary>
     public const string ItemGap = "--flare-menu-item-gap";
+    /// <summary>CSS custom-property name for the dense-menu item gap token.</summary>
+    public const string ItemGapDense = "--flare-menu-item-gap-dense";
     /// <summary>CSS custom-property name for the item gap between token.</summary>
     public const string ItemGapBetween = "--flare-menu-item-gap-between";
     /// <summary>CSS custom-property name for the item icon size token.</summary>

@@ -31,8 +31,12 @@ public sealed record MenuTokens
     [CssVar(MenuPanel.ItemPaddingBlock)] public required string ItemPaddingBlock { get; init; }
     /// <summary>Space between an item's side edges and its content.</summary>
     [CssVar(MenuPanel.ItemPaddingInline)] public required string ItemPaddingInline { get; init; }
+    /// <summary>Space above and below an item's content when the menu is marked dense.</summary>
+    [CssVar(MenuPanel.ItemPaddingBlockDense)] public required string ItemPaddingBlockDense { get; init; }
     /// <summary>Space between an item's icon and its label.</summary>
     [CssVar(MenuPanel.ItemGap)] public required string ItemGap { get; init; }
+    /// <summary>Space between an item's icon and its label when the menu is marked dense.</summary>
+    [CssVar(MenuPanel.ItemGapDense)] public required string ItemGapDense { get; init; }
     /// <summary>Space between adjacent items. A theme with a continuous list parks this at <c>0</c>;
     /// a theme with separated item pills raises it.</summary>
     [CssVar(MenuPanel.ItemGapBetween)] public required string ItemGapBetween { get; init; }
