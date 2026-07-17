@@ -3,12 +3,17 @@
 @inject ISnackbarService SnackbarService
 @inject NavigationManager Navigation
 
-<div class="@Css.Classes.Snackbar.Provider @_positionClass" aria-live="polite" aria-atomic="false">
+@* The live-region semantics sit on each toast, not the container: a stack mixes politeness levels, and a
+   container can only carry one. role="alert" makes an Error interrupt the screen reader (assertive);
+   role="status" (polite) lets Success/Info/Warning wait their turn. aria-atomic reads the whole toast as a
+   unit. *@
+<div class="@Css.Classes.Snackbar.Provider @_positionClass">
     @foreach (var msg in _messages)
     {
         var m = msg;
         <div class="@BuildCssClass(Css.Classes.Snackbar.Root, $"flare-snackbar--{m.Severity.ToString().ToLowerInvariant()}", m.ShowProgress ? Css.Classes.Snackbar.WithProgress : null, m.CssClass)"
-             role="status">
+             role="@(m.Severity == SnackbarSeverity.Error ? "alert" : "status")"
+             aria-atomic="true">
             <span class="@Css.Classes.Snackbar.Text">
                 @if (m.Content is not null)
                 {

@@ -174,11 +174,29 @@ public class C_FlareSnackbarProviderTests : FlareTestContext
     }
 
     [Fact]
-    public void HasAriaLivePolite()
+    public void NonErrorMessage_HasPoliteStatusRole()
     {
         var cut = Render<FlareSnackbarProvider>();
+        var service = Services.GetRequiredService<ISnackbarService>();
 
-        Assert.Equal("polite", cut.Find(".flare-snackbar-provider").GetAttribute("aria-live"));
+        service.Show("Saved", SnackbarSeverity.Success);
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar").Count > 0);
+
+        // Live semantics live on the toast, not the container: a stack mixes politeness levels.
+        Assert.Equal("status", cut.Find(".flare-snackbar").GetAttribute("role"));
+    }
+
+    [Fact]
+    public void ErrorMessage_HasAssertiveAlertRole()
+    {
+        var cut = Render<FlareSnackbarProvider>();
+        var service = Services.GetRequiredService<ISnackbarService>();
+
+        service.Show("Boom", SnackbarSeverity.Error);
+        cut.WaitForState(() => cut.FindAll(".flare-snackbar--error").Count > 0);
+
+        // An error interrupts the screen reader; role="alert" is an assertive live region.
+        Assert.Equal("alert", cut.Find(".flare-snackbar--error").GetAttribute("role"));
     }
 
     [Fact]
