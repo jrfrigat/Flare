@@ -274,10 +274,34 @@ public static class SwitchField
     // Track radius, transition, disabled/pressed-layer and the sm/lg size variants are gone: switch.css
     // reuses the shared shape/motion/state scales and its own size classes. What remains is the per-state
     // geometry and colors the CSS reads.
-    /// <summary>CSS custom-property name for the track width.</summary>
-    public const string TrackWidth = "--flare-switch-track-width";
-    /// <summary>CSS custom-property name for the track height.</summary>
-    public const string TrackHeight = "--flare-switch-track-height";
+    /// <summary>Per-size track width.</summary>
+    public static class TrackWidth
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-track-width-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-track-width-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-track-width-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-track-width-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-track-width-xl";
+    }
+    /// <summary>Per-size track height.</summary>
+    public static class TrackHeight
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-track-height-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-track-height-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-track-height-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-track-height-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-track-height-xl";
+    }
     /// <summary>CSS custom-property name for the track background when off.</summary>
     public const string TrackOffBg = "--flare-switch-track-off-bg";
     /// <summary>CSS custom-property name for the track background when on.</summary>
@@ -286,18 +310,90 @@ public static class SwitchField
     public const string TrackBorder = "--flare-switch-track-border";
     /// <summary>CSS custom-property name for the track border color on hover.</summary>
     public const string TrackHoverBorderColor = "--flare-switch-track-hover-border-color";
-    /// <summary>CSS custom-property name for the thumb diameter when off.</summary>
-    public const string ThumbOffSize = "--flare-switch-thumb-off-size";
-    /// <summary>CSS custom-property name for the thumb diameter when on.</summary>
-    public const string ThumbOnSize = "--flare-switch-thumb-on-size";
-    /// <summary>CSS custom-property name for the thumb diameter when pressed and off.</summary>
-    public const string ThumbPressedOffSize = "--flare-switch-thumb-pressed-off-size";
-    /// <summary>CSS custom-property name for the thumb diameter when pressed and on.</summary>
-    public const string ThumbPressedOnSize = "--flare-switch-thumb-pressed-on-size";
-    /// <summary>CSS custom-property name for the thumb inline position when off.</summary>
-    public const string ThumbOffLeft = "--flare-switch-thumb-off-left";
-    /// <summary>CSS custom-property name for the thumb inline position when on.</summary>
-    public const string ThumbOnLeft = "--flare-switch-thumb-on-left";
+    /// <summary>Per-size thumb diameter when off.</summary>
+    public static class ThumbOffSize
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-thumb-off-size-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-thumb-off-size-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-thumb-off-size-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-thumb-off-size-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-thumb-off-size-xl";
+    }
+    /// <summary>Per-size thumb diameter when on.</summary>
+    public static class ThumbOnSize
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-thumb-on-size-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-thumb-on-size-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-thumb-on-size-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-thumb-on-size-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-thumb-on-size-xl";
+    }
+    /// <summary>Per-size thumb diameter when pressed and off.</summary>
+    public static class ThumbPressedOffSize
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-thumb-pressed-off-size-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-thumb-pressed-off-size-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-thumb-pressed-off-size-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-thumb-pressed-off-size-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-thumb-pressed-off-size-xl";
+    }
+    /// <summary>Per-size thumb diameter when pressed and on.</summary>
+    public static class ThumbPressedOnSize
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-thumb-pressed-on-size-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-thumb-pressed-on-size-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-thumb-pressed-on-size-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-thumb-pressed-on-size-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-thumb-pressed-on-size-xl";
+    }
+    /// <summary>Per-size thumb inline position when off.</summary>
+    public static class ThumbOffLeft
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-thumb-off-left-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-thumb-off-left-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-thumb-off-left-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-thumb-off-left-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-thumb-off-left-xl";
+    }
+    /// <summary>Per-size thumb inline position when on.</summary>
+    public static class ThumbOnLeft
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-switch-thumb-on-left-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-switch-thumb-on-left-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-switch-thumb-on-left-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-switch-thumb-on-left-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-switch-thumb-on-left-xl";
+    }
     /// <summary>CSS custom-property name for the thumb color when off.</summary>
     public const string ThumbOffColor = "--flare-switch-thumb-off-color";
     /// <summary>CSS custom-property name for the thumb color when on.</summary>

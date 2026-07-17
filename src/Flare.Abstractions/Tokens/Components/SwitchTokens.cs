@@ -10,11 +10,27 @@ namespace Flare.Abstractions.Tokens.Components;
 /// </summary>
 public sealed record SwitchTokens
 {
-    /// <summary>Width of the track.</summary>
-    [CssVar(SwitchField.TrackWidth)] public required string TrackWidth { get; init; }
+    /// <summary>Width of the track at the xs size.</summary>
+    [CssVar(SwitchField.TrackWidth.Xs)] public required string TrackWidthXs { get; init; }
+    /// <summary>Width of the track at the sm size.</summary>
+    [CssVar(SwitchField.TrackWidth.Sm)] public required string TrackWidthSm { get; init; }
+    /// <summary>Width of the track at the md (default) size.</summary>
+    [CssVar(SwitchField.TrackWidth.Md)] public required string TrackWidthMd { get; init; }
+    /// <summary>Width of the track at the lg size.</summary>
+    [CssVar(SwitchField.TrackWidth.Lg)] public required string TrackWidthLg { get; init; }
+    /// <summary>Width of the track at the xl size.</summary>
+    [CssVar(SwitchField.TrackWidth.Xl)] public required string TrackWidthXl { get; init; }
 
-    /// <summary>Height of the track.</summary>
-    [CssVar(SwitchField.TrackHeight)] public required string TrackHeight { get; init; }
+    /// <summary>Height of the track at the xs size.</summary>
+    [CssVar(SwitchField.TrackHeight.Xs)] public required string TrackHeightXs { get; init; }
+    /// <summary>Height of the track at the sm size.</summary>
+    [CssVar(SwitchField.TrackHeight.Sm)] public required string TrackHeightSm { get; init; }
+    /// <summary>Height of the track at the md (default) size.</summary>
+    [CssVar(SwitchField.TrackHeight.Md)] public required string TrackHeightMd { get; init; }
+    /// <summary>Height of the track at the lg size.</summary>
+    [CssVar(SwitchField.TrackHeight.Lg)] public required string TrackHeightLg { get; init; }
+    /// <summary>Height of the track at the xl size.</summary>
+    [CssVar(SwitchField.TrackHeight.Xl)] public required string TrackHeightXl { get; init; }
 
     /// <summary>Track background when off.</summary>
     [CssVar(SwitchField.TrackOffBg)] public required string TrackOffBg { get; init; }
@@ -28,23 +44,71 @@ public sealed record SwitchTokens
     /// <summary>Track border color on hover.</summary>
     [CssVar(SwitchField.TrackHoverBorderColor)] public required string TrackHoverBorderColor { get; init; }
 
-    /// <summary>Thumb diameter when off.</summary>
-    [CssVar(SwitchField.ThumbOffSize)] public required string ThumbOffSize { get; init; }
+    /// <summary>Thumb diameter when off, at the xs size.</summary>
+    [CssVar(SwitchField.ThumbOffSize.Xs)] public required string ThumbOffSizeXs { get; init; }
+    /// <summary>Thumb diameter when off, at the sm size.</summary>
+    [CssVar(SwitchField.ThumbOffSize.Sm)] public required string ThumbOffSizeSm { get; init; }
+    /// <summary>Thumb diameter when off, at the md (default) size.</summary>
+    [CssVar(SwitchField.ThumbOffSize.Md)] public required string ThumbOffSizeMd { get; init; }
+    /// <summary>Thumb diameter when off, at the lg size.</summary>
+    [CssVar(SwitchField.ThumbOffSize.Lg)] public required string ThumbOffSizeLg { get; init; }
+    /// <summary>Thumb diameter when off, at the xl size.</summary>
+    [CssVar(SwitchField.ThumbOffSize.Xl)] public required string ThumbOffSizeXl { get; init; }
 
-    /// <summary>Thumb diameter when on.</summary>
-    [CssVar(SwitchField.ThumbOnSize)] public required string ThumbOnSize { get; init; }
+    /// <summary>Thumb diameter when on, at the xs size.</summary>
+    [CssVar(SwitchField.ThumbOnSize.Xs)] public required string ThumbOnSizeXs { get; init; }
+    /// <summary>Thumb diameter when on, at the sm size.</summary>
+    [CssVar(SwitchField.ThumbOnSize.Sm)] public required string ThumbOnSizeSm { get; init; }
+    /// <summary>Thumb diameter when on, at the md (default) size.</summary>
+    [CssVar(SwitchField.ThumbOnSize.Md)] public required string ThumbOnSizeMd { get; init; }
+    /// <summary>Thumb diameter when on, at the lg size.</summary>
+    [CssVar(SwitchField.ThumbOnSize.Lg)] public required string ThumbOnSizeLg { get; init; }
+    /// <summary>Thumb diameter when on, at the xl size.</summary>
+    [CssVar(SwitchField.ThumbOnSize.Xl)] public required string ThumbOnSizeXl { get; init; }
 
-    /// <summary>Thumb diameter when pressed and off.</summary>
-    [CssVar(SwitchField.ThumbPressedOffSize)] public required string ThumbPressedOffSize { get; init; }
+    /// <summary>Thumb diameter when pressed and off, at the xs size.</summary>
+    [CssVar(SwitchField.ThumbPressedOffSize.Xs)] public required string ThumbPressedOffSizeXs { get; init; }
+    /// <summary>Thumb diameter when pressed and off, at the sm size.</summary>
+    [CssVar(SwitchField.ThumbPressedOffSize.Sm)] public required string ThumbPressedOffSizeSm { get; init; }
+    /// <summary>Thumb diameter when pressed and off, at the md (default) size.</summary>
+    [CssVar(SwitchField.ThumbPressedOffSize.Md)] public required string ThumbPressedOffSizeMd { get; init; }
+    /// <summary>Thumb diameter when pressed and off, at the lg size.</summary>
+    [CssVar(SwitchField.ThumbPressedOffSize.Lg)] public required string ThumbPressedOffSizeLg { get; init; }
+    /// <summary>Thumb diameter when pressed and off, at the xl size.</summary>
+    [CssVar(SwitchField.ThumbPressedOffSize.Xl)] public required string ThumbPressedOffSizeXl { get; init; }
 
-    /// <summary>Thumb diameter when pressed and on.</summary>
-    [CssVar(SwitchField.ThumbPressedOnSize)] public required string ThumbPressedOnSize { get; init; }
+    /// <summary>Thumb diameter when pressed and on, at the xs size.</summary>
+    [CssVar(SwitchField.ThumbPressedOnSize.Xs)] public required string ThumbPressedOnSizeXs { get; init; }
+    /// <summary>Thumb diameter when pressed and on, at the sm size.</summary>
+    [CssVar(SwitchField.ThumbPressedOnSize.Sm)] public required string ThumbPressedOnSizeSm { get; init; }
+    /// <summary>Thumb diameter when pressed and on, at the md (default) size.</summary>
+    [CssVar(SwitchField.ThumbPressedOnSize.Md)] public required string ThumbPressedOnSizeMd { get; init; }
+    /// <summary>Thumb diameter when pressed and on, at the lg size.</summary>
+    [CssVar(SwitchField.ThumbPressedOnSize.Lg)] public required string ThumbPressedOnSizeLg { get; init; }
+    /// <summary>Thumb diameter when pressed and on, at the xl size.</summary>
+    [CssVar(SwitchField.ThumbPressedOnSize.Xl)] public required string ThumbPressedOnSizeXl { get; init; }
 
-    /// <summary>Thumb inline position when off.</summary>
-    [CssVar(SwitchField.ThumbOffLeft)] public required string ThumbOffLeft { get; init; }
+    /// <summary>Thumb inline position when off, at the xs size.</summary>
+    [CssVar(SwitchField.ThumbOffLeft.Xs)] public required string ThumbOffLeftXs { get; init; }
+    /// <summary>Thumb inline position when off, at the sm size.</summary>
+    [CssVar(SwitchField.ThumbOffLeft.Sm)] public required string ThumbOffLeftSm { get; init; }
+    /// <summary>Thumb inline position when off, at the md (default) size.</summary>
+    [CssVar(SwitchField.ThumbOffLeft.Md)] public required string ThumbOffLeftMd { get; init; }
+    /// <summary>Thumb inline position when off, at the lg size.</summary>
+    [CssVar(SwitchField.ThumbOffLeft.Lg)] public required string ThumbOffLeftLg { get; init; }
+    /// <summary>Thumb inline position when off, at the xl size.</summary>
+    [CssVar(SwitchField.ThumbOffLeft.Xl)] public required string ThumbOffLeftXl { get; init; }
 
-    /// <summary>Thumb inline position when on.</summary>
-    [CssVar(SwitchField.ThumbOnLeft)] public required string ThumbOnLeft { get; init; }
+    /// <summary>Thumb inline position when on, at the xs size.</summary>
+    [CssVar(SwitchField.ThumbOnLeft.Xs)] public required string ThumbOnLeftXs { get; init; }
+    /// <summary>Thumb inline position when on, at the sm size.</summary>
+    [CssVar(SwitchField.ThumbOnLeft.Sm)] public required string ThumbOnLeftSm { get; init; }
+    /// <summary>Thumb inline position when on, at the md (default) size.</summary>
+    [CssVar(SwitchField.ThumbOnLeft.Md)] public required string ThumbOnLeftMd { get; init; }
+    /// <summary>Thumb inline position when on, at the lg size.</summary>
+    [CssVar(SwitchField.ThumbOnLeft.Lg)] public required string ThumbOnLeftLg { get; init; }
+    /// <summary>Thumb inline position when on, at the xl size.</summary>
+    [CssVar(SwitchField.ThumbOnLeft.Xl)] public required string ThumbOnLeftXl { get; init; }
 
     /// <summary>Thumb color when off.</summary>
     [CssVar(SwitchField.ThumbOffColor)] public required string ThumbOffColor { get; init; }

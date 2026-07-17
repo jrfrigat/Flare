@@ -490,18 +490,19 @@ public class FluentUI2Tokens
     // stays in Extended below.
     internal static readonly SwitchTokens Switch = new()
     {
-        TrackWidth = "2.5rem",
-        TrackHeight = "1.25rem",
+        // Per-size ramp; xs/sm/lg/xl were literals in switch.css, md is this theme's value.
+        TrackWidthXs = "2.125rem", TrackWidthSm = "2.5rem", TrackWidthMd = "2.5rem", TrackWidthLg = "4rem",   TrackWidthXl = "4.75rem",
+        TrackHeightXs = "1.25rem", TrackHeightSm = "1.5rem", TrackHeightMd = "1.25rem", TrackHeightLg = "2.5rem", TrackHeightXl = "3rem",
         TrackOffBg = "var(--flare-color-surface-container-highest)",
         TrackOnBg = "var(--fc-main, var(--flare-color-primary))",
         TrackBorder = "2px solid var(--flare-color-outline)",
         TrackHoverBorderColor = "var(--flare-color-outline)",
-        ThumbOffSize = "1rem",
-        ThumbOnSize = "1.5rem",
-        ThumbPressedOffSize = "1.75rem",
-        ThumbPressedOnSize = "1.75rem",
-        ThumbOffLeft = "0.25rem",
-        ThumbOnLeft = "calc(100% - 1.75rem)",
+        ThumbOffSizeXs = "0.5rem",   ThumbOffSizeSm = "0.625rem", ThumbOffSizeMd = "1rem",   ThumbOffSizeLg = "1.25rem",  ThumbOffSizeXl = "1.5rem",
+        ThumbOnSizeXs = "0.9375rem", ThumbOnSizeSm = "1.125rem",  ThumbOnSizeMd = "1.5rem",  ThumbOnSizeLg = "1.875rem",  ThumbOnSizeXl = "2.25rem",
+        ThumbPressedOffSizeXs = "1.0625rem", ThumbPressedOffSizeSm = "1.25rem", ThumbPressedOffSizeMd = "1.75rem", ThumbPressedOffSizeLg = "2.1875rem", ThumbPressedOffSizeXl = "2.625rem",
+        ThumbPressedOnSizeXs = "1.0625rem",  ThumbPressedOnSizeSm = "1.25rem",  ThumbPressedOnSizeMd = "1.75rem",  ThumbPressedOnSizeLg = "2.1875rem",  ThumbPressedOnSizeXl = "2.625rem",
+        ThumbOffLeftXs = "0.15625rem", ThumbOffLeftSm = "0.1875rem", ThumbOffLeftMd = "0.25rem", ThumbOffLeftLg = "0.3125rem", ThumbOffLeftXl = "0.375rem",
+        ThumbOnLeftXs = "calc(100% - 1.1875rem)", ThumbOnLeftSm = "calc(100% - 1.375rem)", ThumbOnLeftMd = "calc(100% - 1.75rem)", ThumbOnLeftLg = "calc(100% - 2.125rem)", ThumbOnLeftXl = "calc(100% - 2.5rem)",
         ThumbOffColor = "var(--flare-color-outline)",
         ThumbOnColor = "var(--flare-color-on-primary)",
         ThumbStateOffColor = "var(--flare-color-on-surface-variant)",
@@ -551,13 +552,15 @@ public class FluentUI2Tokens
         // Switch - Fluent UI 2: 1px border, white thumb, hover track fill, double focus ring.
         ["--flare-switch-track-border"] = "1px solid var(--flare-color-secondary)",
         ["--flare-switch-track-off-bg"] = "transparent",
-        ["--flare-switch-thumb-off-size"] = "0.625rem",
-        ["--flare-switch-thumb-on-size"] = "0.875rem",
+        // The switch geometry ramp lives in SwitchTokens now; Fluent overrides the md step here (its own
+        // compact thumb) the same way it always has - just at the -md token the CSS reads for the default size.
+        ["--flare-switch-thumb-off-size-md"] = "0.625rem",
+        ["--flare-switch-thumb-on-size-md"] = "0.875rem",
         // Fluent does not resize the handle on press -> keep the normal sizes.
-        ["--flare-switch-thumb-pressed-off-size"] = "0.625rem",
-        ["--flare-switch-thumb-pressed-on-size"] = "0.875rem",
-        ["--flare-switch-thumb-off-left"] = "0.1875rem",
-        ["--flare-switch-thumb-on-left"] = "calc(100% - 1.0625rem)",
+        ["--flare-switch-thumb-pressed-off-size-md"] = "0.625rem",
+        ["--flare-switch-thumb-pressed-on-size-md"] = "0.875rem",
+        ["--flare-switch-thumb-off-left-md"] = "0.1875rem",
+        ["--flare-switch-thumb-on-left-md"] = "calc(100% - 1.0625rem)",
         ["--flare-switch-thumb-off-color"] = "var(--flare-color-secondary)",
         // Hover: subtle fill on track instead of MD3 state-layer bubble
         ["--flare-switch-hover-shadow-off"] = "none",

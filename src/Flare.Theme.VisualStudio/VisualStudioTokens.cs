@@ -261,12 +261,13 @@ internal class VisualStudioTokens
     // fits the 20px rail (a subtle grow to 16px on press, still inside the rail).
     internal static readonly SwitchTokens Switch = FluentUI2Tokens.Design.Switch with
     {
-        ThumbOffSize = "0.875rem",              // 14px
-        ThumbOnSize = "0.875rem",               // 14px - does not grow on check
-        ThumbPressedOffSize = "1rem",           // 16px press grow, still < 20px rail
-        ThumbPressedOnSize = "1rem",
-        ThumbOffLeft = "0.1875rem",             // 3px from the leading edge
-        ThumbOnLeft = "calc(100% - 1.0625rem)", // 14px thumb + 3px trailing margin
+        // md step only; xs/sm/lg/xl inherited from the Fluent ramp.
+        ThumbOffSizeMd = "0.875rem",              // 14px
+        ThumbOnSizeMd = "0.875rem",               // 14px - does not grow on check
+        ThumbPressedOffSizeMd = "1rem",           // 16px press grow, still < 20px rail
+        ThumbPressedOnSizeMd = "1rem",
+        ThumbOffLeftMd = "0.1875rem",             // 3px from the leading edge
+        ThumbOnLeftMd = "calc(100% - 1.0625rem)", // 14px thumb + 3px trailing margin
     };
 
     // Flat VS shadows; color comes from the active ColorScheme shadow vars.

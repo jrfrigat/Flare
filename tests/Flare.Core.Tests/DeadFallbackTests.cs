@@ -68,10 +68,6 @@ public sealed class DeadFallbackTests
     // The debt this guard found on its first run, named rather than silently tolerated. It is a ratchet:
     // every other core stylesheet is clean and must stay clean; these come out one at a time, and a file
     // leaves this list for good once it does.
-    //   switch.css    - a size class hardcodes track/thumb geometry over the theme's. Same shape badge.css
-    //                   had before it got its per-size ramp in BadgeTokens; the fix is the same. Note
-    //                   ThumbOffLeft/ThumbOnLeft are derived from thumb size + track height, so they should
-    //                   be computed in CSS, not ramped - which puts two coefficients into core to decide.
     //   input.css     - the border half is fixed: the width is reserved as `border: 1px solid transparent`
     //                   on the base and the variant classes carry only a colour, so filled and outlined no
     //                   longer differ in height. What remains is the two focus-ring box-shadows
@@ -79,7 +75,7 @@ public sealed class DeadFallbackTests
     //                   split the geometry from, so the offset/spread is structural indicator shape, not a
     //                   theme default - defensibly a component literal, left until decided.
     private static readonly string[] _knownDebt =
-        ["switch.css", "input.css"];
+        ["input.css"];
 
     [Fact]
     public void CoreCss_DoesNotDeclareATokenTheThemeSupplies()

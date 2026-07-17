@@ -20,6 +20,19 @@ All notable changes to Flare are documented here. This project adheres to
   five. `Radius`, `Offset` and `DotOffset` are unchanged - they do not vary by size.
 
 ### Changed
+- **BREAKING: `SwitchTokens` gains a per-size ramp.** The eight geometry members - `TrackWidth`,
+  `TrackHeight`, `ThumbOffSize`, `ThumbOnSize`, `ThumbPressedOffSize`, `ThumbPressedOnSize`, `ThumbOffLeft`,
+  `ThumbOnLeft` - each become `*Xs`/`*Sm`/`*Md`/`*Lg`/`*Xl`, the same shape `ButtonTokens` uses.
+
+  They were single. The theme named the md size and `switch.css` hardcoded xs/sm/lg/xl in literals, so four
+  of the five sizes were core's opinion and no theme could reach them. Measured after: every size paints
+  exactly as before under Material (track 34/40/52/64/76px across xs..xl), Fluent keeps its own compact md
+  thumb, and setting e.g. `--flare-switch-track-width-lg` from a theme now resizes the lg switch, which it
+  never could.
+
+  Migration: a theme building `SwitchTokens` names all five steps per property (or derives via `with` and
+  overrides the md step, as Visual Studio and Liquid Glass do). Positions (`ThumbOffLeft`/`ThumbOnLeft`) are
+  ramped too, so a theme controls the thumb's inset per size rather than inheriting a fixed formula.
 - **BREAKING: the field's border tokens now carry a colour, not a border shorthand.**
   `InputTokens.OutlinedBorder`, `FilledBorderBottom` and `HoverBorderBottom` become `BorderColor`,
   `BorderBottomColor` and `HoverBorderBottomColor` (`--flare-input-border` -> `--flare-input-border-color`,

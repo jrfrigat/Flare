@@ -208,15 +208,16 @@ internal class LiquidGlassTokens
     // The iconic green iOS switch: gray off track, green on track, white circular thumb (same size on/off).
     internal static readonly SwitchTokens Switch = MaterialDesignTokens.Design.Switch with
     {
-        TrackWidth = "51px",
-        TrackHeight = "31px",
+        // md step only (iOS pill); xs/sm/lg/xl inherited from the Material ramp.
+        TrackWidthMd = "51px",
+        TrackHeightMd = "31px",
         TrackOffBg = "var(--flare-color-surface-container-highest)",
         TrackOnBg = "var(--flare-color-success)",
         TrackBorder = "0 solid transparent",
-        ThumbOffSize = "27px",
-        ThumbOnSize = "27px",
-        ThumbPressedOffSize = "27px",
-        ThumbPressedOnSize = "27px",
+        ThumbOffSizeMd = "27px",
+        ThumbOnSizeMd = "27px",
+        ThumbPressedOffSizeMd = "27px",
+        ThumbPressedOnSizeMd = "27px",
         ThumbOffColor = "#FFFFFF",
         ThumbOnColor = "#FFFFFF",
     };

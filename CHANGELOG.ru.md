@@ -21,6 +21,20 @@
   пять. `Radius`, `Offset` и `DotOffset` не изменились - они не зависят от размера.
 
 ### Изменено
+- **ЛОМАЮЩЕЕ: `SwitchTokens` получает рампу по размерам.** Восемь геометрических членов - `TrackWidth`,
+  `TrackHeight`, `ThumbOffSize`, `ThumbOnSize`, `ThumbPressedOffSize`, `ThumbPressedOnSize`, `ThumbOffLeft`,
+  `ThumbOnLeft` - становятся `*Xs`/`*Sm`/`*Md`/`*Lg`/`*Xl`, той же формы, что у `ButtonTokens`.
+
+  Раньше они были одиночными. Тема называла размер md, а `switch.css` зашивал xs/sm/lg/xl литералами - то
+  есть четыре размера из пяти были мнением ядра, и тема не могла до них дотянуться. Замерено после: каждый
+  размер рисуется в точности как прежде под Material (дорожка 34/40/52/64/76px на xs..xl), Fluent сохраняет
+  свой компактный кружок на md, а `--flare-switch-track-width-lg`, заданный темой, теперь меняет lg-размер,
+  чего раньше не было.
+
+  Миграция: тема, строящая `SwitchTokens`, называет все пять ступеней для каждого свойства (или наследует
+  через `with` и переопределяет ступень md, как делают Visual Studio и Liquid Glass). Позиции
+  (`ThumbOffLeft`/`ThumbOnLeft`) тоже рамплены, поэтому тема управляет отступом кружка по размерам, а не
+  наследует фиксированную формулу.
 - **ЛОМАЮЩЕЕ: токены рамки поля теперь держат цвет, а не шорткат рамки.** `InputTokens.OutlinedBorder`,
   `FilledBorderBottom` и `HoverBorderBottom` становятся `BorderColor`, `BorderBottomColor` и
   `HoverBorderBottomColor` (`--flare-input-border` -> `--flare-input-border-color` и так далее). Тема теперь
