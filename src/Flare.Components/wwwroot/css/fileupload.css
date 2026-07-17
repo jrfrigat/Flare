@@ -108,8 +108,14 @@
    button family's own CSS supplies them, which is what makes the upload button line up with a FlareButton
    next to it and follow the theme's button tokens for free. */
 
-/* Shrink the wrap to the button so the component sits in a toolbar row as one control. */
-.flare-file-upload--button .flare-file-upload__drop-wrap { display: inline-block; }
+/* The wrap is a flex container so the label is a flex item rather than an inline-level box.
+   As an inline box it joined a line box and picked up that line's strut - half-leading and descender space
+   from the wrap's own 16px font - which made the wrap 1px taller than the button inside it and pushed the
+   whole control half a pixel down against its neighbours. It only showed where the button is short enough
+   for the strut to matter: invisible on Material's 48px medium, visible on Fluent's 24px small.
+   (display:inline-block used to sit here and did nothing: the root is a flex container, so the wrap was
+   always blockified to `block` anyway.) */
+.flare-file-upload--button .flare-file-upload__drop-wrap { display: flex; }
 
 /* The button does NOT overlay itself with the input. The zone has to - that overlay is what gives it the
    browser's drag-and-drop - but a button only needs a click, and <label for> already delivers that. While

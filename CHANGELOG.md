@@ -63,6 +63,13 @@ All notable changes to Flare are documented here. This project adheres to
   `OnFilesChanged` are unchanged on both. `DropText` stays on the zone; `ButtonText` is now `Text`.
 
 ### Fixed
+- **`FlareFileUploadButton` sat a fraction lower than the buttons beside it.** Its label is an inline-level
+  box, so inside the wrapping `<div>` it joined a line box and picked up that line's strut - half-leading
+  and descender space from the wrapper's own font - leaving the wrapper taller than the button it holds and
+  nudging the whole control down. It only surfaced where the button is short enough for the strut to matter,
+  which is why it looked fine under Material (48px medium) and showed under Fluent (24px small). The wrapper
+  is a flex container now, so the label is a flex item and there is no line box to inherit from. Measured
+  across 16-96px button heights: the wrapper is exactly the button's height at every one.
 - **`FlareFileUploadButton` had no hover, no press and no focus ring.** Its hidden file input was stretched
   over the whole trigger, so the pointer landed on the input and never on the label wearing the button
   classes - everything `.flare-btn` draws through `:hover` / `:active` was unreachable, and beside a real
