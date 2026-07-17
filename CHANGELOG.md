@@ -3,6 +3,17 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- **A snackbar error now interrupts a screen reader; success/info/warning still wait their turn.** The
+  provider was one `aria-live="polite"` container, so every notice - errors included - was announced
+  politely and could be missed. A stack mixes politeness levels and a container can only carry one, so the
+  live semantics move onto each toast: `role="alert"` (assertive) for `Error`, `role="status"` (polite) for
+  the rest, `aria-atomic` so the whole toast is read. No API change - `ISnackbarService.Show(...)` is
+  unchanged; this is the transient-notification service the `toast-snackbar` request asked for, now with the
+  assertive-error behaviour it wanted.
+
 ## [0.9.0] - 2026-07-17
 
 ### Changed
