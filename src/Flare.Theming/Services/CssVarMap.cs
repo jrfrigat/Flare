@@ -106,10 +106,31 @@ public static class CssVarMap
 
         #region BADGE
         v[Css.Tokens.Badge.Radius] = t.Badge.Radius;
-        v[Css.Tokens.Badge.MinWidth] = t.Badge.MinWidth;
-        v[Css.Tokens.Badge.Height] = t.Badge.Height;
-        v[Css.Tokens.Badge.DotSize] = t.Badge.DotSize;
-        v[Css.Tokens.Badge.PaddingX] = t.Badge.PaddingX;
+        v[Css.Tokens.Badge.MinWidth.Xs] = t.Badge.MinWidthXs;
+        v[Css.Tokens.Badge.MinWidth.Sm] = t.Badge.MinWidthSm;
+        v[Css.Tokens.Badge.MinWidth.Md] = t.Badge.MinWidthMd;
+        v[Css.Tokens.Badge.MinWidth.Lg] = t.Badge.MinWidthLg;
+        v[Css.Tokens.Badge.MinWidth.Xl] = t.Badge.MinWidthXl;
+        v[Css.Tokens.Badge.Height.Xs] = t.Badge.HeightXs;
+        v[Css.Tokens.Badge.Height.Sm] = t.Badge.HeightSm;
+        v[Css.Tokens.Badge.Height.Md] = t.Badge.HeightMd;
+        v[Css.Tokens.Badge.Height.Lg] = t.Badge.HeightLg;
+        v[Css.Tokens.Badge.Height.Xl] = t.Badge.HeightXl;
+        v[Css.Tokens.Badge.DotSize.Xs] = t.Badge.DotSizeXs;
+        v[Css.Tokens.Badge.DotSize.Sm] = t.Badge.DotSizeSm;
+        v[Css.Tokens.Badge.DotSize.Md] = t.Badge.DotSizeMd;
+        v[Css.Tokens.Badge.DotSize.Lg] = t.Badge.DotSizeLg;
+        v[Css.Tokens.Badge.DotSize.Xl] = t.Badge.DotSizeXl;
+        v[Css.Tokens.Badge.PaddingX.Xs] = t.Badge.PaddingXXs;
+        v[Css.Tokens.Badge.PaddingX.Sm] = t.Badge.PaddingXSm;
+        v[Css.Tokens.Badge.PaddingX.Md] = t.Badge.PaddingXMd;
+        v[Css.Tokens.Badge.PaddingX.Lg] = t.Badge.PaddingXLg;
+        v[Css.Tokens.Badge.PaddingX.Xl] = t.Badge.PaddingXXl;
+        v[Css.Tokens.Badge.LabelSize.Xs] = t.Badge.LabelSizeXs;
+        v[Css.Tokens.Badge.LabelSize.Sm] = t.Badge.LabelSizeSm;
+        v[Css.Tokens.Badge.LabelSize.Md] = t.Badge.LabelSizeMd;
+        v[Css.Tokens.Badge.LabelSize.Lg] = t.Badge.LabelSizeLg;
+        v[Css.Tokens.Badge.LabelSize.Xl] = t.Badge.LabelSizeXl;
         v[Css.Tokens.Badge.Offset] = t.Badge.Offset;
         v[Css.Tokens.Badge.DotOffset] = t.Badge.DotOffset;
         #endregion

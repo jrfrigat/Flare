@@ -68,9 +68,8 @@ public sealed class DeadFallbackTests
     // The debt this guard found on its first run, named rather than silently tolerated. It is a ratchet:
     // every other core stylesheet is clean and must stay clean; these come out one at a time, and a file
     // leaves this list for good once it does.
-    //   badge.css     - the --xs/--sm/--lg/--xl classes hardcode the badge box, so a theme owns only the
-    //                   default size. Needs a per-size ramp in BadgeTokens, like the button's.
-    //   switch.css    - same shape: a size class hardcodes track/thumb geometry over the theme's.
+    //   switch.css    - a size class hardcodes track/thumb geometry over the theme's. Same shape badge.css
+    //                   had before it got its per-size ramp in BadgeTokens; the fix is the same.
     //   menuitem.css  - hardcodes the item's padding and gap over MenuTokens.
     //   datagrid.css  - the filter editors re-declare what .flare-input-variant--outlined already says;
     //                   they should wear that class instead of copying it.
@@ -78,7 +77,7 @@ public sealed class DeadFallbackTests
     //                   Arguable rather than clearly wrong: the variant exists to define a look INDEPENDENT
     //                   of the theme, and a 1px edge is part of what "outlined" means. Decide before fixing.
     private static readonly string[] _knownDebt =
-        ["badge.css", "switch.css", "menuitem.css", "datagrid.css", "input.css"];
+        ["switch.css", "menuitem.css", "datagrid.css", "input.css"];
 
     [Fact]
     public void CoreCss_DoesNotDeclareATokenTheThemeSupplies()

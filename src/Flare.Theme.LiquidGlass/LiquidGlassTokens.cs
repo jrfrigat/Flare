@@ -81,10 +81,16 @@ internal class LiquidGlassTokens
     internal static readonly BadgeTokens Badge = new()
     {
         Radius = "var(--flare-shape-full)",
-        MinWidth = "1.125rem",
-        Height = "1.125rem",
-        DotSize = "0.5rem",
-        PaddingX = "0.3125rem",
+        // Per-size ramp; the four non-default steps used to be literals in badge.css. Values unchanged.
+        MinWidthXs = "0.75rem",   MinWidthSm = "0.875rem",   MinWidthMd = "1.125rem",   MinWidthLg = "1.25rem",  MinWidthXl = "1.5rem",
+        HeightXs   = "0.75rem",   HeightSm   = "0.875rem",   HeightMd   = "1.125rem",   HeightLg   = "1.25rem",  HeightXl   = "1.5rem",
+        DotSizeXs  = "0.25rem",   DotSizeSm  = "0.3125rem",  DotSizeMd  = "0.5rem", DotSizeLg = "0.5rem",  DotSizeXl  = "0.625rem",
+        PaddingXXs = "0.1875rem", PaddingXSm = "0.1875rem",  PaddingXMd = "0.3125rem", PaddingXLg = "0.375rem", PaddingXXl = "0.5rem",
+        LabelSizeXs = "0.5625rem",
+        LabelSizeSm = "0.625rem",
+        LabelSizeMd = "var(--flare-typescale-label-small-size)",
+        LabelSizeLg = "var(--flare-typescale-label-medium-size)",
+        LabelSizeXl = "var(--flare-typescale-label-large-size)",
         Offset = "0.25rem",
         DotOffset = "0",
     };
