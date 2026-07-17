@@ -21,12 +21,6 @@ public sealed record InputTokens
     /// <summary>Resting bottom border for the filled variant.</summary>
     [CssVar(InputField.FilledBorderBottom)] public required string FilledBorderBottom { get; init; }
 
-    /// <summary>Focus border for the outlined variant.</summary>
-    [CssVar(InputField.FocusBorder)] public required string FocusBorder { get; init; }
-
-    /// <summary>Focus bottom border for the filled variant.</summary>
-    [CssVar(InputField.FocusBorderBottom)] public required string FocusBorderBottom { get; init; }
-
     /// <summary>
     /// Focus indicator drawn as a <c>box-shadow</c> on the field well when focused (mouse or keyboard).
     /// A <c>box-shadow</c> is used so the indicator is layout-neutral (the field never grows/jumps): an

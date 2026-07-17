@@ -19,8 +19,10 @@
 }
 
 /* Anchors */
-.flare-drawer--left  { top: 0; left: 0; bottom: 0; transform: translateX(-100%); }
-.flare-drawer--right { top: 0; right: 0; bottom: 0; transform: translateX(100%); }
+/* The side drawer's resting width is the theme's, not the component's. The Width parameter, when set, still
+   wins by landing inline. Mini overrides this with its own rail width below. */
+.flare-drawer--left  { top: 0; left: 0; bottom: 0; transform: translateX(-100%); width: var(--flare-drawer-width); }
+.flare-drawer--right { top: 0; right: 0; bottom: 0; transform: translateX(100%); width: var(--flare-drawer-width); }
 .flare-drawer--top   { top: 0; left: 0; right: 0; transform: translateY(-100%); }
 .flare-drawer--bottom { bottom: 0; left: 0; right: 0; transform: translateY(100%); }
 

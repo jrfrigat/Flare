@@ -39,8 +39,9 @@
     [Parameter] public DrawerVariant Variant { get; set; } = DrawerVariant.Temporary;
     /// <summary>Edge from which the drawer slides in.</summary>
     [Parameter] public DrawerAnchor Anchor { get; set; } = DrawerAnchor.Left;
-    /// <summary>Width applied to left/right anchored drawers.</summary>
-    [Parameter] public string Width { get; set; } = "280px";
+    /// <summary>Width applied to left/right anchored drawers. <c>null</c> (the default) takes the theme's
+    /// own width; set it to override that for one drawer.</summary>
+    [Parameter] public string? Width { get; set; }
     /// <summary>Height applied to top/bottom anchored drawers.</summary>
     [Parameter] public string Height { get; set; } = "320px";
     /// <summary>Closes the drawer when the scrim backdrop is clicked.</summary>
@@ -104,8 +105,10 @@
 
     private string _role => Variant is DrawerVariant.Temporary or DrawerVariant.Persistent ? "dialog" : "navigation";
 
-    private string _sizeStyle => Anchor is DrawerAnchor.Left or DrawerAnchor.Right
-        ? $"width:{Width};"
+    // Only emit a size when the CALLER asked for one. An inline width beats the stylesheet, so emitting a
+    // default here would (and did) make --flare-drawer-width unreachable: the theme's value never rendered.
+    private string? _sizeStyle => Anchor is DrawerAnchor.Left or DrawerAnchor.Right
+        ? (Width is null ? null : $"width:{Width};")
         : $"height:{Height};";
 
     protected override void OnParametersSet()
