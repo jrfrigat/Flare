@@ -817,6 +817,10 @@ public class FluentUI2Tokens
     internal static readonly LayoutTokens Layout = new()
     {
         AppBarHeight = "64px",
+        // Carried over from the value core used to hardcode, so the dense bar is unchanged. Fluent's own
+        // spec has no compact app bar to read a number from; a Fluent-native height is a separate decision.
+        AppBarHeightDense = "3rem",
+        AppBarBg = "var(--flare-color-surface)",
         ContentPadding = "1.5rem 2rem",
         ContentPaddingMobile = "1rem",
         DrawerRailWidth = "3.5rem",

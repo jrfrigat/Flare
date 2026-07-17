@@ -741,6 +741,8 @@ public static class CssVarMap
 
         #region LAYOUT
         v[Css.Tokens.LayoutField.AppBarHeight] = t.Layout.AppBarHeight;
+        v[Css.Tokens.LayoutField.AppBarHeightDense] = t.Layout.AppBarHeightDense;
+        v[Css.Tokens.LayoutField.AppBarBg] = t.Layout.AppBarBg;
         v[Css.Tokens.LayoutField.ContentPadding] = t.Layout.ContentPadding;
         v[Css.Tokens.LayoutField.ContentPaddingMobile] = t.Layout.ContentPaddingMobile;
         v[Css.Tokens.LayoutField.DrawerRailWidth] = t.Layout.DrawerRailWidth;

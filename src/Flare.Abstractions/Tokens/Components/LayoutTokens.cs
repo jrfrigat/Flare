@@ -5,8 +5,14 @@ namespace Flare.Abstractions.Tokens.Components;
 /// <summary>Design tokens for layout - component-specific geometry read by layout.css.</summary>
 public sealed record LayoutTokens
 {
-    /// <summary>App Bar Height.</summary>
+    /// <summary>Height of the layout's app bar.</summary>
     [CssVar(LayoutField.AppBarHeight)] public required string AppBarHeight { get; init; }
+
+    /// <summary>Height of the app bar in its dense form.</summary>
+    [CssVar(LayoutField.AppBarHeightDense)] public required string AppBarHeightDense { get; init; }
+
+    /// <summary>Background of the app bar. Usually a reference to a surface colour role.</summary>
+    [CssVar(LayoutField.AppBarBg)] public required string AppBarBg { get; init; }
 
     /// <summary>Content Padding.</summary>
     [CssVar(LayoutField.ContentPadding)] public required string ContentPadding { get; init; }

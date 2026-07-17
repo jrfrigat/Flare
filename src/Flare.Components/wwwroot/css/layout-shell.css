@@ -1,12 +1,11 @@
-:root {
-    /* Layout-drawer geometry, namespaced so it does not collide with the standalone FlareDrawer's
-       theme tokens (--flare-drawer-width / --flare-drawer-mini-width, owned by DrawerTokens). */
-    --flare-layout-drawer-width: 260px;
-    --flare-layout-drawer-rail-width: 3.5rem;
-    --flare-layout-appbar-height: 64px;
-    --flare-layout-appbar-height-dense: 3rem;
-    --flare-layout-appbar-bg: var(--flare-color-surface);
-}
+/* The layout's geometry tokens (--flare-layout-drawer-width / -rail-width / -appbar-height /
+   -appbar-height-dense / -appbar-bg) are the theme's, and are named in LayoutTokens. They used to be
+   declared here on :root with literal values, which is a default baked into core: exactly what the token
+   mandate forbids. Worse, appbar-height-dense and appbar-bg had no route out of core at all - a name in the
+   registry, no record member, no theme emitting them - so this block was their only source and no theme
+   could touch them. They are proper LayoutTokens members now.
+   The names stay namespaced (layout-*) so they do not collide with the standalone FlareDrawer's own
+   --flare-drawer-* tokens, owned by DrawerTokens. */
 
 /* Shell: a grid with the app bar in row 1 (spanning every column) and the drawers + content in
    row 2. FlareLayout computes the column template from its registered drawers and sets it via
