@@ -15,7 +15,8 @@
     </FlareButton>
     @if (_open)
     {
-        <div class="@Css.Classes.DataGrid.FilterBuilderPanel">
+        @* Outlined variant, same as the simple filter row - see FlareDataGrid.razor. *@
+        <div class="@Css.Classes.DataGrid.FilterBuilderPanel @Css.Classes.Input.VariantOutlined">
             <div class="@Css.Classes.DataGrid.FilterBuilderTree">
                 @RenderGroup((_root, null))
             </div>

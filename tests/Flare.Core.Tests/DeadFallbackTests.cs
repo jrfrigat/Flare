@@ -69,14 +69,14 @@ public sealed class DeadFallbackTests
     // every other core stylesheet is clean and must stay clean; these come out one at a time, and a file
     // leaves this list for good once it does.
     //   switch.css    - a size class hardcodes track/thumb geometry over the theme's. Same shape badge.css
-    //                   had before it got its per-size ramp in BadgeTokens; the fix is the same.
-    //   datagrid.css  - the filter editors re-declare what .flare-input-variant--outlined already says;
-    //                   they should wear that class instead of copying it.
+    //                   had before it got its per-size ramp in BadgeTokens; the fix is the same. Note
+    //                   ThumbOffLeft/ThumbOnLeft are derived from thumb size + track height, so they should
+    //                   be computed in CSS, not ramped - which puts two coefficients into core to decide.
     //   input.css     - the variant classes (.flare-input-variant--filled/--outlined) hardcode 1px borders.
     //                   Arguable rather than clearly wrong: the variant exists to define a look INDEPENDENT
     //                   of the theme, and a 1px edge is part of what "outlined" means. Decide before fixing.
     private static readonly string[] _knownDebt =
-        ["switch.css", "datagrid.css", "input.css"];
+        ["switch.css", "input.css"];
 
     [Fact]
     public void CoreCss_DoesNotDeclareATokenTheThemeSupplies()

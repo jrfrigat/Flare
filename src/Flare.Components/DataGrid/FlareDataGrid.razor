@@ -115,7 +115,11 @@
                    cannot align to its multi-row records, so the flat filter row is suppressed there. *@
                 @if (!_hasBandedComposite && FilterMode == DataGridFilterMode.Simple && _gridColumns.Any(c => c.Filterable))
                 {
-                    <tr class="@Css.Classes.DataGrid.FilterRow">
+                    @* Wears the outlined variant so the filter editors are outlined whatever the theme's
+                       default field is. The class sets the shared --flare-input-* tokens, which cascade
+                       into every nested field - datagrid.css used to copy four of its six declarations
+                       instead, and silently dropped the two focus ones. *@
+                    <tr class="@Css.Classes.DataGrid.FilterRow @Css.Classes.Input.VariantOutlined">
                         @if (RowDetailTemplate != null)
                         {
                             <th class="@Css.Classes.DataGrid.FilterTh"></th>

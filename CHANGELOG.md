@@ -20,6 +20,12 @@ All notable changes to Flare are documented here. This project adheres to
   five. `Radius`, `Offset` and `DotOffset` are unchanged - they do not vary by size.
 
 ### Fixed
+- **A data-grid filter editor looked outlined but kept the theme's own focus treatment.** `datagrid.css`
+  copied four of the six declarations that `.flare-input-variant--outlined` makes and dropped the two focus
+  ones, so under a filled theme a filter editor drew an outlined box with a bottom-bar focus. The filter row
+  and the advanced builder wear the variant class now instead of copying it, so they get all six - measured,
+  the focus ring on a filter editor matches a real outlined field. No visual change under an already-outlined
+  theme; the copied box geometry is byte-for-byte the variant's.
 - **A theme could style a normal menu but never a dense one.** `menuitem.css` hardcoded the dense item's
   block padding and gap, so `FlareMenu.Dense` was core's opinion outright. `MenuTokens` gains
   `ItemPaddingBlockDense` and `ItemGapDense`; measured after, dense still paints 6px/8px and the theme can
