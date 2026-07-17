@@ -14,6 +14,22 @@ All notable changes to Flare are documented here. This project adheres to
   Migration: replace `<FlareSliderZone .../>` with `<FlareZone .../>`. Identical parameters and behaviour -
   the alias never did anything of its own - and `FlareZone` additionally works inside `FlareProgress`.
 
+### Added
+- **`FlareDrawer.ContentPadding`** - the content region's horizontal inset, on the shared `FlareSpacing`
+  scale (the same steps `FlareStack.Gap` uses, so a drawer and a stack asking for the same step get the same
+  value from the theme). `ContentPaddingValue` takes a raw CSS length for `FlareSpacing.Custom`.
+
+  The drawer's content is full-bleed while its header is inset, so anything placed in a drawer ran to the
+  panel edge and a form did not line up with the header above it. Every caller writing a form into a drawer
+  was overriding `.flare-drawer__content` - a Flare-internal class - to fix it.
+
+  The inset is opt-in rather than the new default, because the drawer cannot know what it holds and the two
+  cases want opposite things: measured in MD3, a nav menu's item highlight sits flush at the panel edge (0px)
+  and would be pushed to 24px by a default inset, while a form field sits at 0px and wants the header's 24px.
+  `ContentPadding="FlareSpacing.Large"` gives the form case exactly the header's inset; the default leaves
+  every existing drawer where it is. Flare's own drawer demo had been faking it with a hand-written
+  `padding:1rem` and now just asks for the step.
+
 ### Removed
 - **43 dead strings from the Gallery's resources**, left behind by the rewritten Getting Started page and the
   removed About page. They were still shipping: a resx string is embedded in the assembly *and* in the

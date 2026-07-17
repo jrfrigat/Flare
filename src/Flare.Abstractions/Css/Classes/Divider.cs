@@ -44,6 +44,18 @@ public static class Drawer
     public const string Top = "flare-drawer--top";
     /// <summary>The <c>flare-drawer--bottom</c> CSS class.</summary>
     public const string Bottom = "flare-drawer--bottom";
+    /// <summary>The <c>flare-drawer--content-pad-xxsmall</c> CSS class (horizontal inset on the content).</summary>
+    public const string ContentPadXxSmall = "flare-drawer--content-pad-xxsmall";
+    /// <summary>The <c>flare-drawer--content-pad-xsmall</c> CSS class (horizontal inset on the content).</summary>
+    public const string ContentPadXSmall = "flare-drawer--content-pad-xsmall";
+    /// <summary>The <c>flare-drawer--content-pad-small</c> CSS class (horizontal inset on the content).</summary>
+    public const string ContentPadSmall = "flare-drawer--content-pad-small";
+    /// <summary>The <c>flare-drawer--content-pad-medium</c> CSS class (horizontal inset on the content).</summary>
+    public const string ContentPadMedium = "flare-drawer--content-pad-medium";
+    /// <summary>The <c>flare-drawer--content-pad-large</c> CSS class (horizontal inset on the content).</summary>
+    public const string ContentPadLarge = "flare-drawer--content-pad-large";
+    /// <summary>The <c>flare-drawer--content-pad-xlarge</c> CSS class (horizontal inset on the content).</summary>
+    public const string ContentPadXLarge = "flare-drawer--content-pad-xlarge";
     /// <summary>The <c>flare-drawer--ac-sm</c> CSS class.</summary>
     public const string AcSm = "flare-drawer--ac-sm";
     /// <summary>The <c>flare-drawer--ac-md</c> CSS class.</summary>

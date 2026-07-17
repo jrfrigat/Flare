@@ -8,8 +8,8 @@
     <div class="@Css.Classes.Drawer.Scrim @_autoCloseScrimClass" @onclick="CloseDrawer" aria-hidden="true" />
 }
 
-<div class="@BuildCssClass(_anchorClass, _openClass, _variantClass, _autoCloseClass)"
-     style="@_sizeStyle @Style"
+<div class="@BuildCssClass(_anchorClass, _openClass, _variantClass, _autoCloseClass, _contentPadClass)"
+     style="@_sizeStyle @_contentPadStyle @Style"
      role="@_role"
      aria-modal="@(Variant is DrawerVariant.Temporary or DrawerVariant.Persistent ? "true" : null)"
      aria-label="@AriaLabel"
@@ -51,8 +51,46 @@
     [Parameter] public string AriaLabel { get; set; } = "Drawer";
     /// <summary>Breakpoint below which the drawer is automatically hidden.</summary>
     [Parameter] public Breakpoint? AutoCloseBelow { get; set; }
+    /// <summary>
+    /// Horizontal inset on the content region, on the shared <see cref="FlareSpacing"/> scale - the same
+    /// steps <c>FlareStack.Gap</c> uses, so a drawer and a stack asking for the same step get the same value
+    /// from the theme. Vertical padding is unaffected.
+    ///
+    /// <see cref="FlareSpacing.None"/> (the default) leaves the content full-bleed, because a drawer cannot
+    /// know what it holds: a nav menu carries its own item insets and wants its state layer to reach the
+    /// panel edge, while a form wants to sit off the edge and line up with the header. Set it to match the
+    /// header's own inset (<see cref="FlareSpacing.Large"/> in the in-box themes) for the form case.
+    /// </summary>
+    [Parameter] public FlareSpacing ContentPadding { get; set; } = FlareSpacing.None;
+    /// <summary>Raw CSS inline padding used when <see cref="ContentPadding"/> is
+    /// <see cref="FlareSpacing.Custom"/>.</summary>
+    [Parameter] public string? ContentPaddingValue { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Drawer.Root;
+
+    // Mirrors FlareStack's Gap: the enum step only selects a pre-compiled class, and the class reads the
+    // theme's spacing scale - no geometry travels through C#. Custom is the escape hatch, sanitised like
+    // every other caller-supplied CSS value.
+    private string? _contentPadClass => ContentPadding switch
+    {
+        FlareSpacing.XXSmall => Css.Classes.Drawer.ContentPadXxSmall,
+        FlareSpacing.XSmall  => Css.Classes.Drawer.ContentPadXSmall,
+        FlareSpacing.Small   => Css.Classes.Drawer.ContentPadSmall,
+        FlareSpacing.Medium  => Css.Classes.Drawer.ContentPadMedium,
+        FlareSpacing.Large   => Css.Classes.Drawer.ContentPadLarge,
+        FlareSpacing.XLarge  => Css.Classes.Drawer.ContentPadXLarge,
+        _                    => null,   // None (full-bleed) and Custom carry no class
+    };
+
+    private string? _contentPadStyle
+    {
+        get
+        {
+            if (ContentPadding != FlareSpacing.Custom) return null;
+            var safe = Flare.Components.Security.CssValidator.StripDangerous(ContentPaddingValue);
+            return safe is null ? null : $"--_content-pad-x:{safe};";
+        }
+    }
 
     private readonly string _id = Guid.NewGuid().ToString("N")[..8];
     private DotNetObjectReference<FlareDrawer>? _dotNetRef;

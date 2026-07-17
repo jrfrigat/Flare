@@ -39,8 +39,24 @@
 .flare-drawer__content {
   flex: 1;
   overflow-y: auto;
-  padding: var(--flare-spacing-4) 0;
+  /* --_content-pad-x is set per instance - by a ContentPadding modifier below, or inline for Custom - so
+     both routes land in one declaration. It is not a theme token, so this fallback is the real default:
+     full-bleed, which is what the drawer has always been. */
+  padding: var(--flare-spacing-4) var(--_content-pad-x, 0);
 }
+
+/* Horizontal inset on the content region, opt-in via ContentPadding.
+   Full-bleed stays the default because the drawer cannot know what is inside it: a nav menu brings its own
+   item insets and wants its state layer to reach the panel edge, while a form wants to sit off the edge and
+   line up with the header. Only the caller knows which, so the caller says.
+   The steps are the same spacing-scale rungs FlareStack's Gap uses, so a drawer and a stack asking for the
+   same step get the same value from the theme. Vertical padding is untouched. */
+.flare-drawer--content-pad-xxsmall { --_content-pad-x: var(--flare-spacing-2); }
+.flare-drawer--content-pad-xsmall  { --_content-pad-x: var(--flare-spacing-4); }
+.flare-drawer--content-pad-small   { --_content-pad-x: var(--flare-spacing-6); }
+.flare-drawer--content-pad-medium  { --_content-pad-x: var(--flare-spacing-8); }
+.flare-drawer--content-pad-large   { --_content-pad-x: var(--flare-spacing-12); }
+.flare-drawer--content-pad-xlarge  { --_content-pad-x: var(--flare-spacing-16); }
 
 @keyframes flare-scrim-in {
   from { opacity: 0; }

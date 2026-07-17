@@ -1983,6 +1983,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Main content rendered inside the drawer body.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"CloseOnEsc", @"bool", @"true", @"Closes the drawer when the Escape key is pressed.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"CloseOnScrimClick", @"bool", @"true", @"Closes the drawer when the scrim backdrop is clicked.", null, false, false, false, @"FlareDrawer"),
+                new ApiParameterInfo(@"ContentPadding", @"FlareSpacing", @"FlareSpacing.None", @"Horizontal inset on the content region, on the shared FlareSpacing scale - the same steps FlareStack.Gap uses, so a drawer and a stack asking for the same step get the same value from the theme. Vertical padding is unaffected. None (the default) leaves the content full-bleed, because a drawer cannot know what it holds: a nav menu carries its own item insets and wants its state layer to reach the panel edge, while a form wants to sit off the edge and line up with the header. Set it to match the header's own inset (Large in the in-box themes) for the form case.", null, false, false, false, @"FlareDrawer"),
+                new ApiParameterInfo(@"ContentPaddingValue", @"string?", null, @"Raw CSS inline padding used when ContentPadding is Custom.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Header", @"RenderFragment?", null, @"Optional header content shown above the body.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Height", @"string", @"""320px""", @"Height applied to top/bottom anchored drawers.", null, false, false, false, @"FlareDrawer"),
                 new ApiParameterInfo(@"Open", @"bool", @"false", @"Controls whether the drawer is visible.", null, false, false, false, @"FlareDrawer"),
@@ -6833,6 +6835,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareDrawer",
                 @"FlareGrid",
                 @"FlarePaper",
                 @"FlareStack",
