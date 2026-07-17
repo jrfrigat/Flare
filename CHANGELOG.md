@@ -5,7 +5,38 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING: `FlareFileUpload` is replaced by `FlareFileUploadZone` and `FlareFileUploadButton`**, and the
+  `FileUploadVariant` enum is gone.
+
+  One component could not be both. Its `Variant` already meant "drop zone or button", so it had no room for
+  the `Variant` every other button takes - and `Size`/`Color` would have been visible but silently dead
+  whenever the drop zone was chosen. A zone is a region that owns its footprint; a button is a control in a
+  row, and a row has a size, a variant and a colour. They are now two components, sharing the input, the
+  accept/multiple/limit rules and the file list through a common base.
+
+  `FlareFileUploadButton` takes `FlareButton`'s own vocabulary - `Variant`, `Size`, `Color`, `Shape`,
+  `PressMorph`, `FullWidth`, `Loading`, `LoadingText`, `LeadingIcon`, `TrailingIcon`, `ChildContent`,
+  `AriaLabel` - under the same names, types and defaults. Measured: it now matches a `FlareButton` beside it
+  at every size (32/40/48/56/64px for xs..xl); it used to be one fixed height that matched nothing.
+
+  It does not take `OnClick`: the click only opens the picker, while `OnFilesChanged` carries the files and
+  arrives only once the user confirms. `Href`/`Target`/`Rel`/`Type` are likewise absent - it opens a picker,
+  it does not navigate or submit.
+
+  Migration: `<FlareFileUpload ... />` -> `<FlareFileUploadZone ... />`;
+  `<FlareFileUpload Variant="FileUploadVariant.Button" ButtonText="Import" />` ->
+  `<FlareFileUploadButton Text="Import" />`. `Accept`, `Multiple`, `Disabled`, `MaxFiles` and
+  `OnFilesChanged` are unchanged on both. `DropText` stays on the zone; `ButtonText` is now `Text`.
+
 ### Fixed
+- **`FlareClipboard.OnCopied` no longer waits for the confirmation animation.** It was raised after the
+  two-second "copied" feedback, so a caller was told the copy had succeeded two seconds late - the callback
+  was locked behind a purely decorative delay. It now fires as soon as the text is on the clipboard.
+
+  Two neighbours went with it: a second click's confirmation is no longer cleared early by the first click's
+  timer still counting down, and the feedback length is now `FeedbackDurationMs` rather than a hardcoded
+  2000ms.
 - **Icon sizes set by a theme now actually reach the icon.** A component that takes an icon as a fragment
   (`FlareButton.LeadingIcon`, `FlareDialog.Icon`, `FlareBottomNavItem.Icon`) wraps it in its own element and
   styled that wrapper's `font-size`. But `FlareIcon` sets `font-size` on itself, and a declaration on an
@@ -33,6 +64,17 @@ All notable changes to Flare are documented here. This project adheres to
   Those three pickers previously hardcoded `font-size:1.25rem` inline in their markup, which no theme could
   reach; that was the last inline dimension left in any component's markup. Field icons move 22px -> 24px
   under Material Design 3, and the picker toggles 20px -> 24px.
+- **`IFlareButtonAppearance`** - the look and interactive state every button-shaped control shares
+  (`Variant`, `Size`, `Color`, `Disabled`, `Loading`). `IFlareButton` now extends it, adding only `OnClick`,
+  so a control whose action is not a plain press can still speak the button vocabulary. `FlareClipboard` and
+  `FlareFileUploadButton` take the appearance; `FlareButton`, `FlareIconButton` and `FlareSplitButton` take
+  the full contract.
+
+  `FlareIconButton` and `FlareSplitButton` already matched it exactly and simply never declared it - now
+  they do, so they cannot drift. `FlareClipboard` gains the `Disabled` and `Loading` it was missing.
+- **`ButtonCssClasses`** - the `ButtonVariant`/`ButtonSize`/`ButtonShape` -> `flare-btn--*` mapping, now
+  shared. `FlareButton` reads it, and so does `FlareFileUploadButton`, which cannot nest a `FlareButton`
+  (a `<button>` inside its `<label for>` would not open the file picker) and so wears the classes directly.
 
 ## [0.7.0] - 2026-07-17
 

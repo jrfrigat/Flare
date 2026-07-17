@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@implements IFlareButtonAppearance
 @inject IFlareClipboard Clipboard
 
 @* Copy-to-clipboard control. Built on FlareButton so it inherits the active theme's button
@@ -8,6 +9,8 @@
 <FlareButton Variant="@Variant"
              Size="@Size"
              Color="@Color"
+             Disabled="@Disabled"
+             Loading="@Loading"
              Class="@_clipboardClass"
              Style="@Style"
              OnClick="CopyAsync"
@@ -48,10 +51,18 @@
     /// emphasized (e.g. a filled Primary "copy your new secret" call-to-action). Default keeps the button's
     /// own default color.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Disables the copy control.</summary>
+    [Parameter] public bool Disabled { get; set; }
+    /// <summary>Shows a busy state and blocks copying - for a caller that is still producing
+    /// <see cref="Text"/> (fetching the secret, rendering the snippet).</summary>
+    [Parameter] public bool Loading { get; set; }
+    /// <summary>How long the copied confirmation stays up, in milliseconds. Default 2000.</summary>
+    [Parameter] public int FeedbackDurationMs { get; set; } = 2000;
 
     protected override string ComponentCssClass => Css.Classes.Clipboard.Root;
 
     private bool _copied;
+    private int _copyGen;
 
     private string _clipboardClass =>
         _copied ? $"{Css.Classes.Clipboard.Root} {Css.Classes.Clipboard.Copied}" : Css.Classes.Clipboard.Root;
@@ -59,14 +70,21 @@
     private async Task CopyAsync()
     {
         await Clipboard.CopyAsync(Text);   // typed service: async API + execCommand fallback
-        if (ShowFeedback)
-        {
-            _copied = true;
-            StateHasChanged();
-            await Task.Delay(2000);
-            _copied = false;
-            StateHasChanged();
-        }
+
+        // Tell the caller the moment the copy is done. This used to sit below the feedback delay, which held
+        // OnCopied back by the full two seconds of a purely decorative animation.
         await OnCopied.InvokeAsync();
+
+        if (!ShowFeedback) return;
+
+        // Each copy takes a generation, so a second click's confirmation is not cleared early by the first
+        // click's timer still counting down.
+        var gen = ++_copyGen;
+        _copied = true;
+        StateHasChanged();
+        await Task.Delay(FeedbackDurationMs);
+        if (gen != _copyGen) return;
+        _copied = false;
+        StateHasChanged();
     }
 }

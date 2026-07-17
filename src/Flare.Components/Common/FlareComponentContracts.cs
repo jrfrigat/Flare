@@ -49,11 +49,16 @@ public interface IFlareMultiField<TValue> : IFlareField
 }
 
 /// <summary>
-/// Shared contract for the Flare button family (button, split button, toggle button, FAB, icon button):
-/// the visual variant/size, disabled state, click callback and loading state. Lets analogous buttons
-/// expose the same core parameters and be handled polymorphically.
+/// The look and interactive state every button-shaped thing in Flare shares: variant, size, color, and
+/// whether it is disabled or busy. Anything a caller would recognise as a button in a toolbar row exposes
+/// these under the same names and types, so knowing one means knowing the rest.
+///
+/// This is deliberately separate from <see cref="IFlareButton"/>, which adds <c>OnClick</c>. Some members
+/// of the family are button-shaped but are not activated by a plain click: <c>FlareClipboard</c> raises
+/// <c>OnCopied</c> and <c>FlareFileUpload</c> raises <c>OnFilesChanged</c>. Giving those an <c>OnClick</c>
+/// too would hand a caller two competing "the user pressed it" events, so they take the appearance only.
 /// </summary>
-public interface IFlareButton
+public interface IFlareButtonAppearance
 {
     /// <summary>Visual variant (filled/outlined/text/...).</summary>
     ButtonVariant Variant { get; set; }
@@ -64,10 +69,19 @@ public interface IFlareButton
     FlareColor Color { get; set; }
     /// <summary>Disables the button.</summary>
     bool Disabled { get; set; }
-    /// <summary>Raised when the button is activated.</summary>
-    EventCallback<MouseEventArgs> OnClick { get; set; }
     /// <summary>Shows a busy/loading state and blocks activation.</summary>
     bool Loading { get; set; }
+}
+
+/// <summary>
+/// A button-shaped control whose action IS the press: it carries the whole appearance surface plus
+/// <c>OnClick</c>. Implemented by <c>FlareButton</c>, <c>FlareIconButton</c> and <c>FlareSplitButton</c>.
+/// Controls with their own action event implement <see cref="IFlareButtonAppearance"/> instead.
+/// </summary>
+public interface IFlareButton : IFlareButtonAppearance
+{
+    /// <summary>Raised when the button is activated.</summary>
+    EventCallback<MouseEventArgs> OnClick { get; set; }
 }
 
 /// <summary>

@@ -150,25 +150,11 @@ else
     private ButtonSize _effectiveSize => GroupContext?.Size ?? Size;
     private FlareColor _effectiveColor => GroupContext?.Color ?? Color;
 
-    private string _variantClass => _effectiveVariant switch
-    {
-        ButtonVariant.Filled => Css.Classes.Button.Filled,
-        ButtonVariant.Outlined => Css.Classes.Button.Outlined,
-        ButtonVariant.Text => Css.Classes.Button.Text,
-        ButtonVariant.Elevated => Css.Classes.Button.Elevated,
-        ButtonVariant.Tonal => Css.Classes.Button.Tonal,
-        _ => Css.Classes.Button.Filled,
-    };
+    // Shared with FlareFileUploadButton, which cannot nest a FlareButton (a <button> inside its <label for>
+    // would not open the file picker) and so wears these classes directly.
+    private string _variantClass => ButtonCssClasses.Variant(_effectiveVariant);
 
-    private string _sizeClass => _effectiveSize switch
-    {
-        ButtonSize.Xs => Css.Classes.Button.Xs,
-        ButtonSize.Sm => Css.Classes.Button.Sm,
-        ButtonSize.Md => Css.Classes.Button.Md,
-        ButtonSize.Lg => Css.Classes.Button.Lg,
-        ButtonSize.Xl => Css.Classes.Button.Xl,
-        _ => Css.Classes.Button.Md,
-    };
+    private string _sizeClass => ButtonCssClasses.Size(_effectiveSize);
 
     // Optional label type-scale override. Reuses the shared typography utility classes
     // (flare-text--*), which set font-* on the label span and so win over the inherited
@@ -193,13 +179,7 @@ else
         _ => null,
     };
 
-    private string _shapeClass => Shape switch
-    {
-        ButtonShape.Rounded => Css.Classes.Button.Rounded,
-        ButtonShape.Circular => Css.Classes.Button.Circular,
-        ButtonShape.Square => Css.Classes.Button.Square,
-        _ => string.Empty,
-    };
+    private string _shapeClass => ButtonCssClasses.Shape(Shape);
 
     private string _morphClass => PressMorph ? Css.Classes.Button.Morph : string.Empty;
 

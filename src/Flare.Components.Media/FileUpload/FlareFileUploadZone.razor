@@ -1,0 +1,72 @@
+@namespace Flare.Components
+@inherits FlareFileUploadBase
+@using Microsoft.AspNetCore.Components.Forms
+
+@* A drop region: it owns its footprint, so it takes no button vocabulary. The button-in-a-row form is a
+   separate component, FlareFileUploadButton. *@
+<div class="@BuildCssClass(_draggingClass, _disabledClass)"
+     style="@Style"
+     @ondragover:preventDefault="true"
+     @ondragenter:preventDefault="true"
+     @ondragover="@(() => _isDragging = true)"
+     @ondragleave="@(() => _isDragging = false)"
+     @ondrop:preventDefault="true"
+     @attributes="AdditionalAttributes">
+    <div class="flare-file-upload__drop-wrap">
+        <label class="flare-file-upload__zone" for="@InputId">
+            @if (Icon is not null)
+            {
+                <span class="flare-file-upload__icon">@Icon</span>
+            }
+            else
+            {
+                <span class="flare-file-upload__icon material-symbols-rounded" aria-hidden="true">upload_file</span>
+            }
+            <span class="flare-file-upload__primary">@(DropText ?? FlareStrings.FileUpload_DropText)</span>
+            @if (!string.IsNullOrEmpty(Accept))
+            {
+                <span class="flare-file-upload__hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
+            }
+        </label>
+        <InputFile id="@InputId"
+                   class="flare-file-upload__input"
+                   accept="@Accept"
+                   multiple="@Multiple"
+                   disabled="@Disabled"
+                   OnChange="HandleDropAsync" />
+    </div>
+    @if (ShowFileList && Files.Count > 0)
+    {
+        <ul class="flare-file-upload__list">
+            @foreach (var file in Files)
+            {
+                <li class="flare-file-upload__file">
+                    <span class="flare-file-upload__file-icon material-symbols-rounded" aria-hidden="true">description</span>
+                    <span class="flare-file-upload__file-name">@file.Name</span>
+                    <span class="flare-file-upload__file-size">@FormatSize(file.Size)</span>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    /// <summary>Instructional text shown inside the drop zone. Defaults to the localized
+    /// "FileUpload_DropText" string.</summary>
+    [Parameter] public string? DropText { get; set; }
+    /// <summary>Icon shown above the instructional text. Defaults to an upload glyph.</summary>
+    [Parameter] public RenderFragment? Icon { get; set; }
+
+    protected override string ComponentCssClass => "flare-file-upload";
+
+    private bool _isDragging;
+    private string _draggingClass => _isDragging ? "flare-file-upload--dragging" : string.Empty;
+    private string _disabledClass => Disabled ? "flare-file-upload--disabled" : string.Empty;
+
+    // The drag highlight has to clear on drop as well as on dragleave, so the zone does not stay lit.
+    private async Task HandleDropAsync(InputFileChangeEventArgs e)
+    {
+        _isDragging = false;
+        await HandleChangeAsync(e);
+    }
+}

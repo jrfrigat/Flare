@@ -1,0 +1,118 @@
+@namespace Flare.Components
+@inherits FlareFileUploadBase
+@implements IFlareButtonAppearance
+@using Microsoft.AspNetCore.Components.Forms
+
+@* Opens the file picker from a button in a row, so it wears the real flare-btn classes and lines up with
+   any FlareButton beside it.
+
+   It cannot nest a <FlareButton>: the trigger must be a <label for> over the hidden input, and a <button>
+   inside a label does not open the picker. So it takes the classes from the shared ButtonCssClasses map that
+   FlareButton itself reads - copying the switch here is what would let the two drift apart.
+
+   It takes the appearance contract but not OnClick: the click merely opens the picker, and OnFilesChanged
+   (which carries the files, and only after the user confirms) is the real event. *@
+<div class="@BuildCssClass("flare-file-upload--button", _disabledClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="flare-file-upload__drop-wrap">
+        <label class="@_labelClass" style="@_labelStyle" for="@InputId" aria-label="@AriaLabel">
+            @if (Loading)
+            {
+                <span class="@Css.Classes.Button.Spinner" aria-hidden="true"></span>
+            }
+            else if (LeadingIcon is not null)
+            {
+                <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconLeading">@LeadingIcon</span>
+            }
+            <span class="@Css.Classes.Button.Label">
+                @if (Loading && LoadingText is not null)
+                {
+                    @LoadingText
+                }
+                else if (ChildContent is not null)
+                {
+                    @ChildContent
+                }
+                else
+                {
+                    @(Text ?? FlareStrings.FileUpload_ButtonText)
+                }
+            </span>
+            @if (!Loading && TrailingIcon is not null)
+            {
+                <span class="@Css.Classes.Button.Icon @Css.Classes.Button.IconTrailing">@TrailingIcon</span>
+            }
+        </label>
+        <InputFile id="@InputId"
+                   class="flare-file-upload__input"
+                   accept="@Accept"
+                   multiple="@Multiple"
+                   disabled="@(Disabled || Loading)"
+                   OnChange="HandleChangeAsync" />
+    </div>
+    @if (ShowFileList && Files.Count > 0)
+    {
+        <ul class="flare-file-upload__list">
+            @foreach (var file in Files)
+            {
+                <li class="flare-file-upload__file">
+                    <span class="flare-file-upload__file-icon material-symbols-rounded" aria-hidden="true">description</span>
+                    <span class="flare-file-upload__file-name">@file.Name</span>
+                    <span class="flare-file-upload__file-size">@FormatSize(file.Size)</span>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    /// <summary>Visual variant, exactly as on <see cref="FlareButton"/>. Default outlined.</summary>
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Outlined;
+    /// <summary>Size scale, exactly as on <see cref="FlareButton"/> - so an upload button lines up with the
+    /// buttons beside it in a toolbar. Default medium.</summary>
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
+    /// <summary>Semantic color of the button.</summary>
+    [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Corner shape of the button.</summary>
+    [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
+    /// <summary>Enables the press morph, as on <see cref="FlareButton"/>.</summary>
+    [Parameter] public bool PressMorph { get; set; }
+    /// <summary>Stretches the button to the full width of its container.</summary>
+    [Parameter] public bool FullWidth { get; set; }
+    /// <summary>Shows a busy state and blocks the picker - for a caller that is still reading or posting
+    /// the previous selection.</summary>
+    [Parameter] public bool Loading { get; set; }
+    /// <summary>Label shown while <see cref="Loading"/>. Null keeps the normal label.</summary>
+    [Parameter] public RenderFragment? LoadingText { get; set; }
+    /// <summary>Icon before the label. Defaults to an upload glyph; set it to say what the button imports.</summary>
+    [Parameter] public RenderFragment? LeadingIcon { get; set; }
+    /// <summary>Icon after the label.</summary>
+    [Parameter] public RenderFragment? TrailingIcon { get; set; }
+    /// <summary>Button content, replacing <see cref="Text"/>.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Button label. Defaults to the localized "choose file" text; <see cref="ChildContent"/>
+    /// overrides it.</summary>
+    [Parameter] public string? Text { get; set; }
+    /// <summary>Accessible label for the trigger.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    protected override string ComponentCssClass => "flare-file-upload";
+
+    private string _disabledClass => Disabled ? "flare-file-upload--disabled" : string.Empty;
+
+    // The real button classes, from the same map FlareButton reads.
+    private string _labelClass => string.Join(' ', new[]
+    {
+        "flare-file-upload__button",
+        Css.Classes.Button.Root,
+        ButtonCssClasses.Variant(Variant),
+        ButtonCssClasses.Size(Size),
+        ButtonCssClasses.Shape(Shape),
+        Color.CssClass ?? string.Empty,
+        PressMorph ? Css.Classes.Button.Morph : string.Empty,
+        Loading ? Css.Classes.Button.Loading : string.Empty,
+        FullWidth ? Css.Classes.Button.Full : string.Empty,
+    }.Where(c => !string.IsNullOrEmpty(c)));
+
+    // Custom colors travel as inline tokens, the same route FlareButton uses for FlareColor.Custom.
+    private string? _labelStyle => Color.IsCustom ? $"{Css.Tokens.LocalColor.Main}:{Color.Value};" : null;
+}
