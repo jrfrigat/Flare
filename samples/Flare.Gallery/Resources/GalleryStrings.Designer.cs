@@ -3193,42 +3193,6 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Accept Filter (PDF, Images).
-        /// </summary>
-        public static string DropZone_AcceptFilter {
-            get {
-                return ResourceManager.GetString("DropZone_AcceptFilter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Basic Drop Zone.
-        /// </summary>
-        public static string DropZone_Basic {
-            get {
-                return ResourceManager.GetString("DropZone_Basic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Custom Content.
-        /// </summary>
-        public static string DropZone_CustomContent {
-            get {
-                return ResourceManager.GetString("DropZone_CustomContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на FlareDropZone - drag &amp;amp; drop file upload area with customizable styling..
-        /// </summary>
-        public static string DropZone_Subtitle {
-            get {
-                return ResourceManager.GetString("DropZone_Subtitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Basic - with action.
         /// </summary>
         public static string EmptyState_BasicWithAction {

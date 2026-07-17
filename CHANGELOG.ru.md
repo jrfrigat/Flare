@@ -7,6 +7,35 @@
 ## [Unreleased]
 
 ### Изменено
+- **ЛОМАЮЩЕЕ: загрузка файлов переехала из `Flare.Components.Media` в `Flare.Components`.** Загрузка файла -
+  не «медиа» (принимается любой файл), и нужна она достаточно часто, чтобы лишняя ссылка на пакет ради неё
+  была трением. `FlareVideoPlayer` и `FlareSignaturePad` остаются: они действительно медиа.
+
+  В разметке не меняется ничего: у `Flare.Components.Media` `RootNamespace` и так был `Flare.Components`,
+  поэтому типы всегда звались `Flare.Components.FlareFileUpload*`. Ссылку на `Flare.Components.Media` можно
+  убрать, если она была нужна только ради загрузки.
+
+  Переезд сразу окупился. CssAudit проверяет только `Flare.Components`, поэтому `fileupload.css` не
+  аудировался никогда: в нём было 11 литеральных фолбэков, причём два задавали **одному и тому же** токену
+  разные значения (`--flare-typescale-body-small-size` как `0.75rem` в одной строке и `0.875rem` в другой).
+  Все сняты.
+- **ЛОМАЮЩЕЕ: `FlareDropZone` удалён и влит в `FlareFileUploadZone`.** Это был один и тот же компонент,
+  написанный дважды - тот же скрытый инпут, то же состояние перетаскивания, та же дефолтная иконка загрузки,
+  подпись и подсказка Accept - в двух разных пакетах, и демонстрировались они бок о бок на одной странице.
+
+  `ChildContent` и `MaxFileSize` перенесены, так что ничего из умений DropZone не потеряно. Страница
+  `/components/dropzone` убрана: страница загрузки файлов покрывает обе формы.
+
+  Миграция: `<FlareDropZone OnFilesDropped="X" />` -> `<FlareFileUploadZone OnFilesChanged="X" />`. Вместе
+  с этим меняются два умолчания, оба намеренно: `Multiple` теперь `false` (собственное умолчание поля, и
+  умолчание HTML), а не `true`; и **`MaxFileSize` теперь без ограничения**, а не 10 МБ. Тот лимит в 10 МБ
+  молча выбрасывал файл пользователя без единого объяснения - теперь лимит нужно запросить явно.
+
+  Токены следуют за компонентом: `DropzoneTokens` -> `FileUploadTokens`, `--flare-dropzone-*` ->
+  `--flare-file-upload-*`. Три величины, бывшие литералами в CSS, тоже стали токенами:
+  `--flare-file-upload-zone-min-height`, `--flare-file-upload-zone-radius` и
+  `--flare-file-upload-file-icon-size`. Производные темы всё это наследуют; значения называют только два
+  эталонных пакета.
 - **ЛОМАЮЩЕЕ: `FlareFileUpload` заменён на `FlareFileUploadZone` и `FlareFileUploadButton`**, перечисление
   `FileUploadVariant` удалено.
 

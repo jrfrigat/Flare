@@ -1,5 +1,5 @@
 <FlareStack Style="max-width:36rem;">
-    <FlareDropZone OnFilesDropped="HandleDropped" Accept=".jpg,.png,.pdf,.docx" Multiple="true" />
+    <FlareFileUploadZone OnFilesChanged="HandleDropped" Accept=".jpg,.png,.pdf,.docx" Multiple="true" ShowFileList="false" />
     @if (_dropped.Count > 0)
     {
         <FlareStack Gap="FlareSpacing.XSmall" Style="margin-top:1rem;">

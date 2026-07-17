@@ -797,13 +797,16 @@ public class FluentUI2Tokens
         PanelGap = "1rem",
     };
 
-    internal static readonly DropzoneTokens Dropzone = new()
+    internal static readonly FileUploadTokens FileUpload = new()
     {
         BorderWidth = "2px",
         HoverBg = "color-mix(in srgb, var(--flare-color-primary) 5%, var(--flare-color-surface))",
         DraggingBg = "color-mix(in srgb, var(--flare-color-primary) 10%, var(--flare-color-surface))",
         DraggingRingWidth = "2px",
         IconSize = "2.5rem",
+        ZoneMinHeight = "10rem",
+        ZoneRadius = "var(--flare-card-radius)",
+        FileIconSize = "1.125rem",
     };
 
     internal static readonly FormTokens Form = new()
@@ -884,7 +887,7 @@ public class FluentUI2Tokens
         AppBar = AppBar,
         Breadcrumb = Breadcrumb,
         DateTimePicker = DateTimePicker,
-        Dropzone = Dropzone,
+        FileUpload = FileUpload,
         Form = Form,
         Layout = Layout,
         Link = Link,

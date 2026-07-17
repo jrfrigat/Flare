@@ -140,4 +140,37 @@ public class C_FlareFileUploadZoneTests : FlareTestContext
 
         Assert.Contains(".json", cut.Find("span.flare-file-upload__hint").TextContent);
     }
+
+    // --- absorbed from FlareDropZone ---
+
+    [Fact]
+    public void ChildContent_ReplacesTheWholeDefaultBody()
+    {
+        var cut = Render<FlareFileUploadZone>(p => p
+            .Add(x => x.Accept, ".json")
+            .AddChildContent("<span id=\"mine\">Drop an avatar</span>"));
+
+        Assert.NotEmpty(cut.FindAll("#mine"));
+        // The default icon, text and accept hint all give way - not just the text.
+        Assert.DoesNotContain("upload_file", cut.Markup);
+        Assert.Empty(cut.FindAll("span.flare-file-upload__hint"));
+    }
+
+    [Fact]
+    public void AriaLabel_IsApplied()
+    {
+        var cut = Render<FlareFileUploadZone>(p => p.Add(x => x.AriaLabel, "Avatar dropper"));
+
+        Assert.Equal("Avatar dropper", cut.Find("div.flare-file-upload").GetAttribute("aria-label"));
+    }
+
+    [Fact]
+    public void MaxFileSize_IsUnlimitedByDefault()
+    {
+        // A silent cap discards the user's file with no explanation, so it must be opt-in. The old
+        // FlareDropZone defaulted to 10MB and dropped anything larger without a word.
+        var cut = Render<FlareFileUploadZone>();
+
+        Assert.Equal(long.MaxValue, cut.Instance.MaxFileSize);
+    }
 }

@@ -214,10 +214,10 @@
 }
 
 /* Shared muted supporting text: the field helper is the canonical form, reused by the
-   grid/list/slider/stepper/dropzone secondary text (identical on-surface-variant / body-small). */
+   grid/list/slider/stepper/file-upload secondary text (identical on-surface-variant / body-small). */
 .flare-input__helper,
 .flare-datagrid__batch-count,
-.flare-dropzone__hint,
+.flare-file-upload__hint,
 .flare-list-item__secondary,
 .flare-slider__helper,
 .flare-stepper__description {

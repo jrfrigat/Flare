@@ -1262,7 +1262,6 @@ public static class ComponentApiRegistry
                 @"FlareDocumentTab",
                 @"FlareDocumentTabs",
                 @"FlareDrawer",
-                @"FlareDropZone",
                 @"FlareEmptyState",
                 @"FlareField",
                 @"FlareFieldChrome",
@@ -2015,35 +2014,6 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
-        c[@"FlareDropZone"] = new ApiComponentInfo(
-            @"FlareDropZone",
-            @"Flare.Components.FlareDropZone",
-            @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
-            null,
-            new ApiParameterInfo[]
-            {
-                new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types (e.g. ""image/*,.pdf""). Note: MIME type filtering is UX only - always validate file type on the server.", null, false, false, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the drop zone container. Defaults to the localized ""File drop zone"" string.", null, false, false, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Custom content to render inside the drop zone.", null, false, false, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the drop zone and file input.", null, false, false, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"MaxFileSize", @"long", @"10485760", @"Maximum allowed file size in bytes per file.", null, false, false, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"Multiple", @"bool", @"true", @"Allows selecting more than one file at a time.", null, false, false, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"OnFilesDropped", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback raised when files are dropped or selected.", null, false, true, false, @"FlareDropZone"),
-                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
-            },
-            System.Array.Empty<ApiMethodInfo>(),
-            new string[]
-            {
-                @"FlareComponentBase",
-                @"ComponentBase",
-                @"object",
-            },
-            System.Array.Empty<string>()
-            );
-
         c[@"FlareEmptyState"] = new ApiComponentInfo(
             @"FlareEmptyState",
             @"Flare.Components.FlareEmptyState",
@@ -2218,6 +2188,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control - the trigger stops opening the file picker.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"MaxFileSize", @"long", @"9223372036854775807", @"Largest accepted file, in bytes. Anything over it is dropped from the selection before OnFilesChanged sees it. Unlimited by default: a cap discards the user's file with no explanation, so it is the caller - who knows what the server will take - that opts in. Filtering here is UX only; always check the size again on the server.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUploadBase"),
@@ -2243,12 +2214,15 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"DropText", @"string?", null, @"Instructional text shown inside the drop zone. Defaults to the localized ""FileUpload_DropText"" string.", null, false, false, false, @"FlareFileUploadZone"),
-                new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"Icon shown above the instructional text. Defaults to an upload glyph.", null, false, false, false, @"FlareFileUploadZone"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the zone. Defaults to the localized ""File drop zone"" string.", null, false, false, false, @"FlareFileUploadZone"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Replaces the zone's whole default body (icon, text and accept hint) with your own content - for an avatar dropper, a preview grid, anything the built-in look does not cover.", null, false, false, false, @"FlareFileUploadZone"),
+                new ApiParameterInfo(@"DropText", @"string?", null, @"Instructional text shown inside the drop zone. Defaults to the localized ""FileUpload_DropText"" string. Ignored when ChildContent is set.", null, false, false, false, @"FlareFileUploadZone"),
+                new ApiParameterInfo(@"Icon", @"RenderFragment?", null, @"Icon shown above the instructional text. Defaults to an upload glyph. Ignored when ChildContent is set.", null, false, false, false, @"FlareFileUploadZone"),
                 new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types as a MIME or extension filter string.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control - the trigger stops opening the file picker.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"MaxFileSize", @"long", @"9223372036854775807", @"Largest accepted file, in bytes. Anything over it is dropped from the selection before OnFilesChanged sees it. Unlimited by default: a cap discards the user's file with no explanation, so it is the caller - who knows what the server will take - that opts in. Filtering here is UX only; always check the size again on the server.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUploadBase"),

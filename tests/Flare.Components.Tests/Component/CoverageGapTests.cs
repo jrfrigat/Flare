@@ -719,14 +719,16 @@ public class C_FlareFormBuilderTests : FlareTestContext
     }
 }
 
+// FlareDropZone was folded into FlareFileUploadZone - same input, same drag state, same default body. Its
+// coverage moves here rather than disappearing with it.
 public class C_FlareDropZoneTests : FlareTestContext
 {
     [Fact]
     public void RendersRootAndFileInput()
     {
-        var cut = Render<FlareDropZone>(p => p
+        var cut = Render<FlareFileUploadZone>(p => p
             .AddChildContent("<span>Drop here</span>"));
-        Assert.NotEmpty(cut.FindAll(".flare-dropzone"));
+        Assert.NotEmpty(cut.FindAll(".flare-file-upload"));
         Assert.NotEmpty(cut.FindAll("input[type=file]"));
     }
 }

@@ -967,7 +967,7 @@
     <value>Загрузка файлов</value>
   </data>
   <data name="FileUpload_Subtitle" xml:space="preserve">
-    <value>FlareFileUpload и FlareDropZone для выбора файлов с поддержкой перетаскивания.</value>
+    <value>FlareFileUploadZone и FlareFileUploadButton для выбора файлов с поддержкой перетаскивания.</value>
   </data>
   <data name="FileUpload_DropZone" xml:space="preserve">
     <value>Зона перетаскивания</value>
@@ -2399,18 +2399,6 @@
   </data>
   <data name="AvatarGroup_Title" xml:space="preserve">
     <value>Группа аватаров</value>
-  </data>
-  <data name="DropZone_Subtitle" xml:space="preserve">
-    <value>FlareDropZone - область загрузки файлов перетаскиванием с настраиваемым оформлением.</value>
-  </data>
-  <data name="DropZone_Basic" xml:space="preserve">
-    <value>Базовая зона загрузки</value>
-  </data>
-  <data name="DropZone_AcceptFilter" xml:space="preserve">
-    <value>Фильтр по типам (PDF, изображения)</value>
-  </data>
-  <data name="DropZone_CustomContent" xml:space="preserve">
-    <value>Своё содержимое</value>
   </data>
   <data name="Paper_Title" xml:space="preserve">
     <value>Paper</value>

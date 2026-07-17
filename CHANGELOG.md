@@ -6,6 +6,34 @@ All notable changes to Flare are documented here. This project adheres to
 ## [Unreleased]
 
 ### Changed
+- **BREAKING: file upload moved from `Flare.Components.Media` to `Flare.Components`.** Uploading a file is
+  not a media concern - it takes any file - and it is wanted often enough that an extra package reference to
+  reach it is friction. `FlareVideoPlayer` and `FlareSignaturePad` stay; they are genuinely media.
+
+  Nothing changes in your markup: `Flare.Components.Media` already declared
+  `RootNamespace=Flare.Components`, so the types were `Flare.Components.FlareFileUpload*` all along. Drop the
+  `Flare.Components.Media` reference if upload was the only thing you used it for.
+
+  The move paid for itself. CssAudit only covers `Flare.Components`, so `fileupload.css` had never been
+  audited: it carried 11 literal token fallbacks, two of which gave the **same** token different values
+  (`--flare-typescale-body-small-size` as `0.75rem` on one line, `0.875rem` on another). All stripped.
+- **BREAKING: `FlareDropZone` is gone, folded into `FlareFileUploadZone`.** They were the same component
+  written twice - same hidden input, same drag state, same default upload glyph, label and accept hint - in
+  two different packages, and demoed side by side on the same Gallery page.
+
+  `ChildContent` and `MaxFileSize` came across, so nothing DropZone did is lost. `/components/dropzone` is
+  gone from the Gallery; the file upload page covers both forms.
+
+  Migration: `<FlareDropZone OnFilesDropped="X" />` -> `<FlareFileUploadZone OnFilesChanged="X" />`. Two
+  defaults change with it, both deliberately: `Multiple` is now `false` (the field's own default, and the
+  HTML one) rather than `true`, and **`MaxFileSize` is unlimited** rather than 10MB. That 10MB cap silently
+  discarded the user's file with no explanation; a cap now has to be asked for.
+
+  The tokens follow the component: `DropzoneTokens` -> `FileUploadTokens`, and `--flare-dropzone-*` ->
+  `--flare-file-upload-*`. Three knobs that were literals in the CSS are now tokens too -
+  `--flare-file-upload-zone-min-height`, `--flare-file-upload-zone-radius` and
+  `--flare-file-upload-file-icon-size`. Derived themes inherit all of it; only the two reference packages
+  name the values.
 - **BREAKING: `FlareFileUpload` is replaced by `FlareFileUploadZone` and `FlareFileUploadButton`**, and the
   `FileUploadVariant` enum is gone.
 

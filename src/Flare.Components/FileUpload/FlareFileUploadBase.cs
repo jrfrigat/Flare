@@ -20,6 +20,13 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Maximum number of files that can be selected.</summary>
     [Parameter] public int MaxFiles { get; set; } = 10;
+    /// <summary>
+    /// Largest accepted file, in bytes. Anything over it is dropped from the selection before
+    /// <see cref="OnFilesChanged"/> sees it. Unlimited by default: a cap discards the user's file with no
+    /// explanation, so it is the caller - who knows what the server will take - that opts in.
+    /// Filtering here is UX only; always check the size again on the server.
+    /// </summary>
+    [Parameter] public long MaxFileSize { get; set; } = long.MaxValue;
     /// <summary>Shows the list of selected files under the trigger. Default true.</summary>
     [Parameter] public bool ShowFileList { get; set; } = true;
 
@@ -29,12 +36,13 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// <summary>Id linking the trigger's <c>&lt;label for&gt;</c> to the hidden input.</summary>
     protected readonly string InputId = $"flare-fu-{Guid.NewGuid():N}";
 
-    /// <summary>Reads the picked files, caps them at <see cref="MaxFiles"/> and raises
-    /// <see cref="OnFilesChanged"/>.</summary>
+    /// <summary>Reads the picked files, applies <see cref="MaxFiles"/> and <see cref="MaxFileSize"/>, and
+    /// raises <see cref="OnFilesChanged"/>.</summary>
     protected async Task HandleChangeAsync(InputFileChangeEventArgs e)
     {
+        if (Disabled) return;
         Files.Clear();
-        Files.AddRange(e.GetMultipleFiles(MaxFiles));
+        Files.AddRange(e.GetMultipleFiles(MaxFiles).Where(f => f.Size <= MaxFileSize));
         await OnFilesChanged.InvokeAsync(Files.AsReadOnly());
     }
 

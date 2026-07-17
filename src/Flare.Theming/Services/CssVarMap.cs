@@ -725,11 +725,14 @@ public static class CssVarMap
         #endregion
 
         #region DROPZONE
-        v[Css.Tokens.DropzoneField.BorderWidth] = t.Dropzone.BorderWidth;
-        v[Css.Tokens.DropzoneField.HoverBg] = t.Dropzone.HoverBg;
-        v[Css.Tokens.DropzoneField.DraggingBg] = t.Dropzone.DraggingBg;
-        v[Css.Tokens.DropzoneField.DraggingRingWidth] = t.Dropzone.DraggingRingWidth;
-        v[Css.Tokens.DropzoneField.IconSize] = t.Dropzone.IconSize;
+        v[Css.Tokens.FileUploadField.BorderWidth] = t.FileUpload.BorderWidth;
+        v[Css.Tokens.FileUploadField.HoverBg] = t.FileUpload.HoverBg;
+        v[Css.Tokens.FileUploadField.DraggingBg] = t.FileUpload.DraggingBg;
+        v[Css.Tokens.FileUploadField.ZoneMinHeight] = t.FileUpload.ZoneMinHeight;
+        v[Css.Tokens.FileUploadField.ZoneRadius] = t.FileUpload.ZoneRadius;
+        v[Css.Tokens.FileUploadField.FileIconSize] = t.FileUpload.FileIconSize;
+        v[Css.Tokens.FileUploadField.DraggingRingWidth] = t.FileUpload.DraggingRingWidth;
+        v[Css.Tokens.FileUploadField.IconSize] = t.FileUpload.IconSize;
         #endregion
 
         #region FORM

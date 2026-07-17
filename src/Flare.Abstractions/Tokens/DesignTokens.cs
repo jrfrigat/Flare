@@ -130,8 +130,8 @@ public sealed record DesignTokens
     /// <summary>datetimepicker geometry tokens.</summary>
     public required DateTimePickerTokens DateTimePicker { get; init; }
 
-    /// <summary>Dropzone geometry tokens.</summary>
-    public required DropzoneTokens Dropzone { get; init; }
+    /// <summary>File upload drop-zone geometry tokens.</summary>
+    public required FileUploadTokens FileUpload { get; init; }
 
     /// <summary>form geometry tokens.</summary>
     public required FormTokens Form { get; init; }

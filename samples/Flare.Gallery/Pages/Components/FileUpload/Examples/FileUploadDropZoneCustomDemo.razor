@@ -1,11 +1,11 @@
 <FlareStack Style="max-width:36rem;">
-    <FlareDropZone OnFilesDropped="HandleDropped2" Accept=".jpg,.png,.gif,.webp" Multiple="false">
+    <FlareFileUploadZone OnFilesChanged="HandleDropped2" Accept=".jpg,.png,.gif,.webp" Multiple="false">
         <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="padding:1rem;pointer-events:none;">
             <FlareAvatar Icon="image" Size="AvatarSize.Lg" Variant="AvatarVariant.Tonal" />
             <FlareText Typo="TypographyScale.TitleSmall">Upload avatar</FlareText>
             <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">JPG, PNG or GIF up to 5 MB</FlareText>
         </FlareStack>
-    </FlareDropZone>
+    </FlareFileUploadZone>
     @if (_avatarName is not null)
     {
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">Selected: @_avatarName</FlareText>
