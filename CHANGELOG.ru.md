@@ -19,8 +19,6 @@
 
   Миграция: `Badge = ... with { Height = "1rem" }` -> назовите нужную ступень (`HeightMd = "1rem"`) или все
   пять. `Radius`, `Offset` и `DotOffset` не изменились - они не зависят от размера.
-
-### Изменено
 - **ЛОМАЮЩЕЕ: `SwitchTokens` получает рампу по размерам.** Восемь геометрических членов - `TrackWidth`,
   `TrackHeight`, `ThumbOffSize`, `ThumbOnSize`, `ThumbPressedOffSize`, `ThumbPressedOnSize`, `ThumbOffLeft`,
   `ThumbOnLeft` - становятся `*Xs`/`*Sm`/`*Md`/`*Lg`/`*Xl`, той же формы, что у `ButtonTokens`.

@@ -18,8 +18,6 @@ All notable changes to Flare are documented here. This project adheres to
 
   Migration: `Badge = ... with { Height = "1rem" }` -> name the step you mean (`HeightMd = "1rem"`), or all
   five. `Radius`, `Offset` and `DotOffset` are unchanged - they do not vary by size.
-
-### Changed
 - **BREAKING: `SwitchTokens` gains a per-size ramp.** The eight geometry members - `TrackWidth`,
   `TrackHeight`, `ThumbOffSize`, `ThumbOnSize`, `ThumbPressedOffSize`, `ThumbPressedOnSize`, `ThumbOffLeft`,
   `ThumbOnLeft` - each become `*Xs`/`*Sm`/`*Md`/`*Lg`/`*Xl`, the same shape `ButtonTokens` uses.
