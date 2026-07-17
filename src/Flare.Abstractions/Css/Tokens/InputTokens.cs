@@ -8,14 +8,17 @@ public static class InputField
     // remain (plus the CSS-computed keyboard focus ring).
     /// <summary>CSS custom-property name for the filled-variant background.</summary>
     public const string FilledBg = "--flare-input-bg";
-    /// <summary>CSS custom-property name for the outlined-variant border.</summary>
-    public const string OutlinedBorder = "--flare-input-border";
+    /// <summary>CSS custom-property name for the control-well border COLOUR (all four sides). The border
+    /// width is reserved structurally in the CSS on every variant, so the theme sets only the colour;
+    /// <c>transparent</c> makes a side invisible (the filled variant's top/left/right).</summary>
+    public const string BorderColor = "--flare-input-border-color";
     /// <summary>CSS custom-property name for the control-well radius (rounded-top for filled).</summary>
     public const string OutlinedRadius = "--flare-input-radius";
-    /// <summary>CSS custom-property name for the filled-variant resting bottom border.</summary>
-    public const string FilledBorderBottom = "--flare-input-border-bottom";
-    /// <summary>CSS custom-property name for the filled-variant hover bottom border.</summary>
-    public const string HoverBorderBottom = "--flare-input-hover-border-bottom";
+    /// <summary>CSS custom-property name for the resting bottom-border COLOUR (the filled variant's active
+    /// indicator).</summary>
+    public const string BorderBottomColor = "--flare-input-border-bottom-color";
+    /// <summary>CSS custom-property name for the hover bottom-border COLOUR.</summary>
+    public const string HoverBorderBottomColor = "--flare-input-hover-border-bottom-color";
     /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
     /// <summary>CSS custom-property name for the control padding.</summary>

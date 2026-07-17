@@ -303,8 +303,8 @@ internal class LiquidGlassTokens
     internal static readonly InputTokens Input = MaterialDesignTokens.Design.Input with
     {
         OutlinedRadius = "var(--flare-shape-medium)",
-        OutlinedBorder = "1px solid transparent",
-        FilledBorderBottom = "1px solid transparent",
+        BorderColor = "transparent",
+        BorderBottomColor = "transparent",
     };
 
     // Progress - rounded thin bar; flat (no MD3 Expressive wavy/round-cap indicator).

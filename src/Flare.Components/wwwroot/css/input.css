@@ -26,8 +26,8 @@
    Applied to FlareInput / FlareNumericField / FlareTextArea roots. Default = theme decides. */
 .flare-input-variant--filled {
     --flare-input-bg: var(--flare-color-surface-container-highest);
-    --flare-input-border: none;
-    --flare-input-border-bottom: 1px solid var(--flare-color-on-surface-variant);
+    --flare-input-border-color: transparent;
+    --flare-input-border-bottom-color: var(--flare-color-on-surface-variant);
     --flare-input-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
     /* Focus emphasis = an inset box-shadow (layout-neutral), so the field never grows / "jumps"
        when focused. The 1px border stays; the shadow adds the second accent pixel at the bottom. */
@@ -37,8 +37,8 @@
 }
 .flare-input-variant--outlined {
     --flare-input-bg: transparent;
-    --flare-input-border: 1px solid var(--flare-color-outline);
-    --flare-input-border-bottom: 1px solid var(--flare-color-outline);
+    --flare-input-border-color: var(--flare-color-outline);
+    --flare-input-border-bottom-color: var(--flare-color-outline);
     --flare-input-radius: var(--flare-shape-extra-small);
     /* Inset ring on all four sides -> reads as a 2px accent border without a layout shift. */
     --flare-input-focus-ring: inset 0 0 0 1px var(--fc-main, var(--flare-color-primary));
@@ -70,8 +70,14 @@
     background-color: var(--flare-input-bg);
     background-image: none;
     border-radius: var(--flare-input-radius);
-    border: var(--flare-input-border);
-    border-bottom: var(--flare-input-border-bottom);
+    /* Reserve the 1px border on all four sides on EVERY variant, then colour it from the tokens - a side is
+       transparent where a variant does not want it. This is why the field no longer changes height between
+       filled (bottom bar only) and outlined (full box): the box model is identical, only the colour differs.
+       The width lives here, in structural layout CSS, not in a theme token - so no theme can bake a default
+       size into it, and the variant classes carry a colour, never a `1px solid`. */
+    border: 1px solid transparent;
+    border-color: var(--flare-input-border-color);
+    border-bottom-color: var(--flare-input-border-bottom-color);
     transition: border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
                 box-shadow var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
                 background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
@@ -81,7 +87,7 @@
    Themes opt in via the tokens; default leaves the rest indicator unchanged. */
 .flare-input__field:hover {
     background-image: var(--flare-input-hover-state-layer);
-    border-bottom: var(--flare-input-hover-border-bottom);
+    border-bottom-color: var(--flare-input-hover-border-bottom-color);
 }
 
 /* Field focus indicator: layout-neutral, on focus (mouse OR keyboard, via :focus-within, matching common
