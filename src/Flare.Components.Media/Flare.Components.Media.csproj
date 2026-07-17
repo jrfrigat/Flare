@@ -5,8 +5,8 @@
     <TargetFramework></TargetFramework>
     <PackageId>Flare.Components.Media</PackageId>
     <RootNamespace>Flare.Components</RootNamespace>
-    <Description>Flare media components - VideoPlayer, SignaturePad, FileUpload for the Flare Blazor component library.</Description>
-    <PackageTags>blazor;components;media;video;signature;fileupload</PackageTags>
+    <Description>Flare media components - VideoPlayer and SignaturePad for the Flare Blazor component library.</Description>
+    <PackageTags>blazor;components;media;video;signature</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 

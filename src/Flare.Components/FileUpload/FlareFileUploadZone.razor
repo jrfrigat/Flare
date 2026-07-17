@@ -12,24 +12,24 @@
      @ondragleave="@(() => _isDragging = false)"
      @ondrop:preventDefault="true"
      @attributes="AdditionalAttributes">
-    <div class="flare-file-upload__drop-wrap">
-        <label class="flare-file-upload__zone" for="@InputId">
+    <div class="@Css.Classes.FileUpload.DropWrap">
+        <label class="@Css.Classes.FileUpload.Zone" for="@InputId">
             @if (Icon is not null)
             {
-                <span class="flare-file-upload__icon">@Icon</span>
+                <span class="@Css.Classes.FileUpload.Icon">@Icon</span>
             }
             else
             {
-                <span class="flare-file-upload__icon material-symbols-rounded" aria-hidden="true">upload_file</span>
+                <span class="@Css.Classes.FileUpload.Icon material-symbols-rounded" aria-hidden="true">upload_file</span>
             }
-            <span class="flare-file-upload__primary">@(DropText ?? FlareStrings.FileUpload_DropText)</span>
+            <span class="@Css.Classes.FileUpload.Primary">@(DropText ?? FlareStrings.FileUpload_DropText)</span>
             @if (!string.IsNullOrEmpty(Accept))
             {
-                <span class="flare-file-upload__hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
+                <span class="@Css.Classes.FileUpload.Hint">@(FlareStrings.FileUpload_Accepted) @Accept</span>
             }
         </label>
         <InputFile id="@InputId"
-                   class="flare-file-upload__input"
+                   class="@Css.Classes.FileUpload.Input"
                    accept="@Accept"
                    multiple="@Multiple"
                    disabled="@Disabled"
@@ -37,13 +37,13 @@
     </div>
     @if (ShowFileList && Files.Count > 0)
     {
-        <ul class="flare-file-upload__list">
+        <ul class="@Css.Classes.FileUpload.List">
             @foreach (var file in Files)
             {
-                <li class="flare-file-upload__file">
-                    <span class="flare-file-upload__file-icon material-symbols-rounded" aria-hidden="true">description</span>
-                    <span class="flare-file-upload__file-name">@file.Name</span>
-                    <span class="flare-file-upload__file-size">@FormatSize(file.Size)</span>
+                <li class="@Css.Classes.FileUpload.File">
+                    <span class="@Css.Classes.FileUpload.FileIcon material-symbols-rounded" aria-hidden="true">description</span>
+                    <span class="@Css.Classes.FileUpload.FileName">@file.Name</span>
+                    <span class="@Css.Classes.FileUpload.FileSize">@FormatSize(file.Size)</span>
                 </li>
             }
         </ul>
@@ -57,11 +57,11 @@
     /// <summary>Icon shown above the instructional text. Defaults to an upload glyph.</summary>
     [Parameter] public RenderFragment? Icon { get; set; }
 
-    protected override string ComponentCssClass => "flare-file-upload";
+    protected override string ComponentCssClass => Css.Classes.FileUpload.Root;
 
     private bool _isDragging;
-    private string _draggingClass => _isDragging ? "flare-file-upload--dragging" : string.Empty;
-    private string _disabledClass => Disabled ? "flare-file-upload--disabled" : string.Empty;
+    private string _draggingClass => _isDragging ? Css.Classes.FileUpload.Dragging : string.Empty;
+    private string _disabledClass => Disabled ? Css.Classes.FileUpload.Disabled : string.Empty;
 
     // The drag highlight has to clear on drop as well as on dragleave, so the zone does not stay lit.
     private async Task HandleDropAsync(InputFileChangeEventArgs e)

@@ -12,8 +12,8 @@
 
    It takes the appearance contract but not OnClick: the click merely opens the picker, and OnFilesChanged
    (which carries the files, and only after the user confirms) is the real event. *@
-<div class="@BuildCssClass("flare-file-upload--button", _disabledClass)" style="@Style" @attributes="AdditionalAttributes">
-    <div class="flare-file-upload__drop-wrap">
+<div class="@BuildCssClass(Css.Classes.FileUpload.Button, _disabledClass)" style="@Style" @attributes="AdditionalAttributes">
+    <div class="@Css.Classes.FileUpload.DropWrap">
         <label class="@_labelClass" style="@_labelStyle" for="@InputId" aria-label="@AriaLabel">
             @if (Loading)
             {
@@ -43,7 +43,7 @@
             }
         </label>
         <InputFile id="@InputId"
-                   class="flare-file-upload__input"
+                   class="@Css.Classes.FileUpload.Input"
                    accept="@Accept"
                    multiple="@Multiple"
                    disabled="@(Disabled || Loading)"
@@ -51,13 +51,13 @@
     </div>
     @if (ShowFileList && Files.Count > 0)
     {
-        <ul class="flare-file-upload__list">
+        <ul class="@Css.Classes.FileUpload.List">
             @foreach (var file in Files)
             {
-                <li class="flare-file-upload__file">
-                    <span class="flare-file-upload__file-icon material-symbols-rounded" aria-hidden="true">description</span>
-                    <span class="flare-file-upload__file-name">@file.Name</span>
-                    <span class="flare-file-upload__file-size">@FormatSize(file.Size)</span>
+                <li class="@Css.Classes.FileUpload.File">
+                    <span class="@Css.Classes.FileUpload.FileIcon material-symbols-rounded" aria-hidden="true">description</span>
+                    <span class="@Css.Classes.FileUpload.FileName">@file.Name</span>
+                    <span class="@Css.Classes.FileUpload.FileSize">@FormatSize(file.Size)</span>
                 </li>
             }
         </ul>
@@ -95,14 +95,14 @@
     /// <summary>Accessible label for the trigger.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
-    protected override string ComponentCssClass => "flare-file-upload";
+    protected override string ComponentCssClass => Css.Classes.FileUpload.Root;
 
-    private string _disabledClass => Disabled ? "flare-file-upload--disabled" : string.Empty;
+    private string _disabledClass => Disabled ? Css.Classes.FileUpload.Disabled : string.Empty;
 
     // The real button classes, from the same map FlareButton reads.
     private string _labelClass => string.Join(' ', new[]
     {
-        "flare-file-upload__button",
+        Css.Classes.FileUpload.ButtonTrigger,
         Css.Classes.Button.Root,
         ButtonCssClasses.Variant(Variant),
         ButtonCssClasses.Size(Size),
