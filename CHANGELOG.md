@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.9.0] - 2026-07-17
 
 ### Changed
 - **BREAKING: `BadgeTokens` gains a per-size ramp.** `MinWidth`, `Height`, `DotSize` and `PaddingX` become
