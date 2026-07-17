@@ -207,8 +207,11 @@ Cannot be done as pure token edits; several are net-new components or need a new
 ### Decisions needed (deliberate deviations - the user's call, do NOT auto-"fix")
 - **D1 Button heights** md/lg/xl: keep the 48/56/64 practicality cap, or adopt spec 56/96/136 (96/136dp
   are very large). Cascades to split-button + button-group.
-- **D2 Slider default size**: keep 40/52dp Medium, or retune so Medium == the 16/44dp MD3E canonical
-  (currently parked at XS).
+- **D2 Slider default size**: RESOLVED - a false positive, like D3. There is nothing to decide: the slider's
+  DEFAULT is `TrackSize.Xs`, and Xs measures 16px track / 44px handle - exactly the MD3E canonical 16/44dp.
+  The 40/52dp figure is the Md rung of the ramp, not the default, and the original reading was taken while
+  the 0.4.0 rail regression was live (every slider computed to 0px then, so any number from that window is
+  suspect). Re-measured 2026-07-17 off the live theme's tokens on a working build.
 - **D3 Button-group** flavor: RESOLVED - the Expressive gapped-pill Connected look is already shipped (the
   audit's "legacy segmented row" was a false positive). Only the separate Standard variant is unbuilt.
 - **D4 Search / Toolbar / Carousel-layouts**: build the net-new Expressive components, or accept the gap.
