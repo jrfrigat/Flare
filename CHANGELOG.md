@@ -37,6 +37,25 @@ All notable changes to Flare are documented here. This project adheres to
   `ChangelogService.LatestVersion`, a property nothing read.
 
 ### Fixed
+- **BREAKING (visual): the drawer's width is the theme's again - 360px, not 280px.** `FlareDrawer` wrote
+  `width:280px` inline on every render from a C# default, and an inline style beats the stylesheet - so
+  `--flare-drawer-width` could never render. The theme shipped the spec-exact MD3 nav-drawer width (360dp)
+  and the component overrode it with a hardcoded literal at every size. `Width` now defaults to `null` and
+  only goes inline when a caller sets one; the resting width comes from the theme.
+
+  Migration: pass `Width="280px"` on any drawer that must keep its old size.
+- **The split button's corner ramp was emitted and then thrown away.** The per-size seam tokens ramp
+  4/4/4/8/12px - exactly what MD3 Expressive specifies - but the theme's own `split-button.css` pinned every
+  seam corner to `shape-small` (8px) with `!important`, so five tokens painted nothing and only `lg` was
+  right by luck. The override existed for a real reason: a 9999px pill radius sharing an edge with a small
+  corner makes the browser scale *both* toward zero, so the seam rendered square while `getComputedStyle`
+  still reported its px. That fix (a `calc(height/2)` outer end) stays; it just no longer takes the seam
+  with it. Measured after the change: 4/4/4/8/12px across xs..xl.
+- **`InputTokens.FocusBorder` / `FocusBorderBottom` are removed.** Nothing read them. The focus indicator has
+  been `--flare-input-focus-ring` + `--flare-input-focus-outline` for some time; these two were left behind by
+  that change, so five themes were filling in values that went nowhere and a theme author tuning focus through
+  them got silence. **Breaking for a custom theme that sets them** - delete the two lines; the ring/outline
+  pair already carries the behaviour.
 - **A hover popover closed under the cursor the moment you reached its content.** Any interactive panel - a
   volume slider, a menu, a form - was unusable: crossing the `Offset` gap between anchor and panel started the
   `HideDelay` countdown, and arriving inside the panel did not stop it, so the popover vanished under the

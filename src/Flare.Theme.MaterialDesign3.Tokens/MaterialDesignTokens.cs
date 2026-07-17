@@ -341,8 +341,6 @@ public class MaterialDesignTokens
         OutlinedBorder = "none",
         OutlinedRadius = "var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0",
         FilledBorderBottom = "1px solid var(--flare-color-on-surface-variant)",
-        FocusBorder = "none",
-        FocusBorderBottom = "3px solid var(--flare-color-primary)",
         // Focus = a 2px primary active indicator drawn as a layout-neutral inset shadow (no jump).
         FocusRing = "inset 0 -3px 0 0 var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",

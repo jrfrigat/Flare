@@ -310,8 +310,6 @@
   --flare-input-border: 1px solid var(--flare-color-outline);
   --flare-input-border-bottom: 1px solid var(--flare-color-outline);
   --flare-input-radius: var(--flare-shape-extra-small);
-  --flare-input-focus-border: 2px solid var(--flare-color-primary);
-  --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
 }
 
 /* -- Advanced filter builder -------------------------------------------- */

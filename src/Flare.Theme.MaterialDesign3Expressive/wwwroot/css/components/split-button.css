@@ -22,27 +22,25 @@
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* Rest geometry: OUTER end = a full capsule from the ACTUAL height, INNER (seam) corner = shape-small
-       (~8dp), matching the connected button group so the two read as one shape system.
+    /* Rest geometry: OUTER end only. The seam corner is deliberately NOT set here - it comes from the
+       per-size tokens the base sheet reads (--flare-split-btn-main/trigger-radius-{size}-*), which ramp
+       4/4/4/8/12dp exactly as MD3 Expressive specifies. This rule used to pin the seam to shape-small (8dp)
+       for every size, which silently discarded that whole ramp.
 
        CRITICAL: the outer end must be calc(height/2), NOT the button's 9999px pill token. When a ~9999px
-       radius shares an edge with the small 8dp inner corner, the browser scales BOTH radii down
-       proportionally (side / sum-of-radii is tiny), crushing the 8dp corner to ~0 -- so the gap edge
-       renders SQUARE even though getComputedStyle still reports 8px. Using calc(height/2) keeps the
-       per-edge radius sum sane (24 + 8 = 32px < button width), so the 8dp seam corner actually paints.
-       The button group already does this (calc height/2 outer), which is why its 8dp inner renders fine.
+       radius shares an edge with the small seam corner, the browser scales BOTH radii down proportionally
+       (side / sum-of-radii is tiny), crushing the seam to ~0 -- so the gap edge renders SQUARE even though
+       getComputedStyle still reports the seam's px. Using calc(height/2) keeps the per-edge radius sum sane
+       (24 + 4 = 28px < button width), so the seam corner actually paints.
+       The button group already does this (calc height/2 outer), which is why its inner corner renders fine.
        Same specificity as the base radius rules, but this theme sheet loads later. */
     .flare-split-btn .flare-split-btn__main.flare-btn {
         border-top-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
         border-bottom-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
-        border-top-right-radius: var(--flare-shape-small) !important;
-        border-bottom-right-radius: var(--flare-shape-small) !important;
     }
     .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn {
         border-top-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
         border-bottom-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
-        border-top-left-radius: var(--flare-shape-small) !important;
-        border-bottom-left-radius: var(--flare-shape-small) !important;
     }
 
     /* When the menu is open the trigger becomes fully round: ALL 4 corners = height / 2,

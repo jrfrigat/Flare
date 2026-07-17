@@ -29,8 +29,6 @@
     --flare-input-border: none;
     --flare-input-border-bottom: 1px solid var(--flare-color-on-surface-variant);
     --flare-input-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
-    --flare-input-focus-border: none;
-    --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
     /* Focus emphasis = an inset box-shadow (layout-neutral), so the field never grows / "jumps"
        when focused. The 1px border stays; the shadow adds the second accent pixel at the bottom. */
     --flare-input-focus-ring: inset 0 -1px 0 0 var(--fc-main, var(--flare-color-primary));
@@ -42,8 +40,6 @@
     --flare-input-border: 1px solid var(--flare-color-outline);
     --flare-input-border-bottom: 1px solid var(--flare-color-outline);
     --flare-input-radius: var(--flare-shape-extra-small);
-    --flare-input-focus-border: 2px solid var(--flare-color-primary);
-    --flare-input-focus-border-bottom: 2px solid var(--flare-color-primary);
     /* Inset ring on all four sides -> reads as a 2px accent border without a layout shift. */
     --flare-input-focus-ring: inset 0 0 0 1px var(--fc-main, var(--flare-color-primary));
     /* An explicit variant defines its own focus (a ring); clear any theme-level focus outline. */

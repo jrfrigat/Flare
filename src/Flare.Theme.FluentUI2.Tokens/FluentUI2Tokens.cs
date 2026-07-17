@@ -404,8 +404,6 @@ public class FluentUI2Tokens
         OutlinedBorder = "1px solid var(--flare-color-outline)",
         OutlinedRadius = "var(--flare-shape-small)",
         FilledBorderBottom = "1px solid var(--flare-color-outline)",
-        FocusBorder = "1px solid var(--flare-color-outline)",
-        FocusBorderBottom = "2px solid var(--flare-color-primary)",
         // Fluent focus = a 2px brand accent under the field, as a layout-neutral inset shadow (no jump).
         FocusRing = "inset 0 -2px 0 0 var(--fc-main, var(--flare-color-primary))",
         FocusOutline = "none",

@@ -504,8 +504,6 @@ public static class CssVarMap
         v[Css.Tokens.InputField.OutlinedBorder] = t.Input.OutlinedBorder;
         v[Css.Tokens.InputField.OutlinedRadius] = t.Input.OutlinedRadius;
         v[Css.Tokens.InputField.FilledBorderBottom] = t.Input.FilledBorderBottom;
-        v[Css.Tokens.InputField.FocusBorder] = t.Input.FocusBorder;
-        v[Css.Tokens.InputField.FocusBorderBottom] = t.Input.FocusBorderBottom;
         v[Css.Tokens.InputField.FocusRing] = t.Input.FocusRing;
         v[Css.Tokens.InputField.FocusOutline] = t.Input.FocusOutline;
         v[Css.Tokens.InputField.FocusOutlineOffset] = t.Input.FocusOutlineOffset;

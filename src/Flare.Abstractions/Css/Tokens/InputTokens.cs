@@ -14,10 +14,6 @@ public static class InputField
     public const string OutlinedRadius = "--flare-input-radius";
     /// <summary>CSS custom-property name for the filled-variant resting bottom border.</summary>
     public const string FilledBorderBottom = "--flare-input-border-bottom";
-    /// <summary>CSS custom-property name for the outlined-variant focus border.</summary>
-    public const string FocusBorder = "--flare-input-focus-border";
-    /// <summary>CSS custom-property name for the filled-variant focus bottom border.</summary>
-    public const string FocusBorderBottom = "--flare-input-focus-border-bottom";
     /// <summary>CSS custom-property name for the filled-variant hover bottom border.</summary>
     public const string HoverBorderBottom = "--flare-input-hover-border-bottom";
     /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>

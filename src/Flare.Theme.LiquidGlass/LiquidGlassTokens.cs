@@ -299,8 +299,6 @@ internal class LiquidGlassTokens
         OutlinedRadius = "var(--flare-shape-medium)",
         OutlinedBorder = "1px solid transparent",
         FilledBorderBottom = "1px solid transparent",
-        FocusBorder = "1px solid var(--flare-color-primary)",
-        FocusBorderBottom = "1px solid var(--flare-color-primary)",
     };
 
     // Progress - rounded thin bar; flat (no MD3 Expressive wavy/round-cap indicator).
