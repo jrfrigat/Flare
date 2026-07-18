@@ -20,6 +20,9 @@ public static class FlareIcons
         return icon;
     }
 
+    /// <summary>An empty (invisible) icon - what a bare string resolves to when its id is not built in.</summary>
+    public static FlareSvgIcon Empty { get; } = new() { Data = "" };
+
     /// <summary>The built-in <c>add</c> icon.</summary>
     public static FlareSvgIcon Add { get; } = Reg("add", "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z");
     /// <summary>The built-in <c>edit</c> icon.</summary>

@@ -7,25 +7,28 @@
 ## [Unreleased]
 
 ### Добавлено
-- **Полиморфная система иконок: любой провайдер подходит в любой слот иконки.** `FlareIcon` теперь абстрактный
+- **Полиморфная система иконок: любой провайдер подходит в любой слот иконки.** `FlareIcon` - абстрактный
   дескриптор иконки; конкретные провайдеры несут свои параметры и подставляются в любой параметр типа
-  `FlareIcon`:
-  - `FlareMaterialIcon` - Material Symbols (`Fill`/`Weight`/`Grade`/`OpticalSize`/`Family`).
-  - `FlareSvgIcon` - inline-SVG (path-данные или разметка).
-  - `FlareFontAwesomeIcon` (новый опциональный пакет `Flare.Icons.FontAwesome`) - Font Awesome, стили
-    Solid/Regular/Light/Thin/Duotone/Brands; хост-приложение подключает стиль Font Awesome.
-  - `FlareFluentIcon` (новый опциональный пакет `Flare.Icons.Fluent`) - Fluent UI System Icons как inline-SVG,
-    filled/regular и сетка по размерам. Поставляется курированный каталог `FluentIcons` (89 частых иконок x
-    Regular/Filled, сгенерирован из пакета иконок Microsoft инструментом `tools/FluentIconGen`); любую другую
-    Fluent-иконку можно передать через `Data`.
+  `FlareIcon`. В ядре есть только `FlareSvgIcon` (inline-SVG); остальные - опциональные пакеты, поэтому ядро
+  не зависит ни от одного стороннего набора иконок:
+  - `Flare.Icons.MaterialDesign3.Symbols` - `FlareMaterialIcon` (вариативный шрифт Material Symbols:
+    `Fill`/`Weight`/`Grade`/`OpticalSize`/`Family`).
+  - `Flare.Icons.MaterialDesign2.Symbols` - `FlareMaterialClassicIcon` (классический шрифт Material Icons:
+    Filled/Outlined/Round/Sharp/TwoTone).
+  - `Flare.Icons.MaterialDesign2.Svg` - полный набор Material Icons (filled) как inline-SVG (каталог
+    `MaterialIcons`, 2122 иконки), генератор `tools/MaterialIconGen`.
+  - `Flare.Icons.FluentUI.Svg` - полный набор Fluent UI System Icons как inline-SVG (каталог `FluentIcons`,
+    Regular + Filled, Size 24, ~5000 иконок), генератор `tools/FluentIconGen`; плюс `FlareFluentIcon`.
+  - `Flare.Icons.FontAwesome.Symbols` - `FlareFontAwesomeIcon` (шрифт Font Awesome: Solid/Regular/Light/
+    Thin/Duotone/Brands).
 
-  Отдельная отрисовка - через `<FlareIconView>`. Голая строка резолвится во встроенный SVG, если её id есть в
-  `FlareIcons` (например `"home"`), и откатывается на Material-глиф только для id вне встроенного набора
-  (например `"volume_up"`) - то есть строка не навязывает шрифт Material без необходимости.
+  Отдельная отрисовка - через `<FlareIconView>`.
 - **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 84 готовых `FlareSvgIcon` (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) как inline-SVG - без иконочного шрифта, без сетевого запроса, без
-  FOUT, независимо от темы. Используются везде, где принимается `FlareIcon`, например
-  `<FlareIconButton Icon="@FlareIcons.Home" />`.
+  FOUT, независимо от темы. Это собственный набор Flare; им рисуется дефолтный хром, и именно в него резолвится
+  голая строка. Голая строка резолвится во встроенный id, если он известен (например `"home"`), иначе - в
+  пустую иконку; ядро не откатывается на сторонний шрифт. (Полный отказ от строкового удобства в пользу
+  типов - зафиксированный follow-up: `docs/issues/icon-string-to-typed-migration.md`.)
 
 ### Изменено
 - **BREAKING: компонента `<FlareIcon>` заменена на `<FlareIconView>` плюс дескриптор `FlareIcon`.** `FlareIcon`
@@ -33,7 +36,7 @@
   параметры `Name`/`Icon`/`Size`/`Color`/`ViewBox`/`AriaLabel`, так что миграция - переименование тега:
   `<FlareIcon ... />` -> `<FlareIconView ... />`.
 - **BREAKING: `FlareIconButton.Icon` теперь `FlareIcon`, а не строка-имя Material**, поэтому в кнопке-иконке
-  работает любой провайдер. Голая строка резолвится во встроенный SVG, если он есть (иначе Material-глиф), то
+  работает любой провайдер. Голая строка резолвится во встроенный SVG, если он есть (иначе пусто, без шрифта), то
   есть по умолчанию не навязывает шрифт; литерал в Razor должен быть выражением: `Icon="settings"` ->
   `Icon="@("settings")"` (или `Icon="@FlareIcons.Settings"`).
 - **BREAKING: члены `FlareIcons.*` теперь значения `FlareSvgIcon`, а не строки-имена** - они рисуют inline-SVG.
@@ -48,7 +51,7 @@
   `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) и
   `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) и иконки ribbon/backstage/document-tab в опциональном
   пакете `Flare.Components.IDE` теперь принимают `FlareIcon`, а не строку-имя Material. Голая строка
-  резолвится во встроенный SVG, если он есть (иначе Material-глиф), то есть по умолчанию не навязывает шрифт;
+  резолвится во встроенный SVG, если он есть (иначе пусто, без шрифта), то есть по умолчанию не навязывает шрифт;
   литерал в Razor должен быть выражением (`Icon="@("home")"`). Сырых `material-symbols`-спанов не осталось
   нигде в `src/`.
 

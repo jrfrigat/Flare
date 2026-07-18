@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Components.Rendering;
 namespace Flare.Components;
 
 /// <summary>
-/// Provider-agnostic description of a single icon. Concrete subclasses bind it to a specific icon source -
-/// <see cref="FlareMaterialIcon"/> (Material Symbols font), <see cref="FlareSvgIcon"/> (inline SVG), and
-/// optional add-on packs (Fluent, Font Awesome) - each carrying that source's own options. Anywhere a
-/// component parameter is typed <see cref="FlareIcon"/>, any subclass may be supplied, so the icon provider
-/// is a caller choice rather than a component constraint. Render one standalone with <c>FlareIconView</c>.
+/// Provider-agnostic description of a single icon. <see cref="FlareSvgIcon"/> (inline SVG) is the only
+/// provider in core; optional add-on packages add their own (Material Symbols font, Material/Fluent SVG, Font
+/// Awesome), each carrying that source's own options. Anywhere a component parameter is typed
+/// <see cref="FlareIcon"/>, any subclass may be supplied, so the icon provider is a caller choice rather than
+/// a component constraint. Render one standalone with <c>FlareIconView</c>.
 /// </summary>
 public abstract record FlareIcon
 {
@@ -39,13 +39,12 @@ public abstract record FlareIcon
     public RenderFragment Render() => Build;
 
     /// <summary>
-    /// Resolves a bare string to an icon by its snake_case id: the dependency-free built-in SVG
-    /// (<see cref="FlareIcons"/>) when one exists (e.g. <c>"home"</c>, <c>"chevron_left"</c>), otherwise a
-    /// Material Symbols glyph (e.g. <c>"volume_up"</c>). So a string never forces the Material font unless the
-    /// id is not in the built-in set.
+    /// Resolves a bare string to the dependency-free built-in SVG (<see cref="FlareIcons"/>) with that
+    /// snake_case id (e.g. <c>"home"</c>, <c>"chevron_left"</c>). An id that is not built in resolves to an
+    /// empty icon - the core never depends on a third-party icon set, so it does not fall back to a Material
+    /// font. For provider icons use a typed value from an icon package (e.g. <c>MaterialIcons.Home</c>).
     /// </summary>
-    public static implicit operator FlareIcon(string name) =>
-        FlareIcons.Find(name) ?? (FlareIcon)new FlareMaterialIcon { Name = name };
+    public static implicit operator FlareIcon(string name) => FlareIcons.Find(name) ?? FlareIcons.Empty;
 
     // Note: there is deliberately no implicit FlareIcon -> RenderFragment conversion. It reads nicely
     // ("drop an icon into a RenderFragment slot") but makes overload resolution ambiguous wherever an API

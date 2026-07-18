@@ -30,8 +30,9 @@
     <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components.QrCode\Flare.Components.QrCode.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Icons.FontAwesome\Flare.Icons.FontAwesome.csproj" />
-    <ProjectReference Include="..\..\src\Flare.Icons.Fluent\Flare.Icons.Fluent.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Icons.FontAwesome.Symbols\Flare.Icons.FontAwesome.Symbols.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Icons.FluentUI.Svg\Flare.Icons.FluentUI.Svg.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Symbols\Flare.Icons.MaterialDesign3.Symbols.csproj" />
     <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
   </ItemGroup>
 

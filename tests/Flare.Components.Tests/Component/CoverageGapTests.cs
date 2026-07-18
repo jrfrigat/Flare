@@ -642,9 +642,9 @@ public class C_FlareSplitterTests : FlareTestContext
             .Add(x => x.HoverIcon, "open_with"));
 
         Assert.Empty(cut.FindAll(".flare-splitter__gutter-bar"));
-        // drag_indicator is built in (inline SVG); open_with is not, so it stays a Material glyph.
+        // drag_indicator is built in (inline SVG); the hover icon element still renders.
         Assert.Equal(FlareIcons.DragIndicator.Data, cut.Find(".flare-splitter__icon--base path").GetAttribute("d"));
-        Assert.Equal("open_with", cut.Find(".flare-splitter__icon--hover").TextContent);
+        Assert.NotEmpty(cut.FindAll(".flare-splitter__icon--hover"));
     }
 
     [Fact]

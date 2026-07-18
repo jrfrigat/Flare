@@ -5,17 +5,16 @@
 
 @code {
     /// <summary>
-    /// A ready-made icon descriptor to render - any provider (<see cref="FlareMaterialIcon"/>,
-    /// <see cref="FlareSvgIcon"/>, a Fluent/Font Awesome pack type, ...). Takes precedence; the
-    /// <see cref="Name"/>/<see cref="Icon"/> shortcuts build one when it is null.
+    /// A ready-made icon descriptor to render - any provider (<see cref="FlareSvgIcon"/> or an add-on pack
+    /// type). Takes precedence; the <see cref="Name"/>/<see cref="Icon"/> shortcuts build one when it is null.
     /// </summary>
     [Parameter] public FlareIcon? Value { get; set; }
 
-    /// <summary>Material Symbols icon name shortcut, e.g. <c>"home"</c> (builds a <see cref="FlareMaterialIcon"/>).</summary>
+    /// <summary>Built-in icon id shortcut, e.g. <c>"home"</c> (resolves to a built-in <see cref="FlareSvgIcon"/>; empty if unknown).</summary>
     [Parameter] public string? Name { get; set; }
 
     /// <summary>
-    /// SVG path data / markup, or a Material Symbols name (auto-detected). Prefer <see cref="Value"/> or
+    /// SVG path data / markup, or a built-in icon id (auto-detected). Prefer <see cref="Value"/> or
     /// <see cref="Name"/>. SECURITY: markup is emitted verbatim - pass only trusted, developer-authored values.
     /// </summary>
     [Parameter] public string? Icon { get; set; }
@@ -60,10 +59,10 @@
     {
         if (!string.IsNullOrEmpty(Icon) && _looksLikeSvg(Icon))
             return new FlareSvgIcon { Data = Icon, ViewBox = ViewBox };
-        // A bare name resolves to the built-in SVG when known, else a Material glyph (same rule as the
-        // string -> FlareIcon conversion), so Name/Icon shortcuts do not force the font by default.
+        // A bare name resolves to the built-in SVG when known, else an empty icon (same rule as the
+        // string -> FlareIcon conversion): core never falls back to a third-party icon font.
         var name = Name ?? Icon ?? string.Empty;
-        return FlareIcons.Find(name) ?? (FlareIcon)new FlareMaterialIcon { Name = name };
+        return FlareIcons.Find(name) ?? FlareIcons.Empty;
     }
 
     private string? _sizeCss => Size ?? (SizePx is int px ? $"{px}px" : null);
