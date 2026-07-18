@@ -24,7 +24,9 @@
   - `Flare.Icons.FontAwesome.Symbols` - `FlareFontAwesomeIcon` (шрифт Font Awesome: Solid/Regular/Light/
     Thin/Duotone/Brands).
 
-  Отдельная отрисовка - через `<FlareIconView>`.
+  Отдельная отрисовка - через `<FlareIconView>`. Каждая иконка - отдельный static-член, а SVG-пакеты помечены
+  `IsTrimmable`, поэтому trimmed-публикация (Blazor WebAssembly) скачивает только реально используемые
+  приложением иконки, а не весь каталог - даже в режиме partial-trim.
 - **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 84 готовых `FlareSvgIcon` (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) как inline-SVG - без иконочного шрифта, без сетевого запроса, без
   FOUT, независимо от темы. Это собственный набор Flare; им рисуется дефолтный хром, и именно в него резолвится

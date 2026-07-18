@@ -23,7 +23,9 @@ All notable changes to Flare are documented here. This project adheres to
   - `Flare.Icons.FontAwesome.Symbols` - `FlareFontAwesomeIcon` (Font Awesome webfont: Solid/Regular/Light/
     Thin/Duotone/Brands).
 
-  Render one standalone with `<FlareIconView>`.
+  Render one standalone with `<FlareIconView>`. Each icon is its own static member and the SVG packages are
+  marked `IsTrimmable`, so a trimmed (Blazor WebAssembly) publish downloads only the icons the app actually
+  references - not the whole catalog - even under partial trim mode.
 - **A built-in, dependency-free SVG icon set (`FlareIcons`).** 84 ready `FlareSvgIcon` members (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) rendered as inline SVG - no icon font, no network request, no
   FOUT, theme-agnostic. This is Flare's own set; it backs the default component chrome and is what a bare

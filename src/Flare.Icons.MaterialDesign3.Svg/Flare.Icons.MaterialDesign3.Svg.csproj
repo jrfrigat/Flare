@@ -8,6 +8,7 @@
     <TargetFramework></TargetFramework>
     <PackageId>Flare.Icons.MaterialDesign3.Svg</PackageId>
     <RootNamespace>Flare.Components</RootNamespace>
+    <IsTrimmable>true</IsTrimmable>
     <Description>Material Design 3 (Material Symbols) as inline SVG for the Flare Blazor component library. Adds the MaterialDesign3Icons catalog of ready FlareSvgIcon values (Regular + Filled), usable anywhere a FlareIcon is accepted - no icon font required.</Description>
     <PackageTags>blazor;components;icons;material;materialsymbols;materialdesign</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
