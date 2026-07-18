@@ -12,7 +12,7 @@
         @attributes="AdditionalAttributes">
     @if (_pressed && _showCheck)
     {
-        <span class="@Css.Classes.ToggleButton.Check material-symbols-rounded" aria-hidden="true">check</span>
+        <FlareIconView Value="FlareIcons.Check" Class="@Css.Classes.ToggleButton.Check" />
     }
     @{ var icon = _pressed ? (OnIcon ?? OffIcon) : OffIcon; }
     @if (icon is not null)

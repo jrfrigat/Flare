@@ -14,7 +14,7 @@
         <button type="button" class="@Css.Classes.Tabs.Scroll @Css.Classes.Tabs.ScrollPrev"
                 disabled="@_atStart" aria-label="@(FlareStrings.Tabs_ScrollBack)"
                 tabindex="-1" @onclick="ScrollPrev">
-            <span class="material-symbols-rounded">chevron_left</span>
+            <FlareIconView Value="FlareIcons.ChevronLeft" />
         </button>
     }
     <div class="@Css.Classes.Tabs.Bar" role="tablist" aria-orientation="@(_vertical ? "vertical" : "horizontal")" @ref="_barRef" @onkeydown="HandleKeyDown">
@@ -46,7 +46,7 @@
                 @if (tab.Closeable)
                 {
                     <button class="@Css.Classes.Tabs.TabClose" @onclick="@(() => CloseTab(tab))" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Aria_CloseTab)">
-                        <span class="material-symbols-rounded">close</span>
+                        <FlareIconView Value="FlareIcons.Close" />
                     </button>
                 }
             </button>
@@ -57,7 +57,7 @@
         <button type="button" class="@Css.Classes.Tabs.Scroll @Css.Classes.Tabs.ScrollNext"
                 disabled="@_atEnd" aria-label="@(FlareStrings.Tabs_ScrollForward)"
                 tabindex="-1" @onclick="ScrollNext">
-            <span class="material-symbols-rounded">chevron_right</span>
+            <FlareIconView Value="FlareIcons.ChevronRight" />
         </button>
     }
     @if (HeaderEnd is not null)

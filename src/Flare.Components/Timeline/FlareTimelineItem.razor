@@ -4,9 +4,9 @@
 <div class="@BuildCssClass(_colorClass, _sideClass)" role="listitem" style="@($"{_colorStyle}{Style}")" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Timeline.Connector">
         <div class="@Css.Classes.Timeline.Dot">
-            @if (!string.IsNullOrEmpty(Icon))
+            @if (Icon is not null)
             {
-                <span class="material-symbols-rounded" aria-hidden="true">@Icon</span>
+                <FlareIconView Value="Icon" />
             }
         </div>
         <div class="@Css.Classes.Timeline.Line"></div>
@@ -36,8 +36,8 @@
     [Parameter] public string? Title { get; set; }
     /// <summary>Timestamp or date string shown above the title.</summary>
     [Parameter] public string? Time { get; set; }
-    /// <summary>Material Symbols icon name shown in the dot.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon shown in the dot - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Dot/connector color. Defaults to <c>Primary</c>. Role (<c>FlareColor.Secondary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Primary;
 

@@ -28,21 +28,21 @@
                     @onclick:stopPropagation="true"
                     tabindex="-1"
                     aria-label="@(_expanded ? (FlareStrings.Tree_Collapse) : (FlareStrings.Tree_Expand))">
-                <span class="material-symbols-rounded" aria-hidden="true">@(_expanded ? "expand_more" : "chevron_right")</span>
+                <FlareIconView Value="@(_expanded ? FlareIcons.ExpandMore : FlareIcons.ChevronRight)" />
             </button>
         }
         else
         {
             <span class="@Css.Classes.TreeView.TogglePlaceholder"></span>
         }
-        @if (!string.IsNullOrEmpty(Icon))
+        @if (Icon is not null)
         {
-            <span class="@Css.Classes.Tree.ItemIcon material-symbols-rounded" aria-hidden="true">@Icon</span>
+            <FlareIconView Value="Icon" Class="@Css.Classes.Tree.ItemIcon" />
         }
         <span class="@Css.Classes.TreeView.Label">@Label</span>
         @if (Draggable)
         {
-            <span class="@Css.Classes.TreeView.DragHandle material-symbols-rounded" aria-hidden="true">drag_indicator</span>
+            <FlareIconView Value="FlareIcons.DragIndicator" Class="@Css.Classes.TreeView.DragHandle" />
         }
     </div>
     @if (_expanded && HasChildren)
@@ -60,8 +60,8 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Text label displayed for this tree item.</summary>
     [Parameter] public string? Label { get; set; }
-    /// <summary>Material Symbols icon name shown beside the label.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon shown beside the label - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Whether this item is currently selected.</summary>
     [Parameter] public bool Selected { get; set; }
     /// <summary>Callback raised when the selected state changes.</summary>

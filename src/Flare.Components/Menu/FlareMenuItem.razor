@@ -15,9 +15,9 @@
        @onclick="HandleClick"
        @onclick:preventDefault="@Disabled"
        @attributes="AdditionalAttributes">
-        @if (!string.IsNullOrEmpty(Icon))
+        @if (Icon is not null)
         {
-            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded @_iconColorClass" style="@_iconColorStyle" aria-hidden="true">@Icon</span>
+            <FlareIconView Value="Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
     </a>
@@ -33,9 +33,9 @@ else
             style="@Style"
             @onclick="HandleClick"
             @attributes="AdditionalAttributes">
-        @if (!string.IsNullOrEmpty(Icon))
+        @if (Icon is not null)
         {
-            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded @_iconColorClass" style="@_iconColorStyle" aria-hidden="true">@Icon</span>
+            <FlareIconView Value="Icon" Class="@Css.Classes.Menu.ItemIcon" Color="_effectiveIconColor" />
         }
         <span class="@Css.Classes.Menu.ItemLabel">@ChildContent</span>
     </button>
@@ -44,8 +44,8 @@ else
 @code {
     /// <summary>Text or content rendered as the menu item label.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Material Symbols icon displayed before the label.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon displayed before the label - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Prevents the menu item from being clicked.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>URL the menu item navigates to. When set renders an anchor element instead of a button.</summary>
@@ -102,11 +102,6 @@ else
 
     // LeadingIconColor (alias) overrides IconColor when set to a non-default color.
     private FlareColor _effectiveIconColor => LeadingIconColor != FlareColor.Default ? LeadingIconColor : IconColor;
-    private string _iconColorClass => _effectiveIconColor.CssClass ?? string.Empty;
-    // Custom color -> inline --fc-main on the icon span; the icon CSS reads var(--fc-main, fallback).
-    private string? _iconColorStyle => _effectiveIconColor.IsCustom
-        ? $"{Css.Tokens.LocalColor.Main}:{_effectiveIconColor.Value};"
-        : null;
 
     /// <summary>Registers this item with the parent <see cref="FlareMenu"/> for keyboard navigation.</summary>
     protected override void OnInitialized()

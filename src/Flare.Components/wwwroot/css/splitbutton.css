@@ -50,7 +50,9 @@
     z-index: 1;
 }
 
-.flare-split-btn__caret {
+/* .flare-icon.<class> keeps 0,2,0 so the caret size wins over the base .flare-icon rule
+   (splitbutton.css imports before icon.css, so equal specificity would otherwise lose). */
+.flare-icon.flare-split-btn__caret {
     display: flex;
     align-items: center;
     justify-content: center;

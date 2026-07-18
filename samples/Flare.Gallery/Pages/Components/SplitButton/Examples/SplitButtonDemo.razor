@@ -2,17 +2,17 @@
     <FlareSplitButton Variant="ButtonVariant.Filled" OnClick="@(() => _last = "Save")">
         <ChildContent>Save</ChildContent>
         <MenuItems>
-            <FlareMenuItem Icon="save_as" OnClick="@(() => _last = "Save as…")">Save as…</FlareMenuItem>
-            <FlareMenuItem Icon="done_all" OnClick="@(() => _last = "Save all")">Save all</FlareMenuItem>
-            <FlareMenuItem Icon="download" OnClick="@(() => _last = "Export")">Export…</FlareMenuItem>
+            <FlareMenuItem Icon="@("save_as")" OnClick="@(() => _last = "Save as…")">Save as…</FlareMenuItem>
+            <FlareMenuItem Icon="@("done_all")" OnClick="@(() => _last = "Save all")">Save all</FlareMenuItem>
+            <FlareMenuItem Icon="@("download")" OnClick="@(() => _last = "Export")">Export…</FlareMenuItem>
         </MenuItems>
     </FlareSplitButton>
 
     <FlareSplitButton Variant="ButtonVariant.Outlined" Color="FlareColor.Secondary" OnClick="@(() => _last = "Reply")">
         <ChildContent>Reply</ChildContent>
         <MenuItems>
-            <FlareMenuItem Icon="reply_all" OnClick="@(() => _last = "Reply all")">Reply all</FlareMenuItem>
-            <FlareMenuItem Icon="forward" OnClick="@(() => _last = "Forward")">Forward</FlareMenuItem>
+            <FlareMenuItem Icon="@("reply_all")" OnClick="@(() => _last = "Reply all")">Reply all</FlareMenuItem>
+            <FlareMenuItem Icon="@("forward")" OnClick="@(() => _last = "Forward")">Forward</FlareMenuItem>
         </MenuItems>
     </FlareSplitButton>
 

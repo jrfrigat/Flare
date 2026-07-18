@@ -4,8 +4,8 @@
     <FlareSplitButton @ref="_split" FullWidth Loading="@_loading" Variant="ButtonVariant.Filled" Color="FlareColor.Primary" OnClick="@SaveAsync">
         <ChildContent>Save</ChildContent>
         <MenuItems>
-            <FlareMenuItem Icon="save_as" OnClick="@SaveAsync">Save as…</FlareMenuItem>
-            <FlareMenuItem Icon="download">Export…</FlareMenuItem>
+            <FlareMenuItem Icon="@("save_as")" OnClick="@SaveAsync">Save as…</FlareMenuItem>
+            <FlareMenuItem Icon="@("download")">Export…</FlareMenuItem>
         </MenuItems>
     </FlareSplitButton>
     <FlareStack Row Gap="FlareSpacing.Small">

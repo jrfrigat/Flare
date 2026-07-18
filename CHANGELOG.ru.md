@@ -18,7 +18,7 @@
     filled/regular и сетка по размерам; артворк предоставляет потребитель из ассетов Fluent.
 
   Отдельная отрисовка - через `<FlareIconView>`. Голая строка трактуется как имя Material Symbols.
-- **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 73 готовых `FlareSvgIcon` (`Home`,
+- **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 84 готовых `FlareSvgIcon` (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) как inline-SVG - без иконочного шрифта, без сетевого запроса, без
   FOUT, независимо от темы. Используются везде, где принимается `FlareIcon`, например
   `<FlareIconButton Icon="@FlareIcons.Home" />`.
@@ -33,6 +33,17 @@
   выражением: `Icon="settings"` -> `Icon="@("settings")"` (или `Icon="@FlareIcons.Settings"`).
 - **BREAKING: члены `FlareIcons.*` теперь значения `FlareSvgIcon`, а не строки-имена** - они рисуют inline-SVG.
   `FlareIcons.All` (id иконок) и `FlareIcons.Brands.FlareLogoShort` не изменились.
+- **Хром компонентов больше не навязывает шрифт Material Symbols.** Все иконки, которые Flare рисует сам -
+  шевроны дерева/подменю/навигации, close в диалоге и вкладках, scroll-to-top и метки степпера, сортировка/
+  фильтр/группа/дерево в data-grid, глифы file-upload и split-button и прочее - теперь inline-SVG, поэтому
+  не-MD3 тема (или приложение без загруженного шрифта Material Symbols) показывает корректный хром без внешней
+  иконочной зависимости и без FOUT. В компонентах не осталось сырых `material-symbols`-спанов.
+- **BREAKING: параметры иконок в компонентах становятся `FlareIcon?` (любой провайдер).** `FlareMenuItem`,
+  `FlareSubMenu`, `FlareTreeItem`, `FlareNavGroup`, `FlareTimelineItem`, `FlareSplitter` (`Icon`/`HoverIcon`),
+  `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) и
+  `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) теперь принимают `FlareIcon`, а не строку-имя Material.
+  Голая строка по-прежнему означает Material-иконку; литерал в Razor должен быть выражением
+  (`Icon="@("home")"`). Опциональный пакет `Flare.Components.IDE` пока не переведён.
 
 ### Исправлено
 - **Ошибка в снэкбаре теперь прерывает скринридер; success/info/warning по-прежнему ждут очереди.** Провайдер

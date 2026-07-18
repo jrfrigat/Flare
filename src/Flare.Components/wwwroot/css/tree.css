@@ -51,13 +51,13 @@
     background: var(--flare-tree-toggle-hover-bg);
 }
 
-.flare-tree-item__toggle .material-symbols-rounded {
+.flare-tree-item__toggle .flare-icon {
     font-size: var(--flare-tree-icon-size);
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     transition: transform var(--flare-motion-duration-short2) ease;
 }
 
-.flare-tree-item[aria-expanded="true"] > .flare-tree-item__row > .flare-tree-item__toggle .material-symbols-rounded {
+.flare-tree-item[aria-expanded="true"] > .flare-tree-item__row > .flare-tree-item__toggle .flare-icon {
     transform: rotate(90deg);
 }
 

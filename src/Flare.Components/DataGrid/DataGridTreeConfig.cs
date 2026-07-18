@@ -17,11 +17,11 @@ public sealed class DataGridTreeConfig<T>
     /// <summary>Column title to render the expand/collapse toggle in. If null, uses the first column.</summary>
     public string? ToggleColumnTitle { get; init; }
 
-    /// <summary>Icon for collapsed state (Material Symbols name).</summary>
-    public string CollapsedIcon { get; init; } = "chevron_right";
+    /// <summary>Icon for the collapsed state - any provider. Defaults to the built-in chevron-right.</summary>
+    public FlareIcon CollapsedIcon { get; init; } = FlareIcons.ChevronRight;
 
-    /// <summary>Icon for expanded state (Material Symbols name).</summary>
-    public string ExpandedIcon { get; init; } = "expand_more";
+    /// <summary>Icon for the expanded state - any provider. Defaults to the built-in expand-more.</summary>
+    public FlareIcon ExpandedIcon { get; init; } = FlareIcons.ExpandMore;
 }
 
 /// <summary>

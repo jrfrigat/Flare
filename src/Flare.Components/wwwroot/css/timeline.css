@@ -32,7 +32,7 @@
     z-index: 1;
 }
 
-.flare-timeline-item__dot .material-symbols-rounded {
+.flare-timeline-item__dot .flare-icon {
     font-size: var(--flare-timeline-dot-icon-size);
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
     color: currentColor;

@@ -40,7 +40,7 @@
                              FirstDayOfWeek="@FirstDayOfWeek"
                              DayClassFunc="@DayClassFunc"
                              IsDateDisabled="@IsDateDisabled" />
-            <span class="@Css.Classes.Daterangepicker.Sep material-symbols-rounded">arrow_forward</span>
+            <FlareIconView Value="FlareIcons.ArrowForward" Class="@Css.Classes.Daterangepicker.Sep" />
             <FlareDatePicker Value="@EndDate"
                              ValueChanged="HandleEndChanged"
                              Label="@(EndLabel ?? FlareStrings.DateRangePicker_EndLabel)"

@@ -5,10 +5,10 @@
     <button class="@Css.Classes.Navigation.NavGroupHeader" title="@Label" @onclick="Toggle" aria-expanded="@_expanded.ToString().ToLowerInvariant()">
         @if (Icon is not null)
         {
-            <span class="material-symbols-rounded @Css.Classes.Navigation.GroupIcon">@Icon</span>
+            <FlareIconView Value="Icon" Class="@Css.Classes.Navigation.GroupIcon" />
         }
         <span class="@Css.Classes.Navigation.NavGroupTitle">@Label</span>
-        <span class="material-symbols-rounded @Css.Classes.Navigation.GroupChevron @(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")" aria-hidden="true">expand_more</span>
+        <FlareIconView Value="FlareIcons.ExpandMore" Class="@($"{Css.Classes.Navigation.GroupChevron} {(_expanded ? Css.Classes.Navigation.NavGroupChevron : "")}")" />
     </button>
     <div class="@Css.Classes.Navigation.GroupItems @(_expanded ? Css.Classes.Navigation.GroupItemsOpen : "")" role="group" aria-hidden="@(!_expanded)">
         <div class="@Css.Classes.Navigation.GroupItemsInner">
@@ -25,8 +25,8 @@
     // bubbles up the whole chain when a deeply nested link becomes active.
     [CascadingParameter] private FlareNavGroup? ParentGroup { get; set; }
 
-    /// <summary>Material Symbols icon name rendered before the label.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon rendered before the label - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Group title text.</summary>
     [Parameter] public string? Label { get; set; }
     /// <summary>Child nav links rendered inside the group.</summary>

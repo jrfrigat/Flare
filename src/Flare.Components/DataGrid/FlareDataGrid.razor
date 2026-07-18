@@ -168,9 +168,9 @@
                             style="@CombineStyle(GetTreeIndentStyle(col, item), col.StyleFunc?.Invoke(item))">
                             @if (_treeMode && col == _gridColumns.First() && Tree?.ChildrenSelector?.Invoke(item)?.Any() == true)
                             {
-                                <span class="material-symbols-rounded @Css.Classes.DataGrid.TreeToggle"
+                                <span class="@Css.Classes.DataGrid.TreeToggle"
                                       @onclick:stopPropagation="true" @onclick="@(() => ToggleExpand(item))">
-                                    @(IsExpanded(item) ? Tree!.ExpandedIcon : Tree!.CollapsedIcon)
+                                    <FlareIconView Value="@(IsExpanded(item) ? Tree!.ExpandedIcon : Tree!.CollapsedIcon)" />
                                 </span>
                             }
                             @RenderCell(col, item)
@@ -266,9 +266,7 @@
                                             style="--_group-indent:@(gl.Level)"
                                             aria-expanded="@((!collapsed).ToString().ToLowerInvariant())"
                                             @onclick="@(() => ToggleGroup(gl.Path))">
-                                        <span class="material-symbols-rounded @Css.Classes.DataGrid.GroupChevron">
-                                            @(collapsed ? "chevron_right" : "expand_more")
-                                        </span>
+                                        <FlareIconView Value="@(collapsed ? FlareIcons.ChevronRight : FlareIcons.ExpandMore)" Class="@Css.Classes.DataGrid.GroupChevron" />
                                         @if (gl.HeaderTemplate is not null)
                                         {
                                             <span class="@Css.Classes.DataGrid.GroupLabel">@gl.HeaderTemplate</span>
@@ -348,9 +346,7 @@
                                             @onclick:stopPropagation="true"
                                             @onclick="@(() => ToggleRowDetail(rowIdx))"
                                             aria-expanded="@(_expandedRows.Contains(rowIdx).ToString().ToLowerInvariant())">
-                                        <span class="material-symbols-rounded">
-                                            @(_expandedRows.Contains(rowIdx) ? "expand_less" : "expand_more")
-                                        </span>
+                                        <FlareIconView Value="@(_expandedRows.Contains(rowIdx) ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" />
                                     </button>
                                 </td>
                             }
@@ -559,9 +555,7 @@
             var sortIdx = _sortStack.FindIndex(s => s.Column.Key == col.Key);
             if (sortIdx >= 0)
             {
-                <span class="material-symbols-rounded @Css.Classes.DataGrid.SortIcon">
-                    @(_sortStack[sortIdx].Direction == SortDirection.Ascending ? "arrow_upward" : "arrow_downward")
-                </span>
+                <FlareIconView Value="@(_sortStack[sortIdx].Direction == SortDirection.Ascending ? FlareIcons.ArrowUpward : FlareIcons.ArrowDownward)" Class="@Css.Classes.DataGrid.SortIcon" />
             }
             if (_sortStack.Count > 1 && sortIdx >= 0)
             {
@@ -582,7 +576,7 @@
                     aria-expanded="@(_filterMenuOpen == col.Key ? "true" : "false")"
                     @onclick:stopPropagation="true"
                     @onclick="@(() => ToggleFilterMenu(col.Key))">
-                <span class="material-symbols-rounded">@(filterActive ? "filter_alt" : "filter_list")</span>
+                <FlareIconView Value="@(filterActive ? FlareIcons.FilterAlt : FlareIcons.FilterList)" />
             </button>
             @if (_filterMenuOpen == col.Key)
             {

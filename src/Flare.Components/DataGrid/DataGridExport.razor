@@ -14,7 +14,7 @@
             <ChildContent>
                 @if (!string.IsNullOrEmpty(primary.Icon))
                 {
-                    <span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">@primary.Icon</span>
+                    <FlareIconView Name="@primary.Icon" Class="@Css.Classes.DataGrid.BtnIcon" />
                 }
                 @primary.Label
             </ChildContent>
@@ -38,7 +38,7 @@
                 <LeadingIcon>
                     @if (!string.IsNullOrEmpty(exp.Icon))
                     {
-                        <span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">@exp.Icon</span>
+                        <FlareIconView Name="@exp.Icon" Class="@Css.Classes.DataGrid.BtnIcon" />
                     }
                 </LeadingIcon>
                 <ChildContent>@exp.Label</ChildContent>

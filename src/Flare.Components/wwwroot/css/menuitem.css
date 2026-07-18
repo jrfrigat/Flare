@@ -77,7 +77,8 @@
     outline-offset: var(--flare-menu-item-focus-ring-offset);
 }
 
-.flare-menu-item__icon {
+/* .flare-icon.<class> keeps 0,2,0 specificity so the menu size/color win over the base .flare-icon rule. */
+.flare-icon.flare-menu-item__icon {
     font-size: var(--flare-menu-item-icon-size);
     /* IconColor (role class or inline) sets --fc-main; default stays the neutral icon color. */
     color: var(--fc-main, var(--flare-color-on-surface-variant));

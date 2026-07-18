@@ -49,7 +49,7 @@
     outline-offset: 2px;
 }
 
-.flare-dialog__close .material-symbols-rounded { font-size: 1.25rem; }
+.flare-dialog__close .flare-icon { font-size: 1.25rem; }
 
 /* Draggable: the header becomes a move handle. */
 .flare-dialog--draggable .flare-dialog__drag-handle {

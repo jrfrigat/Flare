@@ -16,10 +16,10 @@
         </div>
     }
     <div class="@Css.Classes.Slider.Row">
-        @if (!string.IsNullOrEmpty(StartIcon))
+        @if (StartIcon is not null)
         {
             <span class="@Css.Classes.Slider.Icon @Css.Classes.Slider.IconStart" aria-hidden="true">
-                <FlareIconView Name="@StartIcon" />
+                <FlareIconView Value="StartIcon" />
             </span>
         }
         <div class="@Css.Classes.Slider.TrackArea"
@@ -105,10 +105,10 @@
                 }
             </div>
         </div>
-        @if (!string.IsNullOrEmpty(EndIcon))
+        @if (EndIcon is not null)
         {
             <span class="@Css.Classes.Slider.Icon @Css.Classes.Slider.IconEnd" aria-hidden="true">
-                <FlareIconView Name="@EndIcon" />
+                <FlareIconView Value="EndIcon" />
             </span>
         }
     </div>
@@ -163,10 +163,10 @@
     [Parameter] public TrackSize Size { get; set; } = TrackSize.Xs;
     /// <summary>Accent color of the active track and handle. Role (<c>FlareColor.Primary</c>) -> shared class; custom (<c>FlareColor.Custom("#...")</c>) -> inline token. Default uses the theme primary.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
-    /// <summary>Material Symbols icon name shown before the track (e.g. "volume_mute").</summary>
-    [Parameter] public string? StartIcon { get; set; }
-    /// <summary>Material Symbols icon name shown after the track (e.g. "volume_up").</summary>
-    [Parameter] public string? EndIcon { get; set; }
+    /// <summary>Icon shown before the track - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? StartIcon { get; set; }
+    /// <summary>Icon shown after the track - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? EndIcon { get; set; }
     /// <summary>Shows step (stop) indicators along the track at each <see cref="Step"/> position.</summary>
     [Parameter] public bool Stepper { get; set; }
     /// <summary>

@@ -31,15 +31,15 @@
     <LeftToolPanel>
         <FlareToolPanel Title="Solution Explorer">
             <FlareTreeView AriaLabel="Solution Explorer">
-                <FlareTreeItem Label="MyApp" Icon="folder" Expanded="true">
-                    <FlareTreeItem Label="Properties" Icon="folder" />
-                    <FlareTreeItem Label="Pages" Icon="folder" Expanded="true">
-                        <FlareTreeItem Label="Index.razor" Icon="description"
+                <FlareTreeItem Label="MyApp" Icon="@("folder")" Expanded="true">
+                    <FlareTreeItem Label="Properties" Icon="@("folder")" />
+                    <FlareTreeItem Label="Pages" Icon="@("folder")" Expanded="true">
+                        <FlareTreeItem Label="Index.razor" Icon="@("description")"
                                        OnClick="@(() => _status = "Index.razor")" />
-                        <FlareTreeItem Label="Customers.razor" Icon="description"
+                        <FlareTreeItem Label="Customers.razor" Icon="@("description")"
                                        OnClick="@(() => _status = "Customers.razor")" />
                     </FlareTreeItem>
-                    <FlareTreeItem Label="Program.cs" Icon="description" />
+                    <FlareTreeItem Label="Program.cs" Icon="@("description")" />
                 </FlareTreeItem>
             </FlareTreeView>
         </FlareToolPanel>

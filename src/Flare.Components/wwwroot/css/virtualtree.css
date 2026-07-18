@@ -38,12 +38,12 @@
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-.flare-vtree__expand-btn .material-symbols-rounded {
+.flare-vtree__expand-btn .flare-icon {
     font-size: 1rem;
     transition: transform var(--flare-motion-duration-short2) ease;
 }
 
-.flare-vtree__node[aria-expanded="true"] .flare-vtree__expand-btn .material-symbols-rounded {
+.flare-vtree__node[aria-expanded="true"] .flare-vtree__expand-btn .flare-icon {
     transform: rotate(90deg);
 }
 
@@ -72,7 +72,7 @@
     to { transform: rotate(360deg); }
 }
 
-.flare-vtree__expand-btn[disabled] .material-symbols-rounded {
+.flare-vtree__expand-btn[disabled] .flare-icon {
     display: inline-block;
     animation: flare-vtree-spin 0.8s linear infinite;
 }

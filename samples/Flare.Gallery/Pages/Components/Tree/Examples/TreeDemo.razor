@@ -1,23 +1,23 @@
 <FlareTreeView AriaLabel="File explorer">
-    <FlareTreeItem Label="Documents" Icon="folder" Expanded="true">
-        <FlareTreeItem Label="Projects" Icon="folder">
-            <FlareTreeItem Label="Flare.sln" Icon="description"
+    <FlareTreeItem Label="Documents" Icon="@("folder")" Expanded="true">
+        <FlareTreeItem Label="Projects" Icon="@("folder")">
+            <FlareTreeItem Label="Flare.sln" Icon="@("description")"
                            Selected="@(_selected == "Flare.sln")"
                            OnClick="@(() => _selected = "Flare.sln")" />
-            <FlareTreeItem Label="README.md" Icon="description"
+            <FlareTreeItem Label="README.md" Icon="@("description")"
                            Selected="@(_selected == "README.md")"
                            OnClick="@(() => _selected = "README.md")" />
         </FlareTreeItem>
-        <FlareTreeItem Label="Resume.pdf" Icon="picture_as_pdf"
+        <FlareTreeItem Label="Resume.pdf" Icon="@("picture_as_pdf")"
                        Selected="@(_selected == "Resume.pdf")"
                        OnClick="@(() => _selected = "Resume.pdf")" />
     </FlareTreeItem>
-    <FlareTreeItem Label="Downloads" Icon="folder">
-        <FlareTreeItem Label="archive.zip" Icon="folder_zip"
+    <FlareTreeItem Label="Downloads" Icon="@("folder")">
+        <FlareTreeItem Label="archive.zip" Icon="@("folder_zip")"
                        Selected="@(_selected == "archive.zip")"
                        OnClick="@(() => _selected = "archive.zip")" />
     </FlareTreeItem>
-    <FlareTreeItem Label="settings.json" Icon="settings"
+    <FlareTreeItem Label="settings.json" Icon="@("settings")"
                    Selected="@(_selected == "settings.json")"
                    OnClick="@(() => _selected = "settings.json")" />
 </FlareTreeView>

@@ -62,7 +62,7 @@
             @foreach (var file in Files)
             {
                 <li class="@Css.Classes.FileUpload.File">
-                    <span class="@Css.Classes.FileUpload.FileIcon material-symbols-rounded" aria-hidden="true">description</span>
+                    <FlareIconView Value="FlareIcons.Description" Class="@Css.Classes.FileUpload.FileIcon" />
                     <span class="@Css.Classes.FileUpload.FileName">@file.Name</span>
                     <span class="@Css.Classes.FileUpload.FileSize">@FormatSize(file.Size)</span>
                 </li>

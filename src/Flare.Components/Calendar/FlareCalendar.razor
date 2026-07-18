@@ -6,10 +6,10 @@
 <div class="@BuildCssClass(_multiClass)" style="@Style" @attributes="AdditionalAttributes">
     <div class="@Css.Classes.Calendar.Nav">
         <button class="@Css.Classes.Calendar.NavBtn" @onclick="PrevMonth" aria-label="@(FlareStrings.Calendar_PrevMonth)">
-            <span class="material-symbols-rounded">chevron_left</span>
+            <FlareIconView Value="FlareIcons.ChevronLeft" />
         </button>
         <button class="@Css.Classes.Calendar.NavBtn" @onclick="NextMonth" aria-label="@(FlareStrings.Calendar_NextMonth)">
-            <span class="material-symbols-rounded">chevron_right</span>
+            <FlareIconView Value="FlareIcons.ChevronRight" />
         </button>
     </div>
 

@@ -4,7 +4,7 @@
 <div class="@Css.Classes.DataGrid.FilterBuilder">
     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle"
                  Color="@(_advancedCount > 0 ? FlareColor.Primary : FlareColor.Default)">
-        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">filter_alt</span></LeadingIcon>
+        <LeadingIcon><FlareIconView Value="FlareIcons.FilterAlt" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
         <ChildContent>
             @(Label ?? FlareStrings.DataGrid_ConfigureFilters)
             @if (_advancedCount > 0)
@@ -151,11 +151,11 @@
                         @(ctx.Node.Or ? FlareStrings.DataGrid_Or : FlareStrings.DataGrid_And)
                     </button>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddCondition(ctx.Node); StateHasChanged(); })">
-                        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">add</span></LeadingIcon>
+                        <LeadingIcon><FlareIconView Value="FlareIcons.Add" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
                         <ChildContent>@FlareStrings.DataGrid_AddCondition</ChildContent>
                     </FlareButton>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => { AddGroup(ctx.Node); StateHasChanged(); })">
-                        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">create_new_folder</span></LeadingIcon>
+                        <LeadingIcon><FlareIconView Value="FlareIcons.CreateNewFolder" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
                         <ChildContent>@FlareStrings.DataGrid_AddGroup</ChildContent>
                     </FlareButton>
                     @if (ctx.Parent is not null)
@@ -163,7 +163,7 @@
                         <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
                                      OnClick="@(() => { RemoveGroup(ctx.Parent!, ctx.Node); StateHasChanged(); })"
                                      AriaLabel="@FlareStrings.DataGrid_RemoveGroup">
-                            <span class="material-symbols-rounded @Css.Classes.DataGrid.CloseIcon">close</span>
+                            <FlareIconView Value="FlareIcons.Close" Class="@Css.Classes.DataGrid.CloseIcon" />
                         </FlareButton>
                     }
                 </div>
@@ -193,7 +193,7 @@
                             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
                                          OnClick="@(() => { RemoveCondition(ctx.Node, c); StateHasChanged(); })"
                                          AriaLabel="@FlareStrings.DataGrid_RemoveCondition">
-                                <span class="material-symbols-rounded @Css.Classes.DataGrid.CloseIcon">close</span>
+                                <FlareIconView Value="FlareIcons.Close" Class="@Css.Classes.DataGrid.CloseIcon" />
                             </FlareButton>
                         </div>
                     }

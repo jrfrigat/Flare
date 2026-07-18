@@ -10,12 +10,12 @@
          aria-expanded="@_open.ToString().ToLowerInvariant()"
          aria-controls="@_panelId"
          role="menuitem">
-        @if (!string.IsNullOrEmpty(Icon))
+        @if (Icon is not null)
         {
-            <span class="@Css.Classes.Menu.ItemIcon material-symbols-rounded" aria-hidden="true">@Icon</span>
+            <FlareIconView Value="Icon" Class="@Css.Classes.Menu.ItemIcon" />
         }
         <span class="@Css.Classes.Menu.ItemLabel">@Label</span>
-        <span class="@Css.Classes.Menu.SubmenuIcon material-symbols-rounded" aria-hidden="true">chevron_right</span>
+        <FlareIconView Value="FlareIcons.ChevronRight" Class="@Css.Classes.Menu.SubmenuIcon" />
     </div>
     @if (_open)
     {
@@ -38,8 +38,8 @@
 @code {
     /// <summary>Label text for the submenu trigger item.</summary>
     [Parameter] public string? Label { get; set; }
-    /// <summary>Material Symbols icon displayed before the label.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon displayed before the label - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Menu items rendered inside the submenu panel.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Submenu opens to this side relative to the parent item.</summary>

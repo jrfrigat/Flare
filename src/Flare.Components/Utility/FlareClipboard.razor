@@ -26,9 +26,7 @@
     }
     else
     {
-        <span class="material-symbols-rounded flare-icon" aria-hidden="true">
-            @(_copied ? "check" : "content_copy")
-        </span>
+        <FlareIconView Value="@(_copied ? FlareIcons.Check : FlareIcons.ContentCopy)" />
     }
 </FlareButton>
 

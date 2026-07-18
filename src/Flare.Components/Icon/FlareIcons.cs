@@ -156,6 +156,30 @@ public static class FlareIcons
     /// <summary>The built-in <c>speed</c> icon.</summary>
     public static FlareSvgIcon Speed { get; } = new() { Data = "M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 19a2 2 0 0 0 1.72 1h13.85a2 2 0 0 0 1.74-1 10 10 0 0 0-.27-10.44zm-9.79 6.84a2 2 0 0 0 2.83 0l5.66-8.49-8.49 5.66a2 2 0 0 0 0 2.83z" };
 
+    // -- Component chrome (used by default component rendering) ----------------
+    /// <summary>The built-in <c>drag_indicator</c> icon.</summary>
+    public static FlareSvgIcon DragIndicator { get; } = new() { Data = "M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" };
+    /// <summary>The built-in <c>keyboard_arrow_up</c> icon.</summary>
+    public static FlareSvgIcon KeyboardArrowUp { get; } = new() { Data = "M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z" };
+    /// <summary>The built-in <c>filter_alt</c> icon.</summary>
+    public static FlareSvgIcon FilterAlt { get; } = new() { Data = "M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6c0 0 3.72-4.8 5.74-7.39C20.25 4.95 19.78 4 18.95 4H5.04C4.21 4 3.74 4.95 4.25 5.61z" };
+    /// <summary>The built-in <c>view_column</c> icon.</summary>
+    public static FlareSvgIcon ViewColumn { get; } = new() { Data = "M14.67 5v14H9.33V5h5.34zm1 14H21V5h-5.33v14zM8.33 19V5H3v14h5.33z" };
+    /// <summary>The built-in <c>description</c> icon.</summary>
+    public static FlareSvgIcon Description { get; } = new() { Data = "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" };
+    /// <summary>The built-in <c>upload_file</c> icon.</summary>
+    public static FlareSvgIcon UploadFile { get; } = new() { Data = "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11z" };
+    /// <summary>The built-in <c>create_new_folder</c> icon.</summary>
+    public static FlareSvgIcon CreateNewFolder { get; } = new() { Data = "M20 6h-8l-2-2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z" };
+    /// <summary>The built-in <c>content_copy</c> icon.</summary>
+    public static FlareSvgIcon ContentCopy { get; } = new() { Data = "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" };
+    /// <summary>The built-in <c>colorize</c> (eyedropper) icon.</summary>
+    public static FlareSvgIcon Colorize { get; } = new() { Data = "M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z" };
+    /// <summary>The built-in <c>arrow_upward</c> icon.</summary>
+    public static FlareSvgIcon ArrowUpward { get; } = new() { Data = "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" };
+    /// <summary>The built-in <c>arrow_downward</c> icon.</summary>
+    public static FlareSvgIcon ArrowDownward { get; } = new() { Data = "M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z" };
+
     // The icon ids (snake_case), matching the built-in members above.
     private static readonly string[] _names =
     [
@@ -232,6 +256,17 @@ public static class FlareIcons
         "local_fire_department",
         "flash_on",
         "speed",
+        "drag_indicator",
+        "keyboard_arrow_up",
+        "filter_alt",
+        "view_column",
+        "description",
+        "upload_file",
+        "create_new_folder",
+        "content_copy",
+        "colorize",
+        "arrow_upward",
+        "arrow_downward",
     ];
 
     /// <summary>All built-in icon ids, sorted alphabetically.</summary>
