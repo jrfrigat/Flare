@@ -110,7 +110,7 @@
 
 /* Custom step icon sizing inside the indicator circle */
 .flare-stepper__circle .flare-icon,
-.flare-stepper__circle .material-symbols-rounded {
+.flare-stepper__circle .flare-icon {
   font-size: var(--flare-stepper-circle-icon-size);
   width: 1em;
   height: 1em;

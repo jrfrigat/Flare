@@ -593,7 +593,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   background-color: color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-.flare-datagrid__detail-btn > .material-symbols-rounded {
+.flare-datagrid__detail-btn > .flare-icon {
   font-size: var(--flare-datagrid-detail-icon-size);
 }
 
@@ -605,6 +605,10 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   cursor: pointer;
   margin-right: var(--flare-spacing-2);
   vertical-align: middle;
+}
+/* The toggle is a clickable wrapper around the built-in SVG icon; size the icon itself. */
+.flare-datagrid__tree-toggle .flare-icon {
+  font-size: var(--flare-datagrid-tree-toggle-size);
 }
 
 /* Infinite-scroll IntersectionObserver sentinel (visually collapsed). */
@@ -729,7 +733,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
               color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-datagrid__filter-trigger > .material-symbols-rounded { font-size: var(--flare-datagrid-filter-icon-size); }
+.flare-datagrid__filter-trigger > .flare-icon { font-size: var(--flare-datagrid-filter-icon-size); }
 
 .flare-datagrid__filter-trigger:hover {
   background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);

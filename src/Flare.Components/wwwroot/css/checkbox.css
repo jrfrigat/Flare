@@ -163,7 +163,7 @@
     content: none !important;
 }
 .flare-checkbox--custom-icon .flare-checkbox__indicator .flare-icon,
-.flare-checkbox--custom-icon .flare-checkbox__indicator .material-symbols-rounded {
+.flare-checkbox--custom-icon .flare-checkbox__indicator .flare-icon {
     font-size: 1.125rem;
     width: 1em;
     height: 1em;

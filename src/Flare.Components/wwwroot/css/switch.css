@@ -81,7 +81,7 @@
 
 /* Handle icon size (default 16dp). */
 .flare-switch__handle .flare-icon,
-.flare-switch__handle .material-symbols-rounded {
+.flare-switch__handle .flare-icon {
     font-size: var(--flare-switch-icon-size);
     width: 1em;
     height: 1em;

@@ -175,6 +175,10 @@ public static class FlareIcons
     public static FlareSvgIcon ContentCopy { get; } = new() { Data = "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" };
     /// <summary>The built-in <c>colorize</c> (eyedropper) icon.</summary>
     public static FlareSvgIcon Colorize { get; } = new() { Data = "M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z" };
+    /// <summary>The built-in <c>arrow_upward</c> icon.</summary>
+    public static FlareSvgIcon ArrowUpward { get; } = new() { Data = "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" };
+    /// <summary>The built-in <c>arrow_downward</c> icon.</summary>
+    public static FlareSvgIcon ArrowDownward { get; } = new() { Data = "M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z" };
 
     // The icon ids (snake_case), matching the built-in members above.
     private static readonly string[] _names =
@@ -261,6 +265,8 @@ public static class FlareIcons
         "create_new_folder",
         "content_copy",
         "colorize",
+        "arrow_upward",
+        "arrow_downward",
     ];
 
     /// <summary>All built-in icon ids, sorted alphabetically.</summary>

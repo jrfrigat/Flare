@@ -2,7 +2,7 @@
    Length is set with the --flare-slider-length CSS var. *@
 <FlareStack Row Gap="FlareSpacing.Large" Align="FlareAlignItems.End">
     <FlareSlider @bind-Value="_a" Vertical="true" ShowValue="false"
-                 StartIcon="volume_mute" EndIcon="volume_up" Style="--flare-slider-length:13rem" />
+                 StartIcon="@("volume_mute")" EndIcon="@("volume_up")" Style="--flare-slider-length:13rem" />
     <FlareSlider @bind-Value="_b" Vertical="true" ShowValue="false" Color="FlareColor.Secondary"
                  Stepper="true" Min="0" Max="100" Step="10" Style="--flare-slider-length:13rem" />
     <FlareSlider @bind-Value="_c" Vertical="true" ShowValue="false" Size="TrackSize.Md"

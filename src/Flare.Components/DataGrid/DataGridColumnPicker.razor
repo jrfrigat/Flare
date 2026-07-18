@@ -3,7 +3,7 @@
 
 <div class="@Css.Classes.DataGrid.ColumnPickerWrap">
     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle" AriaLabel="@FlareStrings.DataGrid_ToggleColumns">
-        <LeadingIcon><span class="material-symbols-rounded @Css.Classes.DataGrid.BtnIcon">view_column</span></LeadingIcon>
+        <LeadingIcon><FlareIconView Value="FlareIcons.ViewColumn" Class="@Css.Classes.DataGrid.BtnIcon" /></LeadingIcon>
         <ChildContent>@(Label ?? FlareStrings.DataGrid_ColumnsLabel)</ChildContent>
     </FlareButton>
     @if (_open)
