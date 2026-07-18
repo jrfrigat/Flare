@@ -7,11 +7,11 @@
         </HeaderStart>
         <HeaderEnd>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => Snackbar.Show("Refresh"))">
-                <LeadingIcon><FlareIconView Name="refresh" /></LeadingIcon>
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Refresh" /></LeadingIcon>
                 <ChildContent>Refresh</ChildContent>
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="@(() => Snackbar.Show("New"))">
-                <LeadingIcon><FlareIconView Name="add" /></LeadingIcon>
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></LeadingIcon>
                 <ChildContent>New</ChildContent>
             </FlareButton>
         </HeaderEnd>

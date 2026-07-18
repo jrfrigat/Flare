@@ -10,20 +10,20 @@
                     Style="width:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
         <ToolbarContent>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Refresh">
-                <FlareIconView Name="refresh" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Refresh" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Collapse all">
-                <FlareIconView Name="unfold_less" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.UnfoldLess" />
             </FlareButton>
         </ToolbarContent>
         <ChildContent>
             <FlareTreeView AriaLabel="Explorer">
-                <FlareTreeItem Label="src" Icon="@("folder")" Expanded="true">
-                    <FlareTreeItem Label="Program.cs" Icon="@("description")" />
-                    <FlareTreeItem Label="App.razor" Icon="@("code")" />
+                <FlareTreeItem Label="src" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
+                    <FlareTreeItem Label="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" />
+                    <FlareTreeItem Label="App.razor" Icon="@MaterialDesign3Icons.Regular.Code" />
                 </FlareTreeItem>
-                <FlareTreeItem Label="wwwroot" Icon="@("folder")" />
-                <FlareTreeItem Label="README.md" Icon="@("article")" />
+                <FlareTreeItem Label="wwwroot" Icon="@MaterialDesign3Icons.Regular.Folder" />
+                <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Article" />
             </FlareTreeView>
         </ChildContent>
     </FlareToolPanel>
@@ -33,13 +33,13 @@
                     Style="width:240px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);">
         <FlareList TItem="object">
             <FlareListItem Primary="Main(string[] args)">
-                <Leading><FlareIconView Name="data_object" /></Leading>
+                <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
             </FlareListItem>
             <FlareListItem Primary="ConfigureServices()">
-                <Leading><FlareIconView Name="data_object" /></Leading>
+                <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
             </FlareListItem>
             <FlareListItem Primary="Configure(app)">
-                <Leading><FlareIconView Name="data_object" /></Leading>
+                <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></Leading>
             </FlareListItem>
         </FlareList>
     </FlareToolPanel>

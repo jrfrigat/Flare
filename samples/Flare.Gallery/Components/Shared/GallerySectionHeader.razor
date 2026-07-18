@@ -1,9 +1,9 @@
 @namespace Flare.Gallery.Components.Shared
 
 <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-    @if (!string.IsNullOrEmpty(Icon))
+    @if (Icon is not null)
     {
-        <FlareIconView Color="FlareColor.Primary" Name="@Icon" />
+        <FlareIconView Color="FlareColor.Primary" Value="@Icon" />
     }
     <FlareText Typo="TypographyScale.TitleLarge"
                Class="@(string.IsNullOrEmpty(AnchorId) ? null : "demo-section__title")"
@@ -11,8 +11,8 @@
 </FlareStack>
 
 @code {
-    /// <summary>Material Symbols icon name shown before the title.</summary>
-    [Parameter] public string  Icon  { get; set; } = "";
+    /// <summary>Icon shown before the title.</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Section header title.</summary>
     [Parameter] public string? Title { get; set; }
     /// <summary>

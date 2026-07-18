@@ -18,7 +18,7 @@
     <FlareTabs Variant="TabsVariant.Primary">
 
         <FlareTab Label="@GalleryStrings.Settings_TabTheme">
-            <LeadingIcon><FlareIconView Name="contrast" Size="1.1rem" /></LeadingIcon>
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Contrast" Size="1.1rem" /></LeadingIcon>
             <ChildContent>
                 <FlareStack Gap="FlareSpacing.Large" Style="padding-top:1.25rem;">
                     <div>
@@ -39,15 +39,15 @@
                         <FlareText Typo="TypographyScale.LabelLarge" Style="margin-bottom:0.75rem;display:block;">@GalleryStrings.Theme_Mode</FlareText>
                         <FlareStack Row Wrap Gap="FlareSpacing.Small">
                             <FlareButton Variant="@ModeVariant(ThemeMode.Light)" OnClick="@(() => SetModeAsync(ThemeMode.Light))">
-                                <LeadingIcon><FlareIconView Name="light_mode" /></LeadingIcon>
+                                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.LightMode" /></LeadingIcon>
                                 <ChildContent>@GalleryStrings.Theme_ModeLight</ChildContent>
                             </FlareButton>
                             <FlareButton Variant="@ModeVariant(ThemeMode.Dark)" OnClick="@(() => SetModeAsync(ThemeMode.Dark))">
-                                <LeadingIcon><FlareIconView Name="dark_mode" /></LeadingIcon>
+                                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.DarkMode" /></LeadingIcon>
                                 <ChildContent>@GalleryStrings.Theme_ModeDark</ChildContent>
                             </FlareButton>
                             <FlareButton Variant="@ModeVariant(ThemeMode.Auto)" OnClick="@(() => SetModeAsync(ThemeMode.Auto))">
-                                <LeadingIcon><FlareIconView Name="brightness_auto" /></LeadingIcon>
+                                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.BrightnessAuto" /></LeadingIcon>
                                 <ChildContent>@GalleryStrings.Theme_ModeAuto</ChildContent>
                             </FlareButton>
                         </FlareStack>
@@ -57,7 +57,7 @@
         </FlareTab>
 
         <FlareTab Label="@GalleryStrings.Theme_Palette">
-            <LeadingIcon><FlareIconView Name="palette" Size="1.1rem" /></LeadingIcon>
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Palette" Size="1.1rem" /></LeadingIcon>
             <ChildContent>
                 <FlareStack Gap="FlareSpacing.Large" Style="padding-top:1.25rem;">
                     <div>
@@ -88,7 +88,7 @@
                         <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
                             <FlareColorPicker @bind-Value="_seed" Inline="true" />
                             <FlareButton Variant="ButtonVariant.Tonal" OnClick="GenerateAsync">
-                                <LeadingIcon><FlareIconView Name="auto_awesome" /></LeadingIcon>
+                                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Stars" /></LeadingIcon>
                                 <ChildContent>@GalleryStrings.Theming_GenerateBtn</ChildContent>
                             </FlareButton>
                         </FlareStack>
@@ -98,7 +98,7 @@
         </FlareTab>
 
         <FlareTab Label="@GalleryStrings.Settings_TabNavigation">
-            <LeadingIcon><FlareIconView Name="dock_to_right" Size="1.1rem" /></LeadingIcon>
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.DockToRight" Size="1.1rem" /></LeadingIcon>
             <ChildContent>
                 <FlareStack Gap="FlareSpacing.Medium" Style="padding-top:1.25rem;max-width:36rem;">
                     <div>
@@ -109,13 +109,13 @@
                         <FlareButton Variant="@(RailLabels.ShowLabels ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                                      OnClick="@(() => SetRailLabelsAsync(true))"
                                      Style="justify-content:flex-start;width:100%;">
-                            <LeadingIcon><FlareIconView Name="view_sidebar" /></LeadingIcon>
+                            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.ViewSidebar" /></LeadingIcon>
                             <ChildContent>@GalleryStrings.Nav_Rail_Labeled</ChildContent>
                         </FlareButton>
                         <FlareButton Variant="@(RailLabels.ShowLabels ? ButtonVariant.Outlined : ButtonVariant.Filled)"
                                      OnClick="@(() => SetRailLabelsAsync(false))"
                                      Style="justify-content:flex-start;width:100%;">
-                            <LeadingIcon><FlareIconView Name="dock_to_right" /></LeadingIcon>
+                            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.DockToRight" /></LeadingIcon>
                             <ChildContent>@GalleryStrings.Nav_Rail_IconsOnly</ChildContent>
                         </FlareButton>
                     </FlareStack>
@@ -124,7 +124,7 @@
         </FlareTab>
 
         <FlareTab Label="@GalleryStrings.Settings_Language">
-            <LeadingIcon><FlareIconView Name="translate" Size="1.1rem" /></LeadingIcon>
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Translate" Size="1.1rem" /></LeadingIcon>
             <ChildContent>
                 <FlareStack Gap="FlareSpacing.Medium" Style="padding-top:1.25rem;">
                     <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Settings_Language</FlareText>

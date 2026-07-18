@@ -1,18 +1,18 @@
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Medium" Wrap="true">
         <FlareToggleButton @bind-Toggled="_fav" AriaLabel="Favourite">
-            <OffIcon><FlareIconView Name="favorite_border" /></OffIcon>
-            <OnIcon><FlareIconView Color="FlareColor.Error" Name="favorite" /></OnIcon>
+            <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Favorite" /></OffIcon>
+            <OnIcon><FlareIconView Color="FlareColor.Error" Value="@MaterialDesign3Icons.Regular.Favorite" /></OnIcon>
         </FlareToggleButton>
 
         <FlareToggleButton @bind-Toggled="_bookmark" AriaLabel="Bookmark">
-            <OffIcon><FlareIconView Name="bookmark_border" /></OffIcon>
-            <OnIcon><FlareIconView Name="bookmark" /></OnIcon>
+            <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Bookmark" /></OffIcon>
+            <OnIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Bookmark" /></OnIcon>
         </FlareToggleButton>
 
         <FlareToggleButton @bind-Toggled="_mute" AriaLabel="Mute">
-            <OffIcon><FlareIconView Name="volume_up" /></OffIcon>
-            <OnIcon><FlareIconView Name="volume_off" /></OnIcon>
+            <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.VolumeUp" /></OffIcon>
+            <OnIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.VolumeOff" /></OnIcon>
         </FlareToggleButton>
     </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">

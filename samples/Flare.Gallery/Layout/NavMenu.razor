@@ -7,34 +7,34 @@
 <FlareNavMenu Mode="Mode">
     <Footer>
         <FlareNavLink Href="/settings" Tooltip="@GalleryStrings.Settings_Title">
-            <Icon><FlareIconView Size="1.25rem" Name="settings" /></Icon>
+            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Settings" /></Icon>
             <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
         </FlareNavLink>
     </Footer>
     <ChildContent>
         <FlareNavLink Href="/" Match="NavMatchMode.Exact">
-            <Icon><FlareIconView Size="1.25rem" Name="home" /></Icon>
+            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Home" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Guide))" Active="@(RouteSection == GallerySection.Guide)">
-            <Icon><FlareIconView Size="1.25rem" Name="menu_book" /></Icon>
+            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.MenuBook" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Guide</ChildContent>
         </FlareNavLink>
 
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Themes))" Active="@(RouteSection == GallerySection.Themes)">
-            <Icon><FlareIconView Size="1.25rem" Name="palette" /></Icon>
+            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Palette" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Theming</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Components))" Active="@(RouteSection == GallerySection.Components)">
-            <Icon><FlareIconView Size="1.25rem" Name="category" /></Icon>
+            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Category" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Components</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Services))" Active="@(RouteSection == GallerySection.Services)">
-            <Icon><FlareIconView Size="1.25rem" Name="bolt" /></Icon>
+            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Bolt" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Services</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Api))" Active="@(RouteSection == GallerySection.Api)">
-            <Icon><FlareIconView Size="1.25rem" Name="data_object" /></Icon>
+            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.DataObject" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Api</ChildContent>
         </FlareNavLink>
     </ChildContent>

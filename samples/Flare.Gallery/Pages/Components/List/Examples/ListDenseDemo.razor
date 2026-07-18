@@ -1,15 +1,15 @@
 @* Dense reduces the vertical padding of every list item. *@
 <FlareList TItem="object" Dense="true" Style="max-width:22rem;">
     <FlareListItem Primary="Inbox" Secondary="24 new messages">
-        <Leading><FlareIconView Name="inbox" /></Leading>
+        <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.Inbox" /></Leading>
     </FlareListItem>
     <FlareListItem Primary="Starred" Secondary="8 items">
-        <Leading><FlareIconView Name="star" /></Leading>
+        <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.Star" /></Leading>
     </FlareListItem>
     <FlareListItem Primary="Sent" Secondary="Last sent today">
-        <Leading><FlareIconView Name="send" /></Leading>
+        <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.Send" /></Leading>
     </FlareListItem>
     <FlareListItem Primary="Trash">
-        <Leading><FlareIconView Name="delete" /></Leading>
+        <Leading><FlareIconView Value="@MaterialDesign3Icons.Regular.Delete" /></Leading>
     </FlareListItem>
 </FlareList>

@@ -6,7 +6,7 @@
                     @foreach (var item in _feed)
                     {
                         <FlareListItem Primary="@item.Title" Secondary="@item.Time">
-                            <Leading><FlareAvatar Icon="article" Variant="AvatarVariant.Tonal" /></Leading>
+                            <Leading><FlareAvatar Icon="@MaterialDesign3Icons.Regular.Article" Variant="AvatarVariant.Tonal" /></Leading>
                         </FlareListItem>
                     }
                 </FlareList>

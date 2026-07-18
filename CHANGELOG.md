@@ -26,7 +26,7 @@ All notable changes to Flare are documented here. This project adheres to
   Render one standalone with `<FlareIconView>`. Each icon is its own static member and the SVG packages are
   marked `IsTrimmable`, so a trimmed (Blazor WebAssembly) publish downloads only the icons the app actually
   references - not the whole catalog - even under partial trim mode.
-- **A built-in, dependency-free SVG icon set (`FlareIcons`).** 84 ready `FlareSvgIcon` members (`Home`,
+- **A built-in, dependency-free SVG icon set (`FlareIcons`).** 92 ready `FlareSvgIcon` members (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) rendered as inline SVG - no icon font, no network request, no
   FOUT, theme-agnostic. This is Flare's own set; it backs the default component chrome and is what a bare
   string resolves to. A bare string resolves to the built-in id when known (e.g. `"home"`) and to an empty
@@ -58,6 +58,12 @@ All notable changes to Flare are documented here. This project adheres to
   expression (`Icon="@("home")"`). No raw `material-symbols` spans remain anywhere in `src/`.
 
 ### Fixed
+- **The DataGrid export menu, date/time picker triggers and combobox spinner show their icons again.** These
+  chrome icons referenced Material Symbols ids (`data_object`, `grid_on`, `picture_as_pdf`, `table`,
+  `calendar_month`, `calendar_clock`, `progress_activity`, `fullscreen`) that were not in the built-in
+  `FlareIcons` set, so after core stopped falling back to the Material font they rendered empty. The eight are
+  now part of the built-in set (`FlareIcons` is 84 -> 92), so the default chrome is whole again without any
+  icon-font dependency.
 - **A snackbar error now interrupts a screen reader; success/info/warning still wait their turn.** The
   provider was one `aria-live="polite"` container, so every notice - errors included - was announced
   politely and could be missed. A stack mixes politeness levels and a container can only carry one, so the

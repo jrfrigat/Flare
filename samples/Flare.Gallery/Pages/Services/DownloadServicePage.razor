@@ -14,10 +14,10 @@
         <FlareTextArea @bind-Value="_content" Label="Content" Rows="4" />
         <FlareStack Row Gap="FlareSpacing.Small">
             <FlareButton OnClick="@(() => Download.DownloadAsync("flare-note.txt", _content, "text/plain"))">
-                <LeadingIcon><FlareIconView Name="download" /></LeadingIcon><ChildContent>@GalleryStrings.Services_DownloadTxt</ChildContent>
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Download" /></LeadingIcon><ChildContent>@GalleryStrings.Services_DownloadTxt</ChildContent>
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => Download.DownloadCsvAsync("flare-data.csv", _csv))">
-                <LeadingIcon><FlareIconView Name="table_view" /></LeadingIcon><ChildContent>@GalleryStrings.Services_DownloadCsv</ChildContent>
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.TableView" /></LeadingIcon><ChildContent>@GalleryStrings.Services_DownloadCsv</ChildContent>
             </FlareButton>
         </FlareStack>
     </FlareStack>

@@ -3,12 +3,12 @@
 <FlareStack Row Gap="FlareSpacing.XLarge" Wrap Align="FlareAlignItems.End" Style="min-height:12rem;padding:3rem 1rem 1rem;">
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
         <FlareFloatingActionButton Position="FabPosition.Static" AriaLabel="Actions (up)">
-            <Icon><FlareIconView Icon="add" /></Icon>
+            <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></Icon>
             <ChildContent>
                 <FlareFloatingActionMenu Direction="FabMenuDirection.Up">
-                    <FlareFloatingActionMenuItem Icon="@("edit")" Label="Edit" OnClick="@(() => Snackbar.Show("Edit"))" />
-                    <FlareFloatingActionMenuItem Icon="@("share")" Label="Share" OnClick="@(() => Snackbar.Show("Share"))" />
-                    <FlareFloatingActionMenuItem Icon="@("delete")" Label="Delete" OnClick="@(() => Snackbar.Show("Delete", SnackbarSeverity.Error))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Edit" Label="Edit" OnClick="@(() => Snackbar.Show("Edit"))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Share" Label="Share" OnClick="@(() => Snackbar.Show("Share"))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Delete" Label="Delete" OnClick="@(() => Snackbar.Show("Delete", SnackbarSeverity.Error))" />
                 </FlareFloatingActionMenu>
             </ChildContent>
         </FlareFloatingActionButton>
@@ -17,11 +17,11 @@
 
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
         <FlareFloatingActionButton Position="FabPosition.Static" Color="@Colors.Secondary" AriaLabel="Actions (right)">
-            <Icon><FlareIconView Icon="more_horiz" /></Icon>
+            <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.MoreHoriz" /></Icon>
             <ChildContent>
                 <FlareFloatingActionMenu Direction="FabMenuDirection.Right">
-                    <FlareFloatingActionMenuItem Icon="@("download")" Label="Download" OnClick="@(() => Snackbar.Show("Downloading…"))" />
-                    <FlareFloatingActionMenuItem Icon="@("print")" Label="Print" OnClick="@(() => Snackbar.Show("Printing…"))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Download" Label="Download" OnClick="@(() => Snackbar.Show("Downloading…"))" />
+                    <FlareFloatingActionMenuItem Icon="@MaterialDesign3Icons.Regular.Print" Label="Print" OnClick="@(() => Snackbar.Show("Printing…"))" />
                 </FlareFloatingActionMenu>
             </ChildContent>
         </FlareFloatingActionButton>

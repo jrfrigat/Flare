@@ -20,7 +20,7 @@
     {
         RenderFragment body =
             @<FlareStack Row Gap="FlareSpacing.Small" AlignItems="FlareAlignItems.Center">
-                <FlareIconView Name="cloud_done" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.CloudDone" />
                 <span>@GalleryStrings.Snackbar_CustomBody</span>
             </FlareStack>;
         Snackbar.Show(body, new SnackbarOptions { Severity = SnackbarSeverity.Success, DurationMs = 0 });

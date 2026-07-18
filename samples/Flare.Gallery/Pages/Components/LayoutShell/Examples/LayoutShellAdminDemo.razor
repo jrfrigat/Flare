@@ -3,7 +3,7 @@
         <FlareLayoutAppBar DrawerToggle="true">
             <FlareText Typo="TypographyScale.TitleLarge">My App</FlareText>
             <FlareStack Row Style="flex:1;" />
-            <FlareAvatar Icon="account_circle" Size="AvatarSize.Sm" />
+            <FlareAvatar Icon="@MaterialDesign3Icons.Regular.AccountCircle" Size="AvatarSize.Sm" />
         </FlareLayoutAppBar>
 
         @* The drawer owns its own open state; the app-bar toggle flips it. *@
@@ -11,15 +11,15 @@
             <FlareStack Style="padding:1rem 0.5rem;">
                 <FlareNavMenu>
                     <FlareNavLink Href="#" Match="NavMatchMode.Exact">
-                        <Icon><FlareIconView Size="1.1rem" Name="dashboard" /></Icon>
+                        <Icon><FlareIconView Size="1.1rem" Value="@MaterialDesign3Icons.Regular.Dashboard" /></Icon>
                         <ChildContent>Dashboard</ChildContent>
                     </FlareNavLink>
                     <FlareNavLink Href="#">
-                        <Icon><FlareIconView Size="1.1rem" Name="people" /></Icon>
+                        <Icon><FlareIconView Size="1.1rem" Value="@MaterialDesign3Icons.Regular.Group" /></Icon>
                         <ChildContent>Users</ChildContent>
                     </FlareNavLink>
                     <FlareNavLink Href="#">
-                        <Icon><FlareIconView Size="1.1rem" Name="settings" /></Icon>
+                        <Icon><FlareIconView Size="1.1rem" Value="@MaterialDesign3Icons.Regular.Settings" /></Icon>
                         <ChildContent>Settings</ChildContent>
                     </FlareNavLink>
                 </FlareNavMenu>

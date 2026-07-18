@@ -10,9 +10,9 @@
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">File</FlareButton>
                 </Activator>
                 <ChildContent>
-                    <FlareMenuItem Icon="@("note_add")" OnClick="@(() => Set("File > New"))">New</FlareMenuItem>
-                    <FlareMenuItem Icon="@("folder_open")" OnClick="@(() => Set("File > Open"))">Open</FlareMenuItem>
-                    <FlareMenuItem Icon="@("save")" OnClick="@(() => Set("File > Save"))">Save</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.NoteAdd" OnClick="@(() => Set("File > New"))">New</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.FolderOpen" OnClick="@(() => Set("File > Open"))">Open</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Save" OnClick="@(() => Set("File > Save"))">Save</FlareMenuItem>
                 </ChildContent>
             </FlareMenu>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="Edit menu">
@@ -20,9 +20,9 @@
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">Edit</FlareButton>
                 </Activator>
                 <ChildContent>
-                    <FlareMenuItem Icon="@("content_cut")" OnClick="@(() => Set("Edit > Cut"))">Cut</FlareMenuItem>
-                    <FlareMenuItem Icon="@("content_copy")" OnClick="@(() => Set("Edit > Copy"))">Copy</FlareMenuItem>
-                    <FlareMenuItem Icon="@("content_paste")" OnClick="@(() => Set("Edit > Paste"))">Paste</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCut" OnClick="@(() => Set("Edit > Cut"))">Cut</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCopy" OnClick="@(() => Set("Edit > Copy"))">Copy</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentPaste" OnClick="@(() => Set("Edit > Paste"))">Paste</FlareMenuItem>
                 </ChildContent>
             </FlareMenu>
             <FlareMenu Anchor="MenuAnchor.BottomLeft" AriaLabel="View menu">
@@ -30,8 +30,8 @@
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm">View</FlareButton>
                 </Activator>
                 <ChildContent>
-                    <FlareMenuItem Icon="@("account_tree")" OnClick="@(() => Set("View > Solution Explorer"))">Solution Explorer</FlareMenuItem>
-                    <FlareMenuItem Icon="@("terminal")" OnClick="@(() => Set("View > Terminal"))">Terminal</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.AccountTree" OnClick="@(() => Set("View > Solution Explorer"))">Solution Explorer</FlareMenuItem>
+                    <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Terminal" OnClick="@(() => Set("View > Terminal"))">Terminal</FlareMenuItem>
                 </ChildContent>
             </FlareMenu>
         </FlareMenuBar>

@@ -1,13 +1,13 @@
 @* MultiSelect lets several items be selected at once (aria-multiselectable). *@
 <FlareTreeView MultiSelect="true" AriaLabel="Selectable categories">
-    <FlareTreeItem Label="Frontend" Icon="@("folder")" Expanded="true">
-        <FlareTreeItem Label="Blazor" Icon="@("check")" @bind-Selected="_blazor" />
-        <FlareTreeItem Label="React" Icon="@("check")" @bind-Selected="_react" />
-        <FlareTreeItem Label="Vue" Icon="@("check")" @bind-Selected="_vue" />
+    <FlareTreeItem Label="Frontend" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
+        <FlareTreeItem Label="Blazor" Icon="@MaterialDesign3Icons.Regular.Check" @bind-Selected="_blazor" />
+        <FlareTreeItem Label="React" Icon="@MaterialDesign3Icons.Regular.Check" @bind-Selected="_react" />
+        <FlareTreeItem Label="Vue" Icon="@MaterialDesign3Icons.Regular.Check" @bind-Selected="_vue" />
     </FlareTreeItem>
-    <FlareTreeItem Label="Backend" Icon="@("folder")" Expanded="true">
-        <FlareTreeItem Label=".NET" Icon="@("check")" @bind-Selected="_dotnet" />
-        <FlareTreeItem Label="Node" Icon="@("check")" @bind-Selected="_node" />
+    <FlareTreeItem Label="Backend" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
+        <FlareTreeItem Label=".NET" Icon="@MaterialDesign3Icons.Regular.Check" @bind-Selected="_dotnet" />
+        <FlareTreeItem Label="Node" Icon="@MaterialDesign3Icons.Regular.Check" @bind-Selected="_node" />
     </FlareTreeItem>
 </FlareTreeView>
 

@@ -29,6 +29,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Flare\Flare.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Svg\Flare.Icons.MaterialDesign3.Svg.csproj" />
 		<!-- The theme packages are referenced directly so their assemblies are in the WASM boot set
 		     and Settings can switch between every built-in theme (Flare references them transitively,
 		     but WASM only loads directly-reachable theme assemblies). -->

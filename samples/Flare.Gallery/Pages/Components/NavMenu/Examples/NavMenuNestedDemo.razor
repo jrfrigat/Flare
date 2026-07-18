@@ -3,18 +3,18 @@
 <FlareCard Variant="CardVariant.Filled" Style="max-width:280px;padding:0.75rem 0;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-medium);">
     <FlareNavMenu>
         <FlareNavLink Href="/" Match="NavMatchMode.Exact">
-            <Icon><FlareIconView Size="1.1rem" Name="home" /></Icon>
+            <Icon><FlareIconView Size="1.1rem" Value="@MaterialDesign3Icons.Regular.Home" /></Icon>
             <ChildContent>Home</ChildContent>
         </FlareNavLink>
-        <FlareNavGroup Label="Components" Icon="@("widgets")">
+        <FlareNavGroup Label="Components" Icon="@MaterialDesign3Icons.Regular.Widgets">
             <FlareNavLink Href="/components/buttons">Buttons</FlareNavLink>
-            <FlareNavGroup Label="Inputs" Icon="@("edit")">
+            <FlareNavGroup Label="Inputs" Icon="@MaterialDesign3Icons.Regular.Edit">
                 <FlareNavLink Href="/components/input">Text Field</FlareNavLink>
                 <FlareNavLink Href="/components/select">Select</FlareNavLink>
                 @* Active forces this link active -> "Inputs" and "Components" auto-expand *@
                 <FlareNavLink Href="/components/slider" Active="true">Slider</FlareNavLink>
             </FlareNavGroup>
-            <FlareNavGroup Label="Layout" Icon="@("dashboard")">
+            <FlareNavGroup Label="Layout" Icon="@MaterialDesign3Icons.Regular.Dashboard">
                 <FlareNavLink Href="/components/stack">Stack</FlareNavLink>
                 <FlareNavLink Href="/components/grid">Grid</FlareNavLink>
             </FlareNavGroup>

@@ -1,24 +1,24 @@
 ﻿@inject ISnackbarService Snackbar
 
 <FlareButton Variant="ButtonVariant.Filled">
-    <LeadingIcon><FlareIconView Icon="add" /></LeadingIcon>
+    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></LeadingIcon>
     <ChildContent>Add item</ChildContent>
 </FlareButton>
 <FlareButton Variant="ButtonVariant.Outlined">
-    <LeadingIcon><FlareIconView Icon="download" /></LeadingIcon>
+    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Download" /></LeadingIcon>
     <ChildContent>Download</ChildContent>
 </FlareButton>
 <FlareButton Variant="ButtonVariant.Tonal">
-    <TrailingIcon><FlareIconView Icon="arrow_forward" /></TrailingIcon>
+    <TrailingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.ArrowForward" /></TrailingIcon>
     <ChildContent>Next</ChildContent>
 </FlareButton>
 <FlareButton Variant="ButtonVariant.Text"
                 OnClick="@(() => Snackbar.Show("Deleted!", SnackbarSeverity.Error))">
-    <LeadingIcon><FlareIconView Icon="delete" /></LeadingIcon>
+    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Delete" /></LeadingIcon>
     <ChildContent>Delete</ChildContent>
 </FlareButton>
 <FlareButton Variant="ButtonVariant.Elevated"
                 OnClick="@(() => Snackbar.Show("Shared!"))">
-    <LeadingIcon><FlareIconView Icon="share" /></LeadingIcon>
+    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Share" /></LeadingIcon>
     <ChildContent>Share</ChildContent>
 </FlareButton>

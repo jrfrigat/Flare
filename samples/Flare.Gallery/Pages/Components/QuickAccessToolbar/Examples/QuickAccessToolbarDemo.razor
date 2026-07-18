@@ -6,20 +6,20 @@
     <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
         <FlareQuickAccessToolbar>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save" OnClick="@(() => Set("Save"))">
-                <FlareIconView Name="save" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Save" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Undo" OnClick="@(() => Set("Undo"))">
-                <FlareIconView Name="undo" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Undo" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Redo" OnClick="@(() => Set("Redo"))">
-                <FlareIconView Name="redo" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Redo" />
             </FlareButton>
             <FlareRibbonSeparator />
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Print" OnClick="@(() => Set("Print"))">
-                <FlareIconView Name="print" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Print" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Email" OnClick="@(() => Set("Email"))">
-                <FlareIconView Name="mail" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Mail" />
             </FlareButton>
         </FlareQuickAccessToolbar>
     </div>

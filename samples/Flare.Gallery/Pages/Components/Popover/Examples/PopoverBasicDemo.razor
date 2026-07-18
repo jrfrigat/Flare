@@ -23,7 +23,7 @@
     <FlarePopover @bind-Open="_popHelp" Placement="PopoverPlacement.RightStart" Arrow="true">
         <AnchorContent>
             <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _popHelp = !_popHelp)">
-                <FlareIconView Name="help_outline" /> Help
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Help" /> Help
             </FlareButton>
         </AnchorContent>
         <ChildContent>

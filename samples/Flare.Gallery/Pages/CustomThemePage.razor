@@ -23,11 +23,11 @@
 
 <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-bottom:1rem;">
     <FlareButton Variant="ButtonVariant.Filled" OnClick="Apply">
-        <LeadingIcon><FlareIconView Name="check" /></LeadingIcon>
+        <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Check" /></LeadingIcon>
         <ChildContent>Confirm</ChildContent>
     </FlareButton>
     <FlareButton Variant="ButtonVariant.Outlined" OnClick="Reset">
-        <LeadingIcon><FlareIconView Name="restart_alt" /></LeadingIcon>
+        <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.RestartAlt" /></LeadingIcon>
         <ChildContent>Reset</ChildContent>
     </FlareButton>
     <FlareSpacer />
@@ -79,11 +79,11 @@
                     </FlareText>
                     <FlareStack Row Wrap Gap="FlareSpacing.Small">
                         <FlareButton Variant="ButtonVariant.Tonal" OnClick="BuildExport">
-                            <LeadingIcon><FlareIconView Name="data_object" /></LeadingIcon>
+                            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.DataObject" /></LeadingIcon>
                             <ChildContent>Generate JSON</ChildContent>
                         </FlareButton>
                         <FlareButton Variant="ButtonVariant.Outlined" OnClick="DownloadJson" Disabled="@string.IsNullOrEmpty(_exportJson)">
-                            <LeadingIcon><FlareIconView Name="download" /></LeadingIcon>
+                            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Download" /></LeadingIcon>
                             <ChildContent>Download</ChildContent>
                         </FlareButton>
                         @if (!string.IsNullOrEmpty(_exportJson))
@@ -111,7 +111,7 @@
                     }
                     <FlareStack Row Gap="FlareSpacing.Small">
                         <FlareButton Variant="ButtonVariant.Filled" OnClick="Import" Disabled="@string.IsNullOrWhiteSpace(_importText)">
-                            <LeadingIcon><FlareIconView Name="upload" /></LeadingIcon>
+                            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Upload" /></LeadingIcon>
                             <ChildContent>Load and apply</ChildContent>
                         </FlareButton>
                     </FlareStack>

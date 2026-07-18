@@ -19,7 +19,7 @@
         <FlareStack Gap="FlareSpacing.Medium">
             <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
                 <label class="flare-btn flare-btn--tonal flare-btn--md" style="cursor:pointer;">
-                    <FlareIconView Name="upload" Size="1.25rem" />
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Upload" Size="1.25rem" />
                     <span class="flare-btn__label">@GalleryStrings.Services_DynamicUpload</span>
                     <InputFile OnChange="OnFileAsync" accept="image/*" style="display:none;" />
                 </label>
@@ -52,7 +52,7 @@
                     }
                     else
                     {
-                        <FlareIconView Name="music_note" Size="4rem" Style="color:var(--fc-on-container);opacity:.7;" />
+                        <FlareIconView Value="@MaterialDesign3Icons.Regular.MusicNote" Size="4rem" Style="color:var(--fc-on-container);opacity:.7;" />
                     }
                 </div>
 
@@ -68,11 +68,11 @@
 
                 @* Transport controls *@
                 <FlareStack Row Justify="FlareJustifyContent.SpaceBetween" Align="FlareAlignItems.Center">
-                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Shuffle"><LeadingIcon><FlareIconView Name="shuffle" /></LeadingIcon></FlareButton>
-                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Previous"><LeadingIcon><FlareIconView Name="skip_previous" /></LeadingIcon></FlareButton>
-                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Lg" Color="@_dynamic" AriaLabel="Play"><LeadingIcon><FlareIconView Name="play_arrow" /></LeadingIcon></FlareButton>
-                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Next"><LeadingIcon><FlareIconView Name="skip_next" /></LeadingIcon></FlareButton>
-                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Repeat"><LeadingIcon><FlareIconView Name="repeat" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Shuffle"><LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Shuffle" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Previous"><LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.SkipPrevious" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Lg" Color="@_dynamic" AriaLabel="Play"><LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Next"><LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.SkipNext" /></LeadingIcon></FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text" Color="@_dynamic" AriaLabel="Repeat"><LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Repeat" /></LeadingIcon></FlareButton>
                 </FlareStack>
             </FlareStack>
         </FlareCard>

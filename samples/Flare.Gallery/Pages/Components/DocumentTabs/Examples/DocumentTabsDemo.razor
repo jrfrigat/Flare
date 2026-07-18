@@ -6,7 +6,7 @@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="AddDocument">
-            <LeadingIcon><FlareIconView Name="add" /></LeadingIcon>
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Add" /></LeadingIcon>
             <ChildContent>New file</ChildContent>
         </FlareButton>
         <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
@@ -28,7 +28,7 @@
                         @if (doc.Modified)
                         {
                             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => Save(doc))">
-                                <LeadingIcon><FlareIconView Name="save" /></LeadingIcon>
+                                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Save" /></LeadingIcon>
                                 <ChildContent>Save (clear modified)</ChildContent>
                             </FlareButton>
                         }
@@ -48,7 +48,7 @@
     {
         public required int Id { get; init; }
         public required string Title { get; init; }
-        public required string Icon { get; init; }
+        public required FlareIcon Icon { get; init; }
         public required string Description { get; init; }
         public bool Modified { get; set; }
         public bool Closeable { get; set; } = true;
@@ -59,9 +59,9 @@
 
     private readonly List<Doc> _docs =
     [
-        new() { Id = 1, Title = "Program.cs", Icon = "description", Description = "Application entry point.", Modified = true },
-        new() { Id = 2, Title = "README.md", Icon = "article", Description = "Project overview and docs." },
-        new() { Id = 3, Title = "App.razor", Icon = "code", Description = "Root component (pinned).", Closeable = false },
+        new() { Id = 1, Title = "Program.cs", Icon = MaterialDesign3Icons.Regular.Description, Description = "Application entry point.", Modified = true },
+        new() { Id = 2, Title = "README.md", Icon = MaterialDesign3Icons.Regular.Article, Description = "Project overview and docs." },
+        new() { Id = 3, Title = "App.razor", Icon = MaterialDesign3Icons.Regular.Code, Description = "Root component (pinned).", Closeable = false },
     ];
 
     private void OnChanged(string title) => _active = title;
@@ -75,7 +75,7 @@
     private void AddDocument()
     {
         var id = _nextId++;
-        _docs.Add(new Doc { Id = id, Title = $"Untitled-{id}.cs", Icon = "draft", Description = "A new, unsaved file.", Modified = true });
+        _docs.Add(new Doc { Id = id, Title = $"Untitled-{id}.cs", Icon = MaterialDesign3Icons.Regular.Draft, Description = "A new, unsaved file.", Modified = true });
     }
 
     private void Save(Doc doc) => doc.Modified = false;

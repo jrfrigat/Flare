@@ -14,8 +14,8 @@
     <FlareStack Gap="FlareSpacing.Medium">
         <FlareField TValue="string" @bind-Value="_text" Label="Text" Placeholder="Type something to copy..." />
         <FlareStack Row Gap="FlareSpacing.Small">
-            <FlareButton OnClick="CopyAsync"><LeadingIcon><FlareIconView Name="content_copy" /></LeadingIcon><ChildContent>@GalleryStrings.Services_Copy</ChildContent></FlareButton>
-            <FlareButton Variant="ButtonVariant.Tonal" OnClick="ReadAsync"><LeadingIcon><FlareIconView Name="content_paste" /></LeadingIcon><ChildContent>@GalleryStrings.Services_Read</ChildContent></FlareButton>
+            <FlareButton OnClick="CopyAsync"><LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.ContentCopy" /></LeadingIcon><ChildContent>@GalleryStrings.Services_Copy</ChildContent></FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="ReadAsync"><LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.ContentPaste" /></LeadingIcon><ChildContent>@GalleryStrings.Services_Read</ChildContent></FlareButton>
         </FlareStack>
         @if (_read is not null)
         {

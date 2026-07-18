@@ -7,9 +7,9 @@
             <FlarePaper Style="padding:2rem 3rem;">@GalleryStrings.Menu_ContextHint</FlarePaper>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="@("content_cut")" OnClick="@(() => Snackbar.Show(GalleryStrings.Menu_Action_Cut))">@GalleryStrings.Menu_Action_Cut</FlareMenuItem>
-            <FlareMenuItem Icon="@("content_copy")" OnClick="@(() => Snackbar.Show(GalleryStrings.Menu_Action_Copy))">@GalleryStrings.Menu_Action_Copy</FlareMenuItem>
-            <FlareMenuItem Icon="@("content_paste")" OnClick="@(() => Snackbar.Show(GalleryStrings.Menu_Action_Paste))">@GalleryStrings.Menu_Action_Paste</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCut" OnClick="@(() => Snackbar.Show(GalleryStrings.Menu_Action_Cut))">@GalleryStrings.Menu_Action_Cut</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCopy" OnClick="@(() => Snackbar.Show(GalleryStrings.Menu_Action_Copy))">@GalleryStrings.Menu_Action_Copy</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentPaste" OnClick="@(() => Snackbar.Show(GalleryStrings.Menu_Action_Paste))">@GalleryStrings.Menu_Action_Paste</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 
@@ -22,7 +22,7 @@
             @for (var i = 1; i <= 12; i++)
             {
                 var n = i;
-                <FlareMenuItem Icon="@("star")" OnClick="@(() => Snackbar.Show($"{GalleryStrings.Menu_ScrollItem} {n}"))">@GalleryStrings.Menu_ScrollItem @n</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Star" OnClick="@(() => Snackbar.Show($"{GalleryStrings.Menu_ScrollItem} {n}"))">@GalleryStrings.Menu_ScrollItem @n</FlareMenuItem>
             }
         </ChildContent>
     </FlareMenu>
@@ -36,7 +36,7 @@
             <FlareMenuItem AutoClose="false" Icon="@(_a ? "check_box" : "check_box_outline_blank")" OnClick="@(() => _a = !_a)">@GalleryStrings.Menu_Action_Cut</FlareMenuItem>
             <FlareMenuItem AutoClose="false" Icon="@(_b ? "check_box" : "check_box_outline_blank")" OnClick="@(() => _b = !_b)">@GalleryStrings.Menu_Action_Copy</FlareMenuItem>
             <FlareDivider />
-            <FlareMenuItem Icon="@("done")">@GalleryStrings.Menu_Action_Paste</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Check">@GalleryStrings.Menu_Action_Paste</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 </FlareStack>

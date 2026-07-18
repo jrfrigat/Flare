@@ -1,6 +1,9 @@
 # Remove the string -> FlareIcon conversion; move icon usage to typed values
 
-**Status:** open. Follow-up to the icon provider-package restructure.
+**Status:** partly done. The Gallery + Legacy sample apps are migrated to typed icons
+(`MaterialDesign3Icons.Regular.*` / `FlareIcons.*`), and the core chrome that used non-built-in ids
+(DataGrid export, date/time pickers, combobox) is fixed by adding those 8 ids to `FlareIcons` (now 92).
+What remains below is the optional final step of dropping the string convenience from the library itself.
 
 ## Context
 

@@ -6,13 +6,13 @@
     <FlareStepper @ref="_stepper" @bind-ActiveIndex="_index">
         <ChildContent>
             <FlareStep Label="Scope">
-                <Icon><FlareIconView Name="key" /></Icon>
+                <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.Key" /></Icon>
                 <ChildContent>
                     <FlareText Typo="TypographyScale.BodyMedium">Pick the permissions the token should grant.</FlareText>
                 </ChildContent>
             </FlareStep>
             <FlareStep Label="Confirm">
-                <Icon><FlareIconView Name="check_circle" /></Icon>
+                <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.CheckCircle" /></Icon>
                 <ChildContent>
                     <FlareText Typo="TypographyScale.BodyMedium">
                         Review and generate the token. Use the arrows or scroll the mouse wheel to move.
@@ -26,13 +26,13 @@
                 <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Circular"
                              Disabled="ctx.IsFirst" AriaLabel="Previous step"
                              OnClick="@(() => ctx.BackAsync())">
-                    <LeadingIcon><FlareIconView Name="arrow_back" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.ArrowBack" /></LeadingIcon>
                 </FlareButton>
                 <FlareText Typo="TypographyScale.LabelLarge">@(ctx.ActiveIndex + 1) / @ctx.Count</FlareText>
                 <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Circular"
                              Disabled="ctx.IsLast" AriaLabel="Next step"
                              OnClick="@(() => ctx.NextAsync())">
-                    <LeadingIcon><FlareIconView Name="arrow_forward" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.ArrowForward" /></LeadingIcon>
                 </FlareButton>
             </FlareStack>
         </ActionContent>

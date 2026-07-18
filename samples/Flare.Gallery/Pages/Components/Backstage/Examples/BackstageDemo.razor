@@ -6,7 +6,7 @@
 <div style="position:relative;height:340px;border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;background:var(--flare-color-surface);">
     <div style="padding:0.75rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--flare-color-outline-variant);">
         <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="@(() => _open = true)">
-            <LeadingIcon><FlareIconView Name="folder_open" /></LeadingIcon>
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.FolderOpen" /></LeadingIcon>
             <ChildContent>File</ChildContent>
         </FlareButton>
         <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
@@ -22,15 +22,15 @@
 
     <FlareBackstage @bind-Open="_open">
         <NavContent>
-            <FlareBackstageItem Icon="@("note_add")" Label="New" Active="_selected == BackstageNav.New"
+            <FlareBackstageItem Icon="@MaterialDesign3Icons.Regular.NoteAdd" Label="New" Active="_selected == BackstageNav.New"
                                 OnClick="@(() => _selected = BackstageNav.New)" />
-            <FlareBackstageItem Icon="@("folder_open")" Label="Open" Active="_selected == BackstageNav.Open"
+            <FlareBackstageItem Icon="@MaterialDesign3Icons.Regular.FolderOpen" Label="Open" Active="_selected == BackstageNav.Open"
                                 OnClick="@(() => _selected = BackstageNav.Open)" />
-            <FlareBackstageItem Icon="@("save")" Label="Save As" Active="_selected == BackstageNav.Save"
+            <FlareBackstageItem Icon="@MaterialDesign3Icons.Regular.Save" Label="Save As" Active="_selected == BackstageNav.Save"
                                 OnClick="@(() => _selected = BackstageNav.Save)" />
-            <FlareBackstageItem Icon="@("print")" Label="Print" Active="_selected == BackstageNav.Print"
+            <FlareBackstageItem Icon="@MaterialDesign3Icons.Regular.Print" Label="Print" Active="_selected == BackstageNav.Print"
                                 OnClick="@(() => _selected = BackstageNav.Print)" />
-            <FlareBackstageItem Icon="@("settings")" Label="Options" Active="_selected == BackstageNav.Options"
+            <FlareBackstageItem Icon="@MaterialDesign3Icons.Regular.Settings" Label="Options" Active="_selected == BackstageNav.Options"
                                 OnClick="@(() => _selected = BackstageNav.Options)" />
         </NavContent>
         <ChildContent>

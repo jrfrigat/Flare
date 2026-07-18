@@ -11,19 +11,19 @@
     <FlareLayoutDrawer @bind-Open="_navOpen" Variant="DrawerVariant.Mini">
         <FlareNavMenu AriaLabel="Разделы">
             <FlareNavLink Href="/" Match="NavMatchMode.Exact" Tooltip="Список займов">
-                <Icon><FlareIconView Name="format_list_bulleted" /></Icon>
+                <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.FormatListBulleted" /></Icon>
                 <ChildContent>Список займов</ChildContent>
             </FlareNavLink>
             <FlareNavLink Href="/reports" Tooltip="Отчёты">
-                <Icon><FlareIconView Name="insights" /></Icon>
+                <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.Analytics" /></Icon>
                 <ChildContent>Отчёты</ChildContent>
             </FlareNavLink>
             <FlareNavLink Href="/schedule" Tooltip="Рабочий график">
-                <Icon><FlareIconView Name="schedule" /></Icon>
+                <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.Schedule" /></Icon>
                 <ChildContent>Рабочий график</ChildContent>
             </FlareNavLink>
             <FlareNavLink Href="/settings" Tooltip="Настройки">
-                <Icon><FlareIconView Name="settings" /></Icon>
+                <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.Settings" /></Icon>
                 <ChildContent>Настройки</ChildContent>
             </FlareNavLink>
         </FlareNavMenu>

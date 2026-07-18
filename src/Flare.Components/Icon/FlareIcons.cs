@@ -9,13 +9,22 @@ namespace Flare.Components;
 /// <remarks>Icon artwork is derived from the Material Symbols set (Apache License 2.0); see the repository NOTICE.</remarks>
 public static class FlareIcons
 {
-    // Every built-in icon registers here by its snake_case id, so a bare string can resolve to
-    // the dependency-free SVG (falling back to the Material font only for ids not in this set).
+    // Every built-in icon registers here by its snake_case id, so a bare string resolves to the
+    // dependency-free SVG (an id not in this set resolves to Empty - core never depends on an icon font).
     private static readonly Dictionary<string, FlareSvgIcon> _byId = new(StringComparer.OrdinalIgnoreCase);
 
     private static FlareSvgIcon Reg(string id, string data)
     {
         var icon = new FlareSvgIcon { Data = data };
+        _byId[id] = icon;
+        return icon;
+    }
+
+    // Overload for artwork authored on a non-24 grid (e.g. the Material Symbols 960 grid); each icon
+    // carries its own viewBox so it still renders at the same 1em size as the 24x24 built-ins.
+    private static FlareSvgIcon Reg(string id, string data, string viewBox)
+    {
+        var icon = new FlareSvgIcon { Data = data, ViewBox = viewBox };
         _byId[id] = icon;
         return icon;
     }
@@ -193,6 +202,24 @@ public static class FlareIcons
     public static FlareSvgIcon ArrowUpward { get; } = Reg("arrow_upward", "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z");
     /// <summary>The built-in <c>arrow_downward</c> icon.</summary>
     public static FlareSvgIcon ArrowDownward { get; } = Reg("arrow_downward", "M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z");
+
+    // Larger-set icons used by DataGrid export / date-time pickers / combobox (Material Symbols, 960 grid).
+    /// <summary>The <c>data_object</c> icon.</summary>
+    public static FlareSvgIcon DataObject { get; } = Reg("data_object", """<path d="M600-160q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h90q21.25 0 35.63-14.38Q740-248.75 740-270v-100q0-37 22.5-66t57.5-40v-8q-35-10-57.5-39.5T740-590v-100q0-21.25-14.37-35.63Q711.25-740 690-740h-90q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h90q45.83 0 77.92 32.08Q800-735.83 800-690v100q0 21.25 14.38 35.62Q828.75-540 850-540q12.75 0 21.38 8.65 8.62 8.64 8.62 21.42v60.15q0 12.78-8.62 21.28-8.63 8.5-21.38 8.5-21.25 0-35.62 14.37Q800-391.25 800-370v100q0 45.83-32.08 77.92Q735.83-160 690-160h-90Zm-330 0q-45.83 0-77.92-32.08Q160-224.17 160-270v-100q0-21.25-14.37-35.63Q131.25-420 110-420q-12.75 0-21.37-8.65Q80-437.29 80-450.07v-60.15q0-12.78 8.63-21.28Q97.25-540 110-540q21.25 0 35.63-14.38Q160-568.75 160-590v-100q0-45.83 32.08-77.92Q224.17-800 270-800h90q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5h-90q-21.25 0-35.62 14.37Q220-711.25 220-690v100q0 37-22.5 66.5T140-484v8q35 11 57.5 40t22.5 66v100q0 21.25 14.38 35.62Q248.75-220 270-220h90q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5h-90Z"/>""", "0 -960 960 960");
+    /// <summary>The <c>grid_on</c> icon.</summary>
+    public static FlareSvgIcon GridOn { get; } = Reg("grid_on", """<path d="M180-120q-24 0-42-18t-18-42v-600q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Zm0-60h160v-160H180v160Zm220 0h160v-160H400v160Zm220 0h160v-160H620v160ZM180-400h160v-160H180v160Zm220 0h160v-160H400v160Zm220 0h160v-160H620v160ZM180-620h160v-160H180v160Zm220 0h160v-160H400v160Zm220 0h160v-160H620v160Z"/>""", "0 -960 960 960");
+    /// <summary>The <c>picture_as_pdf</c> icon.</summary>
+    public static FlareSvgIcon PictureAsPdf { get; } = Reg("picture_as_pdf", """<path d="M368-514h48q15.73 0 26.36-10.64Q453-535.28 453-551v-48q0-15.72-10.64-26.36Q431.73-636 416-636h-66q-7.6 0-13.3 5-5.7 5-5.7 13.41v168.18q0 8.41 5.5 13.41t13.5 5q8 0 13-5.7t5-13.3v-64Zm0-37v-48h48v48h-48Zm213 120q15 0 26-10.64 11-10.63 11-26.36v-131q0-15.72-11-26.36Q596-636 581-636h-65q-7.6 0-13.3 5-5.7 5-5.7 13.36v167.28q0 8.36 5.7 13.86T516-431h65Zm-47-37v-131h47v131h-47Zm170-46h32q8 0 13-5.5t5-13.5q0-8-5-13t-13-5h-32v-48h32q8 0 13-5.5t5-13.5q0-8-5-13t-13-5h-50q-7.6 0-13.3 5-5.7 5-5.7 13.41v168.18q0 8.41 5.5 13.41t13.5 5q8 0 13-5.7t5-13.3v-64ZM260-200q-24 0-42-18t-18-42v-560q0-24 18-42t42-18h560q24 0 42 18t18 42v560q0 24-18 42t-42 18H260Zm0-60h560v-560H260v560ZM140-80q-24 0-42-18t-18-42v-590q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v590h590q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32Q742.75-80 730-80H140Zm120-740v560-560Z"/>""", "0 -960 960 960");
+    /// <summary>The <c>table</c> icon.</summary>
+    public static FlareSvgIcon Table { get; } = Reg("table", """<path d="M180-120q-24 0-42-18t-18-42v-600q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Zm270-250H180v190h270v-190Zm60 0v190h270v-190H510Zm-60-60v-190H180v190h270Zm60 0h270v-190H510v190ZM180-680h600v-100H180v100Z"/>""", "0 -960 960 960");
+    /// <summary>The <c>calendar_month</c> icon.</summary>
+    public static FlareSvgIcon CalendarMonth { get; } = Reg("calendar_month", """<path d="M180-80q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-28q0-13.6 9-22.8 9-9.2 23.02-9.2t23.5 9.2Q310-861.6 310-848v28h340v-28q0-13.6 9-22.8 9-9.2 23.02-9.2t23.5 9.2Q715-861.6 715-848v28h65q24 0 42 18t18 42v620q0 24-18 42t-42 18H180Zm0-60h600v-430H180v430Zm0-490h600v-130H180v130Zm0 0v-130 130Zm300 230q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-188.5-11.5Q280-423 280-440t11.5-28.5Q303-480 320-480t28.5 11.5Q360-457 360-440t-11.5 28.5Q337-400 320-400t-28.5-11.5ZM640-400q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-188.5-11.5Q280-263 280-280t11.5-28.5Q303-320 320-320t28.5 11.5Q360-297 360-280t-11.5 28.5Q337-240 320-240t-28.5-11.5ZM640-240q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/>""", "0 -960 960 960");
+    /// <summary>The <c>calendar_clock</c> icon.</summary>
+    public static FlareSvgIcon CalendarClock { get; } = Reg("calendar_clock", """<path d="M180-630h600v-130H180v130Zm0 0v-130 130Zm0 550q-24 0-42-18t-18-42v-620q0-24 18-42t42-18h65v-28q0-13.6 9.48-22.8 9.48-9.2 23.5-9.2t23.02 9.2q9 9.2 9 22.8v28h340v-28q0-13.6 9.48-22.8 9.48-9.2 23.5-9.2t23.02 9.2q9 9.2 9 22.8v28h65q24 0 42 18t18 42v277q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-87H180v430h306q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32Q498.75-80 486-80H180Zm417.5-15.5Q542-151 542-229t55.5-133.5Q653-418 731-418t133.5 55.5Q920-307 920-229T864.5-95.5Q809-40 731-40T597.5-95.5ZM742-231v-92.92q0-8.08-5.5-13.58T723-343q-8 0-14 5.7t-6 13.3v95q0 5.57 2 10.78 2 5.22 6 10.22l64 66q6 6 14 6t14-6q6-6 6-14t-6-14l-61-61Z"/>""", "0 -960 960 960");
+    /// <summary>The <c>progress_activity</c> icon.</summary>
+    public static FlareSvgIcon ProgressActivity { get; } = Reg("progress_activity", """<path d="M323-111q-73-31-127-85t-85-127q-31-73-31-157t31-157q31-73 85-127t127-85q73-31 157-31 12 0 21 9t9 21q0 12-9 21t-21 9q-141 0-240.5 99.5T140-480q0 141 99.5 240.5T480-140q141 0 240.5-99.5T820-480q0-12 9-21t21-9q12 0 21 9t9 21q0 84-31 157t-85 127q-54 54-127 85T480-80q-84 0-157-31Z"/>""", "0 -960 960 960");
+    /// <summary>The <c>fullscreen</c> icon.</summary>
+    public static FlareSvgIcon Fullscreen { get; } = Reg("fullscreen", """<path d="M180-180h103q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H150q-12.75 0-21.37-8.63Q120-137.25 120-150v-133q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v103Zm600 0v-103q0-12.75 8.68-21.38 8.67-8.62 21.5-8.62 12.82 0 21.32 8.62 8.5 8.63 8.5 21.38v133q0 12.75-8.62 21.37Q822.75-120 810-120H677q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h103ZM180-780v103q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-133q0-12.75 8.63-21.38Q137.25-840 150-840h133q12.75 0 21.38 8.68 8.62 8.67 8.62 21.5 0 12.82-8.62 21.32-8.63 8.5-21.38 8.5H180Zm600 0H677q-12.75 0-21.37-8.68-8.63-8.67-8.63-21.5 0-12.82 8.63-21.32 8.62-8.5 21.37-8.5h133q12.75 0 21.38 8.62Q840-822.75 840-810v133q0 12.75-8.68 21.37-8.67 8.63-21.5 8.63-12.82 0-21.32-8.63-8.5-8.62-8.5-21.37v-103Z"/>""", "0 -960 960 960");
 
 
     /// <summary>All built-in icon ids, sorted alphabetically.</summary>

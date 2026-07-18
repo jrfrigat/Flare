@@ -9,10 +9,10 @@
             <FlareButton>Open Menu with Submenus</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="@("home")" OnClick="@(() => _lastAction = "Home")">Home</FlareMenuItem>
-            <FlareMenuItem Icon="@("settings")" OnClick="@(() => _lastAction = "Settings")">Settings</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Home" OnClick="@(() => _lastAction = "Home")">Home</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Settings" OnClick="@(() => _lastAction = "Settings")">Settings</FlareMenuItem>
             
-            <FlareSubMenu Label="More Options" Icon="@("more_horiz")">
+            <FlareSubMenu Label="More Options" Icon="@MaterialDesign3Icons.Regular.MoreHoriz">
                 <FlareMenuItem OnClick="@(() => _lastAction = "Option 1")">Option 1</FlareMenuItem>
                 <FlareMenuItem OnClick="@(() => _lastAction = "Option 2")">Option 2</FlareMenuItem>
                 
@@ -22,7 +22,7 @@
                 </FlareSubMenu>
             </FlareSubMenu>
             
-            <FlareMenuItem Icon="@("help")" OnClick="@(() => _lastAction = "Help")">Help</FlareMenuItem>
+            <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Help" OnClick="@(() => _lastAction = "Help")">Help</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
     
@@ -38,19 +38,19 @@
         </Activator>
         <ChildContent>
             <FlareMenuGroup Label="File">
-                <FlareMenuItem Icon="@("file_open")">Open</FlareMenuItem>
-                <FlareMenuItem Icon="@("save")">Save</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.FileOpen">Open</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Save">Save</FlareMenuItem>
             </FlareMenuGroup>
             
-            <FlareSubMenu Label="Edit" Icon="@("edit")">
-                <FlareMenuItem Icon="@("content_copy")">Copy</FlareMenuItem>
-                <FlareMenuItem Icon="@("content_paste")">Paste</FlareMenuItem>
-                <FlareMenuItem Icon="@("undo")">Undo</FlareMenuItem>
+            <FlareSubMenu Label="Edit" Icon="@MaterialDesign3Icons.Regular.Edit">
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentCopy">Copy</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.ContentPaste">Paste</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Undo">Undo</FlareMenuItem>
             </FlareSubMenu>
             
             <FlareMenuGroup Label="Help">
-                <FlareMenuItem Icon="@("help")">Documentation</FlareMenuItem>
-                <FlareMenuItem Icon="@("info")">About</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Help">Documentation</FlareMenuItem>
+                <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Info">About</FlareMenuItem>
             </FlareMenuGroup>
         </ChildContent>
     </FlareMenu>

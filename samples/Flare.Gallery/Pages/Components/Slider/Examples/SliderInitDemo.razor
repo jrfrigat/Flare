@@ -3,7 +3,7 @@
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:30rem;">
     <FlareSlider @bind-Value="_balance" Label="Speaker balance (L / R)"
                  Min="-100" Max="100" Init="0" Step="5"
-                 StartIcon="@("volume_up")" EndIcon="@("volume_up")" Indicator="true" />
+                 StartIcon="@MaterialDesign3Icons.Regular.VolumeUp" EndIcon="@MaterialDesign3Icons.Regular.VolumeUp" Indicator="true" />
     <FlareSlider @bind-Value="_trim" Label="Trim around 0"
                  Min="-12" Max="12" Init="0" Step="1" Stepper="true" Format="+0;-0;0" />
 </FlareStack>

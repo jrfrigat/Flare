@@ -31,6 +31,7 @@
 		<ProjectReference Include="..\..\src\Flare.Components.RichTextEditor\Flare.Components.RichTextEditor.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Transfer\Flare.Components.Transfer.csproj" />
 		<ProjectReference Include="..\..\src\Flare\Flare.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Svg\Flare.Icons.MaterialDesign3.Svg.csproj" />
 		<!--
 			Flare no longer ships themes; reference the theme packages the Gallery showcases directly.
 			AddFlare auto-discovers them (RegisterAllBuiltInThemes) from the loaded assemblies.

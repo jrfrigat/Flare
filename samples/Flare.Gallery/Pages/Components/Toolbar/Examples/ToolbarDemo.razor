@@ -8,18 +8,18 @@
     <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
         <FlareToolbar Dense="_dense">
             <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => Set("Start"))">
-                <LeadingIcon><FlareIconView Name="play_arrow" /></LeadingIcon>
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" /></LeadingIcon>
                 <ChildContent>Start</ChildContent>
             </FlareButton>
             <FlareRibbonSeparator />
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build" OnClick="@(() => Set("Build"))">
-                <FlareIconView Name="build" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Debug" OnClick="@(() => Set("Debug"))">
-                <FlareIconView Name="bug_report" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.BugReport" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Stop" OnClick="@(() => Set("Stop"))">
-                <FlareIconView Name="stop" />
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Stop" />
             </FlareButton>
             <FlareRibbonSeparator />
             <FlareField TValue="string" Size="FieldSize.Sm" Placeholder="Search (Ctrl+,)" Style="width:180px;" />

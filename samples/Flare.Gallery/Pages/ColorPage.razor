@@ -11,7 +11,7 @@
 <FlareStack Gap="FlareSpacing.Large">
 
 <section>
-    <GallerySectionHeader Icon="palette" Title="@GalleryStrings.Color_RolesTitle" />
+    <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Palette" Title="@GalleryStrings.Color_RolesTitle" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
             @GalleryStrings.Color_RolesDesc
@@ -30,7 +30,7 @@
 </section>
 
 <section>
-    <GallerySectionHeader Icon="format_color_text" Title="@GalleryStrings.Color_TextTonesTitle" />
+    <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.FormatColorText" Title="@GalleryStrings.Color_TextTonesTitle" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem">
             @GalleryStrings.Color_TextTonesDesc
@@ -44,7 +44,7 @@
 </section>
 
 <section>
-    <GallerySectionHeader Icon="code" Title="@GalleryStrings.Color_UsageTitle" />
+    <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Code" Title="@GalleryStrings.Color_UsageTitle" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Typo="TypographyScale.BodyMedium" Style="margin-bottom:1rem;">
             @GalleryStrings.Color_UsageDesc
@@ -54,7 +54,7 @@
 </section>
 
 <section>
-    <GallerySectionHeader Icon="auto_awesome" Title="@GalleryStrings.Color_GeneratorsTitle" />
+    <GallerySectionHeader Icon="@MaterialDesign3Icons.Regular.Stars" Title="@GalleryStrings.Color_GeneratorsTitle" />
     <FlareCard Variant="CardVariant.Outlined">
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium" Style="margin-bottom:1.25rem">
             @GalleryStrings.Color_GeneratorsDesc
@@ -68,11 +68,11 @@
             </FlareStack>
             <FlareStack Row Gap="FlareSpacing.Small">
                 <FlareButton Variant="ButtonVariant.Filled" OnClick="RandomColor">
-                    <LeadingIcon><FlareIconView Name="casino" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Casino" /></LeadingIcon>
                     <ChildContent>@GalleryStrings.Color_RandomBtn</ChildContent>
                 </FlareButton>
                 <FlareButton Variant="ButtonVariant.Outlined" OnClick="NextColor">
-                    <LeadingIcon><FlareIconView Name="skip_next" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.SkipNext" /></LeadingIcon>
                     <ChildContent>@GalleryStrings.Color_NextBtn</ChildContent>
                 </FlareButton>
             </FlareStack>

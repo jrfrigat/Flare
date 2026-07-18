@@ -31,15 +31,15 @@
     <LeftToolPanel>
         <FlareToolPanel Title="Solution Explorer">
             <FlareTreeView AriaLabel="Solution Explorer">
-                <FlareTreeItem Label="MyApp" Icon="@("folder")" Expanded="true">
-                    <FlareTreeItem Label="Properties" Icon="@("folder")" />
-                    <FlareTreeItem Label="Pages" Icon="@("folder")" Expanded="true">
-                        <FlareTreeItem Label="Index.razor" Icon="@("description")"
+                <FlareTreeItem Label="MyApp" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
+                    <FlareTreeItem Label="Properties" Icon="@MaterialDesign3Icons.Regular.Folder" />
+                    <FlareTreeItem Label="Pages" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
+                        <FlareTreeItem Label="Index.razor" Icon="@MaterialDesign3Icons.Regular.Description"
                                        OnClick="@(() => _status = "Index.razor")" />
-                        <FlareTreeItem Label="Customers.razor" Icon="@("description")"
+                        <FlareTreeItem Label="Customers.razor" Icon="@MaterialDesign3Icons.Regular.Description"
                                        OnClick="@(() => _status = "Customers.razor")" />
                     </FlareTreeItem>
-                    <FlareTreeItem Label="Program.cs" Icon="@("description")" />
+                    <FlareTreeItem Label="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" />
                 </FlareTreeItem>
             </FlareTreeView>
         </FlareToolPanel>
@@ -47,7 +47,7 @@
 
     <ChildContent>
         <FlareDocumentTabs>
-            <FlareDocumentTab Title="Customers" Icon="@("table_view")">
+            <FlareDocumentTab Title="Customers" Icon="@MaterialDesign3Icons.Regular.TableView">
                 <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
                     <Columns>
                         <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
@@ -57,7 +57,7 @@
                     </Columns>
                 </FlareDataGrid>
             </FlareDocumentTab>
-            <FlareDocumentTab Title="Program.cs" Icon="@("code")" Modified="true">
+            <FlareDocumentTab Title="Program.cs" Icon="@MaterialDesign3Icons.Regular.Code" Modified="true">
                 <pre style="margin:0;padding:0.5rem;font-family:monospace;font-size:0.8rem;">var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFlare();
 var app = builder.Build();

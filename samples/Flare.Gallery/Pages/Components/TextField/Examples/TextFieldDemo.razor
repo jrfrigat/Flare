@@ -1,7 +1,7 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="max-width:28rem;">
     <FlareTextField @bind-Value="_name" Label="Name" Placeholder="Enter name…" Clearable="true" />
     <FlareTextField @bind-Value="_email" Label="Email" Placeholder="name@example.com" HelperText="We won't share your email.">
-        <LeadingIcon><FlareIconView Name="email" /></LeadingIcon>
+        <LeadingIcon><FlareIconView Value="@FlareIcons.Email" /></LeadingIcon>
     </FlareTextField>
     <FlareText Typo="TypographyScale.TitleSmall" Color="FlareColor.OnSurfaceVariant">Variant (theme-independent)</FlareText>
     <FlareTextField @bind-Value="_vDefault" Label="Default variant" Variant="InputVariant.Default" Placeholder="Uses the active theme's field style" HelperText="Default: follows the theme." />

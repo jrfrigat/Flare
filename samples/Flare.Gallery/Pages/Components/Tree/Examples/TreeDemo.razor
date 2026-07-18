@@ -1,23 +1,23 @@
 <FlareTreeView AriaLabel="File explorer">
-    <FlareTreeItem Label="Documents" Icon="@("folder")" Expanded="true">
-        <FlareTreeItem Label="Projects" Icon="@("folder")">
-            <FlareTreeItem Label="Flare.sln" Icon="@("description")"
+    <FlareTreeItem Label="Documents" Icon="@MaterialDesign3Icons.Regular.Folder" Expanded="true">
+        <FlareTreeItem Label="Projects" Icon="@MaterialDesign3Icons.Regular.Folder">
+            <FlareTreeItem Label="Flare.sln" Icon="@MaterialDesign3Icons.Regular.Description"
                            Selected="@(_selected == "Flare.sln")"
                            OnClick="@(() => _selected = "Flare.sln")" />
-            <FlareTreeItem Label="README.md" Icon="@("description")"
+            <FlareTreeItem Label="README.md" Icon="@MaterialDesign3Icons.Regular.Description"
                            Selected="@(_selected == "README.md")"
                            OnClick="@(() => _selected = "README.md")" />
         </FlareTreeItem>
-        <FlareTreeItem Label="Resume.pdf" Icon="@("picture_as_pdf")"
+        <FlareTreeItem Label="Resume.pdf" Icon="@MaterialDesign3Icons.Regular.PictureAsPdf"
                        Selected="@(_selected == "Resume.pdf")"
                        OnClick="@(() => _selected = "Resume.pdf")" />
     </FlareTreeItem>
-    <FlareTreeItem Label="Downloads" Icon="@("folder")">
-        <FlareTreeItem Label="archive.zip" Icon="@("folder_zip")"
+    <FlareTreeItem Label="Downloads" Icon="@MaterialDesign3Icons.Regular.Folder">
+        <FlareTreeItem Label="archive.zip" Icon="@MaterialDesign3Icons.Regular.FolderZip"
                        Selected="@(_selected == "archive.zip")"
                        OnClick="@(() => _selected = "archive.zip")" />
     </FlareTreeItem>
-    <FlareTreeItem Label="settings.json" Icon="@("settings")"
+    <FlareTreeItem Label="settings.json" Icon="@MaterialDesign3Icons.Regular.Settings"
                    Selected="@(_selected == "settings.json")"
                    OnClick="@(() => _selected = "settings.json")" />
 </FlareTreeView>

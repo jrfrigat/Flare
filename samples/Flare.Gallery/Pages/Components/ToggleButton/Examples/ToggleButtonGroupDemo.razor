@@ -1,16 +1,16 @@
 <FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
     <FlareToggleGroup TValue="string" @bind-Value="_alignment">
         <FlareToggleButton Value="@("left")" AriaLabel="Align left">
-            <OffIcon><FlareIconView Name="format_align_left" /></OffIcon>
+            <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.FormatAlignLeft" /></OffIcon>
         </FlareToggleButton>
         <FlareToggleButton Value="@("center")" AriaLabel="Align center">
-            <OffIcon><FlareIconView Name="format_align_center" /></OffIcon>
+            <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.FormatAlignCenter" /></OffIcon>
         </FlareToggleButton>
         <FlareToggleButton Value="@("right")" AriaLabel="Align right">
-            <OffIcon><FlareIconView Name="format_align_right" /></OffIcon>
+            <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.FormatAlignRight" /></OffIcon>
         </FlareToggleButton>
         <FlareToggleButton Value="@("justify")" AriaLabel="Justify">
-            <OffIcon><FlareIconView Name="format_align_justify" /></OffIcon>
+            <OffIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.FormatAlignJustify" /></OffIcon>
         </FlareToggleButton>
     </FlareToggleGroup>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Alignment: @_alignment</FlareText>

@@ -5,25 +5,25 @@
         <FlareRibbon OnTabChanged="OnRibbonTab">
             <FlareRibbonTab Title="Home">
                 <FlareRibbonGroup Label="Clipboard">
-                    <FlareRibbonButton Icon="@("content_paste")" Label="Paste" Tooltip="Paste" IsLarge="true"
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.ContentPaste" Label="Paste" Tooltip="Paste" IsLarge="true"
                                        OnClick="@(() => Set("Pasted"))" />
-                    <FlareRibbonButton Icon="@("content_cut")" Tooltip="Cut" OnClick="@(() => Set("Cut"))" />
-                    <FlareRibbonButton Icon="@("content_copy")" Tooltip="Copy" OnClick="@(() => Set("Copied"))" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.ContentCut" Tooltip="Cut" OnClick="@(() => Set("Cut"))" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.ContentCopy" Tooltip="Copy" OnClick="@(() => Set("Copied"))" />
                 </FlareRibbonGroup>
                 <FlareRibbonGroup Label="Edit">
-                    <FlareRibbonButton Icon="@("undo")" Tooltip="Undo" />
-                    <FlareRibbonButton Icon="@("redo")" Tooltip="Redo" />
-                    <FlareRibbonButton Icon="@("search")" Tooltip="Find" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.Undo" Tooltip="Undo" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.Redo" Tooltip="Redo" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.Search" Tooltip="Find" />
                 </FlareRibbonGroup>
             </FlareRibbonTab>
             <FlareRibbonTab Title="View">
                 <FlareRibbonGroup Label="Zoom">
-                    <FlareRibbonButton Icon="@("zoom_in")" Label="Zoom In" Tooltip="Zoom in" IsLarge="true" />
-                    <FlareRibbonButton Icon="@("zoom_out")" Label="Zoom Out" Tooltip="Zoom out" IsLarge="true" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.ZoomIn" Label="Zoom In" Tooltip="Zoom in" IsLarge="true" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.ZoomOut" Label="Zoom Out" Tooltip="Zoom out" IsLarge="true" />
                 </FlareRibbonGroup>
                 <FlareRibbonGroup Label="Show">
-                    <FlareRibbonButton Icon="@("grid_on")" Tooltip="Grid lines" />
-                    <FlareRibbonButton Icon="@("wrap_text")" Tooltip="Word wrap" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.GridOn" Tooltip="Grid lines" />
+                    <FlareRibbonButton Icon="@MaterialDesign3Icons.Regular.WrapText" Tooltip="Word wrap" />
                 </FlareRibbonGroup>
             </FlareRibbonTab>
         </FlareRibbon>
@@ -43,7 +43,7 @@
 
     <ChildContent>
         <FlareDocumentTabs OnTabChanged="OnDocTab">
-            <FlareDocumentTab Title="Program.cs" Icon="@("description")" Modified="true">
+            <FlareDocumentTab Title="Program.cs" Icon="@MaterialDesign3Icons.Regular.Description" Modified="true">
                 <pre class="ide-demo__code">var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFlare();
 
@@ -51,7 +51,7 @@ var app = builder.Build();
 app.MapRazorComponents&lt;App&gt;();
 app.Run();</pre>
             </FlareDocumentTab>
-            <FlareDocumentTab Title="README.md" Icon="@("article")">
+            <FlareDocumentTab Title="README.md" Icon="@MaterialDesign3Icons.Regular.Article">
                 <div class="ide-demo__doc">
                     <FlareText Typo="TypographyScale.TitleMedium">Flare IDE</FlareText>
                     <FlareText Typo="TypographyScale.BodyMedium" Color="FlareColor.OnSurfaceVariant">
@@ -59,7 +59,7 @@ app.Run();</pre>
                     </FlareText>
                 </div>
             </FlareDocumentTab>
-            <FlareDocumentTab Title="App.razor" Icon="@("code")" Closeable="false">
+            <FlareDocumentTab Title="App.razor" Icon="@MaterialDesign3Icons.Regular.Code" Closeable="false">
                 <pre class="ide-demo__code">&lt;FlareThemeProvider&gt;
     &lt;Routes /&gt;
 &lt;/FlareThemeProvider&gt;</pre>

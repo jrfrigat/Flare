@@ -1,6 +1,6 @@
 <FlareStack Gap="FlareSpacing.Large" Style="max-width:28rem;">
     <FlareSlider @bind-Value="_volume" MouseWheel="true" Label="Volume" Min="0" Max="100" Step="5"
-                 StartIcon="@("volume_mute")" EndIcon="@("volume_up")" ShowValue="true" />
+                 StartIcon="@MaterialDesign3Icons.Regular.VolumeMute" EndIcon="@MaterialDesign3Icons.Regular.VolumeUp" ShowValue="true" />
     <FlareSlider @bind-Value="_low" @bind-ValueEnd="_high" MouseWheel="true" Range="true"
                  Label="Range (wheel = low, Ctrl+wheel = high)" Min="0" Max="100" Step="5" ShowValue="true" />
 </FlareStack>
