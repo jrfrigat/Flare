@@ -8,7 +8,7 @@ public sealed class MarkdownExporter<TItem> : IDataGridExporter<TItem>
     /// <summary>Display label for the export action.</summary>
     public string Label => "Markdown";
     /// <summary>Material Symbols icon name for the export action.</summary>
-    public string? Icon => "data_object";
+    public FlareIcon? Icon => FlareIcons.DataObject;
 
     /// <summary>Exports the grid rows to a Markdown table and triggers its download.</summary>
     public Task ExportAsync(DataGridExportData<TItem> data, IFlareDownload download)

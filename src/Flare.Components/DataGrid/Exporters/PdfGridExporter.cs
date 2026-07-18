@@ -9,7 +9,7 @@ public sealed class PdfGridExporter<TItem> : IDataGridExporter<TItem>
     /// <summary>Display label for the export action.</summary>
     public string Label => "PDF";
     /// <summary>Material Symbols icon name for the export action.</summary>
-    public string? Icon => "picture_as_pdf";
+    public FlareIcon? Icon => FlareIcons.PictureAsPdf;
 
     /// <summary>Exports the grid rows to a PDF file and triggers its download.</summary>
     public async Task ExportAsync(DataGridExportData<TItem> data, IFlareDownload download)

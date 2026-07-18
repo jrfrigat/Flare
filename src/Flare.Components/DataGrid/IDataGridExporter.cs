@@ -42,7 +42,7 @@ public interface IDataGridExporter<TItem>
     /// <summary>Toolbar button label (e.g. "CSV", "Excel").</summary>
     string Label { get; }
     /// <summary>Optional Material Symbols icon name shown on the button.</summary>
-    string? Icon { get; }
+    FlareIcon? Icon { get; }
     /// <summary>Produces the file and triggers the download via <paramref name="download"/>.</summary>
     Task ExportAsync(DataGridExportData<TItem> data, IFlareDownload download);
 }

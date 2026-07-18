@@ -20,29 +20,27 @@
   - `Flare.Icons.MaterialDesign3.Svg` - полный набор Material Symbols (rounded) как inline-SVG (каталог
     `MaterialDesign3Icons`, Regular + Filled, 3894 иконки), генератор `tools/MaterialSymbolsGen`.
   - `Flare.Icons.FluentUI.Svg` - полный набор Fluent UI System Icons как inline-SVG (каталог `FluentUIIcons`,
-    Regular + Filled, Size 24, ~5000 иконок), генератор `tools/FluentIconGen`; плюс `FlareFluentUIIcon`.
+    Regular + Filled, Size 24, ~5000 иконок), генератор `tools/FluentIconGen`. Значения - обычные
+    `FlareSvgIcon`, тот же тип, что и в Material-SVG-пакетах (отдельного Fluent-типа иконки нет).
   - `Flare.Icons.FontAwesome.Symbols` - `FlareFontAwesomeIcon` (шрифт Font Awesome: Solid/Regular/Light/
     Thin/Duotone/Brands).
 
   Отдельная отрисовка - через `<FlareIconView>`. Каждая иконка - отдельный static-член, а SVG-пакеты помечены
   `IsTrimmable`, поэтому trimmed-публикация (Blazor WebAssembly) скачивает только реально используемые
   приложением иконки, а не весь каталог - даже в режиме partial-trim.
-- **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 92 готовых `FlareSvgIcon` (`Home`,
+- **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 96 готовых `FlareSvgIcon` (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) как inline-SVG - без иконочного шрифта, без сетевого запроса, без
-  FOUT, независимо от темы. Это собственный набор Flare; им рисуется дефолтный хром, и именно в него резолвится
-  голая строка. Голая строка резолвится во встроенный id, если он известен (например `"home"`), иначе - в
-  пустую иконку; ядро не откатывается на сторонний шрифт. (Полный отказ от строкового удобства в пользу
-  типов - зафиксированный follow-up: `docs/issues/icon-string-to-typed-migration.md`.)
+  FOUT, независимо от темы. Это собственный набор Flare, им рисуется дефолтный хром. Ссылайтесь на член
+  напрямую (`FlareIcons.Home`); `FlareIcons.All` / `FlareIcons.Find(id)` перечисляют набор по id.
 
 ### Изменено
 - **BREAKING: компонента `<FlareIcon>` заменена на `<FlareIconView>` плюс дескриптор `FlareIcon`.** `FlareIcon`
-  теперь абстрактный тип-значение иконки, поэтому отдельный рендерер - `<FlareIconView>`, он сохраняет прежние
-  параметры `Name`/`Icon`/`Size`/`Color`/`ViewBox`/`AriaLabel`, так что миграция - переименование тега:
-  `<FlareIcon ... />` -> `<FlareIconView ... />`.
+  теперь абстрактный тип-значение иконки, отдельный рендерер - `<FlareIconView>`. Он принимает типизированный
+  `Value` (`<FlareIconView Value="@FlareIcons.Home" />`) плюс оверрайды `Size`/`Color`/`AriaLabel` - **нет
+  поиска по строке `Name`/`Icon` и нет неявного преобразования `string`->`FlareIcon`** (поиск по имени убил бы
+  тримминг SVG-пакетов). Ссылайтесь на иконки типизированным членом везде.
 - **BREAKING: `FlareIconButton.Icon` теперь `FlareIcon`, а не строка-имя Material**, поэтому в кнопке-иконке
-  работает любой провайдер. Голая строка резолвится во встроенный SVG, если он есть (иначе пусто, без шрифта), то
-  есть по умолчанию не навязывает шрифт; литерал в Razor должен быть выражением: `Icon="settings"` ->
-  `Icon="@("settings")"` (или `Icon="@FlareIcons.Settings"`).
+  работает любой провайдер. Передавайте типизированное значение: `Icon="@FlareIcons.Settings"`.
 - **BREAKING: члены `FlareIcons.*` теперь значения `FlareSvgIcon`, а не строки-имена** - они рисуют inline-SVG.
   `FlareIcons.All` (id иконок) и `FlareIcons.Brands.FlareLogoShort` не изменились.
 - **Хром компонентов больше не навязывает шрифт Material Symbols.** Все иконки, которые Flare рисует сам -
@@ -54,10 +52,8 @@
   `FlareSubMenu`, `FlareTreeItem`, `FlareNavGroup`, `FlareTimelineItem`, `FlareSplitter` (`Icon`/`HoverIcon`),
   `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) и
   `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) и иконки ribbon/backstage/document-tab в опциональном
-  пакете `Flare.Components.IDE` теперь принимают `FlareIcon`, а не строку-имя Material. Голая строка
-  резолвится во встроенный SVG, если он есть (иначе пусто, без шрифта), то есть по умолчанию не навязывает шрифт;
-  литерал в Razor должен быть выражением (`Icon="@("home")"`). Сырых `material-symbols`-спанов не осталось
-  нигде в `src/`.
+  пакете `Flare.Components.IDE` теперь принимают `FlareIcon`, а не строку-имя Material. Передавайте
+  типизированное значение (`Icon="@FlareIcons.Home"`). Сырых `material-symbols`-спанов не осталось нигде в `src/`.
 
 ### Исправлено
 - **Меню экспорта DataGrid, триггеры date/time-пикеров и спиннер комбобокса снова показывают иконки.** Эти

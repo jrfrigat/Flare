@@ -892,7 +892,7 @@ public class C_FlareNavGroupTests : FlareTestContext
     public void Icon_RendersIconSpan()
     {
         var cut = Render<FlareNavGroup>(p => p
-            .Add(x => x.Icon, "home"));
+            .Add(x => x.Icon, FlareIcons.Home));
 
         // "home" is built in, so the icon renders as inline SVG (no Material font).
         Assert.Equal(FlareIcons.Home.Data, cut.Find(".flare-nav-group__icon path").GetAttribute("d"));

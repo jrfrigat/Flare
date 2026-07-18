@@ -44,7 +44,7 @@
         {
             <button class="icon-card" title="@GalleryStrings.Icons_CopyHint"
                     @onclick="@(() => CopyUsage($"<FlareIconView Value=\"@FlareIcons.{Pascal(name)}\" />", name))">
-                <FlareIconView Name="@name" SizePx="28" />
+                <FlareIconView Value="@(FlareIcons.Find(name)!)" SizePx="28" />
                 <span class="icon-card__label">@name</span>
             </button>
         }

@@ -90,7 +90,7 @@
                     <span aria-hidden="true">&#x2715;</span>
                 </button>
             }
-            <FlareIconView Name="@(_state.IsOpen ? "expand_less" : "expand_more")" Class="@Css.Classes.Input.Arrow" />
+            <FlareIconView Value="@(_state.IsOpen ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" Class="@Css.Classes.Input.Arrow" />
         </div>
         @if (_chrome is not null)
         {

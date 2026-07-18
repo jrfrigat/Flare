@@ -18,7 +18,7 @@ public class C_FlareButtonFamilyAuditTests : FlareTestContext
     public void IconButton_EdgeStart_AddsEdgeClassToInnerButton()
     {
         var cut = Render<FlareIconButton>(p => p
-            .Add(x => x.Icon, "add").Add(x => x.Edge, ButtonEdge.Start).Add(x => x.AriaLabel, "add"));
+            .Add(x => x.Icon, FlareIcons.Add).Add(x => x.Edge, ButtonEdge.Start).Add(x => x.AriaLabel, "add"));
 
         Assert.Contains("flare-edge-start", cut.Find("button").ClassName);
     }
@@ -27,7 +27,7 @@ public class C_FlareButtonFamilyAuditTests : FlareTestContext
     public void IconButton_BlankTargetLink_DefaultsRelNoopener()
     {
         var cut = Render<FlareIconButton>(p => p
-            .Add(x => x.Icon, "open").Add(x => x.Href, "https://example.com")
+            .Add(x => x.Icon, FlareIcons.OpenInNew).Add(x => x.Href, "https://example.com")
             .Add(x => x.Target, "_blank").Add(x => x.AriaLabel, "open"));
 
         Assert.Equal("noopener noreferrer", cut.Find("a").GetAttribute("rel"));
@@ -36,7 +36,7 @@ public class C_FlareButtonFamilyAuditTests : FlareTestContext
     [Fact]
     public async Task IconButton_FocusAsync_DoesNotThrow()
     {
-        var cut = Render<FlareIconButton>(p => p.Add(x => x.Icon, "add").Add(x => x.AriaLabel, "add"));
+        var cut = Render<FlareIconButton>(p => p.Add(x => x.Icon, FlareIcons.Add).Add(x => x.AriaLabel, "add"));
         await cut.Instance.FocusAsync();
     }
 

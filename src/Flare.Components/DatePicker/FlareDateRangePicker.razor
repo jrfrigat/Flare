@@ -62,13 +62,13 @@
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevMonth" AriaLabel="@FlareStrings.Calendar_PrevMonth" Disabled="@Disabled">
-                        <LeadingIcon><FlareIconView Name="chevron_left" /></LeadingIcon>
+                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronLeft" /></LeadingIcon>
                     </FlareButton>
                 </span>
                 <span class="@Css.Classes.DatePicker.MonthLabel">@HeaderLabel</span>
                 <span @onclick:stopPropagation>
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextMonth" AriaLabel="@FlareStrings.Calendar_NextMonth" Disabled="@Disabled">
-                        <LeadingIcon><FlareIconView Name="chevron_right" /></LeadingIcon>
+                        <LeadingIcon><FlareIconView Value="@FlareIcons.ChevronRight" /></LeadingIcon>
                     </FlareButton>
                 </span>
             </div>

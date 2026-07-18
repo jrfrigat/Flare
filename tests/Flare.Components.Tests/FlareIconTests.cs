@@ -1,104 +1,17 @@
 namespace Flare.Components.Tests;
 
-// A bare name resolves to the dependency-free built-in SVG when the id is in FlareIcons (e.g. "home",
-// "share"), and to an empty icon for ids that are not built in (e.g. "list", "volume_up") - core never
-// falls back to a third-party font. Real path data / markup always renders inline SVG. Names starting with
-// a path-command letter (share -> 's', menu -> 'm', list -> 'l') must still be treated as names, not path data.
+// FlareIconView renders a typed FlareIcon Value - there is no name-string lookup (that is what keeps the
+// SVG icon packages trimmable). Caller overrides (Size/Color/AriaLabel) apply on top of the descriptor.
 public class FlareIconTests : FlareTestContext
 {
-    [Theory]
-    [InlineData("share")]
-    [InlineData("menu")]
-    [InlineData("close")]
-    [InlineData("home")]
-    [InlineData("search")]
-    public void CataloguedNameShortcut_RendersBuiltInSvg(string name)
-    {
-        var cut = Render<FlareIconView>(p => p.Add(x => x.Icon, name));
-
-        // Built-in -> inline SVG, not the Material font.
-        Assert.NotEmpty(cut.FindAll("svg path"));
-        Assert.DoesNotContain("material-symbols", cut.Markup);
-        Assert.Equal(FlareIcons.Find(name)!.Data, cut.Find("path").GetAttribute("d"));
-    }
-
-    [Theory]
-    [InlineData("list")]
-    [InlineData("sync")]
-    [InlineData("chat")]
-    [InlineData("cloud")]
-    [InlineData("history")]
-    public void UncataloguedNameShortcut_RendersEmpty(string name)
-    {
-        var cut = Render<FlareIconView>(p => p.Add(x => x.Icon, name));
-
-        // Not built in -> empty icon; core never falls back to a Material font.
-        Assert.Empty(cut.FindAll("path"));
-        Assert.DoesNotContain("material-symbols", cut.Markup);
-        Assert.DoesNotContain(name, cut.Markup);
-    }
-
     [Fact]
-    public void NameShortcut_Catalogued_IsBuiltInSvg()
+    public void BuiltInValue_RendersInlineSvg()
     {
-        var cut = Render<FlareIconView>(p => p.Add(x => x.Name, "home"));
+        var cut = Render<FlareIconView>(p => p.Add(x => x.Value, FlareIcons.Home));
 
         Assert.NotEmpty(cut.FindAll("svg path"));
         Assert.DoesNotContain("material-symbols", cut.Markup);
-    }
-
-    [Fact]
-    public void NameShortcut_Uncatalogued_IsEmpty()
-    {
-        var cut = Render<FlareIconView>(p => p.Add(x => x.Name, "volume_up"));
-
-        Assert.DoesNotContain("material-symbols", cut.Markup);
-        Assert.Empty(cut.FindAll("path"));
-    }
-
-    [Theory]
-    [InlineData("M3 18h18v-2H3v2z")]
-    [InlineData("m0,0 l10,10 z")]
-    [InlineData("M12 0 A 5 5 0 0 1 7 7 Z")]
-    public void PathDataShortcut_RendersSvgPath(string d)
-    {
-        var cut = Render<FlareIconView>(p => p.Add(x => x.Icon, d));
-
-        Assert.NotEmpty(cut.FindAll("svg path"));
-        Assert.Equal(d, cut.Find("path").GetAttribute("d"));
-    }
-
-    [Fact]
-    public void SvgMarkupShortcut_RendersAsSvg()
-    {
-        var cut = Render<FlareIconView>(p => p
-            .Add(x => x.Icon, "<circle cx=\"12\" cy=\"12\" r=\"6\" />"));
-
-        Assert.NotEmpty(cut.FindAll("svg"));
-    }
-
-    // ---- Value types render standalone via the Value parameter ----------------------------------
-
-    [Fact]
-    public void MaterialIconValue_RendersGlyph_WithAxes()
-    {
-        var cut = Render<FlareIconView>(p => p
-            .Add(x => x.Value, new FlareMaterialDesign3Icon { Name = "star", Fill = true }));
-
-        Assert.Empty(cut.FindAll("svg"));
-        Assert.Contains("star", cut.Markup);
-        Assert.Contains("'FILL' 1", cut.Markup);
-    }
-
-    [Fact]
-    public void MaterialIconValue_Rounded_ByDefault_NoAxes_WhenUnset()
-    {
-        var cut = Render<FlareIconView>(p => p
-            .Add(x => x.Value, new FlareMaterialDesign3Icon { Name = "home" }));
-
-        Assert.Contains("material-symbols-rounded", cut.Markup);
-        // Baseline axes are inherited from icon.css, so no per-icon override is emitted.
-        Assert.DoesNotContain("font-variation-settings", cut.Markup);
+        Assert.Equal(FlareIcons.Home.Data, cut.Find("path").GetAttribute("d"));
     }
 
     [Fact]
@@ -111,24 +24,40 @@ public class FlareIconTests : FlareTestContext
         Assert.Equal("M3 18h18v-2H3v2z", cut.Find("path").GetAttribute("d"));
     }
 
-    // ---- The string -> FlareIcon conversion resolves the built-in SVG, else an empty icon -----------
+    [Fact]
+    public void NullValue_RendersEmptySvg_NoPath()
+    {
+        var cut = Render<FlareIconView>(p => p.Add(x => x.Value, (FlareIcon?)null));
+
+        Assert.NotEmpty(cut.FindAll("svg"));
+        Assert.Empty(cut.FindAll("path"));
+    }
+
+    // ---- Add-on pack value types render standalone via the Value parameter -----------------------
 
     [Fact]
-    public void StringImplicitlyConverts_Catalogued_ToBuiltInSvg()
+    public void MaterialDesign3IconValue_RendersGlyph_WithAxes()
     {
-        FlareIcon icon = "settings";
+        var cut = Render<FlareIconView>(p => p
+            .Add(x => x.Value, new FlareMaterialDesign3Icon { Name = "star", Fill = true }));
 
-        Assert.IsType<FlareSvgIcon>(icon);
+        Assert.Empty(cut.FindAll("svg"));
+        Assert.Contains("star", cut.Markup);
+        Assert.Contains("'FILL' 1", cut.Markup);
     }
 
     [Fact]
-    public void StringImplicitlyConverts_Uncatalogued_ToEmpty()
+    public void MaterialDesign3IconValue_Rounded_ByDefault_NoAxes_WhenUnset()
     {
-        FlareIcon icon = "volume_up";
+        var cut = Render<FlareIconView>(p => p
+            .Add(x => x.Value, new FlareMaterialDesign3Icon { Name = "home" }));
 
-        // No third-party fallback: an unknown id resolves to the empty built-in icon.
-        Assert.Same(FlareIcons.Empty, icon);
+        Assert.Contains("material-symbols-rounded", cut.Markup);
+        // Baseline axes are inherited from icon.css, so no per-icon override is emitted.
+        Assert.DoesNotContain("font-variation-settings", cut.Markup);
     }
+
+    // ---- Caller overrides win over the descriptor's own values ------------------------------------
 
     [Fact]
     public void ViewValue_OverridesDescriptorSize()

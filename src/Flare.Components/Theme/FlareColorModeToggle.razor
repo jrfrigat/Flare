@@ -4,7 +4,7 @@
 
 <button class="@BuildCssClass()" @onclick="ToggleAsync"
         aria-label="@(_isDark ? (FlareStrings.Theme_ToggleLight) : (FlareStrings.Theme_ToggleDark))">
-    <FlareIconView Name="@(_isDark ? "light_mode" : "dark_mode")" />
+    <FlareIconView Value="@(_isDark ? FlareIcons.LightMode : FlareIcons.DarkMode)" />
     @if (ShowLabel)
     {
         <span class="@Css.Classes.Color.ModeToggleLabel">@(_isDark ? LightLabel : DarkLabel)</span>

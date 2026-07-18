@@ -6,7 +6,7 @@
     <PackageId>Flare.Icons.FluentUI.Svg</PackageId>
     <RootNamespace>Flare.Components</RootNamespace>
     <IsTrimmable>true</IsTrimmable>
-    <Description>Fluent UI System Icons as inline SVG for the Flare Blazor component library. Adds FlareFluentUIIcon plus the full FluentUIIcons catalog (Regular + Filled, Size 24), usable anywhere a FlareIcon is accepted - no icon font required.</Description>
+    <Description>Fluent UI System Icons as inline SVG for the Flare Blazor component library. Adds the full FluentUIIcons catalog of ready FlareSvgIcon values (Regular + Filled, Size 24), usable anywhere a FlareIcon is accepted - no icon font required.</Description>
     <PackageTags>blazor;components;icons;fluent;fluentui</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- Public API stays fully XML-documented (drives the generated API docs). -->

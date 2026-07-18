@@ -17,7 +17,7 @@ public class C_FlareIconButtonTests : FlareTestContext
     public void Icon_RendersIconOnlyButton()
     {
         var cut = Render<FlareIconButton>(p => p
-            .Add(x => x.Icon, "settings")
+            .Add(x => x.Icon, FlareIcons.Settings)
             .Add(x => x.AriaLabel, "Settings"));
 
         var btn = cut.Find("button.flare-btn");
@@ -29,7 +29,7 @@ public class C_FlareIconButtonTests : FlareTestContext
     public void DefaultVariant_IsText()
     {
         var cut = Render<FlareIconButton>(p => p
-            .Add(x => x.Icon, "add")
+            .Add(x => x.Icon, FlareIcons.Add)
             .Add(x => x.AriaLabel, "Add"));
 
         Assert.Contains("flare-btn--text", cut.Find("button.flare-btn").ClassName);
@@ -39,7 +39,7 @@ public class C_FlareIconButtonTests : FlareTestContext
     public void Href_RendersAnchor()
     {
         var cut = Render<FlareIconButton>(p => p
-            .Add(x => x.Icon, "open_in_new")
+            .Add(x => x.Icon, FlareIcons.OpenInNew)
             .Add(x => x.Href, "https://example.com")
             .Add(x => x.AriaLabel, "Open"));
 
@@ -110,7 +110,7 @@ public class C_FlareAvatarFallbackTests : FlareTestContext
     [Fact]
     public void FallbackIcon_OverridesDefault()
     {
-        var cut = Render<FlareAvatar>(p => p.Add(x => x.FallbackIcon, "group"));
+        var cut = Render<FlareAvatar>(p => p.Add(x => x.FallbackIcon, FlareIcons.Group));
 
         // "group" is built in, overriding the default person icon with inline SVG.
         Assert.Equal(FlareIcons.Group.Data, cut.Find(".flare-avatar__icon path").GetAttribute("d"));
@@ -272,7 +272,7 @@ public class C_FlareMenuItemTargetColorTests : FlareTestContext
         var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, Activator)
             .AddChildContent<FlareMenuItem>(mi => mi
-                .Add(x => x.Icon, "edit")
+                .Add(x => x.Icon, FlareIcons.Edit)
                 .Add(x => x.IconColor, FlareColor.Primary)
                 .AddChildContent("Edit")));
 
@@ -287,7 +287,7 @@ public class C_FlareMenuItemTargetColorTests : FlareTestContext
         var cut = Render<FlareMenu>(p => p
             .Add(x => x.Activator, Activator)
             .AddChildContent<FlareMenuItem>(mi => mi
-                .Add(x => x.Icon, "edit")
+                .Add(x => x.Icon, FlareIcons.Edit)
                 .Add(x => x.IconColor, FlareColor.Primary)
                 .Add(x => x.LeadingIconColor, FlareColor.Error)
                 .AddChildContent("Edit")));

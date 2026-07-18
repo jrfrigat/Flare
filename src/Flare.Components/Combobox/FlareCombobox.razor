@@ -56,11 +56,11 @@
             <span class="@Css.Classes.Autocomplete.Icon">
                 @if (_searching)
                 {
-                    <FlareIconView Name="progress_activity" Class="@Css.Classes.Autocomplete.Spinner" />
+                    <FlareIconView Value="@FlareIcons.ProgressActivity" Class="@Css.Classes.Autocomplete.Spinner" />
                 }
                 else
                 {
-                    <FlareIconView Name="@(_state.IsOpen ? "expand_less" : "expand_more")" />
+                    <FlareIconView Value="@(_state.IsOpen ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" />
                 }
             </span>
         </div>

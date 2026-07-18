@@ -23,7 +23,7 @@
     {
         public string Id => "MD";
         public string Label => "Markdown";
-        public string? Icon => "data_object";
+        public FlareIcon? Icon => FlareIcons.DataObject;
 
         public Task ExportAsync(DataGridExportData<Person> data, IFlareDownload download)
         {

@@ -8,7 +8,7 @@ public sealed class JsonGridExporter<TItem> : IDataGridExporter<TItem>
     /// <summary>Display label for the export action.</summary>
     public string Label => "JSON";
     /// <summary>Material Symbols icon name for the export action.</summary>
-    public string? Icon => "data_object";
+    public FlareIcon? Icon => FlareIcons.DataObject;
 
     /// <summary>Exports the grid rows to a JSON file and triggers its download.</summary>
     public async Task ExportAsync(DataGridExportData<TItem> data, IFlareDownload download)

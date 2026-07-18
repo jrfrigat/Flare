@@ -12,9 +12,9 @@
                           OnClick="@(_ => ExportAsync(primary))"
                           MenuAriaLabel="@FlareStrings.DataGrid_MoreExports">
             <ChildContent>
-                @if (!string.IsNullOrEmpty(primary.Icon))
+                @if (primary.Icon is not null)
                 {
-                    <FlareIconView Name="@primary.Icon" Class="@Css.Classes.DataGrid.BtnIcon" />
+                    <FlareIconView Value="@primary.Icon" Class="@Css.Classes.DataGrid.BtnIcon" />
                 }
                 @primary.Label
             </ChildContent>
@@ -36,9 +36,9 @@
                          OnClick="@(() => ExportAsync(exp))"
                          AriaLabel="@exp.Label">
                 <LeadingIcon>
-                    @if (!string.IsNullOrEmpty(exp.Icon))
+                    @if (exp.Icon is not null)
                     {
-                        <FlareIconView Name="@exp.Icon" Class="@Css.Classes.DataGrid.BtnIcon" />
+                        <FlareIconView Value="@exp.Icon" Class="@Css.Classes.DataGrid.BtnIcon" />
                     }
                 </LeadingIcon>
                 <ChildContent>@exp.Label</ChildContent>

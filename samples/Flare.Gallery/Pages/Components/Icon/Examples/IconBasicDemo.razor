@@ -4,7 +4,7 @@
     @foreach (var icon in _icons)
     {
         <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="width:5rem;">
-            <FlareIconView Size="1.75rem" Color="FlareColor.OnSurfaceVariant" Name="@icon" />
+            <FlareIconView Size="1.75rem" Color="FlareColor.OnSurfaceVariant" Value="@(FlareIcons.Find(icon)!)" />
             <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Align="TextAlign.Center" Style="word-break:break-all">@icon</FlareText>
         </FlareStack>
     }

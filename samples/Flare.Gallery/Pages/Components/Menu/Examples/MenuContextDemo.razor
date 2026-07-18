@@ -33,8 +33,8 @@
             <FlareButton Variant="ButtonVariant.Filled">@GalleryStrings.Menu_KeepOpen</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem AutoClose="false" Icon="@(_a ? "check_box" : "check_box_outline_blank")" OnClick="@(() => _a = !_a)">@GalleryStrings.Menu_Action_Cut</FlareMenuItem>
-            <FlareMenuItem AutoClose="false" Icon="@(_b ? "check_box" : "check_box_outline_blank")" OnClick="@(() => _b = !_b)">@GalleryStrings.Menu_Action_Copy</FlareMenuItem>
+            <FlareMenuItem AutoClose="false" Icon="@(_a ? MaterialDesign3Icons.Regular.CheckBox : MaterialDesign3Icons.Regular.CheckBoxOutlineBlank)" OnClick="@(() => _a = !_a)">@GalleryStrings.Menu_Action_Cut</FlareMenuItem>
+            <FlareMenuItem AutoClose="false" Icon="@(_b ? MaterialDesign3Icons.Regular.CheckBox : MaterialDesign3Icons.Regular.CheckBoxOutlineBlank)" OnClick="@(() => _b = !_b)">@GalleryStrings.Menu_Action_Copy</FlareMenuItem>
             <FlareDivider />
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Check">@GalleryStrings.Menu_Action_Paste</FlareMenuItem>
         </ChildContent>

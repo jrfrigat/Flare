@@ -8,7 +8,7 @@ public sealed class ExcelGridExporter<TItem> : IDataGridExporter<TItem>
     /// <summary>Display label for the export action.</summary>
     public string Label => "Excel";
     /// <summary>Material Symbols icon name for the export action.</summary>
-    public string? Icon => "grid_on";
+    public FlareIcon? Icon => FlareIcons.GridOn;
 
     /// <summary>Exports the grid rows to an Excel-compatible file and triggers its download.</summary>
     public async Task ExportAsync(DataGridExportData<TItem> data, IFlareDownload download)

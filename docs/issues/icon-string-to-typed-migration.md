@@ -1,9 +1,9 @@
 # Remove the string -> FlareIcon conversion; move icon usage to typed values
 
-**Status:** partly done. The Gallery + Legacy sample apps are migrated to typed icons
-(`MaterialDesign3Icons.Regular.*` / `FlareIcons.*`), and the core chrome that used non-built-in ids
-(DataGrid export, date/time pickers, combobox) is fixed by adding those 8 ids to `FlareIcons` (now 92).
-What remains below is the optional final step of dropping the string convenience from the library itself.
+**Status: DONE.** The `implicit operator FlareIcon(string)` and `FlareIconView`'s `Name`/`Icon` string
+shortcuts are removed; all icon usage across core, samples and tests is typed. `FlareIconView` now takes only
+a typed `Value`. `FlareIcons.Find(id)`/`FlareIcons.All` are kept as an explicit built-in-catalog API (used by
+the icon-browser page), which does not defeat trimming. The historical context below is left for reference.
 
 ## Context
 

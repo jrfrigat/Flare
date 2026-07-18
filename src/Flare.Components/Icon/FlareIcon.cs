@@ -38,18 +38,12 @@ public abstract record FlareIcon
     /// <summary>Returns a <see cref="RenderFragment"/> that renders this icon.</summary>
     public RenderFragment Render() => Build;
 
-    /// <summary>
-    /// Resolves a bare string to the dependency-free built-in SVG (<see cref="FlareIcons"/>) with that
-    /// snake_case id (e.g. <c>"home"</c>, <c>"chevron_left"</c>). An id that is not built in resolves to an
-    /// empty icon - the core never depends on a third-party icon set, so it does not fall back to a Material
-    /// font. For provider icons use a typed value from an icon package (e.g. <c>MaterialDesign2Icons.Home</c>).
-    /// </summary>
-    public static implicit operator FlareIcon(string name) => FlareIcons.Find(name) ?? FlareIcons.Empty;
-
-    // Note: there is deliberately no implicit FlareIcon -> RenderFragment conversion. It reads nicely
-    // ("drop an icon into a RenderFragment slot") but makes overload resolution ambiguous wherever an API
-    // has both a FlareIcon and a RenderFragment overload for the same argument (e.g. bUnit's .Add). Fill a
-    // RenderFragment slot with the explicit @icon.Render() instead.
+    // Note: there is deliberately NO implicit string -> FlareIcon conversion. Resolving an icon from a name
+    // string would defeat trimming (the whole SVG catalog would have to be kept) and reintroduce a runtime
+    // lookup; build icons from typed values instead (FlareIcons.Home, MaterialDesign3Icons.Regular.Home,
+    // new FlareSvgIcon { Data = "..." }). FlareIcons.Find(id) stays as an explicit catalog API for the
+    // built-in set (e.g. an icon-browser page). There is likewise no implicit FlareIcon -> RenderFragment
+    // conversion (it makes overload resolution ambiguous); fill a RenderFragment slot with @icon.Render().
 
     // ---- Shared build helpers (for provider subclasses, including add-on packs) -----------------
 

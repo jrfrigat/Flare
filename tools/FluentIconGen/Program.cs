@@ -42,10 +42,10 @@ sb.AppendLine();
 sb.AppendLine("namespace Flare.Components;");
 sb.AppendLine();
 sb.AppendLine("/// <summary>");
-sb.AppendLine("/// A curated set of common Fluent UI System Icons (Size 24), ready as <see cref=\"FlareFluentUIIcon\"/>");
+sb.AppendLine("/// A curated set of common Fluent UI System Icons (Size 24), ready as <see cref=\"FlareSvgIcon\"/>");
 sb.AppendLine("/// values. Use anywhere a <see cref=\"FlareIcon\"/> is accepted, e.g.");
 sb.AppendLine("/// <c>&lt;FlareIconButton Icon=\"@FluentUIIcons.Regular.Home\" /&gt;</c>. For icons not in this set, pass the");
-sb.AppendLine("/// SVG path from the Fluent assets directly via <see cref=\"FlareFluentUIIcon.Data\"/>.");
+sb.AppendLine("/// SVG path from the Fluent assets directly via <see cref=\"FlareSvgIcon.Data\"/>.");
 sb.AppendLine("/// </summary>");
 sb.AppendLine("public static class FluentUIIcons");
 sb.AppendLine("{");
@@ -59,7 +59,7 @@ void EmitClass(string cls, List<(string Name, string Svg)> items, bool filledFla
     {
         sb.AppendLine($"        /// <summary>The Fluent <c>{name}</c> ({cls.ToLowerInvariant()}) icon.</summary>");
         // Expression-bodied (computed) so a full catalog does not build a pathological static constructor.
-        sb.AppendLine($"        public static FlareFluentUIIcon {name} => new() {{ Name = \"{name}\", Filled = {(filledFlag ? "true" : "false")}, Data = \"\"\"{svg}\"\"\" }};");
+        sb.AppendLine($"        public static FlareSvgIcon {name} => new() {{ Data = \"\"\"{svg}\"\"\" }};");
     }
     sb.AppendLine("    }");
 }

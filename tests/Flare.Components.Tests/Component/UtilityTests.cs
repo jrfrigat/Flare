@@ -226,7 +226,7 @@ public class C_FlareFabMenuTests : FlareTestContext
             .AddChildContent<FlareFloatingActionMenu>(menu => menu
                 .Add(m => m.Direction, FabMenuDirection.Up)
                 .AddChildContent<FlareFloatingActionMenuItem>(item => item
-                    .Add(i => i.Icon, "edit")
+                    .Add(i => i.Icon, FlareIcons.Edit)
                     .Add(i => i.Label, "Edit"))));
 
     [Fact]
@@ -498,8 +498,8 @@ public class C_FlareSliderTests : FlareTestContext
     public void StartAndEndIcons_Rendered()
     {
         var cut = Render<FlareSlider>(p => p
-            .Add(x => x.StartIcon, "volume_mute")
-            .Add(x => x.EndIcon, "volume_up"));
+            .Add(x => x.StartIcon, FlareIcons.VolumeOff)
+            .Add(x => x.EndIcon, FlareIcons.VolumeUp));
 
         Assert.NotEmpty(cut.FindAll(".flare-slider__icon--start"));
         Assert.NotEmpty(cut.FindAll(".flare-slider__icon--end"));

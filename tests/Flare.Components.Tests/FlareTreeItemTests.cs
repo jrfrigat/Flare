@@ -81,7 +81,7 @@ public class FlareTreeItemTests : FlareTestContext
     {
         var cut = Render<FlareTreeItem>(p => p
             .Add(x => x.Label, "With Icon")
-            .Add(x => x.Icon, "folder"));
+            .Add(x => x.Icon, FlareIcons.Folder));
 
         Assert.NotEmpty(cut.FindAll(".flare-tree-item__icon"));
         // "folder" is built in, so the icon renders as inline SVG (no Material font).

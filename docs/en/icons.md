@@ -17,10 +17,10 @@ component chrome (chevrons, close, sort, tree toggles, ...). It works out of the
 <FlareIconButton Icon="@FlareIcons.Settings" AriaLabel="Settings" />
 ```
 
-- `FlareIcons.All` enumerates the built-in ids (snake_case).
-- A bare string resolves to the built-in set: `<FlareIconView Name="home" />`. An id that is **not** built in
-  resolves to an empty icon - core never falls back to a third-party font. Prefer the typed member; string
-  usage is a convenience that a future release removes.
+- Always reference an icon by its **typed member** - there is no lookup by name string. That is deliberate:
+  a name lookup would defeat trimming (the whole catalog would have to be kept) and add a runtime cost.
+- `FlareIcons.All` and `FlareIcons.Find(id)` remain as an explicit catalog API for the built-in set (e.g. an
+  icon-browser page that enumerates it); they do not resolve provider (Material/Fluent) icons.
 
 ## Provider packages
 

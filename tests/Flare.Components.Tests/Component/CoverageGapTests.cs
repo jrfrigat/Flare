@@ -575,7 +575,7 @@ public class C_DataGridExporterTests
     {
         public string Id => "MD";
         public string Label => "Markdown";
-        public string? Icon => null;
+        public FlareIcon? Icon => null;
         public Task ExportAsync(DataGridExportData<Row> data, IFlareDownload download)
         {
             var sb = new System.Text.StringBuilder();
@@ -638,8 +638,8 @@ public class C_FlareSplitterTests : FlareTestContext
     public void Icon_ReplacesGripBar_AndHoverIconRenders()
     {
         var cut = Render<FlareSplitter>(p => p
-            .Add(x => x.Icon, "drag_indicator")
-            .Add(x => x.HoverIcon, "open_with"));
+            .Add(x => x.Icon, FlareIcons.DragIndicator)
+            .Add(x => x.HoverIcon, FlareIcons.OpenInNew));
 
         Assert.Empty(cut.FindAll(".flare-splitter__gutter-bar"));
         // drag_indicator is built in (inline SVG); the hover icon element still renders.
@@ -651,7 +651,7 @@ public class C_FlareSplitterTests : FlareTestContext
     public void ChildContent_OverridesIconAndGrip()
     {
         var cut = Render<FlareSplitter>(p => p
-            .Add(x => x.Icon, "drag_indicator")
+            .Add(x => x.Icon, FlareIcons.DragIndicator)
             .AddChildContent("<b id=\"custom\">grip</b>"));
 
         Assert.Single(cut.FindAll("#custom"));
@@ -941,7 +941,7 @@ public class C_FlareNavGroupInlineTests : FlareTestContext
     {
         var cut = Render<FlareNavGroup>(p => p
             .Add(g => g.Label, "Components")
-            .Add(g => g.Icon, "category")
+            .Add(g => g.Icon, FlareIcons.Folder)
             .AddChildContent("<a class=\"flare-nav-link\">Buttons</a>"));
 
         Assert.NotEmpty(cut.FindAll(".flare-nav-group__items"));

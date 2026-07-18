@@ -26,7 +26,7 @@
                     @Header
                 }
             </span>
-            <FlareIconView Name="@(_expanded ? "expand_less" : "expand_more")" Class="@Css.Classes.Collapse.Icon" />
+            <FlareIconView Value="@(_expanded ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" Class="@Css.Classes.Collapse.Icon" />
         </button>
     }
     <div class="@Css.Classes.Collapse.Region"

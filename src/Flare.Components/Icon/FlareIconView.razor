@@ -5,19 +5,12 @@
 
 @code {
     /// <summary>
-    /// A ready-made icon descriptor to render - any provider (<see cref="FlareSvgIcon"/> or an add-on pack
-    /// type). Takes precedence; the <see cref="Name"/>/<see cref="Icon"/> shortcuts build one when it is null.
+    /// The icon descriptor to render - any provider (<see cref="FlareSvgIcon"/>, or an add-on pack type).
+    /// Icons are values: build one directly (<c>FlareIcons.Home</c>, <c>MaterialDesign3Icons.Regular.Home</c>,
+    /// <c>new FlareSvgIcon { Data = "..." }</c>). There is no lookup by icon name - that is what keeps the
+    /// SVG icon packages trimmable (only the icons you reference statically are published).
     /// </summary>
     [Parameter] public FlareIcon? Value { get; set; }
-
-    /// <summary>Built-in icon id shortcut, e.g. <c>"home"</c> (resolves to a built-in <see cref="FlareSvgIcon"/>; empty if unknown).</summary>
-    [Parameter] public string? Name { get; set; }
-
-    /// <summary>
-    /// SVG path data / markup, or a built-in icon id (auto-detected). Prefer <see cref="Value"/> or
-    /// <see cref="Name"/>. SECURITY: markup is emitted verbatim - pass only trusted, developer-authored values.
-    /// </summary>
-    [Parameter] public string? Icon { get; set; }
 
     /// <summary>Icon size as any CSS length (e.g. <c>"3rem"</c>). Overrides <see cref="Value"/>'s size when set.</summary>
     [Parameter] public string? Size { get; set; }
@@ -28,9 +21,6 @@
     /// <summary>Icon color. Overrides <see cref="Value"/>'s color when not <see cref="FlareColor.Default"/>.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
 
-    /// <summary>SVG viewBox used when building from <see cref="Icon"/> path data. Defaults to a 24x24 grid.</summary>
-    [Parameter] public string ViewBox { get; set; } = "0 0 24 24";
-
     /// <summary>Accessible label; sets aria-label + role=img. Overrides <see cref="Value"/>'s label when set.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
@@ -39,11 +29,11 @@
 
     private FlareIcon _effective => BuildEffective();
 
-    // Merge the caller-facing shortcuts/overrides onto the chosen descriptor. A view-level value wins over
-    // the descriptor's; an unset view value keeps the descriptor's.
+    // Merge the caller-facing overrides onto the descriptor. A view-level value wins over the descriptor's;
+    // an unset view value keeps the descriptor's. A null Value renders an empty icon.
     private FlareIcon BuildEffective()
     {
-        var icon = Value ?? BuildFromShortcut();
+        var icon = Value ?? FlareIcons.Empty;
         return icon with
         {
             Size = _sizeCss ?? icon.Size,
@@ -55,30 +45,5 @@
         };
     }
 
-    private FlareIcon BuildFromShortcut()
-    {
-        if (!string.IsNullOrEmpty(Icon) && _looksLikeSvg(Icon))
-            return new FlareSvgIcon { Data = Icon, ViewBox = ViewBox };
-        // A bare name resolves to the built-in SVG when known, else an empty icon (same rule as the
-        // string -> FlareIcon conversion): core never falls back to a third-party icon font.
-        var name = Name ?? Icon ?? string.Empty;
-        return FlareIcons.Find(name) ?? FlareIcons.Empty;
-    }
-
     private string? _sizeCss => Size ?? (SizePx is int px ? $"{px}px" : null);
-
-    // Material Symbol names are lowercase snake_case words (e.g. "home", "share"), many of which START with
-    // a path-command letter (s, m, c, l, h, ...), so the command letter alone is not enough - real path
-    // data has a number/sign/space/dot right after it, or the string is full markup starting with '<'.
-    private static bool _looksLikeSvg(string s) => s.TrimStart().StartsWith('<') || _looksLikePathData(s);
-
-    private static bool _looksLikePathData(string s)
-    {
-        var t = s.TrimStart();
-        if (t.Length == 0 || !"MmLlHhVvCcSsQqTtAaZz".Contains(t[0])) return false;
-        // 'Z'/'z' (closepath) takes no args; otherwise the command must be followed by a path-data token
-        // (digit, sign, dot, whitespace or comma) - never another letter.
-        if (t[0] is 'Z' or 'z') return t.Length == 1 || char.IsWhiteSpace(t[1]);
-        return t.Length > 1 && (char.IsDigit(t[1]) || t[1] is '-' or '+' or '.' or ',' || char.IsWhiteSpace(t[1]));
-    }
 }

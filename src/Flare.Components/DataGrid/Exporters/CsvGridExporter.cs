@@ -10,7 +10,7 @@ public sealed class CsvGridExporter<TItem> : IDataGridExporter<TItem>
     /// <summary>Display label for the export action.</summary>
     public string Label => "CSV";
     /// <summary>Material Symbols icon name for the export action.</summary>
-    public string? Icon => "download";
+    public FlareIcon? Icon => FlareIcons.Download;
 
     /// <summary>Exports the grid rows to a CSV file and triggers its download.</summary>
     public async Task ExportAsync(DataGridExportData<TItem> data, IFlareDownload download)

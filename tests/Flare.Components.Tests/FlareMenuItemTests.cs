@@ -88,7 +88,7 @@ public class FlareMenuItemTests : FlareTestContext
             .Add(x => x.Activator, b =>
                 b.AddMarkupContent(0, "<button>Open</button>"))
             .AddChildContent<FlareMenuItem>(mi => mi
-                .Add(x => x.Icon, "settings")
+                .Add(x => x.Icon, FlareIcons.Settings)
                 .AddChildContent("Settings")));
 
         cut.Find(".flare-menu__activator").Click();
