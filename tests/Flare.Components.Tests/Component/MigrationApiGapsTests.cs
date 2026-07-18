@@ -112,7 +112,8 @@ public class C_FlareAvatarFallbackTests : FlareTestContext
     {
         var cut = Render<FlareAvatar>(p => p.Add(x => x.FallbackIcon, "group"));
 
-        Assert.Equal("group", cut.Find(".flare-avatar__icon").TextContent);
+        // "group" is built in, overriding the default person icon with inline SVG.
+        Assert.Equal(FlareIcons.Group.Data, cut.Find(".flare-avatar__icon path").GetAttribute("d"));
     }
 
     [Fact]

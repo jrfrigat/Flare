@@ -31,7 +31,8 @@ public class FlareNavGroupTests : FlareTestContext
         var cut = Render<FlareNavGroup>(p => p
             .Add(x => x.Icon, "home"));
 
-        Assert.Contains("home", cut.Find(".flare-nav-group__icon").TextContent);
+        // "home" is built in, so the icon renders as inline SVG (no Material font).
+        Assert.Equal(FlareIcons.Home.Data, cut.Find(".flare-nav-group__icon path").GetAttribute("d"));
     }
 
     [Fact]

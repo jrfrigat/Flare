@@ -84,6 +84,7 @@ public class FlareTreeItemTests : FlareTestContext
             .Add(x => x.Icon, "folder"));
 
         Assert.NotEmpty(cut.FindAll(".flare-tree-item__icon"));
-        Assert.Contains("folder", cut.Find(".flare-tree-item__icon").TextContent);
+        // "folder" is built in, so the icon renders as inline SVG (no Material font).
+        Assert.Equal(FlareIcons.Folder.Data, cut.Find(".flare-tree-item__icon path").GetAttribute("d"));
     }
 }

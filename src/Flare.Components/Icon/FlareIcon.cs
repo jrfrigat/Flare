@@ -38,8 +38,14 @@ public abstract record FlareIcon
     /// <summary>Returns a <see cref="RenderFragment"/> that renders this icon.</summary>
     public RenderFragment Render() => Build;
 
-    /// <summary>Treats a bare string as a Material Symbols icon name (e.g. <c>"home"</c>).</summary>
-    public static implicit operator FlareIcon(string materialSymbolName) => new FlareMaterialIcon { Name = materialSymbolName };
+    /// <summary>
+    /// Resolves a bare string to an icon by its snake_case id: the dependency-free built-in SVG
+    /// (<see cref="FlareIcons"/>) when one exists (e.g. <c>"home"</c>, <c>"chevron_left"</c>), otherwise a
+    /// Material Symbols glyph (e.g. <c>"volume_up"</c>). So a string never forces the Material font unless the
+    /// id is not in the built-in set.
+    /// </summary>
+    public static implicit operator FlareIcon(string name) =>
+        FlareIcons.Find(name) ?? (FlareIcon)new FlareMaterialIcon { Name = name };
 
     // Note: there is deliberately no implicit FlareIcon -> RenderFragment conversion. It reads nicely
     // ("drop an icon into a RenderFragment slot") but makes overload resolution ambiguous wherever an API

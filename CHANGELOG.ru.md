@@ -19,7 +19,9 @@
     Regular/Filled, сгенерирован из пакета иконок Microsoft инструментом `tools/FluentIconGen`); любую другую
     Fluent-иконку можно передать через `Data`.
 
-  Отдельная отрисовка - через `<FlareIconView>`. Голая строка трактуется как имя Material Symbols.
+  Отдельная отрисовка - через `<FlareIconView>`. Голая строка резолвится во встроенный SVG, если её id есть в
+  `FlareIcons` (например `"home"`), и откатывается на Material-глиф только для id вне встроенного набора
+  (например `"volume_up"`) - то есть строка не навязывает шрифт Material без необходимости.
 - **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 84 готовых `FlareSvgIcon` (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) как inline-SVG - без иконочного шрифта, без сетевого запроса, без
   FOUT, независимо от темы. Используются везде, где принимается `FlareIcon`, например
@@ -31,8 +33,9 @@
   параметры `Name`/`Icon`/`Size`/`Color`/`ViewBox`/`AriaLabel`, так что миграция - переименование тега:
   `<FlareIcon ... />` -> `<FlareIconView ... />`.
 - **BREAKING: `FlareIconButton.Icon` теперь `FlareIcon`, а не строка-имя Material**, поэтому в кнопке-иконке
-  работает любой провайдер. Голая строка по-прежнему означает Material-иконку, но литерал в Razor должен быть
-  выражением: `Icon="settings"` -> `Icon="@("settings")"` (или `Icon="@FlareIcons.Settings"`).
+  работает любой провайдер. Голая строка резолвится во встроенный SVG, если он есть (иначе Material-глиф), то
+  есть по умолчанию не навязывает шрифт; литерал в Razor должен быть выражением: `Icon="settings"` ->
+  `Icon="@("settings")"` (или `Icon="@FlareIcons.Settings"`).
 - **BREAKING: члены `FlareIcons.*` теперь значения `FlareSvgIcon`, а не строки-имена** - они рисуют inline-SVG.
   `FlareIcons.All` (id иконок) и `FlareIcons.Brands.FlareLogoShort` не изменились.
 - **Хром компонентов больше не навязывает шрифт Material Symbols.** Все иконки, которые Flare рисует сам -
@@ -45,8 +48,9 @@
   `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) и
   `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) и иконки ribbon/backstage/document-tab в опциональном
   пакете `Flare.Components.IDE` теперь принимают `FlareIcon`, а не строку-имя Material. Голая строка
-  по-прежнему означает Material-иконку; литерал в Razor должен быть выражением (`Icon="@("home")"`). Сырых
-  `material-symbols`-спанов не осталось нигде в `src/`.
+  резолвится во встроенный SVG, если он есть (иначе Material-глиф), то есть по умолчанию не навязывает шрифт;
+  литерал в Razor должен быть выражением (`Icon="@("home")"`). Сырых `material-symbols`-спанов не осталось
+  нигде в `src/`.
 
 ### Исправлено
 - **Ошибка в снэкбаре теперь прерывает скринридер; success/info/warning по-прежнему ждут очереди.** Провайдер

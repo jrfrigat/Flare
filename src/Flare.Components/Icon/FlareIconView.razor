@@ -60,7 +60,10 @@
     {
         if (!string.IsNullOrEmpty(Icon) && _looksLikeSvg(Icon))
             return new FlareSvgIcon { Data = Icon, ViewBox = ViewBox };
-        return new FlareMaterialIcon { Name = Name ?? Icon ?? string.Empty };
+        // A bare name resolves to the built-in SVG when known, else a Material glyph (same rule as the
+        // string -> FlareIcon conversion), so Name/Icon shortcuts do not force the font by default.
+        var name = Name ?? Icon ?? string.Empty;
+        return FlareIcons.Find(name) ?? (FlareIcon)new FlareMaterialIcon { Name = name };
     }
 
     private string? _sizeCss => Size ?? (SizePx is int px ? $"{px}px" : null);

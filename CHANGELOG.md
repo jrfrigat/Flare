@@ -17,7 +17,9 @@ All notable changes to Flare are documented here. This project adheres to
     Regular/Filled, generated from Microsoft's icon package by `tools/FluentIconGen`); any other Fluent SVG
     can be passed via `Data`.
 
-  Render one standalone with `<FlareIconView>`. A bare string is taken as a Material Symbols name.
+  Render one standalone with `<FlareIconView>`. A bare string resolves to the built-in SVG when its id is in
+  `FlareIcons` (e.g. `"home"`), and only falls back to a Material Symbols glyph for ids that are not built in
+  (e.g. `"volume_up"`) - so a string never forces the Material font unless it has to.
 - **A built-in, dependency-free SVG icon set (`FlareIcons`).** 84 ready `FlareSvgIcon` members (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) rendered as inline SVG - no icon font, no network request, no
   FOUT, theme-agnostic. Use anywhere a `FlareIcon` is accepted, e.g. `<FlareIconButton Icon="@FlareIcons.Home" />`.
@@ -28,8 +30,9 @@ All notable changes to Flare are documented here. This project adheres to
   the old `Name`/`Icon`/`Size`/`Color`/`ViewBox`/`AriaLabel` parameters, so migrating is a tag rename:
   `<FlareIcon ... />` -> `<FlareIconView ... />`.
 - **BREAKING: `FlareIconButton.Icon` is now a `FlareIcon`, not a Material-name string**, so any provider
-  works in an icon button. A bare string still means a Material icon, but a Razor literal must be an
-  expression: `Icon="settings"` -> `Icon="@("settings")"` (or `Icon="@FlareIcons.Settings"`).
+  works in an icon button. A bare string resolves to the built-in SVG when known (else a Material glyph), so
+  it does not force the font by default; a Razor literal must be an expression: `Icon="settings"` ->
+  `Icon="@("settings")"` (or `Icon="@FlareIcons.Settings"`).
 - **BREAKING: `FlareIcons.*` members are now `FlareSvgIcon` values, not name strings** - they render inline
   SVG. `FlareIcons.All` (icon ids) and `FlareIcons.Brands.FlareLogoShort` are unchanged.
 - **Component chrome no longer forces the Material Symbols font.** Every default icon Flare draws itself -
@@ -42,8 +45,9 @@ All notable changes to Flare are documented here. This project adheres to
   `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) and
   `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`), and the optional `Flare.Components.IDE` package's
   ribbon/backstage/document-tab icons now take a `FlareIcon` rather than a Material-name string. A bare
-  string still means a Material icon; a Razor literal must be an expression (`Icon="@("home")"`). No raw
-  `material-symbols` spans remain anywhere in `src/`.
+  string resolves to the built-in SVG when known (else a Material glyph), so it does not force the font; a
+  Razor literal must be an expression (`Icon="@("home")"`). No raw `material-symbols` spans remain anywhere
+  in `src/`.
 
 ### Fixed
 - **A snackbar error now interrupts a screen reader; success/info/warning still wait their turn.** The
