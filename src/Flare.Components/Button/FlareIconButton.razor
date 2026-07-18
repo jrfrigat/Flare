@@ -29,17 +29,18 @@
         {
             @ChildContent
         }
-        else if (!string.IsNullOrEmpty(Icon))
+        else if (Icon is not null)
         {
-            <FlareIconView Name="@Icon" />
+            <FlareIconView Value="Icon" />
         }
     </LeadingIcon>
 </FlareButton>
 
 @code {
-    /// <summary>Material Symbols icon name rendered inside the button (e.g. <c>settings</c>). Ignored when
-    /// <see cref="ChildContent"/> is supplied.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>The icon rendered inside the button - any provider (<see cref="FlareMaterialIcon"/>,
+    /// <see cref="FlareSvgIcon"/>, a Fluent/Font Awesome pack type). A bare string is taken as a Material
+    /// Symbols name. Ignored when <see cref="ChildContent"/> is supplied.</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Custom icon content, used in place of <see cref="Icon"/> (e.g. a configured <c>FlareIcon</c> or SVG).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Visual style variant. Defaults to <see cref="ButtonVariant.Text"/> (a standard, chrome-less icon button).</summary>
