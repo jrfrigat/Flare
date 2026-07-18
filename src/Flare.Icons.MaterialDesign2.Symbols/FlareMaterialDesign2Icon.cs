@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 namespace Flare.Components;
 
 /// <summary>The Material Icons (Material Design 2) webfont style; each maps to a font family.</summary>
-public enum MaterialClassicStyle
+public enum MaterialDesign2Style
 {
     /// <summary>Filled (<c>material-icons</c>). The default classic family.</summary>
     Filled,
@@ -21,17 +21,17 @@ public enum MaterialClassicStyle
 /// A Material Design 2 icon from the classic Material Icons webfont, selected by <see cref="Name"/> (the
 /// ligature name, e.g. <c>"home"</c>) and <see cref="Style"/>. Renders a <c>&lt;span class="material-icons"&gt;</c>
 /// glyph, so the host app must load the corresponding Material Icons font family. Any
-/// <see cref="FlareMaterialClassicIcon"/> drops into any parameter typed <see cref="FlareIcon"/>. Ships in the
+/// <see cref="FlareMaterialDesign2Icon"/> drops into any parameter typed <see cref="FlareIcon"/>. Ships in the
 /// optional <c>Flare.Icons.MaterialDesign2.Symbols</c> package. For a font-free icon prefer the SVG package
-/// <c>Flare.Icons.MaterialDesign2.Svg</c> (<c>MaterialIcons.*</c>) or the built-in <see cref="FlareIcons"/> set.
+/// <c>Flare.Icons.MaterialDesign2.Svg</c> (<c>MaterialDesign2Icons.*</c>) or the built-in <see cref="FlareIcons"/> set.
 /// </summary>
-public sealed record FlareMaterialClassicIcon : FlareIcon
+public sealed record FlareMaterialDesign2Icon : FlareIcon
 {
     /// <summary>The Material Icons ligature name (snake_case), e.g. <c>chevron_left</c>.</summary>
     public required string Name { get; init; }
 
-    /// <summary>The font family / style. Default <see cref="MaterialClassicStyle.Filled"/>.</summary>
-    public MaterialClassicStyle Style { get; init; } = MaterialClassicStyle.Filled;
+    /// <summary>The font family / style. Default <see cref="MaterialDesign2Style.Filled"/>.</summary>
+    public MaterialDesign2Style Style { get; init; } = MaterialDesign2Style.Filled;
 
     /// <inheritdoc/>
     protected override void Build(RenderTreeBuilder builder)
@@ -48,10 +48,10 @@ public sealed record FlareMaterialClassicIcon : FlareIcon
 
     private string FontClass() => Style switch
     {
-        MaterialClassicStyle.Outlined => "material-icons-outlined",
-        MaterialClassicStyle.Round => "material-icons-round",
-        MaterialClassicStyle.Sharp => "material-icons-sharp",
-        MaterialClassicStyle.TwoTone => "material-icons-two-tone",
+        MaterialDesign2Style.Outlined => "material-icons-outlined",
+        MaterialDesign2Style.Round => "material-icons-round",
+        MaterialDesign2Style.Sharp => "material-icons-sharp",
+        MaterialDesign2Style.TwoTone => "material-icons-two-tone",
         _ => "material-icons",
     };
 }

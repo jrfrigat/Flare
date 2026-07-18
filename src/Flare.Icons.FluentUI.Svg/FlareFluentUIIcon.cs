@@ -6,7 +6,7 @@ namespace Flare.Components;
 /// A Fluent UI System Icons size grid. Fluent icons are drawn per size (each optimised for its box), so the
 /// value picks the matching SVG <c>viewBox</c>.
 /// </summary>
-public enum FluentIconSize
+public enum FluentUIIconSize
 {
     /// <summary>16x16 grid.</summary>
     Size16,
@@ -25,8 +25,8 @@ public enum FluentIconSize
 /// <summary>
 /// A Fluent UI System Icons icon, rendered as inline SVG with Fluent's own options - <see cref="Filled"/>
 /// (filled vs regular) and the <see cref="GridSize"/> the artwork is authored on. Any
-/// <see cref="FlareFluentIcon"/> drops into any parameter typed <see cref="FlareIcon"/>. Ships in the
-/// optional <c>Flare.Icons.Fluent</c> package.
+/// <see cref="FlareFluentUIIcon"/> drops into any parameter typed <see cref="FlareIcon"/>. Ships in the
+/// optional <c>Flare.Icons.FluentUI.Svg</c> package.
 /// </summary>
 /// <remarks>
 /// This provider renders the SVG artwork you pass in <see cref="Data"/>; source it from the Fluent icon
@@ -34,7 +34,7 @@ public enum FluentIconSize
 /// want. SECURITY: markup in <see cref="Data"/> is emitted verbatim - pass only trusted, developer-authored
 /// values.
 /// </remarks>
-public sealed record FlareFluentIcon : FlareIcon
+public sealed record FlareFluentUIIcon : FlareIcon
 {
     /// <summary>The icon path data (a <c>d=</c> string) or full SVG inner markup, from the Fluent assets.</summary>
     public required string Data { get; init; }
@@ -45,8 +45,8 @@ public sealed record FlareFluentIcon : FlareIcon
     /// <summary>Whether this is the filled (vs regular/outline) variant. Metadata that matches the chosen <see cref="Data"/>.</summary>
     public bool Filled { get; init; }
 
-    /// <summary>The Fluent size grid the artwork is authored on, which sets the SVG <c>viewBox</c>. Default <see cref="FluentIconSize.Size24"/>.</summary>
-    public FluentIconSize GridSize { get; init; } = FluentIconSize.Size24;
+    /// <summary>The Fluent size grid the artwork is authored on, which sets the SVG <c>viewBox</c>. Default <see cref="FluentUIIconSize.Size24"/>.</summary>
+    public FluentUIIconSize GridSize { get; init; } = FluentUIIconSize.Size24;
 
     // A leading '<' means full markup; otherwise Data is bare path data for a single <path d="...">.
     private bool IsMarkup => Data.TrimStart().StartsWith('<');
@@ -79,11 +79,11 @@ public sealed record FlareFluentIcon : FlareIcon
 
     private string ViewBox() => GridSize switch
     {
-        FluentIconSize.Size16 => "0 0 16 16",
-        FluentIconSize.Size20 => "0 0 20 20",
-        FluentIconSize.Size28 => "0 0 28 28",
-        FluentIconSize.Size32 => "0 0 32 32",
-        FluentIconSize.Size48 => "0 0 48 48",
+        FluentUIIconSize.Size16 => "0 0 16 16",
+        FluentUIIconSize.Size20 => "0 0 20 20",
+        FluentUIIconSize.Size28 => "0 0 28 28",
+        FluentUIIconSize.Size32 => "0 0 32 32",
+        FluentUIIconSize.Size48 => "0 0 48 48",
         _ => "0 0 24 24",
     };
 }

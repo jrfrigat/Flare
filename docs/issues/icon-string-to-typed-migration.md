@@ -24,9 +24,9 @@ The Gallery still has demo sites using ids that are not in the built-in set (e.g
 Drop the string convenience entirely and require typed icons everywhere:
 
 - Built-in: `Icon="@FlareIcons.Home"`.
-- Material (font): `@(new FlareMaterialIcon { Name = "volume_up" })` (package `Flare.Icons.MaterialDesign3.Symbols`).
-- Material (SVG): `@MaterialIcons.VolumeUp` (package `Flare.Icons.MaterialDesign2.Svg`).
-- Fluent (SVG): `@FluentIcons.Regular.Speaker2` (package `Flare.Icons.FluentUI.Svg`).
+- Material (font): `@(new FlareMaterialDesign3Icon { Name = "volume_up" })` (package `Flare.Icons.MaterialDesign3.Symbols`).
+- Material (SVG): `@MaterialDesign2Icons.VolumeUp` (package `Flare.Icons.MaterialDesign2.Svg`).
+- Fluent (SVG): `@FluentUIIcons.Regular.Speaker2` (package `Flare.Icons.FluentUI.Svg`).
 - Font Awesome (font): `@(new FlareFontAwesomeIcon { Name = "volume-high" })` (package `Flare.Icons.FontAwesome.Symbols`).
 
 Steps:

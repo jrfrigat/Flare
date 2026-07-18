@@ -1,4 +1,4 @@
-// Build-time generator: reads MudBlazor's Material Icons (Filled) SVG constants and emits a MaterialIcons
+// Build-time generator: reads MudBlazor's Material Icons (Filled) SVG constants and emits a MaterialDesign2Icons
 // catalog of FlareSvgIcon values for Flare.Icons.MaterialDesign2.Svg. Material Icons are Apache-2.0.
 // Run: node tools/MaterialIconGen/gen.mjs
 import fs from 'fs';
@@ -28,9 +28,9 @@ out += 'namespace Flare.Components;\n\n';
 out += '/// <summary>\n';
 out += '/// The Material Design 2 (Material Icons, filled) set as ready <see cref="FlareSvgIcon"/> values -\n';
 out += '/// inline SVG, no icon font. Use anywhere a <see cref="FlareIcon"/> is accepted, e.g.\n';
-out += '/// <c>&lt;FlareIconButton Icon="@MaterialIcons.Home" /&gt;</c>.\n';
+out += '/// <c>&lt;FlareIconButton Icon="@MaterialDesign2Icons.Home" /&gt;</c>.\n';
 out += '/// </summary>\n';
-out += 'public static class MaterialIcons\n';
+out += 'public static class MaterialDesign2Icons\n';
 out += '{\n';
 for (const { name, svg } of icons) {
   out += `    /// <summary>The Material <c>${name}</c> icon.</summary>\n`;
@@ -38,6 +38,6 @@ for (const { name, svg } of icons) {
 }
 out += '}\n';
 
-const outPath = REPO + '/src/Flare.Icons.MaterialDesign2.Svg/MaterialIcons.g.cs';
+const outPath = REPO + '/src/Flare.Icons.MaterialDesign2.Svg/MaterialDesign2Icons.g.cs';
 fs.writeFileSync(outPath, out, 'utf8');
 console.log('icons:', icons.length, '-> wrote', outPath);

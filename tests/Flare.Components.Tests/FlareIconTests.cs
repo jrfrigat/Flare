@@ -1,9 +1,9 @@
 namespace Flare.Components.Tests;
 
 // A bare name resolves to the dependency-free built-in SVG when the id is in FlareIcons (e.g. "home",
-// "share"), and only falls back to a Material Symbols glyph for ids that are not built in (e.g. "list",
-// "volume_up"). Real path data / markup always renders inline SVG. Names starting with a path-command
-// letter (share -> 's', menu -> 'm', list -> 'l') must still be treated as names, not path data.
+// "share"), and to an empty icon for ids that are not built in (e.g. "list", "volume_up") - core never
+// falls back to a third-party font. Real path data / markup always renders inline SVG. Names starting with
+// a path-command letter (share -> 's', menu -> 'm', list -> 'l') must still be treated as names, not path data.
 public class FlareIconTests : FlareTestContext
 {
     [Theory]
@@ -83,7 +83,7 @@ public class FlareIconTests : FlareTestContext
     public void MaterialIconValue_RendersGlyph_WithAxes()
     {
         var cut = Render<FlareIconView>(p => p
-            .Add(x => x.Value, new FlareMaterialIcon { Name = "star", Fill = true }));
+            .Add(x => x.Value, new FlareMaterialDesign3Icon { Name = "star", Fill = true }));
 
         Assert.Empty(cut.FindAll("svg"));
         Assert.Contains("star", cut.Markup);
@@ -94,7 +94,7 @@ public class FlareIconTests : FlareTestContext
     public void MaterialIconValue_Rounded_ByDefault_NoAxes_WhenUnset()
     {
         var cut = Render<FlareIconView>(p => p
-            .Add(x => x.Value, new FlareMaterialIcon { Name = "home" }));
+            .Add(x => x.Value, new FlareMaterialDesign3Icon { Name = "home" }));
 
         Assert.Contains("material-symbols-rounded", cut.Markup);
         // Baseline axes are inherited from icon.css, so no per-icon override is emitted.
@@ -111,7 +111,7 @@ public class FlareIconTests : FlareTestContext
         Assert.Equal("M3 18h18v-2H3v2z", cut.Find("path").GetAttribute("d"));
     }
 
-    // ---- The string -> FlareIcon conversion prefers the built-in SVG, falling back to Material -----
+    // ---- The string -> FlareIcon conversion resolves the built-in SVG, else an empty icon -----------
 
     [Fact]
     public void StringImplicitlyConverts_Catalogued_ToBuiltInSvg()

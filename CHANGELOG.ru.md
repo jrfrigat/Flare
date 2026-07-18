@@ -11,14 +11,14 @@
   дескриптор иконки; конкретные провайдеры несут свои параметры и подставляются в любой параметр типа
   `FlareIcon`. В ядре есть только `FlareSvgIcon` (inline-SVG); остальные - опциональные пакеты, поэтому ядро
   не зависит ни от одного стороннего набора иконок:
-  - `Flare.Icons.MaterialDesign3.Symbols` - `FlareMaterialIcon` (вариативный шрифт Material Symbols:
+  - `Flare.Icons.MaterialDesign3.Symbols` - `FlareMaterialDesign3Icon` (вариативный шрифт Material Symbols:
     `Fill`/`Weight`/`Grade`/`OpticalSize`/`Family`).
-  - `Flare.Icons.MaterialDesign2.Symbols` - `FlareMaterialClassicIcon` (классический шрифт Material Icons:
+  - `Flare.Icons.MaterialDesign2.Symbols` - `FlareMaterialDesign2Icon` (классический шрифт Material Icons:
     Filled/Outlined/Round/Sharp/TwoTone).
   - `Flare.Icons.MaterialDesign2.Svg` - полный набор Material Icons (filled) как inline-SVG (каталог
-    `MaterialIcons`, 2122 иконки), генератор `tools/MaterialIconGen`.
-  - `Flare.Icons.FluentUI.Svg` - полный набор Fluent UI System Icons как inline-SVG (каталог `FluentIcons`,
-    Regular + Filled, Size 24, ~5000 иконок), генератор `tools/FluentIconGen`; плюс `FlareFluentIcon`.
+    `MaterialDesign2Icons`, 2122 иконки), генератор `tools/MaterialIconGen`.
+  - `Flare.Icons.FluentUI.Svg` - полный набор Fluent UI System Icons как inline-SVG (каталог `FluentUIIcons`,
+    Regular + Filled, Size 24, ~5000 иконок), генератор `tools/FluentIconGen`; плюс `FlareFluentUIIcon`.
   - `Flare.Icons.FontAwesome.Symbols` - `FlareFontAwesomeIcon` (шрифт Font Awesome: Solid/Regular/Light/
     Thin/Duotone/Brands).
 

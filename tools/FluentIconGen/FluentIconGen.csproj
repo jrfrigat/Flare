@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!-- Build-time developer tool: reads real Fluent UI System Icons SVG data and generates a curated
-       FluentIcons catalog for Flare.Icons.Fluent. Deliberately NOT in Flare.slnx and references no Flare
+       FluentUIIcons catalog for Flare.Icons.FluentUI.Svg. Deliberately NOT in Flare.slnx and references no Flare
        project - it only depends on Microsoft's icon package, which never ships with Flare. -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>

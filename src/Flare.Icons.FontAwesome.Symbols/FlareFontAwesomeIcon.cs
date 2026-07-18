@@ -27,7 +27,7 @@ public enum FaStyle
 /// <c>"github"</c>, <c>"house"</c>) and <see cref="Variant"/>. Renders the standard Font Awesome
 /// <c>&lt;i class="fa-solid fa-github"&gt;</c> markup, so the host app must load a Font Awesome stylesheet
 /// (Free, Pro, or a kit). Any <see cref="FlareFontAwesomeIcon"/> drops into any parameter typed
-/// <see cref="FlareIcon"/>. Ships in the optional <c>Flare.Icons.FontAwesome</c> package.
+/// <see cref="FlareIcon"/>. Ships in the optional <c>Flare.Icons.FontAwesome.Symbols</c> package.
 /// </summary>
 public sealed record FlareFontAwesomeIcon : FlareIcon
 {

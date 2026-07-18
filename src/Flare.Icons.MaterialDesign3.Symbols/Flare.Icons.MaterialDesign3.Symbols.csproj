@@ -5,7 +5,7 @@
     <TargetFramework></TargetFramework>
     <PackageId>Flare.Icons.MaterialDesign3.Symbols</PackageId>
     <RootNamespace>Flare.Components</RootNamespace>
-    <Description>Material Design 3 (Material Symbols variable font) provider for the Flare Blazor component library. Adds FlareMaterialIcon, usable anywhere a FlareIcon is accepted. Requires the Material Symbols font in the host app.</Description>
+    <Description>Material Design 3 (Material Symbols variable font) provider for the Flare Blazor component library. Adds FlareMaterialDesign3Icon, usable anywhere a FlareIcon is accepted. Requires the Material Symbols font in the host app.</Description>
     <PackageTags>blazor;components;icons;material;materialsymbols;materialdesign</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>

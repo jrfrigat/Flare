@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text;
 
-// Generates a curated FluentIcons catalog for Flare.Icons.Fluent from the real Microsoft Fluent UI System
+// Generates a curated FluentUIIcons catalog for Flare.Icons.FluentUI.Svg from the real Microsoft Fluent UI System
 // Icons package (Regular + Filled, Size24). Over-list names freely: any not present in a variant is skipped
 // and reported, so the output only contains icons that genuinely exist.
 
@@ -42,12 +42,12 @@ sb.AppendLine();
 sb.AppendLine("namespace Flare.Components;");
 sb.AppendLine();
 sb.AppendLine("/// <summary>");
-sb.AppendLine("/// A curated set of common Fluent UI System Icons (Size 24), ready as <see cref=\"FlareFluentIcon\"/>");
+sb.AppendLine("/// A curated set of common Fluent UI System Icons (Size 24), ready as <see cref=\"FlareFluentUIIcon\"/>");
 sb.AppendLine("/// values. Use anywhere a <see cref=\"FlareIcon\"/> is accepted, e.g.");
-sb.AppendLine("/// <c>&lt;FlareIconButton Icon=\"@FluentIcons.Regular.Home\" /&gt;</c>. For icons not in this set, pass the");
-sb.AppendLine("/// SVG path from the Fluent assets directly via <see cref=\"FlareFluentIcon.Data\"/>.");
+sb.AppendLine("/// <c>&lt;FlareIconButton Icon=\"@FluentUIIcons.Regular.Home\" /&gt;</c>. For icons not in this set, pass the");
+sb.AppendLine("/// SVG path from the Fluent assets directly via <see cref=\"FlareFluentUIIcon.Data\"/>.");
 sb.AppendLine("/// </summary>");
-sb.AppendLine("public static class FluentIcons");
+sb.AppendLine("public static class FluentUIIcons");
 sb.AppendLine("{");
 
 void EmitClass(string cls, List<(string Name, string Svg)> items, bool filledFlag)
@@ -59,7 +59,7 @@ void EmitClass(string cls, List<(string Name, string Svg)> items, bool filledFla
     {
         sb.AppendLine($"        /// <summary>The Fluent <c>{name}</c> ({cls.ToLowerInvariant()}) icon.</summary>");
         // Expression-bodied (computed) so a full catalog does not build a pathological static constructor.
-        sb.AppendLine($"        public static FlareFluentIcon {name} => new() {{ Name = \"{name}\", Filled = {(filledFlag ? "true" : "false")}, Data = \"\"\"{svg}\"\"\" }};");
+        sb.AppendLine($"        public static FlareFluentUIIcon {name} => new() {{ Name = \"{name}\", Filled = {(filledFlag ? "true" : "false")}, Data = \"\"\"{svg}\"\"\" }};");
     }
     sb.AppendLine("    }");
 }
@@ -70,7 +70,7 @@ EmitClass("Filled", filled, true);
 sb.AppendLine("}");
 
 var outPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..",
-    "src", "Flare.Icons.FluentUI.Svg", "FluentIcons.g.cs"));
+    "src", "Flare.Icons.FluentUI.Svg", "FluentUIIcons.g.cs"));
 File.WriteAllText(outPath, sb.ToString());
 
 Console.WriteLine($"Regular: {regular.Count}, Filled: {filled.Count}");

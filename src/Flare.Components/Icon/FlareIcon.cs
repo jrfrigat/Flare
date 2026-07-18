@@ -42,7 +42,7 @@ public abstract record FlareIcon
     /// Resolves a bare string to the dependency-free built-in SVG (<see cref="FlareIcons"/>) with that
     /// snake_case id (e.g. <c>"home"</c>, <c>"chevron_left"</c>). An id that is not built in resolves to an
     /// empty icon - the core never depends on a third-party icon set, so it does not fall back to a Material
-    /// font. For provider icons use a typed value from an icon package (e.g. <c>MaterialIcons.Home</c>).
+    /// font. For provider icons use a typed value from an icon package (e.g. <c>MaterialDesign2Icons.Home</c>).
     /// </summary>
     public static implicit operator FlareIcon(string name) => FlareIcons.Find(name) ?? FlareIcons.Empty;
 

@@ -5,7 +5,7 @@
     <TargetFramework></TargetFramework>
     <PackageId>Flare.Icons.MaterialDesign2.Svg</PackageId>
     <RootNamespace>Flare.Components</RootNamespace>
-    <Description>Material Design 2 (Material Icons) as inline SVG for the Flare Blazor component library. Adds the MaterialIcons catalog of ready FlareSvgIcon values, usable anywhere a FlareIcon is accepted - no icon font required.</Description>
+    <Description>Material Design 2 (Material Icons) as inline SVG for the Flare Blazor component library. Adds the MaterialDesign2Icons catalog of ready FlareSvgIcon values, usable anywhere a FlareIcon is accepted - no icon font required.</Description>
     <PackageTags>blazor;components;icons;material;materialdesign</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
