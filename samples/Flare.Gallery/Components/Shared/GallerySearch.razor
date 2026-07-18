@@ -23,7 +23,7 @@
                    DebounceMs="150">
     <ItemTemplate Context="r">
         <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small">
-            <FlareIconView Name="@r.Icon" Size="1.05rem" Color="FlareColor.OnSurfaceVariant" />
+            <FlareIconView Value="@GalleryIcons.Resolve(r.Icon)" Size="1.05rem" Color="FlareColor.OnSurfaceVariant" />
             <FlareText>@r.Title</FlareText>
         </FlareStack>
     </ItemTemplate>

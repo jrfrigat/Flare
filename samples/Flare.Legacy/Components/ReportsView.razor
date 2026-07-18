@@ -8,7 +8,7 @@
         {
             <FlareCard Variant="CardVariant.Filled">
                 <FlareStack Gap="FlareSpacing.XXSmall" Align="FlareAlignItems.Start">
-                    <FlareIconView Size="1.4rem" Name="@report.Icon" Color="FlareColor.Primary" />
+                    <FlareIconView Size="1.4rem" Value="@LegacyIcons.Resolve(report.Icon)" Color="FlareColor.Primary" />
                     <FlareText Typo="TypographyScale.LabelLarge" Weight="FontWeight.Bold">@report.Title</FlareText>
                     <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">@report.Description</FlareText>
                     <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Отчёт: " + report.Title))">Сформировать</FlareButton>

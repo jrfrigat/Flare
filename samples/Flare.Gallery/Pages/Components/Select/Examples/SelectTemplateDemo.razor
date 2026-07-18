@@ -7,7 +7,7 @@
                  ItemLabel="@(p => p.Name)"
                  Style="max-width:24rem;">
         <ItemTemplate>
-            <FlareIconView Name="@context.Icon" Color="@context.Color" />
+            <FlareIconView Value="@GalleryIcons.Resolve(context.Icon)" Color="@context.Color" />
             <span>@context.Name</span>
         </ItemTemplate>
     </FlareSelect>

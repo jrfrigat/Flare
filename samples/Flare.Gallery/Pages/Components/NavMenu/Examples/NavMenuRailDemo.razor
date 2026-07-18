@@ -26,7 +26,7 @@
     </FlareCard>
 
     <FlareButton Variant="ButtonVariant.Tonal" OnClick="() => _rail = !_rail">
-        <FlareIconView Size="1.1rem" Name="@(_rail ? "menu_open" : "menu")" />
+        <FlareIconView Size="1.1rem" Value="@GalleryIcons.Resolve(_rail ? "menu_open" : "menu")" />
         @(_rail ? "Expand" : "Collapse to rail")
     </FlareButton>
 </div>

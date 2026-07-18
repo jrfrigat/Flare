@@ -1,3 +1,5 @@
+using Flare.Components;
+
 namespace Flare.Gallery.Models;
 
 /// <summary>
@@ -49,7 +51,7 @@ public enum ComponentGroup
 public sealed record ComponentEntry(string Href, string Name, string? TitleKey, ComponentGroup Group);
 
 /// <summary>Display metadata (label + icon) for a <see cref="ComponentGroup"/>.</summary>
-public sealed record ComponentGroupMeta(ComponentGroup Group, string Label, string Icon);
+public sealed record ComponentGroupMeta(ComponentGroup Group, string Label, FlareIcon Icon);
 
 /// <summary>
 /// Single source of truth for the component demo pages: the sidebar groups and the global search
@@ -58,24 +60,24 @@ public sealed record ComponentGroupMeta(ComponentGroup Group, string Label, stri
 /// </summary>
 public static class ComponentCatalog
 {
-    /// <summary>Groups in sidebar display order, with their label and Material Symbols icon.</summary>
+    /// <summary>Groups in sidebar display order, with their label and (typed) icon.</summary>
     public static readonly IReadOnlyList<ComponentGroupMeta> Groups = new[]
     {
-        new ComponentGroupMeta(ComponentGroup.Field,       "Field",              "text_fields"),
-        new ComponentGroupMeta(ComponentGroup.Input,       "Input",              "ads_click"),
-        new ComponentGroupMeta(ComponentGroup.Files,       "Files",              "upload_file"),
-        new ComponentGroupMeta(ComponentGroup.Forms,       "Forms",              "dynamic_form"),
-        new ComponentGroupMeta(ComponentGroup.Buttons,     "Buttons & Actions",  "smart_button"),
-        new ComponentGroupMeta(ComponentGroup.Layout,      "Layout & Surfaces",  "dashboard"),
-        new ComponentGroupMeta(ComponentGroup.Navigation,  "Navigation",         "menu"),
-        new ComponentGroupMeta(ComponentGroup.DataDisplay, "Data Display",       "view_list"),
-        new ComponentGroupMeta(ComponentGroup.DataGrid,    "Data Grid",          "table_chart"),
-        new ComponentGroupMeta(ComponentGroup.DateTime,    "Date & Time",        "calendar_month"),
-        new ComponentGroupMeta(ComponentGroup.Feedback,    "Feedback & Overlays","notifications"),
-        new ComponentGroupMeta(ComponentGroup.Media,       "Media",              "perm_media"),
-        new ComponentGroupMeta(ComponentGroup.Foundations, "Foundations",        "foundation"),
-        new ComponentGroupMeta(ComponentGroup.Utilities,   "Utilities",          "handyman"),
-        new ComponentGroupMeta(ComponentGroup.Ide,         "IDE",                "code"),
+        new ComponentGroupMeta(ComponentGroup.Field,       "Field",              MaterialDesign3Icons.Regular.TextFields),
+        new ComponentGroupMeta(ComponentGroup.Input,       "Input",              MaterialDesign3Icons.Regular.AdsClick),
+        new ComponentGroupMeta(ComponentGroup.Files,       "Files",              FlareIcons.UploadFile),
+        new ComponentGroupMeta(ComponentGroup.Forms,       "Forms",              MaterialDesign3Icons.Regular.DynamicForm),
+        new ComponentGroupMeta(ComponentGroup.Buttons,     "Buttons & Actions",  MaterialDesign3Icons.Regular.Widgets),
+        new ComponentGroupMeta(ComponentGroup.Layout,      "Layout & Surfaces",  MaterialDesign3Icons.Regular.Dashboard),
+        new ComponentGroupMeta(ComponentGroup.Navigation,  "Navigation",         FlareIcons.Menu),
+        new ComponentGroupMeta(ComponentGroup.DataDisplay, "Data Display",       MaterialDesign3Icons.Regular.ViewList),
+        new ComponentGroupMeta(ComponentGroup.DataGrid,    "Data Grid",          MaterialDesign3Icons.Regular.TableChart),
+        new ComponentGroupMeta(ComponentGroup.DateTime,    "Date & Time",        FlareIcons.CalendarMonth),
+        new ComponentGroupMeta(ComponentGroup.Feedback,    "Feedback & Overlays",FlareIcons.Notifications),
+        new ComponentGroupMeta(ComponentGroup.Media,       "Media",              MaterialDesign3Icons.Regular.PermMedia),
+        new ComponentGroupMeta(ComponentGroup.Foundations, "Foundations",        MaterialDesign3Icons.Regular.Foundation),
+        new ComponentGroupMeta(ComponentGroup.Utilities,   "Utilities",          MaterialDesign3Icons.Regular.Handyman),
+        new ComponentGroupMeta(ComponentGroup.Ide,         "IDE",                FlareIcons.Code),
     };
 
     /// <summary>Every component demo page, grouped via <see cref="ComponentEntry.Group"/>.</summary>
