@@ -41,7 +41,7 @@
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <!-- Build-time only: the FluentIconGen tool reads real Fluent UI System Icons SVG data from this package
          and generates a curated FluentUIIcons catalog. Not referenced by any shipped package. -->
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.0" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.3" />
   </ItemGroup>
 
 </Project>
