@@ -29,7 +29,7 @@
             <FlareStack Gap="FlareSpacing.XSmall">
                 <FlareStack Row Justify="FlareJustifyContent.Start">
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="ToggleCode">
-                        <LeadingIcon><FlareIcon Name="@(_codeOpen ? "expand_less" : "code")" /></LeadingIcon>
+                        <LeadingIcon><FlareIconView Name="@(_codeOpen ? "expand_less" : "code")" /></LeadingIcon>
                         <ChildContent>@(_codeOpen ? GalleryStrings.Common_HideCode : GalleryStrings.Common_ShowCode)</ChildContent>
                     </FlareButton>
                 </FlareStack>

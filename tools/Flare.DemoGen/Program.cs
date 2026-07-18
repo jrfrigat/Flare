@@ -189,7 +189,7 @@ foreach (var s in stateLines) sb.AppendLine($"    {s}");
 if (optionLines.Count > 0) { sb.AppendLine(); foreach (var s in optionLines) sb.AppendLine($"    {s}"); }
 if (derivedLines.Count > 0) { sb.AppendLine(); foreach (var s in derivedLines) sb.AppendLine($"    {s}"); }
 if (needNullHelper) { sb.AppendLine(); sb.AppendLine("    private static string? NullIfEmpty(string? s) => string.IsNullOrWhiteSpace(s) ? null : s;"); }
-if (needIconHelper) { sb.AppendLine(); sb.AppendLine("    private RenderFragment? IconFragment(string name)"); sb.AppendLine("        => string.IsNullOrWhiteSpace(name) ? null : @<FlareIcon Icon=\"@name\" />;"); }
+if (needIconHelper) { sb.AppendLine(); sb.AppendLine("    private RenderFragment? IconFragment(string name)"); sb.AppendLine("        => string.IsNullOrWhiteSpace(name) ? null : @<FlareIconView Icon=\"@name\" />;"); }
 sb.AppendLine("}");
 
 var outDir = Path.Combine(root, "samples", "Flare.Gallery", "Pages", "Components", folder, "Examples");

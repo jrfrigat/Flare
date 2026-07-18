@@ -7,7 +7,7 @@
 
 <GalleryPageTitle>
     <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
-        <FlareIcon Color="FlareColor.Primary" Icon="@FlareIcons.Brands.FlareLogoShort" Size="4rem" />
+        <FlareIconView Color="FlareColor.Primary" Icon="@FlareIcons.Brands.FlareLogoShort" Size="4rem" />
         <FlareStack Gap="FlareSpacing.None">
             <FlareText Typo="TypographyScale.DisplaySmall" Weight="FontWeight.ExtraBold" Style="letter-spacing:-1px;">@GalleryStrings.Home_Title</FlareText>
             <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.TitleMedium">
@@ -48,7 +48,7 @@
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
                 <FlareLink Href="/components/buttons" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIcon Size="1.75rem" Color="FlareColor.Primary" Name="smart_button" />
+                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Name="smart_button" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Buttons</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Buttons_Desc</FlareText>
                 </FlareLink>
@@ -57,7 +57,7 @@
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
                 <FlareLink Href="/components/text-field" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIcon Size="1.75rem" Color="FlareColor.Primary" Name="text_fields" />
+                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Name="text_fields" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Inputs</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Inputs_Desc</FlareText>
                 </FlareLink>
@@ -66,7 +66,7 @@
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
                 <FlareLink Href="/components/datagrid" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIcon Size="1.75rem" Color="FlareColor.Primary" Name="grid_on" />
+                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Name="grid_on" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_DataGrid</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_DataGrid_Desc</FlareText>
                 </FlareLink>
@@ -75,7 +75,7 @@
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
                 <FlareLink Href="/components/dialog" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIcon Size="1.75rem" Color="FlareColor.Primary" Name="open_in_new" />
+                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Name="open_in_new" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Dialogs</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Dialogs_Desc</FlareText>
                 </FlareLink>
@@ -84,7 +84,7 @@
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
                 <FlareLink Href="/components/alerts" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIcon Size="1.75rem" Color="FlareColor.Primary" Name="notifications" />
+                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Name="notifications" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Feedback</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Feedback_Desc</FlareText>
                 </FlareLink>
@@ -93,7 +93,7 @@
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
                 <FlareLink Href="/components/tabs" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIcon Size="1.75rem" Color="FlareColor.Primary" Name="tab" />
+                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Name="tab" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Navigation</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Navigation_Desc</FlareText>
                 </FlareLink>
@@ -102,7 +102,7 @@
         <FlareCol Span="1">
             <FlareCard Variant="CardVariant.Outlined" Style="cursor:pointer;">
                 <FlareLink Href="/components/typography" Color="FlareColor.Default" Underline="LinkUnderline.None" Style="display:block;">
-                    <FlareIcon Size="1.75rem" Color="FlareColor.Primary" Name="format_size" />
+                    <FlareIconView Size="1.75rem" Color="FlareColor.Primary" Name="format_size" />
                     <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Home_Card_Display</FlareText>
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@GalleryStrings.Home_Card_Display_Desc</FlareText>
                 </FlareLink>
@@ -138,9 +138,9 @@
             </FlareBadge>
             <FlareChip Label="Design" @bind-Selected="_chip1Selected" />
             <FlareChip Label="Blazor" @bind-Selected="_chip2Selected" />
-            <FlareIcon Size="1.5rem" Color="FlareColor.Primary" Name="local_fire_department" />
-            <FlareIcon Size="1.5rem" Color="FlareColor.Tertiary" Name="star" />
-            <FlareIcon Size="1.5rem" Color="FlareColor.Error" Name="favorite" />
+            <FlareIconView Size="1.5rem" Color="FlareColor.Primary" Name="local_fire_department" />
+            <FlareIconView Size="1.5rem" Color="FlareColor.Tertiary" Name="star" />
+            <FlareIconView Size="1.5rem" Color="FlareColor.Error" Name="favorite" />
         </FlareStack>
     </FlareCard>
 </section>

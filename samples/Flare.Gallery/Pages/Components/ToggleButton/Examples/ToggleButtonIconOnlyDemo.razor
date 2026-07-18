@@ -1,18 +1,18 @@
 <FlareStack Gap="FlareSpacing.Medium">
     <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Medium" Wrap="true">
         <FlareToggleButton @bind-Toggled="_fav" AriaLabel="Favourite">
-            <OffIcon><FlareIcon Name="favorite_border" /></OffIcon>
-            <OnIcon><FlareIcon Color="FlareColor.Error" Name="favorite" /></OnIcon>
+            <OffIcon><FlareIconView Name="favorite_border" /></OffIcon>
+            <OnIcon><FlareIconView Color="FlareColor.Error" Name="favorite" /></OnIcon>
         </FlareToggleButton>
 
         <FlareToggleButton @bind-Toggled="_bookmark" AriaLabel="Bookmark">
-            <OffIcon><FlareIcon Name="bookmark_border" /></OffIcon>
-            <OnIcon><FlareIcon Name="bookmark" /></OnIcon>
+            <OffIcon><FlareIconView Name="bookmark_border" /></OffIcon>
+            <OnIcon><FlareIconView Name="bookmark" /></OnIcon>
         </FlareToggleButton>
 
         <FlareToggleButton @bind-Toggled="_mute" AriaLabel="Mute">
-            <OffIcon><FlareIcon Name="volume_up" /></OffIcon>
-            <OnIcon><FlareIcon Name="volume_off" /></OnIcon>
+            <OffIcon><FlareIconView Name="volume_up" /></OffIcon>
+            <OnIcon><FlareIconView Name="volume_off" /></OnIcon>
         </FlareToggleButton>
     </FlareStack>
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">

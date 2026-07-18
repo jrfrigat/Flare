@@ -19,7 +19,7 @@
         @if (!string.IsNullOrEmpty(StartIcon))
         {
             <span class="@Css.Classes.Slider.Icon @Css.Classes.Slider.IconStart" aria-hidden="true">
-                <FlareIcon Name="@StartIcon" />
+                <FlareIconView Name="@StartIcon" />
             </span>
         }
         <div class="@Css.Classes.Slider.TrackArea"
@@ -108,7 +108,7 @@
         @if (!string.IsNullOrEmpty(EndIcon))
         {
             <span class="@Css.Classes.Slider.Icon @Css.Classes.Slider.IconEnd" aria-hidden="true">
-                <FlareIcon Name="@EndIcon" />
+                <FlareIconView Name="@EndIcon" />
             </span>
         }
     </div>

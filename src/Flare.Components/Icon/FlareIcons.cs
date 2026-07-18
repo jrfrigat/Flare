@@ -1,9 +1,9 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Named constants for the built-in SVG icon pack.
-/// Use with FlareIcon: &lt;FlareIcon Name="@FlareIcons.Home" /&gt;
-/// String literals like Name="home" are also accepted (backward-compatible).
+/// Named constants for the Material Symbols icon set used across Flare.
+/// Use with a Material icon: <c>new FlareMaterialIcon { Name = FlareIcons.Home }</c> or
+/// <c>&lt;FlareIconView Name="@FlareIcons.Home" /&gt;</c>. String literals like <c>"home"</c> are also accepted.
 /// </summary>
 public static class FlareIcons
 {

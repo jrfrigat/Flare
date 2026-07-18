@@ -70,7 +70,7 @@
     touch-action: none;
 }
 
-/* Icon is a caller-supplied fragment, so the size travels as --_flare-icon-size: a <FlareIcon> sets its own
+/* Icon is a caller-supplied fragment, so the size travels as --_flare-icon-size: an icon sets its own
    font-size and would ignore this wrapper's. font-size still carries it for a raw glyph span, which inherits. */
 .flare-dialog__icon {
     display: flex;

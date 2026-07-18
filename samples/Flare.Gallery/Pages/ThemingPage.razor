@@ -61,17 +61,17 @@
             <FlareStack Row Wrap Gap="FlareSpacing.Small">
                 <FlareButton Variant="@(ThemeService.Mode == ThemeMode.Light ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                              OnClick="@(() => ThemeService.SetModeAsync(ThemeMode.Light))">
-                    <LeadingIcon><FlareIcon Name="light_mode" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Name="light_mode" /></LeadingIcon>
                     <ChildContent>@GalleryStrings.Theme_ModeLight</ChildContent>
                 </FlareButton>
                 <FlareButton Variant="@(ThemeService.Mode == ThemeMode.Dark ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                              OnClick="@(() => ThemeService.SetModeAsync(ThemeMode.Dark))">
-                    <LeadingIcon><FlareIcon Name="dark_mode" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Name="dark_mode" /></LeadingIcon>
                     <ChildContent>@GalleryStrings.Theme_ModeDark</ChildContent>
                 </FlareButton>
                 <FlareButton Variant="@(ThemeService.Mode == ThemeMode.Auto ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                              OnClick="@(() => ThemeService.SetModeAsync(ThemeMode.Auto))">
-                    <LeadingIcon><FlareIcon Name="brightness_auto" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Name="brightness_auto" /></LeadingIcon>
                     <ChildContent>@GalleryStrings.Theme_ModeAuto</ChildContent>
                 </FlareButton>
             </FlareStack>
@@ -150,7 +150,7 @@
         <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="align-items:center;">
             <FlareColorPicker @bind-Value="_seed" />
             <FlareButton Variant="ButtonVariant.Filled" OnClick="GenerateAsync">
-                <LeadingIcon><FlareIcon Name="palette" /></LeadingIcon>
+                <LeadingIcon><FlareIconView Name="palette" /></LeadingIcon>
                 <ChildContent>@GalleryStrings.Theming_GenerateBtn</ChildContent>
             </FlareButton>
         </FlareStack>

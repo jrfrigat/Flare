@@ -8,7 +8,7 @@
 
        It has to travel as a custom property, not as font-size on the wrapper: this rule sets font-size ON the
        icon, and a declaration on the element always beats what it would inherit from a parent. So a component
-       that wraps a caller-supplied <FlareIcon> and styles the wrapper's font-size sizes nothing at all - the
+       that wraps a caller-supplied icon and styles the wrapper's font-size sizes nothing at all - the
        glyph keeps the baseline. A custom property cascades INTO the icon instead, so one declaration on any
        ancestor reaches the glyph without a specificity war. Components that render their own raw
        material-symbols span are unaffected either way (no font-size of their own to override). */

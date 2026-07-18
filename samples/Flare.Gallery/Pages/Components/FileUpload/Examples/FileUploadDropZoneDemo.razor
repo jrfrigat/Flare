@@ -8,7 +8,7 @@
                 @foreach (var f in _dropped)
                 {
                     <FlareListItem Primary="@f.Name" Secondary="@($"{f.Size / 1024} KB")">
-                        <Leading><FlareIcon Name="insert_drive_file" /></Leading>
+                        <Leading><FlareIconView Name="insert_drive_file" /></Leading>
                     </FlareListItem>
                 }
             </FlareList>

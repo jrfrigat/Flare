@@ -1,14 +1,14 @@
 <FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
     <FlareSwitch @bind-Value="_wifi" Label="Wi-Fi (check / close)">
-        <SelectedIcon><FlareIcon Name="check" /></SelectedIcon>
-        <UnselectedIcon><FlareIcon Name="close" /></UnselectedIcon>
+        <SelectedIcon><FlareIconView Name="check" /></SelectedIcon>
+        <UnselectedIcon><FlareIconView Name="close" /></UnselectedIcon>
     </FlareSwitch>
     <FlareSwitch @bind-Value="_sync" Label="Sync (check when on)">
-        <SelectedIcon><FlareIcon Name="check" /></SelectedIcon>
+        <SelectedIcon><FlareIconView Name="check" /></SelectedIcon>
     </FlareSwitch>
     <FlareSwitch @bind-Value="_theme" Label="Theme (sun / moon)">
-        <SelectedIcon><FlareIcon Name="dark_mode" /></SelectedIcon>
-        <UnselectedIcon><FlareIcon Name="light_mode" /></UnselectedIcon>
+        <SelectedIcon><FlareIconView Name="dark_mode" /></SelectedIcon>
+        <UnselectedIcon><FlareIconView Name="light_mode" /></UnselectedIcon>
     </FlareSwitch>
 </FlareStack>
 <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.5rem">

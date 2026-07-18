@@ -6,20 +6,20 @@
     <div style="border:1px solid var(--flare-color-outline-variant);border-radius:var(--flare-shape-medium);overflow:hidden;">
         <FlareQuickAccessToolbar>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save" OnClick="@(() => Set("Save"))">
-                <FlareIcon Name="save" />
+                <FlareIconView Name="save" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Undo" OnClick="@(() => Set("Undo"))">
-                <FlareIcon Name="undo" />
+                <FlareIconView Name="undo" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Redo" OnClick="@(() => Set("Redo"))">
-                <FlareIcon Name="redo" />
+                <FlareIconView Name="redo" />
             </FlareButton>
             <FlareRibbonSeparator />
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Print" OnClick="@(() => Set("Print"))">
-                <FlareIcon Name="print" />
+                <FlareIconView Name="print" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Email" OnClick="@(() => Set("Email"))">
-                <FlareIcon Name="mail" />
+                <FlareIconView Name="mail" />
             </FlareButton>
         </FlareQuickAccessToolbar>
     </div>

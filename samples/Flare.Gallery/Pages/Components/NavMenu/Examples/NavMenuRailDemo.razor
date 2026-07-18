@@ -6,27 +6,27 @@
                Style="@($"width:{(_rail ? "4rem" : "240px")};padding:0.75rem 0;background:var(--flare-color-surface-container-low);border-radius:var(--flare-shape-medium);transition:width var(--flare-motion-duration-medium2,250ms) var(--flare-motion-easing-emphasized,ease);")">
         <FlareNavMenu Rail="_rail">
             <FlareNavLink Href="/" Match="NavMatchMode.Exact" Tooltip="Dashboard">
-                <Icon><FlareIcon Size="1.25rem" Name="dashboard" /></Icon>
+                <Icon><FlareIconView Size="1.25rem" Name="dashboard" /></Icon>
                 <ChildContent>Dashboard</ChildContent>
             </FlareNavLink>
             <FlareNavLink Href="#inbox" Tooltip="Inbox">
-                <Icon><FlareIcon Size="1.25rem" Name="inbox" /></Icon>
+                <Icon><FlareIconView Size="1.25rem" Name="inbox" /></Icon>
                 <ChildContent>Inbox</ChildContent>
                 <Badge>3</Badge>
             </FlareNavLink>
             <FlareNavLink Href="#reports" Tooltip="Reports">
-                <Icon><FlareIcon Size="1.25rem" Name="insights" /></Icon>
+                <Icon><FlareIconView Size="1.25rem" Name="insights" /></Icon>
                 <ChildContent>Reports</ChildContent>
             </FlareNavLink>
             <FlareNavLink Href="#settings" Tooltip="Settings">
-                <Icon><FlareIcon Size="1.25rem" Name="settings" /></Icon>
+                <Icon><FlareIconView Size="1.25rem" Name="settings" /></Icon>
                 <ChildContent>Settings</ChildContent>
             </FlareNavLink>
         </FlareNavMenu>
     </FlareCard>
 
     <FlareButton Variant="ButtonVariant.Tonal" OnClick="() => _rail = !_rail">
-        <FlareIcon Size="1.1rem" Name="@(_rail ? "menu_open" : "menu")" />
+        <FlareIconView Size="1.1rem" Name="@(_rail ? "menu_open" : "menu")" />
         @(_rail ? "Expand" : "Collapse to rail")
     </FlareButton>
 </div>
