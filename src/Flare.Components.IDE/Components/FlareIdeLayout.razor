@@ -99,7 +99,7 @@
 
     private RenderFragment RenderRail(ToolPanelPosition position) =>@<button type="button" class="@Css.Classes.Ide.Layout.Rail"
             @onclick="@(() => SetCollapsedAsync(position, false))" aria-label="Expand panel">
-        <span class="material-symbols-rounded">@RailIcon(position)</span>
+        <FlareIconView Value="RailIcon(position)" />
         @if (!string.IsNullOrEmpty(TitleOf(position)))
         {
             <span class="@Css.Classes.Ide.Layout.RailTitle">@TitleOf(position)</span>

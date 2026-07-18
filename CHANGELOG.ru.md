@@ -15,7 +15,9 @@
   - `FlareFontAwesomeIcon` (новый опциональный пакет `Flare.Icons.FontAwesome`) - Font Awesome, стили
     Solid/Regular/Light/Thin/Duotone/Brands; хост-приложение подключает стиль Font Awesome.
   - `FlareFluentIcon` (новый опциональный пакет `Flare.Icons.Fluent`) - Fluent UI System Icons как inline-SVG,
-    filled/regular и сетка по размерам; артворк предоставляет потребитель из ассетов Fluent.
+    filled/regular и сетка по размерам. Поставляется курированный каталог `FluentIcons` (89 частых иконок x
+    Regular/Filled, сгенерирован из пакета иконок Microsoft инструментом `tools/FluentIconGen`); любую другую
+    Fluent-иконку можно передать через `Data`.
 
   Отдельная отрисовка - через `<FlareIconView>`. Голая строка трактуется как имя Material Symbols.
 - **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 84 готовых `FlareSvgIcon` (`Home`,
@@ -41,9 +43,10 @@
 - **BREAKING: параметры иконок в компонентах становятся `FlareIcon?` (любой провайдер).** `FlareMenuItem`,
   `FlareSubMenu`, `FlareTreeItem`, `FlareNavGroup`, `FlareTimelineItem`, `FlareSplitter` (`Icon`/`HoverIcon`),
   `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) и
-  `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) теперь принимают `FlareIcon`, а не строку-имя Material.
-  Голая строка по-прежнему означает Material-иконку; литерал в Razor должен быть выражением
-  (`Icon="@("home")"`). Опциональный пакет `Flare.Components.IDE` пока не переведён.
+  `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) и иконки ribbon/backstage/document-tab в опциональном
+  пакете `Flare.Components.IDE` теперь принимают `FlareIcon`, а не строку-имя Material. Голая строка
+  по-прежнему означает Material-иконку; литерал в Razor должен быть выражением (`Icon="@("home")"`). Сырых
+  `material-symbols`-спанов не осталось нигде в `src/`.
 
 ### Исправлено
 - **Ошибка в снэкбаре теперь прерывает скринридер; success/info/warning по-прежнему ждут очереди.** Провайдер

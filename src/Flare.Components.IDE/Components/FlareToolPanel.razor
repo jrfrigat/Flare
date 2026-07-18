@@ -18,9 +18,7 @@
         <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
                      OnClick="@ToggleCollapsed"
                      AriaLabel="@(Collapsed ? "Expand" : "Collapse")">
-            <span class="material-symbols-rounded" style="font-size:1rem;">
-                @(Collapsed ? "chevron_right" : "expand_less")
-            </span>
+            <FlareIconView Value="@(Collapsed ? FlareIcons.ChevronRight : FlareIcons.ExpandLess)" Size="1rem" />
         </FlareButton>
     </div>
     @if (!Collapsed)

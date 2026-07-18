@@ -222,10 +222,10 @@ public partial class FlareIdeLayout : FlareComponentBase
         return cls;
     }
 
-    private string RailIcon(ToolPanelPosition position) => position switch
+    private FlareIcon RailIcon(ToolPanelPosition position) => position switch
     {
-        ToolPanelPosition.Right => "chevron_left",
-        ToolPanelPosition.Bottom => "expand_less",
-        _ => "chevron_right",
+        ToolPanelPosition.Right => FlareIcons.ChevronLeft,
+        ToolPanelPosition.Bottom => FlareIcons.ExpandLess,
+        _ => FlareIcons.ChevronRight,
     };
 }

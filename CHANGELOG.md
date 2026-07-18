@@ -13,7 +13,9 @@ All notable changes to Flare are documented here. This project adheres to
   - `FlareFontAwesomeIcon` (new optional package `Flare.Icons.FontAwesome`) - Font Awesome, styles
     Solid/Regular/Light/Thin/Duotone/Brands; the host app loads a Font Awesome stylesheet.
   - `FlareFluentIcon` (new optional package `Flare.Icons.Fluent`) - Fluent UI System Icons as inline SVG,
-    filled/regular plus the per-size grid; the consumer supplies the artwork from the Fluent assets.
+    filled/regular plus the per-size grid. Ships a curated `FluentIcons` catalog (89 common icons x
+    Regular/Filled, generated from Microsoft's icon package by `tools/FluentIconGen`); any other Fluent SVG
+    can be passed via `Data`.
 
   Render one standalone with `<FlareIconView>`. A bare string is taken as a Material Symbols name.
 - **A built-in, dependency-free SVG icon set (`FlareIcons`).** 84 ready `FlareSvgIcon` members (`Home`,
@@ -38,9 +40,10 @@ All notable changes to Flare are documented here. This project adheres to
 - **BREAKING: icon parameters across components become `FlareIcon?` (any provider).** `FlareMenuItem`,
   `FlareSubMenu`, `FlareTreeItem`, `FlareNavGroup`, `FlareTimelineItem`, `FlareSplitter` (`Icon`/`HoverIcon`),
   `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) and
-  `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) now take a `FlareIcon` rather than a Material-name
-  string. A bare string still means a Material icon; a Razor literal must be an expression
-  (`Icon="@("home")"`). The optional `Flare.Components.IDE` package is not yet converted.
+  `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`), and the optional `Flare.Components.IDE` package's
+  ribbon/backstage/document-tab icons now take a `FlareIcon` rather than a Material-name string. A bare
+  string still means a Material icon; a Razor literal must be an expression (`Icon="@("home")"`). No raw
+  `material-symbols` spans remain anywhere in `src/`.
 
 ### Fixed
 - **A snackbar error now interrupts a screen reader; success/info/warning still wait their turn.** The

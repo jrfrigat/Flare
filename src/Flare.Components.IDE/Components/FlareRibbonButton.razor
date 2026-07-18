@@ -10,7 +10,7 @@
                      class="@($"{Css.Classes.Ide.Ribbon.Button} {Css.Classes.Ide.Ribbon.ButtonLarge}")">
             @if (Icon is not null)
             {
-                <span class="material-symbols-rounded">@Icon</span>
+                <FlareIconView Value="Icon" />
             }
             @if (!string.IsNullOrEmpty(Label))
             {
@@ -26,7 +26,7 @@
                      class="@Css.Classes.Ide.Ribbon.Button">
             @if (Icon is not null)
             {
-                <span class="material-symbols-rounded">@Icon</span>
+                <FlareIconView Value="Icon" />
             }
             @if (!string.IsNullOrEmpty(Label))
             {

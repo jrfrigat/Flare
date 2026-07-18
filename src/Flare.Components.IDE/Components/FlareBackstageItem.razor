@@ -10,14 +10,14 @@
         @attributes="AdditionalAttributes">
     @if (Icon is not null)
     {
-        <span class="material-symbols-rounded">@Icon</span>
+        <FlareIconView Value="Icon" />
     }
     <span class="@Css.Classes.Ide.Backstage.NavLabel">@Label</span>
 </button>
 
 @code {
-    /// <summary>Material icon name shown before the label.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon shown before the label - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
 
     /// <summary>The entry's text.</summary>
     [Parameter] public string? Label { get; set; }

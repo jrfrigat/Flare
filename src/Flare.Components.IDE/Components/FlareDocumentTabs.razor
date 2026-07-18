@@ -16,7 +16,7 @@
                  @oncontextmenu:preventDefault="true">
                 @if (tab.Icon is not null)
                 {
-                    <span class="material-symbols-rounded @Css.Classes.Ide.DocTabs.Icon">@tab.Icon</span>
+                    <FlareIconView Value="tab.Icon" Class="@Css.Classes.Ide.DocTabs.Icon" />
                 }
                 <span class="@Css.Classes.Ide.DocTabs.Label">@tab.Title</span>
                 @if (tab.Modified)
@@ -29,7 +29,7 @@
                             @onclick="@(() => CloseTab(tab))"
                             @onclick:stopPropagation="true"
                             aria-label="Close tab">
-                        <span class="material-symbols-rounded" style="font-size:0.875rem;">close</span>
+                        <FlareIconView Value="FlareIcons.Close" Size="0.875rem" />
                     </button>
                 }
             </div>
@@ -40,7 +40,7 @@
         <FlareButton Variant="@ButtonVariant.Text" Size="@ButtonSize.Xs"
                      OnClick="@ToggleDropdown"
                      AriaLabel="Hidden tabs">
-            <span class="material-symbols-rounded" style="font-size:1rem;">expand_more</span>
+            <FlareIconView Value="FlareIcons.ExpandMore" Size="1rem" />
         </FlareButton>
         @if (_dropdownOpen)
         {

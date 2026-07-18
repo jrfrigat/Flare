@@ -19,16 +19,16 @@
             <FlareRibbon>
                 <FlareRibbonTab Title="Home">
                     <FlareRibbonGroup Label="Clipboard">
-                        <FlareRibbonButton Icon="content_paste" Label="Paste" Tooltip="Paste" IsLarge="true" />
-                        <FlareRibbonButton Icon="content_cut" Tooltip="Cut" />
-                        <FlareRibbonButton Icon="content_copy" Tooltip="Copy" />
+                        <FlareRibbonButton Icon="@("content_paste")" Label="Paste" Tooltip="Paste" IsLarge="true" />
+                        <FlareRibbonButton Icon="@("content_cut")" Tooltip="Cut" />
+                        <FlareRibbonButton Icon="@("content_copy")" Tooltip="Copy" />
                     </FlareRibbonGroup>
                     <FlareRibbonGroup Label="Font">
-                        <FlareRibbonButton Icon="format_bold" Tooltip="Bold" />
-                        <FlareRibbonButton Icon="format_italic" Tooltip="Italic" />
-                        <FlareRibbonButton Icon="format_underlined" Tooltip="Underline" />
+                        <FlareRibbonButton Icon="@("format_bold")" Tooltip="Bold" />
+                        <FlareRibbonButton Icon="@("format_italic")" Tooltip="Italic" />
+                        <FlareRibbonButton Icon="@("format_underlined")" Tooltip="Underline" />
                         <FlareRibbonSeparator />
-                        <FlareRibbonDropdown Icon="format_color_fill" Tooltip="Fill color">
+                        <FlareRibbonDropdown Icon="@("format_color_fill")" Tooltip="Fill color">
                             <MenuContent>
                                 <FlareMenuItem Icon="@("circle")">Red</FlareMenuItem>
                                 <FlareMenuItem Icon="@("circle")">Green</FlareMenuItem>
@@ -37,7 +37,7 @@
                         </FlareRibbonDropdown>
                     </FlareRibbonGroup>
                     <FlareRibbonGroup Label="Styles">
-                        <FlareRibbonDropdown Icon="table_chart" Label="Cell Styles" Tooltip="Cell styles" IsLarge="true">
+                        <FlareRibbonDropdown Icon="@("table_chart")" Label="Cell Styles" Tooltip="Cell styles" IsLarge="true">
                             <MenuContent>
                                 <FlareMenuItem>Normal</FlareMenuItem>
                                 <FlareMenuItem>Heading 1</FlareMenuItem>
@@ -48,8 +48,8 @@
                 </FlareRibbonTab>
                 <FlareRibbonTab Title="Insert">
                     <FlareRibbonGroup Label="Charts">
-                        <FlareRibbonButton Icon="bar_chart" Label="Column" Tooltip="Column chart" IsLarge="true" />
-                        <FlareRibbonButton Icon="pie_chart" Label="Pie" Tooltip="Pie chart" IsLarge="true" />
+                        <FlareRibbonButton Icon="@("bar_chart")" Label="Column" Tooltip="Column chart" IsLarge="true" />
+                        <FlareRibbonButton Icon="@("pie_chart")" Label="Pie" Tooltip="Pie chart" IsLarge="true" />
                     </FlareRibbonGroup>
                 </FlareRibbonTab>
             </FlareRibbon>
@@ -83,11 +83,11 @@
 
     <FlareBackstage @bind-Open="_fileOpen">
         <NavContent>
-            <FlareBackstageItem Icon="note_add" Label="New" Active="true" />
-            <FlareBackstageItem Icon="folder_open" Label="Open" />
-            <FlareBackstageItem Icon="save" Label="Save" />
-            <FlareBackstageItem Icon="print" Label="Print" />
-            <FlareBackstageItem Icon="settings" Label="Options" />
+            <FlareBackstageItem Icon="@("note_add")" Label="New" Active="true" />
+            <FlareBackstageItem Icon="@("folder_open")" Label="Open" />
+            <FlareBackstageItem Icon="@("save")" Label="Save" />
+            <FlareBackstageItem Icon="@("print")" Label="Print" />
+            <FlareBackstageItem Icon="@("settings")" Label="Options" />
         </NavContent>
         <ChildContent>
             <FlareText Typo="TypographyScale.HeadlineSmall">New</FlareText>

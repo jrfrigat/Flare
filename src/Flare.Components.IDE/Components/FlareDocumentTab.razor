@@ -15,8 +15,8 @@
     /// <summary>Display title for the document tab.</summary>
     [Parameter] public string Title { get; set; } = "";
 
-    /// <summary>Material icon name shown in the tab header.</summary>
-    [Parameter] public string? Icon { get; set; } = "description";
+    /// <summary>Icon shown in the tab header - any provider. Defaults to the built-in description icon.</summary>
+    [Parameter] public FlareIcon? Icon { get; set; } = FlareIcons.Description;
 
     /// <summary>Whether the document has unsaved changes (shows a dot/asterisk indicator).</summary>
     [Parameter] public bool Modified { get; set; }
