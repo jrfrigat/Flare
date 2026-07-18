@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.10.0] - 2026-07-19
 
 ### Added
 - **A polymorphic icon system: any icon provider fits any icon slot.** `FlareIcon` is an abstract icon
