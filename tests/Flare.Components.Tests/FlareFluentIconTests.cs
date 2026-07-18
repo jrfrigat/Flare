@@ -33,4 +33,17 @@ public class FlareFluentIconTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll("svg path"));
     }
+
+    [Fact]
+    public void CuratedCatalog_RendersRealFluentSvg()
+    {
+        // Generated FluentIcons catalog carries real Fluent UI System Icons SVG (Size24 -> 24x24 viewBox).
+        var cut = Render<FlareIconView>(p => p.Add(x => x.Value, FluentIcons.Regular.Home));
+
+        var svg = cut.Find("svg");
+        Assert.Equal("0 0 24 24", svg.GetAttribute("viewBox"));
+        Assert.NotEmpty(cut.FindAll("svg path"));
+        Assert.False(FluentIcons.Regular.Home.Filled);
+        Assert.True(FluentIcons.Filled.Home.Filled);
+    }
 }
