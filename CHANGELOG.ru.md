@@ -6,6 +6,34 @@
 
 ## [Unreleased]
 
+### Добавлено
+- **Полиморфная система иконок: любой провайдер подходит в любой слот иконки.** `FlareIcon` теперь абстрактный
+  дескриптор иконки; конкретные провайдеры несут свои параметры и подставляются в любой параметр типа
+  `FlareIcon`:
+  - `FlareMaterialIcon` - Material Symbols (`Fill`/`Weight`/`Grade`/`OpticalSize`/`Family`).
+  - `FlareSvgIcon` - inline-SVG (path-данные или разметка).
+  - `FlareFontAwesomeIcon` (новый опциональный пакет `Flare.Icons.FontAwesome`) - Font Awesome, стили
+    Solid/Regular/Light/Thin/Duotone/Brands; хост-приложение подключает стиль Font Awesome.
+  - `FlareFluentIcon` (новый опциональный пакет `Flare.Icons.Fluent`) - Fluent UI System Icons как inline-SVG,
+    filled/regular и сетка по размерам; артворк предоставляет потребитель из ассетов Fluent.
+
+  Отдельная отрисовка - через `<FlareIconView>`. Голая строка трактуется как имя Material Symbols.
+- **Встроенный набор SVG-иконок без внешних зависимостей (`FlareIcons`).** 73 готовых `FlareSvgIcon` (`Home`,
+  `ChevronLeft`, `ExpandMore`, `Close`, ...) как inline-SVG - без иконочного шрифта, без сетевого запроса, без
+  FOUT, независимо от темы. Используются везде, где принимается `FlareIcon`, например
+  `<FlareIconButton Icon="@FlareIcons.Home" />`.
+
+### Изменено
+- **BREAKING: компонента `<FlareIcon>` заменена на `<FlareIconView>` плюс дескриптор `FlareIcon`.** `FlareIcon`
+  теперь абстрактный тип-значение иконки, поэтому отдельный рендерер - `<FlareIconView>`, он сохраняет прежние
+  параметры `Name`/`Icon`/`Size`/`Color`/`ViewBox`/`AriaLabel`, так что миграция - переименование тега:
+  `<FlareIcon ... />` -> `<FlareIconView ... />`.
+- **BREAKING: `FlareIconButton.Icon` теперь `FlareIcon`, а не строка-имя Material**, поэтому в кнопке-иконке
+  работает любой провайдер. Голая строка по-прежнему означает Material-иконку, но литерал в Razor должен быть
+  выражением: `Icon="settings"` -> `Icon="@("settings")"` (или `Icon="@FlareIcons.Settings"`).
+- **BREAKING: члены `FlareIcons.*` теперь значения `FlareSvgIcon`, а не строки-имена** - они рисуют inline-SVG.
+  `FlareIcons.All` (id иконок) и `FlareIcons.Brands.FlareLogoShort` не изменились.
+
 ### Исправлено
 - **Ошибка в снэкбаре теперь прерывает скринридер; success/info/warning по-прежнему ждут очереди.** Провайдер
   был одним контейнером `aria-live="polite"`, поэтому любое уведомление - включая ошибки - объявлялось
