@@ -777,10 +777,9 @@ else
                 __builder.AddAttribute(124, "class", Css.Classes.Colorpicker.EyedropperBtn);
                 __builder.AddAttribute(125, "title", FlareStrings.ColorPicker_EyeDropperTitle);
                 __builder.AddAttribute(126, "onclick", EventCallback.Factory.Create(this, OpenEyeDropperAsync));
-                    __builder.OpenElement(127, "span");
-                    __builder.AddAttribute(128, "class", "material-symbols-rounded");
-                    __builder.AddContent(129, "colorize");
-                    __builder.CloseElement();
+                    __builder.OpenComponent<FlareIconView>(127);
+                    __builder.AddAttribute(128, "Value", FlareIcons.Colorize);
+                    __builder.CloseComponent();
                     __builder.OpenElement(130, "span");
                     __builder.AddContent(131, FlareStrings.ColorPicker_EyeDropperLabel);
                     __builder.CloseElement();

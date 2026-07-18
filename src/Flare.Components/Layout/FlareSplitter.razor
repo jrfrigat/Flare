@@ -19,12 +19,12 @@
     {
         @ChildContent
     }
-    else if (!string.IsNullOrEmpty(Icon))
+    else if (Icon is not null)
     {
-        <span class="material-symbols-rounded @Css.Classes.Splitter.Icon @Css.Classes.Splitter.IconBase" aria-hidden="true">@Icon</span>
-        @if (!string.IsNullOrEmpty(HoverIcon))
+        <FlareIconView Value="Icon" Class="@($"{Css.Classes.Splitter.Icon} {Css.Classes.Splitter.IconBase}")" />
+        @if (HoverIcon is not null)
         {
-            <span class="material-symbols-rounded @Css.Classes.Splitter.Icon @Css.Classes.Splitter.IconHover" aria-hidden="true">@HoverIcon</span>
+            <FlareIconView Value="HoverIcon" Class="@($"{Css.Classes.Splitter.Icon} {Css.Classes.Splitter.IconHover}")" />
         }
     }
     else
@@ -72,11 +72,11 @@
     /// <summary>Handle color (CSS color) shown on hover/focus. Defaults to a primary tint.</summary>
     [Parameter] public string? HoverColor { get; set; }
 
-    /// <summary>Material Symbols icon shown in the centre of the handle, replacing the default grip bar.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon shown in the centre of the handle, replacing the default grip bar - any provider.</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
 
-    /// <summary>Material Symbols icon swapped in on hover/focus (only when <see cref="Icon"/> is set).</summary>
-    [Parameter] public string? HoverIcon { get; set; }
+    /// <summary>Icon swapped in on hover/focus (only when <see cref="Icon"/> is set) - any provider.</summary>
+    [Parameter] public FlareIcon? HoverIcon { get; set; }
 
     /// <summary>Fully custom centre content, overriding <see cref="Icon"/> and the default grip bar.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }

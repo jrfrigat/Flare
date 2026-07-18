@@ -25,7 +25,7 @@
         }
         else
         {
-            <span class="@Css.Classes.Avatar.Icon material-symbols-rounded" aria-hidden="true">@FallbackIcon</span>
+            <FlareIconView Value="FallbackIcon" Class="@Css.Classes.Avatar.Icon" />
         }
     </div>
 }
@@ -43,9 +43,9 @@
     [Parameter] public AvatarSize Size { get; set; } = AvatarSize.Md;
     /// <summary>Shape of the avatar: Circle, Square, or Rounded.</summary>
     [Parameter] public AvatarShape Shape { get; set; } = AvatarShape.Circle;
-    /// <summary>Material Symbols icon name shown when the avatar has no image and no text. Defaults to
-    /// <c>person</c>. Ignored when <see cref="FallbackContent"/> is set.</summary>
-    [Parameter] public string FallbackIcon { get; set; } = "person";
+    /// <summary>Icon shown when the avatar has no image and no text - any provider. Defaults to the
+    /// built-in person icon. Ignored when <see cref="FallbackContent"/> is set.</summary>
+    [Parameter] public FlareIcon FallbackIcon { get; set; } = FlareIcons.Person;
     /// <summary>Custom content rendered when the avatar has no image and no text, in place of the
     /// default <see cref="FallbackIcon"/> (e.g. a custom <c>FlareIcon</c>, an emoji, or an SVG).</summary>
     [Parameter] public RenderFragment? FallbackContent { get; set; }

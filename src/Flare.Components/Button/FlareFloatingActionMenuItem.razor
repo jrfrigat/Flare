@@ -9,15 +9,15 @@
     <button class="@Css.Classes.Button.Root @Css.Classes.Fab.Root @Css.Classes.Fab.Sm @Css.Classes.Fab.Surface @Css.Classes.FabMenu.Btn"
             type="button"
             disabled="@Disabled"
-            aria-label="@(Label ?? Icon)"
+            aria-label="@Label"
             @onclick="HandleClickAsync">
-        <span class="@Css.Classes.Fab.Icon material-symbols-rounded" aria-hidden="true">@Icon</span>
+        <FlareIconView Value="Icon" Class="@Css.Classes.Fab.Icon" />
     </button>
 </div>
 
 @code {
-    /// <summary>Material Symbols icon displayed on this action's small FAB.</summary>
-    [Parameter] public string Icon { get; set; } = "star";
+    /// <summary>Icon displayed on this action's small FAB - any provider. Defaults to the built-in star.</summary>
+    [Parameter] public FlareIcon Icon { get; set; } = FlareIcons.Star;
     /// <summary>Label shown beside the action button.</summary>
     [Parameter] public string? Label { get; set; }
     /// <summary>Prevents the action from being clicked.</summary>

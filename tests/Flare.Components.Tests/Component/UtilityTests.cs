@@ -24,7 +24,8 @@ public class C_FlareClipboardTests : FlareTestContext
         var cut = Render<FlareClipboard>(p => p
             .Add(x => x.Text, "hello"));
 
-        Assert.Contains("content_copy", cut.Markup);
+        // The default copy icon is now the built-in SVG (no Material Symbols font dependency).
+        Assert.NotEmpty(cut.FindAll("svg path"));
     }
 
     [Fact]

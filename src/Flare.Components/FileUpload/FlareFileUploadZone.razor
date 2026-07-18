@@ -31,7 +31,7 @@
                 }
                 else
                 {
-                    <span class="@Css.Classes.FileUpload.Icon material-symbols-rounded" aria-hidden="true">upload_file</span>
+                    <FlareIconView Value="FlareIcons.UploadFile" Class="@Css.Classes.FileUpload.Icon" />
                 }
                 <span class="@Css.Classes.FileUpload.Primary">@(_isDragging ? FlareStrings.DropZone_DropFiles : (DropText ?? FlareStrings.FileUpload_DropText))</span>
                 @if (!string.IsNullOrEmpty(Accept))
@@ -53,7 +53,7 @@
             @foreach (var file in Files)
             {
                 <li class="@Css.Classes.FileUpload.File">
-                    <span class="@Css.Classes.FileUpload.FileIcon material-symbols-rounded" aria-hidden="true">description</span>
+                    <FlareIconView Value="FlareIcons.Description" Class="@Css.Classes.FileUpload.FileIcon" />
                     <span class="@Css.Classes.FileUpload.FileName">@file.Name</span>
                     <span class="@Css.Classes.FileUpload.FileSize">@FormatSize(file.Size)</span>
                 </li>

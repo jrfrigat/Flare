@@ -16,7 +16,8 @@ public class FlareAvatarShouldRenderTests : FlareTestContext
     public void DefaultShowsPersonIcon()
     {
         var cut = Render<FlareAvatar>();
-        Assert.Contains("person", cut.Markup);
+        // Default fallback is the built-in person SVG (no Material Symbols font dependency).
+        Assert.NotEmpty(cut.FindAll(".flare-avatar__icon path"));
     }
 
     [Fact]

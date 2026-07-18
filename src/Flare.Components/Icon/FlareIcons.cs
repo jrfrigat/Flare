@@ -171,6 +171,10 @@ public static class FlareIcons
     public static FlareSvgIcon UploadFile { get; } = new() { Data = "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15.01l1.41 1.41L11 14.84V19h2v-4.16l1.59 1.59L16 15.01 12.01 11z" };
     /// <summary>The built-in <c>create_new_folder</c> icon.</summary>
     public static FlareSvgIcon CreateNewFolder { get; } = new() { Data = "M20 6h-8l-2-2H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-1 8h-3v3h-2v-3h-3v-2h3V9h2v3h3v2z" };
+    /// <summary>The built-in <c>content_copy</c> icon.</summary>
+    public static FlareSvgIcon ContentCopy { get; } = new() { Data = "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" };
+    /// <summary>The built-in <c>colorize</c> (eyedropper) icon.</summary>
+    public static FlareSvgIcon Colorize { get; } = new() { Data = "M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z" };
 
     // The icon ids (snake_case), matching the built-in members above.
     private static readonly string[] _names =
@@ -255,6 +259,8 @@ public static class FlareIcons
         "description",
         "upload_file",
         "create_new_folder",
+        "content_copy",
+        "colorize",
     ];
 
     /// <summary>All built-in icon ids, sorted alphabetically.</summary>

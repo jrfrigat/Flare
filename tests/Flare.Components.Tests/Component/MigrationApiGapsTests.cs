@@ -103,7 +103,8 @@ public class C_FlareAvatarFallbackTests : FlareTestContext
     {
         var cut = Render<FlareAvatar>();
 
-        Assert.Equal("person", cut.Find(".flare-avatar__icon").TextContent);
+        // The default fallback is now the built-in person SVG (no Material Symbols font dependency).
+        Assert.NotEmpty(cut.FindAll(".flare-avatar__icon path"));
     }
 
     [Fact]
