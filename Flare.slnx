@@ -20,6 +20,7 @@
   </Folder>
   <Folder Name="/src/Icons/">
     <Project Path="src/Flare.Icons.FontAwesome/Flare.Icons.FontAwesome.csproj" />
+    <Project Path="src/Flare.Icons.Fluent/Flare.Icons.Fluent.csproj" />
   </Folder>
   <Folder Name="/src/Themes/">
     <Project Path="src/Flare.Theme.MaterialDesign3.Tokens/Flare.Theme.MaterialDesign3.Tokens.csproj" />
