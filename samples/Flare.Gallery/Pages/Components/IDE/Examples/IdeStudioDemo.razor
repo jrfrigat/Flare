@@ -15,15 +15,15 @@
         </FlareMenuBar>
         <FlareToolbar Dense="true">
             <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs" OnClick="@(() => _status = "Running...")">
-                <LeadingIcon><span class="material-symbols-rounded" style="font-size:1rem;">play_arrow</span></LeadingIcon>
+                <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.PlayArrow" Size="1rem" /></LeadingIcon>
                 <ChildContent>Start</ChildContent>
             </FlareButton>
             <FlareRibbonSeparator />
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save all">
-                <span class="material-symbols-rounded" style="font-size:1rem;">save</span>
+                <FlareIconView Value="@FlareIcons.Save" Size="1rem" />
             </FlareButton>
             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Build">
-                <span class="material-symbols-rounded" style="font-size:1rem;">build</span>
+                <FlareIconView Value="@MaterialDesign3Icons.Regular.Build" Size="1rem" />
             </FlareButton>
         </FlareToolbar>
     </MenuBar>

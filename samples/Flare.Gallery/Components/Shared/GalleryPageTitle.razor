@@ -10,17 +10,17 @@
         @if (!string.IsNullOrEmpty(Api))
         {
             <a class="gallery-page-title__api" href="@($"/api/{Api}")">
-                <span class="material-symbols-rounded gallery-page-title__api-icon">data_object</span>
+                <FlareIconView Value="@FlareIcons.DataObject" Class="gallery-page-title__api-icon" />
                 <span>@GalleryStrings.Nav_Api</span>
-                <span class="material-symbols-rounded gallery-page-title__api-icon">open_in_new</span>
+                <FlareIconView Value="@FlareIcons.OpenInNew" Class="gallery-page-title__api-icon" />
             </a>
         }
     </div>
     @* NuGet package this component/service ships in - click to copy the install command. *@
     <button class="gallery-page-title__pkg" type="button" @onclick="CopyInstallAsync" title="@($"dotnet add package {_package}")">
-        <span class="material-symbols-rounded gallery-page-title__pkg-icon">package_2</span>
+        <FlareIconView Value="@MaterialDesign3Icons.Regular.Package2" Class="gallery-page-title__pkg-icon" />
         <code>@_package</code>
-        <span class="material-symbols-rounded gallery-page-title__pkg-icon">@(_copied ? "check" : "content_copy")</span>
+        <FlareIconView Value="@(_copied ? FlareIcons.Check : FlareIcons.ContentCopy)" Class="gallery-page-title__pkg-icon" />
     </button>
 </div>
 

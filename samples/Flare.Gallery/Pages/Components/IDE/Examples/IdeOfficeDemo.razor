@@ -10,10 +10,10 @@
             <FlareQuickAccessToolbar>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => _fileOpen = true)">File</FlareButton>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Save">
-                    <span class="material-symbols-rounded" style="font-size:1rem;">save</span>
+                    <FlareIconView Value="@FlareIcons.Save" Size="1rem" />
                 </FlareButton>
                 <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" AriaLabel="Undo">
-                    <span class="material-symbols-rounded" style="font-size:1rem;">undo</span>
+                    <FlareIconView Value="@MaterialDesign3Icons.Regular.Undo" Size="1rem" />
                 </FlareButton>
             </FlareQuickAccessToolbar>
             <FlareRibbon>

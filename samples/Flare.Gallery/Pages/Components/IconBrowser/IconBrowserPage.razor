@@ -12,7 +12,7 @@
 </GalleryPageTitle>
 
 
-@* ── Tab bar ── *@
+@* Tab bar *@
 <FlareStack Row Gap="FlareSpacing.XSmall" Style="margin-bottom:1.25rem;">
     <FlareButton Variant="@(_tab == "svg" ? ButtonVariant.Filled : ButtonVariant.Outlined)"
                  OnClick="@(() => SetTab("svg"))">
@@ -24,25 +24,26 @@
     </FlareButton>
 </FlareStack>
 
-@* ── Search + count ── *@
+@* Search + count *@
 <FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center" Wrap="true" Style="margin-bottom:1rem;">
     <FlareField @bind-Value="_search"
                 Placeholder="@GalleryStrings.Icons_Search"
                 Style="max-width:22rem;" />
-    <FlareChip Label="@string.Format(GalleryStrings.Icons_TotalCount, _filtered.Count)" />
+    <FlareChip Label="@string.Format(GalleryStrings.Icons_TotalCount, _tab == "svg" ? _filtered.Count : _materialFiltered.Length)" />
     @if (_copiedName is not null)
     {
         <FlareChip Label="@($"{_copiedName} - {GalleryStrings.Icons_Copied}")" />
     }
 </FlareStack>
 
-@* ── SVG Pack grid ── *@
+@* Built-in FlareIcons grid (dependency-free SVG) *@
 @if (_tab == "svg")
 {
     <div class="icon-browser-grid">
         @foreach (var name in _filtered)
         {
-            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint" @onclick="@(() => CopyUsage(name))">
+            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint"
+                    @onclick="@(() => CopyUsage($"<FlareIconView Value=\"@FlareIcons.{Pascal(name)}\" />", name))">
                 <FlareIconView Name="@name" SizePx="28" />
                 <span class="icon-card__label">@name</span>
             </button>
@@ -50,15 +51,16 @@
     </div>
 }
 
-@* ── Material Symbols reference ── *@
+@* Material Symbols grid (MaterialDesign3.Svg catalog, rendered as inline SVG) *@
 @if (_tab == "material")
 {
     <div class="icon-browser-grid">
-        @foreach (var name in _materialFiltered)
+        @foreach (var t in _materialFiltered)
         {
-            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint" @onclick="@(() => CopyUsage(name))">
-                <span class="material-symbols-rounded" style="font-size:28px;">@name</span>
-                <span class="icon-card__label">@name</span>
+            <button class="icon-card" title="@GalleryStrings.Icons_CopyHint"
+                    @onclick="@(() => CopyUsage($"<FlareIconView Value=\"@MaterialDesign3Icons.Regular.{t.Member}\" />", t.Name))">
+                <FlareIconView Value="@t.Icon" SizePx="28" />
+                <span class="icon-card__label">@t.Name</span>
             </button>
         }
     </div>
@@ -73,39 +75,156 @@
     private string _search = string.Empty;
     private string? _copiedName;
 
+    // The built-in, dependency-free set: rendered by its snake_case id, copied as a typed FlareIcons member.
     private static readonly List<string> _allSvgIcons =
         FlareIcons.All.ToList();
 
-    private static readonly List<string> _allMaterialIcons =
+    // A curated slice of the Material Symbols SVG catalog. Listed as typed members, so a trimmed publish
+    // ships only these icons - not the whole ~3894-icon catalog.
+    private static readonly (string Name, string Member, FlareIcon Icon)[] _allMaterialIcons =
     [
-        "home","add","close","check","search","settings","delete","edit","favorite","star",
-        "info","warning","error","check_circle","cancel","visibility","visibility_off","lock",
-        "person","group","email","phone","calendar_today","schedule","download","upload",
-        "share","refresh","menu","more_vert","more_horiz","expand_more","expand_less",
-        "chevron_right","chevron_left","filter_list","sort","drag_handle","open_in_new",
-        "copy_all","thumb_up","thumb_down","notifications","dark_mode","light_mode","palette",
-        "code","bug_report","rocket_launch","flash_on","speed","arrow_back","arrow_forward",
-        "arrow_drop_down","arrow_drop_up","done_all","folder","folder_open","save","print",
-        "attach_file","link","image","photo_camera","play_arrow","pause","stop","volume_up",
-        "volume_off","mic","mic_off","chat","send","reply","inbox","drafts","label","tag",
-        "bookmark","bookmark_border","star_border","thumb_up_off_alt","cloud","cloud_upload",
-        "cloud_download","wifi","bluetooth","battery_full","phone_android","laptop","monitor",
-        "keyboard","mouse","headphones","speaker","camera","videocam","location_on","map",
-        "directions","transit_enterexit","local_fire_department","ac_unit","wb_sunny",
-        "nightlight_round","access_time","event","today","history","update","sync",
-        "check_box","check_box_outline_blank","radio_button_checked","radio_button_unchecked",
-        "toggle_on","toggle_off","tune","dashboard","bar_chart","pie_chart","show_chart",
-        "table_chart","grid_view","view_list","view_module","view_column","article",
-        "description","insert_drive_file","folder_zip","picture_as_pdf","block","architecture"
+        ("home", "Home", MaterialDesign3Icons.Regular.Home),
+        ("add", "Add", MaterialDesign3Icons.Regular.Add),
+        ("close", "Close", MaterialDesign3Icons.Regular.Close),
+        ("check", "Check", MaterialDesign3Icons.Regular.Check),
+        ("search", "Search", MaterialDesign3Icons.Regular.Search),
+        ("settings", "Settings", MaterialDesign3Icons.Regular.Settings),
+        ("delete", "Delete", MaterialDesign3Icons.Regular.Delete),
+        ("edit", "Edit", MaterialDesign3Icons.Regular.Edit),
+        ("favorite", "Favorite", MaterialDesign3Icons.Regular.Favorite),
+        ("star", "Star", MaterialDesign3Icons.Regular.Star),
+        ("info", "Info", MaterialDesign3Icons.Regular.Info),
+        ("warning", "Warning", MaterialDesign3Icons.Regular.Warning),
+        ("error", "Error", MaterialDesign3Icons.Regular.Error),
+        ("check_circle", "CheckCircle", MaterialDesign3Icons.Regular.CheckCircle),
+        ("cancel", "Cancel", MaterialDesign3Icons.Regular.Cancel),
+        ("visibility", "Visibility", MaterialDesign3Icons.Regular.Visibility),
+        ("visibility_off", "VisibilityOff", MaterialDesign3Icons.Regular.VisibilityOff),
+        ("lock", "Lock", MaterialDesign3Icons.Regular.Lock),
+        ("person", "Person", MaterialDesign3Icons.Regular.Person),
+        ("group", "Group", MaterialDesign3Icons.Regular.Group),
+        ("email", "Mail", MaterialDesign3Icons.Regular.Mail),
+        ("phone", "Call", MaterialDesign3Icons.Regular.Call),
+        ("calendar_today", "CalendarToday", MaterialDesign3Icons.Regular.CalendarToday),
+        ("schedule", "Schedule", MaterialDesign3Icons.Regular.Schedule),
+        ("download", "Download", MaterialDesign3Icons.Regular.Download),
+        ("upload", "Upload", MaterialDesign3Icons.Regular.Upload),
+        ("share", "Share", MaterialDesign3Icons.Regular.Share),
+        ("refresh", "Refresh", MaterialDesign3Icons.Regular.Refresh),
+        ("menu", "Menu", MaterialDesign3Icons.Regular.Menu),
+        ("more_vert", "MoreVert", MaterialDesign3Icons.Regular.MoreVert),
+        ("more_horiz", "MoreHoriz", MaterialDesign3Icons.Regular.MoreHoriz),
+        ("expand_more", "KeyboardArrowDown", MaterialDesign3Icons.Regular.KeyboardArrowDown),
+        ("expand_less", "KeyboardArrowUp", MaterialDesign3Icons.Regular.KeyboardArrowUp),
+        ("chevron_right", "ChevronRight", MaterialDesign3Icons.Regular.ChevronRight),
+        ("chevron_left", "ChevronLeft", MaterialDesign3Icons.Regular.ChevronLeft),
+        ("filter_list", "FilterList", MaterialDesign3Icons.Regular.FilterList),
+        ("sort", "Sort", MaterialDesign3Icons.Regular.Sort),
+        ("drag_handle", "DragHandle", MaterialDesign3Icons.Regular.DragHandle),
+        ("open_in_new", "OpenInNew", MaterialDesign3Icons.Regular.OpenInNew),
+        ("copy_all", "CopyAll", MaterialDesign3Icons.Regular.CopyAll),
+        ("thumb_up", "ThumbUp", MaterialDesign3Icons.Regular.ThumbUp),
+        ("thumb_down", "ThumbDown", MaterialDesign3Icons.Regular.ThumbDown),
+        ("notifications", "Notifications", MaterialDesign3Icons.Regular.Notifications),
+        ("dark_mode", "DarkMode", MaterialDesign3Icons.Regular.DarkMode),
+        ("light_mode", "LightMode", MaterialDesign3Icons.Regular.LightMode),
+        ("palette", "Palette", MaterialDesign3Icons.Regular.Palette),
+        ("code", "Code", MaterialDesign3Icons.Regular.Code),
+        ("bug_report", "BugReport", MaterialDesign3Icons.Regular.BugReport),
+        ("rocket_launch", "RocketLaunch", MaterialDesign3Icons.Regular.RocketLaunch),
+        ("flash_on", "FlashOn", MaterialDesign3Icons.Regular.FlashOn),
+        ("speed", "Speed", MaterialDesign3Icons.Regular.Speed),
+        ("arrow_back", "ArrowBack", MaterialDesign3Icons.Regular.ArrowBack),
+        ("arrow_forward", "ArrowForward", MaterialDesign3Icons.Regular.ArrowForward),
+        ("arrow_drop_down", "ArrowDropDown", MaterialDesign3Icons.Regular.ArrowDropDown),
+        ("arrow_drop_up", "ArrowDropUp", MaterialDesign3Icons.Regular.ArrowDropUp),
+        ("done_all", "DoneAll", MaterialDesign3Icons.Regular.DoneAll),
+        ("folder", "Folder", MaterialDesign3Icons.Regular.Folder),
+        ("folder_open", "FolderOpen", MaterialDesign3Icons.Regular.FolderOpen),
+        ("save", "Save", MaterialDesign3Icons.Regular.Save),
+        ("print", "Print", MaterialDesign3Icons.Regular.Print),
+        ("attach_file", "AttachFile", MaterialDesign3Icons.Regular.AttachFile),
+        ("link", "Link", MaterialDesign3Icons.Regular.Link),
+        ("image", "Image", MaterialDesign3Icons.Regular.Image),
+        ("photo_camera", "PhotoCamera", MaterialDesign3Icons.Regular.PhotoCamera),
+        ("play_arrow", "PlayArrow", MaterialDesign3Icons.Regular.PlayArrow),
+        ("pause", "Pause", MaterialDesign3Icons.Regular.Pause),
+        ("stop", "Stop", MaterialDesign3Icons.Regular.Stop),
+        ("volume_up", "VolumeUp", MaterialDesign3Icons.Regular.VolumeUp),
+        ("volume_off", "VolumeOff", MaterialDesign3Icons.Regular.VolumeOff),
+        ("mic", "Mic", MaterialDesign3Icons.Regular.Mic),
+        ("mic_off", "MicOff", MaterialDesign3Icons.Regular.MicOff),
+        ("chat", "Chat", MaterialDesign3Icons.Regular.Chat),
+        ("send", "Send", MaterialDesign3Icons.Regular.Send),
+        ("reply", "Reply", MaterialDesign3Icons.Regular.Reply),
+        ("inbox", "Inbox", MaterialDesign3Icons.Regular.Inbox),
+        ("drafts", "Drafts", MaterialDesign3Icons.Regular.Drafts),
+        ("label", "Label", MaterialDesign3Icons.Regular.Label),
+        ("tag", "Tag", MaterialDesign3Icons.Regular.Tag),
+        ("bookmark", "Bookmark", MaterialDesign3Icons.Regular.Bookmark),
+        ("bookmark_border", "Bookmark", MaterialDesign3Icons.Regular.Bookmark),
+        ("star_border", "Star", MaterialDesign3Icons.Regular.Star),
+        ("thumb_up_off_alt", "ThumbUp", MaterialDesign3Icons.Regular.ThumbUp),
+        ("cloud", "Cloud", MaterialDesign3Icons.Regular.Cloud),
+        ("cloud_upload", "CloudUpload", MaterialDesign3Icons.Regular.CloudUpload),
+        ("cloud_download", "CloudDownload", MaterialDesign3Icons.Regular.CloudDownload),
+        ("wifi", "Wifi", MaterialDesign3Icons.Regular.Wifi),
+        ("bluetooth", "Bluetooth", MaterialDesign3Icons.Regular.Bluetooth),
+        ("battery_full", "BatteryFull", MaterialDesign3Icons.Regular.BatteryFull),
+        ("laptop", "LaptopMac", MaterialDesign3Icons.Regular.LaptopMac),
+        ("monitor", "Monitor", MaterialDesign3Icons.Regular.Monitor),
+        ("keyboard", "Keyboard", MaterialDesign3Icons.Regular.Keyboard),
+        ("mouse", "Mouse", MaterialDesign3Icons.Regular.Mouse),
+        ("headphones", "Headphones", MaterialDesign3Icons.Regular.Headphones),
+        ("speaker", "Speaker", MaterialDesign3Icons.Regular.Speaker),
+        ("camera", "Camera", MaterialDesign3Icons.Regular.Camera),
+        ("videocam", "Videocam", MaterialDesign3Icons.Regular.Videocam),
+        ("location_on", "LocationOn", MaterialDesign3Icons.Regular.LocationOn),
+        ("map", "Map", MaterialDesign3Icons.Regular.Map),
+        ("directions", "Directions", MaterialDesign3Icons.Regular.Directions),
+        ("transit_enterexit", "TransitEnterexit", MaterialDesign3Icons.Regular.TransitEnterexit),
+        ("local_fire_department", "LocalFireDepartment", MaterialDesign3Icons.Regular.LocalFireDepartment),
+        ("ac_unit", "AcUnit", MaterialDesign3Icons.Regular.AcUnit),
+        ("wb_sunny", "WbSunny", MaterialDesign3Icons.Regular.WbSunny),
+        ("nightlight_round", "Nightlight", MaterialDesign3Icons.Regular.Nightlight),
+        ("access_time", "Schedule", MaterialDesign3Icons.Regular.Schedule),
+        ("event", "Event", MaterialDesign3Icons.Regular.Event),
+        ("today", "Today", MaterialDesign3Icons.Regular.Today),
+        ("history", "History", MaterialDesign3Icons.Regular.History),
+        ("update", "Update", MaterialDesign3Icons.Regular.Update),
+        ("sync", "Sync", MaterialDesign3Icons.Regular.Sync),
+        ("check_box", "CheckBox", MaterialDesign3Icons.Regular.CheckBox),
+        ("check_box_outline_blank", "CheckBoxOutlineBlank", MaterialDesign3Icons.Regular.CheckBoxOutlineBlank),
+        ("radio_button_checked", "RadioButtonChecked", MaterialDesign3Icons.Regular.RadioButtonChecked),
+        ("radio_button_unchecked", "RadioButtonUnchecked", MaterialDesign3Icons.Regular.RadioButtonUnchecked),
+        ("toggle_on", "ToggleOn", MaterialDesign3Icons.Regular.ToggleOn),
+        ("toggle_off", "ToggleOff", MaterialDesign3Icons.Regular.ToggleOff),
+        ("tune", "Tune", MaterialDesign3Icons.Regular.Tune),
+        ("dashboard", "Dashboard", MaterialDesign3Icons.Regular.Dashboard),
+        ("bar_chart", "BarChart", MaterialDesign3Icons.Regular.BarChart),
+        ("pie_chart", "PieChart", MaterialDesign3Icons.Regular.PieChart),
+        ("show_chart", "ShowChart", MaterialDesign3Icons.Regular.ShowChart),
+        ("table_chart", "TableChart", MaterialDesign3Icons.Regular.TableChart),
+        ("grid_view", "GridView", MaterialDesign3Icons.Regular.GridView),
+        ("view_list", "ViewList", MaterialDesign3Icons.Regular.ViewList),
+        ("view_module", "ViewModule", MaterialDesign3Icons.Regular.ViewModule),
+        ("view_column", "ViewColumn", MaterialDesign3Icons.Regular.ViewColumn),
+        ("article", "Article", MaterialDesign3Icons.Regular.Article),
+        ("description", "Description", MaterialDesign3Icons.Regular.Description),
+        ("insert_drive_file", "Draft", MaterialDesign3Icons.Regular.Draft),
+        ("folder_zip", "FolderZip", MaterialDesign3Icons.Regular.FolderZip),
+        ("picture_as_pdf", "PictureAsPdf", MaterialDesign3Icons.Regular.PictureAsPdf),
+        ("block", "Block", MaterialDesign3Icons.Regular.Block),
+        ("architecture", "Architecture", MaterialDesign3Icons.Regular.Architecture),
     ];
 
     private List<string> _filtered => string.IsNullOrWhiteSpace(_search)
         ? _allSvgIcons
         : _allSvgIcons.Where(n => n.Contains(_search, StringComparison.OrdinalIgnoreCase)).ToList();
 
-    private List<string> _materialFiltered => string.IsNullOrWhiteSpace(_search)
+    private (string Name, string Member, FlareIcon Icon)[] _materialFiltered => string.IsNullOrWhiteSpace(_search)
         ? _allMaterialIcons
-        : _allMaterialIcons.Where(n => n.Contains(_search, StringComparison.OrdinalIgnoreCase)).ToList();
+        : _allMaterialIcons.Where(t => t.Name.Contains(_search, StringComparison.OrdinalIgnoreCase)).ToArray();
 
     private void SetTab(string tab)
     {
@@ -113,14 +232,16 @@
         _copiedName = null;
     }
 
-    private async Task CopyUsage(string name)
+    private async Task CopyUsage(string code, string label)
     {
-        var code = $"<FlareIconView Name=\"{name}\" />";
         await JS.InvokeVoidAsync("navigator.clipboard.writeText", code);
-        _copiedName = name;
+        _copiedName = label;
         StateHasChanged();
         await Task.Delay(2000);
-        if (_copiedName == name) _copiedName = null;
+        if (_copiedName == label) _copiedName = null;
         StateHasChanged();
     }
+
+    private static string Pascal(string id) =>
+        string.Concat(id.Split('_', StringSplitOptions.RemoveEmptyEntries).Select(p => char.ToUpperInvariant(p[0]) + p[1..]));
 }

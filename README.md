@@ -85,9 +85,10 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
 <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
 <!-- Component styles -->
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
-<!-- Material Symbols icon font (optional but recommended) -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 ```
+
+> Icons are inline SVG, so there is **no icon font to add** - the built-in `FlareIcons` set backs the default
+> component chrome out of the box. See [Icons](#icons) for the optional per-provider icon packages.
 
 **Wrap your app:**
 ```razor
@@ -136,6 +137,39 @@ Every color-aware component takes a single `Color` parameter of type `FlareColor
 Implicit conversion from `string` also works (`Color="@Colors.Primary"`). Roles map to
 `--fc-main / --fc-on / --fc-container / --fc-on-container` tokens; components read only the
 subset they need, so MD3 and Fluent stay in sync automatically.
+
+---
+
+## Icons
+
+Icons are a **polymorphic value type**: `FlareIcon` is an abstract descriptor, and any provider drops into any
+parameter typed `FlareIcon` (or renders standalone via `<FlareIconView>`). Everything is **inline SVG by
+default** - no icon font, no network request, no FOUT.
+
+```razor
+<FlareIconView Value="@FlareIcons.Home" />                       @* built-in, dependency-free *@
+<FlareIconButton Icon="@MaterialDesign3Icons.Regular.Settings" />@* provider catalog *@
+```
+
+- **Built-in set (`FlareIcons`, in `Flare.Components`).** ~90 ready `FlareSvgIcon` members that back the default
+  component chrome - zero dependencies, works out of the box. Enumerate with `FlareIcons.All`.
+- **Provider packages (opt-in).** Core depends on no third-party icon set; add only what you use:
+
+  | Package | Type / catalog | Delivery |
+  |---|---|---|
+  | `Flare.Icons.MaterialDesign3.Svg` | `MaterialDesign3Icons.Regular/Filled.*` (3894) | inline SVG |
+  | `Flare.Icons.MaterialDesign2.Svg` | `MaterialDesign2Icons.*` (2122) | inline SVG |
+  | `Flare.Icons.FluentUI.Svg` | `FluentUIIcons.Regular/Filled.*` (~5000) | inline SVG |
+  | `Flare.Icons.MaterialDesign3.Symbols` | `FlareMaterialDesign3Icon` | Material Symbols webfont |
+  | `Flare.Icons.MaterialDesign2.Symbols` | `FlareMaterialDesign2Icon` | Material Icons webfont |
+  | `Flare.Icons.FontAwesome.Symbols` | `FlareFontAwesomeIcon` | Font Awesome webfont |
+
+- **Small payloads via trimming.** Each catalog icon is its own static member and the SVG packages are
+  `IsTrimmable`, so a trimmed Blazor WebAssembly publish ships only the icons you reference - not the whole
+  catalog (e.g. the Gallery pulls ~160 of 3894 Material Symbols: 8.9 MB -> ~180 KB). Reference icons by their
+  **typed member** (not a string) so the linker can trace them.
+
+See [docs/en/icons.md](docs/en/icons.md) for the full guide.
 
 ---
 
@@ -314,6 +348,7 @@ Full docs live in **[docs/](docs/README.md)** (English + Russian).
 |----------|-----------|-------------|
 | [README.md](README.md) - [ru](README.ru.md) | EN - RU | Project README |
 | [getting-started](docs/en/getting-started.md) - [ru](docs/ru/getting-started.md) | EN - RU | Install, DI, styles, first component |
+| [icons](docs/en/icons.md) - [ru](docs/ru/icons.md) | EN - RU | FlareIcon system, built-in set, provider packages, trimming |
 | [architecture](docs/en/architecture.md) - [ru](docs/ru/architecture.md) | EN - RU | Module map, component patterns, theming deep-dive |
 | [theme-creation-guide](docs/en/theme-creation-guide.md) - [ru](docs/ru/theme-creation-guide.md) | EN - RU | Theme creation: design tokens, palettes, custom themes |
 | [component-conventions](docs/en/component-conventions.md) - [ru](docs/ru/component-conventions.md) | EN - RU | Component code conventions (CSS tokens, unified color, XML docs) |

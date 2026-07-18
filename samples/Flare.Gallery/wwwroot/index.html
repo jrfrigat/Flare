@@ -7,25 +7,8 @@
     <title>Flare - Blazor Component Library</title>
     <base href="/" />
 
-    <!--
-      Icon-font FOUT guard. FlareIcon renders Material Symbols ligatures (`<span class="flare-icon">home</span>`),
-      so until the icon font downloads the raw ligature NAMES ("home", "search", ...) would paint as text on a
-      cold (uncached) load. Hide icons until the font is ready (or a short safety timeout), so they fade in as
-      glyphs instead of flashing their names. visibility:hidden reserves layout, so there is no shift.
-    -->
-    <style>html:not(.flare-icons-ready) .flare-icon{visibility:hidden}</style>
-    <script>
-      (function () {
-        var reveal = function () { document.documentElement.classList.add('flare-icons-ready'); };
-        try {
-          if (document.fonts && document.fonts.load) {
-            document.fonts.load('24px "Material Symbols Rounded"').then(reveal, reveal);
-            document.fonts.ready.then(reveal);
-          } else { reveal(); }
-        } catch (e) { reveal(); }
-        setTimeout(reveal, 3000); // safety: never keep icons hidden if the font fails to load
-      })();
-    </script>
+    <!-- Icons render as inline SVG (FlareIcons / MaterialDesign3Icons), so there is no icon-font to wait
+         for and no FOUT - the old Material Symbols font + reveal guard were removed. -->
 
     <!-- PWA -->
     <link href="manifest.webmanifest" rel="manifest" />
@@ -36,7 +19,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700" />
 
     <!-- Flare component styles -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />

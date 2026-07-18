@@ -78,10 +78,11 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
     <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
     <!-- All component styles -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
-    <!-- Material Symbols icons (optional, but recommended) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 ```
+
+> Icons are inline SVG (the built-in `FlareIcons` set), so there is **no icon font to add**. For provider
+> icon packages (Material Symbols / Fluent / Font Awesome), see [Icons](icons.md).
 
 > The active theme's CSS (`ITheme.StyleAssets` - fonts, base tokens) is wired up automatically by
 > `FlareThemeProvider` at startup, so you do not need to add theme CSS by hand.

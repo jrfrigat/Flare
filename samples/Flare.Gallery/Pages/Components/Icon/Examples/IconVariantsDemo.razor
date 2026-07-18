@@ -1,10 +1,12 @@
 @inherits LocalizedPage
 
+@* Material Symbols ship in two fills; with the inline-SVG catalog you pick the Regular or Filled member
+   (font-variation-settings only applies to the icon font, not to SVG). *@
 <FlareStack Row Gap="FlareSpacing.Small" Wrap>
-    <FlareIconView Size="2rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Home" Style="font-variation-settings:'FILL' 0" />
-    <FlareIconView Size="2rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Home" Style="font-variation-settings:'FILL' 1" />
-    <FlareIconView Size="2rem" Color="FlareColor.Tertiary" Value="@MaterialDesign3Icons.Regular.Star" Style="font-variation-settings:'FILL' 0" />
-    <FlareIconView Size="2rem" Color="FlareColor.Tertiary" Value="@MaterialDesign3Icons.Regular.Star" Style="font-variation-settings:'FILL' 1" />
-    <FlareIconView Size="2rem" Color="FlareColor.Error" Value="@MaterialDesign3Icons.Regular.Favorite" Style="font-variation-settings:'FILL' 0" />
-    <FlareIconView Size="2rem" Color="FlareColor.Error" Value="@MaterialDesign3Icons.Regular.Favorite" Style="font-variation-settings:'FILL' 1" />
+    <FlareIconView Size="2rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Regular.Home" />
+    <FlareIconView Size="2rem" Color="FlareColor.Primary" Value="@MaterialDesign3Icons.Filled.Home" />
+    <FlareIconView Size="2rem" Color="FlareColor.Tertiary" Value="@MaterialDesign3Icons.Regular.Star" />
+    <FlareIconView Size="2rem" Color="FlareColor.Tertiary" Value="@MaterialDesign3Icons.Filled.Star" />
+    <FlareIconView Size="2rem" Color="FlareColor.Error" Value="@MaterialDesign3Icons.Regular.Favorite" />
+    <FlareIconView Size="2rem" Color="FlareColor.Error" Value="@MaterialDesign3Icons.Filled.Favorite" />
 </FlareStack>

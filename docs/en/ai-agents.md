@@ -91,9 +91,9 @@ registration needed. Other entry points: `AddFlareTheme`, `AddFlarePalette`, `Ad
 ```html
 <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
 <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 ```
 Theme CSS (fonts, base tokens) is wired up automatically by `FlareThemeProvider`; do not add it by hand.
+Icons are inline SVG (no icon font to add).
 
 **c) Imports - `_Imports.razor`:**
 ```razor
@@ -131,8 +131,9 @@ Automatic dark mode follows the OS by default; disable with `RespectSystemColorS
 <FlareButton Type="ButtonType.Submit" Variant="ButtonVariant.Filled">Submit</FlareButton>
 ```
 
-**Icons** use Material Symbol names: `Icon="search"`, `Icon="delete"`, or the `<FlareIcon Name="..." />`
-component.
+**Icons** are the polymorphic `FlareIcon` value type. Use a typed member - built-in `Icon="@FlareIcons.Search"`
+or a provider catalog `Icon="@MaterialDesign3Icons.Regular.Delete"` - and render standalone with
+`<FlareIconView Value="@FlareIcons.Home" />`. Everything is inline SVG; no icon font. See `docs/en/icons.md`.
 
 **Two-way binding:**
 ```razor
@@ -223,7 +224,7 @@ All real component names (consult the [API Reference](../../api/index.md) for ea
 `FlareTimeline`, `FlareTimelineItem`, `FlareChart`, `FlarePagination`, `FlareCard` (+ `FlareCardHeader`,
 `FlareCardContent`, `FlareCardActions`, `FlareCardFooter`, `FlareCardMedia`), `FlarePaper`, `FlareBadge`,
 `FlareChip`, `FlareChipGroup`, `FlareAvatar`, `FlareAvatarGroup`, `FlareSkeleton`, `FlareEmptyState`,
-`FlareHighlighter`, `FlareImage`, `FlareIcon`, `FlarePropertyGrid`, `FlarePropertyGridItem`.
+`FlareHighlighter`, `FlareImage`, `FlareIconView`, `FlarePropertyGrid`, `FlarePropertyGridItem`.
 
 **Navigation:** `FlareAppBar`, `FlareNavMenu`, `FlareNavLink`, `FlareNavGroup`, `FlareTabs`, `FlareTab`,
 `FlareStepper`, `FlareStep`, `FlareBreadcrumb`, `FlareMenu`, `FlareMenuItem`, `FlareMenuGroup`,

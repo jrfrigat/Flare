@@ -78,10 +78,11 @@ builder.Services.AddFlareTheme(new FluentUI2Theme());
     <script src="_content/Flare.Components/js/flare-bootstrap.js"></script>
     <!-- Все стили компонентов -->
     <link rel="stylesheet" href="_content/Flare.Components/css/flare-components.css" />
-    <!-- Иконки Material Symbols (опционально, но рекомендуется) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 ```
+
+> Иконки - это inline-SVG (встроенный набор `FlareIcons`), поэтому **иконочный шрифт подключать не нужно**. Про
+> пакеты провайдеров (Material Symbols / Fluent / Font Awesome) см. [Иконки](icons.md).
 
 > CSS активной темы (`ITheme.StyleAssets` - шрифты, базовые токены) подключается автоматически
 > `FlareThemeProvider` при старте, поэтому вручную добавлять CSS темы не нужно.
