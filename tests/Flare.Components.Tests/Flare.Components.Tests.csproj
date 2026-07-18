@@ -33,6 +33,7 @@
     <ProjectReference Include="..\..\src\Flare.Icons.FontAwesome.Symbols\Flare.Icons.FontAwesome.Symbols.csproj" />
     <ProjectReference Include="..\..\src\Flare.Icons.FluentUI.Svg\Flare.Icons.FluentUI.Svg.csproj" />
     <ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Symbols\Flare.Icons.MaterialDesign3.Symbols.csproj" />
+    <ProjectReference Include="..\..\src\Flare.Icons.MaterialDesign3.Svg\Flare.Icons.MaterialDesign3.Svg.csproj" />
     <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
   </ItemGroup>
 

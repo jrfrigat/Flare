@@ -17,6 +17,8 @@
     Filled/Outlined/Round/Sharp/TwoTone).
   - `Flare.Icons.MaterialDesign2.Svg` - полный набор Material Icons (filled) как inline-SVG (каталог
     `MaterialDesign2Icons`, 2122 иконки), генератор `tools/MaterialIconGen`.
+  - `Flare.Icons.MaterialDesign3.Svg` - полный набор Material Symbols (rounded) как inline-SVG (каталог
+    `MaterialDesign3Icons`, Regular + Filled, 3894 иконки), генератор `tools/MaterialSymbolsGen`.
   - `Flare.Icons.FluentUI.Svg` - полный набор Fluent UI System Icons как inline-SVG (каталог `FluentUIIcons`,
     Regular + Filled, Size 24, ~5000 иконок), генератор `tools/FluentIconGen`; плюс `FlareFluentUIIcon`.
   - `Flare.Icons.FontAwesome.Symbols` - `FlareFontAwesomeIcon` (шрифт Font Awesome: Solid/Regular/Light/

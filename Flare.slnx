@@ -24,6 +24,7 @@
     <Project Path="src/Flare.Icons.MaterialDesign2.Svg/Flare.Icons.MaterialDesign2.Svg.csproj" />
     <Project Path="src/Flare.Icons.MaterialDesign2.Symbols/Flare.Icons.MaterialDesign2.Symbols.csproj" />
     <Project Path="src/Flare.Icons.MaterialDesign3.Symbols/Flare.Icons.MaterialDesign3.Symbols.csproj" />
+    <Project Path="src/Flare.Icons.MaterialDesign3.Svg/Flare.Icons.MaterialDesign3.Svg.csproj" />
   </Folder>
   <Folder Name="/src/Themes/">
     <Project Path="src/Flare.Theme.MaterialDesign3.Tokens/Flare.Theme.MaterialDesign3.Tokens.csproj" />
