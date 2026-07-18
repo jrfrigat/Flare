@@ -308,11 +308,11 @@
     padding: var(--flare-spacing-3, 6px) var(--flare-spacing-4, 8px);
 }
 
-.flare-ribbon__button .material-symbols-rounded {
+.flare-ribbon__button .flare-icon {
     font-size: 1.25rem;
 }
 
-.flare-ribbon__button--large .material-symbols-rounded {
+.flare-ribbon__button--large .flare-icon {
     font-size: 1.5rem;
 }
 
@@ -761,6 +761,6 @@
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
 }
 
-.flare-sheet-tabs__add .material-symbols-rounded {
+.flare-sheet-tabs__add .flare-icon {
     font-size: 1.1rem;
 }

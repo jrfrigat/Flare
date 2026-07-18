@@ -22,15 +22,15 @@
 
     <FlareBackstage @bind-Open="_open">
         <NavContent>
-            <FlareBackstageItem Icon="note_add" Label="New" Active="_selected == BackstageNav.New"
+            <FlareBackstageItem Icon="@("note_add")" Label="New" Active="_selected == BackstageNav.New"
                                 OnClick="@(() => _selected = BackstageNav.New)" />
-            <FlareBackstageItem Icon="folder_open" Label="Open" Active="_selected == BackstageNav.Open"
+            <FlareBackstageItem Icon="@("folder_open")" Label="Open" Active="_selected == BackstageNav.Open"
                                 OnClick="@(() => _selected = BackstageNav.Open)" />
-            <FlareBackstageItem Icon="save" Label="Save As" Active="_selected == BackstageNav.Save"
+            <FlareBackstageItem Icon="@("save")" Label="Save As" Active="_selected == BackstageNav.Save"
                                 OnClick="@(() => _selected = BackstageNav.Save)" />
-            <FlareBackstageItem Icon="print" Label="Print" Active="_selected == BackstageNav.Print"
+            <FlareBackstageItem Icon="@("print")" Label="Print" Active="_selected == BackstageNav.Print"
                                 OnClick="@(() => _selected = BackstageNav.Print)" />
-            <FlareBackstageItem Icon="settings" Label="Options" Active="_selected == BackstageNav.Options"
+            <FlareBackstageItem Icon="@("settings")" Label="Options" Active="_selected == BackstageNav.Options"
                                 OnClick="@(() => _selected = BackstageNav.Options)" />
         </NavContent>
         <ChildContent>

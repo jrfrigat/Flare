@@ -11,8 +11,8 @@ namespace Flare.Components.IDE;
 /// </summary>
 public partial class FlareRibbonButton : FlareComponentBase
 {
-    /// <summary>Material icon name displayed in the button.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon displayed in the button - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
 
     /// <summary>Label text displayed below the icon in large mode.</summary>
     [Parameter] public string? Label { get; set; }

@@ -12,17 +12,17 @@
                          class="@(IsLarge ? $"{Css.Classes.Ide.Ribbon.Button} {Css.Classes.Ide.Ribbon.ButtonLarge}" : Css.Classes.Ide.Ribbon.Button)">
                 @if (Icon is not null)
                 {
-                    <span class="material-symbols-rounded">@Icon</span>
+                    <FlareIconView Value="Icon" />
                 }
                 @if (!string.IsNullOrEmpty(Label))
                 {
                     <span class="@Css.Classes.Ide.Ribbon.ButtonLabel">
-                        @Label <span class="material-symbols-rounded @Css.Classes.Ide.Ribbon.Caret" aria-hidden="true">arrow_drop_down</span>
+                        @Label <FlareIconView Value="FlareIcons.ArrowDropDown" Class="@Css.Classes.Ide.Ribbon.Caret" />
                     </span>
                 }
                 else
                 {
-                    <span class="material-symbols-rounded @Css.Classes.Ide.Ribbon.Caret" aria-hidden="true">arrow_drop_down</span>
+                    <FlareIconView Value="FlareIcons.ArrowDropDown" Class="@Css.Classes.Ide.Ribbon.Caret" />
                 }
             </FlareButton>
         </Activator>
@@ -33,8 +33,8 @@
 </FlareTooltip>
 
 @code {
-    /// <summary>Material icon name displayed in the button.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>Icon displayed in the button - any provider (a bare string is a Material Symbols name).</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
 
     /// <summary>Label text shown next to / below the icon.</summary>
     [Parameter] public string? Label { get; set; }

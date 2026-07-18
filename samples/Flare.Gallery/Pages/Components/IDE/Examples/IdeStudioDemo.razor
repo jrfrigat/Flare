@@ -47,7 +47,7 @@
 
     <ChildContent>
         <FlareDocumentTabs>
-            <FlareDocumentTab Title="Customers" Icon="table_view">
+            <FlareDocumentTab Title="Customers" Icon="@("table_view")">
                 <FlareDataGrid Items="@DatagridData._people" PageSize="50" Dense="true" CellSelection="true">
                     <Columns>
                         <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
@@ -57,7 +57,7 @@
                     </Columns>
                 </FlareDataGrid>
             </FlareDocumentTab>
-            <FlareDocumentTab Title="Program.cs" Icon="code" Modified="true">
+            <FlareDocumentTab Title="Program.cs" Icon="@("code")" Modified="true">
                 <pre style="margin:0;padding:0.5rem;font-family:monospace;font-size:0.8rem;">var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFlare();
 var app = builder.Build();

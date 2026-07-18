@@ -12,17 +12,17 @@
                      OnTabChanged="OnTab">
             <FlareRibbonTab Title="Home">
                 <FlareRibbonGroup Label="Clipboard">
-                    <FlareRibbonButton Icon="content_paste" Label="Paste" Tooltip="Paste" IsLarge="true"
+                    <FlareRibbonButton Icon="@("content_paste")" Label="Paste" Tooltip="Paste" IsLarge="true"
                                        OnClick="@(() => Set("Paste"))" />
-                    <FlareRibbonButton Icon="content_cut" Tooltip="Cut" OnClick="@(() => Set("Cut"))" />
-                    <FlareRibbonButton Icon="content_copy" Tooltip="Copy" OnClick="@(() => Set("Copy"))" />
+                    <FlareRibbonButton Icon="@("content_cut")" Tooltip="Cut" OnClick="@(() => Set("Cut"))" />
+                    <FlareRibbonButton Icon="@("content_copy")" Tooltip="Copy" OnClick="@(() => Set("Copy"))" />
                 </FlareRibbonGroup>
                 <FlareRibbonGroup Label="Font">
-                    <FlareRibbonButton Icon="format_bold" Tooltip="Bold" OnClick="@(() => Set("Bold"))" />
-                    <FlareRibbonButton Icon="format_italic" Tooltip="Italic" OnClick="@(() => Set("Italic"))" />
-                    <FlareRibbonButton Icon="format_underlined" Tooltip="Underline" OnClick="@(() => Set("Underline"))" />
+                    <FlareRibbonButton Icon="@("format_bold")" Tooltip="Bold" OnClick="@(() => Set("Bold"))" />
+                    <FlareRibbonButton Icon="@("format_italic")" Tooltip="Italic" OnClick="@(() => Set("Italic"))" />
+                    <FlareRibbonButton Icon="@("format_underlined")" Tooltip="Underline" OnClick="@(() => Set("Underline"))" />
                     <FlareRibbonSeparator />
-                    <FlareRibbonDropdown Icon="format_color_text" Tooltip="Font color">
+                    <FlareRibbonDropdown Icon="@("format_color_text")" Tooltip="Font color">
                         <MenuContent>
                             <FlareMenuItem Icon="@("circle")" OnClick="@(() => Set("Color: Red"))">Red</FlareMenuItem>
                             <FlareMenuItem Icon="@("circle")" OnClick="@(() => Set("Color: Green"))">Green</FlareMenuItem>
@@ -31,7 +31,7 @@
                     </FlareRibbonDropdown>
                 </FlareRibbonGroup>
                 <FlareRibbonGroup Label="Styles">
-                    <FlareRibbonDropdown Icon="palette" Label="Cell Styles" Tooltip="Cell styles" IsLarge="true">
+                    <FlareRibbonDropdown Icon="@("palette")" Label="Cell Styles" Tooltip="Cell styles" IsLarge="true">
                         <MenuContent>
                             <FlareMenuItem OnClick="@(() => Set("Style: Normal"))">Normal</FlareMenuItem>
                             <FlareMenuItem OnClick="@(() => Set("Style: Heading 1"))">Heading 1</FlareMenuItem>
@@ -42,30 +42,30 @@
             </FlareRibbonTab>
             <FlareRibbonTab Title="Insert">
                 <FlareRibbonGroup Label="Tables">
-                    <FlareRibbonButton Icon="table" Label="Table" Tooltip="Insert table" IsLarge="true"
+                    <FlareRibbonButton Icon="@("table")" Label="Table" Tooltip="Insert table" IsLarge="true"
                                        OnClick="@(() => Set("Insert table"))" />
-                    <FlareRibbonButton Icon="pivot_table_chart" Label="PivotTable" Tooltip="PivotTable" IsLarge="true"
+                    <FlareRibbonButton Icon="@("pivot_table_chart")" Label="PivotTable" Tooltip="PivotTable" IsLarge="true"
                                        OnClick="@(() => Set("Insert PivotTable"))" />
                 </FlareRibbonGroup>
                 <FlareRibbonGroup Label="Charts">
-                    <FlareRibbonButton Icon="bar_chart" Tooltip="Column chart" OnClick="@(() => Set("Column chart"))" />
-                    <FlareRibbonButton Icon="show_chart" Tooltip="Line chart" OnClick="@(() => Set("Line chart"))" />
-                    <FlareRibbonButton Icon="pie_chart" Tooltip="Pie chart" OnClick="@(() => Set("Pie chart"))" />
+                    <FlareRibbonButton Icon="@("bar_chart")" Tooltip="Column chart" OnClick="@(() => Set("Column chart"))" />
+                    <FlareRibbonButton Icon="@("show_chart")" Tooltip="Line chart" OnClick="@(() => Set("Line chart"))" />
+                    <FlareRibbonButton Icon="@("pie_chart")" Tooltip="Pie chart" OnClick="@(() => Set("Pie chart"))" />
                 </FlareRibbonGroup>
             </FlareRibbonTab>
             <FlareRibbonTab Title="View">
                 <FlareRibbonGroup Label="Zoom">
-                    <FlareRibbonButton Icon="zoom_in" Label="Zoom In" Tooltip="Zoom in" IsLarge="true"
+                    <FlareRibbonButton Icon="@("zoom_in")" Label="Zoom In" Tooltip="Zoom in" IsLarge="true"
                                        OnClick="@(() => Set("Zoom in"))" />
-                    <FlareRibbonButton Icon="zoom_out" Label="Zoom Out" Tooltip="Zoom out" IsLarge="true"
+                    <FlareRibbonButton Icon="@("zoom_out")" Label="Zoom Out" Tooltip="Zoom out" IsLarge="true"
                                        OnClick="@(() => Set("Zoom out"))" />
                 </FlareRibbonGroup>
                 <FlareRibbonGroup Label="Show">
-                    <FlareRibbonButton Icon="grid_on" Tooltip="Grid lines" OnClick="@(() => Set("Toggle grid lines"))" />
-                    <FlareRibbonButton Icon="wrap_text" Tooltip="Word wrap" OnClick="@(() => Set("Toggle word wrap"))" />
+                    <FlareRibbonButton Icon="@("grid_on")" Tooltip="Grid lines" OnClick="@(() => Set("Toggle grid lines"))" />
+                    <FlareRibbonButton Icon="@("wrap_text")" Tooltip="Word wrap" OnClick="@(() => Set("Toggle word wrap"))" />
                 </FlareRibbonGroup>
                 <FlareRibbonGroup Label="Disabled">
-                    <FlareRibbonButton Icon="lock" Label="Locked" Tooltip="Disabled command" IsLarge="true" Disabled="true" />
+                    <FlareRibbonButton Icon="@("lock")" Label="Locked" Tooltip="Disabled command" IsLarge="true" Disabled="true" />
                 </FlareRibbonGroup>
             </FlareRibbonTab>
         </FlareRibbon>
