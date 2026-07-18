@@ -22,9 +22,7 @@
                         @onclick:stopPropagation="true"
                         disabled="@node.IsLoading"
                         aria-label="@(node.IsExpanded ? (FlareStrings.Tree_Collapse) : (FlareStrings.Tree_Expand))">
-                    <span class="material-symbols-rounded">
-                        @(node.IsLoading ? "progress_activity" : node.IsExpanded ? "expand_more" : "chevron_right")
-                    </span>
+                    <FlareIconView Value="@(node.IsLoading ? FlareIcons.Refresh : node.IsExpanded ? FlareIcons.ExpandMore : FlareIcons.ChevronRight)" />
                 </button>
             }
             else

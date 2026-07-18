@@ -12,7 +12,7 @@
             <FlareMenuItem Icon="@("home")" OnClick="@(() => _lastAction = "Home")">Home</FlareMenuItem>
             <FlareMenuItem Icon="@("settings")" OnClick="@(() => _lastAction = "Settings")">Settings</FlareMenuItem>
             
-            <FlareSubMenu Label="More Options" Icon="more_horiz">
+            <FlareSubMenu Label="More Options" Icon="@("more_horiz")">
                 <FlareMenuItem OnClick="@(() => _lastAction = "Option 1")">Option 1</FlareMenuItem>
                 <FlareMenuItem OnClick="@(() => _lastAction = "Option 2")">Option 2</FlareMenuItem>
                 
@@ -42,7 +42,7 @@
                 <FlareMenuItem Icon="@("save")">Save</FlareMenuItem>
             </FlareMenuGroup>
             
-            <FlareSubMenu Label="Edit" Icon="edit">
+            <FlareSubMenu Label="Edit" Icon="@("edit")">
                 <FlareMenuItem Icon="@("content_copy")">Copy</FlareMenuItem>
                 <FlareMenuItem Icon="@("content_paste")">Paste</FlareMenuItem>
                 <FlareMenuItem Icon="@("undo")">Undo</FlareMenuItem>

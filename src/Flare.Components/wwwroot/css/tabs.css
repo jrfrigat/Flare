@@ -56,7 +56,7 @@
   cursor: default;
 }
 
-.flare-tabs__scroll > .material-symbols-rounded {
+.flare-tabs__scroll > .flare-icon {
   font-size: 1.25rem;
 }
 
@@ -255,7 +255,7 @@
   background: color-mix(in srgb, currentColor calc(var(--flare-state-selected-opacity) * 100%), transparent);
 }
 
-.flare-tabs__tab-close > .material-symbols-rounded {
+.flare-tabs__tab-close > .flare-icon {
   font-size: 1rem;
 }
 

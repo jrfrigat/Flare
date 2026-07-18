@@ -75,7 +75,9 @@
     width: 100%;
 }
 
-.flare-submenu__icon {
+/* .flare-icon.<class> keeps 0,2,0 so the submenu chevron size/color win over the base .flare-icon rule
+   (menu.css imports before icon.css, so equal specificity would otherwise lose). */
+.flare-icon.flare-submenu__icon {
     margin-left: auto;
     font-size: 1.125rem;
     color: var(--flare-color-on-surface-variant);

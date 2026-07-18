@@ -26,13 +26,13 @@
     
     <FlareText Typo="TypographyScale.TitleMedium">Drag with Icons</FlareText>
     <FlareTreeView Draggable="true" OnItemDrop="HandleDrop2">
-        <FlareTreeItem Label="Home" Icon="home" ItemData="@("home")" />
-        <FlareTreeItem Label="Settings" Icon="settings" ItemData="@("settings")" Expanded="true">
-            <FlareTreeItem Label="General" Icon="tune" ItemData="@("general")" />
-            <FlareTreeItem Label="Security" Icon="security" ItemData="@("security")" />
-            <FlareTreeItem Label="Privacy" Icon="lock" ItemData="@("privacy")" />
+        <FlareTreeItem Label="Home" Icon="@("home")" ItemData="@("home")" />
+        <FlareTreeItem Label="Settings" Icon="@("settings")" ItemData="@("settings")" Expanded="true">
+            <FlareTreeItem Label="General" Icon="@("tune")" ItemData="@("general")" />
+            <FlareTreeItem Label="Security" Icon="@("security")" ItemData="@("security")" />
+            <FlareTreeItem Label="Privacy" Icon="@("lock")" ItemData="@("privacy")" />
         </FlareTreeItem>
-        <FlareTreeItem Label="Help" Icon="help" ItemData="@("help")" />
+        <FlareTreeItem Label="Help" Icon="@("help")" ItemData="@("help")" />
     </FlareTreeView>
     
     @if (_lastDrop2 is not null)

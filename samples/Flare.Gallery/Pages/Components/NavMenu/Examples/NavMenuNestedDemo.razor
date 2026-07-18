@@ -6,15 +6,15 @@
             <Icon><FlareIconView Size="1.1rem" Name="home" /></Icon>
             <ChildContent>Home</ChildContent>
         </FlareNavLink>
-        <FlareNavGroup Label="Components" Icon="widgets">
+        <FlareNavGroup Label="Components" Icon="@("widgets")">
             <FlareNavLink Href="/components/buttons">Buttons</FlareNavLink>
-            <FlareNavGroup Label="Inputs" Icon="edit">
+            <FlareNavGroup Label="Inputs" Icon="@("edit")">
                 <FlareNavLink Href="/components/input">Text Field</FlareNavLink>
                 <FlareNavLink Href="/components/select">Select</FlareNavLink>
                 @* Active forces this link active -> "Inputs" and "Components" auto-expand *@
                 <FlareNavLink Href="/components/slider" Active="true">Slider</FlareNavLink>
             </FlareNavGroup>
-            <FlareNavGroup Label="Layout" Icon="dashboard">
+            <FlareNavGroup Label="Layout" Icon="@("dashboard")">
                 <FlareNavLink Href="/components/stack">Stack</FlareNavLink>
                 <FlareNavLink Href="/components/grid">Grid</FlareNavLink>
             </FlareNavGroup>
