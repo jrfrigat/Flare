@@ -28,15 +28,14 @@ public class FlareIconTests : FlareTestContext
     [InlineData("chat")]
     [InlineData("cloud")]
     [InlineData("history")]
-    public void UncataloguedNameShortcut_RendersMaterialGlyph(string name)
+    public void UncataloguedNameShortcut_RendersEmpty(string name)
     {
         var cut = Render<FlareIconView>(p => p.Add(x => x.Icon, name));
 
-        // Not built in -> Material glyph (name is text, never mis-parsed as path data).
+        // Not built in -> empty icon; core never falls back to a Material font.
         Assert.Empty(cut.FindAll("path"));
-        Assert.Empty(cut.FindAll("svg"));
-        Assert.Contains("material-symbols-rounded", cut.Markup);
-        Assert.Contains(name, cut.Markup);
+        Assert.DoesNotContain("material-symbols", cut.Markup);
+        Assert.DoesNotContain(name, cut.Markup);
     }
 
     [Fact]
@@ -49,12 +48,12 @@ public class FlareIconTests : FlareTestContext
     }
 
     [Fact]
-    public void NameShortcut_Uncatalogued_IsMaterialGlyph()
+    public void NameShortcut_Uncatalogued_IsEmpty()
     {
         var cut = Render<FlareIconView>(p => p.Add(x => x.Name, "volume_up"));
 
-        Assert.Contains("material-symbols-rounded", cut.Markup);
-        Assert.Contains("volume_up", cut.Markup);
+        Assert.DoesNotContain("material-symbols", cut.Markup);
+        Assert.Empty(cut.FindAll("path"));
     }
 
     [Theory]
@@ -123,12 +122,12 @@ public class FlareIconTests : FlareTestContext
     }
 
     [Fact]
-    public void StringImplicitlyConverts_Uncatalogued_ToMaterialIcon()
+    public void StringImplicitlyConverts_Uncatalogued_ToEmpty()
     {
         FlareIcon icon = "volume_up";
 
-        var material = Assert.IsType<FlareMaterialIcon>(icon);
-        Assert.Equal("volume_up", material.Name);
+        // No third-party fallback: an unknown id resolves to the empty built-in icon.
+        Assert.Same(FlareIcons.Empty, icon);
     }
 
     [Fact]

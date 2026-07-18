@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Icons.MaterialDesign2.Symbols</PackageId>
+    <RootNamespace>Flare.Components</RootNamespace>
+    <Description>Material Design 2 (Material Icons webfont) provider for the Flare Blazor component library. Adds FlareMaterialClassicIcon, usable anywhere a FlareIcon is accepted. Requires the Material Icons font in the host app.</Description>
+    <PackageTags>blazor;components;icons;material;materialicons;materialdesign</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
+  </ItemGroup>
+
+</Project>

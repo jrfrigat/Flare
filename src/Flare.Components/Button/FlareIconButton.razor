@@ -37,9 +37,9 @@
 </FlareButton>
 
 @code {
-    /// <summary>The icon rendered inside the button - any provider (<see cref="FlareMaterialIcon"/>,
-    /// <see cref="FlareSvgIcon"/>, a Fluent/Font Awesome pack type). A bare string is taken as a Material
-    /// Symbols name. Ignored when <see cref="ChildContent"/> is supplied.</summary>
+    /// <summary>The icon rendered inside the button - any provider (<see cref="FlareSvgIcon"/> or an add-on
+    /// pack type). A bare string resolves to a built-in icon by id. Ignored when <see cref="ChildContent"/>
+    /// is supplied.</summary>
     [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Custom icon content, used in place of <see cref="Icon"/> (e.g. a configured <c>FlareIcon</c> or SVG).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }

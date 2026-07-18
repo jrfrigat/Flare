@@ -37,7 +37,11 @@ public sealed record FlareSvgIcon : FlareIcon
         if (style is not null) builder.AddAttribute(6, "style", style);
         AddAccessibility(builder, 7);
         AddExtraAttributes(builder, 9);
-        if (IsMarkup)
+        if (Data.Length == 0)
+        {
+            // Empty data -> an empty <svg> (e.g. the "unknown id" placeholder); no path.
+        }
+        else if (IsMarkup)
         {
             builder.AddMarkupContent(10, Data);
         }
