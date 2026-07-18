@@ -6,11 +6,11 @@
             <FlareButton Variant="ButtonVariant.Outlined">Actions ▾</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="edit" OnClick="@(() => Snackbar.Show("Edit clicked"))">Edit</FlareMenuItem>
-            <FlareMenuItem Icon="content_copy" OnClick="@(() => Snackbar.Show("Duplicated"))">Duplicate</FlareMenuItem>
+            <FlareMenuItem Icon="@("edit")" OnClick="@(() => Snackbar.Show("Edit clicked"))">Edit</FlareMenuItem>
+            <FlareMenuItem Icon="@("content_copy")" OnClick="@(() => Snackbar.Show("Duplicated"))">Duplicate</FlareMenuItem>
             <FlareDivider />
-            <FlareMenuItem Icon="delete" OnClick="@(() => Snackbar.Show("Deleted!", SnackbarSeverity.Error))">Delete</FlareMenuItem>
-            <FlareMenuItem Disabled="true" Icon="lock">Locked action</FlareMenuItem>
+            <FlareMenuItem Icon="@("delete")" OnClick="@(() => Snackbar.Show("Deleted!", SnackbarSeverity.Error))">Delete</FlareMenuItem>
+            <FlareMenuItem Disabled="true" Icon="@("lock")">Locked action</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 
@@ -19,9 +19,9 @@
             <FlareButton Variant="ButtonVariant.Filled">Right-aligned ▾</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="settings" OnClick="@(() => Snackbar.Show("Settings"))">Settings</FlareMenuItem>
-            <FlareMenuItem Icon="help" OnClick="@(() => Snackbar.Show("Help"))">Help</FlareMenuItem>
-            <FlareMenuItem Icon="logout" OnClick="@(() => Snackbar.Show("Logged out", SnackbarSeverity.Warning))">Log out</FlareMenuItem>
+            <FlareMenuItem Icon="@("settings")" OnClick="@(() => Snackbar.Show("Settings"))">Settings</FlareMenuItem>
+            <FlareMenuItem Icon="@("help")" OnClick="@(() => Snackbar.Show("Help"))">Help</FlareMenuItem>
+            <FlareMenuItem Icon="@("logout")" OnClick="@(() => Snackbar.Show("Logged out", SnackbarSeverity.Warning))">Log out</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 
@@ -30,9 +30,9 @@
             <FlareButton Variant="ButtonVariant.Outlined">Dense ▾</FlareButton>
         </Activator>
         <ChildContent>
-            <FlareMenuItem Icon="edit" OnClick="@(() => Snackbar.Show("Edit"))">Edit</FlareMenuItem>
-            <FlareMenuItem Icon="content_copy" OnClick="@(() => Snackbar.Show("Duplicate"))">Duplicate</FlareMenuItem>
-            <FlareMenuItem Icon="delete" OnClick="@(() => Snackbar.Show("Delete"))">Delete</FlareMenuItem>
+            <FlareMenuItem Icon="@("edit")" OnClick="@(() => Snackbar.Show("Edit"))">Edit</FlareMenuItem>
+            <FlareMenuItem Icon="@("content_copy")" OnClick="@(() => Snackbar.Show("Duplicate"))">Duplicate</FlareMenuItem>
+            <FlareMenuItem Icon="@("delete")" OnClick="@(() => Snackbar.Show("Delete"))">Delete</FlareMenuItem>
         </ChildContent>
     </FlareMenu>
 </FlareStack>
