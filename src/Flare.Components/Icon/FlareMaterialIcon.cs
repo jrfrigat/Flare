@@ -16,8 +16,8 @@ public enum MaterialSymbolFamily
 /// <summary>
 /// An icon from the Material Symbols variable font, selected by <see cref="Name"/> (e.g. <c>"home"</c>).
 /// Exposes the font axes - <see cref="Fill"/>, <see cref="Weight"/>, <see cref="Grade"/> and
-/// <see cref="OpticalSize"/> - plus the <see cref="Style"/> family. Requires the Material Symbols font to be
-/// loaded by the host app (a non-Rounded <see cref="Style"/> requires that family specifically). For a
+/// <see cref="OpticalSize"/> - plus the <see cref="Family"/> family. Requires the Material Symbols font to be
+/// loaded by the host app (a non-Rounded <see cref="Family"/> requires that family specifically). For a
 /// dependency-free glyph prefer <see cref="FlareSvgIcon"/> or the built-in <see cref="FlareIcons"/> set.
 /// </summary>
 public sealed record FlareMaterialIcon : FlareIcon
@@ -45,7 +45,7 @@ public sealed record FlareMaterialIcon : FlareIcon
     public MaterialSymbolFamily Family { get; init; } = MaterialSymbolFamily.Rounded;
 
     /// <inheritdoc/>
-    protected internal override void Build(RenderTreeBuilder builder)
+    protected override void Build(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, "span");
         builder.AddAttribute(1, "class", BuildClass(FontClass()));

@@ -18,6 +18,9 @@
     <Project Path="src/Flare.Components.Transfer/Flare.Components.Transfer.csproj" />
     <Project Path="src/Flare/Flare.csproj" />
   </Folder>
+  <Folder Name="/src/Icons/">
+    <Project Path="src/Flare.Icons.FontAwesome/Flare.Icons.FontAwesome.csproj" />
+  </Folder>
   <Folder Name="/src/Themes/">
     <Project Path="src/Flare.Theme.MaterialDesign3.Tokens/Flare.Theme.MaterialDesign3.Tokens.csproj" />
     <Project Path="src/Flare.Theme.MaterialDesign3Expressive/Flare.Theme.MaterialDesign3Expressive.csproj" />

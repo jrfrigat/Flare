@@ -33,7 +33,7 @@ public abstract record FlareIcon
     internal IReadOnlyDictionary<string, object>? Attributes { get; init; }
 
     /// <summary>Emits this icon's markup into the render tree. Implemented per provider.</summary>
-    protected internal abstract void Build(RenderTreeBuilder builder);
+    protected abstract void Build(RenderTreeBuilder builder);
 
     /// <summary>Returns a <see cref="RenderFragment"/> that renders this icon.</summary>
     public RenderFragment Render() => Build;
@@ -41,13 +41,15 @@ public abstract record FlareIcon
     /// <summary>Treats a bare string as a Material Symbols icon name (e.g. <c>"home"</c>).</summary>
     public static implicit operator FlareIcon(string materialSymbolName) => new FlareMaterialIcon { Name = materialSymbolName };
 
-    /// <summary>Lets an icon descriptor fill any <see cref="RenderFragment"/> slot directly.</summary>
-    public static implicit operator RenderFragment(FlareIcon icon) => icon.Render();
+    // Note: there is deliberately no implicit FlareIcon -> RenderFragment conversion. It reads nicely
+    // ("drop an icon into a RenderFragment slot") but makes overload resolution ambiguous wherever an API
+    // has both a FlareIcon and a RenderFragment overload for the same argument (e.g. bUnit's .Add). Fill a
+    // RenderFragment slot with the explicit @icon.Render() instead.
 
-    // ---- Shared build helpers (subclasses only) ------------------------------------------------
+    // ---- Shared build helpers (for provider subclasses, including add-on packs) -----------------
 
     /// <summary>Joins the icon class list: root class, optional provider modifier, color role class, caller class.</summary>
-    private protected string BuildClass(string? modifier)
+    protected string BuildClass(string? modifier)
     {
         var parts = new List<string>(4) { Css.Classes.Icon.Root };
         if (!string.IsNullOrEmpty(modifier)) parts.Add(modifier);
@@ -57,7 +59,7 @@ public abstract record FlareIcon
     }
 
     /// <summary>Builds the inline style: font-size (Size), local color token (custom color), a provider extra, then caller Style.</summary>
-    private protected string? BuildStyle(string? extra)
+    protected string? BuildStyle(string? extra)
     {
         var parts = new List<string>(4);
         if (!string.IsNullOrEmpty(Size)) parts.Add($"font-size:{Size}");
@@ -68,7 +70,7 @@ public abstract record FlareIcon
     }
 
     /// <summary>Adds the aria-hidden or role/aria-label attributes. Uses <paramref name="seq"/> and <paramref name="seq"/>+1.</summary>
-    private protected void AddAccessibility(RenderTreeBuilder builder, int seq)
+    protected void AddAccessibility(RenderTreeBuilder builder, int seq)
     {
         if (string.IsNullOrEmpty(AriaLabel))
         {
@@ -82,7 +84,7 @@ public abstract record FlareIcon
     }
 
     /// <summary>Splats the host-forwarded unmatched attributes, if any.</summary>
-    private protected void AddExtraAttributes(RenderTreeBuilder builder, int seq)
+    protected void AddExtraAttributes(RenderTreeBuilder builder, int seq)
     {
         if (Attributes is not null) builder.AddMultipleAttributes(seq, Attributes);
     }

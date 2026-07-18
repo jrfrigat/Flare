@@ -25,7 +25,7 @@ public sealed record FlareSvgIcon : FlareIcon
     private bool IsMarkup => Data.TrimStart().StartsWith('<');
 
     /// <inheritdoc/>
-    protected internal override void Build(RenderTreeBuilder builder)
+    protected override void Build(RenderTreeBuilder builder)
     {
         builder.OpenElement(0, "svg");
         builder.AddAttribute(1, "class", BuildClass(Css.Classes.Icon.Svg));
