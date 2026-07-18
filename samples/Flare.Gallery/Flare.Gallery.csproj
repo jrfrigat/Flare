@@ -6,6 +6,10 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+		<!-- Trim on publish: each icon catalog member is a separate static getter and the icon packages
+		     are IsTrimmable, so a Release publish ships only the icons actually referenced (typed) here,
+		     not the whole ~3894-icon Material Symbols catalog. -->
+		<PublishTrimmed>true</PublishTrimmed>
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
 		<!--
 			The Gallery only ships English + Russian. We keep the full ICU dataset (it includes the

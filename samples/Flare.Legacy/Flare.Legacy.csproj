@@ -14,6 +14,8 @@
 		<!-- PWA: emit the offline service-worker assets manifest on publish so the service worker can
 		     detect a new deployment and prompt the user to update (see PwaUpdatePrompt + pwa-update.js). -->
 		<ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+		<!-- Trim on publish so only the referenced (typed) icons ship, not the whole catalog. -->
+		<PublishTrimmed>true</PublishTrimmed>
 	</PropertyGroup>
 
 	<ItemGroup>
