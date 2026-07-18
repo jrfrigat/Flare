@@ -32,11 +32,10 @@ Drop the string convenience entirely and require typed icons everywhere:
 Steps:
 
 1. Rewire every `<FlareIconView Name="..."/>` / `Icon="@("...")"` / `Icon="@("...")"` call site (~400, mostly
-   Gallery demos) to a typed value from the appropriate package. Blocking: some ids are Material Symbols (MD3)
-   names, and Font Awesome has no offline SVG source. For MD3 SVG the generator exists -
+   Gallery demos) to a typed value from the appropriate package. For MD3 SVG the generator exists -
    `tools/MaterialSymbolsGen` (reads Google's Material Symbols SVGs into the `MaterialDesign3Icons` catalog);
    it just needs the SVG source dropped in (see its header), then activate `Flare.Icons.MaterialDesign3.Svg`.
-   Font Awesome SVG still needs a source/generator, or use the `.Symbols` font package meanwhile.
+   Font Awesome is intentionally font-only (`Flare.Icons.FontAwesome.Symbols`); there is no `.Svg` variant.
 2. Remove `implicit operator FlareIcon(string)` from `FlareIcon`.
 3. Remove the `Name` / `Icon` (string) shortcuts from `FlareIconView`, leaving only `Value`.
 4. `FlareIcons.Empty` can stay as an explicit "no icon" value or be removed with the conversion.
