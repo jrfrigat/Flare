@@ -16,7 +16,7 @@ All notable changes to Flare are documented here. This project adheres to
     filled/regular plus the per-size grid; the consumer supplies the artwork from the Fluent assets.
 
   Render one standalone with `<FlareIconView>`. A bare string is taken as a Material Symbols name.
-- **A built-in, dependency-free SVG icon set (`FlareIcons`).** 73 ready `FlareSvgIcon` members (`Home`,
+- **A built-in, dependency-free SVG icon set (`FlareIcons`).** 84 ready `FlareSvgIcon` members (`Home`,
   `ChevronLeft`, `ExpandMore`, `Close`, ...) rendered as inline SVG - no icon font, no network request, no
   FOUT, theme-agnostic. Use anywhere a `FlareIcon` is accepted, e.g. `<FlareIconButton Icon="@FlareIcons.Home" />`.
 
@@ -30,6 +30,17 @@ All notable changes to Flare are documented here. This project adheres to
   expression: `Icon="settings"` -> `Icon="@("settings")"` (or `Icon="@FlareIcons.Settings"`).
 - **BREAKING: `FlareIcons.*` members are now `FlareSvgIcon` values, not name strings** - they render inline
   SVG. `FlareIcons.All` (icon ids) and `FlareIcons.Brands.FlareLogoShort` are unchanged.
+- **Component chrome no longer forces the Material Symbols font.** Every default icon Flare draws itself -
+  tree/submenu/nav chevrons, dialog and tab close, scroll-to-top and stepper marks, data-grid sort/filter/
+  group/tree toggles, file-upload and split-button glyphs, and more - now renders as built-in SVG, so a
+  non-MD3 theme (or an app that never loads the Material Symbols font) shows correct chrome with no external
+  icon dependency and no FOUT. Zero raw `material-symbols` spans remain in the components.
+- **BREAKING: icon parameters across components become `FlareIcon?` (any provider).** `FlareMenuItem`,
+  `FlareSubMenu`, `FlareTreeItem`, `FlareNavGroup`, `FlareTimelineItem`, `FlareSplitter` (`Icon`/`HoverIcon`),
+  `FlareFloatingActionMenuItem`, `FlareAvatar` (`FallbackIcon`), `FlareSlider` (`StartIcon`/`EndIcon`) and
+  `DataGridTreeConfig` (`CollapsedIcon`/`ExpandedIcon`) now take a `FlareIcon` rather than a Material-name
+  string. A bare string still means a Material icon; a Razor literal must be an expression
+  (`Icon="@("home")"`). The optional `Flare.Components.IDE` package is not yet converted.
 
 ### Fixed
 - **A snackbar error now interrupts a screen reader; success/info/warning still wait their turn.** The
