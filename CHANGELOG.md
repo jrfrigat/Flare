@@ -5,6 +5,32 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Added
+- **A polymorphic icon system: any icon provider fits any icon slot.** `FlareIcon` is now an abstract icon
+  descriptor; concrete providers carry their own options and drop into any parameter typed `FlareIcon`:
+  - `FlareMaterialIcon` - Material Symbols (`Fill`/`Weight`/`Grade`/`OpticalSize`/`Family`).
+  - `FlareSvgIcon` - inline SVG path data or markup.
+  - `FlareFontAwesomeIcon` (new optional package `Flare.Icons.FontAwesome`) - Font Awesome, styles
+    Solid/Regular/Light/Thin/Duotone/Brands; the host app loads a Font Awesome stylesheet.
+  - `FlareFluentIcon` (new optional package `Flare.Icons.Fluent`) - Fluent UI System Icons as inline SVG,
+    filled/regular plus the per-size grid; the consumer supplies the artwork from the Fluent assets.
+
+  Render one standalone with `<FlareIconView>`. A bare string is taken as a Material Symbols name.
+- **A built-in, dependency-free SVG icon set (`FlareIcons`).** 73 ready `FlareSvgIcon` members (`Home`,
+  `ChevronLeft`, `ExpandMore`, `Close`, ...) rendered as inline SVG - no icon font, no network request, no
+  FOUT, theme-agnostic. Use anywhere a `FlareIcon` is accepted, e.g. `<FlareIconButton Icon="@FlareIcons.Home" />`.
+
+### Changed
+- **BREAKING: the `<FlareIcon>` component is replaced by `<FlareIconView>` plus the `FlareIcon` descriptor.**
+  `FlareIcon` is now the abstract icon-value type, so the standalone renderer is `<FlareIconView>` - it keeps
+  the old `Name`/`Icon`/`Size`/`Color`/`ViewBox`/`AriaLabel` parameters, so migrating is a tag rename:
+  `<FlareIcon ... />` -> `<FlareIconView ... />`.
+- **BREAKING: `FlareIconButton.Icon` is now a `FlareIcon`, not a Material-name string**, so any provider
+  works in an icon button. A bare string still means a Material icon, but a Razor literal must be an
+  expression: `Icon="settings"` -> `Icon="@("settings")"` (or `Icon="@FlareIcons.Settings"`).
+- **BREAKING: `FlareIcons.*` members are now `FlareSvgIcon` values, not name strings** - they render inline
+  SVG. `FlareIcons.All` (icon ids) and `FlareIcons.Brands.FlareLogoShort` are unchanged.
+
 ### Fixed
 - **A snackbar error now interrupts a screen reader; success/info/warning still wait their turn.** The
   provider was one `aria-live="polite"` container, so every notice - errors included - was announced

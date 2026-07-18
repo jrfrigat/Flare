@@ -2,19 +2,19 @@
 <FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Start">
     <FlareToggleGroup TValue="string" @bind-Value="_view" Size="ButtonSize.Lg" Color="@Colors.Tertiary">
         <FlareToggleButton Value="@("list")" AriaLabel="List">
-            <OffIcon><FlareIcon Name="view_list" /></OffIcon>
+            <OffIcon><FlareIconView Name="view_list" /></OffIcon>
         </FlareToggleButton>
         <FlareToggleButton Value="@("grid")" AriaLabel="Grid">
-            <OffIcon><FlareIcon Name="grid_view" /></OffIcon>
+            <OffIcon><FlareIconView Name="grid_view" /></OffIcon>
         </FlareToggleButton>
         <FlareToggleButton Value="@("board")" AriaLabel="Board">
-            <OffIcon><FlareIcon Name="view_kanban" /></OffIcon>
+            <OffIcon><FlareIconView Name="view_kanban" /></OffIcon>
         </FlareToggleButton>
     </FlareToggleGroup>
 
     <FlareToggleGroup TValue="string" Value="@("grid")" Disabled>
-        <FlareToggleButton Value="@("list")" AriaLabel="List"><OffIcon><FlareIcon Name="view_list" /></OffIcon></FlareToggleButton>
-        <FlareToggleButton Value="@("grid")" AriaLabel="Grid"><OffIcon><FlareIcon Name="grid_view" /></OffIcon></FlareToggleButton>
+        <FlareToggleButton Value="@("list")" AriaLabel="List"><OffIcon><FlareIconView Name="view_list" /></OffIcon></FlareToggleButton>
+        <FlareToggleButton Value="@("grid")" AriaLabel="Grid"><OffIcon><FlareIconView Name="grid_view" /></OffIcon></FlareToggleButton>
     </FlareToggleGroup>
 
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">View: @_view</FlareText>

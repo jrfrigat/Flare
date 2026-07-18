@@ -3,7 +3,7 @@
 <FlareStack Row Gap="FlareSpacing.XLarge" Wrap Align="FlareAlignItems.End" Style="min-height:12rem;padding:3rem 1rem 1rem;">
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
         <FlareFloatingActionButton Position="FabPosition.Static" AriaLabel="Actions (up)">
-            <Icon><FlareIcon Icon="add" /></Icon>
+            <Icon><FlareIconView Icon="add" /></Icon>
             <ChildContent>
                 <FlareFloatingActionMenu Direction="FabMenuDirection.Up">
                     <FlareFloatingActionMenuItem Icon="edit" Label="Edit" OnClick="@(() => Snackbar.Show("Edit"))" />
@@ -17,7 +17,7 @@
 
     <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
         <FlareFloatingActionButton Position="FabPosition.Static" Color="@Colors.Secondary" AriaLabel="Actions (right)">
-            <Icon><FlareIcon Icon="more_horiz" /></Icon>
+            <Icon><FlareIconView Icon="more_horiz" /></Icon>
             <ChildContent>
                 <FlareFloatingActionMenu Direction="FabMenuDirection.Right">
                     <FlareFloatingActionMenuItem Icon="download" Label="Download" OnClick="@(() => Snackbar.Show("Downloading…"))" />

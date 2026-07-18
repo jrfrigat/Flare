@@ -1,7 +1,7 @@
 ﻿<FlareCarousel TItem="SlideData" Items="_slides">
     <ItemTemplate Context="slide">
         <FlareStack Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center" Gap="FlareSpacing.Small" Style="@($"padding:3rem 1rem;background:{slide.Color};min-height:200px;")">
-            <FlareIcon Size="3rem" Color="FlareColor.OnSurface" Name="@slide.Icon" />
+            <FlareIconView Size="3rem" Color="FlareColor.OnSurface" Name="@slide.Icon" />
             <FlareText Typo="TypographyScale.TitleMedium">@slide.Label</FlareText>
         </FlareStack>
     </ItemTemplate>

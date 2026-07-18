@@ -16,7 +16,7 @@
         <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckBody</FlareText>
 
         <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
-            <FlareIcon Name="check_circle" Color="FlareColor.OnSurfaceVariant" />
+            <FlareIconView Name="check_circle" Color="FlareColor.OnSurfaceVariant" />
             <FlareText Typo="TypographyScale.BodyMedium">
                 @GalleryStrings.Services_VersionCheckCurrent: <strong>@_currentVersion</strong>
             </FlareText>
@@ -30,7 +30,7 @@
             }
             else if (_detected is not null)
             {
-                <FlareIcon Name="system_update" Color="FlareColor.Warning" />
+                <FlareIconView Name="system_update" Color="FlareColor.Warning" />
                 <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckDetected <strong>@_detected</strong></FlareText>
             }
             else if (_checking)
@@ -40,20 +40,20 @@
             }
             else
             {
-                <FlareIcon Name="check_circle" Color="FlareColor.Success" />
+                <FlareIconView Name="check_circle" Color="FlareColor.Success" />
                 <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Services_VersionCheckUpToDate</FlareText>
             }
         </FlareStack>
 
         <FlareStack Row Wrap Gap="FlareSpacing.Small">
             <FlareButton Variant="ButtonVariant.Outlined" OnClick="CheckNowAsync" Disabled="@(_checking || _updating)">
-                <LeadingIcon><FlareIcon Name="refresh" /></LeadingIcon>
+                <LeadingIcon><FlareIconView Name="refresh" /></LeadingIcon>
                 <ChildContent>@GalleryStrings.Services_VersionCheckCheckNow</ChildContent>
             </FlareButton>
             @if (_detected is not null || _updating)
             {
                 <FlareButton Variant="ButtonVariant.Filled" OnClick="ApplyUpdate" Disabled="@_updating">
-                    <LeadingIcon><FlareIcon Name="system_update" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Name="system_update" /></LeadingIcon>
                     <ChildContent>@(_updating ? GalleryStrings.Services_VersionCheckUpdating : GalleryStrings.Services_VersionCheckUpdate)</ChildContent>
                 </FlareButton>
             }

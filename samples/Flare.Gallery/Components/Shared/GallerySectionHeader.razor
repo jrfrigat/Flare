@@ -3,7 +3,7 @@
 <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
     @if (!string.IsNullOrEmpty(Icon))
     {
-        <FlareIcon Color="FlareColor.Primary" Name="@Icon" />
+        <FlareIconView Color="FlareColor.Primary" Name="@Icon" />
     }
     <FlareText Typo="TypographyScale.TitleLarge"
                Class="@(string.IsNullOrEmpty(AnchorId) ? null : "demo-section__title")"

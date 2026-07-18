@@ -33,20 +33,20 @@ else
             </FlareStack>
             <FlareStack Gap="FlareSpacing.XXSmall">
                 <FlareTextField Size="FieldSize.Xs" Label="Стадия" Value="@Loan.Stage" ReadOnly>
-                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
                 </FlareTextField>
                 <FlareTextField Size="FieldSize.Xs" Label="ПМ (продажи)" Value="Галиузов Д.Ю." ReadOnly />
             </FlareStack>
             <FlareStack Gap="FlareSpacing.XXSmall">
                 <FlareTextField Size="FieldSize.Xs" Label="Статус займа" Value="Выдан" ReadOnly>
-                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
                 </FlareTextField>
                 <FlareTextField Size="FieldSize.Xs" Label="Дата выдачи" Value="10.06.2026" ReadOnly />
             </FlareStack>
             <FlareStack Gap="FlareSpacing.XXSmall">
                 <FlareTextField Size="FieldSize.Xs" Label="Передан в портфель" Value="10.06.2026" ReadOnly />
                 <FlareTextField Size="FieldSize.Xs" Label="Портфель" Value="Раннее взыскание / ПКО Добробыт" ReadOnly>
-                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
                 </FlareTextField>
             </FlareStack>
             <FlareStack Gap="FlareSpacing.XXSmall">
@@ -56,7 +56,7 @@ else
             </FlareStack>
             <FlareStack Gap="FlareSpacing.XXSmall">
                 <FlareTextField Size="FieldSize.Xs" Label="Статус взаимодействий" Value="Новый" ReadOnly>
-                    <LeadingIcon><FlareIcon Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
+                    <LeadingIcon><FlareIconView Size="0.7rem" Name="radio_button_checked" /></LeadingIcon>
                 </FlareTextField>
             </FlareStack>
         </FlareGrid>
@@ -158,7 +158,7 @@ else
                                             @LV("Продукт", "Без вопросов", 3, 3)
                                         </FlareGrid>
                                         <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Tonal" FullWidth OnClick="@(() => Snackbar.Show("Открыть действия"))">
-                                            <LeadingIcon><FlareIcon Size="0.9rem" Name="open_in_new" /></LeadingIcon>
+                                            <LeadingIcon><FlareIconView Size="0.9rem" Name="open_in_new" /></LeadingIcon>
                                             <ChildContent>Открыть действия</ChildContent>
                                         </FlareButton>
                                     </FlareStack>
@@ -230,7 +230,7 @@ else
                                 <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XXSmall">
                                     <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">Мобильные телефоны</FlareText>
                                     <FlareSpacer />
-                                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Success" OnClick="AddPhone"><FlareIcon Size="0.9rem" Name="add" /></FlareButton>
+                                    <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Success" OnClick="AddPhone"><FlareIconView Size="0.9rem" Name="add" /></FlareButton>
                                 </FlareStack>
                                 @foreach (var ph in _phones)
                                 {
@@ -242,7 +242,7 @@ else
                                                 @foreach (var (icon, color) in _phoneActions)
                                                 {
                                                     <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="@color" OnClick="@(() => Snackbar.Show($"{icon}: {ph.Number}"))">
-                                                        <LeadingIcon><FlareIcon Size="0.8rem" Name="@icon" /></LeadingIcon>
+                                                        <LeadingIcon><FlareIconView Size="0.8rem" Name="@icon" /></LeadingIcon>
                                                     </FlareButton>
                                                 }
                                             </FlareStack>
@@ -342,8 +342,8 @@ else
         </FlareCol>
         <FlareCol Span="3">
             <FlareStack Row Wrap Align="FlareAlignItems.Center" Gap="FlareSpacing.None">
-                <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" OnClick="@(() => Snackbar.Show("Скопировано"))"><LeadingIcon><FlareIcon Size="0.8rem" Name="content_copy" /></LeadingIcon></FlareButton>
-                <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Primary" OnClick="@(() => Snackbar.Show(label))"><LeadingIcon><FlareIcon Size="0.8rem" Name="@channelIcon" /></LeadingIcon></FlareButton>
+                <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" OnClick="@(() => Snackbar.Show("Скопировано"))"><LeadingIcon><FlareIconView Size="0.8rem" Name="content_copy" /></LeadingIcon></FlareButton>
+                <FlareButton Size="ButtonSize.Xs" Variant="ButtonVariant.Text" Color="FlareColor.Primary" OnClick="@(() => Snackbar.Show(label))"><LeadingIcon><FlareIconView Size="0.8rem" Name="@channelIcon" /></LeadingIcon></FlareButton>
             </FlareStack>
         </FlareCol>
     </text>;

@@ -44,7 +44,7 @@
                 <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
                         disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
                         aria-label="@(FlareStrings.DatePicker_Today)" @onclick="Toggle">
-                    <FlareIcon Name="calendar_month" />
+                    <FlareIconView Name="calendar_month" />
                 </button>
             }
         </div>
@@ -59,7 +59,7 @@
             <div class="@Css.Classes.DatePicker.Header">
                 <span @onclick:stopPropagation @onclick="() => { }">
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="PrevView" AriaLabel="@FlareStrings.Picker_Previous">
-                        <LeadingIcon><FlareIcon Name="chevron_left" /></LeadingIcon>
+                        <LeadingIcon><FlareIconView Name="chevron_left" /></LeadingIcon>
                     </FlareButton>
                 </span>
                 <button class="@($"{Css.Classes.DatePicker.MonthLabel} {Css.Classes.DatePicker.MonthLabelClickable}")"
@@ -68,7 +68,7 @@
                 </button>
                 <span @onclick:stopPropagation @onclick="() => { }">
                     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="NextView" AriaLabel="@FlareStrings.Picker_Next">
-                        <LeadingIcon><FlareIcon Name="chevron_right" /></LeadingIcon>
+                        <LeadingIcon><FlareIconView Name="chevron_right" /></LeadingIcon>
                     </FlareButton>
                 </span>
             </div>

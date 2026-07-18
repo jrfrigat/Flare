@@ -4,7 +4,7 @@
 
 @* A dedicated icon-only button. Thin wrapper over FlareButton that renders the icon as the button's
    LeadingIcon with no label, so FlareButton's square icon-only treatment applies automatically. Use
-   instead of the verbose <FlareButton><LeadingIcon><FlareIcon/></LeadingIcon></FlareButton> idiom. *@
+   instead of the verbose <FlareButton><LeadingIcon><FlareIconView/></LeadingIcon></FlareButton> idiom. *@
 <FlareButton @ref="_button"
              Variant="Variant"
              Size="Size"
@@ -29,17 +29,18 @@
         {
             @ChildContent
         }
-        else if (!string.IsNullOrEmpty(Icon))
+        else if (Icon is not null)
         {
-            <FlareIcon Name="@Icon" />
+            <FlareIconView Value="Icon" />
         }
     </LeadingIcon>
 </FlareButton>
 
 @code {
-    /// <summary>Material Symbols icon name rendered inside the button (e.g. <c>settings</c>). Ignored when
-    /// <see cref="ChildContent"/> is supplied.</summary>
-    [Parameter] public string? Icon { get; set; }
+    /// <summary>The icon rendered inside the button - any provider (<see cref="FlareMaterialIcon"/>,
+    /// <see cref="FlareSvgIcon"/>, a Fluent/Font Awesome pack type). A bare string is taken as a Material
+    /// Symbols name. Ignored when <see cref="ChildContent"/> is supplied.</summary>
+    [Parameter] public FlareIcon? Icon { get; set; }
     /// <summary>Custom icon content, used in place of <see cref="Icon"/> (e.g. a configured <c>FlareIcon</c> or SVG).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Visual style variant. Defaults to <see cref="ButtonVariant.Text"/> (a standard, chrome-less icon button).</summary>

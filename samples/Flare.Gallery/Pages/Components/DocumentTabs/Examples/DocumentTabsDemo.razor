@@ -6,7 +6,7 @@
 <FlareStack Gap="FlareSpacing.Small">
     <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareButton Variant="ButtonVariant.Tonal" Size="ButtonSize.Sm" OnClick="AddDocument">
-            <LeadingIcon><FlareIcon Name="add" /></LeadingIcon>
+            <LeadingIcon><FlareIconView Name="add" /></LeadingIcon>
             <ChildContent>New file</ChildContent>
         </FlareButton>
         <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
@@ -28,7 +28,7 @@
                         @if (doc.Modified)
                         {
                             <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="@(() => Save(doc))">
-                                <LeadingIcon><FlareIcon Name="save" /></LeadingIcon>
+                                <LeadingIcon><FlareIconView Name="save" /></LeadingIcon>
                                 <ChildContent>Save (clear modified)</ChildContent>
                             </FlareButton>
                         }
