@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
     <TargetFramework></TargetFramework>
-    <PackageId>Flare.Icons.FontAwesome</PackageId>
+    <PackageId>Flare.Icons.FontAwesome.Symbols</PackageId>
     <RootNamespace>Flare.Components</RootNamespace>
     <Description>Font Awesome icon provider for the Flare Blazor component library. Adds FlareFontAwesomeIcon, usable anywhere a FlareIcon is accepted. Requires a Font Awesome stylesheet in the host app.</Description>
     <PackageTags>blazor;components;icons;fontawesome</PackageTags>

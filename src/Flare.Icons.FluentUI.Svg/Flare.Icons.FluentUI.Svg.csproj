@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
     <TargetFramework></TargetFramework>
-    <PackageId>Flare.Icons.Fluent</PackageId>
+    <PackageId>Flare.Icons.FluentUI.Svg</PackageId>
     <RootNamespace>Flare.Components</RootNamespace>
-    <Description>Fluent UI System Icons provider for the Flare Blazor component library. Adds FlareFluentIcon (filled/regular, per-size grid) plus a curated FluentIcons catalog of common icons, usable anywhere a FlareIcon is accepted. Renders inline SVG.</Description>
+    <Description>Fluent UI System Icons as inline SVG for the Flare Blazor component library. Adds FlareFluentIcon plus the full FluentIcons catalog (Regular + Filled, Size 24), usable anywhere a FlareIcon is accepted - no icon font required.</Description>
     <PackageTags>blazor;components;icons;fluent;fluentui</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <!-- Public API stays fully XML-documented (drives the generated API docs). -->
