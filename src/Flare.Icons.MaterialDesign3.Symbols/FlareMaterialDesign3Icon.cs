@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Flare.Components;
+namespace Flare.Icons;
 
 /// <summary>The Material Symbols variable-font family (glyph terminals). Each is a distinct font family.</summary>
 public enum MaterialDesign3Family

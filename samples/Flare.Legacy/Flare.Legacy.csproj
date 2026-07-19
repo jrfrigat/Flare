@@ -42,4 +42,7 @@
 		<ProjectReference Include="..\..\src\Flare.Theme.VisualStudio\Flare.Theme.VisualStudio.csproj" />
 	</ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Flare.Icons" />
+  </ItemGroup>
 </Project>

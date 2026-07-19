@@ -151,7 +151,7 @@ var isDark = ThemeService.IsDark;
 <FlareIconButton Icon="@MaterialDesign3Icons.Regular.Settings" />@* каталог провайдера *@
 ```
 
-- **Встроенный набор (`FlareIcons`, в `Flare.Components`).** ~90 готовых `FlareSvgIcon`, которыми рисуется
+- **Встроенный набор (`FlareIcons`, пакет/namespace `Flare.Icons`).** ~90 готовых `FlareSvgIcon`, которыми рисуется
   дефолтный хром - ноль зависимостей, работает из коробки. Перечисление - `FlareIcons.All`.
 - **Пакеты провайдеров (опционально).** Ядро не зависит ни от одного стороннего набора; подключайте только нужное:
 

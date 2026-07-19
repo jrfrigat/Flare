@@ -34,6 +34,13 @@
   напрямую (`FlareIcons.Home`); `FlareIcons.All` / `FlareIcons.Find(id)` перечисляют набор по id.
 
 ### Изменено
+- **BREAKING: иконочные типы-значения и каталоги вынесены в новый пакет `Flare.Icons` и одноимённый namespace.**
+  `FlareIcon`, `FlareSvgIcon` и встроенный набор `FlareIcons` теперь живут в небольшом пакете **`Flare.Icons`**
+  (namespace `Flare.Icons`), и все каталоги/типы провайдеров (`MaterialDesign2Icons`, `MaterialDesign3Icons`,
+  `FluentUIIcons`, `FlareMaterialDesign3Icon`, ...) тоже в namespace `Flare.Icons`. Пакеты провайдеров теперь
+  зависят от крошечного `Flare.Icons` (которому нужен только `Flare.Theming`), а не от всего `Flare.Components`,
+  так что иконки можно использовать с куда меньшим весом. Миграция: добавьте `using Flare.Icons`
+  (или `@using Flare.Icons`). `FlareIconView` остаётся в `Flare.Components`.
 - **BREAKING: компонента `<FlareIcon>` заменена на `<FlareIconView>` плюс дескриптор `FlareIcon`.** `FlareIcon`
   теперь абстрактный тип-значение иконки, отдельный рендерер - `<FlareIconView>`. Он принимает типизированный
   `Value` (`<FlareIconView Value="@FlareIcons.Home" />`) плюс оверрайды `Size`/`Color`/`AriaLabel` - **нет

@@ -7,10 +7,16 @@ nav item, a field adornment, ...) or renders standalone through `<FlareIconView>
 Everything is **inline SVG by default** - no icon font, no network request, no flash of unstyled content, and
 theme-agnostic (icons inherit `currentColor`).
 
+All icon types live in the **`Flare.Icons`** namespace: `FlareIcon`, `FlareSvgIcon` and the built-in
+`FlareIcons` set ship in the small `Flare.Icons` package; the provider packages below add their catalogs to
+the same namespace. Add `using Flare.Icons` (or `@using Flare.Icons`). The render component `FlareIconView`
+lives in `Flare.Components`.
+
 ## The built-in set: `FlareIcons`
 
-`Flare.Components` ships its own dependency-free SVG set (`FlareIcons`, ~90 icons) that backs the default
-component chrome (chevrons, close, sort, tree toggles, ...). It works out of the box with no extra package.
+The `Flare.Icons` package ships Flare's own dependency-free SVG set (`FlareIcons`, ~90 icons) that backs the
+default component chrome (chevrons, close, sort, tree toggles, ...). `Flare.Components` depends on it, so it
+works out of the box with no extra package.
 
 ```razor
 <FlareIconView Value="@FlareIcons.Home" />

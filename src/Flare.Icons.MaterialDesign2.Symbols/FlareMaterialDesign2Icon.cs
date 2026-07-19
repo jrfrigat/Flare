@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Flare.Components;
+namespace Flare.Icons;
 
 /// <summary>The Material Icons (Material Design 2) webfont style; each maps to a font family.</summary>
 public enum MaterialDesign2Style
