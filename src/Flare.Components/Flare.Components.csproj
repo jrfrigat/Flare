@@ -24,6 +24,7 @@
     <!-- Presentation depends inward on contracts + theming engine only (NOT Infrastructure). -->
     <ProjectReference Include="..\Flare.Abstractions\Flare.Abstractions.csproj" />
     <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
+    <ProjectReference Include="..\Flare.Icons\Flare.Icons.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,4 +42,7 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Flare.Icons" />
+  </ItemGroup>
 </Project>

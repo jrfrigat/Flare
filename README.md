@@ -151,7 +151,7 @@ default** - no icon font, no network request, no FOUT.
 <FlareIconButton Icon="@MaterialDesign3Icons.Regular.Settings" />@* provider catalog *@
 ```
 
-- **Built-in set (`FlareIcons`, in `Flare.Components`).** ~90 ready `FlareSvgIcon` members that back the default
+- **Built-in set (`FlareIcons`, in the `Flare.Icons` package/namespace).** ~90 ready `FlareSvgIcon` members that back the default
   component chrome - zero dependencies, works out of the box. Enumerate with `FlareIcons.All`.
 - **Provider packages (opt-in).** Core depends on no third-party icon set; add only what you use:
 

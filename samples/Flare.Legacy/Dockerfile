@@ -17,6 +17,7 @@ COPY ["src/Flare.Theme.Aero/Flare.Theme.Aero.csproj",                           
 COPY ["src/Flare.Theme.LiquidGlass/Flare.Theme.LiquidGlass.csproj",                              "src/Flare.Theme.LiquidGlass/"]
 COPY ["src/Flare.Theme.VisualStudio/Flare.Theme.VisualStudio.csproj",                            "src/Flare.Theme.VisualStudio/"]
 COPY ["src/Flare/Flare.csproj",                                                                  "src/Flare/"]
+COPY ["src/Flare.Icons/Flare.Icons.csproj",                                                      "src/Flare.Icons/"]
 COPY ["src/Flare.Icons.MaterialDesign3.Svg/Flare.Icons.MaterialDesign3.Svg.csproj",              "src/Flare.Icons.MaterialDesign3.Svg/"]
 COPY ["samples/Flare.Legacy/Flare.Legacy.csproj",                                                "samples/Flare.Legacy/"]
 # Both repo-level props files must be present for restore: Directory.Build.props (shared

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Flare.Components;
+namespace Flare.Icons;
 
 /// <summary>
 /// A Font Awesome icon style, mapped to the matching <c>fa-*</c> family class.

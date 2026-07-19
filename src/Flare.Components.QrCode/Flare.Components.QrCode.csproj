@@ -22,4 +22,7 @@
     <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Flare.Icons" />
+  </ItemGroup>
 </Project>

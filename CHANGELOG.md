@@ -33,6 +33,13 @@ All notable changes to Flare are documented here. This project adheres to
   directly (`FlareIcons.Home`); `FlareIcons.All` / `FlareIcons.Find(id)` enumerate the set by id.
 
 ### Changed
+- **BREAKING: the icon value types + catalogs moved to a new `Flare.Icons` package and namespace.**
+  `FlareIcon`, `FlareSvgIcon` and the built-in `FlareIcons` set now live in a small **`Flare.Icons`** package
+  (namespace `Flare.Icons`), and every provider catalog/type (`MaterialDesign2Icons`, `MaterialDesign3Icons`,
+  `FluentUIIcons`, `FlareMaterialDesign3Icon`, ...) is in the `Flare.Icons` namespace too. The provider
+  packages now depend on the tiny `Flare.Icons` (which needs only `Flare.Theming`) instead of the whole
+  `Flare.Components`, so icons can be used with a far lighter footprint. Migration: add `using Flare.Icons`
+  (or `@using Flare.Icons`). `FlareIconView` stays in `Flare.Components`.
 - **BREAKING: the `<FlareIcon>` component is replaced by `<FlareIconView>` plus the `FlareIcon` descriptor.**
   `FlareIcon` is now the abstract icon-value type, so the standalone renderer is `<FlareIconView>`. It takes a
   typed `Value` (`<FlareIconView Value="@FlareIcons.Home" />`) plus `Size`/`Color`/`AriaLabel` overrides -

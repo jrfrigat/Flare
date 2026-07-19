@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Icons</PackageId>
+    <RootNamespace>Flare.Icons</RootNamespace>
+    <Description>The Flare icon model: the polymorphic FlareIcon value type, FlareSvgIcon (inline SVG), and the built-in dependency-free FlareIcons set. The optional Flare.Icons.* provider packages (Material Design 2/3, Fluent UI, Font Awesome) build on this. Depends only on Flare.Theming.</Description>
+    <PackageTags>blazor;icons;svg;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsTrimmable>true</IsTrimmable>
+    <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+    <!-- FlareIconView (in Flare.Components) merges its splat onto the descriptor's internal Attributes. -->
+    <InternalsVisibleTo Include="Flare.Components" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Theming\Flare.Theming.csproj" />
+  </ItemGroup>
+
+</Project>

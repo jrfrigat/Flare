@@ -37,4 +37,7 @@
     <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="Flare.Icons" />
+  </ItemGroup>
 </Project>
