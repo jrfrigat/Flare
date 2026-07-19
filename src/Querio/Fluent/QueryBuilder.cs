@@ -70,15 +70,17 @@ public sealed class QueryBuilder
     /// <param name="alias">Alias for it. Generated from the entity key when omitted.</param>
     /// <param name="relation">Key of the schema relation to traverse.</param>
     /// <param name="kind">How unmatched rows are treated. Defaults to an inner join.</param>
+    /// <param name="from">Alias of the participant to attach to, when more than one could be meant.</param>
     public QueryBuilder Join(
         string entity, string? alias = null, string? relation = null,
-        QueryJoinKind kind = QueryJoinKind.Inner)
+        QueryJoinKind kind = QueryJoinKind.Inner, string? from = null)
     {
         var joinAlias = TakeAlias(entity, alias);
         _joins.Add(new QueryJoin(entity, joinAlias)
         {
             Kind = kind,
             Relation = relation ?? InferRelation(entity),
+            From = from,
         });
         _participants.Add(new KeyValuePair<string, string>(entity, joinAlias));
         return this;
@@ -115,6 +117,37 @@ public sealed class QueryBuilder
         _select.Add(new QuerySelect { Field = new QueryFieldRef(alias, field), Alias = outputAlias });
         return this;
     }
+
+    /// <summary>
+    /// Returns a timestamp collapsed to the start of its period. Pair it with the matching
+    /// <see cref="GroupByPeriod"/> to build a time series.
+    /// </summary>
+    /// <param name="alias">Alias of the participant the field belongs to.</param>
+    /// <param name="field">Logical field name.</param>
+    /// <param name="truncate">The period to collapse each timestamp into.</param>
+    /// <param name="outputAlias">Name for the returned column.</param>
+    public QueryBuilder SelectPeriod(
+        string alias, string field, QueryDateTruncation truncate, string? outputAlias = null)
+    {
+        _select.Add(new QuerySelect
+        {
+            Field = new QueryFieldRef(alias, field),
+            Truncate = truncate,
+            Alias = outputAlias,
+        });
+        return this;
+    }
+
+    /// <summary>
+    /// Returns a timestamp collapsed to its day and groups by the same, the usual shape of a daily
+    /// trend.
+    /// </summary>
+    /// <param name="alias">Alias of the participant the field belongs to.</param>
+    /// <param name="field">Logical field name.</param>
+    /// <param name="outputAlias">Name for the returned column.</param>
+    public QueryBuilder SelectAndGroupByDay(string alias, string field, string? outputAlias = null)
+        => SelectPeriod(alias, field, QueryDateTruncation.Day, outputAlias)
+            .GroupByPeriod(alias, field, QueryDateTruncation.Day);
 
     /// <summary>Counts rows in each group, rather than values of a field.</summary>
     /// <param name="outputAlias">Name for the returned column.</param>

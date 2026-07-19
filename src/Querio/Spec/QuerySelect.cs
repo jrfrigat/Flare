@@ -22,6 +22,13 @@ public sealed record QuerySelect
     /// <summary>The rank for a percentile aggregate, as a fraction: 0.95 means the 95th percentile.</summary>
     public double? Percentile { get; init; }
 
+    /// <summary>
+    /// Truncates a timestamp to the start of its period before returning it. A time series needs
+    /// this: returning the raw timestamp while grouping by its day would not agree with the grouping,
+    /// so the same truncation has to appear on both sides.
+    /// </summary>
+    public QueryDateTruncation? Truncate { get; init; }
+
     /// <summary>Output name for the returned column. Falls back to a renderer-chosen name when null.</summary>
     public string? Alias { get; init; }
 }

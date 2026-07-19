@@ -62,6 +62,13 @@ public sealed record QueryJoin(string Entity, string Alias)
     /// <summary>Key of the schema relation to traverse. The preferred way to express a join.</summary>
     public string? Relation { get; init; }
 
+    /// <summary>
+    /// Alias of the participant this join attaches to. Optional: with one candidate a renderer finds
+    /// it, but once the same entity appears twice - a chain of managers, say - only the caller knows
+    /// which occurrence was meant, and a renderer must not guess.
+    /// </summary>
+    public string? From { get; init; }
+
     /// <summary>Explicit match conditions, for a join the schema does not declare.</summary>
     public IReadOnlyList<QueryJoinCondition>? On { get; init; }
 }

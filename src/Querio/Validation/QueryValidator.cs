@@ -90,10 +90,20 @@ public static class QueryValidator
             var reachable = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (!string.IsNullOrEmpty(spec.From.Entity)) reachable.Add(spec.From.Entity);
 
+            var attached = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (!string.IsNullOrEmpty(spec.From.Alias)) attached.Add(spec.From.Alias);
+
             for (var i = 0; i < spec.Joins.Count; i++)
             {
                 var join = spec.Joins[i];
                 var path = $"Joins[{i}]";
+
+                if (!string.IsNullOrEmpty(join.From) && !attached.Contains(join.From!))
+                {
+                    Add(QueryErrorCode.UnknownAlias,
+                        $"The join attaches to '{join.From}', which is not a participant declared before it.",
+                        path);
+                }
 
                 // A cross join pairs everything with everything, so it deliberately has no condition.
                 if (join.Kind != QueryJoinKind.Cross)
@@ -132,6 +142,7 @@ public static class QueryValidator
                 }
 
                 if (!string.IsNullOrEmpty(join.Entity)) reachable.Add(join.Entity);
+                if (!string.IsNullOrEmpty(join.Alias)) attached.Add(join.Alias);
             }
         }
 
@@ -197,12 +208,19 @@ public static class QueryValidator
                             "The selected item names neither a field nor an aggregate.", path);
                         continue;
                     }
+                    if (select.Truncate is not null && field is not null && field.Type != QueryFieldType.DateTime)
+                    {
+                        Add(QueryErrorCode.TruncationNotApplicable,
+                            $"'{select.Field}' does not hold a timestamp, so it cannot be truncated to a period.",
+                            path);
+                    }
                     // Once the query groups rows, a plain field only has one value per group if it is
-                    // one of the grouping keys.
-                    if (spec.GroupBy.Count > 0 && !IsGrouped(select.Field))
+                    // one of the grouping keys - truncation included, since a raw timestamp and the
+                    // day it falls in are different keys.
+                    if (spec.GroupBy.Count > 0 && !IsGrouped(select.Field, select.Truncate))
                     {
                         Add(QueryErrorCode.MissingGroupBy,
-                            $"'{select.Field}' is returned as-is but the query groups rows, so it must also be grouped by.",
+                            $"'{select.Field}' is returned as-is but the query groups rows, so it must also be grouped by, with the same truncation.",
                             path);
                     }
                     continue;
@@ -235,12 +253,13 @@ public static class QueryValidator
             }
         }
 
-        private bool IsGrouped(QueryFieldRef reference)
+        private bool IsGrouped(QueryFieldRef reference, QueryDateTruncation? truncate)
         {
             foreach (var group in spec.GroupBy)
             {
                 if (string.Equals(group.Field.Alias, reference.Alias, StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(group.Field.Field, reference.Field, StringComparison.OrdinalIgnoreCase))
+                    && string.Equals(group.Field.Field, reference.Field, StringComparison.OrdinalIgnoreCase)
+                    && group.Truncate == truncate)
                 {
                     return true;
                 }
