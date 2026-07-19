@@ -48,4 +48,10 @@
     <Project Path="tools/Flare.DemoGen/Flare.DemoGen.csproj" />
     <Project Path="tools/Md3SpecParser/Md3SpecParser.csproj" />
   </Folder>
+  <!-- Querio is a standalone product that depends on nothing in Flare; it sits in its own solution
+       folder rather than under /src/Core/ so that separation stays visible. -->
+  <Folder Name="/querio/">
+    <Project Path="src/Querio/Querio.csproj" />
+    <Project Path="tests/Querio.Tests/Querio.Tests.csproj" />
+  </Folder>
 </Solution>

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Querio is deliberately independent of Flare. It carries no Flare project or package reference,
+    does not inherit $(FlareLibTargetFrameworks), and ships on its own version line (MinVer tag
+    prefix "querio-v") so a persisted query contract is never forced to churn by a UI release.
+    QuerioIndependenceTests enforces that boundary with a failing build rather than good intentions.
+    Only the visual designer (Flare.Components.Query) depends on Flare, never the other way round.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <!-- netstandard2.0 defaults to C# 7.3, which has neither records nor collection expressions. -->
+    <LangVersion>latest</LangVersion>
+    <PackageId>Querio</PackageId>
+    <RootNamespace>Querio</RootNamespace>
+    <MinVerTagPrefix>querio-v</MinVerTagPrefix>
+    <Description>A database- and ORM-agnostic relational query model: an entity/field/foreign-key schema, a serializable query AST (joins, aggregates, grouping, having, sorting, paging) and a fluent builder. Values travel as data and no SQL text is ever emitted, so every backend renders the same query in its own dialect.</Description>
+    <PackageTags>query;query-builder;sql;ast;relational;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsTrimmable Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsTrimmable>
+    <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+</Project>
