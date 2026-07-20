@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Querio.Sql\Querio.Sql.csproj" />
     <ProjectReference Include="..\..\src\Querio.OneC\Querio.OneC.csproj" />
+    <ProjectReference Include="..\..\src\Querio.Text\Querio.Text.csproj" />
   </ItemGroup>
 
   <ItemGroup>

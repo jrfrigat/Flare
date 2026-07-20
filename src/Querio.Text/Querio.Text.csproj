@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Renders a query as a sentence rather than as a query. Useful for the title of a saved report, an
+    audit trail entry, or a spoken description of what a designer has built. Independent of Flare,
+    like the core it builds on.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PackageId>Querio.Text</PackageId>
+    <RootNamespace>Querio.Text</RootNamespace>
+    <MinVerTagPrefix>querio-v</MinVerTagPrefix>
+    <Description>Describes a Querio query in words. Turns a query specification into a readable sentence for report titles, audit entries and accessible summaries, with every connective swappable so the description can be translated.</Description>
+    <PackageTags>query;description;readable;localization;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsTrimmable Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsTrimmable>
+    <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Querio\Querio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Querio\Internal\IsExternalInit.cs" Link="Internal\IsExternalInit.cs" />
+  </ItemGroup>
+
+</Project>
