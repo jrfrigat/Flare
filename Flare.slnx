@@ -57,6 +57,7 @@
     <Project Path="src/Querio.Text/Querio.Text.csproj" />
     <Project Path="src/Querio.Linq/Querio.Linq.csproj" />
     <Project Path="src/Querio.Http/Querio.Http.csproj" />
+    <Project Path="src/Querio.Language/Querio.Language.csproj" />
     <Project Path="tests/Querio.Tests/Querio.Tests.csproj" />
     <Project Path="tests/Querio.Renderers.Tests/Querio.Renderers.Tests.csproj" />
     <!-- The visual designer is the one piece that depends on Flare, so it sits with Querio rather
