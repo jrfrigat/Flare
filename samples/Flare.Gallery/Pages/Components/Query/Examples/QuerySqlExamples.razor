@@ -1,0 +1,461 @@
+@using Querio
+@using Querio.Sql
+
+@* A catalogue for reading rather than clicking: each entry is a query built in code, and the SQL a
+   dialect turns it into. The cases are chosen to be the ones that go wrong - paging, escaping,
+   ambiguous joins, date truncation - rather than the ones that obviously work. *@
+
+<FlareStack Spacing="4">
+    <FlareStack Direction="StackDirection.Row" Spacing="2" AlignItems="StackAlign.Center">
+        <span>@GalleryStrings.Query_Dialect</span>
+        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Dialects"
+                     Value="@_dialect" ValueChanged="@(value => _dialect = value ?? "SQL Server")"
+                     Style="width: 12rem" />
+    </FlareStack>
+
+    @foreach (var scenario in Scenarios)
+    {
+        var entry = scenario;
+        <FlareStack Spacing="1">
+            <FlareText Typo="TypographyScale.TitleSmall">@entry.Title</FlareText>
+            <pre class="flare-code-block"><code>@entry.Code</code></pre>
+            <pre class="flare-code-block"><code>@Render(entry.Spec)</code></pre>
+        </FlareStack>
+    }
+</FlareStack>
+
+@code {
+    private string _dialect = "SQL Server";
+
+    private static readonly IReadOnlyList<string> Dialects = ["SQL Server", "PostgreSQL", "SQLite"];
+
+    private SqlDialect Selected => _dialect switch
+    {
+        "PostgreSQL" => PostgreSqlDialect.Instance,
+        "SQLite" => SqliteDialect.Instance,
+        _ => SqlServerDialect.Instance,
+    };
+
+    private sealed record Scenario(string Title, string Code, QuerySpec Spec);
+
+    /// <summary>
+    /// Renders one query, showing its parameters underneath. A target that cannot express the query
+    /// says so, and that refusal is worth reading too - it is the whole point of declaring what a
+    /// backend can do rather than approximating it.
+    /// </summary>
+    private string Render(QuerySpec spec)
+    {
+        try
+        {
+            var result = SqlRenderer.Render(spec, Schema, Selected);
+            if (result.Parameters.Count == 0) return result.Sql;
+
+            // Invariant, because a parameter is shown here as the driver will send it rather than
+            // as the reader's locale would write it - "0.2" is a different value from "0,2".
+            var parameters = string.Join(
+                Environment.NewLine,
+                result.Parameters.Select(p => "-- " + p.Name + " = "
+                    + Convert.ToString(p.Value, System.Globalization.CultureInfo.InvariantCulture)));
+            return result.Sql + Environment.NewLine + parameters;
+        }
+        catch (Exception error)
+        {
+            return $"-- {GalleryStrings.Query_Refused}{Environment.NewLine}-- {error.Message}";
+        }
+    }
+
+    // A schema shaped like a real one: physical names that differ from logical ones, a composite
+    // key, two paths to the same entity, a self-relation, and names that need escaping.
+    private static readonly QuerySchema Schema = new(
+        [
+            new QueryEntity("requests", "Requests",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("route", "Route", QueryFieldType.Text),
+                new QueryField("timestamp", "Timestamp", QueryFieldType.DateTime),
+                new QueryField("durationMs", "Duration, ms", QueryFieldType.Number) { Column = "duration_ms" },
+                new QueryField("cacheHit", "Cache hit", QueryFieldType.Boolean),
+                new QueryField("error", "Error", QueryFieldType.Boolean),
+                new QueryField("status", "Status", QueryFieldType.Number),
+                new QueryField("apiKeyId", "API key", QueryFieldType.Guid) { Column = "api_key_id" },
+            ])
+            { Source = "dbo.RequestLog", PrimaryKey = ["id"] },
+
+            new QueryEntity("apiKeys", "API keys",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("name", "Name", QueryFieldType.Text),
+                new QueryField("ownerId", "Owner", QueryFieldType.Guid),
+            ])
+            { Source = "dbo.ApiKeys", PrimaryKey = ["id"] },
+
+            new QueryEntity("users", "Users",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("name", "Name", QueryFieldType.Text),
+                new QueryField("managerId", "Manager", QueryFieldType.Guid) { Nullable = true },
+            ])
+            { Source = "dbo.Users", PrimaryKey = ["id"] },
+
+            new QueryEntity("transfers", "Transfers",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("fromUserId", "From", QueryFieldType.Guid),
+                new QueryField("toUserId", "To", QueryFieldType.Guid),
+                new QueryField("amount", "Amount", QueryFieldType.Number),
+                new QueryField("createdAt", "Created", QueryFieldType.DateTime),
+            ])
+            { Source = "dbo.Transfers", PrimaryKey = ["id"] },
+
+            new QueryEntity("orders", "Orders",
+            [
+                new QueryField("tenantId", "Tenant", QueryFieldType.Guid),
+                new QueryField("number", "Number", QueryFieldType.Number),
+                new QueryField("placedAt", "Placed", QueryFieldType.DateTime),
+            ])
+            { Source = "sales.Orders", PrimaryKey = ["tenantId", "number"] },
+
+            new QueryEntity("orderLines", "Order lines",
+            [
+                new QueryField("tenantId", "Tenant", QueryFieldType.Guid),
+                new QueryField("orderNumber", "Order", QueryFieldType.Number),
+                new QueryField("sku", "SKU", QueryFieldType.Text),
+                new QueryField("quantity", "Quantity", QueryFieldType.Number),
+            ])
+            { Source = "sales.OrderLines" },
+
+            // Deliberately hostile names, to show that escaping is done rather than assumed.
+            new QueryEntity("audit", "Audit",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("payload", "Payload", QueryFieldType.Text) { Column = "value]with]brackets" },
+            ])
+            { Source = "dbo.Audit]Log" },
+        ],
+        [
+            QueryRelation.Simple("request_apiKey", "requests", "apiKeyId", "apiKeys", "id"),
+            QueryRelation.Simple("apiKey_owner", "apiKeys", "ownerId", "users", "id"),
+            QueryRelation.Simple("user_manager", "users", "managerId", "users", "id"),
+            QueryRelation.Simple("transfer_sender", "transfers", "fromUserId", "users", "id"),
+            QueryRelation.Simple("transfer_recipient", "transfers", "toUserId", "users", "id"),
+            new QueryRelation("order_lines", "orders", "orderLines",
+            [
+                new QueryFieldPair("tenantId", "tenantId"),
+                new QueryFieldPair("number", "orderNumber"),
+            ])
+            { Cardinality = QueryCardinality.OneToMany },
+        ],
+        [
+            // Maps onto a built-in rather than a routine, which is what the physical name is for.
+            new QueryFunction("upper", "Upper case", QueryFunctionKind.Value)
+            {
+                Parameters = [new QueryFunctionParameter("text", "Text", QueryFieldType.Text)],
+                ReturnType = QueryFieldType.Text,
+                Source = "UPPER",
+            },
+            new QueryFunction("calcTax", "Calculate tax", QueryFunctionKind.Value)
+            {
+                Parameters =
+                [
+                    new QueryFunctionParameter("amount", "Amount", QueryFieldType.Number),
+                    new QueryFunctionParameter("rate", "Rate", QueryFieldType.Number) { Optional = true },
+                ],
+                ReturnType = QueryFieldType.Number,
+                Source = "dbo.CalcTax",
+            },
+            new QueryFunction("activeUsers", "Active users", QueryFunctionKind.Table)
+            {
+                Parameters = [new QueryFunctionParameter("since", "Since", QueryFieldType.DateTime)],
+                Columns =
+                [
+                    new QueryField("id", "Id", QueryFieldType.Guid),
+                    new QueryField("name", "Name", QueryFieldType.Text),
+                ],
+                Source = "dbo.GetActiveUsers",
+            },
+        ]);
+
+    private static IReadOnlyList<Scenario> Scenarios =>
+    [
+        new(GalleryStrings.Query_Sql_Basics,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route")
+                .Select("r", "durationMs")
+                .Where(f => f.Equal("r", "error", true).GreaterThan("r", "durationMs", 100))
+                .OrderByDescending("r", "durationMs")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route")
+                .Select("r", "durationMs")
+                .Where(f => f.Equal("r", "error", true).GreaterThan("r", "durationMs", 100))
+                .OrderByDescending("r", "durationMs")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Top,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route")
+                .OrderByDescending("r", "timestamp")
+                .Limit(10)
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route")
+                .OrderByDescending("r", "timestamp")
+                .Limit(10)
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Paging,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route")
+                .OrderByDescending("r", "timestamp")
+                .Offset(40)
+                .Limit(20)
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route")
+                .OrderByDescending("r", "timestamp")
+                .Offset(40)
+                .Limit(20)
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_PagingUnordered,
+            """
+            // Skipping rows needs an order to skip them in, and this query has none.
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route")
+                .Offset(40)
+                .Limit(20)
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route")
+                .Offset(40)
+                .Limit(20)
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Escaping,
+            """
+            // The entity is "dbo.Audit]Log" and the column "value]with]brackets".
+            QueryBuilder.From(schema, "audit", "a")
+                .Select("a", "payload")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "audit", "a")
+                .Select("a", "payload")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_LikeEscaping,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route")
+                .Where(f => f.Contains("r", "route", "100% [v2]_beta"))
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route")
+                .Where(f => f.Contains("r", "route", "100% [v2]_beta"))
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Joins,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Join("apiKeys", "k")
+                .LeftJoin("users", "u", "apiKey_owner")
+                .Select("r", "route")
+                .Select("k", "name", "key")
+                .Select("u", "name", "owner")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Join("apiKeys", "k")
+                .LeftJoin("users", "u", "apiKey_owner")
+                .Select("r", "route")
+                .Select("k", "name", "key")
+                .Select("u", "name", "owner")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_CompositeKey,
+            """
+            QueryBuilder.From(schema, "orders", "o")
+                .Join("orderLines", "l", "order_lines")
+                .Select("o", "number")
+                .Select("l", "sku")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "orders", "o")
+                .Join("orderLines", "l", "order_lines")
+                .Select("o", "number")
+                .Select("l", "sku")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_TwoPaths,
+            """
+            // Both joins reach Users, so the second says which side it hangs off.
+            QueryBuilder.From(schema, "transfers", "t")
+                .Join("users", "sender", "transfer_sender")
+                .Join("users", "recipient", "transfer_recipient", from: "t")
+                .Select("sender", "name", "from")
+                .Select("recipient", "name", "to")
+                .Select("t", "amount")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "transfers", "t")
+                .Join("users", "sender", "transfer_sender")
+                .Join("users", "recipient", "transfer_recipient", from: "t")
+                .Select("sender", "name", "from")
+                .Select("recipient", "name", "to")
+                .Select("t", "amount")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_SelfJoin,
+            """
+            QueryBuilder.From(schema, "users", "u")
+                .Join("users", "m", "user_manager")
+                .Select("u", "name", "user")
+                .Select("m", "name", "manager")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "users", "u")
+                .Join("users", "m", "user_manager")
+                .Select("u", "name", "user")
+                .Select("m", "name", "manager")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Aggregates,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route", "route")
+                .CountRows("total")
+                .Avg("r", "durationMs", "mean")
+                .Count("r", "apiKeyId", distinct: true, outputAlias: "keys")
+                .GroupBy("r", "route")
+                .Having(f => f.SelectGreaterThan("total", 100))
+                .OrderBySelectDescending("total")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route", "route")
+                .CountRows("total")
+                .Avg("r", "durationMs", "mean")
+                .Count("r", "apiKeyId", distinct: true, outputAlias: "keys")
+                .GroupBy("r", "route")
+                .Having(f => f.SelectGreaterThan("total", 100))
+                .OrderBySelectDescending("total")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_TimeSeries,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .SelectAndGroupByDay("r", "timestamp", "day")
+                .CountRows("total")
+                .Where(f => f.Since("r", "timestamp", 30, QueryTimeUnit.Day))
+                .OrderBySelect("day")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .SelectAndGroupByDay("r", "timestamp", "day")
+                .CountRows("total")
+                .Where(f => f.Since("r", "timestamp", 30, QueryTimeUnit.Day))
+                .OrderBySelect("day")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Percentile,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Percentile("r", "durationMs", 0.95, "p95")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Percentile("r", "durationMs", 0.95, "p95")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_PercentileGrouped,
+            """
+            // SQL Server has no grouped percentile_cont, and says so rather than approximating.
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route", "route")
+                .Percentile("r", "durationMs", 0.95, "p95")
+                .GroupBy("r", "route")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route", "route")
+                .Percentile("r", "durationMs", 0.95, "p95")
+                .GroupBy("r", "route")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Operators,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route")
+                .Where(f => f
+                    .In("r", "status", new[] { 200, 404, 500 })
+                    .Between("r", "durationMs", 10, 500)
+                    .IsNull("r", "apiKeyId")
+                    .AnyOf(g => g.StartsWith("r", "route", "/api").EndsWith("r", "route", "/health")))
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route")
+                .Where(f => f
+                    .In("r", "status", new[] { 200, 404, 500 })
+                    .Between("r", "durationMs", 10, 500)
+                    .IsNull("r", "apiKeyId")
+                    .AnyOf(g => g.StartsWith("r", "route", "/api").EndsWith("r", "route", "/health")))
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Functions,
+            """
+            // "upper" maps onto the built-in UPPER, "calcTax" onto dbo.CalcTax.
+            QueryBuilder.From(schema, "transfers", "t")
+                .SelectCall(QueryFunctionCall.OfFields("upper", "t", "id"), "id")
+                .SelectCall(
+                    QueryFunctionCall.Of("calcTax",
+                        QueryOperand.Of(new QueryFieldRef("t", "amount")),
+                        QueryOperand.Literal("0.2")),
+                    "tax")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "transfers", "t")
+                .SelectCall(QueryFunctionCall.OfFields("upper", "t", "id"), "id")
+                .SelectCall(
+                    QueryFunctionCall.Of("calcTax",
+                        QueryOperand.Of(new QueryFieldRef("t", "amount")),
+                        QueryOperand.Literal("0.2")),
+                    "tax")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_TableFunction,
+            """
+            QueryBuilder
+                .FromFunction(schema,
+                    QueryFunctionCall.Of("activeUsers", QueryOperand.Ago(7, QueryTimeUnit.Day)), "a")
+                .Select("a", "name")
+                .Build()
+            """,
+            QueryBuilder
+                .FromFunction(Schema,
+                    QueryFunctionCall.Of("activeUsers", QueryOperand.Ago(7, QueryTimeUnit.Day)), "a")
+                .Select("a", "name")
+                .Build()),
+
+        new(GalleryStrings.Query_Sql_Distinct,
+            """
+            QueryBuilder.From(schema, "requests", "r")
+                .Select("r", "route")
+                .Distinct()
+                .OrderBy("r", "route")
+                .Build()
+            """,
+            QueryBuilder.From(Schema, "requests", "r")
+                .Select("r", "route")
+                .Distinct()
+                .OrderBy("r", "route")
+                .Build()),
+    ];
+}

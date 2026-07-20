@@ -1134,6 +1134,72 @@
   <data name="Query_TargetAny" xml:space="preserve">
     <value>Any target</value>
   </data>
+  <data name="Query_SqlTitle" xml:space="preserve">
+    <value>SQL output</value>
+  </data>
+  <data name="Query_SqlSubtitle" xml:space="preserve">
+    <value>The same query object rendered by each dialect. The cases below are the ones that usually go wrong: paging, escaping, ambiguous joins and date truncation.</value>
+  </data>
+  <data name="Query_Dialect" xml:space="preserve">
+    <value>Dialect</value>
+  </data>
+  <data name="Query_Refused" xml:space="preserve">
+    <value>This target cannot express the query:</value>
+  </data>
+  <data name="Query_Sql_Basics" xml:space="preserve">
+    <value>Filtering and sorting</value>
+  </data>
+  <data name="Query_Sql_Top" xml:space="preserve">
+    <value>A row cap, with an order</value>
+  </data>
+  <data name="Query_Sql_Paging" xml:space="preserve">
+    <value>Skipping rows</value>
+  </data>
+  <data name="Query_Sql_PagingUnordered" xml:space="preserve">
+    <value>Skipping rows with nothing to order by</value>
+  </data>
+  <data name="Query_Sql_Escaping" xml:space="preserve">
+    <value>Names that need escaping</value>
+  </data>
+  <data name="Query_Sql_LikeEscaping" xml:space="preserve">
+    <value>A search pattern containing wildcards</value>
+  </data>
+  <data name="Query_Sql_Joins" xml:space="preserve">
+    <value>Inner and outer joins</value>
+  </data>
+  <data name="Query_Sql_CompositeKey" xml:space="preserve">
+    <value>A join on a composite key</value>
+  </data>
+  <data name="Query_Sql_TwoPaths" xml:space="preserve">
+    <value>Two paths to the same entity</value>
+  </data>
+  <data name="Query_Sql_SelfJoin" xml:space="preserve">
+    <value>An entity joined to itself</value>
+  </data>
+  <data name="Query_Sql_Aggregates" xml:space="preserve">
+    <value>Aggregates, grouping and a grouping filter</value>
+  </data>
+  <data name="Query_Sql_TimeSeries" xml:space="preserve">
+    <value>A time series over a relative window</value>
+  </data>
+  <data name="Query_Sql_Percentile" xml:space="preserve">
+    <value>A percentile</value>
+  </data>
+  <data name="Query_Sql_PercentileGrouped" xml:space="preserve">
+    <value>A percentile per group</value>
+  </data>
+  <data name="Query_Sql_Operators" xml:space="preserve">
+    <value>Sets, ranges, null checks and nesting</value>
+  </data>
+  <data name="Query_Sql_Functions" xml:space="preserve">
+    <value>Declared functions</value>
+  </data>
+  <data name="Query_Sql_TableFunction" xml:space="preserve">
+    <value>A table function as the source</value>
+  </data>
+  <data name="Query_Sql_Distinct" xml:space="preserve">
+    <value>Distinct rows</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Kanban Board</value>
   </data>

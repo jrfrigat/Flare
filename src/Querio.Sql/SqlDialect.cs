@@ -44,6 +44,19 @@ public abstract class SqlDialect : IQueryCapabilities
     }
 
     /// <summary>
+    /// The callable name of a declared function.
+    /// <para>
+    /// An unqualified name is a built-in and is written exactly as it stands. Quoting it would send
+    /// the engine looking for a routine of that name instead: <c>[UPPER](x)</c> does not reach
+    /// T-SQL's UPPER, and <c>"UPPER"(x)</c> does not reach PostgreSQL's lower-cased one. A qualified
+    /// name such as <c>dbo.CalcTax</c> is a routine, and is quoted part by part.
+    /// </para>
+    /// </summary>
+    /// <param name="name">The function's physical name, optionally dotted.</param>
+    public virtual string QuoteFunction(string name)
+        => name.IndexOf('.') < 0 ? name : QuoteQualified(name);
+
+    /// <summary>
     /// How a parameter is referred to inside the SQL text. The <c>@name</c> form is understood by the
     /// mainstream drivers for all three engines here, so it is the default.
     /// </summary>

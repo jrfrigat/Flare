@@ -78,8 +78,33 @@ public sealed class FunctionRenderingTests
 
         var sql = SqlRenderer.Render(spec, Schema, PostgreSqlDialect.Instance).Sql;
 
-        Assert.Contains("SELECT \"UPPER\"(\"u\".\"name\") AS \"name\"", sql, StringComparison.Ordinal);
-        Assert.Contains("GROUP BY \"UPPER\"(\"u\".\"name\")", sql, StringComparison.Ordinal);
+        Assert.Contains("SELECT UPPER(\"u\".\"name\") AS \"name\"", sql, StringComparison.Ordinal);
+        Assert.Contains("GROUP BY UPPER(\"u\".\"name\")", sql, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void CallsABuiltInByItsBareNameAndARoutineByItsQualifiedOne()
+    {
+        // Quoting a built-in sends the engine looking for a routine of that name instead: neither
+        // [UPPER](x) nor "UPPER"(x) reaches the function actually meant. A qualified name is a
+        // routine, and does have to be quoted so a reserved word in it survives.
+        var spec = QueryBuilder.From(Schema, "transfers", "t")
+            .SelectCall(QueryFunctionCall.OfFields("upper", "t", "id"), "id")
+            .SelectCall(
+                QueryFunctionCall.Of("calcTax", QueryOperand.Of(new QueryFieldRef("t", "amount"))),
+                "tax")
+            .Build();
+
+        var server = SqlRenderer.Render(spec, Schema, SqlServerDialect.Instance).Sql;
+        var postgres = SqlRenderer.Render(spec, Schema, PostgreSqlDialect.Instance).Sql;
+
+        Assert.Contains("UPPER([t].[id])", server, StringComparison.Ordinal);
+        Assert.DoesNotContain("[UPPER]", server, StringComparison.Ordinal);
+        Assert.Contains("[dbo].[CalcTax](", server, StringComparison.Ordinal);
+
+        Assert.Contains("UPPER(\"t\".\"id\")", postgres, StringComparison.Ordinal);
+        Assert.DoesNotContain("\"UPPER\"", postgres, StringComparison.Ordinal);
+        Assert.Contains("\"dbo\".\"CalcTax\"(", postgres, StringComparison.Ordinal);
     }
 
     [Fact]
