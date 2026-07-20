@@ -18,24 +18,18 @@ namespace Querio.OneC;
 /// Keywords are emitted in Russian, which is what 1C developers read and what its documentation
 /// uses. They are output data, not source identifiers.
 /// </para>
+/// <para>
+/// The walk over the query is the shared one, so what is left here is only how 1C spells each part
+/// of it - which is exactly the thing that makes the query model semantic rather than SQL-shaped.
+/// </para>
 /// </summary>
-public sealed class OneCRenderer
+public sealed class OneCRenderer : QueryRenderer<string>
 {
-    private readonly QuerySpec _spec;
-    private readonly QuerySchema _schema;
     private readonly DateTime _now;
     private readonly List<OneCQueryParameter> _parameters = [];
-    private readonly Dictionary<string, IReadOnlyList<QueryField>> _fields = new(StringComparer.OrdinalIgnoreCase);
-    private readonly List<KeyValuePair<string, string>> _ordered = [];
-    private readonly Dictionary<string, string> _outputExpressions = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Dictionary<string, QueryFieldType> _outputTypes = new(StringComparer.OrdinalIgnoreCase);
 
     private OneCRenderer(QuerySpec spec, QuerySchema schema, DateTime now)
-    {
-        _spec = spec;
-        _schema = schema;
-        _now = now;
-    }
+        : base(spec, schema) => _now = now;
 
     /// <summary>
     /// What 1C can do. It has no percentile, no row offset and no cross join, so a query asking for
@@ -49,6 +43,9 @@ public sealed class OneCRenderer
         // table-valued equivalent - a virtual table - has a wholly different syntax, so it is not
         // something this renderer can honestly produce.
         QueryFeature.TableFunctions);
+
+    /// <inheritdoc/>
+    protected override string TargetName => "The 1C query language";
 
     /// <summary>Renders a query into 1C query text.</summary>
     /// <param name="spec">The query to render.</param>
@@ -69,89 +66,43 @@ public sealed class OneCRenderer
 
     private OneCRenderResult Run()
     {
-        _spec.Validate(_schema).ThrowIfInvalid();
-        CollectParticipants();
-        RequireCapabilities();
+        Prepare();
+        // Every alias is checked once the participants are known and before anything is written,
+        // since an alias this renderer cannot write has to stop the render rather than be escaped.
+        foreach (var participant in Participants) EnsureIdentifier(participant.Alias, "alias");
+        RequireCapabilities(Capabilities);
 
         var query = new StringBuilder();
         AppendSelect(query);
         AppendFrom(query);
         AppendJoins(query);
-        AppendClause(query, " ГДЕ ", _spec.Where);
+        AppendClause(query, " ГДЕ ", Spec.Where);
         AppendGroupBy(query);
-        AppendClause(query, " ИМЕЮЩИЕ ", _spec.Having);
+        AppendClause(query, " ИМЕЮЩИЕ ", Spec.Having);
         AppendOrderBy(query);
 
         return new OneCRenderResult(query.ToString(), _parameters);
     }
 
-    private void CollectParticipants()
-    {
-        Register(_spec.From.Entity, _spec.From.Call, _spec.From.Alias);
-        foreach (var join in _spec.Joins) Register(join.Entity, join.Call, join.Alias);
-    }
-
-    private void Register(string? entityKey, QueryFunctionCall? call, string alias)
-    {
-        EnsureIdentifier(alias, "alias");
-        if (call is not null)
-        {
-            _fields[alias] = _schema.FindFunction(call.Function)!.Columns;
-            _ordered.Add(new KeyValuePair<string, string>(alias, string.Empty));
-            return;
-        }
-        _fields[alias] = _schema.FindEntity(entityKey!)!.Fields;
-        _ordered.Add(new KeyValuePair<string, string>(alias, entityKey!));
-    }
-
-    private void RequireCapabilities()
-    {
-        foreach (var join in _spec.Joins)
-        {
-            switch (join.Kind)
-            {
-                case QueryJoinKind.Left: Require(QueryFeature.LeftJoin); break;
-                case QueryJoinKind.Right: Require(QueryFeature.RightJoin); break;
-                case QueryJoinKind.Full: Require(QueryFeature.FullJoin); break;
-                case QueryJoinKind.Cross: Require(QueryFeature.CrossJoin); break;
-            }
-            if (join.Call is not null) Require(QueryFeature.TableFunctions);
-        }
-        if (_spec.From.Call is not null) Require(QueryFeature.TableFunctions);
-
-        foreach (var item in _spec.Select)
-        {
-            if (item.Aggregate == QueryAggregate.Percentile) Require(QueryFeature.Percentile);
-        }
-
-        if (_spec.Offset is not null) Require(QueryFeature.Offset);
-    }
-
-    private static void Require(QueryFeature feature)
-    {
-        if (Capabilities.Supports(feature)) return;
-        throw new QueryRenderException($"The 1C query language does not support {feature}.", feature);
-    }
-
     private void AppendSelect(StringBuilder query)
     {
         query.Append("ВЫБРАТЬ ");
-        if (_spec.Distinct) query.Append("РАЗЛИЧНЫЕ ");
-        if (_spec.Limit is not null)
+        if (Spec.Distinct) query.Append("РАЗЛИЧНЫЕ ");
+        if (Spec.Limit is not null)
         {
             query.Append("ПЕРВЫЕ ")
-                 .Append(_spec.Limit.Value.ToString(CultureInfo.InvariantCulture))
+                 .Append(Spec.Limit.Value.ToString(CultureInfo.InvariantCulture))
                  .Append(' ');
         }
 
-        if (_spec.Select.Count == 0)
+        if (Spec.Select.Count == 0)
         {
             query.Append('*');
             return;
         }
 
-        var items = new List<string>(_spec.Select.Count);
-        foreach (var item in _spec.Select)
+        var items = new List<string>(Spec.Select.Count);
+        foreach (var item in Spec.Select)
         {
             var expression = SelectExpression(item);
             if (string.IsNullOrEmpty(item.Alias))
@@ -160,8 +111,8 @@ public sealed class OneCRenderer
                 continue;
             }
             EnsureIdentifier(item.Alias!, "output alias");
-            _outputExpressions[item.Alias!] = expression;
-            _outputTypes[item.Alias!] = OutputType(item);
+            OutputExpressions[item.Alias!] = expression;
+            OutputTypes[item.Alias!] = OutputType(item);
             items.Add(expression + " КАК " + item.Alias);
         }
         query.Append(string.Join(", ", items));
@@ -216,19 +167,19 @@ public sealed class OneCRenderer
     private void AppendFrom(StringBuilder query)
     {
         query.Append(" ИЗ ")
-             .Append(SourceExpression(_spec.From.Entity, _spec.From.Call))
+             .Append(SourceExpression(Spec.From.Entity, Spec.From.Call))
              .Append(" КАК ")
-             .Append(_spec.From.Alias);
+             .Append(Spec.From.Alias);
     }
 
     private string SourceExpression(string? entityKey, QueryFunctionCall? call)
-        => call is not null ? CallExpression(call) : QualifiedName(_schema.FindEntity(entityKey!)!.PhysicalName);
+        => call is not null ? Value(null, call) : QualifiedName(Schema.FindEntity(entityKey!)!.PhysicalName);
 
     private void AppendJoins(StringBuilder query)
     {
-        for (var i = 0; i < _spec.Joins.Count; i++)
+        for (var i = 0; i < Spec.Joins.Count; i++)
         {
-            var join = _spec.Joins[i];
+            var join = Spec.Joins[i];
             var keyword = join.Kind switch
             {
                 QueryJoinKind.Left => "ЛЕВОЕ СОЕДИНЕНИЕ",
@@ -242,193 +193,32 @@ public sealed class OneCRenderer
                  .Append(" КАК ")
                  .Append(join.Alias)
                  .Append(" ПО ")
-                 .Append(JoinCondition(join, i));
+                 .Append(string.Join(" И ", JoinMatches(join, i).Select(match =>
+                     $"{Member(match.LeftAlias, match.LeftField)} = {Member(match.RightAlias, match.RightField)}")));
         }
-    }
-
-    private string JoinCondition(QueryJoin join, int index)
-    {
-        if (join.On is { Count: > 0 })
-        {
-            return string.Join(" И ", join.On.Select(pair =>
-                $"{FieldExpression(pair.Left)} = {FieldExpression(pair.Right)}"));
-        }
-
-        var relation = _schema.FindRelation(join.Relation!)!;
-        var newIsTarget = string.Equals(relation.To, join.Entity, StringComparison.OrdinalIgnoreCase);
-        var otherEntity = newIsTarget ? relation.From : relation.To;
-        var otherAlias = join.From ?? ResolveOtherAlias(otherEntity, index, join.Alias);
-
-        return string.Join(" И ", relation.On.Select(pair =>
-        {
-            var source = newIsTarget ? Member(otherAlias, pair.FromField) : Member(join.Alias, pair.FromField);
-            var target = newIsTarget ? Member(join.Alias, pair.ToField) : Member(otherAlias, pair.ToField);
-            return $"{source} = {target}";
-        }));
-    }
-
-    private string ResolveOtherAlias(string entityKey, int joinIndex, string joinAlias)
-    {
-        var candidates = _ordered
-            .Take(joinIndex + 1)
-            .Where(participant => !string.Equals(participant.Key, joinAlias, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(participant.Value, entityKey, StringComparison.OrdinalIgnoreCase))
-            .Select(participant => participant.Key)
-            .ToList();
-
-        if (candidates.Count == 1) return candidates[0];
-        if (candidates.Count == 0)
-        {
-            throw new QueryRenderException(
-                $"The join onto '{joinAlias}' traverses a relation reaching '{entityKey}', which no earlier participant uses.");
-        }
-        throw new QueryRenderException(
-            $"'{entityKey}' appears more than once ({string.Join(", ", candidates)}), so the join onto " +
-            $"'{joinAlias}' is ambiguous. Set QueryJoin.From to the alias it attaches to.");
     }
 
     private void AppendClause(StringBuilder query, string keyword, QueryFilterGroup? group)
     {
         if (group is null || group.IsEmpty) return;
-        query.Append(keyword).Append(RenderGroup(group));
+
+        // The shared walk is entered through the base so the outermost group comes back unbracketed:
+        // the clause keyword already delimits it. Everything below it goes through the override.
+        query.Append(keyword).Append(base.Filter(group));
     }
-
-    private string RenderGroup(QueryFilterGroup group)
-    {
-        var parts = new List<string>(group.Conditions.Count + group.Groups.Count);
-        foreach (var condition in group.Conditions) parts.Add(RenderCondition(condition));
-        foreach (var nested in group.Groups)
-        {
-            if (nested.IsEmpty) continue;
-            parts.Add("(" + RenderGroup(nested) + ")");
-        }
-        return string.Join(group.Or ? " ИЛИ " : " И ", parts);
-    }
-
-    private string RenderCondition(QueryCondition condition)
-    {
-        string left;
-        QueryFieldType type;
-        if (!string.IsNullOrEmpty(condition.Select))
-        {
-            left = _outputExpressions[condition.Select!];
-            type = _outputTypes.TryGetValue(condition.Select!, out var known) ? known : QueryFieldType.Number;
-        }
-        else
-        {
-            left = Value(condition.Field, condition.Call);
-            type = ValueType(condition.Field, condition.Call);
-        }
-
-        switch (condition.Operator)
-        {
-            case QueryOperator.IsNull:
-                return left + " ЕСТЬ NULL";
-            case QueryOperator.IsNotNull:
-                return left + " ЕСТЬ НЕ NULL";
-            case QueryOperator.Contains:
-                return Like(left, condition.Value!, "%{0}%");
-            case QueryOperator.StartsWith:
-                return Like(left, condition.Value!, "{0}%");
-            case QueryOperator.EndsWith:
-                return Like(left, condition.Value!, "%{0}");
-            case QueryOperator.In:
-                return $"{left} В ({ValueList(condition.Value!, type)})";
-            case QueryOperator.NotIn:
-                return $"{left} НЕ В ({ValueList(condition.Value!, type)})";
-            case QueryOperator.Between:
-                return $"{left} МЕЖДУ {Operand(condition.Value!, type)} И {Operand(condition.Value2!, type)}";
-            case QueryOperator.NotBetween:
-                return $"НЕ ({left} МЕЖДУ {Operand(condition.Value!, type)} И {Operand(condition.Value2!, type)})";
-            default:
-                return $"{left} {Symbol(condition.Operator)} {Operand(condition.Value!, type)}";
-        }
-    }
-
-    private string Like(string left, QueryOperand operand, string shape)
-    {
-        if (operand.Kind != QueryOperandKind.Literal)
-        {
-            return $"{left} ПОДОБНО {Operand(operand, QueryFieldType.Text)}";
-        }
-        var pattern = string.Format(shape, EscapePattern(operand.Value ?? string.Empty));
-        return $"{left} ПОДОБНО {AddParameter(pattern)} СПЕЦСИМВОЛ \"\\\"";
-    }
-
-    private static string EscapePattern(string value)
-    {
-        var builder = new StringBuilder(value.Length);
-        foreach (var character in value)
-        {
-            if (character is '\\' or '%' or '_' or '[') builder.Append('\\');
-            builder.Append(character);
-        }
-        return builder.ToString();
-    }
-
-    private string ValueList(QueryOperand operand, QueryFieldType type)
-        => string.Join(", ", (operand.Values ?? []).Select(value => AddParameter(QueryValue.Parse(value, type))));
-
-    private string Operand(QueryOperand operand, QueryFieldType type) => operand.Kind switch
-    {
-        QueryOperandKind.Field => FieldExpression(operand.Field!),
-        // 1C queries have no current-moment function, so the window is resolved here and travels as a
-        // value. The spec keeps the offset, so the next render resolves it again.
-        QueryOperandKind.Relative => AddParameter(Shift(_now, operand.Relative!)),
-        QueryOperandKind.List => ValueList(operand, type),
-        QueryOperandKind.Function => CallExpression(operand.Call!),
-        _ => AddParameter(QueryValue.Parse(operand.Value, type)),
-    };
-
-    // A value function maps onto whatever the target spells the same job, which the schema supplies
-    // as the physical name - so a call renders here exactly as it would in SQL, just unquoted.
-    private string CallExpression(QueryFunctionCall call)
-    {
-        var function = _schema.FindFunction(call.Function)!;
-        var arguments = new List<string>(call.Arguments.Count);
-        for (var i = 0; i < call.Arguments.Count; i++)
-        {
-            var type = i < function.Parameters.Count ? function.Parameters[i].Type : QueryFieldType.Text;
-            arguments.Add(Operand(call.Arguments[i], type));
-        }
-        return QualifiedName(function.PhysicalName) + "(" + string.Join(", ", arguments) + ")";
-    }
-
-    private static DateTime Shift(DateTime now, QueryRelativeValue relative) => relative.Unit switch
-    {
-        QueryTimeUnit.Minute => now.AddMinutes(relative.Amount),
-        QueryTimeUnit.Hour => now.AddHours(relative.Amount),
-        QueryTimeUnit.Day => now.AddDays(relative.Amount),
-        QueryTimeUnit.Week => now.AddDays(relative.Amount * 7),
-        QueryTimeUnit.Month => now.AddMonths(relative.Amount),
-        QueryTimeUnit.Quarter => now.AddMonths(relative.Amount * 3),
-        QueryTimeUnit.Year => now.AddYears(relative.Amount),
-        _ => now.AddDays(relative.Amount),
-    };
-
-    private static string Symbol(QueryOperator op) => op switch
-    {
-        QueryOperator.Equals => "=",
-        QueryOperator.NotEquals => "<>",
-        QueryOperator.GreaterThan => ">",
-        QueryOperator.GreaterThanOrEqual => ">=",
-        QueryOperator.LessThan => "<",
-        QueryOperator.LessThanOrEqual => "<=",
-        _ => "=",
-    };
 
     private void AppendGroupBy(StringBuilder query)
     {
-        if (_spec.GroupBy.Count == 0) return;
+        if (Spec.GroupBy.Count == 0) return;
 
-        var items = new List<string>(_spec.GroupBy.Count);
-        foreach (var group in _spec.GroupBy)
+        var items = new List<string>(Spec.GroupBy.Count);
+        foreach (var group in Spec.GroupBy)
         {
             var expression = Value(group.Field, group.Call);
             if (group.Truncate is not null) expression = Truncate(expression, group.Truncate.Value);
-            if (!string.IsNullOrEmpty(group.Alias) && !_outputExpressions.ContainsKey(group.Alias!))
+            if (!string.IsNullOrEmpty(group.Alias) && !OutputExpressions.ContainsKey(group.Alias!))
             {
-                _outputExpressions[group.Alias!] = expression;
+                OutputExpressions[group.Alias!] = expression;
             }
             items.Add(expression);
         }
@@ -437,10 +227,10 @@ public sealed class OneCRenderer
 
     private void AppendOrderBy(StringBuilder query)
     {
-        if (_spec.OrderBy.Count == 0) return;
+        if (Spec.OrderBy.Count == 0) return;
 
-        var items = new List<string>(_spec.OrderBy.Count);
-        foreach (var sort in _spec.OrderBy)
+        var items = new List<string>(Spec.OrderBy.Count);
+        foreach (var sort in Spec.OrderBy)
         {
             var expression = sort.Field is not null || sort.Call is not null
                 ? Value(sort.Field, sort.Call)
@@ -450,40 +240,12 @@ public sealed class OneCRenderer
         query.Append(" УПОРЯДОЧИТЬ ПО ").Append(string.Join(", ", items));
     }
 
+    private string Member(string alias, string fieldKey) => Field(alias, FindField(alias, fieldKey)!);
+
     private string QualifiedName(string name)
     {
         foreach (var part in name.Split('.')) EnsureIdentifier(part, "object name");
         return name;
-    }
-
-    private string Value(QueryFieldRef? field, QueryFunctionCall? call)
-        => field is not null ? FieldExpression(field) : CallExpression(call!);
-
-    private QueryFieldType ValueType(QueryFieldRef? field, QueryFunctionCall? call)
-        => field is not null
-            ? FieldType(field)
-            : _schema.FindFunction(call!.Function)?.ReturnType ?? QueryFieldType.Text;
-
-    private string FieldExpression(QueryFieldRef reference) => Member(reference.Alias, reference.Field);
-
-    private string Member(string alias, string fieldKey)
-    {
-        var field = Find(alias, fieldKey)!;
-        EnsureIdentifier(field.PhysicalName, "field name");
-        return alias + "." + field.PhysicalName;
-    }
-
-    private QueryFieldType FieldType(QueryFieldRef reference)
-        => Find(reference.Alias, reference.Field)!.Type;
-
-    private QueryField? Find(string alias, string fieldKey)
-    {
-        if (!_fields.TryGetValue(alias, out var fields)) return null;
-        for (var i = 0; i < fields.Count; i++)
-        {
-            if (string.Equals(fields[i].Key, fieldKey, StringComparison.OrdinalIgnoreCase)) return fields[i];
-        }
-        return null;
     }
 
     // 1C offers no way to quote a name, so an unusable name has to be rejected rather than escaped.
@@ -507,10 +269,132 @@ public sealed class OneCRenderer
         }
     }
 
+    private static DateTime Shift(DateTime now, QueryRelativeValue relative) => relative.Unit switch
+    {
+        QueryTimeUnit.Minute => now.AddMinutes(relative.Amount),
+        QueryTimeUnit.Hour => now.AddHours(relative.Amount),
+        QueryTimeUnit.Day => now.AddDays(relative.Amount),
+        QueryTimeUnit.Week => now.AddDays(relative.Amount * 7),
+        QueryTimeUnit.Month => now.AddMonths(relative.Amount),
+        QueryTimeUnit.Quarter => now.AddMonths(relative.Amount * 3),
+        QueryTimeUnit.Year => now.AddYears(relative.Amount),
+        _ => now.AddDays(relative.Amount),
+    };
+
     private string AddParameter(object? value)
     {
         var name = "p" + _parameters.Count.ToString(CultureInfo.InvariantCulture);
         _parameters.Add(new OneCQueryParameter(name, value));
         return "&" + name;
     }
+
+    // ---- What each node means in the 1C language ---------------------------------------------------
+
+    /// <inheritdoc/>
+    protected override string Field(string alias, QueryField field)
+    {
+        EnsureIdentifier(field.PhysicalName, "field name");
+        return alias + "." + field.PhysicalName;
+    }
+
+    /// <inheritdoc/>
+    protected override string Literal(object? value, QueryFieldType type) => AddParameter(value);
+
+    /// <inheritdoc/>
+    protected override string Relative(QueryRelativeValue offset)
+        // 1C queries have no current-moment function, so the window is resolved here and travels as a
+        // value. The spec keeps the offset, so the next render resolves it again.
+        => AddParameter(Shift(_now, offset));
+
+    /// <inheritdoc/>
+    // A value function maps onto whatever the target spells the same job, which the schema supplies
+    // as the physical name - so a call renders here exactly as it would in SQL, just unquoted.
+    protected override string Call(QueryFunction function, IReadOnlyList<string> arguments)
+        => QualifiedName(function.PhysicalName) + "(" + string.Join(", ", arguments) + ")";
+
+    /// <inheritdoc/>
+    protected override string Comparison(
+        string left, QueryOperator op, QueryFieldType type, string? right, string? upper) => op switch
+    {
+        QueryOperator.IsNull => left + " ЕСТЬ NULL",
+        QueryOperator.IsNotNull => left + " ЕСТЬ НЕ NULL",
+        QueryOperator.Between => $"{left} МЕЖДУ {right} И {upper}",
+        QueryOperator.NotBetween => $"НЕ ({left} МЕЖДУ {right} И {upper})",
+        _ => $"{left} {Symbol(op)} {right}",
+    };
+
+    /// <inheritdoc/>
+    protected override string Membership(string left, QueryOperator op, IReadOnlyList<string> values)
+        => $"{left} {(op == QueryOperator.NotIn ? "НЕ В" : "В")} ({string.Join(", ", values)})";
+
+    /// <inheritdoc/>
+    protected override string Combine(bool or, IReadOnlyList<string> parts)
+        => string.Join(or ? " ИЛИ " : " И ", parts);
+
+    /// <inheritdoc/>
+    protected override string? Filter(QueryFilterGroup? group)
+    {
+        // A nested group is bracketed so its connective binds tighter than the one around it. The
+        // outermost group is not, which is why AppendClause enters the walk through the base.
+        var rendered = base.Filter(group);
+        return rendered is null ? null : "(" + rendered + ")";
+    }
+
+    /// <inheritdoc/>
+    protected override string Condition(QueryCondition condition)
+    {
+        // A pattern match is the one thing that has to see the operand before it is rendered: the
+        // wildcards and the escape character belong to the pattern, not to the text a user typed,
+        // and by the time the shared walk hands over an operand that text has become a parameter.
+        var shape = PatternShape(condition.Operator);
+        return shape is null
+            ? base.Condition(condition)
+            : Like(Subject(condition), condition.Value!, shape);
+    }
+
+    private static string? PatternShape(QueryOperator op) => op switch
+    {
+        QueryOperator.Contains => "%{0}%",
+        QueryOperator.StartsWith => "{0}%",
+        QueryOperator.EndsWith => "%{0}",
+        _ => null,
+    };
+
+    // The left side of a condition, which is all a pattern match needs of the shared resolution.
+    private string Subject(QueryCondition condition)
+        => string.IsNullOrEmpty(condition.Select)
+            ? Value(condition.Field, condition.Call)
+            : OutputExpressions[condition.Select!];
+
+    private string Like(string left, QueryOperand operand, string shape)
+    {
+        if (operand.Kind != QueryOperandKind.Literal)
+        {
+            return $"{left} ПОДОБНО {Operand(operand, QueryFieldType.Text)}";
+        }
+        var pattern = string.Format(shape, EscapePattern(operand.Value ?? string.Empty));
+        return $"{left} ПОДОБНО {AddParameter(pattern)} СПЕЦСИМВОЛ \"\\\"";
+    }
+
+    private static string EscapePattern(string value)
+    {
+        var builder = new StringBuilder(value.Length);
+        foreach (var character in value)
+        {
+            if (character is '\\' or '%' or '_' or '[') builder.Append('\\');
+            builder.Append(character);
+        }
+        return builder.ToString();
+    }
+
+    private static string Symbol(QueryOperator op) => op switch
+    {
+        QueryOperator.Equals => "=",
+        QueryOperator.NotEquals => "<>",
+        QueryOperator.GreaterThan => ">",
+        QueryOperator.GreaterThanOrEqual => ">=",
+        QueryOperator.LessThan => "<",
+        QueryOperator.LessThanOrEqual => "<=",
+        _ => "=",
+    };
 }
