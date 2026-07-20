@@ -4534,6 +4534,204 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на SQL output.
+        /// </summary>
+        public static string Query_SqlTitle {
+            get {
+                return ResourceManager.GetString("Query_SqlTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The same query object rendered by each dialect.
+        /// </summary>
+        public static string Query_SqlSubtitle {
+            get {
+                return ResourceManager.GetString("Query_SqlSubtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Dialect.
+        /// </summary>
+        public static string Query_Dialect {
+            get {
+                return ResourceManager.GetString("Query_Dialect", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This target cannot express the query:.
+        /// </summary>
+        public static string Query_Refused {
+            get {
+                return ResourceManager.GetString("Query_Refused", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filtering and sorting.
+        /// </summary>
+        public static string Query_Sql_Basics {
+            get {
+                return ResourceManager.GetString("Query_Sql_Basics", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A row cap, with an order.
+        /// </summary>
+        public static string Query_Sql_Top {
+            get {
+                return ResourceManager.GetString("Query_Sql_Top", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Skipping rows.
+        /// </summary>
+        public static string Query_Sql_Paging {
+            get {
+                return ResourceManager.GetString("Query_Sql_Paging", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Skipping rows with nothing to order by.
+        /// </summary>
+        public static string Query_Sql_PagingUnordered {
+            get {
+                return ResourceManager.GetString("Query_Sql_PagingUnordered", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Names that need escaping.
+        /// </summary>
+        public static string Query_Sql_Escaping {
+            get {
+                return ResourceManager.GetString("Query_Sql_Escaping", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A search pattern containing wildcards.
+        /// </summary>
+        public static string Query_Sql_LikeEscaping {
+            get {
+                return ResourceManager.GetString("Query_Sql_LikeEscaping", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inner and outer joins.
+        /// </summary>
+        public static string Query_Sql_Joins {
+            get {
+                return ResourceManager.GetString("Query_Sql_Joins", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A join on a composite key.
+        /// </summary>
+        public static string Query_Sql_CompositeKey {
+            get {
+                return ResourceManager.GetString("Query_Sql_CompositeKey", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Two paths to the same entity.
+        /// </summary>
+        public static string Query_Sql_TwoPaths {
+            get {
+                return ResourceManager.GetString("Query_Sql_TwoPaths", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на An entity joined to itself.
+        /// </summary>
+        public static string Query_Sql_SelfJoin {
+            get {
+                return ResourceManager.GetString("Query_Sql_SelfJoin", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Aggregates, grouping and a grouping filter.
+        /// </summary>
+        public static string Query_Sql_Aggregates {
+            get {
+                return ResourceManager.GetString("Query_Sql_Aggregates", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A time series over a relative window.
+        /// </summary>
+        public static string Query_Sql_TimeSeries {
+            get {
+                return ResourceManager.GetString("Query_Sql_TimeSeries", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A percentile.
+        /// </summary>
+        public static string Query_Sql_Percentile {
+            get {
+                return ResourceManager.GetString("Query_Sql_Percentile", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A percentile per group.
+        /// </summary>
+        public static string Query_Sql_PercentileGrouped {
+            get {
+                return ResourceManager.GetString("Query_Sql_PercentileGrouped", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sets, ranges, null checks and nesting.
+        /// </summary>
+        public static string Query_Sql_Operators {
+            get {
+                return ResourceManager.GetString("Query_Sql_Operators", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Declared functions.
+        /// </summary>
+        public static string Query_Sql_Functions {
+            get {
+                return ResourceManager.GetString("Query_Sql_Functions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A table function as the source.
+        /// </summary>
+        public static string Query_Sql_TableFunction {
+            get {
+                return ResourceManager.GetString("Query_Sql_TableFunction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Distinct rows.
+        /// </summary>
+        public static string Query_Sql_Distinct {
+            get {
+                return ResourceManager.GetString("Query_Sql_Distinct", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Container (MaxWidth).
         /// </summary>
         public static string Layout_Container {

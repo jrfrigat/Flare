@@ -244,7 +244,7 @@ public sealed class SqlRenderer : QueryRenderer<string>
 
     /// <inheritdoc/>
     protected override string Call(QueryFunction function, IReadOnlyList<string> arguments)
-        => _dialect.CallFunction(_dialect.QuoteQualified(function.PhysicalName), arguments);
+        => _dialect.CallFunction(_dialect.QuoteFunction(function.PhysicalName), arguments);
 
     /// <inheritdoc/>
     protected override string Comparison(

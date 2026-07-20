@@ -1134,6 +1134,72 @@
   <data name="Query_TargetAny" xml:space="preserve">
     <value>Любая цель</value>
   </data>
+  <data name="Query_SqlTitle" xml:space="preserve">
+    <value>Генерация SQL</value>
+  </data>
+  <data name="Query_SqlSubtitle" xml:space="preserve">
+    <value>Один и тот же объект запроса, отрисованный каждым диалектом. Ниже собраны случаи, которые обычно и ломаются: постраничность, экранирование, неоднозначные соединения и усечение дат.</value>
+  </data>
+  <data name="Query_Dialect" xml:space="preserve">
+    <value>Диалект</value>
+  </data>
+  <data name="Query_Refused" xml:space="preserve">
+    <value>Цель не может выразить запрос:</value>
+  </data>
+  <data name="Query_Sql_Basics" xml:space="preserve">
+    <value>Отбор и сортировка</value>
+  </data>
+  <data name="Query_Sql_Top" xml:space="preserve">
+    <value>Ограничение числа строк, с сортировкой</value>
+  </data>
+  <data name="Query_Sql_Paging" xml:space="preserve">
+    <value>Пропуск строк</value>
+  </data>
+  <data name="Query_Sql_PagingUnordered" xml:space="preserve">
+    <value>Пропуск строк без сортировки</value>
+  </data>
+  <data name="Query_Sql_Escaping" xml:space="preserve">
+    <value>Имена, требующие экранирования</value>
+  </data>
+  <data name="Query_Sql_LikeEscaping" xml:space="preserve">
+    <value>Шаблон поиска со спецсимволами</value>
+  </data>
+  <data name="Query_Sql_Joins" xml:space="preserve">
+    <value>Внутреннее и внешнее соединение</value>
+  </data>
+  <data name="Query_Sql_CompositeKey" xml:space="preserve">
+    <value>Соединение по составному ключу</value>
+  </data>
+  <data name="Query_Sql_TwoPaths" xml:space="preserve">
+    <value>Два пути к одной сущности</value>
+  </data>
+  <data name="Query_Sql_SelfJoin" xml:space="preserve">
+    <value>Соединение сущности с самой собой</value>
+  </data>
+  <data name="Query_Sql_Aggregates" xml:space="preserve">
+    <value>Агрегаты, группировка и фильтр групп</value>
+  </data>
+  <data name="Query_Sql_TimeSeries" xml:space="preserve">
+    <value>Временной ряд за относительный период</value>
+  </data>
+  <data name="Query_Sql_Percentile" xml:space="preserve">
+    <value>Перцентиль</value>
+  </data>
+  <data name="Query_Sql_PercentileGrouped" xml:space="preserve">
+    <value>Перцентиль по группам</value>
+  </data>
+  <data name="Query_Sql_Operators" xml:space="preserve">
+    <value>Множества, диапазоны, проверки на пустоту и вложенность</value>
+  </data>
+  <data name="Query_Sql_Functions" xml:space="preserve">
+    <value>Объявленные функции</value>
+  </data>
+  <data name="Query_Sql_TableFunction" xml:space="preserve">
+    <value>Табличная функция как источник</value>
+  </data>
+  <data name="Query_Sql_Distinct" xml:space="preserve">
+    <value>Уникальные строки</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Канбан-доска</value>
   </data>
