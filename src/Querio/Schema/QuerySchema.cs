@@ -14,14 +14,20 @@ public sealed class QuerySchema
 {
     private readonly Dictionary<string, QueryEntity> _entities;
     private readonly Dictionary<string, QueryRelation> _relations;
+    private readonly Dictionary<string, QueryFunction> _functions;
 
-    /// <summary>Builds a schema from its entities and the relations between them.</summary>
+    /// <summary>Builds a schema from its entities, the relations between them, and callable functions.</summary>
     /// <param name="entities">The queryable entities. Keys are matched case-insensitively.</param>
     /// <param name="relations">Declared paths between entities. Null means the entities stand alone.</param>
-    public QuerySchema(IReadOnlyList<QueryEntity> entities, IReadOnlyList<QueryRelation>? relations = null)
+    /// <param name="functions">Functions queries may call. Null means none are offered.</param>
+    public QuerySchema(
+        IReadOnlyList<QueryEntity> entities,
+        IReadOnlyList<QueryRelation>? relations = null,
+        IReadOnlyList<QueryFunction>? functions = null)
     {
         Entities = entities ?? throw new ArgumentNullException(nameof(entities));
         Relations = relations ?? [];
+        Functions = functions ?? [];
 
         // Duplicate keys are a schema mistake, but throwing from a constructor would deny the caller
         // the readable diagnostic QueryValidator produces, so the later declaration simply wins here.
@@ -30,6 +36,9 @@ public sealed class QuerySchema
 
         _relations = new Dictionary<string, QueryRelation>(Relations.Count, StringComparer.OrdinalIgnoreCase);
         foreach (var relation in Relations) _relations[relation.Key] = relation;
+
+        _functions = new Dictionary<string, QueryFunction>(Functions.Count, StringComparer.OrdinalIgnoreCase);
+        foreach (var function in Functions) _functions[function.Key] = function;
     }
 
     /// <summary>The queryable entities, in declaration order.</summary>
@@ -37,6 +46,9 @@ public sealed class QuerySchema
 
     /// <summary>The declared relations between entities, in declaration order.</summary>
     public IReadOnlyList<QueryRelation> Relations { get; }
+
+    /// <summary>The functions queries may call, in declaration order.</summary>
+    public IReadOnlyList<QueryFunction> Functions { get; }
 
     /// <summary>Finds an entity by key, case-insensitively. Null when the schema has no such entity.</summary>
     /// <param name="key">The logical entity name.</param>
@@ -47,6 +59,11 @@ public sealed class QuerySchema
     /// <param name="key">The relation name.</param>
     public QueryRelation? FindRelation(string key)
         => !string.IsNullOrEmpty(key) && _relations.TryGetValue(key, out var relation) ? relation : null;
+
+    /// <summary>Finds a function by key, case-insensitively. Null when the schema offers no such function.</summary>
+    /// <param name="key">The logical function name.</param>
+    public QueryFunction? FindFunction(string key)
+        => !string.IsNullOrEmpty(key) && _functions.TryGetValue(key, out var function) ? function : null;
 
     /// <summary>Finds a field on an entity. Null when either the entity or the field is unknown.</summary>
     /// <param name="entityKey">The logical entity name.</param>

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Renders a Querio query into the 1C:Enterprise query language. Deliberately a separate renderer
+    rather than a dialect of Querio.Sql: 1C is close to SQL in shape but not in spelling, has no row
+    offset and no percentile, and resolves "now" through a parameter instead of a server function.
+    Bending the SQL dialect API around it would make that API worse for every SQL engine.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PackageId>Querio.OneC</PackageId>
+    <RootNamespace>Querio.OneC</RootNamespace>
+    <MinVerTagPrefix>querio-v</MinVerTagPrefix>
+    <Description>Renders a Querio query into the 1C:Enterprise query language, with parameters rather than inlined values. Declares the narrower capability set 1C has, so a query asking for a row offset or a percentile is refused instead of quietly answering something else.</Description>
+    <PackageTags>query;1c;onec;query-builder;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsTrimmable Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsTrimmable>
+    <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Querio\Querio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The init-accessor marker netstandard2.0 lacks has to be declared per assembly, since it is
+         internal. Linking the core's copy keeps one source of truth instead of a second identical file. -->
+    <Compile Include="..\Querio\Internal\IsExternalInit.cs" Link="Internal\IsExternalInit.cs" />
+  </ItemGroup>
+
+</Project>

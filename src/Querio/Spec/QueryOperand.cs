@@ -14,6 +14,9 @@ public enum QueryOperandKind
 
     /// <summary>An offset from the current moment, carried in <see cref="QueryOperand.Relative"/>.</summary>
     Relative,
+
+    /// <summary>A call to a declared function, carried in <see cref="QueryOperand.Call"/>.</summary>
+    Function,
 }
 
 /// <summary>The unit of a relative time offset.</summary>
@@ -77,6 +80,9 @@ public sealed record QueryOperand
     /// <summary>The time offset, when <see cref="Kind"/> is <see cref="QueryOperandKind.Relative"/>.</summary>
     public QueryRelativeValue? Relative { get; init; }
 
+    /// <summary>The function call, when <see cref="Kind"/> is <see cref="QueryOperandKind.Function"/>.</summary>
+    public QueryFunctionCall? Call { get; init; }
+
     /// <summary>An operand holding a fixed value, in invariant-culture string form.</summary>
     /// <param name="value">The value to compare against.</param>
     public static QueryOperand Literal(string? value)
@@ -91,6 +97,17 @@ public sealed record QueryOperand
     /// <param name="values">The values to test membership against.</param>
     public static QueryOperand List(IReadOnlyList<string> values)
         => new() { Kind = QueryOperandKind.List, Values = values };
+
+    /// <summary>An operand that calls a declared function.</summary>
+    /// <param name="call">The call to evaluate.</param>
+    public static QueryOperand Function(QueryFunctionCall call)
+        => new() { Kind = QueryOperandKind.Function, Call = call };
+
+    /// <summary>An operand that calls a declared function by key with the given arguments.</summary>
+    /// <param name="function">Key of the declared function.</param>
+    /// <param name="arguments">The arguments, in parameter order.</param>
+    public static QueryOperand Function(string function, params QueryOperand[] arguments)
+        => Function(new QueryFunctionCall(function) { Arguments = arguments });
 
     /// <summary>An operand meaning "this long before now", re-evaluated every time the query runs.</summary>
     /// <param name="amount">How many units into the past; pass a positive number.</param>

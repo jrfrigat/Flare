@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Querio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Querio.Sql\Querio.Sql.csproj" />
+    <ProjectReference Include="..\..\src\Querio.OneC\Querio.OneC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The relational fixture is worth exercising against every renderer, so it is linked in rather
+         than copied. -->
+    <Compile Include="..\Querio.Tests\TestSchema.cs" Link="TestSchema.cs" />
+  </ItemGroup>
+
+</Project>

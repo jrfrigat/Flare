@@ -88,6 +88,24 @@ public enum QueryErrorCode
 
     /// <summary>The row offset is negative.</summary>
     InvalidOffset,
+
+    /// <summary>The schema declares no function by that key.</summary>
+    UnknownFunction,
+
+    /// <summary>The function is used where the other kind belongs - a table function as a value, or the reverse.</summary>
+    FunctionKindMismatch,
+
+    /// <summary>The call supplies too few or too many arguments for what the function declares.</summary>
+    FunctionArgumentCount,
+
+    /// <summary>An argument does not read as the type its parameter declares.</summary>
+    FunctionArgumentInvalid,
+
+    /// <summary>Both a field and a function call were given where only one value source belongs.</summary>
+    AmbiguousValueSource,
+
+    /// <summary>Neither a field nor a function call was given where a value source is required.</summary>
+    MissingValueSource,
 }
 
 /// <summary>One problem found in a query, with a stable code and the location it was found at.</summary>

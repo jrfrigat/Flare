@@ -52,6 +52,9 @@
        folder rather than under /src/Core/ so that separation stays visible. -->
   <Folder Name="/querio/">
     <Project Path="src/Querio/Querio.csproj" />
+    <Project Path="src/Querio.Sql/Querio.Sql.csproj" />
+    <Project Path="src/Querio.OneC/Querio.OneC.csproj" />
     <Project Path="tests/Querio.Tests/Querio.Tests.csproj" />
+    <Project Path="tests/Querio.Renderers.Tests/Querio.Renderers.Tests.csproj" />
   </Folder>
 </Solution>

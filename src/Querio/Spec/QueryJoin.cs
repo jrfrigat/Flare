@@ -5,18 +5,31 @@ public enum QuerySourceKind
 {
     /// <summary>An entity declared in the schema.</summary>
     Entity,
+
+    /// <summary>A call to a table function declared in the schema.</summary>
+    Function,
 }
 
 /// <summary>
-/// The query's root participant. <see cref="Kind"/> exists so that a future source - a subquery, a
-/// derived table - can be added without reshaping the contract that saved queries are stored in.
+/// The query's root participant: an entity, or a call to a table function. <see cref="Kind"/> says
+/// which, and leaves room for a future source - a subquery, a derived table - to be added without
+/// reshaping the contract that saved queries are stored in.
 /// </summary>
-/// <param name="Entity">Key of the entity to draw from.</param>
+/// <param name="Entity">Key of the entity to draw from. Null when a <see cref="Call"/> supplies the rows.</param>
 /// <param name="Alias">Alias every field reference to this participant uses.</param>
-public sealed record QuerySource(string Entity, string Alias)
+public sealed record QuerySource(string? Entity, string Alias)
 {
-    /// <summary>What this source draws from. Currently always an entity.</summary>
+    /// <summary>What this source draws from.</summary>
     public QuerySourceKind Kind { get; init; } = QuerySourceKind.Entity;
+
+    /// <summary>The table function call supplying the rows, when <see cref="Kind"/> is <see cref="QuerySourceKind.Function"/>.</summary>
+    public QueryFunctionCall? Call { get; init; }
+
+    /// <summary>Builds a source that draws its rows from a table function.</summary>
+    /// <param name="call">The table function call.</param>
+    /// <param name="alias">Alias every field reference to it uses.</param>
+    public static QuerySource FromFunction(QueryFunctionCall call, string alias)
+        => new(null, alias) { Kind = QuerySourceKind.Function, Call = call };
 }
 
 /// <summary>How unmatched rows on either side of a join are treated.</summary>
@@ -52,15 +65,28 @@ public sealed record QueryJoinCondition(QueryFieldRef Left, QueryFieldRef Right)
 /// declared; when both are set the relation wins.
 /// </para>
 /// </summary>
-/// <param name="Entity">Key of the entity being joined in.</param>
+/// <param name="Entity">Key of the entity being joined in. Null when a <see cref="Call"/> supplies the rows.</param>
 /// <param name="Alias">Alias every field reference to this participant uses.</param>
-public sealed record QueryJoin(string Entity, string Alias)
+public sealed record QueryJoin(string? Entity, string Alias)
 {
     /// <summary>How unmatched rows are treated. Defaults to <see cref="QueryJoinKind.Inner"/>.</summary>
     public QueryJoinKind Kind { get; init; } = QueryJoinKind.Inner;
 
+    /// <summary>
+    /// A table function call supplying the joined rows, instead of an entity. A function has no
+    /// declared relations, so such a join matches with an explicit <see cref="On"/>.
+    /// </summary>
+    public QueryFunctionCall? Call { get; init; }
+
     /// <summary>Key of the schema relation to traverse. The preferred way to express a join.</summary>
     public string? Relation { get; init; }
+
+    /// <summary>
+    /// Alias of the participant this join attaches to. Optional: with one candidate a renderer finds
+    /// it, but once the same entity appears twice - a chain of managers, say - only the caller knows
+    /// which occurrence was meant, and a renderer must not guess.
+    /// </summary>
+    public string? From { get; init; }
 
     /// <summary>Explicit match conditions, for a join the schema does not declare.</summary>
     public IReadOnlyList<QueryJoinCondition>? On { get; init; }

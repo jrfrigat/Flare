@@ -199,6 +199,31 @@ public sealed class QueryFilterBuilder
     public QueryFilterBuilder SelectEqual(string outputAlias, object? value)
         => CompareSelect(outputAlias, QueryOperator.Equals, value);
 
+    /// <summary>Compares the result of a value function against a fixed value.</summary>
+    /// <param name="call">The value function call being tested.</param>
+    /// <param name="op">The comparison to apply.</param>
+    /// <param name="value">The value to compare against.</param>
+    public QueryFilterBuilder CompareCall(QueryFunctionCall call, QueryOperator op, object? value)
+    {
+        _conditions.Add(new QueryCondition(null, op) { Call = call, Value = Literal(value) });
+        return this;
+    }
+
+    /// <summary>Requires the result of a value function to equal a fixed value.</summary>
+    /// <param name="call">The value function call being tested.</param>
+    /// <param name="value">The value to compare against.</param>
+    public QueryFilterBuilder EqualCall(QueryFunctionCall call, object? value)
+        => CompareCall(call, QueryOperator.Equals, value);
+
+    /// <summary>Compares a field against the result of a value function.</summary>
+    /// <param name="alias">Alias of the participant the field belongs to.</param>
+    /// <param name="field">Logical field name.</param>
+    /// <param name="op">The comparison to apply.</param>
+    /// <param name="call">The value function call supplying the other side.</param>
+    public QueryFilterBuilder CompareToCall(
+        string alias, string field, QueryOperator op, QueryFunctionCall call)
+        => Compare(alias, field, op, QueryOperand.Function(call));
+
     /// <summary>Nests a child node whose own children are combined with AND.</summary>
     /// <param name="configure">Builds the nested node.</param>
     public QueryFilterBuilder Group(Action<QueryFilterBuilder> configure)

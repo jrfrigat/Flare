@@ -32,9 +32,12 @@ public enum QueryDateTruncation
 /// One grouping level. Setting <see cref="Truncate"/> on a timestamp is what turns "every event" into
 /// "events per day" without needing a separate computed column.
 /// </summary>
-/// <param name="Field">The field to group by.</param>
-public sealed record QueryGroupBy(QueryFieldRef Field)
+/// <param name="Field">The field to group by. Null when a <see cref="Call"/> supplies the key.</param>
+public sealed record QueryGroupBy(QueryFieldRef? Field)
 {
+    /// <summary>A call to a value function to group by, instead of a field.</summary>
+    public QueryFunctionCall? Call { get; init; }
+
     /// <summary>Truncates a timestamp to a period before grouping. Null groups by the exact value.</summary>
     public QueryDateTruncation? Truncate { get; init; }
 
@@ -59,8 +62,11 @@ public enum QuerySortDirection
 /// </summary>
 public sealed record QuerySort
 {
-    /// <summary>The field to order by. Mutually exclusive with <see cref="Select"/>.</summary>
+    /// <summary>The field to order by. Mutually exclusive with <see cref="Select"/> and <see cref="Call"/>.</summary>
     public QueryFieldRef? Field { get; init; }
+
+    /// <summary>A call to a value function to order by, instead of a field.</summary>
+    public QueryFunctionCall? Call { get; init; }
 
     /// <summary>Output name of a selected item to order by. Mutually exclusive with <see cref="Field"/>.</summary>
     public string? Select { get; init; }
