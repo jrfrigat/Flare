@@ -1128,6 +1128,12 @@
   <data name="Query_Designer" xml:space="preserve">
     <value>Конструктор</value>
   </data>
+  <data name="Query_Target" xml:space="preserve">
+    <value>Цель</value>
+  </data>
+  <data name="Query_TargetAny" xml:space="preserve">
+    <value>Любая цель</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Канбан-доска</value>
   </data>

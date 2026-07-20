@@ -1128,6 +1128,12 @@
   <data name="Query_Designer" xml:space="preserve">
     <value>Designer</value>
   </data>
+  <data name="Query_Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="Query_TargetAny" xml:space="preserve">
+    <value>Any target</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Kanban Board</value>
   </data>

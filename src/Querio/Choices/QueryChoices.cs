@@ -120,14 +120,7 @@ public sealed class QueryChoices
     {
         get
         {
-            var kinds = new[]
-                {
-                    QueryJoinKind.Inner, QueryJoinKind.Left, QueryJoinKind.Right,
-                    QueryJoinKind.Full, QueryJoinKind.Cross,
-                }
-                .Where(Allows)
-                .ToList();
-
+            var kinds = JoinKinds;
             var choices = new List<QueryJoinChoice>();
             foreach (var participant in _participants)
             {
@@ -152,6 +145,19 @@ public sealed class QueryChoices
             return choices;
         }
     }
+
+    /// <summary>
+    /// The ways two sources may be joined, narrowed to what the target can shape. An outer join is
+    /// not offered to a target that has no way to keep unmatched rows.
+    /// </summary>
+    public IReadOnlyList<QueryJoinKind> JoinKinds
+        => new[]
+            {
+                QueryJoinKind.Inner, QueryJoinKind.Left, QueryJoinKind.Right,
+                QueryJoinKind.Full, QueryJoinKind.Cross,
+            }
+            .Where(Allows)
+            .ToList();
 
     /// <summary>The value functions a query may call, or none when the target cannot call any.</summary>
     public IReadOnlyList<QueryFunction> ValueFunctions
@@ -249,6 +255,14 @@ public sealed class QueryChoices
     /// <param name="field">The field an aggregate would be computed over.</param>
     public IReadOnlyList<QueryAggregate> AggregatesFor(QueryFieldRef field)
         => Find(field)?.Aggregates ?? [];
+
+    /// <summary>
+    /// The aggregates offered for a kind of value, without naming a particular field - which is what
+    /// a function call needs, since its result belongs to no entity.
+    /// </summary>
+    /// <param name="type">The semantic kind being aggregated.</param>
+    public IReadOnlyList<QueryAggregate> AggregatesForType(QueryFieldType type)
+        => Narrow(QueryDefaults.AggregatesFor(type));
 
     /// <summary>
     /// What may stand on the right of a condition on this field: a fixed value always, and a set, a
