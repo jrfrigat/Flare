@@ -209,9 +209,13 @@ public abstract class QueryRenderer<TExpression>
         _ => Literal(QueryValue.Parse(operand.Value, type), type),
     };
 
-    /// <summary>Renders a condition tree, or returns default when it constrains nothing.</summary>
+    /// <summary>
+    /// Renders a condition tree, or returns default when it constrains nothing. A target that
+    /// delimits a nested tree differently from the outermost one overrides this and reaches the
+    /// shared walk through <c>base.Filter</c> for the outermost tree only.
+    /// </summary>
     /// <param name="group">The tree to render.</param>
-    protected TExpression? Filter(QueryFilterGroup? group)
+    protected virtual TExpression? Filter(QueryFilterGroup? group)
     {
         if (group is null || group.IsEmpty) return default;
 
@@ -225,9 +229,14 @@ public abstract class QueryRenderer<TExpression>
         return parts.Count == 1 ? parts[0] : Combine(group.Or, parts);
     }
 
-    /// <summary>Renders one condition, resolving its left side and reading its operands.</summary>
+    /// <summary>
+    /// Renders one condition, resolving its left side and reading its operands. A target whose
+    /// spelling of an operator needs the operand before it is rendered - a pattern match built out
+    /// of the raw text, say - overrides this for those operators and defers the rest to
+    /// <c>base.Condition</c>.
+    /// </summary>
     /// <param name="condition">The condition to render.</param>
-    protected TExpression Condition(QueryCondition condition)
+    protected virtual TExpression Condition(QueryCondition condition)
     {
         TExpression left;
         QueryFieldType type;
