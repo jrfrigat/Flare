@@ -8,7 +8,17 @@
    object rendered into three different languages, which is the point of keeping the two apart. *@
 
 <FlareStack Spacing="4">
-    <FlareQueryBuilder Schema="_schema" @bind-Spec="_spec" ShowSubmit="false" />
+    @* Naming the target narrows what the designer offers: pick SQLite and the percentile aggregate
+       disappears, pick 1C and so do cross joins and paging by offset. Nothing is offered that would
+       only fail once the query was rendered. *@
+    <FlareStack Direction="StackDirection.Row" Spacing="2" AlignItems="StackAlign.Center">
+        <span>@GalleryStrings.Query_Target</span>
+        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
+                     Value="@_target" ValueChanged="@(value => _target = value ?? string.Empty)"
+                     Style="width: 12rem" />
+    </FlareStack>
+
+    <FlareQueryBuilder Schema="_schema" @bind-Spec="_spec" ShowSubmit="false" Capabilities="@TargetCapabilities" />
 
     <FlareTabs>
         <FlareTab Title="JSON">
@@ -39,6 +49,23 @@
 
     private QuerySpec? _spec;
     private string _json = string.Empty;
+    private string _target = string.Empty;
+
+    private static readonly IReadOnlyList<string> Targets =
+        [string.Empty, "PostgreSQL", "SQL Server", "SQLite", "1C"];
+
+    private string TargetLabel(string value)
+        => string.IsNullOrEmpty(value) ? GalleryStrings.Query_TargetAny : value;
+
+    // A dialect declares what it can do, so it is itself the answer to "what may this offer".
+    private IQueryCapabilities? TargetCapabilities => _target switch
+    {
+        "PostgreSQL" => PostgreSqlDialect.Instance,
+        "SQL Server" => SqlServerDialect.Instance,
+        "SQLite" => SqliteDialect.Instance,
+        "1C" => OneCRenderer.Capabilities,
+        _ => null,
+    };
 
     // A request log with a couple of related entities, plus one declared function of each kind - the
     // shape most reporting screens actually have.

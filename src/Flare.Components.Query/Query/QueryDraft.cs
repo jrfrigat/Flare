@@ -44,23 +44,9 @@ public sealed class QueryDraft
     /// <summary>Rows to skip before returning any, or null to start at the first.</summary>
     public int? Offset { get; set; }
 
-    /// <summary>Every participant currently in the query, root first, as alias and entity key.</summary>
-    public IReadOnlyList<QueryParticipant> Participants
-    {
-        get
-        {
-            var participants = new List<QueryParticipant> { new(RootAlias, RootEntity, RootFunction) };
-            foreach (var join in Joins) participants.Add(new QueryParticipant(join.Alias, join.Entity, null));
-            return participants;
-        }
-    }
-
-    /// <summary>Output names a HAVING condition or an ordering can refer to.</summary>
-    public IReadOnlyList<string> OutputAliases
-        => Columns.Where(column => !string.IsNullOrWhiteSpace(column.OutputAlias))
-            .Select(column => column.OutputAlias!)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .ToList();
+    // What the query reaches, what it may be offered next and which alias is free are all answered
+    // by QueryChoices in the core, from the spec this draft produces. They were worked out here once
+    // too, which meant the designer could disagree with anything else that builds a query.
 
     /// <summary>Converts the draft into a query, leaving out rows that are not filled in yet.</summary>
     public QuerySpec ToSpec()
@@ -189,21 +175,8 @@ public sealed class QueryDraft
         return draft;
     }
 
-    /// <summary>Suggests an unused alias for an entity, the way the fluent builder would.</summary>
-    /// <param name="entityKey">The entity being added.</param>
-    public string SuggestAlias(string entityKey)
-    {
-        var seed = Initial(entityKey);
-        var taken = Participants.Select(participant => participant.Alias).ToList();
-        if (!taken.Contains(seed, StringComparer.OrdinalIgnoreCase)) return seed;
-
-        for (var suffix = 2; ; suffix++)
-        {
-            var candidate = seed + suffix.ToString(CultureInfo.InvariantCulture);
-            if (!taken.Contains(candidate, StringComparer.OrdinalIgnoreCase)) return candidate;
-        }
-    }
-
+    // Only a fallback for a spec that arrived without an alias; suggesting one against the aliases
+    // already taken is QueryChoices.SuggestAlias, in the core.
     private static string Initial(string entityKey)
     {
         foreach (var character in entityKey)
@@ -213,12 +186,6 @@ public sealed class QueryDraft
         return "t";
     }
 }
-
-/// <summary>One participant in the query: the alias it is referred to by and what stands behind it.</summary>
-/// <param name="Alias">The alias field references use.</param>
-/// <param name="Entity">Key of the entity, when the participant is one.</param>
-/// <param name="Function">Key of the table function, when the participant is one.</param>
-public sealed record QueryParticipant(string Alias, string Entity, string? Function = null);
 
 /// <summary>
 /// One argument of a function call, as the designer edits it: either a field of some participant or

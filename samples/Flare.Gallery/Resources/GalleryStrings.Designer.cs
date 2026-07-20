@@ -4514,7 +4514,25 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Query_Designer", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Target.
+        /// </summary>
+        public static string Query_Target {
+            get {
+                return ResourceManager.GetString("Query_Target", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Any target.
+        /// </summary>
+        public static string Query_TargetAny {
+            get {
+                return ResourceManager.GetString("Query_TargetAny", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Container (MaxWidth).
         /// </summary>

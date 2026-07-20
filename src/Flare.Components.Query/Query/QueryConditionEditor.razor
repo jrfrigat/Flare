@@ -97,7 +97,7 @@
 
         @foreach (var nested in Group.Groups)
         {
-            <QueryConditionEditor Group="nested" Parent="Group" Schema="Schema" Draft="Draft"
+            <QueryConditionEditor Group="nested" Parent="Group" Schema="Schema" Choices="Choices"
                                   AllowAggregates="AllowAggregates" OnChanged="OnChanged" />
         }
     </div>
@@ -115,8 +115,11 @@
     /// <summary>The schema the query is built against.</summary>
     [Parameter, EditorRequired] public QuerySchema? Schema { get; set; }
 
-    /// <summary>The draft, which supplies the participants and output names a condition may name.</summary>
-    [Parameter, EditorRequired] public QueryDraft? Draft { get; set; }
+    /// <summary>
+    /// What the query may be offered, read from the core. It supplies the fields a condition may
+    /// test, the operators each one allows and the output names an aggregate can be named by.
+    /// </summary>
+    [Parameter, EditorRequired] public QueryChoices? Choices { get; set; }
 
     /// <summary>Whether conditions may test a computed aggregate, which is true only in a HAVING clause.</summary>
     [Parameter] public bool AllowAggregates { get; set; }
@@ -157,38 +160,15 @@
     {
         get
         {
-            var targets = new List<string>();
-            if (Draft is null || Schema is null) return targets;
+            if (Choices is null) return [];
 
-            foreach (var participant in Draft.Participants)
-            {
-                // Named "member" rather than "field": inside a property accessor, C# 14 treats
-                // "field" as a contextual keyword.
-                foreach (var member in FieldsOf(participant))
-                {
-                    targets.Add($"f:{participant.Alias}.{member.Key}");
-                }
-            }
-            foreach (var function in Schema.Functions)
-            {
-                if (function.Kind == QueryFunctionKind.Value) targets.Add($"fn:{function.Key}");
-            }
-            if (AllowAggregates)
-            {
-                foreach (var alias in Draft.OutputAliases) targets.Add($"s:{alias}");
-            }
+            // Only the fields the schema lets a condition test; one it has closed off is selectable
+            // but never filterable.
+            var targets = Choices.Filterable.Select(member => $"f:{member}").ToList();
+            targets.AddRange(Choices.ValueFunctions.Select(function => $"fn:{function.Key}"));
+            if (AllowAggregates) targets.AddRange(Choices.Outputs.Select(alias => $"s:{alias}"));
             return targets;
         }
-    }
-
-    private IReadOnlyList<QueryField> FieldsOf(QueryParticipant participant)
-    {
-        if (Schema is null) return [];
-        if (!string.IsNullOrEmpty(participant.Function))
-        {
-            return Schema.FindFunction(participant.Function!)?.Columns ?? [];
-        }
-        return Schema.FindEntity(participant.Entity)?.Fields ?? [];
     }
 
     private string TargetLabel(string token)
@@ -252,14 +232,14 @@
 
     private IReadOnlyList<QueryOperator> OperatorsFor(QueryConditionDraft condition)
     {
-        var type = TypeOf(condition);
-        if (type is null) return QueryDefaults.OperatorsFor(QueryFieldType.Text);
-        if (!string.IsNullOrWhiteSpace(condition.Alias) && !string.IsNullOrWhiteSpace(condition.Field))
-        {
-            var field = FindField(condition.Alias, condition.Field);
-            if (field is not null) return field.AllowedOperators;
-        }
-        return QueryDefaults.OperatorsFor(type.Value);
+        if (Choices is null) return [];
+
+        // A field carries its own permitted operators; anything else is judged by what it yields.
+        var member = FindField(condition);
+        if (member is not null) return member.Operators.Select(choice => choice.Operator).ToList();
+
+        var type = TypeOf(condition) ?? QueryFieldType.Text;
+        return Choices.OperatorsFor(type).Select(choice => choice.Operator).ToList();
     }
 
     private QueryFieldType? TypeOf(QueryConditionDraft condition)
@@ -269,22 +249,13 @@
         {
             return Schema?.FindFunction(condition.Function!)?.ReturnType;
         }
-        return FindField(condition.Alias, condition.Field)?.Type;
+        return FindField(condition)?.Type;
     }
 
-    private QueryField? FindField(string alias, string field)
-    {
-        if (Draft is null || string.IsNullOrEmpty(alias)) return null;
-        foreach (var participant in Draft.Participants)
-        {
-            if (!string.Equals(participant.Alias, alias, StringComparison.OrdinalIgnoreCase)) continue;
-            foreach (var candidate in FieldsOf(participant))
-            {
-                if (string.Equals(candidate.Key, field, StringComparison.OrdinalIgnoreCase)) return candidate;
-            }
-        }
-        return null;
-    }
+    private QueryFieldChoice? FindField(QueryConditionDraft condition)
+        => Choices is null || string.IsNullOrWhiteSpace(condition.Alias) || string.IsNullOrWhiteSpace(condition.Field)
+            ? null
+            : Choices.Find(new QueryFieldRef(condition.Alias, condition.Field));
 
     private bool IsTimestamp(QueryConditionDraft condition) => TypeOf(condition) == QueryFieldType.DateTime;
 

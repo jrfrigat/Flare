@@ -115,7 +115,7 @@
 
         <section class="flare-qb__section">
             <h3 class="flare-qb__heading">@Labels.Filter</h3>
-            <QueryConditionEditor Group="_draft.Where" Schema="Schema" Draft="_draft"
+            <QueryConditionEditor Group="_draft.Where" Schema="Schema" Choices="_choices"
                                   AndLabel="@Labels.And" OrLabel="@Labels.Or"
                                   AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
                                   RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"
@@ -128,7 +128,7 @@
         {
             <section class="flare-qb__section">
                 <h3 class="flare-qb__heading">@Labels.GroupFilter</h3>
-                <QueryConditionEditor Group="_draft.Having" Schema="Schema" Draft="_draft" AllowAggregates="true"
+                <QueryConditionEditor Group="_draft.Having" Schema="Schema" Choices="_choices" AllowAggregates="true"
                                       AndLabel="@Labels.And" OrLabel="@Labels.Or"
                                       AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
                                       RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"
@@ -193,9 +193,18 @@
     private QueryValidationResult _validation = new([]);
     private QuerySpec? _emitted;
     private QuerySchema? _boundSchema;
+    private QueryChoices? _choices;
 
     /// <summary>The entities, relations and functions a query may use. Required.</summary>
     [Parameter, EditorRequired] public QuerySchema? Schema { get; set; }
+
+    /// <summary>
+    /// What the query is ultimately going to run on. Setting it narrows every list the designer
+    /// offers to what that target can actually express - a backend with no set operators stops
+    /// offering "is one of", one that cannot keep unmatched rows stops offering an outer join. Null
+    /// offers everything the schema allows.
+    /// </summary>
+    [Parameter] public IQueryCapabilities? Capabilities { get; set; }
 
     /// <summary>
     /// The query being composed. Two-way bindable, so a spec built in code or restored from storage
@@ -242,6 +251,11 @@
             _draft = QueryDraft.FromSpec(Spec, Schema);
             Revalidate();
         }
+        else if (!ReferenceEquals(_choices?.Capabilities, Capabilities ?? QueryCapabilities.All))
+        {
+            // Retargeting mid-edit keeps the query but re-reads what may be offered for it.
+            Revalidate();
+        }
     }
 
     private void Rebuild()
@@ -256,6 +270,9 @@
         if (Schema is null) return;
         _emitted = _draft.ToSpec();
         _validation = _emitted.Validate(Schema);
+        // What the query may be offered next is worked out by the core, not here: a designer is only
+        // one of the things that builds a query, and they must all agree on what is allowed.
+        _choices = QueryChoices.For(_emitted, Schema, Capabilities);
     }
 
     private async Task Submit()
@@ -274,19 +291,13 @@
     private string EntityLabel(string key) => Schema?.FindEntity(key)?.Label ?? key;
 
     // The root may be an entity or a table function, so one dropdown carries both, tagged by prefix.
+    // Which of the two are on offer is the core's answer, not this component's.
     private IReadOnlyList<string> Sources
-    {
-        get
-        {
-            var sources = EntityKeys.Select(key => "e:" + key).ToList();
-            if (Schema is null) return sources;
-            foreach (var function in Schema.Functions)
-            {
-                if (function.Kind == QueryFunctionKind.Table) sources.Add("fn:" + function.Key);
-            }
-            return sources;
-        }
-    }
+        => Schema is null
+            ? []
+            : QueryChoices.Roots(Schema, Capabilities)
+                .Select(root => (root.Kind == QuerySourceKind.Function ? "fn:" : "e:") + root.Key)
+                .ToList();
 
     private string SourceLabel(string token)
         => token.StartsWith("fn:", StringComparison.Ordinal)
@@ -317,16 +328,22 @@
             _draft.RootEntity = token[2..];
         }
 
-        if (string.IsNullOrEmpty(_draft.RootAlias)) _draft.RootAlias = _draft.SuggestAlias(_draft.RootEntity);
+        if (string.IsNullOrEmpty(_draft.RootAlias)) _draft.RootAlias = SuggestAlias(_draft.RootEntity);
         Rebuild();
     }
 
+    // Seeded from a join the core says is actually available, so a freshly added row already reaches
+    // something rather than waiting to be corrected.
     private void AddJoin()
     {
-        var entity = EntityKeys.FirstOrDefault() ?? string.Empty;
-        var join = new QueryJoinDraft { Entity = entity, Alias = _draft.SuggestAlias(entity) };
-        join.Relation = RelationsFor(join).FirstOrDefault();
-        _draft.Joins.Add(join);
+        var offered = _choices?.Joins.FirstOrDefault();
+        var entity = offered?.Entity ?? EntityKeys.FirstOrDefault() ?? string.Empty;
+        _draft.Joins.Add(new QueryJoinDraft
+        {
+            Entity = entity,
+            Alias = offered?.SuggestedAlias ?? SuggestAlias(entity),
+            Relation = offered?.Relation,
+        });
         Rebuild();
     }
 
@@ -337,17 +354,22 @@
         Rebuild();
     }
 
-    // Only relations that actually reach this entity are worth offering; anything else would build a
-    // join the validator immediately rejects.
+    // Only relations that reach something already in the query are worth offering; anything else
+    // would build a join the validator immediately rejects.
     private IReadOnlyList<string> RelationsFor(QueryJoinDraft join)
-        => Schema is null || string.IsNullOrEmpty(join.Entity)
+        => string.IsNullOrEmpty(join.Entity) || _choices is null
             ? []
-            : Schema.RelationsOf(join.Entity).Select(relation => relation.Key).ToList();
+            : _choices.Joins
+                .Where(choice => string.Equals(choice.Entity, join.Entity, StringComparison.OrdinalIgnoreCase))
+                .Select(choice => choice.Relation)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
 
     private string RelationLabel(string key) => Schema?.FindRelation(key)?.Label ?? key;
 
-    private static readonly IReadOnlyList<QueryJoinKind> JoinKinds =
-        (QueryJoinKind[])Enum.GetValues(typeof(QueryJoinKind));
+    private IReadOnlyList<QueryJoinKind> JoinKinds => _choices?.JoinKinds ?? [];
+
+    private string SuggestAlias(string key) => _choices?.SuggestAlias(key) ?? key;
 
     // ---- Columns --------------------------------------------------------------------------------
 
@@ -355,30 +377,11 @@
     {
         get
         {
-            var targets = new List<string>();
-            if (Schema is null) return targets;
-            foreach (var participant in _draft.Participants)
-            {
-                // Named "member" rather than "field": inside a property accessor, C# 14 treats
-                // "field" as a contextual keyword.
-                foreach (var member in FieldsOf(participant)) targets.Add($"f:{participant.Alias}.{member.Key}");
-            }
-            foreach (var function in Schema.Functions)
-            {
-                if (function.Kind == QueryFunctionKind.Value) targets.Add("fn:" + function.Key);
-            }
+            if (_choices is null) return [];
+            var targets = _choices.Fields.Select(member => $"f:{member}").ToList();
+            targets.AddRange(_choices.ValueFunctions.Select(function => "fn:" + function.Key));
             return targets;
         }
-    }
-
-    private IReadOnlyList<QueryField> FieldsOf(QueryParticipant participant)
-    {
-        if (Schema is null) return [];
-        if (!string.IsNullOrEmpty(participant.Function))
-        {
-            return Schema.FindFunction(participant.Function!)?.Columns ?? [];
-        }
-        return Schema.FindEntity(participant.Entity)?.Fields ?? [];
     }
 
     private string ValueTargetLabel(string token)
@@ -434,30 +437,31 @@
         else Rebuild();
     }
 
+    private QueryFieldChoice? ColumnField(QueryColumnDraft column)
+        => _choices is null || string.IsNullOrEmpty(column.Alias) || string.IsNullOrEmpty(column.Field)
+            ? null
+            : _choices.Find(new QueryFieldRef(column.Alias, column.Field));
+
     private QueryFieldType? ColumnType(QueryColumnDraft column)
-    {
-        if (!string.IsNullOrEmpty(column.Function)) return Schema?.FindFunction(column.Function!)?.ReturnType;
-        foreach (var participant in _draft.Participants)
-        {
-            if (!string.Equals(participant.Alias, column.Alias, StringComparison.OrdinalIgnoreCase)) continue;
-            foreach (var field in FieldsOf(participant))
-            {
-                if (string.Equals(field.Key, column.Field, StringComparison.OrdinalIgnoreCase)) return field.Type;
-            }
-        }
-        return null;
-    }
+        => string.IsNullOrEmpty(column.Function)
+            ? ColumnField(column)?.Type
+            : Schema?.FindFunction(column.Function!)?.ReturnType;
 
     private bool IsTimestampColumn(QueryColumnDraft column) => ColumnType(column) == QueryFieldType.DateTime;
 
-    // Offering only what the schema permits keeps the grid from producing a query the validator would
-    // immediately reject.
+    // Offering only what the schema permits and the target can compute keeps the grid from producing
+    // a query that would be rejected, or that would fail once it was rendered.
     private IReadOnlyList<string> AggregatesFor(QueryColumnDraft column)
     {
         var options = new List<string> { string.Empty };
-        var type = ColumnType(column);
-        if (type is null) return options;
-        foreach (var aggregate in QueryDefaults.AggregatesFor(type.Value)) options.Add(aggregate.ToString());
+        var allowed = ColumnField(column)?.Aggregates;
+        if (allowed is null)
+        {
+            var type = ColumnType(column);
+            if (type is null || _choices is null) return options;
+            allowed = _choices.AggregatesForType(type.Value);
+        }
+        foreach (var aggregate in allowed) options.Add(aggregate.ToString());
         return options;
     }
 
@@ -472,9 +476,9 @@
         Rebuild();
     }
 
-    private static readonly IReadOnlyList<string> Periods =
-        new[] { string.Empty }
-            .Concat(((QueryDateTruncation[])Enum.GetValues(typeof(QueryDateTruncation))).Select(p => p.ToString()))
+    private IReadOnlyList<string> Periods
+        => new[] { string.Empty }
+            .Concat((_choices?.Periods ?? []).Select(period => period.ToString()))
             .ToList();
 
     private string PeriodLabel(string value) => string.IsNullOrEmpty(value) ? Labels.None : value;
