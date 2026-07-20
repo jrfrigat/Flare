@@ -27,9 +27,9 @@ public sealed class QueryDescriberTests
         var description = QueryDescriber.Describe(spec, Schema);
 
         Assert.Equal(
-            "From Requests, showing Route and the number of rows, " +
-            "where (Timestamp is at least the last 30 days and Error is true), " +
-            "grouped by Route, ordered by the number of rows descending, first 20",
+            "From Requests (r), showing Route and the number of rows called total, " +
+            "where (Timestamp is at least the last 30 days and Error is \"true\"), " +
+            "grouped by Route, ordered by total descending, first 20",
             description);
     }
 
@@ -101,6 +101,6 @@ public sealed class QueryDescriberTests
 
         var description = QueryDescriber.Describe(spec, Schema, labels);
 
-        Assert.StartsWith("Из Requests, показываем Route, где", description, StringComparison.Ordinal);
+        Assert.StartsWith("Из Requests (r), показываем Route, где", description, StringComparison.Ordinal);
     }
 }
