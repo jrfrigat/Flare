@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\src\Querio.OneC\Querio.OneC.csproj" />
     <ProjectReference Include="..\..\src\Querio.Text\Querio.Text.csproj" />
     <ProjectReference Include="..\..\src\Querio.Linq\Querio.Linq.csproj" />
+    <ProjectReference Include="..\..\src\Querio.Http\Querio.Http.csproj" />
   </ItemGroup>
 
   <ItemGroup>
