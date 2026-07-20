@@ -10,8 +10,14 @@ namespace Querio;
 /// </summary>
 public sealed record QuerySelect
 {
-    /// <summary>The field to return or aggregate. Null means count rows rather than values.</summary>
+    /// <summary>The field to return or aggregate. Null when a <see cref="Call"/> supplies the value, or when counting rows.</summary>
     public QueryFieldRef? Field { get; init; }
+
+    /// <summary>
+    /// A call to a value function to return or aggregate, instead of a field. Mutually exclusive
+    /// with <see cref="Field"/>; an aggregate may wrap either.
+    /// </summary>
+    public QueryFunctionCall? Call { get; init; }
 
     /// <summary>The aggregate to compute. Null returns the field itself.</summary>
     public QueryAggregate? Aggregate { get; init; }

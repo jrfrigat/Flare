@@ -65,6 +65,12 @@ public enum QueryFeature
 
     /// <summary>Matching part of a text value.</summary>
     TextSearch,
+
+    /// <summary>Calling a declared function that yields a value.</summary>
+    ValueFunctions,
+
+    /// <summary>Drawing rows from a declared function that yields a table.</summary>
+    TableFunctions,
 }
 
 /// <summary>

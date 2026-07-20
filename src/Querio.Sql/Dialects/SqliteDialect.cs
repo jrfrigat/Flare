@@ -21,7 +21,7 @@ public sealed class SqliteDialect : SqlDialect
 
     /// <inheritdoc/>
     protected override IQueryCapabilities Capabilities { get; }
-        = QueryCapabilities.All.Without(QueryFeature.Percentile);
+        = QueryCapabilities.All.Without(QueryFeature.Percentile, QueryFeature.TableFunctions);
 
     /// <inheritdoc/>
     public override string Quote(string identifier) => "\"" + Escape(identifier, '"') + "\"";

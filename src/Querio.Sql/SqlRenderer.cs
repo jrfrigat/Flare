@@ -18,7 +18,7 @@ public sealed class SqlRenderer
     private readonly QuerySchema _schema;
     private readonly SqlDialect _dialect;
     private readonly List<SqlQueryParameter> _parameters = [];
-    private readonly Dictionary<string, QueryEntity> _participants = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, IReadOnlyList<QueryField>> _fields = new(StringComparer.OrdinalIgnoreCase);
     private readonly List<KeyValuePair<string, string>> _ordered = [];
     private readonly Dictionary<string, string> _outputExpressions = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, QueryFieldType> _outputTypes = new(StringComparer.OrdinalIgnoreCase);
@@ -57,9 +57,9 @@ public sealed class SqlRenderer
         AppendSelect(sql);
         AppendFrom(sql);
         AppendJoins(sql);
-        AppendClause(sql, " WHERE ", _spec.Where, having: false);
+        AppendClause(sql, " WHERE ", _spec.Where);
         AppendGroupBy(sql);
-        AppendClause(sql, " HAVING ", _spec.Having, having: true);
+        AppendClause(sql, " HAVING ", _spec.Having);
         var hasOrderBy = AppendOrderBy(sql);
         _dialect.AppendPaging(sql, _spec.Limit, _spec.Offset, hasOrderBy);
 
@@ -68,15 +68,22 @@ public sealed class SqlRenderer
 
     private void CollectParticipants()
     {
-        Register(_spec.From.Entity, _spec.From.Alias);
-        foreach (var join in _spec.Joins) Register(join.Entity, join.Alias);
+        Register(_spec.From.Entity, _spec.From.Call, _spec.From.Alias);
+        foreach (var join in _spec.Joins) Register(join.Entity, join.Call, join.Alias);
     }
 
-    private void Register(string entityKey, string alias)
+    // Validation already proved these resolve, so a miss here is impossible by construction. A table
+    // function contributes its declared columns, which makes it a participant like any entity.
+    private void Register(string? entityKey, QueryFunctionCall? call, string alias)
     {
-        // Validation already proved the entity exists, so a miss here is impossible by construction.
-        _participants[alias] = _schema.FindEntity(entityKey)!;
-        _ordered.Add(new KeyValuePair<string, string>(alias, entityKey));
+        if (call is not null)
+        {
+            _fields[alias] = _schema.FindFunction(call.Function)!.Columns;
+            _ordered.Add(new KeyValuePair<string, string>(alias, string.Empty));
+            return;
+        }
+        _fields[alias] = _schema.FindEntity(entityKey!)!.Fields;
+        _ordered.Add(new KeyValuePair<string, string>(alias, entityKey!));
     }
 
     private void RequireCapabilities()
@@ -90,7 +97,9 @@ public sealed class SqlRenderer
                 case QueryJoinKind.Full: Require(QueryFeature.FullJoin); break;
                 case QueryJoinKind.Cross: Require(QueryFeature.CrossJoin); break;
             }
+            if (join.Call is not null) Require(QueryFeature.TableFunctions);
         }
+        if (_spec.From.Call is not null) Require(QueryFeature.TableFunctions);
 
         foreach (var item in _spec.Select)
         {
@@ -98,10 +107,13 @@ public sealed class SqlRenderer
             if (item.Distinct) Require(QueryFeature.DistinctAggregate);
             if (item.Aggregate == QueryAggregate.Percentile) Require(QueryFeature.Percentile);
             if (item.Truncate is not null) Require(QueryFeature.DateTruncation);
+            if (item.Call is not null) Require(QueryFeature.ValueFunctions);
         }
 
         if (_spec.GroupBy.Count > 0) Require(QueryFeature.Grouping);
         if (_spec.GroupBy.Any(group => group.Truncate is not null)) Require(QueryFeature.DateTruncation);
+        if (_spec.GroupBy.Any(group => group.Call is not null)) Require(QueryFeature.ValueFunctions);
+        if (_spec.OrderBy.Any(sort => sort.Call is not null)) Require(QueryFeature.ValueFunctions);
         if (_spec.Having is not null) Require(QueryFeature.Having);
         if (_spec.Distinct) Require(QueryFeature.Distinct);
         if (_spec.Limit is not null) Require(QueryFeature.Limit);
@@ -115,11 +127,13 @@ public sealed class SqlRenderer
             {
                 Require(QueryFeature.TextSearch);
             }
+            if (condition.Call is not null) Require(QueryFeature.ValueFunctions);
             foreach (var operand in new[] { condition.Value, condition.Value2 })
             {
                 if (operand is null) continue;
                 if (operand.Kind == QueryOperandKind.Field) Require(QueryFeature.FieldComparison);
                 if (operand.Kind == QueryOperandKind.Relative) Require(QueryFeature.RelativeTime);
+                if (operand.Kind == QueryOperandKind.Function) Require(QueryFeature.ValueFunctions);
             }
         }
     }
@@ -173,13 +187,13 @@ public sealed class SqlRenderer
     {
         if (item.Aggregate is null)
         {
-            var plain = FieldExpression(item.Field!);
+            var plain = Value(item.Field, item.Call);
             return item.Truncate is null ? plain : _dialect.TruncateDate(plain, item.Truncate.Value);
         }
 
-        if (item.Aggregate == QueryAggregate.Count && item.Field is null) return "COUNT(*)";
+        if (item.Aggregate == QueryAggregate.Count && item.Field is null && item.Call is null) return "COUNT(*)";
 
-        var inner = FieldExpression(item.Field!);
+        var inner = Value(item.Field, item.Call);
         if (item.Aggregate == QueryAggregate.Percentile)
         {
             return _dialect.Percentile(inner, item.Percentile ?? 0d, _spec.GroupBy.Count > 0);
@@ -200,17 +214,15 @@ public sealed class SqlRenderer
     // What a selected item yields, so a HAVING condition against it reads its value correctly.
     private QueryFieldType OutputType(QuerySelect item)
     {
-        if (item.Aggregate == QueryAggregate.Count) return QueryFieldType.Number;
-        if (item.Aggregate == QueryAggregate.Percentile) return QueryFieldType.Number;
-        if (item.Field is null) return QueryFieldType.Number;
-        return FieldType(item.Field);
+        if (item.Aggregate is QueryAggregate.Count or QueryAggregate.Percentile) return QueryFieldType.Number;
+        if (item.Field is null && item.Call is null) return QueryFieldType.Number;
+        return ValueType(item.Field, item.Call);
     }
 
     private void AppendFrom(StringBuilder sql)
     {
-        var entity = _participants[_spec.From.Alias];
         sql.Append(" FROM ")
-           .Append(_dialect.QuoteQualified(entity.PhysicalName))
+           .Append(SourceExpression(_spec.From.Entity, _spec.From.Call))
            .Append(" AS ")
            .Append(_dialect.Quote(_spec.From.Alias));
     }
@@ -220,7 +232,6 @@ public sealed class SqlRenderer
         for (var i = 0; i < _spec.Joins.Count; i++)
         {
             var join = _spec.Joins[i];
-            var entity = _participants[join.Alias];
             var keyword = join.Kind switch
             {
                 QueryJoinKind.Left => "LEFT JOIN",
@@ -231,7 +242,7 @@ public sealed class SqlRenderer
             };
 
             sql.Append(' ').Append(keyword).Append(' ')
-               .Append(_dialect.QuoteQualified(entity.PhysicalName))
+               .Append(SourceExpression(join.Entity, join.Call))
                .Append(" AS ")
                .Append(_dialect.Quote(join.Alias));
 
@@ -239,6 +250,11 @@ public sealed class SqlRenderer
             sql.Append(" ON ").Append(JoinCondition(join, i));
         }
     }
+
+    private string SourceExpression(string? entityKey, QueryFunctionCall? call)
+        => call is not null
+            ? CallExpression(call)
+            : _dialect.QuoteQualified(_schema.FindEntity(entityKey!)!.PhysicalName);
 
     private string JoinCondition(QueryJoin join, int index)
     {
@@ -292,39 +308,39 @@ public sealed class SqlRenderer
             $"'{joinAlias}' is ambiguous. Set QueryJoin.From to the alias it attaches to.");
     }
 
-    private void AppendClause(StringBuilder sql, string keyword, QueryFilterGroup? group, bool having)
+    private void AppendClause(StringBuilder sql, string keyword, QueryFilterGroup? group)
     {
         if (group is null || group.IsEmpty) return;
-        sql.Append(keyword).Append(RenderGroup(group, having));
+        sql.Append(keyword).Append(RenderGroup(group));
     }
 
-    private string RenderGroup(QueryFilterGroup group, bool having)
+    private string RenderGroup(QueryFilterGroup group)
     {
         var parts = new List<string>(group.Conditions.Count + group.Groups.Count);
-        foreach (var condition in group.Conditions) parts.Add(RenderCondition(condition, having));
+        foreach (var condition in group.Conditions) parts.Add(RenderCondition(condition));
         foreach (var nested in group.Groups)
         {
             if (nested.IsEmpty) continue;
-            parts.Add("(" + RenderGroup(nested, having) + ")");
+            parts.Add("(" + RenderGroup(nested) + ")");
         }
         return string.Join(group.Or ? " OR " : " AND ", parts);
     }
 
-    private string RenderCondition(QueryCondition condition, bool having)
+    private string RenderCondition(QueryCondition condition)
     {
         string left;
         QueryFieldType type;
-        if (condition.Field is not null)
-        {
-            left = FieldExpression(condition.Field);
-            type = FieldType(condition.Field);
-        }
-        else
+        if (!string.IsNullOrEmpty(condition.Select))
         {
             // A HAVING condition names a computed aggregate. Some engines refuse an output alias
             // here, so the expression behind it is emitted instead.
             left = _outputExpressions[condition.Select!];
             type = _outputTypes.TryGetValue(condition.Select!, out var known) ? known : QueryFieldType.Number;
+        }
+        else
+        {
+            left = Value(condition.Field, condition.Call);
+            type = ValueType(condition.Field, condition.Call);
         }
 
         switch (condition.Operator)
@@ -354,7 +370,7 @@ public sealed class SqlRenderer
 
     private string Like(string left, QueryOperand operand, string shape)
     {
-        // Comparing against another column cannot carry an escaped pattern, so it is emitted as-is.
+        // Comparing against another expression cannot carry an escaped pattern, so it is emitted as-is.
         if (operand.Kind != QueryOperandKind.Literal)
         {
             return $"{left} {_dialect.LikeOperator} {Operand(operand, QueryFieldType.Text)}";
@@ -372,8 +388,23 @@ public sealed class SqlRenderer
         QueryOperandKind.Field => FieldExpression(operand.Field!),
         QueryOperandKind.Relative => _dialect.RelativeMoment(operand.Relative!.Amount, operand.Relative.Unit),
         QueryOperandKind.List => ValueList(operand, type),
+        QueryOperandKind.Function => CallExpression(operand.Call!),
         _ => AddParameter(QueryValue.Parse(operand.Value, type)),
     };
+
+    private string CallExpression(QueryFunctionCall call)
+    {
+        var function = _schema.FindFunction(call.Function)!;
+        var arguments = new List<string>(call.Arguments.Count);
+        for (var i = 0; i < call.Arguments.Count; i++)
+        {
+            // A literal argument is read as the parameter it fills, which is what lets a date
+            // argument reach the driver as a date rather than as text.
+            var type = i < function.Parameters.Count ? function.Parameters[i].Type : QueryFieldType.Text;
+            arguments.Add(Operand(call.Arguments[i], type));
+        }
+        return _dialect.CallFunction(_dialect.QuoteQualified(function.PhysicalName), arguments);
+    }
 
     private static string Symbol(QueryOperator op) => op switch
     {
@@ -393,7 +424,7 @@ public sealed class SqlRenderer
         var items = new List<string>(_spec.GroupBy.Count);
         foreach (var group in _spec.GroupBy)
         {
-            var expression = FieldExpression(group.Field);
+            var expression = Value(group.Field, group.Call);
             if (group.Truncate is not null) expression = _dialect.TruncateDate(expression, group.Truncate.Value);
             // A grouping key may be ordered by through its alias even when nothing selects it.
             if (!string.IsNullOrEmpty(group.Alias) && !_outputExpressions.ContainsKey(group.Alias!))
@@ -413,9 +444,9 @@ public sealed class SqlRenderer
         foreach (var sort in _spec.OrderBy)
         {
             string expression;
-            if (sort.Field is not null)
+            if (sort.Field is not null || sort.Call is not null)
             {
-                expression = FieldExpression(sort.Field);
+                expression = Value(sort.Field, sort.Call);
             }
             else if (_selectAliases.Contains(sort.Select!))
             {
@@ -433,16 +464,34 @@ public sealed class SqlRenderer
         return true;
     }
 
+    private string Value(QueryFieldRef? field, QueryFunctionCall? call)
+        => field is not null ? FieldExpression(field) : CallExpression(call!);
+
+    private QueryFieldType ValueType(QueryFieldRef? field, QueryFunctionCall? call)
+        => field is not null
+            ? FieldType(field)
+            : _schema.FindFunction(call!.Function)?.ReturnType ?? QueryFieldType.Text;
+
     private string FieldExpression(QueryFieldRef reference) => Member(reference.Alias, reference.Field);
 
     private string Member(string alias, string fieldKey)
     {
-        var field = _participants[alias].FindField(fieldKey)!;
+        var field = Find(alias, fieldKey)!;
         return _dialect.Quote(alias) + "." + _dialect.Quote(field.PhysicalName);
     }
 
     private QueryFieldType FieldType(QueryFieldRef reference)
-        => _participants[reference.Alias].FindField(reference.Field)!.Type;
+        => Find(reference.Alias, reference.Field)!.Type;
+
+    private QueryField? Find(string alias, string fieldKey)
+    {
+        if (!_fields.TryGetValue(alias, out var fields)) return null;
+        for (var i = 0; i < fields.Count; i++)
+        {
+            if (string.Equals(fields[i].Key, fieldKey, StringComparison.OrdinalIgnoreCase)) return fields[i];
+        }
+        return null;
+    }
 
     private string AddParameter(object? value)
     {

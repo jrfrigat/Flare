@@ -18,6 +18,9 @@ public sealed record QueryCondition(QueryFieldRef? Field, QueryOperator Operator
     /// <summary>Output name of a selected aggregate to test instead of a field. Used only in HAVING.</summary>
     public string? Select { get; init; }
 
+    /// <summary>A call to a value function on the left side, instead of a field.</summary>
+    public QueryFunctionCall? Call { get; init; }
+
     /// <summary>The operand compared against. Null for <see cref="QueryOperator.IsNull"/> and its opposite.</summary>
     public QueryOperand? Value { get; init; }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -78,6 +79,15 @@ public abstract class SqlDialect : IQueryCapabilities
         }
         return builder.ToString();
     }
+
+    /// <summary>
+    /// Spells a call to a declared function. The ordinary form suits every engine here; override it
+    /// where one spells a call differently.
+    /// </summary>
+    /// <param name="qualifiedName">The already-quoted physical function name.</param>
+    /// <param name="arguments">The already-rendered arguments, in order.</param>
+    public virtual string CallFunction(string qualifiedName, IReadOnlyList<string> arguments)
+        => qualifiedName + "(" + string.Join(", ", arguments) + ")";
 
     /// <summary>Collapses a timestamp expression to the start of the given period.</summary>
     /// <param name="expression">The already-rendered timestamp expression.</param>

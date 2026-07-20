@@ -84,5 +84,38 @@ internal static class TestSchema
                 new QueryFieldPair("number", "orderNumber"),
             ])
             { Cardinality = QueryCardinality.OneToMany },
+        ],
+        [
+            // A value function with an optional tail, so arity has a range rather than a single number.
+            new QueryFunction("calcTax", "Calculate tax", QueryFunctionKind.Value)
+            {
+                Parameters =
+                [
+                    new QueryFunctionParameter("amount", "Amount", QueryFieldType.Number),
+                    new QueryFunctionParameter("rate", "Rate", QueryFieldType.Number) { Optional = true },
+                ],
+                ReturnType = QueryFieldType.Number,
+                Source = "dbo.CalcTax",
+            },
+
+            // Maps onto a built-in rather than a user routine, which is what the physical name is for.
+            new QueryFunction("upper", "Upper case", QueryFunctionKind.Value)
+            {
+                Parameters = [new QueryFunctionParameter("text", "Text", QueryFieldType.Text)],
+                ReturnType = QueryFieldType.Text,
+                Source = "UPPER",
+            },
+
+            // A table function contributes columns, so it participates exactly like an entity.
+            new QueryFunction("activeUsers", "Active users", QueryFunctionKind.Table)
+            {
+                Parameters = [new QueryFunctionParameter("since", "Since", QueryFieldType.DateTime)],
+                Columns =
+                [
+                    new QueryField("id", "Id", QueryFieldType.Guid),
+                    new QueryField("name", "Name", QueryFieldType.Text),
+                ],
+                Source = "dbo.GetActiveUsers",
+            },
         ]);
 }

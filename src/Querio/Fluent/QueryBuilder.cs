@@ -46,6 +46,15 @@ public sealed class QueryBuilder
         _participants.Add(new KeyValuePair<string, string>(entity, rootAlias));
     }
 
+    private QueryBuilder(QuerySchema? schema, QueryFunctionCall call, string? alias)
+    {
+        _schema = schema;
+        var rootAlias = TakeAlias(call.Function, alias);
+        _from = QuerySource.FromFunction(call, rootAlias);
+        // A function participant belongs to no entity, so nothing can be inferred as reaching it.
+        _participants.Add(new KeyValuePair<string, string>(string.Empty, rootAlias));
+    }
+
     /// <summary>Alias assigned to the root participant, useful when it was generated rather than given.</summary>
     public string RootAlias => _from.Alias;
 
@@ -60,6 +69,70 @@ public sealed class QueryBuilder
     /// <param name="alias">Alias for it. Generated from the entity key when omitted.</param>
     public static QueryBuilder From(QuerySchema schema, string entity, string? alias = null)
         => new(schema, entity, alias);
+
+    /// <summary>Starts a query that draws its rows from a table function.</summary>
+    /// <param name="schema">The schema the query is built against.</param>
+    /// <param name="call">The table function call supplying the rows.</param>
+    /// <param name="alias">Alias for it. Generated from the function name when omitted.</param>
+    public static QueryBuilder FromFunction(QuerySchema schema, QueryFunctionCall call, string? alias = null)
+        => new(schema, call, alias);
+
+    /// <summary>
+    /// Brings a table function into the query. A function has no declared relations, so the match
+    /// conditions are always given explicitly.
+    /// </summary>
+    /// <param name="call">The table function call supplying the rows.</param>
+    /// <param name="alias">Alias for it.</param>
+    /// <param name="on">The field pairs that must match.</param>
+    /// <param name="kind">How unmatched rows are treated. Defaults to an inner join.</param>
+    public QueryBuilder JoinFunction(
+        QueryFunctionCall call, string alias, IReadOnlyList<QueryJoinCondition> on,
+        QueryJoinKind kind = QueryJoinKind.Inner)
+    {
+        var joinAlias = TakeAlias(call.Function, alias);
+        _joins.Add(new QueryJoin(null, joinAlias) { Kind = kind, Call = call, On = on });
+        _participants.Add(new KeyValuePair<string, string>(string.Empty, joinAlias));
+        return this;
+    }
+
+    /// <summary>Returns the result of a value function.</summary>
+    /// <param name="call">The value function call.</param>
+    /// <param name="outputAlias">Name for the returned column.</param>
+    public QueryBuilder SelectCall(QueryFunctionCall call, string? outputAlias = null)
+    {
+        _select.Add(new QuerySelect { Call = call, Alias = outputAlias });
+        return this;
+    }
+
+    /// <summary>Applies an aggregate to the result of a value function.</summary>
+    /// <param name="aggregate">The aggregate to compute.</param>
+    /// <param name="call">The value function call.</param>
+    /// <param name="outputAlias">Name for the returned column.</param>
+    public QueryBuilder AggregateCall(
+        QueryAggregate aggregate, QueryFunctionCall call, string? outputAlias = null)
+    {
+        _select.Add(new QuerySelect { Call = call, Aggregate = aggregate, Alias = outputAlias });
+        return this;
+    }
+
+    /// <summary>Groups by the result of a value function.</summary>
+    /// <param name="call">The value function call.</param>
+    /// <param name="outputAlias">Name for the grouping column.</param>
+    public QueryBuilder GroupByCall(QueryFunctionCall call, string? outputAlias = null)
+    {
+        _groupBy.Add(new QueryGroupBy(null) { Call = call, Alias = outputAlias });
+        return this;
+    }
+
+    /// <summary>Orders by the result of a value function.</summary>
+    /// <param name="call">The value function call.</param>
+    /// <param name="direction">Which way the ordering runs.</param>
+    public QueryBuilder OrderByCall(
+        QueryFunctionCall call, QuerySortDirection direction = QuerySortDirection.Ascending)
+    {
+        _orderBy.Add(new QuerySort { Call = call, Direction = direction });
+        return this;
+    }
 
     /// <summary>
     /// Brings another entity into the query. When <paramref name="relation"/> is omitted and a schema

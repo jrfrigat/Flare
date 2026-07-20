@@ -25,7 +25,7 @@ public sealed class OneCRenderer
     private readonly QuerySchema _schema;
     private readonly DateTime _now;
     private readonly List<OneCQueryParameter> _parameters = [];
-    private readonly Dictionary<string, QueryEntity> _participants = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, IReadOnlyList<QueryField>> _fields = new(StringComparer.OrdinalIgnoreCase);
     private readonly List<KeyValuePair<string, string>> _ordered = [];
     private readonly Dictionary<string, string> _outputExpressions = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, QueryFieldType> _outputTypes = new(StringComparer.OrdinalIgnoreCase);
@@ -44,7 +44,11 @@ public sealed class OneCRenderer
     public static IQueryCapabilities Capabilities { get; } = QueryCapabilities.All.Without(
         QueryFeature.Percentile,
         QueryFeature.Offset,
-        QueryFeature.CrossJoin);
+        QueryFeature.CrossJoin,
+        // A value function maps onto whatever 1C spells the same job, given a physical name. Its
+        // table-valued equivalent - a virtual table - has a wholly different syntax, so it is not
+        // something this renderer can honestly produce.
+        QueryFeature.TableFunctions);
 
     /// <summary>Renders a query into 1C query text.</summary>
     /// <param name="spec">The query to render.</param>
@@ -83,15 +87,21 @@ public sealed class OneCRenderer
 
     private void CollectParticipants()
     {
-        Register(_spec.From.Entity, _spec.From.Alias);
-        foreach (var join in _spec.Joins) Register(join.Entity, join.Alias);
+        Register(_spec.From.Entity, _spec.From.Call, _spec.From.Alias);
+        foreach (var join in _spec.Joins) Register(join.Entity, join.Call, join.Alias);
     }
 
-    private void Register(string entityKey, string alias)
+    private void Register(string? entityKey, QueryFunctionCall? call, string alias)
     {
         EnsureIdentifier(alias, "alias");
-        _participants[alias] = _schema.FindEntity(entityKey)!;
-        _ordered.Add(new KeyValuePair<string, string>(alias, entityKey));
+        if (call is not null)
+        {
+            _fields[alias] = _schema.FindFunction(call.Function)!.Columns;
+            _ordered.Add(new KeyValuePair<string, string>(alias, string.Empty));
+            return;
+        }
+        _fields[alias] = _schema.FindEntity(entityKey!)!.Fields;
+        _ordered.Add(new KeyValuePair<string, string>(alias, entityKey!));
     }
 
     private void RequireCapabilities()
@@ -105,7 +115,9 @@ public sealed class OneCRenderer
                 case QueryJoinKind.Full: Require(QueryFeature.FullJoin); break;
                 case QueryJoinKind.Cross: Require(QueryFeature.CrossJoin); break;
             }
+            if (join.Call is not null) Require(QueryFeature.TableFunctions);
         }
+        if (_spec.From.Call is not null) Require(QueryFeature.TableFunctions);
 
         foreach (var item in _spec.Select)
         {
@@ -159,13 +171,13 @@ public sealed class OneCRenderer
     {
         if (item.Aggregate is null)
         {
-            var plain = FieldExpression(item.Field!);
+            var plain = Value(item.Field, item.Call);
             return item.Truncate is null ? plain : Truncate(plain, item.Truncate.Value);
         }
 
-        if (item.Aggregate == QueryAggregate.Count && item.Field is null) return "КОЛИЧЕСТВО(*)";
+        if (item.Aggregate == QueryAggregate.Count && item.Field is null && item.Call is null) return "КОЛИЧЕСТВО(*)";
 
-        var inner = FieldExpression(item.Field!);
+        var inner = Value(item.Field, item.Call);
         var function = item.Aggregate.Value switch
         {
             QueryAggregate.Count => "КОЛИЧЕСТВО",
@@ -181,8 +193,8 @@ public sealed class OneCRenderer
     private QueryFieldType OutputType(QuerySelect item)
     {
         if (item.Aggregate == QueryAggregate.Count) return QueryFieldType.Number;
-        if (item.Field is null) return QueryFieldType.Number;
-        return FieldType(item.Field);
+        if (item.Field is null && item.Call is null) return QueryFieldType.Number;
+        return ValueType(item.Field, item.Call);
     }
 
     private static string Truncate(string expression, QueryDateTruncation truncation)
@@ -203,19 +215,20 @@ public sealed class OneCRenderer
 
     private void AppendFrom(StringBuilder query)
     {
-        var entity = _participants[_spec.From.Alias];
         query.Append(" ИЗ ")
-             .Append(QualifiedName(entity))
+             .Append(SourceExpression(_spec.From.Entity, _spec.From.Call))
              .Append(" КАК ")
              .Append(_spec.From.Alias);
     }
+
+    private string SourceExpression(string? entityKey, QueryFunctionCall? call)
+        => call is not null ? CallExpression(call) : QualifiedName(_schema.FindEntity(entityKey!)!.PhysicalName);
 
     private void AppendJoins(StringBuilder query)
     {
         for (var i = 0; i < _spec.Joins.Count; i++)
         {
             var join = _spec.Joins[i];
-            var entity = _participants[join.Alias];
             var keyword = join.Kind switch
             {
                 QueryJoinKind.Left => "ЛЕВОЕ СОЕДИНЕНИЕ",
@@ -225,7 +238,7 @@ public sealed class OneCRenderer
             };
 
             query.Append(' ').Append(keyword).Append(' ')
-                 .Append(QualifiedName(entity))
+                 .Append(SourceExpression(join.Entity, join.Call))
                  .Append(" КАК ")
                  .Append(join.Alias)
                  .Append(" ПО ")
@@ -296,15 +309,15 @@ public sealed class OneCRenderer
     {
         string left;
         QueryFieldType type;
-        if (condition.Field is not null)
-        {
-            left = FieldExpression(condition.Field);
-            type = FieldType(condition.Field);
-        }
-        else
+        if (!string.IsNullOrEmpty(condition.Select))
         {
             left = _outputExpressions[condition.Select!];
             type = _outputTypes.TryGetValue(condition.Select!, out var known) ? known : QueryFieldType.Number;
+        }
+        else
+        {
+            left = Value(condition.Field, condition.Call);
+            type = ValueType(condition.Field, condition.Call);
         }
 
         switch (condition.Operator)
@@ -363,8 +376,23 @@ public sealed class OneCRenderer
         // value. The spec keeps the offset, so the next render resolves it again.
         QueryOperandKind.Relative => AddParameter(Shift(_now, operand.Relative!)),
         QueryOperandKind.List => ValueList(operand, type),
+        QueryOperandKind.Function => CallExpression(operand.Call!),
         _ => AddParameter(QueryValue.Parse(operand.Value, type)),
     };
+
+    // A value function maps onto whatever the target spells the same job, which the schema supplies
+    // as the physical name - so a call renders here exactly as it would in SQL, just unquoted.
+    private string CallExpression(QueryFunctionCall call)
+    {
+        var function = _schema.FindFunction(call.Function)!;
+        var arguments = new List<string>(call.Arguments.Count);
+        for (var i = 0; i < call.Arguments.Count; i++)
+        {
+            var type = i < function.Parameters.Count ? function.Parameters[i].Type : QueryFieldType.Text;
+            arguments.Add(Operand(call.Arguments[i], type));
+        }
+        return QualifiedName(function.PhysicalName) + "(" + string.Join(", ", arguments) + ")";
+    }
 
     private static DateTime Shift(DateTime now, QueryRelativeValue relative) => relative.Unit switch
     {
@@ -396,7 +424,7 @@ public sealed class OneCRenderer
         var items = new List<string>(_spec.GroupBy.Count);
         foreach (var group in _spec.GroupBy)
         {
-            var expression = FieldExpression(group.Field);
+            var expression = Value(group.Field, group.Call);
             if (group.Truncate is not null) expression = Truncate(expression, group.Truncate.Value);
             if (!string.IsNullOrEmpty(group.Alias) && !_outputExpressions.ContainsKey(group.Alias!))
             {
@@ -414,32 +442,49 @@ public sealed class OneCRenderer
         var items = new List<string>(_spec.OrderBy.Count);
         foreach (var sort in _spec.OrderBy)
         {
-            var expression = sort.Field is not null
-                ? FieldExpression(sort.Field)
+            var expression = sort.Field is not null || sort.Call is not null
+                ? Value(sort.Field, sort.Call)
                 : sort.Select!;
             items.Add(expression + (sort.Direction == QuerySortDirection.Descending ? " УБЫВ" : " ВОЗР"));
         }
         query.Append(" УПОРЯДОЧИТЬ ПО ").Append(string.Join(", ", items));
     }
 
-    private string QualifiedName(QueryEntity entity)
+    private string QualifiedName(string name)
     {
-        var name = entity.PhysicalName;
-        foreach (var part in name.Split('.')) EnsureIdentifier(part, "entity name");
+        foreach (var part in name.Split('.')) EnsureIdentifier(part, "object name");
         return name;
     }
+
+    private string Value(QueryFieldRef? field, QueryFunctionCall? call)
+        => field is not null ? FieldExpression(field) : CallExpression(call!);
+
+    private QueryFieldType ValueType(QueryFieldRef? field, QueryFunctionCall? call)
+        => field is not null
+            ? FieldType(field)
+            : _schema.FindFunction(call!.Function)?.ReturnType ?? QueryFieldType.Text;
 
     private string FieldExpression(QueryFieldRef reference) => Member(reference.Alias, reference.Field);
 
     private string Member(string alias, string fieldKey)
     {
-        var field = _participants[alias].FindField(fieldKey)!;
+        var field = Find(alias, fieldKey)!;
         EnsureIdentifier(field.PhysicalName, "field name");
         return alias + "." + field.PhysicalName;
     }
 
     private QueryFieldType FieldType(QueryFieldRef reference)
-        => _participants[reference.Alias].FindField(reference.Field)!.Type;
+        => Find(reference.Alias, reference.Field)!.Type;
+
+    private QueryField? Find(string alias, string fieldKey)
+    {
+        if (!_fields.TryGetValue(alias, out var fields)) return null;
+        for (var i = 0; i < fields.Count; i++)
+        {
+            if (string.Equals(fields[i].Key, fieldKey, StringComparison.OrdinalIgnoreCase)) return fields[i];
+        }
+        return null;
+    }
 
     // 1C offers no way to quote a name, so an unusable name has to be rejected rather than escaped.
     // This is also what keeps a user-chosen alias from being able to alter the query.
