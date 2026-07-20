@@ -30,6 +30,11 @@
 		<ProjectReference Include="..\..\src\Flare.Components.Carousel\Flare.Components.Carousel.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.IDE\Flare.Components.IDE.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Kanban\Flare.Components.Kanban.csproj" />
+		<ProjectReference Include="..\..\src\Flare.Components.Query\Flare.Components.Query.csproj" />
+		<!-- The renderers are here only so the demo can show one spec becoming three dialects; the
+		     designer itself needs neither. -->
+		<ProjectReference Include="..\..\src\Querio.Sql\Querio.Sql.csproj" />
+		<ProjectReference Include="..\..\src\Querio.OneC\Querio.OneC.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Media\Flare.Components.Media.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.QrCode\Flare.Components.QrCode.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.RichTextEditor\Flare.Components.RichTextEditor.csproj" />

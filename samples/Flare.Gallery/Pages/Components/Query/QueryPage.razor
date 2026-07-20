@@ -1,0 +1,11 @@
+@page "/components/query"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Query_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareQueryBuilder">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Query_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Query_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Query_Designer" DemoType="typeof(Examples.QueryBuilderDemo)" />

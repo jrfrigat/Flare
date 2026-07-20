@@ -1,0 +1,154 @@
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using Querio
+@using Querio.OneC
+@using Querio.Sql
+
+@* The designer emits a spec and nothing else. Everything below it is the consumer's half: the same
+   object rendered into three different languages, which is the point of keeping the two apart. *@
+
+<FlareStack Spacing="4">
+    <FlareQueryBuilder Schema="_schema" @bind-Spec="_spec" ShowSubmit="false" />
+
+    <FlareTabs>
+        <FlareTab Title="JSON">
+            <pre class="flare-code-block"><code>@_json</code></pre>
+        </FlareTab>
+        <FlareTab Title="PostgreSQL">
+            <pre class="flare-code-block"><code>@Render(PostgreSqlDialect.Instance)</code></pre>
+        </FlareTab>
+        <FlareTab Title="SQL Server">
+            <pre class="flare-code-block"><code>@Render(SqlServerDialect.Instance)</code></pre>
+        </FlareTab>
+        <FlareTab Title="SQLite">
+            <pre class="flare-code-block"><code>@Render(SqliteDialect.Instance)</code></pre>
+        </FlareTab>
+        <FlareTab Title="1C">
+            <pre class="flare-code-block"><code>@RenderOneC()</code></pre>
+        </FlareTab>
+    </FlareTabs>
+</FlareStack>
+
+@code {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        Converters = { new JsonStringEnumConverter() },
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        WriteIndented = true,
+    };
+
+    private QuerySpec? _spec;
+    private string _json = string.Empty;
+
+    // A request log with a couple of related entities, plus one declared function of each kind - the
+    // shape most reporting screens actually have.
+    private readonly QuerySchema _schema = new(
+        [
+            new QueryEntity("requests", "Requests",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("route", "Route", QueryFieldType.Text),
+                new QueryField("timestamp", "Timestamp", QueryFieldType.DateTime),
+                new QueryField("durationMs", "Duration, ms", QueryFieldType.Number),
+                new QueryField("cacheHit", "Cache hit", QueryFieldType.Boolean),
+                new QueryField("error", "Error", QueryFieldType.Boolean),
+                new QueryField("status", "Status", QueryFieldType.Number),
+                new QueryField("apiKeyId", "API key", QueryFieldType.Guid),
+            ])
+            { Source = "dbo.RequestLog", PrimaryKey = ["id"] },
+
+            new QueryEntity("apiKeys", "API keys",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("name", "Name", QueryFieldType.Text),
+                new QueryField("ownerId", "Owner", QueryFieldType.Guid),
+            ])
+            { PrimaryKey = ["id"] },
+
+            new QueryEntity("users", "Users",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("name", "Name", QueryFieldType.Text),
+                new QueryField("managerId", "Manager", QueryFieldType.Guid) { Nullable = true },
+            ])
+            { PrimaryKey = ["id"] },
+        ],
+        [
+            QueryRelation.Simple("request_apiKey", "requests", "apiKeyId", "apiKeys", "id"),
+            QueryRelation.Simple("apiKey_owner", "apiKeys", "ownerId", "users", "id"),
+            QueryRelation.Simple("user_manager", "users", "managerId", "users", "id"),
+        ],
+        [
+            new QueryFunction("upper", "Upper case", QueryFunctionKind.Value)
+            {
+                Parameters = [new QueryFunctionParameter("text", "Text", QueryFieldType.Text)],
+                ReturnType = QueryFieldType.Text,
+                Source = "UPPER",
+            },
+            new QueryFunction("activeUsers", "Active users", QueryFunctionKind.Table)
+            {
+                Parameters = [new QueryFunctionParameter("since", "Since", QueryFieldType.DateTime)],
+                Columns =
+                [
+                    new QueryField("id", "Id", QueryFieldType.Guid),
+                    new QueryField("name", "Name", QueryFieldType.Text),
+                ],
+                Source = "dbo.GetActiveUsers",
+            },
+        ]);
+
+    protected override void OnInitialized()
+    {
+        // Opens on a finished query so the designer shows something worth reading straight away,
+        // which also proves a spec built in code round-trips into the editor.
+        _spec = QueryBuilder.From(_schema, "requests", "r")
+            .Select("r", "route", "route")
+            .CountRows("total")
+            .Where(f => f.Since("r", "timestamp", 30, QueryTimeUnit.Day).Equal("r", "error", true))
+            .GroupBy("r", "route")
+            .OrderBySelectDescending("total")
+            .Limit(20)
+            .Build();
+        Refresh();
+    }
+
+    protected override void OnParametersSet() => Refresh();
+
+    private void Refresh()
+        => _json = _spec is null ? string.Empty : JsonSerializer.Serialize(_spec, JsonOptions);
+
+    private string Render(SqlDialect dialect)
+    {
+        if (_spec is null) return string.Empty;
+        try
+        {
+            var result = SqlRenderer.Render(_spec, _schema, dialect);
+            var parameters = string.Join(
+                Environment.NewLine,
+                result.Parameters.Select(p => $"-- {p.Name} = {p.Value}"));
+            return parameters.Length == 0 ? result.Sql : result.Sql + Environment.NewLine + parameters;
+        }
+        catch (Exception error)
+        {
+            // A target that cannot express the query says so, and that refusal is worth showing.
+            return error.Message;
+        }
+    }
+
+    private string RenderOneC()
+    {
+        if (_spec is null) return string.Empty;
+        try
+        {
+            var result = OneCRenderer.Render(_spec, _schema);
+            var parameters = string.Join(
+                Environment.NewLine,
+                result.Parameters.Select(p => $"// {p.Name} = {p.Value}"));
+            return parameters.Length == 0 ? result.Query : result.Query + Environment.NewLine + parameters;
+        }
+        catch (Exception error)
+        {
+            return error.Message;
+        }
+    }
+}

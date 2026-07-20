@@ -1,0 +1,507 @@
+@namespace Flare.Components
+
+@* Builds a query; never runs one. Everything here edits a QueryDraft, and the immutable QuerySpec is
+   rebuilt and raised whenever something changes - so a host binds to the spec and stays out of the
+   editing model entirely. *@
+
+<div class="@CssClass" style="@Style" @attributes="AdditionalAttributes">
+    @if (Schema is null)
+    {
+        <p class="flare-qb__ok">A schema is required.</p>
+    }
+    else
+    {
+        <section class="flare-qb__section">
+            <h3 class="flare-qb__heading">@Labels.Source</h3>
+            <div class="flare-qb__row">
+                <div class="flare-qb__cell flare-qb__cell--target">
+                    <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Sources" ItemLabel="SourceLabel"
+                                 Value="@RootToken" ValueChanged="SetRoot" />
+                </div>
+                <div class="flare-qb__cell flare-qb__cell--alias">
+                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Alias"
+                                Value="@_draft.RootAlias"
+                                ValueChanged="@(value => { _draft.RootAlias = value ?? string.Empty; Rebuild(); })" />
+                </div>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddJoin">
+                    <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
+                    <ChildContent>@Labels.AddJoin</ChildContent>
+                </FlareButton>
+            </div>
+
+            @foreach (var join in _draft.Joins)
+            {
+                var row = join;
+                <div class="flare-qb__row">
+                    <div class="flare-qb__cell flare-qb__cell--target">
+                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="EntityKeys" ItemLabel="EntityLabel"
+                                     Value="@row.Entity"
+                                     ValueChanged="@(value => SetJoinEntity(row, value))" />
+                    </div>
+                    <div class="flare-qb__cell flare-qb__cell--alias">
+                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Alias"
+                                    Value="@row.Alias"
+                                    ValueChanged="@(value => { row.Alias = value ?? string.Empty; Rebuild(); })" />
+                    </div>
+                    <div class="flare-qb__cell flare-qb__cell--relation">
+                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="RelationsFor(row)" ItemLabel="RelationLabel"
+                                     Value="@row.Relation"
+                                     ValueChanged="@(value => { row.Relation = value; Rebuild(); })" />
+                    </div>
+                    <div class="flare-qb__cell flare-qb__cell--op">
+                        <FlareSelect TValue="QueryJoinKind" Size="FieldSize.Xs" Items="JoinKinds"
+                                     Value="@row.Kind"
+                                     ValueChanged="@(value => { row.Kind = value; Rebuild(); })" />
+                    </div>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                 OnClick="@(() => { _draft.Joins.Remove(row); Rebuild(); })" AriaLabel="@Labels.Remove">
+                        <FlareIconView Value="FlareIcons.Close" />
+                    </FlareButton>
+                </div>
+            }
+        </section>
+
+        <section class="flare-qb__section">
+            <div class="flare-qb__section-head">
+                <h3 class="flare-qb__heading">@Labels.Columns</h3>
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddColumn">
+                    <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
+                    <ChildContent>@Labels.AddColumn</ChildContent>
+                </FlareButton>
+            </div>
+
+            @foreach (var column in _draft.Columns)
+            {
+                var row = column;
+                <div class="flare-qb__row">
+                    <div class="flare-qb__cell flare-qb__cell--target">
+                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="ValueTargets" ItemLabel="ValueTargetLabel"
+                                     Value="@ColumnToken(row)" ValueChanged="@(value => SetColumn(row, value))" />
+                    </div>
+                    <div class="flare-qb__cell flare-qb__cell--op">
+                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="AggregatesFor(row)" ItemLabel="AggregateLabel"
+                                     Value="@(row.Aggregate?.ToString() ?? string.Empty)"
+                                     ValueChanged="@(value => SetAggregate(row, value))" />
+                    </div>
+                    @if (row.Aggregate is null && IsTimestampColumn(row))
+                    {
+                        <div class="flare-qb__cell flare-qb__cell--op">
+                            <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Periods" ItemLabel="PeriodLabel"
+                                         Value="@(row.Truncate?.ToString() ?? string.Empty)"
+                                         ValueChanged="@(value => SetPeriod(row, value))" />
+                        </div>
+                    }
+                    <div class="flare-qb__cell flare-qb__cell--alias">
+                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.OutputName"
+                                    Value="@row.OutputAlias"
+                                    ValueChanged="@(value => { row.OutputAlias = value; Rebuild(); })" />
+                    </div>
+                    <div class="flare-qb__cell flare-qb__cell--flag">
+                        <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Group" Value="@row.Group"
+                                       ValueChanged="@(value => { row.Group = value ?? false; Rebuild(); })" />
+                    </div>
+                    <div class="flare-qb__cell flare-qb__cell--op">
+                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="SortOptions" ItemLabel="SortLabel"
+                                     Value="@(row.Sort?.ToString() ?? string.Empty)"
+                                     ValueChanged="@(value => SetSort(row, value))" />
+                    </div>
+                    <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                                 OnClick="@(() => { _draft.Columns.Remove(row); Rebuild(); })" AriaLabel="@Labels.Remove">
+                        <FlareIconView Value="FlareIcons.Close" />
+                    </FlareButton>
+                </div>
+            }
+        </section>
+
+        <section class="flare-qb__section">
+            <h3 class="flare-qb__heading">@Labels.Filter</h3>
+            <QueryConditionEditor Group="_draft.Where" Schema="Schema" Draft="_draft"
+                                  AndLabel="@Labels.And" OrLabel="@Labels.Or"
+                                  AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
+                                  RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"
+                                  ValuesHint="@Labels.ValuesHint" RelativeLabel="@Labels.Relative"
+                                  OnChanged="Rebuild" />
+        </section>
+
+        @if (_draft.Columns.Any(column => column.Group)
+             || _draft.Columns.Any(column => column.Aggregate is not null))
+        {
+            <section class="flare-qb__section">
+                <h3 class="flare-qb__heading">@Labels.GroupFilter</h3>
+                <QueryConditionEditor Group="_draft.Having" Schema="Schema" Draft="_draft" AllowAggregates="true"
+                                      AndLabel="@Labels.And" OrLabel="@Labels.Or"
+                                      AddConditionLabel="@Labels.AddCondition" AddGroupLabel="@Labels.AddGroup"
+                                      RemoveLabel="@Labels.Remove" ValueHint="@Labels.ValueHint"
+                                      ValuesHint="@Labels.ValuesHint" RelativeLabel="@Labels.Relative"
+                                      OnChanged="Rebuild" />
+            </section>
+        }
+
+        <section class="flare-qb__section">
+            <h3 class="flare-qb__heading">@Labels.Options</h3>
+            <div class="flare-qb__row">
+                <div class="flare-qb__cell flare-qb__cell--flag">
+                    <FlareCheckbox Size="FieldSize.Xs" Label="@Labels.Distinct" Value="@_draft.Distinct"
+                                   ValueChanged="@(value => { _draft.Distinct = value ?? false; Rebuild(); })" />
+                </div>
+                <div class="flare-qb__cell flare-qb__cell--value">
+                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Limit"
+                                Value="@(_draft.Limit?.ToString(Culture))"
+                                ValueChanged="@(value => { _draft.Limit = ParseCount(value); Rebuild(); })" />
+                </div>
+                <div class="flare-qb__cell flare-qb__cell--value">
+                    <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.Offset"
+                                Value="@(_draft.Offset?.ToString(Culture))"
+                                ValueChanged="@(value => { _draft.Offset = ParseCount(value); Rebuild(); })" />
+                </div>
+                @if (ShowSubmit)
+                {
+                    <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm" OnClick="Submit"
+                                 Disabled="@(!_validation.IsValid)">
+                        @Labels.Submit
+                    </FlareButton>
+                }
+            </div>
+        </section>
+
+        @if (ShowValidation)
+        {
+            <section class="flare-qb__section">
+                <h3 class="flare-qb__heading">@Labels.Problems</h3>
+                @if (_validation.IsValid)
+                {
+                    <p class="flare-qb__ok">@Labels.NoProblems</p>
+                }
+                else
+                {
+                    <ul class="flare-qb__problems">
+                        @foreach (var error in _validation.Errors)
+                        {
+                            <li><code>@error.Path</code> @error.Message</li>
+                        }
+                    </ul>
+                }
+            </section>
+        }
+    }
+</div>
+
+@code {
+    private static readonly System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
+
+    private QueryDraft _draft = new();
+    private QueryValidationResult _validation = new([]);
+    private QuerySpec? _emitted;
+    private QuerySchema? _boundSchema;
+
+    /// <summary>The entities, relations and functions a query may use. Required.</summary>
+    [Parameter, EditorRequired] public QuerySchema? Schema { get; set; }
+
+    /// <summary>
+    /// The query being composed. Two-way bindable, so a spec built in code or restored from storage
+    /// opens in the designer and carries on from there.
+    /// </summary>
+    [Parameter] public QuerySpec? Spec { get; set; }
+
+    /// <summary>Raised whenever the composed query changes.</summary>
+    [Parameter] public EventCallback<QuerySpec> SpecChanged { get; set; }
+
+    /// <summary>Raised when the query is submitted. Never fires while the query has problems.</summary>
+    [Parameter] public EventCallback<QuerySpec> OnSubmit { get; set; }
+
+    /// <summary>Whether the submit button is shown.</summary>
+    [Parameter] public bool ShowSubmit { get; set; } = true;
+
+    /// <summary>Whether the list of problems is shown.</summary>
+    [Parameter] public bool ShowValidation { get; set; } = true;
+
+    /// <summary>Every caption the designer shows.</summary>
+    [Parameter] public QueryBuilderLabels Labels { get; set; } = QueryBuilderLabels.Default;
+
+    /// <summary>Extra CSS class(es) appended to the root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Inline style applied to the root element.</summary>
+    [Parameter] public string? Style { get; set; }
+
+    /// <summary>Unmatched attributes, splatted onto the root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.IsNullOrEmpty(Class) ? "flare-qb" : "flare-qb " + Class;
+
+    protected override void OnParametersSet()
+    {
+        if (Schema is null) return;
+
+        // Reopen the draft when the host swaps the schema, or hands in a spec this component did not
+        // itself emit - otherwise every keystroke would be undone by the round trip.
+        if (!ReferenceEquals(_boundSchema, Schema) || !ReferenceEquals(Spec, _emitted))
+        {
+            _boundSchema = Schema;
+            _draft = QueryDraft.FromSpec(Spec, Schema);
+            Revalidate();
+        }
+    }
+
+    private void Rebuild()
+    {
+        Revalidate();
+        StateHasChanged();
+        if (SpecChanged.HasDelegate) SpecChanged.InvokeAsync(_emitted);
+    }
+
+    private void Revalidate()
+    {
+        if (Schema is null) return;
+        _emitted = _draft.ToSpec();
+        _validation = _emitted.Validate(Schema);
+    }
+
+    private async Task Submit()
+    {
+        if (_emitted is null || !_validation.IsValid) return;
+        if (OnSubmit.HasDelegate) await OnSubmit.InvokeAsync(_emitted);
+    }
+
+    private static int? ParseCount(string? raw)
+        => int.TryParse(raw, System.Globalization.NumberStyles.Integer, Culture, out var value) ? value : null;
+
+    // ---- Source ---------------------------------------------------------------------------------
+
+    private IReadOnlyList<string> EntityKeys => Schema?.Entities.Select(entity => entity.Key).ToList() ?? [];
+
+    private string EntityLabel(string key) => Schema?.FindEntity(key)?.Label ?? key;
+
+    // The root may be an entity or a table function, so one dropdown carries both, tagged by prefix.
+    private IReadOnlyList<string> Sources
+    {
+        get
+        {
+            var sources = EntityKeys.Select(key => "e:" + key).ToList();
+            if (Schema is null) return sources;
+            foreach (var function in Schema.Functions)
+            {
+                if (function.Kind == QueryFunctionKind.Table) sources.Add("fn:" + function.Key);
+            }
+            return sources;
+        }
+    }
+
+    private string SourceLabel(string token)
+        => token.StartsWith("fn:", StringComparison.Ordinal)
+            ? (Schema?.FindFunction(token[3..])?.Label ?? token[3..]) + "()"
+            : EntityLabel(token[2..]);
+
+    private string RootToken
+        => string.IsNullOrEmpty(_draft.RootFunction) ? "e:" + _draft.RootEntity : "fn:" + _draft.RootFunction;
+
+    private void SetRoot(string? token)
+    {
+        if (string.IsNullOrEmpty(token)) return;
+        _draft.RootArguments.Clear();
+
+        if (token.StartsWith("fn:", StringComparison.Ordinal))
+        {
+            _draft.RootFunction = token[3..];
+            _draft.RootEntity = string.Empty;
+            var function = Schema?.FindFunction(_draft.RootFunction);
+            if (function is not null)
+            {
+                foreach (var _ in function.Parameters) _draft.RootArguments.Add(new QueryArgumentDraft());
+            }
+        }
+        else
+        {
+            _draft.RootFunction = null;
+            _draft.RootEntity = token[2..];
+        }
+
+        if (string.IsNullOrEmpty(_draft.RootAlias)) _draft.RootAlias = _draft.SuggestAlias(_draft.RootEntity);
+        Rebuild();
+    }
+
+    private void AddJoin()
+    {
+        var entity = EntityKeys.FirstOrDefault() ?? string.Empty;
+        var join = new QueryJoinDraft { Entity = entity, Alias = _draft.SuggestAlias(entity) };
+        join.Relation = RelationsFor(join).FirstOrDefault();
+        _draft.Joins.Add(join);
+        Rebuild();
+    }
+
+    private void SetJoinEntity(QueryJoinDraft join, string? entity)
+    {
+        join.Entity = entity ?? string.Empty;
+        join.Relation = RelationsFor(join).FirstOrDefault();
+        Rebuild();
+    }
+
+    // Only relations that actually reach this entity are worth offering; anything else would build a
+    // join the validator immediately rejects.
+    private IReadOnlyList<string> RelationsFor(QueryJoinDraft join)
+        => Schema is null || string.IsNullOrEmpty(join.Entity)
+            ? []
+            : Schema.RelationsOf(join.Entity).Select(relation => relation.Key).ToList();
+
+    private string RelationLabel(string key) => Schema?.FindRelation(key)?.Label ?? key;
+
+    private static readonly IReadOnlyList<QueryJoinKind> JoinKinds =
+        (QueryJoinKind[])Enum.GetValues(typeof(QueryJoinKind));
+
+    // ---- Columns --------------------------------------------------------------------------------
+
+    private IReadOnlyList<string> ValueTargets
+    {
+        get
+        {
+            var targets = new List<string>();
+            if (Schema is null) return targets;
+            foreach (var participant in _draft.Participants)
+            {
+                // Named "member" rather than "field": inside a property accessor, C# 14 treats
+                // "field" as a contextual keyword.
+                foreach (var member in FieldsOf(participant)) targets.Add($"f:{participant.Alias}.{member.Key}");
+            }
+            foreach (var function in Schema.Functions)
+            {
+                if (function.Kind == QueryFunctionKind.Value) targets.Add("fn:" + function.Key);
+            }
+            return targets;
+        }
+    }
+
+    private IReadOnlyList<QueryField> FieldsOf(QueryParticipant participant)
+    {
+        if (Schema is null) return [];
+        if (!string.IsNullOrEmpty(participant.Function))
+        {
+            return Schema.FindFunction(participant.Function!)?.Columns ?? [];
+        }
+        return Schema.FindEntity(participant.Entity)?.Fields ?? [];
+    }
+
+    private string ValueTargetLabel(string token)
+        => token.StartsWith("fn:", StringComparison.Ordinal)
+            ? (Schema?.FindFunction(token[3..])?.Label ?? token[3..]) + "()"
+            : token[2..];
+
+    private static string ColumnToken(QueryColumnDraft column)
+        => string.IsNullOrEmpty(column.Function)
+            ? $"f:{column.Alias}.{column.Field}"
+            : "fn:" + column.Function;
+
+    private void SetColumn(QueryColumnDraft column, string? token)
+    {
+        column.Function = null;
+        column.Arguments.Clear();
+        column.Alias = string.Empty;
+        column.Field = string.Empty;
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            if (token.StartsWith("fn:", StringComparison.Ordinal))
+            {
+                column.Function = token[3..];
+                var function = Schema?.FindFunction(column.Function);
+                if (function is not null)
+                {
+                    foreach (var _ in function.Parameters) column.Arguments.Add(new QueryArgumentDraft());
+                }
+            }
+            else
+            {
+                var body = token[2..];
+                var dot = body.IndexOf('.');
+                if (dot > 0)
+                {
+                    column.Alias = body[..dot];
+                    column.Field = body[(dot + 1)..];
+                }
+            }
+        }
+
+        if (string.IsNullOrEmpty(column.OutputAlias)) column.OutputAlias = column.Function ?? column.Field;
+        Rebuild();
+    }
+
+    private void AddColumn()
+    {
+        var column = new QueryColumnDraft();
+        _draft.Columns.Add(column);
+        var first = ValueTargets.FirstOrDefault();
+        if (first is not null) SetColumn(column, first);
+        else Rebuild();
+    }
+
+    private QueryFieldType? ColumnType(QueryColumnDraft column)
+    {
+        if (!string.IsNullOrEmpty(column.Function)) return Schema?.FindFunction(column.Function!)?.ReturnType;
+        foreach (var participant in _draft.Participants)
+        {
+            if (!string.Equals(participant.Alias, column.Alias, StringComparison.OrdinalIgnoreCase)) continue;
+            foreach (var field in FieldsOf(participant))
+            {
+                if (string.Equals(field.Key, column.Field, StringComparison.OrdinalIgnoreCase)) return field.Type;
+            }
+        }
+        return null;
+    }
+
+    private bool IsTimestampColumn(QueryColumnDraft column) => ColumnType(column) == QueryFieldType.DateTime;
+
+    // Offering only what the schema permits keeps the grid from producing a query the validator would
+    // immediately reject.
+    private IReadOnlyList<string> AggregatesFor(QueryColumnDraft column)
+    {
+        var options = new List<string> { string.Empty };
+        var type = ColumnType(column);
+        if (type is null) return options;
+        foreach (var aggregate in QueryDefaults.AggregatesFor(type.Value)) options.Add(aggregate.ToString());
+        return options;
+    }
+
+    private string AggregateLabel(string value) => string.IsNullOrEmpty(value) ? Labels.None : value;
+
+    private void SetAggregate(QueryColumnDraft column, string? value)
+    {
+        column.Aggregate = string.IsNullOrEmpty(value)
+            ? null
+            : (QueryAggregate)Enum.Parse(typeof(QueryAggregate), value);
+        if (column.Aggregate is not null) column.Truncate = null;
+        Rebuild();
+    }
+
+    private static readonly IReadOnlyList<string> Periods =
+        new[] { string.Empty }
+            .Concat(((QueryDateTruncation[])Enum.GetValues(typeof(QueryDateTruncation))).Select(p => p.ToString()))
+            .ToList();
+
+    private string PeriodLabel(string value) => string.IsNullOrEmpty(value) ? Labels.None : value;
+
+    private void SetPeriod(QueryColumnDraft column, string? value)
+    {
+        column.Truncate = string.IsNullOrEmpty(value)
+            ? null
+            : (QueryDateTruncation)Enum.Parse(typeof(QueryDateTruncation), value);
+        Rebuild();
+    }
+
+    private static readonly IReadOnlyList<string> SortOptions =
+        [string.Empty, nameof(QuerySortDirection.Ascending), nameof(QuerySortDirection.Descending)];
+
+    private string SortLabel(string value) => value switch
+    {
+        nameof(QuerySortDirection.Ascending) => Labels.Ascending,
+        nameof(QuerySortDirection.Descending) => Labels.Descending,
+        _ => Labels.None,
+    };
+
+    private void SetSort(QueryColumnDraft column, string? value)
+    {
+        column.Sort = string.IsNullOrEmpty(value)
+            ? null
+            : (QuerySortDirection)Enum.Parse(typeof(QuerySortDirection), value);
+        Rebuild();
+    }
+}

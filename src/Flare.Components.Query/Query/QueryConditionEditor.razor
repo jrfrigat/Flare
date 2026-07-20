@@ -1,0 +1,358 @@
+@namespace Flare.Components
+
+@* One node of the condition tree, rendering itself for nested nodes. Keeping the whole tree in one
+   recursive component is what lets AND and OR mix to any depth without a second editor. *@
+
+<div class="flare-qb__group">
+    <div class="flare-qb__group-head">
+        <button type="button" class="flare-qb__connector" @onclick="ToggleConnector">
+            @(Group.Or ? OrLabel : AndLabel)
+        </button>
+        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddCondition">
+            <LeadingIcon><FlareIconView Value="FlareIcons.Add" /></LeadingIcon>
+            <ChildContent>@AddConditionLabel</ChildContent>
+        </FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="AddGroup">
+            <LeadingIcon><FlareIconView Value="FlareIcons.CreateNewFolder" /></LeadingIcon>
+            <ChildContent>@AddGroupLabel</ChildContent>
+        </FlareButton>
+        @if (Parent is not null)
+        {
+            <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs" OnClick="RemoveSelf" AriaLabel="@RemoveLabel">
+                <FlareIconView Value="FlareIcons.Close" />
+            </FlareButton>
+        }
+    </div>
+
+    <div class="flare-qb__group-body">
+        @foreach (var condition in Group.Conditions)
+        {
+            var row = condition;
+            <div class="flare-qb__row">
+                <div class="flare-qb__cell flare-qb__cell--target">
+                    <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
+                                 Value="@TargetOf(row)"
+                                 ValueChanged="@(value => SetTarget(row, value))" />
+                </div>
+                <div class="flare-qb__cell flare-qb__cell--op">
+                    <FlareSelect TValue="QueryOperator" Size="FieldSize.Xs" Items="OperatorsFor(row)"
+                                 ItemLabel="OperatorLabel" Value="@row.Operator"
+                                 ValueChanged="@(value => { row.Operator = value; Changed(); })" />
+                </div>
+
+                @if (QueryDefaults.TakesValueList(row.Operator))
+                {
+                    <div class="flare-qb__cell flare-qb__cell--value">
+                        <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValuesHint"
+                                    Value="@row.Values"
+                                    ValueChanged="@(value => { row.Values = value; Changed(); })" />
+                    </div>
+                }
+                else if (!QueryDefaults.TakesNoValue(row.Operator))
+                {
+                    @if (IsTimestamp(row))
+                    {
+                        <div class="flare-qb__cell flare-qb__cell--relative">
+                            <FlareCheckbox Size="FieldSize.Xs" Label="@RelativeLabel" Value="@row.Relative"
+                                           ValueChanged="@(value => { row.Relative = value ?? false; Changed(); })" />
+                        </div>
+                    }
+                    @if (row.Relative)
+                    {
+                        <div class="flare-qb__cell flare-qb__cell--value">
+                            <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true"
+                                        Value="@row.RelativeAmount.ToString(Culture)"
+                                        ValueChanged="@(value => SetAmount(row, value))" />
+                        </div>
+                        <div class="flare-qb__cell flare-qb__cell--unit">
+                            <FlareSelect TValue="QueryTimeUnit" Size="FieldSize.Xs" Items="Units"
+                                         Value="@row.RelativeUnit"
+                                         ValueChanged="@(value => { row.RelativeUnit = value; Changed(); })" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="flare-qb__cell flare-qb__cell--value">
+                            <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValueHint"
+                                        Value="@row.Value"
+                                        ValueChanged="@(value => { row.Value = value; Changed(); })" />
+                        </div>
+                        @if (QueryDefaults.TakesTwoValues(row.Operator))
+                        {
+                            <div class="flare-qb__cell flare-qb__cell--value">
+                                <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@ValueHint"
+                                            Value="@row.Value2"
+                                            ValueChanged="@(value => { row.Value2 = value; Changed(); })" />
+                            </div>
+                        }
+                    }
+                }
+
+                <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Xs"
+                             OnClick="@(() => RemoveCondition(row))" AriaLabel="@RemoveLabel">
+                    <FlareIconView Value="FlareIcons.Close" />
+                </FlareButton>
+            </div>
+        }
+
+        @foreach (var nested in Group.Groups)
+        {
+            <QueryConditionEditor Group="nested" Parent="Group" Schema="Schema" Draft="Draft"
+                                  AllowAggregates="AllowAggregates" OnChanged="OnChanged" />
+        }
+    </div>
+</div>
+
+@code {
+    private static readonly System.Globalization.CultureInfo Culture = System.Globalization.CultureInfo.InvariantCulture;
+
+    /// <summary>The node being edited.</summary>
+    [Parameter, EditorRequired] public QueryConditionGroupDraft Group { get; set; } = new();
+
+    /// <summary>The node this one is nested in, or null at the root. Only a nested node can be removed.</summary>
+    [Parameter] public QueryConditionGroupDraft? Parent { get; set; }
+
+    /// <summary>The schema the query is built against.</summary>
+    [Parameter, EditorRequired] public QuerySchema? Schema { get; set; }
+
+    /// <summary>The draft, which supplies the participants and output names a condition may name.</summary>
+    [Parameter, EditorRequired] public QueryDraft? Draft { get; set; }
+
+    /// <summary>Whether conditions may test a computed aggregate, which is true only in a HAVING clause.</summary>
+    [Parameter] public bool AllowAggregates { get; set; }
+
+    /// <summary>Raised whenever the node changes, so the host can rebuild the query.</summary>
+    [Parameter] public EventCallback OnChanged { get; set; }
+
+    /// <summary>Caption for the AND connector.</summary>
+    [Parameter] public string AndLabel { get; set; } = "AND";
+
+    /// <summary>Caption for the OR connector.</summary>
+    [Parameter] public string OrLabel { get; set; } = "OR";
+
+    /// <summary>Caption for the button adding a condition.</summary>
+    [Parameter] public string AddConditionLabel { get; set; } = "Condition";
+
+    /// <summary>Caption for the button adding a nested node.</summary>
+    [Parameter] public string AddGroupLabel { get; set; } = "Group";
+
+    /// <summary>Accessible label for the remove buttons.</summary>
+    [Parameter] public string RemoveLabel { get; set; } = "Remove";
+
+    /// <summary>Placeholder for a single value.</summary>
+    [Parameter] public string ValueHint { get; set; } = "Value";
+
+    /// <summary>Placeholder for a comma-separated set of values.</summary>
+    [Parameter] public string ValuesHint { get; set; } = "a, b, c";
+
+    /// <summary>Caption for the toggle that makes a timestamp comparison relative to now.</summary>
+    [Parameter] public string RelativeLabel { get; set; } = "Relative";
+
+    private static readonly IReadOnlyList<QueryTimeUnit> Units =
+        (QueryTimeUnit[])Enum.GetValues(typeof(QueryTimeUnit));
+
+    // One dropdown covers every kind of left-hand side, so the token says which kind it is:
+    // "f:" a field, "fn:" a value function, "s:" a computed aggregate by its output name.
+    private IReadOnlyList<string> Targets
+    {
+        get
+        {
+            var targets = new List<string>();
+            if (Draft is null || Schema is null) return targets;
+
+            foreach (var participant in Draft.Participants)
+            {
+                // Named "member" rather than "field": inside a property accessor, C# 14 treats
+                // "field" as a contextual keyword.
+                foreach (var member in FieldsOf(participant))
+                {
+                    targets.Add($"f:{participant.Alias}.{member.Key}");
+                }
+            }
+            foreach (var function in Schema.Functions)
+            {
+                if (function.Kind == QueryFunctionKind.Value) targets.Add($"fn:{function.Key}");
+            }
+            if (AllowAggregates)
+            {
+                foreach (var alias in Draft.OutputAliases) targets.Add($"s:{alias}");
+            }
+            return targets;
+        }
+    }
+
+    private IReadOnlyList<QueryField> FieldsOf(QueryParticipant participant)
+    {
+        if (Schema is null) return [];
+        if (!string.IsNullOrEmpty(participant.Function))
+        {
+            return Schema.FindFunction(participant.Function!)?.Columns ?? [];
+        }
+        return Schema.FindEntity(participant.Entity)?.Fields ?? [];
+    }
+
+    private string TargetLabel(string token)
+    {
+        if (token.StartsWith("fn:", StringComparison.Ordinal))
+        {
+            var key = token[3..];
+            return (Schema?.FindFunction(key)?.Label ?? key) + "()";
+        }
+        if (token.StartsWith("s:", StringComparison.Ordinal)) return token[2..];
+        return token[2..];
+    }
+
+    private static string TargetOf(QueryConditionDraft condition)
+    {
+        if (!string.IsNullOrWhiteSpace(condition.SelectAlias)) return $"s:{condition.SelectAlias}";
+        if (!string.IsNullOrWhiteSpace(condition.Function)) return $"fn:{condition.Function}";
+        return $"f:{condition.Alias}.{condition.Field}";
+    }
+
+    private void SetTarget(QueryConditionDraft condition, string? token)
+    {
+        condition.SelectAlias = null;
+        condition.Function = null;
+        condition.Arguments.Clear();
+        condition.Alias = string.Empty;
+        condition.Field = string.Empty;
+
+        if (string.IsNullOrEmpty(token)) { Changed(); return; }
+
+        if (token.StartsWith("s:", StringComparison.Ordinal))
+        {
+            condition.SelectAlias = token[2..];
+        }
+        else if (token.StartsWith("fn:", StringComparison.Ordinal))
+        {
+            condition.Function = token[3..];
+            // Seed one argument per declared parameter so the row is usable straight away.
+            var function = Schema?.FindFunction(condition.Function);
+            if (function is not null)
+            {
+                foreach (var _ in function.Parameters) condition.Arguments.Add(new QueryArgumentDraft());
+            }
+        }
+        else
+        {
+            var body = token[2..];
+            var dot = body.IndexOf('.');
+            if (dot > 0)
+            {
+                condition.Alias = body[..dot];
+                condition.Field = body[(dot + 1)..];
+            }
+        }
+
+        // The operator may no longer apply to the new target, so fall back to one that does.
+        var allowed = OperatorsFor(condition);
+        if (!allowed.Contains(condition.Operator)) condition.Operator = allowed.Count > 0 ? allowed[0] : QueryOperator.Equals;
+        Changed();
+    }
+
+    private IReadOnlyList<QueryOperator> OperatorsFor(QueryConditionDraft condition)
+    {
+        var type = TypeOf(condition);
+        if (type is null) return QueryDefaults.OperatorsFor(QueryFieldType.Text);
+        if (!string.IsNullOrWhiteSpace(condition.Alias) && !string.IsNullOrWhiteSpace(condition.Field))
+        {
+            var field = FindField(condition.Alias, condition.Field);
+            if (field is not null) return field.AllowedOperators;
+        }
+        return QueryDefaults.OperatorsFor(type.Value);
+    }
+
+    private QueryFieldType? TypeOf(QueryConditionDraft condition)
+    {
+        if (!string.IsNullOrWhiteSpace(condition.SelectAlias)) return QueryFieldType.Number;
+        if (!string.IsNullOrWhiteSpace(condition.Function))
+        {
+            return Schema?.FindFunction(condition.Function!)?.ReturnType;
+        }
+        return FindField(condition.Alias, condition.Field)?.Type;
+    }
+
+    private QueryField? FindField(string alias, string field)
+    {
+        if (Draft is null || string.IsNullOrEmpty(alias)) return null;
+        foreach (var participant in Draft.Participants)
+        {
+            if (!string.Equals(participant.Alias, alias, StringComparison.OrdinalIgnoreCase)) continue;
+            foreach (var candidate in FieldsOf(participant))
+            {
+                if (string.Equals(candidate.Key, field, StringComparison.OrdinalIgnoreCase)) return candidate;
+            }
+        }
+        return null;
+    }
+
+    private bool IsTimestamp(QueryConditionDraft condition) => TypeOf(condition) == QueryFieldType.DateTime;
+
+    private static string OperatorLabel(QueryOperator op) => op switch
+    {
+        QueryOperator.Contains => "contains",
+        QueryOperator.Equals => "=",
+        QueryOperator.NotEquals => "<>",
+        QueryOperator.StartsWith => "starts with",
+        QueryOperator.EndsWith => "ends with",
+        QueryOperator.GreaterThan => ">",
+        QueryOperator.GreaterThanOrEqual => ">=",
+        QueryOperator.LessThan => "<",
+        QueryOperator.LessThanOrEqual => "<=",
+        QueryOperator.Between => "between",
+        QueryOperator.NotBetween => "not between",
+        QueryOperator.In => "in",
+        QueryOperator.NotIn => "not in",
+        QueryOperator.IsNull => "is empty",
+        QueryOperator.IsNotNull => "is not empty",
+        _ => op.ToString(),
+    };
+
+    private void SetAmount(QueryConditionDraft condition, string? raw)
+    {
+        if (int.TryParse(raw, System.Globalization.NumberStyles.Integer, Culture, out var amount))
+        {
+            condition.RelativeAmount = amount;
+        }
+        Changed();
+    }
+
+    private void ToggleConnector()
+    {
+        Group.Or = !Group.Or;
+        Changed();
+    }
+
+    private void AddCondition()
+    {
+        var condition = new QueryConditionDraft();
+        var first = Targets.FirstOrDefault();
+        Group.Conditions.Add(condition);
+        if (first is not null) SetTarget(condition, first);
+        else Changed();
+    }
+
+    private void AddGroup()
+    {
+        Group.Groups.Add(new QueryConditionGroupDraft());
+        Changed();
+    }
+
+    private void RemoveCondition(QueryConditionDraft condition)
+    {
+        Group.Conditions.Remove(condition);
+        Changed();
+    }
+
+    private void RemoveSelf()
+    {
+        Parent?.Groups.Remove(Group);
+        Changed();
+    }
+
+    private void Changed()
+    {
+        StateHasChanged();
+        if (OnChanged.HasDelegate) OnChanged.InvokeAsync();
+    }
+}

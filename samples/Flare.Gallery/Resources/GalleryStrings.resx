@@ -1119,6 +1119,15 @@
   <data name="InputMask_Basic" xml:space="preserve">
     <value>Phone, card &amp; date masks</value>
   </data>
+  <data name="Query_Title" xml:space="preserve">
+    <value>Query Builder</value>
+  </data>
+  <data name="Query_Subtitle" xml:space="preserve">
+    <value>Compose a query visually over a schema of entities, relations and functions. The designer builds a query and never runs one - it emits a serializable spec that the consumer renders or executes itself.</value>
+  </data>
+  <data name="Query_Designer" xml:space="preserve">
+    <value>Designer</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Kanban Board</value>
   </data>
