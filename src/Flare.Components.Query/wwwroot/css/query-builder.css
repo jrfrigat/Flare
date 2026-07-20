@@ -1,0 +1,140 @@
+/*
+    Visual query designer. Layout only: every colour, radius, spacing and font comes from a semantic
+    Flare token, so the designer takes on whatever theme the host applies without knowing any of them.
+*/
+
+.flare-qb {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-6);
+    color: var(--flare-color-on-surface);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+}
+
+.flare-qb__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-4);
+    padding: var(--flare-spacing-6);
+    background: var(--flare-color-surface-container-low);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-medium);
+}
+
+.flare-qb__section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--flare-spacing-4);
+}
+
+.flare-qb__heading {
+    margin: 0;
+    font-family: var(--flare-typescale-title-small-font);
+    font-size: var(--flare-typescale-title-small-size);
+    font-weight: var(--flare-typescale-title-small-weight);
+    color: var(--flare-color-on-surface-variant);
+}
+
+/* Rows wrap rather than scroll: a designer is often placed in a narrow panel, and a wrapped row
+   stays usable where a horizontally scrolled one does not. */
+.flare-qb__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--flare-spacing-4);
+}
+
+.flare-qb__cell {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.flare-qb__cell--target {
+    flex: 2 1 12rem;
+}
+
+.flare-qb__cell--op,
+.flare-qb__cell--unit,
+.flare-qb__cell--relation {
+    flex: 1 1 8rem;
+}
+
+.flare-qb__cell--value,
+.flare-qb__cell--alias {
+    flex: 1 1 9rem;
+}
+
+.flare-qb__cell--flag,
+.flare-qb__cell--relative {
+    flex: 0 0 auto;
+}
+
+/* The condition tree indents each nesting level so the shape of the logic is visible at a glance. */
+.flare-qb__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-3);
+    padding: var(--flare-spacing-4);
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-small);
+    background: var(--flare-color-surface);
+}
+
+.flare-qb__group .flare-qb__group {
+    margin-inline-start: var(--flare-spacing-6);
+    background: var(--flare-color-surface-container);
+}
+
+.flare-qb__group-head {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-3);
+}
+
+.flare-qb__group-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-3);
+}
+
+.flare-qb__connector {
+    padding: var(--flare-spacing-2) var(--flare-spacing-4);
+    border: 1px solid var(--flare-color-outline);
+    border-radius: var(--flare-shape-full);
+    background: var(--flare-color-surface-container-high);
+    color: var(--flare-color-primary);
+    font: inherit;
+    font-weight: var(--flare-typescale-label-large-weight);
+    cursor: pointer;
+    transition: background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-qb__connector:hover {
+    background: var(--flare-color-surface-container-highest);
+}
+
+.flare-qb__connector:focus-visible {
+    outline: var(--flare-state-focus-ring-width) solid var(--flare-color-primary);
+    outline-offset: var(--flare-state-focus-ring-offset);
+}
+
+.flare-qb__problems {
+    margin: 0;
+    padding-inline-start: var(--flare-spacing-6);
+    color: var(--flare-color-error);
+    display: flex;
+    flex-direction: column;
+    gap: var(--flare-spacing-2);
+}
+
+.flare-qb__problems code {
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-qb__ok {
+    margin: 0;
+    color: var(--flare-color-on-surface-variant);
+}

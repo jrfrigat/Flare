@@ -4487,6 +4487,33 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Kanban_Title", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Query Builder.
+        /// </summary>
+        public static string Query_Title {
+            get {
+                return ResourceManager.GetString("Query_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Compose a query visually over a schema.
+        /// </summary>
+        public static string Query_Subtitle {
+            get {
+                return ResourceManager.GetString("Query_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Designer.
+        /// </summary>
+        public static string Query_Designer {
+            get {
+                return ResourceManager.GetString("Query_Designer", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Container (MaxWidth).

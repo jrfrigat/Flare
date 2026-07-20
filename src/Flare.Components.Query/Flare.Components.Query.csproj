@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!--
+    The visual designer over Querio, and the only piece of the query work that depends on Flare.
+    Querio itself stays independent, so a backend consumes the model without any of this.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Components.Query</PackageId>
+    <RootNamespace>Flare.Components</RootNamespace>
+    <Description>A visual query designer for Flare, built on the Querio query model. Composes joins, aggregates, grouping, conditions and paging over a caller-supplied schema, and emits a serializable query spec that the consumer renders or executes however it likes.</Description>
+    <PackageTags>blazor;components;query;query-builder;querio</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
+    <ProjectReference Include="..\Querio\Querio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Flare.Icons" />
+    <Using Include="Querio" />
+  </ItemGroup>
+
+</Project>

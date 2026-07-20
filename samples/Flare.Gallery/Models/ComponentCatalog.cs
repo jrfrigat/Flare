@@ -159,6 +159,7 @@ public static class ComponentCatalog
         new ComponentEntry("/components/data-tree",         "Data Tree",               "DataTree_Title",        ComponentGroup.DataDisplay),
         new ComponentEntry("/components/description-list",  "Description List",        "DescriptionList_Title", ComponentGroup.DataDisplay),
         new ComponentEntry("/components/kanban",            "Kanban Board",            "Kanban_Title",          ComponentGroup.DataDisplay),
+        new ComponentEntry("/components/query",             "Query Builder",           "Query_Title",           ComponentGroup.DataDisplay),
         new ComponentEntry("/components/list",              "List",                    "List_Title",            ComponentGroup.DataDisplay),
         new ComponentEntry("/components/markdown",          "Markdown",                "Markdown_Title",        ComponentGroup.DataDisplay),
         new ComponentEntry("/components/timeline",          "Timeline",                "Timeline_Title",        ComponentGroup.DataDisplay),

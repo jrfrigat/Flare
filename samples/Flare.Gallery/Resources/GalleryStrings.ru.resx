@@ -1119,6 +1119,15 @@
   <data name="InputMask_Basic" xml:space="preserve">
     <value>Маски телефона, карты и даты</value>
   </data>
+  <data name="Query_Title" xml:space="preserve">
+    <value>Конструктор запросов</value>
+  </data>
+  <data name="Query_Subtitle" xml:space="preserve">
+    <value>Визуальная сборка запроса по схеме сущностей, связей и функций. Конструктор строит запрос, но никогда его не выполняет - на выходе сериализуемая спецификация, которую потребитель сам рендерит или исполняет.</value>
+  </data>
+  <data name="Query_Designer" xml:space="preserve">
+    <value>Конструктор</value>
+  </data>
   <data name="Kanban_Title" xml:space="preserve">
     <value>Канбан-доска</value>
   </data>
