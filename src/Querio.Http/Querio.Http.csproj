@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Writes a query as a query string, and reads one back. The only target that goes both ways, which
+    is what makes it the one to save a query in, put in a link, or accept from a client.
+  -->
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <PackageId>Querio.Http</PackageId>
+    <RootNamespace>Querio.Http</RootNamespace>
+    <MinVerTagPrefix>querio-v</MinVerTagPrefix>
+    <Description>Reads and writes a Querio query as an HTTP query string. Round-trips exactly, so a saved query survives a link, a bookmark or a request from a client and comes back meaning the same thing.</Description>
+    <PackageTags>query;querystring;odata;http;parser;dotnet</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsTrimmable Condition="'$(TargetFramework)' != 'netstandard2.0'">true</IsTrimmable>
+    <!-- Public API must stay fully XML-documented (drives the generated API docs). -->
+    <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
+    <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Querio\Querio.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Querio\Internal\IsExternalInit.cs" Link="Internal\IsExternalInit.cs" />
+  </ItemGroup>
+
+</Project>
