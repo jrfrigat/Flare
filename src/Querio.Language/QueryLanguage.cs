@@ -49,4 +49,22 @@ public static class QueryLanguage
         spec.Validate(schema).ThrowIfInvalid();
         return spec;
     }
+
+    /// <summary>
+    /// Writes a query as text, so a query built in the designer or in code opens in the editor.
+    /// <para>
+    /// Joins are written out, the ones a foreign-key path produced included: once a hop has become a
+    /// join, nothing records that it was typed as a dot. Reading this text back yields the same
+    /// query, but not the same characters somebody originally typed.
+    /// </para>
+    /// </summary>
+    /// <param name="spec">The query to write.</param>
+    /// <param name="schema">The schema it was built against.</param>
+    /// <exception cref="QueryValidationException">The query is not coherent.</exception>
+    public static string Write(QuerySpec spec, QuerySchema schema)
+    {
+        if (spec is null) throw new ArgumentNullException(nameof(spec));
+        if (schema is null) throw new ArgumentNullException(nameof(schema));
+        return new QueryLanguageWriter(spec, schema).Run();
+    }
 }

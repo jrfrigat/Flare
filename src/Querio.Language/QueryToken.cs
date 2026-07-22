@@ -90,6 +90,10 @@ public static class QueryLexer
                 var value = new StringBuilder();
                 while (at < text.Length)
                 {
+                    // A name never spans lines. Without this an unclosed bracket swallows the rest
+                    // of the query, and the caret ends up inside one enormous name - which is the
+                    // state text is in for as long as somebody is halfway through typing a name.
+                    if (text[at] is '\r' or '\n') break;
                     if (text[at] == ']')
                     {
                         // Two closing brackets in a row are one bracket in the name, as in T-SQL.
