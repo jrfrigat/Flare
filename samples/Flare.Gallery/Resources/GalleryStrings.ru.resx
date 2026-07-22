@@ -1128,6 +1128,12 @@
   <data name="Query_Designer" xml:space="preserve">
     <value>Конструктор</value>
   </data>
+  <data name="Query_EditorTitle" xml:space="preserve">
+    <value>Текстовый редактор</value>
+  </data>
+  <data name="Query_EditorSubtitle" xml:space="preserve">
+    <value>Запрос можно написать, а не собирать кликами. Подсказки появляются по ходу набора; поле достижимо через внешний ключ, и это превращается в соединение ниже.</value>
+  </data>
   <data name="Query_Target" xml:space="preserve">
     <value>Цель</value>
   </data>

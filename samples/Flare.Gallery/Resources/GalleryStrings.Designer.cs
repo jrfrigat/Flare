@@ -4516,6 +4516,24 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Text editor.
+        /// </summary>
+        public static string Query_EditorTitle {
+            get {
+                return ResourceManager.GetString("Query_EditorTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Write the query instead of clicking it together.
+        /// </summary>
+        public static string Query_EditorSubtitle {
+            get {
+                return ResourceManager.GetString("Query_EditorSubtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Target.
         /// </summary>
         public static string Query_Target {

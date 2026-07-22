@@ -138,3 +138,10 @@
     margin: 0;
     color: var(--flare-color-on-surface-variant);
 }
+
+.flare-qe__problems {
+    margin: var(--flare-spacing-8) 0 0;
+    padding-inline-start: var(--flare-spacing-20);
+    color: var(--flare-color-error);
+    font-size: var(--flare-typescale-body-small-size);
+}

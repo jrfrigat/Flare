@@ -15,6 +15,24 @@ public static class Codeblock
     public const string Linenumbers = "flare-codeblock__linenumbers";
     /// <summary>The <c>flare-codeblock__textarea</c> CSS class.</summary>
     public const string Textarea = "flare-codeblock__textarea";
+    /// <summary>The <c>flare-codeblock__markers</c> CSS class (the layer holding marked spans).</summary>
+    public const string Markers = "flare-codeblock__markers";
+    /// <summary>The <c>flare-codeblock__marker</c> CSS class (one marked span).</summary>
+    public const string Marker = "flare-codeblock__marker";
+    /// <summary>The <c>flare-codeblock__marker--warning</c> CSS class.</summary>
+    public const string MarkerWarning = "flare-codeblock__marker--warning";
+    /// <summary>The <c>flare-codeblock__suggestions</c> CSS class (the list shown at the caret).</summary>
+    public const string Suggestions = "flare-codeblock__suggestions";
+    /// <summary>The <c>flare-codeblock__suggestion</c> CSS class (one offered item).</summary>
+    public const string Suggestion = "flare-codeblock__suggestion";
+    /// <summary>The <c>flare-codeblock__suggestion--selected</c> CSS class.</summary>
+    public const string SuggestionSelected = "flare-codeblock__suggestion--selected";
+    /// <summary>The <c>flare-codeblock__suggestion-label</c> CSS class.</summary>
+    public const string SuggestionLabel = "flare-codeblock__suggestion-label";
+    /// <summary>The <c>flare-codeblock__suggestion-kind</c> CSS class.</summary>
+    public const string SuggestionKind = "flare-codeblock__suggestion-kind";
+    /// <summary>The <c>flare-codeblock__suggestion-detail</c> CSS class.</summary>
+    public const string SuggestionDetail = "flare-codeblock__suggestion-detail";
 
     /// <summary>
     /// Syntax-highlight token classes emitted by the built-in tokenizer (flare-highlight.js
