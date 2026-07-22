@@ -27,7 +27,7 @@ internal sealed class QueryLanguageReader
     private readonly List<QueryDiagnostic> _diagnostics = [];
     private readonly List<QueryJoin> _joins = [];
     private readonly Dictionary<string, string> _navigated = new(StringComparer.OrdinalIgnoreCase);
-    private readonly List<(string Alias, string? Entity)> _participants = [];
+    private readonly List<(string Alias, string? Entity, string? Function)> _participants = [];
     private int _at;
 
     private QueryLanguageReader(IReadOnlyList<QueryToken> tokens, QuerySchema schema)
@@ -150,7 +150,7 @@ internal sealed class QueryLanguageReader
         if (call is not null)
         {
             var functionAlias = ReadAlias(call.Function);
-            _participants.Add((functionAlias, null));
+            _participants.Add((functionAlias, null, call.Function));
             return QuerySource.FromFunction(call, functionAlias);
         }
 
@@ -166,7 +166,7 @@ internal sealed class QueryLanguageReader
         }
 
         var alias = ReadAlias(entity.Key);
-        _participants.Add((alias, entity.Key));
+        _participants.Add((alias, entity.Key, null));
         return new QuerySource(entity.Key, alias);
     }
 
@@ -198,7 +198,7 @@ internal sealed class QueryLanguageReader
         }
 
         var alias = ReadAlias(entity?.Key ?? call!.Function);
-        _participants.Add((alias, entity?.Key));
+        _participants.Add((alias, entity?.Key, call?.Function));
 
         var join = new QueryJoin(entity?.Key, alias) { Kind = kind, Call = call };
 
@@ -524,7 +524,7 @@ internal sealed class QueryLanguageReader
             Relation = relation.Key,
             From = fromAlias,
         });
-        _participants.Add((alias, relation.To));
+        _participants.Add((alias, relation.To, null));
         _navigated[key] = alias;
         return alias;
     }
@@ -899,12 +899,13 @@ internal sealed class QueryLanguageReader
         return participant.Entity is null ? null : FindField(participant.Entity, reference.Field);
     }
 
+    // Looked up on the participant rather than on the joins: a table function is just as likely to
+    // be what the whole query draws from, and searching only the joins missed exactly that case.
     private IReadOnlyList<QueryField>? FindFunctionColumns(string alias)
     {
-        var join = _joins.FirstOrDefault(candidate =>
+        var participant = _participants.FirstOrDefault(candidate =>
             string.Equals(candidate.Alias, alias, StringComparison.OrdinalIgnoreCase));
-        var call = join?.Call;
-        return call is null ? null : _schema.FindFunction(call.Function)?.Columns;
+        return participant.Function is null ? null : _schema.FindFunction(participant.Function)?.Columns;
     }
 
     // ---- Moving through the tokens ---------------------------------------------------------------
