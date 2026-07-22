@@ -1,0 +1,158 @@
+@namespace Flare.Components
+@using Querio
+@using Querio.Language
+
+@* Writes a query as text rather than through a grid. The component itself holds no knowledge of the
+   language: the code block asks for suggestions, this passes the question to Querio's completion
+   engine, and the answers come back the same for anything else that builds a query. *@
+
+<div class="@CssClass" style="@Style" @attributes="AdditionalAttributes">
+    <FlareCodeBlock Value="@Text"
+                    ValueChanged="HandleTextChanged"
+                    Language="sql"
+                    ReadOnly="false"
+                    Rows="@Rows"
+                    LineNumbers="@LineNumbers"
+                    SuggestionProvider="Suggest"
+                    Markers="@_markers" />
+
+    @if (ShowProblems && _markers.Count > 0)
+    {
+        <ul class="flare-qe__problems">
+            @foreach (var marker in _markers)
+            {
+                <li>@marker.Message</li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    private IReadOnlyList<FlareCodeMarker> _markers = [];
+    private QuerySchema? _boundSchema;
+    private string? _emittedText;
+    // The text last read, so a render that changed nothing does not read it again. Reading produces
+    // a fresh query object every time, so without this the editor would announce a "new" query on
+    // every render, the host would re-render in response, and the two would spin forever.
+    private string? _read;
+
+    /// <summary>The entities, relations and functions a query may use. Required.</summary>
+    [Parameter, EditorRequired] public QuerySchema? Schema { get; set; }
+
+    /// <summary>The query text. Two-way bindable.</summary>
+    [Parameter] public string? Text { get; set; }
+
+    /// <summary>Raised whenever the text changes.</summary>
+    [Parameter] public EventCallback<string> TextChanged { get; set; }
+
+    /// <summary>
+    /// The query the text currently says, or null while it says nothing coherent. Two-way bindable,
+    /// so a query built elsewhere can be opened here.
+    /// </summary>
+    [Parameter] public QuerySpec? Spec { get; set; }
+
+    /// <summary>Raised whenever the query the text says changes.</summary>
+    [Parameter] public EventCallback<QuerySpec?> SpecChanged { get; set; }
+
+    /// <summary>Number of visible rows. Defaults to 10.</summary>
+    [Parameter] public int Rows { get; set; } = 10;
+
+    /// <summary>Whether line numbers are shown. Defaults to true.</summary>
+    [Parameter] public bool LineNumbers { get; set; } = true;
+
+    /// <summary>Whether the list of problems is shown below the editor. Defaults to true.</summary>
+    [Parameter] public bool ShowProblems { get; set; } = true;
+
+    /// <summary>Extra CSS class(es) appended to the root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Inline style applied to the root element.</summary>
+    [Parameter] public string? Style { get; set; }
+
+    /// <summary>Unmatched attributes, splatted onto the root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string CssClass => string.IsNullOrEmpty(Class) ? "flare-qe" : "flare-qe " + Class;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Schema is null) return;
+
+        // A query handed in from elsewhere is written out as text, but only when it is not the one
+        // this editor just produced - otherwise every keystroke would be rewritten underneath it.
+        if (!ReferenceEquals(_boundSchema, Schema) || (Spec is not null && !ReferenceEquals(Text, _emittedText)))
+        {
+            if (Spec is not null && string.IsNullOrWhiteSpace(Text))
+            {
+                Text = QueryLanguage.Write(Spec, Schema);
+                _emittedText = Text;
+            }
+            _boundSchema = Schema;
+        }
+
+        // Text that arrived already written says a query too, and the host has to be told: opening
+        // with a query and never mentioning it would leave everything bound to it looking empty.
+        await RereadAsync();
+    }
+
+    private async Task HandleTextChanged(string text)
+    {
+        Text = text;
+        _emittedText = text;
+        if (TextChanged.HasDelegate) await TextChanged.InvokeAsync(text);
+        await RereadAsync();
+    }
+
+    /// <summary>Reads the text if it has changed, and tells the host what it now says.</summary>
+    private async Task RereadAsync()
+    {
+        if (string.Equals(_read, Text, StringComparison.Ordinal)) return;
+
+        _read = Text;
+        Reread();
+        if (SpecChanged.HasDelegate) await SpecChanged.InvokeAsync(Spec);
+    }
+
+    /// <summary>
+    /// Reads the text again. Every problem is kept, not just the first, because that is what an
+    /// editor has to show; the partial query is kept too, so the rest of the page stays useful while
+    /// the text is still wrong.
+    /// </summary>
+    private void Reread()
+    {
+        if (Schema is null || string.IsNullOrWhiteSpace(Text))
+        {
+            _markers = [];
+            Spec = null;
+            return;
+        }
+
+        var result = QueryLanguage.Read(Text!, Schema);
+        Spec = result.Spec;
+        _markers = result.Diagnostics
+            .Select(problem => new FlareCodeMarker(
+                problem.Start,
+                problem.Length,
+                problem.Message,
+                problem.Severity == QuerySeverity.Warning ? FlareCodeSeverity.Warning : FlareCodeSeverity.Error))
+            .ToList();
+    }
+
+    private ValueTask<IReadOnlyList<FlareCodeSuggestion>> Suggest(FlareCodeContext context)
+    {
+        if (Schema is null) return new ValueTask<IReadOnlyList<FlareCodeSuggestion>>([]);
+
+        var offered = QueryCompletionEngine.Suggest(context.Text, context.Caret, Schema)
+            .Select(candidate => new FlareCodeSuggestion(candidate.Text, candidate.Label)
+            {
+                Detail = candidate.Detail,
+                Kind = candidate.Kind.ToString().ToLowerInvariant(),
+                ReplaceStart = candidate.ReplaceStart,
+                ReplaceLength = candidate.ReplaceLength,
+            })
+            .ToList();
+
+        return new ValueTask<IReadOnlyList<FlareCodeSuggestion>>(offered);
+    }
+}

@@ -22,4 +22,12 @@ public sealed class HighlightJsService : FlareJsModule, IHighlightJsService
     /// <inheritdoc />
     public ValueTask DisableEditorKeysAsync(ElementReference textarea)
         => InvokeVoidAsync("disableCodeEditorKeys", textarea);
+
+    /// <inheritdoc />
+    public ValueTask<FlareCaretInfo?> GetCaretAsync(ElementReference textarea)
+        => InvokeAsync<FlareCaretInfo?>("getCaretInfo", textarea);
+
+    /// <inheritdoc />
+    public ValueTask SetCaretAsync(ElementReference textarea, int offset)
+        => InvokeVoidAsync("setCaret", textarea, offset);
 }

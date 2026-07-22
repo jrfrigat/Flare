@@ -1,0 +1,96 @@
+@using Querio
+@using Querio.Sql
+
+@* Type a query and watch it become one. The interesting part is the third line: a field can be
+   reached through a foreign key, which no SQL can write - and each hop turns into a join below. *@
+
+<FlareStack Spacing="4">
+    <FlareQueryEditor Schema="_schema" @bind-Text="_text" @bind-Spec="_spec" Rows="8" />
+
+    <FlareTabs>
+        <FlareTab Title="SQL Server">
+            <pre class="flare-code-block"><code>@Render(SqlServerDialect.Instance)</code></pre>
+        </FlareTab>
+        <FlareTab Title="PostgreSQL">
+            <pre class="flare-code-block"><code>@Render(PostgreSqlDialect.Instance)</code></pre>
+        </FlareTab>
+    </FlareTabs>
+</FlareStack>
+
+@code {
+    private QuerySpec? _spec;
+
+    // Opens on a query that uses the one thing the language has and SQL does not, so the feature is
+    // the first thing a reader sees rather than something to be found.
+    private string _text =
+        "select [r].[route], [r].[apiKeyId].[name] as [key], count(*) as [total]"
+        + Environment.NewLine + "from [dbo].[RequestLog] as [r]"
+        + Environment.NewLine + "where [r].[timestamp] >= now - 30 day and [r].[error] = true"
+        + Environment.NewLine + "group by [r].[route], [r].[apiKeyId].[name]"
+        + Environment.NewLine + "order by [total] desc"
+        + Environment.NewLine + "limit 20";
+
+    private readonly QuerySchema _schema = new(
+        [
+            new QueryEntity("requests", "Requests",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("route", "Route", QueryFieldType.Text),
+                new QueryField("timestamp", "Timestamp", QueryFieldType.DateTime),
+                new QueryField("durationMs", "Duration, ms", QueryFieldType.Number) { Column = "duration_ms" },
+                new QueryField("error", "Error", QueryFieldType.Boolean),
+                new QueryField("status", "Status", QueryFieldType.Number),
+                new QueryField("apiKeyId", "API key", QueryFieldType.Guid) { Column = "api_key_id" },
+            ])
+            { Source = "dbo.RequestLog", PrimaryKey = ["id"] },
+
+            new QueryEntity("apiKeys", "API keys",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("name", "Name", QueryFieldType.Text),
+                new QueryField("ownerId", "Owner", QueryFieldType.Guid),
+            ])
+            { Source = "dbo.ApiKeys", PrimaryKey = ["id"] },
+
+            new QueryEntity("users", "Users",
+            [
+                new QueryField("id", "Id", QueryFieldType.Guid),
+                new QueryField("name", "Name", QueryFieldType.Text),
+            ])
+            { Source = "dbo.Users", PrimaryKey = ["id"] },
+        ],
+        [
+            QueryRelation.Simple("request_apiKey", "requests", "apiKeyId", "apiKeys", "id"),
+            QueryRelation.Simple("apiKey_owner", "apiKeys", "ownerId", "users", "id"),
+        ],
+        [
+            new QueryFunction("upper", "Upper case", QueryFunctionKind.Value)
+            {
+                Parameters = [new QueryFunctionParameter("text", "Text", QueryFieldType.Text)],
+                ReturnType = QueryFieldType.Text,
+                Source = "UPPER",
+            },
+        ]);
+
+    private string Render(SqlDialect dialect)
+    {
+        if (_spec is null) return string.Empty;
+        try
+        {
+            var result = SqlRenderer.Render(_spec, _schema, dialect);
+            if (result.Parameters.Count == 0) return result.Sql;
+
+            var parameters = string.Join(
+                Environment.NewLine,
+                result.Parameters.Select(p => "-- " + p.Name + " = "
+                    + Convert.ToString(p.Value, System.Globalization.CultureInfo.InvariantCulture)));
+            return result.Sql + Environment.NewLine + parameters;
+        }
+        catch (Exception error)
+        {
+            // While the text is half typed the query is usually incoherent, and saying so is more
+            // use than showing nothing.
+            return "-- " + error.Message;
+        }
+    }
+}

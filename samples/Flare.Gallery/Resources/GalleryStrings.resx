@@ -1128,6 +1128,12 @@
   <data name="Query_Designer" xml:space="preserve">
     <value>Designer</value>
   </data>
+  <data name="Query_EditorTitle" xml:space="preserve">
+    <value>Text editor</value>
+  </data>
+  <data name="Query_EditorSubtitle" xml:space="preserve">
+    <value>Write the query instead of clicking it together. Suggestions appear as you type; a field can be reached through a foreign key, and that becomes a join below.</value>
+  </data>
   <data name="Query_Target" xml:space="preserve">
     <value>Target</value>
   </data>

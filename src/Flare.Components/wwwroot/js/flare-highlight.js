@@ -166,3 +166,50 @@ export function disableCodeEditorKeys(textareaEl) {
         _editorKeyHandlers.delete(textareaEl);
     }
 }
+
+// -- Caret reporting, for a suggestion list anchored to the caret -------------
+
+/** Where the caret is, and where on screen it sits relative to the editor's own box. */
+export function getCaretInfo(textareaEl) {
+    if (!textareaEl) return null;
+    const start = textareaEl.selectionStart;
+
+    // A mirror of the textarea, laid out identically, is the only reliable way to find where a
+    // character sits: a textarea exposes an offset but never a position.
+    const style = window.getComputedStyle(textareaEl);
+    const mirror = document.createElement('div');
+    for (const name of [
+        'fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'lineHeight',
+        'textTransform', 'wordSpacing', 'textIndent', 'whiteSpace', 'tabSize',
+        'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft',
+        'borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth', 'boxSizing']) {
+        mirror.style[name] = style[name];
+    }
+    mirror.style.position = 'absolute';
+    mirror.style.visibility = 'hidden';
+    mirror.style.width = style.width;
+    mirror.style.whiteSpace = 'pre-wrap';
+    mirror.style.overflowWrap = 'break-word';
+
+    mirror.textContent = textareaEl.value.slice(0, start);
+    const anchor = document.createElement('span');
+    // Holds whatever follows the caret, so the span begins exactly at it. A full stop stands in when
+    // nothing follows, because an empty span has no position to read.
+    anchor.textContent = textareaEl.value.slice(start) || '.';
+    mirror.appendChild(anchor);
+    document.body.appendChild(mirror);
+
+    const left = anchor.offsetLeft - textareaEl.scrollLeft;
+    const top = anchor.offsetTop - textareaEl.scrollTop;
+    const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.4;
+    document.body.removeChild(mirror);
+
+    return { start, end: textareaEl.selectionEnd, left, top, lineHeight };
+}
+
+/** Puts the caret at an offset and gives the textarea focus, after text was replaced. */
+export function setCaret(textareaEl, offset) {
+    if (!textareaEl) return;
+    textareaEl.focus();
+    textareaEl.selectionStart = textareaEl.selectionEnd = offset;
+}

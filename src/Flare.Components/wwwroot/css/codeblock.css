@@ -83,3 +83,83 @@
 .flare-codeblock--line-numbers .flare-codeblock__highlight {
     padding-left: calc(2.5rem + 1.5rem);
 }
+
+/* Marked spans sit on their own layer under the text, holding the same characters in the same
+   metrics so an underline lands where it belongs. Only the decoration is visible. */
+.flare-codeblock__markers {
+    position: absolute;
+    inset: 0;
+    padding: var(--flare-spacing-8);
+    margin: 0;
+    white-space: pre;
+    overflow: hidden;
+    color: transparent;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.flare-codeblock__markers code {
+    font: inherit;
+}
+
+.flare-codeblock__marker {
+    text-decoration: underline wavy var(--flare-color-error);
+    text-underline-offset: var(--flare-spacing-2);
+    /* The message is worth reaching for, so this span alone takes the pointer back. */
+    pointer-events: auto;
+}
+
+.flare-codeblock__marker--warning {
+    text-decoration-color: var(--flare-color-tertiary);
+}
+
+.flare-codeblock__suggestions {
+    position: absolute;
+    z-index: 3;
+    min-width: 12rem;
+    max-height: 16rem;
+    overflow-y: auto;
+    padding: var(--flare-spacing-4) 0;
+    border: 1px solid var(--flare-color-outline-variant);
+    border-radius: var(--flare-shape-small);
+    background: var(--flare-color-surface-container-high);
+    box-shadow: var(--flare-elevation-2);
+}
+
+.flare-codeblock__suggestion {
+    display: flex;
+    align-items: baseline;
+    gap: var(--flare-spacing-8);
+    padding: var(--flare-spacing-4) var(--flare-spacing-12);
+    cursor: pointer;
+    color: var(--flare-color-on-surface);
+}
+
+.flare-codeblock__suggestion:hover {
+    background: var(--flare-color-surface-container-highest);
+}
+
+.flare-codeblock__suggestion--selected {
+    background: var(--flare-color-secondary-container);
+    color: var(--flare-color-on-secondary-container);
+}
+
+.flare-codeblock__suggestion-label {
+    flex: 0 0 auto;
+}
+
+.flare-codeblock__suggestion-kind {
+    flex: 0 0 auto;
+    font-size: var(--flare-typescale-label-small-size);
+    color: var(--flare-color-on-surface-variant);
+}
+
+.flare-codeblock__suggestion-detail {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+    font-size: var(--flare-typescale-label-small-size);
+    color: var(--flare-color-on-surface-variant);
+}
