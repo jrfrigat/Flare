@@ -18,8 +18,8 @@
         var entry = scenario;
         <FlareStack Spacing="1">
             <FlareText Typo="TypographyScale.TitleSmall">@entry.Title</FlareText>
-            <pre class="flare-code-block"><code>@entry.Code</code></pre>
-            <pre class="flare-code-block"><code>@Render(entry.Spec)</code></pre>
+            <FlareCodeBlock Value="@entry.Code" Language="csharp" Wrap="true" />
+            <FlareCodeBlock Value="@Render(entry.Spec)" Language="sql" Wrap="true" />
         </FlareStack>
     }
 </FlareStack>

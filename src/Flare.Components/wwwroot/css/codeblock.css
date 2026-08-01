@@ -91,6 +91,18 @@
     height: calc(var(--flare-codeblock-rows, 10) * 1.5em + 2 * var(--flare-spacing-8));
 }
 
+/* Wrapping is set on every layer at once. One layer wrapping alone is the whole reason the caret
+   used to land on a different character than the one under the pointer. */
+.flare-codeblock--wrap .flare-codeblock__highlight,
+.flare-codeblock--wrap .flare-codeblock__markers,
+.flare-codeblock--wrap .flare-codeblock__textarea {
+    white-space: pre-wrap;
+    /* Generated output runs to long unbroken names, and a name wider than the box would push past
+       the edge even while wrapping. */
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
 /* Read-only blocks fit their content (no absolute overlay, no fixed min-height). */
 .flare-codeblock--readonly .flare-codeblock__highlight {
     min-height: 0;

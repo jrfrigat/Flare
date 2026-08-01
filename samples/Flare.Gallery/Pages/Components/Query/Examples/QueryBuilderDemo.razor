@@ -21,20 +21,20 @@
     <FlareQueryBuilder Schema="_schema" @bind-Spec="_spec" ShowSubmit="false" Capabilities="@TargetCapabilities" />
 
     <FlareTabs>
-        <FlareTab Title="JSON">
-            <pre class="flare-code-block"><code>@_json</code></pre>
+        <FlareTab Label="JSON">
+            <FlareCodeBlock Value="@_json" Language="json" Wrap="true" />
         </FlareTab>
-        <FlareTab Title="PostgreSQL">
-            <pre class="flare-code-block"><code>@Render(PostgreSqlDialect.Instance)</code></pre>
+        <FlareTab Label="PostgreSQL">
+            <FlareCodeBlock Value="@Render(PostgreSqlDialect.Instance)" Language="sql" Wrap="true" />
         </FlareTab>
-        <FlareTab Title="SQL Server">
-            <pre class="flare-code-block"><code>@Render(SqlServerDialect.Instance)</code></pre>
+        <FlareTab Label="SQL Server">
+            <FlareCodeBlock Value="@Render(SqlServerDialect.Instance)" Language="sql" Wrap="true" />
         </FlareTab>
-        <FlareTab Title="SQLite">
-            <pre class="flare-code-block"><code>@Render(SqliteDialect.Instance)</code></pre>
+        <FlareTab Label="SQLite">
+            <FlareCodeBlock Value="@Render(SqliteDialect.Instance)" Language="sql" Wrap="true" />
         </FlareTab>
-        <FlareTab Title="1C">
-            <pre class="flare-code-block"><code>@RenderOneC()</code></pre>
+        <FlareTab Label="1C">
+            <FlareCodeBlock Value="@RenderOneC()" Language="sql" Wrap="true" />
         </FlareTab>
     </FlareTabs>
 </FlareStack>

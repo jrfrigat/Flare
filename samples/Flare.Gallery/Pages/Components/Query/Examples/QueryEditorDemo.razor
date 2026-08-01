@@ -8,11 +8,11 @@
     <FlareQueryEditor Schema="_schema" @bind-Text="_text" @bind-Spec="_spec" Rows="8" />
 
     <FlareTabs>
-        <FlareTab Title="SQL Server">
-            <pre class="flare-code-block"><code>@Render(SqlServerDialect.Instance)</code></pre>
+        <FlareTab Label="SQL Server">
+            <FlareCodeBlock Value="@Render(SqlServerDialect.Instance)" Language="sql" Wrap="true" />
         </FlareTab>
-        <FlareTab Title="PostgreSQL">
-            <pre class="flare-code-block"><code>@Render(PostgreSqlDialect.Instance)</code></pre>
+        <FlareTab Label="PostgreSQL">
+            <FlareCodeBlock Value="@Render(PostgreSqlDialect.Instance)" Language="sql" Wrap="true" />
         </FlareTab>
     </FlareTabs>
 </FlareStack>
