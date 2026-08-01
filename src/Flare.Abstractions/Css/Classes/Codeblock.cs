@@ -11,6 +11,8 @@ public static class Codeblock
     public const string Readonly = "flare-codeblock--readonly";
     /// <summary>The <c>flare-codeblock--editable</c> CSS class (a textarea is present).</summary>
     public const string Editable = "flare-codeblock--editable";
+    /// <summary>The <c>flare-codeblock--wrap</c> CSS class (long lines wrap instead of scrolling).</summary>
+    public const string Wrap = "flare-codeblock--wrap";
     /// <summary>The <c>flare-codeblock__highlight</c> CSS class.</summary>
     public const string Highlight = "flare-codeblock__highlight";
     /// <summary>The <c>flare-codeblock__linenumbers</c> CSS class.</summary>

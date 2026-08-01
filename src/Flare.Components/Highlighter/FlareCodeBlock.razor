@@ -109,6 +109,17 @@
     /// <summary>Longest list of suggestions shown at once. Defaults to 8.</summary>
     [Parameter] public int MaxSuggestions { get; set; } = 8;
 
+    /// <summary>
+    /// Wraps long lines instead of scrolling sideways. Off by default, since code is usually easier
+    /// to follow when a line stays a line; turn it on for generated output that has to be read
+    /// rather than edited.
+    /// <para>
+    /// With <see cref="LineNumbers"/> a wrapped line still gets one number, so the numbers stop
+    /// matching the rows on screen.
+    /// </para>
+    /// </summary>
+    [Parameter] public bool Wrap { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Codeblock.Root;
 
     private string _displayValue => MaxLength > 0 && Value?.Length > MaxLength ? Value[..MaxLength] : Value ?? string.Empty;
@@ -143,6 +154,7 @@
             var cls = BuildCssClass();
             cls += ReadOnly ? " " + Css.Classes.Codeblock.Readonly : " " + Css.Classes.Codeblock.Editable;
             if (LineNumbers) cls += " " + Css.Classes.Codeblock.LineNumbers;
+            if (Wrap) cls += " " + Css.Classes.Codeblock.Wrap;
             return cls;
         }
     }
