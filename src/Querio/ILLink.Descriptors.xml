@@ -1,0 +1,16 @@
+<!--
+  Keeps the query model whole when an app is published trimmed.
+
+  A saved query is the product's contract: it is meant to be written to storage, sent over a wire
+  and read back somewhere else. Serializers reach these types by reflection, and the spec types are
+  positional records, so a serializer matches JSON properties to constructor parameters BY NAME.
+  Trimming strips parameter names from methods nothing appears to reflect on, and the failure only
+  shows up in a Release publish, at run time, as
+  "ConstructorContainsNullParameterNames" - long after any test has passed.
+
+  So the contract is preserved rather than left to be inferred. This costs a few kilobytes in an
+  assembly that is almost entirely contract anyway.
+-->
+<linker>
+  <assembly fullname="Querio" preserve="all" />
+</linker>

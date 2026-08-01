@@ -9,6 +9,8 @@ public static class Codeblock
     public const string LineNumbers = "flare-codeblock--line-numbers";
     /// <summary>The <c>flare-codeblock--readonly</c> CSS class.</summary>
     public const string Readonly = "flare-codeblock--readonly";
+    /// <summary>The <c>flare-codeblock--editable</c> CSS class (a textarea is present).</summary>
+    public const string Editable = "flare-codeblock--editable";
     /// <summary>The <c>flare-codeblock__highlight</c> CSS class.</summary>
     public const string Highlight = "flare-codeblock__highlight";
     /// <summary>The <c>flare-codeblock__linenumbers</c> CSS class.</summary>

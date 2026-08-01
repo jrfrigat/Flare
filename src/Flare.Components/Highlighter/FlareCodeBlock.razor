@@ -38,15 +38,13 @@
                   autocorrect="off"
                   autocapitalize="off"
                   maxlength="@(MaxLength > 0 ? MaxLength : int.MaxValue)"
-                  value="@_displayValue"
                   @oninput="HandleInput"
-                  @onscroll="SyncScroll"
                   @onkeydown="HandleKeyDown"
                   @onkeydown:preventDefault="_swallowKey"
-                  @onkeyup="HandleCaretMoved"
+                  @onkeyup="HandleKeyUp"
                   @onclick="HandleCaretMoved"
                   @onblur="HandleBlur"
-                  @ref="_textarea"></textarea>
+                  @ref="_textarea">@_seedText</textarea>
     }
     @if (_open && _suggestions.Count > 0)
     {
@@ -122,6 +120,14 @@
     private string _highlightedHtml = string.Empty;
     private string _lineNumbersText = string.Empty;
 
+    // Rendered into the textarea once and never again. Assigning a textarea's value moves the caret
+    // to the end, so an editor that re-rendered its own text would jump on every keystroke. After
+    // the first render the DOM owns the text, and anything arriving from elsewhere is pushed in
+    // through script instead.
+    private string _seedText = string.Empty;
+    private bool _seeded;
+    private string _domValue = string.Empty;
+
     private IReadOnlyList<FlareCodeSuggestion> _suggestions = [];
     private List<(string Text, FlareCodeMarker? Marker)> _marked = [];
     private bool _open;
@@ -135,14 +141,19 @@
         get
         {
             var cls = BuildCssClass();
-            if (ReadOnly) cls += " flare-codeblock--readonly";
-            if (LineNumbers) cls += " flare-codeblock--line-numbers";
+            cls += ReadOnly ? " " + Css.Classes.Codeblock.Readonly : " " + Css.Classes.Codeblock.Editable;
+            if (LineNumbers) cls += " " + Css.Classes.Codeblock.LineNumbers;
             return cls;
         }
     }
 
-    // Read-only blocks size to their content; the editor uses a fixed, scrollable height.
-    private string _heightStyle => ReadOnly ? string.Empty : $"height:{Rows * 1.5}rem;";
+    // Read-only blocks size to their content; the editor is Rows rows tall. The row count travels
+    // as a custom property rather than a computed height, so the stylesheet works out the geometry
+    // from the line height it already sets and the two cannot disagree.
+    private string _heightStyle => ReadOnly
+        ? string.Empty
+        : string.Create(
+            System.Globalization.CultureInfo.InvariantCulture, $"--flare-codeblock-rows:{Rows};");
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -151,8 +162,11 @@
             try
             {
                 _jsReady = true;
-                if (SmartEditing && !ReadOnly)
-                    await Highlight.EnableEditorKeysAsync(_textarea, IndentSize);
+                if (!ReadOnly)
+                {
+                    await Highlight.AttachEditorSyncAsync(_textarea);
+                    if (SmartEditing) await Highlight.EnableEditorKeysAsync(_textarea, IndentSize);
+                }
             }
             catch { _jsReady = false; /* JS interop not available (prerender) */ }
         }
@@ -165,6 +179,28 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        if (!_seeded)
+        {
+            _seedText = _displayValue;
+            _domValue = _seedText;
+            _seeded = true;
+        }
+        else if (!ReadOnly && !string.Equals(_domValue, _displayValue, StringComparison.Ordinal))
+        {
+            // Text the person did not type - a host swapping the query, say. Pushed in rather than
+            // rendered, so the caret survives.
+            _domValue = _displayValue;
+            if (_jsReady)
+            {
+                try
+                {
+                    await Highlight.SetTextAsync(_textarea, _domValue);
+                    await Highlight.SyncEditorScrollAsync(_textarea);
+                }
+                catch { /* the text is still what the host asked for; only the DOM lags */ }
+            }
+        }
+
         await UpdateHighlightAsync();
         UpdateLineNumbers();
         UpdateMarkers();
@@ -173,6 +209,9 @@
     private async Task HandleInput(ChangeEventArgs e)
     {
         var text = e.Value?.ToString() ?? string.Empty;
+        // Recorded before the host hears about it, so the round trip back is recognised as the same
+        // text and nothing is pushed into the DOM on top of what is being typed.
+        _domValue = text;
         await ValueChanged.InvokeAsync(text);
         UpdateLineNumbers();
         await UpdateHighlightAsync();
@@ -188,6 +227,7 @@
     {
         if (SuggestionProvider is null || !_jsReady) return;
 
+        var previous = _suggestions;
         try
         {
             var caret = await Highlight.GetCaretAsync(_textarea);
@@ -200,7 +240,10 @@
                 : offered;
 
             _open = _suggestions.Count > 0;
-            _selected = 0;
+            // Reset only when the offer actually changed. Re-asking with the same answers and then
+            // jumping back to the first one is what makes arrow keys feel broken.
+            if (!SameAsOffered(_suggestions, previous)) _selected = 0;
+            else _selected = Math.Min(_selected, Math.Max(_suggestions.Count - 1, 0));
             // Placed one line below the caret so the list never covers what is being typed.
             _suggestionsStyle = _open
                 ? string.Create(
@@ -215,6 +258,26 @@
         }
         _swallowKey = _open;
         await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>Whether two offers hold the same things, so the chosen one can stay chosen.</summary>
+    private static bool SameAsOffered(
+        IReadOnlyList<FlareCodeSuggestion> current, IReadOnlyList<FlareCodeSuggestion> previous)
+    {
+        if (current.Count != previous.Count) return false;
+        for (var i = 0; i < current.Count; i++)
+        {
+            if (!string.Equals(current[i].Text, previous[i].Text, StringComparison.Ordinal)) return false;
+        }
+        return true;
+    }
+
+    private async Task HandleKeyUp(KeyboardEventArgs e)
+    {
+        // The keys that move through the list are not keys that move the caret, and re-asking on
+        // them is what used to throw the choice back to the top.
+        if (e.Key is "ArrowDown" or "ArrowUp" or "Enter" or "Tab" or "Escape") return;
+        await HandleCaretMoved();
     }
 
     private async Task HandleCaretMoved()
@@ -264,6 +327,13 @@
         var updated = text.Substring(0, start) + suggestion.Text + text.Substring(start + length);
         Close();
 
+        // Put in through script, since the DOM owns the text; then the host is told.
+        if (_jsReady)
+        {
+            try { await Highlight.SetTextAsync(_textarea, updated); }
+            catch { /* the value still travels to the host below */ }
+        }
+        _domValue = updated;
         await ValueChanged.InvokeAsync(updated);
         UpdateLineNumbers();
         await UpdateHighlightAsync();
@@ -328,12 +398,6 @@
         if (at < text.Length) _marked.Add((text.Substring(at), null));
     }
 
-    private async Task SyncScroll()
-    {
-        // Scroll sync is handled by CSS overflow; no JS needed for basic use.
-        await Task.CompletedTask;
-    }
-
     private async Task UpdateHighlightAsync()
     {
         var display = _displayValue;
@@ -365,8 +429,11 @@
     {
         try
         {
-            if (_jsReady && SmartEditing && !ReadOnly)
-                await Highlight.DisableEditorKeysAsync(_textarea);
+            if (_jsReady && !ReadOnly)
+            {
+                await Highlight.DetachEditorSyncAsync(_textarea);
+                if (SmartEditing) await Highlight.DisableEditorKeysAsync(_textarea);
+            }
         }
         catch { /* ignored */ }
         await base.DisposeAsync();

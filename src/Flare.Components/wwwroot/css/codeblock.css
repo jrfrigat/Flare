@@ -2,12 +2,30 @@
     position: relative;
     border: 1px solid var(--flare-color-outline);
     border-radius: var(--flare-shape-small);
-    overflow: hidden;
-    font-family: monospace;
+    /* Not hidden: the suggestion list is anchored to the caret and has to be able to hang past the
+       bottom edge. The layers inside round and clip themselves instead. */
+    overflow: visible;
+    /* Twice, on purpose: naming a generic family alone makes several engines fall back to their
+       "monospace default size" instead of the size set here, and the text layers would then be
+       measured in one size and painted in another. */
+    font-family: monospace, monospace;
     font-size: 0.875rem;
+    /* Pinned rather than left at "normal", which differs between a pre and a textarea. Every layer
+       inherits this one number, so a line sits at the same height in all of them. */
+    line-height: 1.5;
     background: var(--flare-color-surface-container-high);
 }
 
+/*
+  An editor is two layers holding the same characters: a textarea nobody can see, over a coloured
+  copy of the text nobody can touch. A textarea cannot paint syntax colours and a coloured element
+  cannot be typed into, so the caret and the colours live in separate elements laid exactly on top
+  of each other.
+
+  Exactly means exactly. The two must agree on font, size, line height, padding, tab size, wrapping
+  and scroll offset - miss any one and the caret lands on a different character than the one under
+  the pointer. The rules below are that agreement; nothing here is decoration.
+*/
 .flare-codeblock__textarea {
     position: absolute;
     inset: 0;
@@ -21,9 +39,18 @@
     padding: var(--flare-spacing-8);
     box-sizing: border-box;
     font: inherit;
+    line-height: inherit;
     outline: none;
     z-index: 1;
     tab-size: 4;
+    /* A textarea soft-wraps by default while a pre does not. That mismatch pushes every line after
+       a long one down by a row in one layer and not the other, so the caret sits a line above the
+       character it appears to be next to. Neither layer wraps. */
+    white-space: pre;
+    overflow-wrap: normal;
+    word-break: normal;
+    /* The one element that scrolls. The others are moved to follow it. */
+    overflow: auto;
 }
 
 .flare-codeblock__highlight {
@@ -32,14 +59,36 @@
     white-space: pre;
     overflow: auto;
     margin: 0;
+    font: inherit;
+    line-height: inherit;
+    tab-size: 4;
+    /* Matches the textarea, or the two boxes hold the same text in different amounts of room and
+       scroll by different distances at the far end of a long line. */
+    box-sizing: border-box;
     color: var(--flare-color-on-surface);
     background: var(--flare-color-surface-container-high);
+    /* Rounds itself, since the root no longer clips its children. */
+    border-radius: inherit;
 }
 
 .flare-codeblock__highlight code {
     font: inherit;
+    line-height: inherit;
     background: none;
     padding: 0;
+}
+
+/* With a textarea present the coloured copy is underneath it, and has no scrollbar of its own:
+   script keeps its scroll offset equal to the textarea's. */
+.flare-codeblock--editable .flare-codeblock__highlight {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+/* One row of text plus the padding above and below it, so the box really is Rows rows tall. */
+.flare-codeblock--editable {
+    height: calc(var(--flare-codeblock-rows, 10) * 1.5em + 2 * var(--flare-spacing-8));
 }
 
 /* Read-only blocks fit their content (no absolute overlay, no fixed min-height). */
@@ -65,22 +114,30 @@
     position: absolute;
     left: 0;
     top: 0;
+    /* Reaches the bottom so it can be scrolled: the numbers travel down with the lines they belong
+       to, but never sideways, since the gutter stays pinned while the text slides under it. */
+    bottom: 0;
+    overflow: hidden;
     padding: var(--flare-spacing-8) var(--flare-spacing-4);
     text-align: right;
     color: var(--flare-color-on-surface-variant);
     user-select: none;
     min-width: 2.5rem;
+    box-sizing: border-box;
     border-right: 1px solid var(--flare-color-outline-variant);
     background: var(--flare-color-surface-container);
     white-space: pre;
     font: inherit;
     line-height: inherit;
+    tab-size: 4;
     pointer-events: none;
     z-index: 2;
 }
 
+/* Clear of the gutter, and by the same amount in both layers or the columns disagree. */
 .flare-codeblock--line-numbers .flare-codeblock__textarea,
-.flare-codeblock--line-numbers .flare-codeblock__highlight {
+.flare-codeblock--line-numbers .flare-codeblock__highlight,
+.flare-codeblock--line-numbers .flare-codeblock__markers {
     padding-left: calc(2.5rem + 1.5rem);
 }
 
@@ -93,20 +150,31 @@
     margin: 0;
     white-space: pre;
     overflow: hidden;
+    font: inherit;
+    line-height: inherit;
+    tab-size: 4;
+    box-sizing: border-box;
     color: transparent;
     pointer-events: none;
+    /* Never selectable: this layer holds a second copy of the text, and letting the pointer take
+       hold of it paints a selection that belongs to nothing the reader can see. */
+    user-select: none;
     z-index: 2;
 }
 
 .flare-codeblock__markers code {
     font: inherit;
+    line-height: inherit;
+    user-select: none;
 }
 
 .flare-codeblock__marker {
     text-decoration: underline wavy var(--flare-color-error);
     text-underline-offset: var(--flare-spacing-2);
-    /* The message is worth reaching for, so this span alone takes the pointer back. */
+    /* The message is worth reaching for, so this span alone takes the pointer back - but it stays
+       unselectable, or dragging across a mistake would select the invisible copy of it. */
     pointer-events: auto;
+    user-select: none;
 }
 
 .flare-codeblock__marker--warning {

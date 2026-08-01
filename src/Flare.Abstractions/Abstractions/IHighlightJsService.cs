@@ -34,6 +34,31 @@ public interface IHighlightJsService : IAsyncDisposable
     /// <param name="textarea">The editable textarea element.</param>
     /// <param name="offset">Zero-based offset to place the caret at.</param>
     ValueTask SetCaretAsync(ElementReference textarea, int offset);
+
+    /// <summary>
+    /// Replaces the text while keeping the caret where it was. An editor never renders its own text
+    /// back, because assigning a textarea's value sends the caret to the end; text from anywhere
+    /// other than the person typing arrives through here.
+    /// </summary>
+    /// <param name="textarea">The editable textarea element.</param>
+    /// <param name="text">The text it should hold.</param>
+    ValueTask SetTextAsync(ElementReference textarea, string text);
+
+    /// <summary>
+    /// Makes the coloured copy of the text, the underline layer and the line numbers follow the
+    /// textarea as it scrolls. Only the textarea scrolls; without this the layers drift apart and
+    /// the colours stop lining up with the characters they belong to.
+    /// </summary>
+    /// <param name="textarea">The editable textarea element.</param>
+    ValueTask AttachEditorSyncAsync(ElementReference textarea);
+
+    /// <summary>Lines the layers up now, after something other than typing replaced the text.</summary>
+    /// <param name="textarea">The editable textarea element.</param>
+    ValueTask SyncEditorScrollAsync(ElementReference textarea);
+
+    /// <summary>Stops following the textarea's scrolling.</summary>
+    /// <param name="textarea">The editable textarea element.</param>
+    ValueTask DetachEditorSyncAsync(ElementReference textarea);
 }
 
 /// <summary>

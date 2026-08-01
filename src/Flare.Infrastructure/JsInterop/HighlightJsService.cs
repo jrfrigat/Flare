@@ -30,4 +30,20 @@ public sealed class HighlightJsService : FlareJsModule, IHighlightJsService
     /// <inheritdoc />
     public ValueTask SetCaretAsync(ElementReference textarea, int offset)
         => InvokeVoidAsync("setCaret", textarea, offset);
+
+    /// <inheritdoc />
+    public ValueTask SetTextAsync(ElementReference textarea, string text)
+        => InvokeVoidAsync("setText", textarea, text);
+
+    /// <inheritdoc />
+    public ValueTask AttachEditorSyncAsync(ElementReference textarea)
+        => InvokeVoidAsync("attachEditorSync", textarea);
+
+    /// <inheritdoc />
+    public ValueTask SyncEditorScrollAsync(ElementReference textarea)
+        => InvokeVoidAsync("syncEditorScroll", textarea);
+
+    /// <inheritdoc />
+    public ValueTask DetachEditorSyncAsync(ElementReference textarea)
+        => InvokeVoidAsync("detachEditorSync", textarea);
 }

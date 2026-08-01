@@ -188,8 +188,11 @@ export function getCaretInfo(textareaEl) {
     mirror.style.position = 'absolute';
     mirror.style.visibility = 'hidden';
     mirror.style.width = style.width;
-    mirror.style.whiteSpace = 'pre-wrap';
-    mirror.style.overflowWrap = 'break-word';
+    // Wrapping is copied from the textarea rather than assumed. Measuring a wrapped mirror against
+    // an unwrapped textarea reports the caret a line or more away from where it actually blinks.
+    mirror.style.whiteSpace = style.whiteSpace;
+    mirror.style.overflowWrap = style.overflowWrap;
+    mirror.style.wordBreak = style.wordBreak;
 
     mirror.textContent = textareaEl.value.slice(0, start);
     const anchor = document.createElement('span');
@@ -212,4 +215,76 @@ export function setCaret(textareaEl, offset) {
     if (!textareaEl) return;
     textareaEl.focus();
     textareaEl.selectionStart = textareaEl.selectionEnd = offset;
+}
+
+/**
+ * Replaces the text, keeping the caret where it was.
+ *
+ * The editor never renders its own text back into the DOM, because assigning a textarea's value
+ * sends the caret to the end - which is why typing in the middle used to jump. Text coming from
+ * anywhere other than the person typing arrives through here instead.
+ */
+export function setText(textareaEl, text) {
+    if (!textareaEl || textareaEl.value === text) return;
+    const caret = Math.min(textareaEl.selectionStart, text.length);
+    textareaEl.value = text;
+    textareaEl.selectionStart = textareaEl.selectionEnd = caret;
+}
+
+// -- Keeping the layers on top of one another --------------------------------
+
+const _editorSyncHandlers = new WeakMap();
+
+/**
+ * Makes the coloured copy, the underline layer and the line numbers follow the textarea's scroll.
+ *
+ * Only the textarea scrolls; the rest are moved to match. Left to themselves they would each scroll
+ * separately, and the colours would drift away from the characters they belong to as soon as a line
+ * ran past the right edge.
+ *
+ * Done here rather than through an event handler in C# because this runs on every scrolled frame,
+ * and a round trip per frame would be felt.
+ */
+export function attachEditorSync(textareaEl) {
+    if (!textareaEl || _editorSyncHandlers.has(textareaEl)) return;
+    const root = textareaEl.parentElement;
+    if (!root) return;
+
+    function sync() {
+        const top = textareaEl.scrollTop;
+        const left = textareaEl.scrollLeft;
+        for (const selector of ['.flare-codeblock__highlight', '.flare-codeblock__markers']) {
+            const layer = root.querySelector(selector);
+            if (layer) {
+                layer.scrollTop = top;
+                layer.scrollLeft = left;
+            }
+        }
+        // The numbers travel down with their lines but never sideways: the gutter is pinned to the
+        // left edge and the text slides underneath it.
+        const gutter = root.querySelector('.flare-codeblock__linenumbers');
+        if (gutter) gutter.scrollTop = top;
+    }
+
+    textareaEl.addEventListener('scroll', sync);
+    // Typing can move the text under a fixed scroll offset, so the layers are squared up then too.
+    textareaEl.addEventListener('input', sync);
+    _editorSyncHandlers.set(textareaEl, sync);
+    sync();
+}
+
+/** Squares the layers up now, after something other than typing replaced the text. */
+export function syncEditorScroll(textareaEl) {
+    const sync = textareaEl ? _editorSyncHandlers.get(textareaEl) : null;
+    if (sync) sync();
+}
+
+export function detachEditorSync(textareaEl) {
+    if (!textareaEl) return;
+    const sync = _editorSyncHandlers.get(textareaEl);
+    if (sync) {
+        textareaEl.removeEventListener('scroll', sync);
+        textareaEl.removeEventListener('input', sync);
+        _editorSyncHandlers.delete(textareaEl);
+    }
 }
