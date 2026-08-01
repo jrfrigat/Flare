@@ -83,14 +83,16 @@
                                      Value="@(row.Aggregate?.ToString() ?? string.Empty)"
                                      ValueChanged="@(value => SetAggregate(row, value))" />
                     </div>
-                    @if (row.Aggregate is null && IsTimestampColumn(row))
-                    {
-                        <div class="flare-qb__cell flare-qb__cell--op">
-                            <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Periods" ItemLabel="PeriodLabel"
-                                         Value="@(row.Truncate?.ToString() ?? string.Empty)"
-                                         ValueChanged="@(value => SetPeriod(row, value))" />
-                        </div>
-                    }
+                    @* Always here, disabled where a period means nothing - a moment can be grouped
+                       into one, a name cannot, and an aggregate has already collapsed the rows.
+                       Rendering it only sometimes moved everything to its right, so two rows of the
+                       same designer put their output names in different places. *@
+                    <div class="flare-qb__cell flare-qb__cell--op">
+                        <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Periods" ItemLabel="PeriodLabel"
+                                     Disabled="@(row.Aggregate is not null || !IsTimestampColumn(row))"
+                                     Value="@(row.Truncate?.ToString() ?? string.Empty)"
+                                     ValueChanged="@(value => SetPeriod(row, value))" />
+                    </div>
                     <div class="flare-qb__cell flare-qb__cell--alias">
                         <FlareField TValue="string" Size="FieldSize.Xs" Immediate="true" Placeholder="@Labels.OutputName"
                                     Value="@row.OutputAlias"

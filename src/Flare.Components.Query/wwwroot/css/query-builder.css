@@ -10,6 +10,17 @@
     color: var(--flare-color-on-surface);
     font-family: var(--flare-typescale-body-medium-font);
     font-size: var(--flare-typescale-body-medium-size);
+
+    /*
+       One width per kind of field, shared by every row in every section. Kept here rather than
+       spread through the rules below so the whole set can be read, and retuned, in one place.
+    */
+    --_col-target: 14rem;
+    --_col-relation: 12rem;
+    --_col-value: 11rem;
+    --_col-op: 9rem;
+    --_col-alias: 9rem;
+    --_col-unit: 8rem;
 }
 
 .flare-qb__section {
@@ -46,27 +57,50 @@
     gap: var(--flare-spacing-4);
 }
 
+/*
+   Cells never grow. Left to grow they divided the leftover width between however many of them a
+   given row happened to have, so a row of three handed each a third and a row of five a fifth, and
+   the trailing one swallowed whatever was left: the same dropdown came out 132px under Columns and
+   381px two cells later. A field of one kind is now the same width wherever it appears, which is
+   what makes the designer read as columns rather than as rows of assorted boxes.
+
+   Shrinking stays allowed as a safety valve. Rows wrap before it ever applies, so it only matters
+   when a single cell is wider than the panel it is in.
+*/
 .flare-qb__cell {
     display: flex;
     align-items: center;
+    flex: 0 1 auto;
     min-width: 0;
 }
 
 .flare-qb__cell--target {
-    flex: 2 1 12rem;
+    flex-basis: var(--_col-target);
 }
 
-.flare-qb__cell--op,
-.flare-qb__cell--unit,
 .flare-qb__cell--relation {
-    flex: 1 1 8rem;
+    flex-basis: var(--_col-relation);
 }
 
-.flare-qb__cell--value,
+.flare-qb__cell--value {
+    flex-basis: var(--_col-value);
+}
+
+/* Operators, aggregates, join kinds, periods and sort directions are all short closed lists, and
+   they line up down the designer when they share a width. */
+.flare-qb__cell--op {
+    flex-basis: var(--_col-op);
+}
+
 .flare-qb__cell--alias {
-    flex: 1 1 9rem;
+    flex-basis: var(--_col-alias);
 }
 
+.flare-qb__cell--unit {
+    flex-basis: var(--_col-unit);
+}
+
+/* A checkbox is as wide as its label; giving it a column of its own would only add a gap. */
 .flare-qb__cell--flag,
 .flare-qb__cell--relative {
     flex: 0 0 auto;
