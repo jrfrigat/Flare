@@ -136,11 +136,19 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
 
     const place = () => {
         const a = anchor.getBoundingClientRect();
+        const vh = window.innerHeight, vw = window.innerWidth;
         panel.style.position = 'fixed';
         panel.style.margin = '0';
-        if (opts.matchWidth) panel.style.width = `${a.width}px`;
+        if (opts.matchWidth) {
+            // At least as wide as the field, and wider when an option needs it. Pinning the panel to
+            // the field's width made the list clip the very values it exists to show - a name only
+            // slightly longer than its box became unreadable at the point of choosing it. Capped so
+            // a long option widens the list without pushing it off the screen.
+            panel.style.minWidth = `${a.width}px`;
+            panel.style.width = 'max-content';
+            panel.style.maxWidth = `${vw - 2 * margin}px`;
+        }
         const p = panel.getBoundingClientRect();
-        const vh = window.innerHeight, vw = window.innerWidth;
         const below = vh - a.bottom, above = a.top;
         // Flip above only when there is not enough room below and more room above.
         let top = (below >= p.height + gap || below >= above)

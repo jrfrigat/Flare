@@ -28,7 +28,11 @@ public partial class FlarePopup
     /// <summary>Invoked when a pointer-down outside the widget or a focus-out escaping it should dismiss.</summary>
     [Parameter] public EventCallback OnDismiss { get; set; }
 
-    /// <summary>Sizes the panel to the anchor width (default true).</summary>
+    /// <summary>
+    /// Keeps the panel at least as wide as the anchor (default true). It still grows past that when
+    /// an option needs the room, since a list that clipped its own values would hide the very thing
+    /// being chosen; it never grows past the viewport.
+    /// </summary>
     [Parameter] public bool MatchWidth { get; set; } = true;
 
     // The panel CSS class is the inherited FlareComponentBase.Class.

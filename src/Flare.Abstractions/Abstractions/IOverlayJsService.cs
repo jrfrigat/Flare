@@ -54,7 +54,10 @@ public interface IOverlayJsService : IAsyncDisposable
     /// <param name="id">A stable id identifying this anchored panel.</param>
     /// <param name="anchor">The element the panel is positioned against.</param>
     /// <param name="panel">The popup element to position.</param>
-    /// <param name="options">Optional placement options (e.g. <c>matchWidth</c>, <c>gap</c>).</param>
+    /// <param name="options">
+    /// Optional placement options. <c>matchWidth</c> keeps the panel at least as wide as the anchor
+    /// while still letting its content widen it; <c>gap</c> sets the distance from the anchor.
+    /// </param>
     ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel, object? options = null);
 
     /// <summary>Stops positioning and detaches listeners for the anchored panel under <paramref name="id"/>.</summary>
