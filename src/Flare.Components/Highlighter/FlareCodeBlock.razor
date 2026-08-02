@@ -165,7 +165,7 @@
     private string _heightStyle => ReadOnly
         ? string.Empty
         : string.Create(
-            System.Globalization.CultureInfo.InvariantCulture, $"--flare-codeblock-rows:{Rows};");
+            System.Globalization.CultureInfo.InvariantCulture, $"--_codeblock-rows:{Rows};");
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

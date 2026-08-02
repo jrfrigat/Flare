@@ -86,9 +86,11 @@
     overflow: hidden;
 }
 
-/* One row of text plus the padding above and below it, so the box really is Rows rows tall. */
+/* One row of text plus the padding above and below it, so the box really is Rows rows tall. The
+   row count arrives from the component as a private property rather than a --flare- one: it carries
+   a parameter across to the stylesheet and is nothing a theme would ever set. */
 .flare-codeblock--editable {
-    height: calc(var(--flare-codeblock-rows, 10) * 1.5em + 2 * var(--flare-spacing-8));
+    height: calc(var(--_codeblock-rows, 10) * 1.5em + 2 * var(--flare-spacing-8));
 }
 
 /* Wrapping is set on every layer at once. One layer wrapping alone is the whole reason the caret

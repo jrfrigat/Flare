@@ -14,13 +14,19 @@
     /*
        One width per kind of field, shared by every row in every section. Kept here rather than
        spread through the rules below so the whole set can be read, and retuned, in one place.
+
+       Sized for the names a real schema carries rather than for the demo's short ones: a field
+       picker holds "alias.somethingDescriptive" and a relation picker a key like
+       "request_apiKey", and a box that fits the example but not the real thing is a box that
+       will be wrong in use. The list that opens is not bound by these - it takes the width its
+       own values need.
     */
-    --_col-target: 14rem;
-    --_col-relation: 12rem;
-    --_col-value: 11rem;
-    --_col-op: 9rem;
-    --_col-alias: 9rem;
-    --_col-unit: 8rem;
+    --_col-target: 16rem;
+    --_col-relation: 14rem;
+    --_col-value: 12rem;
+    --_col-op: 10rem;
+    --_col-alias: 10rem;
+    --_col-unit: 9rem;
 }
 
 .flare-qb__section {
@@ -71,6 +77,17 @@
     display: flex;
     align-items: center;
     flex: 0 1 auto;
+    min-width: 0;
+}
+
+/*
+   The control fills its cell. Without this a cell was the width declared below while the select or
+   field inside it stayed as narrow as whatever it happened to be showing, so a picker holding
+   "Requests" and one holding "r.timestamp" were visibly different boxes and the column widths
+   below changed nothing but the gaps between them.
+*/
+.flare-qb__cell > * {
+    flex: 1 1 auto;
     min-width: 0;
 }
 
