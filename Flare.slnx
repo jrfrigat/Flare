@@ -4,6 +4,7 @@
     <Project Path="samples/Flare.Gallery/Flare.Gallery.csproj" />
     <Project Path="samples/Flare.Legacy/Flare.Legacy.csproj" />
   </Folder>
+  <Folder Name="/src/" />
   <Folder Name="/src/Core/">
     <Project Path="src/Flare.Abstractions/Flare.Abstractions.csproj" />
     <Project Path="src/Flare.Theming/Flare.Theming.csproj" />

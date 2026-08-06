@@ -11,7 +11,7 @@
     <NoWarn>$(NoWarn.Replace('CS1591',''))</NoWarn>
     <WarningsAsErrors>$(WarningsAsErrors);CS1591</WarningsAsErrors>
     <!-- Match the ASP.NET Core package to each target framework. -->
-    <AspNetCoreComponentsVersion>10.0.10</AspNetCoreComponentsVersion>
+    <AspNetCoreComponentsVersion>10.0.*</AspNetCoreComponentsVersion>
     <AspNetCoreComponentsVersion Condition="'$(TargetFramework)' == 'net8.0'">8.0.*</AspNetCoreComponentsVersion>
     <AspNetCoreComponentsVersion Condition="'$(TargetFramework)' == 'net9.0'">9.0.*</AspNetCoreComponentsVersion>
   </PropertyGroup>
@@ -31,8 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Version varies per target framework (see AspNetCoreComponentsVersion above). VersionOverride
-         is CPM's escape hatch for a version that must differ from the central pin per TFM. -->
+    <!-- Version varies per target framework (see AspNetCoreComponentsVersion above), so this one
+         package is versioned here rather than in Directory.Packages.props: VersionOverride is CPM's
+         escape hatch, and it is also the only way to float, which a central PackageVersion is not
+         allowed to do (NU1011). Each target takes the newest patch of its own major. -->
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" VersionOverride="$(AspNetCoreComponentsVersion)" />
   </ItemGroup>
 
