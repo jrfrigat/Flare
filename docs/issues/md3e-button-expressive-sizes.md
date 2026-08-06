@@ -7,6 +7,11 @@ section). Recorded as a deliberate deviation pending a product call.
 size scale, and the icon/label typography is already spec-sized so it looks proportionally small in the
 lg/xl containers.
 
+**Re-checked 2026-08-07: the numbers below are unchanged.** `MaterialDesignTokens.cs` still declares the
+button ramp `HeightXs = 2rem`, `HeightSm = 2.5rem`, `HeightMd = 3rem`, `HeightLg = 3.5rem`,
+`HeightXl = 4rem` - so md/lg/xl are still 8/40/72dp under spec and the decision below is still unmade.
+No opt-in hero size set was added either.
+
 ## Measured 2026-07-17 (0.7.0, MD3 Expressive, working build)
 
 Read off the live theme's emitted tokens, not off the source, and against

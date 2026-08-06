@@ -1,5 +1,14 @@
 # Core decoupling P1+P2: tokenize the state-layer paint + disabled model
 
+**Re-checked against the code 2026-08-07 - still open, and the file is accurate.** What is in the tree:
+`StateTokens` carries the 4 `-layer` members (Hover/Focus/Pressed/Dragged) and no `SelectedLayer`, exactly
+as recorded; the layer tokens are read by 4 core stylesheets only - `button.css`, `menuitem.css`,
+`togglebutton.css` and the shared `state-layer.css` - i.e. Pattern A and nothing else. Pattern B's ~23
+stylesheets still bake `color-mix(<role> X%, <base>)` directly. FluentUI2 still ships 253 lines of override
+CSS across 5 files with 4 surviving `opacity: 0 !important` `::before` suppressions, so P1 items 2-3 have
+not started. P2 has not started either: there is no `--flare-state-disabled-bg/-fg/-border` anywhere (the
+only `DisabledBg` in the tree is `--flare-input-disabled-bg`, an input-specific token, not the core trio).
+
 **Decision (2026-07-13):** Flare's core component CSS bakes ONE theme's interaction model (MD3): the
 state layer is a translucent `currentColor` `::before` overlay, and disabled is whole-element `opacity`.
 A theme with a different model (Fluent = discrete per-state colors + flat disabled palette) cannot express

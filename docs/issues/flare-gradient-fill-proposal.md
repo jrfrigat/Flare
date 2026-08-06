@@ -1,7 +1,11 @@
 # Proposal: first-class gradient FILL for Flare (background + text)
 
-**Status:** planned, not started. Separate task from the Deka gap fixes
-([deka-design-flare-gaps.md](deka-design-flare-gaps.md) #2).
+**Status:** planned, not started - confirmed 2026-08-07: neither `FlareGradient` nor a `GradientFill`
+parameter exists anywhere in `src/`, so none of the three phases below has begun.
+
+Originally split out of a Deka design-gap report (gap #2, "palette roles are solid colors only"). That
+report is closed and deleted; the part that survives is this: a CSS gradient is an `<image>`, the palette
+is `<color>`-only, so a brand gradient lives in `DesignTokens.Extended` until a first-class fill exists.
 
 **Goal:** let a theme or app define a brand gradient and apply it as a *fill* to component backgrounds
 (logo mark, avatar, primary CTA, card cover) and to *text* (gradient headings / wordmark), opt-in and

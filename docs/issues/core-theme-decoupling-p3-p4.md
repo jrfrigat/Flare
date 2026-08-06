@@ -62,7 +62,38 @@ Work:
 - Add a guard test (analog of the token-default guard, but for CSS): fail if a core `wwwroot/css` file has
   a `var(--flare-*, <non-structural literal>)` fallback. Needs a defensible "structural" allowlist.
 
-Large + mechanical (dozens of files). Best done after P1+P2 shrink the state/disabled surface.
+### The classification, done 2026-08-07 - it is 9 declarations in 2 components, not dozens of files
+
+Core `wwwroot/css` holds **38** `var(--flare-*, <fallback>)` reads in total. Enumerated, they split cleanly,
+and the remainder is far smaller than this file assumed:
+
+**STRUCTURAL - keep (29).** Per-instance vars a theme never emits, whose fallbacks are identity values
+rather than a look: `--flare-col-span*` / `--flare-col-start` (grid placement), `--flare-z-dropdown` /
+`--flare-z-appbar` (layering), `--flare-dial-angle` / `--flare-dial-len`, `--flare-toc-depth`,
+`--flare-vtree-indent`, `--flare-textarea-max-lines`, `--flare-tab-label-rotation`, `--flare-layout-cols`.
+
+**VISUAL-OPINION - move to the themes (9), in exactly two components.**
+
+1. **`FlareSplitter` - 7 declarations, and the deeper problem is that it has no token record at all.**
+   `Css.Tokens.Splitter` registers 7 names (`GripLength`, `GripThickness`, `GutterSize`, `Color`,
+   `HoverColor`, `IconSize`, `IconColor`) but **no token-record member stands behind any of them**, so no
+   theme sets any and every value ships from `splitter.css`: `0.5rem` gutter, `2px` grip thickness,
+   `1.75rem` grip length, `1.125rem` icon. Its own doc comment states the inversion outright - "Defaults
+   live in the splitter stylesheet". That is the token mandate backwards: the splitter is fully styled with
+   no theme loaded. The three colour fallbacks point at semantic roles (`--flare-color-surface-variant`,
+   `--flare-color-on-surface-variant`, a `color-mix` on primary), which the mandate allows, so only the four
+   geometry literals must move - but the missing record is the real finding.
+
+2. **`FlareToggleButton` - 2 declarations, a hole at both ends of a size ramp.** `RadiusSelected` is declared
+   for `Sm`/`Md`/`Lg` only, as `required` members every theme sets. `togglebutton.css` nevertheless reads
+   `--flare-toggle-btn-radius-selected-xs` and `-xl`, which appear nowhere in `Css.Tokens` and which no theme
+   emits, with `0.5rem` / `1.25rem` baked in as the fallback. Two of five rungs are core opinion a theme
+   cannot reach. Add `Xs`/`Xl` to `Css.Tokens.ToggleButton.RadiusSelected` and to the record, have the 6
+   themes supply them, drop the literals. Worth noting the audit tooling did not surface this one: the var is
+   read but never registered.
+
+Neither is blocked by P1+P2, and both are small and self-contained. The guard test is the only part that
+still wants a "structural" allowlist - the 29 above are that allowlist.
 
 ## P4 - role/scale vocabulary (recommend: KEEP, decide explicitly)
 

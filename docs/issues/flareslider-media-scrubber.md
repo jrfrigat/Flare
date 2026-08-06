@@ -5,6 +5,12 @@ That report asked for three things; two are now done, this file tracks the remai
 
 **Severity:** low. A seek bar is expressible today - it just does not *look* like a player scrubber.
 
+**Re-checked 2026-08-07 - still open, none of the three options was taken.** No `HandleOnHover` or
+`Scrubber` parameter exists on `FlareSlider`, and `TrackSize` (now at `src/Flare.Components/Track/`, shared
+with Progress and Meter) has no `Hairline` rung - so option (a) and option (c) are both untouched, and
+option (b) is still an undocumented per-instance token override. The per-size geometry the fix depends on
+does now live in the theme, so the ground the file assumed is in place.
+
 ## Already resolved (do not re-do)
 
 - **Buffered / loaded band** - the essential part. Expressed as a plain zone, no dedicated parameter:
