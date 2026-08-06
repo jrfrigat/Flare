@@ -1,5 +1,4 @@
 <Project>
-
   <!--
     Central Package Management (CPM). Every NuGet package version used anywhere in the repo is
     declared ONCE here; individual .csproj files reference packages WITHOUT a Version attribute
@@ -14,7 +13,6 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
   <!-- Build/versioning/pack tooling needed by every project (replaces the MinVer + SourceLink
        PackageReferences that used to be injected via Directory.Build.props and then re-pinned in
        each csproj). GlobalPackageReference implies PrivateAssets="all". -->
@@ -22,7 +20,6 @@
     <GlobalPackageReference Include="MinVer" Version="7.0.0" />
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.301" />
   </ItemGroup>
-
   <ItemGroup>
     <!-- Roslyn source generator (samples/Flare.Gallery.Generators). -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
@@ -33,15 +30,22 @@
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.10" />
+    <!-- Querio: the query model the visual designer is built on. It lives in its own repository and
+         ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
+         its text language are needed by the designer; the Gallery adds two renderers to demo one
+         spec becoming several dialects. -->
+    <PackageVersion Include="Querio" Version="0.0.1" />
+    <PackageVersion Include="Querio.Language" Version="0.0.1" />
+    <PackageVersion Include="Querio.Sql" Version="0.0.1" />
+    <PackageVersion Include="Querio.OneC" Version="0.0.1" />
     <!-- Test stack (tests/Flare.*.Tests). -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-    <PackageVersion Include="bunit" Version="2.7.2" />
+    <PackageVersion Include="bunit" Version="2.8.6" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <!-- Build-time only: the FluentIconGen tool reads real Fluent UI System Icons SVG data from this package
          and generates a curated FluentUIIcons catalog. Not referenced by any shipped package. -->
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.3" />
   </ItemGroup>
-
 </Project>
