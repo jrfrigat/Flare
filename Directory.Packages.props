@@ -24,9 +24,10 @@
     <!-- Roslyn source generator (samples/Flare.Gallery.Generators). -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.6.0" />
-    <!-- Blazor / ASP.NET Core runtime. Flare.Abstractions pins this per-TFM via VersionOverride
-         (net8.0 -> 8.0.*, net9.0 -> 9.0.*, net10.0 -> the version below). -->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.10" />
+    <!-- Blazor / ASP.NET Core runtime.
+         Microsoft.AspNetCore.Components.Web is deliberately absent: Flare.Abstractions is its only
+         consumer and needs a different major per TFM, so it carries the whole version there via
+         VersionOverride. A central pin would be dead weight that reads like the real one. -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.10" />
@@ -42,7 +43,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-    <PackageVersion Include="bunit" Version="2.8.6" />
+    <PackageVersion Include="bunit" Version="2.9.0" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <!-- Build-time only: the FluentIconGen tool reads real Fluent UI System Icons SVG data from this package
          and generates a curated FluentUIIcons catalog. Not referenced by any shipped package. -->
