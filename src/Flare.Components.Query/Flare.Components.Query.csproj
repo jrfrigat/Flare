@@ -20,8 +20,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
-    <ProjectReference Include="..\Querio\Querio.csproj" />
-    <ProjectReference Include="..\Querio.Language\Querio.Language.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Querio" />
+    <PackageReference Include="Querio.Language" />
   </ItemGroup>
 
   <ItemGroup>

@@ -24,6 +24,10 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Localization" />
+		<!-- The Querio renderers are here only so the query demo can show one spec becoming several
+		     dialects; the designer itself needs neither. -->
+		<PackageReference Include="Querio.Sql" />
+		<PackageReference Include="Querio.OneC" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,10 +35,6 @@
 		<ProjectReference Include="..\..\src\Flare.Components.IDE\Flare.Components.IDE.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Kanban\Flare.Components.Kanban.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Query\Flare.Components.Query.csproj" />
-		<!-- The renderers are here only so the demo can show one spec becoming three dialects; the
-		     designer itself needs neither. -->
-		<ProjectReference Include="..\..\src\Querio.Sql\Querio.Sql.csproj" />
-		<ProjectReference Include="..\..\src\Querio.OneC\Querio.OneC.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.Media\Flare.Components.Media.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.QrCode\Flare.Components.QrCode.csproj" />
 		<ProjectReference Include="..\..\src\Flare.Components.RichTextEditor\Flare.Components.RichTextEditor.csproj" />
