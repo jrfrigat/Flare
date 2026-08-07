@@ -72,7 +72,8 @@ rather than a look: `--flare-col-span*` / `--flare-col-start` (grid placement), 
 `--flare-z-appbar` (layering), `--flare-dial-angle` / `--flare-dial-len`, `--flare-toc-depth`,
 `--flare-vtree-indent`, `--flare-textarea-max-lines`, `--flare-tab-label-rotation`, `--flare-layout-cols`.
 
-**VISUAL-OPINION - move to the themes (9), in exactly two components.**
+**VISUAL-OPINION - all 9 moved to the themes 2026-08-07. Both cases below are now closed**; they are kept
+because each turned out to be a different kind of hole and both are worth recognising again.
 
 1. **`FlareSplitter` - 7 declarations, and the deeper problem is that it has no token record at all.**
    `Css.Tokens.Splitter` registers 7 names (`GripLength`, `GripThickness`, `GutterSize`, `Color`,
@@ -84,16 +85,56 @@ rather than a look: `--flare-col-span*` / `--flare-col-start` (grid placement), 
    `--flare-color-on-surface-variant`, a `color-mix` on primary), which the mandate allows, so only the four
    geometry literals must move - but the missing record is the real finding.
 
+   **Fixed:** `SplitterTokens` now exists with all 7 members `required`, `DesignTokens.Splitter` is
+   `required`, `CssVarMap` has a SPLITTER region, MD3 and FUI2 each state their own values, and
+   `splitter.css` holds no value of its own. MD3's values are the ones the stylesheet used to carry, so
+   nothing moved on screen; FUI2 states the same geometry deliberately rather than inheriting, so a
+   Fluent-specific gutter is now a one-line edit instead of a core CSS change.
+
 2. **`FlareToggleButton` - 2 declarations, a hole at both ends of a size ramp.** `RadiusSelected` is declared
    for `Sm`/`Md`/`Lg` only, as `required` members every theme sets. `togglebutton.css` nevertheless reads
    `--flare-toggle-btn-radius-selected-xs` and `-xl`, which appear nowhere in `Css.Tokens` and which no theme
    emits, with `0.5rem` / `1.25rem` baked in as the fallback. Two of five rungs are core opinion a theme
    cannot reach. Add `Xs`/`Xl` to `Css.Tokens.ToggleButton.RadiusSelected` and to the record, have the 6
-   themes supply them, drop the literals. Worth noting the audit tooling did not surface this one: the var is
-   read but never registered.
+   themes supply them, drop the literals.
 
-Neither is blocked by P1+P2, and both are small and self-contained. The guard test is the only part that
-still wants a "structural" allowlist - the 29 above are that allowlist.
+   **Fixed:** `RadiusSelected.Xs`/`.Xl` are registered, `RadiusSelectedXs`/`Xl` are `required` members, and
+   the two literals are gone from `togglebutton.css`. MD3 keeps today's rendering (`shape-small` is exactly
+   the 0.5rem that was baked; xl stays 1.25rem). **FUI2 changes on purpose:** its record already declared
+   "selected changes colour only, so RadiusSelected* == Radius", and the two rungs it could not reach were
+   silently rendering the core's 8px/20px against that intent. They are now `shape-small` (4px) like the
+   other three, which is the theme finally getting the ramp it always described.
+
+### Why no gate caught either one - measured, and it is the spec for the guard
+
+`cssaudit tokens` reported `[T+] 0` while both defects were live. Checked by putting the pre-fix token
+constants back and re-running: still `[T+] 0`. Three separate mechanisms, worth knowing before writing the
+guard, because each one has to be modelled or the guard drowns in false positives.
+
+1. **The segment-prefix rule hid the toggle vars.** `Program.CompareTokens` counts a token as declared when
+   any const is a *segment prefix* of it - `t.StartsWith(c + "-")` - which exists for the runtime-prefix
+   family (`--flare-btn-label` -> `--flare-btn-label-md-font`). `--flare-toggle-btn-radius` is a const, so
+   `--flare-toggle-btn-radius-selected-xs` looked declared by a const that has nothing to do with it. Any
+   token whose name extends another token's name is invisible to this audit.
+
+2. **Nothing compares constants to token-record members, which is the whole splitter defect.** The audit
+   runs CSS <-> `Css.Tokens` constants. All 7 splitter constants existed, so there was never anything to
+   report - the missing half was the *record*, and no gate looks there. `CssVarAttributeTests` checks the
+   opposite direction (every `[CssVar]` name is emitted by `FlattenDesign`), which cannot see a constant
+   that no member references.
+
+3. **`LiteralFallbackRx` exempts component families on purpose.** It only flags fallbacks on the semantic
+   families (`color|shape|spacing|typescale|motion|state|elevation`), because a `--flare-<component>-*`
+   fallback is normally the parked-token/`initial` sentinel described above. That exemption is correct and
+   is also why nine literal fallbacks sat in core CSS unflagged.
+
+**Do not write the guard as "every constant needs a `[CssVar]` member"** - measured, that reports 69
+candidates and most are legitimate: `ColorScheme` roles are flattened by their own path rather than by
+`[CssVar]`, the per-corner `--flare-split-btn-trigger-radius-*-top-left` family comes from nested
+`CornerRadiusTokens` members, and `--flare-btn-label` is the runtime prefix from (1). The guard has to
+model those three shapes; the 29 structural reads listed above are the allowlist for its fallback half.
+
+Neither fix was blocked by P1+P2. What remains of P3 is that guard.
 
 ## P4 - role/scale vocabulary (recommend: KEEP, decide explicitly)
 

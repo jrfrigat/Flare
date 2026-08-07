@@ -58,6 +58,9 @@ public sealed record DesignTokens
     /// <summary>Slider geometry/colors. A theme supplies the shape (e.g. a bar handle or a thin rail with a circular thumb).</summary>
     public required SliderTokens Slider { get; init; }
 
+    /// <summary>Splitter gutter/grip geometry and colors.</summary>
+    public required SplitterTokens Splitter { get; init; }
+
     /// <summary>Input/Select/TextArea form field tokens.</summary>
     public required InputTokens Input { get; init; }
 

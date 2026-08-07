@@ -221,9 +221,11 @@ public class FluentUI2Tokens
         // Fluent segmented control: subtle rounded rectangle, and the selected state changes colour
         // only (no MD3 Expressive pill->squircle shape morph, so RadiusSelected* == Radius).
         Radius = "var(--flare-shape-small)",
+        RadiusSelectedXs = "var(--flare-shape-small)",
         RadiusSelectedSm = "var(--flare-shape-small)",
         RadiusSelectedMd = "var(--flare-shape-small)",
         RadiusSelectedLg = "var(--flare-shape-small)",
+        RadiusSelectedXl = "var(--flare-shape-small)",
         RestBg = "var(--flare-color-surface-container-highest)",
         RestColor = "var(--flare-color-on-surface-variant)",
         SelectedBg = "var(--flare-color-secondary-container)",
@@ -357,6 +359,20 @@ public class FluentUI2Tokens
         // Gap between the rail/marker and the link text.
         LinkPadX = "0.625rem",
         Indent = "0.75rem",
+    };
+
+    // Splitter: an 8dp gutter with a 2dp centred grip. The colours are semantic roles, so they already
+    // resolve to Fluent's palette; the geometry matches MD3's because Fluent has no separate opinion
+    // about a resize gutter. Stated here rather than inherited so a divergence stays a one-line edit.
+    internal static readonly SplitterTokens Splitter = new()
+    {
+        GutterSize = "0.5rem",
+        GripThickness = "2px",
+        GripLength = "1.75rem",
+        Color = "var(--flare-color-surface-variant)",
+        HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
+        IconSize = "1.125rem",
+        IconColor = "var(--flare-color-on-surface-variant)",
     };
 
     // Slider - Fluent: thin 4px rail, round white thumb (20px) with a 2px brand ring,
@@ -910,6 +926,7 @@ public class FluentUI2Tokens
         Scrim = Scrim,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
+        Splitter = Splitter,
         Table = Table,
         TimePicker = TimePicker,
         Dialog = Dialog,

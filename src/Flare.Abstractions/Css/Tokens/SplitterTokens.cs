@@ -1,21 +1,22 @@
 namespace Flare.Css.Tokens;
 
-/// <summary>CSS custom properties for <c>FlareSplitter</c> (handle thickness, idle/hover colors,
-/// centre-icon size/color). Defaults live in the splitter stylesheet; set these to customize.</summary>
+/// <summary>CSS custom properties for <c>FlareSplitter</c> (gutter thickness, grip geometry, idle/hover
+/// colors, centre-icon size/color). Every one of these is supplied by the active theme through
+/// <c>SplitterTokens</c>; the stylesheet holds no value of its own.</summary>
 public static class Splitter
 {
     /// <summary>CSS custom-property name for the grip length token.</summary>
     public const string GripLength = "--flare-splitter-grip-length";
     /// <summary>CSS custom-property name for the grip thickness token.</summary>
     public const string GripThickness = "--flare-splitter-grip-thickness";
-    /// <summary>Handle thickness (CSS length).</summary>
+    /// <summary>CSS custom-property name for the gutter thickness token.</summary>
     public const string GutterSize = "--flare-splitter-gutter-size";
-    /// <summary>Handle color when idle.</summary>
+    /// <summary>CSS custom-property name for the idle gutter colour token.</summary>
     public const string Color = "--flare-splitter-color";
-    /// <summary>Handle color on hover/focus.</summary>
+    /// <summary>CSS custom-property name for the hover/focus gutter colour token.</summary>
     public const string HoverColor = "--flare-splitter-hover-color";
-    /// <summary>Centre-icon size.</summary>
+    /// <summary>CSS custom-property name for the centre-icon size token.</summary>
     public const string IconSize = "--flare-splitter-icon-size";
-    /// <summary>Centre-icon color.</summary>
+    /// <summary>CSS custom-property name for the centre-icon colour token.</summary>
     public const string IconColor = "--flare-splitter-icon-color";
 }

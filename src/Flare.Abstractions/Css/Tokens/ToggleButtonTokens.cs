@@ -42,12 +42,16 @@ public static class ToggleButton
     /// <summary>Selected-state (morph) radius per size.</summary>
     public static class RadiusSelected
     {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-toggle-btn-radius-selected-xs";
         /// <summary>CSS custom-property name for the sm token.</summary>
         public const string Sm = "--flare-toggle-btn-radius-selected-sm";
         /// <summary>CSS custom-property name for the md token.</summary>
         public const string Md = "--flare-toggle-btn-radius-selected-md";
         /// <summary>CSS custom-property name for the lg token.</summary>
         public const string Lg = "--flare-toggle-btn-radius-selected-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-toggle-btn-radius-selected-xl";
     }
 
     /// <summary>CSS custom-property name for the rest bg token.</summary>

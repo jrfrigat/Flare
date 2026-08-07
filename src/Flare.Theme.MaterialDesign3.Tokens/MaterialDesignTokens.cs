@@ -227,9 +227,11 @@ public class MaterialDesignTokens
         PaddingLg = "1.5rem",
         Gap = "0.375rem",
         Radius = "var(--flare-shape-full)",
+        RadiusSelectedXs = "var(--flare-shape-small)",
         RadiusSelectedSm = "var(--flare-shape-medium)",
         RadiusSelectedMd = "var(--flare-shape-medium)",
         RadiusSelectedLg = "1rem",
+        RadiusSelectedXl = "1.25rem",
         RestBg = "var(--flare-color-surface-container-highest)",
         RestColor = "var(--flare-color-on-surface-variant)",
         SelectedBg = "var(--flare-color-secondary-container)",
@@ -510,6 +512,19 @@ public class MaterialDesignTokens
         PaddingBlock = "0.875rem",
         ProviderInset = "1.5rem",
         CloseOpacity = "0.75",
+    };
+
+    // Splitter: an 8dp gutter - comfortable to grab without reading as a divider - carrying a 2dp grip
+    // mark, tinted with the primary wash on hover the way the rest of the theme signals an active target.
+    internal static readonly SplitterTokens Splitter = new()
+    {
+        GutterSize = "0.5rem",
+        GripThickness = "2px",
+        GripLength = "1.75rem",
+        Color = "var(--flare-color-surface-variant)",
+        HoverColor = "color-mix(in srgb, var(--flare-color-primary) 24%, transparent)",
+        IconSize = "1.125rem",
+        IconColor = "var(--flare-color-on-surface-variant)",
     };
 
     internal static readonly SliderTokens Slider = new()
@@ -853,6 +868,7 @@ public class MaterialDesignTokens
         Scrim = Scrim,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
+        Splitter = Splitter,
         Table = Table,
         TimePicker = TimePicker,
         Spacing = Spacing,

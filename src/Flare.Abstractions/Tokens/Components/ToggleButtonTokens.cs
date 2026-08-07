@@ -38,14 +38,18 @@ public sealed record ToggleButtonTokens
     // --- 4. RADIUS for rest and selected states (morph) ---
     /// <summary>Corner radius in the unselected state, at every size.</summary>
     [CssVar(ToggleButton.Radius)] public required string Radius { get; init; }
-    /// <summary>Corner radius in the selected state at the sm size. A theme that signals selection with
+    /// <summary>Corner radius in the selected state at the xs size. A theme that signals selection with
     /// colour alone sets this to the same value as <see cref="Radius"/>; a theme that morphs the shape on
     /// selection makes them differ.</summary>
+    [CssVar(ToggleButton.RadiusSelected.Xs)] public required string RadiusSelectedXs { get; init; }
+    /// <summary>Corner radius in the selected state at the sm size.</summary>
     [CssVar(ToggleButton.RadiusSelected.Sm)] public required string RadiusSelectedSm { get; init; }
     /// <summary>Corner radius in the selected state at the md size.</summary>
     [CssVar(ToggleButton.RadiusSelected.Md)] public required string RadiusSelectedMd { get; init; }
     /// <summary>Corner radius in the selected state at the lg size.</summary>
     [CssVar(ToggleButton.RadiusSelected.Lg)] public required string RadiusSelectedLg { get; init; }
+    /// <summary>Corner radius in the selected state at the xl size.</summary>
+    [CssVar(ToggleButton.RadiusSelected.Xl)] public required string RadiusSelectedXl { get; init; }
 
     // --- 5. COLORS for rest / selected ---
     /// <summary>Container background in the unselected state.</summary>

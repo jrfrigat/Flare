@@ -9,18 +9,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--flare-splitter-color, var(--flare-color-surface-variant));
+    background: var(--flare-splitter-color);
     touch-action: none;
     transition: background var(--flare-motion-duration-short1);
     /* Horizontal handle (vertical separator) is the default; --vertical flips it. The orientation is
        auto-detected from the parent flex direction, so usually no class is needed up front. */
-    width: var(--flare-splitter-gutter-size, 0.5rem);
+    width: var(--flare-splitter-gutter-size);
     cursor: col-resize;
 }
 
 .flare-splitter:hover,
 .flare-splitter:focus-visible {
-    background: var(--flare-splitter-hover-color, color-mix(in srgb, var(--flare-color-primary) 24%, transparent));
+    background: var(--flare-splitter-hover-color);
     outline: none;
 }
 
@@ -28,8 +28,8 @@
 .flare-splitter__icon {
     pointer-events: none;
     line-height: 1;
-    font-size: var(--flare-splitter-icon-size, 1.125rem);
-    color: var(--flare-splitter-icon-color, var(--flare-color-on-surface-variant));
+    font-size: var(--flare-splitter-icon-size);
+    color: var(--flare-splitter-icon-color);
 }
 
 .flare-splitter__icon--hover {
@@ -48,7 +48,7 @@
 
 .flare-splitter--vertical {
     width: auto;
-    height: var(--flare-splitter-gutter-size, 0.5rem);
+    height: var(--flare-splitter-gutter-size);
     cursor: row-resize;
 }
 
@@ -57,13 +57,13 @@
     background: var(--flare-color-outline);
     border-radius: var(--flare-shape-full);
     pointer-events: none;
-    width: var(--flare-splitter-grip-thickness,2px);
-    height: var(--flare-splitter-grip-length,1.75rem);
+    width: var(--flare-splitter-grip-thickness);
+    height: var(--flare-splitter-grip-length);
 }
 
 .flare-splitter--vertical .flare-splitter__gutter-bar {
-    width: var(--flare-splitter-grip-length,1.75rem);
-    height: var(--flare-splitter-grip-thickness,2px);
+    width: var(--flare-splitter-grip-length);
+    height: var(--flare-splitter-grip-thickness);
 }
 
 @media (forced-colors: active) {

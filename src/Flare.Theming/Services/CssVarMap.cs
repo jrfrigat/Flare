@@ -312,9 +312,11 @@ public static class CssVarMap
         v[Css.Tokens.ToggleButton.Gap] = t.ToggleButton.Gap;
         v[Css.Tokens.ToggleButton.Radius] = t.ToggleButton.Radius;
 
+        v[Css.Tokens.ToggleButton.RadiusSelected.Xs] = t.ToggleButton.RadiusSelectedXs;
         v[Css.Tokens.ToggleButton.RadiusSelected.Sm] = t.ToggleButton.RadiusSelectedSm;
         v[Css.Tokens.ToggleButton.RadiusSelected.Md] = t.ToggleButton.RadiusSelectedMd;
         v[Css.Tokens.ToggleButton.RadiusSelected.Lg] = t.ToggleButton.RadiusSelectedLg;
+        v[Css.Tokens.ToggleButton.RadiusSelected.Xl] = t.ToggleButton.RadiusSelectedXl;
 
         v[Css.Tokens.ToggleButton.RestBg] = t.ToggleButton.RestBg;
         v[Css.Tokens.ToggleButton.RestColor] = t.ToggleButton.RestColor;
@@ -836,6 +838,16 @@ public static class CssVarMap
         #region SKELETON
         v[Css.Tokens.SkeletonField.PulseMinOpacity] = t.Skeleton.PulseMinOpacity;
         v[Css.Tokens.SkeletonField.WaveOpacity] = t.Skeleton.WaveOpacity;
+        #endregion
+
+        #region SPLITTER
+        v[Css.Tokens.Splitter.GutterSize] = t.Splitter.GutterSize;
+        v[Css.Tokens.Splitter.GripThickness] = t.Splitter.GripThickness;
+        v[Css.Tokens.Splitter.GripLength] = t.Splitter.GripLength;
+        v[Css.Tokens.Splitter.Color] = t.Splitter.Color;
+        v[Css.Tokens.Splitter.HoverColor] = t.Splitter.HoverColor;
+        v[Css.Tokens.Splitter.IconSize] = t.Splitter.IconSize;
+        v[Css.Tokens.Splitter.IconColor] = t.Splitter.IconColor;
         #endregion
 
         #region TABLE

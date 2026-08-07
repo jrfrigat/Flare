@@ -96,14 +96,14 @@
     height: var(--flare-toggle-btn-height-xs);
     padding: 0 var(--flare-toggle-btn-padding-xs);
     font-size: 0.75rem;
-    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xs, 0.5rem);
+    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xs);
 }
 
 .flare-toggle-btn--xl {
     height: var(--flare-toggle-btn-height-xl);
     padding: 0 var(--flare-toggle-btn-padding-xl);
     font-size: 1.125rem;
-    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xl, 1.25rem);
+    --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xl);
 }
 
 /* Icon-only - square */
