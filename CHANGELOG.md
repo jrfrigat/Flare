@@ -45,6 +45,14 @@ All notable changes to Flare are documented here. This project adheres to
   a coloured `<pre>`; the textarea soft-wrapped and the `<pre>` did not, so on any line after a wrap the
   caret landed on the wrong character and a selection highlighted text other than the one shown. Both
   layers now agree on wrapping, font, line height and scroll position.
+- **The split button's trigger is square at every size, so MD3 Expressive draws it round.** Its width token
+  is declared on `:root`, where the per-size button height does not exist, so "width = button height"
+  resolved once against the medium fallback and inherited 48px to every size. At the large size that is a
+  48x56 box, on which a half-height radius draws a stadium rather than a circle. The width now comes from
+  the element's real height; a theme that wants a fixed-width trigger still sets one and is unaffected.
+- **A menu opened with the pointer no longer highlights its first item.** The highlight said "this one is
+  selected" to someone who had just clicked somewhere else. A keyboard opening still starts on the first
+  item, and the first arrow key after a click lands on the first item rather than skipping it.
 - **The splitter and the toggle button's end sizes are the theme's again.** Seven splitter constants had
   no token record behind them, and the toggle's selected radius was declared for sm/md/lg while the CSS
   also read xs and xl, so those values shipped from core CSS where a theme could not change them. A
