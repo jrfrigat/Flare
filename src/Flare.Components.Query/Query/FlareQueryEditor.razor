@@ -1,12 +1,13 @@
 @namespace Flare.Components
 @using Querio
 @using Querio.Language
+@inherits FlareComponentBase
 
 @* Writes a query as text rather than through a grid. The component itself holds no knowledge of the
    language: the code block asks for suggestions, this passes the question to Querio's completion
    engine, and the answers come back the same for anything else that builds a query. *@
 
-<div class="@CssClass" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     <FlareCodeBlock Value="@Text"
                     ValueChanged="HandleTextChanged"
                     Language="sql"
@@ -63,17 +64,8 @@
     /// <summary>Whether the list of problems is shown below the editor. Defaults to true.</summary>
     [Parameter] public bool ShowProblems { get; set; } = true;
 
-    /// <summary>Extra CSS class(es) appended to the root element.</summary>
-    [Parameter] public string? Class { get; set; }
-
-    /// <summary>Inline style applied to the root element.</summary>
-    [Parameter] public string? Style { get; set; }
-
-    /// <summary>Unmatched attributes, splatted onto the root element.</summary>
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private string CssClass => string.IsNullOrEmpty(Class) ? "flare-qe" : "flare-qe " + Class;
+    /// <inheritdoc />
+    protected override string ComponentCssClass => "flare-qe";
 
     protected override async Task OnParametersSetAsync()
     {

@@ -8825,5 +8825,311 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("VirtualList_VirtualList", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Source.
+        /// </summary>
+        public static string Query_Lbl_Source {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Source", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Columns.
+        /// </summary>
+        public static string Query_Lbl_Columns {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Columns", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filter.
+        /// </summary>
+        public static string Query_Lbl_Filter {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Filter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Filter groups.
+        /// </summary>
+        public static string Query_Lbl_GroupFilter {
+            get {
+                return ResourceManager.GetString("Query_Lbl_GroupFilter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Options.
+        /// </summary>
+        public static string Query_Lbl_Options {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Options", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Problems.
+        /// </summary>
+        public static string Query_Lbl_Problems {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Problems", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add join.
+        /// </summary>
+        public static string Query_Lbl_AddJoin {
+            get {
+                return ResourceManager.GetString("Query_Lbl_AddJoin", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Add column.
+        /// </summary>
+        public static string Query_Lbl_AddColumn {
+            get {
+                return ResourceManager.GetString("Query_Lbl_AddColumn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Run.
+        /// </summary>
+        public static string Query_Lbl_Submit {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Submit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove.
+        /// </summary>
+        public static string Query_Lbl_Remove {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Remove", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Value.
+        /// </summary>
+        public static string Query_Lbl_Value {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Value", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Aggregate.
+        /// </summary>
+        public static string Query_Lbl_Aggregate {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Aggregate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Period.
+        /// </summary>
+        public static string Query_Lbl_Period {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Period", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name.
+        /// </summary>
+        public static string Query_Lbl_OutputName {
+            get {
+                return ResourceManager.GetString("Query_Lbl_OutputName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Group.
+        /// </summary>
+        public static string Query_Lbl_Group {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Group", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sort.
+        /// </summary>
+        public static string Query_Lbl_Sort {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Sort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Alias.
+        /// </summary>
+        public static string Query_Lbl_Alias {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Alias", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Relation.
+        /// </summary>
+        public static string Query_Lbl_Relation {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Relation", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Join.
+        /// </summary>
+        public static string Query_Lbl_JoinKind {
+            get {
+                return ResourceManager.GetString("Query_Lbl_JoinKind", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Distinct.
+        /// </summary>
+        public static string Query_Lbl_Distinct {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Distinct", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Limit.
+        /// </summary>
+        public static string Query_Lbl_Limit {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Limit", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Offset.
+        /// </summary>
+        public static string Query_Lbl_Offset {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Offset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на None.
+        /// </summary>
+        public static string Query_Lbl_None {
+            get {
+                return ResourceManager.GetString("Query_Lbl_None", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The query is valid..
+        /// </summary>
+        public static string Query_Lbl_NoProblems {
+            get {
+                return ResourceManager.GetString("Query_Lbl_NoProblems", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на AND.
+        /// </summary>
+        public static string Query_Lbl_And {
+            get {
+                return ResourceManager.GetString("Query_Lbl_And", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на OR.
+        /// </summary>
+        public static string Query_Lbl_Or {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Or", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Condition.
+        /// </summary>
+        public static string Query_Lbl_AddCondition {
+            get {
+                return ResourceManager.GetString("Query_Lbl_AddCondition", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Group.
+        /// </summary>
+        public static string Query_Lbl_AddGroup {
+            get {
+                return ResourceManager.GetString("Query_Lbl_AddGroup", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Value.
+        /// </summary>
+        public static string Query_Lbl_ValueHint {
+            get {
+                return ResourceManager.GetString("Query_Lbl_ValueHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на a, b, c.
+        /// </summary>
+        public static string Query_Lbl_ValuesHint {
+            get {
+                return ResourceManager.GetString("Query_Lbl_ValuesHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Relative.
+        /// </summary>
+        public static string Query_Lbl_Relative {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Relative", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ascending.
+        /// </summary>
+        public static string Query_Lbl_Ascending {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Ascending", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Descending.
+        /// </summary>
+        public static string Query_Lbl_Descending {
+            get {
+                return ResourceManager.GetString("Query_Lbl_Descending", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A schema is required..
+        /// </summary>
+        public static string Query_Lbl_SchemaMissing {
+            get {
+                return ResourceManager.GetString("Query_Lbl_SchemaMissing", resourceCulture);
+            }
+        }
     }
 }

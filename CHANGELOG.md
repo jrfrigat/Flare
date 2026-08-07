@@ -3,6 +3,53 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.11.0] - 2026-08-07
+
+### Added
+- **`Flare.Components.Query` - a visual query designer and a query text editor.** Two components over
+  the [Querio](https://www.nuget.org/packages/Querio/) query model, which lives in its own repository and
+  ships as its own package:
+  - **`FlareQueryBuilder`** composes sources, joins, columns, aggregates, date truncation, grouping,
+    nested AND/OR conditions, sorting and paging against a caller-supplied `QuerySchema`. It **builds a
+    query and never runs one** - the output is a serializable `QuerySpec` that the consumer renders to
+    SQL, translates to `IQueryable`, or posts to an API. What it offers is narrowed by an
+    `IQueryCapabilities`, so a target that cannot do percentiles never lists them.
+  - **`FlareQueryEditor`** writes the same query as text, with completion as you type (including
+    navigation through foreign keys, `[r].[apiKeyId].[ownerId].[name]`, which no SQL dialect has) and
+    every problem underlined in place rather than only the first.
+  - **`QueryBuilderLabels`** holds every caption the designer shows in one record, so a host translates
+    the whole set in a single assignment instead of parameter by parameter.
+- **`FlareCodeBlock` became editable, and can advise.** `SuggestionProvider` supplies completions
+  asynchronously, `Markers` underlines errors and warnings at exact offsets, `MaxSuggestions` caps the
+  list, and `Wrap` soft-wraps long lines instead of scrolling them off the side.
+- **Splitter tokens.** `SplitterTokens` - gutter thickness, grip thickness/length, idle and hover
+  colour, centre-icon size and colour - so a theme owns how a splitter looks.
+
+### Changed
+- **BREAKING for custom themes: two token records grew required members.** `DesignTokens` gained
+  `Splitter`, and `ToggleButtonTokens` gained `RadiusSelectedXs` / `RadiusSelectedXl`. A bespoke theme
+  (one not deriving from an in-box theme) must set them or it will not compile. In-box themes and
+  anything built with `with` from them are unaffected. This is the token mandate being enforced, not
+  widened: those values previously came from core CSS, where no theme could reach them.
+- **A dropdown now sizes to its content.** Anchored panels take the anchor's width as a minimum rather
+  than as the width, grow to `max-content`, and stop at the viewport - so a select whose values are
+  longer than its field no longer truncates them.
+- **FluentUI2's toggle button no longer morphs its shape at the xs and xl sizes.** The theme states that
+  selection changes colour only, and those two sizes were the ones it could not reach, so they had been
+  rendering a shape morph against that intent.
+- `Microsoft.AspNetCore.Components.Web` now floats to the newest patch of each target's major
+  (`8.0.*` / `9.0.*` / `10.0.*`), rather than pinning net10.0 to one patch in two places at once.
+
+### Fixed
+- **Text and colour in the code editor no longer drift apart.** The editor is an invisible textarea over
+  a coloured `<pre>`; the textarea soft-wrapped and the `<pre>` did not, so on any line after a wrap the
+  caret landed on the wrong character and a selection highlighted text other than the one shown. Both
+  layers now agree on wrapping, font, line height and scroll position.
+- **The splitter and the toggle button's end sizes are the theme's again.** Seven splitter constants had
+  no token record behind them, and the toggle's selected radius was declared for sm/md/lg while the CSS
+  also read xs and xl, so those values shipped from core CSS where a theme could not change them. A
+  guard test now fails the build on any token constant no theme can set.
+
 ## [0.10.0] - 2026-07-19
 
 ### Added

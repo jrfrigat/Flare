@@ -18,7 +18,8 @@
                      Style="width: 12rem" />
     </FlareStack>
 
-    <FlareQueryBuilder Schema="_schema" @bind-Spec="_spec" ShowSubmit="false" Capabilities="@TargetCapabilities" />
+    <FlareQueryBuilder Schema="_schema" @bind-Spec="_spec" ShowSubmit="false" Capabilities="@TargetCapabilities"
+                       Labels="@Captions" />
 
     <FlareTabs>
         <FlareTab Label="JSON">
@@ -40,6 +41,47 @@
 </FlareStack>
 
 @code {
+    // The designer ships English captions; the Gallery is bilingual, so every one is taken from the
+    // resources instead. Built per render rather than cached - the strings follow the current culture,
+    // and the language can change without the page being rebuilt.
+    private static QueryBuilderLabels Captions => new()
+    {
+        Source = GalleryStrings.Query_Lbl_Source,
+        Columns = GalleryStrings.Query_Lbl_Columns,
+        Filter = GalleryStrings.Query_Lbl_Filter,
+        GroupFilter = GalleryStrings.Query_Lbl_GroupFilter,
+        Options = GalleryStrings.Query_Lbl_Options,
+        Problems = GalleryStrings.Query_Lbl_Problems,
+        AddJoin = GalleryStrings.Query_Lbl_AddJoin,
+        AddColumn = GalleryStrings.Query_Lbl_AddColumn,
+        Submit = GalleryStrings.Query_Lbl_Submit,
+        Remove = GalleryStrings.Query_Lbl_Remove,
+        Value = GalleryStrings.Query_Lbl_Value,
+        Aggregate = GalleryStrings.Query_Lbl_Aggregate,
+        Period = GalleryStrings.Query_Lbl_Period,
+        OutputName = GalleryStrings.Query_Lbl_OutputName,
+        Group = GalleryStrings.Query_Lbl_Group,
+        Sort = GalleryStrings.Query_Lbl_Sort,
+        Alias = GalleryStrings.Query_Lbl_Alias,
+        Relation = GalleryStrings.Query_Lbl_Relation,
+        JoinKind = GalleryStrings.Query_Lbl_JoinKind,
+        Distinct = GalleryStrings.Query_Lbl_Distinct,
+        Limit = GalleryStrings.Query_Lbl_Limit,
+        Offset = GalleryStrings.Query_Lbl_Offset,
+        None = GalleryStrings.Query_Lbl_None,
+        NoProblems = GalleryStrings.Query_Lbl_NoProblems,
+        And = GalleryStrings.Query_Lbl_And,
+        Or = GalleryStrings.Query_Lbl_Or,
+        AddCondition = GalleryStrings.Query_Lbl_AddCondition,
+        AddGroup = GalleryStrings.Query_Lbl_AddGroup,
+        ValueHint = GalleryStrings.Query_Lbl_ValueHint,
+        ValuesHint = GalleryStrings.Query_Lbl_ValuesHint,
+        Relative = GalleryStrings.Query_Lbl_Relative,
+        Ascending = GalleryStrings.Query_Lbl_Ascending,
+        Descending = GalleryStrings.Query_Lbl_Descending,
+        SchemaMissing = GalleryStrings.Query_Lbl_SchemaMissing,
+    };
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         Converters = { new JsonStringEnumConverter() },
