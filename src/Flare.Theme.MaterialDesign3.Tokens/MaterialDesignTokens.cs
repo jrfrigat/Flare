@@ -136,6 +136,12 @@ public class MaterialDesignTokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
+
+        // Expressive reshapes its buttons as you interact with them - pill at rest, a softer
+        // rectangle on hover, a tighter corner when pressed - so this theme is the one that turns
+        // the corner travel on. It rides the fast spring, since a corner change is a spatial move.
+        ShapeMorphDuration = "var(--flare-motion-duration-spring-fast)",
+        ShapeMorphEasing = "var(--flare-motion-easing-spring-fast)",
         // 5 gap sizes (Gap) between text and icon
         // XS/S - height matches the MD3 spec -> gap = spec (8dp);
         // M=8 matches; L/XL - adapted to the reduced height.
@@ -159,13 +165,22 @@ public class MaterialDesignTokens
         PaddingInlineLg = "2rem",
         PaddingInlineXl = "2.5rem",
 
-        // Per-corner radii: a fully rounded capsule at all 5 sizes, so we reference
-        // the Shape.Full scale (like the other components) rather than a hardcoded half-height rem.
-        RadiusXs = CornerRadiusTokens.All("var(--flare-shape-full)"),
-        RadiusSm = CornerRadiusTokens.All("var(--flare-shape-full)"),
-        RadiusMd = CornerRadiusTokens.All("var(--flare-shape-full)"),
-        RadiusLg = CornerRadiusTokens.All("var(--flare-shape-full)"),
-        RadiusXl = CornerRadiusTokens.All("var(--flare-shape-full)"),
+        // Per-corner radii: a fully rounded capsule at all 5 sizes, expressed as half the size's own
+        // height rather than through the Shape.Full scale.
+        //
+        // The distinction is invisible at rest and decisive in motion. Shape.Full is 9999px, and the
+        // browser clamps a radius that large down to half the height when it paints - so the pill
+        // looks right either way. But now that these corners animate toward the hover and pressed
+        // radii, the value being interpolated matters: from 9999px nothing changes on screen until
+        // the number falls under the clamp, which happens in the last fraction of a percent of the
+        // duration and arrives as a snap. Half the height interpolates through values that are
+        // actually painted, so the morph is the morph it was specified to be. The split button hit
+        // the same trap in its static form.
+        RadiusXs = CornerRadiusTokens.All("calc(var(--flare-btn-height-xs) / 2)"),
+        RadiusSm = CornerRadiusTokens.All("calc(var(--flare-btn-height-sm) / 2)"),
+        RadiusMd = CornerRadiusTokens.All("calc(var(--flare-btn-height-md) / 2)"),
+        RadiusLg = CornerRadiusTokens.All("calc(var(--flare-btn-height-lg) / 2)"),
+        RadiusXl = CornerRadiusTokens.All("calc(var(--flare-btn-height-xl) / 2)"),
 
         // Focus outline and shadow settings
         FocusOutline = "3px solid var(--flare-color-primary)",

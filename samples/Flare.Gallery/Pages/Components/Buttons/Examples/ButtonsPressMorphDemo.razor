@@ -6,18 +6,17 @@
     </FlareText>
 
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
-        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Xs">Xs</FlareButton>
-        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">Sm</FlareButton>
-        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Md">Md</FlareButton>
-        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Lg">Lg</FlareButton>
-        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Xl">Xl</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xs">Xs</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">Sm</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Md">Md</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Lg">Lg</FlareButton>
+        <FlareButton Variant="ButtonVariant.Filled" Size="ButtonSize.Xl">Xl</FlareButton>
     </FlareStack>
 
-    @* Square opts out of the morph, so it is the control: press it and nothing moves. *@
+    @* Square asks for sharp corners outright, so it has nothing to travel to and stays put. *@
     <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
-        <FlareButton PressMorph Variant="ButtonVariant.Tonal" Shape="ButtonShape.Circular">Circular</FlareButton>
-        <FlareButton PressMorph Variant="ButtonVariant.Tonal" Shape="ButtonShape.Rounded">Rounded</FlareButton>
-        <FlareButton PressMorph Variant="ButtonVariant.Tonal" Shape="ButtonShape.Square">Square</FlareButton>
-        <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Buttons_PressMorph_Off</FlareButton>
+        <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Circular">Circular</FlareButton>
+        <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Rounded">Rounded</FlareButton>
+        <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Square">Square</FlareButton>
     </FlareStack>
 </FlareStack>

@@ -125,6 +125,10 @@ public class FluentUI2Tokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
+
+        // Fluent 2 buttons hold a constant 4dp corner in every state - the fill changes, the shape does not.
+        ShapeMorphDuration = "0s",
+        ShapeMorphEasing = "cubic-bezier(0.1, 0.9, 0.2, 1)",
         // Compact gaps (Gap) between text and the Microsoft icon
         GapXs = "0.125rem",        // 2px
         GapSm = "0.25rem",         // 4px

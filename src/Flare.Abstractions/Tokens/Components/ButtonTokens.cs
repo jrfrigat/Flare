@@ -18,6 +18,25 @@ public sealed record ButtonTokens
     /// <summary>Side padding for the Text variant, replacing the per-size inline padding at every size.
     /// A text button has no container to sit inside, so it usually hugs its label more tightly.</summary>
     [CssVar(Button.TextPaddingInline)] public required string TextPaddingInline { get; init; }
+
+    /// <summary>
+    /// How long a button takes to travel between the corner radii of its rest, hover and pressed
+    /// states. <b>This token is what decides whether a theme's buttons morph their shape at all:</b>
+    /// a theme that reshapes its buttons on interaction gives the travel a duration, and a theme
+    /// whose buttons hold one shape parks it at an instant so each state's corners simply apply.
+    /// </summary>
+    /// <remarks>
+    /// The radii themselves are the theme's business - the core supplies no hover or pressed corner
+    /// of its own - so a theme wanting a morph declares both this duration and the radii it moves
+    /// between. A duration alone changes nothing.
+    /// </remarks>
+    [CssVar(Button.ShapeMorphDuration)] public required string ShapeMorphDuration { get; init; }
+    /// <summary>
+    /// Easing of the corner travel described by <see cref="ShapeMorphDuration"/>. A theme that parks
+    /// that duration at an instant never reaches this.
+    /// </summary>
+    [CssVar(Button.ShapeMorphEasing)] public required string ShapeMorphEasing { get; init; }
+
     // --- 1. STRONGLY-TYPED GAPS (gaps between icon and text) ---
     /// <summary>Space between the icon and the label at the xs size.</summary>
     [CssVar(Button.Gap.Xs)] public required string GapXs { get; init; }

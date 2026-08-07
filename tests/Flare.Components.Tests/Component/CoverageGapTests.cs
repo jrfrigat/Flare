@@ -1840,17 +1840,14 @@ public class C_FlareButtonShapeTests : FlareTestContext
     }
 
     [Fact]
-    public void PressMorph_AddsMorphModifier()
+    public void ShapeMorph_IsNotAComponentConcern()
     {
-        var cut = Render<FlareButton>(p => p.Add(x => x.PressMorph, true).AddChildContent("Go"));
-        Assert.Contains("flare-btn--morph", cut.Find("button").ClassName);
-    }
-
-    [Fact]
-    public void NoPressMorph_ByDefault()
-    {
+        // The morph used to be a PressMorph parameter that stamped flare-btn--morph. It is now the
+        // theme's --flare-btn-shape-morph-duration, which is why no class records it any more: a
+        // theme could not deliver its own specified behaviour while every call site had to opt in.
         var cut = Render<FlareButton>(p => p.AddChildContent("Go"));
-        Assert.DoesNotContain("flare-btn--morph", cut.Find("button").ClassName);
+
+        Assert.DoesNotContain("morph", cut.Find("button").ClassName);
     }
 }
 

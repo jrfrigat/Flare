@@ -39,12 +39,16 @@
     font-size: var(--flare-btn-label-md-size);
     line-height: var(--flare-btn-label-md-height);
     letter-spacing: var(--flare-btn-label-md-spacing);
-    /* UNIFIED TRANSITION: controls the visuals and all 4 corners */
-    /* NB: border-radius is intentionally NOT transitioned. Corner radii come from per-theme
-       tokens, so animating them would morph every button's geometry on a theme switch (the
-       leftover shape-morph effect). Keep only colour/shadow/outline transitions. A press-time
-       shape morph, if wanted, should be a scoped :active transition - not a global one. */
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+    /* UNIFIED TRANSITION: controls the visuals and all 4 corners.
+       The corner travel is here but its duration is the theme's: --flare-btn-shape-morph-duration
+       decides whether a design language reshapes its buttons on interaction at all, and a theme that
+       does not sets it to 0s, which leaves each state's corners simply applying. This used to be a
+       component parameter, which meant the theme could not deliver its own specified behaviour
+       without every call site opting in. The old worry - that animating radii would morph geometry
+       on a theme SWITCH - does not apply: a switch replaces the token itself, and a token change is
+       not an interpolated transition. */
+    --_morph-duration: var(--flare-btn-shape-morph-duration);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-radius var(--_morph-duration) var(--flare-btn-shape-morph-easing);
     /* Reserve 1px for the border on all buttons so a bordered variant never shifts layout */
     border: 1px solid transparent;
 }
@@ -244,35 +248,20 @@
 .flare-btn--rounded.flare-btn--lg,
 .flare-btn--rounded.flare-btn--xl { border-radius: var(--flare-shape-extra-large); }
 
-.flare-btn--circular { border-radius: var(--flare-shape-full); }
+/* A pill must be expressed as half the height, not as an enormous radius. The browser clamps a
+   9999px radius down to height/2 when it paints, so interpolating 9999px toward a small corner
+   shows nothing at all until the value falls under that clamp - which happens in the last fraction
+   of a percent of the duration and lands as a snap rather than a morph. Half the height is the same
+   pill and interpolates through values that actually get painted. Same trap the split button hit,
+   in its animated form. */
+.flare-btn--circular { border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2); }
 
 .flare-btn--square { border-radius: var(--flare-shape-none); }
 
-/* ==========================================================================
-   PRESS MORPH (opt-in via .flare-btn--morph): the corner radius
-   animates while pressed. Scoped to this class only - the base .flare-btn keeps
-   border-radius out of its transition so theme switches never morph geometry.
-   The full base transition list is re-declared here (not appended) plus border-radius.
-   ========================================================================== */
-.flare-btn--morph {
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
-                background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
-                border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
-                color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
-                outline-color var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate),
-                /* The corner change is a spatial move, so it rides the spring rung rather than the
-                   plain ramp: a theme whose language overshoots gets its overshoot here, and one
-                   whose language does not still gets a curve of its own choosing. */
-                border-radius var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast);
-}
-/* Default/Circular press toward a rounded rectangle; Rounded presses to a tighter
-   corner; Square stays sharp (no geometry morph for the hard-edged shape). */
-.flare-btn--morph:active { border-radius: var(--flare-shape-large); }
-.flare-btn--morph.flare-btn--rounded:active { border-radius: var(--flare-shape-small); }
-.flare-btn--morph.flare-btn--square:active { border-radius: var(--flare-shape-none); }
-
+/* The corner travel is the one motion here worth suppressing on request: it is movement rather than
+   a colour change. Zeroing the local var leaves the rest of the transition list intact. */
 @media (prefers-reduced-motion: reduce) {
-    .flare-btn--morph { transition-duration: 0s; }
+    .flare-btn { --_morph-duration: 0s; }
 }
 
 .flare-btn__icon {

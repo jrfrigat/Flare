@@ -119,6 +119,10 @@ internal class VisualStudioTokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
+
+        // IDE chrome does not move under the pointer; a button that reshapes itself would be noise.
+        ShapeMorphDuration = "0s",
+        ShapeMorphEasing = "cubic-bezier(0.4, 0, 0.2, 1)",
         GapXs = "0.1875rem",
         GapSm = "0.25rem",
         GapMd = "0.375rem",

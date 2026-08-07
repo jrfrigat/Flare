@@ -24,6 +24,16 @@ All notable changes to Flare are documented here. This project adheres to
 - **A reduced-motion guard on the switch**, matching the one the button's press morph already had.
 
 ### Changed
+- **BREAKING: the button shape morph is a theme token, and `PressMorph` is gone.** Whether buttons
+  reshape their corners on hover and press is a property of a design language, not of a call site -
+  MD3 Expressive specifies it, Fluent 2 specifies the opposite - so a component parameter meant no
+  theme could deliver its own behaviour without every usage opting in. `ButtonTokens` gained
+  `ShapeMorphDuration` and `ShapeMorphEasing`; a theme that reshapes gives the travel a duration, one
+  that does not parks it at an instant. The `PressMorph` parameter on `FlareButton`, `FlareIconButton`
+  and `FlareFileUploadButton`, the `flare-btn--morph` class, and the core's pressed-corner values that
+  came with it are all removed - those radii were a theme opinion living in the core. MD3 Expressive
+  now morphs every button, as its spec always said it should; the other five in-box themes are
+  unchanged.
 - **BREAKING for custom themes: `MotionTokens` grew six required members** (three spring easings, three
   spring durations). A bespoke theme - one not deriving from an in-box theme - must set them or it will not
   compile. In-box themes and anything built with `with` from them are unaffected. A theme whose language

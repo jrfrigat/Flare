@@ -34,8 +34,6 @@ public static class Button
     public const string Circular = "flare-btn--circular";
     /// <summary>The <c>flare-btn--square</c> CSS class.</summary>
     public const string Square = "flare-btn--square";
-    /// <summary>The <c>flare-btn--morph</c> CSS class.</summary>
-    public const string Morph = "flare-btn--morph";
 
     /// <summary>The <c>flare-btn--loading</c> CSS class.</summary>
     public const string Loading = "flare-btn--loading";

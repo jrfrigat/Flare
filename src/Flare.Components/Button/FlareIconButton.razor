@@ -13,7 +13,6 @@
              Shape="Shape"
              Disabled="Disabled"
              Loading="Loading"
-             PressMorph="PressMorph"
              Type="Type"
              AriaPressed="AriaPressed"
              AriaLabel="@AriaLabel"
@@ -56,8 +55,6 @@
     [Parameter] public ButtonEdge Edge { get; set; } = ButtonEdge.None;
     /// <summary>Corner shape of the button. Default keeps the theme's native (typically circular for icon buttons).</summary>
     [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
-    /// <summary>Opt-in press morph: the corner radius animates while the button is pressed.</summary>
-    [Parameter] public bool PressMorph { get; set; }
     /// <summary>Disables the button when true.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Shows a spinner and disables the button when true.</summary>

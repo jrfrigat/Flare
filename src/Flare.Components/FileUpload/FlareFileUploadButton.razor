@@ -86,8 +86,6 @@
     [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Corner shape of the button.</summary>
     [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
-    /// <summary>Enables the press morph, as on <see cref="FlareButton"/>.</summary>
-    [Parameter] public bool PressMorph { get; set; }
     /// <summary>Stretches the button to the full width of its container.</summary>
     [Parameter] public bool FullWidth { get; set; }
     /// <summary>Shows a busy state and blocks the picker - for a caller that is still reading or posting
@@ -123,7 +121,6 @@
         ButtonCssClasses.Size(Size),
         ButtonCssClasses.Shape(Shape),
         Color.CssClass ?? string.Empty,
-        PressMorph ? Css.Classes.Button.Morph : string.Empty,
         Loading ? Css.Classes.Button.Loading : string.Empty,
         FullWidth ? Css.Classes.Button.Full : string.Empty,
     }.Where(c => !string.IsNullOrEmpty(c)));

@@ -44,7 +44,7 @@
 {
     @* Link button: rendered as <a>. Disabled/Loading removes href and marks aria-disabled. *@
     <a @ref="_element"
-       class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _morphClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
+       class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
        style="@_buttonStyle"
        href="@(Disabled || Loading ? null : Href)"
        target="@Target"
@@ -60,7 +60,7 @@
 else
 {
     <button @ref="_element"
-            class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _morphClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
+            class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
             style="@_buttonStyle"
             disabled="@(Disabled || Loading)"
             type="@Type.ToString().ToLowerInvariant()"
@@ -93,8 +93,6 @@ else
     /// <see cref="ButtonShape.Square"/> force a rounded rectangle, pill, or sharp corners.
     /// </summary>
     [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
-    /// <summary>Opt-in press morph: the corner radius animates while the button is pressed.</summary>
-    [Parameter] public bool PressMorph { get; set; }
     /// <summary>Disables the button when true.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>HTML type attribute of the button element (Button, Submit, or Reset).</summary>
@@ -162,8 +160,6 @@ else
     private string? _typoClass => FlareTypography.CssClass(Typo);
 
     private string _shapeClass => ButtonCssClasses.Shape(Shape);
-
-    private string _morphClass => PressMorph ? Css.Classes.Button.Morph : string.Empty;
 
     private string _loadingClass => Loading ? Css.Classes.Button.Loading : string.Empty;
 

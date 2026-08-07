@@ -111,6 +111,10 @@ internal static class MaterialDesign2Tokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
+
+        // Shape morphing arrived with Material 3 Expressive; Material 2 buttons keep their corners.
+        ShapeMorphDuration = "0s",
+        ShapeMorphEasing = "cubic-bezier(0.4, 0, 0.2, 1)",
         HeightXs = "1.75rem",  // 28dp
         HeightSm = "2rem",     // 32dp
         HeightMd = "2.25rem",  // 36dp (classic MD2 contained button)

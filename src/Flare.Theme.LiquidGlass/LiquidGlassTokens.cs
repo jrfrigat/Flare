@@ -119,6 +119,10 @@ internal class LiquidGlassTokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
+
+        // The glass reacts through blur and highlight rather than by reshaping its corners.
+        ShapeMorphDuration = "0s",
+        ShapeMorphEasing = "cubic-bezier(0.34, 1.4, 0.5, 1)",
         GapXs = "0.25rem",
         GapSm = "0.3125rem",
         GapMd = "0.4375rem",

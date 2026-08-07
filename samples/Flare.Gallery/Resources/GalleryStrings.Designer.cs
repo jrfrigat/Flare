@@ -1211,15 +1211,6 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Buttons_PressMorph_Hint", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на No PressMorph.
-        /// </summary>
-        public static string Buttons_PressMorph_Off {
-            get {
-                return ResourceManager.GetString("Buttons_PressMorph_Off", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareButton - 5 variants, 5 sizes, icon support..
