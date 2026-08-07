@@ -3,6 +3,46 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.12.0] - 2026-08-08
+
+### Added
+- **Spring motion, which a cubic-bezier cannot express.** `MotionTokens` gained three spatial spring
+  easings (fast / default / slow) and a matching duration for each. A cubic-bezier is monotone by
+  construction, so it cannot describe a settling overshoot at all - which is why a design language built
+  on springs previously rendered without any. Each easing must be used with its own duration: a spring is
+  a shape *plus* the time it takes to settle, and pairing it with a different duration truncates the curve
+  into a snap. MD3 ships the real curves, sampled from a damped harmonic oscillator at the Expressive
+  scheme's parameters (a pronounced overshoot on the fast rung, restrained on the other two). They are read
+  by the switch handle's travel and grow-on-press, the button's opt-in press morph, and the split button's
+  seam morph and caret rotation. Colour deliberately stays on the plain ramp, since a spring on a colour
+  overshoots past the target tone and clamps there instead of settling into it.
+- **`FlareChip.Disabled`.** The chip was the one component with no way to switch it off - no parameter, no
+  class, no styling - so a filter or choice chip that needed to show an unavailable option had to not
+  render it. A disabled chip dims, leaves the tab order, reports `aria-disabled`, and fires none of its
+  click, keyboard or close callbacks. Inside a `FlareChipGroup` it also stops taking part in selection, so
+  one that is already selected stays selected and cannot be cleared by clicking it.
+- **A reduced-motion guard on the switch**, matching the one the button's press morph already had.
+
+### Changed
+- **BREAKING for custom themes: `MotionTokens` grew six required members** (three spring easings, three
+  spring durations). A bespoke theme - one not deriving from an in-box theme - must set them or it will not
+  compile. In-box themes and anything built with `with` from them are unaffected. A theme whose language
+  does not bounce is expected to answer that plainly by pointing the spring easings at its ordinary curve;
+  that is what four of the six in-box themes do, and none of them changes visually.
+- **`FlareQrCode` encodes up to 2953 bytes instead of 76.** See below - the cap was low enough to count as
+  a defect rather than a limit.
+
+### Fixed
+- **`FlareQrCode` no longer refuses ordinary payloads.** The encoder stopped at symbol version 4, so
+  anything past 76 bytes at correction level L (60 at M) drew "Value too long" instead of a code - under
+  the length of a plain vCard and under many everyday URLs, which made the component unusable for its two
+  most common jobs. It now covers the whole ISO/IEC 18004 range, versions 1 to 40, choosing the smallest
+  symbol that fits: 2953 bytes at level L, 1273 at H. The message it shows when a payload genuinely does
+  not fit is localized now, too.
+- **Encoding a QR code no longer repeats on every parameter change.** It evaluates all eight mask patterns
+  over the whole symbol, which is worth skipping when neither the payload nor the correction level moved -
+  and at the larger versions now reachable, that is no longer a small saving.
+
 ## [0.11.0] - 2026-08-07
 
 ### Added
