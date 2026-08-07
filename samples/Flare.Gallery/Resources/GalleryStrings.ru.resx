@@ -1584,6 +1584,12 @@
   <data name="QrCode_Large" xml:space="preserve">
     <value>Крупный QR-код</value>
   </data>
+  <data name="QrCode_LongPayload" xml:space="preserve">
+    <value>Длинные данные</value>
+  </data>
+  <data name="QrCode_Bytes" xml:space="preserve">
+    <value>байт</value>
+  </data>
   <data name="QrCode_Rounded" xml:space="preserve">
     <value>Скругление модулей</value>
   </data>

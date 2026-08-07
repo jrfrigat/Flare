@@ -1584,6 +1584,12 @@
   <data name="QrCode_Large" xml:space="preserve">
     <value>Large QR Code</value>
   </data>
+  <data name="QrCode_LongPayload" xml:space="preserve">
+    <value>Long Payloads</value>
+  </data>
+  <data name="QrCode_Bytes" xml:space="preserve">
+    <value>bytes</value>
+  </data>
   <data name="QrCode_Rounded" xml:space="preserve">
     <value>Rounded Modules</value>
   </data>

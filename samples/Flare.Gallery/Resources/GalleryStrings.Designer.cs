@@ -6100,6 +6100,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Long Payloads.
+        /// </summary>
+        public static string QrCode_LongPayload {
+            get {
+                return ResourceManager.GetString("QrCode_LongPayload", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на bytes.
+        /// </summary>
+        public static string QrCode_Bytes {
+            get {
+                return ResourceManager.GetString("QrCode_Bytes", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Rounded Modules.
         /// </summary>
         public static string QrCode_Rounded {

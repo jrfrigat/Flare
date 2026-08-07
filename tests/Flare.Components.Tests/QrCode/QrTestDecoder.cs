@@ -3,13 +3,24 @@ using System.Text;
 namespace Flare.Components.Tests.QrCode;
 
 /// <summary>
-/// Minimal, independent QR decoder used only by the test suite to prove that
+/// Minimal QR decoder used only by the test suite to prove that
 /// <see cref="QrCodeGenerator"/> output is genuinely scannable. It shares no
-/// code with the generator: it reconstructs the codeword stream from the
-/// finished matrix and validates it with the standard block structure and
-/// Reed-Solomon syndromes, so a passing test reflects a real reader's success.
-/// Supports byte mode, versions 1-4 (the range the generator supports).
+/// encoding code with the generator: it reconstructs the codeword stream from
+/// the finished matrix, de-interleaves it, and validates it with Reed-Solomon
+/// syndromes, so a passing test reflects a real reader's success.
+/// Supports byte mode, versions 1-40.
 /// </summary>
+/// <remarks>
+/// What this proves and what it does not. The decoder re-implements the read
+/// side of the pipeline - format bits, masking, zig-zag traversal, the function
+/// module map, block de-interleaving and the syndrome check - so it catches any
+/// disagreement in how a symbol is laid out or how error correction is
+/// computed. It deliberately takes the block structure and the alignment
+/// centres FROM the generator rather than re-transcribing the standard's
+/// tables, because a second hand-typed copy would only prove that two
+/// transcriptions match. Those tables are checked instead against published
+/// constants and against the module geometry in <c>QrCodeTableTests</c>.
+/// </remarks>
 internal static class QrTestDecoder
 {
     // GF(256), primitive polynomial 0x11D (same field QR uses).
@@ -25,23 +36,12 @@ internal static class QrTestDecoder
 
     private static byte Mul(byte a, byte b) => (a == 0 || b == 0) ? (byte)0 : Exp[(Log[a] + Log[b]) % 255];
 
-    // Standard block structure for versions 1-4: [levelIdx][versionIdx] = (dataPerBlock, ecPerBlock, numBlocks).
-    // All version 1-4 combinations use a single group of equal blocks.
-    private static readonly (int dataPerBlock, int ecPerBlock, int numBlocks)[][] Std =
-    {
-        new[] { (19, 7, 1), (34, 10, 1), (55, 15, 1), (80, 20, 1) }, // L
-        new[] { (16, 10, 1), (28, 16, 1), (44, 26, 1), (32, 18, 2) }, // M
-        new[] { (13, 13, 1), (22, 22, 1), (17, 18, 2), (24, 26, 2) }, // Q
-        new[] { (9, 17, 1), (16, 28, 1), (13, 22, 2), (9, 16, 4) },   // H
-    };
-
     /// <summary>Decodes a finished module matrix (dark = true, no quiet zone).</summary>
     public static (string decoded, bool syndromesZero) Decode(bool[,] m, QrErrorCorrectionLevel level)
     {
         int n = m.GetLength(0);
         int version = (n - 21) / 4 + 1;
-        int levelIdx = (int)level;
-        var (dataPerBlock, ecPerBlock, numBlocks) = Std[levelIdx][version - 1];
+        var (numBlocks, ecPerBlock, shortLen, numShortBlocks) = QrCodeGenerator.BlockStructure(version, level);
 
         int mask = ReadMask(m);
         var fn = FunctionMap(n, version);
@@ -77,21 +77,29 @@ internal static class QrTestDecoder
             up = !up;
         }
 
-        // De-interleave into equal blocks.
+        // De-interleave the two block groups: the short blocks come first and
+        // contribute nothing to the final data pass.
         var dataBlocks = new byte[numBlocks][];
         var ecBlocks = new byte[numBlocks][];
-        for (int b = 0; b < numBlocks; b++) { dataBlocks[b] = new byte[dataPerBlock]; ecBlocks[b] = new byte[ecPerBlock]; }
+        for (int b = 0; b < numBlocks; b++)
+        {
+            dataBlocks[b] = new byte[shortLen + (b < numShortBlocks ? 0 : 1)];
+            ecBlocks[b] = new byte[ecPerBlock];
+        }
         int idx = 0;
-        for (int i = 0; i < dataPerBlock; i++) for (int b = 0; b < numBlocks; b++) dataBlocks[b][i] = stream[idx++];
-        for (int i = 0; i < ecPerBlock; i++) for (int b = 0; b < numBlocks; b++) ecBlocks[b][i] = stream[idx++];
+        for (int i = 0; i <= shortLen; i++)
+            for (int b = 0; b < numBlocks; b++)
+                if (i < dataBlocks[b].Length) dataBlocks[b][i] = stream[idx++];
+        for (int i = 0; i < ecPerBlock; i++)
+            for (int b = 0; b < numBlocks; b++) ecBlocks[b][i] = stream[idx++];
 
         // Reed-Solomon syndrome check: valid iff C(alpha^j) == 0 for j in [0, ecPerBlock).
         bool syndromesZero = true;
         for (int b = 0; b < numBlocks && syndromesZero; b++)
         {
-            var full = new byte[dataPerBlock + ecPerBlock];
-            Array.Copy(dataBlocks[b], 0, full, 0, dataPerBlock);
-            Array.Copy(ecBlocks[b], 0, full, dataPerBlock, ecPerBlock);
+            var full = new byte[dataBlocks[b].Length + ecPerBlock];
+            Array.Copy(dataBlocks[b], 0, full, 0, dataBlocks[b].Length);
+            Array.Copy(ecBlocks[b], 0, full, dataBlocks[b].Length, ecPerBlock);
             for (int j = 0; j < ecPerBlock; j++)
             {
                 byte s = 0;
@@ -110,10 +118,10 @@ internal static class QrTestDecoder
 
         int mode = Read(4);
         if (mode != 0b0100) return ($"<non-byte mode {mode}>", syndromesZero);
-        int len = Read(8);
+        int len = Read(version < 10 ? 8 : 16);
         var bytes = new byte[len];
         for (int i = 0; i < len; i++) bytes[i] = (byte)Read(8);
-        return (Encoding.GetEncoding("ISO-8859-1").GetString(bytes), syndromesZero);
+        return (Encoding.Latin1.GetString(bytes), syndromesZero);
     }
 
     private static int ReadMask(bool[,] m)
@@ -151,14 +159,24 @@ internal static class QrTestDecoder
         Fill(0, 0, 7, 7); Fill(0, n - 8, 7, n - 1); Fill(n - 8, 0, n - 1, 7); // finders + separators
         for (int i = 8; i < n - 8; i++) { fn[6, i] = true; fn[i, 6] = true; } // timing
 
-        int[][] centers = { Array.Empty<int>(), new[] { 6, 18 }, new[] { 6, 22 }, new[] { 6, 26 } };
-        var ce = centers[version - 1];
-        if (ce.Length > 0)
-        {
-            int cc = ce[1];
-            for (int r = cc - 2; r <= cc + 2; r++)
-                for (int c = cc - 2; c <= cc + 2; c++) fn[r, c] = true; // single alignment pattern
-        }
+        var centers = QrCodeGenerator.AlignmentCenters(version);
+        for (int i = 0; i < centers.Length; i++)
+            for (int j = 0; j < centers.Length; j++)
+            {
+                bool finderCorner = (i == 0 && j == 0)
+                    || (i == 0 && j == centers.Length - 1)
+                    || (i == centers.Length - 1 && j == 0);
+                if (finderCorner) continue;
+                Fill(centers[i] - 2, centers[j] - 2, centers[i] + 2, centers[j] + 2);
+            }
+
+        if (version >= 7)
+            for (int i = 0; i < 18; i++)
+            {
+                int a = n - 11 + i % 3, b = i / 3;
+                fn[a, b] = true;
+                fn[b, a] = true;
+            }
 
         fn[4 * version + 9, 8] = true; // dark module
         for (int i = 0; i <= 8; i++) { fn[8, i] = true; fn[i, 8] = true; } // format reserve

@@ -115,6 +115,9 @@
   <!-- Chip -->
   <data name="Chip_Delete" xml:space="preserve"><value>Delete chip</value></data>
 
+  <!-- QrCode -->
+  <data name="QrCode_ValueTooLong" xml:space="preserve"><value>Value too long</value></data>
+
   <!-- Calendar -->
   <data name="Calendar_PrevMonth" xml:space="preserve"><value>Previous month</value></data>
   <data name="Calendar_NextMonth" xml:space="preserve"><value>Next month</value></data>

@@ -6,67 +6,86 @@ namespace Flare.Components.Tests.QrCode;
 // Regression tests for QrCodeGenerator.
 //
 // These assert that generated codes are actually SCANNABLE, not merely that
-// they look like QR codes. An INDEPENDENT decoder reads the finished matrix
+// they look like QR codes. An independent decoder reads the finished matrix
 // back: it un-masks via the recorded format bits, reads the codeword stream in
-// the standard zig-zag, de-interleaves with the ISO/IEC 18004 block structure,
-// verifies Reed-Solomon syndromes are zero (a real scanner's decode succeeds
-// iff they are), and parses the byte-mode payload. A code that round-trips with
-// zero syndromes will scan on any conforming reader.
+// the standard zig-zag, de-interleaves the two block groups, verifies
+// Reed-Solomon syndromes are zero (a real scanner's decode succeeds iff they
+// are), and parses the byte-mode payload. A code that round-trips with zero
+// syndromes will scan on any conforming reader.
 //
 // Guards three historical bugs that shipped in untested code:
 //   1. RS division off-by-one (gen[i] vs gen[i+1]) -> every code unscannable.
 //   2. Wrong EC block structure for M-v3 and Q-v4.
 //   3. Corrupt format-info constants for level H, masks 5/6/7.
+//
+// The transcribed capacity tables are checked separately in QrCodeTableTests -
+// a round-trip cannot catch a table the encoder and decoder both read.
 // ---------------------------------------------------------------------------
 public class QrCodeGeneratorTests
 {
-    public static IEnumerable<object[]> RoundTripCases()
+    private static readonly QrErrorCorrectionLevel[] AllLevels =
+        [QrErrorCorrectionLevel.L, QrErrorCorrectionLevel.M, QrErrorCorrectionLevel.Q, QrErrorCorrectionLevel.H];
+
+    public static IEnumerable<object[]> EveryVersionAndLevel()
     {
-        // Payload lengths chosen to land on each version (1-4) at each level,
-        // including the boundaries that the block-structure/format bugs broke.
-        int[] lengths = { 1, 2, 6, 10, 13, 16, 18, 22, 24, 28, 30, 32, 40, 44, 55, 60 };
-        foreach (var level in new[]
-        {
-            QrErrorCorrectionLevel.L, QrErrorCorrectionLevel.M,
-            QrErrorCorrectionLevel.Q, QrErrorCorrectionLevel.H,
-        })
-        {
-            foreach (var len in lengths)
-                yield return new object[] { level, MakePayload(len) };
-        }
+        foreach (var level in AllLevels)
+            for (int version = QrCodeGenerator.MinVersion; version <= QrCodeGenerator.MaxVersion; version++)
+                yield return [level, version];
     }
 
+    /// <summary>
+    /// A payload of exactly the version's capacity: the boundary case, where
+    /// the bitstream ends flush with the last codeword and no padding is added.
+    /// It also pins version selection, since the previous version cannot hold it.
+    /// </summary>
     [Theory]
-    [MemberData(nameof(RoundTripCases))]
-    public void GeneratedCode_IsScannable(QrErrorCorrectionLevel level, string payload)
+    [MemberData(nameof(EveryVersionAndLevel))]
+    public void PayloadAtExactCapacity_SelectsThatVersion_AndScans(QrErrorCorrectionLevel level, int version)
     {
+        string payload = MakePayload(QrCodeGenerator.MaxPayloadBytes(version, level));
+
         var matrix = QrCodeGenerator.Generate(payload, level);
-        if (matrix is null)
-            return; // payload exceeds the supported version-4 capacity at this level
 
-        var (decoded, syndromesZero) = QrTestDecoder.Decode(matrix, level);
+        Assert.NotNull(matrix);
+        Assert.Equal(QrCodeGenerator.SizeOf(version), matrix!.GetLength(0));
+        AssertScans(matrix, level, payload);
+    }
 
-        Assert.True(syndromesZero, $"Reed-Solomon syndromes non-zero (unscannable) for level {level}, len {payload.Length}");
-        Assert.Equal(payload, decoded);
+    /// <summary>
+    /// One byte past the previous version's capacity: the shortest payload that
+    /// needs this version, so the bitstream is mostly pad codewords. Together
+    /// with the boundary case this exercises both ends of every symbol size.
+    /// </summary>
+    [Theory]
+    [MemberData(nameof(EveryVersionAndLevel))]
+    public void ShortestPayloadForVersion_Scans(QrErrorCorrectionLevel level, int version)
+    {
+        int floor = version == QrCodeGenerator.MinVersion
+            ? 0
+            : QrCodeGenerator.MaxPayloadBytes(version - 1, level);
+        string payload = MakePayload(floor + 1);
+
+        var matrix = QrCodeGenerator.Generate(payload, level);
+
+        Assert.NotNull(matrix);
+        Assert.Equal(QrCodeGenerator.SizeOf(version), matrix!.GetLength(0));
+        AssertScans(matrix, level, payload);
     }
 
     [Theory]
     [InlineData("https://example.com/path?q=42")]
     [InlineData("HELLO WORLD")]
     [InlineData("mixed CASE 123 -._~ /:")]
+    // Long enough to have needed version 5+, which the encoder could not reach before.
+    [InlineData("https://flare.example.org/components/data-grid?tab=api&anchor=parameters&v=2")]
+    [InlineData("BEGIN:VCARD\nVERSION:3.0\nN:Doe;Jane\nTEL:+1-555-0100\nEMAIL:jane.doe@example.com\nEND:VCARD")]
     public void CommonPayloads_RoundTrip(string payload)
     {
-        foreach (var level in new[]
-        {
-            QrErrorCorrectionLevel.L, QrErrorCorrectionLevel.M,
-            QrErrorCorrectionLevel.Q, QrErrorCorrectionLevel.H,
-        })
+        foreach (var level in AllLevels)
         {
             var matrix = QrCodeGenerator.Generate(payload, level);
             Assert.NotNull(matrix);
-            var (decoded, syndromesZero) = QrTestDecoder.Decode(matrix!, level);
-            Assert.True(syndromesZero, $"unscannable for level {level}");
-            Assert.Equal(payload, decoded);
+            AssertScans(matrix!, level, payload);
         }
     }
 
@@ -76,16 +95,50 @@ public class QrCodeGeneratorTests
         // Generator substitutes a single space for empty input.
         var matrix = QrCodeGenerator.Generate("", QrErrorCorrectionLevel.M);
         Assert.NotNull(matrix);
-        var (decoded, syndromesZero) = QrTestDecoder.Decode(matrix!, QrErrorCorrectionLevel.M);
-        Assert.True(syndromesZero);
-        Assert.Equal(" ", decoded);
+        AssertScans(matrix!, QrErrorCorrectionLevel.M, " ");
     }
 
     [Fact]
-    public void OverlongPayload_ReturnsNull()
+    public void PayloadBeyondVersion40_ReturnsNull()
     {
-        // Beyond version-4 byte capacity at level H.
-        Assert.Null(QrCodeGenerator.Generate(MakePayload(200), QrErrorCorrectionLevel.H));
+        foreach (var level in AllLevels)
+        {
+            int max = QrCodeGenerator.MaxPayloadBytes(QrCodeGenerator.MaxVersion, level);
+            Assert.NotNull(QrCodeGenerator.Generate(MakePayload(max), level));
+            Assert.Null(QrCodeGenerator.Generate(MakePayload(max + 1), level));
+        }
+    }
+
+    [Fact]
+    public void VersionInformationBlock_IsPresentFromVersion7()
+    {
+        // Versions 7 and up carry an 18-bit version word twice; a reader uses it
+        // to size the symbol, so a missing or misplaced block fails to scan even
+        // though every data module is correct.
+        const QrErrorCorrectionLevel level = QrErrorCorrectionLevel.L;
+        var matrix = QrCodeGenerator.Generate(MakePayload(QrCodeGenerator.MaxPayloadBytes(7, level)), level);
+        Assert.NotNull(matrix);
+
+        int size = matrix!.GetLength(0);
+        int expected = QrCodeGenerator.VersionInfoWord(7);
+        int topRight = 0, bottomLeft = 0;
+        for (int i = 0; i < 18; i++)
+        {
+            int a = size - 11 + i % 3, b = i / 3;
+            if (matrix[b, a]) topRight |= 1 << i;
+            if (matrix[a, b]) bottomLeft |= 1 << i;
+        }
+
+        Assert.Equal(expected, topRight);
+        Assert.Equal(expected, bottomLeft);
+    }
+
+    private static void AssertScans(bool[,] matrix, QrErrorCorrectionLevel level, string payload)
+    {
+        var (decoded, syndromesZero) = QrTestDecoder.Decode(matrix, level);
+        Assert.True(syndromesZero,
+            $"Reed-Solomon syndromes non-zero (unscannable) for level {level}, {payload.Length} bytes");
+        Assert.Equal(payload, decoded);
     }
 
     private static string MakePayload(int len)

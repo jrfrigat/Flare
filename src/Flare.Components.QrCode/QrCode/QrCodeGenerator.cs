@@ -3,11 +3,18 @@ using System.Text;
 namespace Flare.Components;
 
 /// <summary>
-/// Pure-C# minimal QR code encoder.
-/// Supports byte mode, error correction levels L/M/Q/H, versions 1-4.
+/// Pure-C# QR code encoder covering the whole ISO/IEC 18004 symbol range.
+/// Encodes in byte mode at error correction levels L/M/Q/H, versions 1-40
+/// (21x21 to 177x177 modules, up to 2953 bytes of payload).
 /// </summary>
 internal static class QrCodeGenerator
 {
+    /// <summary>Lowest symbol version defined by the standard.</summary>
+    public const int MinVersion = 1;
+
+    /// <summary>Highest symbol version defined by the standard.</summary>
+    public const int MaxVersion = 40;
+
     // -- Reed-Solomon GF(256) arithmetic (primitive polynomial x^8+x^4+x^3+x^2+1 = 0x11D) --
 
     private static readonly byte[] _exp = new byte[512];
@@ -51,9 +58,8 @@ internal static class QrCodeGenerator
         return g;
     }
 
-    private static byte[] RsEncode(byte[] data, int ecCount)
+    private static byte[] RsEncode(ReadOnlySpan<byte> data, int ecCount, byte[] gen)
     {
-        byte[] gen = RsGenerator(ecCount);
         byte[] rem = new byte[ecCount];
         foreach (byte b in data)
         {
@@ -68,37 +74,30 @@ internal static class QrCodeGenerator
         return rem;
     }
 
-    // -- Capacity tables (byte mode) indexed by [levelIdx][versionIdx] --
-    // (moduleSize, dataCodewordsPerBlock, ecCodewordsPerBlock, numBlocks)
-    // Level index: L=0, M=1, Q=2, H=3
-    private static readonly (int size, int dataPerBlock, int ecPerBlock, int numBlocks)[][] _versionInfoByLevel =
+    // -- Block structure, ISO/IEC 18004 table 13-22, indexed by [levelIdx][version] --
+    //
+    // Only these two tables are transcribed; everything else about the symbol
+    // (total codewords, data codewords, how the blocks are sized and split into
+    // two groups) is derived from them plus the module geometry, so a symbol's
+    // capacity cannot silently disagree with its layout. Level index: L=0, M=1,
+    // Q=2, H=3. Index 0 is unused padding so the version number indexes directly.
+
+    private static readonly byte[][] _ecPerBlock =
     [
-        // L
-        [(21, 19, 7, 1), (25, 34, 10, 1), (29, 55, 15, 1), (33, 80, 20, 1)],
-        // M
-        [(21, 16, 10, 1), (25, 28, 16, 1), (29, 44, 26, 1), (33, 32, 18, 2)],
-        // Q
-        [(21, 13, 13, 1), (25, 22, 22, 1), (29, 17, 18, 2), (33, 24, 26, 2)],
-        // H
-        [(21, 9, 17, 1),  (25, 16, 28, 1), (29, 13, 22, 2), (33, 9, 16, 4)],
+        //   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40
+        [0,  7, 10, 15, 20, 26, 18, 20, 24, 30, 18, 20, 24, 26, 30, 22, 24, 28, 30, 28, 28, 28, 28, 30, 30, 26, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30], // L
+        [0, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26, 26, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28], // M
+        [0, 13, 22, 18, 26, 18, 24, 18, 22, 20, 24, 28, 26, 24, 20, 30, 24, 28, 28, 26, 30, 28, 30, 30, 30, 30, 28, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30], // Q
+        [0, 17, 28, 22, 16, 22, 28, 26, 26, 24, 28, 24, 28, 22, 24, 24, 30, 28, 28, 26, 28, 30, 24, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30], // H
     ];
 
-    // Conservative max byte capacity per level and version
-    private static readonly int[][] _maxBytesByLevel =
+    private static readonly byte[][] _blockCount =
     [
-        [16, 31, 51, 76], // L
-        [13, 24, 40, 60], // M
-        [10, 18, 30, 44], // Q
-        [6,  13, 22, 32], // H
-    ];
-
-    // Alignment pattern centers (version >=2; version 1 has none)
-    private static readonly int[][] _alignCenters =
-    [
-        [],       // version 1
-        [6, 18],  // version 2
-        [6, 22],  // version 3
-        [6, 26],  // version 4
+        //   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40
+        [0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  4,  4,  4,  4,  4,  6,  6,  6,  6,  7,  8,  8,  9,  9, 10, 12, 12, 12, 13, 14, 15, 16, 17, 18, 19, 19, 20, 21, 22, 24, 25], // L
+        [0,  1,  1,  1,  2,  2,  4,  4,  4,  5,  5,  5,  8,  9,  9, 10, 10, 11, 13, 14, 16, 17, 17, 18, 20, 21, 23, 25, 26, 28, 29, 31, 33, 35, 37, 38, 40, 43, 45, 47, 49], // M
+        [0,  1,  1,  2,  2,  4,  4,  6,  6,  8,  8,  8, 10, 12, 16, 12, 17, 16, 18, 21, 20, 23, 23, 25, 27, 29, 34, 34, 35, 38, 40, 43, 45, 48, 51, 53, 56, 59, 62, 65, 68], // Q
+        [0,  1,  1,  2,  4,  4,  4,  5,  6,  8,  8, 11, 11, 16, 16, 18, 16, 19, 21, 25, 25, 25, 34, 30, 32, 35, 37, 40, 42, 45, 48, 51, 54, 57, 60, 63, 66, 70, 74, 77, 81], // H
     ];
 
     // Pre-computed format information 15-bit words for each level (rows) and mask (cols).
@@ -115,70 +114,159 @@ internal static class QrCodeGenerator
         [0x1689, 0x13BE, 0x1CE7, 0x19D0, 0x0762, 0x0255, 0x0D0C, 0x083B],
     ];
 
-    /// <summary>Generates a QR code matrix. Returns null if text exceeds version 4 capacity.</summary>
+    /// <summary>Module count along one edge of the given version's symbol.</summary>
+    public static int SizeOf(int version) => version * 4 + 17;
+
+    /// <summary>
+    /// Counts the modules a version leaves free for data and error correction,
+    /// by subtracting every function pattern from the symbol area. The whole
+    /// capacity model is anchored on this geometry rather than a transcribed
+    /// capacity table, so the two cannot drift apart.
+    /// </summary>
+    public static int RawDataModules(int version)
+    {
+        int size = SizeOf(version);
+        int result = size * size;
+        result -= 8 * 8 * 3;          // three finder patterns with their separators
+        result -= 15 * 2 + 1;         // two format information strips + the dark module
+        result -= (size - 16) * 2;    // the timing patterns outside the finder corners
+        if (version >= 2)
+        {
+            int numAlign = version / 7 + 2;
+            result -= (numAlign - 1) * (numAlign - 1) * 25;  // alignment patterns clear of the timing lines
+            result -= (numAlign - 2) * 2 * 20;               // those straddling a timing line share 5 modules
+            if (version >= 7)
+                result -= 6 * 3 * 2;  // two version information blocks
+        }
+        return result;
+    }
+
+    /// <summary>Total codewords (data plus error correction) a version holds.</summary>
+    public static int TotalCodewords(int version) => RawDataModules(version) / 8;
+
+    /// <summary>Codewords a version and level leave for the data bitstream.</summary>
+    public static int DataCodewords(int version, QrErrorCorrectionLevel level) =>
+        TotalCodewords(version) - _ecPerBlock[(int)level][version] * _blockCount[(int)level][version];
+
+    /// <summary>Bits the character count indicator occupies in byte mode at the given version.</summary>
+    private static int CountBits(int version) => version < 10 ? 8 : 16;
+
+    /// <summary>
+    /// How a version and level divide their codewords into interleaved blocks.
+    /// The data codewords rarely divide evenly, so the standard uses two groups:
+    /// the first <c>shortBlocks</c> blocks carry <c>shortDataLen</c> data
+    /// codewords and the rest carry one more.
+    /// </summary>
+    public static (int blocks, int ecPerBlock, int shortDataLen, int shortBlocks) BlockStructure(
+        int version, QrErrorCorrectionLevel level)
+    {
+        int blocks = _blockCount[(int)level][version];
+        int ecPerBlock = _ecPerBlock[(int)level][version];
+        int total = TotalCodewords(version);
+        return (blocks, ecPerBlock, DataCodewords(version, level) / blocks, blocks - total % blocks);
+    }
+
+    /// <summary>Longest byte-mode payload a version and level can carry.</summary>
+    public static int MaxPayloadBytes(int version, QrErrorCorrectionLevel level) =>
+        (DataCodewords(version, level) * 8 - 4 - CountBits(version)) / 8;
+
+    /// <summary>
+    /// Centre coordinates of the alignment patterns for a version. The first is
+    /// always 6; the rest are spread evenly from the far edge inwards, with the
+    /// spacing rounded up to an even number (version 32 is the one case where
+    /// the general rule and the standard's table disagree).
+    /// </summary>
+    public static int[] AlignmentCenters(int version)
+    {
+        if (version == 1) return [];
+        int numAlign = version / 7 + 2;
+        int step = version == 32 ? 26 : (version * 4 + numAlign * 2 + 1) / (numAlign * 2 - 2) * 2;
+        var result = new int[numAlign];
+        result[0] = 6;
+        for (int i = numAlign - 1, pos = SizeOf(version) - 7; i >= 1; i--, pos -= step)
+            result[i] = pos;
+        return result;
+    }
+
+    /// <summary>
+    /// The 18-bit version information word: the version number followed by a
+    /// (18,6) Golay remainder, computed rather than tabulated.
+    /// </summary>
+    public static int VersionInfoWord(int version)
+    {
+        int rem = version;
+        for (int i = 0; i < 12; i++)
+            rem = (rem << 1) ^ ((rem >> 11) * 0x1F25);
+        return version << 12 | rem;
+    }
+
+    /// <summary>
+    /// Generates a QR code matrix, picking the smallest version that fits.
+    /// Returns null when the text exceeds the 2953-byte version-40 capacity at
+    /// the requested level.
+    /// </summary>
     public static bool[,]? Generate(string text, QrErrorCorrectionLevel ecLevel = QrErrorCorrectionLevel.M)
     {
         if (string.IsNullOrEmpty(text)) text = " ";
 
-        byte[] bytes = Encoding.GetEncoding("ISO-8859-1").GetBytes(text);
+        byte[] bytes = Encoding.Latin1.GetBytes(text);
         int len = bytes.Length;
-
         int levelIdx = (int)ecLevel;
-        int[] maxBytes = _maxBytesByLevel[levelIdx];
-        var versionInfo = _versionInfoByLevel[levelIdx];
 
-        int versionIdx = -1;
-        for (int i = 0; i < maxBytes.Length; i++)
+        int version = 0;
+        for (int v = MinVersion; v <= MaxVersion; v++)
         {
-            if (len <= maxBytes[i]) { versionIdx = i; break; }
+            if (len <= MaxPayloadBytes(v, ecLevel)) { version = v; break; }
         }
-        if (versionIdx < 0) return null;
+        if (version == 0) return null;
 
-        int version = versionIdx + 1;
-        var (size, dataPerBlock, ecPerBlock, numBlocks) = versionInfo[versionIdx];
+        int size = SizeOf(version);
+        int totalCodewords = TotalCodewords(version);
+        int dataCodewords = DataCodewords(version, ecLevel);
+        var (numBlocks, ecPerBlock, shortLen, numShortBlocks) = BlockStructure(version, ecLevel);
 
-        // -- Build data bitstream --
-        var bits = new BitWriter();
+        // -- Build the data bitstream --
+        var bits = new BitWriter(dataCodewords);
 
-        bits.Write(0b0100, 4);        // byte mode
-        bits.Write(len, 8);           // character count (versions 1-9)
+        bits.Write(0b0100, 4);              // byte mode
+        bits.Write(len, CountBits(version));
         foreach (byte b in bytes) bits.Write(b, 8);
 
-        int totalDataBits = dataPerBlock * numBlocks * 8;
-        int terminatorLen = Math.Min(4, totalDataBits - bits.Length);
-        if (terminatorLen > 0) bits.Write(0, terminatorLen);
-        while (bits.Length % 8 != 0) bits.Write(0, 1);
+        int totalDataBits = dataCodewords * 8;
+        bits.Write(0, Math.Min(4, totalDataBits - bits.Length));  // terminator
+        bits.Write(0, (8 - bits.Length % 8) % 8);                 // pad to a codeword boundary
 
         byte[] padBytes = [0xEC, 0x11];
-        int padIdx = 0;
-        while (bits.Length < totalDataBits)
-        {
+        for (int padIdx = 0; bits.Length < totalDataBits; padIdx++)
             bits.Write(padBytes[padIdx % 2], 8);
-            padIdx++;
-        }
 
         byte[] allData = bits.ToByteArray();
 
-        // -- Split into blocks, compute EC --
-        var dataBlocks = new List<byte[]>();
-        var ecBlocks = new List<byte[]>();
-        int offset = 0;
-        for (int b = 0; b < numBlocks; b++)
+        // -- Split into blocks and compute error correction --
+        byte[] gen = RsGenerator(ecPerBlock);
+        var dataBlocks = new byte[numBlocks][];
+        var ecBlocks = new byte[numBlocks][];
+        for (int b = 0, offset = 0; b < numBlocks; b++)
         {
-            byte[] block = allData[offset..(offset + dataPerBlock)];
-            dataBlocks.Add(block);
-            ecBlocks.Add(RsEncode(block, ecPerBlock));
-            offset += dataPerBlock;
+            int blockLen = shortLen + (b < numShortBlocks ? 0 : 1);
+            dataBlocks[b] = allData[offset..(offset + blockLen)];
+            ecBlocks[b] = RsEncode(dataBlocks[b], ecPerBlock, gen);
+            offset += blockLen;
         }
 
         // -- Interleave codewords --
-        var finalCW = new List<byte>();
-        for (int i = 0; i < dataPerBlock; i++)
-            foreach (var blk in dataBlocks) finalCW.Add(blk[i]);
+        // Column-major across the blocks; the short blocks simply have nothing
+        // to contribute on the final data pass.
+        var finalCW = new byte[totalCodewords];
+        int cw = 0;
+        for (int i = 0; i <= shortLen; i++)
+            for (int b = 0; b < numBlocks; b++)
+                if (i < dataBlocks[b].Length) finalCW[cw++] = dataBlocks[b][i];
         for (int i = 0; i < ecPerBlock; i++)
-            foreach (var blk in ecBlocks) finalCW.Add(blk[i]);
+            for (int b = 0; b < numBlocks; b++)
+                finalCW[cw++] = ecBlocks[b][i];
 
-        // -- Build module matrix --
+        // -- Build the module matrix --
         var matrix = new byte[size, size];
         var isFunction = new bool[size, size];
 
@@ -193,12 +281,24 @@ internal static class QrCodeGenerator
             isFunction[6, i] = isFunction[i, 6] = true;
         }
 
-        int[] centers = _alignCenters[versionIdx];
-        if (centers.Length > 0)
-            PlaceAlignment(matrix, isFunction, centers[1], centers[1]);
+        // Alignment patterns sit at every pairing of the centres except the
+        // three corners already occupied by the finder patterns.
+        int[] centers = AlignmentCenters(version);
+        for (int i = 0; i < centers.Length; i++)
+        {
+            for (int j = 0; j < centers.Length; j++)
+            {
+                bool finderCorner = (i == 0 && j == 0)
+                    || (i == 0 && j == centers.Length - 1)
+                    || (i == centers.Length - 1 && j == 0);
+                if (!finderCorner) PlaceAlignment(matrix, isFunction, centers[i], centers[j]);
+            }
+        }
 
         matrix[4 * version + 9, 8] = 1;
         isFunction[4 * version + 9, 8] = true;
+
+        if (version >= 7) PlaceVersionInfo(matrix, isFunction, size, version);
 
         ReserveFormat(isFunction, size);
 
@@ -218,7 +318,7 @@ internal static class QrCodeGenerator
                 {
                     int c = col - dc;
                     if (isFunction[row, c]) continue;
-                    if (cwIndex >= finalCW.Count) { matrix[row, c] = 0; continue; }
+                    if (cwIndex >= finalCW.Length) { matrix[row, c] = 0; continue; }
                     byte bit = (byte)((finalCW[cwIndex] >> bitIndex) & 1);
                     matrix[row, c] = bit;
                     bitIndex--;
@@ -272,11 +372,28 @@ internal static class QrCodeGenerator
             for (int c = -2; c <= 2; c++)
             {
                 int pr = row + r, pc = col + c;
+                // Where an alignment pattern straddles a timing line the modules
+                // already carry the identical value, so leaving them is correct.
                 if (fn[pr, pc]) continue;
                 fn[pr, pc] = true;
                 bool dark = r == -2 || r == 2 || c == -2 || c == 2 || (r == 0 && c == 0);
                 m[pr, pc] = dark ? (byte)1 : (byte)0;
             }
+        }
+    }
+
+    private static void PlaceVersionInfo(byte[,] m, bool[,] fn, int size, int version)
+    {
+        int word = VersionInfoWord(version);
+        for (int i = 0; i < 18; i++)
+        {
+            byte bit = (byte)((word >> i) & 1);
+            int a = size - 11 + i % 3;
+            int b = i / 3;
+            m[a, b] = bit;                 // block below the bottom-left finder
+            fn[a, b] = true;
+            m[b, a] = bit;                 // block left of the top-right finder
+            fn[b, a] = true;
         }
     }
 
@@ -397,21 +514,17 @@ internal static class QrCodeGenerator
         return true;
     }
 
-    private sealed class BitWriter
+    private sealed class BitWriter(int dataCodewords)
     {
-        private readonly List<bool> _bits = [];
-        public int Length => _bits.Count;
+        private readonly byte[] _bytes = new byte[dataCodewords];
+        public int Length { get; private set; }
+
         public void Write(int value, int count)
         {
-            for (int i = count - 1; i >= 0; i--) _bits.Add(((value >> i) & 1) == 1);
+            for (int i = count - 1; i >= 0; i--, Length++)
+                if (((value >> i) & 1) == 1) _bytes[Length / 8] |= (byte)(0x80 >> (Length % 8));
         }
-        public byte[] ToByteArray()
-        {
-            int n = (_bits.Count + 7) / 8;
-            byte[] result = new byte[n];
-            for (int i = 0; i < _bits.Count; i++)
-                if (_bits[i]) result[i / 8] |= (byte)(0x80 >> (i % 8));
-            return result;
-        }
+
+        public byte[] ToByteArray() => _bytes;
     }
 }
