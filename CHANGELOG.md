@@ -50,6 +50,11 @@ All notable changes to Flare are documented here. This project adheres to
   resolved once against the medium fallback and inherited 48px to every size. At the large size that is a
   48x56 box, on which a half-height radius draws a stadium rather than a circle. The width now comes from
   the element's real height; a theme that wants a fixed-width trigger still sets one and is unaffected.
+- **An icon inside a coloured button is no longer painted in the button's own fill.** A `Color` sets the
+  role tokens on the button element, both inherit into its content, and an icon paints itself the role's
+  main colour - which on a filled button is exactly the background beneath it, so
+  `<FlareButton Variant="Filled" Color="Primary">` drew any icon invisibly. This is what hid the split
+  button's caret. Icons in a button now take the button's own foreground, as part of its label.
 - **A menu opened with the pointer no longer highlights its first item.** The highlight said "this one is
   selected" to someone who had just clicked somewhere else. A keyboard opening still starts on the first
   item, and the first arrow key after a click lands on the first item rather than skipping it.

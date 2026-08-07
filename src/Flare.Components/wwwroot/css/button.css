@@ -281,6 +281,17 @@
     flex-shrink: 0;
 }
 
+/* An icon inside a button is part of the label, so it takes the button's own foreground.
+   Without this it takes the button's ROLE instead: a colour on the button sets --fc-main/--fc-on on the
+   button element, both inherit into the content, and `.flare-icon` paints itself `var(--fc-main)` - which
+   on a filled button is exactly the background it is sitting on. So <FlareButton Variant="Filled"
+   Color="Primary"> with any icon drew that icon in the fill colour, i.e. invisible. Text and outlined
+   buttons were unaffected only because their foreground happens to equal --fc-main already.
+   An icon that genuinely needs its own colour inside a button sets it on itself with a style. */
+.flare-btn .flare-icon {
+    color: inherit;
+}
+
 /* Button label: never wraps inside the button. */
 .flare-btn__label {
     white-space: nowrap;
