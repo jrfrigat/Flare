@@ -1193,6 +1193,33 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Buttons_States", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Press morph (spring).
+        /// </summary>
+        public static string Buttons_PressMorph {
+            get {
+                return ResourceManager.GetString("Buttons_PressMorph", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Press and hold: the corners travel on the fast spring rung.
+        /// </summary>
+        public static string Buttons_PressMorph_Hint {
+            get {
+                return ResourceManager.GetString("Buttons_PressMorph_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на No PressMorph.
+        /// </summary>
+        public static string Buttons_PressMorph_Off {
+            get {
+                return ResourceManager.GetString("Buttons_PressMorph_Off", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareButton - 5 variants, 5 sizes, icon support..

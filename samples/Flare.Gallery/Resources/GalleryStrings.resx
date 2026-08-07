@@ -435,6 +435,15 @@
   <data name="Buttons_States" xml:space="preserve">
     <value>Type, aria-pressed &amp; disabled</value>
   </data>
+  <data name="Buttons_PressMorph" xml:space="preserve">
+    <value>Press morph (spring)</value>
+  </data>
+  <data name="Buttons_PressMorph_Hint" xml:space="preserve">
+    <value>Press and hold: the corners travel on the fast spring rung, so under a theme whose language overshoots they settle slightly past the target radius. Opt-in via PressMorph - a plain button changes its corners instantly.</value>
+  </data>
+  <data name="Buttons_PressMorph_Off" xml:space="preserve">
+    <value>No PressMorph</value>
+  </data>
   <data name="Calendar_Title" xml:space="preserve">
     <value>Calendar</value>
   </data>

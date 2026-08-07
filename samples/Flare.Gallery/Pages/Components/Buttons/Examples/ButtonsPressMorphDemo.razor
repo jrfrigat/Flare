@@ -1,0 +1,23 @@
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @GalleryStrings.Buttons_PressMorph_Hint
+    </FlareText>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Xs">Xs</FlareButton>
+        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Sm">Sm</FlareButton>
+        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Md">Md</FlareButton>
+        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Lg">Lg</FlareButton>
+        <FlareButton PressMorph Variant="ButtonVariant.Filled" Size="ButtonSize.Xl">Xl</FlareButton>
+    </FlareStack>
+
+    @* Square opts out of the morph, so it is the control: press it and nothing moves. *@
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">
+        <FlareButton PressMorph Variant="ButtonVariant.Tonal" Shape="ButtonShape.Circular">Circular</FlareButton>
+        <FlareButton PressMorph Variant="ButtonVariant.Tonal" Shape="ButtonShape.Rounded">Rounded</FlareButton>
+        <FlareButton PressMorph Variant="ButtonVariant.Tonal" Shape="ButtonShape.Square">Square</FlareButton>
+        <FlareButton Variant="ButtonVariant.Outlined">@GalleryStrings.Buttons_PressMorph_Off</FlareButton>
+    </FlareStack>
+</FlareStack>

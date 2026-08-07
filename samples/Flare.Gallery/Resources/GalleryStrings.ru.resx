@@ -435,6 +435,15 @@
   <data name="Buttons_States" xml:space="preserve">
     <value>Type, aria-pressed и отключение</value>
   </data>
+  <data name="Buttons_PressMorph" xml:space="preserve">
+    <value>Морф при нажатии (пружина)</value>
+  </data>
+  <data name="Buttons_PressMorph_Hint" xml:space="preserve">
+    <value>Нажмите и удерживайте: углы едут по быстрой пружинной ступени, поэтому в теме, язык которой допускает перелёт, они слегка проскакивают целевой радиус и осаживаются обратно. Включается параметром PressMorph - обычная кнопка меняет углы мгновенно.</value>
+  </data>
+  <data name="Buttons_PressMorph_Off" xml:space="preserve">
+    <value>Без PressMorph</value>
+  </data>
   <data name="Calendar_Title" xml:space="preserve">
     <value>Календарь</value>
   </data>
