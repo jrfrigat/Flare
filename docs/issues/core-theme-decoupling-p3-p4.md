@@ -128,13 +128,27 @@ guard, because each one has to be modelled or the guard drowns in false positive
    fallback is normally the parked-token/`initial` sentinel described above. That exemption is correct and
    is also why nine literal fallbacks sat in core CSS unflagged.
 
-**Do not write the guard as "every constant needs a `[CssVar]` member"** - measured, that reports 69
-candidates and most are legitimate: `ColorScheme` roles are flattened by their own path rather than by
-`[CssVar]`, the per-corner `--flare-split-btn-trigger-radius-*-top-left` family comes from nested
-`CornerRadiusTokens` members, and `--flare-btn-label` is the runtime prefix from (1). The guard has to
-model those three shapes; the 29 structural reads listed above are the allowlist for its fallback half.
+**Half the guard landed 2026-08-07: `tests/Flare.Core.Tests/SettableTokenTests.cs`.** It asks the question
+that actually matters - *can a theme set this?* - rather than the one that looks equivalent: every
+`Css.Tokens` constant must name a variable `FlattenDesign` emits. Asking it that way dissolves the false
+positives on its own. "Every constant needs a `[CssVar]` member" would have reported **69** candidates,
+most of them legitimate (`ColorScheme` roles flatten by their own path, the per-corner
+`--flare-split-btn-trigger-radius-*-top-left` family comes from nested `CornerRadiusTokens`); asking
+whether the flatten emits the name, all of those pass, because it does. Across 424 constants only two
+categories needed an exemption, and both are argued in the file:
 
-Neither fix was blocked by P1+P2. What remains of P3 is that guard.
+- the 6 `--flare-breakpoint-*`, because **a media query cannot read a custom property** - the real
+  breakpoints are the literal px in the `@media` rules, and these vars only republish them. A theme value
+  is *impossible* here, not merely absent, which is the bar for the exemption list.
+- `--flare-btn-label`, the runtime-family stem from (1). That exemption validates itself: it only holds
+  while the theme emits names extending the stem, so deleting the family still fails the guard.
+
+Verified by putting the defect back - commenting out the SPLITTER region of `CssVarMap` fails the guard
+with all seven splitter constants named.
+
+**Still open: the fallback half of P3** - a guard that a core `wwwroot/css` file carries no
+`var(--flare-*, <visual-opinion literal>)`. The 29 structural reads listed above are its allowlist, and
+note it cannot simply reuse `LiteralFallbackRx` for the reason in (3).
 
 ## P4 - role/scale vocabulary (recommend: KEEP, decide explicitly)
 
