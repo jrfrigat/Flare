@@ -108,4 +108,7 @@ public sealed record QueryBuilderLabels
 
     /// <summary>Descending ordering.</summary>
     public string Descending { get; init; } = "Descending";
+
+    /// <summary>Shown in place of the designer when no schema was supplied.</summary>
+    public string SchemaMissing { get; init; } = "A schema is required.";
 }

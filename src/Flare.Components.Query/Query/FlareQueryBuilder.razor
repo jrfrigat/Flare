@@ -1,13 +1,14 @@
 @namespace Flare.Components
+@inherits FlareComponentBase
 
 @* Builds a query; never runs one. Everything here edits a QueryDraft, and the immutable QuerySpec is
    rebuilt and raised whenever something changes - so a host binds to the spec and stays out of the
    editing model entirely. *@
 
-<div class="@CssClass" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
     @if (Schema is null)
     {
-        <p class="flare-qb__ok">A schema is required.</p>
+        <p class="flare-qb__ok">@Labels.SchemaMissing</p>
     }
     else
     {
@@ -229,17 +230,8 @@
     /// <summary>Every caption the designer shows.</summary>
     [Parameter] public QueryBuilderLabels Labels { get; set; } = QueryBuilderLabels.Default;
 
-    /// <summary>Extra CSS class(es) appended to the root element.</summary>
-    [Parameter] public string? Class { get; set; }
-
-    /// <summary>Inline style applied to the root element.</summary>
-    [Parameter] public string? Style { get; set; }
-
-    /// <summary>Unmatched attributes, splatted onto the root element.</summary>
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object>? AdditionalAttributes { get; set; }
-
-    private string CssClass => string.IsNullOrEmpty(Class) ? "flare-qb" : "flare-qb " + Class;
+    /// <inheritdoc />
+    protected override string ComponentCssClass => "flare-qb";
 
     protected override void OnParametersSet()
     {

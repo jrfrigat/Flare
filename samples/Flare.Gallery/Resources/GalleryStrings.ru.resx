@@ -2696,4 +2696,38 @@
   <data name="Snackbar_Custom" xml:space="preserve"><value>Своё содержимое</value></data>
   <data name="Snackbar_CustomBody" xml:space="preserve"><value>Своё тело с иконкой</value></data>
   <data name="Snackbar_ClearAll" xml:space="preserve"><value>Очистить все</value></data>
+  <data name="Query_Lbl_Source" xml:space="preserve"><value>Источник</value></data>
+  <data name="Query_Lbl_Columns" xml:space="preserve"><value>Колонки</value></data>
+  <data name="Query_Lbl_Filter" xml:space="preserve"><value>Отбор</value></data>
+  <data name="Query_Lbl_GroupFilter" xml:space="preserve"><value>Отбор групп</value></data>
+  <data name="Query_Lbl_Options" xml:space="preserve"><value>Параметры</value></data>
+  <data name="Query_Lbl_Problems" xml:space="preserve"><value>Ошибки</value></data>
+  <data name="Query_Lbl_AddJoin" xml:space="preserve"><value>Добавить связь</value></data>
+  <data name="Query_Lbl_AddColumn" xml:space="preserve"><value>Добавить колонку</value></data>
+  <data name="Query_Lbl_Submit" xml:space="preserve"><value>Выполнить</value></data>
+  <data name="Query_Lbl_Remove" xml:space="preserve"><value>Удалить</value></data>
+  <data name="Query_Lbl_Value" xml:space="preserve"><value>Значение</value></data>
+  <data name="Query_Lbl_Aggregate" xml:space="preserve"><value>Агрегат</value></data>
+  <data name="Query_Lbl_Period" xml:space="preserve"><value>Период</value></data>
+  <data name="Query_Lbl_OutputName" xml:space="preserve"><value>Имя</value></data>
+  <data name="Query_Lbl_Group" xml:space="preserve"><value>Группировать</value></data>
+  <data name="Query_Lbl_Sort" xml:space="preserve"><value>Сортировка</value></data>
+  <data name="Query_Lbl_Alias" xml:space="preserve"><value>Псевдоним</value></data>
+  <data name="Query_Lbl_Relation" xml:space="preserve"><value>Связь</value></data>
+  <data name="Query_Lbl_JoinKind" xml:space="preserve"><value>Соединение</value></data>
+  <data name="Query_Lbl_Distinct" xml:space="preserve"><value>Без повторов</value></data>
+  <data name="Query_Lbl_Limit" xml:space="preserve"><value>Лимит</value></data>
+  <data name="Query_Lbl_Offset" xml:space="preserve"><value>Смещение</value></data>
+  <data name="Query_Lbl_None" xml:space="preserve"><value>Нет</value></data>
+  <data name="Query_Lbl_NoProblems" xml:space="preserve"><value>Запрос корректен.</value></data>
+  <data name="Query_Lbl_And" xml:space="preserve"><value>И</value></data>
+  <data name="Query_Lbl_Or" xml:space="preserve"><value>ИЛИ</value></data>
+  <data name="Query_Lbl_AddCondition" xml:space="preserve"><value>Условие</value></data>
+  <data name="Query_Lbl_AddGroup" xml:space="preserve"><value>Группа</value></data>
+  <data name="Query_Lbl_ValueHint" xml:space="preserve"><value>Значение</value></data>
+  <data name="Query_Lbl_ValuesHint" xml:space="preserve"><value>a, b, c</value></data>
+  <data name="Query_Lbl_Relative" xml:space="preserve"><value>Относительно сейчас</value></data>
+  <data name="Query_Lbl_Ascending" xml:space="preserve"><value>По возрастанию</value></data>
+  <data name="Query_Lbl_Descending" xml:space="preserve"><value>По убыванию</value></data>
+  <data name="Query_Lbl_SchemaMissing" xml:space="preserve"><value>Требуется схема.</value></data>
 </root>

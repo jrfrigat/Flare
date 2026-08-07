@@ -2696,4 +2696,38 @@
   <data name="Snackbar_Custom" xml:space="preserve"><value>Custom content</value></data>
   <data name="Snackbar_CustomBody" xml:space="preserve"><value>Custom body with an icon</value></data>
   <data name="Snackbar_ClearAll" xml:space="preserve"><value>Clear all</value></data>
+  <data name="Query_Lbl_Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Query_Lbl_Columns" xml:space="preserve"><value>Columns</value></data>
+  <data name="Query_Lbl_Filter" xml:space="preserve"><value>Filter</value></data>
+  <data name="Query_Lbl_GroupFilter" xml:space="preserve"><value>Filter groups</value></data>
+  <data name="Query_Lbl_Options" xml:space="preserve"><value>Options</value></data>
+  <data name="Query_Lbl_Problems" xml:space="preserve"><value>Problems</value></data>
+  <data name="Query_Lbl_AddJoin" xml:space="preserve"><value>Add join</value></data>
+  <data name="Query_Lbl_AddColumn" xml:space="preserve"><value>Add column</value></data>
+  <data name="Query_Lbl_Submit" xml:space="preserve"><value>Run</value></data>
+  <data name="Query_Lbl_Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Query_Lbl_Value" xml:space="preserve"><value>Value</value></data>
+  <data name="Query_Lbl_Aggregate" xml:space="preserve"><value>Aggregate</value></data>
+  <data name="Query_Lbl_Period" xml:space="preserve"><value>Period</value></data>
+  <data name="Query_Lbl_OutputName" xml:space="preserve"><value>Name</value></data>
+  <data name="Query_Lbl_Group" xml:space="preserve"><value>Group</value></data>
+  <data name="Query_Lbl_Sort" xml:space="preserve"><value>Sort</value></data>
+  <data name="Query_Lbl_Alias" xml:space="preserve"><value>Alias</value></data>
+  <data name="Query_Lbl_Relation" xml:space="preserve"><value>Relation</value></data>
+  <data name="Query_Lbl_JoinKind" xml:space="preserve"><value>Join</value></data>
+  <data name="Query_Lbl_Distinct" xml:space="preserve"><value>Distinct</value></data>
+  <data name="Query_Lbl_Limit" xml:space="preserve"><value>Limit</value></data>
+  <data name="Query_Lbl_Offset" xml:space="preserve"><value>Offset</value></data>
+  <data name="Query_Lbl_None" xml:space="preserve"><value>None</value></data>
+  <data name="Query_Lbl_NoProblems" xml:space="preserve"><value>The query is valid.</value></data>
+  <data name="Query_Lbl_And" xml:space="preserve"><value>AND</value></data>
+  <data name="Query_Lbl_Or" xml:space="preserve"><value>OR</value></data>
+  <data name="Query_Lbl_AddCondition" xml:space="preserve"><value>Condition</value></data>
+  <data name="Query_Lbl_AddGroup" xml:space="preserve"><value>Group</value></data>
+  <data name="Query_Lbl_ValueHint" xml:space="preserve"><value>Value</value></data>
+  <data name="Query_Lbl_ValuesHint" xml:space="preserve"><value>a, b, c</value></data>
+  <data name="Query_Lbl_Relative" xml:space="preserve"><value>Relative</value></data>
+  <data name="Query_Lbl_Ascending" xml:space="preserve"><value>Ascending</value></data>
+  <data name="Query_Lbl_Descending" xml:space="preserve"><value>Descending</value></data>
+  <data name="Query_Lbl_SchemaMissing" xml:space="preserve"><value>A schema is required.</value></data>
 </root>
