@@ -108,6 +108,12 @@
 
 .flare-input__control {
     flex: 1;
+    /* A form control's min-width:auto resolves to its own intrinsic width - roughly 20 characters for
+       an input - so as a flex item it refuses to shrink below that and pushes whatever follows it out
+       past the field's edge. Everything that sits beside the control in this row is affected: the
+       numeric prefix/suffix, the clear button, the stepper. Zero lets the row divide the space it
+       actually has. */
+    min-width: 0;
     background: transparent;
     border: none;
     outline: none;
@@ -118,6 +124,22 @@
     color: var(--flare-color-on-surface);
     /* Caret follows the field's accent (--fc-main), default primary */
     caret-color: var(--fc-main, var(--flare-color-primary));
+}
+
+/* Browsers draw their own spin buttons inside a number input. Flare never wants them: with a stepper
+   asked for they sit next to it as a second, unstyled pair, and with no stepper asked for they appear
+   anyway and contradict the parameter. Nothing is lost by removing them - the arrow keys step the
+   value, which is all the native control offered. Covers every field rendering this control at
+   type=number, so FlareNumericField and a FlareField with Type="number" behave the same. */
+.flare-input__control[type=number]::-webkit-inner-spin-button,
+.flare-input__control[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+.flare-input__control[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 /* Size grid (Xs..Xl): block padding sets the field height, font-size scales the text. Single source

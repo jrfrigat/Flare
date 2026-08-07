@@ -76,6 +76,16 @@
   color: var(--flare-color-on-surface);
   outline: none;
   font-family: inherit;
+  /* Same reasoning as the shared field control: the native spin buttons are unstyled and, in a 3rem
+     box centred on two digits, they crowd the number they are meant to serve. Arrow keys still step. */
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.flare-datetimepicker__time-input::-webkit-inner-spin-button,
+.flare-datetimepicker__time-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 
 .flare-datetimepicker__time-input:focus {
