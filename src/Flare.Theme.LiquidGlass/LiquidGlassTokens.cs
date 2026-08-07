@@ -61,6 +61,15 @@ internal class LiquidGlassTokens
         EasingDecelerate = "cubic-bezier(0.16, 1, 0.3, 1)",
         EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
         EasingEmphasized = "cubic-bezier(0.34, 1.4, 0.5, 1)",
+
+        // This theme already overshoots on its emphasized curve - the wobble is the point of the
+        // glass - so the springs stay on it rather than inventing a second bounce alongside.
+        EasingSpringFast = "cubic-bezier(0.34, 1.4, 0.5, 1)",
+        EasingSpring = "cubic-bezier(0.34, 1.4, 0.5, 1)",
+        EasingSpringSlow = "cubic-bezier(0.34, 1.4, 0.5, 1)",
+        DurationSpringFast = "250ms",
+        DurationSpring = "350ms",
+        DurationSpringSlow = "600ms",
     };
 
     internal static readonly StateTokens State = new()

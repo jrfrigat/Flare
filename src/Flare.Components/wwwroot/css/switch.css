@@ -71,10 +71,13 @@
     justify-content: center;
     /* Unselected icon color (surface-container-highest on the outline handle). */
     color: var(--flare-switch-icon-off-color);
+    /* The handle's travel and its grow-on-press are spatial, so they take the fast spring rung; the
+       fill stays on the plain ramp because a spring on a colour would overshoot past the target
+       tone and clamp there rather than settling into it. */
     transition:
-        left var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-        width var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
-        height var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
+        left var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
+        width var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
+        height var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
         background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
         box-shadow var(--flare-motion-duration-short1) ease;
 }
@@ -240,4 +243,12 @@
 }
 .flare-switch--disabled .flare-switch__label {
     opacity: var(--flare-state-disabled-opacity);
+}
+
+/* The handle travels on a spring, which for a theme that overshoots means the ball visibly settles
+   past the end of the rail before coming back. That is the one motion here worth honouring a
+   reduced-motion preference for, so the handle snaps instead. Matches the guard on the button's
+   opt-in press morph. */
+@media (prefers-reduced-motion: reduce) {
+    .flare-switch__handle { transition-duration: 0s; }
 }

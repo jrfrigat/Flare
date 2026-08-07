@@ -3,16 +3,18 @@
    Base (non-theme) rules - apply in any theme.
    ========================================================================== */
 
-/* Smooth caret rotation (enter ~300ms per MD3 spec) */
+/* Caret rotation on the default spring: a component-sized spatial move, so it settles slightly past
+   the flip rather than easing into it. */
 .flare-split-btn .flare-split-btn__caret {
-    transition: transform var(--flare-motion-duration-medium2, 300ms) var(--flare-motion-easing-standard);
+    transition: transform var(--flare-motion-duration-spring) var(--flare-motion-easing-spring);
 }
 
-/* Snappy inner-corner morph on open/hover. The old 300ms (medium2) made the corner visibly "hang"
-   behind the click; the main button + button group morph their corners instantly, so keep the trigger
-   quick (short2 ~100ms) - a perceptible Expressive morph, not a lag. */
+/* Inner-corner morph on open/hover, on the fast spring. An earlier 300ms (medium2) made the corner
+   visibly "hang" behind the click, which is why this was cut to a flat 100ms; the spring rung gets
+   the responsiveness back without the flatness, since most of its travel is over early and only the
+   settle occupies the tail. */
 .flare-split-btn .flare-split-btn__trigger.flare-btn {
-    transition: border-radius var(--flare-motion-duration-short2, 100ms) var(--flare-motion-easing-standard), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
+    transition: border-radius var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
 }
 
 /* ==========================================================================

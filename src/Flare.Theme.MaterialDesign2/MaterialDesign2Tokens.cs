@@ -76,6 +76,15 @@ internal static class MaterialDesign2Tokens
         EasingDecelerate = "cubic-bezier(0, 0, 0.2, 1)",
         EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
         EasingEmphasized = "cubic-bezier(0.4, 0, 0.6, 1)", // MD2 "sharp"
+
+        // Springs arrived with Material 3 Expressive; Material 2 predates them, so these resolve to
+        // the standard curve and keep this theme reading as its own era.
+        EasingSpringFast = "cubic-bezier(0.4, 0, 0.2, 1)",
+        EasingSpring = "cubic-bezier(0.4, 0, 0.2, 1)",
+        EasingSpringSlow = "cubic-bezier(0.4, 0, 0.2, 1)",
+        DurationSpringFast = "150ms",
+        DurationSpring = "250ms",
+        DurationSpringSlow = "375ms",
     };
 
     // ---- State layers: Material Design 2 overlay opacities. ----

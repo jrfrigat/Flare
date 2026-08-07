@@ -260,7 +260,10 @@
                 border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
                 color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
                 outline-color var(--flare-motion-duration-short2) var(--flare-motion-easing-decelerate),
-                border-radius var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+                /* The corner change is a spatial move, so it rides the spring rung rather than the
+                   plain ramp: a theme whose language overshoots gets its overshoot here, and one
+                   whose language does not still gets a curve of its own choosing. */
+                border-radius var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast);
 }
 /* Default/Circular press toward a rounded rectangle; Rounded presses to a tighter
    corner; Square stays sharp (no geometry morph for the hard-edged shape). */

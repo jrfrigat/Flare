@@ -62,6 +62,16 @@ public class FluentUI2Tokens
         EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",       // curveDecelerateMid
         EasingAccelerate = "cubic-bezier(0.9, 0.1, 1, 0.2)", // curveAccelerateMax
         EasingEmphasized = "cubic-bezier(0.33, 0, 0.67, 1)", // curveEasyEase
+
+        // Fluent 2 has no spring in its motion language - it moves on decelerating curves and never
+        // overshoots - so the spring easings resolve to curveDecelerateMax and only the durations
+        // distinguish them. A theme is entitled to answer "this design does not bounce".
+        EasingSpringFast = "cubic-bezier(0.1, 0.9, 0.2, 1)",
+        EasingSpring = "cubic-bezier(0.1, 0.9, 0.2, 1)",
+        EasingSpringSlow = "cubic-bezier(0.1, 0.9, 0.2, 1)",
+        DurationSpringFast = "150ms",  // durationFast
+        DurationSpring = "200ms",      // durationNormal
+        DurationSpringSlow = "300ms",  // durationSlow
     };
 
     internal static readonly StateTokens State = new()

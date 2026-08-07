@@ -90,6 +90,12 @@ public static class CssVarMap
         v[Css.Tokens.Motion.EasingDecelerate] = t.Motion.EasingDecelerate;
         v[Css.Tokens.Motion.EasingAccelerate] = t.Motion.EasingAccelerate;
         v[Css.Tokens.Motion.EasingEmphasized] = t.Motion.EasingEmphasized;
+        v[Css.Tokens.Motion.EasingSpringFast] = t.Motion.EasingSpringFast;
+        v[Css.Tokens.Motion.EasingSpring] = t.Motion.EasingSpring;
+        v[Css.Tokens.Motion.EasingSpringSlow] = t.Motion.EasingSpringSlow;
+        v[Css.Tokens.Motion.DurationSpringFast] = t.Motion.DurationSpringFast;
+        v[Css.Tokens.Motion.DurationSpring] = t.Motion.DurationSpring;
+        v[Css.Tokens.Motion.DurationSpringSlow] = t.Motion.DurationSpringSlow;
 
         // State layers
         v[Css.Tokens.State.HoverOpacity] = t.State.HoverOpacity;

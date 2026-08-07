@@ -68,6 +68,22 @@ public class MaterialDesignTokens
         EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
         EasingAccelerate = "cubic-bezier(0.3, 0, 1, 1)",
         EasingEmphasized = "cubic-bezier(0.2, 0, 0, 1)",
+
+        // Expressive spatial springs, sampled from a damped harmonic oscillator and expressed as
+        // linear() so the browser can play the real curve rather than an eyeballed bezier - a cubic
+        // cannot describe a settling overshoot at all. Parameters are the Expressive motion scheme's,
+        // not the standard one's: fast = stiffness 800 / damping 0.6 (a pronounced 9% overshoot on the
+        // small, quick moves), default and slow = stiffness 380 and 200 at damping 0.8 (a restrained
+        // 1.5%). Each is sampled over its own duration below, so the two must move together.
+        //
+        // The effects springs of the scheme are critically damped - no overshoot - so on the web they
+        // are indistinguishable from the emphasized curve above and are deliberately not tokenized.
+        EasingSpringFast = "linear(0, 0.0315, 0.1124, 0.2244, 0.3524, 0.4842, 0.611, 0.7265, 0.8269, 0.9103, 0.9764, 1.0258, 1.0603, 1.0817, 1.0924, 1.0947, 1.0906, 1.0823, 1.0713, 1.059, 1.0465, 1.0347, 1.024, 1.0148, 1.0072, 1.0012, 0.9968, 0.9938, 0.992, 0.9911, 0.9911, 0.9915, 1)",
+        EasingSpring = "linear(0, 0.0203, 0.0723, 0.1449, 0.2293, 0.3189, 0.4087, 0.4952, 0.5761, 0.6499, 0.7158, 0.7736, 0.8233, 0.8655, 0.9006, 0.9294, 0.9526, 0.9709, 0.985, 0.9956, 1.0033, 1.0087, 1.0122, 1.0142, 1.0151, 1.0151, 1.0146, 1.0136, 1.0124, 1.0111, 1.0097, 1.0084, 1)",
+        EasingSpringSlow = "linear(0, 0.0217, 0.077, 0.1536, 0.2421, 0.3353, 0.428, 0.5165, 0.5984, 0.6724, 0.7378, 0.7944, 0.8426, 0.8829, 0.916, 0.9427, 0.9638, 0.98, 0.9923, 1.0012, 1.0074, 1.0115, 1.0139, 1.015, 1.0151, 1.0146, 1.0137, 1.0124, 1.0111, 1.0096, 1.0083, 1.0069, 1)",
+        DurationSpringFast = "300ms",
+        DurationSpring = "350ms",
+        DurationSpringSlow = "500ms",
     };
 
     internal static readonly StateTokens State = new()
