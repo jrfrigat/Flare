@@ -58,6 +58,11 @@
     private double? _cursorY;
     private ElementReference _panelEl;
     private FlareMenuItem? _focusedItem;
+    // Whether this opening came from the keyboard, which decides if an item starts out active. A pointer
+    // user is looking at where they clicked and has no use for a highlight on the first item; a keyboard
+    // user has nowhere to look without one. A click raised by Enter/Space on the activator carries
+    // detail 0, which is how the two are told apart.
+    private bool _openedByKeyboard;
     private readonly List<FlareMenuItem> _items = [];
     private readonly string _panelId = "flare-menu-" + Guid.NewGuid().ToString("N")[..8];
     // Stable close/register callbacks shared with every FlareMenuItem via one cascading context.
@@ -74,9 +79,11 @@
         if (_open && !_wasOpen)
         {
             _wasOpen = true;
-            // Focus the panel so its keydown handler receives arrow/Home/End/Tab keys, and start the
-            // active item on the first enabled one (announced to screen readers via aria-activedescendant).
-            _focusedItem ??= _items.FirstOrDefault(i => !i.Disabled);
+            // Focus the panel so its keydown handler receives arrow/Home/End/Tab keys. The active item is
+            // only started off for a keyboard opening; after a click there is nothing to highlight yet, and
+            // the first arrow key still lands on the first item because the index starts at -1.
+            if (_openedByKeyboard)
+                _focusedItem ??= _items.FirstOrDefault(i => !i.Disabled);
             try { await _panelEl.FocusAsync(); } catch (JSException) { } catch (InvalidOperationException) { }
             StateHasChanged();
         }
@@ -146,6 +153,8 @@
             _cursorX = e.ClientX;
             _cursorY = e.ClientY;
         }
+        // Enter/Space on the activator raises a click with no click count; a real press reports at least one.
+        _openedByKeyboard = e.Detail == 0;
         _open = true;
         await OnToggle.InvokeAsync(true);
         StateHasChanged();
@@ -155,6 +164,9 @@
     public async Task OpenAsync()
     {
         if (_open) return;
+        // Opened from code, with no way to know what the user was doing: leave the highlight off, the same
+        // as a click. A keyboard user's first arrow key still lands on the first item.
+        _openedByKeyboard = false;
         _open = true;
         await OnToggle.InvokeAsync(true);
         StateHasChanged();
@@ -168,6 +180,7 @@
         _open = false;
         _items.Clear();
         _focusedItem = null;
+        _openedByKeyboard = false;
         _cursorX = null;
         _cursorY = null;
 

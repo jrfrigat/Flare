@@ -187,8 +187,11 @@ public class MaterialDesignTokens
     {
         Gap = "0.125rem", // 2dp (between space)
 
-        // Trigger is square: width = Button height (forwarded), no inline padding needed
-        TriggerWidth = "var(--_flare-btn-height, var(--flare-btn-height-md, 3rem))",
+        // Trigger is square at every size. `auto` hands the width to the stylesheet's aspect-ratio, which
+        // reads the button's real height; a length here (as the other themes use) would win instead.
+        // It cannot forward --_flare-btn-height: this record is emitted on :root, where that per-size
+        // variable does not exist, so every size would end up the md fallback width.
+        TriggerWidth = "auto",
 
         // Caret icon = Button icon size at the same size (token forwarded)
         CaretSizeXs = "var(--flare-btn-icon-size-xs)",

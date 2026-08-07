@@ -38,8 +38,14 @@
     border-top-right-radius: var(--flare-split-btn-trigger-radius-md-top-right) !important;
     border-bottom-right-radius: var(--flare-split-btn-trigger-radius-md-bottom-right) !important;
     border-bottom-left-radius: var(--flare-split-btn-trigger-radius-md-bottom-left) !important;
-    /* Trigger width: default = height (square); a theme can fix a width via the token */
+    /* Trigger width. A theme that wants a fixed width sets the token to a length; a theme that wants a
+       square trigger sets it to `auto` and lets the aspect ratio take the width from the actual height.
+       The token CANNOT do the square case itself: it is declared on :root, where the per-size
+       --_flare-btn-height does not exist, so a value referring to it resolves once against the fallback
+       and then inherits that one length to every size. `aspect-ratio` is ignored whenever the token
+       supplies a length, so a fixed-width theme is unaffected. */
     width: var(--flare-split-btn-trigger-width);
+    aspect-ratio: 1;
     padding-inline: 0 !important;
 }
 

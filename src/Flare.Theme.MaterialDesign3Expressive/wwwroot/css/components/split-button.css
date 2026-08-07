@@ -46,7 +46,11 @@
     /* When the menu is open the trigger becomes fully round: ALL 4 corners = height / 2,
        so the left rounding matches the right. Radius is taken from the ACTUAL height
        (--_flare-btn-height is set by the button size class), so one rule works correctly
-       for all sizes (xs..xl). */
+       for all sizes (xs..xl).
+
+       This only reads as a circle while the trigger is square, which is what the stylesheet's
+       aspect-ratio guarantees; a trigger wider than it is tall renders a stadium no matter what
+       radius is asked for here. */
     .flare-split-btn--open .flare-split-btn__trigger.flare-btn {
         border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
