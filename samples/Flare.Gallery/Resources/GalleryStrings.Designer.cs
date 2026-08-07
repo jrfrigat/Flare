@@ -1562,6 +1562,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Chip_SizeColor", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled.
+        /// </summary>
+        public static string Chip_Disabled {
+            get {
+                return ResourceManager.GetString("Chip_Disabled", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareChip for tags, filters and selections..
@@ -6099,6 +6108,24 @@ namespace Flare.Gallery.Resources {
             }
         }
         
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Long Payloads.
+        /// </summary>
+        public static string QrCode_LongPayload {
+            get {
+                return ResourceManager.GetString("QrCode_LongPayload", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на bytes.
+        /// </summary>
+        public static string QrCode_Bytes {
+            get {
+                return ResourceManager.GetString("QrCode_Bytes", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Rounded Modules.
         /// </summary>

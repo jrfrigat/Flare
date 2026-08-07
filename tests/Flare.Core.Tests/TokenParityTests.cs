@@ -183,7 +183,13 @@ public class TokenParityTests
                 EasingStandard = "cubic-bezier(0.2, 0, 0, 1)",
                 EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
                 EasingAccelerate = "cubic-bezier(0.3, 0, 1, 1)",
-                EasingEmphasized = "cubic-bezier(0.2, 0, 0, 1)"
+                EasingEmphasized = "cubic-bezier(0.2, 0, 0, 1)",
+                EasingSpringFast = "cubic-bezier(0.2, 0, 0, 1)",
+                EasingSpring = "cubic-bezier(0.2, 0, 0, 1)",
+                EasingSpringSlow = "cubic-bezier(0.2, 0, 0, 1)",
+                DurationSpringFast = "300ms",
+                DurationSpring = "350ms",
+                DurationSpringSlow = "500ms"
             },
             State = new StateTokens
             {

@@ -47,21 +47,33 @@ parallel auditors). Analysis only - no fixes applied yet.
 | Elevation | 5 levels, umbra+penumbra | `Level0..5` matches MD3 geometry | MATCH |
 | Type scale | Roboto display->label ramp | `Typography` = MD3 baseline ramp | MATCH |
 | Color roles | MD3 baseline + Expressive on-container tone 30 | `LightColors`/`DarkColors` match; on-*-container = tone 30 | MATCH |
-| **Motion - springs** | **Expressive = physics springs (damping/stiffness)** | cubic-bezier + fixed durations only; **no spring primitive** | **GAP (foundational)** |
+| **Motion - springs** | **Expressive = physics springs (damping/stiffness)** | three spatial spring rungs, `linear()` sampled from the Expressive scheme | **RESOLVED in 0.12.0** |
 
-**Foundational finding F1 - no spring motion primitive.** MD3 Expressive's signature is spring-based
-motion (e.g. button press shape-morph spring damping 0.9 / stiffness 1400). Flare's `MotionTokens` are
-all `cubic-bezier(...)` easings + fixed `ms` durations. CSS cannot run a true spring, but the Expressive
-"springy overshoot" is normally approximated with a tuned `linear()` easing or a keyframe. Flare has
-**no such token/primitive**, so every Expressive morph that depends on it degrades to a plain ease.
-This is the root of several per-component NOT-IMPL findings below and is a candidate **core** addition
-(a spring-approximation easing token + optionally a shape-morph transition helper).
+**Foundational finding F1 - no spring motion primitive. RESOLVED in 0.12.0.** MD3 Expressive's signature
+is spring-based motion. Flare's `MotionTokens` were all `cubic-bezier(...)` easings + fixed `ms`
+durations, and a cubic-bezier is monotone by construction, so it cannot describe a settling overshoot at
+all - every Expressive morph degraded to a plain ease.
+
+`MotionTokens` now carries three spatial spring easings (fast/default/slow) with a matching duration
+each; the pairing is load-bearing, since a spring is a shape plus its settling time and a mismatched
+duration truncates the curve into a snap. MD3 supplies curves sampled from a damped harmonic oscillator
+at the **Expressive** scheme's parameters - stiffness 800 / damping 0.6 for fast (a ~9% overshoot),
+380 and 200 at damping 0.8 for the other two (~1.5%) - **not** the standard scheme's 0.9 damping, whose
+overshoot is 0.15% and invisible. Read today by the switch handle, the button's opt-in press morph, and
+the split button's seam morph and caret rotation.
+
+Two deliberate omissions. The scheme's *effects* springs are critically damped, so on the web they are
+indistinguishable from the emphasized cubic-bezier and are not tokenized. The slow rung is defined but
+not yet read by any stylesheet: it is sized for sheets and full-screen transitions, which are still
+open under "net-new" below, and it shipped early only because these members are `required` and adding
+it later would break custom themes a second time.
 
 ---
 
 ## 2. Cross-cutting Expressive gaps (seeded; expand from auditors)
 
-- **F1 spring motion** (above) - no spring/overshoot easing primitive.
+- ~~**F1 spring motion**~~ (above) - resolved in 0.12.0; the remaining work is widening which components
+  read the rungs, not adding the primitive.
 - **Shape morph on interaction** - MD3 Expressive morphs container corners on press (round->squircle)
   and on toggle-select (shape inversion). Flare's state engine only animates `::before` opacity; there
   is no core mechanism to animate `border-radius` per size/state. Button confirmed locked to
@@ -80,16 +92,16 @@ absent) / DELIBERATE (intentional deviation). Only non-MATCH axes listed; unlist
   outlined-tint and 150/50ms timing. So the agent's "press-morph opt-in / wrong targets" was a FALSE
   POSITIVE (it read core `PressMorph` and missed the theme). Remaining: MINOR outline width 1px vs
   1/1/1/2/3; DELIBERATE heights md/lg/xl 48/56/64 vs 56/96/136 (issue `md3e-button-expressive-sizes`);
-  and the morph eases with cubic-bezier not a spring (the only true Expressive miss -> C1 spring).
+  the press morph now rides the fast spring rung (C1, done in 0.12.0).
 - **Split-button** - the Expressive `split-button.css` DOES morph the inner (seam) corner on hover/press
   (hovered half -> full capsule) and rounds the trigger fully when open, with the pill-radius-scaling-trap
   fix (calc(height/2), not 9999px). Agent's "not implemented (only caret rotates)" was a FALSE POSITIVE.
-  Remaining: spring easing only (C1); inherits the deliberate height cap.
+  Remaining: none but the deliberate height cap - the seam morph and caret are on the spring rungs since 0.12.0.
 - **Button-group** - the Expressive theme overrides `ButtonGroup` to the separated gapped-pill Connected
   bundle (2dp gap, no overlap, capsule ends, 8dp inner) + `button-group.css` morphs a segment to a full
   capsule on hover/press. So the Expressive flavor is ALREADY implemented - agent's "legacy segmented row"
   was a FALSE POSITIVE. Remaining: the separate **Standard** variant (large gaps + press width-grow) is
-  not modeled, and spring easing (C1). Inherits the height cap.
+  not modeled; the segment morph is still on the plain ramp, so it is the next spring consumer. Inherits the height cap.
 - **FAB** - (no theme override - core-rendered) GAP padding-sized (sm/md/lg) instead of fixed
   40/56/80/96dp diameters; Medium (80dp) size missing. Container color/elevation (6/8dp)/states MATCH.
 - **Badge** - MATCH (spec-complete). No action.
@@ -99,8 +111,8 @@ absent) / DELIBERATE (intentional deviation). Only non-MATCH axes listed; unlist
   inconsistent with radio. MINOR no focus/pressed state-layer fill (ring only). Geometry/selected MATCH.
 - **Radio** - MINOR focus ring = 2px primary vs family/spec 3dp secondary (and radio has no focus tokens).
 - **Switch** - GAP resting 1dp handle elevation (drop shadow) missing. Thumb sizes 16/24/28dp CONFIRMED
-  MATCH; hover/focus/disabled/selected MATCH; motion eased not spring (MINOR).
-- **Chip** - GAP no disabled state at all (no `--disabled` param/CSS); MINOR elevated hover = elevation-2
+  MATCH; hover/focus/disabled/selected MATCH; handle travel is on the fast spring since 0.12.0.
+- **Chip** - disabled state DONE in 0.12.0 (`Disabled` param + `--disabled` CSS); MINOR elevated hover = elevation-2
   vs spec 3dp; MINOR filter chip wants outline-variant. Assist/filter/input/suggestion are
   composition-only, not named variants (by design).
 - **Slider** - faithful MD3E (thick track, active/inactive gap w/ rounded corners, morphing thin handle,
@@ -181,7 +193,9 @@ Each needs a token the core reads (so it stays theme-set) or is a genuine cross-
 9. **Checkbox** rest outline -> on-surface-variant (align with radio).
 10. **Radio** focus ring -> 3dp secondary (align with checkbox/switch; add the focus tokens radio lacks).
 11. **Switch** resting 1dp handle elevation (new `--flare-switch-handle-shadow` token + core CSS).
-12. **Chip** disabled state (new `Disabled` param + CSS: label 0.38 / container 0.12).
+12. ~~**Chip** disabled state (new `Disabled` param + CSS: label 0.38 / container 0.12).~~ **DONE in
+    0.12.0** - `Disabled` dims through `--flare-state-disabled-opacity`, leaves the tab order, reports
+    `aria-disabled`, suppresses every callback, and withdraws from group selection.
 13. **Menu** selected-item state (secondary-container fill).
 14. **List** line heights 56/72/88dp + selected roles -> secondary-container (natural home: a new
     `ListTokens` record).
@@ -191,8 +205,9 @@ Each needs a token the core reads (so it stays theme-set) or is a genuine cross-
 
 ### Bucket C - Expressive-signature behaviors / net-new (feed the deferred CORE discussion)
 Cannot be done as pure token edits; several are net-new components or need a new core primitive.
-- **C1 spring motion primitive (F1)** - a `linear()` spring-approximation easing token. Unlocks button
-  press-morph, switch thumb-morph, slider handle-morph springiness at once. **Core token addition.**
+- ~~**C1 spring motion primitive (F1)**~~ - **DONE in 0.12.0**; see F1 above. Button press-morph, switch
+  handle and the split-button morphs are on it. The slider handle is not yet - it is the obvious next
+  consumer, along with the list container morph in C2.
 - **C2 interaction shape-morph** - ALREADY DONE for the button family (button hover/press, split-button
   seam, button-group segment) in the Expressive theme's override CSS, per-size spec targets. Remaining:
   **list** per-state container morph (4->12->16dp). Uses discrete radii + a `transition: border-radius`;

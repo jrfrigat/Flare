@@ -9,6 +9,8 @@ public static class Chip
     public const string Group = "flare-chip-group";
     /// <summary>The <c>flare-chip--selected</c> CSS class.</summary>
     public const string Selected = "flare-chip--selected";
+    /// <summary>The <c>flare-chip--disabled</c> CSS class.</summary>
+    public const string Disabled = "flare-chip--disabled";
     /// <summary>The <c>flare-chip__label</c> CSS class.</summary>
     public const string Label = "flare-chip__label";
     /// <summary>The <c>flare-chip__close</c> CSS class.</summary>

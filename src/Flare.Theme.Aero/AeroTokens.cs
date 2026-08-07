@@ -60,6 +60,15 @@ internal class AeroTokens
         EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
         EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
         EasingEmphasized = "cubic-bezier(0.4, 0, 0.2, 1)",
+
+        // Aero's motion is glide and glow, not bounce, so the springs resolve to the same
+        // decelerating curve as everything else and only the settling times differ.
+        EasingSpringFast = "cubic-bezier(0, 0, 0, 1)",
+        EasingSpring = "cubic-bezier(0, 0, 0, 1)",
+        EasingSpringSlow = "cubic-bezier(0, 0, 0, 1)",
+        DurationSpringFast = "150ms",
+        DurationSpring = "200ms",
+        DurationSpringSlow = "400ms",
     };
 
     internal static readonly StateTokens State = new()

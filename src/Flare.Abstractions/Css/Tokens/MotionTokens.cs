@@ -20,6 +20,13 @@ public static class Motion
     /// <summary>CSS custom-property name for the duration long 2 token.</summary>
     public const string DurationLong2 = "--flare-motion-duration-long2";
 
+    /// <summary>CSS custom-property name for the fast spring duration token.</summary>
+    public const string DurationSpringFast = "--flare-motion-duration-spring-fast";
+    /// <summary>CSS custom-property name for the default spring duration token.</summary>
+    public const string DurationSpring = "--flare-motion-duration-spring";
+    /// <summary>CSS custom-property name for the slow spring duration token.</summary>
+    public const string DurationSpringSlow = "--flare-motion-duration-spring-slow";
+
     /// <summary>CSS custom-property name for the easing standard token.</summary>
     public const string EasingStandard = "--flare-motion-easing-standard";
     /// <summary>CSS custom-property name for the easing decelerate token.</summary>
@@ -28,4 +35,11 @@ public static class Motion
     public const string EasingAccelerate = "--flare-motion-easing-accelerate";
     /// <summary>CSS custom-property name for the easing emphasized token.</summary>
     public const string EasingEmphasized = "--flare-motion-easing-emphasized";
+
+    /// <summary>CSS custom-property name for the fast spring easing token.</summary>
+    public const string EasingSpringFast = "--flare-motion-easing-spring-fast";
+    /// <summary>CSS custom-property name for the default spring easing token.</summary>
+    public const string EasingSpring = "--flare-motion-easing-spring";
+    /// <summary>CSS custom-property name for the slow spring easing token.</summary>
+    public const string EasingSpringSlow = "--flare-motion-easing-spring-slow";
 }

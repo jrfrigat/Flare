@@ -91,7 +91,7 @@
             <rect x="0" y="0" width="@Size" height="@Size" stroke="none"
                   style="fill:@BackColor" />
             <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
-                  style="fill:@ForeColor" font-size="12">Value too long</text>
+                  style="fill:@ForeColor" font-size="12">@FlareStrings.QrCode_ValueTooLong</text>
         </svg>
     }
 </div>
@@ -135,9 +135,19 @@
     protected override string ComponentCssClass => "flare-qrcode";
 
     private bool[,]? _matrix;
+    private string? _encodedValue;
+    private QrErrorCorrectionLevel? _encodedLevel;
 
     protected override void OnParametersSet()
     {
+        // Encoding evaluates all eight mask patterns over the whole symbol, which
+        // is by far the most expensive thing this component does - and at the
+        // larger versions it is not cheap. Only the payload and the correction
+        // level change the matrix, so redo it only when one of them moves.
+        if (_encodedValue == Value && _encodedLevel == ErrorCorrectionLevel) return;
+
         _matrix = QrCodeGenerator.Generate(Value, ErrorCorrectionLevel);
+        _encodedValue = Value;
+        _encodedLevel = ErrorCorrectionLevel;
     }
 }

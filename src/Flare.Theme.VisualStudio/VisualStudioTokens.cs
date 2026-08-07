@@ -61,6 +61,15 @@ internal class VisualStudioTokens
         EasingDecelerate = "cubic-bezier(0, 0, 0, 1)",
         EasingAccelerate = "cubic-bezier(0.4, 0, 1, 1)",
         EasingEmphasized = "cubic-bezier(0.4, 0, 0.2, 1)",
+
+        // An IDE chrome theme wants motion to stay out of the way, so nothing here springs; the
+        // durations are the short end of the ramp for the same reason.
+        EasingSpringFast = "cubic-bezier(0.4, 0, 0.2, 1)",
+        EasingSpring = "cubic-bezier(0.4, 0, 0.2, 1)",
+        EasingSpringSlow = "cubic-bezier(0.4, 0, 0.2, 1)",
+        DurationSpringFast = "90ms",
+        DurationSpring = "180ms",
+        DurationSpringSlow = "360ms",
     };
 
     internal static readonly StateTokens State = new()

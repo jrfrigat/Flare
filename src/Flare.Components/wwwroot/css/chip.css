@@ -104,5 +104,17 @@
     background: color-mix(in srgb, currentColor 15%, transparent);
 }
 
+/* Disabled chip. The chip root is a div rather than a button, so the state comes
+   from a modifier class instead of the :disabled pseudo-class - the same shape
+   checkbox, collapse and the other non-button controls use.
+   pointer-events:none suppresses hover, the state layer and the close button in
+   one go; the chip is also taken out of the tab order, so no focus state can
+   reach it either. */
+.flare-chip--disabled {
+    opacity: var(--flare-state-disabled-opacity);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* Color is set via the Color parameter (string) -> fills --_chip-fg/-border/-sel-bg/-sel-fg
    inline. There are no separate per-color classes. */

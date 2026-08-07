@@ -774,6 +774,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Closable", @"bool", @"false", @"Shows a close button to remove the chip. Alias for Closeable.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Closeable", @"bool", @"false", @"Shows a close button to remove the chip.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the chip. Role -> shared color class; custom -> inline tokens. Default = theme default.", null, false, false, false, @"FlareChip"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Dims the chip and stops it responding: no click, keyboard or close callback fires, and it leaves the tab order. A chip inside a FlareChipGroup also stops taking part in selection, so a disabled chip can neither be selected nor cleared.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Elevated", @"bool", @"false", @"Renders the chip as an elevated chip (filled surface with a shadow, no border). Convenience shorthand for Variant=""ChipVariant.Elevated""; when true it overrides Variant.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"GroupContext", @"FlareChipGroupContext?", null, @"Parent chip group context providing selection state management.", null, true, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Text label displayed inside the chip.", null, false, false, false, @"FlareChip"),

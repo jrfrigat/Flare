@@ -185,7 +185,16 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Chip_Delete", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Value too long.
+        /// </summary>
+        public static string QrCode_ValueTooLong {
+            get {
+                return ResourceManager.GetString("QrCode_ValueTooLong", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Ищет локализованную строку, похожую на Copied!.
         /// </summary>
