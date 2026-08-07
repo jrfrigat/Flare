@@ -1562,6 +1562,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Chip_SizeColor", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Disabled.
+        /// </summary>
+        public static string Chip_Disabled {
+            get {
+                return ResourceManager.GetString("Chip_Disabled", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareChip for tags, filters and selections..

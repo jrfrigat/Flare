@@ -318,6 +318,9 @@
   <data name="Chip_SizeColor" xml:space="preserve">
     <value>Размеры, цвета и клик</value>
   </data>
+  <data name="Chip_Disabled" xml:space="preserve">
+    <value>Отключённые</value>
+  </data>
   <data name="BottomNav_Title" xml:space="preserve">
     <value>Нижняя навигация</value>
   </data>

@@ -318,6 +318,9 @@
   <data name="Chip_SizeColor" xml:space="preserve">
     <value>Sizes, colors &amp; click</value>
   </data>
+  <data name="Chip_Disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
   <data name="BottomNav_Title" xml:space="preserve">
     <value>Bottom Nav</value>
   </data>

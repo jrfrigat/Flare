@@ -1,0 +1,24 @@
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareChip Label="Outlined" Variant="ChipVariant.Outlined" Disabled />
+        <FlareChip Label="Filled" Variant="ChipVariant.Filled" Disabled />
+        <FlareChip Label="Elevated" Variant="ChipVariant.Elevated" Disabled />
+        <FlareChip Label="Selected" Selected Disabled />
+        <FlareChip Label="Closeable" Closeable Disabled />
+    </FlareStack>
+
+    @* A disabled chip inside a group keeps whatever selection it already has,
+       but clicking it neither selects nor clears it. *@
+    <FlareChipGroup MultiSelect SelectedValues="_selected" SelectedValuesChanged="@(v => _selected = v)"
+                    AriaLabel="@GalleryStrings.Chip_Disabled">
+        <FlareChip Value="draft" Label="Draft" />
+        <FlareChip Value="review" Label="In review" />
+        <FlareChip Value="archived" Label="Archived" Disabled />
+    </FlareChipGroup>
+</FlareStack>
+
+@code {
+    private IReadOnlyCollection<string> _selected = ["review", "archived"];
+}
