@@ -64,12 +64,41 @@ Two distinct core patterns were found (grep `state-<x>-opacity` in wwwroot/css):
   scrolltop). These bake a SPECIFIC role (on-surface / primary / on-primary) + the state opacity into a
   solid hover bg - a SOFTER coupling (semantic roles are mandate-allowed), NOT the currentColor overlay.
 
+**P1 items 2-3 DONE FOR THE BUTTON FAMILY (0.12.2).** FluentUI2's button no longer suppresses the core
+layer and repaints underneath: each variant assigns `--flare-state-*-layer` and the three
+`opacity: 0 !important` blocks are gone. The black-overlay equivalence was measured in the browser
+rather than argued - `rgba(0,0,0,0.13)` over the brand and `color-mix(brand 87%, #000)` agree to
+0.0001 per channel, and the same for the 0.48/52% pressed step. The redundant focus-ring block went
+too: it restated `ButtonTokens.FocusOutline/FocusOutlineOffset/FocusShadow`, which the core already
+applies, so Fluent could not retune its own focus from its token record.
+
+**The precedence question is settled - by a token, not by a rule.** The chosen answer was none of
+(a)/(b)/(c) but a fourth: `--flare-state-focus-hover-layer`, applied by
+`.flare-btn:hover:focus-visible:not(:active)::before`. Focus+hover is the ONLY contested pairing -
+pressed outranks both in either language - so one token settles it and each theme states its own
+answer (Material resolves to its focus wash, Fluent to its hover fill so the ring and the fill
+coexist). `:not(:active)` keeps the pressed rule in charge, which it would otherwise outrank.
+
+**Latent coupling found while doing it:** the state layer is an absolutely positioned `::before`, so
+it painted ABOVE the in-flow label. That only ever worked because every layer so far was translucent;
+Fluent's subtle greys are opaque and would have covered the label. `.flare-btn__label/__icon` are now
+positioned so the content sits above the layer, which is where a state layer expects it. Any future
+theme with an opaque state fill depended on this.
+
 REMAINING P1:
 1. **Pattern A sweep DONE** (commit `ff4b770`): button/menuitem/togglebutton `::before` now paint
    `var(--flare-state-<state>-layer)` at opacity:1 (base transparent). Zero visual change. So the core no
    longer bakes the state MODEL for the overlay components. Add `-selected-layer` when the first
-   selected-state overlay is swept. **Pattern B tokenization is a separate follow-up** (decide whether to
-   route those through the layer token too, or accept the semantic-role coupling).
+   selected-state overlay is swept.
+
+   **Pattern B: RECOMMEND CLOSING AS ACCEPTED, not doing.** Those 25 stylesheets bake a semantic ROLE
+   (`on-surface` / `primary`) plus a state opacity into a solid hover background. Semantic roles are
+   mandate-allowed, so this is a different and much weaker coupling than the `currentColor` overlay
+   the issue was opened about - and sweeping 25 files would put the whole library's hover paint
+   through one channel for little gain. Decide explicitly rather than leaving it open.
+2. **Still to do for the rest of Pattern A**: menuitem and togglebutton carry the same
+   suppress-and-repaint shape in FluentUI2's `controls.css` / `surfaces.css` (1 suppression left
+   there). Same recipe as the button, one component at a time.
 2. FluentUI2 discretisation: set FUI2's `-layer` tokens to its discrete subtle fills (globally and/or
    per-variant, e.g. `.flare-btn--filled { --flare-state-hover-layer: <darkened brand> }`), at effectively
    opacity 1. `currentColor` in a custom prop resolves at the `::before` use-site, so MD3 stays correct.

@@ -111,6 +111,7 @@ public static class CssVarMap
         v[Css.Tokens.State.FocusLayer] = t.State.FocusLayer;
         v[Css.Tokens.State.PressedLayer] = t.State.PressedLayer;
         v[Css.Tokens.State.DraggedLayer] = t.State.DraggedLayer;
+        v[Css.Tokens.State.FocusHoverLayer] = t.State.FocusHoverLayer;
 
         #region BADGE
         v[Css.Tokens.Badge.Radius] = t.Badge.Radius;

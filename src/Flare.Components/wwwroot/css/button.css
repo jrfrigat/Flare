@@ -83,6 +83,16 @@
         opacity: 1;
     }
 
+    /* Hovered AND focused at once. The rules above are ordered so the later one wins a tie, which
+       makes focus outrank hover - right for a language whose focus is a fill, wrong for one whose
+       focus is a stroke and whose hover fill is meant to survive underneath it. Rather than the core
+       picking, the theme names the answer. :not(:active) keeps the pressed rule below in charge when
+       all three apply, since this selector would otherwise outrank it. */
+    .flare-btn:hover:focus-visible:not(:active)::before {
+        background: var(--flare-state-focus-hover-layer);
+        opacity: 1;
+    }
+
     .flare-btn:active::before {
         background: var(--flare-state-pressed-layer);
         opacity: 1;
@@ -289,6 +299,16 @@
 /* Button label: never wraps inside the button. */
 .flare-btn__label {
     white-space: nowrap;
+}
+
+/* Keep the content above the state layer. The layer is an absolutely positioned ::before, so it
+   paints in the positioned layer - above in-flow content - and the label only stayed readable
+   because every state layer so far happened to be translucent. Positioning the content puts it
+   later in the same layer and therefore on top, which is where a state layer expects it: behind.
+   Without this, a theme whose states are opaque fills paints over its own label. */
+.flare-btn__label,
+.flare-btn__icon {
+    position: relative;
 }
 
 /* Optically tuck each icon toward the button edge on its side (the icon side gets

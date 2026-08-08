@@ -10,25 +10,12 @@
 @scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
 
     /*
-       1. DOUBLE FOCUS RING PER MICROSOFT SPECIFICATION [specs]
-       Override focus colors depending on the chosen button style.
+       1. DOUBLE FOCUS RING - now carried by tokens, not by this file.
+       Fluent uses the same neutral focus stroke (colorStrokeFocus2) for every appearance, so the two
+       !important blocks that used to sit here said exactly what ButtonTokens.FocusOutline /
+       FocusOutlineOffset / FocusShadow already say, and the core applies those on :focus-visible.
+       Restating them in CSS only meant the theme could not be retuned from its own token record.
     */
-
-    /* Filled button (Accent / Filled): inner focus black, outer white */
-    .flare-btn--filled:focus-visible {
-        outline: 2px solid var(--flare-fluent-focus-stroke-color, #000000) !important;
-        box-shadow: 0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF) !important;
-    }
-
-    /* Standard / Subtle buttons: Fluent uses the SAME neutral focus stroke (colorStrokeFocus2)
-       for every appearance, not a brand-coloured ring. [specs: react-button colorStrokeFocus2] */
-    .flare-btn--outlined:focus-visible,
-    .flare-btn--tonal:focus-visible,
-    .flare-btn--elevated:focus-visible,
-    .flare-btn--text:focus-visible {
-        outline: 2px solid var(--flare-fluent-focus-stroke-color, #000000) !important;
-        box-shadow: 0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF) !important;
-    }
 
     /*
        2. ADAPTIVE PADDING FOR THE SUBTLE BUTTON VARIANT (--text) [specs]
@@ -65,40 +52,46 @@
     }
 
     /*
-       4. FILLED BUTTONS: EXPLICIT PER-STATE BACKGROUND (FLUENT UI 2) [specs]
-       On filled the text is white -> the semi-transparent overlay (currentColor)
-       LIGHTENED the background, so pressed came out lighter than hover. In F2 the
-       press is the darkest. So for filled we suppress the lightening overlay and set
-       a darkened background on hover/active.
-       Colors approximate the F2 brand ramp (Primary): rest #0F6CBD -> hover #115EA3 ->
-       pressed #0C3B5E -- via color-mix from the role (works in both light and dark).
-    */
-    .flare-btn--filled:hover::before,
-    .flare-btn--filled:focus-visible::before,
-    .flare-btn--filled:active::before { opacity: 0 !important; }
+       4. PER-VARIANT STATE FILLS (FLUENT UI 2) [specs]
+       Fluent paints a discrete colour per state where Material washes the element in translucent
+       currentColor. This used to be expressed by suppressing the core's state layer with
+       `opacity: 0 !important` and repainting the element underneath - the theme fighting the core.
+       Each variant now simply ASSIGNS the core's state-layer tokens. Same pixels, but the difference
+       lives in token values, which is what lets a new theme pick either model without override CSS.
 
-    /* Filled hover/active: darken the button's OWN color. --fc-main is set by the color role
-       (flare-color-*) or a custom color, falling back to the brand primary -- so this works for
-       every color (the old per-color .flare-btn--<color> selectors are no longer rendered). */
-    .flare-btn--filled:hover  { background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 87%, #000); }
-    .flare-btn--filled:active { background-color: color-mix(in srgb, var(--fc-main, var(--flare-color-primary)) 52%, #000); }
+       Filled: a black overlay composites to exactly the old darkened brand, since rgba(0,0,0,0.13)
+       over the brand is the same colour as mixing the brand 87% with black - and 0.48 is the 52%
+       pressed step. Expressed as an overlay it works for every colour role, as the repaint did.
+       Focus is a stroke in this language (the double ring above), not a fill, so it paints nothing;
+       the pairing token keeps the hover darken while the ring is on, which is the case a fixed
+       core precedence would have dropped.
+    */
+    .flare-btn--filled {
+        --flare-state-hover-layer: color-mix(in srgb, #000 13%, transparent);
+        --flare-state-pressed-layer: color-mix(in srgb, #000 48%, transparent);
+        --flare-state-focus-layer: transparent;
+        --flare-state-focus-hover-layer: color-mix(in srgb, #000 13%, transparent);
+    }
 
     /*
-       5. SUBTLE (--text) HOVER/PRESSED: discrete neutral fill, not a currentColor overlay [specs]
-       Fluent's subtle button fills with colorSubtleBackgroundHover / ...Pressed (the neutral
-       surface-container greys) instead of a translucent state layer. Suppress the ::before wash and
-       set the discrete fill (the surface-container roles map to the subtle greys in both modes).
+       5. SUBTLE (--text): the neutral subtle greys [specs]
+       colorSubtleBackgroundHover / ...Pressed are opaque, which is exactly why the core had to stop
+       painting its state layer over the label - see the note on .flare-btn__label.
     */
-    .flare-btn--text:hover::before,
-    .flare-btn--text:focus-visible::before,
-    .flare-btn--text:active::before { opacity: 0 !important; }
-    .flare-btn--text:hover  { background-color: var(--flare-fluent-subtle-hover, #F5F5F5); }
-    .flare-btn--text:active { background-color: var(--flare-fluent-subtle-pressed, #E0E0E0); }
+    .flare-btn--text {
+        --flare-state-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
+        --flare-state-focus-layer: transparent;
+        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+    }
 
-    /* Outline hover/pressed: Fluent keeps the fill transparent and darkens only the stroke -
-       suppress the currentColor wash and step the border through the neutral stroke tokens. */
-    .flare-btn--outlined:hover::before,
-    .flare-btn--outlined:active::before { opacity: 0 !important; }
+    /* Outlined: Fluent keeps the fill transparent and darkens only the stroke. A fill token cannot
+       express a border, so the layer paints nothing on hover and press and the stroke rules stay.
+       Focus is deliberately left on the theme's default layer - that is what it renders today. */
+    .flare-btn--outlined {
+        --flare-state-hover-layer: transparent;
+        --flare-state-pressed-layer: transparent;
+    }
     .flare-btn--outlined:hover  { border-color: var(--flare-fluent-stroke-hover, #C7C7C7); }
     .flare-btn--outlined:active { border-color: var(--flare-fluent-stroke-pressed, #B3B3B3); }
 

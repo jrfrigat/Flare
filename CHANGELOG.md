@@ -6,6 +6,16 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.12.2] - 2026-08-08
 
 ### Added
+- **A theme can now state its own interaction model for the button, instead of overriding the core.**
+  `StateTokens` gained `FocusHoverLayer` - the layer painted while an element is hovered AND focused,
+  the one pairing the design languages genuinely disagree about (pressed outranks both everywhere
+  else). A language whose focus is a fill resolves it to focus; one whose focus is a stroke resolves
+  it to the hover fill so the ring and the fill coexist. FluentUI2 uses this to drop the
+  `opacity: 0 !important` blocks that used to suppress the core state layer before repainting the
+  button underneath: each variant assigns the layer tokens instead. Identical pixels - the black
+  overlay and the old darkened repaint agree to 0.0001 per channel - with the difference now living
+  in token values, which is the point.
+
 - **`FlareSlider.HandleOnHover` turns the slider into a media scrubber.** A seek bar was expressible
   already - a zone paints the buffered range, `MouseWheel` seeks - but the handle sat there at rest,
   so it never looked like one and apps hand-rolled a raw `<input type="range">` instead. The handle
@@ -14,6 +24,9 @@ All notable changes to Flare are documented here. This project adheres to
   handle stays visible rather than leaving a bar nobody can grab.
 
 ### Fixed
+- **The button's label sits above its state layer.** The layer is an absolutely positioned
+  `::before`, so it painted over the label; that only ever went unnoticed because every state layer
+  so far was translucent. A theme whose states are opaque fills would have covered its own text.
 - **The radio ring reads focus tokens, like every other selection control.** Its focus indicator was
   a literal in the core stylesheet - 2px primary - while the checkbox and the switch drew theirs from
   tokens at 3dp secondary, so the family disagreed with itself and no theme could reach the radio to

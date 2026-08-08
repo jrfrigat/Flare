@@ -34,7 +34,7 @@ public class TokensToCssTests
         Shape = new() { None = "0", ExtraSmall = "4px", Small = "8px", Medium = "12px", Large = "16px", ExtraLarge = "28px", Full = "9999px", MorphDuration = "0s", MorphEasing = "ease" },
         Elevation = new() { Level0 = "none", Level1 = "0 1px 2px var(--flare-shadow-umbra)", Level2 = "x", Level3 = "x", Level4 = "x", Level5 = "x" },
         Motion = new() { DurationShort1 = "50ms", DurationShort2 = "100ms", DurationShort3 = "150ms", DurationShort4 = "200ms", DurationMedium1 = "200ms", DurationMedium2 = "300ms", DurationLong1 = "450ms", DurationLong2 = "600ms", EasingStandard = "ease", EasingDecelerate = "ease-out", EasingAccelerate = "ease-in", EasingEmphasized = "ease", EasingSpringFast = "ease", EasingSpring = "ease", EasingSpringSlow = "ease", DurationSpringFast = "300ms", DurationSpring = "350ms", DurationSpringSlow = "500ms" },
-        State = new() { HoverOpacity = "0.08", SelectedOpacity = "0.12", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12", HoverLayer = "currentColor", FocusLayer = "currentColor", PressedLayer = "currentColor", DraggedLayer = "currentColor" },
+        State = new() { HoverOpacity = "0.08", SelectedOpacity = "0.12", FocusOpacity = "0.12", PressedOpacity = "0.12", DraggedOpacity = "0.16", DisabledOpacity = "0.38", DisabledContainerOpacity = "0.12", HoverLayer = "currentColor", FocusLayer = "currentColor", PressedLayer = "currentColor", DraggedLayer = "currentColor", FocusHoverLayer = "currentColor" },
         Extended = extended ?? new Dictionary<string, string> { ["--x"] = "1" },
     };
 

@@ -205,7 +205,8 @@ public class TokenParityTests
                 HoverLayer = "currentColor",
                 FocusLayer = "currentColor",
                 PressedLayer = "currentColor",
-                DraggedLayer = "currentColor"
+                DraggedLayer = "currentColor",
+                FocusHoverLayer = "currentColor"
             },
         };
     }
