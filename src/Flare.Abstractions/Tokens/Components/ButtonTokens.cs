@@ -84,6 +84,16 @@ public sealed record ButtonTokens
     /// at <c>none</c>.</summary>
     [CssVar(Button.FilledHoverShadow)] public required string FilledHoverShadow { get; init; }
 
+    /// <summary>How far a disabled button fades. A language that signals disabled by dimming the whole
+    /// control sets a fraction here; one that repaints it in a flat palette leaves it fully opaque and
+    /// carries the change in <see cref="DisabledLayer"/> instead. Per component rather than shared,
+    /// because a theme may well dim its other controls while repainting this one.</summary>
+    [CssVar(Button.DisabledOpacity)] public required string DisabledOpacity { get; init; }
+    /// <summary>Paint laid over a disabled button's container. A language that dims parks this at a
+    /// transparent value - the only genuinely neutral answer, since no CSS value means "leave the
+    /// colour alone" - while one that repaints puts its flat disabled fill here.</summary>
+    [CssVar(Button.DisabledLayer)] public required string DisabledLayer { get; init; }
+
     // --- 6. ICON SIZE for the 5 sizes ---
     /// <summary>Leading/trailing icon glyph size at the xs size.</summary>
     [CssVar(Button.IconSize.Xs)] public required string IconSizeXs { get; init; }

@@ -155,6 +155,9 @@ internal class VisualStudioTokens
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 2px var(--flare-vs-focus, rgba(0,120,212,0.4))",
         FilledHoverShadow = "none",
+        // Repaints like its Fluent lineage.
+        DisabledOpacity = "1",
+        DisabledLayer = "var(--flare-fluent-disabled-bg, #F0F0F0)",
 
         IconSizeXs = "0.875rem",
         IconSizeSm = "1rem",

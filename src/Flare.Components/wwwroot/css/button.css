@@ -147,10 +147,20 @@
     box-shadow: var(--flare-elevation-0);
 }
 
+/* Disabled carries BOTH mechanisms, and each theme neutralises the one its language does not use
+   with a real value - never by leaving a token unset, which this codebase bans outright.
+   Dimming: the opacity token, a fraction for a language that fades and 1 for one that repaints.
+   Repainting: a layer over the container, transparent for a language that fades. Transparent is the
+   only genuinely neutral answer available, which is exactly why the repaint is a layer and not a
+   background-color - no CSS value means "leave the colour as the variant painted it". */
 .flare-btn:disabled, .flare-btn[disabled] {
     pointer-events: none;
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-btn-disabled-opacity);
     box-shadow: var(--flare-elevation-0) !important;
+}
+.flare-btn:disabled::before, .flare-btn[disabled]::before {
+    background: var(--flare-btn-disabled-layer);
+    opacity: 1;
 }
 
 /* Edge alignment (ButtonEdge): pull an icon/toggle button toward the container edge so its glyph lines

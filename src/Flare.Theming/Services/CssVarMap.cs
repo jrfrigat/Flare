@@ -214,6 +214,8 @@ public static class CssVarMap
         v[Css.Tokens.Button.FocusOutlineOffset] = t.Button.FocusOutlineOffset;
         v[Css.Tokens.Button.FocusShadow] = t.Button.FocusShadow;
         v[Css.Tokens.Button.FilledHoverShadow] = t.Button.FilledHoverShadow;
+        v[Css.Tokens.Button.DisabledOpacity] = t.Button.DisabledOpacity;
+        v[Css.Tokens.Button.DisabledLayer] = t.Button.DisabledLayer;
 
         // Icon size
         v[Css.Tokens.Button.IconSize.Xs] = t.Button.IconSizeXs;

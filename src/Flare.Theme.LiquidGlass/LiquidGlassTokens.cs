@@ -155,6 +155,9 @@ internal class LiquidGlassTokens
         FocusOutlineOffset = "0px",
         FocusShadow = "0 0 0 4px var(--flare-liquid-glow, rgba(0,122,255,0.35))",
         FilledHoverShadow = "none",
+        // Fades like its Material lineage.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        DisabledLayer = "transparent",
 
         IconSizeXs = "1rem",
         IconSizeSm = "1.125rem",

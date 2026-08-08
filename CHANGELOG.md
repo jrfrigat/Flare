@@ -6,6 +6,14 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.13.0] - 2026-08-08
 
 ### Added
+- **A theme states how a disabled button looks, instead of forcing it.** `ButtonTokens` gained
+  `DisabledOpacity` and `DisabledLayer`. A design language that signals disabled by fading sets a
+  fraction and parks the layer at transparent; one that repaints in a flat palette stays fully opaque
+  and puts its fill in the layer. Both sides are real values - parking a token at `initial` is banned
+  here, and for good reason. The repaint is a layer rather than a background colour precisely because
+  transparent is then a genuine no-op, where overriding the element background has none. FluentUI2's
+  disabled button drops its forced opacity and container repaint; its foreground and stroke stay in
+  theme CSS, because neither `color` nor `border-color` has a value meaning "leave this alone".
 - **Pressing a segment in a button group widens it, so its neighbours flinch.**
   `md.comp.button-group.standard.<size>.pressed.item.width.multiplier` asks for 15%; the spec says
   nothing about the neighbours because it does not have to - they move because layout moves them.

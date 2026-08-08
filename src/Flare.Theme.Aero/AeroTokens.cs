@@ -154,6 +154,9 @@ internal class AeroTokens
         FocusOutlineOffset = "-3px",
         FocusShadow = "0 0 0 2px var(--flare-aero-glow, rgba(60,127,177,0.45))",
         FilledHoverShadow = "none",
+        // Fades like its Material lineage.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        DisabledLayer = "transparent",
 
         IconSizeXs = "0.875rem",
         IconSizeSm = "1rem",

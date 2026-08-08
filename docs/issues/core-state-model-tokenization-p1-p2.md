@@ -128,7 +128,37 @@ REMAINING P1:
    fills) that only suppressed `::before` + repainted - now a pure token assignment.
 4. Verify BOTH themes per component (hover/focus/pressed, light+dark) in the Gallery.
 
-## P2 - disabled model (has a genuine two-model wrinkle - design before coding)
+## P2 - disabled model
+
+**DONE FOR THE BUTTON FAMILY (0.13.0), and the wrinkle turned out to be real but only half-wide.**
+
+The recommendation below asked whether "unset" could be neutral. It cannot, and it must not be tried:
+parking a token at `initial` is banned by `ParkedTokenFallbackTests`, which exists because that exact
+shortcut shipped collapsed geometry across three releases. So both models had to be expressed with
+REAL values on both sides. Two of the three properties can be:
+
+- **Dimming** -> `ButtonTokens.DisabledOpacity`. Material sets `var(--flare-state-disabled-opacity)`,
+  Fluent sets `1`. Per component rather than the shared state token, because Fluent dims its other
+  controls while repainting this one - a single shared value cannot say both.
+- **Container repaint** -> `ButtonTokens.DisabledLayer`, painted over the container by the disabled
+  `::before`. Material parks it at `transparent`, Fluent puts its flat fill there. Transparent is a
+  real value and a genuine no-op, which is *why* the repaint is a layer rather than a
+  `background-color`: overriding the element's own background has no neutral value at all.
+
+**The foreground and the border cannot be tokenized this way, and that is not a gap to close later.**
+Neither `color` nor `border-color` has a value meaning "leave this as the variant painted it";
+`currentColor` on `color` resolves to the inherited colour, which loses a filled button's on-colour.
+So a theme that fades has no way to neutralise a core-applied foreground repaint. Those two stay in
+FluentUI2's own stylesheet by design. Recorded here so nobody re-opens it looking for a trick.
+
+Result: FluentUI2's button disabled block went from three rules to one plus the stroke, and its
+`opacity: 1 !important` is gone. Material renders unchanged - verified: element opacity still 0.38,
+layer still paints nothing.
+
+Remaining: the same treatment for checkbox/radio (`controls.css`) and the menu/list/nav/tabs family
+(`surfaces.css`), which repeat the pattern. Same recipe, one component at a time.
+
+## P2 - original analysis (kept for the reasoning)
 
 MD3 disabled = DIM the element (`opacity: 0.38`). Fluent disabled = REPAINT discrete (bg/fg/border flat
 palette, opacity 1). A single always-applied core rule cannot do both purely, because "keep the element's

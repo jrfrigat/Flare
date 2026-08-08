@@ -149,6 +149,9 @@ internal static class MaterialDesign2Tokens
 
         // MD2 contained buttons sit at 2dp and rise to 8dp on hover (applied in md2-base.css too).
         FilledHoverShadow = "var(--flare-elevation-4)",
+        // Material fades the whole control, so the repaint layer stays out of the way.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        DisabledLayer = "transparent",
         FocusOutline = "2px solid var(--flare-color-primary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",

@@ -190,6 +190,9 @@ public class MaterialDesignTokens
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
         FilledHoverShadow = "var(--flare-elevation-1)",
+        // Material fades the whole control, so the repaint layer stays out of the way.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        DisabledLayer = "transparent",
 
         // Icon size per the MD3 Expressive spec
         IconSizeXs = "1.25rem", // 20dp

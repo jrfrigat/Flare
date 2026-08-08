@@ -164,6 +164,9 @@ public class FluentUI2Tokens
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer, #FFFFFF)",
         FilledHoverShadow = "none",
+        // Fluent repaints disabled controls in a flat palette rather than fading them, so the control stays fully opaque and the flat fill arrives as the layer.
+        DisabledOpacity = "1",
+        DisabledLayer = "var(--flare-fluent-disabled-bg, #F0F0F0)",
 
         // Compact Fluent icons (no MD3 gigantism at L/XL)
         IconSizeXs = "1rem",     // 16px

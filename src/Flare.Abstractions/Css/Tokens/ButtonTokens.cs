@@ -132,4 +132,8 @@ public static class Button
     public const string FocusShadow = "--flare-btn-focus-shadow";
     /// <summary>CSS custom-property name for the filled hover shadow token.</summary>
     public const string FilledHoverShadow = "--flare-btn-filled-hover-shadow";
+    /// <summary>CSS custom-property name for the disabled opacity token.</summary>
+    public const string DisabledOpacity = "--flare-btn-disabled-opacity";
+    /// <summary>CSS custom-property name for the disabled state layer token.</summary>
+    public const string DisabledLayer = "--flare-btn-disabled-layer";
 }
