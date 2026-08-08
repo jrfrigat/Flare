@@ -6,6 +6,8 @@
 }
 
 .flare-vtree__node {
+    position: relative;
+    z-index: 0;
     display: flex;
     align-items: center;
     gap: var(--flare-spacing-2);
@@ -19,11 +21,29 @@
     transition: background var(--flare-motion-duration-short2);
 }
 
-.flare-vtree__node:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer for the node row and its expand toggle - the theme names the paint; core only says
+   where it goes, under the content at z-index -1. See tabs.css. */
+.flare-vtree__node::before,
+.flare-vtree__expand-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-vtree__node:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
 
 .flare-vtree__expand-btn {
+    position: relative;
+    z-index: 0;
     background: none;
     border: none;
     padding: 0;
@@ -34,8 +54,9 @@
     border-radius: var(--flare-nav-item-radius);
 }
 
-.flare-vtree__expand-btn:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+.flare-vtree__expand-btn:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
 
 .flare-vtree__expand-btn .flare-icon {

@@ -42,8 +42,19 @@
             color-mix(in srgb, var(--flare-color-primary) 86%, #000000) 100%) !important;
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
-    .flare-picker__day:hover:not(.flare-picker__day--selected):not(.flare-picker__day--disabled),
-    .flare-calendar__cell:hover:not(.flare-calendar__cell--selected) {
+    /* The calendar cell carries a state layer now, so its glass hover is assigned to the token rather
+       than painted on the element - the core layer sits above the element's own background, so
+       painting there would show both. The picker day has no layer yet and stays an element repaint. */
+    .flare-calendar__cell {
+        --flare-state-hover-layer: linear-gradient(
+            to bottom,
+            color-mix(in srgb, var(--flare-color-primary) 12%, transparent) 0%,
+            color-mix(in srgb, var(--flare-color-primary) 20%, transparent) 100%);
+    }
+
+    .flare-calendar__cell.flare-calendar__cell--selected:hover::before { opacity: 0; }
+
+    .flare-picker__day:hover:not(.flare-picker__day--selected):not(.flare-picker__day--disabled) {
         background-image: linear-gradient(
             to bottom,
             color-mix(in srgb, var(--flare-color-primary) 12%, transparent) 0%,
@@ -84,8 +95,11 @@
             color-mix(in srgb, var(--flare-color-primary) 28%, transparent) 100%);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
-    .flare-nav-link:not(.flare-nav-link--active):not(.flare-nav-link--disabled):hover {
-        background-image: linear-gradient(
+    /* Assigned to the state-layer token, not painted on the element - the core layer sits above the
+       element's own background, so painting there would show both. The core rule already excludes the
+       active link, so the :not() chain is no longer needed either. */
+    .flare-nav-link {
+        --flare-state-hover-layer: linear-gradient(
             to bottom,
             color-mix(in srgb, var(--flare-color-primary) 9%, transparent) 0%,
             color-mix(in srgb, var(--flare-color-primary) 16%, transparent) 100%);

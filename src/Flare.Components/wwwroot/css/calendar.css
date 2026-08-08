@@ -74,6 +74,8 @@
 }
 
 .flare-calendar__cell {
+    position: relative;
+    z-index: 0;
     min-height: var(--flare-calendar-cell-min-height);
     padding: var(--flare-spacing-2);
     border-radius: var(--flare-shape-extra-small);
@@ -84,8 +86,23 @@
     gap: var(--flare-spacing-1);
 }
 
-.flare-calendar__cell:hover:not(.flare-calendar__cell--other) {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer - the theme names the paint; core only says where it goes. Under the content at
+   z-index -1, since a cell's content is a bare day number. See tabs.css. */
+.flare-calendar__cell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-calendar__cell:hover:not(.flare-calendar__cell--other)::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
 
 .flare-calendar__cell--other {

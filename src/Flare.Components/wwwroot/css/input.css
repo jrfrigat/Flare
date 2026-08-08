@@ -210,6 +210,8 @@
 .flare-input--has-adornment-end   .flare-input__control { padding-right: 0; }
 
 .flare-input__clear {
+    position: relative;
+    z-index: 0;
     order: 1;
     display: inline-flex;
     align-items: center;
@@ -224,10 +226,23 @@
     transition: color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard),
                 background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
-.flare-input__clear:hover {
-    color: var(--flare-color-on-surface);
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer - the theme names the paint; core only says where it goes. See tabs.css. */
+.flare-input__clear::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
+.flare-input__clear:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
+}
+.flare-input__clear:hover { color: var(--flare-color-on-surface); }
 .flare-input__clear:focus-visible {
     outline: 2px solid var(--flare-color-primary);
     outline-offset: 1px;

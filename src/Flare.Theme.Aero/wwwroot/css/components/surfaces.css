@@ -72,11 +72,16 @@
             color-mix(in srgb, var(--flare-color-surface) 92%, #000000) 100%) !important;
         border: 1px solid var(--flare-color-outline-variant) !important;
     }
-    .flare-pagination__btn:hover {
-        background-image: linear-gradient(
+    /* Assigned to the state-layer token rather than painted on the element: the core layer sits above
+       the element's own background, so painting there would show both. That also drops the !important
+       the background needed to beat the core's hover rule. */
+    .flare-pagination__btn {
+        --flare-state-hover-layer: linear-gradient(
             to bottom,
             color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-color-surface)) 0%,
-            color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-color-surface)) 100%) !important;
+            color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-color-surface)) 100%);
+    }
+    .flare-pagination__btn:hover {
         border-color: var(--flare-color-primary) !important;
     }
     .flare-pagination__btn--active {

@@ -67,6 +67,8 @@
 .flare-nav-group { display: flex; flex-direction: column; }
 
 .flare-nav-group__header {
+  position: relative;
+  z-index: 0;
   display: flex;
   align-items: center;
   gap: var(--flare-spacing-6);
@@ -84,8 +86,26 @@
   transition: background-color var(--flare-motion-duration-short1);
 }
 
-.flare-nav-group__header:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer for the two navigation surfaces. Their hover was computed here as
+   `color-mix(on-surface x hover-opacity, transparent)`, i.e. core deciding what hover MEANS for every
+   theme; the theme now names the paint. It sits under the content at z-index -1 - see tabs.css for
+   why that is preferable to lifting each slot by name. */
+.flare-nav-group__header::before,
+.flare-nav-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-nav-group__header:hover::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 /* Nav group and nav link icons share one icon layout. */
@@ -127,6 +147,8 @@
 
 /* Nav Link */
 .flare-nav-link {
+  position: relative;
+  z-index: 0;
   display: flex;
   align-items: center;
   gap: var(--flare-spacing-6);
@@ -140,10 +162,14 @@
   transition: background-color var(--flare-motion-duration-short1), color var(--flare-motion-duration-short1);
 }
 
-.flare-nav-link:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
-  color: var(--flare-color-on-surface);
+/* The current destination is a state, not a target, so it never lights up - excluded here rather
+   than switched off afterwards, so specificity cannot decide it the other way. */
+.flare-nav-link:hover:not(.flare-nav-link--active)::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
+
+.flare-nav-link:hover { color: var(--flare-color-on-surface); }
 
 .flare-nav-link--active {
   background: var(--flare-nav-active-indicator);
@@ -153,9 +179,8 @@
   font-weight: var(--flare-nav-active-weight);
 }
 
-.flare-nav-link--active:hover {
-  background: var(--flare-nav-active-indicator);
-}
+/* No hover rule of its own any more - the layer rule above excludes it, so the indicator background
+   no longer has to be restated here just to survive the cursor. */
 
 .flare-nav-link--disabled {
   opacity: var(--flare-nav-link-disabled-opacity);

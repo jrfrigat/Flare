@@ -205,9 +205,26 @@ and a cell's content is whatever the consumer put there - usually a bare text no
 impossible and the `z-index: -1` route needs a stacking context per cell, which changes how a popover
 rendered inside a cell stacks against its neighbours. Worth doing, needs its own look.
 
-Still on the old model: `calendar, colormodetoggle, colorpicker, confirmdialog, datepicker, input,
-listbox, messagebox, nav, numericfield, pagination, scrolltop, snackbar, stepper, timepicker,
-virtualtree`.
+**Second batch done (0.14.0):** nav (link + group header), pagination, stepper (both buttons),
+colormodetoggle, virtualtree (node + toggle), calendar cell, timepicker cell, input clear, numericfield
+step. Four more theme overrides became token assignments (Aero and Liquid Glass, pagination and
+calendar), two of them shedding an `!important`.
+
+Two things this batch taught, worth remembering before the next one:
+
+- **A theme that paints hover on the ELEMENT double-paints once the core moves to a layer**, because
+  the layer sits above the element's own background. Every theme override on a converted selector has
+  to move into `--flare-state-hover-layer` - and can, since the token takes a gradient as readily as a
+  colour. Grep the themes for `<selector>:hover` before converting anything.
+- **"Turn the layer off for the selected item" loses on specificity.** `.x--active:hover::before` is
+  one class less specific than `.x:hover:not(:disabled)::before`, so it never applies however late it
+  comes. Exclude the state in the rule that turns the layer ON instead. This shipped broken for a few
+  minutes and was caught by hovering the active page in the Gallery, not by reading the CSS.
+
+Still on the old model: `colorpicker, confirmdialog, datepicker, listbox, messagebox, scrolltop,
+snackbar`, plus the table and DataGrid row hovers above. Several of those (confirmdialog, messagebox,
+scrolltop) mix `on-primary` over `primary`, which is what a content-coloured layer computes anyway -
+they should collapse to the shared rule the way the stepper's filled button just did.
 
 ## P2 - original analysis (kept for the reasoning)
 

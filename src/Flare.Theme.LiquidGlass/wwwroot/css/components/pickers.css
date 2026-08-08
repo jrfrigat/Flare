@@ -37,8 +37,15 @@
             inset 0 1px 0.5px rgba(255, 255, 255, 0.5),
             0 1px 4px color-mix(in srgb, var(--flare-color-primary) 32%, transparent);
     }
-    .flare-picker__day:hover:not(.flare-picker__day--selected):not(.flare-picker__day--disabled),
-    .flare-calendar__cell:hover:not(.flare-calendar__cell--selected) {
+    /* The calendar cell carries a state layer now, so its tint is assigned to the token rather than
+       painted on the element. The picker day has no layer yet and stays an element repaint. */
+    .flare-calendar__cell {
+        --flare-state-hover-layer: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
+    }
+
+    .flare-calendar__cell.flare-calendar__cell--selected:hover::before { opacity: 0; }
+
+    .flare-picker__day:hover:not(.flare-picker__day--selected):not(.flare-picker__day--disabled) {
         background-color: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
     }
 
@@ -67,7 +74,9 @@
         background-color: color-mix(in srgb, var(--flare-color-primary) 18%, transparent);
         box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
     }
-    .flare-nav-link:not(.flare-nav-link--active):not(.flare-nav-link--disabled):hover {
-        background-color: color-mix(in srgb, var(--flare-color-primary) 10%, transparent);
+    /* Assigned to the state-layer token, not painted on the element - see the calendar note above.
+       The core rule already excludes the active link. */
+    .flare-nav-link {
+        --flare-state-hover-layer: color-mix(in srgb, var(--flare-color-primary) 10%, transparent);
     }
 }

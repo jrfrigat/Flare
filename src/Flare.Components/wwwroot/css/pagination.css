@@ -16,6 +16,8 @@
 }
 
 .flare-pagination__btn {
+  position: relative;
+  z-index: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -34,10 +36,29 @@
     border-color var(--flare-motion-duration-short1);
 }
 
-.flare-pagination__btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
-  border-color: var(--flare-color-outline);
+/* State layer - the theme names the paint; core only says where it goes. Under the content at
+   z-index -1, since the button's content is a bare page number. See tabs.css. */
+.flare-pagination__btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
+
+/* The current page is a state, not a target, so it never lights up: excluded here rather than
+   switched off afterwards, because a `--active:hover` rule is one class LESS specific than this one
+   and would lose however late it came. */
+.flare-pagination__btn:hover:not(:disabled):not(.flare-pagination__btn--active)::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
+}
+
+.flare-pagination__btn:hover:not(:disabled) { border-color: var(--flare-color-outline); }
 
 /* Active page: role class sets --fc-main/--fc-on; custom inlines them; default = the active token. */
 .flare-pagination__btn--active {
@@ -46,9 +67,8 @@
   color: var(--fc-on, var(--flare-color-on-primary));
 }
 
-.flare-pagination__btn--active:hover {
-  background: var(--fc-main, var(--flare-pagination-active-color)) !important;
-}
+/* No hover rule of its own any more - the layer rule above excludes it, which also retired the
+   `!important` the old restated background needed. */
 
 .flare-pagination__btn--nav {
   font-size: var(--flare-typescale-title-medium-size);

@@ -59,8 +59,12 @@
         background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 55%) !important;
         border: 1px solid var(--flare-liquid-edge) !important;
     }
+    /* Assigned to the state-layer token rather than painted on the element - see the Aero note; the
+       core layer would otherwise show on top of this. Drops the background's !important with it. */
+    .flare-pagination__btn {
+        --flare-state-hover-layer: color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-liquid-tint-strong));
+    }
     .flare-pagination__btn:hover {
-        background-color: color-mix(in srgb, var(--flare-color-primary) 14%, var(--flare-liquid-tint-strong)) !important;
         border-color: color-mix(in srgb, var(--flare-color-primary) 45%, transparent) !important;
     }
     .flare-pagination__btn--active {

@@ -29,6 +29,17 @@ All notable changes to Flare are documented here. This project adheres to
   unchanged: they paint on the cells, whose content is whatever the consumer put there, and a layer
   over a bare text node needs a per-cell stacking context that would change how a popover inside a
   cell stacks. Tracked as an issue.
+- **Nine more surfaces follow: nav links and group headers, pagination buttons, stepper navigation,
+  the colour-mode toggle, virtual-tree rows and their toggles, calendar and time-picker cells, the
+  field clear button and the numeric stepper.** Four more theme overrides became token assignments -
+  Aero's glass pagination and calendar hovers, Liquid Glass's tinted ones - and two of those shed an
+  `!important` with the move. The stepper's filled button lost its hand-written
+  `color-mix(primary 92%, on-primary)` entirely: the shared layer is content-coloured, so it tints
+  with the button's own label without a rule of its own.
+- **The current page and the current nav destination no longer light up under the cursor**, which
+  they briefly would have: the rules that used to suppress them were a class less specific than the
+  rule that turns the layer on, so they lost regardless of order. The layer now excludes them instead
+  of switching off afterwards. Two more `!important`s went with it.
 - **BREAKING for custom themes: four more required token members.** `CheckboxTokens.DisabledOpacity`,
   `RadioTokens.DisabledOpacity`, `MenuTokens.ItemDisabledOpacity` and
   `ToggleButtonTokens.DisabledOpacity`. Each replaces a fade the core used to apply on every theme's

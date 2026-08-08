@@ -23,6 +23,8 @@
     align-self: stretch;
 }
 .flare-numericfield__step {
+    position: relative;
+    z-index: 0;
     flex: 1;
     display: inline-flex;
     align-items: center;
@@ -37,9 +39,21 @@
     cursor: pointer;
     transition: background-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
-.flare-numericfield__step:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
-    color: var(--flare-color-on-surface);
+/* State layer - the theme names the paint; core only says where it goes. See tabs.css. */
+.flare-numericfield__step::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
+.flare-numericfield__step:hover:not(:disabled)::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
+}
+.flare-numericfield__step:hover:not(:disabled) { color: var(--flare-color-on-surface); }
 .flare-numericfield__step:disabled { opacity: var(--flare-input-disabled-opacity); cursor: not-allowed; }
 .flare-numericfield__step--up { border-bottom: 1px solid var(--flare-color-outline-variant); }
