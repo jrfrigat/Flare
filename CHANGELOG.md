@@ -6,6 +6,12 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.12.2] - 2026-08-08
 
 ### Fixed
+- **The radio ring reads focus tokens, like every other selection control.** Its focus indicator was
+  a literal in the core stylesheet - 2px primary - while the checkbox and the switch drew theirs from
+  tokens at 3dp secondary, so the family disagreed with itself and no theme could reach the radio to
+  say otherwise. `RadioTokens` gained `FocusOutline`, `FocusOutlineOffset` and `FocusShadow`,
+  mirroring the checkbox, and each in-box theme now gives its radio the same focus it already states
+  for its checkbox.
 - **The clipboard's copied tick is visible on a filled button.** The copied state tinted the whole
   control primary, including its foreground - so on a filled primary copy button the tick was drawn
   primary on a primary container and could not be seen at all. The tint now skips the filled variant,

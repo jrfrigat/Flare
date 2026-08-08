@@ -317,6 +317,11 @@ public class MaterialDesignTokens
         Size = "1.25rem",
         StateLayerHover = "color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent)",
         StateLayerHoverChecked = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
+        // The focus this theme already states for the checkbox and the switch - the selection
+        // controls answer as one family rather than each drawing its own ring.
+        FocusOutline = "3px solid var(--flare-color-secondary)",
+        FocusOutlineOffset = "2px",
+        FocusShadow = "none",
     };
     internal static readonly ChipTokens Chip = new()
     {

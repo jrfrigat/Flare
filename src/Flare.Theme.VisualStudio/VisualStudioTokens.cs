@@ -213,6 +213,10 @@ internal class VisualStudioTokens
         Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
+        // Matches the checkbox this theme derives from Fluent, so the family stays consistent.
+        FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
+        FocusOutlineOffset = "1px",
+        FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };

@@ -85,9 +85,12 @@
 /* __label style comes from the shared control-label rule (checkbox.css). */
 
 /* Focus-visible ring (a11y) */
+/* Focus is the theme's to state, exactly as it is for the checkbox and the switch. This used to be
+   a literal here, which is how the radio ended up 2px primary while its siblings drew 3dp secondary. */
 .flare-radio__input:focus-visible + .flare-radio__indicator {
-  outline: 2px solid var(--flare-color-primary);
-  outline-offset: 2px;
+  outline: var(--flare-radio-focus-outline);
+  outline-offset: var(--flare-radio-focus-outline-offset);
+  box-shadow: var(--flare-radio-focus-shadow);
 }
 
 .flare-radio--disabled {

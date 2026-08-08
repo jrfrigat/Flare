@@ -368,6 +368,9 @@ public static class CssVarMap
         v[Css.Tokens.Radio.StateLayerHover] = t.Radio.StateLayerHover;
         v[Css.Tokens.Radio.Size] = t.Radio.Size;
         v[Css.Tokens.Radio.StateLayerHoverChecked] = t.Radio.StateLayerHoverChecked;
+        v[Css.Tokens.Radio.FocusOutline] = t.Radio.FocusOutline;
+        v[Css.Tokens.Radio.FocusOutlineOffset] = t.Radio.FocusOutlineOffset;
+        v[Css.Tokens.Radio.FocusShadow] = t.Radio.FocusShadow;
         v[Css.Tokens.Chip.Radius] = t.Chip.Radius;
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;

@@ -329,6 +329,10 @@ public class FluentUI2Tokens
         Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
+        // Fluent's two-stroke focus indicator, as stated for the checkbox above.
+        FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
+        FocusOutlineOffset = "1px",
+        FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
     };
 
     // Chip - Fluent: the same values (8dp/32dp).

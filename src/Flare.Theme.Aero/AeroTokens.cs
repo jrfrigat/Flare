@@ -212,6 +212,10 @@ internal class AeroTokens
         Size = "1.25rem",
         StateLayerHover = "transparent",
         StateLayerHoverChecked = "transparent",
+        // Matches the checkbox this theme derives from Material, so the family stays consistent.
+        FocusOutline = "3px solid var(--flare-color-secondary)",
+        FocusOutlineOffset = "2px",
+        FocusShadow = "none",
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };

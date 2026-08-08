@@ -30,4 +30,10 @@ public static class Radio
     public const string StateLayerHover = "--flare-radio-state-layer-hover";
     /// <summary>CSS custom-property name for the state layer hover checked token.</summary>
     public const string StateLayerHoverChecked = "--flare-radio-state-layer-hover-checked";
+    /// <summary>CSS custom-property name for the focus outline token.</summary>
+    public const string FocusOutline = "--flare-radio-focus-outline";
+    /// <summary>CSS custom-property name for the focus outline offset token.</summary>
+    public const string FocusOutlineOffset = "--flare-radio-focus-outline-offset";
+    /// <summary>CSS custom-property name for the focus shadow token.</summary>
+    public const string FocusShadow = "--flare-radio-focus-shadow";
 }
