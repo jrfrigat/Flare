@@ -3,6 +3,16 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.14.0] - 2026-08-08
+
+### Fixed
+- **Pressing a button, a split button or a group segment now shows its morph.** The corners and the
+  group's width grow rode the same 300ms spring as the hover morph, and an ordinary click holds
+  `:active` for a fraction of that - measured at about two frames. The shape moved a hair and sprang
+  back, so a press looked exactly like a hover, which is what it was: only the hover morph was ever
+  visible. Entering the pressed state now uses a short duration so it arrives while the finger is
+  still down; leaving it keeps the spring, which is where the overshoot belongs.
+
 ## [0.13.0] - 2026-08-08
 
 ### Changed

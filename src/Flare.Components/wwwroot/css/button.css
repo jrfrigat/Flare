@@ -99,6 +99,16 @@
         transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
     }
 
+    /* A press is an order of magnitude shorter than the morph. Measured: :active survives about two
+       frames of an ordinary click - roughly 30ms - while the shape travel is a 300ms spring, so the
+       corners moved a fraction of a pixel and sprang back. Pressing therefore looked identical to
+       hovering, which is exactly what it was: only the hover morph was ever visible.
+       Entering the pressed state uses a short duration so it arrives at once; LEAVING it falls back
+       to the rule above and springs, which is where the overshoot belongs anyway. */
+    .flare-btn:active {
+        --_morph-duration: var(--flare-motion-duration-short2);
+    }
+
     .flare-btn:focus-visible {
         outline: var(--flare-btn-focus-outline);
         outline-offset: var(--flare-btn-focus-outline-offset);

@@ -71,6 +71,13 @@
     .flare-btn-group .flare-btn--lg:active,
     .flare-btn-group .flare-btn--xl:active { padding-inline: calc(var(--_flare-btn-padding-inline) + 0.5rem); }
 
+    /* Entering the press has to be quick for the same reason the corners do: an ordinary click holds
+       :active for about two frames, so a 300ms grow never leaves the starting line. The release keeps
+       the spring above, which is what makes the neighbours spring back rather than slide. */
+    .flare-btn-group .flare-btn:active {
+        --_grow-duration: var(--flare-motion-duration-short2);
+    }
+
     @media (prefers-reduced-motion: reduce) {
         .flare-btn-group .flare-btn { --_grow-duration: 0s; }
     }
