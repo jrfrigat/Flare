@@ -1,9 +1,8 @@
 # FlareProgress: the wavy RING does not flow (the linear bar does)
 
-**Status: the visual defect is fixed; the animation is not implemented.** The ring renders a correct,
-still wavy arc. Making its crests travel is what remains.
+**Status: CLOSED in 0.14.0.** The crests travel and the arc stays where the value put it.
 
-## What was wrong (0.14.0)
+## What was wrong
 
 The ring's flow was attempted with a CSS keyframe on the indicator:
 
@@ -15,34 +14,47 @@ to   { rotate: 360deg; stroke-dashoffset: 100; }
 The idea was to rotate the wavy path a full turn while sliding the dash window by the same amount, so
 the two cancel and the visible arc stays put while the crests travel through it.
 
-It cannot work, for a reason that is structural rather than a tuning error. The indicator's dash array
-is **a single window**, not a repeating pattern:
+The idea was right; the dash it was applied to was not. The indicator's dash array was **a single
+window**, not a repeating pattern:
 
 ```
 stroke-dasharray = "0 <lead> <len> 100"      (pathLength=100)
 ```
 
-Sliding `stroke-dashoffset` across that walks the window onto the trailing 100-unit gap, so the
-visible arc changes length and position every frame and periodically collapses to a fragment. Rotation
-on its own is no better: the window is defined *along the path*, so it rides around with it.
+Its period is `lead + len + 100`, which shares no common measure with the path, so sliding the offset
+walked the window onto the trailing 100-unit gap: the visible arc changed length and position every
+frame and periodically collapsed to a fragment.
 
-A second, smaller flaw sat underneath: `transform-box: fill-box` puts the rotation origin at the
-bounding box centre of the wavy path, which is not exactly the ring's centre.
+Two smaller flaws sat underneath. `transform-box: fill-box` puts the rotation origin at the bounding
+box centre of the wavy path, which is not the ring's centre. And the sweep cannot be written as
+`from { stroke-dashoffset: var(--lead) }` / `to { calc(var(--lead) + 100) }` - those keyframes parse,
+and read back correctly from `getKeyframes()`, but do not interpolate: the computed offset snaps to
+the `to` value for the whole cycle.
 
-## What to do instead
+## How it was fixed
 
-Animate the **phase of the wave in the path data**, leaving the element untransformed and the dash
-window alone. `BuildWavyCirclePath(waves, amp, phase)` already takes a phase argument and is only ever
-called with `0`, which is the shape the original design had in mind - the razor still carries a comment
-about a SMIL `d`-morph.
+- **Dash period = path length.** Two values summing to exactly 100, so the pattern repeats once per
+  lap and an offset sweep of 100 lands back on itself. The window's start moved out of the array and
+  into the offset.
+- **A full turn, not `360/waves`.** The wave is n-fold symmetric, so the *shape* returns after
+  `360/waves` - but the dash would only have slid `100/waves` by then. Only the whole turn closes both.
+- **The sweep is a registered custom property.** `@property --_ring-sweep { syntax: '<number>' }`
+  animates 0 -> 100 and `stroke-dashoffset` is `calc(var(--_ring-lead) + var(--_ring-sweep))`, so the
+  offset recomputes each frame instead of snapping.
+- **`transform-box: view-box` + `transform-origin: 22px 22px`** for the true centre.
+- **One cycle is one lap**, so the duration is `wave-speed x ring-waves`: the ring and the linear bar
+  then pulse at the same rate off a single theme token, with no new token for the ring.
 
-Two routes, both without JS:
+## What "stays put" means, measured
 
-- **SMIL** `<animate attributeName="d" values="…;…;…" dur="…" repeatCount="indefinite" />` with one
-  path per phase step through a single wave period. Works in every evergreen browser. Cost is markup
-  size: each path is ~120 segments, so keep the step count low and consider fewer segments while
-  animating.
-- **CSS `d`** on `path()` values. Cleaner, but support is narrower than SMIL's.
+Rotation is linear in angle; arc length is not, because the path runs slightly long over a crest and
+short through a trough. Sampled across a cycle in the Gallery, the visible arc's endpoints move by
+**0.77 deg at the start and 0.63 deg at the end** - about a quarter of a percent of the circumference,
+a fraction of a pixel at the rendered size. It cancels every `360/waves` rather than accumulating, so
+the arc breathes imperceptibly instead of drifting.
 
-Either way: honour `prefers-reduced-motion`, and remember that the linear bar's flow is unaffected -
-it works because it translates a wide clipped sine by exactly one wavelength, which IS periodic.
+## Guards
+
+`C_FlareProgressWavyTests` asserts the dash array has exactly two values summing to 100 (at 0/25/60/100)
+and that `--_ring-lead` is published and negative. A regression would not throw or fail to render - it
+would only come apart while animating.

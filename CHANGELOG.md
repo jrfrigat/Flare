@@ -16,13 +16,17 @@ All notable changes to Flare are documented here. This project adheres to
   them with `with` are unaffected and none of the six changes appearance.
 
 ### Fixed
-- **The wavy ring no longer breaks up while it animates.** Its flow rotated the whole path a full turn
-  and slid `stroke-dashoffset` by the same amount, meaning the two to cancel so the arc stayed put.
-  They cannot: the indicator's dash array is a single window rather than a repeating pattern, so
-  sliding the offset walked the window onto the trailing gap - the arc changed length and position
-  every frame and at times collapsed to a fragment. The ring now draws a correct, still wavy arc.
-  Making its crests travel needs the wave's phase animated in the path data instead of the element
-  being transformed, which is tracked as an issue; the linear bar is unaffected and still flows.
+- **The wavy ring flows.** Its crests now travel round the indicator while the arc stays where the
+  value put it. The flow rotates the path a full turn and walks `stroke-dashoffset` by the matching
+  arc length to cancel it - which is what the first attempt did, and it came apart because the dash
+  array was a single window rather than a repeating pattern: its period shared no common measure with
+  the path, so the sweep dragged the visible arc onto the trailing gap and it changed length and
+  position every frame. The array is now two values summing to exactly the path length, so the pattern
+  repeats once per lap and the sweep lands back on itself. Rotation is linear in angle and arc length
+  is not, so the arc's endpoints breathe by about a quarter of a percent of the circumference - a
+  fraction of a pixel, and it cancels each wave rather than accumulating. One cycle is one lap, so the
+  ring and the linear bar pulse at the same rate off the same `wave-speed` token. Honours
+  `prefers-reduced-motion`, which stills the crests and keeps the gap.
 - **`FlareProgress.Wavy` and the circular gap were being ignored by every theme.** Both are computed in
   C# rather than in CSS, because an SVG path has to be built from numbers - and the reader looked only
   in `DesignTokens.Extended`, which those values left when they became typed `ProgressTokens` members

@@ -6,8 +6,9 @@
 @if (Variant == ProgressVariant.Circular && _wavyActive)
 {
     @* Wavy ring: ONLY the active indicator is wavy; the remaining track is a
-       normal smooth circle. The active arc is a wavy path whose phase is animated (SMIL d-morph) so
-       the crests travel around the ring. pathLength=100 keeps the active-arc dash in percent units. *@
+       normal smooth circle. pathLength=100 keeps the active-arc dash in percent units, which is also
+       what lets the flow work: the dash is a TWO-value pattern summing to exactly 100, so it repeats
+       once per lap and the offset can be walked a full 100 without the window desynchronising. *@
     <div class="@BuildCssClass(Css.Classes.Progress.Circular, Css.Classes.Progress.Wavy, _sizeClass, _colorClass)"
          role="progressbar"
          aria-valuenow="@_clampedValue.ToString("F0")"
@@ -16,13 +17,14 @@
          style="@($"{_colorTokens}{Style}")"
          @attributes="AdditionalAttributes">
         @* -90deg start offset on the group; the wavy indicator flows via a CSS rotation synced with
-           stroke-dashoffset (the fill window stays put while the wave crests travel around). *@
+           stroke-dashoffset (the fill window stays put while the wave crests travel around). The
+           window's start is carried as --_ring-lead so the keyframe can walk it a full lap. *@
         <svg viewBox="0 0 44 44" class="@Css.Classes.Progress.Svg">
             <g transform="rotate(-90 22 22)">
                 <circle class="@Css.Classes.Progress.Track" cx="22" cy="22" r="18" fill="none" stroke-width="4"
                         stroke-dasharray="@_trackDash" />
                 <path class="@Css.Classes.Progress.Indicator" d="@_wavyRingPath" pathLength="100" fill="none" stroke-width="4"
-                      stroke-dasharray="@_wavyIndicatorDash" />
+                      stroke-dasharray="@_wavyIndicatorDash" style="@_wavyRingLead" />
             </g>
         </svg>
     </div>
@@ -251,8 +253,8 @@ else
         return sb.ToString();
     }
 
-    // -- Wavy ring: ONLY the active arc is wavy (the track stays a smooth circle). A single static
-    //    wavy path is drawn; the flow comes from a CSS rotation synced with stroke-dashoffset (see
+    // -- Wavy ring: ONLY the active arc is wavy (the track stays a smooth circle). One static wavy
+    //    path is drawn; the flow comes from a CSS rotation synced with stroke-dashoffset (see
     //    progress.css) so crests travel while the fill window stays put. pathLength=100 -> % dash. ---
     private int _ringWaves => Math.Max(3, (int)ReadTokenNum("--flare-progress-ring-waves", 8));
     private double _ringAmp => ReadTokenNum("--flare-progress-ring-wave-amplitude", 1.6);
@@ -277,10 +279,20 @@ else
 
     // Active-arc dash for the wavy ring, in pathLength=100 (percent) units, with the same gap as the
     // plain ring (expressed as a fraction of the circle circumference).
+    //
+    // Two values summing to exactly 100 - NOT the plain ring's `0 lead len C` window. That difference
+    // is what makes the flow possible at all: a pattern whose total equals the path length repeats
+    // once per lap, so walking stroke-dashoffset by 100 lands back on itself and the window is where
+    // it started. The four-value form's total is lead+len+100, which shares no common period with the
+    // path, so an offset sweep dragged the window onto the trailing gap and the arc came apart. The
+    // window's start moves out of the array and into the offset, published as --_ring-lead for the
+    // keyframe to sweep.
     private double _gapPct => _circumference > 0d ? _circularGap / _circumference * 100d : 0d;
-    private string _wavyIndicatorDash => Dash100(_gapPct / 2, Math.Max(0, _clampedValue - _gapPct));
-    private static string Dash100(double lead, double len) =>
-        string.Create(System.Globalization.CultureInfo.InvariantCulture, $"0 {lead:F2} {len:F2} 100");
+    private double _wavyArcLen => Math.Clamp(_clampedValue - _gapPct, 0d, 100d);
+    private string _wavyIndicatorDash =>
+        string.Create(CultureInfo.InvariantCulture, $"{_wavyArcLen:F2} {100d - _wavyArcLen:F2}");
+    private string _wavyRingLead =>
+        string.Create(CultureInfo.InvariantCulture, $"--_ring-lead:{-_gapPct / 2:F2};");
 
     // Reads a numeric (optionally px-suffixed) theme token; falls back when unset/unparseable.
     private double ReadTokenNum(string name, double fallback)

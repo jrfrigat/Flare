@@ -171,15 +171,58 @@
 .flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
   stroke-linejoin: round;
 }
-/* The ring's wave is deliberately still. Making the crests travel needs the PATH's phase to change;
-   the previous attempt rotated the whole path a full turn and shifted stroke-dashoffset by the same
-   amount, meaning to cancel one against the other so the visible arc stayed put. It cannot work: the
-   dash array here is a single window - `0 lead len 100` - not a repeating pattern, so walking the
-   offset across it slides the window onto the trailing 100-unit gap. The arc changed length and
-   position on every frame and at times collapsed to a fragment. Rotation alone is no better, since
-   the window is defined along the path and rides around with it.
-   Doing this properly means animating the wave's phase in the path data (BuildWavyCirclePath already
-   takes a phase it is never given) rather than transforming the element - tracked as an issue. */
+
+/* Rotating the path carries the crests round; sweeping stroke-dashoffset by the matching arc length
+   pulls the visible window back, so the fill stays where the value put it and only the wave moves.
+   Both halves must be exact for the loop to be seamless, and both now are:
+
+   - A full 360deg returns the path to itself, and pathLength=100 makes the matching sweep exactly
+     100. Stopping at 360/waves would be enough for the SHAPE (the wave is n-fold symmetric) but not
+     for the dash, which would have slid 100/waves - hence the whole turn.
+   - The dash array sums to exactly 100, so the pattern's period IS the path length and offset 100
+     lands back on offset 0. This is what the first attempt lacked; see the razor for the details.
+
+   Within a turn the two are not in perfect lockstep, because arc length runs slightly ahead of angle
+   over a crest and behind it in a trough. The excess is bounded by the wave itself - about a quarter
+   of a percent of the circumference at the shipped amplitude - and it cancels every 360/waves rather
+   than accumulating, so the window breathes by a fraction of a pixel instead of drifting.
+
+   One cycle is one lap, so a crest rate matching the linear bar's means wave-speed per WAVE, times
+   the number of waves. The bar and the ring then pulse at the same rate under one theme token. */
+/* The sweep is animated as a registered custom property rather than animating stroke-dashoffset
+   directly, because the offset also has to carry the value's own leading gap. Putting `var()` in the
+   keyframes instead - `from: var(--_ring-lead)` to `calc(var(--_ring-lead) + 100)` - parses and reads
+   back as correct keyframes, but does not interpolate: the computed offset snaps to the `to` value
+   for the whole cycle, so the window rides around with the path and nothing is cancelled. Registering
+   the property gives the sweep a real <number> type, so it interpolates and the offset recomputes
+   each frame. */
+@property --_ring-sweep {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
+  /* Not fill-box: that centres rotation on the wavy path's bounding box, which is not the ring's
+     centre, and the arc wobbles off-axis. The viewBox's centre is the real one. */
+  transform-box: view-box;
+  transform-origin: 22px 22px;
+  stroke-dashoffset: calc(var(--_ring-lead, 0) + var(--_ring-sweep));
+  animation: flare-progress-ring-wave
+             calc(var(--flare-progress-wave-speed) * var(--flare-progress-ring-waves))
+             linear infinite;
+}
+
+@keyframes flare-progress-ring-wave {
+  from { rotate: 0deg;   --_ring-sweep: 0;   }
+  to   { rotate: 360deg; --_ring-sweep: 100; }
+}
+
+/* The crests travelling are movement; the arc itself is information. Suppressing only the animation
+   leaves the base stroke-dashoffset above in charge, so the gap before the arc survives. */
+@media (prefers-reduced-motion: reduce) {
+  .flare-progress--wavy.flare-progress--circular .flare-progress__indicator { animation: none; }
+}
 
 @keyframes flare-progress-linear {
   0%   { transform: translateX(-100%); }
