@@ -171,18 +171,15 @@
 .flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
   stroke-linejoin: round;
 }
-.flare-progress--wavy.flare-progress--circular .flare-progress__indicator {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: flare-progress-ring-wave var(--flare-progress-wave-speed) linear infinite;
-}
-@keyframes flare-progress-ring-wave {
-  from { rotate: 0deg;   stroke-dashoffset: 0;   }
-  to   { rotate: 360deg; stroke-dashoffset: 100; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .flare-progress--wavy.flare-progress--circular .flare-progress__indicator { animation: none; }
-}
+/* The ring's wave is deliberately still. Making the crests travel needs the PATH's phase to change;
+   the previous attempt rotated the whole path a full turn and shifted stroke-dashoffset by the same
+   amount, meaning to cancel one against the other so the visible arc stayed put. It cannot work: the
+   dash array here is a single window - `0 lead len 100` - not a repeating pattern, so walking the
+   offset across it slides the window onto the trailing 100-unit gap. The arc changed length and
+   position on every frame and at times collapsed to a fragment. Rotation alone is no better, since
+   the window is defined along the path and rides around with it.
+   Doing this properly means animating the wave's phase in the path data (BuildWavyCirclePath already
+   takes a phase it is never given) rather than transforming the element - tracked as an issue. */
 
 @keyframes flare-progress-linear {
   0%   { transform: translateX(-100%); }

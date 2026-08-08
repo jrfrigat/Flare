@@ -6,6 +6,13 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.14.0] - 2026-08-08
 
 ### Fixed
+- **The wavy ring no longer breaks up while it animates.** Its flow rotated the whole path a full turn
+  and slid `stroke-dashoffset` by the same amount, meaning the two to cancel so the arc stayed put.
+  They cannot: the indicator's dash array is a single window rather than a repeating pattern, so
+  sliding the offset walked the window onto the trailing gap - the arc changed length and position
+  every frame and at times collapsed to a fragment. The ring now draws a correct, still wavy arc.
+  Making its crests travel needs the wave's phase animated in the path data instead of the element
+  being transformed, which is tracked as an issue; the linear bar is unaffected and still flows.
 - **`FlareProgress.Wavy` and the circular gap were being ignored by every theme.** Both are computed in
   C# rather than in CSS, because an SVG path has to be built from numbers - and the reader looked only
   in `DesignTokens.Extended`, which those values left when they became typed `ProgressTokens` members
