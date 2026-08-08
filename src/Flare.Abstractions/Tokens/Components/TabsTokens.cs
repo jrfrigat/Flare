@@ -46,4 +46,14 @@ public sealed record TabsTokens
 
     /// <summary>Corner radius of the selected pill for <c>Tonal</c>/<c>Filled</c>.</summary>
     [CssVar(Tabs.PillRadius)] public required string PillRadius { get; init; }
+
+    /// <summary>How far a disabled tab fades. A language that repaints disabled controls in a flat
+    /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
+    /// colour has no value meaning "leave this as painted".</summary>
+    [CssVar(Tabs.TabDisabledOpacity)] public required string TabDisabledOpacity { get; init; }
+
+    /// <summary>How far a disabled scroll button fades - the arrow shown when the strip overflows and
+    /// has reached one end. Separate from the tab, because a language may mute a spent affordance more
+    /// heavily than an unavailable destination.</summary>
+    [CssVar(Tabs.ScrollDisabledOpacity)] public required string ScrollDisabledOpacity { get; init; }
 }

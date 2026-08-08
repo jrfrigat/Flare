@@ -40,6 +40,16 @@ All notable changes to Flare are documented here. This project adheres to
 - **BREAKING for custom themes: `DesignTokens` gains `List`, `Accordion` and `Collapse`.** Required,
   like every other component record. A bespoke theme must supply all three; anything built from an
   in-box theme with `with` inherits them.
+- **BREAKING for custom themes: eight more required token members, and no theme forces opacity any
+  more.** `NavTokens.LinkDisabledOpacity`, `TabsTokens.TabDisabledOpacity` and `ScrollDisabledOpacity`,
+  `PaginationTokens.BtnDisabledOpacity`, `LinkTokens.DisabledOpacity`,
+  `BottomNavTokens.ItemDisabledOpacity`, `InputTokens.DisabledOpacity` and
+  `SliderTokens.DisabledOpacity`. With these the disabled model is finished: **every
+  `opacity: 1 !important` is gone from every in-box theme**, where before Fluent UI 2 needed twelve
+  selectors' worth of them to undo a fade the core applied on its behalf. What is left in the theme is
+  the disabled foreground colour, which cannot become a token - no CSS value means "leave this as
+  painted". The tab and its overflow scroll button get separate members on purpose: a language may
+  mute a spent affordance more heavily than an unavailable destination.
 
 ### Fixed
 - **The wavy ring flows.** Its crests now travel round the indicator while the arc stays where the

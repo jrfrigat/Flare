@@ -289,7 +289,7 @@
 .flare-input--disabled .flare-input__icon,
 .flare-input--disabled .flare-input__arrow,
 .flare-input--disabled .flare-input__placeholder {
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-input-disabled-opacity);
 }
 
 /* FlareNumericField's prefix/suffix + stepper extras live in numericfield.css (not baked into the

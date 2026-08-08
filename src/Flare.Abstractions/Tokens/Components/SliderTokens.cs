@@ -126,4 +126,8 @@ public sealed record SliderTokens
 
     /// <summary>Value-indicator bubble text color.</summary>
     [CssVar(Slider.ValueColor)] public required string ValueColor { get; init; }
+
+    /// <summary>How far a disabled slider's label, value bubble and icons fade. The track and handle
+    /// are repainted rather than faded, so this covers only the text around them.</summary>
+    [CssVar(Slider.DisabledOpacity)] public required string DisabledOpacity { get; init; }
 }

@@ -56,7 +56,7 @@
 }
 
 .flare-pagination__btn:disabled {
-  opacity: var(--flare-state-disabled-opacity);
+  opacity: var(--flare-pagination-btn-disabled-opacity);
   cursor: not-allowed;
 }
 

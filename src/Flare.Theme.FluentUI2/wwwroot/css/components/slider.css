@@ -19,7 +19,6 @@
     .flare-slider--disabled .flare-slider__label,
     .flare-slider--disabled .flare-slider__value,
     .flare-slider--disabled .flare-slider__icon {
-        opacity: 1 !important;
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }
 }

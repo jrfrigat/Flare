@@ -79,6 +79,6 @@
 }
 
 .flare-bottom-nav-item--disabled {
-  opacity: var(--flare-state-disabled-opacity);
+  opacity: var(--flare-bottom-nav-item-disabled-opacity);
   pointer-events: none;
 }

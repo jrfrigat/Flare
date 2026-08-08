@@ -37,4 +37,8 @@ public static class Tabs
     public const string TrackBg = "--flare-tabs-track-bg";
     /// <summary>CSS custom-property name for the pill radius token.</summary>
     public const string PillRadius = "--flare-tabs-pill-radius";
+    /// <summary>CSS custom-property name for the disabled tab opacity token.</summary>
+    public const string TabDisabledOpacity = "--flare-tabs-tab-disabled-opacity";
+    /// <summary>CSS custom-property name for the disabled scroll-button opacity token.</summary>
+    public const string ScrollDisabledOpacity = "--flare-tabs-scroll-disabled-opacity";
 }

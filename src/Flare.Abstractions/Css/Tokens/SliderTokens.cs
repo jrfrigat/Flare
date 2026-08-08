@@ -105,4 +105,6 @@ public static class Slider
     public const string ValueBg = "--flare-slider-value-bg";
     /// <summary>CSS custom-property name for the value color token.</summary>
     public const string ValueColor = "--flare-slider-value-color";
+    /// <summary>CSS custom-property name for the disabled-slider label opacity token.</summary>
+    public const string DisabledOpacity = "--flare-slider-disabled-opacity";
 }

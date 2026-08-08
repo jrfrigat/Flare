@@ -10,4 +10,9 @@ public sealed record LinkTokens
 
     /// <summary>Hover Opacity.</summary>
     [CssVar(LinkField.HoverOpacity)] public required string HoverOpacity { get; init; }
+
+    /// <summary>How far a disabled link fades. A language that repaints disabled controls in a flat
+    /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
+    /// colour has no value meaning "leave this as painted".</summary>
+    [CssVar(LinkField.DisabledOpacity)] public required string DisabledOpacity { get; init; }
 }

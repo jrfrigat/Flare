@@ -266,6 +266,8 @@ public static class NavField
     public const string ActiveIndicator = "--flare-nav-active-indicator";
     /// <summary>CSS custom-property name for the active item left-bar token (an optional left accent bar).</summary>
     public const string ActiveLeftBar = "--flare-nav-active-left-bar";
+    /// <summary>CSS custom-property name for the disabled nav-link opacity token.</summary>
+    public const string LinkDisabledOpacity = "--flare-nav-link-disabled-opacity";
 }
 
 /// <summary>CSS variable tokens for switch field.</summary>

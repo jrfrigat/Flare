@@ -79,7 +79,7 @@
 .flare-tabs__scroll:hover:not(:disabled) { color: var(--flare-color-on-surface); }
 
 .flare-tabs__scroll:disabled {
-  opacity: var(--flare-state-disabled-opacity);
+  opacity: var(--flare-tabs-scroll-disabled-opacity);
   cursor: default;
 }
 
@@ -237,7 +237,7 @@
    (an anchor cannot be :disabled, so pointer-events:none also blocks its hover/click). */
 .flare-tabs__tab:disabled,
 .flare-tabs__tab--disabled {
-  opacity: var(--flare-state-disabled-opacity);
+  opacity: var(--flare-tabs-tab-disabled-opacity);
   cursor: not-allowed;
   pointer-events: none;
 }

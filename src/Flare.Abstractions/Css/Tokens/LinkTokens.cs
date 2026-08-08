@@ -7,4 +7,6 @@ public static class LinkField
     public const string FocusRingWidth = "--flare-link-focus-ring-width";
     /// <summary>CSS custom-property name for the hover opacity token.</summary>
     public const string HoverOpacity = "--flare-link-hover-opacity";
+    /// <summary>CSS custom-property name for the disabled link opacity token.</summary>
+    public const string DisabledOpacity = "--flare-link-disabled-opacity";
 }

@@ -305,6 +305,7 @@ internal class AeroTokens
         IndicatorRadius = "0",
         ActiveIndicator = "none",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
+        LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     /// <summary>Theme-specific extras (geometry/gloss hooks consumed by the scoped CSS).</summary>

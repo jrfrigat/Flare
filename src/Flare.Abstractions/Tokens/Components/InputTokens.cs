@@ -71,4 +71,10 @@ public sealed record InputTokens
 
     /// <summary>Bottom-border color of an errored field on hover.</summary>
     [CssVar(InputField.ErrorHoverIndicator)] public required string ErrorHoverIndicator { get; init; }
+
+    /// <summary>How far a disabled field's content fades - label, helper, adornments, icons and the
+    /// placeholder, plus the numeric stepper. A language that repaints them in a flat palette leaves this
+    /// opaque and carries the change in its own stylesheet, since a foreground colour has no value
+    /// meaning "leave this as painted".</summary>
+    [CssVar(InputField.DisabledOpacity)] public required string DisabledOpacity { get; init; }
 }

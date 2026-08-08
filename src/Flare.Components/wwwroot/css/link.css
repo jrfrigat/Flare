@@ -18,7 +18,7 @@
 .flare-link:hover:not(.flare-link--disabled) { opacity: var(--flare-link-hover-opacity); }
 
 .flare-link--disabled {
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-link-disabled-opacity);
     cursor: not-allowed;
     pointer-events: none;
 }

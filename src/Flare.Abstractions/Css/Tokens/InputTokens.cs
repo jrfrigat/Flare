@@ -39,6 +39,8 @@ public static class InputField
     public const string FocusOutline = "--flare-input-focus-outline";
     /// <summary>CSS custom-property name for the focus outline offset.</summary>
     public const string FocusOutlineOffset = "--flare-input-focus-outline-offset";
+    /// <summary>CSS custom-property name for the disabled-field content opacity token.</summary>
+    public const string DisabledOpacity = "--flare-input-disabled-opacity";
 }
 
 /// <summary>CSS variable tokens for the dialog panel.</summary>

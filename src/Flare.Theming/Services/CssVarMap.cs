@@ -395,6 +395,8 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.FilledFg] = t.Tabs.FilledFg;
         v[Css.Tokens.Tabs.TrackBg] = t.Tabs.TrackBg;
         v[Css.Tokens.Tabs.PillRadius] = t.Tabs.PillRadius;
+        v[Css.Tokens.Tabs.TabDisabledOpacity] = t.Tabs.TabDisabledOpacity;
+        v[Css.Tokens.Tabs.ScrollDisabledOpacity] = t.Tabs.ScrollDisabledOpacity;
         v[Css.Tokens.TableOfContents.ActiveColor] = t.TableOfContents.ActiveColor;
         v[Css.Tokens.TableOfContents.ActiveWeight] = t.TableOfContents.ActiveWeight;
         v[Css.Tokens.TableOfContents.HoverBgOpacity] = t.TableOfContents.HoverBgOpacity;
@@ -452,6 +454,7 @@ public static class CssVarMap
         v[Css.Tokens.Slider.StopSize] = t.Slider.StopSize;
         v[Css.Tokens.Slider.ValueBg] = t.Slider.ValueBg;
         v[Css.Tokens.Slider.ValueColor] = t.Slider.ValueColor;
+        v[Css.Tokens.Slider.DisabledOpacity] = t.Slider.DisabledOpacity;
 
         v[Css.Tokens.Rating.Size.Xs] = t.Rating.SizeXs;
         v[Css.Tokens.Rating.Size.Sm] = t.Rating.SizeSm;
@@ -470,6 +473,7 @@ public static class CssVarMap
         v[Css.Tokens.Pagination.Radius] = t.Pagination.Radius;
         v[Css.Tokens.Pagination.BorderColor] = t.Pagination.BorderColor;
         v[Css.Tokens.Pagination.ActiveColor] = t.Pagination.ActiveColor;
+        v[Css.Tokens.Pagination.BtnDisabledOpacity] = t.Pagination.BtnDisabledOpacity;
 
         v[Css.Tokens.Timeline.DotSize] = t.Timeline.DotSize;
         v[Css.Tokens.Timeline.DotBg] = t.Timeline.DotBg;
@@ -607,6 +611,7 @@ public static class CssVarMap
         v[Css.Tokens.InputField.FocusRing] = t.Input.FocusRing;
         v[Css.Tokens.InputField.FocusOutline] = t.Input.FocusOutline;
         v[Css.Tokens.InputField.FocusOutlineOffset] = t.Input.FocusOutlineOffset;
+        v[Css.Tokens.InputField.DisabledOpacity] = t.Input.DisabledOpacity;
         v[Css.Tokens.InputField.HoverBorderBottomColor] = t.Input.HoverBorderBottomColor;
         v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
         v[Css.Tokens.InputField.Padding] = t.Input.Padding;
@@ -751,6 +756,7 @@ public static class CssVarMap
         v[Css.Tokens.NavField.IndicatorRadius] = t.Nav.IndicatorRadius;
         v[Css.Tokens.NavField.ActiveIndicator] = t.Nav.ActiveIndicator;
         v[Css.Tokens.NavField.ActiveLeftBar] = t.Nav.ActiveLeftBar;
+        v[Css.Tokens.NavField.LinkDisabledOpacity] = t.Nav.LinkDisabledOpacity;
         #endregion
 
         #region BOTTOM NAV
@@ -767,6 +773,7 @@ public static class CssVarMap
         v[Css.Tokens.BottomNavField.IndicatorBg] = t.BottomNav.IndicatorBg;
         v[Css.Tokens.BottomNavField.IndicatorRadius] = t.BottomNav.IndicatorRadius;
         v[Css.Tokens.BottomNavField.IndicatorSize] = t.BottomNav.IndicatorSize;
+        v[Css.Tokens.BottomNavField.ItemDisabledOpacity] = t.BottomNav.ItemDisabledOpacity;
         #endregion
 
         #region SWITCH
@@ -884,6 +891,7 @@ public static class CssVarMap
         #region LINK
         v[Css.Tokens.LinkField.FocusRingWidth] = t.Link.FocusRingWidth;
         v[Css.Tokens.LinkField.HoverOpacity] = t.Link.HoverOpacity;
+        v[Css.Tokens.LinkField.DisabledOpacity] = t.Link.DisabledOpacity;
         #endregion
 
         #region OTP

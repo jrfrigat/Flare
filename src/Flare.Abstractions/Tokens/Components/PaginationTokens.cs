@@ -31,4 +31,9 @@ public sealed record PaginationTokens
 
     /// <summary>Default active-page fill (the per-instance <c>Color</c> parameter overrides it).</summary>
     [CssVar(Pagination.ActiveColor)] public required string ActiveColor { get; init; }
+
+    /// <summary>How far a disabled page button fades. A language that repaints disabled controls in a flat
+    /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
+    /// colour has no value meaning "leave this as painted".</summary>
+    [CssVar(Pagination.BtnDisabledOpacity)] public required string BtnDisabledOpacity { get; init; }
 }

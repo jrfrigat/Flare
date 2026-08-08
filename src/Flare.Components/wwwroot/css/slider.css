@@ -484,7 +484,7 @@
 .flare-slider--disabled .flare-slider__label,
 .flare-slider--disabled .flare-slider__value,
 .flare-slider--disabled .flare-slider__icon {
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-slider-disabled-opacity);
 }
 
 /* Forced-colors (Windows High Contrast) - keep the handle focus ring visible */

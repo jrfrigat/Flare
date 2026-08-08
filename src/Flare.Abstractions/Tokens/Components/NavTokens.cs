@@ -26,4 +26,9 @@ public sealed record NavTokens
 
     /// <summary>Left accent bar drawn on the active item; set to none for no bar.</summary>
     [CssVar(NavField.ActiveLeftBar)] public required string ActiveLeftBar { get; init; }
+
+    /// <summary>How far a disabled nav link fades. A language that repaints disabled controls in a flat
+    /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
+    /// colour has no value meaning "leave this as painted".</summary>
+    [CssVar(NavField.LinkDisabledOpacity)] public required string LinkDisabledOpacity { get; init; }
 }

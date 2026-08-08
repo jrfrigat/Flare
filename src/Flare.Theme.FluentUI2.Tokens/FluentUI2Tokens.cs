@@ -435,6 +435,8 @@ public class FluentUI2Tokens
         FilledFg = "var(--flare-color-on-primary)",
         TrackBg = "transparent",
         PillRadius = "var(--flare-shape-full)",
+        TabDisabledOpacity = "1",
+        ScrollDisabledOpacity = "1",
     };
 
     // On-this-page - Fluent: rail style (vertical line + brand bar on the left of the active item),
@@ -519,6 +521,7 @@ public class FluentUI2Tokens
         HandleClipPath = "none",
         ValueBg = "var(--flare-color-inverse-surface)",
         ValueColor = "var(--flare-color-inverse-on-surface)",
+        DisabledOpacity = "1",
     };
 
     // Input - Fluent outlined style (full 1px border, neutral focus box + 2px brand bottom accent).
@@ -541,6 +544,7 @@ public class FluentUI2Tokens
         DisabledBg = "var(--flare-fluent-disabled-bg, #F0F0F0)",
         DisabledIndicator = "var(--flare-fluent-disabled-border, #E0E0E0)",
         ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
+        DisabledOpacity = "1",
     };
 
     // Progress - Fluent: thin 2px rail, squared corners, no stop dot, 3px butt-cap ring. Wavy is left
@@ -597,6 +601,7 @@ public class FluentUI2Tokens
         IndicatorRadius = "0",
         ActiveIndicator = "none",
         ActiveLeftBar = "3px solid var(--flare-color-primary)",
+        LinkDisabledOpacity = "1",
     };
 
     // Switch - Fluent's compact track + thin focus offset map to the typed record; the rest of the
@@ -783,6 +788,7 @@ public class FluentUI2Tokens
         Radius = "var(--flare-shape-extra-small)",
         BorderColor = "var(--flare-color-outline-variant)",
         ActiveColor = "var(--flare-color-primary)",
+        BtnDisabledOpacity = "1",
     };
 
     // DataGrid baseline geometry/colors. Fluent does not customize the grid, so it carries the same
@@ -848,6 +854,7 @@ public class FluentUI2Tokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        ItemDisabledOpacity = "1",
     };
 
     internal static readonly ColorPickerTokens ColorPicker = new()
@@ -955,6 +962,7 @@ public class FluentUI2Tokens
     {
         FocusRingWidth = "2px",
         HoverOpacity = "0.8",
+        DisabledOpacity = "1",
     };
 
     internal static readonly OtpTokens Otp = new()

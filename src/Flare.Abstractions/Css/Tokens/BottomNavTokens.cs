@@ -29,4 +29,6 @@ public static class BottomNavField
     public const string IndicatorRadius = "--flare-bottom-nav-indicator-radius";
     /// <summary>CSS custom-property name for the active-item indicator pill height token.</summary>
     public const string IndicatorSize = "--flare-bottom-nav-indicator-size";
+    /// <summary>CSS custom-property name for the disabled item opacity token.</summary>
+    public const string ItemDisabledOpacity = "--flare-bottom-nav-item-disabled-opacity";
 }

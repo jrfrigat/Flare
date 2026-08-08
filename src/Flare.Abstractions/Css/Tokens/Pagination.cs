@@ -26,4 +26,6 @@ public static class Pagination
     public const string BorderColor = "--flare-pagination-border-color";
     /// <summary>CSS custom-property name for the default active-page color token.</summary>
     public const string ActiveColor = "--flare-pagination-active-color";
+    /// <summary>CSS custom-property name for the disabled page-button opacity token.</summary>
+    public const string BtnDisabledOpacity = "--flare-pagination-btn-disabled-opacity";
 }

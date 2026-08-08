@@ -38,24 +38,21 @@
        cheap here (one line), but not free. */
     .flare-listbox__option:hover { background-color: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
 
-    /* Staying opaque is a token for those that have one, so they only need the repaint here. The rest
-       still force it: each would need a token of its own, and their components have no token record.
-       Tracked in the issue. */
+    /* Staying opaque is a token for every one of these now, so all that is left here is the repaint -
+       and that cannot move: a foreground colour has no value meaning "leave this as painted", so a
+       token for it would have to name a colour, which is exactly the theme decision this file exists
+       to hold. The !important stays because several of the core rules set `color` alongside the fade. */
     .flare-menu-item--disabled, .flare-menu-item:disabled,
     .flare-toggle-btn:disabled, .flare-toggle-btn[disabled],
     .flare-list-item--disabled,
     .flare-accordion-panel--disabled .flare-accordion-panel__header,
-    .flare-collapse--disabled .flare-collapse__header {
-        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
-    }
-
+    .flare-collapse--disabled .flare-collapse__header,
     .flare-nav-link--disabled,
     .flare-tabs__tab:disabled, .flare-tabs__tab--disabled,
     .flare-tabs__scroll:disabled,
     .flare-pagination__btn:disabled,
     .flare-link--disabled,
     .flare-bottom-nav-item--disabled {
-        opacity: 1 !important;
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }
 }

@@ -18,14 +18,12 @@
         .flare-input__placeholder,
         .flare-select__value,
         .flare-multiselect__value) {
-        opacity: 1 !important;
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }
 
     /* Numeric stepper buttons. */
     .flare-input--disabled .flare-numericfield__step,
     .flare-numericfield__step:disabled {
-        opacity: 1 !important;
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }
 }

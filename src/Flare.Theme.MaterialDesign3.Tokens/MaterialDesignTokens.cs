@@ -357,6 +357,8 @@ public class MaterialDesignTokens
         FilledFg = "var(--flare-color-on-primary)",
         TrackBg = "transparent",
         PillRadius = "var(--flare-shape-full)",
+        TabDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        ScrollDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,
@@ -490,6 +492,7 @@ public class MaterialDesignTokens
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
         DisabledIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent)",
         ErrorHoverIndicator = "color-mix(in srgb, var(--flare-color-on-surface) 8%, var(--flare-color-error))",
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // Progress - MD3 Expressive: rounded full track, 4px thick, trailing stop-indicator dot, round
@@ -555,6 +558,7 @@ public class MaterialDesignTokens
         IndicatorRadius = "var(--flare-shape-full)",
         ActiveIndicator = "var(--flare-color-secondary-container)",
         ActiveLeftBar = "none",
+        LinkDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     internal static readonly BottomNavTokens BottomNav = new()
@@ -572,6 +576,7 @@ public class MaterialDesignTokens
         IndicatorBg = "var(--flare-nav-active-indicator)",
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
+        ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     internal static readonly TableOfContentsTokens TableOfContents = new()
@@ -696,6 +701,7 @@ public class MaterialDesignTokens
         StopSize = "4px",
         ValueBg = "var(--flare-color-inverse-surface)",
         ValueColor = "var(--flare-color-inverse-on-surface)",
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     internal static readonly DialogTokens Dialog = new()
@@ -815,6 +821,7 @@ public class MaterialDesignTokens
         Radius = "var(--flare-shape-extra-small)",
         BorderColor = "var(--flare-color-outline-variant)",
         ActiveColor = "var(--flare-color-primary)",
+        BtnDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // Switch (MD3 baseline geometry: 52x32 track, 24 thumb, elevation-1 lift). Carried explicitly
@@ -924,6 +931,7 @@ public class MaterialDesignTokens
     {
         FocusRingWidth = "2px",
         HoverOpacity = "0.8",
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     internal static readonly OtpTokens Otp = new()

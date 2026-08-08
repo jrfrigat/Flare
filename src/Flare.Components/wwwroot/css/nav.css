@@ -158,7 +158,7 @@
 }
 
 .flare-nav-link--disabled {
-  opacity: var(--flare-state-disabled-opacity);
+  opacity: var(--flare-nav-link-disabled-opacity);
   pointer-events: none;
 }
 

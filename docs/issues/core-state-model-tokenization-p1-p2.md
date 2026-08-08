@@ -167,13 +167,20 @@ what that cost and what else it bought. Their disabled opacity is now a token li
 because those three were being rewritten anyway they also moved to the state-layer model, which is
 P3's job (below) rather than this one's.
 
-**Remaining: six selectors still force opacity** in `surfaces.css` - nav link, tabs, tab scroll,
-pagination button, link, bottom-nav item. All six have token records, so each is a one-line member and
-a value per theme; the only reason they are not done is that they were not in the way. Note the return
-is modest either way: the rule does not disappear, it loses one declaration of two.
+**P2 IS DONE (0.14.0).** The remaining six in `surfaces.css` - nav link, tab, tab scroll, pagination
+button, link, bottom-nav item - plus the two that were never in scope, `fields.css` and `slider.css`,
+all took a `DisabledOpacity` member. **`grep "opacity: 1 !important" src/Flare.Theme.*` now returns
+nothing.** Fluent UI 2 needed twelve selectors' worth of it to undo a fade the core applied on its
+behalf; that is all gone.
 
-Also still open: `fields.css` and `slider.css` force opacity the same way and were never in this
-issue's scope.
+Measured across all six in-box themes with the disabled classes applied: Material 0.38, Aero 0.4,
+Liquid Glass 0.35, Fluent UI 2 and Visual Studio 1 with their own disabled foreground. The three
+Material-lineage values differing from each other is the point - before, core's single
+`--flare-state-disabled-opacity` was the only answer any of them could give.
+
+What stays in the theme is the disabled foreground colour. It cannot become a token: no CSS value
+means "leave this as painted", and `currentColor` on `color` resolves to the inherited value, so a
+token for it would have to name a colour - which is the theme decision this file exists to hold.
 
 ## P3 - the state-layer sweep (started 0.14.0)
 

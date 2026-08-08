@@ -41,5 +41,5 @@
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
     color: var(--flare-color-on-surface);
 }
-.flare-numericfield__step:disabled { opacity: var(--flare-state-disabled-opacity); cursor: not-allowed; }
+.flare-numericfield__step:disabled { opacity: var(--flare-input-disabled-opacity); cursor: not-allowed; }
 .flare-numericfield__step--up { border-bottom: 1px solid var(--flare-color-outline-variant); }

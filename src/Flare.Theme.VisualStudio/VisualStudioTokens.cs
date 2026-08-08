@@ -249,6 +249,8 @@ internal class VisualStudioTokens
         FilledFg = "var(--flare-color-on-primary)",
         TrackBg = "var(--flare-color-surface-container)",
         PillRadius = "var(--flare-shape-small)",
+        TabDisabledOpacity = "1",
+        ScrollDisabledOpacity = "1",
     };
 
     internal static readonly SliderTokens Slider = FluentUI2Tokens.Design.Slider with
@@ -369,6 +371,7 @@ internal class VisualStudioTokens
         IndicatorRadius = "0",
         ActiveIndicator = "none",
         ActiveLeftBar = "2px solid var(--flare-color-primary)",
+        LinkDisabledOpacity = "1",
     };
 
     /// <summary>Theme-specific extras (VS chrome hooks consumed by the scoped CSS).</summary>
