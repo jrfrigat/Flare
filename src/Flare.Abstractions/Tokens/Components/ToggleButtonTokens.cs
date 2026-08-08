@@ -36,10 +36,26 @@ public sealed record ToggleButtonTokens
     [CssVar(ToggleButton.Gap)] public required string Gap { get; init; }
 
     // --- 4. RADIUS for rest and selected states (morph) ---
-    /// <summary>Corner radius in the unselected state, at every size.</summary>
-    [CssVar(ToggleButton.Radius)] public required string Radius { get; init; }
+    /// <summary>Corner radius in the unselected state at the xs size.</summary>
+    /// <remarks>
+    /// Per size rather than one value for all of them, because a theme whose rest shape is a capsule
+    /// has to express it as half the size's own height. The obvious alternative - the full end of the
+    /// shape scale - is a radius so large the browser clamps it when painting, which looks identical
+    /// standing still but makes the travel to the selected corner invisible until the last moment of
+    /// the animation. A single token cannot pick a height, since it resolves once at the document
+    /// root where no size is in scope.
+    /// </remarks>
+    [CssVar(ToggleButton.Radius.Xs)] public required string RadiusXs { get; init; }
+    /// <summary>Corner radius in the unselected state at the sm size.</summary>
+    [CssVar(ToggleButton.Radius.Sm)] public required string RadiusSm { get; init; }
+    /// <summary>Corner radius in the unselected state at the md size.</summary>
+    [CssVar(ToggleButton.Radius.Md)] public required string RadiusMd { get; init; }
+    /// <summary>Corner radius in the unselected state at the lg size.</summary>
+    [CssVar(ToggleButton.Radius.Lg)] public required string RadiusLg { get; init; }
+    /// <summary>Corner radius in the unselected state at the xl size.</summary>
+    [CssVar(ToggleButton.Radius.Xl)] public required string RadiusXl { get; init; }
     /// <summary>Corner radius in the selected state at the xs size. A theme that signals selection with
-    /// colour alone sets this to the same value as <see cref="Radius"/>; a theme that morphs the shape on
+    /// colour alone sets this to the same value as the rest radius; a theme that morphs the shape on
     /// selection makes them differ.</summary>
     [CssVar(ToggleButton.RadiusSelected.Xs)] public required string RadiusSelectedXs { get; init; }
     /// <summary>Corner radius in the selected state at the sm size.</summary>

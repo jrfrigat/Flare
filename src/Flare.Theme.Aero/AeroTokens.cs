@@ -43,6 +43,10 @@ internal class AeroTokens
         Large = "4px",
         ExtraLarge = "6px",
         Full = "9999px",
+
+        // Aero reacts with glow and gloss; its containers keep one shape throughout.
+        MorphDuration = "0s",
+        MorphEasing = "cubic-bezier(0, 0, 0, 1)",
     };
 
     // Snappy, short transitions - the quick hover fades of the Aero era.
@@ -118,10 +122,6 @@ internal class AeroTokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
-
-        // Aero buttons keep one shape throughout; the glow carries the interaction, not the geometry.
-        ShapeMorphDuration = "0s",
-        ShapeMorphEasing = "cubic-bezier(0, 0, 0, 1)",
         GapXs = "0.1875rem",
         GapSm = "0.25rem",
         GapMd = "0.375rem",

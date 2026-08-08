@@ -36,8 +36,20 @@ public static class ToggleButton
     /// <summary>CSS custom-property name for the gap token.</summary>
     public const string Gap = "--flare-toggle-btn-gap";
 
-    /// <summary>CSS custom-property name for the radius token.</summary>
-    public const string Radius = "--flare-toggle-btn-radius";
+    /// <summary>Rest-state radius per size.</summary>
+    public static class Radius
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-toggle-btn-radius-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-toggle-btn-radius-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-toggle-btn-radius-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-toggle-btn-radius-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-toggle-btn-radius-xl";
+    }
 
     /// <summary>Selected-state (morph) radius per size.</summary>
     public static class RadiusSelected

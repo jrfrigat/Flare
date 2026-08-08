@@ -48,6 +48,10 @@ internal static class MaterialDesign2Tokens
         Large = "8px",
         ExtraLarge = "8px",
         Full = "9999px",
+
+        // Shape morphing arrived with Material 3 Expressive; Material 2 containers keep their corners.
+        MorphDuration = "0s",
+        MorphEasing = "cubic-bezier(0.4, 0, 0.2, 1)",
     };
 
     // ---- Elevation: the canonical Material Design 2 dp box-shadows (fixed black alphas). ----
@@ -111,10 +115,6 @@ internal static class MaterialDesign2Tokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
-
-        // Shape morphing arrived with Material 3 Expressive; Material 2 buttons keep their corners.
-        ShapeMorphDuration = "0s",
-        ShapeMorphEasing = "cubic-bezier(0.4, 0, 0.2, 1)",
         HeightXs = "1.75rem",  // 28dp
         HeightSm = "2rem",     // 32dp
         HeightMd = "2.25rem",  // 36dp (classic MD2 contained button)

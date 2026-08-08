@@ -40,6 +40,13 @@ public class MaterialDesignTokens
         Large = "16px",
         ExtraLarge = "28px",
         Full = "9999px",
+
+        // Expressive reshapes its components as you interact with them - a button is a pill at rest,
+        // a softer rectangle on hover and a tighter corner when pressed; a toggle button rounds into
+        // a squircle on selection. This theme is therefore the one that turns the corner travel on,
+        // and it rides the fast spring because a corner change is a spatial move.
+        MorphDuration = "var(--flare-motion-duration-spring-fast)",
+        MorphEasing = "var(--flare-motion-easing-spring-fast)",
     };
 
     // Geometry only; shadow color comes from the active ColorScheme via
@@ -136,12 +143,6 @@ public class MaterialDesignTokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
-
-        // Expressive reshapes its buttons as you interact with them - pill at rest, a softer
-        // rectangle on hover, a tighter corner when pressed - so this theme is the one that turns
-        // the corner travel on. It rides the fast spring, since a corner change is a spatial move.
-        ShapeMorphDuration = "var(--flare-motion-duration-spring-fast)",
-        ShapeMorphEasing = "var(--flare-motion-easing-spring-fast)",
         // 5 gap sizes (Gap) between text and icon
         // XS/S - height matches the MD3 spec -> gap = spec (8dp);
         // M=8 matches; L/XL - adapted to the reduced height.
@@ -260,7 +261,16 @@ public class MaterialDesignTokens
         PaddingMd = "1rem",
         PaddingLg = "1.5rem",
         Gap = "0.375rem",
-        Radius = "var(--flare-shape-full)",
+        // A capsule, expressed as half the size's own height rather than through Shape.Full, for the
+        // same reason the button's radii are: 9999px is clamped when painted, so the round ->
+        // squircle travel on selection would show nothing until the value crossed the clamp and would
+        // arrive as a snap. Per size because a single token resolves once at the document root, where
+        // no size is in scope.
+        RadiusXs = "calc(var(--flare-toggle-btn-height-xs) / 2)",
+        RadiusSm = "calc(var(--flare-toggle-btn-height-sm) / 2)",
+        RadiusMd = "calc(var(--flare-toggle-btn-height-md) / 2)",
+        RadiusLg = "calc(var(--flare-toggle-btn-height-lg) / 2)",
+        RadiusXl = "calc(var(--flare-toggle-btn-height-xl) / 2)",
         RadiusSelectedXs = "var(--flare-shape-small)",
         RadiusSelectedSm = "var(--flare-shape-medium)",
         RadiusSelectedMd = "var(--flare-shape-medium)",

@@ -11,10 +11,6 @@ public static class Button
     public const string ContainerRadius = "--flare-btn-radius";
     /// <summary>CSS custom-property name for the text padding inline token.</summary>
     public const string TextPaddingInline = "--flare-btn-text-padding-inline";
-    /// <summary>CSS custom-property name for the shape morph duration token.</summary>
-    public const string ShapeMorphDuration = "--flare-btn-shape-morph-duration";
-    /// <summary>CSS custom-property name for the shape morph easing token.</summary>
-    public const string ShapeMorphEasing = "--flare-btn-shape-morph-easing";
     /// <summary>Per-corner button radii, addressable by size and side.</summary>
     public static class Radius
     {

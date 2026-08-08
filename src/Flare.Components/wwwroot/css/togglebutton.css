@@ -13,7 +13,7 @@
     justify-content: center;
     gap: var(--flare-toggle-btn-gap);
     border: none;
-    border-radius: var(--flare-toggle-btn-radius);
+    border-radius: var(--flare-toggle-btn-radius-md);
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -26,10 +26,14 @@
     letter-spacing: var(--flare-typescale-label-large-spacing);
     background: var(--flare-toggle-btn-rest-bg);
     color: var(--flare-toggle-btn-rest-color);
+    /* The round -> squircle travel on selection is the same journey the button makes, so it reads the
+       same library-wide token instead of naming a duration here - which is what let this component
+       morph under a theme whose buttons deliberately do not. */
+    --_morph-duration: var(--flare-shape-morph-duration);
     transition:
         background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
         color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),
-        border-radius var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard);
+        border-radius var(--_morph-duration) var(--flare-shape-morph-easing);
 }
 
 /* State layer */
@@ -58,7 +62,9 @@
 
 /* Pressed/active (selected) - the round -> squircle shape morph is driven by a size token. The local
    --_toggle-radius-selected var is switched by the size classes below. */
-.flare-toggle-btn--pressed {
+/* Doubled class so the selected radius outranks the size classes below, which now carry the rest
+   radius at the same single-class specificity and would otherwise win on source order. */
+.flare-toggle-btn.flare-toggle-btn--pressed {
     /* Color (role class / inline) sets --fc-container/--fc-on-container; default keeps the theme token. */
     background: var(--fc-container, var(--flare-toggle-btn-selected-bg));
     color: var(--fc-on-container, var(--flare-toggle-btn-selected-color));
@@ -79,17 +85,20 @@
     padding: 0 var(--flare-toggle-btn-padding-sm);
     font-size: 0.8125rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-sm);
+    border-radius: var(--flare-toggle-btn-radius-sm);
 }
 .flare-toggle-btn--md {
     height: var(--flare-toggle-btn-height-md);
     padding: 0 var(--flare-toggle-btn-padding-md);
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-md);
+    border-radius: var(--flare-toggle-btn-radius-md);
 }
 .flare-toggle-btn--lg {
     height: var(--flare-toggle-btn-height-lg);
     padding: 0 var(--flare-toggle-btn-padding-lg);
     font-size: 1rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-lg);
+    border-radius: var(--flare-toggle-btn-radius-lg);
 }
 
 .flare-toggle-btn--xs {
@@ -97,6 +106,7 @@
     padding: 0 var(--flare-toggle-btn-padding-xs);
     font-size: 0.75rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xs);
+    border-radius: var(--flare-toggle-btn-radius-xs);
 }
 
 .flare-toggle-btn--xl {
@@ -104,6 +114,7 @@
     padding: 0 var(--flare-toggle-btn-padding-xl);
     font-size: 1.125rem;
     --_toggle-radius-selected: var(--flare-toggle-btn-radius-selected-xl);
+    border-radius: var(--flare-toggle-btn-radius-xl);
 }
 
 /* Icon-only - square */
@@ -186,4 +197,10 @@
 .flare-togglegroup > .flare-toggle-btn--pressed {
     background: var(--fc-container, var(--flare-toggle-btn-selected-bg));
     color: var(--fc-on-container, var(--flare-toggle-btn-selected-color));
+}
+
+/* Same reasoning as the button: the corner travel is movement, so a reduced-motion preference
+   suppresses it while the colour change stays. */
+@media (prefers-reduced-motion: reduce) {
+    .flare-toggle-btn { --_morph-duration: 0s; }
 }

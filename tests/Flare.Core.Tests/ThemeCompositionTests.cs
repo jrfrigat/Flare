@@ -29,7 +29,7 @@ public class ThemeCompositionTests
             LabelMedium = T(),
             LabelSmall = T(),
         },
-        Shape = new() { None = "0", ExtraSmall = "4px", Small = "8px", Medium = "12px", Large = "16px", ExtraLarge = "28px", Full = "9999px" },
+        Shape = new() { None = "0", ExtraSmall = "4px", Small = "8px", Medium = "12px", Large = "16px", ExtraLarge = "28px", Full = "9999px", MorphDuration = "0s", MorphEasing = "ease" },
         Elevation = new()
         {
             Level0 = "none",

@@ -159,7 +159,9 @@ public class TokenParityTests
                 Medium = "8px",
                 Large = "12px",
                 ExtraLarge = "16px",
-                Full = "9999px"
+                Full = "9999px",
+                MorphDuration = "0s",
+                MorphEasing = "ease"
             },
             Elevation = new ElevationTokens
             {

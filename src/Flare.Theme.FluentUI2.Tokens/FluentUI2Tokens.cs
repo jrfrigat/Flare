@@ -44,6 +44,10 @@ public class FluentUI2Tokens
         Large = "8px",
         ExtraLarge = "12px",
         Full = "9999px",
+
+        // Fluent 2 holds a constant corner in every state - the fill changes, the shape does not.
+        MorphDuration = "0s",
+        MorphEasing = "cubic-bezier(0.1, 0.9, 0.2, 1)",
     };
 
     // Fluent 2 motion: the durationUltraFast..durationUltraSlow ramp and the named curves
@@ -125,10 +129,6 @@ public class FluentUI2Tokens
         LoadingOpacity = "0.8",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
-
-        // Fluent 2 buttons hold a constant 4dp corner in every state - the fill changes, the shape does not.
-        ShapeMorphDuration = "0s",
-        ShapeMorphEasing = "cubic-bezier(0.1, 0.9, 0.2, 1)",
         // Compact gaps (Gap) between text and the Microsoft icon
         GapXs = "0.125rem",        // 2px
         GapSm = "0.25rem",         // 4px
@@ -234,7 +234,11 @@ public class FluentUI2Tokens
         Gap = "0.375rem",
         // Fluent segmented control: subtle rounded rectangle, and the selected state changes colour
         // only (no MD3 Expressive pill->squircle shape morph, so RadiusSelected* == Radius).
-        Radius = "var(--flare-shape-small)",
+        RadiusXs = "var(--flare-shape-small)",
+        RadiusSm = "var(--flare-shape-small)",
+        RadiusMd = "var(--flare-shape-small)",
+        RadiusLg = "var(--flare-shape-small)",
+        RadiusXl = "var(--flare-shape-small)",
         RadiusSelectedXs = "var(--flare-shape-small)",
         RadiusSelectedSm = "var(--flare-shape-small)",
         RadiusSelectedMd = "var(--flare-shape-small)",

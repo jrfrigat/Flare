@@ -40,15 +40,17 @@
     line-height: var(--flare-btn-label-md-height);
     letter-spacing: var(--flare-btn-label-md-spacing);
     /* UNIFIED TRANSITION: controls the visuals and all 4 corners.
-       The corner travel is here but its duration is the theme's: --flare-btn-shape-morph-duration
-       decides whether a design language reshapes its buttons on interaction at all, and a theme that
-       does not sets it to 0s, which leaves each state's corners simply applying. This used to be a
+       The corner travel is here but its duration is the theme's: --flare-shape-morph-duration
+       decides whether a design language reshapes its components on interaction at all, and a theme
+       that does not parks it at an instant, leaving each state's corners simply applying. The token
+       is library-wide rather than button-specific because the toggle button and the split button
+       make the same journey, and it is one statement per design language. This used to be a
        component parameter, which meant the theme could not deliver its own specified behaviour
        without every call site opting in. The old worry - that animating radii would morph geometry
        on a theme SWITCH - does not apply: a switch replaces the token itself, and a token change is
        not an interpolated transition. */
-    --_morph-duration: var(--flare-btn-shape-morph-duration);
-    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-radius var(--_morph-duration) var(--flare-btn-shape-morph-easing);
+    --_morph-duration: var(--flare-shape-morph-duration);
+    transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-radius var(--_morph-duration) var(--flare-shape-morph-easing);
     /* Reserve 1px for the border on all buttons so a bordered variant never shifts layout */
     border: 1px solid transparent;
 }

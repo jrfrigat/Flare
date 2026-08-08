@@ -17,4 +17,9 @@ public static class Shape
     public const string ExtraLarge = "--flare-shape-extra-large";
     /// <summary>CSS custom-property name for the full token.</summary>
     public const string Full = "--flare-shape-full";
+
+    /// <summary>CSS custom-property name for the shape morph duration token.</summary>
+    public const string MorphDuration = "--flare-shape-morph-duration";
+    /// <summary>CSS custom-property name for the shape morph easing token.</summary>
+    public const string MorphEasing = "--flare-shape-morph-easing";
 }

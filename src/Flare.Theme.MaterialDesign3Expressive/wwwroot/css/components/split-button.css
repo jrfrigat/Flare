@@ -14,7 +14,7 @@
    the responsiveness back without the flatness, since most of its travel is over early and only the
    settle occupies the tail. */
 .flare-split-btn .flare-split-btn__trigger.flare-btn {
-    transition: border-radius var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
+    transition: border-radius var(--flare-shape-morph-duration) var(--flare-shape-morph-easing), padding-inline var(--flare-motion-duration-short1, 50ms) var(--flare-motion-easing-standard);
 }
 
 /* ==========================================================================

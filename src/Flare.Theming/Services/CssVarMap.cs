@@ -53,6 +53,8 @@ public static class CssVarMap
         v[Css.Tokens.Shape.Large] = t.Shape.Large;
         v[Css.Tokens.Shape.ExtraLarge] = t.Shape.ExtraLarge;
         v[Css.Tokens.Shape.Full] = t.Shape.Full;
+        v[Css.Tokens.Shape.MorphDuration] = t.Shape.MorphDuration;
+        v[Css.Tokens.Shape.MorphEasing] = t.Shape.MorphEasing;
 
         // Spacing scale (padding/margin/gap)
         v[Css.Tokens.Spacing.S0] = t.Spacing.S0;
@@ -156,8 +158,6 @@ public static class CssVarMap
         v[Css.Tokens.Button.LoadingOpacity] = t.Button.LoadingOpacity;
         v[Css.Tokens.Button.ContainerRadius] = t.Button.ContainerRadius;
         v[Css.Tokens.Button.TextPaddingInline] = t.Button.TextPaddingInline;
-        v[Css.Tokens.Button.ShapeMorphDuration] = t.Button.ShapeMorphDuration;
-        v[Css.Tokens.Button.ShapeMorphEasing] = t.Button.ShapeMorphEasing;
         v[Css.Tokens.Button.Gap.Sm] = t.Button.GapSm;
         v[Css.Tokens.Button.Gap.Md] = t.Button.GapMd;
         v[Css.Tokens.Button.Gap.Lg] = t.Button.GapLg;
@@ -318,7 +318,11 @@ public static class CssVarMap
         v[Css.Tokens.ToggleButton.Padding.Lg] = t.ToggleButton.PaddingLg;
 
         v[Css.Tokens.ToggleButton.Gap] = t.ToggleButton.Gap;
-        v[Css.Tokens.ToggleButton.Radius] = t.ToggleButton.Radius;
+        v[Css.Tokens.ToggleButton.Radius.Xs] = t.ToggleButton.RadiusXs;
+        v[Css.Tokens.ToggleButton.Radius.Sm] = t.ToggleButton.RadiusSm;
+        v[Css.Tokens.ToggleButton.Radius.Md] = t.ToggleButton.RadiusMd;
+        v[Css.Tokens.ToggleButton.Radius.Lg] = t.ToggleButton.RadiusLg;
+        v[Css.Tokens.ToggleButton.Radius.Xl] = t.ToggleButton.RadiusXl;
 
         v[Css.Tokens.ToggleButton.RadiusSelected.Xs] = t.ToggleButton.RadiusSelectedXs;
         v[Css.Tokens.ToggleButton.RadiusSelected.Sm] = t.ToggleButton.RadiusSelectedSm;
