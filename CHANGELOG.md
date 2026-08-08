@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.12.2] - 2026-08-08
+## [0.13.0] - 2026-08-08
 
 ### Added
 - **A theme can now state its own interaction model for the button, instead of overriding the core.**
