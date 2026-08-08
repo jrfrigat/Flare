@@ -1719,6 +1719,15 @@
   <data name="Slider_Zones" xml:space="preserve">
     <value>Цветные зоны</value>
   </data>
+  <data name="Slider_Scrubber" xml:space="preserve">
+    <value>Перемотка медиа</value>
+  </data>
+  <data name="Slider_Scrubber_Hint" xml:space="preserve">
+    <value>Полоса перемотки плеера без второго компонента: HandleOnHover убирает ползунок с глаз, пока к нему не тянутся, зона рисует буферизованный диапазон, а MouseWheel перематывает колесом. Ползунок скрывается только там, где указатель умеет наводиться: на тач-устройствах он остаётся на месте и из порядка обхода не уходит никогда.</value>
+  </data>
+  <data name="Slider_Scrubber_Buffered" xml:space="preserve">
+    <value>буферизовано</value>
+  </data>
   <data name="Meter_Title" xml:space="preserve">
     <value>Индикатор (Meter)</value>
   </data>

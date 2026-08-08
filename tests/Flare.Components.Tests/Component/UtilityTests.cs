@@ -606,6 +606,32 @@ public class C_FlareSliderTests : FlareTestContext
     }
 
     [Fact]
+    public void HandleOnHover_MarksTheRootAndKeepsTheControlReachable()
+    {
+        var cut = Render<FlareSlider>(p => p
+            .Add(x => x.HandleOnHover, true)
+            .Add(x => x.Value, 40.0));
+
+        Assert.Contains("flare-slider--handle-on-hover", cut.Find(".flare-slider").ClassName);
+
+        // Only the handle's paint is hidden. The control must keep everything that makes it
+        // operable, or a seek bar becomes unreachable by keyboard and silent to a screen reader.
+        var input = cut.Find("input[type='range']");
+        Assert.Null(input.GetAttribute("disabled"));
+        Assert.Null(input.GetAttribute("tabindex"));   // still in the natural tab order
+        // A native range reports its value from the attribute itself, not from aria-valuenow.
+        Assert.Equal("40", input.GetAttribute("value"));
+    }
+
+    [Fact]
+    public void NoHandleOnHover_ByDefault()
+    {
+        var cut = Render<FlareSlider>(p => p.Add(x => x.Value, 40.0));
+
+        Assert.DoesNotContain("handle-on-hover", cut.Find(".flare-slider").ClassName);
+    }
+
+    [Fact]
     public void Range_SetsBothPctVars()
     {
         var cut = Render<FlareSlider>(p => p

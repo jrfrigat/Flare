@@ -1,0 +1,38 @@
+@inherits LocalizedPage
+
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:32rem;">
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @GalleryStrings.Slider_Scrubber_Hint
+    </FlareText>
+
+    @* A player seek bar out of the plain slider: the buffered band is a zone, the wheel seeks, and
+       the handle stays out of the way until you reach for it. *@
+    <FlareSlider @bind-Value="_played" Min="0" Max="100" Size="TrackSize.Xs"
+                 HandleOnHover MouseWheel AriaLabel="@GalleryStrings.Slider_Scrubber">
+        <Zones>
+            <FlareZone Start="0" End="@_buffered" Color="FlareColor.OnSurfaceVariant" />
+        </Zones>
+    </FlareSlider>
+
+    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">
+            @Format(_played) / @Format(100)
+        </FlareText>
+        <FlareText Typo="TypographyScale.LabelSmall" Color="FlareColor.OnSurfaceVariant">
+            &middot; @GalleryStrings.Slider_Scrubber_Buffered: @Format(_buffered)
+        </FlareText>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private double _played = 34;
+    private double _buffered = 62;
+
+    // The demo's scale is a percentage; render it as a clock so it reads as a seek bar.
+    private static string Format(double pct)
+    {
+        var total = TimeSpan.FromMinutes(4.5);
+        var at = TimeSpan.FromSeconds(total.TotalSeconds * pct / 100.0);
+        return $"{(int)at.TotalMinutes}:{at.Seconds:00}";
+    }
+}

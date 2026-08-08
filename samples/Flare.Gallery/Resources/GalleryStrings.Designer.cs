@@ -7387,6 +7387,33 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Media scrubber.
+        /// </summary>
+        public static string Slider_Scrubber {
+            get {
+                return ResourceManager.GetString("Slider_Scrubber", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A player seek bar without a second component.
+        /// </summary>
+        public static string Slider_Scrubber_Hint {
+            get {
+                return ResourceManager.GetString("Slider_Scrubber_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на buffered.
+        /// </summary>
+        public static string Slider_Scrubber_Buffered {
+            get {
+                return ResourceManager.GetString("Slider_Scrubber_Buffered", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Colored zones.
         /// </summary>
         public static string Progress_Zones {

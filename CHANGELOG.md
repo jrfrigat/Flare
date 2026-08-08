@@ -5,6 +5,14 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.12.2] - 2026-08-08
 
+### Added
+- **`FlareSlider.HandleOnHover` turns the slider into a media scrubber.** A seek bar was expressible
+  already - a zone paints the buffered range, `MouseWheel` seeks - but the handle sat there at rest,
+  so it never looked like one and apps hand-rolled a raw `<input type="range">` instead. The handle
+  now stays hidden until the control is hovered, focused or dragged. Only its paint is hidden: the hit
+  area, the tab order and the reported value are untouched, and where the pointer cannot hover the
+  handle stays visible rather than leaving a bar nobody can grab.
+
 ### Fixed
 - **The radio ring reads focus tokens, like every other selection control.** Its focus indicator was
   a literal in the core stylesheet - 2px primary - while the checkbox and the switch drew theirs from

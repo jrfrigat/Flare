@@ -492,3 +492,36 @@
     .flare-slider__input:focus-visible::-webkit-slider-thumb { outline: 2px solid ButtonText; }
     .flare-slider__input:focus-visible::-moz-range-thumb { outline: 2px solid ButtonText; }
 }
+
+/* ==========================================================================
+   SCRUBBER (HandleOnHover): the handle is hidden until the control is hovered or focused, the way a
+   media player's seek bar behaves. Only the PAINT is hidden - the input keeps its full size, so the
+   hit area never shrinks below the touch target, the control stays in the tab order, and a screen
+   reader still gets the value. That is the difference between hiding a handle and removing one.
+
+   Gated on a fine pointer: a touch user has no hover with which to reveal it, so on a coarse pointer
+   the handle simply stays visible rather than leaving a bar nobody can grab.
+   ========================================================================== */
+@media (hover: hover) {
+    .flare-slider--handle-on-hover .flare-slider__input::-webkit-slider-thumb {
+        opacity: 0;
+        transition: width var(--flare-motion-duration-short2),
+                    box-shadow var(--flare-motion-duration-short2),
+                    opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    }
+    .flare-slider--handle-on-hover .flare-slider__input::-moz-range-thumb {
+        opacity: 0;
+        transition: width var(--flare-motion-duration-short2),
+                    box-shadow var(--flare-motion-duration-short2),
+                    opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+    }
+
+    /* Revealed by hovering the track, by keyboard focus, and while dragging - a drag that leaves the
+       track vertically must not make the handle vanish mid-gesture. */
+    .flare-slider--handle-on-hover:hover .flare-slider__input::-webkit-slider-thumb,
+    .flare-slider--handle-on-hover .flare-slider__input:focus::-webkit-slider-thumb,
+    .flare-slider--handle-on-hover .flare-slider__input:active::-webkit-slider-thumb { opacity: 1; }
+    .flare-slider--handle-on-hover:hover .flare-slider__input::-moz-range-thumb,
+    .flare-slider--handle-on-hover .flare-slider__input:focus::-moz-range-thumb,
+    .flare-slider--handle-on-hover .flare-slider__input:active::-moz-range-thumb { opacity: 1; }
+}

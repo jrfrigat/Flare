@@ -7,6 +7,8 @@ public static class Slider
     public const string Root = "flare-slider";
     /// <summary>The <c>flare-slider--disabled</c> CSS class.</summary>
     public const string Disabled = "flare-slider--disabled";
+    /// <summary>The <c>flare-slider--handle-on-hover</c> CSS class.</summary>
+    public const string HandleOnHover = "flare-slider--handle-on-hover";
     /// <summary>The <c>flare-slider__label-row</c> CSS class.</summary>
     public const string LabelRow = "flare-slider__label-row";
     /// <summary>The <c>flare-slider__label</c> CSS class.</summary>

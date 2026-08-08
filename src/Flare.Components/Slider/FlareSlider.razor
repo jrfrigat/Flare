@@ -4,7 +4,7 @@
 @using System.Globalization
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="@BuildCssClass(_sizeClass, _disabledClass, _steppedClass, _indicatorClass, _colorClass, _verticalClass, _rangeClass, _marksClass)" style="@_rootStyle" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_sizeClass, _disabledClass, _steppedClass, _indicatorClass, _colorClass, _verticalClass, _rangeClass, _marksClass, _handleOnHoverClass)" style="@_rootStyle" @attributes="AdditionalAttributes">
     @if (!string.IsNullOrEmpty(Label) || (ShowValue && Range))
     {
         <div class="@Css.Classes.Slider.LabelRow">
@@ -187,6 +187,17 @@
     /// neither handle can cross the other. No effect when <see cref="Disabled"/>.
     /// </summary>
     [Parameter] public bool MouseWheel { get; set; }
+    /// <summary>
+    /// Hides the handle until the slider is hovered or focused, the way a media player's seek bar
+    /// behaves. Only the handle's paint is hidden: the control keeps its full hit area, stays in the
+    /// tab order and still reads its value, so nothing about reaching it changes.
+    /// </summary>
+    /// <remarks>
+    /// Ignored where the pointer cannot hover - a touch user has no way to reveal the handle, so on a
+    /// coarse pointer it stays visible. Combine with <c>Zones</c> for a buffered band and
+    /// <see cref="MouseWheel"/> for wheel-to-seek to get a player scrubber out of the plain slider.
+    /// </remarks>
+    [Parameter] public bool HandleOnHover { get; set; }
     /// <summary>Label text displayed above the slider.</summary>
     [Parameter] public string? Label { get; set; }
     /// <summary>Accessible label used when no visible <see cref="Label"/> is provided.</summary>
@@ -214,6 +225,7 @@
     private string _verticalClass => Vertical ? Css.Classes.Slider.Vertical : string.Empty;
     private string _rangeClass => Range ? Css.Classes.Slider.Range : string.Empty;
     private string _marksClass => _marks.Count > 0 ? Css.Classes.Slider.WithMarks : string.Empty;
+    private string _handleOnHoverClass => HandleOnHover ? Css.Classes.Slider.HandleOnHover : string.Empty;
 
     // Accent color: role -> shared flare-color-* class (sets --fc-main); custom -> inline --fc-main.
     private string _colorClass => Color.CssClass ?? string.Empty;
