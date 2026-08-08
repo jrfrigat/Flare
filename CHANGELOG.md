@@ -15,6 +15,10 @@ All notable changes to Flare are documented here. This project adheres to
   button underneath: each variant assigns the layer tokens instead. Identical pixels - the black
   overlay and the old darkened repaint agree to 0.0001 per channel - with the difference now living
   in token values, which is the point.
+  The menu item followed in the same release, which leaves the FluentUI2 theme with no state-layer
+  suppressions at all. List, tab and listbox items keep a one-line hover override each: they paint
+  their hover straight onto the element rather than through a state layer, so there is no token to
+  assign - recorded in the issue as an accepted coupling rather than swept.
 
 - **`FlareSlider.HandleOnHover` turns the slider into a media scrubber.** A seek bar was expressible
   already - a zone paints the buffered range, `MouseWheel` seeks - but the handle sat there at rest,
@@ -24,7 +28,7 @@ All notable changes to Flare are documented here. This project adheres to
   handle stays visible rather than leaving a bar nobody can grab.
 
 ### Fixed
-- **The button's label sits above its state layer.** The layer is an absolutely positioned
+- **The button and menu item labels sit above their state layer.** The layer is an absolutely positioned
   `::before`, so it painted over the label; that only ever went unnoticed because every state layer
   so far was translucent. A theme whose states are opaque fills would have covered its own text.
 - **The radio ring reads focus tokens, like every other selection control.** Its focus indicator was

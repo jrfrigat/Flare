@@ -65,6 +65,15 @@
     opacity: 1;
 }
 
+/* Hovered AND focused at once - the one pairing the design languages disagree about, so the theme
+   names the answer rather than the core's rule order deciding it. :not(:active) keeps the pressed
+   rule below in charge, which this selector would otherwise outrank. */
+.flare-menu-item:hover:focus-visible:not(:disabled):not(:active)::before,
+.flare-menu-item:hover.flare-menu-item--focused:not(:disabled):not(:active)::before {
+    background: var(--flare-state-focus-hover-layer);
+    opacity: 1;
+}
+
 .flare-menu-item:active:not(:disabled)::before {
     background: var(--flare-state-pressed-layer);
     opacity: 1;
@@ -84,6 +93,14 @@
     color: var(--fc-main, var(--flare-color-on-surface-variant));
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     flex-shrink: 0;
+}
+
+/* Above the state layer. The layer is an absolutely positioned ::before, so it paints over in-flow
+   content; that went unnoticed while every layer was translucent, but a theme whose states are
+   opaque fills would cover the item's own text. Same reasoning as the button's label. */
+.flare-menu-item__label,
+.flare-icon.flare-menu-item__icon {
+    position: relative;
 }
 
 .flare-menu-item__label {

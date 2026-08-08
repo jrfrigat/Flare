@@ -96,9 +96,15 @@ REMAINING P1:
    mandate-allowed, so this is a different and much weaker coupling than the `currentColor` overlay
    the issue was opened about - and sweeping 25 files would put the whole library's hover paint
    through one channel for little gain. Decide explicitly rather than leaving it open.
-2. **Still to do for the rest of Pattern A**: menuitem and togglebutton carry the same
-   suppress-and-repaint shape in FluentUI2's `controls.css` / `surfaces.css` (1 suppression left
-   there). Same recipe as the button, one component at a time.
+2. **Pattern A is now COMPLETE (0.12.2).** The menu item followed the button's recipe - its variants
+   assign the layer tokens in FluentUI2's `surfaces.css` and the suppression is gone - and it needed
+   the same two supporting changes: the focus-while-hovered pairing rule, and positioning its label
+   and icon above the layer, since Fluent's subtle greys are opaque and would otherwise have covered
+   the item's own text.
+
+   An earlier note here claimed the toggle button carried the same shape. It does not: FluentUI2
+   never overrode its state layer, only its disabled state, so it already ran on the theme's tokens.
+   **There are now zero `opacity: 0 !important` suppressions anywhere in the FluentUI2 theme.**
 2. FluentUI2 discretisation: set FUI2's `-layer` tokens to its discrete subtle fills (globally and/or
    per-variant, e.g. `.flare-btn--filled { --flare-state-hover-layer: <darkened brand> }`), at effectively
    opacity 1. `currentColor` in a custom prop resolves at the `::before` use-site, so MD3 stays correct.

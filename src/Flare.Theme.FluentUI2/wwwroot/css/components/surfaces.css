@@ -6,12 +6,19 @@
    ========================================================================== */
 @scope (.flare-theme-fluent2) to (.flare-root:not(.flare-theme-fluent2)) {
 
-    /* Subtle hover/pressed: discrete neutral fill (colorSubtleBackgroundHover/Pressed) instead of
-       the translucent currentColor state layer. surface-container-low/high map to the subtle greys. */
-    .flare-menu-item:hover:not(:disabled)::before,
-    .flare-menu-item:active:not(:disabled)::before { opacity: 0 !important; }
-    .flare-menu-item:hover:not(:disabled)  { background-color: var(--flare-fluent-subtle-hover, #F5F5F5); }
-    .flare-menu-item:active:not(:disabled) { background-color: var(--flare-fluent-subtle-pressed, #E0E0E0); }
+    /* Menu item: the discrete neutral fill (colorSubtleBackgroundHover/Pressed) assigned to the core's
+       state-layer tokens, rather than suppressing the layer and repainting the element beneath it.
+       Focus keeps the theme's default layer, which is what it renders today; the pairing token settles
+       focus-while-hovered as the hover fill, since focus here is carried by the item's own ring. */
+    .flare-menu-item {
+        --flare-state-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
+        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+    }
+
+    /* List, tab and listbox items paint their hover straight onto the element - they have no state
+       layer to assign - so these stay element repaints. That is the Pattern B coupling the issue
+       records: cheap here (three one-line overrides), but not free. */
     .flare-list-item--clickable:hover { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
     .flare-tabs__tab:hover:not(:disabled) { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
     .flare-listbox__option:hover { background-color: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
