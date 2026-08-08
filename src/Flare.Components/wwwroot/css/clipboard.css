@@ -1,3 +1,10 @@
 /* FlareClipboard renders a FlareButton, so the button styling (variant/size/gloss) provides the
    box, border, padding and hover. Only the brief copied-state accent lives here. */
-.flare-clipboard--copied { color: var(--flare-color-primary); border-color: var(--flare-color-primary); }
+/* The copied confirmation tints the control, but only where its container is not already carrying a
+   fill. A filled button's foreground is the fill's on-colour, so repainting it primary put a primary
+   check mark on a primary container - the tick was drawn, and invisible. There the icon swap is the
+   confirmation on its own, which is what the state was for. */
+.flare-clipboard--copied:not(.flare-btn--filled) {
+    color: var(--flare-color-primary);
+    border-color: var(--flare-color-primary);
+}

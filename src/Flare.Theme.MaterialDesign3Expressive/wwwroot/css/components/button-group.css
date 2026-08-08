@@ -15,8 +15,19 @@
        (--_flare-btn-height, set by the button's size class), so one rule covers all sizes.
        !important so it overrides the base group's per-corner outer/inner rules on every corner. */
     .flare-btn-group .flare-btn:hover,
-    .flare-btn-group .flare-btn:focus-visible,
-    .flare-btn-group .flare-btn:active {
+    .flare-btn-group .flare-btn:focus-visible {
         border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
+
+    /* Press tightens the segment to the button family's per-size pressed corner (xs/sm 8dp, md 12dp,
+       lg/xl 16dp) rather than holding the capsule. Press used to be listed with hover above, aiming
+       at the same capsule, so pressing a segment the pointer was already over changed nothing; and it
+       could not fall through to the button's own pressed rule, because the capsule's !important
+       outranks it regardless of specificity. Last in the file, so it wins the tie while both states
+       apply. */
+    .flare-btn-group .flare-btn--xs:active,
+    .flare-btn-group .flare-btn--sm:active { border-radius: 0.5rem !important; }
+    .flare-btn-group .flare-btn--md:active { border-radius: 0.75rem !important; }
+    .flare-btn-group .flare-btn--lg:active,
+    .flare-btn-group .flare-btn--xl:active { border-radius: 1rem !important; }
 }

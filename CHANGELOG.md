@@ -3,6 +3,59 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.12.2] - 2026-08-08
+
+### Fixed
+- **The clipboard's copied tick is visible on a filled button.** The copied state tinted the whole
+  control primary, including its foreground - so on a filled primary copy button the tick was drawn
+  primary on a primary container and could not be seen at all. The tint now skips the filled variant,
+  where the foreground belongs to the fill and the icon swap is the confirmation on its own. This was
+  specific to `FlareClipboard`: it is the only component that repaints the foreground of a button root.
+- **The split button and the button group morph on press, not only on hover.** Press was listed
+  alongside hover and aimed at the same capsule, so pressing a half or a segment the pointer was
+  already over changed nothing. It could not fall through to the button's own pressed corner either,
+  because the hover capsule carries `!important` and outranks it whatever its specificity. Both now
+  tighten to the button family's per-size pressed corner - 8dp at xs and sm, 12dp at md, 16dp at lg
+  and xl - the same ramp a single button uses.
+
+## [0.12.1] - 2026-08-08
+
+### Changed
+- **BREAKING: the shape morph is a theme token, and `PressMorph` is gone.** Whether a component
+  reshapes its corners as you interact with it is a property of a design language, not of a call
+  site - MD3 Expressive specifies it, Fluent 2 specifies the opposite - so a component parameter
+  meant no theme could deliver its own behaviour without every usage opting in. `ShapeTokens` gained
+  `MorphDuration` and `MorphEasing`: one pair for the whole library, because reshaping on interaction
+  is a single statement a design language makes. A theme that reshapes gives the travel a duration,
+  one that does not parks it at an instant. The `PressMorph` parameter on `FlareButton`,
+  `FlareIconButton` and `FlareFileUploadButton`, the `flare-btn--morph` class, and the core's
+  pressed-corner values that came with it are all removed - those radii were a theme opinion living
+  in the core. The button, the toggle button, the split button and the button group all read the new
+  pair, so under MD3 Expressive they now morph as its spec always said they should; the other five
+  in-box themes are unchanged.
+- **BREAKING for custom themes: the toggle button's rest radius is per size.**
+  `ToggleButtonTokens.Radius` is replaced by `RadiusXs` through `RadiusXl`. A theme whose toggle
+  button is a capsule has to express that as half the size's own height, and a single token cannot:
+  it resolves once at the document root, where no size is in scope. Themes deriving from an in-box
+  theme are unaffected.
+
+### Fixed
+- **A capsule that animates is half the height, not 9999px.** MD3 Expressive's button and toggle
+  button expressed their rest shape through the full end of the shape scale. The browser clamps a
+  radius that large when it paints, so the pill looked right standing still - but once those corners
+  animated, nothing changed on screen until the interpolated value fell under the clamp, in the last
+  thousandth of the duration. The morph read as a pause and then a jump. Both now use half the size's
+  own height: the same pill, interpolating through values that are actually painted.
+- **The browser no longer draws its own stepper inside a number field.** It appeared regardless of
+  `FlareNumericField.ShowStepper` - two steppers side by side with it on, one the parameter said
+  should not exist with it off. Three components render a number input and only the colour picker had
+  suppressed it, so the DataGrid's numeric filter and the date-time picker's hour and minute boxes
+  carried it too. Nothing is lost: the arrow keys already step the value.
+- **A field's prefix, suffix, clear button and stepper stay inside the field.** A form control's
+  `min-width: auto` resolves to its intrinsic width - about twenty characters - so as a flex item it
+  refused to shrink and pushed whatever followed it past the field's edge, which is how a `kg` suffix
+  ended up outside a numeric field while a shorter `%` happened to fit.
+
 ## [0.12.0] - 2026-08-08
 
 ### Added
@@ -24,23 +77,6 @@ All notable changes to Flare are documented here. This project adheres to
 - **A reduced-motion guard on the switch**, matching the one the button's press morph already had.
 
 ### Changed
-- **BREAKING: the shape morph is a theme token, and `PressMorph` is gone.** Whether a component
-  reshapes its corners as you interact with it is a property of a design language, not of a call
-  site - MD3 Expressive specifies it, Fluent 2 specifies the opposite - so a component parameter
-  meant no theme could deliver its own behaviour without every usage opting in. `ShapeTokens` gained
-  `MorphDuration` and `MorphEasing`: one pair for the whole library, because reshaping on interaction
-  is a single statement a design language makes. A theme that reshapes gives the travel a duration,
-  one that does not parks it at an instant. The `PressMorph` parameter on `FlareButton`,
-  `FlareIconButton` and `FlareFileUploadButton`, the `flare-btn--morph` class, and the core's
-  pressed-corner values that came with it are all removed - those radii were a theme opinion living
-  in the core. The button, the toggle button, the split button and the button group all read the new
-  pair, so under MD3 Expressive they now morph as its spec always said they should; the other five
-  in-box themes are unchanged.
-- **BREAKING for custom themes: the toggle button's rest radius is per size.**
-  `ToggleButtonTokens.Radius` is replaced by `RadiusXs` through `RadiusXl`. A theme whose toggle
-  button is a capsule has to express that as half the size's own height, and a single token cannot:
-  it resolves once at the document root, where no size is in scope. Themes deriving from an in-box
-  theme are unaffected.
 - **BREAKING for custom themes: `MotionTokens` grew six required members** (three spring easings, three
   spring durations). A bespoke theme - one not deriving from an in-box theme - must set them or it will not
   compile. In-box themes and anything built with `with` from them are unaffected. A theme whose language

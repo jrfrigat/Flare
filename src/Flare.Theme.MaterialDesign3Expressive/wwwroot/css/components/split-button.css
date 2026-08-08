@@ -65,16 +65,37 @@
        rest -> full-capsule jump is a clearly visible morph (the previous 8->12dp step read as "no change").
        (0,4,0) beats the scoped rest radius (0,3,0).
        ====================================================================== */
-    .flare-split-btn .flare-split-btn__main.flare-btn:hover,
-    .flare-split-btn .flare-split-btn__main.flare-btn:active {
+    .flare-split-btn .flare-split-btn__main.flare-btn:hover {
         border-top-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
         border-bottom-right-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
     /* Trigger: inner LEFT grows to the full capsule (except the open state - already a full circle). */
-    .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:hover,
-    .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:active {
+    .flare-split-btn:not(.flare-split-btn--open) .flare-split-btn__trigger.flare-btn:hover {
         border-top-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
         border-bottom-left-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
+
+    /* ======================================================================
+       PRESS: the half tightens to the button family's per-size pressed corner on all four sides,
+       the same ramp a single button uses (xs/sm 8dp, md 12dp, lg/xl 16dp).
+
+       Press used to be listed alongside hover above, aiming at the same capsule - so pressing a half
+       that was already hovered changed nothing, and the whole press morph was invisible on a pointer.
+       It also could not fall through to the button's own pressed rule, because the hover capsule
+       carries !important and outranks it whatever its specificity. These rules therefore repeat the
+       ramp rather than deferring to it, and sit last so they win the tie while both states apply.
+       ====================================================================== */
+    .flare-split-btn .flare-split-btn__main.flare-btn--xs:active,
+    .flare-split-btn .flare-split-btn__main.flare-btn--sm:active,
+    .flare-split-btn .flare-split-btn__trigger.flare-btn--xs:active,
+    .flare-split-btn .flare-split-btn__trigger.flare-btn--sm:active { border-radius: 0.5rem !important; }
+
+    .flare-split-btn .flare-split-btn__main.flare-btn--md:active,
+    .flare-split-btn .flare-split-btn__trigger.flare-btn--md:active { border-radius: 0.75rem !important; }
+
+    .flare-split-btn .flare-split-btn__main.flare-btn--lg:active,
+    .flare-split-btn .flare-split-btn__main.flare-btn--xl:active,
+    .flare-split-btn .flare-split-btn__trigger.flare-btn--lg:active,
+    .flare-split-btn .flare-split-btn__trigger.flare-btn--xl:active { border-radius: 1rem !important; }
 }
