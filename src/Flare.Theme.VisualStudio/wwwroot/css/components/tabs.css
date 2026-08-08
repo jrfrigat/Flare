@@ -33,9 +33,15 @@
         color: var(--flare-tabs-inactive-color, var(--flare-color-on-surface-variant));
     }
 
-    /* Hover on an inactive tab: a subtle rounded-top wash that also flows with the strip. */
+    /* Hover on an inactive tab: a subtle rounded-top wash that also flows with the strip. The wash is
+       assigned to the state-layer token rather than painted on the element - the core's layer sits
+       above the element's own background, so painting there would show both. The foreground still
+       changes on :hover, which is a property the layer does not carry. */
+    .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab:not(.flare-tabs__tab--active) {
+        --flare-state-hover-layer: var(--flare-color-surface-container-high);
+    }
+
     .flare-tabs:not(.flare-tabs--vertical):not(.flare-tabs--tonal):not(.flare-tabs--filled):not(.flare-tabs--text):not(.flare-tabs--outlined) .flare-tabs__tab:hover:not(:disabled):not(.flare-tabs__tab--active) {
-        background: var(--flare-color-surface-container-high);
         color: var(--flare-color-on-surface);
     }
 

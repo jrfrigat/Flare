@@ -17,13 +17,18 @@ All notable changes to Flare are documented here. This project adheres to
   transparent standalone control, and a theme is entitled to size and weight them differently.
 
 ### Changed
-- **List rows and expandable headers use the state-layer model.** Their hover was computed in core as
-  `color-mix(on-surface x hover-opacity, surface)` - core deciding what hover *means* for every theme,
-  which is why a language with a discrete neutral fill had to override the whole rule with
-  `!important`. They now carry a `::before` layer painted from `--flare-state-*-layer`, like the button
-  and the menu item, and gain focus, pressed and focus-while-hovered states they did not have. That
-  removed the last `!important` hover override for the list from the Fluent UI 2 theme. Content slots
-  are lifted above the layer, which matters for a theme whose state fills are opaque.
+- **List rows, expandable headers, tabs, tree rows and the DataGrid's chrome use the state-layer
+  model.** Their hover was computed in core as `color-mix(on-surface x hover-opacity, ...)` - core
+  deciding what hover *means* for every theme, which is why a language with a discrete neutral fill
+  had to override the whole rule with `!important`. They now carry a `::before` layer painted from
+  `--flare-state-*-layer`, like the button and the menu item; list rows and expandable headers also
+  gain focus, pressed and focus-while-hovered states they did not have. Three theme overrides moved
+  from repainting the element to naming the layer: Fluent UI 2's `!important` tab wash, Aero's
+  gradient tab hover and Visual Studio's tab wash - Aero's being the proof that the token takes a
+  gradient as readily as a colour. The table's and the DataGrid's **row** hovers are deliberately
+  unchanged: they paint on the cells, whose content is whatever the consumer put there, and a layer
+  over a bare text node needs a per-cell stacking context that would change how a popover inside a
+  cell stacks. Tracked as an issue.
 - **BREAKING for custom themes: four more required token members.** `CheckboxTokens.DisabledOpacity`,
   `RadioTokens.DisabledOpacity`, `MenuTokens.ItemDisabledOpacity` and
   `ToggleButtonTokens.DisabledOpacity`. Each replaces a fade the core used to apply on every theme's

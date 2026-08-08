@@ -33,6 +33,8 @@
 
 /* Overflow scroll arrows (shown by the component only when the bar overflows). */
 .flare-tabs__scroll {
+  position: relative;
+  z-index: 0;
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
@@ -46,10 +48,35 @@
               color var(--flare-motion-duration-short1);
 }
 
-.flare-tabs__scroll:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
-  color: var(--flare-color-on-surface);
+/* State layer for the tab strip's two interactive surfaces. Their hover used to be computed here as
+   `color-mix(on-surface x hover-opacity, transparent)` - core deciding what hover MEANS for every
+   theme, which is why a language with a discrete neutral fill had to override the whole rule with
+   !important. The theme now names the paint and the core only says where it goes.
+
+   Unlike the button and the menu item, the layer sits at z-index -1 rather than above the content
+   with each slot lifted back over it. A tab holds a leading icon, a label, a badge and a close button,
+   and lifting them by name is a list that goes stale the moment a slot is added; putting the layer
+   under the content covers every slot there will ever be, and leaves an absolutely positioned child
+   working. It needs the host to be a stacking context, which is what the z-index:0 above is for. */
+.flare-tabs__scroll::before,
+.flare-tabs__tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
+
+.flare-tabs__scroll:hover:not(:disabled)::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
+}
+
+.flare-tabs__scroll:hover:not(:disabled) { color: var(--flare-color-on-surface); }
 
 .flare-tabs__scroll:disabled {
   opacity: var(--flare-state-disabled-opacity);
@@ -74,6 +101,11 @@
 .flare-tabs--vertical .flare-tabs__bar-wrap { border-bottom: none; flex-direction: column; }
 
 .flare-tabs__tab {
+  /* z-index:0 makes the tab its own stacking context so the state layer below can sit at -1: above
+     the tab's own background, under everything it contains. See the layer rule for why that is
+     preferable here to lifting each slot by name. */
+  position: relative;
+  z-index: 0;
   display: inline-flex;
   align-items: center;
   gap: var(--flare-spacing-4);
@@ -95,8 +127,9 @@
               border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
-.flare-tabs__tab:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+.flare-tabs__tab:hover:not(:disabled)::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 /* Active-tab color (FlareLinkTab reuses this class on its route links). */

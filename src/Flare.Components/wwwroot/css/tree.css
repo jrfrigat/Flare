@@ -12,6 +12,9 @@
 }
 
 .flare-tree-item__row {
+    /* z-index:0 makes the row its own stacking context so the state layer below can sit at -1. */
+    position: relative;
+    z-index: 0;
     display: flex;
     align-items: center;
     gap: var(--flare-spacing-2);
@@ -22,8 +25,23 @@
     transition: background var(--flare-motion-duration-short1);
 }
 
-.flare-tree-item__row:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer - see tabs.css for why it sits under the content at z-index -1 rather than above it
+   with each slot lifted back over. A row holds a toggle, an icon, a label and a drag handle. */
+.flare-tree-item__row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-tree-item__row:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
 
 .flare-tree-item__row--selected {

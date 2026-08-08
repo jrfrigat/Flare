@@ -589,8 +589,42 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   line-height: 1;
 }
 
-.flare-datagrid__detail-btn:hover {
-  background-color: color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer for the grid's interactive CHROME - the detail toggle, the column-picker rows, the
+   filter trigger and the filter menu's checkboxes. Their hover was computed here as
+   `color-mix(on-surface x hover-opacity, ...)`, i.e. core deciding what hover MEANS for every theme;
+   the theme now names the paint. It sits under the content at z-index -1, so the host needs its own
+   stacking context - see tabs.css for the reasoning.
+
+   The grid's ROWS are deliberately not here: their hover paints on the cells, and a cell's content is
+   whatever the consumer put in it, usually a bare text node that cannot be lifted over an opaque
+   layer. Doing those properly needs a per-cell stacking context, which would change how popovers
+   rendered inside a cell stack. Tracked in the issue. */
+.flare-datagrid__detail-btn,
+.flare-datagrid__column-picker-item,
+.flare-datagrid__filter-trigger,
+.flare-datagrid__filter-menu-list > .flare-checkbox {
+  position: relative;
+  z-index: 0;
+}
+
+.flare-datagrid__detail-btn::before,
+.flare-datagrid__column-picker-item::before,
+.flare-datagrid__filter-trigger::before,
+.flare-datagrid__filter-menu-list > .flare-checkbox::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-datagrid__detail-btn:hover::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 .flare-datagrid__detail-btn > .flare-icon {
@@ -710,8 +744,9 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   user-select: none;
 }
 
-.flare-datagrid__column-picker-item:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
+.flare-datagrid__column-picker-item:hover::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 /* Menu filter (FilterMode.Menu): per-column trigger button + popover panel. */
@@ -735,10 +770,12 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 
 .flare-datagrid__filter-trigger > .flare-icon { font-size: var(--flare-datagrid-filter-icon-size); }
 
-.flare-datagrid__filter-trigger:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
-  color: var(--flare-color-on-surface);
+.flare-datagrid__filter-trigger:hover::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
+
+.flare-datagrid__filter-trigger:hover { color: var(--flare-color-on-surface); }
 
 .flare-datagrid__filter-trigger--active {
   color: var(--flare-color-primary);
@@ -793,8 +830,9 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   border-radius: var(--flare-shape-extra-small);
 }
 
-.flare-datagrid__filter-menu-list > .flare-checkbox:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+.flare-datagrid__filter-menu-list > .flare-checkbox:hover::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 .flare-datagrid__filter-menu-divider {

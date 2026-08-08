@@ -20,16 +20,22 @@
        the same way the menu item does - by assignment, not by overriding the core's rule. */
     .flare-list-item--clickable,
     .flare-accordion-panel__header,
-    .flare-collapse__header {
+    .flare-collapse__header,
+    .flare-tabs__tab,
+    .flare-tabs__scroll,
+    .flare-tree-item__row,
+    .flare-datagrid__detail-btn,
+    .flare-datagrid__column-picker-item,
+    .flare-datagrid__filter-trigger,
+    .flare-datagrid__filter-menu-list > .flare-checkbox {
         --flare-state-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
         --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
         --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
     }
 
-    /* Tab and listbox items still paint their hover straight onto the element - they have no state
-       layer to assign - so these stay element repaints. That is the Pattern B coupling the issue
-       records: cheap here (two one-line overrides), but not free. */
-    .flare-tabs__tab:hover:not(:disabled) { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
+    /* Listbox options still paint their hover straight onto the element - they have no state layer to
+       assign - so this stays an element repaint. That is the Pattern B coupling the issue records:
+       cheap here (one line), but not free. */
     .flare-listbox__option:hover { background-color: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
 
     /* Staying opaque is a token for those that have one, so they only need the repaint here. The rest

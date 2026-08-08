@@ -175,6 +175,33 @@ is modest either way: the rule does not disappear, it loses one declaration of t
 Also still open: `fields.css` and `slider.css` force opacity the same way and were never in this
 issue's scope.
 
+## P3 - the state-layer sweep (started 0.14.0)
+
+Separate from the disabled model above: 23 core stylesheets computed hover as
+`color-mix(on-surface x hover-opacity, ...)`, which is core deciding what hover *means* for every
+theme. **Done: list, accordion, collapse, tabs, tree, and the DataGrid's chrome** (detail toggle,
+column-picker rows, filter trigger, filter-menu checkboxes). Three theme overrides moved from
+repainting the element to naming the layer - Fluent's `!important` tab wash, Aero's gradient tab
+hover, and Visual Studio's tab wash. Aero's is the useful proof that the token takes an `<image>` as
+readily as a colour.
+
+Two techniques are now in the tree, deliberately:
+
+- **Layer above the content, each slot lifted back over it** (button, menu item, list). Fine when the
+  slots are a short fixed list.
+- **Layer under the content at `z-index: -1`, host made a stacking context** (tabs, tree, DataGrid
+  chrome). Covers every slot including raw text and future ones, and leaves an absolutely positioned
+  child working. Prefer this for anything whose children are open-ended.
+
+**Not done, and not for lack of trying: the table and DataGrid ROW hovers.** They paint on the cells,
+and a cell's content is whatever the consumer put there - usually a bare text node. Lifting is
+impossible and the `z-index: -1` route needs a stacking context per cell, which changes how a popover
+rendered inside a cell stacks against its neighbours. Worth doing, needs its own look.
+
+Still on the old model: `calendar, colormodetoggle, colorpicker, confirmdialog, datepicker, input,
+listbox, messagebox, nav, numericfield, pagination, scrolltop, snackbar, stepper, timepicker,
+virtualtree`.
+
 ## P2 - original analysis (kept for the reasoning)
 
 MD3 disabled = DIM the element (`opacity: 0.38`). Fluent disabled = REPAINT discrete (bg/fg/border flat
