@@ -1,56 +1,92 @@
+/* Accordion. Everything a theme could have an opinion about is a --flare-accordion-* token; the file
+   keeps only layout. It used to be built out of primitives - raw spacing steps, a literal 0.875rem
+   chevron, a magic 2000px open ceiling, and the CARD's radius. */
+
 .flare-accordion {
-  border: 1px solid var(--flare-color-outline-variant);
-  border-radius: var(--flare-card-radius);
+  border: var(--flare-accordion-border);
+  border-radius: var(--flare-accordion-radius);
   overflow: hidden;
 }
 
 .flare-accordion-panel + .flare-accordion-panel {
-  border-top: 1px solid var(--flare-color-outline-variant);
+  border-top: var(--flare-accordion-panel-divider);
 }
 
 .flare-accordion-panel__header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: var(--flare-spacing-8) var(--flare-spacing-12);
-  background: var(--flare-color-surface);
-  color: var(--flare-color-on-surface);
-  font-family: var(--flare-typescale-title-small-font);
-  font-size: var(--flare-typescale-title-small-size);
-  font-weight: var(--flare-typescale-title-small-weight);
+  padding: var(--flare-accordion-header-padding-block) var(--flare-accordion-header-padding-inline);
+  background: var(--flare-accordion-header-bg);
+  color: var(--flare-accordion-header-color);
+  font-family: var(--flare-accordion-header-label-font);
+  font-size: var(--flare-accordion-header-label-size);
+  font-weight: var(--flare-accordion-header-label-weight);
   border: none;
   cursor: pointer;
   text-align: left;
-  transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-accordion-panel__header:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
+/* State layer, as on the button and the menu item - see list.css for why the old
+   `color-mix(on-surface x hover-opacity, ...)` had to go. */
+.flare-accordion-panel__header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-accordion-panel__header:hover:not(:disabled)::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
+}
+
+.flare-accordion-panel__header:focus-visible:not(:disabled)::before {
+  background: var(--flare-state-focus-layer);
+  opacity: 1;
+}
+
+.flare-accordion-panel__header:hover:focus-visible:not(:disabled):not(:active)::before {
+  background: var(--flare-state-focus-hover-layer);
+  opacity: 1;
+}
+
+.flare-accordion-panel__header:active:not(:disabled)::before {
+  background: var(--flare-state-pressed-layer);
+  opacity: 1;
 }
 
 /* Rich header content (icons/badges) sits inline before the chevron. Shared with FlareCollapse:
    accordion and collapse are visually distinct (filled sections vs transparent standalone), but the
-   inline header-text layout and the disabled treatment are identical, so they share these two rules. */
+   inline header-text LAYOUT is identical, so they share this rule - the gap is each one's own token,
+   because a theme is entitled to space a section title differently from a standalone expander.
+   The relative position also lifts it above the state layer. */
 .flare-accordion-panel__header-text,
 .flare-collapse__header-text {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--flare-spacing-4);
   flex: 1;
   min-width: 0;
 }
 
-/* Disabled expandable header (accordion + collapse). */
-.flare-accordion-panel--disabled .flare-accordion-panel__header,
-.flare-collapse--disabled .flare-collapse__header {
+.flare-accordion-panel__header-text { gap: var(--flare-accordion-header-gap); }
+.flare-collapse__header-text { gap: var(--flare-collapse-header-gap); }
+
+.flare-accordion-panel--disabled .flare-accordion-panel__header {
   cursor: not-allowed;
-  opacity: var(--flare-state-disabled-opacity);
+  opacity: var(--flare-accordion-header-disabled-opacity);
 }
 
 .flare-accordion-panel__icon {
+  position: relative;
   font-style: normal;
-  font-size: 0.875rem;
+  font-size: var(--flare-accordion-icon-size);
   display: inline-block;
   transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
@@ -66,10 +102,10 @@
 }
 
 .flare-accordion-panel--expanded .flare-accordion-panel__content {
-  max-height: 2000px;
+  max-height: var(--flare-accordion-content-max-height);
 }
 
 .flare-accordion-panel__body {
-  padding: var(--flare-spacing-8) var(--flare-spacing-12);
-  color: var(--flare-color-on-surface-variant);
+  padding: var(--flare-accordion-body-padding-block) var(--flare-accordion-body-padding-inline);
+  color: var(--flare-accordion-body-color);
 }

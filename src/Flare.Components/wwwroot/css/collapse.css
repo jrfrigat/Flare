@@ -1,37 +1,74 @@
 /* Standalone expand/collapse container. The region animates its height via the grid-rows
-   0fr -> 1fr technique, which handles arbitrary content height without a magic max-height cap. */
+   0fr -> 1fr technique, which handles arbitrary content height without a magic max-height cap.
+   Everything a theme could have an opinion about is a --flare-collapse-* token. */
 .flare-collapse {
     display: block;
 }
 
 .flare-collapse__header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    gap: var(--flare-spacing-4);
-    padding: var(--flare-spacing-6) var(--flare-spacing-8);
-    background: transparent;
-    color: var(--flare-color-on-surface);
-    font-family: var(--flare-typescale-title-small-font);
-    font-size: var(--flare-typescale-title-small-size);
-    font-weight: var(--flare-typescale-title-small-weight);
+    gap: var(--flare-collapse-header-gap);
+    padding: var(--flare-collapse-header-padding-block) var(--flare-collapse-header-padding-inline);
+    background: var(--flare-collapse-header-bg);
+    color: var(--flare-collapse-header-color);
+    font-family: var(--flare-collapse-header-label-font);
+    font-size: var(--flare-collapse-header-label-size);
+    font-weight: var(--flare-collapse-header-label-weight);
     border: none;
-    border-radius: var(--flare-shape-small);
+    border-radius: var(--flare-collapse-header-radius);
     cursor: pointer;
     text-align: left;
-    transition: background var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-collapse__header:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer, as on the button and the menu item - see list.css for why the old
+   `color-mix(on-surface x hover-opacity, ...)` had to go. */
+.flare-collapse__header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-/* The disabled treatment and __header-text layout are shared with FlareAccordion (accordion.css). */
+.flare-collapse__header:hover:not(:disabled)::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
+}
+
+.flare-collapse__header:focus-visible:not(:disabled)::before {
+    background: var(--flare-state-focus-layer);
+    opacity: 1;
+}
+
+.flare-collapse__header:hover:focus-visible:not(:disabled):not(:active)::before {
+    background: var(--flare-state-focus-hover-layer);
+    opacity: 1;
+}
+
+.flare-collapse__header:active:not(:disabled)::before {
+    background: var(--flare-state-pressed-layer);
+    opacity: 1;
+}
+
+/* The __header-text layout is shared with FlareAccordion (accordion.css); the gap is this
+   component's own token. */
+
+.flare-collapse--disabled .flare-collapse__header {
+    cursor: not-allowed;
+    opacity: var(--flare-collapse-header-disabled-opacity);
+}
 
 .flare-collapse__icon {
+    position: relative;
     flex-shrink: 0;
-    color: var(--flare-color-on-surface-variant);
+    color: var(--flare-collapse-icon-color);
     transition: transform var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 

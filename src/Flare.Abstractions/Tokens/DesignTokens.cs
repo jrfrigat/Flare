@@ -46,6 +46,12 @@ public sealed record DesignTokens
     public required FabTokens Fab { get; init; }
     /// <summary>Menu token.</summary>
     public required MenuTokens Menu { get; init; }
+    /// <summary>List token.</summary>
+    public required ListTokens List { get; init; }
+    /// <summary>Accordion token.</summary>
+    public required AccordionTokens Accordion { get; init; }
+    /// <summary>Collapse token.</summary>
+    public required CollapseTokens Collapse { get; init; }
     /// <summary>Checkbox token.</summary>
     public required CheckboxTokens Checkbox { get; init; }
     /// <summary>Radio token.</summary>

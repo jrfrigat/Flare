@@ -546,6 +546,59 @@ public static class CssVarMap
         v[Css.Tokens.MenuPanel.ItemDisabledOpacity] = t.Menu.ItemDisabledOpacity;
         #endregion
 
+        #region LIST / ACCORDION / COLLAPSE
+        v[Css.Tokens.ListField.Bg] = t.List.Bg;
+        v[Css.Tokens.ListField.Radius] = t.List.Radius;
+        v[Css.Tokens.ListField.Divider] = t.List.Divider;
+        v[Css.Tokens.ListField.ItemHeight] = t.List.ItemHeight;
+        v[Css.Tokens.ListField.ItemHeightTwoLine] = t.List.ItemHeightTwoLine;
+        v[Css.Tokens.ListField.ItemHeightDense] = t.List.ItemHeightDense;
+        v[Css.Tokens.ListField.ItemHeightTwoLineDense] = t.List.ItemHeightTwoLineDense;
+        v[Css.Tokens.ListField.ItemPaddingBlock] = t.List.ItemPaddingBlock;
+        v[Css.Tokens.ListField.ItemPaddingBlockDense] = t.List.ItemPaddingBlockDense;
+        v[Css.Tokens.ListField.ItemPaddingInline] = t.List.ItemPaddingInline;
+        v[Css.Tokens.ListField.ItemGap] = t.List.ItemGap;
+        v[Css.Tokens.ListField.ItemContentGap] = t.List.ItemContentGap;
+        v[Css.Tokens.ListField.ItemRadius] = t.List.ItemRadius;
+        v[Css.Tokens.ListField.ItemLabelFont] = t.List.ItemLabelFont;
+        v[Css.Tokens.ListField.ItemLabelSize] = t.List.ItemLabelSize;
+        v[Css.Tokens.ListField.ItemColor] = t.List.ItemColor;
+        v[Css.Tokens.ListField.ItemTrailingColor] = t.List.ItemTrailingColor;
+        v[Css.Tokens.ListField.ItemSelectedBg] = t.List.ItemSelectedBg;
+        v[Css.Tokens.ListField.ItemSelectedColor] = t.List.ItemSelectedColor;
+        v[Css.Tokens.ListField.ItemDisabledOpacity] = t.List.ItemDisabledOpacity;
+
+        v[Css.Tokens.AccordionField.Border] = t.Accordion.Border;
+        v[Css.Tokens.AccordionField.Radius] = t.Accordion.Radius;
+        v[Css.Tokens.AccordionField.PanelDivider] = t.Accordion.PanelDivider;
+        v[Css.Tokens.AccordionField.HeaderBg] = t.Accordion.HeaderBg;
+        v[Css.Tokens.AccordionField.HeaderColor] = t.Accordion.HeaderColor;
+        v[Css.Tokens.AccordionField.HeaderPaddingBlock] = t.Accordion.HeaderPaddingBlock;
+        v[Css.Tokens.AccordionField.HeaderPaddingInline] = t.Accordion.HeaderPaddingInline;
+        v[Css.Tokens.AccordionField.HeaderGap] = t.Accordion.HeaderGap;
+        v[Css.Tokens.AccordionField.HeaderLabelFont] = t.Accordion.HeaderLabelFont;
+        v[Css.Tokens.AccordionField.HeaderLabelSize] = t.Accordion.HeaderLabelSize;
+        v[Css.Tokens.AccordionField.HeaderLabelWeight] = t.Accordion.HeaderLabelWeight;
+        v[Css.Tokens.AccordionField.HeaderDisabledOpacity] = t.Accordion.HeaderDisabledOpacity;
+        v[Css.Tokens.AccordionField.IconSize] = t.Accordion.IconSize;
+        v[Css.Tokens.AccordionField.BodyPaddingBlock] = t.Accordion.BodyPaddingBlock;
+        v[Css.Tokens.AccordionField.BodyPaddingInline] = t.Accordion.BodyPaddingInline;
+        v[Css.Tokens.AccordionField.BodyColor] = t.Accordion.BodyColor;
+        v[Css.Tokens.AccordionField.ContentMaxHeight] = t.Accordion.ContentMaxHeight;
+
+        v[Css.Tokens.CollapseField.HeaderBg] = t.Collapse.HeaderBg;
+        v[Css.Tokens.CollapseField.HeaderColor] = t.Collapse.HeaderColor;
+        v[Css.Tokens.CollapseField.HeaderRadius] = t.Collapse.HeaderRadius;
+        v[Css.Tokens.CollapseField.HeaderPaddingBlock] = t.Collapse.HeaderPaddingBlock;
+        v[Css.Tokens.CollapseField.HeaderPaddingInline] = t.Collapse.HeaderPaddingInline;
+        v[Css.Tokens.CollapseField.HeaderGap] = t.Collapse.HeaderGap;
+        v[Css.Tokens.CollapseField.HeaderLabelFont] = t.Collapse.HeaderLabelFont;
+        v[Css.Tokens.CollapseField.HeaderLabelSize] = t.Collapse.HeaderLabelSize;
+        v[Css.Tokens.CollapseField.HeaderLabelWeight] = t.Collapse.HeaderLabelWeight;
+        v[Css.Tokens.CollapseField.HeaderDisabledOpacity] = t.Collapse.HeaderDisabledOpacity;
+        v[Css.Tokens.CollapseField.IconColor] = t.Collapse.IconColor;
+        #endregion
+
         #region INPUT
         v[Css.Tokens.InputField.FilledBg] = t.Input.FilledBg;
         v[Css.Tokens.InputField.BorderColor] = t.Input.BorderColor;

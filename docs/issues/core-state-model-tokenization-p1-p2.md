@@ -161,17 +161,16 @@ layer still paints nothing.
 cannot move: unlike the button, their indicators have no spare layer to take a fill, so there is not
 even a background half to tokenize.
 
-**Remaining, and it needs a decision rather than more of the same.** Eight selectors still force
-opacity in `surfaces.css` - list item, nav link, tabs, tab scroll, pagination button, link, bottom-nav
-item, accordion and collapse headers. Finishing them the same way means a token each, and three of
-them (list, accordion, collapse) have **no token record at all**, so it is new API surface rather than
-a new member. Weigh that against the return: the rule does not disappear either way, it loses one
-declaration of two. Options:
+**The three recordless components got records (0.14.0).** `ListTokens`, `AccordionTokens` and
+`CollapseTokens` were created rather than leaving the family half-converted - see the changelog for
+what that cost and what else it bought. Their disabled opacity is now a token like the rest, and
+because those three were being rewritten anyway they also moved to the state-layer model, which is
+P3's job (below) rather than this one's.
 
-- Give the five that have records a `DisabledOpacity` and leave the three recordless ones forcing it.
-  Cheap, but leaves the family half-converted for no principled reason.
-- Create the three missing records. Consistent, but that is a real API decision, not a refactor.
-- Accept the remaining force as the documented cost of a component with no token record, and close it.
+**Remaining: six selectors still force opacity** in `surfaces.css` - nav link, tabs, tab scroll,
+pagination button, link, bottom-nav item. All six have token records, so each is a one-line member and
+a value per theme; the only reason they are not done is that they were not in the way. Note the return
+is modest either way: the rule does not disappear, it loses one declaration of two.
 
 Also still open: `fields.css` and `slider.css` force opacity the same way and were never in this
 issue's scope.

@@ -5,7 +5,25 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.14.0] - 2026-08-08
 
+### Added
+- **`ListTokens`, `AccordionTokens` and `CollapseTokens`.** These three components had no token record
+  at all: they were assembled out of primitives - raw spacing steps, literal `3.5rem`/`4.5rem` row
+  heights, a `0.875rem` chevron, a magic `2000px` open ceiling - and both the list and the accordion
+  read the **card's** radius, so a theme could not reshape a card without reshaping them too. Every
+  value a design language could have an opinion about is now a `--flare-list-*`, `--flare-accordion-*`
+  or `--flare-collapse-*` token, 48 in all. The in-box themes set them to what the core used to paint,
+  so nothing changes appearance; what changes is that it can now be changed. Accordion and collapse
+  keep separate records on purpose - one is a filled section inside a bordered container, the other a
+  transparent standalone control, and a theme is entitled to size and weight them differently.
+
 ### Changed
+- **List rows and expandable headers use the state-layer model.** Their hover was computed in core as
+  `color-mix(on-surface x hover-opacity, surface)` - core deciding what hover *means* for every theme,
+  which is why a language with a discrete neutral fill had to override the whole rule with
+  `!important`. They now carry a `::before` layer painted from `--flare-state-*-layer`, like the button
+  and the menu item, and gain focus, pressed and focus-while-hovered states they did not have. That
+  removed the last `!important` hover override for the list from the Fluent UI 2 theme. Content slots
+  are lifted above the layer, which matters for a theme whose state fills are opaque.
 - **BREAKING for custom themes: four more required token members.** `CheckboxTokens.DisabledOpacity`,
   `RadioTokens.DisabledOpacity`, `MenuTokens.ItemDisabledOpacity` and
   `ToggleButtonTokens.DisabledOpacity`. Each replaces a fade the core used to apply on every theme's
@@ -14,6 +32,9 @@ All notable changes to Flare are documented here. This project adheres to
   its own stylesheet. That removed four `opacity: 1 !important` overrides from the Fluent UI 2 theme.
   A bespoke theme must set the four or it will not compile; in-box themes and anything built from
   them with `with` are unaffected and none of the six changes appearance.
+- **BREAKING for custom themes: `DesignTokens` gains `List`, `Accordion` and `Collapse`.** Required,
+  like every other component record. A bespoke theme must supply all three; anything built from an
+  in-box theme with `with` inherits them.
 
 ### Fixed
 - **The wavy ring flows.** Its crests now travel round the indicator while the arc stays where the

@@ -361,6 +361,69 @@ public class MaterialDesignTokens
 
     // Menu (MD3 Expressive "Menus"): container 16dp (shape-large), elevation 3,
     // item 4dp (end items 12dp), label-large text, vertical 8dp, gap 2dp, focus-ring secondary.
+    /// <summary>List container and row tokens.</summary>
+    internal static readonly ListTokens List = new()
+    {
+        Bg = "var(--flare-color-surface)",
+        Radius = "var(--flare-shape-medium)",
+        Divider = "1px solid var(--flare-color-outline-variant)",
+        ItemHeight = "3.5rem",
+        ItemHeightTwoLine = "4.5rem",
+        ItemHeightDense = "3rem",
+        ItemHeightTwoLineDense = "3.5rem",
+        ItemPaddingBlock = "var(--flare-spacing-6)",
+        ItemPaddingBlockDense = "var(--flare-spacing-3)",
+        ItemPaddingInline = "var(--flare-spacing-8)",
+        ItemGap = "var(--flare-spacing-8)",
+        ItemContentGap = "var(--flare-spacing-1)",
+        ItemRadius = "0",
+        ItemLabelFont = "var(--flare-typescale-body-large-font)",
+        ItemLabelSize = "var(--flare-typescale-body-large-size)",
+        ItemColor = "var(--flare-color-on-surface)",
+        ItemTrailingColor = "var(--flare-color-on-surface-variant)",
+        ItemSelectedBg = "var(--flare-color-secondary-container)",
+        ItemSelectedColor = "var(--flare-color-on-secondary-container)",
+        ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
+    };
+
+    /// <summary>Accordion container, header and body tokens.</summary>
+    internal static readonly AccordionTokens Accordion = new()
+    {
+        Border = "1px solid var(--flare-color-outline-variant)",
+        Radius = "var(--flare-shape-medium)",
+        PanelDivider = "1px solid var(--flare-color-outline-variant)",
+        HeaderBg = "var(--flare-color-surface)",
+        HeaderColor = "var(--flare-color-on-surface)",
+        HeaderPaddingBlock = "var(--flare-spacing-8)",
+        HeaderPaddingInline = "var(--flare-spacing-12)",
+        HeaderGap = "var(--flare-spacing-4)",
+        HeaderLabelFont = "var(--flare-typescale-title-small-font)",
+        HeaderLabelSize = "var(--flare-typescale-title-small-size)",
+        HeaderLabelWeight = "var(--flare-typescale-title-small-weight)",
+        HeaderDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        IconSize = "0.875rem",
+        BodyPaddingBlock = "var(--flare-spacing-8)",
+        BodyPaddingInline = "var(--flare-spacing-12)",
+        BodyColor = "var(--flare-color-on-surface-variant)",
+        ContentMaxHeight = "2000px",
+    };
+
+    /// <summary>Standalone collapse header tokens.</summary>
+    internal static readonly CollapseTokens Collapse = new()
+    {
+        HeaderBg = "transparent",
+        HeaderColor = "var(--flare-color-on-surface)",
+        HeaderRadius = "var(--flare-shape-small)",
+        HeaderPaddingBlock = "var(--flare-spacing-6)",
+        HeaderPaddingInline = "var(--flare-spacing-8)",
+        HeaderGap = "var(--flare-spacing-4)",
+        HeaderLabelFont = "var(--flare-typescale-title-small-font)",
+        HeaderLabelSize = "var(--flare-typescale-title-small-size)",
+        HeaderLabelWeight = "var(--flare-typescale-title-small-weight)",
+        HeaderDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        IconColor = "var(--flare-color-on-surface-variant)",
+    };
+
     internal static readonly MenuTokens Menu = new()
     {
         GroupDivider = "none",
@@ -964,6 +1027,9 @@ public class MaterialDesignTokens
         ToggleButton = ToggleButton,
         Fab = Fab,
         Menu = Menu,
+        List = List,
+        Accordion = Accordion,
+        Collapse = Collapse,
         Checkbox = Checkbox,
         Radio = Radio,
         Chip = Chip,

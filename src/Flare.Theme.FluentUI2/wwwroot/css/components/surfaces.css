@@ -16,31 +16,39 @@
         --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
     }
 
-    /* List, tab and listbox items paint their hover straight onto the element - they have no state
+    /* List rows and expandable headers carry a state layer now, so they take the discrete neutral fill
+       the same way the menu item does - by assignment, not by overriding the core's rule. */
+    .flare-list-item--clickable,
+    .flare-accordion-panel__header,
+    .flare-collapse__header {
+        --flare-state-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+        --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
+        --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
+    }
+
+    /* Tab and listbox items still paint their hover straight onto the element - they have no state
        layer to assign - so these stay element repaints. That is the Pattern B coupling the issue
-       records: cheap here (three one-line overrides), but not free. */
-    .flare-list-item--clickable:hover { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
+       records: cheap here (two one-line overrides), but not free. */
     .flare-tabs__tab:hover:not(:disabled) { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
     .flare-listbox__option:hover { background-color: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
 
-    /* Staying opaque is a token for the two that have one - MenuTokens.ItemDisabledOpacity and
-       ToggleButtonTokens.DisabledOpacity - so they only need the repaint here. The rest still force
-       it, because each would need a token of its own and three of them (list, accordion, collapse)
-       have no token record at all yet. Tracked in the issue. */
+    /* Staying opaque is a token for those that have one, so they only need the repaint here. The rest
+       still force it: each would need a token of its own, and their components have no token record.
+       Tracked in the issue. */
     .flare-menu-item--disabled, .flare-menu-item:disabled,
-    .flare-toggle-btn:disabled, .flare-toggle-btn[disabled] {
+    .flare-toggle-btn:disabled, .flare-toggle-btn[disabled],
+    .flare-list-item--disabled,
+    .flare-accordion-panel--disabled .flare-accordion-panel__header,
+    .flare-collapse--disabled .flare-collapse__header {
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }
 
-    .flare-list-item--disabled,
     .flare-nav-link--disabled,
     .flare-tabs__tab:disabled, .flare-tabs__tab--disabled,
     .flare-tabs__scroll:disabled,
     .flare-pagination__btn:disabled,
     .flare-link--disabled,
-    .flare-bottom-nav-item--disabled,
-    .flare-accordion-panel--disabled .flare-accordion-panel__header,
-    .flare-collapse--disabled .flare-collapse__header {
+    .flare-bottom-nav-item--disabled {
         opacity: 1 !important;
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
     }

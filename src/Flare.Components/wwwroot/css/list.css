@@ -1,30 +1,35 @@
+/* List. Everything a theme could have an opinion about is a --flare-list-* token; the file keeps only
+   layout. It used to be built out of primitives - raw spacing steps, literal 3.5rem/4.5rem heights,
+   and the CARD's radius, which meant reshaping a card reshaped every list with it. */
+
 .flare-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    background: var(--flare-color-surface);
-    border-radius: var(--flare-card-radius);
+    background: var(--flare-list-bg);
+    border-radius: var(--flare-list-radius);
     overflow: hidden;
 }
 
 .flare-list-item {
+    position: relative;
     display: flex;
     align-items: center;
     /* Line-count item heights: one-line here; a two-line item (has supporting text) grows via :has() below. */
-    min-height: 3.5rem;
-    padding: var(--flare-spacing-6) var(--flare-spacing-8);
-    gap: var(--flare-spacing-8);
-    color: var(--flare-color-on-surface);
-    font-family: var(--flare-typescale-body-large-font);
-    font-size: var(--flare-typescale-body-large-size);
-    transition: background var(--flare-motion-duration-short1);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    min-height: var(--flare-list-item-height);
+    padding: var(--flare-list-item-padding-block) var(--flare-list-item-padding-inline);
+    gap: var(--flare-list-item-gap);
+    color: var(--flare-list-item-color);
+    font-family: var(--flare-list-item-label-font);
+    font-size: var(--flare-list-item-label-size);
+    border-radius: var(--flare-list-item-radius);
+    border-bottom: var(--flare-list-divider);
 }
 
 .flare-list-item:last-child { border-bottom: none; }
 
 /* A two-line item (has supporting text) grows to the two-line height. */
-.flare-list-item:has(.flare-list-item__secondary) { min-height: 4.5rem; }
+.flare-list-item:has(.flare-list-item__secondary) { min-height: var(--flare-list-item-height-two-line); }
 
 .flare-list-item__leading {
     display: flex;
@@ -36,11 +41,11 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-1);
+    gap: var(--flare-list-item-content-gap);
     min-width: 0;
 }
 
-.flare-list-item__primary { color: var(--flare-color-on-surface); }
+.flare-list-item__primary { color: var(--flare-list-item-color); }
 
 /* __secondary style comes from the shared supporting-text rule (input.css). */
 
@@ -48,7 +53,7 @@
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    color: var(--flare-color-on-surface-variant);
+    color: var(--flare-list-item-trailing-color);
 }
 
 .flare-list-item--clickable {
@@ -56,24 +61,58 @@
     user-select: none;
 }
 
-.flare-list-item--clickable:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
+/* State layer, as on the button and the menu item. The hover used to be computed here as
+   `color-mix(on-surface x hover-opacity, surface)` - core deciding what hover MEANS on every theme's
+   behalf, which is why a language with a discrete neutral fill had to override the whole rule with
+   !important. The theme now names the paint and the core only says where it goes. */
+.flare-list-item--clickable::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-/* Selected item: secondary-container fill + on-secondary-container label (was a primary tint). The
-   secondary-container role maps to each theme's own selected surface, so this reads correctly under any theme. */
+.flare-list-item--clickable:hover::before { background: var(--flare-state-hover-layer); opacity: 1; }
+.flare-list-item--clickable:focus-visible::before { background: var(--flare-state-focus-layer); opacity: 1; }
+.flare-list-item--clickable:active::before { background: var(--flare-state-pressed-layer); opacity: 1; }
+
+/* Hovered AND focused at once - the one pairing the design languages disagree about, so the theme
+   names the answer rather than the core's rule order deciding it. */
+.flare-list-item--clickable:hover:focus-visible:not(:active)::before {
+    background: var(--flare-state-focus-hover-layer);
+    opacity: 1;
+}
+
+/* Above the state layer: the layer is an absolutely positioned ::before, so it paints over in-flow
+   content, which a theme whose states are opaque fills would use to cover the row's own text. */
+.flare-list-item__leading,
+.flare-list-item__content,
+.flare-list-item__trailing {
+    position: relative;
+}
+
+/* Selected item: the theme's own selected surface and label. */
 .flare-list-item--selected {
-    background: var(--flare-color-secondary-container);
-    color: var(--flare-color-on-secondary-container);
+    background: var(--flare-list-item-selected-bg);
+    color: var(--flare-list-item-selected-color);
 }
 
-.flare-list-item--selected .flare-list-item__primary { color: var(--flare-color-on-secondary-container); }
+.flare-list-item--selected .flare-list-item__primary { color: var(--flare-list-item-selected-color); }
 
 .flare-list-item--disabled {
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-list-item-disabled-opacity);
     pointer-events: none;
 }
 
-/* Dense stays compact: shorter min-height + padding so the 56/72dp defaults do not force it tall. */
-.flare-list--dense .flare-list-item { min-height: 3rem; padding: var(--flare-spacing-3) var(--flare-spacing-8); }
-.flare-list--dense .flare-list-item:has(.flare-list-item__secondary) { min-height: 3.5rem; }
+/* Dense stays compact: shorter min-height + padding so the one/two-line defaults do not force it tall. */
+.flare-list--dense .flare-list-item {
+    min-height: var(--flare-list-item-height-dense);
+    padding: var(--flare-list-item-padding-block-dense) var(--flare-list-item-padding-inline);
+}
+.flare-list--dense .flare-list-item:has(.flare-list-item__secondary) {
+    min-height: var(--flare-list-item-height-two-line-dense);
+}
