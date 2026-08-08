@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @using System.Globalization
+@using Flare.Theming
 
 @if (Variant == ProgressVariant.Circular && _wavyActive)
 {
@@ -298,11 +299,34 @@ else
         return string.IsNullOrWhiteSpace(raw) ? fallback : raw.Trim();
     }
 
+    // The wavy geometry and the circular gap are TYPED members of ProgressTokens, so they never appear
+    // in Design.Extended - which is the only place this used to look. Every read fell through to its
+    // fallback, so --flare-progress-wavy-enabled read 0 and Wavy rendered a plain bar in every theme,
+    // and the circular gap read 0 and the ring drew no break. Reading the flattened map instead asks
+    // the same source the emitted CSS is built from, so what the component computes and what the
+    // stylesheet paints cannot disagree again.
+    private object? _tokenCacheKey;
+    private Dictionary<string, string>? _tokenCache;
+
+    private Dictionary<string, string>? FlattenedTokens()
+    {
+        var theme = ThemeService?.CurrentTheme;
+        if (theme is null) return null;
+        // Keyed on the THEME, not on Design: a theme's Design is usually an expression-bodied
+        // property that builds a fresh record per access, so caching on it would never hit.
+        if (!ReferenceEquals(theme, _tokenCacheKey))
+        {
+            _tokenCache = theme.Design?.FlattenDesign();
+            _tokenCacheKey = theme;
+        }
+        return _tokenCache;
+    }
+
     private string? ReadTokenRaw(string name)
     {
         if (ThemeService is null) return null;
         if (ThemeService.GetCustomTokens() is { } custom && custom.TryGetValue(name, out var c)) return c;
-        if (ThemeService.CurrentTheme?.Design?.Extended is { } ext && ext.TryGetValue(name, out var e)) return e;
+        if (FlattenedTokens() is { } all && all.TryGetValue(name, out var v)) return v;
         return null;
     }
 }

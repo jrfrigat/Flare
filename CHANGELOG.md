@@ -6,6 +6,14 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.14.0] - 2026-08-08
 
 ### Fixed
+- **`FlareProgress.Wavy` and the circular gap were being ignored by every theme.** Both are computed in
+  C# rather than in CSS, because an SVG path has to be built from numbers - and the reader looked only
+  in `DesignTokens.Extended`, which those values left when they became typed `ProgressTokens` members
+  during the token-mandate work. Every lookup fell through to its fallback, so `Wavy` drew a flat bar
+  and the ring drew no break between the indicator and the track. The reader now asks the same
+  flattened design the emitted CSS is built from, so what the component computes and what the
+  stylesheet paints cannot disagree again. CssAudit could not have caught this: every name existed and
+  was in sync - a guard test now checks that each token the component looks up is actually there.
 - **Pressing a button, a split button or a group segment now shows its morph.** The corners and the
   group's width grow rode the same 300ms spring as the hover morph, and an ordinary click holds
   `:active` for a fraction of that - measured at about two frames. The shape moved a hair and sprang
