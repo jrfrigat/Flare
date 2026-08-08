@@ -49,9 +49,18 @@
        the displacement, not a bounce. It rides the theme's fast spring rung, which overshoots more;
        that is this theme being Expressive rather than baseline, consistent with its other morphs.
        ====================================================================== */
+    /* transition is a shorthand, so this REPLACES the base button's list rather than adding to it -
+       the colour and shadow entries have to be restated or a grouped button stops fading on hover
+       while a lone one still does. --_morph-duration is the base button's own local, already zeroed
+       by its reduced-motion rule; the grow gets a local of its own for the same reason. */
     .flare-btn-group .flare-btn {
-        transition: padding-inline var(--flare-motion-duration-spring-fast) var(--flare-motion-easing-spring-fast),
-                    border-radius var(--flare-shape-morph-duration) var(--flare-shape-morph-easing);
+        --_grow-duration: var(--flare-motion-duration-spring-fast);
+        transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                    background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                    border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                    color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
+                    border-radius var(--_morph-duration) var(--flare-shape-morph-easing),
+                    padding-inline var(--_grow-duration) var(--flare-motion-easing-spring-fast);
     }
     /* Steps chosen by measuring: +0.375rem a side takes a short-labelled md segment from 81px to 93px,
        which is the spec's 15%. A long label makes the same step a smaller share - the cost of not
@@ -63,6 +72,6 @@
     .flare-btn-group .flare-btn--xl:active { padding-inline: calc(var(--_flare-btn-padding-inline) + 0.5rem); }
 
     @media (prefers-reduced-motion: reduce) {
-        .flare-btn-group .flare-btn { transition-duration: 0s; }
+        .flare-btn-group .flare-btn { --_grow-duration: 0s; }
     }
 }
