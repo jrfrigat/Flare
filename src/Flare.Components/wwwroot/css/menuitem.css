@@ -109,6 +109,6 @@
 
 .flare-menu-item--disabled,
 .flare-menu-item:disabled {
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-menu-item-disabled-opacity);
     cursor: not-allowed;
 }

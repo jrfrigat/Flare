@@ -257,6 +257,8 @@ public class FluentUI2Tokens
         GroupRadius = "var(--flare-shape-small)",
         GroupRadiusVertical = "var(--flare-shape-small)",
         GroupDivider = "var(--flare-color-outline)",
+        // Fluent repaints a disabled control rather than fading it.
+        DisabledOpacity = "1",
     };
 
     // FAB: flatter Fluent rounding (4-8dp).
@@ -313,6 +315,8 @@ public class FluentUI2Tokens
         ItemFocusRingColor = "var(--flare-color-secondary)",
         ItemFocusRingThickness = "3px",
         ItemFocusRingOffset = "-3px",
+        // Fluent repaints a disabled item rather than fading it.
+        ItemDisabledOpacity = "1",
     };
 
     // Checkbox - Fluent: 1px border, 4dp corner, no MD3 halo, double focus ring.
@@ -326,6 +330,8 @@ public class FluentUI2Tokens
         FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
+        // Fluent repaints a disabled control in a flat palette rather than fading it.
+        DisabledOpacity = "1",
     };
 
     // Radio - Fluent: no MD3 state-layer halo.
@@ -338,6 +344,8 @@ public class FluentUI2Tokens
         FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
+        // Fluent repaints a disabled control in a flat palette rather than fading it.
+        DisabledOpacity = "1",
     };
 
     // Chip - Fluent: the same values (8dp/32dp).

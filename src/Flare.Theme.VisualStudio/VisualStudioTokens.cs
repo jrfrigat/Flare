@@ -222,6 +222,8 @@ internal class VisualStudioTokens
         FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color)",
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 5px var(--flare-fluent-focus-stroke-outer)",
+        // Repaints, like its Fluent lineage.
+        DisabledOpacity = "1",
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };

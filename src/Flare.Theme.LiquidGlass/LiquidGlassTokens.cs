@@ -222,6 +222,8 @@ internal class LiquidGlassTokens
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
+        // Dims, like its Material lineage.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     internal static readonly ChipTokens Chip = new() { Radius = "var(--flare-shape-small)", Height = "2rem" };

@@ -82,6 +82,8 @@ public static class ToggleButton
     public const string GroupRadius = "--flare-togglegroup-radius";
     /// <summary>CSS custom-property name for the group radius vertical token.</summary>
     public const string GroupRadiusVertical = "--flare-togglegroup-radius-vertical";
+    /// <summary>CSS custom-property name for the disabled opacity token.</summary>
+    public const string DisabledOpacity = "--flare-toggle-btn-disabled-opacity";
     /// <summary>CSS custom-property name for the group divider token.</summary>
     public const string GroupDivider = "--flare-togglegroup-divider";
 }

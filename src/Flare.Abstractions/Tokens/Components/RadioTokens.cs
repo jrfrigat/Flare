@@ -26,4 +26,9 @@ public sealed record RadioTokens
     /// <summary>Shadow drawn on keyboard focus, in addition to the outline. A theme that signals focus
     /// with the outline alone parks this at a no-op.</summary>
     [CssVar(Radio.FocusShadow)] public required string FocusShadow { get; init; }
+    /// <summary>How far the control fades when disabled. A language that signals disabled by dimming sets
+    /// a fraction; one that repaints it in a flat palette leaves it opaque and carries the change in its own
+    /// stylesheet - the indicator has no spare layer to take a fill, and neither `color` nor `border-color`
+    /// has a value meaning "leave this alone".</summary>
+    [CssVar(Radio.DisabledOpacity)] public required string DisabledOpacity { get; init; }
 }

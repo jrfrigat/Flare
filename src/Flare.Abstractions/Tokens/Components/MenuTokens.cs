@@ -87,4 +87,8 @@ public sealed record MenuTokens
     /// <summary>Offset of an item's keyboard-focus ring. A negative value pulls the ring inside the item,
     /// so it is not clipped by the panel edge.</summary>
     [CssVar(MenuPanel.ItemFocusRingOffset)] public required string ItemFocusRingOffset { get; init; }
+    /// <summary>How far a disabled item fades. A language that repaints disabled items in a flat palette
+    /// leaves this opaque and carries the change in its own stylesheet, since a foreground colour has no
+    /// value meaning "leave this as painted".</summary>
+    [CssVar(MenuPanel.ItemDisabledOpacity)] public required string ItemDisabledOpacity { get; init; }
 }

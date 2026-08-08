@@ -289,6 +289,8 @@ public class MaterialDesignTokens
         GroupRadius = "var(--flare-shape-full)",
         GroupRadiusVertical = "var(--flare-shape-medium)",
         GroupDivider = "var(--flare-color-outline)",
+        // Material dims a disabled control.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // FAB: padding-based sizing, large/medium/extra-large rounding.
@@ -316,6 +318,8 @@ public class MaterialDesignTokens
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
+        // Material dims the whole control; the shared state value is the one it means.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
     internal static readonly RadioTokens Radio = new()
     {
@@ -327,6 +331,8 @@ public class MaterialDesignTokens
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
+        // Material dims the whole control; the shared state value is the one it means.
+        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
     internal static readonly ChipTokens Chip = new()
     {
@@ -396,6 +402,8 @@ public class MaterialDesignTokens
         ItemFocusRingColor = "var(--flare-color-secondary)",
         ItemFocusRingThickness = "3px",
         ItemFocusRingOffset = "-3px",
+        // Material dims a disabled item.
+        ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // Input - filled style (md.comp.filled-text-field): surface-container-highest container, 56dp

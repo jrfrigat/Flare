@@ -19,6 +19,8 @@ public static class Checkbox
     public const string FocusOutlineOffset = "--flare-checkbox-focus-outline-offset";
     /// <summary>CSS custom-property name for the focus shadow token.</summary>
     public const string FocusShadow = "--flare-checkbox-focus-shadow";
+    /// <summary>CSS custom-property name for the disabled opacity token.</summary>
+    public const string DisabledOpacity = "--flare-checkbox-disabled-opacity";
 }
 
 /// <summary>CSS variable tokens for radio.</summary>
@@ -36,4 +38,6 @@ public static class Radio
     public const string FocusOutlineOffset = "--flare-radio-focus-outline-offset";
     /// <summary>CSS custom-property name for the focus shadow token.</summary>
     public const string FocusShadow = "--flare-radio-focus-shadow";
+    /// <summary>CSS custom-property name for the disabled opacity token.</summary>
+    public const string DisabledOpacity = "--flare-radio-disabled-opacity";
 }

@@ -5,6 +5,16 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.14.0] - 2026-08-08
 
+### Changed
+- **BREAKING for custom themes: four more required token members.** `CheckboxTokens.DisabledOpacity`,
+  `RadioTokens.DisabledOpacity`, `MenuTokens.ItemDisabledOpacity` and
+  `ToggleButtonTokens.DisabledOpacity`. Each replaces a fade the core used to apply on every theme's
+  behalf, continuing the button's treatment from 0.13.0: a language that signals disabled by fading
+  sets the shared state value, one that repaints in a flat palette sets `1` and carries the change in
+  its own stylesheet. That removed four `opacity: 1 !important` overrides from the Fluent UI 2 theme.
+  A bespoke theme must set the four or it will not compile; in-box themes and anything built from
+  them with `with` are unaffected and none of the six changes appearance.
+
 ### Fixed
 - **The wavy ring no longer breaks up while it animates.** Its flow rotated the whole path a full turn
   and slid `stroke-dashoffset` by the same amount, meaning the two to cancel so the arc stayed put.

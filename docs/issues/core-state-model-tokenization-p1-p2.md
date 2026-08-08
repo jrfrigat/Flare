@@ -155,8 +155,26 @@ Result: FluentUI2's button disabled block went from three rules to one plus the 
 `opacity: 1 !important` is gone. Material renders unchanged - verified: element opacity still 0.38,
 layer still paints nothing.
 
-Remaining: the same treatment for checkbox/radio (`controls.css`) and the menu/list/nav/tabs family
-(`surfaces.css`), which repeat the pattern. Same recipe, one component at a time.
+**Checkbox, radio, menu item and toggle button followed (0.14.0)**, each with a per-component
+`DisabledOpacity`: Material defers to the shared state value, Fluent sets `1`. Their `opacity: 1
+!important` overrides are gone. Only the repaint remains in FluentUI2's stylesheet, and for these it
+cannot move: unlike the button, their indicators have no spare layer to take a fill, so there is not
+even a background half to tokenize.
+
+**Remaining, and it needs a decision rather than more of the same.** Eight selectors still force
+opacity in `surfaces.css` - list item, nav link, tabs, tab scroll, pagination button, link, bottom-nav
+item, accordion and collapse headers. Finishing them the same way means a token each, and three of
+them (list, accordion, collapse) have **no token record at all**, so it is new API surface rather than
+a new member. Weigh that against the return: the rule does not disappear either way, it loses one
+declaration of two. Options:
+
+- Give the five that have records a `DisabledOpacity` and leave the three recordless ones forcing it.
+  Cheap, but leaves the family half-converted for no principled reason.
+- Create the three missing records. Consistent, but that is a real API decision, not a refactor.
+- Accept the remaining force as the documented cost of a component with no token record, and close it.
+
+Also still open: `fields.css` and `slider.css` force opacity the same way and were never in this
+issue's scope.
 
 ## P2 - original analysis (kept for the reasoning)
 

@@ -23,13 +23,20 @@
     .flare-tabs__tab:hover:not(:disabled) { background: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
     .flare-listbox__option:hover { background-color: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
 
+    /* Staying opaque is a token for the two that have one - MenuTokens.ItemDisabledOpacity and
+       ToggleButtonTokens.DisabledOpacity - so they only need the repaint here. The rest still force
+       it, because each would need a token of its own and three of them (list, accordion, collapse)
+       have no token record at all yet. Tracked in the issue. */
     .flare-menu-item--disabled, .flare-menu-item:disabled,
+    .flare-toggle-btn:disabled, .flare-toggle-btn[disabled] {
+        color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;
+    }
+
     .flare-list-item--disabled,
     .flare-nav-link--disabled,
     .flare-tabs__tab:disabled, .flare-tabs__tab--disabled,
     .flare-tabs__scroll:disabled,
     .flare-pagination__btn:disabled,
-    .flare-toggle-btn:disabled, .flare-toggle-btn[disabled],
     .flare-link--disabled,
     .flare-bottom-nav-item--disabled,
     .flare-accordion-panel--disabled .flare-accordion-panel__header,

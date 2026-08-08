@@ -27,4 +27,9 @@ public sealed record CheckboxTokens
 
     /// <summary>Extra focus shadow (e.g. an outer focus ring); set to none for no shadow.</summary>
     [CssVar(Checkbox.FocusShadow)] public required string FocusShadow { get; init; }
+    /// <summary>How far the control fades when disabled. A language that signals disabled by dimming sets
+    /// a fraction; one that repaints it in a flat palette leaves it opaque and carries the change in its own
+    /// stylesheet - the indicator has no spare layer to take a fill, and neither `color` nor `border-color`
+    /// has a value meaning "leave this alone".</summary>
+    [CssVar(Checkbox.DisabledOpacity)] public required string DisabledOpacity { get; init; }
 }

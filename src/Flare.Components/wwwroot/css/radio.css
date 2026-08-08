@@ -94,7 +94,7 @@
 }
 
 .flare-radio--disabled {
-  opacity: var(--flare-state-disabled-opacity);
+  opacity: var(--flare-radio-disabled-opacity);
   pointer-events: none;
 }
 

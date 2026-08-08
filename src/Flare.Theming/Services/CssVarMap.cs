@@ -341,6 +341,7 @@ public static class CssVarMap
         v[Css.Tokens.ToggleButton.GroupBorder] = t.ToggleButton.GroupBorder;
         v[Css.Tokens.ToggleButton.GroupRadius] = t.ToggleButton.GroupRadius;
         v[Css.Tokens.ToggleButton.GroupRadiusVertical] = t.ToggleButton.GroupRadiusVertical;
+        v[Css.Tokens.ToggleButton.DisabledOpacity] = t.ToggleButton.DisabledOpacity;
         v[Css.Tokens.ToggleButton.GroupDivider] = t.ToggleButton.GroupDivider;
         #endregion
 
@@ -368,12 +369,14 @@ public static class CssVarMap
         v[Css.Tokens.Checkbox.FocusOutline] = t.Checkbox.FocusOutline;
         v[Css.Tokens.Checkbox.FocusOutlineOffset] = t.Checkbox.FocusOutlineOffset;
         v[Css.Tokens.Checkbox.FocusShadow] = t.Checkbox.FocusShadow;
+        v[Css.Tokens.Checkbox.DisabledOpacity] = t.Checkbox.DisabledOpacity;
         v[Css.Tokens.Radio.StateLayerHover] = t.Radio.StateLayerHover;
         v[Css.Tokens.Radio.Size] = t.Radio.Size;
         v[Css.Tokens.Radio.StateLayerHoverChecked] = t.Radio.StateLayerHoverChecked;
         v[Css.Tokens.Radio.FocusOutline] = t.Radio.FocusOutline;
         v[Css.Tokens.Radio.FocusOutlineOffset] = t.Radio.FocusOutlineOffset;
         v[Css.Tokens.Radio.FocusShadow] = t.Radio.FocusShadow;
+        v[Css.Tokens.Radio.DisabledOpacity] = t.Radio.DisabledOpacity;
         v[Css.Tokens.Chip.Radius] = t.Chip.Radius;
         v[Css.Tokens.Chip.Height] = t.Chip.Height;
         v[Css.Tokens.Tabs.IndicatorThickness] = t.Tabs.IndicatorThickness;
@@ -540,6 +543,7 @@ public static class CssVarMap
         v[Css.Tokens.MenuPanel.ItemFocusRingColor] = t.Menu.ItemFocusRingColor;
         v[Css.Tokens.MenuPanel.ItemFocusRingThickness] = t.Menu.ItemFocusRingThickness;
         v[Css.Tokens.MenuPanel.ItemFocusRingOffset] = t.Menu.ItemFocusRingOffset;
+        v[Css.Tokens.MenuPanel.ItemDisabledOpacity] = t.Menu.ItemDisabledOpacity;
         #endregion
 
         #region INPUT

@@ -73,4 +73,6 @@ public static class MenuPanel
     public const string ItemFocusRingThickness = "--flare-menu-item-focus-ring-thickness";
     /// <summary>CSS custom-property name for the item focus ring offset token.</summary>
     public const string ItemFocusRingOffset = "--flare-menu-item-focus-ring-offset";
+    /// <summary>CSS custom-property name for the item disabled opacity token.</summary>
+    public const string ItemDisabledOpacity = "--flare-menu-item-disabled-opacity";
 }

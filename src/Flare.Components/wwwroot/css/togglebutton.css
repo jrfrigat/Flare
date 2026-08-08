@@ -74,7 +74,7 @@
 /* Disabled */
 .flare-toggle-btn:disabled,
 .flare-toggle-btn[disabled] {
-    opacity: var(--flare-state-disabled-opacity);
+    opacity: var(--flare-toggle-btn-disabled-opacity);
     cursor: not-allowed;
     pointer-events: none;
 }

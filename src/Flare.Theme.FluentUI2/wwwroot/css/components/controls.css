@@ -20,9 +20,12 @@
         border-color: var(--flare-color-on-surface);
     }
 
-    /* Disabled: flat Fluent disabled palette instead of the element-opacity fade. */
+    /* Disabled: flat Fluent disabled palette instead of the element-opacity fade. Staying opaque is
+       now CheckboxTokens/RadioTokens.DisabledOpacity, so only the repaint remains here. The indicator
+       has no spare layer to take a fill the way the button's ::before does, and neither `color` nor
+       `border-color` has a value meaning "leave this as painted", so a theme that fades could not
+       neutralise them if the core applied them - which is why they stay theme CSS. */
     .flare-checkbox--disabled, .flare-radio--disabled {
-        opacity: 1 !important;
         color: var(--flare-fluent-disabled-fg, #BDBDBD) !important;   /* label text (inherited) */
     }
     .flare-checkbox--disabled .flare-checkbox__indicator,

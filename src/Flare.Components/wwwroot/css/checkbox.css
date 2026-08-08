@@ -125,7 +125,7 @@
     color: var(--flare-color-error);
 }
 
-.flare-checkbox--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+.flare-checkbox--disabled { opacity: var(--flare-checkbox-disabled-opacity); pointer-events: none; }
 
 /* Size grid (Xs..Xl): scales the box via --_cb-size; the label font tracks the size. */
 .flare-checkbox--xs { --_cb-size: 0.875rem; gap: var(--flare-spacing-4); }
