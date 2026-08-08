@@ -5,6 +5,15 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [0.13.0] - 2026-08-08
 
+### Changed
+- **BREAKING for custom themes: six more required token members.** `StateTokens.FocusHoverLayer`,
+  `ButtonTokens.DisabledOpacity` and `DisabledLayer`, and `RadioTokens.FocusOutline`,
+  `FocusOutlineOffset` and `FocusShadow`. A bespoke theme - one not deriving from an in-box theme -
+  must set them or it will not compile, which is the mandate working rather than an oversight: each
+  replaces something the core used to decide on every theme's behalf. In-box themes and anything
+  built with `with` from them are unaffected, and none of the six in-box themes changes appearance
+  because of them.
+
 ### Added
 - **A theme states how a disabled button looks, instead of forcing it.** `ButtonTokens` gained
   `DisabledOpacity` and `DisabledLayer`. A design language that signals disabled by fading sets a
