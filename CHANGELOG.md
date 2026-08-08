@@ -6,6 +6,14 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.13.0] - 2026-08-08
 
 ### Added
+- **Pressing a segment in a button group widens it, so its neighbours flinch.**
+  `md.comp.button-group.standard.<size>.pressed.item.width.multiplier` asks for 15%; the spec says
+  nothing about the neighbours because it does not have to - they move because layout moves them.
+  That is also why it had to be a layout property: a transform would leave them exactly where they
+  were and stretch the label besides. Measured on a live group, the pressed segment grows to the
+  spec figure and the neighbour overshoots its resting place by a pixel before settling, which is
+  the flinch. Side padding stands in for the width multiplier, since a percentage of an item's own
+  width is not something CSS can name without measuring each segment in script.
 - **A theme can now state its own interaction model for the button, instead of overriding the core.**
   `StateTokens` gained `FocusHoverLayer` - the layer painted while an element is hovered AND focused,
   the one pairing the design languages genuinely disagree about (pressed outranks both everywhere
