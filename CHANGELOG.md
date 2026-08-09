@@ -68,6 +68,17 @@ All notable changes to Flare are documented here. This project adheres to
   context, so nothing new is isolated.
 
 ### Added
+- **`FlareButtonGroup.Connected` - the second of Material's two group models.** Until now Flare had
+  one button group that behaved like both at once. The models differ in what a press does: a standard
+  group's segments respond to each other, so pressing one changes its width and its neighbours give
+  up the space; a **connected** group's segments are independent, and pressing one changes only its
+  shape. Flare applied the width trade to every group, which is wrong for half of them. They also
+  size differently, and that is the one structural difference the core carries: a standard group hugs
+  the buttons inside it, while a connected group given `FullWidth` shares that width out equally
+  between its segments - the row reads as one control, which is what replaces the older segmented
+  button. Standard stays the default, so existing markup is unchanged; the rendered group now names
+  its model (`flare-btn-group--standard` / `--connected`) rather than one being the absence of the
+  other.
 - **`TabsVariant.Secondary` - the tab level below `Primary`.** A full-width indicator instead of one
   that hugs the label, thinner, and an active label in the content colour rather than the accent, so
   a secondary strip nested under a primary one reads as subordinate instead of competing with it.
@@ -88,11 +99,16 @@ All notable changes to Flare are documented here. This project adheres to
 - **A pressed button group's neighbours give up the space the pressed segment takes.** The Material
   Expressive press grew the pressed segment and left the rest alone, so the group got wider on every
   press and the neighbours were displaced rather than compressed. The token table has one row for
-  this - `pressed width multiplier` 15% - and on its own it is not a complete description: a button
-  group does not change size when you press it, so the 15% has to come from the segments on either
-  side. Each neighbour now gives up half a step per side, which is exactly what the pressed one
-  gains, so a group with a neighbour on both sides holds its size to the pixel. At the ends only one
-  neighbour can pay and the group gives a little, which is how an elastic row behaves anyway.
+  this - `pressed width multiplier` 15% - and on its own it is not a complete description: a standard
+  group hugs the buttons inside it and is meant to animate without disturbing the layout around it,
+  so the 15% has to come from the segments on either side. Each neighbour now gives up half a step
+  per side, which is exactly what the pressed one gains, so a group with a neighbour on both sides
+  holds its size to the pixel. At the ends only one neighbour can pay and the group gives a little,
+  which is how an elastic row behaves anyway.
+- **The pressed corner is the group's own, not the lone button's.** A grouped segment tightens to
+  `md.comp.button-group.connected.<size>.pressed.inner-corner-size` - 4/4/4/12/16dp - where this had
+  been borrowing the button family's pressed corner (8/8/12/16/16dp), so every size below large
+  under-tightened.
 - **A vertical button group presses along its own axis.** The grow was side padding regardless of
   direction. In a column the cross axis is horizontal and its items stretch to the widest, so
   pressing any segment widened the entire stack instead of lengthening the one pressed. The spec's

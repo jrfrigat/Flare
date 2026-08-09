@@ -19,29 +19,41 @@
         border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
-    /* Press tightens the segment to the button family's per-size pressed corner (xs/sm 8dp, md 12dp,
-       lg/xl 16dp) rather than holding the capsule. Press used to be listed with hover above, aiming
-       at the same capsule, so pressing a segment the pointer was already over changed nothing; and it
-       could not fall through to the button's own pressed rule, because the capsule's !important
-       outranks it regardless of specificity. Last in the file, so it wins the tie while both states
-       apply. */
+    /* Press tightens the segment rather than holding the capsule. The values are the GROUP's own
+       (`md.comp.button-group.connected.<size>.pressed.inner-corner-size` = 4/4/4/12/16dp), not the
+       lone button's pressed corner, which is what this used to borrow - a grouped segment tightens
+       further than a button on its own does. Press used to be listed with hover above, aiming at the
+       same capsule, so pressing a segment the pointer was already over changed nothing; and it could
+       not fall through to the button's own pressed rule, because the capsule's !important outranks it
+       regardless of specificity. Last in the file, so it wins the tie while both states apply.
+
+       This one applies to BOTH group models: "when a button is pressed, it changes width and shape",
+       and shape is the half a connected group keeps. */
     .flare-btn-group .flare-btn--xs:active,
-    .flare-btn-group .flare-btn--sm:active { border-radius: 0.5rem !important; }
-    .flare-btn-group .flare-btn--md:active { border-radius: 0.75rem !important; }
-    .flare-btn-group .flare-btn--lg:active,
+    .flare-btn-group .flare-btn--sm:active,
+    .flare-btn-group .flare-btn--md:active { border-radius: 0.25rem !important; }
+    .flare-btn-group .flare-btn--lg:active { border-radius: 0.75rem !important; }
     .flare-btn-group .flare-btn--xl:active { border-radius: 1rem !important; }
 
     /* ======================================================================
-       PRESS GROW - the pressed segment takes space, its neighbours give it up.
+       PRESS GROW - STANDARD GROUPS ONLY: the pressed segment takes space, its neighbours give it up.
+
+       The two group models part company here. Material: "when a button is pressed, it changes width
+       and shape. In a STANDARD button group, pressing a button also affects the width of adjacent
+       buttons. In a CONNECTED button group, ONLY THE SHAPE of the pressed button changes." So the
+       corner morph above is shared and everything below is scoped to `--standard`. The token table
+       agrees without saying so: the width multiplier rows live under "Button group standard", while
+       "Button group connected" has only corner sizes.
 
        `md.comp.button-group.standard.<size>.pressed.item.width.multiplier` = 15% is the only row the
-       token table has, and on its own it is not a complete description: a button group does not
-       change its overall size when you press it, so the 15% has to come from somewhere, and the only
-       place it can come from is the segments on either side. That is the Material behaviour - the
-       pressed item swells and its neighbours compress - and it is what makes the group feel like one
-       elastic object rather than a row that grows a lump. An earlier version of this file grew the
-       pressed segment alone and argued the neighbours "flinch because layout moves them"; they were
-       only ever displaced, never compressed, and the group got wider on every press.
+       table has for the width, and on its own it is not a complete description: a standard group
+       hugs the buttons inside it and is meant to animate without disturbing the layout around it, so
+       the 15% has to come from somewhere, and the only place it can come from is the segments on
+       either side. That is the stated behaviour - "adjacent buttons move and temporarily change
+       width" - and it is what makes the group feel like one elastic object rather than a row that
+       grows a lump. An earlier version of this file grew the pressed segment alone and argued the
+       neighbours "flinch because layout moves them"; they were only ever displaced, never
+       compressed, and the group got wider on every press.
 
        Expressed as padding rather than the spec's multiplier: a percentage of the item's OWN size is
        not something CSS can name here (`width: 115%` resolves against the group), so an exact
@@ -82,11 +94,11 @@
     .flare-btn-group .flare-btn--xl { --_press-step: 0.5rem; }
 
     /* Horizontal: the main axis is inline, so the trade is in side padding. */
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:active {
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) .flare-btn:active {
         padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
     }
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:active + .flare-btn,
-    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:has(+ .flare-btn:active) {
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) .flare-btn:active + .flare-btn,
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) .flare-btn:has(+ .flare-btn:active) {
         padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) - var(--_press-step) / 2);
     }
 
@@ -96,12 +108,16 @@
        items to the widest one, pressing any segment would have widened the whole stack.
 
        It is `height` rather than block padding because the button sizes itself with an explicit
-       height, which block padding cannot move. */
-    .flare-btn-group--vertical .flare-btn:active {
+       height, which block padding cannot move.
+
+       Material does not define a vertical button group at all - it says groups travel in a single
+       line and do not interact vertically. Flare offers one, so this is Flare's reading of the same
+       rule along the other axis rather than something the spec dictates. */
+    .flare-btn-group--standard.flare-btn-group--vertical .flare-btn:active {
         height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) + var(--_press-step) * 2);
     }
-    .flare-btn-group--vertical .flare-btn:active + .flare-btn,
-    .flare-btn-group--vertical .flare-btn:has(+ .flare-btn:active) {
+    .flare-btn-group--standard.flare-btn-group--vertical .flare-btn:active + .flare-btn,
+    .flare-btn-group--standard.flare-btn-group--vertical .flare-btn:has(+ .flare-btn:active) {
         height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) - var(--_press-step));
     }
 
@@ -110,9 +126,9 @@
        are in this list too - given the slow rung they would still be drifting inwards while the
        pressed segment had already arrived, and the trade would read as two separate animations rather
        than one. The release keeps the spring above, which is what springs everything back. */
-    .flare-btn-group .flare-btn:active,
-    .flare-btn-group .flare-btn:active + .flare-btn,
-    .flare-btn-group .flare-btn:has(+ .flare-btn:active) {
+    .flare-btn-group--standard .flare-btn:active,
+    .flare-btn-group--standard .flare-btn:active + .flare-btn,
+    .flare-btn-group--standard .flare-btn:has(+ .flare-btn:active) {
         --_grow-duration: var(--flare-motion-duration-short2);
     }
 

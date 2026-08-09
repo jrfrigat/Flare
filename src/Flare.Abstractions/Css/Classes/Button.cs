@@ -98,4 +98,8 @@ public static class ButtonGroup
     public const string Vertical = "flare-btn-group--vertical";
     /// <summary>The <c>flare-btn-group--full</c> CSS class.</summary>
     public const string Full = "flare-btn-group--full";
+    /// <summary>The <c>flare-btn-group--connected</c> CSS class.</summary>
+    public const string Connected = "flare-btn-group--connected";
+    /// <summary>The <c>flare-btn-group--standard</c> CSS class.</summary>
+    public const string Standard = "flare-btn-group--standard";
 }

@@ -19,6 +19,22 @@
     width: 100%;
 }
 
+/* The two group models size their segments differently, and it is the one structural difference
+   between them: a STANDARD group hugs the buttons inside it, so each segment keeps its own width even
+   when the group is stretched; a CONNECTED group is meant to span its surface and share that width
+   out equally, so the row reads as a single control. Everything else that separates the two - whether
+   a press travels to the neighbours - is interaction, and lives in the theme.
+
+   Structural only, no visual opinion: which model a group follows is the consumer's call, and every
+   colour and corner still comes from the --flare-btn-group-* tokens. */
+.flare-btn-group--standard .flare-btn {
+    flex: 0 0 auto;
+}
+.flare-btn-group--connected.flare-btn-group--full .flare-btn {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
 .flare-btn-group--vertical {
     flex-direction: column;
 }

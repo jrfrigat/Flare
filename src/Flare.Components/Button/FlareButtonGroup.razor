@@ -3,7 +3,7 @@
 
 @* The group manages geometry via CSS (seams + per-corner radii) and cascades
    Size/Variant/Color to child FlareButton via FlareButtonGroupContext. *@
-<div class="@BuildCssClass(_verticalClass, _fullWidthClass)"
+<div class="@BuildCssClass(_verticalClass, _fullWidthClass, _modelClass)"
      style="@Style"
      @attributes="AdditionalAttributes">
 
@@ -21,6 +21,17 @@
 
     /// <summary>When true, the group stretches to fill the full width of its container.</summary>
     [Parameter] public bool FullWidth { get; set; }
+
+    /// <summary>
+    /// Switches the group from the standard model to the connected one. The two differ in how a press
+    /// travels: a standard group's segments respond to each other, so pressing one changes its width
+    /// and its neighbours give up the space; a connected group's segments are independent, and a press
+    /// changes only the shape of the button pressed. Connected is the model for a row of related
+    /// options that can be selected - it is what replaces the older segmented button - and it is
+    /// usually paired with <see cref="FullWidth"/>, since a connected group is meant to span its
+    /// surface and widen its buttons to fill it. Default false (standard).
+    /// </summary>
+    [Parameter] public bool Connected { get; set; }
 
     /// <summary>Visual style variant applied to all buttons in the group. Null keeps each button's own Variant.</summary>
     [Parameter] public ButtonVariant? Variant { get; set; }
@@ -40,4 +51,8 @@
 
     private string _verticalClass => Vertical ? Css.Classes.ButtonGroup.Vertical : string.Empty;
     private string _fullWidthClass => FullWidth ? Css.Classes.ButtonGroup.Full : string.Empty;
+    // Both models carry a marker class rather than one being the absence of the other: a theme styles
+    // them differently enough that a rule reading `:not(--connected)` would be the wrong shape, and
+    // the rendered markup says which model is in play without the reader inferring it.
+    private string _modelClass => Connected ? Css.Classes.ButtonGroup.Connected : Css.Classes.ButtonGroup.Standard;
 }

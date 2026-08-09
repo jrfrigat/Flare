@@ -144,6 +144,25 @@ public class C_FlareButtonGroupTests : FlareTestContext
     }
 
     [Fact]
+    public void NamesItsModel()
+    {
+        // The two models behave differently under a press - a standard group's segments trade width
+        // with each other, a connected group's only change shape - so the markup has to say which one
+        // it is rather than one being the absence of the other. Standard is the default.
+        foreach (var (connected, expected, notExpected) in new[]
+                 {
+                     (false, "flare-btn-group--standard", "flare-btn-group--connected"),
+                     (true, "flare-btn-group--connected", "flare-btn-group--standard"),
+                 })
+        {
+            var cut = Render<FlareButtonGroup>(p => p.Add(x => x.Connected, connected));
+            var cls = cut.Find(".flare-btn-group").ClassName;
+            Assert.Contains(expected, cls);
+            Assert.DoesNotContain(notExpected, cls);
+        }
+    }
+
+    [Fact]
     public void RendersChildContent()
     {
         var cut = Render<FlareButtonGroup>(p => p

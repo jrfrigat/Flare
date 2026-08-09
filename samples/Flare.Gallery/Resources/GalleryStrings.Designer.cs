@@ -1094,6 +1094,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("ButtonGroup_Basic", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Standard and connected.
+        /// </summary>
+        public static string ButtonGroup_Connected {
+            get {
+                return ResourceManager.GetString("ButtonGroup_Connected", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Full width.
