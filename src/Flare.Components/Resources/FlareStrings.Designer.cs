@@ -106,6 +106,15 @@ namespace Flare.Components.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Show or hide the list.
+        /// </summary>
+        public static string Aria_ToggleList {
+            get {
+                return ResourceManager.GetString("Aria_ToggleList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на {0} more.
         /// </summary>
         public static string Avatar_OverflowMore {

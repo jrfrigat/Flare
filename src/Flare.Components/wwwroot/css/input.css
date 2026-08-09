@@ -177,7 +177,22 @@
 .flare-input__icon--trailing { order: 1; }
 
 /* Trailing expand/collapse chevron shared by the combobox-style triggers (Select/MultiSelect). */
-.flare-input__arrow { color: var(--flare-color-on-surface-variant); flex: none; }
+/* The trailing chevron is a <button> (it toggles the list), so it carries the control resets rather
+   than inheriting the page's button chrome. It is not a tab stop - the field itself is. */
+.flare-input__arrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    color: var(--flare-color-on-surface-variant);
+    flex: none;
+}
+
+.flare-input__arrow:disabled { cursor: default; }
 
 /* Shared button reset for a picker expand/open toggle (DatePicker/TimePicker/DateTimePicker). */
 .flare-input__toggle {

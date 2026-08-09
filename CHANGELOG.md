@@ -83,6 +83,13 @@ All notable changes to Flare are documented here. This project adheres to
   well-formed token names, and it renders correctly under the one theme it was written for.
 
 ### Fixed
+- **The chevron on a combobox, select or multi-select opens and closes the list.** On
+  `FlareAutocomplete` it did nothing at all - it was a decorative `<span>` with no handler, and only
+  focusing the input opened the list, which is why the dead affordance went unnoticed. On a
+  **searchable** select or multi-select the container's click handler could only ever open, so the
+  chevron could not close what it had opened while visibly pointing up. It is a real `<button>` in all
+  three now, with `aria-expanded` and a label, kept out of the tab order (the field is the tab stop)
+  and with `mousedown` suppressed so clicking it never pulls focus out of the input.
 - **The wavy ring flows.** Its crests now travel round the indicator while the arc stays where the
   value put it. The flow rotates the path a full turn and walks `stroke-dashoffset` by the matching
   arc length to cancel it - which is what the first attempt did, and it came apart because the dash

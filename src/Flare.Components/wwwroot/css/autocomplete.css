@@ -13,12 +13,23 @@
 /* Control chrome (flex/transparent/padding/font) inherited from .flare-input__control (input.css). */
 
 
+/* Rendered as a <button> (it toggles the list) except while searching, when it is a <span> holding the
+   spinner - so it carries the control resets and works as either element. */
 .flare-autocomplete__icon {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  background: none;
+  border: none;
   padding: 0 var(--flare-spacing-6);
   color: var(--flare-color-on-surface-variant);
   font-size: 0.75rem;
+  line-height: 1;
+  cursor: pointer;
   flex-shrink: 0;
 }
+
+.flare-autocomplete__icon:disabled { cursor: default; }
 
 .flare-autocomplete__clear {
   display: inline-flex;
@@ -40,7 +51,9 @@
 /* Error + disabled state come from the shared flare-input--error / flare-input--disabled (input.css).
    The shared disabled content-opacity rule targets flare-input__icon, so dim the autocomplete's own
    chevron wrapper explicitly. */
-.flare-input--disabled .flare-autocomplete__icon { opacity: var(--flare-state-disabled-opacity); }
+/* Same disabled model as the field's other trailing chrome (input.css), so a theme that repaints
+   rather than fades does not end up with a faded chevron beside an opaque arrow. */
+.flare-input--disabled .flare-autocomplete__icon { opacity: var(--flare-input-disabled-opacity); }
 
 
 .flare-autocomplete__spinner {

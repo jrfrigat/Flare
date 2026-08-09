@@ -90,7 +90,17 @@
                     <span aria-hidden="true">&#x2715;</span>
                 </button>
             }
-            <FlareIconView Value="@(_state.IsOpen ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" Class="@Css.Classes.Input.Arrow" />
+            @* A real button, not a decorative glyph. The container's click only ever OPENS in the
+               searchable mode, so without this the chevron could not close what it had opened. *@
+            <button type="button" class="@Css.Classes.Input.Arrow"
+                    tabindex="-1"
+                    aria-label="@FlareStrings.Aria_ToggleList"
+                    aria-expanded="@(_state.IsOpen ? "true" : "false")"
+                    disabled="@(Disabled || ReadOnly)"
+                    @onmousedown:preventDefault="true"
+                    @onclick="ToggleOpenAsync" @onclick:stopPropagation="true">
+                <FlareIconView Value="@(_state.IsOpen ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" />
+            </button>
         </div>
         @if (_chrome is not null)
         {
@@ -306,6 +316,23 @@
             _state.ToggleOpen();
         }
         _ = NotifyOpenAsync();
+    }
+
+    // The chevron's own action: a plain toggle in both modes, where the container click only opens.
+    private async Task ToggleOpenAsync()
+    {
+        if (Disabled || ReadOnly) return;
+
+        if (_state.IsOpen)
+        {
+            await HandleDismissAsync();
+        }
+        else
+        {
+            if (Searchable) { _editing = true; _focusQueued = true; }
+            _state.Open(FocusStrategy.KeepSelected);
+            await NotifyOpenAsync();
+        }
     }
 
     private void OnInputFocus()

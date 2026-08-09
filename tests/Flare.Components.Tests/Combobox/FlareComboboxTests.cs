@@ -170,4 +170,43 @@ public class FlareComboboxTests : FlareTestContext
         cut.Find("input").Focus();
         Assert.Equal(2, cut.FindAll(".flare-listbox__option").Count);
     }
+
+    [Fact]
+    public void Chevron_opens_and_closes_the_list()
+    {
+        // The chevron was a decorative <span> with no handler, so the affordance that looks like the
+        // way to open the list was the one thing that could not. Focusing the input still worked, which
+        // is why it went unnoticed. It is a real button now, and it has to toggle - opening only would
+        // leave a control that visibly points UP and does nothing.
+        var cut = Render<FlareCombobox<string>>(p => p.Add(x => x.Items, Cities));
+
+        var chevron = cut.Find($".{Css.Classes.Autocomplete.Icon}");
+        Assert.Equal("BUTTON", chevron.TagName);
+        Assert.Equal("false", chevron.GetAttribute("aria-expanded"));
+        Assert.Empty(cut.FindAll(".flare-listbox__option"));
+
+        chevron.Click();
+        Assert.NotEmpty(cut.FindAll(".flare-listbox__option"));
+        Assert.Equal("true", cut.Find($".{Css.Classes.Autocomplete.Icon}").GetAttribute("aria-expanded"));
+
+        cut.Find($".{Css.Classes.Autocomplete.Icon}").Click();
+        Assert.Empty(cut.FindAll(".flare-listbox__option"));
+        Assert.Equal("false", cut.Find($".{Css.Classes.Autocomplete.Icon}").GetAttribute("aria-expanded"));
+    }
+
+    [Fact]
+    public void Chevron_does_nothing_when_the_field_is_not_interactive()
+    {
+        foreach (var disabled in new[] { true, false })
+        {
+            var cut = Render<FlareCombobox<string>>(p => p
+                .Add(x => x.Items, Cities)
+                .Add(x => x.Disabled, disabled)
+                .Add(x => x.ReadOnly, !disabled));
+
+            var chevron = cut.Find($".{Css.Classes.Autocomplete.Icon}");
+            Assert.True(chevron.HasAttribute("disabled"),
+                $"the chevron must be inert when the field is {(disabled ? "disabled" : "read-only")}");
+        }
+    }
 }

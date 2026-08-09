@@ -140,6 +140,7 @@
   <data name="Tabs_ScrollForward" xml:space="preserve"><value>Прокрутить вкладки вперёд</value></data>
   <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Переключить меню</value></data>
   <data name="Aria_TogglePassword" xml:space="preserve"><value>Показать/скрыть пароль</value></data>
+  <data name="Aria_ToggleList" xml:space="preserve"><value>Показать или скрыть список</value></data>
 
   <!-- Input -->
   <data name="Input_Clear" xml:space="preserve"><value>Очистить</value></data>

@@ -53,16 +53,28 @@
                     <span aria-hidden="true">&#x2715;</span>
                 </button>
             }
-            <span class="@Css.Classes.Autocomplete.Icon">
-                @if (_searching)
-                {
+            @if (_searching)
+            {
+                <span class="@Css.Classes.Autocomplete.Icon">
                     <FlareIconView Value="@FlareIcons.ProgressActivity" Class="@Css.Classes.Autocomplete.Spinner" />
-                }
-                else
-                {
+                </span>
+            }
+            else
+            {
+                @* A real button, not a decorative span: the chevron LOOKS like a control, so it has to
+                   behave like one. mousedown is prevented so clicking it never pulls focus out of the
+                   input (which would dismiss the popup before the click landed). *@
+                <button type="button" class="@Css.Classes.Autocomplete.Icon"
+                        tabindex="-1"
+                        aria-label="@FlareStrings.Aria_ToggleList"
+                        aria-expanded="@(_state.IsOpen ? "true" : "false")"
+                        aria-controls="@(_state.IsOpen ? _listboxId : null)"
+                        disabled="@(Disabled || ReadOnly)"
+                        @onmousedown:preventDefault="true"
+                        @onclick="ToggleOpenAsync">
                     <FlareIconView Value="@(_state.IsOpen ? FlareIcons.ExpandLess : FlareIcons.ExpandMore)" />
-                }
-            </span>
+                </button>
+            }
         </div>
         @if (_chrome is not null)
         {
@@ -295,6 +307,29 @@
         // Open showing all options; the label clears so the next keystroke is a fresh query.
         _state.SetInput(string.Empty);
         if (!_state.IsOpen) _state.Open(FocusStrategy.First);
+    }
+
+    // The chevron's own action. Closing goes through the dismiss path rather than a bare Close() so a
+    // typed custom value is committed and an abandoned query reverts - exactly as clicking away does.
+    private async Task ToggleOpenAsync()
+    {
+        if (Disabled || ReadOnly) return;
+
+        if (_state.IsOpen)
+        {
+            await HandleDismissAsync();
+        }
+        else
+        {
+            HandleFocus();
+            await NotifyOpenAsync();
+        }
+
+        // The button is not a tab stop and mousedown was prevented, so focus never moved; put it on the
+        // input anyway for the case where it was somewhere else entirely.
+        try { await _inputRef.FocusAsync(); }
+        catch (Microsoft.JSInterop.JSException) { }
+        catch (InvalidOperationException) { }
     }
 
     private async Task HandleInputAsync(ChangeEventArgs e)
