@@ -1,0 +1,37 @@
+@* Secondary tabs only make sense next to the level they sit under, so the demo shows the pairing
+   rather than the variant on its own: the outer strip is Primary (accent label, hugging 3dp
+   indicator), the inner one Secondary (content-coloured label, full-width 2dp indicator). *@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
+    <FlareTabs Variant="TabsVariant.Primary">
+        <FlareTab Label="Library">
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Dashboard" /></LeadingIcon>
+            <ChildContent>
+                <FlareTabs Variant="TabsVariant.Secondary">
+                    <FlareTab Label="Albums">
+                        <FlareText Typo="TypographyScale.BodyMedium">
+                            The inner strip subdivides the destination the outer one picked. Its active
+                            label keeps the content colour so the accent stays with the level above it.
+                        </FlareText>
+                    </FlareTab>
+                    <FlareTab Label="Artists">
+                        <FlareText Typo="TypographyScale.BodyMedium">
+                            Both differences - a thinner indicator and a quieter active label - are theme
+                            tokens, so a design language can widen or close the gap between the levels.
+                        </FlareText>
+                    </FlareTab>
+                    <FlareTab Label="Songs">
+                        <FlareText Typo="TypographyScale.BodyMedium">
+                            The indicator spans the whole tab here, where the primary one hugs its label.
+                        </FlareText>
+                    </FlareTab>
+                </FlareTabs>
+            </ChildContent>
+        </FlareTab>
+        <FlareTab Label="Downloads">
+            <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Bolt" /></LeadingIcon>
+            <ChildContent>
+                <FlareText Typo="TypographyScale.BodyMedium">Nothing downloaded yet.</FlareText>
+            </ChildContent>
+        </FlareTab>
+    </FlareTabs>
+</FlareStack>

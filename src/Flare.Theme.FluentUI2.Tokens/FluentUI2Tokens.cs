@@ -427,6 +427,10 @@ public class FluentUI2Tokens
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
         ActiveColor = "var(--flare-color-primary)",
+        // Fluent has no nested-tab level of its own, so the subordinate strip is expressed the way
+        // this language expresses subordination anyway: a thinner rail and a neutral active label.
+        SecondaryIndicatorThickness = "2px",
+        SecondaryActiveColor = "var(--flare-color-on-surface)",
         InactiveColor = "var(--flare-color-on-surface)",
         DividerColor = "var(--flare-color-surface-variant)",
         SelectedBg = "var(--flare-color-secondary-container)",

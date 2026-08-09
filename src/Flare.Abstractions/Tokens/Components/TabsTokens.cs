@@ -23,6 +23,16 @@ public sealed record TabsTokens
     /// <summary>Active-indicator and active-tab color.</summary>
     [CssVar(Tabs.ActiveColor)] public required string ActiveColor { get; init; }
 
+    /// <summary>Active-indicator thickness for the <c>Secondary</c> variant. Separate from
+    /// <see cref="IndicatorThickness"/> because the two tab levels are meant to be told apart at a
+    /// glance, and thickness is half of how a language does that.</summary>
+    [CssVar(Tabs.SecondaryIndicatorThickness)] public required string SecondaryIndicatorThickness { get; init; }
+
+    /// <summary>Active label and icon color for the <c>Secondary</c> variant - the other half. A
+    /// secondary tab sits beneath a primary one, so its active state is usually the content colour
+    /// rather than the accent, leaving the indicator alone to carry the accent.</summary>
+    [CssVar(Tabs.SecondaryActiveColor)] public required string SecondaryActiveColor { get; init; }
+
     /// <summary>Inactive tab text color.</summary>
     [CssVar(Tabs.InactiveColor)] public required string InactiveColor { get; init; }
 

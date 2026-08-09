@@ -1809,6 +1809,9 @@
   <data name="Tabs_Variants" xml:space="preserve">
     <value>Варианты</value>
   </data>
+  <data name="Tabs_PrimarySecondary" xml:space="preserve">
+    <value>Основные и вложенные</value>
+  </data>
   <data name="Tabs_CloseableTabs" xml:space="preserve">
     <value>Закрываемые вкладки</value>
   </data>

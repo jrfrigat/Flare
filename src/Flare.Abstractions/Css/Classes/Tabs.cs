@@ -12,6 +12,8 @@ public static class Tabs
     public const string Underline = "flare-tabs--underline";
     /// <summary>The <c>flare-tabs--primary</c> CSS class.</summary>
     public const string Primary = "flare-tabs--primary";
+    /// <summary>The <c>flare-tabs--secondary</c> CSS class.</summary>
+    public const string Secondary = "flare-tabs--secondary";
     /// <summary>The <c>flare-tabs--text</c> CSS class.</summary>
     public const string Text = "flare-tabs--text";
     /// <summary>The <c>flare-tabs--tonal</c> CSS class.</summary>

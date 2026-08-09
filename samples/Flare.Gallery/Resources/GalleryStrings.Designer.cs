@@ -7963,6 +7963,15 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Primary over secondary.
+        /// </summary>
+        public static string Tabs_PrimarySecondary {
+            get {
+                return ResourceManager.GetString("Tabs_PrimarySecondary", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Variants.
         /// </summary>
         public static string Tabs_Variants {

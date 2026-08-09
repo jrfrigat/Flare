@@ -241,6 +241,10 @@ internal class VisualStudioTokens
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "2px",
         ActiveColor = "var(--flare-color-primary)",
+        // The IDE's own tab rail is already 2dp, so a subordinate strip separates itself by dropping
+        // the accent label rather than by getting thinner still.
+        SecondaryIndicatorThickness = "2px",
+        SecondaryActiveColor = "var(--flare-color-on-surface)",
         InactiveColor = "var(--flare-color-on-surface-variant)",
         DividerColor = "var(--flare-color-outline-variant)",
         SelectedBg = "var(--flare-color-surface)",

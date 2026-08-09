@@ -349,7 +349,16 @@ public class MaterialDesignTokens
         ScrollShadowOpacity = "35%",
         IndicatorThickness = "3px",
         ActiveColor = "var(--flare-color-primary)",
-        InactiveColor = "var(--flare-color-on-surface)",
+        // Secondary navigation tab: 2dp indicator, active label on-surface (spec md.comp
+        // .secondary-navigation-tab.active-indicator.height / .label-text.color).
+        SecondaryIndicatorThickness = "2px",
+        SecondaryActiveColor = "var(--flare-color-on-surface)",
+        // Spec is on-surface-VARIANT at rest (#49454F) for both tab levels, and on-surface only once
+        // the tab is hovered or focused. This was on-surface, so an inactive tab read as dark as the
+        // active one - invisible on a primary strip, where the accent carries the distinction, but
+        // plainly wrong on a secondary strip, where the label colour is all there is besides a 2dp
+        // rail. The hover darkening is not modelled yet; the state layer signals hover meanwhile.
+        InactiveColor = "var(--flare-color-on-surface-variant)",
         DividerColor = "var(--flare-color-surface-variant)",
         SelectedBg = "var(--flare-color-secondary-container)",
         SelectedFg = "var(--flare-color-on-secondary-container)",

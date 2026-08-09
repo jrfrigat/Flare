@@ -6,10 +6,11 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.15.0] - 2026-08-09
 
 ### Changed
-- **BREAKING for custom themes: three required token members added, one removed, one changed
-  meaning.** `SliderTokens.DisabledActiveColor` and `DisabledInactiveColor` are new, as is
-  `StripeTokens.Background` (a new top-level `DesignTokens.Stripe`), and a bespoke theme - one not
-  deriving from an in-box theme - must set all three or it will not compile.
+- **BREAKING for custom themes: five required token members added, one removed, one changed
+  meaning.** `SliderTokens.DisabledActiveColor` and `DisabledInactiveColor`,
+  `TabsTokens.SecondaryIndicatorThickness` and `SecondaryActiveColor`, and
+  `StripeTokens.Background` (a new top-level `DesignTokens.Stripe`) are all new, and a bespoke
+  theme - one not deriving from an in-box theme - must set them or it will not compile.
   `TableTokens.StripeOpacity` is gone, replaced by that shared stripe. `CardTokens.StateLayer` now
   holds the **whole** hover layer rather than a colour the core mixed at a fixed 8%, so a custom
   theme setting a bare colour there will paint it opaque: point it at `var(--flare-state-hover-layer)`
@@ -63,6 +64,13 @@ All notable changes to Flare are documented here. This project adheres to
   context, so nothing new is isolated.
 
 ### Added
+- **`TabsVariant.Secondary` - the tab level below `Primary`.** A full-width indicator instead of one
+  that hugs the label, thinner, and an active label in the content colour rather than the accent, so
+  a secondary strip nested under a primary one reads as subordinate instead of competing with it.
+  Both differences are tokens - `TabsTokens.SecondaryIndicatorThickness` and `SecondaryActiveColor` -
+  because how far apart a design language sets its two tab levels is its answer, not the core's.
+  Measured against the MD3 spec: primary active `#6750A4` at 3dp, secondary active `#1D1B20` with a
+  2dp `#6750A4` indicator, all matching.
 - **A theme states how a disabled slider looks.** `SliderTokens.DisabledActiveColor` and
   `DisabledInactiveColor`. The filled track, the thumb and the rail were three fixed fades of
   `on-surface` written into the core - one design language's disabled recipe - which is why Fluent
@@ -73,6 +81,11 @@ All notable changes to Flare are documented here. This project adheres to
   colour, which is the theme's decision to make.
 
 ### Fixed
+- **An inactive tab is no longer as dark as the active one under Material.** The theme set the
+  inactive label to `on-surface`, where MD3 specifies `on-surface-variant` at rest for both tab
+  levels and `on-surface` only under hover or focus. On a primary strip the accent hid it; on the new
+  secondary strip, where the label colour is nearly the whole distinction, it would have been
+  obvious. The audit had marked the primary tab faithful, which it was on every axis but this one.
 - **A grouped table's group header hovers in its own colour again.** `.flare-table--hover tbody
   tr:hover td` reaches three elements deep and outranked `.flare-table__group-row:hover td`, so in a
   hoverable table - the default - a group header showed the ordinary row wash instead of the

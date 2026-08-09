@@ -1809,6 +1809,9 @@
   <data name="Tabs_Variants" xml:space="preserve">
     <value>Variants</value>
   </data>
+  <data name="Tabs_PrimarySecondary" xml:space="preserve">
+    <value>Primary over secondary</value>
+  </data>
   <data name="Tabs_CloseableTabs" xml:space="preserve">
     <value>Closeable Tabs</value>
   </data>

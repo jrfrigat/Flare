@@ -162,6 +162,19 @@
   border-radius: var(--flare-shape-extra-small) var(--flare-shape-extra-small) 0 0;
 }
 
+/* Secondary tabs: the level below Primary. The indicator spans the whole tab rather than hugging the
+   label, it is thinner, and the active label stays the content colour - the accent is left to the
+   indicator alone, so a secondary strip sitting under a primary one reads as subordinate to it
+   instead of competing. Both differences are tokens, because "how do two tab levels differ" is a
+   design-language answer, not a core one. Vertical is unaffected: there is no bottom edge to mark. */
+.flare-tabs--secondary:not(.flare-tabs--vertical) .flare-tabs__tab {
+  border-bottom: var(--flare-tabs-secondary-indicator-thickness) solid transparent;
+}
+.flare-tabs--secondary:not(.flare-tabs--vertical) .flare-tabs__tab--active {
+  color: var(--flare-tabs-secondary-active-color);
+  border-bottom-color: var(--flare-tabs-active-color);
+}
+
 /* ============================ Variants ====================================
    Underline (and Default) use the base styling above. Text/Tonal/Filled/Outlined
    restyle the bar; every colour/shape knob comes from a --flare-tabs-* token so

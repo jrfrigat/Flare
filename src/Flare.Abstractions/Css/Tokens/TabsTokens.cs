@@ -19,6 +19,10 @@ public static class Tabs
     public const string IndicatorThickness = "--flare-tabs-indicator-thickness";
     /// <summary>CSS custom-property name for the active color token.</summary>
     public const string ActiveColor = "--flare-tabs-active-color";
+    /// <summary>CSS custom-property name for the secondary-variant indicator thickness token.</summary>
+    public const string SecondaryIndicatorThickness = "--flare-tabs-secondary-indicator-thickness";
+    /// <summary>CSS custom-property name for the secondary-variant active label color token.</summary>
+    public const string SecondaryActiveColor = "--flare-tabs-secondary-active-color";
     /// <summary>CSS custom-property name for the inactive color token.</summary>
     public const string InactiveColor = "--flare-tabs-inactive-color";
     /// <summary>CSS custom-property name for the divider color token.</summary>

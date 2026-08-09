@@ -387,6 +387,8 @@ public static class CssVarMap
         v[Css.Tokens.Tabs.LabelWeight] = t.Tabs.LabelWeight;
         v[Css.Tokens.Tabs.ScrollShadowOpacity] = t.Tabs.ScrollShadowOpacity;
         v[Css.Tokens.Tabs.ActiveColor] = t.Tabs.ActiveColor;
+        v[Css.Tokens.Tabs.SecondaryIndicatorThickness] = t.Tabs.SecondaryIndicatorThickness;
+        v[Css.Tokens.Tabs.SecondaryActiveColor] = t.Tabs.SecondaryActiveColor;
         v[Css.Tokens.Tabs.InactiveColor] = t.Tabs.InactiveColor;
         v[Css.Tokens.Tabs.DividerColor] = t.Tabs.DividerColor;
         v[Css.Tokens.Tabs.SelectedBg] = t.Tabs.SelectedBg;

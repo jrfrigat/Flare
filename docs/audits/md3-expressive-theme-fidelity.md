@@ -137,8 +137,18 @@ absent) / DELIBERATE (intentional deviation). Only non-MATCH axes listed; unlist
   small (64dp) size exists - medium 112 / large 152 / center-aligned / flexible + scroll-collapse NOT-IMPL.
 - **Nav** - MINOR active label weight 600 vs spec 700; rail is a drawer-collapse, not a true 80dp rail
   with the fixed 56x32 centered pill. Indicator pill / roles / states MATCH.
-- **Tabs** - primary tab faithful (3dp hugging primary indicator). GAP no dedicated secondary tab (2dp
-  full-width, on-surface active label). Tonal/filled pill is correctly scoped - does NOT leak to default.
+- **Tabs** - ~~GAP no dedicated secondary tab~~ **FIXED (0.15.0):** `TabsVariant.Secondary` with
+  `SecondaryIndicatorThickness` (2dp) and `SecondaryActiveColor` (on-surface), both tokens so a theme
+  can set how far apart its two tab levels sit. Measured against the spec: primary active #6750A4 /
+  3dp, secondary active #1D1B20 / 2dp indicator #6750A4 - all match.
+  **The "primary tab faithful" verdict was wrong on one point,** found while checking the new
+  variant: `InactiveColor` was `on-surface`, where the spec is `on-surface-variant` (#49454F) at rest
+  for *both* levels, `on-surface` only under hover/focus. An inactive primary tab therefore read as
+  dark as the active one - hidden by the accent on a primary strip, but plainly wrong on a secondary
+  strip where the label colour is nearly the whole distinction. Fixed to on-surface-variant.
+  STILL OPEN: the inactive label does not darken on hover (spec #49454F -> #1D1B20); that needs an
+  inactive-hover colour token. The state layer signals hover meanwhile.
+  Tonal/filled pill is correctly scoped - does NOT leak to default.
 - **Toolbar** - NOT-IMPL: the entire Expressive toolbar family is absent (no `FlareToolbar`,
   `ToolbarTokens`, or `toolbar.css`) - docked + floating pill, standard/vibrant, FAB companion.
 - **Menu** - Expressive 16dp island panel + per-group elevation islands present. GAP no selected-item
@@ -199,7 +209,8 @@ Each needs a token the core reads (so it stays theme-set) or is a genuine cross-
 13. **Menu** selected-item state (secondary-container fill).
 14. **List** line heights 56/72/88dp + selected roles -> secondary-container (natural home: a new
     `ListTokens` record).
-15. **Tabs** secondary variant (2dp full-width, on-surface active label).
+15. ~~**Tabs** secondary variant (2dp full-width, on-surface active label).~~ **DONE 0.15.0**, and it
+    turned up an inactive-label colour defect on the primary tab too - see the Navigation section.
 16. **Date-picker** today 1dp primary ring + picker panel radius -> 16dp.
 17. **Time-picker** dial selector 48dp handle + display toward 57pt.
 

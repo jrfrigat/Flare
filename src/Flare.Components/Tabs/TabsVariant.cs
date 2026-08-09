@@ -17,6 +17,14 @@ public enum TabsVariant
     /// <summary>Content-hugging underline indicator with rounded top corners.</summary>
     Primary,
 
+    /// <summary>
+    /// Full-width underline indicator with the active label in the content colour rather than the
+    /// accent. Pairs with <see cref="Primary"/>: primary tabs mark top-level destinations, secondary
+    /// tabs subdivide one of them, and the quieter active label is what keeps the two levels from
+    /// competing when they are stacked.
+    /// </summary>
+    Secondary,
+
     /// <summary>No persistent indicator: the active tab is color/weight only, with a subtle hover wash.</summary>
     Text,
 
