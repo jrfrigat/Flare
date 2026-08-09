@@ -1,32 +1,36 @@
 /* ==========================================================================
    FlareButtonGroup - THEME-AGNOSTIC base. This file carries NO visual opinion: it only reads the
-   --flare-btn-group-* tokens, every one of which DEFAULTS to a plain, un-connected row of buttons
-   (gap 0, no overlap, square corners). Each theme SETS the model it wants via ButtonGroupTokens:
-     - connected  = gap 0 + a negative --overlap that collapses adjacent borders + flat --inner-radius
-     - separated  = a positive --gap + zero --overlap + rounded --inner-radius
-   (see Flare.Abstractions/Tokens/Components/ButtonGroupTokens.cs). Logical margins/corners so RTL mirrors
-   automatically; no per-size fan-out (the outer radius may be a calc(--_flare-btn-height / 2) capsule and
-   the button's own size class supplies that height). */
+   --flare-btn-group-* tokens, and it reads a different set for each of the two group models.
+
+     - STANDARD  = separate buttons standing together. The group contributes a gap and nothing else;
+                   every corner is the button's own, which is why a standard group's buttons stay free
+                   to be round or square on their own terms.
+     - CONNECTED = one seamed control. The group owns the shape: a gap (often zero), an overlap that
+                   collapses adjacent borders into a single seam, a radius for the control's ends and
+                   another for its interior corners.
+
+   The asymmetry is deliberate. Corner tokens for the standard model would describe a shape it does not
+   have, and a theme filling them in would be describing the connected look twice.
+   (see Flare.Abstractions/Tokens/Components/ButtonGroupTokens.cs). Logical margins/corners so RTL
+   mirrors automatically; no per-size fan-out (the outer radius may be a
+   calc(--_flare-btn-height / 2) capsule and the button's own size class supplies that height). */
 
 .flare-btn-group {
     display: inline-flex;
     box-sizing: border-box;
-    gap: var(--flare-btn-group-gap);
 }
+
+.flare-btn-group--standard { gap: var(--flare-btn-group-standard-gap); }
+.flare-btn-group--connected { gap: var(--flare-btn-group-connected-gap); }
 
 .flare-btn-group--full {
     display: flex;
     width: 100%;
 }
 
-/* The two group models size their segments differently, and it is the one structural difference
-   between them: a STANDARD group hugs the buttons inside it, so each segment keeps its own width even
-   when the group is stretched; a CONNECTED group is meant to span its surface and share that width
-   out equally, so the row reads as a single control. Everything else that separates the two - whether
-   a press travels to the neighbours - is interaction, and lives in the theme.
-
-   Structural only, no visual opinion: which model a group follows is the consumer's call, and every
-   colour and corner still comes from the --flare-btn-group-* tokens. */
+/* The two models also size their segments differently: a STANDARD group hugs the buttons inside it, so
+   each segment keeps its own width even when the group is stretched; a CONNECTED group is meant to span
+   its surface and share that width out equally, so the row reads as a single control. */
 .flare-btn-group--standard .flare-btn {
     flex: 0 0 auto;
 }
@@ -35,18 +39,18 @@
     min-width: 0;
 }
 
-.flare-btn-group--vertical {
-    flex-direction: column;
+/* Connected overlap: a (usually negative) leading margin on every non-first segment pulls it over its
+   neighbour so two 1px borders collapse into one seam. Logical properties -> correct in both LTR and
+   RTL and for vertical stacks. A standard group has no seams to collapse. */
+.flare-btn-group--connected:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
+    margin-inline-start: var(--flare-btn-group-connected-overlap);
+}
+.flare-btn-group--connected.flare-btn-group--vertical .flare-btn:not(:first-child) {
+    margin-block-start: var(--flare-btn-group-connected-overlap);
 }
 
-/* Connected overlap: a (usually negative) leading margin on every non-first segment pulls it over its
-   neighbour so two 1px borders collapse into one seam. Default 0 = separated / no overlap. Logical
-   properties -> correct in both LTR and RTL and for vertical stacks. */
-.flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
-    margin-inline-start: var(--flare-btn-group-overlap);
-}
-.flare-btn-group--vertical .flare-btn:not(:first-child) {
-    margin-block-start: var(--flare-btn-group-overlap);
+.flare-btn-group--vertical {
+    flex-direction: column;
 }
 
 /* Raise the hovered/focused segment so its border + focus ring are not clipped by an overlapping
@@ -57,32 +61,37 @@
 }
 
 /* ==========================================================================
-   PER-CORNER RADIUS - position based, driven by two group tokens (outer/inner). Interior corners read
-   --inner-radius; the group's two ends read --outer-radius. Logical corners so first/last map to the
-   correct visual ends in RTL. No xs..xl fan-out: the button reads --_flare-btn-height for a capsule.
+   PER-CORNER RADIUS - CONNECTED ONLY, position based, driven by two group tokens (outer/inner).
+   Interior corners read --connected-inner-radius; the control's two ends read --connected-outer-radius.
+   Logical corners so first/last map to the correct visual ends in RTL. No xs..xl fan-out: the button
+   reads --_flare-btn-height for a capsule.
+
+   A standard group is deliberately absent from every rule below, so its segments render with the
+   radius the button itself carries - including whatever shape morph the theme gives a button on hover
+   or press. That is what "separate buttons standing together" has to mean if it is to mean anything.
    ========================================================================== */
 
 /* Every segment: all four corners default to the interior radius. */
-.flare-btn-group .flare-btn {
-    border-radius: var(--flare-btn-group-inner-radius);
+.flare-btn-group--connected .flare-btn {
+    border-radius: var(--flare-btn-group-connected-inner-radius);
 }
 
 /* Horizontal: first segment rounds its LEADING (start) end, last segment its TRAILING (end) end. */
-.flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:first-child {
-    border-start-start-radius: var(--flare-btn-group-outer-radius);
-    border-end-start-radius: var(--flare-btn-group-outer-radius);
+.flare-btn-group--connected:not(.flare-btn-group--vertical) .flare-btn:first-child {
+    border-start-start-radius: var(--flare-btn-group-connected-outer-radius);
+    border-end-start-radius: var(--flare-btn-group-connected-outer-radius);
 }
-.flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:last-child {
-    border-start-end-radius: var(--flare-btn-group-outer-radius);
-    border-end-end-radius: var(--flare-btn-group-outer-radius);
+.flare-btn-group--connected:not(.flare-btn-group--vertical) .flare-btn:last-child {
+    border-start-end-radius: var(--flare-btn-group-connected-outer-radius);
+    border-end-end-radius: var(--flare-btn-group-connected-outer-radius);
 }
 
 /* Vertical: first segment rounds its TOP corners, last segment its BOTTOM corners. */
-.flare-btn-group--vertical .flare-btn:first-child {
-    border-start-start-radius: var(--flare-btn-group-outer-radius);
-    border-start-end-radius: var(--flare-btn-group-outer-radius);
+.flare-btn-group--connected.flare-btn-group--vertical .flare-btn:first-child {
+    border-start-start-radius: var(--flare-btn-group-connected-outer-radius);
+    border-start-end-radius: var(--flare-btn-group-connected-outer-radius);
 }
-.flare-btn-group--vertical .flare-btn:last-child {
-    border-end-start-radius: var(--flare-btn-group-outer-radius);
-    border-end-end-radius: var(--flare-btn-group-outer-radius);
+.flare-btn-group--connected.flare-btn-group--vertical .flare-btn:last-child {
+    border-end-start-radius: var(--flare-btn-group-connected-outer-radius);
+    border-end-end-radius: var(--flare-btn-group-connected-outer-radius);
 }

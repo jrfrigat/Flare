@@ -23,10 +23,15 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         // full-capsule ends. Purely a token bundle - the base buttongroup.css is untouched (no override).
         ButtonGroup = new ButtonGroupTokens
         {
-            Gap = "0.125rem",
-            Overlap = "0",
-            OuterRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2)",
-            InnerRadius = "var(--flare-shape-small)",
+            // Standard: separate pills a spacing step apart. The spec calls for "padding between
+            // buttons so they can animate width and shape without disrupting the product layout" -
+            // the gap is what the press grow spends, and the corners stay the button's own.
+            StandardGap = "var(--flare-spacing-4)",
+            // Connected: the spec's 2dp seam, capsule ends, softened interior corners.
+            ConnectedGap = "0.125rem",
+            ConnectedOverlap = "0",
+            ConnectedOuterRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2)",
+            ConnectedInnerRadius = "var(--flare-shape-small)",
             ZActive = "1",
         },
     };

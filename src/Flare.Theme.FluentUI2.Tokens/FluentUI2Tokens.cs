@@ -183,14 +183,17 @@ public class FluentUI2Tokens
         LabelXl = Typography.TitleLarge,
     };
 
-    // Connected button group (Fluent's segmented look): touching segments, 1px overlap collapsing the
-    // shared border, small rounded ends, flat interior corners.
+    // Connected (Fluent's segmented look): touching segments, 1px overlap collapsing the shared border,
+    // small rounded ends, flat interior corners. Standard is Fluent's toolbar shape - separate buttons a
+    // spacing step apart, each keeping the 4px corner the button already has, which is why the group
+    // says nothing about corners here.
     internal static readonly ButtonGroupTokens ButtonGroup = new()
     {
-        Gap = "0",
-        Overlap = "-1px",
-        OuterRadius = "var(--flare-shape-small)",
-        InnerRadius = "0",
+        StandardGap = "var(--flare-spacing-4)",
+        ConnectedGap = "0",
+        ConnectedOverlap = "-1px",
+        ConnectedOuterRadius = "var(--flare-shape-small)",
+        ConnectedInnerRadius = "0",
         ZActive = "1",
     };
 

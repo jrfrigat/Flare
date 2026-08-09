@@ -209,14 +209,17 @@ public class MaterialDesignTokens
         LabelXl = Typography.HeadlineLarge,
     };
 
-    // CONNECTED button group: no gap, a 1px negative overlap that collapses adjacent borders into one
-    // seam, rounded group ends, flat interior corners. MD3 Expressive overrides this to a separated look.
+    // Both group models. Connected: no gap, a 1px negative overlap that collapses adjacent borders into
+    // one seam, rounded control ends, flat interior corners. Standard: separate buttons a spacing step
+    // apart, each keeping its own corner - MD3 Expressive keeps this and reshapes only the connected
+    // half, since a standard group's segments are already the buttons the theme drew.
     internal static readonly ButtonGroupTokens ButtonGroup = new()
     {
-        Gap = "0",
-        Overlap = "-1px",
-        OuterRadius = "var(--flare-shape-small)",
-        InnerRadius = "0",
+        StandardGap = "var(--flare-spacing-4)",
+        ConnectedGap = "0",
+        ConnectedOverlap = "-1px",
+        ConnectedOuterRadius = "var(--flare-shape-small)",
+        ConnectedInnerRadius = "0",
         ZActive = "1",
     };
 

@@ -11,7 +11,11 @@ All notable changes to Flare are documented here. This project adheres to
   `TabsTokens.SecondaryIndicatorThickness` and `SecondaryActiveColor`, and
   `StripeTokens.Background` (a new top-level `DesignTokens.Stripe`) are all new, and a bespoke
   theme - one not deriving from an in-box theme - must set them or it will not compile.
-  `TableTokens.StripeOpacity` is gone, replaced by that shared stripe. **`TabsVariant` renumbered:**
+  `TableTokens.StripeOpacity` is gone, replaced by that shared stripe. **`ButtonGroupTokens` renamed
+  its four geometry members** to `Connected*` and added `StandardGap`, and the four CSS variables
+  moved with them (`--flare-btn-group-gap` is now `--flare-btn-group-connected-gap`, and so on) -
+  the old names described one of two models while claiming to describe the component.
+  **`TabsVariant` renumbered:**
   `Secondary` was inserted next to `Primary` where it belongs rather than appended, so `Text`,
   `Tonal`, `Filled` and `Outlined` moved from 3-6 to 4-7. Markup naming the members is unaffected;
   anything that persisted the *numeric* value - a stored setting, a query string - reads back one
@@ -68,17 +72,29 @@ All notable changes to Flare are documented here. This project adheres to
   context, so nothing new is isolated.
 
 ### Added
-- **`FlareButtonGroup.Connected` - the second of Material's two group models.** Until now Flare had
-  one button group that behaved like both at once. The models differ in what a press does: a standard
-  group's segments respond to each other, so pressing one changes its width and its neighbours give
-  up the space; a **connected** group's segments are independent, and pressing one changes only its
-  shape. Flare applied the width trade to every group, which is wrong for half of them. They also
-  size differently, and that is the one structural difference the core carries: a standard group hugs
-  the buttons inside it, while a connected group given `FullWidth` shares that width out equally
-  between its segments - the row reads as one control, which is what replaces the older segmented
-  button. Standard stays the default, so existing markup is unchanged; the rendered group now names
-  its model (`flare-btn-group--standard` / `--connected`) rather than one being the absence of the
-  other.
+- **`FlareButtonGroup.Connected` - the second of Material's two group models, and a theme now dresses
+  both.** Until now Flare had one button group that behaved like both at once, and `ButtonGroupTokens`
+  described one geometry, so whichever look a theme chose, the other model wore it. Fluent UI 2's
+  bundle is written as the segmented control, so a *standard* Fluent group rendered joined - which is
+  the opposite of what standard means.
+
+  The models differ in what a press does: a standard group's segments respond to each other, so
+  pressing one changes its width and its neighbours give up the space; a **connected** group's
+  segments are independent, and pressing one changes only its shape. Flare applied the width trade to
+  every group, which is wrong for half of them.
+
+  `ButtonGroupTokens` now describes both - **unevenly, on purpose**. Connected keeps the whole seam
+  vocabulary (`ConnectedGap`, `ConnectedOverlap`, `ConnectedOuterRadius`, `ConnectedInnerRadius`),
+  because it is one control whose shape the group owns. Standard gets `StandardGap` and nothing else,
+  because it is separate buttons standing together: every corner is the button's own, which is also
+  what lets a standard group's buttons keep their own shape and their own hover and press morphs.
+  Corner tokens for standard would describe a shape the model does not have. Measured: an Expressive
+  standard group is three 24px pills 8px apart, its connected group a 2dp-seamed bar with capsule ends
+  and 8dp interior corners; a Fluent standard group is three 4px buttons 8px apart, its connected group
+  the joined control with a -1px seam.
+
+  Standard stays the default, so existing markup is unchanged, and the rendered group names its model
+  (`flare-btn-group--standard` / `--connected`) rather than one being the absence of the other.
 - **`TabsVariant.Secondary` - the tab level below `Primary`.** A full-width indicator instead of one
   that hugs the label, thinner, and an active label in the content colour rather than the accent, so
   a secondary strip nested under a primary one reads as subordinate instead of competing with it.

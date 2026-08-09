@@ -13,9 +13,14 @@
 
     /* Segment morphs into a round capsule on interaction. Radius from the ACTUAL height
        (--_flare-btn-height, set by the button's size class), so one rule covers all sizes.
-       !important so it overrides the base group's per-corner outer/inner rules on every corner. */
-    .flare-btn-group .flare-btn:hover,
-    .flare-btn-group .flare-btn:focus-visible {
+       !important so it overrides the base group's per-corner outer/inner rules on every corner.
+
+       CONNECTED only, here and for the press corner below. A standard group's segments are separate
+       buttons that keep their own shape, so the button family's own hover and press morphs already
+       govern them - and they say the same thing in per-size detail. Aiming a second, group-level
+       !important at the same corners would only take the decision away from the button. */
+    .flare-btn-group--connected .flare-btn:hover,
+    .flare-btn-group--connected .flare-btn:focus-visible {
         border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
@@ -27,13 +32,13 @@
        not fall through to the button's own pressed rule, because the capsule's !important outranks it
        regardless of specificity. Last in the file, so it wins the tie while both states apply.
 
-       This one applies to BOTH group models: "when a button is pressed, it changes width and shape",
-       and shape is the half a connected group keeps. */
-    .flare-btn-group .flare-btn--xs:active,
-    .flare-btn-group .flare-btn--sm:active,
-    .flare-btn-group .flare-btn--md:active { border-radius: 0.25rem !important; }
-    .flare-btn-group .flare-btn--lg:active { border-radius: 0.75rem !important; }
-    .flare-btn-group .flare-btn--xl:active { border-radius: 1rem !important; }
+       "When a button is pressed, it changes width and shape", and shape is the half a connected group
+       keeps - the whole of what a press does to it. */
+    .flare-btn-group--connected .flare-btn--xs:active,
+    .flare-btn-group--connected .flare-btn--sm:active,
+    .flare-btn-group--connected .flare-btn--md:active { border-radius: 0.25rem !important; }
+    .flare-btn-group--connected .flare-btn--lg:active { border-radius: 0.75rem !important; }
+    .flare-btn-group--connected .flare-btn--xl:active { border-radius: 1rem !important; }
 
     /* ======================================================================
        PRESS GROW - STANDARD GROUPS ONLY: the pressed segment takes space, its neighbours give it up.

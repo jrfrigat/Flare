@@ -233,10 +233,11 @@ public static class CssVarMap
         #endregion
 
         #region BUTTON GROUP
-        v[Css.Tokens.ButtonGroup.Gap] = t.ButtonGroup.Gap;
-        v[Css.Tokens.ButtonGroup.Overlap] = t.ButtonGroup.Overlap;
-        v[Css.Tokens.ButtonGroup.OuterRadius] = t.ButtonGroup.OuterRadius;
-        v[Css.Tokens.ButtonGroup.InnerRadius] = t.ButtonGroup.InnerRadius;
+        v[Css.Tokens.ButtonGroup.StandardGap] = t.ButtonGroup.StandardGap;
+        v[Css.Tokens.ButtonGroup.ConnectedGap] = t.ButtonGroup.ConnectedGap;
+        v[Css.Tokens.ButtonGroup.ConnectedOverlap] = t.ButtonGroup.ConnectedOverlap;
+        v[Css.Tokens.ButtonGroup.ConnectedOuterRadius] = t.ButtonGroup.ConnectedOuterRadius;
+        v[Css.Tokens.ButtonGroup.ConnectedInnerRadius] = t.ButtonGroup.ConnectedInnerRadius;
         v[Css.Tokens.ButtonGroup.ZActive] = t.ButtonGroup.ZActive;
         #endregion
 
