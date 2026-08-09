@@ -54,8 +54,13 @@
   background: var(--flare-color-surface-container-low);
 }
 
+/* Row hover paints on the ROW, immediately after the stripe so it wins the tie between two equally
+   specific selectors. It used to paint twice - a second rule mixed the wash itself from the state
+   opacity scale on every cell, and covered this one. Both are now the theme's single hover layer.
+   See table.css for why the row is the right element and what a cell with a background of its own
+   means for it. */
 .flare-datagrid--hoverable tbody tr.flare-datagrid__row:hover {
-  background: var(--flare-color-surface-container);
+  background: var(--flare-state-hover-layer);
 }
 
 .flare-datagrid--dense .flare-datagrid__th,
@@ -72,11 +77,6 @@
 
 .flare-datagrid__row:last-child .flare-datagrid__td {
   border-bottom: none;
-}
-
-/* Hover effect only when Hoverable class is present */
-.flare-datagrid--hoverable .flare-datagrid__row:hover .flare-datagrid__td {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
 }
 
 /* Selected row: tinted with the primary state layer. */
@@ -565,6 +565,36 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   background-color: var(--flare-color-surface-container-high);
 }
 
+/* A frozen cell is the one place the row's hover cannot reach it: the cell needs an opaque background
+   of its own (it is sticky, and the rows scrolling underneath would otherwise read straight through
+   it), and that background paints above the row's. So the column would sit unlit while the rest of
+   its row highlighted.
+
+   It gets the layer instead - and unlike an ordinary cell it can take one without any new stacking
+   context to trap a popover, because `position: sticky` with a z-index already made it one. That is
+   also why `inset: 0` needs no `position: relative` here. */
+.flare-datagrid__td--frozen::before,
+.flare-datagrid__td--frozen-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+/* Selected and editing rows are excluded here rather than switched off below: a rule that turns the
+   layer back off has to out-specify the one that turned it on, and `--selected:hover` is a class
+   short of that. Both states paint their own opaque tint on the cells, so the row's hover does not
+   show through them - and the frozen column has to agree with the rest of its row. */
+.flare-datagrid--hoverable .flare-datagrid__row:hover:not(.flare-datagrid__row--selected):not(.flare-datagrid__row--editing) > .flare-datagrid__td--frozen::before,
+.flare-datagrid--hoverable .flare-datagrid__row:hover:not(.flare-datagrid__row--selected):not(.flare-datagrid__row--editing) > .flare-datagrid__td--frozen-right::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
+}
+
 /* Expandable row detail */
 .flare-datagrid__detail-toggle-th {
   width: 3rem;
@@ -595,10 +625,9 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
    the theme now names the paint. It sits under the content at z-index -1, so the host needs its own
    stacking context - see tabs.css for the reasoning.
 
-   The grid's ROWS are deliberately not here: their hover paints on the cells, and a cell's content is
-   whatever the consumer put in it, usually a bare text node that cannot be lifted over an opaque
-   layer. Doing those properly needs a per-cell stacking context, which would change how popovers
-   rendered inside a cell stack. Tracked in the issue. */
+   The grid's ROWS are not here and do not need to be: a row can carry the theme's paint as its own
+   background, so it takes no layer and no stacking context at all (see the hover rule near the top of
+   this file). Only the frozen column, whose opaque cells paint above the row, needs one. */
 .flare-datagrid__detail-btn,
 .flare-datagrid__column-picker-item,
 .flare-datagrid__filter-trigger,

@@ -41,7 +41,7 @@
 }
 
 .flare-dialog__close:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent);
+    background: var(--flare-state-hover-layer);
 }
 
 .flare-dialog__close:focus-visible {

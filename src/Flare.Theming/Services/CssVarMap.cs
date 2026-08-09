@@ -455,6 +455,8 @@ public static class CssVarMap
         v[Css.Tokens.Slider.ValueBg] = t.Slider.ValueBg;
         v[Css.Tokens.Slider.ValueColor] = t.Slider.ValueColor;
         v[Css.Tokens.Slider.DisabledOpacity] = t.Slider.DisabledOpacity;
+        v[Css.Tokens.Slider.DisabledActiveColor] = t.Slider.DisabledActiveColor;
+        v[Css.Tokens.Slider.DisabledInactiveColor] = t.Slider.DisabledInactiveColor;
 
         v[Css.Tokens.Rating.Size.Xs] = t.Rating.SizeXs;
         v[Css.Tokens.Rating.Size.Sm] = t.Rating.SizeSm;

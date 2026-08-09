@@ -3,6 +3,69 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.15.0] - 2026-08-09
+
+### Changed
+- **BREAKING for custom themes: two more required token members, and one that changed meaning.**
+  `SliderTokens.DisabledActiveColor` and `DisabledInactiveColor` are new and must be set by a bespoke
+  theme - one not deriving from an in-box theme - or it will not compile. `CardTokens.StateLayer`
+  now holds the **whole** hover layer rather than a colour the core mixed at a fixed 8%, so a custom
+  theme setting a bare colour there will paint it opaque: point it at `var(--flare-state-hover-layer)`
+  for the previous look, or name a translucent value of its own. Anything built with `with` from an
+  in-box theme is unaffected, and none of the six in-box themes changes appearance.
+- **Seven hovers that invented their own paint now use the theme's.** The calendar's month arrows, a
+  chip's close button, a dialog's close button, a chip's remove button in a multi-select or tag
+  field, a snackbar's close button, the date picker's month and year buttons, and a picker day each
+  mixed their own colour at their own percentage - anywhere from 8% to 15% for what is one concept -
+  so hovering two affordances a few pixels apart could read differently, and no theme could change
+  any of it. All seven read `--flare-state-hover-layer` now. Two of them, the date picker's
+  month/year buttons and the picker day, mixed **primary**: picking a month lit up in the accent
+  while the day beside it lit up neutral, an accent hover no spec asks for. They are neutral now,
+  like the rest of the library.
+- **`CardTokens.StateLayer` holds the layer, not a colour.** Same shape as the seven above, but the
+  card had a token already - it just named the colour while the core kept the 8%. Both halves are
+  the theme's now, which is what the token was for.
+
+- **Table and DataGrid row hover moved onto the state-layer model.** These were the last two core
+  stylesheets computing an interaction state themselves - `color-mix(on-surface x hover-opacity,
+  surface)`, i.e. core deciding what hover *means* for every theme - and they had been left behind on
+  the strength of an assumption that turned out to be wrong. The assumption was that the paint has to
+  stay on the cells, so each cell would need a `::before` layer and therefore a stacking context of
+  its own, which would trap any popover opened from inside a cell - including Flare's own inline-edit
+  dropdowns. A row needs none of that. It has one background and one `currentColor`, so the paint
+  moved up to the `<tr>` and is simply `var(--flare-state-hover-layer)`: no layer, no isolation, and
+  one tint per row instead of one per cell, which is what a row whose cells a consumer had coloured
+  used to get. The striped rule moved to the row with it, because a cell background is the one thing a
+  row-wide paint cannot get above. `StateLayerModelTests` no longer carries an allowlist.
+- **A frozen DataGrid column highlights in the same colour as the row it belongs to.** It is the one
+  cell that cannot take the row's paint - it is sticky, so it needs an opaque background of its own or
+  the rows scrolling underneath read through it - and it used to be repainted on hover from `surface`
+  while its idle state came from `surface-container`, so the pinned column shifted tone family
+  whenever the pointer crossed its row. It now carries the same layer over its own background. This is
+  the only cell in either component that takes one, and being sticky it was already a stacking
+  context, so nothing new is isolated.
+
+### Added
+- **A theme states how a disabled slider looks.** `SliderTokens.DisabledActiveColor` and
+  `DisabledInactiveColor`. The filled track, the thumb and the rail were three fixed fades of
+  `on-surface` written into the core - one design language's disabled recipe - which is why Fluent
+  UI 2 shipped a whole `slider.css` doing nothing but forcing its flat greys back over them with
+  `!important`. That file is now four lines: three of its five rules became token assignments and
+  every `!important` in it is gone. What stays is the disabled label colour, for the reason recorded
+  in the issue - no CSS value means "leave this as painted", so a token for it would have to name a
+  colour, which is the theme's decision to make.
+
+### Fixed
+- **A grouped table's group header hovers in its own colour again.** `.flare-table--hover tbody
+  tr:hover td` reaches three elements deep and outranked `.flare-table__group-row:hover td`, so in a
+  hoverable table - the default - a group header showed the ordinary row wash instead of the
+  `surface-container-high` step written for it. The rule was never wrong; it just never won. With the
+  row wash on the row, the group's own opaque cell sits above it and the rule applies.
+- **A group header in a striped table keeps its group colour.** Same shape of defect: the stripe was
+  two classes deeper than the group tint and both painted on the cell, so an even-numbered group
+  header rendered as a striped data row. The stripe is on the row now, the group tint on the cell, and
+  they no longer compete.
+
 ## [0.14.0] - 2026-08-09
 
 ### Added

@@ -48,7 +48,9 @@ public sealed record CardTokens
     /// <summary>Background tint applied to a selected card.</summary>
     [CssVar(CardField.SelectedBg)] public required string SelectedBg { get; init; }
 
-    /// <summary>Color of the hover/press state layer for interactive cards.</summary>
+    /// <summary>Whole hover state layer for interactive cards - colour including alpha, or an image.
+    /// Point it at the shared hover layer to make a card hover like every other surface, or give it
+    /// its own value to make a card the exception.</summary>
     [CssVar(CardField.StateLayer)] public required string StateLayer { get; init; }
 
     /// <summary>Inner padding at the top of the card root (raw-content cards). Default 0.</summary>

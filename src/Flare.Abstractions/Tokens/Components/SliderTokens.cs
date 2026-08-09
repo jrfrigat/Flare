@@ -130,4 +130,14 @@ public sealed record SliderTokens
     /// <summary>How far a disabled slider's label, value bubble and icons fade. The track and handle
     /// are repainted rather than faded, so this covers only the text around them.</summary>
     [CssVar(Slider.DisabledOpacity)] public required string DisabledOpacity { get; init; }
+
+    /// <summary>Filled track and handle color while the slider is disabled. A design language that
+    /// signals disabled with a flat palette names its grey here; one that fades names a translucent
+    /// mix of its content color.</summary>
+    [CssVar(Slider.DisabledActiveColor)] public required string DisabledActiveColor { get; init; }
+
+    /// <summary>Remaining-track color while the slider is disabled. Separate from
+    /// <see cref="DisabledActiveColor"/> because the filled and unfilled halves stay distinguishable
+    /// in both models - one fades further than the other rather than matching it.</summary>
+    [CssVar(Slider.DisabledInactiveColor)] public required string DisabledInactiveColor { get; init; }
 }

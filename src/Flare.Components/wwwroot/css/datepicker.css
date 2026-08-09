@@ -202,9 +202,12 @@
   transition: background-color var(--flare-motion-duration-short2);
 }
 
+/* Content-coloured, like every other hover in the library. These two mixed `primary`, so picking a
+   month hovered in the accent while the day beside it hovered neutral - an accent hover no spec asks
+   for and no theme could take back. */
 .flare-datepicker__month-btn:hover:not(:disabled),
 .flare-datepicker__year-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
+  background: var(--flare-state-hover-layer);
 }
 
 .flare-datepicker__month-btn--selected,
