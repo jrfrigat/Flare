@@ -286,12 +286,13 @@ unrelated things:
    theme sets it to `secondary-container`, an opaque tonal fill - pointing the wash there changes
    the look. Worth noting that tabs are muddled here more broadly: the tab CLOSE button's *hover*
    is painted from `--flare-state-selected-opacity`. A tabs state audit, not a one-line patch.
-3. **Three striped components, two mechanisms, one token.** Table = `color-mix(on-surface x
-   --flare-table-stripe-opacity, surface)`; description list = the same mix with a hardcoded 4%;
-   DataGrid = `surface-container-low`, a role step. Only the table's is themeable. The mandate's
-   "analogous components reuse common tokens" applies, and the honest fix is one shared stripe
-   token - which renames `TableTokens.StripeOpacity` (breaking for custom themes) and changes the
-   DataGrid's appearance, since its stripe genuinely is a different value today.
+3. ~~**Three striped components, two mechanisms, one token.**~~ **DONE.** `StripeTokens.Background`
+   (`--flare-stripe-bg`), modelled on `ScrimTokens` - a small shared record rather than a member on
+   any one component. It holds the whole paint, not an opacity, because the DataGrid's answer was a
+   role step (`surface-container-low`) and the table's a wash; an opacity token could not have
+   expressed both. `TableTokens.StripeOpacity` is gone. The feared visual cost turned out to be
+   **1 unit per channel in dark MD3, 4 in light** - the two mechanisms had been arriving at nearly
+   the same colour by different routes, which is itself the case for a single token.
 4. **The switch's 10% focus halos** are already inside a component knob's fallback, which the
    sentinel mechanism allows. Nothing to do.
 

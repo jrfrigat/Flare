@@ -972,11 +972,17 @@ public class MaterialDesignTokens
         WaveOpacity = "12%",
     };
 
+    internal static readonly StripeTokens Stripe = new()
+    {
+        // A wash of the content colour, which is what a striped table has always been here. The data
+        // grid used to step to surface-container-low instead; one language, one answer.
+        Background = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
+    };
+
     internal static readonly TableTokens Table = new()
     {
         CellPaddingH = "1rem",
         CellPaddingV = "0.75rem",
-        StripeOpacity = "4%",
     };
 
     internal static readonly TimePickerTokens TimePicker = new()
@@ -1005,6 +1011,7 @@ public class MaterialDesignTokens
         Scrim = Scrim,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
+        Stripe = Stripe,
         Splitter = Splitter,
         Table = Table,
         TimePicker = TimePicker,

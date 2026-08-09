@@ -1003,11 +1003,15 @@ public class FluentUI2Tokens
         WaveOpacity = "12%",
     };
 
+    internal static readonly StripeTokens Stripe = new()
+    {
+        Background = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
+    };
+
     internal static readonly TableTokens Table = new()
     {
         CellPaddingH = "1rem",
         CellPaddingV = "0.75rem",
-        StripeOpacity = "4%",
     };
 
     internal static readonly TimePickerTokens TimePicker = new()
@@ -1036,6 +1040,7 @@ public class FluentUI2Tokens
         Scrim = Scrim,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
+        Stripe = Stripe,
         Splitter = Splitter,
         Table = Table,
         TimePicker = TimePicker,

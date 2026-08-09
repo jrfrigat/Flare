@@ -62,7 +62,7 @@
    come along. Cells that keep a background of their own on purpose - the frozen column, a group
    header, the totals footer - therefore sit above the hover and state that themselves. */
 .flare-table--striped tbody tr:nth-child(even) {
-    background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-table-stripe-opacity), var(--flare-color-surface));
+    background: var(--flare-stripe-bg);
 }
 
 .flare-table--hover tbody tr:hover {

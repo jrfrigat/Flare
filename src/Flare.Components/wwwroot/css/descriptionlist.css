@@ -28,9 +28,10 @@
     overflow-wrap: anywhere;
 }
 
-/* Striped: tint alternate rows (both cells, so the stripe spans the row). */
+/* Striped: tint alternate rows (both cells, so the stripe spans the row). Same paint as a striped
+   table or data grid - see StripeTokens for why one token rather than three. */
 .flare-description-list--striped .flare-description-list__row:nth-child(even) > * {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent);
+    background: var(--flare-stripe-bg);
 }
 
 /* Bordered: a hairline under every row but the last. */

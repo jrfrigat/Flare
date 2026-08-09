@@ -10,7 +10,4 @@ public sealed record TableTokens
 
     /// <summary>Cell Padding V.</summary>
     [CssVar(TableField.CellPaddingV)] public required string CellPaddingV { get; init; }
-
-    /// <summary>Stripe Opacity.</summary>
-    [CssVar(TableField.StripeOpacity)] public required string StripeOpacity { get; init; }
 }

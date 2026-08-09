@@ -51,7 +51,7 @@
 
 /* Appearance modifiers */
 .flare-datagrid--striped tbody tr.flare-datagrid__row:nth-of-type(even) {
-  background: var(--flare-color-surface-container-low);
+  background: var(--flare-stripe-bg);
 }
 
 /* Row hover paints on the ROW, immediately after the stripe so it wins the tie between two equally

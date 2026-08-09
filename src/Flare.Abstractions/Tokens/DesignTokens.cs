@@ -166,6 +166,9 @@ public sealed record DesignTokens
     /// <summary>skeleton geometry tokens.</summary>
     public required SkeletonTokens Skeleton { get; init; }
 
+    /// <summary>alternating-row stripe, shared by table, data grid and description list.</summary>
+    public required StripeTokens Stripe { get; init; }
+
     /// <summary>table geometry tokens.</summary>
     public required TableTokens Table { get; init; }
 

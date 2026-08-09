@@ -6,13 +6,25 @@ All notable changes to Flare are documented here. This project adheres to
 ## [0.15.0] - 2026-08-09
 
 ### Changed
-- **BREAKING for custom themes: two more required token members, and one that changed meaning.**
-  `SliderTokens.DisabledActiveColor` and `DisabledInactiveColor` are new and must be set by a bespoke
-  theme - one not deriving from an in-box theme - or it will not compile. `CardTokens.StateLayer`
-  now holds the **whole** hover layer rather than a colour the core mixed at a fixed 8%, so a custom
+- **BREAKING for custom themes: three required token members added, one removed, one changed
+  meaning.** `SliderTokens.DisabledActiveColor` and `DisabledInactiveColor` are new, as is
+  `StripeTokens.Background` (a new top-level `DesignTokens.Stripe`), and a bespoke theme - one not
+  deriving from an in-box theme - must set all three or it will not compile.
+  `TableTokens.StripeOpacity` is gone, replaced by that shared stripe. `CardTokens.StateLayer` now
+  holds the **whole** hover layer rather than a colour the core mixed at a fixed 8%, so a custom
   theme setting a bare colour there will paint it opaque: point it at `var(--flare-state-hover-layer)`
   for the previous look, or name a translucent value of its own. Anything built with `with` from an
-  in-box theme is unaffected, and none of the six in-box themes changes appearance.
+  in-box theme is unaffected.
+- **One stripe token instead of three answers.** A striped table, a striped data grid and a striped
+  description list all mean the same thing, and painted it three different ways: the table mixed
+  `on-surface` at `--flare-table-stripe-opacity`, the description list mixed the same thing with the
+  4% hardcoded, and the data grid stepped to `surface-container-low` - a different mechanism
+  entirely. Only the table's was themeable at all. All three now read `--flare-stripe-bg`, which
+  holds the whole paint rather than an opacity, because the two in-box answers to "what is a stripe"
+  differed in more than strength. The table and the description list are pixel-identical; the data
+  grid's stripe moves onto the wash, which measures **1 unit per channel in dark and at most 4 in
+  light** - the two answers were nearly the same colour by different routes, which is the argument
+  for there being one.
 - **Seven hovers that invented their own paint now use the theme's.** The calendar's month arrows, a
   chip's close button, a dialog's close button, a chip's remove button in a multi-select or tag
   field, a snackbar's close button, the date picker's month and year buttons, and a picker day each

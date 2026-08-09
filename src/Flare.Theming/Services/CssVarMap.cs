@@ -938,7 +938,7 @@ public static class CssVarMap
         #region TABLE
         v[Css.Tokens.TableField.CellPaddingH] = t.Table.CellPaddingH;
         v[Css.Tokens.TableField.CellPaddingV] = t.Table.CellPaddingV;
-        v[Css.Tokens.TableField.StripeOpacity] = t.Table.StripeOpacity;
+        v[Css.Tokens.StripeField.Background] = t.Stripe.Background;
         #endregion
 
         #region TIMEPICKER
