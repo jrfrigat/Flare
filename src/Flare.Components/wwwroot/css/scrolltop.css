@@ -28,8 +28,23 @@
     transform: translateY(0);
 }
 
-.flare-scroll-top:hover {
-    background: color-mix(in srgb, var(--flare-color-on-primary) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-primary));
+/* State layer - the theme names the paint; core only says where it goes. The button is already a
+   stacking context (position:fixed + z-index), so the layer needs no extra one. */
+.flare-scroll-top::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-scroll-top:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
 
 .flare-scroll-top .flare-icon {

@@ -38,6 +38,8 @@
 .flare-confirmdialog__footer { display: flex; justify-content: flex-end; gap: var(--flare-spacing-6); }
 
 .flare-confirmdialog__btn {
+    position: relative;
+    z-index: 0;
     border: none;
     padding: var(--flare-spacing-4) var(--flare-spacing-10);
     border-radius: var(--flare-btn-radius);
@@ -53,8 +55,25 @@
     color: var(--flare-color-primary);
 }
 
-.flare-confirmdialog__btn--cancel:hover {
-    background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer - the theme names the paint; core only says where it goes (see tabs.css). One rule for
+   both buttons: the layer is content-coloured, so the cancel button tints with its primary label and
+   the confirm button with its on-primary label over its own fill - which is exactly what the two
+   hand-written color-mixes computed, so nothing changes except who decides. */
+.flare-confirmdialog__btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-confirmdialog__btn:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
 
 .flare-confirmdialog__btn--confirm {
@@ -62,6 +81,4 @@
     color: var(--flare-color-on-primary);
 }
 
-.flare-confirmdialog__btn--confirm:hover {
-    background: color-mix(in srgb, var(--flare-color-on-primary) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-primary));
-}
+/* No hover rule of its own any more - the shared layer above handles it. */

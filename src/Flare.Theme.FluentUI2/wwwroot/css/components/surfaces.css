@@ -18,12 +18,18 @@
 
     /* List rows and expandable headers carry a state layer now, so they take the discrete neutral fill
        the same way the menu item does - by assignment, not by overriding the core's rule. */
+    /* Every one of these carries a state layer, so Fluent's discrete neutral fill is ASSIGNED rather
+       than forced over the core's rule. There is no `!important` left in this file. */
     .flare-list-item--clickable,
     .flare-accordion-panel__header,
     .flare-collapse__header,
     .flare-tabs__tab,
     .flare-tabs__scroll,
     .flare-tree-item__row,
+    .flare-listbox__option,
+    .flare-nav-link,
+    .flare-nav-group__header,
+    .flare-pagination__btn,
     .flare-datagrid__detail-btn,
     .flare-datagrid__column-picker-item,
     .flare-datagrid__filter-trigger,
@@ -32,11 +38,6 @@
         --flare-state-pressed-layer: var(--flare-fluent-subtle-pressed, #E0E0E0);
         --flare-state-focus-hover-layer: var(--flare-fluent-subtle-hover, #F5F5F5);
     }
-
-    /* Listbox options still paint their hover straight onto the element - they have no state layer to
-       assign - so this stays an element repaint. That is the Pattern B coupling the issue records:
-       cheap here (one line), but not free. */
-    .flare-listbox__option:hover { background-color: var(--flare-fluent-subtle-hover, #F5F5F5) !important; }
 
     /* Staying opaque is a token for every one of these now, so all that is left here is the repaint -
        and that cannot move: a foreground colour has no value meaning "leave this as painted", so a

@@ -43,12 +43,29 @@
 }
 
 .flare-datepicker__month-label--clickable {
+  position: relative;
+  z-index: 0;
   cursor: pointer;
   transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-datepicker__month-label--clickable:hover {
-  background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer - the theme names the paint; core only says where it goes (see tabs.css). The wash is
+   content-coloured, where this rule used to mix PRIMARY: an accent tint core chose for every theme. */
+.flare-datepicker__month-label--clickable::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-datepicker__month-label--clickable:hover::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 /* The day-headers / grid / day cells + states come from the shared flare-picker__* month grid
@@ -98,6 +115,8 @@
 }
 
 .flare-daterangepicker__preset {
+  position: relative;
+  z-index: 0;
   border: 1px solid var(--flare-color-outline-variant);
   background: transparent;
   color: var(--flare-color-on-surface-variant);
@@ -111,8 +130,22 @@
               border-color var(--flare-motion-duration-short1);
 }
 
-.flare-daterangepicker__preset:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer - see the month label above. */
+.flare-daterangepicker__preset::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-daterangepicker__preset:hover:not(:disabled)::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 .flare-daterangepicker__preset--active {

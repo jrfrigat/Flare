@@ -39,6 +39,8 @@
 }
 
 .flare-listbox__option {
+    position: relative;
+    z-index: 0;
     display: flex;
     align-items: center;
     gap: var(--flare-spacing-4);
@@ -51,7 +53,26 @@
     transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
 }
 
-.flare-listbox__option:hover { background-color: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), transparent); }
+/* State layer - the theme names the paint; core only says where it goes, under the content at
+   z-index -1 (see tabs.css). The wash it paints is content-coloured, where this rule used to mix
+   PRIMARY: core was choosing an accent-tinted hover that no spec asks for, that no theme could
+   change, and that made a listbox option hover in a different colour from the menu item beside it. */
+.flare-listbox__option::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-listbox__option:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
+}
 .flare-listbox__option--active { background-color: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent); }
 .flare-listbox__option--selected { color: var(--flare-color-primary); font-weight: 600; }
 

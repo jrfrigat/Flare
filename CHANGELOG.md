@@ -40,6 +40,19 @@ All notable changes to Flare are documented here. This project adheres to
   they briefly would have: the rules that used to suppress them were a class less specific than the
   rule that turns the layer on, so they lost regardless of order. The layer now excludes them instead
   of switching off afterwards. Two more `!important`s went with it.
+- **The sweep finishes: listbox options, the eyedropper, the date picker's month label and range
+  presets, the confirm-dialog and message-box buttons, the scroll-to-top button and the snackbar
+  action.** Every core stylesheet except two now leaves the paint to the theme, and the Fluent UI 2
+  theme's stylesheet contains no `!important` at all. The confirm dialog and the message box each lost
+  one of their two hover rules: the layer is content-coloured, so cancel tints with its primary label
+  and confirm with its on-primary label over its own fill - which is what the two hand-written
+  `color-mix`es computed. Only the table's and the DataGrid's **row** hovers remain, for the reason
+  above.
+- **A hover on a list-box option is a neutral wash rather than a primary tint** in Material-lineage
+  themes (also the eyedropper and the clickable month label). Core was mixing `primary` there - an
+  accent hover no spec asks for, that no theme could change, and that made a select option hover in a
+  different colour from the menu item beside it. A useful side effect: the keyboard-active row keeps
+  its accent fill, so the two are now told apart at a glance instead of both reading violet.
 - **BREAKING for custom themes: four more required token members.** `CheckboxTokens.DisabledOpacity`,
   `RadioTokens.DisabledOpacity`, `MenuTokens.ItemDisabledOpacity` and
   `ToggleButtonTokens.DisabledOpacity`. Each replaces a fade the core used to apply on every theme's
@@ -61,6 +74,13 @@ All notable changes to Flare are documented here. This project adheres to
   the disabled foreground colour, which cannot become a token - no CSS value means "leave this as
   painted". The tab and its overflow scroll button get separate members on purpose: a language may
   mute a spent affordance more heavily than an unavailable destination.
+
+- **A guard against the state model sliding back.** `StateLayerModelTests` fails if a core stylesheet
+  mixes an interaction state from `--flare-state-hover-opacity` again, if an in-box theme forces
+  `opacity: 1 !important` to undo a core fade, or if the two-file allowlist for the table and DataGrid
+  rows goes stale. The old form is the kind of thing that returns by imitation - the next person adding
+  a hover copies the rule beside it - and nothing else would catch it: the CSS is valid, CssAudit sees
+  well-formed token names, and it renders correctly under the one theme it was written for.
 
 ### Fixed
 - **The wavy ring flows.** Its crests now travel round the indicator while the arc stays where the

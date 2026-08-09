@@ -113,6 +113,8 @@
 }
 
 .flare-snackbar__action-btn {
+  position: relative;
+  z-index: 0;
   background: transparent;
   border: none;
   /* Default suits the inverse-surface snackbar; severity surfaces flip this to currentColor below. */
@@ -124,9 +126,24 @@
   border-radius: var(--flare-shape-extra-small);
 }
 
-.flare-snackbar__action-btn:hover {
-  /* Drive the action state layer from the theme's hover-opacity token instead of a literal. */
-  background: color-mix(in srgb, var(--_snackbar-action-color, var(--flare-color-inverse-primary)) calc(var(--flare-state-hover-opacity) * 100%), transparent);
+/* State layer - the theme names the paint. The mix this replaces was already the action's own label
+   colour at the hover opacity, which is what a content-coloured layer computes, so the severity
+   surfaces keep tinting with their own accent. */
+.flare-snackbar__action-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--flare-motion-duration-short1) var(--flare-motion-easing-standard);
+}
+
+.flare-snackbar__action-btn:hover::before {
+  background: var(--flare-state-hover-layer);
+  opacity: 1;
 }
 
 .flare-snackbar__close-btn {

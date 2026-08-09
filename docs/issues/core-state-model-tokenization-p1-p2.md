@@ -221,10 +221,24 @@ Two things this batch taught, worth remembering before the next one:
   comes. Exclude the state in the rule that turns the layer ON instead. This shipped broken for a few
   minutes and was caught by hovering the active page in the Gallery, not by reading the CSS.
 
-Still on the old model: `colorpicker, confirmdialog, datepicker, listbox, messagebox, scrolltop,
-snackbar`, plus the table and DataGrid row hovers above. Several of those (confirmdialog, messagebox,
-scrolltop) mix `on-primary` over `primary`, which is what a content-coloured layer computes anyway -
-they should collapse to the shared rule the way the stepper's filled button just did.
+**Third batch done - P3 IS COMPLETE except the two documented cell hovers (0.14.0):** listbox,
+colorpicker, confirmdialog, messagebox, scrolltop, snackbar, datepicker. As predicted, confirmdialog,
+messagebox and scrolltop collapsed: a content-coloured layer computes exactly what their
+`color-mix(on-primary x opacity, primary)` did, so each lost one of its two hover rules. **Fluent UI 2's
+stylesheet now contains no `!important` at all.**
+
+Three of them were not a like-for-like swap and are called out in the changelog: the listbox option,
+the eyedropper and the clickable month label mixed **primary**, which a content-coloured layer does
+not reproduce. That was core choosing an accent hover no spec asks for and no theme could change - and
+it made a select option hover differently from the menu item beside it. Converting them is the fix,
+not a casualty of it.
+
+**Guarded by `StateLayerModelTests`** (tests/Flare.Core.Tests): no core stylesheet may mix a state
+from `--flare-state-hover-opacity`, no in-box theme may force `opacity: 1 !important`, and the
+two-file allowlist must stay real. Verified to fail when the old form is reintroduced, not just to
+pass today.
+
+**Remaining, and it is the whole of what is left:** the table's and the DataGrid's row hovers.
 
 ## P2 - original analysis (kept for the reasoning)
 

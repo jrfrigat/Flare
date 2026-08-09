@@ -373,6 +373,8 @@
 }
 
 .flare-colorpicker__eyedropper-btn {
+    position: relative;
+    z-index: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -387,6 +389,22 @@
     transition: background var(--flare-motion-duration-short2);
 }
 
-.flare-colorpicker__eyedropper-btn:hover {
-    background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface-container-highest));
+/* State layer - the theme names the paint; core only says where it goes (see tabs.css). The wash is
+   content-coloured, where this rule used to mix PRIMARY over the button's own fill: an accent tint
+   core chose on every theme's behalf. */
+.flare-colorpicker__eyedropper-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
+}
+
+.flare-colorpicker__eyedropper-btn:hover::before {
+    background: var(--flare-state-hover-layer);
+    opacity: 1;
 }
