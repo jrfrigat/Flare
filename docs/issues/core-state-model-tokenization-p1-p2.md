@@ -200,10 +200,24 @@ Two techniques are now in the tree, deliberately:
   chrome). Covers every slot including raw text and future ones, and leaves an absolutely positioned
   child working. Prefer this for anything whose children are open-ended.
 
-**Not done, and not for lack of trying: the table and DataGrid ROW hovers.** They paint on the cells,
-and a cell's content is whatever the consumer put there - usually a bare text node. Lifting is
-impossible and the `z-index: -1` route needs a stacking context per cell, which changes how a popover
-rendered inside a cell stacks against its neighbours. Worth doing, needs its own look.
+**The table and DataGrid ROW hovers are done too (0.15.0), and the paragraph that used to sit here was
+wrong about why they were hard.** It said the paint had to stay on the cells, so each cell would need
+a stacking context, which would change how a popover inside a cell stacks. The second half was right
+and worse than stated - Flare's own inline-edit dropdown is such a popover, so the per-cell route
+would have broken shipped behaviour, not just a hypothetical consumer's. The first half was the
+mistake: nothing required the paint to stay on the cells. A row has one background and one
+`currentColor`, so `tr:hover { background: var(--flare-state-hover-layer) }` needs no layer, no
+`::before` and no isolation at all - and it fixes the per-cell `currentColor` problem the layer
+placement was never going to solve.
+
+Two things had to move with it, and both are the same rule: a cell background is the only thing a
+row-wide paint cannot get above. The stripe moved to the row. The frozen column could not - a sticky
+cell needs an opaque background or the rows scrolling under it read through - so it is the one cell
+that takes a `::before` layer, which it can afford because `position: sticky` with a z-index had
+already made it a stacking context.
+
+Falling out of that: two paints that had always been outranked started working (the group header's
+hover, and its tint in a striped table).
 
 **Second batch done (0.14.0):** nav (link + group header), pagination, stepper (both buttons),
 colormodetoggle, virtualtree (node + toggle), calendar cell, timepicker cell, input clear, numericfield
@@ -234,11 +248,13 @@ it made a select option hover differently from the menu item beside it. Converti
 not a casualty of it.
 
 **Guarded by `StateLayerModelTests`** (tests/Flare.Core.Tests): no core stylesheet may mix a state
-from `--flare-state-hover-opacity`, no in-box theme may force `opacity: 1 !important`, and the
-two-file allowlist must stay real. Verified to fail when the old form is reintroduced, not just to
-pass today.
+from `--flare-state-hover-opacity`, and no in-box theme may force `opacity: 1 !important`. Verified to
+fail when the old form is reintroduced, not just to pass today. **The allowlist is gone (0.15.0)** -
+it held table.css and datagrid.css, and the check that kept it honest went with it. It caught its
+first offender the same session it went unconditional: a *comment* naming the old token, in the very
+file that had just been converted.
 
-**Remaining, and it is the whole of what is left:** the table's and the DataGrid's row hovers.
+**P3 IS COMPLETE.** Nothing is left on the old model.
 
 ## P2 - original analysis (kept for the reasoning)
 

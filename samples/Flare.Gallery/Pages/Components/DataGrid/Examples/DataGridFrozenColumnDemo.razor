@@ -1,6 +1,8 @@
 @* Frozen columns pin to either edge: Name and Role stay on the left (cumulative offsets) and
-   Actions stays on the right (FrozenRight), while the middle columns scroll horizontally. *@
-<FlareDataGrid Items="@DatagridData._people" PageSize="6">
+   Actions stays on the right (FrozenRight), while the middle columns scroll horizontally.
+   Hoverable is on so the pinned columns can be seen highlighting with the rest of their row - they
+   are the one place a row's own paint cannot reach, since a sticky cell needs an opaque background. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="6" Hoverable>
     <Columns>
         <FlareColumn Title="Name" Field="@(p => p.Name)" Frozen Width="180px" />
         <FlareColumn Title="Role" Field="@(p => p.Role)" Frozen Width="160px" />

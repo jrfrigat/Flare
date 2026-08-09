@@ -23,16 +23,15 @@ namespace Flare.Core.Tests;
 public sealed class StateLayerModelTests
 {
     /// <summary>
-    /// The two files still on the old model, and why. Both paint their hover on table CELLS, and a
-    /// cell holds whatever the consumer put in it - usually a bare text node, which cannot be lifted
-    /// above an opaque layer. The under-the-content placement used everywhere else needs a stacking
-    /// context per cell, which would change how a popover rendered inside a cell stacks against its
-    /// neighbours. Tracked in docs/issues/core-state-model-tokenization-p1-p2.md.
-    ///
-    /// Shrink this list, never grow it: an addition means a component went the wrong way.
+    /// There is no allowlist. The last two entries on it were table.css and datagrid.css, whose row
+    /// hover painted on the CELLS - and a cell holds whatever the consumer put there, usually a bare
+    /// text node that cannot be lifted above an opaque layer. The answer was not the per-cell stacking
+    /// context that had been assumed and rejected (it would have trapped a popover opened from inside
+    /// a cell, including Flare's own inline-edit dropdowns): the paint moved up to the ROW, where
+    /// there is one background, one <c>currentColor</c>, and nothing to isolate. The frozen column is
+    /// the single cell that still needs a layer of its own, and being sticky it was already a
+    /// stacking context.
     /// </summary>
-    private static readonly string[] KnownHoldouts = ["datagrid.css", "table.css"];
-
     [Fact]
     public void NoCoreStylesheet_ComputesAStateItselfFromTheOpacityScale()
     {
@@ -42,8 +41,6 @@ public sealed class StateLayerModelTests
         foreach (var file in Directory.EnumerateFiles(cssDir, "*.css").OrderBy(f => f))
         {
             var name = Path.GetFileName(file);
-            if (KnownHoldouts.Contains(name)) continue;
-
             var lines = File.ReadAllLines(file);
             for (var i = 0; i < lines.Length; i++)
             {
@@ -58,21 +55,6 @@ public sealed class StateLayerModelTests
             + "theme to override the rule. Paint a ::before layer from --flare-state-hover-layer instead "
             + "- see tabs.css for the placement and the reasoning:\n  "
             + string.Join("\n  ", offenders));
-    }
-
-    [Fact]
-    public void EveryHoldout_IsStillReal()
-    {
-        // A stale allowlist is worse than none: it would silently excuse a file that was converted and
-        // then regressed. If a holdout no longer uses the old form, delete it from the list.
-        var cssDir = Path.Combine(FindRepoRoot(), "src", "Flare.Components", "wwwroot", "css");
-
-        foreach (var name in KnownHoldouts)
-        {
-            var path = Path.Combine(cssDir, name);
-            Assert.True(File.Exists(path), $"{name} is on the state-model allowlist but no longer exists.");
-            Assert.Contains("--flare-state-hover-opacity", File.ReadAllText(path), StringComparison.Ordinal);
-        }
     }
 
     [Fact]

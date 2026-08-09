@@ -3,6 +3,39 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.15.0] - 2026-08-09
+
+### Changed
+- **Table and DataGrid row hover moved onto the state-layer model.** These were the last two core
+  stylesheets computing an interaction state themselves - `color-mix(on-surface x hover-opacity,
+  surface)`, i.e. core deciding what hover *means* for every theme - and they had been left behind on
+  the strength of an assumption that turned out to be wrong. The assumption was that the paint has to
+  stay on the cells, so each cell would need a `::before` layer and therefore a stacking context of
+  its own, which would trap any popover opened from inside a cell - including Flare's own inline-edit
+  dropdowns. A row needs none of that. It has one background and one `currentColor`, so the paint
+  moved up to the `<tr>` and is simply `var(--flare-state-hover-layer)`: no layer, no isolation, and
+  one tint per row instead of one per cell, which is what a row whose cells a consumer had coloured
+  used to get. The striped rule moved to the row with it, because a cell background is the one thing a
+  row-wide paint cannot get above. `StateLayerModelTests` no longer carries an allowlist.
+- **A frozen DataGrid column highlights in the same colour as the row it belongs to.** It is the one
+  cell that cannot take the row's paint - it is sticky, so it needs an opaque background of its own or
+  the rows scrolling underneath read through it - and it used to be repainted on hover from `surface`
+  while its idle state came from `surface-container`, so the pinned column shifted tone family
+  whenever the pointer crossed its row. It now carries the same layer over its own background. This is
+  the only cell in either component that takes one, and being sticky it was already a stacking
+  context, so nothing new is isolated.
+
+### Fixed
+- **A grouped table's group header hovers in its own colour again.** `.flare-table--hover tbody
+  tr:hover td` reaches three elements deep and outranked `.flare-table__group-row:hover td`, so in a
+  hoverable table - the default - a group header showed the ordinary row wash instead of the
+  `surface-container-high` step written for it. The rule was never wrong; it just never won. With the
+  row wash on the row, the group's own opaque cell sits above it and the rule applies.
+- **A group header in a striped table keeps its group colour.** Same shape of defect: the stripe was
+  two classes deeper than the group tint and both painted on the cell, so an even-numbered group
+  header rendered as a striped data row. The stripe is on the row now, the group tint on the cell, and
+  they no longer compete.
+
 ## [0.14.0] - 2026-08-09
 
 ### Added

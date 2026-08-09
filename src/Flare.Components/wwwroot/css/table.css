@@ -51,12 +51,22 @@
 
 .flare-table tbody tr:last-child td { border-bottom: none; }
 
-.flare-table--hover tbody tr:hover td {
-    background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), var(--flare-color-surface));
+/* The stripe and the row hover both paint on the ROW, and they must stay in this order: the two
+   selectors have equal specificity, so source order is the only thing deciding what a striped row
+   looks like under the pointer. Hover replaces the stripe rather than compositing over it, which is
+   what shipped before and what a single background per element allows.
+
+   Neither can move back onto the cells. Painting hover there resolved `currentColor` once per cell,
+   so a row whose cells a consumer had coloured would hover in as many tints as it had colours; and a
+   cell background is the one thing a row-wide paint cannot get above, which is why the stripe had to
+   come along. Cells that keep a background of their own on purpose - the frozen column, a group
+   header, the totals footer - therefore sit above the hover and state that themselves. */
+.flare-table--striped tbody tr:nth-child(even) {
+    background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-table-stripe-opacity), var(--flare-color-surface));
 }
 
-.flare-table--striped tbody tr:nth-child(even) td {
-    background: color-mix(in srgb, var(--flare-color-on-surface) var(--flare-table-stripe-opacity), var(--flare-color-surface));
+.flare-table--hover tbody tr:hover {
+    background: var(--flare-state-hover-layer);
 }
 
 .flare-table--bordered thead th,
