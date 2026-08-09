@@ -522,6 +522,10 @@ public class FluentUI2Tokens
         ValueBg = "var(--flare-color-inverse-surface)",
         ValueColor = "var(--flare-color-inverse-on-surface)",
         DisabledOpacity = "1",
+        // Flat disabled palette rather than a fade - the same two values the theme's own slider.css
+        // used to force onto the track with !important.
+        DisabledActiveColor = "var(--flare-fluent-disabled-fg, #BDBDBD)",
+        DisabledInactiveColor = "var(--flare-fluent-disabled-border, #E0E0E0)",
     };
 
     // Input - Fluent outlined style (full 1px border, neutral focus box + 2px brand bottom accent).
@@ -1088,7 +1092,7 @@ public class FluentUI2Tokens
             TextColor = "var(--flare-color-on-surface)",
             SelectedBorder = "2px solid var(--flare-color-primary)",
             SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
-            StateLayer = "var(--flare-color-on-surface)",
+            StateLayer = "var(--flare-state-hover-layer)",
             ContentPadding = "16px",
             HeaderPadding = "16px 16px 0 16px",
             FooterPadding = "8px 16px 16px 16px",

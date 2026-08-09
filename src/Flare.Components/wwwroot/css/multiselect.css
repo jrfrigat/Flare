@@ -39,7 +39,7 @@
     font-size: 0.7rem;
     border-radius: var(--flare-shape-full);
 }
-.flare-multiselect__chip-remove:hover { background: color-mix(in srgb, var(--flare-color-on-secondary-container) 12%, transparent); }
+.flare-multiselect__chip-remove:hover { background: var(--flare-state-hover-layer); }
 /* Disabled: dim the chips with the rest of the field content. The shared flare-input--disabled (input.css)
    dims the control/label/placeholder but not the chips (a component visual). Covers both FlareMultiSelect
    and FlareTagField, since TagField renders its chips via the shared FlareChipStrip (flare-multiselect__chip). */

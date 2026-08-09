@@ -107,4 +107,8 @@ public static class Slider
     public const string ValueColor = "--flare-slider-value-color";
     /// <summary>CSS custom-property name for the disabled-slider label opacity token.</summary>
     public const string DisabledOpacity = "--flare-slider-disabled-opacity";
+    /// <summary>CSS custom-property name for the disabled active-track and handle color token.</summary>
+    public const string DisabledActiveColor = "--flare-slider-disabled-active-color";
+    /// <summary>CSS custom-property name for the disabled inactive-track color token.</summary>
+    public const string DisabledInactiveColor = "--flare-slider-disabled-inactive-color";
 }

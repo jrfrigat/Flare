@@ -55,7 +55,7 @@
 }
 
 .flare-calendar__nav-btn:hover {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent);
+    background: var(--flare-state-hover-layer);
 }
 
 .flare-calendar__grid {

@@ -702,6 +702,10 @@ public class MaterialDesignTokens
         ValueBg = "var(--flare-color-inverse-surface)",
         ValueColor = "var(--flare-color-inverse-on-surface)",
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
+        // Disabled is a fade of the content colour, and the two halves fade by different amounts so
+        // the filled portion is still readable against the rest.
+        DisabledActiveColor = "color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-disabled-opacity) * 100%), transparent)",
+        DisabledInactiveColor = "color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent)",
     };
 
     internal static readonly DialogTokens Dialog = new()
@@ -1064,7 +1068,7 @@ public class MaterialDesignTokens
             Elevation = "var(--flare-elevation-1)",
             SelectedBorder = "2px solid var(--flare-color-primary)",
             SelectedBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
-            StateLayer = "var(--flare-color-on-surface)",
+            StateLayer = "var(--flare-state-hover-layer)",
             ContentPadding = "16px",
             HeaderPadding = "16px 16px 0 16px",
             FooterPadding = "8px 16px 16px 16px",

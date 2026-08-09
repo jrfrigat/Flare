@@ -159,7 +159,7 @@
 
 .flare-snackbar__close-btn:hover {
   opacity: 1;
-  background: color-mix(in srgb, var(--_snackbar-btn-color, var(--flare-color-inverse-on-surface)) 12%, transparent);
+  background: var(--flare-state-hover-layer);
 }
 
 /* -- Severity variants -- */

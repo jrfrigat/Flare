@@ -76,7 +76,7 @@
     transition: background-color var(--flare-motion-duration-short2);
 }
 .flare-picker__day:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--flare-color-primary) 12%, transparent);
+    background: var(--flare-state-hover-layer);
 }
 .flare-picker__day--outside {
     color: var(--flare-color-on-surface-variant);

@@ -101,7 +101,7 @@
 }
 .flare-chip__close:hover {
     opacity: 1;
-    background: color-mix(in srgb, currentColor 15%, transparent);
+    background: var(--flare-state-hover-layer);
 }
 
 /* Disabled chip. The chip root is a div rather than a button, so the state comes

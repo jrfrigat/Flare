@@ -467,18 +467,20 @@
     transform: translateY(50%) scale(1);
 }
 
-/* Disabled: split opacity - active 0.38 / inactive 0.12 */
+/* Disabled: the theme names both halves. These used to be two fixed fades of `on-surface` - one
+   design language's disabled recipe, which a language that repaints instead could only take back by
+   overriding all three rules with `!important`. */
 .flare-slider--disabled { pointer-events: none; }
 .flare-slider--disabled {
-    --_active: color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent);
-    --_inactive: color-mix(in srgb, var(--flare-color-on-surface) 12%, transparent);
+    --_active: var(--flare-slider-disabled-active-color);
+    --_inactive: var(--flare-slider-disabled-inactive-color);
 }
 .flare-slider--disabled .flare-slider__input::-webkit-slider-thumb {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent);
+    background: var(--flare-slider-disabled-active-color);
     border-width: 0;
 }
 .flare-slider--disabled .flare-slider__input::-moz-range-thumb {
-    background: color-mix(in srgb, var(--flare-color-on-surface) 38%, transparent);
+    background: var(--flare-slider-disabled-active-color);
     border-width: 0;
 }
 .flare-slider--disabled .flare-slider__label,

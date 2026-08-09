@@ -86,7 +86,10 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: color-mix(in srgb, var(--flare-card-state-layer) 8%, transparent);
+    /* The token holds the whole layer now, not just a colour core then mixed at a fixed 8%. A card
+       that should hover unlike everything else still says so in one token; a card that should hover
+       like everything else points it at the shared layer, which is what all six themes do. */
+    background: var(--flare-card-state-layer);
 }
 .flare-card--clickable:focus-visible {
     outline: 3px solid var(--flare-color-secondary);
