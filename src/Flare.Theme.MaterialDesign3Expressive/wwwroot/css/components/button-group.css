@@ -32,49 +32,87 @@
     .flare-btn-group .flare-btn--xl:active { border-radius: 1rem !important; }
 
     /* ======================================================================
-       PRESS WIDTH GROW - the effect that makes the neighbours flinch.
+       PRESS GROW - the pressed segment takes space, its neighbours give it up.
 
-       `md.comp.button-group.standard.<size>.pressed.item.width.multiplier` = 15%: the pressed segment
-       widens, and everything after it in the row is displaced. The spec says nothing about the
-       neighbours because it does not have to - they move because layout moves them, which is also why
-       this has to be a layout property. A transform or `scale` would leave the neighbours exactly
-       where they were (and stretch the label besides), so the flinch would never happen.
+       `md.comp.button-group.standard.<size>.pressed.item.width.multiplier` = 15% is the only row the
+       token table has, and on its own it is not a complete description: a button group does not
+       change its overall size when you press it, so the 15% has to come from somewhere, and the only
+       place it can come from is the segments on either side. That is the Material behaviour - the
+       pressed item swells and its neighbours compress - and it is what makes the group feel like one
+       elastic object rather than a row that grows a lump. An earlier version of this file grew the
+       pressed segment alone and argued the neighbours "flinch because layout moves them"; they were
+       only ever displaced, never compressed, and the group got wider on every press.
 
-       Expressed as side padding rather than the spec's width multiplier: a percentage of the item's
-       OWN width is not something CSS can name here (`width: 115%` resolves against the group, not the
-       item), so an exact multiplier would need JS measuring each segment. The padding step is sized to
-       land near 15% for a typical label and reads identically.
+       Expressed as padding rather than the spec's multiplier: a percentage of the item's OWN size is
+       not something CSS can name here (`width: 115%` resolves against the group), so an exact
+       multiplier would need JS measuring each segment. The step is sized to land near 15% for a
+       typical label.
 
-       The spec pairs this with a 0.9/1400 spring, whose overshoot is 0.15% - invisible. The flinch is
-       the displacement, not a bounce. It rides the theme's fast spring rung, which overshoots more;
-       that is this theme being Expressive rather than baseline, consistent with its other morphs.
+       The arithmetic is deliberate. The pressed segment gains one step on EACH side (2 steps total);
+       each neighbour loses half a step per side (1 step total). With a neighbour on both sides the
+       group's size is unchanged to the pixel; at the ends of the group only one neighbour can pay, so
+       the group gives a little - which is also how a real elastic row behaves.
+
+       The spec pairs this with a 0.9/1400 spring, whose overshoot is 0.15% - invisible. It rides the
+       theme's fast spring rung, which overshoots more; that is this theme being Expressive rather than
+       baseline, consistent with its other morphs.
        ====================================================================== */
     /* transition is a shorthand, so this REPLACES the base button's list rather than adding to it -
        the colour and shadow entries have to be restated or a grouped button stops fading on hover
        while a lone one still does. --_morph-duration is the base button's own local, already zeroed
-       by its reduced-motion rule; the grow gets a local of its own for the same reason. */
+       by its reduced-motion rule; the grow gets a local of its own for the same reason. `padding` and
+       `height` are both listed because the axis that grows follows the group's direction. */
     .flare-btn-group .flare-btn {
         --_grow-duration: var(--flare-motion-duration-spring-fast);
+        /* Step chosen by measuring: +0.375rem a side takes a short-labelled md segment from 81px to
+           93px, which is the spec's 15%. A long label makes the same step a smaller share - the cost
+           of not measuring each segment in script. */
+        --_press-step: 0.375rem;
         transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
                     background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
                     border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
                     color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard),
                     border-radius var(--_morph-duration) var(--flare-shape-morph-easing),
-                    padding-inline var(--_grow-duration) var(--flare-motion-easing-spring-fast);
+                    padding var(--_grow-duration) var(--flare-motion-easing-spring-fast),
+                    height var(--_grow-duration) var(--flare-motion-easing-spring-fast);
     }
-    /* Steps chosen by measuring: +0.375rem a side takes a short-labelled md segment from 81px to 93px,
-       which is the spec's 15%. A long label makes the same step a smaller share - the cost of not
-       measuring each segment in script. */
-    .flare-btn-group .flare-btn--xs:active,
-    .flare-btn-group .flare-btn--sm:active { padding-inline: calc(var(--_flare-btn-padding-inline) + 0.25rem); }
-    .flare-btn-group .flare-btn--md:active { padding-inline: calc(var(--_flare-btn-padding-inline) + 0.375rem); }
-    .flare-btn-group .flare-btn--lg:active,
-    .flare-btn-group .flare-btn--xl:active { padding-inline: calc(var(--_flare-btn-padding-inline) + 0.5rem); }
+    .flare-btn-group .flare-btn--xs,
+    .flare-btn-group .flare-btn--sm { --_press-step: 0.25rem; }
+    .flare-btn-group .flare-btn--lg,
+    .flare-btn-group .flare-btn--xl { --_press-step: 0.5rem; }
+
+    /* Horizontal: the main axis is inline, so the trade is in side padding. */
+    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:active {
+        padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
+    }
+    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:active + .flare-btn,
+    .flare-btn-group:not(.flare-btn-group--vertical) .flare-btn:has(+ .flare-btn:active) {
+        padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) - var(--_press-step) / 2);
+    }
+
+    /* Vertical: the main axis is block, so the SAME trade has to happen in height - the spec's "width
+       multiplier" is a main-axis measurement, and in a column that is the height. Side padding here
+       would grow the segment across the group instead of along it, and because a column stretches its
+       items to the widest one, pressing any segment would have widened the whole stack.
+
+       It is `height` rather than block padding because the button sizes itself with an explicit
+       height, which block padding cannot move. */
+    .flare-btn-group--vertical .flare-btn:active {
+        height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) + var(--_press-step) * 2);
+    }
+    .flare-btn-group--vertical .flare-btn:active + .flare-btn,
+    .flare-btn-group--vertical .flare-btn:has(+ .flare-btn:active) {
+        height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) - var(--_press-step));
+    }
 
     /* Entering the press has to be quick for the same reason the corners do: an ordinary click holds
-       :active for about two frames, so a 300ms grow never leaves the starting line. The release keeps
-       the spring above, which is what makes the neighbours spring back rather than slide. */
-    .flare-btn-group .flare-btn:active {
+       :active for about two frames, so a 300ms grow never leaves the starting line. The neighbours
+       are in this list too - given the slow rung they would still be drifting inwards while the
+       pressed segment had already arrived, and the trade would read as two separate animations rather
+       than one. The release keeps the spring above, which is what springs everything back. */
+    .flare-btn-group .flare-btn:active,
+    .flare-btn-group .flare-btn:active + .flare-btn,
+    .flare-btn-group .flare-btn:has(+ .flare-btn:active) {
         --_grow-duration: var(--flare-motion-duration-short2);
     }
 

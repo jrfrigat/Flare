@@ -85,6 +85,21 @@ All notable changes to Flare are documented here. This project adheres to
   colour, which is the theme's decision to make.
 
 ### Fixed
+- **A pressed button group's neighbours give up the space the pressed segment takes.** The Material
+  Expressive press grew the pressed segment and left the rest alone, so the group got wider on every
+  press and the neighbours were displaced rather than compressed. The token table has one row for
+  this - `pressed width multiplier` 15% - and on its own it is not a complete description: a button
+  group does not change size when you press it, so the 15% has to come from the segments on either
+  side. Each neighbour now gives up half a step per side, which is exactly what the pressed one
+  gains, so a group with a neighbour on both sides holds its size to the pixel. At the ends only one
+  neighbour can pay and the group gives a little, which is how an elastic row behaves anyway.
+- **A vertical button group presses along its own axis.** The grow was side padding regardless of
+  direction. In a column the cross axis is horizontal and its items stretch to the widest, so
+  pressing any segment widened the entire stack instead of lengthening the one pressed. The spec's
+  "width multiplier" is a main-axis measurement, and in a column that is the height; a vertical group
+  now trades height, and its width no longer moves. Measured: pressing the middle segment of a
+  three-button column takes it from 48px to 60px while its neighbours go to 42px and the column's
+  height and width both stay put.
 - **An inactive tab is no longer as dark as the active one under Material.** The theme set the
   inactive label to `on-surface`, where MD3 specifies `on-surface-variant` at rest for both tab
   levels and `on-surface` only under hover or focus. On a primary strip the accent hid it; on the new
