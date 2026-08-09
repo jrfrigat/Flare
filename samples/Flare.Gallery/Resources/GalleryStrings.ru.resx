@@ -2560,6 +2560,7 @@
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Группа кнопок</value></data>
   <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Связанные наборы кнопок с общими variant, color и size. В теме MD3 Expressive сегменты разделены зазором со скруглёнными внутренними углами и превращаются в капсулу при взаимодействии.</value></data>
   <data name="ButtonGroup_Connected" xml:space="preserve"><value>Стандартная и связанная</value></data>
+  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Сворачивание и toggle-сегменты</value></data>
   <data name="ButtonGroup_Basic" xml:space="preserve"><value>Базовый</value></data>
   <data name="ButtonGroup_Vertical" xml:space="preserve"><value>Вертикальный</value></data>
   <data name="ButtonGroup_VariantsColors" xml:space="preserve"><value>Варианты и цвета (каскад)</value></data>

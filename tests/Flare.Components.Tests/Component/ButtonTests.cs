@@ -144,6 +144,37 @@ public class C_FlareButtonGroupTests : FlareTestContext
     }
 
     [Fact]
+    public void CollapsibleRendersAnOverflowControlAndASecondCopy()
+    {
+        // The fold itself is a measurement and only a browser can make it, so what is testable here is
+        // the contract the measurer needs: the trailing overflow control exists, and the panel holds a
+        // second copy of the same content for it to reveal. Without the copy there would be nothing to
+        // fold INTO, and the group would just clip.
+        var cut = Render<FlareButtonGroup>(p => p
+            .Add(x => x.Collapsible, true)
+            .AddChildContent("<button class=\"flare-btn\">One</button><button class=\"flare-btn\">Two</button>"));
+
+        var root = cut.Find(".flare-btn-group");
+        Assert.Contains("flare-btn-group--collapsible", root.ClassName);
+        Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.More}"));
+
+        // The copies live behind the popover, so they exist only once it is open - which is also why
+        // the measurer treats the panel as optional rather than assuming it is there.
+        Assert.Empty(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
+        cut.Find($".{Css.Classes.ButtonGroup.More} .flare-btn").Click();
+        Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
+        Assert.Equal(2, cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList} .flare-btn").Count);
+    }
+
+    [Fact]
+    public void NotCollapsibleRendersNoOverflowControl()
+    {
+        var cut = Render<FlareButtonGroup>(p => p.AddChildContent("<button class=\"flare-btn\">One</button>"));
+        Assert.DoesNotContain("flare-btn-group--collapsible", cut.Find(".flare-btn-group").ClassName);
+        Assert.Empty(cut.FindAll($".{Css.Classes.ButtonGroup.More}"));
+    }
+
+    [Fact]
     public void NamesItsModel()
     {
         // The two models behave differently under a press - a standard group's segments trade width

@@ -32,6 +32,17 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
     public ValueTask RemoveTabScrollerAsync(ElementReference bar) => InvokeVoidAsync("removeTabScroller", bar);
 
     /// <inheritdoc />
+    public ValueTask RegisterButtonGroupCollapseAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+        => InvokeVoidAsync("registerButtonGroupCollapse", root, dotNetRef);
+
+    /// <inheritdoc />
+    public ValueTask ApplyButtonGroupOverflowAsync<T>(ElementReference root, DotNetObjectReference<T> dotNetRef) where T : class
+        => InvokeVoidAsync("applyButtonGroupOverflow", root, dotNetRef);
+
+    /// <inheritdoc />
+    public ValueTask RemoveButtonGroupCollapseAsync(ElementReference root) => InvokeVoidAsync("removeButtonGroupCollapse", root);
+
+    /// <inheritdoc />
     public ValueTask RegisterShortcutsAsync<T>(DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerShortcutListener", dotNetRef);
 

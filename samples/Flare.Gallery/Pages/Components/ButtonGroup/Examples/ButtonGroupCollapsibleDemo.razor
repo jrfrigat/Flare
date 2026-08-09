@@ -1,0 +1,35 @@
+@* Drag the slider to narrow the container: the segments that no longer fit fold into the "..." at the
+   trailing end and come back when the room does. The second group shows that a segment can be a toggle
+   button as readily as a plain one - a connected row of toggles is what Material means by a group for
+   selecting options or switching views. *@
+<FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Stretch">
+
+    <FlareSlider @bind-Value="_width" Min="20" Max="100" Step="1" Label="@($"Container width: {_width}%")" />
+
+    <div style="@($"width:{_width}%")">
+        <FlareButtonGroup Collapsible Variant="ButtonVariant.Tonal">
+            <FlareButton>Cut</FlareButton>
+            <FlareButton>Copy</FlareButton>
+            <FlareButton>Paste</FlareButton>
+            <FlareButton>Duplicate</FlareButton>
+            <FlareButton>Rename</FlareButton>
+            <FlareButton>Delete</FlareButton>
+        </FlareButtonGroup>
+    </div>
+
+    <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
+        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Toggle buttons as segments</FlareText>
+        <FlareButtonGroup Connected>
+            <FlareToggleButton @bind-Toggled="_bold">Bold</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_italic">Italic</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_underline">Underline</FlareToggleButton>
+        </FlareButtonGroup>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private double _width = 100;
+    private bool _bold = true;
+    private bool _italic;
+    private bool _underline;
+}

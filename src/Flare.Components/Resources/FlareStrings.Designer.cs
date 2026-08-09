@@ -113,6 +113,15 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Aria_ToggleList", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на More actions.
+        /// </summary>
+        public static string Aria_MoreActions {
+            get {
+                return ResourceManager.GetString("Aria_MoreActions", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на {0} more.

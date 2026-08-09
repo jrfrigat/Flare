@@ -141,6 +141,7 @@
   <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Toggle drawer</value></data>
   <data name="Aria_TogglePassword" xml:space="preserve"><value>Toggle password visibility</value></data>
   <data name="Aria_ToggleList" xml:space="preserve"><value>Show or hide the list</value></data>
+  <data name="Aria_MoreActions" xml:space="preserve"><value>More actions</value></data>
 
   <!-- Input -->
   <data name="Input_Clear" xml:space="preserve"><value>Clear</value></data>

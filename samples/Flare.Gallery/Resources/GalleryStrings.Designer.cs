@@ -1096,6 +1096,15 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Collapsing and toggle segments.
+        /// </summary>
+        public static string ButtonGroup_Collapsible {
+            get {
+                return ResourceManager.GetString("ButtonGroup_Collapsible", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Standard and connected.
         /// </summary>
         public static string ButtonGroup_Connected {

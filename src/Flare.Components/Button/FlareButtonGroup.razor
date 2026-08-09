@@ -1,14 +1,45 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
+@inject Flare.Components.Services.IUiJsService Ui
+@implements IAsyncDisposable
 
 @* The group manages geometry via CSS (seams + per-corner radii) and cascades
    Size/Variant/Color to child FlareButton via FlareButtonGroupContext. *@
-<div class="@BuildCssClass(_verticalClass, _fullWidthClass, _modelClass)"
+<div @ref="_root"
+     class="@BuildCssClass(_verticalClass, _fullWidthClass, _modelClass, _collapsibleClass)"
      style="@Style"
      @attributes="AdditionalAttributes">
 
     <CascadingValue Value="_context">
         @ChildContent
+
+        @if (Collapsible)
+        {
+            @* The overflow control is a segment like any other and lives at the trailing end, where the
+               guidance puts it. Its panel holds a SECOND copy of the same content: with ChildContent an
+               opaque fragment, the group cannot move a button it never enumerated - but it can render
+               the same fragment twice and let the measurer show each item in exactly one of the two
+               places. Nothing is on screen twice, and a folded button keeps its own handlers and state
+               because it IS the same component, declared once. *@
+            <FlarePopover Class="@Css.Classes.ButtonGroup.More"
+                          Trigger="PopoverTrigger.Click"
+                          Placement="@(Vertical ? PopoverPlacement.RightStart : PopoverPlacement.BottomEnd)"
+                          @bind-Open="_overflowOpen">
+                <AnchorContent>
+                    @* Size/Variant/Color come from the group's own cascade, the same way every other
+                       segment gets them - passing them again would only be a second source of truth. *@
+                    <FlareButton AriaLabel="@(OverflowLabel ?? FlareStrings.Aria_MoreActions)"
+                                 aria-expanded="@(_overflowOpen ? "true" : "false")">
+                        <FlareIconView Value="FlareIcons.MoreHoriz" />
+                    </FlareButton>
+                </AnchorContent>
+                <ChildContent>
+                    <div class="@Css.Classes.ButtonGroup.OverflowList">
+                        @ChildContent
+                    </div>
+                </ChildContent>
+            </FlarePopover>
+        }
     </CascadingValue>
 </div>
 
@@ -33,6 +64,18 @@
     /// </summary>
     [Parameter] public bool Connected { get; set; }
 
+    /// <summary>
+    /// Folds the segments that no longer fit into an overflow menu at the trailing end, and unfolds them
+    /// again when the room comes back. Whether something fits is a question only the browser can answer,
+    /// so this is the one part of the group measured in script rather than decided in CSS.
+    /// Suits the standard model, which hugs its buttons and therefore can run out of room; a connected
+    /// group is meant to span its surface and share the width out instead of overflowing.
+    /// </summary>
+    [Parameter] public bool Collapsible { get; set; }
+
+    /// <summary>Accessible label for the overflow button. Defaults to Flare's localized "More actions".</summary>
+    [Parameter] public string? OverflowLabel { get; set; }
+
     /// <summary>Visual style variant applied to all buttons in the group. Null keeps each button's own Variant.</summary>
     [Parameter] public ButtonVariant? Variant { get; set; }
 
@@ -47,10 +90,77 @@
     // Records have value equality, so CascadingValue re-renders children only when settings change.
     private FlareButtonGroupContext _context = new(null, null, null);
 
+    private ElementReference _root;
+    private DotNetObjectReference<FlareButtonGroup>? _selfRef;
+    private bool _observing;
+    private bool _overflowOpen;
+
     protected override void OnParametersSet() => _context = new(Size, Variant, Color);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!Collapsible)
+        {
+            if (_observing) await StopObservingAsync();
+            return;
+        }
+
+        try
+        {
+            _selfRef ??= DotNetObjectReference.Create(this);
+            if (!_observing)
+            {
+                await Ui.RegisterButtonGroupCollapseAsync(_root, _selfRef);
+                _observing = true;
+            }
+            else
+            {
+                // Re-applied after EVERY render, not only on resize: the fold is written into an
+                // attribute on the segments, and a render can replace the segment it was written on.
+                await Ui.ApplyButtonGroupOverflowAsync(_root, _selfRef);
+            }
+        }
+        // ObjectDisposedException derives from InvalidOperationException, so it has to come first.
+        catch (Microsoft.JSInterop.JSException) { }   // module not there yet (prerender / stale SW)
+        catch (ObjectDisposedException) { }
+        catch (InvalidOperationException) { }         // no JS runtime during static prerender
+    }
+
+    /// <summary>Invoked from script with the number of segments currently folded away.</summary>
+    /// <param name="hidden">How many trailing segments did not fit.</param>
+    [JSInvokable]
+    public Task OnOverflowChanged(int hidden)
+    {
+        // The overflow control stays in the DOM either way - it has to be measurable for the fold to
+        // reserve room for it - so an empty menu is hidden by CSS rather than by not rendering it.
+        if (_hiddenCount == hidden) return Task.CompletedTask;
+        _hiddenCount = hidden;
+        if (hidden == 0) _overflowOpen = false;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private int _hiddenCount;
+
+    private async Task StopObservingAsync()
+    {
+        _observing = false;
+        try { await Ui.RemoveButtonGroupCollapseAsync(_root); }
+        catch (Microsoft.JSInterop.JSException) { }
+        catch (ObjectDisposedException) { }
+        catch (InvalidOperationException) { }
+    }
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync()
+    {
+        if (_observing) await StopObservingAsync();
+        _selfRef?.Dispose();
+    }
 
     private string _verticalClass => Vertical ? Css.Classes.ButtonGroup.Vertical : string.Empty;
     private string _fullWidthClass => FullWidth ? Css.Classes.ButtonGroup.Full : string.Empty;
+    private string _collapsibleClass => Collapsible ? Css.Classes.ButtonGroup.Collapsible : string.Empty;
     // Both models carry a marker class rather than one being the absence of the other: a theme styles
     // them differently enough that a rule reading `:not(--connected)` would be the wrong shape, and
     // the rendered markup says which model is in play without the reader inferring it.

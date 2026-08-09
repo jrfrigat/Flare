@@ -19,8 +19,8 @@
        buttons that keep their own shape, so the button family's own hover and press morphs already
        govern them - and they say the same thing in per-size detail. Aiming a second, group-level
        !important at the same corners would only take the decision away from the button. */
-    .flare-btn-group--connected .flare-btn:hover,
-    .flare-btn-group--connected .flare-btn:focus-visible {
+    .flare-btn-group--connected > :is(.flare-btn, .flare-toggle-btn):hover,
+    .flare-btn-group--connected > :is(.flare-btn, .flare-toggle-btn):focus-visible {
         border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
     }
 
@@ -34,11 +34,11 @@
 
        "When a button is pressed, it changes width and shape", and shape is the half a connected group
        keeps - the whole of what a press does to it. */
-    .flare-btn-group--connected .flare-btn--xs:active,
-    .flare-btn-group--connected .flare-btn--sm:active,
-    .flare-btn-group--connected .flare-btn--md:active { border-radius: 0.25rem !important; }
-    .flare-btn-group--connected .flare-btn--lg:active { border-radius: 0.75rem !important; }
-    .flare-btn-group--connected .flare-btn--xl:active { border-radius: 1rem !important; }
+    .flare-btn-group--connected > :is(.flare-btn--xs, .flare-toggle-btn--xs):active,
+    .flare-btn-group--connected > :is(.flare-btn--sm, .flare-toggle-btn--sm):active,
+    .flare-btn-group--connected > :is(.flare-btn--md, .flare-toggle-btn--md):active { border-radius: 0.25rem !important; }
+    .flare-btn-group--connected > :is(.flare-btn--lg, .flare-toggle-btn--lg):active { border-radius: 0.75rem !important; }
+    .flare-btn-group--connected > :is(.flare-btn--xl, .flare-toggle-btn--xl):active { border-radius: 1rem !important; }
 
     /* ======================================================================
        PRESS GROW - STANDARD GROUPS ONLY: the pressed segment takes space, its neighbours give it up.
@@ -79,7 +79,7 @@
        while a lone one still does. --_morph-duration is the base button's own local, already zeroed
        by its reduced-motion rule; the grow gets a local of its own for the same reason. `padding` and
        `height` are both listed because the axis that grows follows the group's direction. */
-    .flare-btn-group .flare-btn {
+    .flare-btn-group > :is(.flare-btn, .flare-toggle-btn) {
         --_grow-duration: var(--flare-motion-duration-spring-fast);
         /* Step chosen by measuring: +0.375rem a side takes a short-labelled md segment from 81px to
            93px, which is the spec's 15%. A long label makes the same step a smaller share - the cost
@@ -93,17 +93,17 @@
                     padding var(--_grow-duration) var(--flare-motion-easing-spring-fast),
                     height var(--_grow-duration) var(--flare-motion-easing-spring-fast);
     }
-    .flare-btn-group .flare-btn--xs,
-    .flare-btn-group .flare-btn--sm { --_press-step: 0.25rem; }
-    .flare-btn-group .flare-btn--lg,
-    .flare-btn-group .flare-btn--xl { --_press-step: 0.5rem; }
+    .flare-btn-group > :is(.flare-btn--xs, .flare-toggle-btn--xs),
+    .flare-btn-group > :is(.flare-btn--sm, .flare-toggle-btn--sm) { --_press-step: 0.25rem; }
+    .flare-btn-group > :is(.flare-btn--lg, .flare-toggle-btn--lg),
+    .flare-btn-group > :is(.flare-btn--xl, .flare-toggle-btn--xl) { --_press-step: 0.5rem; }
 
     /* Horizontal: the main axis is inline, so the trade is in side padding. */
-    .flare-btn-group--standard:not(.flare-btn-group--vertical) .flare-btn:active {
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):active {
         padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
     }
-    .flare-btn-group--standard:not(.flare-btn-group--vertical) .flare-btn:active + .flare-btn,
-    .flare-btn-group--standard:not(.flare-btn-group--vertical) .flare-btn:has(+ .flare-btn:active) {
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):active + :is(.flare-btn, .flare-toggle-btn),
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):has(+ :is(.flare-btn, .flare-toggle-btn):active) {
         padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) - var(--_press-step) / 2);
     }
 
@@ -118,11 +118,11 @@
        Material does not define a vertical button group at all - it says groups travel in a single
        line and do not interact vertically. Flare offers one, so this is Flare's reading of the same
        rule along the other axis rather than something the spec dictates. */
-    .flare-btn-group--standard.flare-btn-group--vertical .flare-btn:active {
+    .flare-btn-group--standard.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):active {
         height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) + var(--_press-step) * 2);
     }
-    .flare-btn-group--standard.flare-btn-group--vertical .flare-btn:active + .flare-btn,
-    .flare-btn-group--standard.flare-btn-group--vertical .flare-btn:has(+ .flare-btn:active) {
+    .flare-btn-group--standard.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):active + :is(.flare-btn, .flare-toggle-btn),
+    .flare-btn-group--standard.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):has(+ :is(.flare-btn, .flare-toggle-btn):active) {
         height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) - var(--_press-step));
     }
 
@@ -131,13 +131,13 @@
        are in this list too - given the slow rung they would still be drifting inwards while the
        pressed segment had already arrived, and the trade would read as two separate animations rather
        than one. The release keeps the spring above, which is what springs everything back. */
-    .flare-btn-group--standard .flare-btn:active,
-    .flare-btn-group--standard .flare-btn:active + .flare-btn,
-    .flare-btn-group--standard .flare-btn:has(+ .flare-btn:active) {
+    .flare-btn-group--standard > :is(.flare-btn, .flare-toggle-btn):active,
+    .flare-btn-group--standard > :is(.flare-btn, .flare-toggle-btn):active + :is(.flare-btn, .flare-toggle-btn),
+    .flare-btn-group--standard > :is(.flare-btn, .flare-toggle-btn):has(+ :is(.flare-btn, .flare-toggle-btn):active) {
         --_grow-duration: var(--flare-motion-duration-short2);
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .flare-btn-group .flare-btn { --_grow-duration: 0s; }
+        .flare-btn-group > :is(.flare-btn, .flare-toggle-btn) { --_grow-duration: 0s; }
     }
 }

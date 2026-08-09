@@ -65,6 +65,93 @@ export function removeTabScroller(bar) {
     }
 }
 
+// -- FlareButtonGroup collapse ----------------------------------------------
+// A button group that runs out of room folds its trailing segments into an overflow menu. Only the
+// browser knows whether they fit, so the decision is made here and the component is told the count.
+//
+// The hiding is a data attribute rather than a class or an inline style, and that is not cosmetic:
+// `class` and `style` are attributes Blazor renders and will rewrite on its next pass, so a decision
+// written into either would be silently undone. Blazor never emits this attribute, so the two writers
+// never collide - and the component re-applies after each of its renders anyway, which covers a
+// segment being replaced outright.
+const HIDDEN_ATTR = 'data-flare-bg-hidden';
+const _groupCollapsers = new Map();
+
+function _segments(root) {
+    return Array.from(root.children).filter(el =>
+        (el.classList.contains('flare-btn') || el.classList.contains('flare-toggle-btn')) &&
+        !el.classList.contains('flare-btn-group__more'));
+}
+
+export function applyButtonGroupOverflow(root, dotNetRef) {
+    if (!root || !root.isConnected) return 0;
+    const vertical = root.classList.contains('flare-btn-group--vertical');
+    const more = root.querySelector(':scope > .flare-btn-group__more');
+    const segs = _segments(root);
+    if (segs.length === 0) return 0;
+
+    // Measure with everything shown, or a segment hidden on the last pass would measure as zero and
+    // never come back when the group grows again. The overflow control is un-hidden for the same
+    // reason: its width is what the fold reserves, and a display:none element measures zero.
+    segs.forEach(s => s.removeAttribute(HIDDEN_ATTR));
+    if (more) more.removeAttribute(HIDDEN_ATTR);
+    const size = el => vertical ? el.offsetHeight : el.offsetWidth;
+    const available = vertical ? root.clientHeight : root.clientWidth;
+    const styles = getComputedStyle(root);
+    const gap = parseFloat(vertical ? styles.rowGap : styles.columnGap) || 0;
+
+    const natural = segs.map(size);
+    const total = natural.reduce((a, b) => a + b, 0) + gap * (segs.length - 1);
+
+    let visible = segs.length;
+    if (total > available + 0.5) {
+        // The overflow control has to fit too, so it is reserved before anything is placed.
+        const reserve = more ? size(more) + gap : 0;
+        let used = 0;
+        visible = 0;
+        for (let i = 0; i < segs.length; i++) {
+            const step = natural[i] + (i > 0 ? gap : 0);
+            if (used + step + reserve > available + 0.5) break;
+            used += step;
+            visible++;
+        }
+        // Folding everything away leaves a lone "..." with no way back; keep one real segment.
+        if (visible === 0) visible = 1;
+    }
+
+    for (let i = visible; i < segs.length; i++) segs[i].setAttribute(HIDDEN_ATTR, '');
+
+    // The panel holds a second copy of the same content: it shows exactly what the bar hid.
+    const panel = root.querySelector(':scope > .flare-btn-group__more .flare-btn-group__overflow-list');
+    if (panel) {
+        const copies = Array.from(panel.children);
+        copies.forEach((el, i) => {
+            if (i < visible) el.setAttribute(HIDDEN_ATTR, '');
+            else el.removeAttribute(HIDDEN_ATTR);
+        });
+    }
+
+    const hidden = segs.length - visible;
+    if (more && hidden === 0) more.setAttribute(HIDDEN_ATTR, '');
+    if (dotNetRef) dotNetRef.invokeMethodAsync('OnOverflowChanged', hidden).catch(() => {});
+    return hidden;
+}
+
+export function registerButtonGroupCollapse(root, dotNetRef) {
+    if (!root) return;
+    const run = () => applyButtonGroupOverflow(root, dotNetRef);
+    const ro = new ResizeObserver(run);
+    ro.observe(root);
+    if (root.parentElement) ro.observe(root.parentElement);
+    _groupCollapsers.set(root, ro);
+    run();
+}
+
+export function removeButtonGroupCollapse(root) {
+    const ro = _groupCollapsers.get(root);
+    if (ro) { ro.disconnect(); _groupCollapsers.delete(root); }
+}
+
 // -- FlareShortcuts ----------------------------------------------------------
 let _shortcutDotNetRef = null;
 

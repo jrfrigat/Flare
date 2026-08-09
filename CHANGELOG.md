@@ -72,6 +72,25 @@ All notable changes to Flare are documented here. This project adheres to
   context, so nothing new is isolated.
 
 ### Added
+- **`FlareButtonGroup.Collapsible` - the segments that no longer fit fold into a "..." at the trailing
+  end, and unfold when the room comes back.** Whether something fits is a question only the browser
+  can answer, so this is the one part of the group measured in script rather than decided in CSS; a
+  `ResizeObserver` reports it and the component is told how many folded. The fold is written as a
+  `data-` attribute rather than a class or an inline style, because those two are Blazor's to rewrite
+  and a decision written into either would be silently undone on the next render - and it is
+  re-applied after every render anyway, which covers a segment being replaced outright.
+  The overflow panel holds a second copy of the same content: with `ChildContent` an opaque fragment
+  the group cannot relocate a button it never enumerated, but it can render the fragment twice and let
+  the measurement show each item in exactly one of the two places. Nothing is on screen twice, and a
+  folded button keeps its own handlers and state because it *is* the same component, declared once.
+  Suits the standard model, which hugs its buttons and so can run out of room.
+- **A button group's segments can be toggle buttons.** `FlareToggleButton` inside a `FlareButtonGroup`
+  now gets the group's geometry - the seam, the shared corners, the raised z-index under the pointer -
+  where before it was invisible to every one of those rules and rendered as a loose button in a row.
+  A connected group of toggles is what Material means by a group that "helps people select options,
+  switch views, or sort elements". The group's selectors say `:is(.flare-btn, .flare-toggle-btn)`,
+  which costs the same specificity they already had, and they became CHILD selectors in the process,
+  so the overflow panel's own buttons are not mistaken for segments.
 - **`FlareButtonGroup.Connected` - the second of Material's two group models, and a theme now dresses
   both.** Until now Flare had one button group that behaved like both at once, and `ButtonGroupTokens`
   described one geometry, so whichever look a theme chose, the other model wore it. Fluent UI 2's

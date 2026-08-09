@@ -2560,6 +2560,7 @@
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Button Group</value></data>
   <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Connected sets of buttons sharing variant, color and size. In the MD3 Expressive theme segments are separated by a gap with rounded inner corners and morph into a full capsule on interaction.</value></data>
   <data name="ButtonGroup_Connected" xml:space="preserve"><value>Standard and connected</value></data>
+  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Collapsing and toggle segments</value></data>
   <data name="ButtonGroup_Basic" xml:space="preserve"><value>Basic</value></data>
   <data name="ButtonGroup_Vertical" xml:space="preserve"><value>Vertical</value></data>
   <data name="ButtonGroup_VariantsColors" xml:space="preserve"><value>Variants &amp; colors (cascade)</value></data>

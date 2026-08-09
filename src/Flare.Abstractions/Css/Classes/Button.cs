@@ -102,4 +102,10 @@ public static class ButtonGroup
     public const string Connected = "flare-btn-group--connected";
     /// <summary>The <c>flare-btn-group--standard</c> CSS class.</summary>
     public const string Standard = "flare-btn-group--standard";
+    /// <summary>The <c>flare-btn-group--collapsible</c> CSS class.</summary>
+    public const string Collapsible = "flare-btn-group--collapsible";
+    /// <summary>The <c>flare-btn-group__more</c> CSS class on the overflow control.</summary>
+    public const string More = "flare-btn-group__more";
+    /// <summary>The <c>flare-btn-group__overflow-list</c> CSS class on the folded-away segments.</summary>
+    public const string OverflowList = "flare-btn-group__overflow-list";
 }

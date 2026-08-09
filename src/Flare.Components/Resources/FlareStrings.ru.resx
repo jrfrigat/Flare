@@ -141,6 +141,7 @@
   <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Переключить меню</value></data>
   <data name="Aria_TogglePassword" xml:space="preserve"><value>Показать/скрыть пароль</value></data>
   <data name="Aria_ToggleList" xml:space="preserve"><value>Показать или скрыть список</value></data>
+  <data name="Aria_MoreActions" xml:space="preserve"><value>Другие действия</value></data>
 
   <!-- Input -->
   <data name="Input_Clear" xml:space="preserve"><value>Очистить</value></data>

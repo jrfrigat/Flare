@@ -13,7 +13,14 @@
    have, and a theme filling them in would be describing the connected look twice.
    (see Flare.Abstractions/Tokens/Components/ButtonGroupTokens.cs). Logical margins/corners so RTL
    mirrors automatically; no per-size fan-out (the outer radius may be a
-   calc(--_flare-btn-height / 2) capsule and the button's own size class supplies that height). */
+   calc(--_flare-btn-height / 2) capsule and the button's own size class supplies that height).
+
+   A SEGMENT is `> :is(.flare-btn, .flare-toggle-btn)`: a group holds plain buttons or toggle buttons,
+   and a connected group of toggles is what Material means by a group that "helps people select
+   options, switch views, or sort elements". The `:is()` costs one class of specificity either way, so
+   the selectors weigh what they always did. The CHILD combinator matters as much as the list: the
+   collapse menu below renders buttons of its own inside the group, and a descendant selector would
+   have given every one of them the seam radii of a segment. */
 
 .flare-btn-group {
     display: inline-flex;
@@ -31,10 +38,10 @@
 /* The two models also size their segments differently: a STANDARD group hugs the buttons inside it, so
    each segment keeps its own width even when the group is stretched; a CONNECTED group is meant to span
    its surface and share that width out equally, so the row reads as a single control. */
-.flare-btn-group--standard .flare-btn {
+.flare-btn-group--standard > :is(.flare-btn, .flare-toggle-btn) {
     flex: 0 0 auto;
 }
-.flare-btn-group--connected.flare-btn-group--full .flare-btn {
+.flare-btn-group--connected.flare-btn-group--full > :is(.flare-btn, .flare-toggle-btn) {
     flex: 1 1 0;
     min-width: 0;
 }
@@ -42,10 +49,10 @@
 /* Connected overlap: a (usually negative) leading margin on every non-first segment pulls it over its
    neighbour so two 1px borders collapse into one seam. Logical properties -> correct in both LTR and
    RTL and for vertical stacks. A standard group has no seams to collapse. */
-.flare-btn-group--connected:not(.flare-btn-group--vertical) .flare-btn:not(:first-child) {
+.flare-btn-group--connected:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):not(:first-child) {
     margin-inline-start: var(--flare-btn-group-connected-overlap);
 }
-.flare-btn-group--connected.flare-btn-group--vertical .flare-btn:not(:first-child) {
+.flare-btn-group--connected.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):not(:first-child) {
     margin-block-start: var(--flare-btn-group-connected-overlap);
 }
 
@@ -53,10 +60,42 @@
     flex-direction: column;
 }
 
+/* ==========================================================================
+   COLLAPSE. The measurer in flare-ui.js writes data-flare-bg-hidden on whatever did not fit, and on
+   the panel copies of whatever did - so each declared segment is on screen in exactly one of the two
+   places. An attribute rather than a class or an inline style because those two are Blazor's to
+   rewrite; this one is nobody else's.
+
+   The group must be bounded for "did not fit" to mean anything - an inline-flex box that hugs its
+   content always fits itself - so a collapsible group is capped at its container and told not to wrap.
+   ========================================================================== */
+.flare-btn-group--collapsible {
+    max-width: 100%;
+    flex-wrap: nowrap;
+}
+
+/* The overflow control hides through the SAME attribute as the segments, not through a state class:
+   the fold has to reserve room for it before it can decide what fits, and `display:none` measures
+   zero. The measurer un-hides it, measures, and hides it again when nothing needed folding - which a
+   CSS rule keyed off a state class could not do without lying about the width in between. */
+[data-flare-bg-hidden] { display: none; }
+
+.flare-btn-group__more {
+    flex: 0 0 auto;
+}
+
+/* The folded segments stack, so a row of buttons reads as a list once it is inside the panel. */
+.flare-btn-group__overflow-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--flare-btn-group-standard-gap);
+}
+
 /* Raise the hovered/focused segment so its border + focus ring are not clipped by an overlapping
    neighbour. Only matters in the connected (overlapping) mode; harmless when separated. */
-.flare-btn-group .flare-btn:hover,
-.flare-btn-group .flare-btn:focus-visible {
+.flare-btn-group > :is(.flare-btn, .flare-toggle-btn):hover,
+.flare-btn-group > :is(.flare-btn, .flare-toggle-btn):focus-visible {
     z-index: var(--flare-btn-group-z-active);
 }
 
@@ -72,26 +111,26 @@
    ========================================================================== */
 
 /* Every segment: all four corners default to the interior radius. */
-.flare-btn-group--connected .flare-btn {
+.flare-btn-group--connected > :is(.flare-btn, .flare-toggle-btn) {
     border-radius: var(--flare-btn-group-connected-inner-radius);
 }
 
 /* Horizontal: first segment rounds its LEADING (start) end, last segment its TRAILING (end) end. */
-.flare-btn-group--connected:not(.flare-btn-group--vertical) .flare-btn:first-child {
+.flare-btn-group--connected:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):first-child {
     border-start-start-radius: var(--flare-btn-group-connected-outer-radius);
     border-end-start-radius: var(--flare-btn-group-connected-outer-radius);
 }
-.flare-btn-group--connected:not(.flare-btn-group--vertical) .flare-btn:last-child {
+.flare-btn-group--connected:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):last-child {
     border-start-end-radius: var(--flare-btn-group-connected-outer-radius);
     border-end-end-radius: var(--flare-btn-group-connected-outer-radius);
 }
 
 /* Vertical: first segment rounds its TOP corners, last segment its BOTTOM corners. */
-.flare-btn-group--connected.flare-btn-group--vertical .flare-btn:first-child {
+.flare-btn-group--connected.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):first-child {
     border-start-start-radius: var(--flare-btn-group-connected-outer-radius);
     border-start-end-radius: var(--flare-btn-group-connected-outer-radius);
 }
-.flare-btn-group--connected.flare-btn-group--vertical .flare-btn:last-child {
+.flare-btn-group--connected.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):last-child {
     border-end-start-radius: var(--flare-btn-group-connected-outer-radius);
     border-end-end-radius: var(--flare-btn-group-connected-outer-radius);
 }
