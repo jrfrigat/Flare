@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.14.0] - 2026-08-08
+## [0.14.0] - 2026-08-09
 
 ### Added
 - **`ListTokens`, `AccordionTokens` and `CollapseTokens`.** These three components had no token record
