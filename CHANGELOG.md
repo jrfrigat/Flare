@@ -11,7 +11,11 @@ All notable changes to Flare are documented here. This project adheres to
   `TabsTokens.SecondaryIndicatorThickness` and `SecondaryActiveColor`, and
   `StripeTokens.Background` (a new top-level `DesignTokens.Stripe`) are all new, and a bespoke
   theme - one not deriving from an in-box theme - must set them or it will not compile.
-  `TableTokens.StripeOpacity` is gone, replaced by that shared stripe. `CardTokens.StateLayer` now
+  `TableTokens.StripeOpacity` is gone, replaced by that shared stripe. **`TabsVariant` renumbered:**
+  `Secondary` was inserted next to `Primary` where it belongs rather than appended, so `Text`,
+  `Tonal`, `Filled` and `Outlined` moved from 3-6 to 4-7. Markup naming the members is unaffected;
+  anything that persisted the *numeric* value - a stored setting, a query string - reads back one
+  variant off. `CardTokens.StateLayer` now
   holds the **whole** hover layer rather than a colour the core mixed at a fixed 8%, so a custom
   theme setting a bare colour there will paint it opaque: point it at `var(--flare-state-hover-layer)`
   for the previous look, or name a translucent value of its own. Anything built with `with` from an

@@ -7677,10 +7677,11 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Default", @"0", @"The active theme's default tab style (typically a simple underline indicator)."),
                 new ApiEnumMember(@"Underline", @"1", @"Full-width underline active indicator."),
                 new ApiEnumMember(@"Primary", @"2", @"Content-hugging underline indicator with rounded top corners."),
-                new ApiEnumMember(@"Text", @"3", @"No persistent indicator: the active tab is color/weight only, with a subtle hover wash."),
-                new ApiEnumMember(@"Tonal", @"4", @"Active tab filled with a soft tonal pill."),
-                new ApiEnumMember(@"Filled", @"5", @"Active tab filled with the solid accent as a pill / segmented control."),
-                new ApiEnumMember(@"Outlined", @"6", @"Bordered card / folder tabs that connect to the panel below (classic ""card"" tabs)."),
+                new ApiEnumMember(@"Secondary", @"3", @"Full-width underline indicator with the active label in the content colour rather than the accent. Pairs with Primary: primary tabs mark top-level destinations, secondary tabs subdivide one of them, and the quieter active label is what keeps the two levels from competing when they are stacked."),
+                new ApiEnumMember(@"Text", @"4", @"No persistent indicator: the active tab is color/weight only, with a subtle hover wash."),
+                new ApiEnumMember(@"Tonal", @"5", @"Active tab filled with a soft tonal pill."),
+                new ApiEnumMember(@"Filled", @"6", @"Active tab filled with the solid accent as a pill / segmented control."),
+                new ApiEnumMember(@"Outlined", @"7", @"Bordered card / folder tabs that connect to the panel below (classic ""card"" tabs)."),
             },
             new string[]
             {
