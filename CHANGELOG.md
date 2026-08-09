@@ -25,6 +25,11 @@ All notable changes to Flare are documented here. This project adheres to
 - **`CardTokens.StateLayer` holds the layer, not a colour.** Same shape as the seven above, but the
   card had a token already - it just named the colour while the core kept the 8%. Both halves are
   the theme's now, which is what the token was for.
+- **The virtualized tree reads the tree's selection tokens.** `TreeTokens.SelectedBg` and
+  `SelectedColor` already held `color-mix(primary 16%, transparent)` and `primary` - the exact two
+  values the virtual tree had written into its own stylesheet. So restyling a tree restyled one of
+  them and not the other, and the two would have drifted the first time a theme touched either. Same
+  pixels in every in-box theme; one token now reaches both.
 
 - **Table and DataGrid row hover moved onto the state-layer model.** These were the last two core
   stylesheets computing an interaction state themselves - `color-mix(on-surface x hover-opacity,

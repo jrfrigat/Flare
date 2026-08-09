@@ -73,9 +73,12 @@
     outline-offset: -2px;
 }
 
+/* The same two tokens the ordinary tree reads. They held exactly these values, hardcoded here, so a
+   theme could restyle one tree and not the other - and the virtualized list is the same component,
+   just able to survive a hundred thousand rows. */
 .flare-vtree__node[aria-selected="true"] {
-    background: color-mix(in srgb, var(--flare-color-primary) 16%, transparent);
-    color: var(--flare-color-primary);
+    background: var(--flare-tree-selected-bg);
+    color: var(--flare-tree-selected-color);
 }
 
 .flare-vtree__leaf-spacer {

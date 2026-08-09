@@ -270,17 +270,30 @@ inside a `color-mix` turned up nineteen more sites the model had simply never re
 - **The disabled slider** got `DisabledActiveColor` / `DisabledInactiveColor`, which is what let
   FluentUI2's `slider.css` shed three of its five rules and all four of its `!important`.
 
-**Left, and deliberately - each is a decision, not a mechanical wrap:**
+- **The virtualized tree's selected node** was `primary 16%` / `primary` written out by hand - the
+  exact contents of `TreeTokens.SelectedBg` and `SelectedColor`. It reads the tokens now.
 
-1. **The selected percentages: 12 / 14 / 16.** `--flare-state-selected-opacity` is 12%, but the
-   DataGrid's range cell uses 14% and the virtual tree's selected node 16%, and the vertical tab
-   uses 8% of `primary`. Normalising them onto the token shifts pixels under **every** theme, and
-   whether a "range" cell is even the same concept as a "selected" row is the actual question.
-2. **The description list's 4% stripe** is the same concept as `--flare-table-stripe-opacity`, which
-   is also 4%. Sharing it means either a description list reading a `--flare-table-*` token or a
-   duplicate of it - the honest fix is a shared stripe token, which is a rename.
-3. **The switch's 10% focus halos** are already inside a component knob's fallback, which the
-   sentinel mechanism allows.
+**An earlier draft of this list called the remaining four "one decision about 12 / 14 / 16%". That
+was the wrong frame** and it hid the one item worth doing (the virtual tree, above, which was not a
+normalisation question at all but a duplicate of an existing token). What is actually left is three
+unrelated things:
+
+1. **The DataGrid's range cell, `primary` at 14%.** Excel-style range selection is not the same
+   state as a selected row, so normalising it onto `--flare-state-selected-opacity` (12%) would be
+   asserting they are. It wants a DataGrid token of its own - a full record member, since a knob
+   with a literal fallback would fail `cssaudit`.
+2. **The vertical tab's active wash, `primary` at 8%.** `--flare-tabs-selected-bg` exists but every
+   theme sets it to `secondary-container`, an opaque tonal fill - pointing the wash there changes
+   the look. Worth noting that tabs are muddled here more broadly: the tab CLOSE button's *hover*
+   is painted from `--flare-state-selected-opacity`. A tabs state audit, not a one-line patch.
+3. **Three striped components, two mechanisms, one token.** Table = `color-mix(on-surface x
+   --flare-table-stripe-opacity, surface)`; description list = the same mix with a hardcoded 4%;
+   DataGrid = `surface-container-low`, a role step. Only the table's is themeable. The mandate's
+   "analogous components reuse common tokens" applies, and the honest fix is one shared stripe
+   token - which renames `TableTokens.StripeOpacity` (breaking for custom themes) and changes the
+   DataGrid's appearance, since its stripe genuinely is a different value today.
+4. **The switch's 10% focus halos** are already inside a component knob's fallback, which the
+   sentinel mechanism allows. Nothing to do.
 
 ## P2 - original analysis (kept for the reasoning)
 
