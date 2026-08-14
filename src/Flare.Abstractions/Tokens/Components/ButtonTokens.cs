@@ -101,6 +101,33 @@ public sealed record ButtonTokens
     /// <see cref="SelectedBg"/>.</summary>
     [CssVar(Button.SelectedColor)] public required string SelectedColor { get; init; }
 
+    // Per-variant toggle paint. Material keeps a separate colour table for toggle buttons - "the default
+    // and toggle buttons use different colors" - and every variant lands somewhere its default never
+    // goes when selected. Filled is the one that also differs while UNselected, which is why it is the
+    // only variant with an unselected pair: a filled toggle at rest is not a filled button.
+    /// <summary>Container of a selected Elevated button.</summary>
+    [CssVar(Button.Toggle.ElevatedSelectedBg)] public required string ElevatedSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Elevated button.</summary>
+    [CssVar(Button.Toggle.ElevatedSelectedColor)] public required string ElevatedSelectedColor { get; init; }
+    /// <summary>Container of a selected Filled button.</summary>
+    [CssVar(Button.Toggle.FilledSelectedBg)] public required string FilledSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Filled button.</summary>
+    [CssVar(Button.Toggle.FilledSelectedColor)] public required string FilledSelectedColor { get; init; }
+    /// <summary>Container of a selected Tonal button.</summary>
+    [CssVar(Button.Toggle.TonalSelectedBg)] public required string TonalSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Tonal button.</summary>
+    [CssVar(Button.Toggle.TonalSelectedColor)] public required string TonalSelectedColor { get; init; }
+    /// <summary>Container of a selected Outlined button.</summary>
+    [CssVar(Button.Toggle.OutlinedSelectedBg)] public required string OutlinedSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Outlined button.</summary>
+    [CssVar(Button.Toggle.OutlinedSelectedColor)] public required string OutlinedSelectedColor { get; init; }
+    /// <summary>Container of a Filled button that is a toggle and currently unselected - the one state
+    /// where being a toggle changes a button before anything has been selected. A theme that draws no
+    /// such distinction points this at its own filled container.</summary>
+    [CssVar(Button.Toggle.FilledUnselectedBg)] public required string FilledUnselectedBg { get; init; }
+    /// <summary>Icon and label of an unselected Filled toggle.</summary>
+    [CssVar(Button.Toggle.FilledUnselectedColor)] public required string FilledUnselectedColor { get; init; }
+
     // --- 5. FOCUS AND BEHAVIOR ---
     /// <summary>Shorthand <c>outline</c> drawn around the button on keyboard focus
     /// (<c>:focus-visible</c>), not on a pointer press.</summary>

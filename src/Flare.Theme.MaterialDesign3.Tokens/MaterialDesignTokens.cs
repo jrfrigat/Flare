@@ -179,8 +179,27 @@ public class MaterialDesignTokens
         SelectedRadiusLg = "1.75rem",  // 28dp
         SelectedRadiusXl = "1.75rem",  // 28dp
         SelectedRadiusSquare = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+        // The fallback pair, which in Material's own table reaches only the text style - the one style it
+        // says a toggle should not use. Named anyway so a text toggle reads as on rather than as nothing.
         SelectedBg = "var(--flare-color-secondary-container)",
         SelectedColor = "var(--flare-color-on-secondary-container)",
+
+        // The toggle colour table, read straight across: elevated fills with the accent, filled returns to
+        // it, tonal steps down from the container to the tone itself, and outlined inverts the surface.
+        // Each lands somewhere its own default never goes, which is what makes "selected" legible without
+        // a checkmark beside it.
+        ElevatedSelectedBg = "var(--flare-color-primary)",
+        ElevatedSelectedColor = "var(--flare-color-on-primary)",
+        FilledSelectedBg = "var(--flare-color-primary)",
+        FilledSelectedColor = "var(--flare-color-on-primary)",
+        TonalSelectedBg = "var(--flare-color-secondary)",
+        TonalSelectedColor = "var(--flare-color-on-secondary)",
+        OutlinedSelectedBg = "var(--flare-color-inverse-surface)",
+        OutlinedSelectedColor = "var(--flare-color-inverse-on-surface)",
+        // And the one asymmetry in that table: a filled toggle AT REST is a neutral container, not the
+        // primary fill a filled button is, or every option in a row would read as already chosen.
+        FilledUnselectedBg = "var(--flare-color-surface-container)",
+        FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
 
         // Per-corner radii: a fully rounded capsule at all 5 sizes, expressed as half the size's own
         // height rather than through the Shape.Full scale.

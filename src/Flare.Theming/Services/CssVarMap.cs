@@ -230,6 +230,16 @@ public static class CssVarMap
         v[Css.Tokens.Button.SelectedRadius.Lg] = t.Button.SelectedRadiusLg;
         v[Css.Tokens.Button.SelectedRadius.Xl] = t.Button.SelectedRadiusXl;
         v[Css.Tokens.Button.SelectedRadiusSquare] = t.Button.SelectedRadiusSquare;
+        v[Css.Tokens.Button.Toggle.ElevatedSelectedBg] = t.Button.ElevatedSelectedBg;
+        v[Css.Tokens.Button.Toggle.ElevatedSelectedColor] = t.Button.ElevatedSelectedColor;
+        v[Css.Tokens.Button.Toggle.FilledSelectedBg] = t.Button.FilledSelectedBg;
+        v[Css.Tokens.Button.Toggle.FilledSelectedColor] = t.Button.FilledSelectedColor;
+        v[Css.Tokens.Button.Toggle.TonalSelectedBg] = t.Button.TonalSelectedBg;
+        v[Css.Tokens.Button.Toggle.TonalSelectedColor] = t.Button.TonalSelectedColor;
+        v[Css.Tokens.Button.Toggle.OutlinedSelectedBg] = t.Button.OutlinedSelectedBg;
+        v[Css.Tokens.Button.Toggle.OutlinedSelectedColor] = t.Button.OutlinedSelectedColor;
+        v[Css.Tokens.Button.Toggle.FilledUnselectedBg] = t.Button.FilledUnselectedBg;
+        v[Css.Tokens.Button.Toggle.FilledUnselectedColor] = t.Button.FilledUnselectedColor;
         v[Css.Tokens.Button.SelectedBg] = t.Button.SelectedBg;
         v[Css.Tokens.Button.SelectedColor] = t.Button.SelectedColor;
 

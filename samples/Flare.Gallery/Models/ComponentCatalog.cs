@@ -104,7 +104,6 @@ public static class ComponentCatalog
         new ComponentEntry("/components/signaturepad",      "Signature Pad",           "SignaturePad_Title",    ComponentGroup.Input),
         new ComponentEntry("/components/slider",            "Slider",                  "Slider_Title",          ComponentGroup.Input),
         new ComponentEntry("/components/switch",            "Switch",                  "Switch_Title",          ComponentGroup.Input),
-        new ComponentEntry("/components/toggle-button",     "Toggle Button",           "ToggleButton_Title",    ComponentGroup.Input),
         new ComponentEntry("/components/transfer",          "Transfer / Dual List",    "Transfer_Title",        ComponentGroup.Input),
 
         // -- Files ----------------------------------------------------------------
@@ -121,6 +120,7 @@ public static class ComponentCatalog
         new ComponentEntry("/components/fab",               "Floating Action Button",  "Fab_Title",             ComponentGroup.Buttons),
         new ComponentEntry("/components/icon-button",       "Icon Button",             "IconButton_Title",      ComponentGroup.Buttons),
         new ComponentEntry("/components/split-button",      "Split Button",            "SplitButton_Title",     ComponentGroup.Buttons),
+        new ComponentEntry("/components/toggle-button",     "Toggle Button",           "ToggleButton_Title",    ComponentGroup.Buttons),
 
         // -- Layout & Surfaces ----------------------------------------------------
         new ComponentEntry("/components/accordion",         "Accordion",               "Accordion_Title",       ComponentGroup.Layout),

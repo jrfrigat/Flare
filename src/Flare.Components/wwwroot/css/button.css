@@ -312,6 +312,43 @@
     border-radius: var(--flare-btn-selected-radius-md);
 }
 
+/* PER-VARIANT PAINT. Material keeps a second colour table for toggles - "the default and toggle buttons
+   use different colors" - and every variant lands somewhere its own default never goes when selected: an
+   elevated toggle fills, a tonal one drops from the container to the tone itself, an outlined one
+   inverts. The rule above is what a variant with no entry of its own gets, which in the spec's table is
+   only the text style, and the text style is the one it says toggles do not use.
+
+   A Color set on the button still wins through --fc-*: choosing a colour is a stronger statement than
+   the variant's default, and it is what makes <FlareToggleButton Color="Primary"> mean anything. */
+.flare-btn--elevated.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-elevated-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-elevated-selected-color));
+}
+.flare-btn--filled.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-filled-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-filled-selected-color));
+}
+.flare-btn--tonal.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-tonal-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-tonal-selected-color));
+}
+.flare-btn--outlined.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-outlined-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-outlined-selected-color));
+}
+
+/* The filled toggle is the only one that differs from its variant's default BEFORE anything is selected:
+   a filled button is a primary fill, but a filled toggle sitting unselected is a neutral container, or
+   the row would read as though every option were already chosen.
+
+   Keyed off aria-pressed rather than a class, because that attribute is precisely the question being
+   asked - is this a toggle? - and it is already there for assistive technology. A command button has no
+   aria-pressed at all, so it cannot match, which is the whole point: the two must not be confused. */
+.flare-btn--filled[aria-pressed="false"] {
+    background-color: var(--fc-main, var(--flare-btn-filled-unselected-bg));
+    color: var(--fc-on, var(--flare-btn-filled-unselected-color));
+}
+
 .flare-btn--selected.flare-btn--xs { border-radius: var(--flare-btn-selected-radius-xs); }
 .flare-btn--selected.flare-btn--sm { border-radius: var(--flare-btn-selected-radius-sm); }
 .flare-btn--selected.flare-btn--md { border-radius: var(--flare-btn-selected-radius-md); }

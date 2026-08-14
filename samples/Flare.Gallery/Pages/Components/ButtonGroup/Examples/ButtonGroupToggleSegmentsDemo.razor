@@ -1,0 +1,34 @@
+@* A segment can be a toggle button as readily as a plain one - a toggle IS a button with a selected
+   state, so it takes the group's geometry on identical terms. A connected row of toggles is what Material
+   means by a group that helps people select options or switch views, and there a selected segment goes
+   fully round. *@
+<FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Start">
+    <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
+        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Standard</FlareText>
+        <FlareButtonGroup>
+            <FlareToggleButton @bind-Toggled="_bold">Bold</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_italic">Italic</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_underline">Underline</FlareToggleButton>
+        </FlareButtonGroup>
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
+        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Connected - a selected segment goes round</FlareText>
+        <FlareButtonGroup Connected>
+            <FlareToggleButton @bind-Toggled="_connectedBold">Bold</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_connectedItalic">Italic</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_connectedUnderline">Underline</FlareToggleButton>
+        </FlareButtonGroup>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    // The two rows carry their own state: sharing it would move both at once and hide the point, which is
+    // that the same toggles read differently in the two models.
+    private bool _bold = true;
+    private bool _italic;
+    private bool _underline;
+    private bool _connectedBold = true;
+    private bool _connectedItalic;
+    private bool _connectedUnderline;
+}

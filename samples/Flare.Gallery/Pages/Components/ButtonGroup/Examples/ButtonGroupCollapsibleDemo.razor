@@ -1,8 +1,6 @@
 @* Drag the slider to narrow the container: the segments that no longer fit fold into the ellipsis at the
-   trailing end and come back when the room does - the folded buttons are the same components, moved into
-   the menu rather than copied. The rows below show that a segment can be a toggle button as readily as a
-   plain one - a connected row of toggles is what Material means by a group for selecting options or
-   switching views. *@
+   trailing end and come back when the room does - and the folded buttons are the same components, moved
+   into the menu rather than copied. *@
 <FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Stretch">
 
     <FlareSlider @bind-Value="_width" Min="0" Max="100" Step="1" Label="@($"Container width: {_width}%")" />
@@ -17,47 +15,8 @@
             <FlareButton>Delete</FlareButton>
         </FlareButtonGroup>
     </div>
-
-    <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
-        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Toggle buttons as segments - standard</FlareText>
-        <FlareButtonGroup>
-            <FlareToggleButton @bind-Toggled="_bold">Bold</FlareToggleButton>
-            <FlareToggleButton @bind-Toggled="_italic">Italic</FlareToggleButton>
-            <FlareToggleButton @bind-Toggled="_underline">Underline</FlareToggleButton>
-        </FlareButtonGroup>
-
-        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Toggle buttons as segments - connected (a selected segment goes round)</FlareText>
-        <FlareButtonGroup Connected>
-            <FlareToggleButton @bind-Toggled="_connectedBold">Bold</FlareToggleButton>
-            <FlareToggleButton @bind-Toggled="_connectedItalic">Italic</FlareToggleButton>
-            <FlareToggleButton @bind-Toggled="_connectedUnderline">Underline</FlareToggleButton>
-        </FlareButtonGroup>
-
-        @* A toggle button is a button with a selected state, so it takes every axis a button takes -
-           and selection travels in opposite directions from the two shapes: a round button squares off,
-           a square one opens out to a capsule. *@
-        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">The selected shape flips - round becomes square, square becomes round</FlareText>
-        <FlareButtonGroup>
-            <FlareToggleButton @bind-Toggled="_roundOne" Variant="ButtonVariant.Filled">Round</FlareToggleButton>
-            <FlareToggleButton @bind-Toggled="_squareOne" Variant="ButtonVariant.Filled" Shape="ButtonShape.Square">Square</FlareToggleButton>
-            <FlareToggleButton @bind-Toggled="_outlinedOne" Variant="ButtonVariant.Outlined">Outlined</FlareToggleButton>
-            <FlareToggleButton @bind-Toggled="_textOne" Variant="ButtonVariant.Text">Text</FlareToggleButton>
-        </FlareButtonGroup>
-    </FlareStack>
 </FlareStack>
 
 @code {
     private double _width = 100;
-    private bool _bold = true;
-    private bool _italic;
-    private bool _underline;
-    // The two rows carry their own state: sharing it would move both at once and hide the point, which
-    // is that the same toggles read differently in the two models.
-    private bool _connectedBold = true;
-    private bool _connectedItalic;
-    private bool _connectedUnderline;
-    private bool _roundOne = true;
-    private bool _squareOne = true;
-    private bool _outlinedOne;
-    private bool _textOne;
 }

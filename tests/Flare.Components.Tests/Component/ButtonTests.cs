@@ -194,6 +194,31 @@ public class C_FlareButtonGroupTests : FlareTestContext
     }
 
     [Fact]
+    public void TheLabelCanChangeWithTheState()
+    {
+        // A toggle whose two states are different verbs says so in the label, not only in the icon.
+        var cut = Render<FlareToggleButton>(p => p
+            .Add(x => x.OnLabel, (RenderFragment)(b => b.AddContent(0, "Following")))
+            .AddChildContent("Follow"));
+
+        Assert.Contains("Follow", cut.Find("button").TextContent);
+        Assert.DoesNotContain("Following", cut.Find("button").TextContent);
+
+        cut.Find("button").Click();
+        Assert.Contains("Following", cut.Find("button").TextContent);
+    }
+
+    [Fact]
+    public void TheLabelStaysPutWhenOnlyOneIsGiven()
+    {
+        // Falling back keeps a toggle that changes only colour and shape from having to say its label
+        // twice.
+        var cut = Render<FlareToggleButton>(p => p.AddChildContent("Bold"));
+        cut.Find("button").Click();
+        Assert.Contains("Bold", cut.Find("button").TextContent);
+    }
+
+    [Fact]
     public void APlainButtonIsNotAToggle()
     {
         // The tri-state is what keeps that promise in the other direction: an ordinary button must not

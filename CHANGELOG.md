@@ -46,6 +46,19 @@ All notable changes to Flare are documented here. This project adheres to
   and a navigation rail already follow.
 
 ### Added
+- **A toggle button's colour now follows its variant, which is what Material's second colour table says
+  it should.** "The default and toggle buttons use different colors", and every variant lands somewhere
+  its own default never goes when selected: elevated fills with the accent, filled returns to it, tonal
+  steps down from the container to the tone itself, and outlined inverts the surface. Ten new required
+  `ButtonTokens` members carry it - four selected pairs plus one UNselected pair, because filled is the
+  one variant that also differs before anything is chosen: a filled toggle at rest is a neutral
+  container, not the primary fill a filled button is, or every option in a row would read as already
+  selected. That distinction is keyed off `aria-pressed`, the attribute that already answers "is this a
+  toggle?", so a command button cannot match it.
+- **`FlareToggleButton.OnLabel`, so the words can change with the state and not just the icon.** A toggle
+  whose two states are different verbs - Follow and Following, Mute and Unmute - says what will happen
+  and what already has, which one label cannot. Left null the label stays put across both states, which
+  is what a toggle that signals itself with colour and shape wants.
 - **`FlareMenu.FreeContent`, for a panel that holds content rather than menu items.** A menu panel
   keeps the focus on itself and moves a highlight over its items, which is the only way items that
   cannot take focus can be reached - and exactly wrong for content that is focusable in its own

@@ -27,7 +27,7 @@
              TrailingIcon="TrailingIcon"
              OnClick="@(_ => HandleClick())"
              @attributes="AdditionalAttributes">
-    @ChildContent
+    @_label
 </FlareButton>
 
 @code {
@@ -40,6 +40,12 @@
     [Parameter] public RenderFragment? OnIcon { get; set; }
     /// <summary>Icon rendered after the label, in both states.</summary>
     [Parameter] public RenderFragment? TrailingIcon { get; set; }
+    /// <summary>
+    /// Label rendered while the button is selected, replacing <see cref="ChildContent"/>. A toggle whose
+    /// two states are different verbs - Follow and Following, Mute and Unmute - says so in the label as
+    /// readily as in the icon, and leaving this null keeps one label across both states.
+    /// </summary>
+    [Parameter] public RenderFragment? OnLabel { get; set; }
     /// <summary>Whether the button is currently in the selected state.</summary>
     [Parameter] public bool Toggled { get; set; }
     /// <summary>Callback raised when the selected state changes.</summary>
@@ -118,6 +124,10 @@
             };
         }
     }
+
+    // The selected label falls back to the unselected one, so a toggle that only changes colour and shape
+    // needs to say its label once.
+    private RenderFragment? _label => _pressed ? (OnLabel ?? ChildContent) : ChildContent;
 
     private bool _showCheck => _pressed && Group?.CheckMark == true;
 

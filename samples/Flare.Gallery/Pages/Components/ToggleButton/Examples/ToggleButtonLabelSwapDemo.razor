@@ -1,0 +1,31 @@
+@* Both halves of a toggle can change with the state: OnIcon swaps the glyph, OnLabel swaps the words.
+   That matters when the two states are different verbs rather than the same noun switched on and off -
+   "Follow" and "Following" say what will happen and what already has, which one label cannot. Leave
+   either unset and that half simply stays put. *@
+<FlareStack Row Gap="FlareSpacing.Small" Wrap Align="FlareAlignItems.Center">
+    <FlareToggleButton @bind-Toggled="_following" Variant="ButtonVariant.Filled">
+        <OffIcon><FlareIconView Value="FlareIcons.Add" /></OffIcon>
+        <OnIcon><FlareIconView Value="FlareIcons.Check" /></OnIcon>
+        <OnLabel>Following</OnLabel>
+        <ChildContent>Follow</ChildContent>
+    </FlareToggleButton>
+
+    <FlareToggleButton @bind-Toggled="_muted" Variant="ButtonVariant.Outlined">
+        <OffIcon><FlareIconView Value="FlareIcons.VolumeUp" /></OffIcon>
+        <OnIcon><FlareIconView Value="FlareIcons.VolumeOff" /></OnIcon>
+        <OnLabel>Unmute</OnLabel>
+        <ChildContent>Mute</ChildContent>
+    </FlareToggleButton>
+
+    @* Icon only, no label at all - the glyph and the container carry both states between them. *@
+    <FlareToggleButton @bind-Toggled="_starred" Variant="ButtonVariant.Tonal" AriaLabel="Star">
+        <OffIcon><FlareIconView Value="FlareIcons.Star" /></OffIcon>
+        <OnIcon><FlareIconView Value="FlareIcons.Star" /></OnIcon>
+    </FlareToggleButton>
+</FlareStack>
+
+@code {
+    private bool _following;
+    private bool _muted;
+    private bool _starred = true;
+}

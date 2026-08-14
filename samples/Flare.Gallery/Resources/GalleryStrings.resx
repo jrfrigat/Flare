@@ -2560,7 +2560,7 @@
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Button Group</value></data>
   <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Connected sets of buttons sharing variant, color and size. In the MD3 Expressive theme segments are separated by a gap with rounded inner corners and morph into a full capsule on interaction.</value></data>
   <data name="ButtonGroup_Connected" xml:space="preserve"><value>Standard and connected</value></data>
-  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Collapsing and toggle segments</value></data>
+  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Collapsing</value></data>
   <data name="ButtonGroup_Basic" xml:space="preserve"><value>Basic</value></data>
   <data name="ButtonGroup_Vertical" xml:space="preserve"><value>Vertical</value></data>
   <data name="ButtonGroup_VariantsColors" xml:space="preserve"><value>Variants &amp; colors (cascade)</value></data>
@@ -2759,4 +2759,16 @@
   <data name="Query_Lbl_Ascending" xml:space="preserve"><value>Ascending</value></data>
   <data name="Query_Lbl_Descending" xml:space="preserve"><value>Descending</value></data>
   <data name="Query_Lbl_SchemaMissing" xml:space="preserve"><value>A schema is required.</value></data>
+  <data name="ButtonGroup_ToggleSegments" xml:space="preserve">
+    <value>Toggle segments</value>
+  </data>
+  <data name="ToggleButton_Variants" xml:space="preserve">
+    <value>Variants - colour per variant</value>
+  </data>
+  <data name="ToggleButton_Shape" xml:space="preserve">
+    <value>Shape swap on selection</value>
+  </data>
+  <data name="ToggleButton_LabelSwap" xml:space="preserve">
+    <value>Icon and label that change with the state</value>
+  </data>
 </root>

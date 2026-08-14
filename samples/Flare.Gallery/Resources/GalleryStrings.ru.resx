@@ -2560,7 +2560,7 @@
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Группа кнопок</value></data>
   <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Связанные наборы кнопок с общими variant, color и size. В теме MD3 Expressive сегменты разделены зазором со скруглёнными внутренними углами и превращаются в капсулу при взаимодействии.</value></data>
   <data name="ButtonGroup_Connected" xml:space="preserve"><value>Стандартная и связанная</value></data>
-  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Сворачивание и toggle-сегменты</value></data>
+  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Сворачивание</value></data>
   <data name="ButtonGroup_Basic" xml:space="preserve"><value>Базовый</value></data>
   <data name="ButtonGroup_Vertical" xml:space="preserve"><value>Вертикальный</value></data>
   <data name="ButtonGroup_VariantsColors" xml:space="preserve"><value>Варианты и цвета (каскад)</value></data>
@@ -2759,4 +2759,16 @@
   <data name="Query_Lbl_Ascending" xml:space="preserve"><value>По возрастанию</value></data>
   <data name="Query_Lbl_Descending" xml:space="preserve"><value>По убыванию</value></data>
   <data name="Query_Lbl_SchemaMissing" xml:space="preserve"><value>Требуется схема.</value></data>
+  <data name="ButtonGroup_ToggleSegments" xml:space="preserve">
+    <value>Toggle-сегменты</value>
+  </data>
+  <data name="ToggleButton_Variants" xml:space="preserve">
+    <value>Варианты - свой цвет у каждого</value>
+  </data>
+  <data name="ToggleButton_Shape" xml:space="preserve">
+    <value>Смена формы при выборе</value>
+  </data>
+  <data name="ToggleButton_LabelSwap" xml:space="preserve">
+    <value>Иконка и подпись меняются вместе с состоянием</value>
+  </data>
 </root>

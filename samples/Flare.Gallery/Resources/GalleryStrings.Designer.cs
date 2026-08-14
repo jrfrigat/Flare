@@ -1096,7 +1096,7 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Collapsing and toggle segments.
+        ///   Ищет локализованную строку, похожую на Collapsing.
         /// </summary>
         public static string ButtonGroup_Collapsible {
             get {
@@ -9228,6 +9228,42 @@ namespace Flare.Gallery.Resources {
         public static string Query_Lbl_SchemaMissing {
             get {
                 return ResourceManager.GetString("Query_Lbl_SchemaMissing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Toggle segments.
+        /// </summary>
+        public static string ButtonGroup_ToggleSegments {
+            get {
+                return ResourceManager.GetString("ButtonGroup_ToggleSegments", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Variants - colour per variant.
+        /// </summary>
+        public static string ToggleButton_Variants {
+            get {
+                return ResourceManager.GetString("ToggleButton_Variants", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Shape swap on selection.
+        /// </summary>
+        public static string ToggleButton_Shape {
+            get {
+                return ResourceManager.GetString("ToggleButton_Shape", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Icon and label that change with the state.
+        /// </summary>
+        public static string ToggleButton_LabelSwap {
+            get {
+                return ResourceManager.GetString("ToggleButton_LabelSwap", resourceCulture);
             }
         }
     }
