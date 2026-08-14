@@ -6,6 +6,34 @@ All notable changes to Flare are documented here. This project adheres to
 ## [Unreleased]
 
 ### Changed
+- **BREAKING for custom themes: a toggle button is a button now, and the tokens follow.** `FlareToggleButton`
+  renders a `FlareButton` carrying `flare-btn--selected` instead of a control of its own, so it takes the
+  button's height, padding, typography, corners, focus ring and every variant - and a toggle dropped into a
+  `FlareButtonGroup` is a segment on exactly the terms a plain button is. It gains `Variant`, `Shape`,
+  `FullWidth`, `Typo` and `TrailingIcon` for free. `ToggleButtonTokens` loses the twenty-one members that
+  restated what `ButtonTokens` already said (heights, paddings, gap, rest and selected radii, rest colours,
+  disabled opacity) and keeps only what the segmented container adds: its border, its two corner radii and
+  its divider. A bespoke theme setting the old members will not compile; the values it wants are the
+  button's. The `flare-toggle-btn` class family is gone from the DOM with them.
+- **BREAKING for custom themes: seventeen new required token members across the button and the group.**
+  `ButtonTokens` gains `SelectedRadiusXs..Xl`, `SelectedRadiusSquare`, `SelectedBg` and `SelectedColor`;
+  `ButtonGroupTokens` replaces `StandardGap` with a five-step ramp, `ConnectedInnerRadius` with one, adds
+  `ConnectedPressedRadiusXs..Xl` and `ConnectedSelectedRadius`, and keeps `ConnectedGap`,
+  `ConnectedOverlap`, `ConnectedOuterRadius` and `ZActive` as single values. Which families ramp is not
+  arbitrary: a capsule is half the segment's own height and one token spells it at every size, while
+  Material's interior corners and standard gaps are ramps no arithmetic on a height reproduces - and one
+  of them tightens as the buttons grow, which no default would have guessed.
+- **Selection changes shape, in the direction the shape decides.** Material states it as a swap - a
+  selected button goes round to square, or square to round - so `flare-btn--selected` tightens a round
+  button to the per-size selected corner and opens an explicitly square one out to whatever the theme
+  calls its square-selected radius. Both directions are tokens rather than arithmetic, which is what lets
+  Fluent UI 2 and Visual Studio answer selection with a repaint and no movement at all while Material
+  Expressive travels the full swap.
+- **The Expressive button group carries the spec's per-size numbers.** Standard gaps ramp 18/12/8/8/8dp,
+  connected keeps a 2dp seam at every size, interior corners run 8/8/8/16/20dp and tighten to 4/4/4/12/16dp
+  under a press. Those pressed corners used to be literals in the theme's stylesheet backed by an
+  `!important`; they are tokens the base stylesheet reads now, and dropping the `!important` is what lets a
+  pressed or selected segment be seen at all when the pointer is already over it.
 - **A collapsed button group folds into a menu.** The segments that no longer fit used to appear in a
   bare popover panel; they now open from `FlareMenu`, which brings the surface, the backdrop that
   closes on an outside click, and the escape and focus handling a dropdown is expected to have. What
@@ -26,6 +54,21 @@ All notable changes to Flare are documented here. This project adheres to
   A button group's overflow is the first caller: its folded segments are buttons, not menu items.
   Menus of `FlareMenuItem` are untouched - the roving highlight, the panel role and the keys it
   claims are all as they were.
+
+### Fixed
+- **Pressing a toggle segment grew its neighbours instead of shrinking them.** A standard group trades
+  width on a press: the pressed segment takes a step and the segments beside it give one up. The trade is
+  written against the button's own padding token, and a toggle button was not a button - it carried a
+  padding token of its own - so the rule reached it holding a value from the wrong family and the
+  neighbours jumped outward. Measured after the rebuild: pressing a medium segment takes it from 82.9px to
+  94.9px (the spec's 15%), its neighbour gives up 6px, and a segment that is not adjacent does not move.
+- **A selected segment of a connected group did not go round.** Material makes it fully round - "selected
+  inner corner size 50%" - but no rule said so, and the theme's hover capsule carried an `!important` that
+  no non-important rule could have outranked anyway. A selected medium segment now measures 24px on all
+  four corners against its own 48px height.
+- **A selected item of a segmented `FlareToggleGroup` lost its fill.** The container clears its segments'
+  backgrounds so the group reads as one object, and that rule outranks the button's selected paint on both
+  specificity and load order; the selected item is repainted at the container's own weight again.
 
 ## [0.15.0] - 2026-08-09
 

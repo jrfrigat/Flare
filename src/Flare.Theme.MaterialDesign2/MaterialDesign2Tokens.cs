@@ -135,6 +135,17 @@ internal static class MaterialDesign2Tokens
         RadiusLg = CornerRadiusTokens.All("4px"),
         RadiusXl = CornerRadiusTokens.All("4px"),
 
+        // M2 keeps its one 4dp corner in every state - the shape swap on selection arrived with M3
+        // Expressive and would be an anachronism here.
+        SelectedRadiusXs = "4px",
+        SelectedRadiusSm = "4px",
+        SelectedRadiusMd = "4px",
+        SelectedRadiusLg = "4px",
+        SelectedRadiusXl = "4px",
+        SelectedRadiusSquare = "var(--flare-shape-none)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+
         IconSizeXs = "1.125rem", // 18dp
         IconSizeSm = "1.125rem",
         IconSizeMd = "1.125rem",

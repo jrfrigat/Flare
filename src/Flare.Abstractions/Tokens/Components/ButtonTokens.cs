@@ -71,6 +71,36 @@ public sealed record ButtonTokens
     /// <summary>Space between the container edge and the content at the xl size, on both sides.</summary>
     [CssVar(Button.PaddingInline.Xl)] public required string PaddingInlineXl { get; init; }
 
+    // --- 4b. SELECTED (a button whose toggle is on) ---
+    // Selection is a shape change as much as a colour one, and Material states the shape half as a swap:
+    // a round button becomes square when selected and a square one becomes round. The value below is the
+    // first half of that swap - what a button with the theme's own (round) shape takes when selected -
+    // while the explicitly square shape travels to a capsule, which is geometry the core computes from
+    // the height rather than a value a theme could usefully name. Per size because the two shapes are a
+    // per-size pair in the spec, not one radius applied five times.
+    /// <summary>Corner radius of a selected button at the xs size.</summary>
+    [CssVar(Button.SelectedRadius.Xs)] public required string SelectedRadiusXs { get; init; }
+    /// <summary>Corner radius of a selected button at the sm size.</summary>
+    [CssVar(Button.SelectedRadius.Sm)] public required string SelectedRadiusSm { get; init; }
+    /// <summary>Corner radius of a selected button at the md size.</summary>
+    [CssVar(Button.SelectedRadius.Md)] public required string SelectedRadiusMd { get; init; }
+    /// <summary>Corner radius of a selected button at the lg size.</summary>
+    [CssVar(Button.SelectedRadius.Lg)] public required string SelectedRadiusLg { get; init; }
+    /// <summary>Corner radius of a selected button at the xl size.</summary>
+    [CssVar(Button.SelectedRadius.Xl)] public required string SelectedRadiusXl { get; init; }
+    /// <summary>Corner radius a selected button takes when its rest shape is the explicit square - the
+    /// other half of the swap, and the direction that travels outward. A language that does not reshape
+    /// on selection points this back at its own square radius, which is the difference between the two
+    /// kinds of theme rather than something the core is entitled to decide.</summary>
+    [CssVar(Button.SelectedRadiusSquare)] public required string SelectedRadiusSquare { get; init; }
+    /// <summary>Container background of a selected button, shared by every variant. A theme that wants a
+    /// variant to answer selection differently says so in its own stylesheet; this is the one answer the
+    /// core paints from.</summary>
+    [CssVar(Button.SelectedBg)] public required string SelectedBg { get; init; }
+    /// <summary>Icon and label colour of a selected button, which must stay legible on
+    /// <see cref="SelectedBg"/>.</summary>
+    [CssVar(Button.SelectedColor)] public required string SelectedColor { get; init; }
+
     // --- 5. FOCUS AND BEHAVIOR ---
     /// <summary>Shorthand <c>outline</c> drawn around the button on keyboard focus
     /// (<c>:focus-visible</c>), not on a pointer press.</summary>

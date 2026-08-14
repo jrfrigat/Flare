@@ -314,7 +314,7 @@ public class C_FlareToggleGroupCascadeTests : FlareTestContext
                 .Add(x => x.Value, (object?)"a")
                 .AddChildContent("A")));
 
-        Assert.Contains("flare-toggle-btn--lg", cut.Find("button.flare-toggle-btn").ClassName);
+        Assert.Contains("flare-btn--lg", cut.Find("button.flare-btn").ClassName);
     }
 
     [Fact]
@@ -326,7 +326,7 @@ public class C_FlareToggleGroupCascadeTests : FlareTestContext
                 .Add(x => x.Value, (object?)"a")
                 .AddChildContent("A")));
 
-        Assert.Contains("flare-color-tertiary", cut.Find("button.flare-toggle-btn").ClassName);
+        Assert.Contains("flare-color-tertiary", cut.Find("button.flare-btn").ClassName);
     }
 
     [Fact]
@@ -338,7 +338,7 @@ public class C_FlareToggleGroupCascadeTests : FlareTestContext
                 .Add(x => x.Value, (object?)"a")
                 .AddChildContent("A")));
 
-        Assert.True(cut.Find("button.flare-toggle-btn").HasAttribute("disabled"));
+        Assert.True(cut.Find("button.flare-btn").HasAttribute("disabled"));
     }
 }
 

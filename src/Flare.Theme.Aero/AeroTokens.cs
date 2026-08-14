@@ -150,6 +150,17 @@ internal class AeroTokens
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-medium)"),
         RadiusXl = CornerRadiusTokens.All("var(--flare-shape-large)"),
 
+        // Aero says "on" with its gloss and its tint, not by reshaping - the corners stay where the
+        // rest state left them at each size.
+        SelectedRadiusXs = "var(--flare-shape-extra-small)",
+        SelectedRadiusSm = "var(--flare-shape-small)",
+        SelectedRadiusMd = "var(--flare-shape-small)",
+        SelectedRadiusLg = "var(--flare-shape-medium)",
+        SelectedRadiusXl = "var(--flare-shape-large)",
+        SelectedRadiusSquare = "var(--flare-shape-none)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+
         FocusOutline = "1px dotted var(--flare-color-on-surface)",
         FocusOutlineOffset = "-3px",
         FocusShadow = "0 0 0 2px var(--flare-aero-glow, rgba(60,127,177,0.45))",

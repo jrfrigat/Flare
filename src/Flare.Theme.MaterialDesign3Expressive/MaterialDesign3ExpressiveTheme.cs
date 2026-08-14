@@ -23,15 +23,36 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
         // full-capsule ends. Purely a token bundle - the base buttongroup.css is untouched (no override).
         ButtonGroup = new ButtonGroupTokens
         {
-            // Standard: separate pills a spacing step apart. The spec calls for "padding between
-            // buttons so they can animate width and shape without disrupting the product layout" -
-            // the gap is what the press grow spends, and the corners stay the button's own.
-            StandardGap = "var(--flare-spacing-4)",
-            // Connected: the spec's 2dp seam, capsule ends, softened interior corners.
-            ConnectedGap = "0.125rem",
+            // Standard: separate pills, and the space between them TIGHTENS as the buttons grow -
+            // `md.comp.button-group.standard.<size>.between-space` reads 18/12/8/8/8dp, which is not the
+            // ramp anyone would guess. The gap is also what a press spends: the spec's grow takes its
+            // 15% from the neighbours, and a small button needs more room around it to do that without
+            // disturbing the layout, which is why the ramp runs the way it does.
+            StandardGapXs = "1.125rem", // 18dp
+            StandardGapSm = "0.75rem",  // 12dp
+            StandardGapMd = "0.5rem",   // 8dp
+            StandardGapLg = "0.5rem",   // 8dp
+            StandardGapXl = "0.5rem",   // 8dp
+            // Connected: the spec's 2dp seam at every size, capsule ends, and interior corners that
+            // ramp with the size. A selected segment goes fully round - the spec's "selected inner
+            // corner size = 50%" - which is the same capsule arithmetic the ends use.
+            ConnectedGap = "0.125rem", // 2dp
             ConnectedOverlap = "0",
             ConnectedOuterRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2)",
-            ConnectedInnerRadius = "var(--flare-shape-small)",
+            ConnectedSelectedRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2)",
+            ConnectedInnerRadiusXs = "0.5rem",  // 8dp
+            ConnectedInnerRadiusSm = "0.5rem",  // 8dp
+            ConnectedInnerRadiusMd = "0.5rem",  // 8dp
+            ConnectedInnerRadiusLg = "1rem",    // 16dp
+            ConnectedInnerRadiusXl = "1.25rem", // 20dp
+            // A pressed segment tightens further, and by the GROUP's own numbers rather than the lone
+            // button's: `connected.<size>.pressed.inner-corner` is 4/4/4/12/16dp where a button on its
+            // own presses to 8/8/12/16/16dp. Being part of a control changes what a press looks like.
+            ConnectedPressedRadiusXs = "0.25rem", // 4dp
+            ConnectedPressedRadiusSm = "0.25rem", // 4dp
+            ConnectedPressedRadiusMd = "0.25rem", // 4dp
+            ConnectedPressedRadiusLg = "0.75rem", // 12dp
+            ConnectedPressedRadiusXl = "1rem",    // 16dp
             ZActive = "1",
         },
     };

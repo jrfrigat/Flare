@@ -151,6 +151,17 @@ internal class VisualStudioTokens
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-medium)"),
         RadiusXl = CornerRadiusTokens.All("var(--flare-shape-large)"),
 
+        // A toggled tool-window button in Visual Studio changes colour and stays exactly where it is;
+        // reshaping on selection would read as a different control appearing.
+        SelectedRadiusXs = "var(--flare-shape-extra-small)",
+        SelectedRadiusSm = "var(--flare-shape-small)",
+        SelectedRadiusMd = "var(--flare-shape-small)",
+        SelectedRadiusLg = "var(--flare-shape-medium)",
+        SelectedRadiusXl = "var(--flare-shape-large)",
+        SelectedRadiusSquare = "var(--flare-shape-none)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+
         FocusOutline = "1px solid var(--flare-color-primary)",
         FocusOutlineOffset = "1px",
         FocusShadow = "0 0 0 2px var(--flare-vs-focus, rgba(0,120,212,0.4))",

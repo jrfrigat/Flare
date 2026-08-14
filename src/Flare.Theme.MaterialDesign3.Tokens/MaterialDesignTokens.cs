@@ -168,6 +168,20 @@ public class MaterialDesignTokens
         PaddingInlineLg = "2rem",
         PaddingInlineXl = "2.5rem",
 
+        // Selected: `md.comp.button.<size>.selected.container.shape.round` - 12/12/16/28/28dp. These are
+        // the SQUARE shape values, which is the whole idea: a round button that gets selected takes the
+        // square shape and a square one takes the capsule, so selection reads as a change of kind rather
+        // than a change of degree. The other direction is arithmetic on the height and belongs to the
+        // core rule, not here.
+        SelectedRadiusXs = "0.75rem",  // 12dp
+        SelectedRadiusSm = "0.75rem",  // 12dp
+        SelectedRadiusMd = "1rem",     // 16dp
+        SelectedRadiusLg = "1.75rem",  // 28dp
+        SelectedRadiusXl = "1.75rem",  // 28dp
+        SelectedRadiusSquare = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+
         // Per-corner radii: a fully rounded capsule at all 5 sizes, expressed as half the size's own
         // height rather than through the Shape.Full scale.
         //
@@ -213,13 +227,31 @@ public class MaterialDesignTokens
     // one seam, rounded control ends, flat interior corners. Standard: separate buttons a spacing step
     // apart, each keeping its own corner - MD3 Expressive keeps this and reshapes only the connected
     // half, since a standard group's segments are already the buttons the theme drew.
+    // Baseline M3 has no button-group component of its own - the group is an Expressive addition - so
+    // this states the plain, unanimated reading: one gap at every size, segments sharing a seam, and a
+    // selection that is a repaint rather than a reshape. The Expressive theme replaces the whole record
+    // with the spec's per-size ramps.
     internal static readonly ButtonGroupTokens ButtonGroup = new()
     {
-        StandardGap = "var(--flare-spacing-4)",
+        StandardGapXs = "var(--flare-spacing-4)",
+        StandardGapSm = "var(--flare-spacing-4)",
+        StandardGapMd = "var(--flare-spacing-4)",
+        StandardGapLg = "var(--flare-spacing-4)",
+        StandardGapXl = "var(--flare-spacing-4)",
         ConnectedGap = "0",
         ConnectedOverlap = "-1px",
         ConnectedOuterRadius = "var(--flare-shape-small)",
-        ConnectedInnerRadius = "0",
+        ConnectedSelectedRadius = "var(--flare-shape-small)",
+        ConnectedInnerRadiusXs = "0",
+        ConnectedInnerRadiusSm = "0",
+        ConnectedInnerRadiusMd = "0",
+        ConnectedInnerRadiusLg = "0",
+        ConnectedInnerRadiusXl = "0",
+        ConnectedPressedRadiusXs = "0",
+        ConnectedPressedRadiusSm = "0",
+        ConnectedPressedRadiusMd = "0",
+        ConnectedPressedRadiusLg = "0",
+        ConnectedPressedRadiusXl = "0",
         ZActive = "1",
     };
 
@@ -256,44 +288,14 @@ public class MaterialDesignTokens
     };
 
     // MD3: round rest shape, morphs into a squircle on selection (values = record defaults).
+    // Only the segmented container's own chrome: the buttons inside it are buttons and read the button
+    // family for everything else.
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
-        HeightXs = "1.75rem",
-        HeightXl = "3.5rem",
-        PaddingXs = "0.5rem",
-        PaddingXl = "2rem",
-        HeightSm = "2rem",
-        HeightMd = "2.5rem",
-        HeightLg = "3rem",
-        PaddingSm = "0.75rem",
-        PaddingMd = "1rem",
-        PaddingLg = "1.5rem",
-        Gap = "0.375rem",
-        // A capsule, expressed as half the size's own height rather than through Shape.Full, for the
-        // same reason the button's radii are: 9999px is clamped when painted, so the round ->
-        // squircle travel on selection would show nothing until the value crossed the clamp and would
-        // arrive as a snap. Per size because a single token resolves once at the document root, where
-        // no size is in scope.
-        RadiusXs = "calc(var(--flare-toggle-btn-height-xs) / 2)",
-        RadiusSm = "calc(var(--flare-toggle-btn-height-sm) / 2)",
-        RadiusMd = "calc(var(--flare-toggle-btn-height-md) / 2)",
-        RadiusLg = "calc(var(--flare-toggle-btn-height-lg) / 2)",
-        RadiusXl = "calc(var(--flare-toggle-btn-height-xl) / 2)",
-        RadiusSelectedXs = "var(--flare-shape-small)",
-        RadiusSelectedSm = "var(--flare-shape-medium)",
-        RadiusSelectedMd = "var(--flare-shape-medium)",
-        RadiusSelectedLg = "1rem",
-        RadiusSelectedXl = "1.25rem",
-        RestBg = "var(--flare-color-surface-container-highest)",
-        RestColor = "var(--flare-color-on-surface-variant)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedColor = "var(--flare-color-on-secondary-container)",
         GroupBorder = "1px solid var(--flare-color-outline)",
         GroupRadius = "var(--flare-shape-full)",
         GroupRadiusVertical = "var(--flare-shape-medium)",
         GroupDivider = "var(--flare-color-outline)",
-        // Material dims a disabled control.
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // FAB: padding-based sizing, large/medium/extra-large rounding.

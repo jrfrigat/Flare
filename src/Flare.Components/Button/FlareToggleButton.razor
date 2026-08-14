@@ -1,46 +1,65 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<button @ref="_element"
-        class="@BuildCssClass(_pressedClass, _sizeClass, _iconOnlyClass, _colorClass, _edgeClass)"
-        style="@_btnStyle"
-        type="button"
-        disabled="@_effectiveDisabled"
-        aria-label="@AriaLabel"
-        aria-pressed="@(_pressed ? "true" : "false")"
-        @onclick="HandleClick"
-        @attributes="AdditionalAttributes">
-    @if (_pressed && _showCheck)
-    {
-        <FlareIconView Value="FlareIcons.Check" Class="@Css.Classes.ToggleButton.Check" />
-    }
-    @{ var icon = _pressed ? (OnIcon ?? OffIcon) : OffIcon; }
-    @if (icon is not null)
-    {
-        <span class="@Css.Classes.ToggleButton.Icon">@icon</span>
-    }
-    @if (ChildContent is not null)
-    {
-        <span class="@Css.Classes.ToggleButton.Label">@ChildContent</span>
-    }
-</button>
+@* A toggle button IS a button with a selected state, and this renders one rather than imitating one: it
+   is the same element, the same class family, the same tokens, so a toggle placed in a FlareButtonGroup
+   is a segment on exactly the terms every other segment is. That equality is the whole design. Before it,
+   the toggle carried a control of its own with a parallel token family, and every group rule written for
+   a button quietly missed it or - worse - hit it with the wrong value: a pressed neighbour read the
+   BUTTON's padding as its starting point and grew segments that were meant to shrink.
+
+   Selection is passed on rather than styled here: Selected paints and reshapes through the button's own
+   --flare-btn-selected-* tokens, so a theme answers it once for the family. *@
+<FlareButton @ref="_button"
+             Class="@_buttonClass"
+             Style="@Style"
+             Variant="Variant"
+             Size="_effectiveSize"
+             Shape="Shape"
+             Color="_effectiveColor"
+             FullWidth="FullWidth"
+             Typo="Typo"
+             Disabled="_effectiveDisabled"
+             Selected="_pressed"
+             AriaPressed="_pressed"
+             AriaLabel="@AriaLabel"
+             LeadingIcon="@_leadingIcon"
+             TrailingIcon="TrailingIcon"
+             OnClick="@(_ => HandleClick())"
+             @attributes="AdditionalAttributes">
+    @ChildContent
+</FlareButton>
 
 @code {
     /// <summary>Button label content shown alongside the icon.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Icon rendered when the button is not pressed.</summary>
+    /// <summary>Icon rendered when the button is not selected.</summary>
     [Parameter] public RenderFragment? OffIcon { get; set; }
-    /// <summary>Icon rendered when the button is pressed. Defaults to OffIcon if not set.</summary>
+    /// <summary>Icon rendered when the button is selected. Falls back to <see cref="OffIcon"/> when unset,
+    /// which is what a toggle that signals its state with colour and shape alone wants.</summary>
     [Parameter] public RenderFragment? OnIcon { get; set; }
-    /// <summary>Whether the button is currently in the pressed/active state.</summary>
+    /// <summary>Icon rendered after the label, in both states.</summary>
+    [Parameter] public RenderFragment? TrailingIcon { get; set; }
+    /// <summary>Whether the button is currently in the selected state.</summary>
     [Parameter] public bool Toggled { get; set; }
-    /// <summary>Callback raised when the pressed state changes.</summary>
+    /// <summary>Callback raised when the selected state changes.</summary>
     [Parameter] public EventCallback<bool> ToggledChanged { get; set; }
+    /// <summary>Visual style variant, the same axis a plain button has. Overridden by an enclosing
+    /// <c>FlareButtonGroup.Variant</c> when that is set.</summary>
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Tonal;
+    /// <summary>Corner shape. <see cref="ButtonShape.Default"/> keeps the theme's own, and selection then
+    /// travels to the theme's selected corner; an explicitly square button travels the other way, to a
+    /// capsule, which is Material's "round to square, or square to round".</summary>
+    [Parameter] public ButtonShape Shape { get; set; } = ButtonShape.Default;
     /// <summary>Size of the toggle button. Overridden by the parent <c>FlareToggleGroup.Size</c> when that is set.</summary>
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Md;
     /// <summary>Color tinting the selected state. Role -> shared color class; custom -> inline tokens.
-    /// Overridden by the parent <c>FlareToggleGroup.Color</c> when that is set. Default = theme's secondary container.</summary>
+    /// Overridden by the parent <c>FlareToggleGroup.Color</c> when that is set.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Default;
+    /// <summary>Stretches the button to the full width of its container.</summary>
+    [Parameter] public bool FullWidth { get; set; }
+    /// <summary>Overrides the label's typography with a type-scale value.</summary>
+    [Parameter] public TypographyScale? Typo { get; set; }
     /// <summary>Disables the button when true. Also disabled when the parent <c>FlareToggleGroup.Disabled</c> is true.</summary>
     [Parameter] public bool Disabled { get; set; }
     /// <summary>Accessible label forwarded as aria-label.</summary>
@@ -53,22 +72,25 @@
     /// <summary>Cascading context supplied by a parent FlareToggleGroup.</summary>
     [CascadingParameter] public FlareToggleGroupContext? Group { get; set; }
 
-    protected override string ComponentCssClass => Css.Classes.ToggleButton.Root;
+    // The rendered element is a FlareButton, so the root class is the button's - stated here rather than
+    // inherited so the merged Class the base builds lands on the same element the button paints.
+    protected override string ComponentCssClass => string.Empty;
 
     private bool _pressed;
     // Tracks the last Toggled parameter seen so we can detect external changes vs local clicks
     private bool _lastToggled;
-    private ElementReference _element;
+    private FlareButton? _button;
 
     /// <summary>Sets keyboard focus to the toggle button element.</summary>
-    public ValueTask FocusAsync() => _element.FocusAsync();
+    public ValueTask FocusAsync() => _button?.FocusAsync() ?? ValueTask.CompletedTask;
 
-    /// <summary>Toggles the pressed state, exactly as a user click would (honors the disabled state and,
+    /// <summary>Toggles the selected state, exactly as a user click would (honors the disabled state and,
     /// inside a group, the group's selection rules).</summary>
     public Task Toggle() => HandleClick();
 
-    /// <summary>Sets the pressed state programmatically. No-op when disabled or already in that state;
+    /// <summary>Sets the selected state programmatically. No-op when disabled or already in that state;
     /// inside a group it routes through the group so the group's binding stays authoritative.</summary>
+    /// <param name="toggled">The state to move to.</param>
     public async Task SetToggledAsync(bool toggled)
     {
         if (_effectiveDisabled || _pressed == toggled) return;
@@ -79,8 +101,25 @@
         StateHasChanged();
     }
 
-    private string _pressedClass => _pressed ? Css.Classes.ToggleButton.Pressed : string.Empty;
-    private bool _showCheck => Group?.CheckMark == true;
+    // The group's optional leading check mark rides in front of the state icon rather than replacing it,
+    // so a checked group item still shows what it is.
+    private RenderFragment? _leadingIcon
+    {
+        get
+        {
+            var icon = _pressed ? (OnIcon ?? OffIcon) : OffIcon;
+            if (!_showCheck) return icon;
+            return builder =>
+            {
+                builder.OpenComponent<FlareIconView>(0);
+                builder.AddComponentParameter(1, nameof(FlareIconView.Value), FlareIcons.Check);
+                builder.CloseComponent();
+                if (icon is not null) builder.AddContent(2, icon);
+            };
+        }
+    }
+
+    private bool _showCheck => _pressed && Group?.CheckMark == true;
 
     private string _edgeClass => Edge switch
     {
@@ -89,26 +128,14 @@
         _ => string.Empty,
     };
 
-    // Group settings cascade: a group value overrides the button's own (Size/Color), or forces Disabled.
+    // A segmented FlareToggleGroup overrides its items' size and colour; a FlareButtonGroup's cascade is
+    // read by the FlareButton below and is not resolved twice here, so the two group kinds cannot end up
+    // disagreeing about which one wins.
     private ButtonSize _effectiveSize => Group?.Size ?? Size;
     private FlareColor _effectiveColor => Group?.Color ?? Color;
     private bool _effectiveDisabled => Disabled || (Group?.Disabled ?? false);
 
-    // Role -> shared color class (sets --fc-container/--fc-on-container); custom -> inline those tokens.
-    private string _colorClass => _effectiveColor.CssClass ?? string.Empty;
-    private string? _btnStyle => _effectiveColor.StyleContainerSolid() is { } tokens ? tokens + Style : Style;
-
-    private string _sizeClass => _effectiveSize switch
-    {
-        ButtonSize.Xs => Css.Classes.ToggleButton.Xs,
-        ButtonSize.Sm => Css.Classes.ToggleButton.Sm,
-        ButtonSize.Md => Css.Classes.ToggleButton.Md,
-        ButtonSize.Lg => Css.Classes.ToggleButton.Lg,
-        ButtonSize.Xl => Css.Classes.ToggleButton.Xl,
-        _ => Css.Classes.ToggleButton.Md,
-    };
-
-    private string _iconOnlyClass => ChildContent is null ? Css.Classes.ToggleButton.IconOnly : string.Empty;
+    private string _buttonClass => string.IsNullOrEmpty(Class) ? _edgeClass : $"{_edgeClass} {Class}".Trim();
 
     protected override void OnParametersSet()
     {

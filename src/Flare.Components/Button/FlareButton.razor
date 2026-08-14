@@ -44,7 +44,7 @@
 {
     @* Link button: rendered as <a>. Disabled/Loading removes href and marks aria-disabled. *@
     <a @ref="_element"
-       class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
+       class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass, _selectedClass)"
        style="@_buttonStyle"
        href="@(Disabled || Loading ? null : Href)"
        target="@Target"
@@ -60,12 +60,12 @@
 else
 {
     <button @ref="_element"
-            class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass)"
+            class="@BuildCssClass(_variantClass, _sizeClass, _shapeClass, _colorClass, _loadingClass, _iconOnlyClass, _fullWidthClass, _selectedClass)"
             style="@_buttonStyle"
             disabled="@(Disabled || Loading)"
             type="@Type.ToString().ToLowerInvariant()"
             aria-label="@AriaLabel"
-            aria-pressed="@(AriaPressed ? "true" : null)"
+            aria-pressed="@(AriaPressed is { } p ? (p ? "true" : "false") : null)"
             aria-busy="@(Loading ? "true" : null)"
             @onclick="OnClick"
             @attributes="AdditionalAttributes">@_inner</button>
@@ -101,8 +101,17 @@ else
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
     /// <summary>Accessible label for the button, forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }
-    /// <summary>Indicates pressed state for toggle buttons, forwarded as aria-pressed.</summary>
-    [Parameter] public bool AriaPressed { get; set; }
+    /// <summary>
+    /// Toggle state, forwarded as <c>aria-pressed</c>. Left <c>null</c> the attribute is absent and the
+    /// button is an ordinary command; <c>false</c> renders <c>aria-pressed="false"</c>, which is what makes
+    /// assistive technology announce a toggle that is currently off rather than a plain button. The
+    /// distinction is why this is nullable: an absent attribute and an explicit "false" are different
+    /// controls, not the same control in different states.
+    /// </summary>
+    [Parameter] public bool? AriaPressed { get; set; }
+    /// <summary>Marks the button as selected - the on state of a toggle - which a theme may answer with a
+    /// paint, a shape, or both. Set by <c>FlareToggleButton</c>; usually left alone on a plain button.</summary>
+    [Parameter] public bool Selected { get; set; }
     /// <summary>Shows a spinner and disables the button when true.</summary>
     [Parameter] public bool Loading { get; set; }
     /// <summary>Replaces the button label text while Loading is true.</summary>
@@ -162,6 +171,8 @@ else
     private string _shapeClass => ButtonCssClasses.Shape(Shape);
 
     private string _loadingClass => Loading ? Css.Classes.Button.Loading : string.Empty;
+
+    private string _selectedClass => Selected ? Css.Classes.Button.Selected : string.Empty;
 
     // Role path -> shared color class (fast, cached). Custom/Default -> none.
     private string _colorClass => _effectiveColor.CssClass ?? string.Empty;

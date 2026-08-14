@@ -364,7 +364,7 @@ public class C_FlareToggleGroupTests : FlareTestContext
             .AddChildContent<FlareToggleButton>(bp => bp
                 .Add(x => x.Value, "A")));
 
-        Assert.NotEmpty(cut.FindAll("button.flare-toggle-btn"));
+        Assert.NotEmpty(cut.FindAll("button.flare-btn"));
     }
 
     [Fact]

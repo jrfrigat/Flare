@@ -167,6 +167,42 @@ public class C_FlareButtonGroupTests : FlareTestContext
     }
 
     [Fact]
+    public void AToggleIsAButtonAndCarriesTheButtonFamily()
+    {
+        // The whole point of the rebuild: a toggle segment and a plain segment are the same element with
+        // the same classes, so every group rule reaches both with the same token family. While the toggle
+        // was a control of its own, the group's press rule found it holding a different padding token and
+        // GREW the neighbours it was supposed to shrink.
+        var cut = Render<FlareToggleButton>(p => p
+            .Add(x => x.Variant, ButtonVariant.Outlined)
+            .Add(x => x.Size, ButtonSize.Lg)
+            .Add(x => x.Toggled, true)
+            .AddChildContent("Bold"));
+
+        var btn = cut.Find("button");
+        Assert.Contains(Css.Classes.Button.Root, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Outlined, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Lg, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Selected, btn.ClassName);
+        // An unselected toggle must still say it is a toggle: an absent aria-pressed reads as a plain
+        // command, so "false" is the state and not the absence of one.
+        Assert.Equal("true", btn.GetAttribute("aria-pressed"));
+
+        var off = Render<FlareToggleButton>(p => p.AddChildContent("Bold"));
+        Assert.Equal("false", off.Find("button").GetAttribute("aria-pressed"));
+        Assert.DoesNotContain(Css.Classes.Button.Selected, off.Find("button").ClassName);
+    }
+
+    [Fact]
+    public void APlainButtonIsNotAToggle()
+    {
+        // The tri-state is what keeps that promise in the other direction: an ordinary button must not
+        // grow an aria-pressed just because the parameter exists.
+        var cut = Render<FlareButton>(p => p.AddChildContent("Save"));
+        Assert.False(cut.Find("button").HasAttribute("aria-pressed"));
+    }
+
+    [Fact]
     public void OverflowPanelIsAGroupAndNotAMenu()
     {
         // The folded segments are buttons, not menu items: they take the focus themselves. A menu panel
@@ -378,7 +414,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     {
         var cut = Render<FlareToggleButton>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-toggle-btn"));
+        Assert.NotEmpty(cut.FindAll(".flare-btn"));
     }
 
     [Fact]
@@ -414,7 +450,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
         var cut = Render<FlareToggleButton>(p => p
             .AddChildContent("Bookmark"));
 
-        Assert.Contains("Bookmark", cut.Find(".flare-toggle-btn__label").TextContent);
+        Assert.Contains("Bookmark", cut.Find($".{Css.Classes.Button.Label}").TextContent);
     }
 }
 

@@ -120,6 +120,32 @@ public static class Button
         public const string Xl = "--flare-btn-icon-size-xl";
     }
 
+    /// <summary>Corner radius a SELECTED button takes, per size. Selection is a shape change as much as a
+    /// colour change, and the two directions are not the same value, which is why this is a family of its
+    /// own rather than a reuse of the rest radii.</summary>
+    public static class SelectedRadius
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-selected-radius-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-selected-radius-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-selected-radius-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-selected-radius-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-selected-radius-xl";
+    }
+
+    /// <summary>CSS custom-property name for the corner radius a selected button takes when its rest
+    /// shape is the explicit square. One value rather than a ramp: a language that opens a square out
+    /// on selection opens it to a capsule, which is arithmetic on the segment's own height.</summary>
+    public const string SelectedRadiusSquare = "--flare-btn-selected-radius-square";
+    /// <summary>CSS custom-property name for the selected container background token.</summary>
+    public const string SelectedBg = "--flare-btn-selected-bg";
+    /// <summary>CSS custom-property name for the selected foreground token.</summary>
+    public const string SelectedColor = "--flare-btn-selected-color";
+
     /// <summary>Prefix for the label typography CSS variables: --flare-btn-label-{size}-{font|weight|size|height|spacing}.</summary>
     public const string LabelPrefix = "--flare-btn-label";
 

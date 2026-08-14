@@ -151,6 +151,17 @@ internal class LiquidGlassTokens
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-full)"),
         RadiusXl = CornerRadiusTokens.All("var(--flare-shape-full)"),
 
+        // Everything in this language is a lozenge, selected included: the state reads through the
+        // brighter glass rather than through a corner that moved.
+        SelectedRadiusXs = "var(--flare-shape-full)",
+        SelectedRadiusSm = "var(--flare-shape-full)",
+        SelectedRadiusMd = "var(--flare-shape-full)",
+        SelectedRadiusLg = "var(--flare-shape-full)",
+        SelectedRadiusXl = "var(--flare-shape-full)",
+        SelectedRadiusSquare = "var(--flare-shape-full)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+
         FocusOutline = "none",
         FocusOutlineOffset = "0px",
         FocusShadow = "0 0 0 4px var(--flare-liquid-glow, rgba(0,122,255,0.35))",

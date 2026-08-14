@@ -290,6 +290,42 @@
 
 .flare-btn--square { border-radius: var(--flare-shape-none); }
 
+/* ==========================================================================
+   SELECTED - the on state of a toggle. Material puts these tokens in the BUTTON table, not in a
+   component of its own, and says the shape half as a swap: "a selected button should change shape from
+   round to square, or square to round". So selection is not one radius, it is a direction, and which
+   direction a button travels is decided by the shape it is standing in.
+
+   Round (the theme's own shape, and the explicit pill) tightens to the per-size selected corner; the
+   explicit square opens out to a capsule. The capsule is computed from the height for the same reason
+   .flare-btn--circular is: a 9999px radius is clamped when painted, so interpolating from it shows
+   nothing until the last moment and lands as a snap.
+
+   After the shape axis, so an explicitly-shaped button is still overridden when it is selected; the
+   paint sits with them because a Color set on the button (--fc-*) must keep outranking the theme's
+   neutral selected pair, which is what makes <FlareToggleButton Color="Primary"> mean anything.
+   ========================================================================== */
+.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-selected-color));
+    border-color: transparent;
+    border-radius: var(--flare-btn-selected-radius-md);
+}
+
+.flare-btn--selected.flare-btn--xs { border-radius: var(--flare-btn-selected-radius-xs); }
+.flare-btn--selected.flare-btn--sm { border-radius: var(--flare-btn-selected-radius-sm); }
+.flare-btn--selected.flare-btn--md { border-radius: var(--flare-btn-selected-radius-md); }
+.flare-btn--selected.flare-btn--lg { border-radius: var(--flare-btn-selected-radius-lg); }
+.flare-btn--selected.flare-btn--xl { border-radius: var(--flare-btn-selected-radius-xl); }
+
+/* The other direction, and a token rather than arithmetic: whether a square opens out at all is the
+   difference between a language that swaps shapes on selection and one that only repaints, and the
+   core is not entitled to decide that. Two classes plus a size class would be needed to beat the rules
+   above on specificity, so this is written at the same weight and placed after them. */
+.flare-btn--square.flare-btn--selected {
+    border-radius: var(--flare-btn-selected-radius-square);
+}
+
 /* The corner travel is the one motion here worth suppressing on request: it is movement rather than
    a colour change. Zeroing the local var leaves the rest of the transition list intact. */
 @media (prefers-reduced-motion: reduce) {

@@ -2,83 +2,13 @@ using Flare.Css;
 using Flare.Css.Tokens;
 namespace Flare.Abstractions.Tokens.Components;
 
-/// <summary>Per-theme tokens for <c>FlareToggleButton</c> / <c>FlareToggleGroup</c> (segmented button)
-/// across the five button sizes. The selected state may morph the corner radius or only change the
-/// colour - both are expressed purely through these tokens, so the shared CSS stays theme-agnostic.</summary>
+/// <summary>Per-theme tokens for <c>FlareToggleGroup</c>, the segmented control that seams several toggle
+/// buttons into one bordered container. The buttons inside it are ordinary <c>FlareButton</c>s and read
+/// <see cref="ButtonTokens"/> for their height, padding, typography, corners and selected paint - a toggle
+/// is a button with a selected state, not a control of its own - so what is left here is only what the
+/// container adds: its border, its corners and the rule between its segments.</summary>
 public sealed record ToggleButtonTokens
 {
-    // --- 1. CONTAINER HEIGHT (with label) ---
-    /// <summary>Container height at the xs size.</summary>
-    [CssVar(ToggleButton.HeightXs)] public required string HeightXs { get; init; }
-    /// <summary>Container height at the sm size.</summary>
-    [CssVar(ToggleButton.Height.Sm)] public required string HeightSm { get; init; }
-    /// <summary>Container height at the md size.</summary>
-    [CssVar(ToggleButton.Height.Md)] public required string HeightMd { get; init; }
-    /// <summary>Container height at the lg size.</summary>
-    [CssVar(ToggleButton.Height.Lg)] public required string HeightLg { get; init; }
-    /// <summary>Container height at the xl size.</summary>
-    [CssVar(ToggleButton.HeightXl)] public required string HeightXl { get; init; }
-
-    // --- 2. SIDE PADDING (with label) ---
-    /// <summary>Space between the container edge and the content at the xs size.</summary>
-    [CssVar(ToggleButton.PaddingXs)] public required string PaddingXs { get; init; }
-    /// <summary>Space between the container edge and the content at the sm size.</summary>
-    [CssVar(ToggleButton.Padding.Sm)] public required string PaddingSm { get; init; }
-    /// <summary>Space between the container edge and the content at the md size.</summary>
-    [CssVar(ToggleButton.Padding.Md)] public required string PaddingMd { get; init; }
-    /// <summary>Space between the container edge and the content at the lg size.</summary>
-    [CssVar(ToggleButton.Padding.Lg)] public required string PaddingLg { get; init; }
-    /// <summary>Space between the container edge and the content at the xl size.</summary>
-    [CssVar(ToggleButton.PaddingXl)] public required string PaddingXl { get; init; }
-
-    // --- 3. GAP between icon and label ---
-    /// <summary>Space between the icon and the label. The toggle uses one gap at every size.</summary>
-    [CssVar(ToggleButton.Gap)] public required string Gap { get; init; }
-
-    // --- 4. RADIUS for rest and selected states (morph) ---
-    /// <summary>Corner radius in the unselected state at the xs size.</summary>
-    /// <remarks>
-    /// Per size rather than one value for all of them, because a theme whose rest shape is a capsule
-    /// has to express it as half the size's own height. The obvious alternative - the full end of the
-    /// shape scale - is a radius so large the browser clamps it when painting, which looks identical
-    /// standing still but makes the travel to the selected corner invisible until the last moment of
-    /// the animation. A single token cannot pick a height, since it resolves once at the document
-    /// root where no size is in scope.
-    /// </remarks>
-    [CssVar(ToggleButton.Radius.Xs)] public required string RadiusXs { get; init; }
-    /// <summary>Corner radius in the unselected state at the sm size.</summary>
-    [CssVar(ToggleButton.Radius.Sm)] public required string RadiusSm { get; init; }
-    /// <summary>Corner radius in the unselected state at the md size.</summary>
-    [CssVar(ToggleButton.Radius.Md)] public required string RadiusMd { get; init; }
-    /// <summary>Corner radius in the unselected state at the lg size.</summary>
-    [CssVar(ToggleButton.Radius.Lg)] public required string RadiusLg { get; init; }
-    /// <summary>Corner radius in the unselected state at the xl size.</summary>
-    [CssVar(ToggleButton.Radius.Xl)] public required string RadiusXl { get; init; }
-    /// <summary>Corner radius in the selected state at the xs size. A theme that signals selection with
-    /// colour alone sets this to the same value as the rest radius; a theme that morphs the shape on
-    /// selection makes them differ.</summary>
-    [CssVar(ToggleButton.RadiusSelected.Xs)] public required string RadiusSelectedXs { get; init; }
-    /// <summary>Corner radius in the selected state at the sm size.</summary>
-    [CssVar(ToggleButton.RadiusSelected.Sm)] public required string RadiusSelectedSm { get; init; }
-    /// <summary>Corner radius in the selected state at the md size.</summary>
-    [CssVar(ToggleButton.RadiusSelected.Md)] public required string RadiusSelectedMd { get; init; }
-    /// <summary>Corner radius in the selected state at the lg size.</summary>
-    [CssVar(ToggleButton.RadiusSelected.Lg)] public required string RadiusSelectedLg { get; init; }
-    /// <summary>Corner radius in the selected state at the xl size.</summary>
-    [CssVar(ToggleButton.RadiusSelected.Xl)] public required string RadiusSelectedXl { get; init; }
-
-    // --- 5. COLORS for rest / selected ---
-    /// <summary>Container background in the unselected state.</summary>
-    [CssVar(ToggleButton.RestBg)] public required string RestBg { get; init; }
-    /// <summary>Icon and label colour in the unselected state.</summary>
-    [CssVar(ToggleButton.RestColor)] public required string RestColor { get; init; }
-    /// <summary>Container background in the selected state.</summary>
-    [CssVar(ToggleButton.SelectedBg)] public required string SelectedBg { get; init; }
-    /// <summary>Icon and label colour in the selected state, which must stay legible on
-    /// <see cref="SelectedBg"/>.</summary>
-    [CssVar(ToggleButton.SelectedColor)] public required string SelectedColor { get; init; }
-
-    // --- 6. GROUP (Segmented) ---
     /// <summary>Border around a segmented group, as a CSS <c>border</c> shorthand.</summary>
     [CssVar(ToggleButton.GroupBorder)] public required string GroupBorder { get; init; }
     /// <summary>Corner radius of a horizontal segmented group.</summary>
@@ -86,8 +16,6 @@ public sealed record ToggleButtonTokens
     /// <summary>Corner radius of a vertical segmented group, which a theme may want to differ from the
     /// horizontal one because the group is taller than it is wide.</summary>
     [CssVar(ToggleButton.GroupRadiusVertical)] public required string GroupRadiusVertical { get; init; }
-    /// <summary>How far the control fades when disabled; a repainting language leaves it opaque.</summary>
-    [CssVar(ToggleButton.DisabledOpacity)] public required string DisabledOpacity { get; init; }
     /// <summary>Colour of the rule between adjacent segments in a group.</summary>
     [CssVar(ToggleButton.GroupDivider)] public required string GroupDivider { get; init; }
 }
