@@ -1,10 +1,11 @@
-@* Drag the slider to narrow the container: the segments that no longer fit fold into the "..." at the
-   trailing end and come back when the room does. The second group shows that a segment can be a toggle
-   button as readily as a plain one - a connected row of toggles is what Material means by a group for
-   selecting options or switching views. *@
+@* Drag the slider to narrow the container: the segments that no longer fit fold into the ellipsis at the
+   trailing end and come back when the room does - the folded buttons are the same components, moved into
+   the menu rather than copied. The rows below show that a segment can be a toggle button as readily as a
+   plain one - a connected row of toggles is what Material means by a group for selecting options or
+   switching views. *@
 <FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Stretch">
 
-    <FlareSlider @bind-Value="_width" Min="20" Max="100" Step="1" Label="@($"Container width: {_width}%")" />
+    <FlareSlider @bind-Value="_width" Min="0" Max="100" Step="1" Label="@($"Container width: {_width}%")" />
 
     <div style="@($"width:{_width}%")">
         <FlareButtonGroup Collapsible Variant="ButtonVariant.Tonal">
@@ -18,11 +19,18 @@
     </div>
 
     <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
-        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Toggle buttons as segments</FlareText>
-        <FlareButtonGroup Connected>
+        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Toggle buttons as segments - standard</FlareText>
+        <FlareButtonGroup>
             <FlareToggleButton @bind-Toggled="_bold">Bold</FlareToggleButton>
             <FlareToggleButton @bind-Toggled="_italic">Italic</FlareToggleButton>
             <FlareToggleButton @bind-Toggled="_underline">Underline</FlareToggleButton>
+        </FlareButtonGroup>
+
+        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Toggle buttons as segments - connected</FlareText>
+        <FlareButtonGroup Connected>
+            <FlareToggleButton @bind-Toggled="_connectedBold">Bold</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_connectedItalic">Italic</FlareToggleButton>
+            <FlareToggleButton @bind-Toggled="_connectedUnderline">Underline</FlareToggleButton>
         </FlareButtonGroup>
     </FlareStack>
 </FlareStack>
@@ -32,4 +40,9 @@
     private bool _bold = true;
     private bool _italic;
     private bool _underline;
+    // The two rows carry their own state: sharing it would move both at once and hide the point, which
+    // is that the same toggles read differently in the two models.
+    private bool _connectedBold = true;
+    private bool _connectedItalic;
+    private bool _connectedUnderline;
 }

@@ -19,8 +19,8 @@
    and a connected group of toggles is what Material means by a group that "helps people select
    options, switch views, or sort elements". The `:is()` costs one class of specificity either way, so
    the selectors weigh what they always did. The CHILD combinator matters as much as the list: the
-   collapse menu below renders buttons of its own inside the group, and a descendant selector would
-   have given every one of them the seam radii of a segment. */
+   collapse menu below renders a second copy of the same buttons inside the group, and a descendant
+   selector would have given every one of them the seam radii of a segment. */
 
 .flare-btn-group {
     display: inline-flex;
@@ -77,8 +77,15 @@
 /* The overflow control hides through the SAME attribute as the segments, not through a state class:
    the fold has to reserve room for it before it can decide what fits, and `display:none` measures
    zero. The measurer un-hides it, measures, and hides it again when nothing needed folding - which a
-   CSS rule keyed off a state class could not do without lying about the width in between. */
-[data-flare-bg-hidden] { display: none; }
+   CSS rule keyed off a state class could not do without lying about the width in between.
+
+   Scoped to the group rather than left bare, which is what carries it past the display each element
+   already has: the segments are `.flare-btn` and the overflow control is a `.flare-menu`, both single
+   classes, and menu.css loads after this file. Two classes here settle it on specificity instead of
+   on load order, and without an !important that every later rule would have to fight. */
+.flare-btn-group [data-flare-bg-hidden] {
+    display: none;
+}
 
 .flare-btn-group__more {
     flex: 0 0 auto;

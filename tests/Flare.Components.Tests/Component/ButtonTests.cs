@@ -158,12 +158,40 @@ public class C_FlareButtonGroupTests : FlareTestContext
         Assert.Contains("flare-btn-group--collapsible", root.ClassName);
         Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.More}"));
 
-        // The copies live behind the popover, so they exist only once it is open - which is also why
+        // The copies live behind the menu, so they exist only once it is open - which is also why
         // the measurer treats the panel as optional rather than assuming it is there.
         Assert.Empty(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
         cut.Find($".{Css.Classes.ButtonGroup.More} .flare-btn").Click();
         Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
         Assert.Equal(2, cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList} .flare-btn").Count);
+    }
+
+    [Fact]
+    public void OverflowPanelIsAGroupAndNotAMenu()
+    {
+        // The folded segments are buttons, not menu items: they take the focus themselves. A menu panel
+        // keeps the focus and swallows the keys that would move it, which is right for items that cannot
+        // be focused and wrong here - it would leave every folded button reachable by nothing but Escape.
+        var cut = Render<FlareButtonGroup>(p => p
+            .Add(x => x.Collapsible, true)
+            .AddChildContent("<button class=\"flare-btn\">One</button>"));
+
+        cut.Find($".{Css.Classes.ButtonGroup.More} .flare-btn").Click();
+        Assert.Equal("group", cut.Find($".{Css.Classes.Menu.Panel}").GetAttribute("role"));
+    }
+
+    [Fact]
+    public void OverflowEllipsisTurnsWithTheGroup()
+    {
+        // The dots run ACROSS the bar they fold, so a row gets the vertical ellipsis and a column the
+        // horizontal one - the same convention an app bar and a navigation rail follow.
+        var horizontal = Render<FlareButtonGroup>(p => p.Add(x => x.Collapsible, true));
+        Assert.Contains(FlareIcons.MoreVert.Data, horizontal.Markup);
+
+        var vertical = Render<FlareButtonGroup>(p => p
+            .Add(x => x.Collapsible, true)
+            .Add(x => x.Vertical, true));
+        Assert.Contains(FlareIcons.MoreHoriz.Data, vertical.Markup);
     }
 
     [Fact]

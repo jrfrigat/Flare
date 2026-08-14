@@ -12,9 +12,9 @@
     @if (_open)
     {
         <div class="@Css.Classes.Menu.Backdrop" @onclick="CloseAsync" @oncontextmenu="CloseAsync" @oncontextmenu:preventDefault="true" aria-hidden="true"></div>
-        <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="menu" tabindex="-1"
+        <div id="@_panelId" @ref="_panelEl" class="@Css.Classes.Menu.Panel @_anchorClass @_scrollClass" style="@_panelStyle" role="@_panelRole" tabindex="-1"
              aria-label="@AriaLabel" aria-activedescendant="@_focusedItem?.ItemId"
-             @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="true">
+             @onkeydown="HandleMenuKeyDown" @onkeydown:preventDefault="_ownsKeyboard">
             <CascadingValue Value="_menuContext" IsFixed="true">
                 <CascadingValue Value="@_focusedItem" Name="MenuFocusedItem">
                     @ChildContent
@@ -47,9 +47,25 @@
     /// of overflowing the viewport.</summary>
     [Parameter] public string? MaxHeight { get; set; }
 
+    /// <summary>
+    /// Declares that the panel holds ordinary focusable content - buttons, fields, anything that answers
+    /// the keyboard itself - rather than <see cref="FlareMenuItem"/> entries. A menu of items keeps the
+    /// focus on the panel and moves a highlight over them, so it has to swallow the keys that would
+    /// otherwise move the focus away; content that is focusable in its own right needs the opposite, and
+    /// swallowing those keys would leave it reachable by nothing but Escape. Set this and the panel
+    /// announces itself as a group instead of a menu and lets Tab, Enter and Space through. Escape still
+    /// closes either way.
+    /// </summary>
+    [Parameter] public bool FreeContent { get; set; }
+
     protected override string ComponentCssClass => Css.Classes.Menu.Root;
 
     private string? _denseClass => Dense ? Css.Classes.Menu.Dense : null;
+
+    // A panel of menu items is a menu and owns the keyboard; a panel of free content is a plain grouping
+    // of things that own it themselves. Both facts follow from the same parameter, so they cannot drift.
+    private string _panelRole => FreeContent ? "group" : "menu";
+    private bool _ownsKeyboard => !FreeContent;
 
     private bool _open;
     private bool _wasOpen;
@@ -203,6 +219,10 @@
         if (!_open) return;
 
         if (e.Key == "Escape") { await CloseAsync(); return; }
+
+        // Free content answers its own arrows, Tab, Enter and Space; the roving highlight below is for
+        // menu items, which are not focusable and would be unreachable without it.
+        if (FreeContent) return;
 
         var enabled = _items.Where(i => !i.Disabled).ToList();
         if (enabled.Count == 0) return;

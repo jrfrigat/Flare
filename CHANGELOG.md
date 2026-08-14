@@ -3,6 +3,30 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+- **A collapsed button group folds into a menu.** The segments that no longer fit used to appear in a
+  bare popover panel; they now open from `FlareMenu`, which brings the surface, the backdrop that
+  closes on an outside click, and the escape and focus handling a dropdown is expected to have. What
+  is inside has not changed and is the point of the design: the panel holds the same buttons the bar
+  declared, so a folded button keeps its own handlers and state because it *is* the same component.
+  The hide rule that decides which of the two places each segment appears in is now scoped to the
+  group, so it wins on specificity rather than on which stylesheet the bundle happens to load last.
+- **The overflow ellipsis turns with the group.** A row folds into a vertical ellipsis and a column
+  into a horizontal one - the dots run across the bar they fold, which is the convention an app bar
+  and a navigation rail already follow.
+
+### Added
+- **`FlareMenu.FreeContent`, for a panel that holds content rather than menu items.** A menu panel
+  keeps the focus on itself and moves a highlight over its items, which is the only way items that
+  cannot take focus can be reached - and exactly wrong for content that is focusable in its own
+  right, where swallowing Tab, Enter and Space leaves everything reachable by nothing but Escape.
+  Setting `FreeContent` announces the panel as a group instead of a menu and lets those keys through.
+  A button group's overflow is the first caller: its folded segments are buttons, not menu items.
+  Menus of `FlareMenuItem` are untouched - the roving highlight, the panel role and the keys it
+  claims are all as they were.
+
 ## [0.15.0] - 2026-08-09
 
 ### Changed
