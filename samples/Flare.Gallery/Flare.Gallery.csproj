@@ -82,7 +82,10 @@
 
 	<!-- Each theme package's README carries its design-system -> Flare component mapping. Embedding the
 	     real file (rather than a copy) means the page in the gallery and the README on nuget.org cannot
-	     drift apart. LogicalName is the theme's Id, which is how ThemeDocService looks it up. -->
+	     drift apart. LogicalName is the theme's Id, which is how ThemeDocService looks it up.
+	     WithCulture=false is REQUIRED on the .ru. files for the same reason CHANGELOG.ru.md needs it:
+	     MSBuild would infer a culture from the infix and route them into the ru satellite assembly,
+	     where a service reading the MAIN assembly's manifest could never find them. -->
 	<ItemGroup>
 		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\README.md" LogicalName="theme-md3-expressive.md" WithCulture="false" />
 		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign3\README.md" LogicalName="theme-md3.md" WithCulture="false" />
@@ -91,6 +94,13 @@
 		<EmbeddedResource Include="..\..\src\Flare.Theme.Aero\README.md" LogicalName="theme-aero.md" WithCulture="false" />
 		<EmbeddedResource Include="..\..\src\Flare.Theme.LiquidGlass\README.md" LogicalName="theme-liquid-glass.md" WithCulture="false" />
 		<EmbeddedResource Include="..\..\src\Flare.Theme.VisualStudio\README.md" LogicalName="theme-visualstudio.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\README.ru.md" LogicalName="theme-md3-expressive.ru.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign3\README.ru.md" LogicalName="theme-md3.ru.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign2\README.ru.md" LogicalName="theme-md2.ru.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.FluentUI2\README.ru.md" LogicalName="theme-fluent2.ru.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.Aero\README.ru.md" LogicalName="theme-aero.ru.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.LiquidGlass\README.ru.md" LogicalName="theme-liquid-glass.ru.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.VisualStudio\README.ru.md" LogicalName="theme-visualstudio.ru.md" WithCulture="false" />
 	</ItemGroup>
 
 	<!--

@@ -53,8 +53,8 @@ All notable changes to Flare are documented here. This project adheres to
   than copied, so the page and the package description are the same text and cannot drift; the page
   strips the install block, renders the rest with `FlareMarkdown`, and offers to switch to the theme
   you are reading about. The nav lists one entry per registered theme that ships a README, so adding a
-  theme package adds its page without editing a list. The documents are English; a translated README is
-  the remaining piece.
+  theme package adds its page without editing a list. Each README has a Russian translation beside it
+  (`README.ru.md`), served by UI culture with a fall back to English, the same way the changelog works.
 - **A guard against suppressing a state layer.** `StateLayerModelTests` already refused
   `opacity: 1 !important` in a theme; it now refuses `opacity: 0 !important` too, and all three checks
   in that file strip CSS comments before scanning. The first run reported three offenders, every one of
@@ -62,6 +62,13 @@ All notable changes to Flare are documented here. This project adheres to
   anti-pattern is not one worth having.
 
 ### Fixed
+- **A tag chip forced white label text.** `FlareTagField` wrote a caller's `ChipColor` straight onto
+  `background-color` and pinned the label to `#fff` - the last hardcoded colour in any component's
+  markup, and the core deciding a foreground it cannot know is legible: a pale tag rendered white on
+  white. The colour now goes through the chip's own custom-colour contract (`--fc-main` fills,
+  `--fc-on` labels), so an unset label colour falls back to the theme's on-colour, and the new
+  `ChipTextColor` callback lets the caller - the only one who knows what colour it picked - say
+  otherwise.
 - **The DataGrid clipped its own columns on a phone.** At 375px the grid measured 600px inside a 343px
   container with `overflow-x: visible` all the way up, so the columns past the viewport were not off to
   the side - they were cut off and unreachable by touch. The small-screen rule put its minimum width on
