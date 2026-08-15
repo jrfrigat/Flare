@@ -19,6 +19,45 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
     public string DisplayName => "Material Design 3 Expressive";
     public DesignTokens Design => MaterialDesignTokens.Design with
     {
+        // THE EXPRESSIVE SIZE RAMP. Baseline M3 has one button - "small", 40dp tall - and the XS/M/L/XL
+        // steps arrive with Expressive, which is why they are stated here rather than in the shared
+        // Material bundle: the two eras genuinely disagree about how big a button is, and the baseline
+        // theme keeps its own gentler ramp.
+        //
+        // The numbers are `md.comp.button.<size>.*` read straight off the table, and the top of the
+        // ramp is meant to look startling: an extra-large Expressive button is 136dp tall with a 32pt
+        // label, a display-scale control for one hero action per screen rather than a slightly bigger
+        // button. Flare used to compress the whole ramp into 32-64dp, which made large and extra-large
+        // near-duplicates of medium and quietly threw away the size axis Expressive exists to offer.
+        Button = MaterialDesignTokens.Design.Button with
+        {
+            HeightXs = "2rem",     // 32dp
+            HeightSm = "2.5rem",   // 40dp
+            HeightMd = "3.5rem",   // 56dp
+            HeightLg = "6rem",     // 96dp
+            HeightXl = "8.5rem",   // 136dp
+
+            // Leading and trailing space, which the spec ramps far harder than the heights do.
+            PaddingInlineXs = "0.75rem", // 12dp
+            PaddingInlineSm = "1rem",    // 16dp
+            PaddingInlineMd = "1.5rem",  // 24dp
+            PaddingInlineLg = "3rem",    // 48dp
+            PaddingInlineXl = "4rem",    // 64dp
+
+            // Space between icon and label.
+            GapXs = "0.5rem",  // 8dp
+            GapSm = "0.5rem",  // 8dp
+            GapMd = "0.5rem",  // 8dp
+            GapLg = "0.75rem", // 12dp
+            GapXl = "1rem",    // 16dp
+
+            // `md.comp.button.<size>.outlined.outline.width` - the stroke thickens with the container.
+            OutlineWidthXs = "1px",
+            OutlineWidthSm = "1px",
+            OutlineWidthMd = "1px",
+            OutlineWidthLg = "2px",
+            OutlineWidthXl = "3px",
+        },
         // SEPARATED button group (Expressive): a real 2dp gap, no overlap, rounded interior corners and
         // full-capsule ends. Purely a token bundle - the base buttongroup.css is untouched (no override).
         ButtonGroup = new ButtonGroupTokens

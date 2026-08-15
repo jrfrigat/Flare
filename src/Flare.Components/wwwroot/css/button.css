@@ -51,8 +51,11 @@
        not an interpolated transition. */
     --_morph-duration: var(--flare-shape-morph-duration);
     transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-radius var(--_morph-duration) var(--flare-shape-morph-easing);
-    /* Reserve 1px for the border on all buttons so a bordered variant never shifts layout */
-    border: 1px solid transparent;
+    /* Reserve the border on EVERY button, whatever its variant, so switching variant never shifts
+       layout. The width is the theme's and ramps with the size - a stroke that reads as a hairline
+       beside a small label is a thread beside a large one, which is why Material thickens it as the
+       button grows rather than keeping one width the core could have hardcoded. */
+    border: var(--_flare-btn-outline-width, var(--flare-btn-outline-width-md)) solid transparent;
 }
 
 /* Colour: variants read the shared role tokens (--fc-*) with a fallback to "Default".
@@ -183,6 +186,7 @@
    ADAPTIVE SIZE GRID
    ========================================================================== */
 .flare-btn--xs {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-xs);
     gap: var(--flare-btn-gap-xs);
     --_flare-btn-height: var(--flare-btn-height-xs);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xs);
@@ -199,6 +203,7 @@
 }
 
 .flare-btn--sm {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-sm);
     gap: var(--flare-btn-gap-sm);
     --_flare-btn-height: var(--flare-btn-height-sm);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-sm);
@@ -215,6 +220,7 @@
 }
 
 .flare-btn--md {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-md);
     gap: var(--flare-btn-gap-md);
     --_flare-btn-height: var(--flare-btn-height-md);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-md);
@@ -231,6 +237,7 @@
 }
 
 .flare-btn--lg {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-lg);
     gap: var(--flare-btn-gap-lg);
     --_flare-btn-height: var(--flare-btn-height-lg);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-lg);
@@ -247,6 +254,7 @@
 }
 
 .flare-btn--xl {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-xl);
     gap: var(--flare-btn-gap-xl);
     --_flare-btn-height: var(--flare-btn-height-xl);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xl);

@@ -120,6 +120,22 @@ public static class Button
         public const string Xl = "--flare-btn-icon-size-xl";
     }
 
+    /// <summary>Width of the container's border, per size. Reserved on every button whatever its variant
+    /// so switching variant never shifts layout, and painted only by the ones that draw an outline.</summary>
+    public static class OutlineWidth
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-outline-width-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-outline-width-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-outline-width-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-outline-width-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-outline-width-xl";
+    }
+
     /// <summary>Corner radius a SELECTED button takes, per size. Selection is a shape change as much as a
     /// colour change, and the two directions are not the same value, which is why this is a family of its
     /// own rather than a reuse of the rest radii.</summary>

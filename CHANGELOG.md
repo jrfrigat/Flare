@@ -6,6 +6,20 @@ All notable changes to Flare are documented here. This project adheres to
 ## [Unreleased]
 
 ### Changed
+- **BREAKING visually under MD3 Expressive: the button size ramp is the spec's.** Heights were
+  32/40/48/56/64dp against a spec of 32/40/56/96/136dp, which made large and extra-large near-duplicates
+  of medium and quietly threw away the size axis Expressive exists to offer - an extra-large button is a
+  display-scale control for one hero action, not a slightly bigger button. Leading and trailing space
+  (12/16/24/48/64dp) and the icon-label gap (8/8/8/12/16dp) move with them. The ramp lives on the
+  Expressive theme rather than the shared Material bundle, because baseline M3 has exactly one button -
+  "small", 40dp - and keeps its own gentler steps.
+- **The button no longer reshapes on hover, which is what let the press be seen.** Material's shape-morph
+  section has one trigger - "when pressed, buttons can morph to become more square" - and its corner
+  table has three rows: round, square, pressed. Flare's Expressive theme also shrank the corners to a
+  third of the height on hover, and that did more than add an unspecified state: a medium button
+  travelled 24px to 16px on hover and then only 16px to 12px on press, so the one shape change Material
+  asks for was reduced to the last quarter of its range and a pointer user never saw the rest. Corners
+  now hold their resting shape until the press, and the press runs the full 28px to 12px.
 - **BREAKING for custom themes: a toggle button is a button now, and the tokens follow.** `FlareToggleButton`
   renders a `FlareButton` carrying `flare-btn--selected` instead of a control of its own, so it takes the
   button's height, padding, typography, corners, focus ring and every variant - and a toggle dropped into a
@@ -55,6 +69,11 @@ All notable changes to Flare are documented here. This project adheres to
   container, not the primary fill a filled button is, or every option in a row would read as already
   selected. That distinction is keyed off `aria-pressed`, the attribute that already answers "is this a
   toggle?", so a command button cannot match it.
+- **A per-size outline width.** `md.comp.button.<size>.outlined.outline.width` ramps 1/1/1/2/3dp - a
+  stroke that reads as a hairline beside a small label is a thread beside a 32pt one - and the core had
+  it hardcoded at 1px, which was both a spec miss and geometry the core is not entitled to own. Five new
+  required `ButtonTokens` members; the width is reserved on every variant, not only the outlined one, so
+  switching variant still never shifts layout.
 - **`FlareToggleButton.OnLabel`, so the words can change with the state and not just the icon.** A toggle
   whose two states are different verbs - Follow and Following, Mute and Unmute - says what will happen
   and what already has, which one label cannot. Left null the label stays put across both states, which

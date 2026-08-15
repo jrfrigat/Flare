@@ -36,23 +36,20 @@
     }
 
     /* ======================================================================
-       DYNAMIC SHAPE MORPHING (SMART PER-CORNER SHAPE MORPH) [specs]
-       The morph radius is computed from the ACTUAL button height: the size
-       classes (.flare-btn--xs/sm/md/lg/xl) set a local --_flare-btn-height,
-       so one rule works correctly for all 5 sizes (fallback - Medium).
+       SHAPE MORPH. Material's shape-morph section has exactly one trigger: "when pressed, buttons can
+       morph to become more square", and its corner table has three rows - round, square, pressed. A
+       button at rest and a button under the pointer are the same shape.
+
+       There used to be a hover rule here that shrank the corners to a third of the height, and it did
+       more than add an unspecified state: it ate the specified one. A medium button travelled 24px ->
+       16px on hover and then only 16px -> 12px on press, so the press - the one shape change Material
+       actually asks for - was reduced to the last quarter of its range, and a pointer user never saw
+       the other three. The corners now sit still until the press, and the press is the whole journey.
+
+       The values are per size (`md.comp.button.<size>.pressed.container.shape`) and apply to the round
+       and square shapes alike, which the spec says in as many words: "Both round and square buttons
+       should have the same pressed shape."
        ====================================================================== */
-
-    /* Hover: radius shrinks to 33% of the height (soft rectangle) [specs] */
-    .flare-btn:hover {
-        --_shape-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 3);
-        border-top-left-radius: var(--_shape-radius);
-        border-top-right-radius: var(--_shape-radius);
-        border-bottom-right-radius: var(--_shape-radius);
-        border-bottom-left-radius: var(--_shape-radius);
-    }
-
-    /* Pressed: corner radius per MD3 spec - per size
-       (XS/S = 8dp, M = 12dp, L/XL = 16dp). */
     .flare-btn--xs:active { border-radius: 0.5rem; }   /* 8dp */
     .flare-btn--sm:active { border-radius: 0.5rem; }   /* 8dp */
     .flare-btn--md:active { border-radius: 0.75rem; }  /* 12dp */

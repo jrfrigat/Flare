@@ -439,7 +439,7 @@
     <value>Shape morph (theme-driven)</value>
   </data>
   <data name="Buttons_PressMorph_Hint" xml:space="preserve">
-    <value>Hover, then press and hold. Whether the corners travel at all is the theme's decision, not the button's: MD3 Expressive reshapes them - pill at rest, softer rectangle on hover, tighter corner when pressed - while Fluent 2 and the rest hold one shape and change only their fill. Switch the theme above to compare.</value>
+    <value>Press and hold. Whether the corners travel at all is the theme's decision, not the button's: MD3 Expressive squares them off while pressed and returns them when released, holding its resting shape under the pointer as Material specifies, while Fluent 2 and the rest keep one shape and change only their fill. Switch the theme above to compare.</value>
   </data>
   <data name="Calendar_Title" xml:space="preserve">
     <value>Calendar</value>

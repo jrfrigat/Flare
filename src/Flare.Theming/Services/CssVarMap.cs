@@ -229,6 +229,11 @@ public static class CssVarMap
         v[Css.Tokens.Button.SelectedRadius.Md] = t.Button.SelectedRadiusMd;
         v[Css.Tokens.Button.SelectedRadius.Lg] = t.Button.SelectedRadiusLg;
         v[Css.Tokens.Button.SelectedRadius.Xl] = t.Button.SelectedRadiusXl;
+        v[Css.Tokens.Button.OutlineWidth.Xs] = t.Button.OutlineWidthXs;
+        v[Css.Tokens.Button.OutlineWidth.Sm] = t.Button.OutlineWidthSm;
+        v[Css.Tokens.Button.OutlineWidth.Md] = t.Button.OutlineWidthMd;
+        v[Css.Tokens.Button.OutlineWidth.Lg] = t.Button.OutlineWidthLg;
+        v[Css.Tokens.Button.OutlineWidth.Xl] = t.Button.OutlineWidthXl;
         v[Css.Tokens.Button.SelectedRadiusSquare] = t.Button.SelectedRadiusSquare;
         v[Css.Tokens.Button.Toggle.ElevatedSelectedBg] = t.Button.ElevatedSelectedBg;
         v[Css.Tokens.Button.Toggle.ElevatedSelectedColor] = t.Button.ElevatedSelectedColor;

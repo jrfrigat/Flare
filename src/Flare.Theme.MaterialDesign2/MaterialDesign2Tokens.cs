@@ -115,6 +115,12 @@ internal static class MaterialDesign2Tokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
+        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
+        OutlineWidthXs = "1px",
+        OutlineWidthSm = "1px",
+        OutlineWidthMd = "1px",
+        OutlineWidthLg = "1px",
+        OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
         HeightXs = "1.75rem",  // 28dp

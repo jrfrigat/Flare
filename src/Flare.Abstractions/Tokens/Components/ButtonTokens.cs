@@ -71,6 +71,21 @@ public sealed record ButtonTokens
     /// <summary>Space between the container edge and the content at the xl size, on both sides.</summary>
     [CssVar(Button.PaddingInline.Xl)] public required string PaddingInlineXl { get; init; }
 
+    // --- 4a. OUTLINE WIDTH ---
+    // Per size rather than one value, because a stroke that reads as a hairline beside a small label is
+    // a thread beside a large one - Material thickens it as the button grows. It is reserved on every
+    // variant, not just the outlined one, so that changing variant never moves anything.
+    /// <summary>Container border width at the xs size.</summary>
+    [CssVar(Button.OutlineWidth.Xs)] public required string OutlineWidthXs { get; init; }
+    /// <summary>Container border width at the sm size.</summary>
+    [CssVar(Button.OutlineWidth.Sm)] public required string OutlineWidthSm { get; init; }
+    /// <summary>Container border width at the md size.</summary>
+    [CssVar(Button.OutlineWidth.Md)] public required string OutlineWidthMd { get; init; }
+    /// <summary>Container border width at the lg size.</summary>
+    [CssVar(Button.OutlineWidth.Lg)] public required string OutlineWidthLg { get; init; }
+    /// <summary>Container border width at the xl size.</summary>
+    [CssVar(Button.OutlineWidth.Xl)] public required string OutlineWidthXl { get; init; }
+
     // --- 4b. SELECTED (a button whose toggle is on) ---
     // Selection is a shape change as much as a colour one, and Material states the shape half as a swap:
     // a round button becomes square when selected and a square one becomes round. The value below is the
