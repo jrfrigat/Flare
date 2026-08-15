@@ -88,14 +88,7 @@ else
     /// </summary>
     /// <param name="href">The candidate URL.</param>
     /// <returns><c>true</c> when the URL is safe to render in an anchor.</returns>
-    private static bool IsHrefSafe(string? href) =>
-        href is null || href.StartsWith('/') || href.StartsWith('#') ||
-        href.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
-        href.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-        href.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase) ||
-        href.StartsWith("tel:", StringComparison.OrdinalIgnoreCase);
-
-    private string _safeHref => IsHrefSafe(Href) ? Href! : "about:blank";
+    private string _safeHref => CssValidator.IsHrefSafe(Href) ? Href! : "about:blank";
 
     // A _blank target needs rel=noopener noreferrer to prevent reverse-tabnabbing.
     private string? _rel => Target == "_blank" ? "noopener noreferrer" : null;

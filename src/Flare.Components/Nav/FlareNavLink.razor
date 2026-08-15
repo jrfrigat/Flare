@@ -53,14 +53,7 @@
 
     private bool _wasActive;
 
-    private static bool IsHrefSafe(string? href) =>
-        href is null || href.StartsWith('/') || href.StartsWith('#') ||
-        href.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
-        href.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-        href.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase) ||
-        href.StartsWith("tel:", StringComparison.OrdinalIgnoreCase);
-
-    private string _safeHref => IsHrefSafe(Href) ? (Href ?? string.Empty) : "about:blank";
+    private string _safeHref => CssValidator.IsHrefSafe(Href) ? (Href ?? string.Empty) : "about:blank";
 
     private bool _isActive => Active || (Href is not null && IsHrefActive());
     private string _activeClass => _isActive ? Css.Classes.Navigation.NavLinkActive : string.Empty;
