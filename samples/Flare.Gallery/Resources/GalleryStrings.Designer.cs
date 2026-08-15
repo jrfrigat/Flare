@@ -9266,5 +9266,59 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("ToggleButton_LabelSwap", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to How this design system's components map onto Flare, straight from the theme package's README..
+        /// </summary>
+        public static string ThemeMapping_Subtitle {
+            get {
+                return ResourceManager.GetString("ThemeMapping_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No mapping for this theme.
+        /// </summary>
+        public static string ThemeMapping_NoneTitle {
+            get {
+                return ResourceManager.GetString("ThemeMapping_NoneTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This theme package ships no README, or the id in the address is not one of the registered themes..
+        /// </summary>
+        public static string ThemeMapping_NoneDescription {
+            get {
+                return ResourceManager.GetString("ThemeMapping_NoneDescription", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This is not the theme you are looking at right now..
+        /// </summary>
+        public static string ThemeMapping_NotActive {
+            get {
+                return ResourceManager.GetString("ThemeMapping_NotActive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Switch to it.
+        /// </summary>
+        public static string ThemeMapping_Apply {
+            get {
+                return ResourceManager.GetString("ThemeMapping_Apply", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Component mapping.
+        /// </summary>
+        public static string Nav_ThemeMappings {
+            get {
+                return ResourceManager.GetString("Nav_ThemeMappings", resourceCulture);
+            }
+        }
     }
 }

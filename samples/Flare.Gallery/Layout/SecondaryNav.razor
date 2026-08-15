@@ -1,6 +1,8 @@
 @inherits LocalizedPage
 @using Flare.Gallery.Api
 @using Flare.Gallery.Models
+@inject IThemeService ThemeService
+@inject Flare.Gallery.Services.ThemeDocService Docs
 
 @* The secondary navigation column: the pages of the currently selected section, as a full menu.
    The active page auto-highlights and its group auto-expands (FlareNavLink). *@
@@ -26,6 +28,14 @@
             <FlareNavLink Href="theming" Match="NavMatchMode.Exact">@GalleryStrings.Nav_Theming</FlareNavLink>
             <FlareNavLink Href="color">@GalleryStrings.Nav_Color</FlareNavLink>
             <FlareNavLink Href="custom-theme">Custom Theme</FlareNavLink>
+            @* One entry per registered theme that ships a README, so adding a theme package adds its
+               mapping page without touching this list. *@
+            <FlareNavGroup Label="@GalleryStrings.Nav_ThemeMappings">
+                @foreach (var theme in ThemeService.Themes.Where(t => Docs.Has(t.Id)))
+                {
+                    <FlareNavLink Href="@($"themes/{theme.Id}")">@theme.DisplayName</FlareNavLink>
+                }
+            </FlareNavGroup>
         }
         else if (Section == GallerySection.Components)
         {

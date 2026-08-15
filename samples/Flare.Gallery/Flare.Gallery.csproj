@@ -80,6 +80,19 @@
 		<EmbeddedResource Include="..\..\CHANGELOG.ru.md" LogicalName="CHANGELOG.ru.md" WithCulture="false" />
 	</ItemGroup>
 
+	<!-- Each theme package's README carries its design-system -> Flare component mapping. Embedding the
+	     real file (rather than a copy) means the page in the gallery and the README on nuget.org cannot
+	     drift apart. LogicalName is the theme's Id, which is how ThemeDocService looks it up. -->
+	<ItemGroup>
+		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign3Expressive\README.md" LogicalName="theme-md3-expressive.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign3\README.md" LogicalName="theme-md3.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.MaterialDesign2\README.md" LogicalName="theme-md2.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.FluentUI2\README.md" LogicalName="theme-fluent2.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.Aero\README.md" LogicalName="theme-aero.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.LiquidGlass\README.md" LogicalName="theme-liquid-glass.md" WithCulture="false" />
+		<EmbeddedResource Include="..\..\src\Flare.Theme.VisualStudio\README.md" LogicalName="theme-visualstudio.md" WithCulture="false" />
+	</ItemGroup>
+
 	<!--
 		Opt-in API documentation generation. Runs the Flare.ApiDocGen tool to (re)generate
 		Api/ComponentApiRegistry.g.cs from reflection + XML docs. Disabled by default so normal

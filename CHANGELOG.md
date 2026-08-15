@@ -41,6 +41,20 @@ All notable changes to Flare are documented here. This project adheres to
   wrong here, because each of these sits in a row of its own kind and an expanded target overlaps its
   neighbours, with the later sibling silently winning the tap. The reflow is confined to devices whose
   primary pointer is coarse; a laptop with a touchscreen reports `fine`.
+- **Every theme package documents its design system's component mapping.** Each
+  `Flare.Theme.*/README.md` now carries a table taking that design system's own vocabulary to the Flare
+  component and the parameter that selects it - Material's "common buttons" to
+  `FlareButton Variant=...`, Fluent's Dropdown-vs-Combobox split to `FlareSelect` and `FlareCombobox`,
+  Aero's Win32 common controls, Visual Studio's shell parts to the IDE family. `Flare.Theme.MaterialDesign3`
+  and `Flare.Theme.MaterialDesign2` had no README at all and now have one, so every theme package
+  arrives on nuget.org describing itself. Each also states what the theme changes beyond colour, which
+  is the part a token list cannot show.
+- **The gallery serves those mappings at `/themes/{id}`.** The README file itself is embedded rather
+  than copied, so the page and the package description are the same text and cannot drift; the page
+  strips the install block, renders the rest with `FlareMarkdown`, and offers to switch to the theme
+  you are reading about. The nav lists one entry per registered theme that ships a README, so adding a
+  theme package adds its page without editing a list. The documents are English; a translated README is
+  the remaining piece.
 - **A guard against suppressing a state layer.** `StateLayerModelTests` already refused
   `opacity: 1 !important` in a theme; it now refuses `opacity: 0 !important` too, and all three checks
   in that file strip CSS comments before scanning. The first run reported three offenders, every one of

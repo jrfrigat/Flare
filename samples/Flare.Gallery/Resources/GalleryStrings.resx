@@ -2771,4 +2771,22 @@
   <data name="ToggleButton_LabelSwap" xml:space="preserve">
     <value>Icon and label that change with the state</value>
   </data>
+  <data name="ThemeMapping_Subtitle" xml:space="preserve">
+    <value>How this design system's components map onto Flare, straight from the theme package's README.</value>
+  </data>
+  <data name="ThemeMapping_NoneTitle" xml:space="preserve">
+    <value>No mapping for this theme</value>
+  </data>
+  <data name="ThemeMapping_NoneDescription" xml:space="preserve">
+    <value>This theme package ships no README, or the id in the address is not one of the registered themes.</value>
+  </data>
+  <data name="ThemeMapping_NotActive" xml:space="preserve">
+    <value>This is not the theme you are looking at right now.</value>
+  </data>
+  <data name="ThemeMapping_Apply" xml:space="preserve">
+    <value>Switch to it</value>
+  </data>
+  <data name="Nav_ThemeMappings" xml:space="preserve">
+    <value>Component mapping</value>
+  </data>
 </root>

@@ -2771,4 +2771,22 @@
   <data name="ToggleButton_LabelSwap" xml:space="preserve">
     <value>Иконка и подпись меняются вместе с состоянием</value>
   </data>
+  <data name="ThemeMapping_Subtitle" xml:space="preserve">
+    <value>Как компоненты этой дизайн-системы соответствуют компонентам Flare - прямо из README пакета темы.</value>
+  </data>
+  <data name="ThemeMapping_NoneTitle" xml:space="preserve">
+    <value>Для этой темы нет сопоставления</value>
+  </data>
+  <data name="ThemeMapping_NoneDescription" xml:space="preserve">
+    <value>Пакет темы не содержит README, либо идентификатор в адресе не соответствует ни одной зарегистрированной теме.</value>
+  </data>
+  <data name="ThemeMapping_NotActive" xml:space="preserve">
+    <value>Сейчас вы смотрите не на эту тему.</value>
+  </data>
+  <data name="ThemeMapping_Apply" xml:space="preserve">
+    <value>Переключиться</value>
+  </data>
+  <data name="Nav_ThemeMappings" xml:space="preserve">
+    <value>Сопоставление компонентов</value>
+  </data>
 </root>

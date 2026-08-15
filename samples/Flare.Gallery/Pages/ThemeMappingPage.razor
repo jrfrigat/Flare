@@ -1,0 +1,66 @@
+@page "/themes/{ThemeId}"
+@inherits LocalizedPage
+@inject IThemeService ThemeService
+@inject Flare.Gallery.Services.ThemeDocService Docs
+
+@* Renders the theme package's own README - the design-system -> Flare component mapping - from the
+   embedded file, the same text nuget.org shows. No content lives in this page. *@
+
+<PageTitle>@_title - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@_title</FlareText>
+    <FlareText Typo="TypographyScale.BodyLarge" Color="@Colors.OnSurfaceVariant">
+        @GalleryStrings.ThemeMapping_Subtitle
+    </FlareText>
+</GalleryPageTitle>
+
+@if (_markdown is null)
+{
+    <FlareEmptyState Title="@GalleryStrings.ThemeMapping_NoneTitle"
+                     Description="@GalleryStrings.ThemeMapping_NoneDescription" />
+}
+else
+{
+    <FlareStack Gap="FlareSpacing.Large">
+        @if (_isCurrent is false)
+        {
+            @* Reading a mapping is the moment you want to see the theme, so offer the switch here. *@
+            <FlareAlert Variant="AlertVariant.Outlined" Severity="AlertSeverity.Info">
+                <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small">
+                    <FlareText>@GalleryStrings.ThemeMapping_NotActive</FlareText>
+                    <FlareButton Variant="ButtonVariant.Text" OnClick="ApplyThemeAsync">
+                        @GalleryStrings.ThemeMapping_Apply
+                    </FlareButton>
+                </FlareStack>
+            </FlareAlert>
+        }
+        <FlareCard Variant="CardVariant.Outlined">
+            <FlareMarkdown Value="@_markdown" />
+        </FlareCard>
+    </FlareStack>
+}
+
+@code {
+    /// <summary>Theme id from the route, e.g. <c>md3-expressive</c>.</summary>
+    [Parameter] public string ThemeId { get; set; } = string.Empty;
+
+    private string? _markdown;
+    private string _title = string.Empty;
+    private bool? _isCurrent;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _markdown = Docs.Body(ThemeId);
+        var theme = ThemeService.Themes.FirstOrDefault(t => t.Id == ThemeId);
+        _title = theme?.DisplayName ?? ThemeId;
+        _isCurrent = theme is not null && ThemeService.CurrentTheme.Id == ThemeId;
+    }
+
+    private async Task ApplyThemeAsync()
+    {
+        await ThemeService.SetThemeAsync(ThemeId);
+        _isCurrent = true;
+    }
+}
