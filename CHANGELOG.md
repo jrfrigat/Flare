@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.16.0] - 2026-08-15
 
 ### Changed
 - **BREAKING visually under MD3 Expressive: the button size ramp is the spec's.** Heights were
@@ -88,6 +88,17 @@ All notable changes to Flare are documented here. This project adheres to
   claims are all as they were.
 
 ### Fixed
+- **An icon-only toggle button was not square.** `FlareButton` decides "icon-only" by its `ChildContent`
+  being null, and the rebuilt toggle handed its label over as markup between the tags - which compiles to
+  a fragment that renders nothing but is not null. So a toggle with only an icon kept a full-width
+  container, an empty label span and a gap beside its glyph: 78px wide where it should have been a 56px
+  square. The label is passed as a parameter now, and a null label is genuinely null.
+- **A selected toggle was invisible in four themes at one variant.** Giving every variant the same
+  selected paint works only if no variant already rests there - and the tonal button rests on exactly the
+  `secondary-container` those themes had chosen for "on", so a selected tonal toggle was pixel-identical
+  to an unselected one in Fluent UI 2, Visual Studio, Aero, Liquid Glass and Material 2. Selection in
+  those languages is the accent now, whatever the variant, and the filled toggle starts from a neutral
+  container rather than from the accent it ends on. All four variants read distinctly in each theme.
 - **Pressing the first or last button of a standard group made the group itself wider.** The press trade
   is meant to be a trade: the pressed segment takes space and the segments beside it give exactly that
   much up, so the row's width never changes and nothing around it moves. It only balanced in the middle
