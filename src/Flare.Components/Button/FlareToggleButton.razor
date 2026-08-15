@@ -26,9 +26,8 @@
              LeadingIcon="@_leadingIcon"
              TrailingIcon="TrailingIcon"
              OnClick="@(_ => HandleClick())"
-             @attributes="AdditionalAttributes">
-    @_label
-</FlareButton>
+             ChildContent="_label"
+             @attributes="AdditionalAttributes" />
 
 @code {
     /// <summary>Button label content shown alongside the icon.</summary>
@@ -127,6 +126,12 @@
 
     // The selected label falls back to the unselected one, so a toggle that only changes colour and shape
     // needs to say its label once.
+    //
+    // Handed to FlareButton as a PARAMETER rather than as markup between its tags, and the difference is
+    // not stylistic: `<FlareButton>@_label</FlareButton>` compiles to a ChildContent fragment that is
+    // never null - it renders nothing when the label is null, but it exists. FlareButton reads "no
+    // ChildContent" as "icon-only" and squares itself off, so writing it that way left an icon-only
+    // toggle with a full-width container, an empty label span and a gap beside its glyph.
     private RenderFragment? _label => _pressed ? (OnLabel ?? ChildContent) : ChildContent;
 
     private bool _showCheck => _pressed && Group?.CheckMark == true;

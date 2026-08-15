@@ -209,6 +209,20 @@ public class C_FlareButtonGroupTests : FlareTestContext
     }
 
     [Fact]
+    public void AToggleWithNoLabelIsIconOnly()
+    {
+        // FlareButton decides "icon-only" by ChildContent being null, so the label has to reach it as a
+        // parameter: markup between the tags compiles to a fragment that renders nothing but is not null,
+        // which left an icon-only toggle full width with an empty label span and a gap beside its glyph.
+        var cut = Render<FlareToggleButton>(p => p
+            .Add(x => x.OffIcon, (RenderFragment)(b => b.AddMarkupContent(0, "<i class=\"icon\"></i>")))
+            .Add(x => x.AriaLabel, "Star"));
+
+        Assert.Contains(Css.Classes.Button.IconOnly, cut.Find("button").ClassName);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Button.Label}"));
+    }
+
+    [Fact]
     public void TheLabelStaysPutWhenOnlyOneIsGiven()
     {
         // Falling back keeps a toggle that changes only colour and shape from having to say its label

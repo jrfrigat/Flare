@@ -167,20 +167,22 @@ internal class LiquidGlassTokens
         SelectedRadiusSquare = "var(--flare-shape-full)",
         SelectedBg = "var(--flare-color-secondary-container)",
         SelectedColor = "var(--flare-color-on-secondary-container)",
-        // One selected paint for every variant: this language answers selection by repainting to a single
-        // "on" colour rather than by sending each variant somewhere different, so the four pairs below
-        // deliberately repeat it. An unselected filled toggle is simply a filled button here - the
-        // distinction Material draws between the two does not exist in this design language.
-        ElevatedSelectedBg = "var(--flare-color-secondary-container)",
-        ElevatedSelectedColor = "var(--flare-color-on-secondary-container)",
-        FilledSelectedBg = "var(--flare-color-secondary-container)",
-        FilledSelectedColor = "var(--flare-color-on-secondary-container)",
-        TonalSelectedBg = "var(--flare-color-secondary-container)",
-        TonalSelectedColor = "var(--flare-color-on-secondary-container)",
-        OutlinedSelectedBg = "var(--flare-color-secondary-container)",
-        OutlinedSelectedColor = "var(--flare-color-on-secondary-container)",
-        FilledUnselectedBg = "var(--flare-color-primary)",
-        FilledUnselectedColor = "var(--flare-color-on-primary)",
+        // Selection is the accent here, whatever the variant: this language does not send each variant
+        // somewhere different the way Material does, it just says "on" in the accent colour. The one
+        // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
+        // secondary-container would be indistinguishable from an unselected one, which is exactly what
+        // happened when these four pairs were first filled in - so every variant travels to the accent,
+        // and the filled toggle starts from a neutral container rather than from the accent it ends on.
+        ElevatedSelectedBg = "var(--flare-color-primary)",
+        ElevatedSelectedColor = "var(--flare-color-on-primary)",
+        FilledSelectedBg = "var(--flare-color-primary)",
+        FilledSelectedColor = "var(--flare-color-on-primary)",
+        TonalSelectedBg = "var(--flare-color-primary)",
+        TonalSelectedColor = "var(--flare-color-on-primary)",
+        OutlinedSelectedBg = "var(--flare-color-primary)",
+        OutlinedSelectedColor = "var(--flare-color-on-primary)",
+        FilledUnselectedBg = "var(--flare-color-surface-container)",
+        FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
 
         FocusOutline = "none",
         FocusOutlineOffset = "0px",
