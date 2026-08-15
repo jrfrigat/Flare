@@ -1,5 +1,25 @@
 # MD3 Expressive: button md/lg/xl heights are capped below spec
 
+## RESOLVED in 0.16.0 - the ramp is the spec's
+
+The decision recorded below was made in favour of the spec. `MaterialDesign3ExpressiveTheme` now overrides
+`Button` with the Expressive ramp, measured off the running theme as heights **32/40/56/96/136px**, leading
+and trailing space **12/16/24/48/64px** and icon-label gaps **8/8/8/12/16px**.
+
+The "opt-in hero size set" option below was not taken, and the reason is worth keeping: the sizes ARE the
+opt-in. `Size` is already a per-call-site parameter, so an app that wants a 136dp control asks for `Xl` and
+one that does not never sees it. A second parallel scale would have been a way of having the size axis
+without admitting to it.
+
+The ramp lives on the Expressive theme rather than in the shared `MaterialDesignTokens`, because baseline
+M3 has exactly one button - "small", 40dp, per the M3-vs-M3-Expressive table on the spec site - and the
+XS/M/L/XL steps arrive with Expressive. The two eras genuinely disagree about how big a button is, so the
+baseline theme keeps its own gentler steps.
+
+Everything below is the original record, kept for the reasoning.
+
+---
+
 **Source:** MD3-Expressive theme fidelity audit (`docs/audits/md3-expressive-theme-fidelity.md`, buttons
 section). Recorded as a deliberate deviation pending a product call.
 

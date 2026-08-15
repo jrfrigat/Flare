@@ -60,7 +60,8 @@ Flare is a published NuGet library with token-driven theming. All component styl
 ### Already-implemented token records
 The full set lives in `src/Flare.Abstractions/Tokens/Components/`: Alert, Avatar, Badge, Button, Card,
 Checkbox, Chip, DataGrid, Dialog, Drawer, Fab, Input, Menu, Popover, Progress, Radio, Select,
-Slider, Snackbar, SplitButton, Switch, TableOfContents, Tabs, ToggleButton, Tooltip.
+Slider, Snackbar, SplitButton, Switch, TableOfContents, Tabs, ToggleButton, Tooltip - plus ButtonGroup,
+which carries both group models.
 
 ### 2.1 One color system - `FlareColor`
 Any public color-choice parameter of a component is **only** `FlareColor` (one name everywhere:

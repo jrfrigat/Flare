@@ -239,7 +239,9 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 | `ElevationTokens` | Тени | 6 уровней |
 | `MotionTokens` | Длительности + easings | 6 длительностей + 4 easing |
 | `StateTokens` | Уровни прозрачности | 6 состояний |
-| `ButtonTokens` | Геометрия кнопки | ~30 полей |
+| `ButtonTokens` | Геометрия кнопки, выбранное состояние, цвета toggle | 62 поля |
+| `ButtonGroupTokens` | Обе модели группы, по размерам | 20 полей |
+| `ToggleButtonTokens` | Только сегментированный контейнер | 4 поля |
 | `InputTokens` | Геометрия поля ввода | 23 поля |
 | `DialogTokens` | Модальный диалог | 26 полей |
 | `DrawerTokens` | Навигационный drawer | 18 полей |
@@ -263,6 +265,95 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 Это репрезентативная выборка; полный набор записей токенов компонентов лежит в
 `Flare.Abstractions/Tokens/Components/`. Все члены каждой записи объявлены `required`, поэтому
 компилятор перечислит все пропущенные, если вы собираете `DesignTokens` с нуля.
+
+### Семейство кнопки: на что обязана ответить ваша тема (0.16.0)
+
+Кнопка несёт больше решений, чем любой другой компонент, и три из них легко упустить, потому что они
+проявляются только в состояниях, о которых можно не подумать заранее. Если вы наследуетесь от готовой
+темы через `with { }`, рабочие ответы на все три достаются вам даром; если собираете `ButtonTokens` с
+нуля - компилятор назовёт каждый.
+
+**1. Выбранная кнопка - это смена формы, а не только цвета.** Toggle-кнопка представляет собой
+`FlareButton` с классом `flare-btn--selected` - тот же элемент, те же токены, - поэтому выбор описан в
+`ButtonTokens`:
+
+```csharp
+// Material формулирует это как ОБМЕН: круглая становится квадратной, квадратная - круглой.
+SelectedRadiusXs = "0.75rem",   // что берёт круглая кнопка при выборе, по размерам
+SelectedRadiusSm = "0.75rem",
+SelectedRadiusMd = "1rem",
+SelectedRadiusLg = "1.75rem",
+SelectedRadiusXl = "1.75rem",
+// ...и обратное направление - для кнопки, чья форма покоя является явным квадратом.
+// Язык, который НЕ меняет форму при выборе, направляет это обратно на свой же квадратный радиус:
+SelectedRadiusSquare = "var(--flare-shape-none)",
+```
+
+**2. У выбора есть цвет на каждый вариант, и один вариант отличается ещё до всякого выбора.** Material
+держит для переключателей отдельную цветовую таблицу - «the default and toggle buttons use different
+colors», - поэтому каждый вариант называет, куда он попадает:
+
+```csharp
+ElevatedSelectedBg = "var(--flare-color-primary)",
+ElevatedSelectedColor = "var(--flare-color-on-primary)",
+FilledSelectedBg = "var(--flare-color-primary)",
+FilledSelectedColor = "var(--flare-color-on-primary)",
+TonalSelectedBg = "var(--flare-color-secondary)",
+TonalSelectedColor = "var(--flare-color-on-secondary)",
+OutlinedSelectedBg = "var(--flare-color-inverse-surface)",
+OutlinedSelectedColor = "var(--flare-color-inverse-on-surface)",
+// Filled - тот самый вариант, что отличается в НЕвыбранном состоянии: filled-переключатель в покое
+// является нейтральным контейнером, а не акцентной заливкой, какой является filled-КНОПКА, иначе ряд
+// вариантов читается как уже выбранный.
+FilledUnselectedBg = "var(--flare-color-surface-container)",
+FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
+// Запасная пара - для варианта без собственной записи (в таблице Material это только Text).
+SelectedBg = "var(--flare-color-secondary-container)",
+SelectedColor = "var(--flare-color-on-secondary-container)",
+```
+
+> **Ловушка, которую стоит назвать.** Направить все четыре варианта в один цвет безопасно только если
+> ни один вариант в нём уже не покоится. Tonal-кнопка покоится на `secondary-container`, поэтому тема,
+> отвечающая `secondary-container` на все варианты, делает выбранную tonal-кнопку неотличимой от
+> невыбранной. Сверяйте цвет покоя каждого варианта с цветом, который вы выбрали для его выбранного
+> состояния.
+
+**3. Толщина обводки растёт вместе с размером.** Штрих, читающийся волоском рядом с маленькой подписью,
+рядом с крупной выглядит ниткой. Он резервируется у всех вариантов, а не только у outlined, поэтому
+смена варианта никогда ничего не сдвигает:
+
+```csharp
+OutlineWidthXs = "1px", OutlineWidthSm = "1px", OutlineWidthMd = "1px",
+OutlineWidthLg = "2px", OutlineWidthXl = "3px",
+```
+
+`ButtonGroupTokens` устроен по той же идее и описывает **две модели**. Стандартная группа - это
+отдельные кнопки, стоящие рядом: она добавляет только зазор, потому что углы остаются собственными
+углами кнопок. Связанная группа - это единый контрол со швами, и ей нужен весь словарь швов. Какие
+семейства идут по размерам, следует из того, может ли ответить высота: капсула - это половина
+собственной высоты сегмента, поэтому внешний и выбранный радиусы - по одному токену, а внутренние углы,
+нажатые углы и стандартные зазоры - шкалы, которые язык дизайна выбирает свободно:
+
+```csharp
+StandardGapXs = "1.125rem", StandardGapSm = "0.75rem", StandardGapMd = "0.5rem",
+StandardGapLg  = "0.5rem",  StandardGapXl = "0.5rem",
+ConnectedGap = "0.125rem",              // одно значение на всех размерах
+ConnectedOverlap = "0",                 // отрицательное стягивает сегменты на общую границу
+ConnectedOuterRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+ConnectedSelectedRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+ConnectedInnerRadiusXs = "0.5rem",  /* ...Sm, Md, Lg, Xl */
+ConnectedPressedRadiusXs = "0.25rem", /* ...Sm, Md, Lg, Xl */
+ZActive = "1",
+```
+
+`--_flare-btn-height` - это локальная переменная, которую задаёт собственный размерный класс кнопки,
+поэтому токен, ссылающийся на неё, разрешается по размеру, хотя написан один раз.
+
+Наконец, `ToggleButtonTokens` теперь описывает **только** контейнер сегментированной
+`FlareToggleGroup` - его рамку, два радиуса и линию между сегментами. Кнопки внутри являются кнопками и
+читают всё остальное из семейства кнопки, поэтому при переносе темы с версий до 0.16.0 высоты, отступы,
+gap, радиусы, цвета покоя и прозрачность disabled, которые раньше жили там, удалены, а не перемещены:
+ответы на них уже даёт ваш `ButtonTokens`.
 
 ### Использование токенов в CSS
 

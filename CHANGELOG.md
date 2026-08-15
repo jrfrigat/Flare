@@ -24,12 +24,14 @@ All notable changes to Flare are documented here. This project adheres to
   renders a `FlareButton` carrying `flare-btn--selected` instead of a control of its own, so it takes the
   button's height, padding, typography, corners, focus ring and every variant - and a toggle dropped into a
   `FlareButtonGroup` is a segment on exactly the terms a plain button is. It gains `Variant`, `Shape`,
-  `FullWidth`, `Typo` and `TrailingIcon` for free. `ToggleButtonTokens` loses the twenty-one members that
+  `FullWidth`, `Typo` and `TrailingIcon` for free. `ToggleButtonTokens` drops from thirty members to four,
+  losing the twenty-six that
   restated what `ButtonTokens` already said (heights, paddings, gap, rest and selected radii, rest colours,
   disabled opacity) and keeps only what the segmented container adds: its border, its two corner radii and
   its divider. A bespoke theme setting the old members will not compile; the values it wants are the
   button's. The `flare-toggle-btn` class family is gone from the DOM with them.
-- **BREAKING for custom themes: seventeen new required token members across the button and the group.**
+- **BREAKING for custom themes: thirty-nine new required token members across the button and the group.**
+  `ButtonTokens` goes from 39 members to 62 and `ButtonGroupTokens` from 6 to 20.
   `ButtonTokens` gains `SelectedRadiusXs..Xl`, `SelectedRadiusSquare`, `SelectedBg` and `SelectedColor`;
   `ButtonGroupTokens` replaces `StandardGap` with a five-step ramp, `ConnectedInnerRadius` with one, adds
   `ConnectedPressedRadiusXs..Xl` and `ConnectedSelectedRadius`, and keeps `ConnectedGap`,
