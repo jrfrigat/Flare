@@ -240,7 +240,7 @@ else
             .ToList();
     }
 
-    private void GoTo(string componentName) => Nav.NavigateTo($"/api/{componentName}");
+    private void GoTo(string componentName) => Nav.NavigateTo($"api/{componentName}");
 
     private readonly record struct LineageItem(string Name, bool IsCurrent);
 
@@ -263,7 +263,7 @@ else
             if (token.IsIdentifier && ComponentApiRegistry.IsDocumented(token.Text))
             {
                 builder.OpenElement(seq++, "a");
-                builder.AddAttribute(seq++, "href", $"/api/{token.Text}");
+                builder.AddAttribute(seq++, "href", $"api/{token.Text}");
                 builder.AddAttribute(seq++, "style", "color:var(--flare-color-primary);text-decoration:none;");
                 builder.AddContent(seq++, token.Text);
                 builder.CloseElement();

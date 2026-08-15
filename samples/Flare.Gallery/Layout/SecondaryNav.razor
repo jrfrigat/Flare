@@ -12,20 +12,20 @@
     <ChildContent>
         @if (Section == GallerySection.Guide)
         {
-            <FlareNavLink Href="/getting-started">
+            <FlareNavLink Href="getting-started">
                 <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.RocketLaunch" /></Icon>
                 <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
             </FlareNavLink>
-            <FlareNavLink Href="/changelog">
+            <FlareNavLink Href="changelog">
                 <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.History" /></Icon>
                 <ChildContent>@GalleryStrings.Nav_Changelog</ChildContent>
             </FlareNavLink>
         }
         else if (Section == GallerySection.Themes)
         {
-            <FlareNavLink Href="/theming" Match="NavMatchMode.Exact">@GalleryStrings.Nav_Theming</FlareNavLink>
-            <FlareNavLink Href="/color">@GalleryStrings.Nav_Color</FlareNavLink>
-            <FlareNavLink Href="/custom-theme">Custom Theme</FlareNavLink>
+            <FlareNavLink Href="theming" Match="NavMatchMode.Exact">@GalleryStrings.Nav_Theming</FlareNavLink>
+            <FlareNavLink Href="color">@GalleryStrings.Nav_Color</FlareNavLink>
+            <FlareNavLink Href="custom-theme">Custom Theme</FlareNavLink>
         }
         else if (Section == GallerySection.Components)
         {
@@ -41,21 +41,21 @@
         }
         else if (Section == GallerySection.Services)
         {
-            <FlareNavLink Href="/services/dynamic-color">Dynamic Color</FlareNavLink>
-            <FlareNavLink Href="/services/theme-scope">Theme Scope</FlareNavLink>
-            <FlareNavLink Href="/services/clipboard">Clipboard</FlareNavLink>
-            <FlareNavLink Href="/services/snackbar">Snackbar</FlareNavLink>
-            <FlareNavLink Href="/services/download">Download</FlareNavLink>
-            <FlareNavLink Href="/services/messagebox">Message Box</FlareNavLink>
-            <FlareNavLink Href="/services/dialog">Dialog</FlareNavLink>
-            <FlareNavLink Href="/services/version-check">Version Check</FlareNavLink>
+            <FlareNavLink Href="services/dynamic-color">Dynamic Color</FlareNavLink>
+            <FlareNavLink Href="services/theme-scope">Theme Scope</FlareNavLink>
+            <FlareNavLink Href="services/clipboard">Clipboard</FlareNavLink>
+            <FlareNavLink Href="services/snackbar">Snackbar</FlareNavLink>
+            <FlareNavLink Href="services/download">Download</FlareNavLink>
+            <FlareNavLink Href="services/messagebox">Message Box</FlareNavLink>
+            <FlareNavLink Href="services/dialog">Dialog</FlareNavLink>
+            <FlareNavLink Href="services/version-check">Version Check</FlareNavLink>
         }
         else if (Section == GallerySection.Api)
         {
-            <FlareNavLink Href="/api" Match="NavMatchMode.Exact">@GalleryStrings.Nav_AllApi</FlareNavLink>
+            <FlareNavLink Href="api" Match="NavMatchMode.Exact">@GalleryStrings.Nav_AllApi</FlareNavLink>
             @foreach (var name in _apiComponents)
             {
-                <FlareNavLink Href="@($"/api/{name}")">@name</FlareNavLink>
+                <FlareNavLink Href="@($"api/{name}")">@name</FlareNavLink>
             }
         }
     </ChildContent>

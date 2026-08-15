@@ -3,16 +3,21 @@
 
 @* Primary navigation rail: the top-level sections. Plain pages (Overview, Getting started) navigate;
    the section triggers (Themes, Components, Services, API) toggle the secondary drawer instead of
-   navigating, so clicking one reveals that section's pages in the column to the right. *@
+   navigating, so clicking one reveals that section's pages in the column to the right.
+
+   Every Href here (and everywhere else in the gallery) is base-relative - no leading slash, and ""
+   for the home page. The gallery ships to a site root (Docker/nginx) AND to a sub-path (GitHub Pages
+   serves it under /Flare/); "/x" resolves against the ORIGIN, ignoring <base href>, so a leading
+   slash silently navigates out of the app on Pages and breaks FlareNavLink's active matching too. *@
 <FlareNavMenu Mode="Mode">
     <Footer>
-        <FlareNavLink Href="/settings" Tooltip="@GalleryStrings.Settings_Title">
+        <FlareNavLink Href="settings" Tooltip="@GalleryStrings.Settings_Title">
             <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Settings" /></Icon>
             <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
         </FlareNavLink>
     </Footer>
     <ChildContent>
-        <FlareNavLink Href="/" Match="NavMatchMode.Exact">
+        <FlareNavLink Href="" Match="NavMatchMode.Exact">
             <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Home" /></Icon>
             <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
         </FlareNavLink>

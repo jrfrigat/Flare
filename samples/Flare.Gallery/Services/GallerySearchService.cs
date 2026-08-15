@@ -91,12 +91,12 @@ public sealed class GallerySearchService
         var list = new List<Entry>();
 
         // -- Top-level pages (English name = the resource key resolved for en). ----
-        AddKeyed(list, "/", "Nav_Overview", SearchKind.Page, "home");
-        AddKeyed(list, "/getting-started", "Nav_GettingStarted", SearchKind.Page, "rocket_launch");
-        AddKeyed(list, "/theming", "Nav_Theming", SearchKind.Page, "palette");
-        AddKeyed(list, "/color", "Nav_Color", SearchKind.Page, "format_color_fill");
+        AddKeyed(list, "", "Nav_Overview", SearchKind.Page, "home");
+        AddKeyed(list, "getting-started", "Nav_GettingStarted", SearchKind.Page, "rocket_launch");
+        AddKeyed(list, "theming", "Nav_Theming", SearchKind.Page, "palette");
+        AddKeyed(list, "color", "Nav_Color", SearchKind.Page, "format_color_fill");
         // Custom Theme has no localized nav label (English-only literal in the menu).
-        AddLiteral(list, "/custom-theme", "Custom Theme", SearchKind.Page, "tune");
+        AddLiteral(list, "custom-theme", "Custom Theme", SearchKind.Page, "tune");
 
         // -- Components (English name from the catalog; RU/EN titles from resources). --
         foreach (var c in ComponentCatalog.All)
@@ -109,7 +109,7 @@ public sealed class GallerySearchService
 
         // -- API type pages (type names only; English). ---------------------------
         foreach (var name in ComponentApiRegistry.Components.Keys)
-            list.Add(new Entry($"/api/{name}", null, name, SearchKind.Api, "data_object", Hay(name, null, null, name)));
+            list.Add(new Entry($"api/{name}", null, name, SearchKind.Api, "data_object", Hay(name, null, null, name)));
 
         return list;
     }

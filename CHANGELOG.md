@@ -3,6 +3,36 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.16.1] - 2026-08-15
+
+### Fixed
+- **Every relative link rendered as `about:blank`.** The href guard allow-listed URL *shapes* - a leading
+  `/` or `#`, or an `http`/`https`/`mailto`/`tel` scheme - so an internal link written the way the Blazor
+  project template writes one (`href="counter"`, `href=""` for home) failed the check and was swapped for
+  `about:blank`. It went unnoticed while every link in the gallery began with `/`, and a leading slash is
+  exactly what an app cannot use once it is hosted under a sub-path, because it resolves against the
+  origin and ignores `<base href>`: serving the gallery from `/Flare/` killed 112 of its 140 links at
+  once. The guard now blocks by SCHEME instead of by shape - a relative reference is always safe, an
+  absolute URL only when its scheme cannot run script - and it sees through what a shape allow-list
+  never had to consider: leading whitespace, `JaVaScRiPt:`, and a tab dropped inside the word
+  `javascript`, which a browser strips before it parses the scheme. `FlareMenuItem`,
+  `FlareBottomNavItem` and `FlareNavLink` each carried a private copy of the old check; all six
+  link-bearing components share `CssValidator` now. `IsImageSrcSafe` gets the same model, still refusing
+  `data:` for anything that is not an image.
+
+### Changed
+- **GitHub Pages serves the gallery; the docfx site is gone.** docfx turned the XML docs into roughly
+  eight thousand HTML pages that nothing in the repo ever linked to, and a component library's site
+  should be its components: the gallery renders every one of them live, in every theme, and already
+  carries the generated API reference and the changelog. `docs.yml` becomes `pages.yml` and publishes
+  the WASM app; `docfx.json`, `filterConfig.yml`, the docfx landing page, its tocs and its template go
+  with it. The markdown guides under `docs/` are no longer built into HTML - they stay in the repo,
+  which is where the README already pointed at them. Deploys drop from 119 MB to 18 MB.
+- **The gallery's own links are base-relative.** A project Pages site is served from `/Flare/`, so the
+  navigation, the home page cards, the API links and the search index drop their leading slash and the
+  home link becomes `""`. The same build now serves correctly from a site root (the Docker image) and
+  from a sub-path.
+
 ## [0.16.0] - 2026-08-15
 
 ### Changed
