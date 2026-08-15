@@ -1,13 +1,39 @@
 # Core decoupling P1+P2: tokenize the state-layer paint + disabled model
 
-**Re-checked against the code 2026-08-07 - still open, and the file is accurate.** What is in the tree:
-`StateTokens` carries the 4 `-layer` members (Hover/Focus/Pressed/Dragged) and no `SelectedLayer`, exactly
-as recorded; the layer tokens are read by 4 core stylesheets only - `button.css`, `menuitem.css`,
-`togglebutton.css` and the shared `state-layer.css` - i.e. Pattern A and nothing else. Pattern B's ~23
-stylesheets still bake `color-mix(<role> X%, <base>)` directly. FluentUI2 still ships 253 lines of override
-CSS across 5 files with 4 surviving `opacity: 0 !important` `::before` suppressions, so P1 items 2-3 have
-not started. P2 has not started either: there is no `--flare-state-disabled-bg/-fg/-border` anywhere (the
-only `DisabledBg` in the tree is `--flare-input-disabled-bg`, an input-specific token, not the core trio).
+**P1, P2 and P3 all landed across 0.12.2-0.15.0. Four things are still open** - re-measured against the
+tree 2026-08-15, so this list is the file's live part and everything below it is the record of how the
+rest was done (worth keeping: several of those paragraphs are the only place a trap is written down).
+
+1. **The SELECTED state never moved onto the layer model.** There is no `--flare-state-selected-layer`
+   token anywhere, and four core stylesheets still mix from `--flare-state-selected-opacity`:
+   `breadcrumb.css`, `datagrid.css`, `listbox.css`, `tabs.css`. It is the one axis left on the old
+   mechanism, and `CssAudit check` means the token and its first consumer must land in one commit.
+2. **Two themes still suppress the core layer.** `grep "opacity: 0 !important" src/Flare.Theme.*` returns
+   `Flare.Theme.Aero/.../button.css:19` and `Flare.Theme.LiquidGlass/.../button.css:19`, both
+   `.flare-btn::before { opacity: 0 !important; }`. The note further down saying the suppressions are gone
+   was checked against FluentUI2 only - these two were never looked at, and they are the same defect the
+   issue was opened about (the theme fighting the core instead of assigning the token).
+3. **The DataGrid's range cell** (`primary` at 14%, `datagrid.css:450`) wants a DataGrid token of its own -
+   Excel-style range selection is not the same state as a selected row, so folding it onto
+   `--flare-state-selected-opacity` would assert they are.
+4. **The vertical tab's active wash** (`primary` at 8%, `tabs.css:333`) plus the tab CLOSE button painting
+   its *hover* from `--flare-state-selected-opacity` (`tabs.css:301`). This is a tabs state audit, not a
+   one-line patch, and it overlaps item 1.
+
+**Pattern B was decided, not dropped:** the ~23 stylesheets that bake `color-mix(<semantic role> X%,
+<base>)` stay as they are. Semantic roles are mandate-allowed, so this is a far weaker coupling than the
+`currentColor` overlay this issue was opened about, and routing the library's whole hover paint through
+one channel buys little. Recorded here so it reads as an accepted decision rather than unfinished work.
+
+---
+
+**Original header, kept for the dates.** Re-checked 2026-08-07: `StateTokens` carries the 4 `-layer`
+members (Hover/Focus/Pressed/Dragged) and no `SelectedLayer`; the layer tokens were then read by 4 core
+stylesheets only - `button.css`, `menuitem.css`, `togglebutton.css` and the shared `state-layer.css` -
+i.e. Pattern A and nothing else. FluentUI2 still shipped 253 lines of override CSS across 5 files with 4
+surviving `opacity: 0 !important` suppressions. P2 had not started: there was no
+`--flare-state-disabled-bg/-fg/-border` anywhere (the only `DisabledBg` in the tree is
+`--flare-input-disabled-bg`, an input-specific token, not the core trio).
 
 **Decision (2026-07-13):** Flare's core component CSS bakes ONE theme's interaction model (MD3): the
 state layer is a translucent `currentColor` `::before` overlay, and disabled is whole-element `opacity`.

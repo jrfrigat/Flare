@@ -3,6 +3,17 @@
 Follow-ups to `core-state-model-tokenization-p1-p2.md`. Deferred by decision (2026-07-13) - do P1+P2
 first, keep these as tracked scope.
 
+**Live part, re-checked 2026-08-15 - one item.** The dead-fallback strip, its correction, the splitter and
+toggle-button holes and the `SettableTokenTests` half of the guard are all done and shipped; the rest of
+this file is the record of how, including two mistakes worth not repeating. What remains:
+
+- **The fallback half of the P3 guard**: a test that no core `wwwroot/css` file carries a
+  `var(--flare-*, <visual-opinion literal>)`. The 29 structural reads enumerated below are its allowlist,
+  and it cannot reuse `LiteralFallbackRx` - reason (3) in "Why no gate caught either one" explains why.
+
+**P4 needs no work**: keeping the MD3-derived role vocabulary is an accepted decision, written up at the
+bottom of this file so it stays an explicit contract rather than a silent assumption.
+
 ## P3 - sweep literal visual fallbacks out of core component CSS
 
 **STATUS: DONE** (commits `082b1f3`, then `f260e95` in 0.5.0): 515 dead `var(--flare-X, <literal>)` fallbacks stripped

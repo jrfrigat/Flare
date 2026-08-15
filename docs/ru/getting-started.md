@@ -323,4 +323,4 @@ docker compose up --build
 
 - [Архитектура](architecture.md) - подробно о модулях, токенах и сервисах
 - [Создание тем](theme-creation-guide.md) - дизайн-токены, палитры, кастомные темы
-- [Галерея](https://flare.frigat.duckdns.org/) - живые примеры всех компонентов
+- [Галерея](https://jrfrigat.github.io/Flare/) - живые примеры всех компонентов
