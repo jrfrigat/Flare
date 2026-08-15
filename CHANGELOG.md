@@ -69,6 +69,15 @@ All notable changes to Flare are documented here. This project adheres to
   claims are all as they were.
 
 ### Fixed
+- **Pressing the first or last button of a standard group made the group itself wider.** The press trade
+  is meant to be a trade: the pressed segment takes space and the segments beside it give exactly that
+  much up, so the row's width never changes and nothing around it moves. It only balanced in the middle
+  of a row - at either end there is one neighbour rather than two, and the group grew by the step the
+  missing neighbour never paid. Measured on a medium group: 304.4px at rest, 310.4px on a first or last
+  press. The pressed segment now takes a step from each side that HAS a neighbour to take it from, so an
+  end button expands inward and the row measures 304.4px in every position. The same correction applies
+  to a vertical group's height, and to a collapsed group, where the last visible segment is followed by
+  the overflow control rather than by a segment - a case no first/last-child rule could have described.
 - **Pressing a toggle segment grew its neighbours instead of shrinking them.** A standard group trades
   width on a press: the pressed segment takes a step and the segments beside it give one up. The trade is
   written against the button's own padding token, and a toggle button was not a button - it carried a

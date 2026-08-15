@@ -57,10 +57,24 @@
        multiplier would need JS measuring each segment. The step is sized to land near 15% for a
        typical label.
 
-       The arithmetic is deliberate. The pressed segment gains one step on EACH side (2 steps total);
-       each neighbour loses half a step per side (1 step total). With a neighbour on both sides the
-       group's size is unchanged to the pixel; at the ends of the group only one neighbour can pay, so
-       the group gives a little - which is also how a real elastic row behaves.
+       THE ARITHMETIC HAS TO SUM TO ZERO, and that is what decides the shape of the rules below. Each
+       neighbour gives up half a step per side, so one step in total; the pressed segment therefore
+       takes exactly one step from each side that HAS a neighbour to take it from. In the middle of a
+       row that is two steps against two payers; at either end it is one step against the single payer
+       there is. Either way the row's width is unchanged to the pixel.
+
+       An earlier version grew the pressed segment by two steps wherever it stood and accepted that an
+       end press had only one neighbour to pay for it - the group widened by a step on every press of
+       its first or last button, which moved whatever sat beside the group. The fix is not to make the
+       lone neighbour pay double: that would keep the pressed segment's growth constant at the cost of
+       squeezing one neighbour twice as hard as any other, and it cannot be written at all for the case
+       that matters most, a collapsible group whose last visible segment is followed by the overflow
+       control rather than by a segment. Growing only toward a neighbour handles every arrangement with
+       the same two rules, and an end button expanding INWARD, away from the group's edge, is what the
+       eye expects anyway.
+
+       A folded segment is excluded by name: it is still a sibling in the DOM but display:none, so it
+       cannot pay, and counting it would let the group grow by the step it never gave up.
 
        The spec pairs this with a 0.9/1400 spring, whose overshoot is 0.15% - invisible. It rides the
        theme's fast spring rung, which overshoots more; that is this theme being Expressive rather than
@@ -90,9 +104,14 @@
     .flare-btn-group > .flare-btn--lg,
     .flare-btn-group > .flare-btn--xl { --_press-step: 0.5rem; }
 
-    /* Horizontal: the main axis is inline, so the trade is in side padding. */
-    .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:active {
-        padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
+    /* Horizontal: the main axis is inline, so the trade is in side padding - and each side is written
+       separately, because a side with no neighbour behind it must not grow. A first segment therefore
+       expands only rightwards and a last one only leftwards, while a segment in the middle does both. */
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:not([data-flare-bg-hidden]) + .flare-btn:active {
+        padding-inline-start: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
+    }
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:active:has(+ .flare-btn:not([data-flare-bg-hidden])) {
+        padding-inline-end: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
     }
     .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:active + .flare-btn,
     .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:has(+ .flare-btn:active) {
@@ -109,9 +128,22 @@
 
        Material does not define a vertical button group at all - it says groups travel in a single
        line and do not interact vertically. Flare offers one, so this is Flare's reading of the same
-       rule along the other axis rather than something the spec dictates. */
+       rule along the other axis rather than something the spec dictates.
+
+       Height is one property rather than two edges, so the "only grow toward a neighbour" rule is
+       counted into a local first and spent once: zero for a lone segment, one where there is a
+       neighbour on a single side, two in the middle. The selectors are ordered by how many neighbours
+       they assert, and their specificity rises with it, so the most specific match wins. */
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active { --_grow-sides: 0; }
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:not([data-flare-bg-hidden]) + .flare-btn:active,
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active:has(+ .flare-btn:not([data-flare-bg-hidden])) {
+        --_grow-sides: 1;
+    }
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:not([data-flare-bg-hidden]) + .flare-btn:active:has(+ .flare-btn:not([data-flare-bg-hidden])) {
+        --_grow-sides: 2;
+    }
     .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active {
-        height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) + var(--_press-step) * 2);
+        height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) + var(--_press-step) * var(--_grow-sides));
     }
     .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active + .flare-btn,
     .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:has(+ .flare-btn:active) {
