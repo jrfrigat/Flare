@@ -107,6 +107,8 @@ internal static class MaterialDesign2Tokens
         DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
         // Focus outranks hover in this language, so the pair resolves to the focus wash.
         FocusHoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        SelectedLayer = "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent)",
+        SelectedHoverLayer = "color-mix(in srgb, var(--flare-color-primary) 18%, transparent)",
     };
 
     // ---- Components: only the tokens that differ from the defaults to read as MD2. ----

@@ -31,4 +31,8 @@ public static class State
     public const string DraggedLayer = "--flare-state-dragged-layer";
     /// <summary>CSS custom-property name for the focus-while-hovered state layer token.</summary>
     public const string FocusHoverLayer = "--flare-state-focus-hover-layer";
+    /// <summary>CSS custom-property name for the selected state-layer paint token.</summary>
+    public const string SelectedLayer = "--flare-state-selected-layer";
+    /// <summary>CSS custom-property name for the selected-while-hovered state layer token.</summary>
+    public const string SelectedHoverLayer = "--flare-state-selected-hover-layer";
 }

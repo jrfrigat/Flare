@@ -62,8 +62,8 @@ public static class DataGridField
     public const string ActiveCellOutline = "--flare-datagrid-active-cell-outline";
     /// <summary>CSS custom-property name for the column-picker minimum width.</summary>
     public const string ColumnPickerMinWidth = "--flare-datagrid-column-picker-min-width";
-    /// <summary>CSS custom-property name for the selected+hover row mix percentage.</summary>
-    public const string RowSelectedHoverPct = "--flare-datagrid-row-selected-hover-pct";
+    /// <summary>CSS custom-property name for the cell-range selection paint.</summary>
+    public const string RangeLayer = "--flare-datagrid-range-layer";
     /// <summary>CSS custom-property name for the row-being-edited tint percentage.</summary>
     public const string RowEditingPct = "--flare-datagrid-row-editing-pct";
     /// <summary>CSS custom-property name for the loading-veil opacity percentage.</summary>

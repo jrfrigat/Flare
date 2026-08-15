@@ -42,4 +42,28 @@ public sealed record StateTokens
     /// is contested: pressed outranks both everywhere.
     /// </remarks>
     [CssVar(State.FocusHoverLayer)] public required string FocusHoverLayer { get; init; }
+
+    /// <summary>
+    /// Selected state-layer paint (full background value incl. alpha) - the wash that marks a row,
+    /// option, tab or node as chosen, as opposed to the transient hover/focus/pressed states above.
+    /// </summary>
+    /// <remarks>
+    /// Selection is the one interaction state that persists, so it is the one a language is most
+    /// likely to express differently: a tonal container in Material, a discrete neutral fill in
+    /// Fluent. It reads the same way as the other layers - the core says where the paint goes, the
+    /// theme says what it is - and it takes a gradient as readily as a colour.
+    /// </remarks>
+    [CssVar(State.SelectedLayer)] public required string SelectedLayer { get; init; }
+
+    /// <summary>
+    /// State layer painted while an element is selected <i>and</i> hovered at once.
+    /// </summary>
+    /// <remarks>
+    /// The same problem <see cref="FocusHoverLayer"/> solves, for the other persistent pairing:
+    /// stacking two translucent washes is not what either language means by "a selected row you are
+    /// pointing at", so the pair gets one token and each theme states the answer. This replaced a
+    /// DataGrid-only knob that mixed the primary colour at a percentage, which said the same thing
+    /// but only for one component and only in one design language's terms.
+    /// </remarks>
+    [CssVar(State.SelectedHoverLayer)] public required string SelectedHoverLayer { get; init; }
 }

@@ -95,6 +95,8 @@ public class FluentUI2Tokens
         DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
         // Fluent signals focus with a stroke, not a fill, so the hover fill must survive the pairing.
         FocusHoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        SelectedLayer = "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent)",
+        SelectedHoverLayer = "color-mix(in srgb, var(--flare-color-primary) 18%, transparent)",
     };
 
     internal static readonly BadgeTokens Badge = new()
@@ -846,7 +848,7 @@ public class FluentUI2Tokens
         FilterGroupRail = "3px",
         ActiveCellOutline = "2px solid var(--flare-color-primary)",
         ColumnPickerMinWidth = "160px",
-        RowSelectedHoverPct = "18%",
+        RangeLayer = "color-mix(in srgb, var(--flare-color-primary) 14%, transparent)",
         RowEditingPct = "6%",
         LoadingVeilPct = "55%",
         LoadingDim = "0.6",

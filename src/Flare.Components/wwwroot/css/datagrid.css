@@ -79,12 +79,15 @@
   border-bottom: none;
 }
 
-/* Selected row: tinted with the primary state layer. */
-.flare-datagrid__row--selected .flare-datagrid__td {
-  background: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), var(--flare-color-surface));
+/* Selected row: the theme's selected layer, painted on the ROW for the same reason the hover moved
+   there - a row has one background and one currentColor, while a cell has neither reliably. Mixing
+   into transparent rather than into surface lets it composite over whatever the row actually sits
+   on (a stripe, a group tint), instead of assuming the table is on the surface colour. */
+.flare-datagrid__row--selected {
+  background: var(--flare-state-selected-layer);
 }
-.flare-datagrid__row--selected:hover .flare-datagrid__td {
-  background: color-mix(in srgb, var(--flare-color-primary) var(--flare-datagrid-row-selected-hover-pct), var(--flare-color-surface));
+.flare-datagrid--hoverable tbody tr.flare-datagrid__row--selected:hover {
+  background: var(--flare-state-selected-hover-layer);
 }
 
 .flare-datagrid__empty {
@@ -446,8 +449,10 @@
 
 /* Excel-like cell-range selection (CellSelection). Range cells get a tinted primary wash; the
    active (focus) cell gets a solid primary outline. */
+/* Not the selected layer: an Excel-style range is a different state from a selected row, and saying
+   so with one token would assert they are the same. It gets its own DataGrid paint. */
 .flare-datagrid__cell--range {
-  background: color-mix(in srgb, var(--flare-color-primary) 14%, transparent);
+  background: var(--flare-datagrid-range-layer);
 }
 .flare-datagrid__cell--active {
   outline: var(--flare-datagrid-active-cell-outline);

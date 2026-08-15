@@ -112,6 +112,8 @@ public static class CssVarMap
         v[Css.Tokens.State.PressedLayer] = t.State.PressedLayer;
         v[Css.Tokens.State.DraggedLayer] = t.State.DraggedLayer;
         v[Css.Tokens.State.FocusHoverLayer] = t.State.FocusHoverLayer;
+        v[Css.Tokens.State.SelectedLayer] = t.State.SelectedLayer;
+        v[Css.Tokens.State.SelectedHoverLayer] = t.State.SelectedHoverLayer;
 
         #region BADGE
         v[Css.Tokens.Badge.Radius] = t.Badge.Radius;
@@ -678,7 +680,7 @@ public static class CssVarMap
         v[Css.Tokens.DataGridField.FilterGroupRail] = t.DataGrid.FilterGroupRail;
         v[Css.Tokens.DataGridField.ActiveCellOutline] = t.DataGrid.ActiveCellOutline;
         v[Css.Tokens.DataGridField.ColumnPickerMinWidth] = t.DataGrid.ColumnPickerMinWidth;
-        v[Css.Tokens.DataGridField.RowSelectedHoverPct] = t.DataGrid.RowSelectedHoverPct;
+        v[Css.Tokens.DataGridField.RangeLayer] = t.DataGrid.RangeLayer;
         v[Css.Tokens.DataGridField.RowEditingPct] = t.DataGrid.RowEditingPct;
         v[Css.Tokens.DataGridField.LoadingVeilPct] = t.DataGrid.LoadingVeilPct;
         v[Css.Tokens.DataGridField.LoadingDim] = t.DataGrid.LoadingDim;

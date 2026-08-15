@@ -57,6 +57,7 @@
   transition: background var(--flare-motion-duration-short1);
 }
 
+/* Also a hover reading the selected opacity - see the note in tabs.css on the close button. */
 .flare-breadcrumb__expander:hover {
-  background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-selected-opacity) * 100%), transparent);
+  background: var(--flare-state-hover-layer);
 }
