@@ -925,6 +925,7 @@ public static class CssVarMap
 
         #region SCRIM
         v[Css.Tokens.ScrimField.Opacity] = t.Scrim.Opacity;
+        v[Css.Tokens.TouchField.TargetMin] = t.Touch.TargetMin;
         #endregion
 
         #region SCROLLTOP

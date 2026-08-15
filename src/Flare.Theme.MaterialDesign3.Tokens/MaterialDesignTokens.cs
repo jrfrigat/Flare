@@ -1001,6 +1001,13 @@ public class MaterialDesignTokens
         Opacity = "0.32",
     };
 
+    // Material asks for a 48dp minimum target; the control keeps its drawn size and the core widens
+    // the hit area to this under a coarse pointer.
+    internal static readonly TouchTokens Touch = new()
+    {
+        TargetMin = "48px",
+    };
+
     internal static readonly ScrollTopTokens ScrollTop = new()
     {
         TopInset = "1.5rem",
@@ -1050,6 +1057,7 @@ public class MaterialDesignTokens
         Otp = Otp,
         Picker = Picker,
         Scrim = Scrim,
+        Touch = Touch,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
         Stripe = Stripe,

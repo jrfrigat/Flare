@@ -1,8 +1,8 @@
 # Mobile: verify and finish the small-screen story
 
-**Status: OPEN, opened 2026-08-15.** One instance found and fixed (the gallery's section drawer, below);
-the audit behind it has not been done. Everything in "Measured" was read off a real 375x812 viewport
-against the Release build, not inferred from the CSS.
+**Status: OPEN - the three measured defects are fixed (2026-08-15), the sweep behind them is not done.**
+Everything in "Measured" was read off a real 375x812 viewport against the Release build, not inferred
+from the CSS.
 
 Flare has the machinery for this already - `IBrowserViewportService`, `Breakpoint`, `FlareMediaQuery`,
 `FlareLayout`'s mobile bound, the `Hidden.BelowMd` utilities - and several components use it well
@@ -42,26 +42,50 @@ byte-identical - rail 0-88, panel 88-360, content from 392.
 **This is the shape of the whole issue: the responsive primitives work, and the places that consume them
 have not all been checked.**
 
-### 2. The DataGrid overflows its container with no scroller - OPEN
+### 2. The DataGrid clipped its own columns - FIXED
 
-At 375px, on `/components/datagrid`: `.flare-datagrid` measures **600px inside a 343px container**, and
-every ancestor up to the layout has `overflow-x: visible` (`scrollWidth` 624 vs `clientWidth` 343). The
-page itself does not scroll horizontally, so the columns past 343px are not merely off to the side - they
-are **clipped and unreachable by touch**.
+At 375px, on `/components/datagrid`: `.flare-datagrid` measured **600px inside a 343px container**, with
+`overflow-x: visible` on every ancestor (`scrollWidth` 624 vs `clientWidth` 343). The page did not scroll
+horizontally, so the columns past 343px were not off to the side - they were **clipped and unreachable
+by touch**.
 
-A wide grid on a narrow screen needs a decision, not a media query: horizontal scroll inside the grid's
-own frame is the cheap answer; column priority (drop low-priority columns first) or a stacked card
-rendering per row is the good one. `FlareTable` needs the same call and should get the same answer.
+The cause was one selector naming the wrong element. The small-screen rule read:
 
-### 3. Touch targets are below the 48dp Material asks for - OPEN
+```css
+@media (max-width: 599px) {
+  .flare-datagrid__wrapper { overflow-x: auto; }
+  .flare-datagrid       { min-width: 600px; }   /* the OUTER element */
+}
+```
 
-On the same page, **36 of 36** interactive controls under `#gallery-main` are shorter than 44px:
-pagination buttons at 36x36, and so on down the page. WCAG 2.5.8 (AA) sets the floor at 24x24, so this
-is not a violation - but Material's own guidance is 48x48, iOS asks for 44x44, and 36px is under both.
+`.flare-datagrid` is the component's outer flex column and `__wrapper` is the scroller inside it, so the
+minimum made the whole component 600px wide - the scroller grew with it and had nothing left to scroll.
+The comment above the rule described the right behaviour all along. The minimum now sits on
+`.flare-datagrid__table`, as `max-content` rather than a fixed width, so a narrow grid still fits without
+a scrollbar and a wide one scrolls by exactly what it needs. Measured after: grid 295px in its container,
+wrapper 293 visible / 394 scrollable.
 
-This is a token question rather than a CSS one: the min target is a per-size ramp, and the sizes are
-chosen for a mouse. Options are a coarse-pointer bump (`@media (pointer: coarse)`) applied through the
-size tokens, or a documented "use the larger size on touch" rule. It must not become a core literal.
+`FlareTable` was checked at the same time and is structurally fine - `.flare-table-container` already
+scrolls, and a table that squashes rather than scrolls keeps its content reachable.
+
+### 3. Touch targets below every published minimum - FIXED for the square controls
+
+On the same page, **36 of 36** interactive controls under `#gallery-main` were shorter than 44px:
+pagination buttons at 36x36, and so on. WCAG 2.5.8 (AA) sets the floor at 24x24, so this was not a
+violation - but it is under both Material's and Apple's guidance.
+
+`TouchTokens.TargetMin` (`--flare-touch-target-min`) is now a theme token, read only inside the core's
+`@media (pointer: coarse)` block, where the square icon-sized controls take it as a minimum size.
+
+**The control grows rather than a hit area drawn over it**, which is the opposite of the usual advice
+and deliberate: each of these sits in a row of its own kind, so an expanded target overlaps its
+neighbours and the later sibling silently wins the tap - a pagination bar of 36px buttons with a 4px gap
+would have every button stealing 4px from the one beside it. The reflow this causes is confined to
+devices whose PRIMARY pointer is coarse; a laptop with a touchscreen reports `fine` and is untouched.
+
+**Still open here:** the dense inline affordances - a chip's close icon (1.1em) and a tab's close icon
+(1.25rem) - are excluded, because their hosts have no room to give and an oversized target would cover
+the chip body or the neighbouring chip. Making those tappable is a spacing and layout question.
 
 ## What the audit still has to cover
 

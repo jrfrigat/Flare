@@ -160,6 +160,9 @@ public sealed record DesignTokens
     /// <summary>scrim geometry tokens.</summary>
     public required ScrimTokens Scrim { get; init; }
 
+    /// <summary>pointer-ergonomics tokens (the minimum target a coarse pointer gets).</summary>
+    public required TouchTokens Touch { get; init; }
+
     /// <summary>scroll geometry tokens.</summary>
     public required ScrollTopTokens ScrollTop { get; init; }
 

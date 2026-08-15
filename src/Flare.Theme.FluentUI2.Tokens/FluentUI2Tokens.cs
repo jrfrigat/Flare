@@ -1024,6 +1024,13 @@ public class FluentUI2Tokens
         Opacity = "0.32",
     };
 
+    // Fluent's touch guidance is 44px, not Material's 48dp. The control keeps its drawn size and the
+    // core widens the hit area to this under a coarse pointer.
+    internal static readonly TouchTokens Touch = new()
+    {
+        TargetMin = "44px",
+    };
+
     internal static readonly ScrollTopTokens ScrollTop = new()
     {
         TopInset = "1.5rem",
@@ -1071,6 +1078,7 @@ public class FluentUI2Tokens
         Otp = Otp,
         Picker = Picker,
         Scrim = Scrim,
+        Touch = Touch,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
         Stripe = Stripe,

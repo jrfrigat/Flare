@@ -3,6 +3,63 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.17.0] - 2026-08-15
+
+### Changed
+- **BREAKING for custom themes: the selected state is a layer, like every other state.** `StateTokens`
+  gains `SelectedLayer` and `SelectedHoverLayer`, `DesignTokens` gains `Touch`, and
+  `DataGridTokens.RowSelectedHoverPct` is replaced by `RangeLayer` - all `required`, so a custom theme
+  will not compile until it answers them. Selection was the last interaction state the core still
+  computed on every theme's behalf, mixing the primary colour at the selected opacity in four
+  stylesheets. Now the core says where the paint goes and the theme says what it is, and the pairing a
+  selected row makes with hover gets its own token for the same reason focus-while-hovered did: two
+  translucent washes stacked is not what either language means by "the selected row you are pointing
+  at". Under the in-box themes nothing moves - the DataGrid's selected row was measured before and
+  after and composites to the same colour, because mixing into `transparent` over a surface backdrop
+  and mixing into `surface` are the same arithmetic. It now also paints correctly over a stripe or a
+  group tint, which the old "mix into surface" could only guess at.
+- **Three states that were reading the wrong axis.** The tab's close button and the breadcrumb's
+  expander painted their HOVER from the selected opacity - darkening by the amount the design language
+  reserves for "chosen" - and the listbox's keyboard-highlighted option painted an accent wash from it,
+  above the layer rather than through it. They read the hover and focus layers now. Under MD3 the
+  close button and expander lighten from 12% to 8%, and the highlighted option changes from primary at
+  12% to the content colour at 10%: the highlight is roving focus, which is neither an accent nor a
+  selection.
+- **The vertical tab's active wash is the theme's, not the core's.** It was a literal 8% of primary; it
+  is the selected layer now, which under MD3 reads 12%. A theme could not previously retune it at all.
+- **Aero and Liquid Glass stopped switching the core's state layer off.** Both suppressed it with
+  `opacity: 0 !important` on the button's `::before` - the theme fighting the core - where the honest
+  form is to name the paint: the layer tokens are `transparent` there now. The old declaration also
+  outranked the DISABLED layer, so it had been deciding that too; both themes park `DisabledLayer` at
+  `transparent`, so nothing moves on screen.
+
+### Added
+- **`TouchTokens.TargetMin` - the minimum a control presents to a finger.** Read only inside the core's
+  `@media (pointer: coarse)` rules, where the square icon-sized controls take it as a minimum size.
+  Measured at 375px beforehand: 36 of 36 interactive controls on the DataGrid page were shorter than
+  44px. The CONTROL grows rather than a transparent hit area drawn over it - the usual advice, and
+  wrong here, because each of these sits in a row of its own kind and an expanded target overlaps its
+  neighbours, with the later sibling silently winning the tap. The reflow is confined to devices whose
+  primary pointer is coarse; a laptop with a touchscreen reports `fine`.
+- **A guard against suppressing a state layer.** `StateLayerModelTests` already refused
+  `opacity: 1 !important` in a theme; it now refuses `opacity: 0 !important` too, and all three checks
+  in that file strip CSS comments before scanning. The first run reported three offenders, every one of
+  them a paragraph explaining why the old form was wrong - a guard that forbids documenting the
+  anti-pattern is not one worth having.
+
+### Fixed
+- **The DataGrid clipped its own columns on a phone.** At 375px the grid measured 600px inside a 343px
+  container with `overflow-x: visible` all the way up, so the columns past the viewport were not off to
+  the side - they were cut off and unreachable by touch. The small-screen rule put its minimum width on
+  `.flare-datagrid`, the outer flex column, instead of on the table that scrolls inside
+  `.flare-datagrid__wrapper`: the scroller grew with the component and had nothing left to scroll. The
+  minimum is `max-content` on the table now, so a narrow grid still fits without a scrollbar and a wide
+  one scrolls by exactly what it needs. Measured after: 293px visible, 394px scrollable.
+- **The gallery's section drawer could not be closed on a phone.** Below the Md bound every drawer
+  floats over the content, and the section column was given `Open` one-way with no `OpenChanged` - so
+  the scrim tap, Escape, and the layout's own "close floating drawers on navigation" were all raised
+  into nothing, and the next render put it straight back. It covered a 375px viewport with no way out.
+
 ## [0.16.1] - 2026-08-15
 
 ### Fixed
