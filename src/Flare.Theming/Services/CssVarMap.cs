@@ -845,6 +845,8 @@ public static class CssVarMap
         v[Css.Tokens.SwitchField.FocusOutline] = t.Switch.FocusOutline;
         v[Css.Tokens.SwitchField.FocusOutlineOffset] = t.Switch.FocusOutlineOffset;
         v[Css.Tokens.SwitchField.FocusShadow] = t.Switch.FocusShadow;
+        v[Css.Tokens.SwitchField.FocusShadowOff] = t.Switch.FocusShadowOff;
+        v[Css.Tokens.SwitchField.FocusShadowOn] = t.Switch.FocusShadowOn;
         v[Css.Tokens.SwitchField.TrackHoverOffBg] = t.Switch.TrackHoverOffBg;
         v[Css.Tokens.SwitchField.TrackHoverOnBg] = t.Switch.TrackHoverOnBg;
         v[Css.Tokens.SwitchField.HoverShadowOff] = t.Switch.HoverShadowOff;

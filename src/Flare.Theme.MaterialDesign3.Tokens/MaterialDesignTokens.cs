@@ -896,6 +896,8 @@ public class MaterialDesignTokens
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
+        FocusShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        FocusShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-focus-opacity) * 100%), transparent)",
         TrackHoverOffBg = "var(--flare-switch-track-off-bg)",
         TrackHoverOnBg = "var(--flare-switch-track-on-bg)",
         HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",

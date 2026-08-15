@@ -230,6 +230,12 @@ public static partial class MarkdownParser
         // Header row
         var headers = SplitTableRow(lines[start]);
         // Skip separator (start+1)
+        // A markdown table is authored content: it can need more width than the column it lands in, and
+        // nothing here can know in advance. Wrapped in its own scroller so a wide table scrolls rather
+        // than being clipped by whatever contains it - measured at 375px, a 754px table simply lost its
+        // right-hand columns with no way to reach them. `display: block` on the table itself would
+        // scroll too, but it also throws away table layout, which is the one thing the table is for.
+        sb.AppendLine($"<div class=\"{Css.Classes.Markdown.TableScroll}\">");
         sb.AppendLine("<table>");
         sb.AppendLine("  <thead><tr>");
         foreach (var h in headers)
@@ -250,15 +256,51 @@ public static partial class MarkdownParser
 
         sb.AppendLine("  </tbody>");
         sb.AppendLine("</table>");
+        sb.AppendLine("</div>");
         return i;
     }
 
+    /// <summary>
+    /// Splits a table row on its delimiting pipes, honouring the <c>\|</c> escape.
+    /// </summary>
+    /// <remarks>
+    /// A pipe is the cell delimiter, so a cell that needs a literal one escapes it - and inside a table
+    /// that is the ONLY way, because a code span does not protect it either. A naive Split('|') turns
+    /// one cell reading <c>Variant="Filled\|Tonal"</c> into three, which shifts every later cell into a
+    /// column of its own and leaves the row's backticks unpaired. The escape is consumed here rather
+    /// than by the inline renderer, so what reaches it is already the literal text.
+    /// </remarks>
     private static string[] SplitTableRow(string line)
     {
         var t = line.Trim();
         if (t.StartsWith('|')) t = t[1..];
-        if (t.EndsWith('|')) t = t[..^1];
-        return t.Split('|');
+        // A row ENDING in an escaped pipe keeps it: that last '|' is content, not the closing delimiter.
+        if (t.EndsWith('|') && !t.EndsWith("\\|", StringComparison.Ordinal)) t = t[..^1];
+
+        var cells = new List<string>();
+        var cell = new StringBuilder();
+
+        for (var i = 0; i < t.Length; i++)
+        {
+            if (t[i] == '\\' && i + 1 < t.Length && t[i + 1] == '|')
+            {
+                cell.Append('|');
+                i++;
+                continue;
+            }
+
+            if (t[i] == '|')
+            {
+                cells.Add(cell.ToString());
+                cell.Clear();
+                continue;
+            }
+
+            cell.Append(t[i]);
+        }
+
+        cells.Add(cell.ToString());
+        return [.. cells];
     }
 
     private static int RenderParagraph(string[] lines, int start, StringBuilder sb)

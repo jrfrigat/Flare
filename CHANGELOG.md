@@ -3,7 +3,7 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.17.0] - 2026-08-15
+## [0.17.0] - 2026-08-16
 
 ### Changed
 - **BREAKING for custom themes: the selected state is a layer, like every other state.** `StateTokens`
@@ -55,6 +55,17 @@ All notable changes to Flare are documented here. This project adheres to
   you are reading about. The nav lists one entry per registered theme that ships a README, so adding a
   theme package adds its page without editing a list. Each README has a Russian translation beside it
   (`README.ru.md`), served by UI culture with a fall back to English, the same way the changelog works.
+- **A guard against a core fallback that decides how a component looks**, closing the last open item of
+  the core/theme decoupling work. `CoreCssFallbackTests` reads every `var(--flare-x, <fallback>)` in core
+  CSS and requires the fallback to be an identity value. The plan had assumed this needed an allowlist of
+  the 29 legitimate structural reads; measured, it does not - a per-instance var falls back to `1`,
+  `auto`, `0deg` or a chain of other vars, and only a fallback that names a COLOUR is a design decision.
+  One rule, no list, and a new structural fallback passes on its own merits.
+  - It found two offenders immediately: **the switch's focus halo was core opinion no theme could
+    reach.** `--flare-switch-focus-shadow-off`/`-on` were registered nowhere and set by nobody, so the
+    halo's size and colour were baked into `switch.css`. They were invisible to CssAudit because
+    `--flare-switch-focus-shadow` IS a const and the audit counts a token as declared when any const is a
+    segment prefix of it. Both are now `required` members of `SwitchTokens`, set by both theme bases.
 - **A guard against suppressing a state layer.** `StateLayerModelTests` already refused
   `opacity: 1 !important` in a theme; it now refuses `opacity: 0 !important` too, and all three checks
   in that file strip CSS comments before scanning. The first run reported three offenders, every one of

@@ -416,6 +416,10 @@ public static class SwitchField
     public const string FocusOutlineOffset = "--flare-switch-focus-outline-offset";
     /// <summary>CSS custom-property name for the focus shadow.</summary>
     public const string FocusShadow = "--flare-switch-focus-shadow";
+    /// <summary>CSS custom-property name for the off-state focus layer around the handle.</summary>
+    public const string FocusShadowOff = "--flare-switch-focus-shadow-off";
+    /// <summary>CSS custom-property name for the on-state focus layer around the handle.</summary>
+    public const string FocusShadowOn = "--flare-switch-focus-shadow-on";
     /// <summary>CSS custom-property name for the track background on off-hover.</summary>
     public const string TrackHoverOffBg = "--flare-switch-track-hover-off-bg";
     /// <summary>CSS custom-property name for the track background on on-hover.</summary>

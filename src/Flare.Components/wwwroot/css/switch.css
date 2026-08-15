@@ -164,14 +164,15 @@
     background: var(--flare-switch-thumb-state-on-color);
 }
 
-/* Focus state layer (~10%), in addition to the focus ring. */
+/* Focus state layer around the handle, in addition to the focus ring. Both the size and the colour are
+   the theme's: they used to be literals in a fallback that no theme could reach, because
+   --flare-switch-focus-shadow is a registered const and the audit's segment-prefix rule read
+   "-off"/"-on" as already declared by it. */
 .flare-switch__input:focus-visible + .flare-switch__thumb .flare-switch__handle {
-    box-shadow: var(--flare-switch-focus-shadow-off,
-        0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) 10%, transparent));
+    box-shadow: var(--flare-switch-focus-shadow-off);
 }
 .flare-switch__input:checked:focus-visible + .flare-switch__thumb .flare-switch__handle {
-    box-shadow: var(--flare-switch-focus-shadow-on,
-        0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) 10%, transparent));
+    box-shadow: var(--flare-switch-focus-shadow-on);
 }
 
 /* __label style comes from the shared control-label rule (checkbox.css). */
