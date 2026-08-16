@@ -120,6 +120,78 @@ public static class Button
         public const string Xl = "--flare-btn-icon-size-xl";
     }
 
+    /// <summary>Width of the container's border, per size. Reserved on every button whatever its variant
+    /// so switching variant never shifts layout, and painted only by the ones that draw an outline.</summary>
+    public static class OutlineWidth
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-outline-width-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-outline-width-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-outline-width-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-outline-width-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-outline-width-xl";
+    }
+
+    /// <summary>Corner radius a SELECTED button takes, per size. Selection is a shape change as much as a
+    /// colour change, and the two directions are not the same value, which is why this is a family of its
+    /// own rather than a reuse of the rest radii.</summary>
+    public static class SelectedRadius
+    {
+        /// <summary>CSS custom-property name for the xs token.</summary>
+        public const string Xs = "--flare-btn-selected-radius-xs";
+        /// <summary>CSS custom-property name for the sm token.</summary>
+        public const string Sm = "--flare-btn-selected-radius-sm";
+        /// <summary>CSS custom-property name for the md token.</summary>
+        public const string Md = "--flare-btn-selected-radius-md";
+        /// <summary>CSS custom-property name for the lg token.</summary>
+        public const string Lg = "--flare-btn-selected-radius-lg";
+        /// <summary>CSS custom-property name for the xl token.</summary>
+        public const string Xl = "--flare-btn-selected-radius-xl";
+    }
+
+    /// <summary>CSS custom-property name for the corner radius a selected button takes when its rest
+    /// shape is the explicit square. One value rather than a ramp: a language that opens a square out
+    /// on selection opens it to a capsule, which is arithmetic on the segment's own height.</summary>
+    public const string SelectedRadiusSquare = "--flare-btn-selected-radius-square";
+    /// <summary>CSS custom-property name for the selected container background token, used by any variant
+    /// that does not name its own.</summary>
+    public const string SelectedBg = "--flare-btn-selected-bg";
+    /// <summary>CSS custom-property name for the selected foreground token.</summary>
+    public const string SelectedColor = "--flare-btn-selected-color";
+
+    /// <summary>Per-variant paint for a toggle button, which Material states as a table of its own: "the
+    /// default and toggle buttons use different colors". A selected button of each variant lands somewhere
+    /// the variant does not otherwise go, and one variant - filled - also differs from its own default
+    /// while UNselected, which is why that pair exists here too.</summary>
+    public static class Toggle
+    {
+        /// <summary>CSS custom-property name for the selected elevated container.</summary>
+        public const string ElevatedSelectedBg = "--flare-btn-elevated-selected-bg";
+        /// <summary>CSS custom-property name for the selected elevated icon and label.</summary>
+        public const string ElevatedSelectedColor = "--flare-btn-elevated-selected-color";
+        /// <summary>CSS custom-property name for the selected filled container.</summary>
+        public const string FilledSelectedBg = "--flare-btn-filled-selected-bg";
+        /// <summary>CSS custom-property name for the selected filled icon and label.</summary>
+        public const string FilledSelectedColor = "--flare-btn-filled-selected-color";
+        /// <summary>CSS custom-property name for the selected tonal container.</summary>
+        public const string TonalSelectedBg = "--flare-btn-tonal-selected-bg";
+        /// <summary>CSS custom-property name for the selected tonal icon and label.</summary>
+        public const string TonalSelectedColor = "--flare-btn-tonal-selected-color";
+        /// <summary>CSS custom-property name for the selected outlined container.</summary>
+        public const string OutlinedSelectedBg = "--flare-btn-outlined-selected-bg";
+        /// <summary>CSS custom-property name for the selected outlined icon and label.</summary>
+        public const string OutlinedSelectedColor = "--flare-btn-outlined-selected-color";
+        /// <summary>CSS custom-property name for the UNselected filled toggle container - the one place a
+        /// toggle differs from its variant's default before anything is selected.</summary>
+        public const string FilledUnselectedBg = "--flare-btn-filled-unselected-bg";
+        /// <summary>CSS custom-property name for the unselected filled toggle icon and label.</summary>
+        public const string FilledUnselectedColor = "--flare-btn-filled-unselected-color";
+    }
+
     /// <summary>Prefix for the label typography CSS variables: --flare-btn-label-{size}-{font|weight|size|height|spacing}.</summary>
     public const string LabelPrefix = "--flare-btn-label";
 

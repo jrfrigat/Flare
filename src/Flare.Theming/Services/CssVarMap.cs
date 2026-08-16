@@ -112,6 +112,8 @@ public static class CssVarMap
         v[Css.Tokens.State.PressedLayer] = t.State.PressedLayer;
         v[Css.Tokens.State.DraggedLayer] = t.State.DraggedLayer;
         v[Css.Tokens.State.FocusHoverLayer] = t.State.FocusHoverLayer;
+        v[Css.Tokens.State.SelectedLayer] = t.State.SelectedLayer;
+        v[Css.Tokens.State.SelectedHoverLayer] = t.State.SelectedHoverLayer;
 
         #region BADGE
         v[Css.Tokens.Badge.Radius] = t.Badge.Radius;
@@ -224,6 +226,30 @@ public static class CssVarMap
         v[Css.Tokens.Button.IconSize.Lg] = t.Button.IconSizeLg;
         v[Css.Tokens.Button.IconSize.Xl] = t.Button.IconSizeXl;
 
+        v[Css.Tokens.Button.SelectedRadius.Xs] = t.Button.SelectedRadiusXs;
+        v[Css.Tokens.Button.SelectedRadius.Sm] = t.Button.SelectedRadiusSm;
+        v[Css.Tokens.Button.SelectedRadius.Md] = t.Button.SelectedRadiusMd;
+        v[Css.Tokens.Button.SelectedRadius.Lg] = t.Button.SelectedRadiusLg;
+        v[Css.Tokens.Button.SelectedRadius.Xl] = t.Button.SelectedRadiusXl;
+        v[Css.Tokens.Button.OutlineWidth.Xs] = t.Button.OutlineWidthXs;
+        v[Css.Tokens.Button.OutlineWidth.Sm] = t.Button.OutlineWidthSm;
+        v[Css.Tokens.Button.OutlineWidth.Md] = t.Button.OutlineWidthMd;
+        v[Css.Tokens.Button.OutlineWidth.Lg] = t.Button.OutlineWidthLg;
+        v[Css.Tokens.Button.OutlineWidth.Xl] = t.Button.OutlineWidthXl;
+        v[Css.Tokens.Button.SelectedRadiusSquare] = t.Button.SelectedRadiusSquare;
+        v[Css.Tokens.Button.Toggle.ElevatedSelectedBg] = t.Button.ElevatedSelectedBg;
+        v[Css.Tokens.Button.Toggle.ElevatedSelectedColor] = t.Button.ElevatedSelectedColor;
+        v[Css.Tokens.Button.Toggle.FilledSelectedBg] = t.Button.FilledSelectedBg;
+        v[Css.Tokens.Button.Toggle.FilledSelectedColor] = t.Button.FilledSelectedColor;
+        v[Css.Tokens.Button.Toggle.TonalSelectedBg] = t.Button.TonalSelectedBg;
+        v[Css.Tokens.Button.Toggle.TonalSelectedColor] = t.Button.TonalSelectedColor;
+        v[Css.Tokens.Button.Toggle.OutlinedSelectedBg] = t.Button.OutlinedSelectedBg;
+        v[Css.Tokens.Button.Toggle.OutlinedSelectedColor] = t.Button.OutlinedSelectedColor;
+        v[Css.Tokens.Button.Toggle.FilledUnselectedBg] = t.Button.FilledUnselectedBg;
+        v[Css.Tokens.Button.Toggle.FilledUnselectedColor] = t.Button.FilledUnselectedColor;
+        v[Css.Tokens.Button.SelectedBg] = t.Button.SelectedBg;
+        v[Css.Tokens.Button.SelectedColor] = t.Button.SelectedColor;
+
         // Label typography (across 5 sizes)
         FlattenBtnLabel(v, "xs", t.Button.LabelXs);
         FlattenBtnLabel(v, "sm", t.Button.LabelSm);
@@ -233,11 +259,25 @@ public static class CssVarMap
         #endregion
 
         #region BUTTON GROUP
-        v[Css.Tokens.ButtonGroup.StandardGap] = t.ButtonGroup.StandardGap;
+        v[Css.Tokens.ButtonGroup.StandardGap.Xs] = t.ButtonGroup.StandardGapXs;
+        v[Css.Tokens.ButtonGroup.StandardGap.Sm] = t.ButtonGroup.StandardGapSm;
+        v[Css.Tokens.ButtonGroup.StandardGap.Md] = t.ButtonGroup.StandardGapMd;
+        v[Css.Tokens.ButtonGroup.StandardGap.Lg] = t.ButtonGroup.StandardGapLg;
+        v[Css.Tokens.ButtonGroup.StandardGap.Xl] = t.ButtonGroup.StandardGapXl;
         v[Css.Tokens.ButtonGroup.ConnectedGap] = t.ButtonGroup.ConnectedGap;
         v[Css.Tokens.ButtonGroup.ConnectedOverlap] = t.ButtonGroup.ConnectedOverlap;
         v[Css.Tokens.ButtonGroup.ConnectedOuterRadius] = t.ButtonGroup.ConnectedOuterRadius;
-        v[Css.Tokens.ButtonGroup.ConnectedInnerRadius] = t.ButtonGroup.ConnectedInnerRadius;
+        v[Css.Tokens.ButtonGroup.ConnectedSelectedRadius] = t.ButtonGroup.ConnectedSelectedRadius;
+        v[Css.Tokens.ButtonGroup.ConnectedInnerRadius.Xs] = t.ButtonGroup.ConnectedInnerRadiusXs;
+        v[Css.Tokens.ButtonGroup.ConnectedInnerRadius.Sm] = t.ButtonGroup.ConnectedInnerRadiusSm;
+        v[Css.Tokens.ButtonGroup.ConnectedInnerRadius.Md] = t.ButtonGroup.ConnectedInnerRadiusMd;
+        v[Css.Tokens.ButtonGroup.ConnectedInnerRadius.Lg] = t.ButtonGroup.ConnectedInnerRadiusLg;
+        v[Css.Tokens.ButtonGroup.ConnectedInnerRadius.Xl] = t.ButtonGroup.ConnectedInnerRadiusXl;
+        v[Css.Tokens.ButtonGroup.ConnectedPressedRadius.Xs] = t.ButtonGroup.ConnectedPressedRadiusXs;
+        v[Css.Tokens.ButtonGroup.ConnectedPressedRadius.Sm] = t.ButtonGroup.ConnectedPressedRadiusSm;
+        v[Css.Tokens.ButtonGroup.ConnectedPressedRadius.Md] = t.ButtonGroup.ConnectedPressedRadiusMd;
+        v[Css.Tokens.ButtonGroup.ConnectedPressedRadius.Lg] = t.ButtonGroup.ConnectedPressedRadiusLg;
+        v[Css.Tokens.ButtonGroup.ConnectedPressedRadius.Xl] = t.ButtonGroup.ConnectedPressedRadiusXl;
         v[Css.Tokens.ButtonGroup.ZActive] = t.ButtonGroup.ZActive;
         #endregion
 
@@ -308,41 +348,10 @@ public static class CssVarMap
         v[Css.Tokens.SplitButton.TriggerRadius.XlBottomLeft] = t.SplitButton.TriggerRadiusXl.BottomLeft;
         #endregion
 
-        #region TOGGLE BUTTON
-        v[Css.Tokens.ToggleButton.Height.Sm] = t.ToggleButton.HeightSm;
-        v[Css.Tokens.ToggleButton.HeightXs] = t.ToggleButton.HeightXs;
-        v[Css.Tokens.ToggleButton.HeightXl] = t.ToggleButton.HeightXl;
-        v[Css.Tokens.ToggleButton.PaddingXs] = t.ToggleButton.PaddingXs;
-        v[Css.Tokens.ToggleButton.PaddingXl] = t.ToggleButton.PaddingXl;
-        v[Css.Tokens.ToggleButton.Height.Md] = t.ToggleButton.HeightMd;
-        v[Css.Tokens.ToggleButton.Height.Lg] = t.ToggleButton.HeightLg;
-
-        v[Css.Tokens.ToggleButton.Padding.Sm] = t.ToggleButton.PaddingSm;
-        v[Css.Tokens.ToggleButton.Padding.Md] = t.ToggleButton.PaddingMd;
-        v[Css.Tokens.ToggleButton.Padding.Lg] = t.ToggleButton.PaddingLg;
-
-        v[Css.Tokens.ToggleButton.Gap] = t.ToggleButton.Gap;
-        v[Css.Tokens.ToggleButton.Radius.Xs] = t.ToggleButton.RadiusXs;
-        v[Css.Tokens.ToggleButton.Radius.Sm] = t.ToggleButton.RadiusSm;
-        v[Css.Tokens.ToggleButton.Radius.Md] = t.ToggleButton.RadiusMd;
-        v[Css.Tokens.ToggleButton.Radius.Lg] = t.ToggleButton.RadiusLg;
-        v[Css.Tokens.ToggleButton.Radius.Xl] = t.ToggleButton.RadiusXl;
-
-        v[Css.Tokens.ToggleButton.RadiusSelected.Xs] = t.ToggleButton.RadiusSelectedXs;
-        v[Css.Tokens.ToggleButton.RadiusSelected.Sm] = t.ToggleButton.RadiusSelectedSm;
-        v[Css.Tokens.ToggleButton.RadiusSelected.Md] = t.ToggleButton.RadiusSelectedMd;
-        v[Css.Tokens.ToggleButton.RadiusSelected.Lg] = t.ToggleButton.RadiusSelectedLg;
-        v[Css.Tokens.ToggleButton.RadiusSelected.Xl] = t.ToggleButton.RadiusSelectedXl;
-
-        v[Css.Tokens.ToggleButton.RestBg] = t.ToggleButton.RestBg;
-        v[Css.Tokens.ToggleButton.RestColor] = t.ToggleButton.RestColor;
-        v[Css.Tokens.ToggleButton.SelectedBg] = t.ToggleButton.SelectedBg;
-        v[Css.Tokens.ToggleButton.SelectedColor] = t.ToggleButton.SelectedColor;
-
+        #region TOGGLE GROUP (segmented container; its buttons read the BUTTON family)
         v[Css.Tokens.ToggleButton.GroupBorder] = t.ToggleButton.GroupBorder;
         v[Css.Tokens.ToggleButton.GroupRadius] = t.ToggleButton.GroupRadius;
         v[Css.Tokens.ToggleButton.GroupRadiusVertical] = t.ToggleButton.GroupRadiusVertical;
-        v[Css.Tokens.ToggleButton.DisabledOpacity] = t.ToggleButton.DisabledOpacity;
         v[Css.Tokens.ToggleButton.GroupDivider] = t.ToggleButton.GroupDivider;
         #endregion
 
@@ -671,7 +680,7 @@ public static class CssVarMap
         v[Css.Tokens.DataGridField.FilterGroupRail] = t.DataGrid.FilterGroupRail;
         v[Css.Tokens.DataGridField.ActiveCellOutline] = t.DataGrid.ActiveCellOutline;
         v[Css.Tokens.DataGridField.ColumnPickerMinWidth] = t.DataGrid.ColumnPickerMinWidth;
-        v[Css.Tokens.DataGridField.RowSelectedHoverPct] = t.DataGrid.RowSelectedHoverPct;
+        v[Css.Tokens.DataGridField.RangeLayer] = t.DataGrid.RangeLayer;
         v[Css.Tokens.DataGridField.RowEditingPct] = t.DataGrid.RowEditingPct;
         v[Css.Tokens.DataGridField.LoadingVeilPct] = t.DataGrid.LoadingVeilPct;
         v[Css.Tokens.DataGridField.LoadingDim] = t.DataGrid.LoadingDim;
@@ -836,6 +845,8 @@ public static class CssVarMap
         v[Css.Tokens.SwitchField.FocusOutline] = t.Switch.FocusOutline;
         v[Css.Tokens.SwitchField.FocusOutlineOffset] = t.Switch.FocusOutlineOffset;
         v[Css.Tokens.SwitchField.FocusShadow] = t.Switch.FocusShadow;
+        v[Css.Tokens.SwitchField.FocusShadowOff] = t.Switch.FocusShadowOff;
+        v[Css.Tokens.SwitchField.FocusShadowOn] = t.Switch.FocusShadowOn;
         v[Css.Tokens.SwitchField.TrackHoverOffBg] = t.Switch.TrackHoverOffBg;
         v[Css.Tokens.SwitchField.TrackHoverOnBg] = t.Switch.TrackHoverOnBg;
         v[Css.Tokens.SwitchField.HoverShadowOff] = t.Switch.HoverShadowOff;
@@ -916,6 +927,7 @@ public static class CssVarMap
 
         #region SCRIM
         v[Css.Tokens.ScrimField.Opacity] = t.Scrim.Opacity;
+        v[Css.Tokens.TouchField.TargetMin] = t.Touch.TargetMin;
         #endregion
 
         #region SCROLLTOP

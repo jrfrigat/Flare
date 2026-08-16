@@ -322,4 +322,4 @@ docker compose up --build
 
 - [Architecture](architecture.md) - modules, tokens and services in detail
 - [Theme creation](theme-creation-guide.md) - design tokens, palettes, custom themes
-- [Gallery](https://flare.frigat.duckdns.org/) - live examples of every component
+- [Gallery](https://jrfrigat.github.io/Flare/) - live examples of every component

@@ -1,7 +1,10 @@
 @* The two group models differ in what a press does. Press and HOLD a middle button in each row to
    see it: the standard group's neighbours give up width while the pressed one takes it; the connected
    group's segments only change shape. A connected group is also meant to span its surface, which is
-   why it is paired with FullWidth here. *@
+   why it is paired with FullWidth here.
+
+   Neither model is tied to a variant - the group describes the spacing and the seams, never the fill -
+   so the last row wears Outlined to show the same connected geometry under a different button. *@
 <FlareStack Gap="FlareSpacing.Large" Align="FlareAlignItems.Stretch">
     <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Start">
         <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Standard - segments respond to each other</FlareText>
@@ -15,6 +18,15 @@
     <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Stretch">
         <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Connected - only the pressed segment changes shape</FlareText>
         <FlareButtonGroup Connected FullWidth Variant="ButtonVariant.Tonal">
+            <FlareButton>Day</FlareButton>
+            <FlareButton>Week</FlareButton>
+            <FlareButton>Month</FlareButton>
+        </FlareButtonGroup>
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.Small" Align="FlareAlignItems.Stretch">
+        <FlareText Typo="TypographyScale.LabelLarge" Color="@Colors.OnSurfaceVariant">Connected, Outlined - the same geometry under another variant</FlareText>
+        <FlareButtonGroup Connected FullWidth Variant="ButtonVariant.Outlined">
             <FlareButton>Day</FlareButton>
             <FlareButton>Week</FlareButton>
             <FlareButton>Month</FlareButton>

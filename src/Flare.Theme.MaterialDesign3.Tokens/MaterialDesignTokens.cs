@@ -109,6 +109,8 @@ public class MaterialDesignTokens
         DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
         // Focus outranks hover in this language, so the pair resolves to the focus wash.
         FocusHoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        SelectedLayer = "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent)",
+        SelectedHoverLayer = "color-mix(in srgb, var(--flare-color-primary) 18%, transparent)",
     };
 
     internal static readonly BadgeTokens Badge = new()
@@ -143,6 +145,12 @@ public class MaterialDesignTokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
+        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
+        OutlineWidthXs = "1px",
+        OutlineWidthSm = "1px",
+        OutlineWidthMd = "1px",
+        OutlineWidthLg = "1px",
+        OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
         // 5 gap sizes (Gap) between text and icon
@@ -167,6 +175,39 @@ public class MaterialDesignTokens
         PaddingInlineMd = "1.5rem",
         PaddingInlineLg = "2rem",
         PaddingInlineXl = "2.5rem",
+
+        // Selected: `md.comp.button.<size>.selected.container.shape.round` - 12/12/16/28/28dp. These are
+        // the SQUARE shape values, which is the whole idea: a round button that gets selected takes the
+        // square shape and a square one takes the capsule, so selection reads as a change of kind rather
+        // than a change of degree. The other direction is arithmetic on the height and belongs to the
+        // core rule, not here.
+        SelectedRadiusXs = "0.75rem",  // 12dp
+        SelectedRadiusSm = "0.75rem",  // 12dp
+        SelectedRadiusMd = "1rem",     // 16dp
+        SelectedRadiusLg = "1.75rem",  // 28dp
+        SelectedRadiusXl = "1.75rem",  // 28dp
+        SelectedRadiusSquare = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+        // The fallback pair, which in Material's own table reaches only the text style - the one style it
+        // says a toggle should not use. Named anyway so a text toggle reads as on rather than as nothing.
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+
+        // The toggle colour table, read straight across: elevated fills with the accent, filled returns to
+        // it, tonal steps down from the container to the tone itself, and outlined inverts the surface.
+        // Each lands somewhere its own default never goes, which is what makes "selected" legible without
+        // a checkmark beside it.
+        ElevatedSelectedBg = "var(--flare-color-primary)",
+        ElevatedSelectedColor = "var(--flare-color-on-primary)",
+        FilledSelectedBg = "var(--flare-color-primary)",
+        FilledSelectedColor = "var(--flare-color-on-primary)",
+        TonalSelectedBg = "var(--flare-color-secondary)",
+        TonalSelectedColor = "var(--flare-color-on-secondary)",
+        OutlinedSelectedBg = "var(--flare-color-inverse-surface)",
+        OutlinedSelectedColor = "var(--flare-color-inverse-on-surface)",
+        // And the one asymmetry in that table: a filled toggle AT REST is a neutral container, not the
+        // primary fill a filled button is, or every option in a row would read as already chosen.
+        FilledUnselectedBg = "var(--flare-color-surface-container)",
+        FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
 
         // Per-corner radii: a fully rounded capsule at all 5 sizes, expressed as half the size's own
         // height rather than through the Shape.Full scale.
@@ -213,13 +254,31 @@ public class MaterialDesignTokens
     // one seam, rounded control ends, flat interior corners. Standard: separate buttons a spacing step
     // apart, each keeping its own corner - MD3 Expressive keeps this and reshapes only the connected
     // half, since a standard group's segments are already the buttons the theme drew.
+    // Baseline M3 has no button-group component of its own - the group is an Expressive addition - so
+    // this states the plain, unanimated reading: one gap at every size, segments sharing a seam, and a
+    // selection that is a repaint rather than a reshape. The Expressive theme replaces the whole record
+    // with the spec's per-size ramps.
     internal static readonly ButtonGroupTokens ButtonGroup = new()
     {
-        StandardGap = "var(--flare-spacing-4)",
+        StandardGapXs = "var(--flare-spacing-4)",
+        StandardGapSm = "var(--flare-spacing-4)",
+        StandardGapMd = "var(--flare-spacing-4)",
+        StandardGapLg = "var(--flare-spacing-4)",
+        StandardGapXl = "var(--flare-spacing-4)",
         ConnectedGap = "0",
         ConnectedOverlap = "-1px",
         ConnectedOuterRadius = "var(--flare-shape-small)",
-        ConnectedInnerRadius = "0",
+        ConnectedSelectedRadius = "var(--flare-shape-small)",
+        ConnectedInnerRadiusXs = "0",
+        ConnectedInnerRadiusSm = "0",
+        ConnectedInnerRadiusMd = "0",
+        ConnectedInnerRadiusLg = "0",
+        ConnectedInnerRadiusXl = "0",
+        ConnectedPressedRadiusXs = "0",
+        ConnectedPressedRadiusSm = "0",
+        ConnectedPressedRadiusMd = "0",
+        ConnectedPressedRadiusLg = "0",
+        ConnectedPressedRadiusXl = "0",
         ZActive = "1",
     };
 
@@ -256,44 +315,14 @@ public class MaterialDesignTokens
     };
 
     // MD3: round rest shape, morphs into a squircle on selection (values = record defaults).
+    // Only the segmented container's own chrome: the buttons inside it are buttons and read the button
+    // family for everything else.
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
-        HeightXs = "1.75rem",
-        HeightXl = "3.5rem",
-        PaddingXs = "0.5rem",
-        PaddingXl = "2rem",
-        HeightSm = "2rem",
-        HeightMd = "2.5rem",
-        HeightLg = "3rem",
-        PaddingSm = "0.75rem",
-        PaddingMd = "1rem",
-        PaddingLg = "1.5rem",
-        Gap = "0.375rem",
-        // A capsule, expressed as half the size's own height rather than through Shape.Full, for the
-        // same reason the button's radii are: 9999px is clamped when painted, so the round ->
-        // squircle travel on selection would show nothing until the value crossed the clamp and would
-        // arrive as a snap. Per size because a single token resolves once at the document root, where
-        // no size is in scope.
-        RadiusXs = "calc(var(--flare-toggle-btn-height-xs) / 2)",
-        RadiusSm = "calc(var(--flare-toggle-btn-height-sm) / 2)",
-        RadiusMd = "calc(var(--flare-toggle-btn-height-md) / 2)",
-        RadiusLg = "calc(var(--flare-toggle-btn-height-lg) / 2)",
-        RadiusXl = "calc(var(--flare-toggle-btn-height-xl) / 2)",
-        RadiusSelectedXs = "var(--flare-shape-small)",
-        RadiusSelectedSm = "var(--flare-shape-medium)",
-        RadiusSelectedMd = "var(--flare-shape-medium)",
-        RadiusSelectedLg = "1rem",
-        RadiusSelectedXl = "1.25rem",
-        RestBg = "var(--flare-color-surface-container-highest)",
-        RestColor = "var(--flare-color-on-surface-variant)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedColor = "var(--flare-color-on-secondary-container)",
         GroupBorder = "1px solid var(--flare-color-outline)",
         GroupRadius = "var(--flare-shape-full)",
         GroupRadiusVertical = "var(--flare-shape-medium)",
         GroupDivider = "var(--flare-color-outline)",
-        // Material dims a disabled control.
-        DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
     // FAB: padding-based sizing, large/medium/extra-large rounding.
@@ -746,7 +775,7 @@ public class MaterialDesignTokens
         FilterGroupRail = "3px",
         ActiveCellOutline = "2px solid var(--flare-color-primary)",
         ColumnPickerMinWidth = "160px",
-        RowSelectedHoverPct = "18%",
+        RangeLayer = "color-mix(in srgb, var(--flare-color-primary) 14%, transparent)",
         RowEditingPct = "6%",
         LoadingVeilPct = "55%",
         LoadingDim = "0.6",
@@ -867,6 +896,8 @@ public class MaterialDesignTokens
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "2px",
         FocusShadow = "none",
+        FocusShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        FocusShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-focus-opacity) * 100%), transparent)",
         TrackHoverOffBg = "var(--flare-switch-track-off-bg)",
         TrackHoverOnBg = "var(--flare-switch-track-on-bg)",
         HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
@@ -972,6 +1003,13 @@ public class MaterialDesignTokens
         Opacity = "0.32",
     };
 
+    // Material asks for a 48dp minimum target; the control keeps its drawn size and the core widens
+    // the hit area to this under a coarse pointer.
+    internal static readonly TouchTokens Touch = new()
+    {
+        TargetMin = "48px",
+    };
+
     internal static readonly ScrollTopTokens ScrollTop = new()
     {
         TopInset = "1.5rem",
@@ -1021,6 +1059,7 @@ public class MaterialDesignTokens
         Otp = Otp,
         Picker = Picker,
         Scrim = Scrim,
+        Touch = Touch,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
         Stripe = Stripe,

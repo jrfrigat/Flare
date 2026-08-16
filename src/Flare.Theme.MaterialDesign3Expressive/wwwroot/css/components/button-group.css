@@ -11,34 +11,26 @@
    ========================================================================== */
 @scope (.flare-theme-md3-expressive) to (.flare-root:not(.flare-theme-md3-expressive)) {
 
-    /* Segment morphs into a round capsule on interaction. Radius from the ACTUAL height
+    /* Segment morphs into a round capsule on hover. Radius from the ACTUAL height
        (--_flare-btn-height, set by the button's size class), so one rule covers all sizes.
-       !important so it overrides the base group's per-corner outer/inner rules on every corner.
 
-       CONNECTED only, here and for the press corner below. A standard group's segments are separate
-       buttons that keep their own shape, so the button family's own hover and press morphs already
-       govern them - and they say the same thing in per-size detail. Aiming a second, group-level
-       !important at the same corners would only take the decision away from the button. */
-    .flare-btn-group--connected > :is(.flare-btn, .flare-toggle-btn):hover,
-    .flare-btn-group--connected > :is(.flare-btn, .flare-toggle-btn):focus-visible {
-        border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2) !important;
+       CONNECTED only. A standard group's segments are separate buttons that keep their own shape, so
+       the button family's own hover and press morphs already govern them - and they say the same
+       thing in per-size detail. A second, group-level rule aimed at the same corners would only take
+       the decision away from the button.
+
+       The pressed and selected corners are NOT here any more: both are spec'd per size
+       (`connected.<size>.pressed.inner-corner` = 4/4/4/12/16dp, `selected.inner-corner` = 50%) and are
+       now tokens the base stylesheet reads, which is where a value the theme merely names belongs.
+       That move is what forces the :not() pair below. This rule used to carry an !important - it had
+       to, to beat the base group's per-corner rules - and an !important outranks any non-important
+       rule whatever its specificity, so a pressed or selected segment under the pointer would have
+       kept the hover capsule and the tokens would never have been seen. Excluding the two states by
+       name says the same thing without taking the argument outside the cascade. */
+    .flare-btn-group--connected > .flare-btn:hover:not(:active):not(.flare-btn--selected),
+    .flare-btn-group--connected > .flare-btn:focus-visible:not(:active):not(.flare-btn--selected) {
+        border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md, 3rem)) / 2);
     }
-
-    /* Press tightens the segment rather than holding the capsule. The values are the GROUP's own
-       (`md.comp.button-group.connected.<size>.pressed.inner-corner-size` = 4/4/4/12/16dp), not the
-       lone button's pressed corner, which is what this used to borrow - a grouped segment tightens
-       further than a button on its own does. Press used to be listed with hover above, aiming at the
-       same capsule, so pressing a segment the pointer was already over changed nothing; and it could
-       not fall through to the button's own pressed rule, because the capsule's !important outranks it
-       regardless of specificity. Last in the file, so it wins the tie while both states apply.
-
-       "When a button is pressed, it changes width and shape", and shape is the half a connected group
-       keeps - the whole of what a press does to it. */
-    .flare-btn-group--connected > :is(.flare-btn--xs, .flare-toggle-btn--xs):active,
-    .flare-btn-group--connected > :is(.flare-btn--sm, .flare-toggle-btn--sm):active,
-    .flare-btn-group--connected > :is(.flare-btn--md, .flare-toggle-btn--md):active { border-radius: 0.25rem !important; }
-    .flare-btn-group--connected > :is(.flare-btn--lg, .flare-toggle-btn--lg):active { border-radius: 0.75rem !important; }
-    .flare-btn-group--connected > :is(.flare-btn--xl, .flare-toggle-btn--xl):active { border-radius: 1rem !important; }
 
     /* ======================================================================
        PRESS GROW - STANDARD GROUPS ONLY: the pressed segment takes space, its neighbours give it up.
@@ -65,10 +57,24 @@
        multiplier would need JS measuring each segment. The step is sized to land near 15% for a
        typical label.
 
-       The arithmetic is deliberate. The pressed segment gains one step on EACH side (2 steps total);
-       each neighbour loses half a step per side (1 step total). With a neighbour on both sides the
-       group's size is unchanged to the pixel; at the ends of the group only one neighbour can pay, so
-       the group gives a little - which is also how a real elastic row behaves.
+       THE ARITHMETIC HAS TO SUM TO ZERO, and that is what decides the shape of the rules below. Each
+       neighbour gives up half a step per side, so one step in total; the pressed segment therefore
+       takes exactly one step from each side that HAS a neighbour to take it from. In the middle of a
+       row that is two steps against two payers; at either end it is one step against the single payer
+       there is. Either way the row's width is unchanged to the pixel.
+
+       An earlier version grew the pressed segment by two steps wherever it stood and accepted that an
+       end press had only one neighbour to pay for it - the group widened by a step on every press of
+       its first or last button, which moved whatever sat beside the group. The fix is not to make the
+       lone neighbour pay double: that would keep the pressed segment's growth constant at the cost of
+       squeezing one neighbour twice as hard as any other, and it cannot be written at all for the case
+       that matters most, a collapsible group whose last visible segment is followed by the overflow
+       control rather than by a segment. Growing only toward a neighbour handles every arrangement with
+       the same two rules, and an end button expanding INWARD, away from the group's edge, is what the
+       eye expects anyway.
+
+       A folded segment is excluded by name: it is still a sibling in the DOM but display:none, so it
+       cannot pay, and counting it would let the group grow by the step it never gave up.
 
        The spec pairs this with a 0.9/1400 spring, whose overshoot is 0.15% - invisible. It rides the
        theme's fast spring rung, which overshoots more; that is this theme being Expressive rather than
@@ -79,7 +85,7 @@
        while a lone one still does. --_morph-duration is the base button's own local, already zeroed
        by its reduced-motion rule; the grow gets a local of its own for the same reason. `padding` and
        `height` are both listed because the axis that grows follows the group's direction. */
-    .flare-btn-group > :is(.flare-btn, .flare-toggle-btn) {
+    .flare-btn-group > .flare-btn {
         --_grow-duration: var(--flare-motion-duration-spring-fast);
         /* Step chosen by measuring: +0.375rem a side takes a short-labelled md segment from 81px to
            93px, which is the spec's 15%. A long label makes the same step a smaller share - the cost
@@ -93,17 +99,22 @@
                     padding var(--_grow-duration) var(--flare-motion-easing-spring-fast),
                     height var(--_grow-duration) var(--flare-motion-easing-spring-fast);
     }
-    .flare-btn-group > :is(.flare-btn--xs, .flare-toggle-btn--xs),
-    .flare-btn-group > :is(.flare-btn--sm, .flare-toggle-btn--sm) { --_press-step: 0.25rem; }
-    .flare-btn-group > :is(.flare-btn--lg, .flare-toggle-btn--lg),
-    .flare-btn-group > :is(.flare-btn--xl, .flare-toggle-btn--xl) { --_press-step: 0.5rem; }
+    .flare-btn-group > .flare-btn--xs,
+    .flare-btn-group > .flare-btn--sm { --_press-step: 0.25rem; }
+    .flare-btn-group > .flare-btn--lg,
+    .flare-btn-group > .flare-btn--xl { --_press-step: 0.5rem; }
 
-    /* Horizontal: the main axis is inline, so the trade is in side padding. */
-    .flare-btn-group--standard:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):active {
-        padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
+    /* Horizontal: the main axis is inline, so the trade is in side padding - and each side is written
+       separately, because a side with no neighbour behind it must not grow. A first segment therefore
+       expands only rightwards and a last one only leftwards, while a segment in the middle does both. */
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:not([data-flare-bg-hidden]) + .flare-btn:active {
+        padding-inline-start: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
     }
-    .flare-btn-group--standard:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):active + :is(.flare-btn, .flare-toggle-btn),
-    .flare-btn-group--standard:not(.flare-btn-group--vertical) > :is(.flare-btn, .flare-toggle-btn):has(+ :is(.flare-btn, .flare-toggle-btn):active) {
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:active:has(+ .flare-btn:not([data-flare-bg-hidden])) {
+        padding-inline-end: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) + var(--_press-step));
+    }
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:active + .flare-btn,
+    .flare-btn-group--standard:not(.flare-btn-group--vertical) > .flare-btn:has(+ .flare-btn:active) {
         padding-inline: calc(var(--_flare-btn-padding-inline, var(--flare-btn-padding-inline-md)) - var(--_press-step) / 2);
     }
 
@@ -117,12 +128,25 @@
 
        Material does not define a vertical button group at all - it says groups travel in a single
        line and do not interact vertically. Flare offers one, so this is Flare's reading of the same
-       rule along the other axis rather than something the spec dictates. */
-    .flare-btn-group--standard.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):active {
-        height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) + var(--_press-step) * 2);
+       rule along the other axis rather than something the spec dictates.
+
+       Height is one property rather than two edges, so the "only grow toward a neighbour" rule is
+       counted into a local first and spent once: zero for a lone segment, one where there is a
+       neighbour on a single side, two in the middle. The selectors are ordered by how many neighbours
+       they assert, and their specificity rises with it, so the most specific match wins. */
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active { --_grow-sides: 0; }
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:not([data-flare-bg-hidden]) + .flare-btn:active,
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active:has(+ .flare-btn:not([data-flare-bg-hidden])) {
+        --_grow-sides: 1;
     }
-    .flare-btn-group--standard.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):active + :is(.flare-btn, .flare-toggle-btn),
-    .flare-btn-group--standard.flare-btn-group--vertical > :is(.flare-btn, .flare-toggle-btn):has(+ :is(.flare-btn, .flare-toggle-btn):active) {
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:not([data-flare-bg-hidden]) + .flare-btn:active:has(+ .flare-btn:not([data-flare-bg-hidden])) {
+        --_grow-sides: 2;
+    }
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active {
+        height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) + var(--_press-step) * var(--_grow-sides));
+    }
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:active + .flare-btn,
+    .flare-btn-group--standard.flare-btn-group--vertical > .flare-btn:has(+ .flare-btn:active) {
         height: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) - var(--_press-step));
     }
 
@@ -131,13 +155,13 @@
        are in this list too - given the slow rung they would still be drifting inwards while the
        pressed segment had already arrived, and the trade would read as two separate animations rather
        than one. The release keeps the spring above, which is what springs everything back. */
-    .flare-btn-group--standard > :is(.flare-btn, .flare-toggle-btn):active,
-    .flare-btn-group--standard > :is(.flare-btn, .flare-toggle-btn):active + :is(.flare-btn, .flare-toggle-btn),
-    .flare-btn-group--standard > :is(.flare-btn, .flare-toggle-btn):has(+ :is(.flare-btn, .flare-toggle-btn):active) {
+    .flare-btn-group--standard > .flare-btn:active,
+    .flare-btn-group--standard > .flare-btn:active + .flare-btn,
+    .flare-btn-group--standard > .flare-btn:has(+ .flare-btn:active) {
         --_grow-duration: var(--flare-motion-duration-short2);
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .flare-btn-group > :is(.flare-btn, .flare-toggle-btn) { --_grow-duration: 0s; }
+        .flare-btn-group > .flare-btn { --_grow-duration: 0s; }
     }
 }

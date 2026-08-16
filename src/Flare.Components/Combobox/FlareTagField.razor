@@ -113,8 +113,14 @@
     /// <summary>Custom render template for a chip's content.</summary>
     [Parameter] public RenderFragment<TValue>? ChipTemplate { get; set; }
 
-    /// <summary>Optional per-tag chip colour; rendered as the chip background.</summary>
+    /// <summary>Optional per-tag chip colour; rendered as the chip fill.</summary>
     [Parameter] public Func<TValue, string?>? ChipColor { get; set; }
+
+    /// <summary>
+    /// Optional per-tag label colour to go with <see cref="ChipColor"/>. Unset, the label keeps the
+    /// theme's on-colour - only the caller knows whether a colour it chose needs a light or dark label.
+    /// </summary>
+    [Parameter] public Func<TValue, string?>? ChipTextColor { get; set; }
 
     /// <summary>Static suggestions offered in a dropdown as the user types. Already-added tags are excluded.</summary>
     [Parameter] public IEnumerable<TValue>? Suggestions { get; set; }
@@ -203,8 +209,19 @@
 
     private string ResolveLabel(TValue item) => ItemText?.Invoke(item) ?? item?.ToString() ?? string.Empty;
 
-    private string? ChipStyleOf(TValue item) =>
-        ChipColor?.Invoke(item) is { } c ? $"background-color:{c};color:#fff" : null;
+    // A caller-supplied colour goes through the chip's own custom-colour contract (--fc-main paints the
+    // fill, --fc-on its text) rather than being written straight onto background-color. The old form
+    // also forced `color:#fff`, which is the core deciding a foreground it cannot know is legible - a
+    // pale tag colour rendered white-on-white - and the one hardcoded colour left in any component's
+    // markup. Unset, --fc-on falls back to the theme's on-colour; ChipTextColor overrides it.
+    private string? ChipStyleOf(TValue item)
+    {
+        if (ChipColor?.Invoke(item) is not { } background) return null;
+        var foreground = ChipTextColor?.Invoke(item);
+        return foreground is null
+            ? $"--fc-main:{background}"
+            : $"--fc-main:{background};--fc-on:{foreground}";
+    }
 
     private void OnStateChanged() => InvokeAsync(StateHasChanged);
 

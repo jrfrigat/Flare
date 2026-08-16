@@ -9,7 +9,7 @@
         </div>
         @if (!string.IsNullOrEmpty(Api))
         {
-            <a class="gallery-page-title__api" href="@($"/api/{Api}")">
+            <a class="gallery-page-title__api" href="@($"api/{Api}")">
                 <FlareIconView Value="@FlareIcons.DataObject" Class="gallery-page-title__api-icon" />
                 <span>@GalleryStrings.Nav_Api</span>
                 <FlareIconView Value="@FlareIcons.OpenInNew" Class="gallery-page-title__api-icon" />

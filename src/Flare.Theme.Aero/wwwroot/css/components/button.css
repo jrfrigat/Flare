@@ -15,8 +15,17 @@
             box-shadow var(--flare-motion-duration-short2, 90ms) ease;
     }
 
-    /* Suppress the MD3 translucent state layer; the gradient swap IS the hover effect. */
-    .flare-btn::before { opacity: 0 !important; }
+    /* The gradient swap IS the hover effect here, so the state layer must paint nothing - said by
+       naming the paint rather than by suppressing the core's element with an important opacity of
+       zero. The layer is still there and still fades; it just fades to nothing, which a theme can
+       retune one token at a time. The old suppression also outranked the DISABLED layer, so it
+       silently decided that too (this theme parks DisabledLayer at transparent, so nothing moves). */
+    .flare-btn {
+        --flare-state-hover-layer: transparent;
+        --flare-state-focus-layer: transparent;
+        --flare-state-focus-hover-layer: transparent;
+        --flare-state-pressed-layer: transparent;
+    }
 
     /* ---- Filled (accent) button: glossy gradient of the resolved color ---- */
     .flare-btn--filled {

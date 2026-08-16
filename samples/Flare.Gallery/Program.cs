@@ -62,6 +62,7 @@ builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<RailLabelService>();
 builder.Services.AddSingleton<GallerySearchService>();
 builder.Services.AddSingleton<ChangelogService>();
+builder.Services.AddSingleton<ThemeDocService>();
 // A theme is not bound to a palette; when the user switches theme without having pinned a palette,
 // follow the new theme's own default palette (e.g. Fluent -> Fluent blue). Activated after build.
 // Scoped: it depends on the scoped IThemeService (a singleton here would fail DI validation).

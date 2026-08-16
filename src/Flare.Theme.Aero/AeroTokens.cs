@@ -90,6 +90,8 @@ internal class AeroTokens
         DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
         // Focus outranks hover in this language, so the pair resolves to the focus wash.
         FocusHoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        SelectedLayer = "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent)",
+        SelectedHoverLayer = "color-mix(in srgb, var(--flare-color-primary) 18%, transparent)",
     };
 
     internal static readonly BadgeTokens Badge = new()
@@ -122,6 +124,12 @@ internal class AeroTokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
+        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
+        OutlineWidthXs = "1px",
+        OutlineWidthSm = "1px",
+        OutlineWidthMd = "1px",
+        OutlineWidthLg = "1px",
+        OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
         GapXs = "0.1875rem",
@@ -149,6 +157,33 @@ internal class AeroTokens
         RadiusMd = CornerRadiusTokens.All("var(--flare-shape-small)"),
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-medium)"),
         RadiusXl = CornerRadiusTokens.All("var(--flare-shape-large)"),
+
+        // Aero says "on" with its gloss and its tint, not by reshaping - the corners stay where the
+        // rest state left them at each size.
+        SelectedRadiusXs = "var(--flare-shape-extra-small)",
+        SelectedRadiusSm = "var(--flare-shape-small)",
+        SelectedRadiusMd = "var(--flare-shape-small)",
+        SelectedRadiusLg = "var(--flare-shape-medium)",
+        SelectedRadiusXl = "var(--flare-shape-large)",
+        SelectedRadiusSquare = "var(--flare-shape-none)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+        // Selection is the accent here, whatever the variant: this language does not send each variant
+        // somewhere different the way Material does, it just says "on" in the accent colour. The one
+        // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
+        // secondary-container would be indistinguishable from an unselected one, which is exactly what
+        // happened when these four pairs were first filled in - so every variant travels to the accent,
+        // and the filled toggle starts from a neutral container rather than from the accent it ends on.
+        ElevatedSelectedBg = "var(--flare-color-primary)",
+        ElevatedSelectedColor = "var(--flare-color-on-primary)",
+        FilledSelectedBg = "var(--flare-color-primary)",
+        FilledSelectedColor = "var(--flare-color-on-primary)",
+        TonalSelectedBg = "var(--flare-color-primary)",
+        TonalSelectedColor = "var(--flare-color-on-primary)",
+        OutlinedSelectedBg = "var(--flare-color-primary)",
+        OutlinedSelectedColor = "var(--flare-color-on-primary)",
+        FilledUnselectedBg = "var(--flare-color-surface-container)",
+        FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
 
         FocusOutline = "1px dotted var(--flare-color-on-surface)",
         FocusOutlineOffset = "-3px",

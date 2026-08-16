@@ -1,0 +1,14 @@
+@* Material states the selected shape as a swap rather than a value: "a selected button should change
+   shape from round to square, or square to round". So the direction a button travels is decided by the
+   shape it is standing in - the round one squares off, the square one opens out to a capsule - and both
+   ends of the swap are theme tokens, which is how a language that answers selection by repainting alone
+   keeps its corners still. *@
+<FlareStack Row Gap="FlareSpacing.Small" Wrap>
+    <FlareToggleButton @bind-Toggled="_round" Variant="ButtonVariant.Filled">Round</FlareToggleButton>
+    <FlareToggleButton @bind-Toggled="_square" Variant="ButtonVariant.Filled" Shape="ButtonShape.Square">Square</FlareToggleButton>
+</FlareStack>
+
+@code {
+    private bool _round = true;
+    private bool _square = true;
+}

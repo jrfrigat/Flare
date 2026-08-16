@@ -3,6 +3,246 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.17.0] - 2026-08-16
+
+### Changed
+- **BREAKING for custom themes: the selected state is a layer, like every other state.** `StateTokens`
+  gains `SelectedLayer` and `SelectedHoverLayer`, `DesignTokens` gains `Touch`, and
+  `DataGridTokens.RowSelectedHoverPct` is replaced by `RangeLayer` - all `required`, so a custom theme
+  will not compile until it answers them. Selection was the last interaction state the core still
+  computed on every theme's behalf, mixing the primary colour at the selected opacity in four
+  stylesheets. Now the core says where the paint goes and the theme says what it is, and the pairing a
+  selected row makes with hover gets its own token for the same reason focus-while-hovered did: two
+  translucent washes stacked is not what either language means by "the selected row you are pointing
+  at". Under the in-box themes nothing moves - the DataGrid's selected row was measured before and
+  after and composites to the same colour, because mixing into `transparent` over a surface backdrop
+  and mixing into `surface` are the same arithmetic. It now also paints correctly over a stripe or a
+  group tint, which the old "mix into surface" could only guess at.
+- **Three states that were reading the wrong axis.** The tab's close button and the breadcrumb's
+  expander painted their HOVER from the selected opacity - darkening by the amount the design language
+  reserves for "chosen" - and the listbox's keyboard-highlighted option painted an accent wash from it,
+  above the layer rather than through it. They read the hover and focus layers now. Under MD3 the
+  close button and expander lighten from 12% to 8%, and the highlighted option changes from primary at
+  12% to the content colour at 10%: the highlight is roving focus, which is neither an accent nor a
+  selection.
+- **The vertical tab's active wash is the theme's, not the core's.** It was a literal 8% of primary; it
+  is the selected layer now, which under MD3 reads 12%. A theme could not previously retune it at all.
+- **Aero and Liquid Glass stopped switching the core's state layer off.** Both suppressed it with
+  `opacity: 0 !important` on the button's `::before` - the theme fighting the core - where the honest
+  form is to name the paint: the layer tokens are `transparent` there now. The old declaration also
+  outranked the DISABLED layer, so it had been deciding that too; both themes park `DisabledLayer` at
+  `transparent`, so nothing moves on screen.
+
+### Added
+- **`TouchTokens.TargetMin` - the minimum a control presents to a finger.** Read only inside the core's
+  `@media (pointer: coarse)` rules, where the square icon-sized controls take it as a minimum size.
+  Measured at 375px beforehand: 36 of 36 interactive controls on the DataGrid page were shorter than
+  44px. The CONTROL grows rather than a transparent hit area drawn over it - the usual advice, and
+  wrong here, because each of these sits in a row of its own kind and an expanded target overlaps its
+  neighbours, with the later sibling silently winning the tap. The reflow is confined to devices whose
+  primary pointer is coarse; a laptop with a touchscreen reports `fine`.
+- **Every theme package documents its design system's component mapping.** Each
+  `Flare.Theme.*/README.md` now carries a table taking that design system's own vocabulary to the Flare
+  component and the parameter that selects it - Material's "common buttons" to
+  `FlareButton Variant=...`, Fluent's Dropdown-vs-Combobox split to `FlareSelect` and `FlareCombobox`,
+  Aero's Win32 common controls, Visual Studio's shell parts to the IDE family. `Flare.Theme.MaterialDesign3`
+  and `Flare.Theme.MaterialDesign2` had no README at all and now have one, so every theme package
+  arrives on nuget.org describing itself. Each also states what the theme changes beyond colour, which
+  is the part a token list cannot show.
+- **The gallery serves those mappings at `/themes/{id}`.** The README file itself is embedded rather
+  than copied, so the page and the package description are the same text and cannot drift; the page
+  strips the install block, renders the rest with `FlareMarkdown`, and offers to switch to the theme
+  you are reading about. The nav lists one entry per registered theme that ships a README, so adding a
+  theme package adds its page without editing a list. Each README has a Russian translation beside it
+  (`README.ru.md`), served by UI culture with a fall back to English, the same way the changelog works.
+- **A guard against a core fallback that decides how a component looks**, closing the last open item of
+  the core/theme decoupling work. `CoreCssFallbackTests` reads every `var(--flare-x, <fallback>)` in core
+  CSS and requires the fallback to be an identity value. The plan had assumed this needed an allowlist of
+  the 29 legitimate structural reads; measured, it does not - a per-instance var falls back to `1`,
+  `auto`, `0deg` or a chain of other vars, and only a fallback that names a COLOUR is a design decision.
+  One rule, no list, and a new structural fallback passes on its own merits.
+  - It found two offenders immediately: **the switch's focus halo was core opinion no theme could
+    reach.** `--flare-switch-focus-shadow-off`/`-on` were registered nowhere and set by nobody, so the
+    halo's size and colour were baked into `switch.css`. They were invisible to CssAudit because
+    `--flare-switch-focus-shadow` IS a const and the audit counts a token as declared when any const is a
+    segment prefix of it. Both are now `required` members of `SwitchTokens`, set by both theme bases.
+- **A guard against suppressing a state layer.** `StateLayerModelTests` already refused
+  `opacity: 1 !important` in a theme; it now refuses `opacity: 0 !important` too, and all three checks
+  in that file strip CSS comments before scanning. The first run reported three offenders, every one of
+  them a paragraph explaining why the old form was wrong - a guard that forbids documenting the
+  anti-pattern is not one worth having.
+
+### Fixed
+- **A tag chip forced white label text.** `FlareTagField` wrote a caller's `ChipColor` straight onto
+  `background-color` and pinned the label to `#fff` - the last hardcoded colour in any component's
+  markup, and the core deciding a foreground it cannot know is legible: a pale tag rendered white on
+  white. The colour now goes through the chip's own custom-colour contract (`--fc-main` fills,
+  `--fc-on` labels), so an unset label colour falls back to the theme's on-colour, and the new
+  `ChipTextColor` callback lets the caller - the only one who knows what colour it picked - say
+  otherwise.
+- **The DataGrid clipped its own columns on a phone.** At 375px the grid measured 600px inside a 343px
+  container with `overflow-x: visible` all the way up, so the columns past the viewport were not off to
+  the side - they were cut off and unreachable by touch. The small-screen rule put its minimum width on
+  `.flare-datagrid`, the outer flex column, instead of on the table that scrolls inside
+  `.flare-datagrid__wrapper`: the scroller grew with the component and had nothing left to scroll. The
+  minimum is `max-content` on the table now, so a narrow grid still fits without a scrollbar and a wide
+  one scrolls by exactly what it needs. Measured after: 293px visible, 394px scrollable.
+- **The gallery's section drawer could not be closed on a phone.** Below the Md bound every drawer
+  floats over the content, and the section column was given `Open` one-way with no `OpenChanged` - so
+  the scrim tap, Escape, and the layout's own "close floating drawers on navigation" were all raised
+  into nothing, and the next render put it straight back. It covered a 375px viewport with no way out.
+
+## [0.16.1] - 2026-08-15
+
+### Fixed
+- **Every relative link rendered as `about:blank`.** The href guard allow-listed URL *shapes* - a leading
+  `/` or `#`, or an `http`/`https`/`mailto`/`tel` scheme - so an internal link written the way the Blazor
+  project template writes one (`href="counter"`, `href=""` for home) failed the check and was swapped for
+  `about:blank`. It went unnoticed while every link in the gallery began with `/`, and a leading slash is
+  exactly what an app cannot use once it is hosted under a sub-path, because it resolves against the
+  origin and ignores `<base href>`: serving the gallery from `/Flare/` killed 112 of its 140 links at
+  once. The guard now blocks by SCHEME instead of by shape - a relative reference is always safe, an
+  absolute URL only when its scheme cannot run script - and it sees through what a shape allow-list
+  never had to consider: leading whitespace, `JaVaScRiPt:`, and a tab dropped inside the word
+  `javascript`, which a browser strips before it parses the scheme. `FlareMenuItem`,
+  `FlareBottomNavItem` and `FlareNavLink` each carried a private copy of the old check; all six
+  link-bearing components share `CssValidator` now. `IsImageSrcSafe` gets the same model, still refusing
+  `data:` for anything that is not an image.
+
+### Changed
+- **GitHub Pages serves the gallery; the docfx site is gone.** docfx turned the XML docs into roughly
+  eight thousand HTML pages that nothing in the repo ever linked to, and a component library's site
+  should be its components: the gallery renders every one of them live, in every theme, and already
+  carries the generated API reference and the changelog. `docs.yml` becomes `pages.yml` and publishes
+  the WASM app; `docfx.json`, `filterConfig.yml`, the docfx landing page, its tocs and its template go
+  with it. The markdown guides under `docs/` are no longer built into HTML - they stay in the repo,
+  which is where the README already pointed at them. Deploys drop from 119 MB to 18 MB.
+- **The gallery's own links are base-relative.** A project Pages site is served from `/Flare/`, so the
+  navigation, the home page cards, the API links and the search index drop their leading slash and the
+  home link becomes `""`. The same build now serves correctly from a site root (the Docker image) and
+  from a sub-path.
+
+## [0.16.0] - 2026-08-15
+
+### Changed
+- **BREAKING visually under MD3 Expressive: the button size ramp is the spec's.** Heights were
+  32/40/48/56/64dp against a spec of 32/40/56/96/136dp, which made large and extra-large near-duplicates
+  of medium and quietly threw away the size axis Expressive exists to offer - an extra-large button is a
+  display-scale control for one hero action, not a slightly bigger button. Leading and trailing space
+  (12/16/24/48/64dp) and the icon-label gap (8/8/8/12/16dp) move with them. The ramp lives on the
+  Expressive theme rather than the shared Material bundle, because baseline M3 has exactly one button -
+  "small", 40dp - and keeps its own gentler steps.
+- **The button no longer reshapes on hover, which is what let the press be seen.** Material's shape-morph
+  section has one trigger - "when pressed, buttons can morph to become more square" - and its corner
+  table has three rows: round, square, pressed. Flare's Expressive theme also shrank the corners to a
+  third of the height on hover, and that did more than add an unspecified state: a medium button
+  travelled 24px to 16px on hover and then only 16px to 12px on press, so the one shape change Material
+  asks for was reduced to the last quarter of its range and a pointer user never saw the rest. Corners
+  now hold their resting shape until the press, and the press runs the full 28px to 12px.
+- **BREAKING for custom themes: a toggle button is a button now, and the tokens follow.** `FlareToggleButton`
+  renders a `FlareButton` carrying `flare-btn--selected` instead of a control of its own, so it takes the
+  button's height, padding, typography, corners, focus ring and every variant - and a toggle dropped into a
+  `FlareButtonGroup` is a segment on exactly the terms a plain button is. It gains `Variant`, `Shape`,
+  `FullWidth`, `Typo` and `TrailingIcon` for free. `ToggleButtonTokens` drops from thirty members to four,
+  losing the twenty-six that
+  restated what `ButtonTokens` already said (heights, paddings, gap, rest and selected radii, rest colours,
+  disabled opacity) and keeps only what the segmented container adds: its border, its two corner radii and
+  its divider. A bespoke theme setting the old members will not compile; the values it wants are the
+  button's. The `flare-toggle-btn` class family is gone from the DOM with them.
+- **BREAKING for custom themes: thirty-nine new required token members across the button and the group.**
+  `ButtonTokens` goes from 39 members to 62 and `ButtonGroupTokens` from 6 to 20.
+  `ButtonTokens` gains `SelectedRadiusXs..Xl`, `SelectedRadiusSquare`, `SelectedBg` and `SelectedColor`;
+  `ButtonGroupTokens` replaces `StandardGap` with a five-step ramp, `ConnectedInnerRadius` with one, adds
+  `ConnectedPressedRadiusXs..Xl` and `ConnectedSelectedRadius`, and keeps `ConnectedGap`,
+  `ConnectedOverlap`, `ConnectedOuterRadius` and `ZActive` as single values. Which families ramp is not
+  arbitrary: a capsule is half the segment's own height and one token spells it at every size, while
+  Material's interior corners and standard gaps are ramps no arithmetic on a height reproduces - and one
+  of them tightens as the buttons grow, which no default would have guessed.
+- **Selection changes shape, in the direction the shape decides.** Material states it as a swap - a
+  selected button goes round to square, or square to round - so `flare-btn--selected` tightens a round
+  button to the per-size selected corner and opens an explicitly square one out to whatever the theme
+  calls its square-selected radius. Both directions are tokens rather than arithmetic, which is what lets
+  Fluent UI 2 and Visual Studio answer selection with a repaint and no movement at all while Material
+  Expressive travels the full swap.
+- **The Expressive button group carries the spec's per-size numbers.** Standard gaps ramp 18/12/8/8/8dp,
+  connected keeps a 2dp seam at every size, interior corners run 8/8/8/16/20dp and tighten to 4/4/4/12/16dp
+  under a press. Those pressed corners used to be literals in the theme's stylesheet backed by an
+  `!important`; they are tokens the base stylesheet reads now, and dropping the `!important` is what lets a
+  pressed or selected segment be seen at all when the pointer is already over it.
+- **A collapsed button group folds into a menu.** The segments that no longer fit used to appear in a
+  bare popover panel; they now open from `FlareMenu`, which brings the surface, the backdrop that
+  closes on an outside click, and the escape and focus handling a dropdown is expected to have. What
+  is inside has not changed and is the point of the design: the panel holds the same buttons the bar
+  declared, so a folded button keeps its own handlers and state because it *is* the same component.
+  The hide rule that decides which of the two places each segment appears in is now scoped to the
+  group, so it wins on specificity rather than on which stylesheet the bundle happens to load last.
+- **The overflow ellipsis turns with the group.** A row folds into a vertical ellipsis and a column
+  into a horizontal one - the dots run across the bar they fold, which is the convention an app bar
+  and a navigation rail already follow.
+
+### Added
+- **A toggle button's colour now follows its variant, which is what Material's second colour table says
+  it should.** "The default and toggle buttons use different colors", and every variant lands somewhere
+  its own default never goes when selected: elevated fills with the accent, filled returns to it, tonal
+  steps down from the container to the tone itself, and outlined inverts the surface. Ten new required
+  `ButtonTokens` members carry it - four selected pairs plus one UNselected pair, because filled is the
+  one variant that also differs before anything is chosen: a filled toggle at rest is a neutral
+  container, not the primary fill a filled button is, or every option in a row would read as already
+  selected. That distinction is keyed off `aria-pressed`, the attribute that already answers "is this a
+  toggle?", so a command button cannot match it.
+- **A per-size outline width.** `md.comp.button.<size>.outlined.outline.width` ramps 1/1/1/2/3dp - a
+  stroke that reads as a hairline beside a small label is a thread beside a 32pt one - and the core had
+  it hardcoded at 1px, which was both a spec miss and geometry the core is not entitled to own. Five new
+  required `ButtonTokens` members; the width is reserved on every variant, not only the outlined one, so
+  switching variant still never shifts layout.
+- **`FlareToggleButton.OnLabel`, so the words can change with the state and not just the icon.** A toggle
+  whose two states are different verbs - Follow and Following, Mute and Unmute - says what will happen
+  and what already has, which one label cannot. Left null the label stays put across both states, which
+  is what a toggle that signals itself with colour and shape wants.
+- **`FlareMenu.FreeContent`, for a panel that holds content rather than menu items.** A menu panel
+  keeps the focus on itself and moves a highlight over its items, which is the only way items that
+  cannot take focus can be reached - and exactly wrong for content that is focusable in its own
+  right, where swallowing Tab, Enter and Space leaves everything reachable by nothing but Escape.
+  Setting `FreeContent` announces the panel as a group instead of a menu and lets those keys through.
+  A button group's overflow is the first caller: its folded segments are buttons, not menu items.
+  Menus of `FlareMenuItem` are untouched - the roving highlight, the panel role and the keys it
+  claims are all as they were.
+
+### Fixed
+- **An icon-only toggle button was not square.** `FlareButton` decides "icon-only" by its `ChildContent`
+  being null, and the rebuilt toggle handed its label over as markup between the tags - which compiles to
+  a fragment that renders nothing but is not null. So a toggle with only an icon kept a full-width
+  container, an empty label span and a gap beside its glyph: 78px wide where it should have been a 56px
+  square. The label is passed as a parameter now, and a null label is genuinely null.
+- **A selected toggle was invisible in four themes at one variant.** Giving every variant the same
+  selected paint works only if no variant already rests there - and the tonal button rests on exactly the
+  `secondary-container` those themes had chosen for "on", so a selected tonal toggle was pixel-identical
+  to an unselected one in Fluent UI 2, Visual Studio, Aero, Liquid Glass and Material 2. Selection in
+  those languages is the accent now, whatever the variant, and the filled toggle starts from a neutral
+  container rather than from the accent it ends on. All four variants read distinctly in each theme.
+- **Pressing the first or last button of a standard group made the group itself wider.** The press trade
+  is meant to be a trade: the pressed segment takes space and the segments beside it give exactly that
+  much up, so the row's width never changes and nothing around it moves. It only balanced in the middle
+  of a row - at either end there is one neighbour rather than two, and the group grew by the step the
+  missing neighbour never paid. Measured on a medium group: 304.4px at rest, 310.4px on a first or last
+  press. The pressed segment now takes a step from each side that HAS a neighbour to take it from, so an
+  end button expands inward and the row measures 304.4px in every position. The same correction applies
+  to a vertical group's height, and to a collapsed group, where the last visible segment is followed by
+  the overflow control rather than by a segment - a case no first/last-child rule could have described.
+- **Pressing a toggle segment grew its neighbours instead of shrinking them.** A standard group trades
+  width on a press: the pressed segment takes a step and the segments beside it give one up. The trade is
+  written against the button's own padding token, and a toggle button was not a button - it carried a
+  padding token of its own - so the rule reached it holding a value from the wrong family and the
+  neighbours jumped outward. Measured after the rebuild: pressing a medium segment takes it from 82.9px to
+  94.9px (the spec's 15%), its neighbour gives up 6px, and a segment that is not adjacent does not move.
+- **A selected segment of a connected group did not go round.** Material makes it fully round - "selected
+  inner corner size 50%" - but no rule said so, and the theme's hover capsule carried an `!important` that
+  no non-important rule could have outranked anyway. A selected medium segment now measures 24px on all
+  four corners against its own 48px height.
+- **A selected item of a segmented `FlareToggleGroup` lost its fill.** The container clears its segments'
+  backgrounds so the group reads as one object, and that rule outranks the button's selected paint on both
+  specificity and load order; the selected item is repainted at the container's own weight again.
+
 ## [0.15.0] - 2026-08-09
 
 ### Changed

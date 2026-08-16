@@ -296,9 +296,12 @@
               background var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
+/* A hover, so it reads the hover layer. It used to mix from the SELECTED opacity, which made the
+   close button darken by the amount this design language reserves for "chosen" - a different state,
+   and one no theme could retune here without also moving every selection in the library. */
 .flare-tabs__tab-close:hover {
   opacity: 1;
-  background: color-mix(in srgb, currentColor calc(var(--flare-state-selected-opacity) * 100%), transparent);
+  background: var(--flare-state-hover-layer);
 }
 
 .flare-tabs__tab-close > .flare-icon {
@@ -330,7 +333,7 @@
 
 .flare-tabs--vertical .flare-tabs__tab--active {
   border-right-color: var(--flare-tabs-active-color);
-  background-color: color-mix(in srgb, var(--flare-color-primary) 8%, transparent);
+  background-color: var(--flare-state-selected-layer);
 }
 
 .flare-tabs--vertical .flare-tabs__panels {

@@ -57,8 +57,15 @@ public sealed record DataGridTokens
     /// <summary>Minimum width of the column-picker dropdown.</summary>
     [CssVar(DataGridField.ColumnPickerMinWidth)] public required string ColumnPickerMinWidth { get; init; }
 
-    /// <summary>Mix percentage for a row that is both selected and hovered.</summary>
-    [CssVar(DataGridField.RowSelectedHoverPct)] public required string RowSelectedHoverPct { get; init; }
+    /// <summary>
+    /// Paint for a cell inside an Excel-style selected range (full background value incl. alpha).
+    /// </summary>
+    /// <remarks>
+    /// Deliberately not the shared selected layer: a range is a different state from a selected row -
+    /// it marks an extent being worked on rather than a chosen record - and one token for both would
+    /// assert they are the same thing, leaving no way to tell them apart in a grid that does both.
+    /// </remarks>
+    [CssVar(DataGridField.RangeLayer)] public required string RangeLayer { get; init; }
 
     /// <summary>Tint percentage for the row currently being edited.</summary>
     [CssVar(DataGridField.RowEditingPct)] public required string RowEditingPct { get; init; }

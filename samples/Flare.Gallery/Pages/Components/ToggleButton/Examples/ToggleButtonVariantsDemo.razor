@@ -1,0 +1,27 @@
+@* A toggle button takes every variant a button takes, and Material gives toggles a colour table of their
+   own: each variant lands somewhere its default never goes when selected. Click through the row to see
+   it - elevated fills with the accent, filled returns to it, tonal steps down from the container to the
+   tone itself, and outlined inverts the surface.
+
+   Filled is the one that also differs while UNSELECTED: a filled toggle at rest is a neutral container,
+   not the primary fill a filled button is, or every option would read as already chosen. *@
+<FlareStack Gap="FlareSpacing.Medium" Align="FlareAlignItems.Start">
+    <FlareStack Row Gap="FlareSpacing.Small" Wrap>
+        <FlareToggleButton @bind-Toggled="_elevated" Variant="ButtonVariant.Elevated">Elevated</FlareToggleButton>
+        <FlareToggleButton @bind-Toggled="_filled" Variant="ButtonVariant.Filled">Filled</FlareToggleButton>
+        <FlareToggleButton @bind-Toggled="_tonal" Variant="ButtonVariant.Tonal">Tonal</FlareToggleButton>
+        <FlareToggleButton @bind-Toggled="_outlined" Variant="ButtonVariant.Outlined">Outlined</FlareToggleButton>
+    </FlareStack>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="@Colors.OnSurfaceVariant">
+        Beside a plain filled button, for comparison - it keeps the accent whether or not anything is selected.
+    </FlareText>
+    <FlareButton Variant="ButtonVariant.Filled">Filled button</FlareButton>
+</FlareStack>
+
+@code {
+    private bool _elevated;
+    private bool _filled = true;
+    private bool _tonal;
+    private bool _outlined;
+}

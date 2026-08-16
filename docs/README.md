@@ -26,4 +26,4 @@
 
 ---
 
-See also the live [Gallery](https://flare.frigat.duckdns.org/) - interactive examples of every component.
+See also the live [Gallery](https://jrfrigat.github.io/Flare/) - interactive examples of every component.

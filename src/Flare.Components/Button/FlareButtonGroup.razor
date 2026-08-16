@@ -1,7 +1,6 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IUiJsService Ui
-@implements IAsyncDisposable
 
 @* The group manages geometry via CSS (seams + per-corner radii) and cascades
    Size/Variant/Color to child FlareButton via FlareButtonGroupContext. *@
@@ -15,30 +14,41 @@
 
         @if (Collapsible)
         {
-            @* The overflow control is a segment like any other and lives at the trailing end, where the
-               guidance puts it. Its panel holds a SECOND copy of the same content: with ChildContent an
-               opaque fragment, the group cannot move a button it never enumerated - but it can render
-               the same fragment twice and let the measurer show each item in exactly one of the two
-               places. Nothing is on screen twice, and a folded button keeps its own handlers and state
-               because it IS the same component, declared once. *@
-            <FlarePopover Class="@Css.Classes.ButtonGroup.More"
-                          Trigger="PopoverTrigger.Click"
-                          Placement="@(Vertical ? PopoverPlacement.RightStart : PopoverPlacement.BottomEnd)"
-                          @bind-Open="_overflowOpen">
-                <AnchorContent>
+            @* The overflow control sits at the trailing end, where the guidance puts it. Its panel holds a
+               SECOND copy of the same content: with ChildContent an opaque fragment, the group cannot move
+               a button it never enumerated - but it can render the same fragment twice and let the measurer
+               show each item in exactly one of the two places. Nothing is on screen twice, and a folded
+               button keeps its own handlers and state because it IS the same component, declared once.
+
+               FreeContent because those copies are buttons, not menu items: they take the focus themselves,
+               and a menu that swallowed Tab and Enter on their behalf would leave them unreachable.
+
+               The measurer owns data-flare-bg-hidden from the moment the module answers; rendering it here
+               only settles the frames before that, when nothing has been measured and an overflow control
+               would be promising a fold that has not happened. Both read the same count, so they agree. *@
+            <FlareMenu @ref="_menu"
+                       Class="@Css.Classes.ButtonGroup.More"
+                       FreeContent
+                       Anchor="@(Vertical ? MenuAnchor.BottomLeft : MenuAnchor.BottomRight)"
+                       AriaLabel="@_overflowLabel"
+                       OnToggle="@(open => _overflowOpen = open)"
+                       data-flare-bg-hidden="@(_hiddenCount == 0 ? "" : null)">
+                <Activator>
                     @* Size/Variant/Color come from the group's own cascade, the same way every other
-                       segment gets them - passing them again would only be a second source of truth. *@
-                    <FlareButton AriaLabel="@(OverflowLabel ?? FlareStrings.Aria_MoreActions)"
+                       segment gets them - passing them again would only be a second source of truth.
+                       The dots run across the bar, so they turn with it: a row folds into a vertical
+                       ellipsis, a column into a horizontal one. *@
+                    <FlareButton AriaLabel="@_overflowLabel"
                                  aria-expanded="@(_overflowOpen ? "true" : "false")">
-                        <FlareIconView Value="FlareIcons.MoreHoriz" />
+                        <FlareIconView Value="@(Vertical ? FlareIcons.MoreHoriz : FlareIcons.MoreVert)" />
                     </FlareButton>
-                </AnchorContent>
+                </Activator>
                 <ChildContent>
                     <div class="@Css.Classes.ButtonGroup.OverflowList">
                         @ChildContent
                     </div>
                 </ChildContent>
-            </FlarePopover>
+            </FlareMenu>
         }
     </CascadingValue>
 </div>
@@ -94,6 +104,10 @@
     private DotNetObjectReference<FlareButtonGroup>? _selfRef;
     private bool _observing;
     private bool _overflowOpen;
+    private FlareMenu? _menu;
+    private int _hiddenCount;
+
+    private string _overflowLabel => OverflowLabel ?? FlareStrings.Aria_MoreActions;
 
     protected override void OnParametersSet() => _context = new(Size, Variant, Color);
 
@@ -107,13 +121,14 @@
 
         try
         {
-            _selfRef ??= DotNetObjectReference.Create(this);
             if (!_observing)
             {
+                _selfRef ??= DotNetObjectReference.Create(this);
                 await Ui.RegisterButtonGroupCollapseAsync(_root, _selfRef);
                 _observing = true;
+                await Ui.ApplyButtonGroupOverflowAsync(_root, _selfRef);
             }
-            else
+            else if (_selfRef is not null)
             {
                 // Re-applied after EVERY render, not only on resize: the fold is written into an
                 // attribute on the segments, and a render can replace the segment it was written on.
@@ -129,18 +144,17 @@
     /// <summary>Invoked from script with the number of segments currently folded away.</summary>
     /// <param name="hidden">How many trailing segments did not fit.</param>
     [JSInvokable]
-    public Task OnOverflowChanged(int hidden)
+    public async Task OnOverflowChanged(int hidden)
     {
         // The overflow control stays in the DOM either way - it has to be measurable for the fold to
         // reserve room for it - so an empty menu is hidden by CSS rather than by not rendering it.
-        if (_hiddenCount == hidden) return Task.CompletedTask;
+        if (_hiddenCount == hidden) return;
         _hiddenCount = hidden;
-        if (hidden == 0) _overflowOpen = false;
+        // Room came back while the panel was open: it now lists nothing, and leaving it open would park
+        // an empty panel under a control CSS is about to hide.
+        if (hidden == 0 && _menu is not null) await _menu.CloseAsync();
         StateHasChanged();
-        return Task.CompletedTask;
     }
-
-    private int _hiddenCount;
 
     private async Task StopObservingAsync()
     {
@@ -152,10 +166,11 @@
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
+    public override async ValueTask DisposeAsync()
     {
         if (_observing) await StopObservingAsync();
         _selfRef?.Dispose();
+        await base.DisposeAsync();
     }
 
     private string _verticalClass => Vertical ? Css.Classes.ButtonGroup.Vertical : string.Empty;

@@ -28,12 +28,13 @@ It is a decision document: it was written before any of it was acted on. Since t
 ## The headline: MD3 Expressive is MD3 baseline + the button family
 
 ```csharp
-// MaterialDesign3ExpressiveTheme.cs:20
-public DesignTokens Design => MaterialDesignTokens.Design with { ButtonGroup = ... };
+// MaterialDesign3ExpressiveTheme.cs
+public DesignTokens Design => MaterialDesignTokens.Design with { Button = ..., ButtonGroup = ... };
 ```
 
-The theme overrides **exactly one** token record, and ships three scoped CSS files (button, button-group,
-split-button) that add the press/hover morphs. For every other component it emits the MD3 baseline verbatim.
+The theme overrides **two** token records - `Button` gained the Expressive size ramp in 0.16.0; before
+that it was `ButtonGroup` alone - and ships three scoped CSS files (button, button-group, split-button)
+that add the press morphs. For every other component it emits the MD3 baseline verbatim.
 
 So most "deviations from MD3 Expressive" below are not oversights in a value - they are Expressive geometry
 that was never adopted. Where a spec file carries two generations of the same component (a legacy
@@ -138,14 +139,26 @@ box model without a hardcoded height.
 
 | Property | Spec (xs/sm/md/lg/xl) | Flare | |
 |---|---|---|---|
-| Container height | 32/40/56/96/136 | 32/40/48/56/64 | KNOWN (see `md3e-button-expressive-sizes.md`) |
-| Leading/trailing space | 12/16/24/48/64 | 12/16/24/32/40 | KNOWN |
-| **Icon-label gap** | 8/8/8/**12/16** | 8/8/8/**8/12** | **NEW: lg -4, xl -4** |
-| **Outline width** | 1/1/1/**2/3** | 1px hardcoded, no token | **NEW: lg -1, xl -2** |
-| **Icon-button sm icon** | **24** | 20 | **NEW: -4** (composition can't express it: button sm = 20dp, icon-button sm = 24dp) |
+| Container height | 32/40/56/96/136 | 32/40/56/96/136 | **FIXED 0.16.0** |
+| Leading/trailing space | 12/16/24/48/64 | 12/16/24/48/64 | **FIXED 0.16.0** |
+| Icon-label gap | 8/8/8/12/16 | 8/8/8/12/16 | **FIXED 0.16.0** |
+| Outline width | 1/1/1/2/3 | 1/1/1/2/3 | **FIXED 0.16.0** (`ButtonTokens.OutlineWidth*`) |
+| **Icon-button sm icon** | **24** | 20 | **OPEN: -4** (composition can't express it: button sm = 20dp, icon-button sm = 24dp) |
 
 Icon sizes, the full label typescale, round shape, the pressed-morph ramp (8/8/12/16/16), xs/sm heights and
-xs/sm/md padding are all exact.
+xs/sm/md padding were already exact.
+
+**The four rows above closed in 0.16.0**, measured off the running theme: heights 32/40/56/96/136px,
+padding 12/16/24/48/64px, gaps 8/8/8/12/16px, outline 1/1/1/2/3px. The size ramp lives on
+`MaterialDesign3ExpressiveTheme` rather than the shared Material bundle - baseline M3 has one button
+("small", 40dp) and keeps its own gentler steps, which is why this was never a matter of correcting the
+Material record in place.
+
+Also closed in 0.16.0, though it is a shape rather than a size: the theme used to shrink a button's
+corners to a third of its height **on hover**, a state the spec's shape-morph section does not describe -
+its corner table is round / square / pressed. Worse, it consumed the specified press: a medium button
+travelled 24px to 16px on hover and then only 16px to 12px on press. Corners now hold their resting shape
+until the press, which runs the full 28px to 12px.
 
 ### Split button
 

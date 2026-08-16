@@ -238,7 +238,9 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 | `ElevationTokens` | Box shadows | 6 levels |
 | `MotionTokens` | Durations + easings | 6 durations + 4 easings |
 | `StateTokens` | Opacity levels | 6 states |
-| `ButtonTokens` | Button geometry | ~30 fields |
+| `ButtonTokens` | Button geometry, selected state, toggle colour | 62 fields |
+| `ButtonGroupTokens` | Both group models, per size | 20 fields |
+| `ToggleButtonTokens` | The segmented container only | 4 fields |
 | `InputTokens` | Form field geometry | 23 fields |
 | `DialogTokens` | Modal dialog | 26 fields |
 | `DrawerTokens` | Navigation drawer | 18 fields |
@@ -262,6 +264,93 @@ await ThemeService.ApplyDynamicPaletteAsync(new PaletteSeed("#3F51B5"));
 This is a representative subset; the full set of component token records lives in
 `Flare.Abstractions/Tokens/Components/`. Every record's members are `required`, so the compiler
 lists any you miss when you build a `DesignTokens` from scratch.
+
+### The button family: what your theme has to answer (0.16.0)
+
+The button carries more decisions than any other component, and three of them are easy to miss because
+they only appear in states you may not have thought about yet. If you derive from an in-box theme with
+`with { }` you inherit workable answers for all of them; if you build `ButtonTokens` from scratch, the
+compiler will name every one.
+
+**1. A selected button is a shape change, not only a colour change.** A toggle button is a
+`FlareButton` wearing `flare-btn--selected` - the same element, the same tokens - so selection is
+described in `ButtonTokens`:
+
+```csharp
+// Material states it as a SWAP: round becomes square, square becomes round.
+SelectedRadiusXs = "0.75rem",   // what a round button takes when selected, per size
+SelectedRadiusSm = "0.75rem",
+SelectedRadiusMd = "1rem",
+SelectedRadiusLg = "1.75rem",
+SelectedRadiusXl = "1.75rem",
+// ...and the other direction, for a button whose rest shape is the explicit square.
+// A language that does NOT reshape on selection points this back at its own square radius:
+SelectedRadiusSquare = "var(--flare-shape-none)",
+```
+
+**2. Selection has a colour per variant, and one variant differs before anything is selected.**
+Material keeps a separate colour table for toggles - "the default and toggle buttons use different
+colors" - so each variant names where it lands:
+
+```csharp
+ElevatedSelectedBg = "var(--flare-color-primary)",
+ElevatedSelectedColor = "var(--flare-color-on-primary)",
+FilledSelectedBg = "var(--flare-color-primary)",
+FilledSelectedColor = "var(--flare-color-on-primary)",
+TonalSelectedBg = "var(--flare-color-secondary)",
+TonalSelectedColor = "var(--flare-color-on-secondary)",
+OutlinedSelectedBg = "var(--flare-color-inverse-surface)",
+OutlinedSelectedColor = "var(--flare-color-inverse-on-surface)",
+// The filled toggle is the one that differs while UNSELECTED: a filled toggle at rest is a neutral
+// container, not the accent fill a filled BUTTON is, or a row of options reads as already chosen.
+FilledUnselectedBg = "var(--flare-color-surface-container)",
+FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
+// The fallback pair, for any variant with no entry of its own (in Material's table, only Text).
+SelectedBg = "var(--flare-color-secondary-container)",
+SelectedColor = "var(--flare-color-on-secondary-container)",
+```
+
+> **The trap worth naming.** Pointing all four variants at one colour is only safe if no variant
+> already rests there. The tonal button rests on `secondary-container`, so a theme that answers every
+> variant with `secondary-container` makes a selected tonal button pixel-identical to an unselected
+> one. Check each variant's rest colour against the colour you chose for its selected state.
+
+**3. Outline width ramps with the size.** A stroke that reads as a hairline beside a small label is a
+thread beside a large one. It is reserved on every variant, not only the outlined one, so switching
+variant never shifts layout:
+
+```csharp
+OutlineWidthXs = "1px", OutlineWidthSm = "1px", OutlineWidthMd = "1px",
+OutlineWidthLg = "2px", OutlineWidthXl = "3px",
+```
+
+`ButtonGroupTokens` follows the same idea and describes **two models**. A standard group is separate
+buttons standing together - it contributes a gap and nothing else, because the corners stay the
+buttons' own. A connected group is one seamed control and needs the whole seam vocabulary. Which
+families ramp per size follows from whether a height can answer the question: a capsule is half the
+segment's own height, so the outer and selected radii are one token each, while interior corners,
+pressed corners and standard gaps are ramps a design language picks freely:
+
+```csharp
+StandardGapXs = "1.125rem", StandardGapSm = "0.75rem", StandardGapMd = "0.5rem",
+StandardGapLg  = "0.5rem",  StandardGapXl = "0.5rem",
+ConnectedGap = "0.125rem",              // one value at every size
+ConnectedOverlap = "0",                 // negative pulls segments onto a shared border
+ConnectedOuterRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+ConnectedSelectedRadius = "calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2)",
+ConnectedInnerRadiusXs = "0.5rem",  /* ...Sm, Md, Lg, Xl */
+ConnectedPressedRadiusXs = "0.25rem", /* ...Sm, Md, Lg, Xl */
+ZActive = "1",
+```
+
+`--_flare-btn-height` is a local the button's own size class sets, so a token referring to it resolves
+per size even though it is written once.
+
+Finally, `ToggleButtonTokens` is now **only** the segmented `FlareToggleGroup` container - its border,
+its two corner radii and the rule between segments. The buttons inside it are buttons and read the
+button family for everything else, so if you are migrating a theme from before 0.16.0, the heights,
+paddings, gap, radii, rest colours and disabled opacity that used to live there are deleted rather
+than moved: their answers are the ones your `ButtonTokens` already gives.
 
 ### Using Tokens in CSS
 

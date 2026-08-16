@@ -386,7 +386,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the button, forwarded as aria-label.", null, false, false, false, @"FlareButton"),
-                new ApiParameterInfo(@"AriaPressed", @"bool", @"false", @"Indicates pressed state for toggle buttons, forwarded as aria-pressed.", null, false, false, false, @"FlareButton"),
+                new ApiParameterInfo(@"AriaPressed", @"bool?", null, @"Toggle state, forwarded as aria-pressed. Left null the attribute is absent and the button is an ordinary command; false renders aria-pressed=""false"", which is what makes assistive technology announce a toggle that is currently off rather than a plain button. The distinction is why this is nullable: an absent attribute and an explicit ""false"" are different controls, not the same control in different states.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Button label and inner content.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the button. Use a semantic preset (FlareColor.Primary) - rendered via a shared CSS class (fast path) - or an arbitrary color via FlareColor.Custom(""#FF0000"") / @(""#FF0000""), which inlines the local color tokens (filled text auto-contrasted, or set via OnColor). Default keeps the theme default.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true.", null, false, false, false, @"FlareButton"),
@@ -399,6 +399,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnClick", @"EventCallback<MouseEventArgs>", null, @"Callback invoked when the button is clicked.", null, false, true, false, @"FlareButton"),
                 new ApiParameterInfo(@"OnColor", @"string?", null, @"Optional foreground color for the filled variant when Color is a custom color.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Rel", @"string?", null, @"The link's rel attribute (link button only). When left null and Target is _blank, Flare defaults it to noopener noreferrer to prevent reverse tabnabbing.", null, false, false, false, @"FlareButton"),
+                new ApiParameterInfo(@"Selected", @"bool", @"false", @"Marks the button as selected - the on state of a toggle - which a theme may answer with a paint, a shape, or both. Set by FlareToggleButton; usually left alone on a plain button.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape of the button. Default keeps the theme's native shape; Rounded, Circular and Square force a rounded rectangle, pill, or sharp corners.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the button.", null, false, false, false, @"FlareButton"),
                 new ApiParameterInfo(@"Target", @"string?", null, @"Target for the link button (e.g. ""_blank""). Only used with Href.", null, false, false, false, @"FlareButton"),
@@ -2552,7 +2553,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the button, forwarded as aria-label. Strongly recommended for icon-only buttons.", null, false, false, false, @"FlareIconButton"),
-                new ApiParameterInfo(@"AriaPressed", @"bool", @"false", @"Indicates pressed state for toggle icon buttons, forwarded as aria-pressed.", null, false, false, false, @"FlareIconButton"),
+                new ApiParameterInfo(@"AriaPressed", @"bool?", null, @"Toggle state, forwarded as aria-pressed. Null (the default) leaves the attribute off and the button reads as an ordinary command; false announces a toggle that is currently off.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Custom icon content, used in place of Icon (e.g. a configured FlareIcon or SVG).", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the button. Role -> shared class; custom -> inline tokens. Default keeps the theme default.", null, false, false, false, @"FlareIconButton"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true.", null, false, false, false, @"FlareIconButton"),
@@ -3208,6 +3209,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the menu panel (role=""menu"").", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Menu items rendered inside the dropdown panel.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"Dense", @"bool", @"false", @"Reduces item height/padding for a denser menu (consistent with other components' Dense).", null, false, false, false, @"FlareMenu"),
+                new ApiParameterInfo(@"FreeContent", @"bool", @"false", @"Declares that the panel holds ordinary focusable content - buttons, fields, anything that answers the keyboard itself - rather than FlareMenuItem entries. A menu of items keeps the focus on the panel and moves a highlight over them, so it has to swallow the keys that would otherwise move the focus away; content that is focusable in its own right needs the opposite, and swallowing those keys would leave it reachable by nothing but Escape. Set this and the panel announces itself as a group instead of a menu and lets Tab, Enter and Space through. Escape still closes either way.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"MaxHeight", @"string?", null, @"Optional CSS max-height for the panel (e.g. ""20rem""); a longer list scrolls instead of overflowing the viewport.", null, false, false, false, @"FlareMenu"),
                 new ApiParameterInfo(@"OnToggle", @"EventCallback<bool>", null, @"Callback triggered whenever the menu open state changes.", null, false, true, false, @"FlareMenu"),
                 new ApiParameterInfo(@"PositionAtCursor", @"bool", @"false", @"Opens the panel pinned to the pointer position instead of the activator corner - the expected behavior for a context menu.", null, false, false, false, @"FlareMenu"),
@@ -5529,16 +5531,22 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label forwarded as aria-label.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Button label content shown alongside the icon.", null, false, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color tinting the selected state. Role -> shared color class; custom -> inline tokens. Overridden by the parent FlareToggleGroup.Color when that is set. Default = theme's secondary container.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color tinting the selected state. Role -> shared color class; custom -> inline tokens. Overridden by the parent FlareToggleGroup.Color when that is set.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the button when true. Also disabled when the parent FlareToggleGroup.Disabled is true.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Edge", @"ButtonEdge", @"ButtonEdge.None", @"Optical edge alignment - a negative inline margin pulling the button toward the container edge.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"FullWidth", @"bool", @"false", @"Stretches the button to the full width of its container.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Group", @"FlareToggleGroupContext?", null, @"Cascading context supplied by a parent FlareToggleGroup.", null, true, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"OffIcon", @"RenderFragment?", null, @"Icon rendered when the button is not pressed.", null, false, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"OnIcon", @"RenderFragment?", null, @"Icon rendered when the button is pressed. Defaults to OffIcon if not set.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"OffIcon", @"RenderFragment?", null, @"Icon rendered when the button is not selected.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"OnIcon", @"RenderFragment?", null, @"Icon rendered when the button is selected. Falls back to OffIcon when unset, which is what a toggle that signals its state with colour and shape alone wants.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"OnLabel", @"RenderFragment?", null, @"Label rendered while the button is selected, replacing ChildContent. A toggle whose two states are different verbs - Follow and Following, Mute and Unmute - says so in the label as readily as in the icon, and leaving this null keeps one label across both states.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Shape", @"ButtonShape", @"ButtonShape.Default", @"Corner shape. Default keeps the theme's own, and selection then travels to the theme's selected corner; an explicitly square button travels the other way, to a capsule, which is Material's ""round to square, or square to round"".", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Size", @"ButtonSize", @"ButtonSize.Md", @"Size of the toggle button. Overridden by the parent FlareToggleGroup.Size when that is set.", null, false, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"Toggled", @"bool", @"false", @"Whether the button is currently in the pressed/active state.", null, false, false, false, @"FlareToggleButton"),
-                new ApiParameterInfo(@"ToggledChanged", @"EventCallback<bool>", null, @"Callback raised when the pressed state changes.", null, false, true, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Toggled", @"bool", @"false", @"Whether the button is currently in the selected state.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"ToggledChanged", @"EventCallback<bool>", null, @"Callback raised when the selected state changes.", null, false, true, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"TrailingIcon", @"RenderFragment?", null, @"Icon rendered after the label, in both states.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Overrides the label's typography with a type-scale value.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"Value", @"object?", null, @"The value reported to a parent FlareToggleGroup when toggled.", null, false, false, false, @"FlareToggleButton"),
+                new ApiParameterInfo(@"Variant", @"ButtonVariant", @"ButtonVariant.Tonal", @"Visual style variant, the same axis a plain button has. Overridden by an enclosing FlareButtonGroup.Variant when that is set.", null, false, false, false, @"FlareToggleButton"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -5547,12 +5555,12 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"FocusAsync", @"FocusAsync()", @"ValueTask", null, @"Sets keyboard focus to the toggle button element.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"SetToggledAsync", @"SetToggledAsync(bool toggled)", @"Task", null, @"Sets the pressed state programmatically. No-op when disabled or already in that state; inside a group it routes through the group so the group's binding stays authoritative.",
+                new ApiMethodInfo(@"SetToggledAsync", @"SetToggledAsync(bool toggled)", @"Task", null, @"Sets the selected state programmatically. No-op when disabled or already in that state; inside a group it routes through the group so the group's binding stays authoritative.",
                     new ApiMethodParameter[]
                     {
-                        new ApiMethodParameter(@"toggled", @"bool", null),
+                        new ApiMethodParameter(@"toggled", @"bool", @"The state to move to."),
                     }),
-                new ApiMethodInfo(@"Toggle", @"Toggle()", @"Task", null, @"Toggles the pressed state, exactly as a user click would (honors the disabled state and, inside a group, the group's selection rules).",
+                new ApiMethodInfo(@"Toggle", @"Toggle()", @"Task", null, @"Toggles the selected state, exactly as a user click would (honors the disabled state and, inside a group, the group's selection rules).",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
@@ -6079,6 +6087,7 @@ public static class ComponentApiRegistry
                 @"FlareButton",
                 @"FlareFileUploadButton",
                 @"FlareIconButton",
+                @"FlareToggleButton",
             });
 
         e[@"ButtonSize"] = new ApiEnumInfo(
@@ -6147,6 +6156,7 @@ public static class ComponentApiRegistry
                 @"FlareFileUploadButton",
                 @"FlareIconButton",
                 @"FlareSplitButton",
+                @"FlareToggleButton",
             });
 
         e[@"CardActionsAlign"] = new ApiEnumInfo(
@@ -7932,6 +7942,7 @@ public static class ComponentApiRegistry
                 @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTimePicker",
+                @"FlareToggleButton",
             });
 
         return e;

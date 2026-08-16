@@ -61,8 +61,9 @@
     [Parameter] public bool Loading { get; set; }
     /// <summary>HTML type attribute of the button element (Button, Submit, or Reset).</summary>
     [Parameter] public ButtonType Type { get; set; } = ButtonType.Button;
-    /// <summary>Indicates pressed state for toggle icon buttons, forwarded as aria-pressed.</summary>
-    [Parameter] public bool AriaPressed { get; set; }
+    /// <summary>Toggle state, forwarded as <c>aria-pressed</c>. Null (the default) leaves the attribute off
+    /// and the button reads as an ordinary command; <c>false</c> announces a toggle that is currently off.</summary>
+    [Parameter] public bool? AriaPressed { get; set; }
     /// <summary>Accessible label for the button, forwarded as aria-label. Strongly recommended for icon-only buttons.</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>When set, the button renders as a link (&lt;a&gt;) to this URL. Disabled/Loading removes the href.</summary>

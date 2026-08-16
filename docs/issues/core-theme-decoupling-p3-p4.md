@@ -3,6 +3,30 @@
 Follow-ups to `core-state-model-tokenization-p1-p2.md`. Deferred by decision (2026-07-13) - do P1+P2
 first, keep these as tracked scope.
 
+**P3 IS COMPLETE (0.17.0). P4 needs no work.** Everything below is the record of how, including two
+mistakes worth not repeating.
+
+**The fallback half of the guard landed as `tests/Flare.Core.Tests/CoreCssFallbackTests.cs`**, and it
+needed no allowlist at all - which is the part this file got wrong. It assumed the 29 structural reads
+would have to be enumerated and exempted. Measured instead: core CSS holds **44 reads across 19 tokens**,
+and they separate on one question rather than on a list. A per-instance var a theme never emits
+(`--flare-col-span`, `--flare-z-dropdown`, `--flare-dial-angle`) falls back to an IDENTITY - `1`, `auto`,
+`0deg`, `minmax(0, 1fr)`, or a chain of other vars - and carries no design decision. A fallback that
+names a COLOUR decides what the component looks like for every theme. So the rule is "a fallback may not
+name a colour", the 29 structural reads pass without being listed, and a new one passes too as long as it
+is an identity.
+
+**It found two live offenders on its first run**, both of which this file had waved through as "already
+inside a component knob's fallback, which the sentinel mechanism allows. Nothing to do." That was wrong:
+`--flare-switch-focus-shadow-off` and `-on` were **not registered anywhere** and **no theme set them**, so
+the halo's size and colour were pure core opinion with no way for a theme to reach them. They were
+invisible to `cssaudit` for exactly mechanism (1) below - `--flare-switch-focus-shadow` is a const, so the
+`-off`/`-on` names looked declared by a const that has nothing to do with them. Both are now registered,
+`required` on `SwitchTokens`, and set by both theme bases; the literals are gone from `switch.css`.
+
+**P4 needs no work**: keeping the MD3-derived role vocabulary is an accepted decision, written up at the
+bottom of this file so it stays an explicit contract rather than a silent assumption.
+
 ## P3 - sweep literal visual fallbacks out of core component CSS
 
 **STATUS: DONE** (commits `082b1f3`, then `f260e95` in 0.5.0): 515 dead `var(--flare-X, <literal>)` fallbacks stripped

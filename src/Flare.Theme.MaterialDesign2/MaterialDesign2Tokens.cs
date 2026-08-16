@@ -107,6 +107,8 @@ internal static class MaterialDesign2Tokens
         DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
         // Focus outranks hover in this language, so the pair resolves to the focus wash.
         FocusHoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        SelectedLayer = "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent)",
+        SelectedHoverLayer = "color-mix(in srgb, var(--flare-color-primary) 18%, transparent)",
     };
 
     // ---- Components: only the tokens that differ from the defaults to read as MD2. ----
@@ -115,6 +117,12 @@ internal static class MaterialDesign2Tokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
+        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
+        OutlineWidthXs = "1px",
+        OutlineWidthSm = "1px",
+        OutlineWidthMd = "1px",
+        OutlineWidthLg = "1px",
+        OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
         HeightXs = "1.75rem",  // 28dp
@@ -134,6 +142,33 @@ internal static class MaterialDesign2Tokens
         RadiusMd = CornerRadiusTokens.All("4px"),
         RadiusLg = CornerRadiusTokens.All("4px"),
         RadiusXl = CornerRadiusTokens.All("4px"),
+
+        // M2 keeps its one 4dp corner in every state - the shape swap on selection arrived with M3
+        // Expressive and would be an anachronism here.
+        SelectedRadiusXs = "4px",
+        SelectedRadiusSm = "4px",
+        SelectedRadiusMd = "4px",
+        SelectedRadiusLg = "4px",
+        SelectedRadiusXl = "4px",
+        SelectedRadiusSquare = "var(--flare-shape-none)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+        // Selection is the accent here, whatever the variant: this language does not send each variant
+        // somewhere different the way Material does, it just says "on" in the accent colour. The one
+        // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
+        // secondary-container would be indistinguishable from an unselected one, which is exactly what
+        // happened when these four pairs were first filled in - so every variant travels to the accent,
+        // and the filled toggle starts from a neutral container rather than from the accent it ends on.
+        ElevatedSelectedBg = "var(--flare-color-primary)",
+        ElevatedSelectedColor = "var(--flare-color-on-primary)",
+        FilledSelectedBg = "var(--flare-color-primary)",
+        FilledSelectedColor = "var(--flare-color-on-primary)",
+        TonalSelectedBg = "var(--flare-color-primary)",
+        TonalSelectedColor = "var(--flare-color-on-primary)",
+        OutlinedSelectedBg = "var(--flare-color-primary)",
+        OutlinedSelectedColor = "var(--flare-color-on-primary)",
+        FilledUnselectedBg = "var(--flare-color-surface-container)",
+        FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
 
         IconSizeXs = "1.125rem", // 18dp
         IconSizeSm = "1.125rem",

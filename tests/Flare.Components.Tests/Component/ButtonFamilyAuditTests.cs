@@ -109,7 +109,8 @@ public class C_FlareButtonFamilyAuditTests : FlareTestContext
             .Add(x => x.CheckMark, true)
             .AddChildContent<FlareToggleButton>(cp => cp.Add(b => b.Value, "a").AddChildContent("A")));
 
-        Assert.Contains("flare-toggle-btn__check", cut.Markup);
+        // The check rides in the button's leading-icon slot, in front of whatever state icon is there.
+        Assert.Contains(FlareIcons.Check.Data, cut.Markup);
     }
 
     // ---- FlareSplitButton ----

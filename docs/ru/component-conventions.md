@@ -60,7 +60,8 @@ Flare - это публикуемая NuGet-библиотека с токен-d
 ### Уже реализованные токен-записи
 Полный набор живёт в `src/Flare.Abstractions/Tokens/Components/`: Alert, Avatar, Badge, Button, Card,
 Checkbox, Chip, DataGrid, Dialog, Drawer, Fab, Input, Menu, Popover, Progress, Radio, Select,
-Slider, Snackbar, SplitButton, Switch, TableOfContents, Tabs, ToggleButton, Tooltip.
+Slider, Snackbar, SplitButton, Switch, TableOfContents, Tabs, ToggleButton, Tooltip - плюс ButtonGroup,
+которая несёт обе модели группы.
 
 ### 2.1 Единая система цвета - `FlareColor`
 Любой публичный параметр выбора цвета компонента - **только** `FlareColor` (одно имя везде:

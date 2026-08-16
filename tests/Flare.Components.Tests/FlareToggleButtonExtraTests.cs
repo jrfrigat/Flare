@@ -10,7 +10,7 @@ public class FlareToggleButtonExtraTests : FlareTestContext
         var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Size, ButtonSize.Sm));
 
-        Assert.Contains("flare-toggle-btn--sm", cut.Find("button").ClassName);
+        Assert.Contains("flare-btn--sm", cut.Find("button").ClassName);
     }
 
     [Fact]
@@ -19,6 +19,6 @@ public class FlareToggleButtonExtraTests : FlareTestContext
         var cut = Render<FlareToggleButton>(p => p
             .Add(x => x.Size, ButtonSize.Lg));
 
-        Assert.Contains("flare-toggle-btn--lg", cut.Find("button").ClassName);
+        Assert.Contains("flare-btn--lg", cut.Find("button").ClassName);
     }
 }

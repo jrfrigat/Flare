@@ -38,18 +38,9 @@
             var(--flare-liquid-shadow);
     }
 
-    /* ---- Toggle button (segmented): translucent glass; pressed = accent pill ---- */
-    .flare-toggle-btn {
-        background-color: var(--flare-liquid-tint) !important;
-        background-image: linear-gradient(180deg, var(--flare-liquid-sheen) 0%, transparent 55%) !important;
-        border: 1px solid var(--flare-liquid-edge) !important;
-        box-shadow: inset 0 1px 0.5px var(--flare-liquid-rim);
-    }
-    .flare-toggle-btn:hover {
-        background-color: color-mix(in srgb, var(--flare-color-primary) 12%, var(--flare-liquid-tint-strong)) !important;
-        border-color: color-mix(in srgb, var(--flare-color-primary) 40%, transparent) !important;
-    }
-    .flare-toggle-btn--pressed {
+    /* ---- Selected button: the accent pill. The translucent glass and its hover used to be repeated
+       here for a control of its own; a toggle is a button now and inherits both. ---- */
+    .flare-btn--selected {
         background-color: color-mix(in srgb, var(--flare-color-primary) 26%, var(--flare-liquid-tint-strong)) !important;
         border-color: var(--flare-color-primary) !important;
         box-shadow:

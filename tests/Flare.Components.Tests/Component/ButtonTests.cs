@@ -158,12 +158,115 @@ public class C_FlareButtonGroupTests : FlareTestContext
         Assert.Contains("flare-btn-group--collapsible", root.ClassName);
         Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.More}"));
 
-        // The copies live behind the popover, so they exist only once it is open - which is also why
+        // The copies live behind the menu, so they exist only once it is open - which is also why
         // the measurer treats the panel as optional rather than assuming it is there.
         Assert.Empty(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
         cut.Find($".{Css.Classes.ButtonGroup.More} .flare-btn").Click();
         Assert.Single(cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList}"));
         Assert.Equal(2, cut.FindAll($".{Css.Classes.ButtonGroup.OverflowList} .flare-btn").Count);
+    }
+
+    [Fact]
+    public void AToggleIsAButtonAndCarriesTheButtonFamily()
+    {
+        // The whole point of the rebuild: a toggle segment and a plain segment are the same element with
+        // the same classes, so every group rule reaches both with the same token family. While the toggle
+        // was a control of its own, the group's press rule found it holding a different padding token and
+        // GREW the neighbours it was supposed to shrink.
+        var cut = Render<FlareToggleButton>(p => p
+            .Add(x => x.Variant, ButtonVariant.Outlined)
+            .Add(x => x.Size, ButtonSize.Lg)
+            .Add(x => x.Toggled, true)
+            .AddChildContent("Bold"));
+
+        var btn = cut.Find("button");
+        Assert.Contains(Css.Classes.Button.Root, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Outlined, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Lg, btn.ClassName);
+        Assert.Contains(Css.Classes.Button.Selected, btn.ClassName);
+        // An unselected toggle must still say it is a toggle: an absent aria-pressed reads as a plain
+        // command, so "false" is the state and not the absence of one.
+        Assert.Equal("true", btn.GetAttribute("aria-pressed"));
+
+        var off = Render<FlareToggleButton>(p => p.AddChildContent("Bold"));
+        Assert.Equal("false", off.Find("button").GetAttribute("aria-pressed"));
+        Assert.DoesNotContain(Css.Classes.Button.Selected, off.Find("button").ClassName);
+    }
+
+    [Fact]
+    public void TheLabelCanChangeWithTheState()
+    {
+        // A toggle whose two states are different verbs says so in the label, not only in the icon.
+        var cut = Render<FlareToggleButton>(p => p
+            .Add(x => x.OnLabel, (RenderFragment)(b => b.AddContent(0, "Following")))
+            .AddChildContent("Follow"));
+
+        Assert.Contains("Follow", cut.Find("button").TextContent);
+        Assert.DoesNotContain("Following", cut.Find("button").TextContent);
+
+        cut.Find("button").Click();
+        Assert.Contains("Following", cut.Find("button").TextContent);
+    }
+
+    [Fact]
+    public void AToggleWithNoLabelIsIconOnly()
+    {
+        // FlareButton decides "icon-only" by ChildContent being null, so the label has to reach it as a
+        // parameter: markup between the tags compiles to a fragment that renders nothing but is not null,
+        // which left an icon-only toggle full width with an empty label span and a gap beside its glyph.
+        var cut = Render<FlareToggleButton>(p => p
+            .Add(x => x.OffIcon, (RenderFragment)(b => b.AddMarkupContent(0, "<i class=\"icon\"></i>")))
+            .Add(x => x.AriaLabel, "Star"));
+
+        Assert.Contains(Css.Classes.Button.IconOnly, cut.Find("button").ClassName);
+        Assert.Empty(cut.FindAll($".{Css.Classes.Button.Label}"));
+    }
+
+    [Fact]
+    public void TheLabelStaysPutWhenOnlyOneIsGiven()
+    {
+        // Falling back keeps a toggle that changes only colour and shape from having to say its label
+        // twice.
+        var cut = Render<FlareToggleButton>(p => p.AddChildContent("Bold"));
+        cut.Find("button").Click();
+        Assert.Contains("Bold", cut.Find("button").TextContent);
+    }
+
+    [Fact]
+    public void APlainButtonIsNotAToggle()
+    {
+        // The tri-state is what keeps that promise in the other direction: an ordinary button must not
+        // grow an aria-pressed just because the parameter exists.
+        var cut = Render<FlareButton>(p => p.AddChildContent("Save"));
+        Assert.False(cut.Find("button").HasAttribute("aria-pressed"));
+    }
+
+    [Fact]
+    public void OverflowPanelIsAGroupAndNotAMenu()
+    {
+        // The folded segments are buttons, not menu items: they take the focus themselves. A menu panel
+        // keeps the focus and swallows the keys that would move it, which is right for items that cannot
+        // be focused and wrong here - it would leave every folded button reachable by nothing but Escape.
+        var cut = Render<FlareButtonGroup>(p => p
+            .Add(x => x.Collapsible, true)
+            .AddChildContent("<button class=\"flare-btn\">One</button>"));
+
+        cut.Find($".{Css.Classes.ButtonGroup.More} .flare-btn").Click();
+        Assert.Equal("group", cut.Find($".{Css.Classes.Menu.Panel}").GetAttribute("role"));
+    }
+
+    [Fact]
+    public void OverflowEllipsisTurnsWithTheGroup()
+    {
+        // The dots run ACROSS the bar they fold, so a row gets the vertical ellipsis and a column the
+        // horizontal one - the same convention an app bar and a navigation rail follow.
+        var horizontal = Render<FlareButtonGroup>(p => p.Add(x => x.Collapsible, true));
+        Assert.Contains(FlareIcons.MoreVert.Data, horizontal.Markup);
+
+        var vertical = Render<FlareButtonGroup>(p => p
+            .Add(x => x.Collapsible, true)
+            .Add(x => x.Vertical, true));
+        Assert.Contains(FlareIcons.MoreHoriz.Data, vertical.Markup);
     }
 
     [Fact]
@@ -350,7 +453,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
     {
         var cut = Render<FlareToggleButton>();
 
-        Assert.NotEmpty(cut.FindAll(".flare-toggle-btn"));
+        Assert.NotEmpty(cut.FindAll(".flare-btn"));
     }
 
     [Fact]
@@ -386,7 +489,7 @@ public class C_FlareToggleButtonTests : FlareTestContext
         var cut = Render<FlareToggleButton>(p => p
             .AddChildContent("Bookmark"));
 
-        Assert.Contains("Bookmark", cut.Find(".flare-toggle-btn__label").TextContent);
+        Assert.Contains("Bookmark", cut.Find($".{Css.Classes.Button.Label}").TextContent);
     }
 }
 

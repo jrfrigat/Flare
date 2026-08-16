@@ -1,0 +1,106 @@
+name: Gallery (GitHub Pages)
+
+# Publishes the Flare.Gallery WASM app to GitHub Pages at https://jrfrigat.github.io/Flare/.
+# The gallery IS the documentation site: it renders every component live, in every theme, and
+# carries the API reference (Api/ComponentApiRegistry.g.cs) and the changelog. It replaced the
+# docfx site, which generated ~8000 HTML pages that nothing in the repo ever linked to.
+#
+# One-time setup in the repo: Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'samples/Flare.Gallery/**'
+      - 'Directory.Build.props'
+      - 'Directory.Packages.props'
+      - 'CHANGELOG.md'
+      - 'CHANGELOG.ru.md'
+      - 'llms.txt'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+# Allow the GITHUB_TOKEN to deploy to Pages and mint an OIDC token for deploy-pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two Pages deploys at once; let an in-progress run finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Publish the gallery
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      # A project Pages site is served from /<repo>/, not from the origin root, so the app has to
+      # know its base path. This MUST happen BEFORE publish, not after: index.html is listed in
+      # service-worker-assets.js with a sha256 integrity hash, and the service worker installs by
+      # cache.addAll({integrity}) - rewriting index.html in the published output would make the hash
+      # no longer match, the install would throw, and the PWA/offline layer would silently die.
+      # Rewriting the source first means the manifest is generated from the file we actually ship.
+      #
+      # The repo keeps "/" so the Docker image (samples/Flare.Gallery/Dockerfile -> nginx at a site
+      # root) and `dotnet run` locally are unaffected; only this Pages build rewrites it.
+      - name: Point the app at the Pages sub-path
+        run: |
+          base="/${GITHUB_REPOSITORY#*/}/"
+          echo "Base path: $base"
+          sed -i "s|<base href=\"/\" />|<base href=\"$base\" />|" samples/Flare.Gallery/wwwroot/index.html
+          sed -i "s|const base = \"/\";|const base = \"$base\";|" samples/Flare.Gallery/wwwroot/service-worker.published.js
+          grep -q "<base href=\"$base\" />" samples/Flare.Gallery/wwwroot/index.html
+          grep -q "const base = \"$base\";" samples/Flare.Gallery/wwwroot/service-worker.published.js
+
+      - name: Publish (Release, trimmed)
+        run: dotnet publish samples/Flare.Gallery/Flare.Gallery.csproj -c Release -o publish
+        env:
+          DOTNET_NOLOGO: 'true'
+          DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+
+      - name: Add the static-host shims
+        run: |
+          # Pages has no SPA fallback: a cold deep link (/Flare/components/button) is a 404 for the
+          # static host, so it serves 404.html - which is the app, which then routes on the URL.
+          # Copied AFTER publish on purpose: 404.html must not enter the service worker's manifest.
+          cp publish/wwwroot/index.html publish/wwwroot/404.html
+          # Belt and braces: the Actions deploy path serves the artifact as-is and never runs Jekyll,
+          # but if Pages is ever pointed back at a branch, Jekyll would drop _framework/ and _content/.
+          touch publish/wwwroot/.nojekyll
+          # Keep the AI-agent entry point at the same URL docfx published it at.
+          cp llms.txt publish/wwwroot/llms.txt
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: publish/wwwroot
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment-retry.outputs.page_url }}
+    steps:
+      # GitHub Pages occasionally fails a deploy at "syncing_files" with a transient
+      # "Deployment failed, try again later"; retry once so a single backend blip
+      # does not fail the run (the built artifact is reused).
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Deploy (retry after a transient Pages sync failure)
+        id: deployment-retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v5

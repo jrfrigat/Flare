@@ -439,7 +439,7 @@
     <value>Shape morph (theme-driven)</value>
   </data>
   <data name="Buttons_PressMorph_Hint" xml:space="preserve">
-    <value>Hover, then press and hold. Whether the corners travel at all is the theme's decision, not the button's: MD3 Expressive reshapes them - pill at rest, softer rectangle on hover, tighter corner when pressed - while Fluent 2 and the rest hold one shape and change only their fill. Switch the theme above to compare.</value>
+    <value>Press and hold. Whether the corners travel at all is the theme's decision, not the button's: MD3 Expressive squares them off while pressed and returns them when released, holding its resting shape under the pointer as Material specifies, while Fluent 2 and the rest keep one shape and change only their fill. Switch the theme above to compare.</value>
   </data>
   <data name="Calendar_Title" xml:space="preserve">
     <value>Calendar</value>
@@ -2560,7 +2560,7 @@
   <data name="ButtonGroup_Title" xml:space="preserve"><value>Button Group</value></data>
   <data name="ButtonGroup_Subtitle" xml:space="preserve"><value>Connected sets of buttons sharing variant, color and size. In the MD3 Expressive theme segments are separated by a gap with rounded inner corners and morph into a full capsule on interaction.</value></data>
   <data name="ButtonGroup_Connected" xml:space="preserve"><value>Standard and connected</value></data>
-  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Collapsing and toggle segments</value></data>
+  <data name="ButtonGroup_Collapsible" xml:space="preserve"><value>Collapsing</value></data>
   <data name="ButtonGroup_Basic" xml:space="preserve"><value>Basic</value></data>
   <data name="ButtonGroup_Vertical" xml:space="preserve"><value>Vertical</value></data>
   <data name="ButtonGroup_VariantsColors" xml:space="preserve"><value>Variants &amp; colors (cascade)</value></data>
@@ -2759,4 +2759,34 @@
   <data name="Query_Lbl_Ascending" xml:space="preserve"><value>Ascending</value></data>
   <data name="Query_Lbl_Descending" xml:space="preserve"><value>Descending</value></data>
   <data name="Query_Lbl_SchemaMissing" xml:space="preserve"><value>A schema is required.</value></data>
+  <data name="ButtonGroup_ToggleSegments" xml:space="preserve">
+    <value>Toggle segments</value>
+  </data>
+  <data name="ToggleButton_Variants" xml:space="preserve">
+    <value>Variants - colour per variant</value>
+  </data>
+  <data name="ToggleButton_Shape" xml:space="preserve">
+    <value>Shape swap on selection</value>
+  </data>
+  <data name="ToggleButton_LabelSwap" xml:space="preserve">
+    <value>Icon and label that change with the state</value>
+  </data>
+  <data name="ThemeMapping_Subtitle" xml:space="preserve">
+    <value>How this design system's components map onto Flare, straight from the theme package's README.</value>
+  </data>
+  <data name="ThemeMapping_NoneTitle" xml:space="preserve">
+    <value>No mapping for this theme</value>
+  </data>
+  <data name="ThemeMapping_NoneDescription" xml:space="preserve">
+    <value>This theme package ships no README, or the id in the address is not one of the registered themes.</value>
+  </data>
+  <data name="ThemeMapping_NotActive" xml:space="preserve">
+    <value>This is not the theme you are looking at right now.</value>
+  </data>
+  <data name="ThemeMapping_Apply" xml:space="preserve">
+    <value>Switch to it</value>
+  </data>
+  <data name="Nav_ThemeMappings" xml:space="preserve">
+    <value>Component mapping</value>
+  </data>
 </root>

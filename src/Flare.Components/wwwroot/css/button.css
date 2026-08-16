@@ -51,8 +51,11 @@
        not an interpolated transition. */
     --_morph-duration: var(--flare-shape-morph-duration);
     transition: box-shadow var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), background-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), color var(--flare-motion-duration-medium1) var(--flare-motion-easing-standard), border-radius var(--_morph-duration) var(--flare-shape-morph-easing);
-    /* Reserve 1px for the border on all buttons so a bordered variant never shifts layout */
-    border: 1px solid transparent;
+    /* Reserve the border on EVERY button, whatever its variant, so switching variant never shifts
+       layout. The width is the theme's and ramps with the size - a stroke that reads as a hairline
+       beside a small label is a thread beside a large one, which is why Material thickens it as the
+       button grows rather than keeping one width the core could have hardcoded. */
+    border: var(--_flare-btn-outline-width, var(--flare-btn-outline-width-md)) solid transparent;
 }
 
 /* Colour: variants read the shared role tokens (--fc-*) with a fallback to "Default".
@@ -183,6 +186,7 @@
    ADAPTIVE SIZE GRID
    ========================================================================== */
 .flare-btn--xs {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-xs);
     gap: var(--flare-btn-gap-xs);
     --_flare-btn-height: var(--flare-btn-height-xs);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xs);
@@ -199,6 +203,7 @@
 }
 
 .flare-btn--sm {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-sm);
     gap: var(--flare-btn-gap-sm);
     --_flare-btn-height: var(--flare-btn-height-sm);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-sm);
@@ -215,6 +220,7 @@
 }
 
 .flare-btn--md {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-md);
     gap: var(--flare-btn-gap-md);
     --_flare-btn-height: var(--flare-btn-height-md);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-md);
@@ -231,6 +237,7 @@
 }
 
 .flare-btn--lg {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-lg);
     gap: var(--flare-btn-gap-lg);
     --_flare-btn-height: var(--flare-btn-height-lg);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-lg);
@@ -247,6 +254,7 @@
 }
 
 .flare-btn--xl {
+    --_flare-btn-outline-width: var(--flare-btn-outline-width-xl);
     gap: var(--flare-btn-gap-xl);
     --_flare-btn-height: var(--flare-btn-height-xl);
     --_flare-btn-padding-inline: var(--flare-btn-padding-inline-xl);
@@ -289,6 +297,79 @@
 .flare-btn--circular { border-radius: calc(var(--_flare-btn-height, var(--flare-btn-height-md)) / 2); }
 
 .flare-btn--square { border-radius: var(--flare-shape-none); }
+
+/* ==========================================================================
+   SELECTED - the on state of a toggle. Material puts these tokens in the BUTTON table, not in a
+   component of its own, and says the shape half as a swap: "a selected button should change shape from
+   round to square, or square to round". So selection is not one radius, it is a direction, and which
+   direction a button travels is decided by the shape it is standing in.
+
+   Round (the theme's own shape, and the explicit pill) tightens to the per-size selected corner; the
+   explicit square opens out to a capsule. The capsule is computed from the height for the same reason
+   .flare-btn--circular is: a 9999px radius is clamped when painted, so interpolating from it shows
+   nothing until the last moment and lands as a snap.
+
+   After the shape axis, so an explicitly-shaped button is still overridden when it is selected; the
+   paint sits with them because a Color set on the button (--fc-*) must keep outranking the theme's
+   neutral selected pair, which is what makes <FlareToggleButton Color="Primary"> mean anything.
+   ========================================================================== */
+.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-selected-color));
+    border-color: transparent;
+    border-radius: var(--flare-btn-selected-radius-md);
+}
+
+/* PER-VARIANT PAINT. Material keeps a second colour table for toggles - "the default and toggle buttons
+   use different colors" - and every variant lands somewhere its own default never goes when selected: an
+   elevated toggle fills, a tonal one drops from the container to the tone itself, an outlined one
+   inverts. The rule above is what a variant with no entry of its own gets, which in the spec's table is
+   only the text style, and the text style is the one it says toggles do not use.
+
+   A Color set on the button still wins through --fc-*: choosing a colour is a stronger statement than
+   the variant's default, and it is what makes <FlareToggleButton Color="Primary"> mean anything. */
+.flare-btn--elevated.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-elevated-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-elevated-selected-color));
+}
+.flare-btn--filled.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-filled-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-filled-selected-color));
+}
+.flare-btn--tonal.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-tonal-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-tonal-selected-color));
+}
+.flare-btn--outlined.flare-btn--selected {
+    background-color: var(--fc-container, var(--flare-btn-outlined-selected-bg));
+    color: var(--fc-on-container, var(--flare-btn-outlined-selected-color));
+}
+
+/* The filled toggle is the only one that differs from its variant's default BEFORE anything is selected:
+   a filled button is a primary fill, but a filled toggle sitting unselected is a neutral container, or
+   the row would read as though every option were already chosen.
+
+   Keyed off aria-pressed rather than a class, because that attribute is precisely the question being
+   asked - is this a toggle? - and it is already there for assistive technology. A command button has no
+   aria-pressed at all, so it cannot match, which is the whole point: the two must not be confused. */
+.flare-btn--filled[aria-pressed="false"] {
+    background-color: var(--fc-main, var(--flare-btn-filled-unselected-bg));
+    color: var(--fc-on, var(--flare-btn-filled-unselected-color));
+}
+
+.flare-btn--selected.flare-btn--xs { border-radius: var(--flare-btn-selected-radius-xs); }
+.flare-btn--selected.flare-btn--sm { border-radius: var(--flare-btn-selected-radius-sm); }
+.flare-btn--selected.flare-btn--md { border-radius: var(--flare-btn-selected-radius-md); }
+.flare-btn--selected.flare-btn--lg { border-radius: var(--flare-btn-selected-radius-lg); }
+.flare-btn--selected.flare-btn--xl { border-radius: var(--flare-btn-selected-radius-xl); }
+
+/* The other direction, and a token rather than arithmetic: whether a square opens out at all is the
+   difference between a language that swaps shapes on selection and one that only repaints, and the
+   core is not entitled to decide that. Two classes plus a size class would be needed to beat the rules
+   above on specificity, so this is written at the same weight and placed after them. */
+.flare-btn--square.flare-btn--selected {
+    border-radius: var(--flare-btn-selected-radius-square);
+}
 
 /* The corner travel is the one motion here worth suppressing on request: it is movement rather than
    a colour change. Zeroing the local var leaves the rest of the transition list intact. */

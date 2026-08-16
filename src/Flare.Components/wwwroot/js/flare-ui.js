@@ -144,7 +144,8 @@ export function registerButtonGroupCollapse(root, dotNetRef) {
     ro.observe(root);
     if (root.parentElement) ro.observe(root.parentElement);
     _groupCollapsers.set(root, ro);
-    run();
+    // No first pass from here: observe() already schedules one, and the component asks for another as
+    // soon as this call returns. A third would only measure the same layout again.
 }
 
 export function removeButtonGroupCollapse(root) {

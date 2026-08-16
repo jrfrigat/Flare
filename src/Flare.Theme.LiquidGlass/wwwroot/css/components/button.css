@@ -15,8 +15,17 @@
             background-color 150ms ease,
             box-shadow 150ms ease;
     }
-    /* Drop the MD3 translucent state layer; the sheen IS the feedback. */
-    .flare-btn::before { opacity: 0 !important; }
+    /* The sheen IS the feedback here, so the state layer must paint nothing - said by naming the
+       paint rather than by suppressing the core's element with `opacity: 0 !important`. The layer
+       is still there and still fades; it just fades to nothing, which a theme can retune one token
+       at a time. The old suppression also outranked the DISABLED layer, so it silently decided that
+       too (this theme parks DisabledLayer at transparent, so nothing moves). */
+    .flare-btn {
+        --flare-state-hover-layer: transparent;
+        --flare-state-focus-layer: transparent;
+        --flare-state-focus-hover-layer: transparent;
+        --flare-state-pressed-layer: transparent;
+    }
 
     /* The liquid squash on press. */
     .flare-btn:active { transform: scale(0.96); }

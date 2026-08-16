@@ -62,8 +62,8 @@ public static class DataGridField
     public const string ActiveCellOutline = "--flare-datagrid-active-cell-outline";
     /// <summary>CSS custom-property name for the column-picker minimum width.</summary>
     public const string ColumnPickerMinWidth = "--flare-datagrid-column-picker-min-width";
-    /// <summary>CSS custom-property name for the selected+hover row mix percentage.</summary>
-    public const string RowSelectedHoverPct = "--flare-datagrid-row-selected-hover-pct";
+    /// <summary>CSS custom-property name for the cell-range selection paint.</summary>
+    public const string RangeLayer = "--flare-datagrid-range-layer";
     /// <summary>CSS custom-property name for the row-being-edited tint percentage.</summary>
     public const string RowEditingPct = "--flare-datagrid-row-editing-pct";
     /// <summary>CSS custom-property name for the loading-veil opacity percentage.</summary>
@@ -416,6 +416,10 @@ public static class SwitchField
     public const string FocusOutlineOffset = "--flare-switch-focus-outline-offset";
     /// <summary>CSS custom-property name for the focus shadow.</summary>
     public const string FocusShadow = "--flare-switch-focus-shadow";
+    /// <summary>CSS custom-property name for the off-state focus layer around the handle.</summary>
+    public const string FocusShadowOff = "--flare-switch-focus-shadow-off";
+    /// <summary>CSS custom-property name for the on-state focus layer around the handle.</summary>
+    public const string FocusShadowOn = "--flare-switch-focus-shadow-on";
     /// <summary>CSS custom-property name for the track background on off-hover.</summary>
     public const string TrackHoverOffBg = "--flare-switch-track-hover-off-bg";
     /// <summary>CSS custom-property name for the track background on on-hover.</summary>

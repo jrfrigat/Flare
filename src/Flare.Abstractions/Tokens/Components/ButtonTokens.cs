@@ -71,6 +71,78 @@ public sealed record ButtonTokens
     /// <summary>Space between the container edge and the content at the xl size, on both sides.</summary>
     [CssVar(Button.PaddingInline.Xl)] public required string PaddingInlineXl { get; init; }
 
+    // --- 4a. OUTLINE WIDTH ---
+    // Per size rather than one value, because a stroke that reads as a hairline beside a small label is
+    // a thread beside a large one - Material thickens it as the button grows. It is reserved on every
+    // variant, not just the outlined one, so that changing variant never moves anything.
+    /// <summary>Container border width at the xs size.</summary>
+    [CssVar(Button.OutlineWidth.Xs)] public required string OutlineWidthXs { get; init; }
+    /// <summary>Container border width at the sm size.</summary>
+    [CssVar(Button.OutlineWidth.Sm)] public required string OutlineWidthSm { get; init; }
+    /// <summary>Container border width at the md size.</summary>
+    [CssVar(Button.OutlineWidth.Md)] public required string OutlineWidthMd { get; init; }
+    /// <summary>Container border width at the lg size.</summary>
+    [CssVar(Button.OutlineWidth.Lg)] public required string OutlineWidthLg { get; init; }
+    /// <summary>Container border width at the xl size.</summary>
+    [CssVar(Button.OutlineWidth.Xl)] public required string OutlineWidthXl { get; init; }
+
+    // --- 4b. SELECTED (a button whose toggle is on) ---
+    // Selection is a shape change as much as a colour one, and Material states the shape half as a swap:
+    // a round button becomes square when selected and a square one becomes round. The value below is the
+    // first half of that swap - what a button with the theme's own (round) shape takes when selected -
+    // while the explicitly square shape travels to a capsule, which is geometry the core computes from
+    // the height rather than a value a theme could usefully name. Per size because the two shapes are a
+    // per-size pair in the spec, not one radius applied five times.
+    /// <summary>Corner radius of a selected button at the xs size.</summary>
+    [CssVar(Button.SelectedRadius.Xs)] public required string SelectedRadiusXs { get; init; }
+    /// <summary>Corner radius of a selected button at the sm size.</summary>
+    [CssVar(Button.SelectedRadius.Sm)] public required string SelectedRadiusSm { get; init; }
+    /// <summary>Corner radius of a selected button at the md size.</summary>
+    [CssVar(Button.SelectedRadius.Md)] public required string SelectedRadiusMd { get; init; }
+    /// <summary>Corner radius of a selected button at the lg size.</summary>
+    [CssVar(Button.SelectedRadius.Lg)] public required string SelectedRadiusLg { get; init; }
+    /// <summary>Corner radius of a selected button at the xl size.</summary>
+    [CssVar(Button.SelectedRadius.Xl)] public required string SelectedRadiusXl { get; init; }
+    /// <summary>Corner radius a selected button takes when its rest shape is the explicit square - the
+    /// other half of the swap, and the direction that travels outward. A language that does not reshape
+    /// on selection points this back at its own square radius, which is the difference between the two
+    /// kinds of theme rather than something the core is entitled to decide.</summary>
+    [CssVar(Button.SelectedRadiusSquare)] public required string SelectedRadiusSquare { get; init; }
+    /// <summary>Container background of a selected button, shared by every variant. A theme that wants a
+    /// variant to answer selection differently says so in its own stylesheet; this is the one answer the
+    /// core paints from.</summary>
+    [CssVar(Button.SelectedBg)] public required string SelectedBg { get; init; }
+    /// <summary>Icon and label colour of a selected button, which must stay legible on
+    /// <see cref="SelectedBg"/>.</summary>
+    [CssVar(Button.SelectedColor)] public required string SelectedColor { get; init; }
+
+    // Per-variant toggle paint. Material keeps a separate colour table for toggle buttons - "the default
+    // and toggle buttons use different colors" - and every variant lands somewhere its default never
+    // goes when selected. Filled is the one that also differs while UNselected, which is why it is the
+    // only variant with an unselected pair: a filled toggle at rest is not a filled button.
+    /// <summary>Container of a selected Elevated button.</summary>
+    [CssVar(Button.Toggle.ElevatedSelectedBg)] public required string ElevatedSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Elevated button.</summary>
+    [CssVar(Button.Toggle.ElevatedSelectedColor)] public required string ElevatedSelectedColor { get; init; }
+    /// <summary>Container of a selected Filled button.</summary>
+    [CssVar(Button.Toggle.FilledSelectedBg)] public required string FilledSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Filled button.</summary>
+    [CssVar(Button.Toggle.FilledSelectedColor)] public required string FilledSelectedColor { get; init; }
+    /// <summary>Container of a selected Tonal button.</summary>
+    [CssVar(Button.Toggle.TonalSelectedBg)] public required string TonalSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Tonal button.</summary>
+    [CssVar(Button.Toggle.TonalSelectedColor)] public required string TonalSelectedColor { get; init; }
+    /// <summary>Container of a selected Outlined button.</summary>
+    [CssVar(Button.Toggle.OutlinedSelectedBg)] public required string OutlinedSelectedBg { get; init; }
+    /// <summary>Icon and label of a selected Outlined button.</summary>
+    [CssVar(Button.Toggle.OutlinedSelectedColor)] public required string OutlinedSelectedColor { get; init; }
+    /// <summary>Container of a Filled button that is a toggle and currently unselected - the one state
+    /// where being a toggle changes a button before anything has been selected. A theme that draws no
+    /// such distinction points this at its own filled container.</summary>
+    [CssVar(Button.Toggle.FilledUnselectedBg)] public required string FilledUnselectedBg { get; init; }
+    /// <summary>Icon and label of an unselected Filled toggle.</summary>
+    [CssVar(Button.Toggle.FilledUnselectedColor)] public required string FilledUnselectedColor { get; init; }
+
     // --- 5. FOCUS AND BEHAVIOR ---
     /// <summary>Shorthand <c>outline</c> drawn around the button on keyboard focus
     /// (<c>:focus-visible</c>), not on a pointer press.</summary>

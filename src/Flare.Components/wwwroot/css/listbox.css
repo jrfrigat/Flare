@@ -73,7 +73,14 @@
     background: var(--flare-state-hover-layer);
     opacity: 1;
 }
-.flare-listbox__option--active { background-color: color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent); }
+/* The keyboard-highlighted option is roving FOCUS, so it paints the focus layer through the same
+   ::before the hover uses instead of setting a background of its own - which sat above the layer and
+   won. It used to mix PRIMARY at the SELECTED opacity: an accent wash for a state that is neither an
+   accent nor a selection, and one a theme had no way to retune. */
+.flare-listbox__option--active::before {
+    background: var(--flare-state-focus-layer);
+    opacity: 1;
+}
 .flare-listbox__option--selected { color: var(--flare-color-primary); font-weight: 600; }
 
 /* Trailing check on the selected single-select option. */

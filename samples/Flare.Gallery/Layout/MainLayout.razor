@@ -1,15 +1,18 @@
 @inherits LayoutComponentBase
 @implements IDisposable
+@implements IAsyncDisposable
 @inject NavigationManager NavManager
 @inject IVersionCheckService VersionCheck
 @inject ISnackbarService Snackbar
+@inject IBrowserViewportService Viewport
 @inject Flare.Gallery.Services.RailLabelService RailLabels
 @using Flare.Gallery.Models
+@using Microsoft.JSInterop
 
 <FlareLayout>
     <FlareLayoutAppBar DrawerToggle="true">
         <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.Small" Style="flex:1;min-width:0;">
-            <FlareLink Href="/" Underline="LinkUnderline.None" Color="FlareColor.Default">
+            <FlareLink Href="" Underline="LinkUnderline.None" Color="FlareColor.Default">
                 <FlareStack Row Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall">
                     <FlareIconView Color="FlareColor.Primary" Value="@FlareIcons.Brands.FlareLogo" Size="2.25rem" AriaLabel="Flare" />
                     <FlareText Typo="TypographyScale.TitleLarge" Weight="FontWeight.ExtraBold" Style="letter-spacing:-0.5px;">Flare</FlareText>
@@ -31,9 +34,14 @@
         <NavMenu Mode="@PrimaryNavMode" @bind-Section="_section" RouteSection="_routeSection" />
     </FlareLayoutDrawer>
 
-    @* Secondary section column: a separate Persistent drawer, opened by selecting a section. Its open
-       state is its own parameter -- the layout does not own it. *@
-    <FlareLayoutDrawer Open="@(_section != GallerySection.None)" Variant="DrawerVariant.Persistent" Width="17rem">
+    @* Secondary section column: a separate Persistent drawer, opened by selecting a section. It pushes
+       content on a desktop, but every drawer floats over it on mobile - so OpenChanged is not optional
+       there. The drawer is what learns it was dismissed (scrim tap, Escape, or FlareLayout closing
+       floating overlays on a mobile navigation); with nowhere to report that, the next render re-supplied
+       Open=true from _section and the panel snapped straight back, which on a phone left the section list
+       covering the page with no way to close it. *@
+    <FlareLayoutDrawer Open="@(_section != GallerySection.None)" OpenChanged="OnSectionPanelOpenChanged"
+                       Variant="DrawerVariant.Persistent" Width="17rem" AriaLabel="@GalleryStrings.Nav_Components">
         @if (_section != GallerySection.None)
         {
             <SecondaryNav Section="_section" />
@@ -72,6 +80,10 @@
     // The primary drawer starts collapsed (a rail); the secondary column is driven by the section.
     private bool _navOpen;
     private GallerySection _section = GallerySection.None;
+    // Below the Md bound the layout floats its drawers, which changes what the section panel should do
+    // on navigation (see OnLocationChanged).
+    private bool _isMobile;
+    private IAsyncDisposable? _breakpointSubscription;
     // The section of the current route -- highlights the matching rail trigger (independent of which
     // secondary panel happens to be open).
     private GallerySection _routeSection = GallerySection.None;
@@ -106,8 +118,33 @@
         // The secondary column follows the route: navigating into a section opens its panel (so a direct
         // link or reload lands with the right panel open, not just the highlight), and leaving every
         // section (Overview / Getting started) closes it. A trigger click can still collapse it in place.
-        _section = _routeSection;
+        //
+        // Not on mobile, where the panel is a modal overlay: following the route there would re-cover the
+        // page the tap just opened. A modal navigation drawer closes on selection - Material's own docs
+        // site does exactly this, showing the section list only until you pick something from it.
+        _section = _isMobile ? GallerySection.None : _routeSection;
         StateHasChanged();
+    }
+
+    // The drawer reports its own dismissal here; see the markup for why dropping it broke mobile.
+    private void OnSectionPanelOpenChanged(bool open)
+    {
+        if (!open) _section = GallerySection.None;
+    }
+
+    private async Task OnBreakpointAsync(Breakpoint breakpoint)
+    {
+        // Same bound FlareLayout uses for "mobile" (below Md), so the panel's behaviour flips at exactly
+        // the width where the layout starts floating it.
+        var mobile = breakpoint.IsAtMost(Breakpoint.Sm);
+        if (mobile == _isMobile) return;
+        _isMobile = mobile;
+        // Becoming mobile turns the panel into an overlay, so anything the route opened is now covering
+        // the page rather than sitting beside it. This also catches the first load: the breakpoint is
+        // only known after the first render, by which point OnInitialized has already opened the
+        // section for the current route.
+        if (mobile) _section = GallerySection.None;
+        await InvokeAsync(StateHasChanged);
     }
 
     private void OnRailLabelsChanged() => InvokeAsync(StateHasChanged);
@@ -134,10 +171,29 @@
     // The anti-FOUC startup splash is revealed automatically by FlareThemeProvider once the theme
     // CSS and web fonts are ready, so the layout no longer needs to hide it by hand.
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        // JS interop is only available after the first render; a disconnected circuit or prerender pass
+        // simply leaves _isMobile false, which is the desktop behaviour this layout had before.
+        try
+        {
+            _breakpointSubscription = await Viewport.SubscribeBreakpointAsync(OnBreakpointAsync);
+        }
+        catch (InvalidOperationException) { }
+        catch (JSDisconnectedException) { }
+    }
+
     public void Dispose()
     {
         VersionCheck.NewVersionAvailable -= OnNewVersionAsync;
         RailLabels.Changed -= OnRailLabelsChanged;
         NavManager.LocationChanged -= OnLocationChanged;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_breakpointSubscription is not null)
+            await _breakpointSubscription.DisposeAsync();
     }
 }

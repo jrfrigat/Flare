@@ -1,7 +1,9 @@
 # Proposal: first-class gradient FILL for Flare (background + text)
 
-**Status:** planned, not started - confirmed 2026-08-07: neither `FlareGradient` nor a `GradientFill`
-parameter exists anywhere in `src/`, so none of the three phases below has begun.
+**Status:** planned, not started - re-confirmed 2026-08-15: neither `FlareGradient` nor a `GradientFill`
+parameter exists anywhere in `src/`, so none of the three phases below has begun. This is a feature
+proposal, not a defect: nothing is broken while it waits, and phase 1 alone would cover the cases it
+was raised for.
 
 Originally split out of a Deka design-gap report (gap #2, "palette roles are solid colors only"). That
 report is closed and deleted; the part that survives is this: a CSS gradient is an `<image>`, the palette

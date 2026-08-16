@@ -103,3 +103,34 @@ h6[tabindex="-1"]:focus {
     outline: var(--flare-focus-ring);
     outline-offset: 2px;
 }
+
+/* ==========================================================================
+   COARSE-POINTER TARGETS
+
+   A finger is not a mouse: the small square controls that read fine at 36px under a cursor are below
+   every published touch minimum (Material 48dp, Apple 44pt, WCAG 2.5.8's floor of 24). Measured in
+   the gallery at 375px before this rule: every interactive control on the DataGrid page was shorter
+   than 44px, the pagination buttons at 36x36.
+
+   The CONTROL grows, not a hit area drawn over it. The pseudo-element trick - inflate a transparent
+   ::after and leave the pixels alone - is the usual advice and it is wrong for these: every one of
+   them sits in a row of its own kind, so a target wider than the control overlaps its neighbours and
+   the later sibling silently wins the tap. A pagination bar of 36px buttons with a 4px gap would
+   have each button stealing 4px from the one beside it. Growing the control keeps every target
+   disjoint, and the reflow it causes is confined to devices whose PRIMARY pointer is coarse - a
+   laptop with a touchscreen reports `fine` and is unaffected.
+
+   Dense inline affordances are deliberately absent: a chip's close icon and a tab's close icon are
+   1.1em and 1.25rem inside a host that has no room to give, so making them tappable is a spacing and
+   layout question rather than a minimum-size one. See docs/issues/mobile-responsive-audit.md.
+   ========================================================================== */
+@media (pointer: coarse) {
+    .flare-pagination__btn,
+    .flare-btn--icon-only,
+    .flare-input__clear,
+    .flare-autocomplete__clear,
+    .flare-numericfield__step {
+        min-inline-size: var(--flare-touch-target-min);
+        min-block-size: var(--flare-touch-target-min);
+    }
+}

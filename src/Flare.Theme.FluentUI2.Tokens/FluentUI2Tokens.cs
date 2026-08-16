@@ -95,6 +95,8 @@ public class FluentUI2Tokens
         DraggedLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-dragged-opacity) * 100%), transparent)",
         // Fluent signals focus with a stroke, not a fill, so the hover fill must survive the pairing.
         FocusHoverLayer = "color-mix(in srgb, currentColor calc(var(--flare-state-hover-opacity) * 100%), transparent)",
+        SelectedLayer = "color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-selected-opacity) * 100%), transparent)",
+        SelectedHoverLayer = "color-mix(in srgb, var(--flare-color-primary) 18%, transparent)",
     };
 
     internal static readonly BadgeTokens Badge = new()
@@ -129,6 +131,12 @@ public class FluentUI2Tokens
     internal static readonly ButtonTokens Button = new()
     {
         LoadingOpacity = "0.8",
+        // A hairline at every size; the Expressive theme is the one that thickens it as the button grows.
+        OutlineWidthXs = "1px",
+        OutlineWidthSm = "1px",
+        OutlineWidthMd = "1px",
+        OutlineWidthLg = "1px",
+        OutlineWidthXl = "1px",
         ContainerRadius = "var(--flare-shape-full)",
         TextPaddingInline = "0.75rem",
         // Compact gaps (Gap) between text and the Microsoft icon
@@ -159,6 +167,34 @@ public class FluentUI2Tokens
         RadiusLg = CornerRadiusTokens.All("var(--flare-shape-medium)"),      // 6px
         RadiusXl = CornerRadiusTokens.All("var(--flare-shape-large)"),       // 8px
 
+        // Selection is a repaint here, not a reshape: Windows keeps its corners where they are and says
+        // "on" with colour. Each selected radius therefore repeats the rest radius at that size rather
+        // than travelling anywhere.
+        SelectedRadiusXs = "var(--flare-shape-extra-small)",
+        SelectedRadiusSm = "var(--flare-shape-small)",
+        SelectedRadiusMd = "var(--flare-shape-small)",
+        SelectedRadiusLg = "var(--flare-shape-medium)",
+        SelectedRadiusXl = "var(--flare-shape-large)",
+        SelectedRadiusSquare = "var(--flare-shape-none)",
+        SelectedBg = "var(--flare-color-secondary-container)",
+        SelectedColor = "var(--flare-color-on-secondary-container)",
+        // Selection is the accent here, whatever the variant: this language does not send each variant
+        // somewhere different the way Material does, it just says "on" in the accent colour. The one
+        // thing it cannot do is repeat a variant s own resting colour - a selected tonal button painted
+        // secondary-container would be indistinguishable from an unselected one, which is exactly what
+        // happened when these four pairs were first filled in - so every variant travels to the accent,
+        // and the filled toggle starts from a neutral container rather than from the accent it ends on.
+        ElevatedSelectedBg = "var(--flare-color-primary)",
+        ElevatedSelectedColor = "var(--flare-color-on-primary)",
+        FilledSelectedBg = "var(--flare-color-primary)",
+        FilledSelectedColor = "var(--flare-color-on-primary)",
+        TonalSelectedBg = "var(--flare-color-primary)",
+        TonalSelectedColor = "var(--flare-color-on-primary)",
+        OutlinedSelectedBg = "var(--flare-color-primary)",
+        OutlinedSelectedColor = "var(--flare-color-on-primary)",
+        FilledUnselectedBg = "var(--flare-color-surface-container)",
+        FilledUnselectedColor = "var(--flare-color-on-surface-variant)",
+
         // Double focus-ring behavior (inner + outer) and flat shadows
         FocusOutline = "2px solid var(--flare-fluent-focus-stroke-color, #000000)",
         FocusOutlineOffset = "1px",
@@ -187,13 +223,31 @@ public class FluentUI2Tokens
     // small rounded ends, flat interior corners. Standard is Fluent's toolbar shape - separate buttons a
     // spacing step apart, each keeping the 4px corner the button already has, which is why the group
     // says nothing about corners here.
+    // Fluent groups its buttons at one rhythm regardless of size, and its connected group is a single
+    // rounded rectangle whose segments share a hairline seam: square inside, softened only at the two
+    // ends. Neither a press nor a selection reshapes anything - Fluent signals both by repainting - so
+    // the pressed and selected corners are pointed back at the shape the segment already has.
     internal static readonly ButtonGroupTokens ButtonGroup = new()
     {
-        StandardGap = "var(--flare-spacing-4)",
+        StandardGapXs = "var(--flare-spacing-4)",
+        StandardGapSm = "var(--flare-spacing-4)",
+        StandardGapMd = "var(--flare-spacing-4)",
+        StandardGapLg = "var(--flare-spacing-4)",
+        StandardGapXl = "var(--flare-spacing-4)",
         ConnectedGap = "0",
         ConnectedOverlap = "-1px",
         ConnectedOuterRadius = "var(--flare-shape-small)",
-        ConnectedInnerRadius = "0",
+        ConnectedSelectedRadius = "0",
+        ConnectedInnerRadiusXs = "0",
+        ConnectedInnerRadiusSm = "0",
+        ConnectedInnerRadiusMd = "0",
+        ConnectedInnerRadiusLg = "0",
+        ConnectedInnerRadiusXl = "0",
+        ConnectedPressedRadiusXs = "0",
+        ConnectedPressedRadiusSm = "0",
+        ConnectedPressedRadiusMd = "0",
+        ConnectedPressedRadiusLg = "0",
+        ConnectedPressedRadiusXl = "0",
         ZActive = "1",
     };
 
@@ -227,41 +281,13 @@ public class FluentUI2Tokens
     };
 
     // Toggle: currently = MD3 defaults (Fluent-specific sizes/shape - an open decision in the spec).
+    // Fluent's segmented control: a subtle rounded rectangle around segments that are ordinary buttons.
     internal static readonly ToggleButtonTokens ToggleButton = new()
     {
-        HeightXs = "1.75rem",
-        HeightXl = "3.5rem",
-        PaddingXs = "0.5rem",
-        PaddingXl = "2rem",
-        HeightSm = "2rem",
-        HeightMd = "2.5rem",
-        HeightLg = "3rem",
-        PaddingSm = "0.75rem",
-        PaddingMd = "1rem",
-        PaddingLg = "1.5rem",
-        Gap = "0.375rem",
-        // Fluent segmented control: subtle rounded rectangle, and the selected state changes colour
-        // only (no MD3 Expressive pill->squircle shape morph, so RadiusSelected* == Radius).
-        RadiusXs = "var(--flare-shape-small)",
-        RadiusSm = "var(--flare-shape-small)",
-        RadiusMd = "var(--flare-shape-small)",
-        RadiusLg = "var(--flare-shape-small)",
-        RadiusXl = "var(--flare-shape-small)",
-        RadiusSelectedXs = "var(--flare-shape-small)",
-        RadiusSelectedSm = "var(--flare-shape-small)",
-        RadiusSelectedMd = "var(--flare-shape-small)",
-        RadiusSelectedLg = "var(--flare-shape-small)",
-        RadiusSelectedXl = "var(--flare-shape-small)",
-        RestBg = "var(--flare-color-surface-container-highest)",
-        RestColor = "var(--flare-color-on-surface-variant)",
-        SelectedBg = "var(--flare-color-secondary-container)",
-        SelectedColor = "var(--flare-color-on-secondary-container)",
         GroupBorder = "1px solid var(--flare-color-outline)",
         GroupRadius = "var(--flare-shape-small)",
         GroupRadiusVertical = "var(--flare-shape-small)",
         GroupDivider = "var(--flare-color-outline)",
-        // Fluent repaints a disabled control rather than fading it.
-        DisabledOpacity = "1",
     };
 
     // FAB: flatter Fluent rounding (4-8dp).
@@ -648,6 +674,8 @@ public class FluentUI2Tokens
         FocusOutline = "3px solid var(--flare-color-secondary)",
         FocusOutlineOffset = "1px",
         FocusShadow = "none",
+        FocusShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-focus-opacity) * 100%), transparent)",
+        FocusShadowOn = "0 0 0 0.5rem color-mix(in srgb, var(--flare-color-primary) calc(var(--flare-state-focus-opacity) * 100%), transparent)",
         TrackHoverOffBg = "var(--flare-switch-track-off-bg)",
         TrackHoverOnBg = "var(--flare-switch-track-on-bg)",
         HoverShadowOff = "0 0 0 0.75rem color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-hover-opacity) * 100%), transparent)",
@@ -822,7 +850,7 @@ public class FluentUI2Tokens
         FilterGroupRail = "3px",
         ActiveCellOutline = "2px solid var(--flare-color-primary)",
         ColumnPickerMinWidth = "160px",
-        RowSelectedHoverPct = "18%",
+        RangeLayer = "color-mix(in srgb, var(--flare-color-primary) 14%, transparent)",
         RowEditingPct = "6%",
         LoadingVeilPct = "55%",
         LoadingDim = "0.6",
@@ -998,6 +1026,13 @@ public class FluentUI2Tokens
         Opacity = "0.32",
     };
 
+    // Fluent's touch guidance is 44px, not Material's 48dp. The control keeps its drawn size and the
+    // core widens the hit area to this under a coarse pointer.
+    internal static readonly TouchTokens Touch = new()
+    {
+        TargetMin = "44px",
+    };
+
     internal static readonly ScrollTopTokens ScrollTop = new()
     {
         TopInset = "1.5rem",
@@ -1045,6 +1080,7 @@ public class FluentUI2Tokens
         Otp = Otp,
         Picker = Picker,
         Scrim = Scrim,
+        Touch = Touch,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
         Stripe = Stripe,

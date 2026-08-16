@@ -13,7 +13,10 @@
 .flare-markdown hr { border: none; border-top: 1px solid var(--flare-color-outline-variant); margin: var(--flare-spacing-8) 0; }
 .flare-markdown a { color: var(--flare-color-primary); text-decoration: none; }
 .flare-markdown a:hover { text-decoration: underline; }
-.flare-markdown table { border-collapse: collapse; width: 100%; margin: var(--flare-spacing-6) 0; }
+/* The table's own frame: a table too wide for its column scrolls here instead of being clipped by an
+   ancestor. The margin lives on the wrapper so the scrollbar sits with the table, not around it. */
+.flare-markdown__table-scroll { overflow-x: auto; max-width: 100%; margin: var(--flare-spacing-6) 0; }
+.flare-markdown table { border-collapse: collapse; width: 100%; }
 .flare-markdown th,.flare-markdown td { border: 1px solid var(--flare-color-outline-variant); padding: 0.4rem var(--flare-spacing-6); }
 .flare-markdown th { background: var(--flare-color-surface-container); font-weight: 600; }
 .flare-markdown img { max-width: 100%; }

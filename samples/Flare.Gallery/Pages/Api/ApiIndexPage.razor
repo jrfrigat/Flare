@@ -17,7 +17,7 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:0.75rem;">
         @foreach (var c in Filtered)
         {
-            <a href="@($"/api/{c.Name}")" style="text-decoration:none;color:inherit;">
+            <a href="@($"api/{c.Name}")" style="text-decoration:none;color:inherit;">
                 <FlareCard Variant="CardVariant.Outlined">
                     <FlareStack Gap="FlareSpacing.XXSmall">
                         <FlareText Typo="TypographyScale.TitleMedium" Color="@Colors.Primary">@c.Name</FlareText>

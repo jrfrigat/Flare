@@ -41,7 +41,7 @@ public sealed class StateLayerModelTests
         foreach (var file in Directory.EnumerateFiles(cssDir, "*.css").OrderBy(f => f))
         {
             var name = Path.GetFileName(file);
-            var lines = File.ReadAllLines(file);
+            var lines = CssLinesWithoutComments(file);
             for (var i = 0; i < lines.Length; i++)
             {
                 if (lines[i].Contains("--flare-state-hover-opacity", StringComparison.Ordinal))
@@ -74,7 +74,7 @@ public sealed class StateLayerModelTests
 
             foreach (var file in Directory.EnumerateFiles(cssRoot, "*.css", SearchOption.AllDirectories))
             {
-                var lines = File.ReadAllLines(file);
+                var lines = CssLinesWithoutComments(file);
                 for (var i = 0; i < lines.Length; i++)
                 {
                     var line = lines[i].Replace(" ", "", StringComparison.Ordinal);
@@ -88,6 +88,82 @@ public sealed class StateLayerModelTests
             "An in-box theme is forcing opacity back to 1 to undo a fade the core applied. Give the "
             + "component a DisabledOpacity token and let the theme set it, the way every other "
             + "component now does:\n  " + string.Join("\n  ", offenders));
+    }
+
+    [Fact]
+    public void NoInBoxTheme_SuppressesAStateLayerInsteadOfNamingItsPaint()
+    {
+        // The mirror image of the rule above, and the one that survived longest unnoticed: a theme
+        // whose own gloss IS the feedback used to switch the core's layer off with
+        // `opacity: 0 !important` on the ::before. That reads as the theme fighting the core, and it
+        // is indiscriminate - the same declaration outranked the DISABLED layer, so it decided that
+        // too. Setting the -layer tokens to transparent says the same thing through the contract.
+        var root = FindRepoRoot();
+        var offenders = new List<string>();
+
+        foreach (var themeDir in Directory.EnumerateDirectories(Path.Combine(root, "src"), "Flare.Theme.*"))
+        {
+            var cssRoot = Path.Combine(themeDir, "wwwroot", "css");
+            if (!Directory.Exists(cssRoot)) continue;
+
+            foreach (var file in Directory.EnumerateFiles(cssRoot, "*.css", SearchOption.AllDirectories))
+            {
+                var lines = CssLinesWithoutComments(file);
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    var line = lines[i].Replace(" ", "", StringComparison.Ordinal);
+                    if (line.Contains("opacity:0!important", StringComparison.OrdinalIgnoreCase))
+                        offenders.Add($"{Path.GetFileName(themeDir)}/{Path.GetFileName(file)}:{i + 1}");
+                }
+            }
+        }
+
+        Assert.True(offenders.Count == 0,
+            "An in-box theme is suppressing a state layer with `opacity: 0 !important` instead of "
+            + "naming its paint. Set the --flare-state-*-layer tokens to transparent on the component "
+            + "instead - same result, and the layer stays retunable:\n  " + string.Join("\n  ", offenders));
+    }
+
+    /// <summary>
+    /// Returns the stylesheet's lines with every comment blanked out, newlines preserved so a reported
+    /// line number still points at the real line.
+    /// </summary>
+    /// <remarks>
+    /// Without this, a guard cannot tell a rule from prose about a rule - and the paragraph explaining
+    /// why the old form was wrong has to quote it verbatim to be worth reading. Both of the themes fixed
+    /// here, and FluentUI2's write-up of the same conversion, were reported as offenders by their own
+    /// documentation. The alternative (forbid the words) would make the codebase unable to describe its
+    /// own history.
+    /// </remarks>
+    private static string[] CssLinesWithoutComments(string path)
+    {
+        var css = File.ReadAllText(path);
+        var stripped = new System.Text.StringBuilder(css.Length);
+        var inComment = false;
+
+        for (var i = 0; i < css.Length; i++)
+        {
+            if (!inComment && css[i] == '/' && i + 1 < css.Length && css[i + 1] == '*')
+            {
+                inComment = true;
+                stripped.Append("  ");
+                i++;
+                continue;
+            }
+
+            if (inComment && css[i] == '*' && i + 1 < css.Length && css[i + 1] == '/')
+            {
+                inComment = false;
+                stripped.Append("  ");
+                i++;
+                continue;
+            }
+
+            // Keep line breaks even inside a comment so the line numbering survives.
+            stripped.Append(inComment && css[i] is not ('\n' or '\r') ? ' ' : css[i]);
+        }
+
+        return stripped.ToString().Split('\n');
     }
 
     // Walk up to the folder that contains src/Flare.Components (the test runs from bin/).

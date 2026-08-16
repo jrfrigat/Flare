@@ -35,6 +35,8 @@ public static class Button
     /// <summary>The <c>flare-btn--square</c> CSS class.</summary>
     public const string Square = "flare-btn--square";
 
+    /// <summary>The <c>flare-btn--selected</c> CSS class: a button whose toggle is on.</summary>
+    public const string Selected = "flare-btn--selected";
     /// <summary>The <c>flare-btn--loading</c> CSS class.</summary>
     public const string Loading = "flare-btn--loading";
     /// <summary>The <c>flare-btn--icon-only</c> CSS class.</summary>
