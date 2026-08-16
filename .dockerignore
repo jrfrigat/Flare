@@ -8,8 +8,6 @@
 **/TestResults
 **/nupkg
 .claude
-.claude-flow
-.swarm
 *.md
 !README.md
 # The Gallery embeds these as resources (single-source release notes) - keep them in the build context.

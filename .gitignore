@@ -79,13 +79,9 @@ yarn-debug.log*
 yarn-error.log*
 
 ## AI tooling ##
-.claude-flow/
 .claude/
 CLAUDE.md
-.swarm/
 .mcp.json
-ruvector.db
-*.jsonl
 
 ## docfx (API docs site) ##
 _site/
