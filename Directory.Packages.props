@@ -18,7 +18,7 @@
        each csproj). GlobalPackageReference implies PrivateAssets="all". -->
   <ItemGroup>
     <GlobalPackageReference Include="MinVer" Version="7.0.0" />
-    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.301" />
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400" />
   </ItemGroup>
   <ItemGroup>
     <!-- Roslyn source generator (samples/Flare.Gallery.Generators). -->
@@ -29,8 +29,8 @@
          consumer and needs a different major per TFM, so it carries the whole version there via
          VersionOverride. A central pin would be dead weight that reads like the real one. -->
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.10" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.10" />
-    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Extensions.Localization" Version="10.0.11" />
     <!-- Querio: the query model the visual designer is built on. It lives in its own repository and
          ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
          its text language are needed by the designer; the Gallery adds two renderers to demo one
