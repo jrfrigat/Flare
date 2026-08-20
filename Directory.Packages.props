@@ -22,8 +22,8 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Roslyn source generator (samples/Flare.Gallery.Generators). -->
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.6.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
     <!-- Blazor / ASP.NET Core runtime.
          Microsoft.AspNetCore.Components.Web is deliberately absent: Flare.Abstractions is its only
          consumer and needs a different major per TFM, so it carries the whole version there via
@@ -40,7 +40,7 @@
     <PackageVersion Include="Querio.Sql" Version="0.0.1" />
     <PackageVersion Include="Querio.OneC" Version="0.0.1" />
     <!-- Test stack (tests/Flare.*.Tests). -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="bunit" Version="2.9.0" />
