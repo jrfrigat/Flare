@@ -11,6 +11,14 @@ updates:
       nuget-minor-and-patch:
         update-types: [minor, patch]
     labels: [dependencies]
+    ignore:
+      # The Gallery source generator must not reference a Roslyn newer than the compiler that
+      # loads it: the SDK then drops the analyzer with CS9057, which is only a warning, so the
+      # generated code silently disappears and the build fails on the generated types instead.
+      # Both are pinned to the build SDK's Roslyn in Directory.Packages.props and are raised by
+      # hand together with that SDK, never by an automated bump.
+      - dependency-name: Microsoft.CodeAnalysis.CSharp
+      - dependency-name: Microsoft.CodeAnalysis.Analyzers
 
   # GitHub Actions used by the workflows.
   - package-ecosystem: github-actions
