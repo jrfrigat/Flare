@@ -14,5 +14,12 @@
     "version": "10.0.400",
     "rollForward": "latestFeature",
     "allowPrerelease": false
+  },
+  // xunit.v3 4.0.0 builds test projects as Microsoft.Testing.Platform applications. The old bridge
+  // that let "dotnet test" drive them through the VSTest target is gone on the .NET 10 SDK, which
+  // fails outright rather than falling back, so the runner has to be selected here. Note this also
+  // changes the command line: MTP takes "--report-trx", and silently ignores VSTest's "--logger".
+  "test": {
+    "runner": "Microsoft.Testing.Platform"
   }
 }
