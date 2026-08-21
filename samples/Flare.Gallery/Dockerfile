@@ -9,16 +9,18 @@ COPY . .
 # The pruned tree is byte-identical whenever no project file changed, so the layer that copies it
 # into the build stage keeps its digest and the restore below stays cached.
 RUN mkdir -p /projects && \
-    find . -type f \( -name "*.csproj" -o -name "Directory.Build.props" -o -name "Directory.Packages.props" \) \
+    find . -type f \( -name "*.csproj" -o -name "Directory.Build.props" -o -name "Directory.Packages.props" \
+        -o -name "global.json" \) \
         -exec install -D {} /projects/{} \;
 
 # ── Stage 2: Build ───────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /repo
 
-# Both repo-level props files come across with the projects: Directory.Build.props (shared
-# <TargetFramework> etc.) and Directory.Packages.props (Central Package Management - the single
-# source of every NuGet version; without it the version-less PackageReferences won't resolve).
+# The repo-level build-control files come across with the projects: Directory.Build.props (shared
+# <TargetFramework> etc.), Directory.Packages.props (Central Package Management - the single source
+# of every NuGet version; without it the version-less PackageReferences won't resolve) and
+# global.json (the SDK floor, so restore picks the same compiler the publish below will use).
 COPY --from=projects /projects .
 RUN dotnet restore "samples/Flare.Gallery/Flare.Gallery.csproj"
 

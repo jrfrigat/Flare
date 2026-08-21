@@ -1,0 +1,18 @@
+{
+  // Floor for the .NET SDK, which is really a floor for the C# compiler. The Gallery source
+  // generator references Microsoft.CodeAnalysis.CSharp (see Directory.Packages.props), and a
+  // generator may not reference a Roslyn newer than the compiler loading it - the SDK then drops
+  // the analyzer with CS9057, a mere warning, and the build fails far away with CS0103 on the
+  // types that silently stopped being generated. Without this floor CI floats to the newest SDK,
+  // so its compiler is never the older one and it cannot reproduce that break at all: the CI stays
+  // green while an older dev machine fails.
+  //
+  // 10.0.400 ships Roslyn 5.9.0, matching the pinned analyzer packages. rollForward latestFeature
+  // accepts 10.0.400 and any higher 10.0 feature band, so newer machines are fine - it only bars
+  // ones that are too old, which is the failure this guards.
+  "sdk": {
+    "version": "10.0.400",
+    "rollForward": "latestFeature",
+    "allowPrerelease": false
+  }
+}
