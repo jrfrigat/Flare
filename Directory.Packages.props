@@ -21,9 +21,14 @@
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400" />
   </ItemGroup>
   <ItemGroup>
-    <!-- Roslyn source generator (samples/Flare.Gallery.Generators). -->
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
+    <!-- Roslyn source generator (samples/Flare.Gallery.Generators). PIN - do not bump blindly:
+         a generator may not reference a Roslyn newer than the compiler that loads it. The SDK then
+         drops the analyzer with CS9057, which is only a WARNING - the generated code silently
+         disappears and the Gallery fails with CS0103 on the generated types. Cap this at the
+         Roslyn shipped by the .NET SDK the repo builds with (SDK 10.0.3xx -> 5.6.0); raise it only
+         once the build SDK ships a newer compiler. Dependabot is told to ignore these two. -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.6.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.6.0" />
     <!-- Blazor / ASP.NET Core runtime.
          Microsoft.AspNetCore.Components.Web is deliberately absent: Flare.Abstractions is its only
          consumer and needs a different major per TFM, so it carries the whole version there via
