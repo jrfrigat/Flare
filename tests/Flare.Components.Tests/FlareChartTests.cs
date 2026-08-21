@@ -272,7 +272,7 @@ public class FlareChartTests : FlareTestContext
 
         Assert.Equal(2, cut.FindAll("path[style*=stroke]").Count); // both lines drawn
         cut.FindAll(".flare-chart__legend-item")[0].Click();        // hide series 0
-        Assert.Equal(1, cut.FindAll("path[style*=stroke]").Count);  // one line left
+        Assert.Single(cut.FindAll("path[style*=stroke]"));         // one line left
         Assert.NotEmpty(cut.FindAll(".flare-chart__legend-item--off"));
     }
 

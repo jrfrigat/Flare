@@ -1675,8 +1675,8 @@ public class C_FlareSliderZonesTests : FlareTestContext
         // The handle sits at 40%, inside the first zone, so that zone is cut by the notch into two spans
         // (0-40 and 40-60) exactly like the rail underneath it - three spans in total with the second zone.
         Assert.Equal(3, bands.Count);
-        Assert.Contains(bands, z => z.ClassName.Contains("flare-color-success"));
-        Assert.Contains(bands, z => z.ClassName.Contains("flare-color-error"));
+        Assert.Contains(bands, z => z.ClassName!.Contains("flare-color-success"));
+        Assert.Contains(bands, z => z.ClassName!.Contains("flare-color-error"));
         // First span starts flush on the track start with the full track radius.
         Assert.Contains(bands, z => z.GetAttribute("style")!.Contains("left:0")
             && z.GetAttribute("style")!.Contains("right:calc(100% - 40.00% + var(--_gap))"));
@@ -2375,7 +2375,7 @@ public class C_FlarePopoverTriggerTests : FlareTestContext
         await cut.InvokeAsync(() => root.MouseLeave());   // into the Offset gap: hide is now pending
         await cut.InvokeAsync(() => root.MouseEnter());   // into the panel: must cancel that hide
 
-        await Task.Delay(200);                            // outlast HideDelay
+        await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);   // outlast HideDelay
 
         Assert.DoesNotContain(false, states);
     }
@@ -2399,7 +2399,7 @@ public class C_FlarePopoverTriggerTests : FlareTestContext
         await cut.InvokeAsync(() => root.MouseEnter());   // open is now pending
         await cut.InvokeAsync(() => root.MouseLeave());   // passed straight through: cancel it
 
-        await Task.Delay(200);                            // outlast Delay
+        await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);   // outlast Delay
 
         Assert.DoesNotContain(true, states);
     }
@@ -2417,7 +2417,7 @@ public class C_FlarePopoverTriggerTests : FlareTestContext
             .Add(x => x.OpenChanged, EventCallback.Factory.Create<bool>(this, v => states.Add(v))));
 
         await cut.InvokeAsync(() => cut.Find(".flare-popover-anchor").MouseLeave());
-        await Task.Delay(200);
+        await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);
 
         Assert.Contains(false, states);
     }

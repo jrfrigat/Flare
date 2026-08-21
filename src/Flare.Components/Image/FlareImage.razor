@@ -83,7 +83,9 @@
             if (!string.IsNullOrEmpty(Style)) parts.Add(Style);
             // OWASP GS-3: strip dangerous CSS (expression()/javascript:/url(...) etc.) from the
             // composed inline style, consistent with the other style-injecting components.
-            return Flare.Components.Security.CssValidator.StripDangerous(string.Join(";", parts));
+            // StripDangerous is null-in/null-out; the joined string is never null, so neither is
+            // the result - the coalesce just states that for the non-nullable property type.
+            return Flare.Components.Security.CssValidator.StripDangerous(string.Join(";", parts)) ?? string.Empty;
         }
     }
 

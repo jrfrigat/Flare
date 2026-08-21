@@ -102,7 +102,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
     public void LeadingIconReplacesTheDefaultGlyph()
     {
         var cut = Render<FlareFileUploadButton>(p => p
-            .Add<RenderFragment>(x => x.LeadingIcon, b => b.AddMarkupContent(0, "<span id=\"my-icon\"></span>")));
+            .Add<RenderFragment>(x => x.LeadingIcon!, b => b.AddMarkupContent(0, "<span id=\"my-icon\"></span>")));
 
         Assert.NotEmpty(cut.FindAll("#my-icon"));
         Assert.DoesNotContain("upload_file", cut.Markup);
@@ -143,7 +143,7 @@ public class C_FlareFileUploadButtonTests : FlareTestContext
         var cut = Render<FlareFileUploadButton>(p => p
             .Add(x => x.Loading, true)
             .Add(x => x.Text, "Import")
-            .Add<RenderFragment>(x => x.LoadingTemplate, b => b.AddMarkupContent(0, "<span id=\"mine\">Reading...</span>")));
+            .Add<RenderFragment>(x => x.LoadingTemplate!, b => b.AddMarkupContent(0, "<span id=\"mine\">Reading...</span>")));
 
         Assert.NotEmpty(cut.FindAll("#mine"));
         Assert.Empty(cut.FindAll("span.flare-btn__spinner"));
