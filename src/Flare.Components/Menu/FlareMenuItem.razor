@@ -83,11 +83,10 @@ else
     private string _tabIndex => (!Disabled && ReferenceEquals(MenuFocusedItem, this)) ? "0" : "-1";
 
     /// <summary>
-    /// Validates <see cref="Href"/> against a scheme allowlist (GS-2): only relative, fragment,
-    /// http(s), mailto and tel URLs are allowed; blocks <c>javascript:</c>, <c>vbscript:</c>, <c>data:</c> etc.
+    /// <see cref="Href"/> checked against a scheme allowlist (GS-2), falling back to
+    /// <c>about:blank</c> when it fails: only relative, fragment, http(s), mailto and tel URLs
+    /// pass; <c>javascript:</c>, <c>vbscript:</c>, <c>data:</c> and the like are blocked.
     /// </summary>
-    /// <param name="href">The candidate URL.</param>
-    /// <returns><c>true</c> when the URL is safe to render in an anchor.</returns>
     private string _safeHref => CssValidator.IsHrefSafe(Href) ? Href! : "about:blank";
 
     // A _blank target needs rel=noopener noreferrer to prevent reverse-tabnabbing.

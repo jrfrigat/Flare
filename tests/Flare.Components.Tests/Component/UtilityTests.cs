@@ -104,7 +104,7 @@ public class C_FlareClipboardTests : FlareTestContext
         _ = cut.Find("button.flare-clipboard").ClickAsync(new MouseEventArgs());
 
         // Let the copy + callback run, but nowhere near the 30s confirmation.
-        await Task.Delay(200);
+        await Task.Delay(200, Xunit.TestContext.Current.CancellationToken);
         Assert.True(copied);
     }
 
