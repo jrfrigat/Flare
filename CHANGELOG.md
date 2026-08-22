@@ -3,6 +3,23 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.18.1] - 2026-08-22
+
+### Fixed
+- **Twenty public components were missing from the API reference.** `Flare.ApiDocGen` decided what to
+  document by walking for `FlareComponentBase` in the inheritance chain, so every component that sits
+  directly on `ComponentBase` - because it needs none of the theme cascade - was invisible to it. That
+  was not a short list of oddities: `FlareRadio`, `FlareColumn` and its band/row siblings, `FlareStep`,
+  `FlareZone`, `FlareMeterSegment`, `FlareMonthGrid`, `FlareShortcuts`, the three DataGrid parts, and
+  every provider and root component - `FlareThemeProvider`, `FlareThemeScope`,
+  `FlareMessageBoxProvider`, `FlareConfirmDialogProvider` - including ones the setup guide tells people
+  to place by hand. Discovery now follows the library's own naming convention instead: a public
+  `ComponentBase` subclass whose name is `Flare`-prefixed, which keeps the internal composition helpers
+  next to them (`DataGridExport`, `QueryConditionEditor`) out on the same rule that keeps them out of
+  user code. The reference goes from 161 to 181 components, and `FlareThemeProvider.IconMorph` - the
+  switch that turns 0.18.0's icon transitions on library-wide - is documented where a reader looks for
+  it.
+
 ## [0.18.0] - 2026-08-22
 
 ### Added

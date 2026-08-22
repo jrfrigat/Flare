@@ -10,6 +10,7 @@ internal sealed class ComponentExtractor
     private const string CascadingParameterAttr = "Microsoft.AspNetCore.Components.CascadingParameterAttribute";
     private const string EditorRequiredAttr = "Microsoft.AspNetCore.Components.EditorRequiredAttribute";
     internal const string BaseTypeName = "Flare.Components.FlareComponentBase";
+    private const string ComponentBaseTypeName = "Microsoft.AspNetCore.Components.ComponentBase";
 
     private readonly XmlDocReader _docs;
     private readonly NullabilityInfoContext _nullability = new();
@@ -18,16 +19,30 @@ internal sealed class ComponentExtractor
     public ComponentExtractor(XmlDocReader docs) => _docs = docs;
 
     /// <summary>Returns true if <paramref name="type"/> is a documentable Flare component.</summary>
+    /// <remarks>
+    /// Deriving from <see cref="BaseTypeName"/> is the common case, not the rule. A dozen public
+    /// components sit directly on <c>ComponentBase</c> because they need none of the theme cascade -
+    /// providers, the theme root, several DataGrid parts - and keying discovery off the Flare base
+    /// silently left every one of them out of the reference, including ones the setup docs tell people
+    /// to place by hand. The library's own convention decides instead: a public component is
+    /// <c>Flare</c>-prefixed, so the internal composition helpers next to them (<c>DataGridExport</c>,
+    /// <c>QueryConditionEditor</c>) stay out on the same rule that keeps them out of user code.
+    /// </remarks>
     public static bool IsComponent(Type type)
     {
         if (!type.IsClass || type.IsAbstract || !type.IsPublic)
             return false;
 
+        var onComponentBase = false;
         for (var b = type.BaseType; b is not null; b = b.BaseType)
+        {
             if (b.FullName == BaseTypeName)
                 return true;
+            if (b.FullName == ComponentBaseTypeName)
+                onComponentBase = true;
+        }
 
-        return false;
+        return onComponentBase && type.Name.StartsWith("Flare", StringComparison.Ordinal);
     }
 
     /// <summary>Returns true if <paramref name="type"/> is a documentable public enum.</summary>
