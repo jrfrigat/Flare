@@ -1032,6 +1032,27 @@
   <data name="Icon_MorphSwap" xml:space="preserve">
     <value>Сменить иконку</value>
   </data>
+  <data name="Icon_MorphPath" xml:space="preserve">
+    <value>Морфинг контура</value>
+  </data>
+  <data name="Icon_MorphToggle" xml:space="preserve">
+    <value>Переключить</value>
+  </data>
+  <data name="Icon_MorphScope" xml:space="preserve">
+    <value>Включение на всю библиотеку</value>
+  </data>
+  <data name="Icon_MorphScopeOn" xml:space="preserve">
+    <value>Внутри области</value>
+  </data>
+  <data name="Icon_MorphScopeOff" xml:space="preserve">
+    <value>Снаружи</value>
+  </data>
+  <data name="Icon_MorphScopeHeader" xml:space="preserve">
+    <value>Открой меня</value>
+  </data>
+  <data name="Icon_MorphScopeBody" xml:space="preserve">
+    <value>Шеврон в заголовке - это собственный хром Flare. Он берёт режим из области: в этой разметке нет ни одного параметра иконки.</value>
+  </data>
   <data name="Image_Title" xml:space="preserve">
     <value>Изображение</value>
   </data>

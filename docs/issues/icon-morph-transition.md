@@ -1,7 +1,9 @@
 # FlareIconView: animate the transition when the icon value changes
 
-**Status: OPEN - phase 1 (core mechanism + tokens + Gallery demo) implemented on `feat/icon-morph`.
-Phases 2-3 below are not started.**
+**Status: CLOSED. Everything below shipped.** The cross-fade mechanism and its four tokens, the scope
+that turns it on library-wide, and `FlareMorphIcon` - real outline interpolation for authored pairs -
+are all in. The one thing deliberately NOT built is the View Transitions mode, and the reason is at the
+bottom: it is a decision, not a gap.
 
 Today `FlareIconView` swaps its glyph with no transition at all. `Value` changes, Blazor diffs the
 `<svg>` in place, the new path data replaces the old one on the same DOM node, and the change lands on
@@ -35,10 +37,10 @@ there cannot be, because the caller picks both ends of the swap at runtime. Brow
 `d` property is also uneven, but that is the second reason, not the first - even with universal support
 this approach animates only hand-authored pairs.
 
-There is a real, narrower version of this worth keeping in mind for phase 3: a **pair authored to
-interpolate**, e.g. a play triangle authored as a 4-point path that morphs into a pause bar pair. That
-is an icon-artwork feature (a `FlareMorphIcon` holding two structurally matched `d` values), not a
-transition feature, and it does not generalize.
+There is a real, narrower version of this, and it is what `FlareMorphIcon` became (phase 3 below): a
+**pair authored to interpolate**, drawn against each other so their command lists match. That is an
+icon-artwork feature rather than a transition feature - it does not generalize to the catalog, which is
+why it is a separate icon type instead of a mode of the mechanism chosen here.
 
 ### B. Runtime path normalization (flubber / polymorph in JS) - REJECTED
 
@@ -69,12 +71,12 @@ interop, compositor-only properties (`opacity`, `transform`).
 
 ## The mechanism as built (phase 1)
 
-**Off by default.** `Morph` defaults to `FlareIconMorph.None`, and in that mode `FlareIconView` renders
-exactly what it renders today - the icon element with no wrapper, no extra state, no change tracking.
-The morph machinery costs nothing until it is asked for. This matters because `FlareIconView` is not a
-leaf used once per page; it is the rendering path behind a large part of the library's chrome.
+**Off by default.** With no mode set here and no scope above (phase 2), `FlareIconView` renders exactly
+what it rendered before this issue - the icon element with no wrapper, no extra state, no change
+tracking. The morph machinery costs nothing until it is asked for. This matters because `FlareIconView`
+is not a leaf used once per page; it is the rendering path behind a large part of the library's chrome.
 
-**When `Morph` is set**, the view renders a wrapper:
+**When a mode is in effect**, the view renders a wrapper:
 
 ```
 <span class="flare-icon-morph flare-icon-morph--scale">
@@ -169,27 +171,69 @@ is a theme's call. A theme that wants `Scale` and `Rotate` to be plain crossfade
 
 ---
 
-## Phase 2 - not started
+## Phase 2 - DONE
 
-1. **`FlareIconButton` / the chrome that renders `FlareIcon` directly.** Roughly a dozen components
-   take a `FlareIcon` parameter and call `icon.Render()` themselves rather than going through
-   `FlareIconView`, so they get no transition. The fix is not to add a `Morph` parameter to each of
-   them; it is to decide whether those call sites should route through `FlareIconView` at all (they
-   would gain the size/color merge for free) and to measure what the extra component costs at
-   DataGrid-row density before doing it.
-2. **State-driven icons inside Flare itself** - the expander chevron, the checkbox tick, the password
-   reveal, the sort direction. These are the cases the feature exists for, and each one is a decision
-   about which mode reads right, not a mechanical switch-on.
-3. **A `Morph` cascade**, so an app can turn icon transitions on library-wide without touching call
-   sites, the way the theme cascades. Needs a decision on whether that cascade is a `FlareIconView`
-   concern or a theme-provider one.
+**1. The premise was wrong, and measuring it was the whole fix.** This said "roughly a dozen components
+call `icon.Render()` themselves rather than going through `FlareIconView`". They do not:
+`grep -rn "\.Render()" src` returns three hits, two of which are inside `FlareIconView` and the third a
+comment. All 95 icon call sites across `src` already go through the view, so every one of them inherits
+the transition the moment a scope turns it on. Nothing to route, nothing to measure.
 
-## Phase 3 - speculative
+What DOES sit outside the system is a different backlog: the handful of components that emit a raw
+`<span class="material-symbols-rounded">` instead of a `FlareIcon` at all (the DataGrid's sort arrow and
+bool cell, the Carousel's chevrons, the RichTextEditor's toolbar). Those belong to the FlareIcon-system
+de-hardcoding work, not here - they have no descriptor to transition between.
 
-- **`FlareMorphIcon`**: a descriptor holding two structurally matched `d` strings plus the CSS `d`
-  transition between them (option A, in the narrow form where it works). Real path morphing for
-  hand-authored pairs - play/pause, plus/minus, hamburger/close - with the crossfade as the fallback
-  wherever the CSS `d` property is unsupported. This is the only route to the effect people picture
-  when they say "morph", and it is additive: a different icon *type*, not a change to this mechanism.
-- **View Transitions** as an opt-in `FlareIconMorph.ViewTransition` mode, once scoped transitions land
-  broadly enough that the document-scope contention above stops being a correctness problem.
+**2 and 3 turned out to be one thing.** The plan treated "state-driven icons inside Flare" as a
+per-component decision - pick a mode for the expander chevron, another for the checkbox tick - and the
+cascade as a separate convenience. That was backwards. Baking a mode into each component would assert
+Flare's taste in exactly the place the token mandate says it must not, and it would leave an app that
+wants no motion at all unable to say so. The scope is therefore the *only* mechanism, and internal
+chrome gets its transition the same way an app's own icons do:
+
+```razor
+<FlareThemeProvider IconMorph="FlareIconMorph.Scale">   @* the whole library, chrome included *@
+<CascadingValue TValue="FlareIconMorph?" Value="FlareIconMorph.Rotate">  @* or one region *@
+```
+
+`Morph` on the view became `FlareIconMorph?`: unset inherits the scope, and any explicit value wins -
+including `None`, so a single call site can opt out of a scope that is on. Default behaviour is
+unchanged: no scope, no transition, no wrapper.
+
+The scope is a cascading parameter on `FlareIconView` rather than a field on the theme snapshot, and
+that split is deliberate. The theme already owns how a swap MOVES (`--flare-icon-morph-*`); whether
+icons transition at all is a statement about the app's character, and an app must be able to make it
+without forking a theme.
+
+## Phase 3 - `FlareMorphIcon` DONE, View Transitions REJECTED
+
+**`FlareMorphIcon` ships**, and it is option A from the top of this file in the narrow form where that
+option actually works: one `<path>` element that stays in the document while its geometry is
+interpolated. The design landed simpler than this file predicted in two ways.
+
+It holds **one** path, not a pair. A descriptor carrying `From` and `To` would have to be told which end
+it is on, which is a second piece of state saying what `Value` already says; the caller flips between two
+descriptors exactly as they do with any other icon, and the transition happens because the element is
+retained rather than replaced.
+
+And there is **no fallback branch**. The path is emitted twice - as the `d` attribute and as the CSS `d`
+property - so a browser that implements the property transitions it and one that does not draws the
+attribute and lands the change in a frame. No `@supports`, no feature detection, no JS. Verified in the
+Gallery: mid-transition the computed `d` reads `M 11 10.3393 …`, an interpolated point between the plus's
+`11 5` and the minus's `11 11`, so the outline genuinely flows.
+
+`FlareIconView` recognises the type and stands its cross-fade down - even with a mode on - because
+cross-fading would replace the very element whose geometry is being interpolated. The rule is stated on
+the type rather than tracked in state: *a morph icon is never cross-faded*.
+
+`FlareMorphIcons` holds the built-in matched pairs (`Plus`/`Minus`, `ChevronDown`/`ChevronUp`), drawn
+with absolute line segments only and padded with degenerate segments so both sides of a pair share one
+command list. A guard test compares the command lists, because a mismatched pair does not fail loudly -
+it just swaps discretely half way through, which reads as a stutter rather than a bug.
+
+**View Transitions stays rejected.** Nothing about the API changed while this was built, and the reason
+from the top of the file is a correctness problem rather than a polish one: the transition is
+document-scoped, so two icons changing in the same frame contend and the second call is dropped. An icon
+transition that works only when a single icon changes at a time is not a mode worth offering. If scoped
+view transitions become broadly available, this is worth revisiting as an additive mode - it would not
+change anything built here.

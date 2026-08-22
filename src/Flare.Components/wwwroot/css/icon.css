@@ -20,6 +20,22 @@
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
+/* ---- Outline morph (FlareMorphIcon) ----------------------------------------------------------
+   The other kind of morph, and the literal one: the same <path> stays in the document and its
+   geometry is interpolated. It needs no wrapper, no second element and no swap machinery, because
+   nothing is being replaced - which is also why it works whether or not FlareIconView is morphing.
+
+   `d` is a CSS property here, not just an attribute. A browser that does not implement it ignores
+   this declaration and draws the `d` attribute the icon also emits, so the shape still renders and
+   the change simply lands in one frame. */
+.flare-icon--path-morph path {
+    transition: d var(--flare-icon-morph-duration) var(--flare-icon-morph-easing);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flare-icon--path-morph path { transition-duration: 0s; }
+}
+
 /* ---- Glyph swap (FlareIconView Morph) --------------------------------------------------------
    Off unless the view asks for it: with Morph="None" nothing below is in the DOM at all, so an icon
    that never changes pays neither the wrapper nor the extra slot element.

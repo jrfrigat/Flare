@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components;
+
 namespace Flare.Components.Tests;
 
 // FlareIconView.Morph cross-fades the outgoing glyph against the incoming one. The transition itself is
@@ -140,6 +142,96 @@ public class FlareIconMorphTests : FlareTestContext
 
         Assert.Single(cut.FindAll(Slot));
         Assert.Empty(cut.FindAll(Enter));
+    }
+
+    // ---- The scope: an app turns transitions on library-wide without touching call sites ----------
+
+    // bUnit's AddCascadingValue constrains TValue to notnull, and the scope is deliberately a NULLABLE
+    // enum (null = "not set here"), so the cascade goes in through the root render tree instead.
+    private void ScopeIs(FlareIconMorph morph) =>
+        RenderTree.Add<CascadingValue<FlareIconMorph?>>(p => p.Add(c => c.Value, morph));
+
+    [Fact]
+    public void Scope_AppliesWhenMorphIsUnset()
+    {
+        ScopeIs(FlareIconMorph.Rotate);
+
+        var cut = Render<FlareIconView>(p => p.Add(x => x.Value, FlareIcons.Home));
+        cut.Render(p => p.Add(x => x.Value, FlareIcons.Menu));
+
+        Assert.Contains("flare-icon-morph--rotate", cut.Find(Wrapper).ClassName);
+        Assert.Equal(2, cut.FindAll(Slot).Count);
+    }
+
+    [Fact]
+    public void ExplicitMorph_WinsOverTheScope()
+    {
+        ScopeIs(FlareIconMorph.Rotate);
+
+        var cut = Render<FlareIconView>(p => p
+            .Add(x => x.Value, FlareIcons.Home)
+            .Add(x => x.Morph, FlareIconMorph.Fade));
+
+        Assert.Contains("flare-icon-morph--fade", cut.Find(Wrapper).ClassName);
+    }
+
+    // The direction that matters most: one call site opting OUT of a scope that is on.
+    [Fact]
+    public void ExplicitNone_OptsOutOfTheScope()
+    {
+        ScopeIs(FlareIconMorph.Rotate);
+
+        var cut = Render<FlareIconView>(p => p
+            .Add(x => x.Value, FlareIcons.Home)
+            .Add(x => x.Morph, FlareIconMorph.None));
+        cut.Render(p => p.Add(x => x.Value, FlareIcons.Menu));
+
+        Assert.Empty(cut.FindAll(Wrapper));
+    }
+
+    // ---- FlareMorphIcon: the outline transitions itself, so it is never cross-faded ---------------
+
+    [Fact]
+    public void MorphIcon_RendersBothTheAttributeAndTheCssProperty()
+    {
+        var cut = Render<FlareIconView>(p => p.Add(x => x.Value, FlareMorphIcons.Plus));
+
+        var path = cut.Find("path");
+        Assert.Equal(FlareMorphIcons.Plus.Data, path.GetAttribute("d"));
+        Assert.Contains($"d:path('{FlareMorphIcons.Plus.Data}')", path.GetAttribute("style"));
+        Assert.Contains("flare-icon--path-morph", cut.Find("svg").ClassName);
+    }
+
+    // Cross-fading a morph icon would replace the very element whose geometry is being interpolated, so a
+    // mode that is on must still leave it alone.
+    [Fact]
+    public void MorphIcon_IsNeverWrapped_EvenWithAModeOn()
+    {
+        var cut = Render<FlareIconView>(p => p
+            .Add(x => x.Value, FlareMorphIcons.Plus)
+            .Add(x => x.Morph, FlareIconMorph.Scale));
+
+        cut.Render(p => p.Add(x => x.Value, FlareMorphIcons.Minus));
+
+        Assert.Empty(cut.FindAll(Wrapper));
+        Assert.Single(cut.FindAll("path"));
+        Assert.Equal(FlareMorphIcons.Minus.Data, cut.Find("path").GetAttribute("d"));
+    }
+
+    // The pairs are only useful if they actually interpolate, which needs the same command list on both
+    // sides. Guarding the shape here is cheaper than discovering a mismatched pair as a mid-animation jump.
+    [Theory]
+    [InlineData(nameof(FlareMorphIcons.Plus), nameof(FlareMorphIcons.Minus))]
+    [InlineData(nameof(FlareMorphIcons.ChevronDown), nameof(FlareMorphIcons.ChevronUp))]
+    public void BuiltInPairs_ShareOneCommandList(string first, string second)
+    {
+        static string Commands(string data) =>
+            new(data.Where(char.IsLetter).ToArray());
+
+        static string DataOf(string name) =>
+            ((FlareMorphIcon)typeof(FlareMorphIcons).GetProperty(name)!.GetValue(null)!).Data;
+
+        Assert.Equal(Commands(DataOf(first)), Commands(DataOf(second)));
     }
 
     // The caller-facing overrides are merged onto the descriptor, not onto the wrapper, so the icon element
