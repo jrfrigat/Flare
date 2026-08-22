@@ -2597,6 +2597,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label; sets aria-label + role=img. Overrides Value's label when set.", null, false, false, false, @"FlareIconView"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Icon color. Overrides Value's color when not Default.", null, false, false, false, @"FlareIconView"),
+                new ApiParameterInfo(@"Morph", @"FlareIconMorph", @"FlareIconMorph.None", @"How a change of Value is animated. Left at None the swap is instant and the view renders the icon element alone, exactly as it does without this parameter; any other mode wraps the icon so the outgoing and incoming glyphs can share one box while they trade places. The first value to arrive never animates - there is nothing for it to replace.", null, false, false, false, @"FlareIconView"),
                 new ApiParameterInfo(@"Size", @"string?", null, @"Icon size as any CSS length (e.g. ""3rem""). Overrides Value's size when set.", null, false, false, false, @"FlareIconView"),
                 new ApiParameterInfo(@"SizePx", @"int?", null, @"Convenience pixel size (e.g. 48 -> ""48px""). Ignored when Size is set.", null, false, false, false, @"FlareIconView"),
                 new ApiParameterInfo(@"Value", @"FlareIcon?", null, @"The icon descriptor to render - any provider (FlareSvgIcon, or an add-on pack type). Icons are values: build one directly (FlareIcons.Home, MaterialDesign3Icons.Regular.Home, new FlareSvgIcon { Data = ""..."" }). There is no lookup by icon name - that is what keeps the SVG icon packages trimmable (only the icons you reference statically are published).", null, false, false, false, @"FlareIconView"),
@@ -5110,8 +5111,9 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AddOnBlur", @"bool", null, @"Adds the current input as a tag when focus leaves the field. Default: true.", null, false, false, false, @"FlareTagField"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"AllowDuplicates", @"bool", null, @"Allows adding duplicate tags. Requires a reference/value type whose equality permits it.", null, false, false, false, @"FlareTagField"),
-                new ApiParameterInfo(@"ChipColor", @"Func<TValue?, string?>?", null, @"Optional per-tag chip colour; rendered as the chip background.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"ChipColor", @"Func<TValue?, string?>?", null, @"Optional per-tag chip colour; rendered as the chip fill.", null, false, false, false, @"FlareTagField"),
                 new ApiParameterInfo(@"ChipTemplate", @"RenderFragment<TValue?>?", null, @"Custom render template for a chip's content.", null, false, false, false, @"FlareTagField"),
+                new ApiParameterInfo(@"ChipTextColor", @"Func<TValue?, string?>?", null, @"Optional per-tag label colour to go with ChipColor. Unset, the label keeps the theme's on-colour - only the caller knows whether a colour it chose needs a light or dark label.", null, false, false, false, @"FlareTagField"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"CustomValueFactory", @"Func<string, TValue?>?", null, @"Converts the typed text into a tag value. Defaults to identity for string tags.", null, false, false, false, @"FlareTagField"),
                 new ApiParameterInfo(@"DebounceMs", @"int", null, @"Debounce in milliseconds before querying SearchFunc. Default: 200ms.", null, false, false, false, @"FlareTagField"),
@@ -6403,32 +6405,6 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
-        e[@"ComponentGroup"] = new ApiEnumInfo(
-            @"ComponentGroup",
-            @"Flare.Gallery.Models.ComponentGroup",
-            @"Flare.Gallery.Models",
-            null,
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Field", @"0", null),
-                new ApiEnumMember(@"Input", @"1", null),
-                new ApiEnumMember(@"Files", @"2", null),
-                new ApiEnumMember(@"Forms", @"3", null),
-                new ApiEnumMember(@"Buttons", @"4", null),
-                new ApiEnumMember(@"Layout", @"5", null),
-                new ApiEnumMember(@"Navigation", @"6", null),
-                new ApiEnumMember(@"DataDisplay", @"7", null),
-                new ApiEnumMember(@"DataGrid", @"8", null),
-                new ApiEnumMember(@"DateTime", @"9", null),
-                new ApiEnumMember(@"Feedback", @"10", null),
-                new ApiEnumMember(@"Media", @"11", null),
-                new ApiEnumMember(@"Foundations", @"12", null),
-                new ApiEnumMember(@"Utilities", @"13", null),
-                new ApiEnumMember(@"Ide", @"14", null),
-            },
-            System.Array.Empty<string>());
-
         e[@"CompositeMode"] = new ApiEnumInfo(
             @"CompositeMode",
             @"Flare.Components.CompositeMode",
@@ -6913,6 +6889,24 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"FlareIconMorph"] = new ApiEnumInfo(
+            @"FlareIconMorph",
+            @"Flare.Components.FlareIconMorph",
+            @"Flare.Components",
+            @"How FlareIconView transitions from one glyph to the next when its value changes. The outgoing and incoming glyphs are cross-faded in place - what differs between the modes is the movement layered on top of that fade, and how far it travels is the theme's call (the --flare-icon-morph-* tokens).",
+            @"This is a transition between two icons, not an interpolation of one outline into another: the pair is chosen by the caller at runtime, so no shared path structure can be assumed. See docs/issues/icon-morph-transition.md.",
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"No transition; the glyph is replaced in place. The view renders no wrapper and keeps no history."),
+                new ApiEnumMember(@"Fade", @"1", @"The outgoing glyph fades out as the incoming one fades in, neither of them moving."),
+                new ApiEnumMember(@"Scale", @"2", @"The outgoing glyph shrinks away while the incoming one grows in, both fading."),
+                new ApiEnumMember(@"Rotate", @"3", @"The outgoing glyph turns away while the incoming one arrives from the opposite angle, both fading."),
+            },
+            new string[]
+            {
+                @"FlareIconView",
+            });
+
         e[@"FlareJustifyContent"] = new ApiEnumInfo(
             @"FlareJustifyContent",
             @"Flare.Components.FlareJustifyContent",
@@ -7030,23 +7024,6 @@ public static class ComponentApiRegistry
             {
                 @"FlareForm",
             });
-
-        e[@"GallerySection"] = new ApiEnumInfo(
-            @"GallerySection",
-            @"Flare.Gallery.Models.GallerySection",
-            @"Flare.Gallery.Models",
-            null,
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"None", @"0", null),
-                new ApiEnumMember(@"Guide", @"1", null),
-                new ApiEnumMember(@"Themes", @"2", null),
-                new ApiEnumMember(@"Components", @"3", null),
-                new ApiEnumMember(@"Services", @"4", null),
-                new ApiEnumMember(@"Api", @"5", null),
-            },
-            System.Array.Empty<string>());
 
         e[@"IdePanelMode"] = new ApiEnumInfo(
             @"IdePanelMode",
@@ -7438,20 +7415,6 @@ public static class ComponentApiRegistry
             {
                 @"FlareRibbon",
             });
-
-        e[@"SearchKind"] = new ApiEnumInfo(
-            @"SearchKind",
-            @"Flare.Gallery.Services.SearchKind",
-            @"Flare.Gallery.Services",
-            null,
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Page", @"0", null),
-                new ApiEnumMember(@"Component", @"1", null),
-                new ApiEnumMember(@"Api", @"2", null),
-            },
-            System.Array.Empty<string>());
 
         e[@"SelectionMode"] = new ApiEnumInfo(
             @"SelectionMode",

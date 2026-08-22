@@ -1,7 +1,25 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-@_effective.Render()
+@if (Morph == FlareIconMorph.None)
+{
+    @BuildEffective(Value).Render()
+}
+else
+{
+    <span class="@WrapperClass">
+        @* Both slots MUST come from this one element rather than from two branches of an @@if. Blazor
+           diffs attributes by their sequence number, and two source elements have two sets of them: the
+           retained node then loses the class it had and is handed the other branch's attributes instead,
+           so the outgoing glyph ends up with no exit animation and stays painted at full opacity on top
+           of its replacement. One source element, one sequence, and the swap diffs correctly. *@
+        @for (var i = _outgoing is null ? 1 : 0; i < 2; i++)
+        {
+            var exiting = i == 0;
+            <span class="@SlotClass(exiting)" aria-hidden="@(exiting ? "true" : null)" @key="_swapCount - 1 + i">@BuildEffective(exiting ? _outgoing : Value).Render()</span>
+        }
+    </span>
+}
 
 @code {
     /// <summary>
@@ -24,16 +42,86 @@
     /// <summary>Accessible label; sets aria-label + role=img. Overrides <see cref="Value"/>'s label when set.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
-    // This component renders the icon element directly (no wrapper of its own).
+    /// <summary>
+    /// How a change of <see cref="Value"/> is animated. Left at <see cref="FlareIconMorph.None"/> the swap is
+    /// instant and the view renders the icon element alone, exactly as it does without this parameter; any
+    /// other mode wraps the icon so the outgoing and incoming glyphs can share one box while they trade
+    /// places. The first value to arrive never animates - there is nothing for it to replace.
+    /// </summary>
+    [Parameter] public FlareIconMorph Morph { get; set; } = FlareIconMorph.None;
+
+    // This component renders the icon element directly (no wrapper of its own) unless a morph is asked for.
     protected override string ComponentCssClass => string.Empty;
 
-    private FlareIcon _effective => BuildEffective();
+    // The glyph that was replaced. It is NOT removed when its exit animation finishes: the animation's fill
+    // mode parks it at zero opacity, so it costs one hidden element and the NEXT swap is what recycles it.
+    // That is the whole reason this component needs no timer, no animation-end callback and no JS - the
+    // teardown a cross-fade normally needs is exactly the work the next render already does.
+    private FlareIcon? _outgoing;
+    // The value the last render displayed, which is what an incoming Value is compared against.
+    private FlareIcon? _settled;
+    private bool _initialized;
+    // Whether the glyph on screen arrived by a swap. Only then does it carry the enter animation: a first
+    // paint has nothing to transition from, and an icon that animated itself in on page load would be noise.
+    private bool _swapped;
+    // Bumped once per swap and used as the slot @key. The key is the whole mechanism: without it Blazor's
+    // sequence diff patches the new path data into the existing DOM node, and a CSS animation cannot fire on
+    // an element that was never inserted. With it, the old node is retained (and re-classed to run the exit)
+    // while the new one is genuinely inserted.
+    private int _swapCount;
+
+    private const string SlotIdle = Css.Classes.Icon.MorphSlot;
+    private const string SlotEnter = Css.Classes.Icon.MorphSlot + " " + Css.Classes.Icon.MorphSlotEnter;
+    private const string SlotExit = Css.Classes.Icon.MorphSlot + " " + Css.Classes.Icon.MorphSlotExit;
+    private const string WrapperFade = Css.Classes.Icon.Morph + " " + Css.Classes.Icon.MorphFade;
+    private const string WrapperScale = Css.Classes.Icon.Morph + " " + Css.Classes.Icon.MorphScale;
+    private const string WrapperRotate = Css.Classes.Icon.Morph + " " + Css.Classes.Icon.MorphRotate;
+
+    private string SlotClass(bool exiting) => exiting ? SlotExit : _swapped ? SlotEnter : SlotIdle;
+
+    private string WrapperClass => Morph switch
+    {
+        FlareIconMorph.Scale => WrapperScale,
+        FlareIconMorph.Rotate => WrapperRotate,
+        _ => WrapperFade,
+    };
+
+    /// <inheritdoc/>
+    protected override void OnParametersSet()
+    {
+        if (Morph == FlareIconMorph.None)
+        {
+            // Nothing is animating and nothing will, so drop any history: the value stays current so that
+            // turning the morph on later starts from what is on screen instead of animating a stale pair.
+            _outgoing = null;
+            _swapped = false;
+            _settled = Value;
+            _initialized = true;
+            return;
+        }
+
+        if (!_initialized)
+        {
+            _settled = Value;
+            _initialized = true;
+            return;
+        }
+
+        // Record equality, so this compares the icon's CONTENT: a re-render passing the same descriptor - or
+        // a freshly built but identical one - is not a change and must not restart the animation.
+        if (Equals(_settled, Value)) return;
+
+        _outgoing = _settled;
+        _settled = Value;
+        _swapped = true;
+        _swapCount++;
+    }
 
     // Merge the caller-facing overrides onto the descriptor. A view-level value wins over the descriptor's;
-    // an unset view value keeps the descriptor's. A null Value renders an empty icon.
-    private FlareIcon BuildEffective()
+    // an unset view value keeps the descriptor's. A null icon renders an empty icon.
+    private FlareIcon BuildEffective(FlareIcon? value)
     {
-        var icon = Value ?? FlareIcons.Empty;
+        var icon = value ?? FlareIcons.Empty;
         return icon with
         {
             Size = _sizeCss ?? icon.Size,

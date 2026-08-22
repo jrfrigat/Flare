@@ -936,6 +936,11 @@ public static class CssVarMap
         #endregion
 
         #region SKELETON
+        v[Css.Tokens.Icon.MorphDuration] = t.Icon.MorphDuration;
+        v[Css.Tokens.Icon.MorphEasing] = t.Icon.MorphEasing;
+        v[Css.Tokens.Icon.MorphScale] = t.Icon.MorphScale;
+        v[Css.Tokens.Icon.MorphRotate] = t.Icon.MorphRotate;
+
         v[Css.Tokens.SkeletonField.PulseMinOpacity] = t.Skeleton.PulseMinOpacity;
         v[Css.Tokens.SkeletonField.WaveOpacity] = t.Skeleton.WaveOpacity;
         #endregion

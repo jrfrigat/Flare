@@ -1026,6 +1026,12 @@
   <data name="Icon_ColorSize" xml:space="preserve">
     <value>Color &amp; size</value>
   </data>
+  <data name="Icon_Morph" xml:space="preserve">
+    <value>Morph on change</value>
+  </data>
+  <data name="Icon_MorphSwap" xml:space="preserve">
+    <value>Swap the icon</value>
+  </data>
   <data name="Image_Title" xml:space="preserve">
     <value>Image</value>
   </data>

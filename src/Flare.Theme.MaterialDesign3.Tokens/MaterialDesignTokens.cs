@@ -1022,6 +1022,17 @@ public class MaterialDesignTokens
         WaveOpacity = "12%",
     };
 
+    // A glyph swap is Material's "icon transition": the outgoing symbol leaves while the incoming one
+    // arrives, rather than one repainting over the other. It rides the fast spring because the travel is
+    // spatial and the element is small - the same pairing the switch thumb and the checkbox tick use.
+    internal static readonly IconTokens Icon = new()
+    {
+        MorphDuration = "var(--flare-motion-duration-spring-fast)",
+        MorphEasing = "var(--flare-motion-easing-spring-fast)",
+        MorphScale = "0.6",
+        MorphRotate = "90deg",
+    };
+
     internal static readonly StripeTokens Stripe = new()
     {
         // A wash of the content colour, which is what a striped table has always been here. The data
@@ -1062,6 +1073,7 @@ public class MaterialDesignTokens
         Touch = Touch,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
+        Icon = Icon,
         Stripe = Stripe,
         Splitter = Splitter,
         Table = Table,

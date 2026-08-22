@@ -1026,6 +1026,12 @@
   <data name="Icon_ColorSize" xml:space="preserve">
     <value>Цвет и размер</value>
   </data>
+  <data name="Icon_Morph" xml:space="preserve">
+    <value>Морфинг при смене</value>
+  </data>
+  <data name="Icon_MorphSwap" xml:space="preserve">
+    <value>Сменить иконку</value>
+  </data>
   <data name="Image_Title" xml:space="preserve">
     <value>Изображение</value>
   </data>

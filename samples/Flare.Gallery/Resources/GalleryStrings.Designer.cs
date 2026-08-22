@@ -4021,6 +4021,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Morph on change.
+        /// </summary>
+        public static string Icon_Morph {
+            get {
+                return ResourceManager.GetString("Icon_Morph", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Swap the icon.
+        /// </summary>
+        public static string Icon_MorphSwap {
+            get {
+                return ResourceManager.GetString("Icon_MorphSwap", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на FlareIcon wrapping Material Symbols Rounded..
         /// </summary>
         public static string Icon_Subtitle {
