@@ -352,6 +352,41 @@ button family for everything else, so if you are migrating a theme from before 0
 paddings, gap, radii, rest colours and disabled opacity that used to live there are deleted rather
 than moved: their answers are the ones your `ButtonTokens` already gives.
 
+### Icon motion: four tokens, and one trap (0.18.0)
+
+`IconTokens` is new and `required`, so a theme built from scratch will not compile until it answers it.
+It describes what happens when an icon CHANGES - `FlareIconView.Morph` and `FlareMorphIcon` - and is
+inert until an app asks for a transition, so a theme that has no opinion can park it and move on.
+
+```csharp
+internal static readonly IconTokens Icon = new()
+{
+    MorphDuration = "var(--flare-motion-duration-spring-fast)",
+    MorphEasing = "var(--flare-motion-easing-spring-fast)",
+    MorphScale = "0.6",     // how far the glyph travels in the Scale mode
+    MorphRotate = "90deg",  // the angle it turns through in the Rotate mode
+};
+```
+
+**The trap is `MorphEasing`: it times the MOVEMENT only, never the cross-fade.** That split exists
+because the easing worth putting here is usually a spring, and a spring overshoots - an eased fraction
+past 1 drives opacity past its endpoint, so the fade finishes about a third of the way in and the
+hand-off between the two glyphs reads as a pop rather than a transition. The fade rides
+`--flare-motion-easing-standard` instead, which your theme already answers.
+
+Two ways to say "no":
+
+```csharp
+MorphDuration = "0s",    // icon swaps stay instant everywhere, whatever an app asks for
+MorphScale = "1",        // Scale and Rotate become plain cross-fades, and the modes
+MorphRotate = "0deg",    // stay available without asserting motion your language does not have
+```
+
+Fluent UI 2 does exactly the second - a short decelerated fade with both geometry axes parked, because
+that language has no icon overshoot in it. Themes derived from Material with `with { }` inherit its
+values, and since those reference the motion scale rather than literals, each one resolves through its
+own springs.
+
 ### Using Tokens in CSS
 
 ```css
