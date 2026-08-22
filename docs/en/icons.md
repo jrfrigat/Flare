@@ -106,9 +106,46 @@ the fade itself rides the theme's standard easing so a spring cannot cut it shor
 and `--flare-icon-morph-rotate`. A theme that wants icon swaps to stay instant parks the duration; one that
 wants `Scale` and `Rotate` to be plain cross-fades parks the two geometry tokens.
 
-Two things worth knowing. The transition is between two icons, **not** an interpolation of one outline into
-another - the pair is chosen at runtime, so no shared path structure can be assumed. And it applies to
-`FlareIconView`; components that take a `FlareIcon` and render it themselves are unaffected.
+### Turning it on everywhere
+
+Leave `Morph` unset and the mode comes from the enclosing scope, so an app switches the whole library on at
+the root - Flare's own chrome included, from an expander's chevron to a select's caret:
+
+```razor
+<FlareThemeProvider IconMorph="FlareIconMorph.Scale">
+```
+
+Scope it to part of a page with a plain cascading value instead:
+
+```razor
+<CascadingValue TValue="FlareIconMorph?" Value="FlareIconMorph.Rotate"> ... </CascadingValue>
+```
+
+An explicit `Morph` on a call site always wins, `FlareIconMorph.None` included - which is how one icon opts
+out of a scope that is on.
+
+## Morphing the outline itself
+
+`Morph` transitions *between two icons*. `FlareMorphIcon` is the other thing: one `<path>` element that
+stays in the document while its geometry is interpolated, so the shape flows instead of one glyph fading
+into another.
+
+```razor
+<FlareIconView Value="@(_open ? FlareMorphIcons.Minus : FlareMorphIcons.Plus)" />
+```
+
+No `Morph` parameter - the icon type carries the transition, and `FlareIconView` leaves such an icon alone
+even when a mode is on (cross-fading it would replace the element whose geometry is being interpolated).
+
+The catch is the same one that makes path interpolation impossible for the catalog at large: **the two
+outlines must share one command list** - the same commands in the same order, differing only in
+coordinates. `FlareMorphIcons` ships pairs drawn that way (`Plus`/`Minus`, `ChevronDown`/`ChevronUp`); for
+your own, draw both shapes with the same command list and pad the simpler one with degenerate, zero-length
+segments. A mismatched pair does not error - it swaps discretely half way through.
+
+It uses the CSS `d` property, so it costs no JavaScript. The geometry is emitted as the `d` attribute too,
+so where a browser does not implement that property the icon still draws and the change simply lands in one
+frame.
 
 ## Performance: only ship the icons you use
 

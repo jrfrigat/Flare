@@ -1032,6 +1032,27 @@
   <data name="Icon_MorphSwap" xml:space="preserve">
     <value>Swap the icon</value>
   </data>
+  <data name="Icon_MorphPath" xml:space="preserve">
+    <value>Outline morph</value>
+  </data>
+  <data name="Icon_MorphToggle" xml:space="preserve">
+    <value>Toggle</value>
+  </data>
+  <data name="Icon_MorphScope" xml:space="preserve">
+    <value>Turning it on library-wide</value>
+  </data>
+  <data name="Icon_MorphScopeOn" xml:space="preserve">
+    <value>Inside the scope</value>
+  </data>
+  <data name="Icon_MorphScopeOff" xml:space="preserve">
+    <value>Outside it</value>
+  </data>
+  <data name="Icon_MorphScopeHeader" xml:space="preserve">
+    <value>Open me</value>
+  </data>
+  <data name="Icon_MorphScopeBody" xml:space="preserve">
+    <value>The chevron in the header is Flare's own chrome. It picks the mode up from the scope - this markup sets no icon parameter at all.</value>
+  </data>
   <data name="Image_Title" xml:space="preserve">
     <value>Image</value>
   </data>

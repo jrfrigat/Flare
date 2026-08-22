@@ -8,6 +8,7 @@
 
 <CascadingValue Value="@_snapshot" IsFixed="false">
     <CascadingValue Value="@ThemeService" IsFixed="false">
+        <CascadingValue Value="@IconMorph" TValue="FlareIconMorph?" IsFixed="false">
         <FlareStyles />
 
         <div class="@Css.Classes.Theme.Root @Css.Classes.Theme.ForTheme(ThemeService.CurrentTheme.Id) @Css.Classes.Theme.ForPalette(ThemeService.CurrentPalette.Id) @(ThemeService.IsHighContrast ? Css.Classes.Theme.ModeHighContrast : ThemeService.IsDark ? Css.Classes.Theme.ModeDark : null) @(ThemeService.IsRtl ? Css.Classes.Theme.Rtl : null)"
@@ -15,12 +16,26 @@
              dir="@(ThemeService.IsRtl ? "rtl" : "ltr")">
             @ChildContent
         </div>
+        </CascadingValue>
     </CascadingValue>
 </CascadingValue>
 
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public bool RespectSystemColorScheme { get; set; } = true;
+
+    /// <summary>
+    /// Default transition for every <c>FlareIconView</c> beneath this provider whose own <c>Morph</c> is
+    /// unset - including the icons Flare's own chrome renders, such as an expander's chevron or a select's
+    /// caret. Null (the default) leaves icon swaps instant, which is what the library has always done.
+    /// </summary>
+    /// <remarks>
+    /// This is an app decision rather than a theme one: the theme already owns how the swap MOVES (the
+    /// <c>--flare-icon-morph-*</c> tokens), while whether icons transition at all is a choice about the
+    /// app's own character. Scope it to part of a page with a plain
+    /// <c>CascadingValue&lt;FlareIconMorph?&gt;</c> instead.
+    /// </remarks>
+    [Parameter] public FlareIconMorph? IconMorph { get; set; }
 
     /// <summary>
     /// When true (default), the provider signals app-readiness once the theme stylesheets and web

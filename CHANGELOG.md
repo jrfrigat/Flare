@@ -3,6 +3,77 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.18.0] - 2026-08-22
+
+### Added
+- **Icons can transition when they change.** `FlareIconView` gains `Morph`
+  (`Fade`/`Scale`/`Rotate`): the outgoing and incoming glyphs share one grid cell and trade places
+  instead of the glyph being repainted on a single frame. It works for any pair of icons from any
+  provider, and it is pure CSS - a keyed slot per glyph is what makes the browser INSERT the incoming
+  node rather than patch the path data into the existing one, and an animation fires on insertion
+  without anything imperative. There is no teardown step at all: `animation-fill-mode: both` parks the
+  outgoing glyph at zero opacity and the next swap recycles it, so the component holds no timer, no
+  animation-end callback and no JS, and the slot count is bounded at two. Off unless asked for - with
+  no mode in effect the view renders exactly what it always did, with no wrapper and no change
+  tracking.
+- **One switch turns icon transitions on library-wide.** `FlareThemeProvider.IconMorph` (or a plain
+  `CascadingValue<FlareIconMorph?>` for one region) sets the default for every `FlareIconView` beneath
+  it that has no `Morph` of its own - Flare's own chrome included, from an expander's chevron to a
+  select's caret, since all 95 icon call sites in the library already route through the view. An
+  explicit `Morph` still wins, `None` included, so a single icon can opt out of a scope that is on.
+  This is deliberately an app decision rather than a theme one: the theme owns how a swap MOVES,
+  while whether icons transition at all is a statement about the app's character.
+- **`FlareMorphIcon`: the outline itself interpolates.** A second, narrower kind of morph - one
+  `<path>` element stays in the document while its geometry flows, which is the effect people usually
+  picture. It uses the CSS `d` property, so it costs no JavaScript, and the geometry is emitted as the
+  `d` attribute as well, so a browser without that property still draws the icon and simply lands the
+  change in one frame. It only works between outlines drawn against each other - path interpolation
+  requires the same command list on both sides - so `FlareMorphIcons` ships pairs authored that way
+  (`Plus`/`Minus`, `ChevronDown`/`ChevronUp`), padded with degenerate segments, and a guard test
+  compares their command lists because a mismatched pair does not fail loudly, it stutters.
+  `FlareIconView` recognises the type and stands its cross-fade down even when a mode is on:
+  cross-fading would replace the very element whose geometry is being interpolated.
+- **Four theme tokens for the motion.** `IconTokens` adds `--flare-icon-morph-duration`,
+  `--flare-icon-morph-easing`, `--flare-icon-morph-scale` and `--flare-icon-morph-rotate`. The
+  easing times the MOVEMENT only - the cross-fade underneath rides the theme's standard easing,
+  because a spring overshoots and an opacity driven past its endpoint finishes about a third of the
+  way in, which turns the hand-off between two glyphs into a pop. A theme parks the duration to keep
+  icon swaps instant everywhere, or parks the two geometry tokens to make `Scale` and `Rotate` plain
+  cross-fades.
+
+### Changed
+- **BREAKING for custom themes: `DesignTokens` gains `Icon`.** `IconTokens` is `required` like every
+  other component record, so a custom theme will not compile until it answers the four tokens above.
+  Material Design 3 rides its fast spring; Fluent UI 2 takes a short decelerated fade with both
+  geometry axes parked, because that language has no icon overshoot in it. The themes derived from
+  Material inherit its values, and because those values reference the motion scale rather than
+  literals, each one resolves through its own springs.
+- **`FlareIconView.Morph` is `FlareIconMorph?`, not `FlareIconMorph`.** Unset now means "inherit the
+  scope" rather than "none". Call sites that pass a value are unaffected.
+
+### Fixed
+- **Three chips in the Gallery rendered with no icon at all.** `ChipGroupIconDemo` still used the
+  pre-migration idiom `<FlareIconView>check_circle</FlareIconView>`. `FlareIconView` takes a typed
+  `FlareIcon` and has no `ChildContent`, and the Razor compiler drops content passed to a component
+  that cannot accept it **without a diagnostic** - so the build stayed green while the icons silently
+  did not exist. Swept the rest of the Gallery for the same shape; this was the only one.
+- **The API reference had been missing `FlareQueryBuilder` and `FlareQueryEditor`.** `Flare.ApiDocGen`
+  probes its own output directory, and its project did not reference `Flare.Components.Query` - the
+  exact failure the comment above that reference list warns about. The two components are documented
+  again, along with two `FlareTagField` parameters whose docs had drifted.
+
+### Toolchain
+- **The test run could report green from a stale binary.** xunit.v3 4.0.0 builds test projects as
+  Microsoft.Testing.Platform applications, and the VSTest bridge `dotnet test` used to rely on is gone
+  on the .NET 10 SDK, so the runner is selected in `global.json` now. MTP also takes `--report-trx`
+  rather than VSTest's `--logger`, which it ignores silently.
+- **The SDK floor is pinned at 10.0.400** (`global.json`, `rollForward: latestFeature`). The Gallery's
+  source generator references `Microsoft.CodeAnalysis.CSharp`, and a generator may not reference a
+  Roslyn newer than the compiler loading it: the SDK drops the analyzer with CS9057 - a warning - and
+  the build then fails far away with CS0103 on the types that quietly stopped being generated. CI
+  floats to the newest SDK and so could never reproduce it.
+- Every build warning is cleared, and the build is warning-free across all target frameworks.
+
 ## [0.17.0] - 2026-08-16
 
 ### Changed

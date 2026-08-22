@@ -1,7 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-@if (Morph == FlareIconMorph.None)
+@if (!Morphing)
 {
     @BuildEffective(Value).Render()
 }
@@ -43,15 +43,32 @@ else
     [Parameter] public string? AriaLabel { get; set; }
 
     /// <summary>
-    /// How a change of <see cref="Value"/> is animated. Left at <see cref="FlareIconMorph.None"/> the swap is
+    /// How a change of <see cref="Value"/> is animated. At <see cref="FlareIconMorph.None"/> the swap is
     /// instant and the view renders the icon element alone, exactly as it does without this parameter; any
     /// other mode wraps the icon so the outgoing and incoming glyphs can share one box while they trade
     /// places. The first value to arrive never animates - there is nothing for it to replace.
     /// </summary>
-    [Parameter] public FlareIconMorph Morph { get; set; } = FlareIconMorph.None;
+    /// <remarks>
+    /// Left unset, the mode is inherited from the enclosing scope - <c>FlareThemeProvider.IconMorph</c>, or
+    /// any <c>CascadingValue</c> of this type - so an app turns icon transitions on for the whole library,
+    /// its own chrome included, without touching call sites. Setting it here overrides that either way,
+    /// including back to <see cref="FlareIconMorph.None"/>.
+    /// </remarks>
+    [Parameter] public FlareIconMorph? Morph { get; set; }
+
+    // The scope's default, which an explicit Morph overrides. Cascaded by FlareThemeProvider.
+    [CascadingParameter] private FlareIconMorph? MorphScope { get; set; }
 
     // This component renders the icon element directly (no wrapper of its own) unless a morph is asked for.
     protected override string ComponentCssClass => string.Empty;
+
+    private FlareIconMorph EffectiveMorph => Morph ?? MorphScope ?? FlareIconMorph.None;
+
+    // Whether this render needs the two-slot machinery. A FlareMorphIcon is excluded on purpose: it
+    // transitions its own outline in place, and cross-fading it would mean REPLACING the very element whose
+    // `d` is being interpolated - the two mechanisms cancel each other out. So the icon's own type decides,
+    // which keeps the rule stateless and easy to state: a morph icon is never cross-faded.
+    private bool Morphing => EffectiveMorph != FlareIconMorph.None && Value is not FlareMorphIcon;
 
     // The glyph that was replaced. It is NOT removed when its exit animation finishes: the animation's fill
     // mode parks it at zero opacity, so it costs one hidden element and the NEXT swap is what recycles it.
@@ -79,7 +96,7 @@ else
 
     private string SlotClass(bool exiting) => exiting ? SlotExit : _swapped ? SlotEnter : SlotIdle;
 
-    private string WrapperClass => Morph switch
+    private string WrapperClass => EffectiveMorph switch
     {
         FlareIconMorph.Scale => WrapperScale,
         FlareIconMorph.Rotate => WrapperRotate,
@@ -89,9 +106,9 @@ else
     /// <inheritdoc/>
     protected override void OnParametersSet()
     {
-        if (Morph == FlareIconMorph.None)
+        if (!Morphing)
         {
-            // Nothing is animating and nothing will, so drop any history: the value stays current so that
+            // Nothing is cross-fading and nothing will, so drop any history: the value stays current so that
             // turning the morph on later starts from what is on screen instead of animating a stale pair.
             _outgoing = null;
             _swapped = false;

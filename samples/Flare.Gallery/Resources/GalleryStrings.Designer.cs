@@ -4030,11 +4030,74 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Outline morph.
+        /// </summary>
+        public static string Icon_MorphPath {
+            get {
+                return ResourceManager.GetString("Icon_MorphPath", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Turning it on library-wide.
+        /// </summary>
+        public static string Icon_MorphScope {
+            get {
+                return ResourceManager.GetString("Icon_MorphScope", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The chevron in the header is Flare&apos;s own chrome. It picks the mode up from the scope - this markup sets no icon parameter at all.
+        /// </summary>
+        public static string Icon_MorphScopeBody {
+            get {
+                return ResourceManager.GetString("Icon_MorphScopeBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Open me.
+        /// </summary>
+        public static string Icon_MorphScopeHeader {
+            get {
+                return ResourceManager.GetString("Icon_MorphScopeHeader", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Outside it.
+        /// </summary>
+        public static string Icon_MorphScopeOff {
+            get {
+                return ResourceManager.GetString("Icon_MorphScopeOff", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inside the scope.
+        /// </summary>
+        public static string Icon_MorphScopeOn {
+            get {
+                return ResourceManager.GetString("Icon_MorphScopeOn", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Swap the icon.
         /// </summary>
         public static string Icon_MorphSwap {
             get {
                 return ResourceManager.GetString("Icon_MorphSwap", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Toggle.
+        /// </summary>
+        public static string Icon_MorphToggle {
+            get {
+                return ResourceManager.GetString("Icon_MorphToggle", resourceCulture);
             }
         }
 

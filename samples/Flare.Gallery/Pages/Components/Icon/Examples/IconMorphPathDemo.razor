@@ -1,0 +1,20 @@
+@inherits LocalizedPage
+
+@* The other kind of morph, and the literal one: FlareMorphIcon keeps ONE path element and interpolates
+   its geometry, so the shape flows rather than one glyph cross-fading against another. It only works
+   between outlines drawn for each other - these pairs share a command list. No Morph parameter here:
+   the icon type is what carries the transition. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _on = !_on)">@GalleryStrings.Icon_MorphToggle</FlareButton>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <FlareIconView Size="2.5rem" Color="FlareColor.Primary"
+                       Value="@(_on ? FlareMorphIcons.Minus : FlareMorphIcons.Plus)" />
+        <FlareIconView Size="2.5rem" Color="FlareColor.Tertiary"
+                       Value="@(_on ? FlareMorphIcons.ChevronUp : FlareMorphIcons.ChevronDown)" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private bool _on;
+}

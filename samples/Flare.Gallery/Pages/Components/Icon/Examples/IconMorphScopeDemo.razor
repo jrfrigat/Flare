@@ -1,0 +1,26 @@
+@inherits LocalizedPage
+
+@* One CascadingValue turns icon transitions on for everything beneath it, Flare's own chrome included -
+   the collapse below sets no icon parameter, yet its chevron picks the mode up. FlareThemeProvider takes
+   the same value as IconMorph, which is how an app switches the whole library on at the root. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Align="FlareAlignItems.Start">
+    <CascadingValue TValue="FlareIconMorph?" Value="FlareIconMorph.Rotate">
+        <FlareStack Gap="FlareSpacing.Small" Style="min-width:18rem;">
+            <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Icon_MorphScopeOn</FlareText>
+            <FlareCollapse Header="@GalleryStrings.Icon_MorphScopeHeader">
+                <FlarePaper Style="padding:0.75rem 1rem;">
+                    <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Icon_MorphScopeBody</FlareText>
+                </FlarePaper>
+            </FlareCollapse>
+        </FlareStack>
+    </CascadingValue>
+
+    <FlareStack Gap="FlareSpacing.Small" Style="min-width:18rem;">
+        <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Icon_MorphScopeOff</FlareText>
+        <FlareCollapse Header="@GalleryStrings.Icon_MorphScopeHeader">
+            <FlarePaper Style="padding:0.75rem 1rem;">
+                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Icon_MorphScopeBody</FlareText>
+            </FlarePaper>
+        </FlareCollapse>
+    </FlareStack>
+</FlareStack>
