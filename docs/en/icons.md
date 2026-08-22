@@ -84,6 +84,32 @@ role or a custom color). Icons inherit `currentColor` otherwise, so they match s
 <FlareIconView Value="@FlareIcons.Bolt" Size="3rem" Color="@FlareColor.Custom("#FFB300")" />
 ```
 
+## Animating the swap
+
+By default a change of `Value` replaces the glyph on one frame. `Morph` turns that replacement into a
+transition: the outgoing and incoming glyphs share one box and trade places, which is what a state-carrying
+icon - play/pause, menu/close, a check that appears on success - wants instead of a repaint.
+
+```razor
+<FlareIconView Value="@(_playing ? FlareIcons.Pause : FlareIcons.PlayArrow)" Morph="FlareIconMorph.Scale" />
+```
+
+| mode | what it does |
+| :-- | :-- |
+| `None` (default) | instant swap; the view renders the icon element alone, with no wrapper |
+| `Fade` | cross-fade in place |
+| `Scale` | cross-fade while the outgoing glyph shrinks away and the incoming one grows in |
+| `Rotate` | cross-fade while the pair turns through the theme's angle |
+
+The motion is the theme's: `--flare-icon-morph-duration`, `--flare-icon-morph-easing` (the movement curve -
+the fade itself rides the theme's standard easing so a spring cannot cut it short), `--flare-icon-morph-scale`
+and `--flare-icon-morph-rotate`. A theme that wants icon swaps to stay instant parks the duration; one that
+wants `Scale` and `Rotate` to be plain cross-fades parks the two geometry tokens.
+
+Two things worth knowing. The transition is between two icons, **not** an interpolation of one outline into
+another - the pair is chosen at runtime, so no shared path structure can be assumed. And it applies to
+`FlareIconView`; components that take a `FlareIcon` and render it themselves are unaffected.
+
 ## Performance: only ship the icons you use
 
 Every catalog icon is its own static member, and the SVG packages are marked `IsTrimmable`. So a **trimmed

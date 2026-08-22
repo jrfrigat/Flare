@@ -1,0 +1,17 @@
+@inherits LocalizedPage
+
+@* Morph is off by default (None), so the first column swaps the way FlareIconView always has - it is
+   there as the baseline the other three are read against. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareButton Variant="ButtonVariant.Filled" OnClick="Next">@GalleryStrings.Icon_MorphSwap</FlareButton>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        @foreach (var mode in _modes)
+        {
+            <FlareStack Align="FlareAlignItems.Center" Gap="FlareSpacing.XSmall" Style="width:6rem;">
+                <FlareIconView Size="2.5rem" Color="FlareColor.Primary" Morph="mode" Value="@_icons[_index]" />
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">@mode</FlareText>
+            </FlareStack>
+        }
+    </FlareStack>
+</FlareStack>

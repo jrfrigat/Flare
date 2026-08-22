@@ -19,3 +19,107 @@
     line-height: 1;
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
+
+/* ---- Glyph swap (FlareIconView Morph) --------------------------------------------------------
+   Off unless the view asks for it: with Morph="None" nothing below is in the DOM at all, so an icon
+   that never changes pays neither the wrapper nor the extra slot element.
+
+   Both glyphs share ONE grid cell, so the outgoing one is still painted while the incoming one
+   arrives without either of them taking layout space of its own - the wrapper stays exactly one
+   glyph wide and nothing around it reflows mid-swap. Only opacity and transform animate, which are
+   the two properties the compositor can run off the main thread. */
+.flare-icon-morph {
+    --_morph-duration: var(--flare-icon-morph-duration);
+    display: inline-grid;
+    grid-template-areas: "glyph";
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.flare-icon-morph__slot {
+    grid-area: glyph;
+    display: inline-flex;
+}
+
+/* The outgoing glyph is a ghost. It is left in place rather than removed on a timer - `both` parks it
+   at the end of its exit animation, so it is already invisible and the next swap is what recycles it -
+   which is why it must not answer a pointer that lands on the cell it still occupies. It is hidden
+   from assistive technology by the markup, not from here. */
+.flare-icon-morph__slot--exit {
+    pointer-events: none;
+}
+
+/* The fade and the movement are SEPARATE animations, and that separation is not tidiness. A morph
+   easing worth having is a spring, and a spring overshoots: run opacity on it and the eased fraction
+   passes 1 about a third of the way in, so the cross-fade is over before the movement has started and
+   the swap reads as a pop rather than a hand-off. Opacity therefore rides the theme's ordinary easing
+   while only the transform rides the morph curve. Both are the same length - one gesture, two curves. */
+.flare-icon-morph__slot--enter,
+.flare-icon-morph__slot--exit {
+    animation-duration: var(--_morph-duration);
+    animation-timing-function: var(--flare-motion-easing-standard);
+    animation-fill-mode: both;
+}
+
+/* Fade is the opacity-only mode: it reads neither geometry token, so a theme cannot make it move. */
+.flare-icon-morph--fade > .flare-icon-morph__slot--enter { animation-name: flare-icon-morph-fade-in; }
+.flare-icon-morph--fade > .flare-icon-morph__slot--exit { animation-name: flare-icon-morph-fade-out; }
+
+.flare-icon-morph--scale > .flare-icon-morph__slot--enter {
+    animation-name: flare-icon-morph-fade-in, flare-icon-morph-scale-in;
+    animation-timing-function: var(--flare-motion-easing-standard), var(--flare-icon-morph-easing);
+}
+
+.flare-icon-morph--scale > .flare-icon-morph__slot--exit {
+    animation-name: flare-icon-morph-fade-out, flare-icon-morph-scale-out;
+    animation-timing-function: var(--flare-motion-easing-standard), var(--flare-icon-morph-easing);
+}
+
+.flare-icon-morph--rotate > .flare-icon-morph__slot--enter {
+    animation-name: flare-icon-morph-fade-in, flare-icon-morph-rotate-in;
+    animation-timing-function: var(--flare-motion-easing-standard), var(--flare-icon-morph-easing);
+}
+
+.flare-icon-morph--rotate > .flare-icon-morph__slot--exit {
+    animation-name: flare-icon-morph-fade-out, flare-icon-morph-rotate-out;
+    animation-timing-function: var(--flare-motion-easing-standard), var(--flare-icon-morph-easing);
+}
+
+@keyframes flare-icon-morph-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes flare-icon-morph-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes flare-icon-morph-scale-in {
+    from { transform: scale(var(--flare-icon-morph-scale)); }
+    to { transform: scale(1); }
+}
+
+@keyframes flare-icon-morph-scale-out {
+    from { transform: scale(1); }
+    to { transform: scale(var(--flare-icon-morph-scale)); }
+}
+
+/* The incoming glyph arrives from the negation of the angle the outgoing one leaves towards, so the
+   pair reads as one turn rather than as two independent spins. */
+@keyframes flare-icon-morph-rotate-in {
+    from { transform: rotate(calc(-1 * var(--flare-icon-morph-rotate))); }
+    to { transform: rotate(0deg); }
+}
+
+@keyframes flare-icon-morph-rotate-out {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(var(--flare-icon-morph-rotate)); }
+}
+
+/* Zeroed rather than removed: the outgoing glyph is parked at the END of its exit animation - that is
+   what keeps it invisible - so dropping the animation instead of its duration would leave it painted
+   on top of its replacement. */
+@media (prefers-reduced-motion: reduce) {
+    .flare-icon-morph { --_morph-duration: 0s; }
+}

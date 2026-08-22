@@ -1045,6 +1045,16 @@ public class FluentUI2Tokens
         WaveOpacity = "12%",
     };
 
+    // Fluent's motion is a short decelerated fade, not a spring, and the language has no icon overshoot in
+    // it: the glyph crosses over in place, so the geometry axes stay parked and the swap is opacity only.
+    internal static readonly IconTokens Icon = new()
+    {
+        MorphDuration = "var(--flare-motion-duration-short3)",
+        MorphEasing = "var(--flare-motion-easing-decelerate)",
+        MorphScale = "1",
+        MorphRotate = "0deg",
+    };
+
     internal static readonly StripeTokens Stripe = new()
     {
         Background = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
@@ -1083,6 +1093,7 @@ public class FluentUI2Tokens
         Touch = Touch,
         ScrollTop = ScrollTop,
         Skeleton = Skeleton,
+        Icon = Icon,
         Stripe = Stripe,
         Splitter = Splitter,
         Table = Table,
