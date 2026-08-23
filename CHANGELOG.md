@@ -30,6 +30,16 @@ All notable changes to Flare are documented here. This project adheres to
   switch that turns 0.18.0's icon transitions on library-wide - is documented where a reader looks for
   it.
 
+### Toolchain
+- **The Docker images had silently stopped building.** Pinning the SDK floor to 10.0.400 in 0.18.0 gave
+  the `mcr.microsoft.com/dotnet/sdk:10.0` base image nothing to satisfy it with - that floating tag
+  currently carries 10.0.301 - so `dotnet restore` exited 155 before reading a project. Compose keeps the
+  previous container when a build fails, so both demo sites went on serving a week-old image with nothing
+  visibly wrong. Both Dockerfiles now pin the SDK tag to the version `global.json` floors, which is the
+  only setting that can stay true: the floor exists because the Gallery's source generator references a
+  Roslyn newer than 10.0.301's compiler, so on that image the generator would be dropped with a warning
+  and the publish would fail far away on the types it stopped generating.
+
 ## [0.18.0] - 2026-08-22
 
 ### Added

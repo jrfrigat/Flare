@@ -1,6 +1,11 @@
 # Build the standalone "Legacy" enterprise demo (Blazor WASM) and serve it via nginx.
+#
+# The SDK tag is PINNED to the version global.json floors; see the note in the Gallery's Dockerfile for
+# why the floating `10.0` tag breaks restore outright. Both images must move together, since compose
+# builds them in one go and a failure in either leaves the whole stack on its previous containers.
+#
 # ── Stage 1: Build ───────────────────────────────────────────
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0.400 AS build
 WORKDIR /repo
 
 # Restore dependencies first (layer-cached unless .csproj files change). Only the Flare.Legacy
