@@ -34,7 +34,7 @@ public static class ComponentApiRegistry
             @"FlareAccordion",
             @"Flare.Components.FlareAccordion",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -58,7 +58,7 @@ public static class ComponentApiRegistry
             @"FlareAccordionPanel",
             @"Flare.Components.FlareAccordionPanel",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -87,7 +87,7 @@ public static class ComponentApiRegistry
             @"FlareAlert",
             @"Flare.Components.FlareAlert",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -120,7 +120,7 @@ public static class ComponentApiRegistry
             @"FlareAppBar",
             @"Flare.Components.FlareAppBar",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -150,7 +150,7 @@ public static class ComponentApiRegistry
             @"FlareAvatar",
             @"Flare.Components.FlareAvatar",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -181,7 +181,7 @@ public static class ComponentApiRegistry
             @"FlareAvatarGroup",
             @"Flare.Components.FlareAvatarGroup",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -207,7 +207,7 @@ public static class ComponentApiRegistry
             @"FlareBackstage",
             @"Flare.Components.IDE.FlareBackstage",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -234,7 +234,7 @@ public static class ComponentApiRegistry
             @"FlareBackstageItem",
             @"Flare.Components.IDE.FlareBackstageItem",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -261,7 +261,7 @@ public static class ComponentApiRegistry
             @"FlareBadge",
             @"Flare.Components.FlareBadge",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -293,8 +293,8 @@ public static class ComponentApiRegistry
             @"FlareBootstrap",
             @"Flare.Components.FlareBootstrap",
             @"Flare.Components",
-            null,
-            null,
+            @"Anti-flash bootstrap for server-rendered and prerendered apps: a synchronous script in the document head that applies the visitor's saved theme, palette and mode before the first paint, so the page never appears in the default theme and then switches.",
+            @"A component renders after Blazor has started, which is already too late for a purely static WebAssembly app - paste the generated script into index.html there instead.",
             System.Array.Empty<ApiParameterInfo>(),
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -309,7 +309,7 @@ public static class ComponentApiRegistry
             @"FlareBottomNav",
             @"Flare.Components.FlareBottomNav",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -333,7 +333,7 @@ public static class ComponentApiRegistry
             @"FlareBottomNavItem",
             @"Flare.Components.FlareBottomNavItem",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -368,7 +368,7 @@ public static class ComponentApiRegistry
             @"FlareBreadcrumb",
             @"Flare.Components.FlareBreadcrumb",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -397,7 +397,7 @@ public static class ComponentApiRegistry
             @"FlareButton",
             @"Flare.Components.FlareButton",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -445,7 +445,7 @@ public static class ComponentApiRegistry
             @"FlareButtonGroup",
             @"Flare.Components.FlareButtonGroup",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -485,7 +485,7 @@ public static class ComponentApiRegistry
             @"FlareCalendar",
             @"Flare.Components.FlareCalendar",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -516,7 +516,7 @@ public static class ComponentApiRegistry
             @"FlareCard",
             @"Flare.Components.FlareCard",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -550,7 +550,7 @@ public static class ComponentApiRegistry
             @"FlareCardActions",
             @"Flare.Components.FlareCardActions",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -574,7 +574,7 @@ public static class ComponentApiRegistry
             @"FlareCardContent",
             @"Flare.Components.FlareCardContent",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -597,7 +597,7 @@ public static class ComponentApiRegistry
             @"FlareCardFooter",
             @"Flare.Components.FlareCardFooter",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -620,7 +620,7 @@ public static class ComponentApiRegistry
             @"FlareCardHeader",
             @"Flare.Components.FlareCardHeader",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -647,7 +647,7 @@ public static class ComponentApiRegistry
             @"FlareCardMedia",
             @"Flare.Components.FlareCardMedia",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -672,7 +672,7 @@ public static class ComponentApiRegistry
             @"FlareCarousel",
             @"Flare.Components.FlareCarousel",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -705,7 +705,7 @@ public static class ComponentApiRegistry
             @"FlareChart",
             @"Flare.Components.FlareChart",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -756,7 +756,7 @@ public static class ComponentApiRegistry
             @"FlareCheckbox",
             @"Flare.Components.FlareCheckbox",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -794,7 +794,7 @@ public static class ComponentApiRegistry
             @"FlareChip",
             @"Flare.Components.FlareChip",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -832,7 +832,7 @@ public static class ComponentApiRegistry
             @"FlareChipGroup",
             @"Flare.Components.FlareChipGroup",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -859,7 +859,7 @@ public static class ComponentApiRegistry
             @"FlareChipStrip",
             @"Flare.Components.FlareChipStrip",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -888,7 +888,7 @@ public static class ComponentApiRegistry
             @"FlareClipboard",
             @"Flare.Components.FlareClipboard",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -921,7 +921,7 @@ public static class ComponentApiRegistry
             @"FlareClockDial",
             @"Flare.Components.FlareClockDial",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -948,7 +948,7 @@ public static class ComponentApiRegistry
             @"FlareCode",
             @"Flare.Components.FlareCode",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -971,7 +971,7 @@ public static class ComponentApiRegistry
             @"FlareCodeBlock",
             @"Flare.Components.FlareCodeBlock",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1010,7 +1010,7 @@ public static class ComponentApiRegistry
             @"FlareCol",
             @"Flare.Components.FlareCol",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1042,7 +1042,7 @@ public static class ComponentApiRegistry
             @"FlareCollapse",
             @"Flare.Components.FlareCollapse",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1070,7 +1070,7 @@ public static class ComponentApiRegistry
             @"FlareColorCustomizer",
             @"Flare.Components.FlareColorCustomizer",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1099,7 +1099,7 @@ public static class ComponentApiRegistry
             @"FlareColorModeToggle",
             @"Flare.Components.FlareColorModeToggle",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1124,7 +1124,7 @@ public static class ComponentApiRegistry
             @"FlareColorPicker",
             @"Flare.Components.FlareColorPicker",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1167,7 +1167,7 @@ public static class ComponentApiRegistry
             @"FlareColumn",
             @"Flare.Components.FlareColumn",
             @"Flare.Components",
-            null,
+            @"One data column of a FlareDataGrid: what to read from a row, how to display and edit it, and which of sorting, filtering, grouping and aggregation it takes part in. Declaring it registers the column with the enclosing grid, band or composite row - the markup is a description, not the cells themselves, which the grid draws.",
             null,
             new ApiParameterInfo[]
             {
@@ -1220,7 +1220,7 @@ public static class ComponentApiRegistry
             @"FlareColumnBand",
             @"Flare.Components.FlareColumnBand",
             @"Flare.Components",
-            null,
+            @"A heading that spans several columns, turning a flat header into a banded one. It draws no cells of its own: nested columns and bands register into it, and the grid reads that tree to lay the header rows out. Bands may nest to any depth.",
             null,
             new ApiParameterInfo[]
             {
@@ -1250,7 +1250,7 @@ public static class ComponentApiRegistry
             @"FlareColumnBase",
             @"Flare.Components.FlareColumnBase",
             @"Flare.Components",
-            null,
+            @"Shared heading node of a FlareDataGrid: the geometry, identity and pinning every kind of header carries, whether it ends up drawing cells (a column) or only grouping others (a band or a composite row). Declaration order is captured at construction, so the grid can rebuild the header tree in the order the markup states it.",
             null,
             new ApiParameterInfo[]
             {
@@ -1279,7 +1279,7 @@ public static class ComponentApiRegistry
             @"FlareColumnRow",
             @"Flare.Components.FlareColumnRow",
             @"Flare.Components",
-            null,
+            @"One visual line inside a composite column - the way several fields of a record are stacked in a single cell instead of spread across columns. The fields declared in it are laid out left to right; the row itself renders nothing.",
             null,
             new ApiParameterInfo[]
             {
@@ -1309,7 +1309,7 @@ public static class ComponentApiRegistry
             @"FlareCombobox",
             @"Flare.Components.FlareCombobox",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1553,7 +1553,7 @@ public static class ComponentApiRegistry
             @"FlareConfirmDialogProvider",
             @"Flare.Components.FlareConfirmDialogProvider",
             @"Flare.Components",
-            @"Access the confirm dialog via [CascadingParameter] FlareConfirmDialogProvider.",
+            @"Host for the confirmation dialogs raised through IConfirmDialogService. It cascades itself, so anything beneath it can take the service as a cascading parameter and await a yes/no answer instead of wiring up a dialog and its state.",
             null,
             new ApiParameterInfo[]
             {
@@ -1582,7 +1582,7 @@ public static class ComponentApiRegistry
             @"FlareContainer",
             @"Flare.Components.FlareContainer",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1764,7 +1764,7 @@ public static class ComponentApiRegistry
             @"FlareDataGridFilterPresets",
             @"Flare.Components.FlareDataGridFilterPresets",
             @"Flare.Components",
-            null,
+            @"Named advanced filters offered as a single choice, so a reader picks ""Overdue"" instead of rebuilding its condition tree. Choosing an entry applies that filter group to the FlareDataGrid; the leading empty entry clears it.",
             null,
             new ApiParameterInfo[]
             {
@@ -1785,7 +1785,7 @@ public static class ComponentApiRegistry
             @"FlareDataGridPager",
             @"Flare.Components.FlareDataGridPager",
             @"Flare.Components",
-            null,
+            @"Page navigation for a FlareDataGrid, placed wherever the layout wants it rather than where the grid would put it. The grid keeps owning the page and page size - the data concern - while this owns how paging is presented. It renders nothing when there is nothing to navigate: a virtualized or infinite-scroll grid, or a single page with no page-size choice.",
             null,
             new ApiParameterInfo[]
             {
@@ -1810,7 +1810,7 @@ public static class ComponentApiRegistry
             @"FlareDataGridQuickFilter",
             @"Flare.Components.FlareDataGridQuickFilter",
             @"Flare.Components",
-            null,
+            @"A debounced search box that narrows a FlareDataGrid to the rows where any visible column contains the typed text, case-insensitively. Placed in the grid's toolbar it finds the grid through the cascade; anywhere else it is pointed at one explicitly.",
             null,
             new ApiParameterInfo[]
             {
@@ -1836,7 +1836,7 @@ public static class ComponentApiRegistry
             @"FlareDataTree",
             @"Flare.Components.FlareDataTree",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1866,7 +1866,7 @@ public static class ComponentApiRegistry
             @"FlareDatePicker",
             @"Flare.Components.FlareDatePicker",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1937,7 +1937,7 @@ public static class ComponentApiRegistry
             @"FlareDateRangePicker",
             @"Flare.Components.FlareDateRangePicker",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -1981,7 +1981,7 @@ public static class ComponentApiRegistry
             @"FlareDateTimePicker",
             @"Flare.Components.FlareDateTimePicker",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2046,7 +2046,7 @@ public static class ComponentApiRegistry
             @"FlareDescriptionItem",
             @"Flare.Components.FlareDescriptionItem",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2071,7 +2071,7 @@ public static class ComponentApiRegistry
             @"FlareDescriptionList",
             @"Flare.Components.FlareDescriptionList",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2097,7 +2097,7 @@ public static class ComponentApiRegistry
             @"FlareDialog",
             @"Flare.Components.FlareDialog",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2145,7 +2145,7 @@ public static class ComponentApiRegistry
             @"FlareDialogProvider",
             @"Flare.Components.FlareDialogProvider",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2171,7 +2171,7 @@ public static class ComponentApiRegistry
             @"FlareDivider",
             @"Flare.Components.FlareDivider",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2197,7 +2197,7 @@ public static class ComponentApiRegistry
             @"FlareDocumentTab",
             @"Flare.Components.IDE.FlareDocumentTab",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2228,7 +2228,7 @@ public static class ComponentApiRegistry
             @"FlareDocumentTabs",
             @"Flare.Components.IDE.FlareDocumentTabs",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2254,7 +2254,7 @@ public static class ComponentApiRegistry
             @"FlareDrawer",
             @"Flare.Components.FlareDrawer",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2296,7 +2296,7 @@ public static class ComponentApiRegistry
             @"FlareEmptyState",
             @"Flare.Components.FlareEmptyState",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2323,7 +2323,7 @@ public static class ComponentApiRegistry
             @"FlareField",
             @"Flare.Components.FlareField",
             @"Flare.Components",
-            @"Base class for the EDITABLE Flare fields - the ones backed by a real focusable <input>/ <textarea> (text/password/numeric/mask/textarea). It adds the imperative focus surface (FocusAsync + Autofocus) on top of FlareFieldBase. The select-family fields (select, multi-select, combobox, tag field, pickers) deliberately do NOT derive from this: they own their own focus/trigger model, so exposing a single-input focus API on them would be misleading. They stay on FlareFieldBase.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2405,7 +2405,7 @@ public static class ComponentApiRegistry
             @"FlareFieldChrome",
             @"Flare.Components.FlareFieldChrome",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2445,7 +2445,7 @@ public static class ComponentApiRegistry
             @"FlareFileUploadButton",
             @"Flare.Components.FlareFileUploadButton",
             @"Flare.Components",
-            @"What FlareFileUploadZone and FlareFileUploadButton share: the hidden file input, the accept/multiple/limit rules, the selected-file list and the change callback. Only the trigger - a drop region or a button in a row - differs, and each subclass owns just that.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2490,7 +2490,7 @@ public static class ComponentApiRegistry
             @"FlareFileUploadZone",
             @"Flare.Components.FlareFileUploadZone",
             @"Flare.Components",
-            @"What FlareFileUploadZone and FlareFileUploadButton share: the hidden file input, the accept/multiple/limit rules, the selected-file list and the change callback. Only the trigger - a drop region or a button in a row - differs, and each subclass owns just that.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2524,7 +2524,7 @@ public static class ComponentApiRegistry
             @"FlareFloatingActionButton",
             @"Flare.Components.FlareFloatingActionButton",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2559,7 +2559,7 @@ public static class ComponentApiRegistry
             @"FlareFloatingActionMenu",
             @"Flare.Components.FlareFloatingActionMenu",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2583,7 +2583,7 @@ public static class ComponentApiRegistry
             @"FlareFloatingActionMenuItem",
             @"Flare.Components.FlareFloatingActionMenuItem",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2609,7 +2609,7 @@ public static class ComponentApiRegistry
             @"FlareForm",
             @"Flare.Components.FlareForm",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2637,7 +2637,7 @@ public static class ComponentApiRegistry
             @"FlareFormBuilder",
             @"Flare.Components.FlareFormBuilder",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2665,7 +2665,7 @@ public static class ComponentApiRegistry
             @"FlareFormField",
             @"Flare.Components.FlareFormField",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2692,7 +2692,7 @@ public static class ComponentApiRegistry
             @"FlareFormulaBar",
             @"Flare.Components.IDE.FlareFormulaBar",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2721,7 +2721,7 @@ public static class ComponentApiRegistry
             @"FlareGrid",
             @"Flare.Components.FlareGrid",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2753,7 +2753,7 @@ public static class ComponentApiRegistry
             @"FlareHidden",
             @"Flare.Components.FlareHidden",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2780,7 +2780,7 @@ public static class ComponentApiRegistry
             @"FlareHighlighter",
             @"Flare.Components.FlareHighlighter",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2807,7 +2807,7 @@ public static class ComponentApiRegistry
             @"FlareIconButton",
             @"Flare.Components.FlareIconButton",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2850,7 +2850,7 @@ public static class ComponentApiRegistry
             @"FlareIconView",
             @"Flare.Components.FlareIconView",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2931,7 +2931,7 @@ public static class ComponentApiRegistry
             @"FlareImage",
             @"Flare.Components.FlareImage",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2964,7 +2964,7 @@ public static class ComponentApiRegistry
             @"FlareInfiniteScroll",
             @"Flare.Components.FlareInfiniteScroll",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -2998,7 +2998,7 @@ public static class ComponentApiRegistry
             @"FlareKanban",
             @"Flare.Components.FlareKanban",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3027,7 +3027,7 @@ public static class ComponentApiRegistry
             @"FlareLayout",
             @"Flare.Components.FlareLayout",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3055,7 +3055,7 @@ public static class ComponentApiRegistry
             @"FlareLayoutAppBar",
             @"Flare.Components.FlareLayoutAppBar",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3082,7 +3082,7 @@ public static class ComponentApiRegistry
             @"FlareLayoutContent",
             @"Flare.Components.FlareLayoutContent",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3107,7 +3107,7 @@ public static class ComponentApiRegistry
             @"FlareLayoutDrawer",
             @"Flare.Components.FlareLayoutDrawer",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3166,7 +3166,7 @@ public static class ComponentApiRegistry
             @"FlareLazy",
             @"Flare.Components.FlareLazy",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3204,7 +3204,7 @@ public static class ComponentApiRegistry
             @"FlareLink",
             @"Flare.Components.FlareLink",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3234,7 +3234,7 @@ public static class ComponentApiRegistry
             @"FlareLinkTab",
             @"Flare.Components.FlareLinkTab",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3267,7 +3267,7 @@ public static class ComponentApiRegistry
             @"FlareLinkTabs",
             @"Flare.Components.FlareLinkTabs",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3292,7 +3292,7 @@ public static class ComponentApiRegistry
             @"FlareList",
             @"Flare.Components.FlareList",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3322,7 +3322,7 @@ public static class ComponentApiRegistry
             @"FlareListItem",
             @"Flare.Components.FlareListItem",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3352,7 +3352,7 @@ public static class ComponentApiRegistry
             @"FlareMarkdown",
             @"Flare.Components.FlareMarkdown",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3377,7 +3377,7 @@ public static class ComponentApiRegistry
             @"FlareMaskedField",
             @"Flare.Components.FlareMaskedField",
             @"Flare.Components",
-            @"Base class for the EDITABLE Flare fields - the ones backed by a real focusable <input>/ <textarea> (text/password/numeric/mask/textarea). It adds the imperative focus surface (FocusAsync + Autofocus) on top of FlareFieldBase. The select-family fields (select, multi-select, combobox, tag field, pickers) deliberately do NOT derive from this: they own their own focus/trigger model, so exposing a single-input focus API on them would be misleading. They stay on FlareFieldBase.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3430,7 +3430,7 @@ public static class ComponentApiRegistry
             @"FlareMediaQuery",
             @"Flare.Components.FlareMediaQuery",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3459,7 +3459,7 @@ public static class ComponentApiRegistry
             @"FlareMenu",
             @"Flare.Components.FlareMenu",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3520,7 +3520,7 @@ public static class ComponentApiRegistry
             @"FlareMenuGroup",
             @"Flare.Components.FlareMenuGroup",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3544,7 +3544,7 @@ public static class ComponentApiRegistry
             @"FlareMenuItem",
             @"Flare.Components.FlareMenuItem",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3575,7 +3575,7 @@ public static class ComponentApiRegistry
             @"FlareMessageBoxProvider",
             @"Flare.Components.FlareMessageBoxProvider",
             @"Flare.Components",
-            null,
+            @"Host for the message boxes raised through IMessageBoxService. Placed once in the layout, it renders whichever alert, confirmation or prompt is currently open, so calling code awaits an answer instead of managing a dialog.",
             null,
             System.Array.Empty<ApiParameterInfo>(),
             new ApiMethodInfo[]
@@ -3595,7 +3595,7 @@ public static class ComponentApiRegistry
             @"FlareMeter",
             @"Flare.Components.FlareMeter",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3622,8 +3622,8 @@ public static class ComponentApiRegistry
             @"FlareMeterSegment",
             @"Flare.Components.FlareMeterSegment",
             @"Flare.Components",
-            @"Shared base for a colored region drawn on a track. Two concrete kinds derive from it, because the hosts place a region in genuinely different coordinate systems: FlareZone - an absolute [Start, End] range on a scale the HOST owns (FlareSlider's Min..Max, FlareProgress's 0-100).FlareMeterSegment - a proportional Value weight on FlareMeter, where the parts themselves DEFINE the whole. This base owns the fill color and the registration handshake with the host, so both kinds - and all three hosts - share one mechanism while each concrete type exposes only the parameters that apply to it. A region renders no DOM of its own; the host paints the band.",
-            null,
+            @"One part of a FlareMeter, weighted rather than positioned: a meter has no external scale, so each segment carries a raw measurement and is sized in proportion to the sum of them all. That lets figures be declared as measured, with no cumulative boundaries to work out by hand.",
+            @"For an absolute range on a scale the host owns - a slider or progress bar - use FlareZone.",
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Label", @"string?", null, @"Optional label for the hover tooltip and the meter's legend entry.", null, false, false, false, @"FlareMeterSegment"),
@@ -3644,7 +3644,7 @@ public static class ComponentApiRegistry
             @"FlareMonthGrid",
             @"Flare.Components.FlareMonthGrid",
             @"Flare.Components",
-            null,
+            @"The month calendar shared by the date, date-time and range pickers: the weekday header and the six-by-seven grid of day buttons. Each picker keeps its own selection and keyboard behaviour and supplies it through the decoration hooks, so the markup and the date arithmetic live here once.",
             null,
             new ApiParameterInfo[]
             {
@@ -3675,7 +3675,7 @@ public static class ComponentApiRegistry
             @"FlareMultiSelect",
             @"Flare.Components.FlareMultiSelect",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3734,7 +3734,7 @@ public static class ComponentApiRegistry
             @"FlareNavGroup",
             @"Flare.Components.FlareNavGroup",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3765,7 +3765,7 @@ public static class ComponentApiRegistry
             @"FlareNavLink",
             @"Flare.Components.FlareNavLink",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3801,7 +3801,7 @@ public static class ComponentApiRegistry
             @"FlareNavMenu",
             @"Flare.Components.FlareNavMenu",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3830,7 +3830,7 @@ public static class ComponentApiRegistry
             @"FlareNumericField",
             @"Flare.Components.FlareNumericField",
             @"Flare.Components",
-            @"Base class for the EDITABLE Flare fields - the ones backed by a real focusable <input>/ <textarea> (text/password/numeric/mask/textarea). It adds the imperative focus surface (FocusAsync + Autofocus) on top of FlareFieldBase. The select-family fields (select, multi-select, combobox, tag field, pickers) deliberately do NOT derive from this: they own their own focus/trigger model, so exposing a single-input focus API on them would be misleading. They stay on FlareFieldBase.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3897,7 +3897,7 @@ public static class ComponentApiRegistry
             @"FlareOnThisPage",
             @"Flare.Components.FlareOnThisPage",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3939,7 +3939,7 @@ public static class ComponentApiRegistry
             @"FlareOptionList",
             @"Flare.Components.FlareOptionList",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -3980,7 +3980,7 @@ public static class ComponentApiRegistry
             @"FlareOtpField",
             @"Flare.Components.FlareOtpField",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4030,7 +4030,7 @@ public static class ComponentApiRegistry
             @"FlareOverlay",
             @"Flare.Components.FlareOverlay",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4059,7 +4059,7 @@ public static class ComponentApiRegistry
             @"FlarePagination",
             @"Flare.Components.FlarePagination",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4096,7 +4096,7 @@ public static class ComponentApiRegistry
             @"FlarePaper",
             @"Flare.Components.FlarePaper",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4124,7 +4124,7 @@ public static class ComponentApiRegistry
             @"FlarePasswordField",
             @"Flare.Components.FlarePasswordField",
             @"Flare.Components",
-            @"Base class for the EDITABLE Flare fields - the ones backed by a real focusable <input>/ <textarea> (text/password/numeric/mask/textarea). It adds the imperative focus surface (FocusAsync + Autofocus) on top of FlareFieldBase. The select-family fields (select, multi-select, combobox, tag field, pickers) deliberately do NOT derive from this: they own their own focus/trigger model, so exposing a single-input focus API on them would be misleading. They stay on FlareFieldBase.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4179,7 +4179,7 @@ public static class ComponentApiRegistry
             @"FlarePopover",
             @"Flare.Components.FlarePopover",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4259,7 +4259,7 @@ public static class ComponentApiRegistry
             @"FlareProgress",
             @"Flare.Components.FlareProgress",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4288,7 +4288,7 @@ public static class ComponentApiRegistry
             @"FlarePropertyGrid",
             @"Flare.Components.IDE.FlarePropertyGrid",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4312,7 +4312,7 @@ public static class ComponentApiRegistry
             @"FlarePropertyGridItem",
             @"Flare.Components.IDE.FlarePropertyGridItem",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4337,7 +4337,7 @@ public static class ComponentApiRegistry
             @"FlareQrCode",
             @"Flare.Components.FlareQrCode",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4369,7 +4369,7 @@ public static class ComponentApiRegistry
             @"FlareQueryBuilder",
             @"Flare.Components.FlareQueryBuilder",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4399,7 +4399,7 @@ public static class ComponentApiRegistry
             @"FlareQueryEditor",
             @"Flare.Components.FlareQueryEditor",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4429,7 +4429,7 @@ public static class ComponentApiRegistry
             @"FlareQuickAccessToolbar",
             @"Flare.Components.IDE.FlareQuickAccessToolbar",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4452,7 +4452,7 @@ public static class ComponentApiRegistry
             @"FlareRadio",
             @"Flare.Components.FlareRadio",
             @"Flare.Components",
-            null,
+            @"One option of a radio group: a single choice among several, checked when its value matches the group's. It takes its name, selection and disabled state from the enclosing FlareRadioGroup, so the group stays the one place the answer lives.",
             null,
             new ApiParameterInfo[]
             {
@@ -4473,7 +4473,7 @@ public static class ComponentApiRegistry
             @"FlareRadioGroup",
             @"Flare.Components.FlareRadioGroup",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4510,7 +4510,7 @@ public static class ComponentApiRegistry
             @"FlareRating",
             @"Flare.Components.FlareRating",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4543,7 +4543,7 @@ public static class ComponentApiRegistry
             @"FlareResizable",
             @"Flare.Components.FlareResizable",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4633,7 +4633,7 @@ public static class ComponentApiRegistry
             @"FlareRibbonDropdown",
             @"Flare.Components.IDE.FlareRibbonDropdown",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4685,7 +4685,7 @@ public static class ComponentApiRegistry
             @"FlareRibbonSeparator",
             @"Flare.Components.IDE.FlareRibbonSeparator",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4707,7 +4707,7 @@ public static class ComponentApiRegistry
             @"FlareRibbonTab",
             @"Flare.Components.IDE.FlareRibbonTab",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4736,7 +4736,7 @@ public static class ComponentApiRegistry
             @"FlareRichTextEditor",
             @"Flare.Components.FlareRichTextEditor",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4775,7 +4775,7 @@ public static class ComponentApiRegistry
             @"FlareScrollTop",
             @"Flare.Components.FlareScrollTop",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4808,7 +4808,7 @@ public static class ComponentApiRegistry
             @"FlareSelect",
             @"Flare.Components.FlareSelect",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4863,7 +4863,7 @@ public static class ComponentApiRegistry
             @"FlareSheetTabs",
             @"Flare.Components.IDE.FlareSheetTabs",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4891,7 +4891,7 @@ public static class ComponentApiRegistry
             @"FlareShortcutEntry",
             @"Flare.Components.FlareShortcutEntry",
             @"Flare.Components",
-            null,
+            @"One keyboard shortcut: a key combination, what it invokes, and the description the help overlay lists it under. It registers with the enclosing FlareShortcuts scope and renders nothing.",
             null,
             new ApiParameterInfo[]
             {
@@ -4917,7 +4917,7 @@ public static class ComponentApiRegistry
             @"FlareShortcuts",
             @"Flare.Components.FlareShortcuts",
             @"Flare.Components",
-            null,
+            @"Keyboard-shortcut scope: the entries declared inside it register their key combinations here, and it listens for them, dispatches to the matching entry and can show the resulting list as a help overlay.",
             null,
             new ApiParameterInfo[]
             {
@@ -4947,7 +4947,7 @@ public static class ComponentApiRegistry
             @"FlareSignaturePad",
             @"Flare.Components.FlareSignaturePad",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -4986,7 +4986,7 @@ public static class ComponentApiRegistry
             @"FlareSkeleton",
             @"Flare.Components.FlareSkeleton",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5012,7 +5012,7 @@ public static class ComponentApiRegistry
             @"FlareSlider",
             @"Flare.Components.FlareSlider",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5066,7 +5066,7 @@ public static class ComponentApiRegistry
             @"FlareSnackbarProvider",
             @"Flare.Components.FlareSnackbarProvider",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5094,7 +5094,7 @@ public static class ComponentApiRegistry
             @"FlareSpacer",
             @"Flare.Components.FlareSpacer",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5116,7 +5116,7 @@ public static class ComponentApiRegistry
             @"FlareSplitButton",
             @"Flare.Components.FlareSplitButton",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5160,7 +5160,7 @@ public static class ComponentApiRegistry
             @"FlareSplitter",
             @"Flare.Components.FlareSplitter",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5203,7 +5203,7 @@ public static class ComponentApiRegistry
             @"FlareStack",
             @"Flare.Components.FlareStack",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5236,7 +5236,7 @@ public static class ComponentApiRegistry
             @"FlareStatusBar",
             @"Flare.Components.IDE.FlareStatusBar",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5261,7 +5261,7 @@ public static class ComponentApiRegistry
             @"FlareStep",
             @"Flare.Components.FlareStep",
             @"Flare.Components",
-            null,
+            @"One stage of a FlareStepper: its label, its optional description, and the content shown while it is the active stage. It registers with the stepper and draws nothing on its own - the stepper renders both the indicator and the panel.",
             null,
             new ApiParameterInfo[]
             {
@@ -5292,7 +5292,7 @@ public static class ComponentApiRegistry
             @"FlareStepper",
             @"Flare.Components.FlareStepper",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5335,7 +5335,7 @@ public static class ComponentApiRegistry
             @"FlareStyles",
             @"Flare.Components.FlareStyles",
             @"Flare.Components",
-            null,
+            @"Emits the stylesheet links for the registered themes and palettes. By default it emits them all, which is what lets the app switch theme at runtime by swapping a class; restricting it to the active one trades that away for a smaller payload.",
             null,
             new ApiParameterInfo[]
             {
@@ -5354,7 +5354,7 @@ public static class ComponentApiRegistry
             @"FlareSubMenu",
             @"Flare.Components.FlareSubMenu",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5385,7 +5385,7 @@ public static class ComponentApiRegistry
             @"FlareSwitch",
             @"Flare.Components.FlareSwitch",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5422,7 +5422,7 @@ public static class ComponentApiRegistry
             @"FlareTab",
             @"Flare.Components.FlareTab",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5458,7 +5458,7 @@ public static class ComponentApiRegistry
             @"FlareTable",
             @"Flare.Components.FlareTable",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5494,7 +5494,7 @@ public static class ComponentApiRegistry
             @"FlareTableOfContents",
             @"Flare.Components.FlareTableOfContents",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5518,7 +5518,7 @@ public static class ComponentApiRegistry
             @"FlareTabs",
             @"Flare.Components.FlareTabs",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5563,7 +5563,7 @@ public static class ComponentApiRegistry
             @"FlareTagField",
             @"Flare.Components.FlareTagField",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5649,7 +5649,7 @@ public static class ComponentApiRegistry
             @"FlareTextArea",
             @"Flare.Components.FlareTextArea",
             @"Flare.Components",
-            @"Base class for the EDITABLE Flare fields - the ones backed by a real focusable <input>/ <textarea> (text/password/numeric/mask/textarea). It adds the imperative focus surface (FocusAsync + Autofocus) on top of FlareFieldBase. The select-family fields (select, multi-select, combobox, tag field, pickers) deliberately do NOT derive from this: they own their own focus/trigger model, so exposing a single-input focus API on them would be misleading. They stay on FlareFieldBase.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5776,7 +5776,7 @@ public static class ComponentApiRegistry
             @"FlareTextInput",
             @"Flare.Components.FlareTextInput",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5843,7 +5843,7 @@ public static class ComponentApiRegistry
             @"FlareThemeProvider",
             @"Flare.Components.FlareThemeProvider",
             @"Flare.Components",
-            null,
+            @"The root every Flare app is wrapped in: it cascades the active theme to every component below, restores the visitor's saved theme, palette and mode, follows the OS light/dark preference and its accent colour, and holds the app's splash until the themed first frame has painted.",
             null,
             new ApiParameterInfo[]
             {
@@ -5876,7 +5876,7 @@ public static class ComponentApiRegistry
             @"FlareThemeScope",
             @"Flare.Components.FlareThemeScope",
             @"Flare.Components",
-            null,
+            @"Re-themes one subtree without disturbing the rest of the app - a dark toolbar over a light page, or a preview pane showing another design system. Each axis left unset keeps the surrounding theme's answer, so a scope can change only the mode, only the palette, or all three.",
             null,
             new ApiParameterInfo[]
             {
@@ -5904,7 +5904,7 @@ public static class ComponentApiRegistry
             @"FlareTimePicker",
             @"Flare.Components.FlareTimePicker",
             @"Flare.Components",
-            @"Base class for the Flare field family (text field, numeric, mask, textarea, password, select, multi-select, combobox, tag field, and the date/time pickers). Centralizes the shared field plumbing so it is not re-implemented per component: the EditContext validation wiring (subscription, bound-field identifier, validation-message lookup and change notification) and the shared field parameters (label, placeholder, helper/error text, disabled, read-only, required, and the visual Variant/Size/Typo). Every member forwards Variant/Size/Typo to the shared FlareFieldChrome frame, so they live here once rather than being re-declared per component.",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5968,7 +5968,7 @@ public static class ComponentApiRegistry
             @"FlareTimeline",
             @"Flare.Components.FlareTimeline",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -5994,7 +5994,7 @@ public static class ComponentApiRegistry
             @"FlareTimelineItem",
             @"Flare.Components.FlareTimelineItem",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6021,7 +6021,7 @@ public static class ComponentApiRegistry
             @"FlareTocLink",
             @"Flare.Components.FlareTocLink",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6047,7 +6047,7 @@ public static class ComponentApiRegistry
             @"FlareToggleButton",
             @"Flare.Components.FlareToggleButton",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6098,7 +6098,7 @@ public static class ComponentApiRegistry
             @"FlareToggleGroup",
             @"Flare.Components.FlareToggleGroup",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6162,7 +6162,7 @@ public static class ComponentApiRegistry
             @"FlareToolbar",
             @"Flare.Components.IDE.FlareToolbar",
             @"Flare.Components.IDE",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6186,7 +6186,7 @@ public static class ComponentApiRegistry
             @"FlareTooltip",
             @"Flare.Components.FlareTooltip",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6226,7 +6226,7 @@ public static class ComponentApiRegistry
             @"FlareTransfer",
             @"Flare.Components.FlareTransfer",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6254,7 +6254,7 @@ public static class ComponentApiRegistry
             @"FlareTreeItem",
             @"Flare.Components.FlareTreeItem",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6285,7 +6285,7 @@ public static class ComponentApiRegistry
             @"FlareTreeView",
             @"Flare.Components.FlareTreeView",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6314,7 +6314,7 @@ public static class ComponentApiRegistry
             @"FlareValidationSummary",
             @"Flare.Components.FlareValidationSummary",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6340,7 +6340,7 @@ public static class ComponentApiRegistry
             @"FlareVideoPlayer",
             @"Flare.Components.FlareVideoPlayer",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6388,7 +6388,7 @@ public static class ComponentApiRegistry
             @"FlareVirtualList",
             @"Flare.Components.FlareVirtualList",
             @"Flare.Components",
-            @"Base class for all Flare components. Provides theme access via cascading parameters and automatic re-renders when the theme changes (via CascadingValue pattern, not subscriptions).",
+            null,
             null,
             new ApiParameterInfo[]
             {
@@ -6414,8 +6414,8 @@ public static class ComponentApiRegistry
             @"FlareZone",
             @"Flare.Components.FlareZone",
             @"Flare.Components",
-            @"Shared base for a colored region drawn on a track. Two concrete kinds derive from it, because the hosts place a region in genuinely different coordinate systems: FlareZone - an absolute [Start, End] range on a scale the HOST owns (FlareSlider's Min..Max, FlareProgress's 0-100).FlareMeterSegment - a proportional Value weight on FlareMeter, where the parts themselves DEFINE the whole. This base owns the fill color and the registration handshake with the host, so both kinds - and all three hosts - share one mechanism while each concrete type exposes only the parameters that apply to it. A region renders no DOM of its own; the host paints the band.",
-            null,
+            @"A coloured band drawn across part of a slider's or progress bar's track, marking a region of the host's own scale - ""danger starts at 90"". The range is absolute, so each zone reads as a pair of boundaries and is independent of the others. It registers with the host and renders nothing itself.",
+            @"For a part-to-whole breakdown, where the parts define the scale instead of sitting on one, use FlareMeterSegment.",
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"End", @"double?", null, @"End of the range on the host's scale.", null, false, false, false, @"FlareZone"),

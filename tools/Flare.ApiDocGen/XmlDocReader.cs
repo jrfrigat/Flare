@@ -37,8 +37,16 @@ internal sealed class XmlDocReader
         }
     }
 
-    /// <summary>Resolves the doc comment for a type, following &lt;inheritdoc/&gt; up the hierarchy.</summary>
-    public XmlMemberDoc? ForType(Type type) => Resolve("T:" + DocId.ForType(type), () => InheritTargetsForType(type));
+    /// <summary>Resolves the doc comment for a type, following an explicit &lt;inheritdoc/&gt; up the hierarchy.</summary>
+    /// <remarks>
+    /// Unlike a member, a type does NOT fall back to its base when it has no doc of its own. A member that
+    /// is genuinely inherited is described by the base's doc; a type is not its base class, and borrowing
+    /// the summary there produced 136 component pages that introduced themselves as "Base class for all
+    /// Flare components" - <c>FlareButton</c>'s among them. Nothing is a better description than something
+    /// false, and an empty summary is also the only signal that the type still owes one.
+    /// </remarks>
+    public XmlMemberDoc? ForType(Type type) =>
+        Resolve("T:" + DocId.ForType(type), () => InheritTargetsForType(type), inheritWhenUndocumented: false);
 
     /// <summary>Resolves the doc comment for a property, following &lt;inheritdoc/&gt;.</summary>
     public XmlMemberDoc? ForProperty(PropertyInfo property) =>
@@ -53,14 +61,16 @@ internal sealed class XmlDocReader
     public XmlMemberDoc? ForMethod(MethodInfo method) =>
         Resolve(DocId.ForMethod(method), () => InheritTargetsForMethod(method));
 
-    private XmlMemberDoc? Resolve(string id, Func<IEnumerable<string>> inheritTargets, int depth = 0)
+    private XmlMemberDoc? Resolve(
+        string id, Func<IEnumerable<string>> inheritTargets, int depth = 0, bool inheritWhenUndocumented = true)
     {
         if (depth > 8 || !_members.TryGetValue(id, out var element))
         {
             if (depth > 8)
                 return null;
-            // No element at all: still try inherited definitions.
-            return ResolveInherited(inheritTargets, depth);
+            // No element at all: try inherited definitions, unless the caller says an undocumented
+            // subject owes its own text rather than the base's (see ForType).
+            return inheritWhenUndocumented ? ResolveInherited(inheritTargets, depth) : null;
         }
 
         // Explicit <inheritdoc/> with no own content -> resolve from base definitions.

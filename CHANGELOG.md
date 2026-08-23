@@ -3,9 +3,19 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [0.18.1] - 2026-08-22
+## [0.18.1] - 2026-08-23
 
 ### Fixed
+- **136 components in the API reference described themselves as "Base class for all Flare components".**
+  `FlareButton`'s page said it, and so did 135 others. A component written as a `.razor` file has no
+  type-level XML doc unless someone writes a code-behind partial to carry one - 8 of 183 did - and the
+  doc reader, finding nothing, walked up the inheritance chain and used `FlareComponentBase`'s summary.
+  Inheriting a doc is right for a MEMBER, where the base's text describes the very thing being shown;
+  a type is not its base class, and the result was a reference that introduced almost every page with a
+  sentence about something else. Type docs no longer fall back to a base unless an explicit
+  `<inheritdoc/>` asks for it, so a component with nothing of its own now shows nothing - honest, and
+  the only signal that it still owes a summary. Twenty components got theirs written in this release;
+  the rest are tracked.
 - **Twenty public components were missing from the API reference.** `Flare.ApiDocGen` decided what to
   document by walking for `FlareComponentBase` in the inheritance chain, so every component that sits
   directly on `ComponentBase` - because it needs none of the theme cascade - was invisible to it. That
