@@ -62,6 +62,15 @@ jobs:
           grep -q "<base href=\"$base\" />" samples/Flare.Gallery/wwwroot/index.html
           grep -q "const base = \"$base\";" samples/Flare.Gallery/wwwroot/service-worker.published.js
 
+      # The gallery carries the API reference, so the reference has to be built from the sources being
+      # deployed rather than from whatever was last committed. This is the reason the generator is not
+      # wired into the build itself: it reflects over the built assemblies, so an automatic run would
+      # put an inner build on every Debug F5 to keep pages current that only the deployed site shows.
+      - name: Regenerate the API reference
+        run: >
+          dotnet run --project tools/Flare.ApiDocGen -c Release --
+          samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+
       - name: Publish (Release, trimmed)
         run: dotnet publish samples/Flare.Gallery/Flare.Gallery.csproj -c Release -o publish
         env:

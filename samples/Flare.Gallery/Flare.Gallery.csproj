@@ -105,8 +105,14 @@
 
 	<!--
 		Opt-in API documentation generation. Runs the Flare.ApiDocGen tool to (re)generate
-		Api/ComponentApiRegistry.g.cs from reflection + XML docs. Disabled by default so normal
-		builds and CI don't depend on it; enable with:  dotnet build -p:RunApiDocGen=true
+		Api/ComponentApiRegistry.g.cs from reflection + XML docs.
+
+		Deliberately NOT automatic. The tool reflects over the built Flare assemblies, so running it as
+		part of every build means an inner `dotnet run` (with its own restore and build) on every F5 -
+		the inner-loop cost lands on Debug, where nobody is reading the API pages. The release path runs
+		it instead: `pages.yml` regenerates before publishing the gallery, which IS the documentation
+		site, and `release.yml` re-runs it on a tag and fails if the committed file drifted. Locally:
+		dotnet build -p:RunApiDocGen=true
 	-->
 	<Target Name="GenerateApiDocs" BeforeTargets="BeforeCompile" Condition="'$(RunApiDocGen)' == 'true'">
 		<Exec Command="dotnet run --project &quot;$(MSBuildThisFileDirectory)..\..\tools\Flare.ApiDocGen\Flare.ApiDocGen.csproj&quot; -c $(Configuration) -- &quot;$(MSBuildThisFileDirectory)Api\ComponentApiRegistry.g.cs&quot;" />

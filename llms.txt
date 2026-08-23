@@ -13,7 +13,7 @@ Key facts for code generation:
 
 - [For AI Agents (full guide)](https://github.com/jrfrigat/Flare/blob/main/docs/en/ai-agents.md): Compact, machine-friendly reference: hard rules, setup, patterns, services, forms, data grid, and the full component catalog with real names.
 - [Getting Started](https://github.com/jrfrigat/Flare/blob/main/docs/en/getting-started.md): Install, DI setup, styles, theme provider, first component, forms, dialogs.
-- [API Reference](https://jrfrigat.github.io/Flare/api/): Generated reference for every public type, parameter, and enum (docfx + XML docs).
+- [API Reference](https://jrfrigat.github.io/Flare/api/): Generated reference for every public component, parameter, method, and enum - part of the gallery itself, built from the XML docs by `tools/Flare.ApiDocGen`.
 - [Architecture](https://github.com/jrfrigat/Flare/blob/main/docs/en/architecture.md): Module map, component patterns, token system, theming engine, services.
 
 ## Optional
