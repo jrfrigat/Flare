@@ -684,6 +684,93 @@ internal static class Program
         }
     }
 
+    // A qualified reference to a token constant, e.g. `Chart.BarRadius` or `ProgressField.CircularGap`.
+    // Matching only the last two segments keeps `Css.Tokens.Chart.BarRadius` and a `using`-shortened
+    // `Chart.BarRadius` on the same footing.
+    private static readonly Regex QualifiedRefRx =
+        new(@"\b([A-Z][A-Za-z0-9_]*)\.([A-Z][A-Za-z0-9_]*)\b", RegexOptions.Compiled);
+
+    /// <summary>
+    /// Adds every token whose <c>Css.Tokens</c> CONSTANT is referenced from code under
+    /// <paramref name="codeRoot"/> - <c>ReadTokenNum(Css.Tokens.Chart.BarRadius)</c>, a style string built
+    /// from <c>Chart.SeriesVar(i)</c>, and so on.
+    /// <para>
+    /// <see cref="AddComponentCodeTokens"/> only sees a token spelled out inside a string literal, so a
+    /// component that does the RIGHT thing and goes through the constant was reported as though the token
+    /// were dead. That punished the better practice: FlareChart's whole token surface came back [T-] on the
+    /// first run after it was introduced. Resolving the reference back to its value fixes the direction.
+    /// </para>
+    /// </summary>
+    internal static void AddConstantReferenceTokens(
+        SortedDictionary<string, SortedSet<string>> map, ConstSet constants, string codeRoot)
+    {
+        if (!Directory.Exists(codeRoot)) return;
+
+        var byRef = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var (owner, field, value) in constants.Declarations())
+            byRef[$"{owner}.{field}"] = value;
+        if (byRef.Count == 0) return;
+
+        foreach (var path in Directory.EnumerateFiles(codeRoot, "*.*", SearchOption.AllDirectories))
+        {
+            var ext = Path.GetExtension(path);
+            if (ext is not ".razor" and not ".cs") continue;
+            if (path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.Ordinal)
+                || path.Contains($"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}", StringComparison.Ordinal)) continue;
+
+            var text = File.ReadAllText(path);
+            var file = Path.GetFileName(path);
+            foreach (Match m in QualifiedRefRx.Matches(text))
+                if (byRef.TryGetValue(m.Value, out var tok))
+                    (map.TryGetValue(tok, out var files) ? files : map[tok] = new(StringComparer.Ordinal)).Add(file);
+        }
+    }
+
+    private static readonly Regex TokenConstDeclRx =
+        new(@"^\s*public\s+const\s+string\s+([A-Za-z0-9_]+)\s*=", RegexOptions.Compiled);
+
+    /// <summary>
+    /// Adds tokens that a token class consumes through its OWN accessor - the palette indexer on
+    /// <c>Css.Tokens.Chart</c> holds <c>Series1..Series12</c> in an array and hands them out by index, so no
+    /// consumer ever names them and the plain scans see twelve dead constants. Declaration lines are
+    /// skipped, so a constant that is only declared still reports as dead; only a reference from another
+    /// member of the same file counts.
+    /// </summary>
+    internal static void AddIntraClassTokenReferences(
+        SortedDictionary<string, SortedSet<string>> map, params string[] tokenDirs)
+    {
+        foreach (var dir in tokenDirs)
+        {
+            if (!Directory.Exists(dir)) continue;
+            foreach (var path in Directory.EnumerateFiles(dir, "*.cs", SearchOption.AllDirectories))
+            {
+                if (path.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.Ordinal)) continue;
+
+                var lines = File.ReadAllLines(path);
+                var declared = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var raw in lines)
+                {
+                    var dm = TokenConstDeclRx.Match(raw);
+                    var cm = ConstRx.Match(raw);
+                    if (dm.Success && cm.Success && cm.Groups[2].Value.StartsWith("--flare-", StringComparison.Ordinal))
+                        declared[dm.Groups[1].Value] = cm.Groups[2].Value;
+                }
+                if (declared.Count == 0) continue;
+
+                var file = Path.GetFileName(path);
+                foreach (var raw in lines)
+                {
+                    if (TokenConstDeclRx.IsMatch(raw)) continue;   // the declaration is not a usage
+                    foreach (Match m in IdentifierRx.Matches(raw))
+                        if (declared.TryGetValue(m.Value, out var tok))
+                            (map.TryGetValue(tok, out var files) ? files : map[tok] = new(StringComparer.Ordinal)).Add(file);
+                }
+            }
+        }
+    }
+
+    private static readonly Regex IdentifierRx = new(@"\b[A-Z][A-Za-z0-9_]*\b", RegexOptions.Compiled);
+
     /// <summary>
     /// Every <c>--flare-*</c> constant declared under <c>Flare.Abstractions/Css/Tokens</c>. The token
     /// counterpart of <see cref="CollectConstants"/>; skips non-token consts (the <c>--fc-*</c> local
@@ -852,6 +939,11 @@ internal sealed class ConstSet
 
     public void Add(string value, string owner, string field) =>
         (_byValue.TryGetValue(value, out var list) ? list : _byValue[value] = new()).Add((owner, field));
+
+    /// <summary>Every declaration as (Owner, Field, Value), so a caller can resolve an
+    /// <c>Owner.Field</c> reference found in code back to the token name it stands for.</summary>
+    public IEnumerable<(string Owner, string Field, string Value)> Declarations() =>
+        _byValue.SelectMany(kv => kv.Value.Select(l => (l.Owner, l.Field, Value: kv.Key)));
 
     public string LocationOf(string value) =>
         _byValue.TryGetValue(value, out var locs) && locs.Count > 0

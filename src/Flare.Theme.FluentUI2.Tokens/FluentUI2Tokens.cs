@@ -584,6 +584,82 @@ public class FluentUI2Tokens
         DisabledOpacity = "1",
     };
 
+    // Chart - Fluent: flat marks, square legend swatches, hairline solid grid, no frame around the plot.
+    // The palette is built from the theme's own hues so a brand swap carries into the data, with the same
+    // three-hue / four-treatment construction the Material base uses; the error role stays out of it.
+    // A product with the official Fluent data-visualization ramp overrides these twelve values.
+    internal static readonly ChartTokens Chart = new()
+    {
+        Series1 = "var(--flare-color-primary)",
+        Series2 = "var(--flare-color-tertiary)",
+        Series3 = "var(--flare-color-secondary)",
+        Series4 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-tertiary))",
+        Series5 = "color-mix(in srgb, var(--flare-color-secondary) 50%, var(--flare-color-tertiary))",
+        Series6 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-secondary))",
+        Series7 = "color-mix(in srgb, var(--flare-color-primary) 70%, var(--flare-color-on-surface))",
+        Series8 = "color-mix(in srgb, var(--flare-color-tertiary) 70%, var(--flare-color-on-surface))",
+        Series9 = "color-mix(in srgb, var(--flare-color-secondary) 70%, var(--flare-color-on-surface))",
+        Series10 = "color-mix(in srgb, var(--flare-color-primary) 60%, var(--flare-color-surface))",
+        Series11 = "color-mix(in srgb, var(--flare-color-tertiary) 60%, var(--flare-color-surface))",
+        Series12 = "color-mix(in srgb, var(--flare-color-secondary) 60%, var(--flare-color-surface))",
+
+        // Fluent draws thinner and squarer than Material: butt caps, near-square bars, smaller points.
+        LineWidth = "1.5",
+        LineCap = "butt",
+        PointRadius = "2",
+        PointOpacity = "0.7",
+        BubbleMinRadius = "3",
+        BubbleMaxRadius = "22",
+        BarRadius = "1",
+        AreaOpacity = "0.25",
+        RadarFillOpacity = "0.15",
+        WedgeOpacity = "0.75",
+        SliceStrokeColor = "var(--flare-color-surface)",
+        SliceStrokeWidth = "1",
+
+        RampColor = "var(--flare-color-primary)",
+        RampMinOpacity = "0.1",
+        RampMaxOpacity = "1",
+        CellRadius = "0",
+        CellGap = "2",
+        CellHoverOpacity = "0.85",
+
+        GridColor = "var(--flare-color-outline-variant)",
+        GridWidth = "0.5",
+        GridDash = "none",
+        LabelColor = "var(--flare-color-on-surface-variant)",
+        LabelSize = "9px",
+        ValueColor = "var(--flare-color-on-surface-variant)",
+        ValueOnFillColor = "var(--flare-color-surface)",
+        ValueSize = "8px",
+        AxisTitleColor = "var(--flare-color-on-surface-variant)",
+        AxisTitleSize = "10px",
+
+        // Fluent charts sit in the page, not in a card: no border, tighter padding.
+        Surface = "transparent",
+        Radius = "var(--flare-shape-extra-small)",
+        BorderWidth = "0",
+        BorderColor = "transparent",
+        Padding = "var(--flare-spacing-4)",
+        Gap = "var(--flare-spacing-3)",
+
+        LegendGap = "var(--flare-spacing-5)",
+        LegendItemGap = "var(--flare-spacing-2)",
+        LegendDotSize = "0.625rem",
+        LegendDotRadius = "0",
+        LegendSize = "var(--flare-typescale-label-small-size)",
+        LegendColor = "var(--flare-color-on-surface-variant)",
+        LegendOffOpacity = "0.4",
+
+        TrendWidth = "1",
+        TrendDash = "4 3",
+        TrendOpacity = "0.8",
+        AnnotationColor = "var(--flare-color-error)",
+        AnnotationWidth = "1",
+        AnnotationDash = "3 3",
+        AnnotationBandOpacity = "0.1",
+    };
+
     // Progress - Fluent: thin 2px rail, squared corners, no stop dot, 3px butt-cap ring. Wavy is left
     // off (WavyEnabled stays at the default 0) so FlareProgress renders a plain bar/ring.
     internal static readonly ProgressTokens Progress = new()
@@ -1168,6 +1244,7 @@ public class FluentUI2Tokens
             TransitionEasing = "var(--flare-motion-easing-standard)",
         },
         Input = Input,
+        Chart = Chart,
         Progress = Progress,
         Nav = Nav,
         Switch = Switch,

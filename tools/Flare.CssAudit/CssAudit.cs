@@ -94,6 +94,11 @@ public static class CssAudit
         // project, not the core - so a theme-private token declared there is not reported as undeclared).
         var themeProjectDirs = Directory.GetDirectories(Path.Combine(root, "src"), "Flare.Theme.*");
         var constants = Program.CollectTokenConstants(new[] { tokensDir }.Concat(themeProjectDirs).ToArray());
+        // A component that reads a token through its Css.Tokens CONSTANT (the practice the conventions ask
+        // for) leaves no token string in its source, so the two scans above cannot see the usage. Resolve
+        // the constant references too, plus the ones a token class consumes through its own accessor.
+        Program.AddConstantReferenceTokens(css, constants, Path.Combine(root, "src", "Flare.Components"));
+        Program.AddIntraClassTokenReferences(css, tokensDir);
         var themeCss = Program.CollectCssTokens(themeDirs);
         // Theme-private tokens are often defined + read entirely in the theme's C# (its extra-var dict and
         // DesignTokens value strings), never in a .css file - count those references so they are not [T-].

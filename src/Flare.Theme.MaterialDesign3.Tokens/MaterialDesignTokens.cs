@@ -536,6 +536,89 @@ public class MaterialDesignTokens
         DisabledOpacity = "var(--flare-state-disabled-opacity)",
     };
 
+    // Chart. The categorical palette is built from the theme's OWN hues rather than from fixed ink, so a
+    // dynamic palette and a mode switch both carry through to the plot: three source hues (primary,
+    // tertiary, secondary) crossed with four tonal treatments - pure, deepened toward on-surface, lightened
+    // toward surface, and blended with a neighbour. The error role is deliberately ABSENT: red carries a
+    // meaning here that a fourth series does not have. A theme that wants twelve genuinely distinct hues
+    // overrides these twelve values; that is what the tokens are for.
+    internal static readonly ChartTokens Chart = new()
+    {
+        Series1 = "var(--flare-color-primary)",
+        Series2 = "var(--flare-color-tertiary)",
+        Series3 = "var(--flare-color-secondary)",
+        Series4 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-tertiary))",
+        Series5 = "color-mix(in srgb, var(--flare-color-secondary) 50%, var(--flare-color-tertiary))",
+        Series6 = "color-mix(in srgb, var(--flare-color-primary) 50%, var(--flare-color-secondary))",
+        Series7 = "color-mix(in srgb, var(--flare-color-primary) 65%, var(--flare-color-on-surface))",
+        Series8 = "color-mix(in srgb, var(--flare-color-tertiary) 65%, var(--flare-color-on-surface))",
+        Series9 = "color-mix(in srgb, var(--flare-color-secondary) 65%, var(--flare-color-on-surface))",
+        Series10 = "color-mix(in srgb, var(--flare-color-primary) 55%, var(--flare-color-surface))",
+        Series11 = "color-mix(in srgb, var(--flare-color-tertiary) 55%, var(--flare-color-surface))",
+        Series12 = "color-mix(in srgb, var(--flare-color-secondary) 55%, var(--flare-color-surface))",
+
+        // Marks. Sizes without a unit are viewBox units: the plot is 400 wide and scales to its container,
+        // so these are proportions of the chart, not pixels.
+        LineWidth = "2",
+        LineCap = "round",
+        PointRadius = "2.5",
+        PointOpacity = "0.6",
+        BubbleMinRadius = "4",
+        BubbleMaxRadius = "24",
+        BarRadius = "2",
+        AreaOpacity = "0.35",
+        RadarFillOpacity = "0.2",
+        WedgeOpacity = "0.7",
+        SliceStrokeColor = "var(--flare-color-surface)",
+        SliceStrokeWidth = "1.5",
+
+        // Sequential ramp: one hue, intensity carries the value. The floor keeps a zero cell visible as a
+        // cell rather than as a hole in the grid.
+        RampColor = "var(--flare-color-primary)",
+        RampMinOpacity = "0.12",
+        RampMaxOpacity = "1",
+        CellRadius = "2",
+        CellGap = "2",
+        CellHoverOpacity = "0.85",
+
+        // Axes. A grid line is lighter than an outline: it sits behind the data and must not compete.
+        GridColor = "var(--flare-color-outline-variant)",
+        GridWidth = "0.5",
+        GridDash = "none",
+        LabelColor = "var(--flare-color-on-surface-variant)",
+        LabelSize = "9px",
+        ValueColor = "var(--flare-color-on-surface-variant)",
+        ValueOnFillColor = "var(--flare-color-surface)",
+        ValueSize = "8px",
+        AxisTitleColor = "var(--flare-color-on-surface-variant)",
+        AxisTitleSize = "10px",
+
+        Surface = "var(--flare-color-surface)",
+        Radius = "var(--flare-shape-medium)",
+        BorderWidth = "1px",
+        BorderColor = "var(--flare-color-outline-variant)",
+        Padding = "var(--flare-spacing-8)",
+        Gap = "var(--flare-spacing-4)",
+
+        LegendGap = "var(--flare-spacing-6)",
+        LegendItemGap = "var(--flare-spacing-3)",
+        LegendDotSize = "0.625rem",
+        LegendDotRadius = "var(--flare-shape-full)",
+        LegendSize = "var(--flare-typescale-label-small-size)",
+        LegendColor = "var(--flare-color-on-surface-variant)",
+        LegendOffOpacity = "0.4",
+
+        // Overlays. The annotation default IS the error role - a threshold line means what red means,
+        // which is exactly why a data series must not borrow it.
+        TrendWidth = "1.5",
+        TrendDash = "5 4",
+        TrendOpacity = "0.7",
+        AnnotationColor = "var(--flare-color-error)",
+        AnnotationWidth = "1.5",
+        AnnotationDash = "4 3",
+        AnnotationBandOpacity = "0.12",
+    };
+
     // Progress - MD3 Expressive: rounded full track, 4px thick, trailing stop-indicator dot, round
     // circular caps, and the opt-in wavy determinate track (with-wave 10dp, amplitude 3dp, wavelength 40dp).
     internal static readonly ProgressTokens Progress = new()
@@ -1155,6 +1238,7 @@ public class MaterialDesignTokens
             TransitionEasing = "var(--flare-motion-easing-standard)",
         },
         Input = Input,
+        Chart = Chart,
         Progress = Progress,
         // Popover / dropdown panels use the medium shape (Snackbar/Dialog/Nav already match defaults).
         Popover = Popover,

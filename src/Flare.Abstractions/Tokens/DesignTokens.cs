@@ -88,6 +88,9 @@ public sealed record DesignTokens
     /// <summary>DataGrid tokens.</summary>
     public required DataGridTokens DataGrid { get; init; }
 
+    /// <summary>Chart tokens: the categorical series palette, the sequential ramp, and the plot chrome.</summary>
+    public required ChartTokens Chart { get; init; }
+
     /// <summary>Card tokens.</summary>
     public required CardTokens Card { get; init; }
 

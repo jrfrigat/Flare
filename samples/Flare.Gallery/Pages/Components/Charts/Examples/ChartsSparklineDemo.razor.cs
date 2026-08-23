@@ -9,8 +9,8 @@ public partial class ChartsSparklineDemo
         ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
 
     private static readonly ChartData _spark1 = new(
-        [new ChartSeries("Throughput", [8, 10, 9, 13, 12, 16, 14, 19, 22, 18, 24, 27, 25, 30], "var(--flare-color-primary)")]);
+        [new ChartSeries("Throughput", [8, 10, 9, 13, 12, 16, 14, 19, 22, 18, 24, 27, 25, 30], Css.Tokens.Chart.SeriesVar(0))]);
 
     private static readonly ChartData _spark2 = new(
-        [new ChartSeries("Latency", [52, 48, 55, 44, 47, 41, 45, 39, 42, 46, 40, 43, 38, 42], "var(--flare-color-tertiary)")]);
+        [new ChartSeries("Latency", [52, 48, 55, 44, 47, 41, 45, 39, 42, 46, 40, 43, 38, 42], Css.Tokens.Chart.SeriesVar(1))]);
 }

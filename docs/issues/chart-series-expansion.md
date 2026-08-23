@@ -40,13 +40,17 @@ categorical axis model would distort both.
 
 ## Family 3 - analytics over an existing series
 
+**Correction to the first pass of this document:** Flare already has more of this family than the inventory
+credited it with. `FlareChart.TrendLine` draws a linear regression over line, area and scatter series, and
+`Annotations` (`ChartAnnotation` / `ChartAnnotationKind`) already covers horizontal threshold lines,
+horizontal bands and vertical category lines, with labels. What is missing is narrower than "trendlines":
+
 | Feature | Notes |
 | :-- | :-- |
-| Trendline (linear, polynomial) | Radzen has both; Blazorise has a trendline extension. Pure math over an existing series. |
-| Moving average | Radzen has it. Window parameter. |
-| Value line / mean line | A horizontal reference at a constant or a computed statistic. |
-| Range band | Shaded region between two values - targets, tolerances, confidence intervals. |
-| Data labels with collision avoidance | Radzen has `RadzenSeriesDataLabels`. Flare shows values on some series; a general labeller that hides overlapping labels is the missing part. |
+| Polynomial trendline | The linear case ships; Radzen has both. Same fit machinery, higher order. |
+| Moving average | Radzen has it. Window parameter over an existing series. |
+| Per-series trend control | `TrendLine` is one flag for the whole chart. It should be per series - a trend over the total and none over the components. |
+| Data labels with collision avoidance | Radzen has `RadzenSeriesDataLabels`. `ShowValues` draws every label; a labeller that hides overlapping ones is the missing part. |
 
 These are the cheapest of the three families and the most immediately useful, because they apply to
 series Flare already renders. **Do this family first.**

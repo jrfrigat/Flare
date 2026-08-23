@@ -94,6 +94,19 @@ public sealed class MaterialDesign3ExpressiveTheme : ITheme
             ConnectedPressedRadiusXl = "1rem",    // 16dp
             ZActive = "1",
         },
+
+        // Charts get the Expressive treatment for the same reason the buttons do: shape is the axis this
+        // era pushes. A heavier stroke and a visibly rounded bar end read as Expressive at a glance, and
+        // baseline M3 keeps the quieter geometry from the shared Material bundle.
+        Chart = MaterialDesignTokens.Design.Chart with
+        {
+            LineWidth = "3",
+            PointRadius = "3.5",
+            BarRadius = "6",
+            CellRadius = "4",
+            AreaOpacity = "0.4",
+            LegendDotSize = "0.75rem",
+        },
     };
     public string DefaultPaletteId => Md3Palettes.Violet.Id;
     public IReadOnlyList<Palette> Palettes => Md3Palettes.All;

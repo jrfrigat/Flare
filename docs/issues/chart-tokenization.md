@@ -1,6 +1,30 @@
 # Charts: give the chart engine a token record
 
-**Status: OPEN. Foundation item - blocks the gauge family, the new series types, and treemap/sankey.**
+**Status: DONE (2026-08-23). `ChartTokens` ships with 58 tokens; `FlareChart` and `chart.css` hold zero
+semantic-role literals and zero geometry literals; MD and Fluent bases supply the full record and
+MD3-Expressive overrides the shape half. Verified in the Gallery across two themes.** The record of what
+was wrong and why the shape is what it is stays below, because the gauge family and the new series types
+build directly on it.
+
+What shipped, against the plan in this document:
+
+- `Flare.Css.Tokens.Chart` (name registry) + `ChartTokens` (values, every property `required`), wired
+  through `DesignTokens.Chart` and `CssVarMap.FlattenDesign`.
+- The palette is 12 categorical colors built in each theme from its OWN hues (three source hues crossed
+  with four tonal treatments) rather than fixed ink, so a dynamic palette and a light/dark switch both
+  carry into the plot. **The error role is no longer in the ramp.**
+- Colors, opacities, stroke widths, dashes and font sizes resolve as `var()` inside style attributes -
+  no C# parse per mark. Only the values SVG takes as numbers (`r`, `rx`) are read in C#, once per
+  renderer rather than once per mark.
+- `ReadTokenNum` / `ReadTokenStr` and the per-theme flatten cache moved from `FlareProgress` to
+  `FlareComponentBase`; both components now ask the theme the same way.
+- The CSS audit was taught to resolve token CONSTANT references (`Css.Tokens.Chart.BarRadius`) and
+  same-class accessor use. It previously only saw tokens spelled out as string literals, so going through
+  the constants - the practice the conventions require - reported the whole surface as dead.
+
+Two follow-ups this work did not do: the chart tooltip still styles itself from the shared color scales
+rather than reusing `TooltipTokens` beyond max-width and offset, and `DonutRingRatio` / `BarWidthRatio`
+remain parameters with numeric defaults rather than tokens.
 
 `FlareChart` is the only substantial component in the library with **no token record**. There are 56
 files in `Flare.Abstractions/Tokens/Components/`; `ChartTokens.cs` is not one of them. What a theme can

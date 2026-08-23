@@ -729,6 +729,69 @@ public static class CssVarMap
         v[Css.Tokens.AvatarField.OverflowColor] = t.Avatar.OverflowColor;
         #endregion
 
+        #region CHART
+        v[Css.Tokens.Chart.Series1] = t.Chart.Series1;
+        v[Css.Tokens.Chart.Series2] = t.Chart.Series2;
+        v[Css.Tokens.Chart.Series3] = t.Chart.Series3;
+        v[Css.Tokens.Chart.Series4] = t.Chart.Series4;
+        v[Css.Tokens.Chart.Series5] = t.Chart.Series5;
+        v[Css.Tokens.Chart.Series6] = t.Chart.Series6;
+        v[Css.Tokens.Chart.Series7] = t.Chart.Series7;
+        v[Css.Tokens.Chart.Series8] = t.Chart.Series8;
+        v[Css.Tokens.Chart.Series9] = t.Chart.Series9;
+        v[Css.Tokens.Chart.Series10] = t.Chart.Series10;
+        v[Css.Tokens.Chart.Series11] = t.Chart.Series11;
+        v[Css.Tokens.Chart.Series12] = t.Chart.Series12;
+        v[Css.Tokens.Chart.LineWidth] = t.Chart.LineWidth;
+        v[Css.Tokens.Chart.LineCap] = t.Chart.LineCap;
+        v[Css.Tokens.Chart.PointRadius] = t.Chart.PointRadius;
+        v[Css.Tokens.Chart.PointOpacity] = t.Chart.PointOpacity;
+        v[Css.Tokens.Chart.BubbleMinRadius] = t.Chart.BubbleMinRadius;
+        v[Css.Tokens.Chart.BubbleMaxRadius] = t.Chart.BubbleMaxRadius;
+        v[Css.Tokens.Chart.BarRadius] = t.Chart.BarRadius;
+        v[Css.Tokens.Chart.AreaOpacity] = t.Chart.AreaOpacity;
+        v[Css.Tokens.Chart.RadarFillOpacity] = t.Chart.RadarFillOpacity;
+        v[Css.Tokens.Chart.WedgeOpacity] = t.Chart.WedgeOpacity;
+        v[Css.Tokens.Chart.SliceStrokeColor] = t.Chart.SliceStrokeColor;
+        v[Css.Tokens.Chart.SliceStrokeWidth] = t.Chart.SliceStrokeWidth;
+        v[Css.Tokens.Chart.RampColor] = t.Chart.RampColor;
+        v[Css.Tokens.Chart.RampMinOpacity] = t.Chart.RampMinOpacity;
+        v[Css.Tokens.Chart.RampMaxOpacity] = t.Chart.RampMaxOpacity;
+        v[Css.Tokens.Chart.CellRadius] = t.Chart.CellRadius;
+        v[Css.Tokens.Chart.CellGap] = t.Chart.CellGap;
+        v[Css.Tokens.Chart.CellHoverOpacity] = t.Chart.CellHoverOpacity;
+        v[Css.Tokens.Chart.GridColor] = t.Chart.GridColor;
+        v[Css.Tokens.Chart.GridWidth] = t.Chart.GridWidth;
+        v[Css.Tokens.Chart.GridDash] = t.Chart.GridDash;
+        v[Css.Tokens.Chart.LabelColor] = t.Chart.LabelColor;
+        v[Css.Tokens.Chart.LabelSize] = t.Chart.LabelSize;
+        v[Css.Tokens.Chart.ValueColor] = t.Chart.ValueColor;
+        v[Css.Tokens.Chart.ValueOnFillColor] = t.Chart.ValueOnFillColor;
+        v[Css.Tokens.Chart.ValueSize] = t.Chart.ValueSize;
+        v[Css.Tokens.Chart.AxisTitleColor] = t.Chart.AxisTitleColor;
+        v[Css.Tokens.Chart.AxisTitleSize] = t.Chart.AxisTitleSize;
+        v[Css.Tokens.Chart.Surface] = t.Chart.Surface;
+        v[Css.Tokens.Chart.Radius] = t.Chart.Radius;
+        v[Css.Tokens.Chart.BorderWidth] = t.Chart.BorderWidth;
+        v[Css.Tokens.Chart.BorderColor] = t.Chart.BorderColor;
+        v[Css.Tokens.Chart.Padding] = t.Chart.Padding;
+        v[Css.Tokens.Chart.Gap] = t.Chart.Gap;
+        v[Css.Tokens.Chart.LegendGap] = t.Chart.LegendGap;
+        v[Css.Tokens.Chart.LegendItemGap] = t.Chart.LegendItemGap;
+        v[Css.Tokens.Chart.LegendDotSize] = t.Chart.LegendDotSize;
+        v[Css.Tokens.Chart.LegendDotRadius] = t.Chart.LegendDotRadius;
+        v[Css.Tokens.Chart.LegendSize] = t.Chart.LegendSize;
+        v[Css.Tokens.Chart.LegendColor] = t.Chart.LegendColor;
+        v[Css.Tokens.Chart.LegendOffOpacity] = t.Chart.LegendOffOpacity;
+        v[Css.Tokens.Chart.TrendWidth] = t.Chart.TrendWidth;
+        v[Css.Tokens.Chart.TrendDash] = t.Chart.TrendDash;
+        v[Css.Tokens.Chart.TrendOpacity] = t.Chart.TrendOpacity;
+        v[Css.Tokens.Chart.AnnotationColor] = t.Chart.AnnotationColor;
+        v[Css.Tokens.Chart.AnnotationWidth] = t.Chart.AnnotationWidth;
+        v[Css.Tokens.Chart.AnnotationDash] = t.Chart.AnnotationDash;
+        v[Css.Tokens.Chart.AnnotationBandOpacity] = t.Chart.AnnotationBandOpacity;
+        #endregion
+
         #region PROGRESS
         v[Css.Tokens.ProgressField.LinearHeight.Xs] = t.Progress.LinearHeightXs;
         v[Css.Tokens.ProgressField.LinearHeight.Sm] = t.Progress.LinearHeightSm;

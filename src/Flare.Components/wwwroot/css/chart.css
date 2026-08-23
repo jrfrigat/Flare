@@ -25,7 +25,7 @@
 
 /* Heat-map cells. */
 .flare-chart__cell { transition: opacity var(--flare-motion-duration-short2); }
-.flare-chart__cell:hover { opacity: 0.85; }
+.flare-chart__cell:hover { opacity: var(--flare-chart-cell-hover-opacity); }
 
 /* Visually-hidden data table exposed to screen readers as a chart fallback. */
 .flare-chart__table {
@@ -43,15 +43,23 @@
 .flare-chart {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-4);
-    background: var(--flare-color-surface);
-    border-radius: var(--flare-shape-medium);
-    border: 1px solid var(--flare-color-outline-variant);
-    padding: var(--flare-spacing-8);
+    gap: var(--flare-chart-gap);
+    background: var(--flare-chart-surface);
+    border-radius: var(--flare-chart-radius);
+    border: var(--flare-chart-border-width) solid var(--flare-chart-border-color);
+    padding: var(--flare-chart-padding);
 }
 
 .flare-chart__title {
     margin-bottom: var(--flare-spacing-2);
+}
+
+/* Line series. Width and cap are the theme's, so they live here rather than as SVG presentation
+   attributes written by the renderer - a presentation attribute is what a theme cannot override. */
+.flare-chart__line {
+    stroke-width: var(--flare-chart-line-width);
+    stroke-linecap: var(--flare-chart-line-cap);
+    stroke-linejoin: round;
 }
 
 /* Sparkline: a chromeless line that fills its host (e.g. a FlareCard body) edge-to-edge -
@@ -76,7 +84,7 @@
 .flare-chart__body {
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-4);
+    gap: var(--flare-chart-gap);
 }
 .flare-chart__body--row {
     flex-direction: row;
@@ -95,7 +103,7 @@
 .flare-chart__legend {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--flare-spacing-6);
+    gap: var(--flare-chart-legend-gap);
     margin-top: var(--flare-spacing-2);
 }
 /* Interactive legend: click to toggle a series. */
@@ -104,21 +112,21 @@
     user-select: none;
 }
 .flare-chart__legend-item--off {
-    opacity: 0.4;
+    opacity: var(--flare-chart-legend-off-opacity);
 }
 
 .flare-chart__legend-item {
     display: flex;
     align-items: center;
-    gap: var(--flare-spacing-3);
-    font-size: var(--flare-typescale-label-small-size);
-    color: var(--flare-color-on-surface-variant);
+    gap: var(--flare-chart-legend-item-gap);
+    font-size: var(--flare-chart-legend-size);
+    color: var(--flare-chart-legend-color);
 }
 
 .flare-chart__legend-dot {
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: var(--flare-shape-full);
+    width: var(--flare-chart-legend-dot-size);
+    height: var(--flare-chart-legend-dot-size);
+    border-radius: var(--flare-chart-legend-dot-radius);
     flex-shrink: 0;
     background: var(--flare-chart-dot);
 }
@@ -132,7 +140,7 @@
     position: absolute;
     /* left/top are a % of the SVG box at the data point; lift the bubble above
        and centre it horizontally on that point */
-    transform: translate(-50%, calc(-100% - 8px));
+    transform: translate(-50%, calc(-100% - var(--flare-tooltip-offset)));
     pointer-events: none;
     background: var(--flare-color-surface-container-highest);
     color: var(--flare-color-on-surface);
@@ -144,5 +152,5 @@
     white-space: pre;
     box-shadow: var(--flare-elevation-2);
     z-index: 10;
-    max-width: 14rem;
+    max-width: var(--flare-tooltip-max-width);
 }

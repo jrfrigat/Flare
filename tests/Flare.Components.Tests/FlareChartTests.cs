@@ -446,7 +446,10 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.TrendLine, true));
 
-        Assert.Contains(cut.FindAll("line"), l => (l.GetAttribute("stroke-dasharray") ?? "").Length > 0);
+        // The dash is the THEME's now, so it rides in the style as a token rather than as a
+        // stroke-dasharray presentation attribute - which a theme could not have overridden.
+        Assert.Contains(cut.FindAll("line"),
+            l => (l.GetAttribute("style") ?? "").Contains("stroke-dasharray:var(--flare-chart-trend-dash)"));
     }
 
     [Fact]
@@ -460,7 +463,65 @@ public class FlareChartTests : FlareTestContext
                 new ChartAnnotation(ChartAnnotationKind.HorizontalLine, 5, Label: "Target"),
             }));
 
-        Assert.Contains(cut.FindAll("line"), l => (l.GetAttribute("stroke-dasharray") ?? "").Length > 0);
+        Assert.Contains(cut.FindAll("line"),
+            l => (l.GetAttribute("style") ?? "").Contains("stroke-dasharray:var(--flare-chart-annotation-dash)"));
         Assert.Contains(cut.FindAll("text"), t => (t.TextContent ?? "").Contains("Target"));
+    }
+
+    [Fact]
+    public void SeriesColors_ComeFromTheChartPalette_NotTheSemanticRoles()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Bar)
+            .Add(x => x.Data, new ChartData(
+                [
+                    new ChartSeries("A", [1]), new ChartSeries("B", [2]),
+                    new ChartSeries("C", [3]), new ChartSeries("D", [4]),
+                ],
+                ["x"])));
+
+        var fills = cut.FindAll("rect")
+            .Select(r => r.GetAttribute("style") ?? "")
+            .Where(s => s.Contains("fill:"))
+            .ToList();
+
+        Assert.Equal(4, fills.Count);
+        Assert.All(fills, s => Assert.Contains("fill:var(--flare-chart-series-", s));
+
+        // The point of the palette. Series four used to be painted with the ERROR role, so a four-series
+        // chart drew its fourth series in the color the design system reserves for failure - and a theme
+        // could not widen the ramp without repainting every button on the page.
+        Assert.DoesNotContain(fills, s => s.Contains("--flare-color-"));
+    }
+
+    [Fact]
+    public void SeriesColor_Override_WinsOverThePalette()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Bar)
+            .Add(x => x.Data, new ChartData([new ChartSeries("A", [1], Color: "rebeccapurple")], ["x"])));
+
+        var fill = cut.FindAll("rect")
+            .Select(r => r.GetAttribute("style") ?? "")
+            .First(s => s.Contains("fill:"));
+
+        Assert.Contains("fill:rebeccapurple", fill);
+    }
+
+    [Fact]
+    public void HeatMap_Ramp_IsTokenDriven()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.HeatMap)
+            .Add(x => x.Data, new ChartData([new ChartSeries("r", [0, 10])], ["a", "b"])));
+
+        var cells = cut.FindAll("rect.flare-chart__cell");
+        Assert.Equal(2, cells.Count);
+        // The intensity still encodes the value; what changed is that the hue and both ends of the ramp
+        // are the theme's, instead of the primary role with a 0.12..1 opacity range baked into the render.
+        Assert.All(cells, c => Assert.Contains("fill:var(--flare-chart-ramp-color)", c.GetAttribute("style") ?? ""));
+        Assert.NotEqual(
+            cells[0].GetAttribute("style"),
+            cells[1].GetAttribute("style"));
     }
 }
