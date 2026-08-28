@@ -780,6 +780,36 @@
   <data name="DataGrid_GroupedHeaderDesc" xml:space="preserve">
     <value>Wrap the columns in a FlareColumnBand to give them a shared heading; columns outside the band span both header rows.</value>
   </data>
+  <data name="DataGrid_ExternalControlTitle" xml:space="preserve">
+    <value>Driving the Grid From Outside</value>
+  </data>
+  <data name="DataGrid_ExternalControlDesc" xml:space="preserve">
+    <value>Pass a DataGridContext to the grid and every control around it - built-in or your own - can read, change and observe its state. Custom controls inherit FlareDataGridControl and name the changes they re-render for.</value>
+  </data>
+  <data name="DataGrid_ExternalSearch" xml:space="preserve">
+    <value>Search all columns</value>
+  </data>
+  <data name="DataGrid_ExternalTopScores" xml:space="preserve">
+    <value>Top scores</value>
+  </data>
+  <data name="DataGrid_ExternalReset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="DataGrid_ExternalMatched" xml:space="preserve">
+    <value>{0} rows matched</value>
+  </data>
+  <data name="DataGrid_ExternalPage" xml:space="preserve">
+    <value>Page {0} of {1}</value>
+  </data>
+  <data name="DataGrid_ExternalSortedAsc" xml:space="preserve">
+    <value>{0}, ascending</value>
+  </data>
+  <data name="DataGrid_ExternalSortedDesc" xml:space="preserve">
+    <value>{0}, descending</value>
+  </data>
+  <data name="DataGrid_ExternalUnsorted" xml:space="preserve">
+    <value>Unsorted</value>
+  </data>
   <data name="DataGrid_FrozenColumnsTitle" xml:space="preserve">
     <value>Frozen Columns</value>
   </data>

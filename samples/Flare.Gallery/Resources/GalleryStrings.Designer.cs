@@ -2392,6 +2392,96 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Pass a DataGridContext to the grid and every control around it - built-in or your own - can read, change and observe its state..
+        /// </summary>
+        public static string DataGrid_ExternalControlDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalControlDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Driving the Grid From Outside.
+        /// </summary>
+        public static string DataGrid_ExternalControlTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalControlTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0} rows matched.
+        /// </summary>
+        public static string DataGrid_ExternalMatched {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalMatched", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Page {0} of {1}.
+        /// </summary>
+        public static string DataGrid_ExternalPage {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalPage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset.
+        /// </summary>
+        public static string DataGrid_ExternalReset {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalReset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Search all columns.
+        /// </summary>
+        public static string DataGrid_ExternalSearch {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalSearch", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}, ascending.
+        /// </summary>
+        public static string DataGrid_ExternalSortedAsc {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalSortedAsc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}, descending.
+        /// </summary>
+        public static string DataGrid_ExternalSortedDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalSortedDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Top scores.
+        /// </summary>
+        public static string DataGrid_ExternalTopScores {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalTopScores", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsorted.
+        /// </summary>
+        public static string DataGrid_ExternalUnsorted {
+            get {
+                return ResourceManager.GetString("DataGrid_ExternalUnsorted", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на DataGridColumnPicker component for show/hide columns..
         /// </summary>
         public static string DataGrid_ColumnPickerDesc {

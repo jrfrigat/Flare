@@ -780,6 +780,36 @@
   <data name="DataGrid_GroupedHeaderDesc" xml:space="preserve">
     <value>Оберните колонки в FlareColumnBand, чтобы дать им общий заголовок; колонки вне полосы занимают обе строки шапки.</value>
   </data>
+  <data name="DataGrid_ExternalControlTitle" xml:space="preserve">
+    <value>Управление таблицей извне</value>
+  </data>
+  <data name="DataGrid_ExternalControlDesc" xml:space="preserve">
+    <value>Передайте таблице DataGridContext - и любой элемент вокруг неё, встроенный или ваш собственный, сможет читать, менять и отслеживать её состояние. Свои компоненты наследуют FlareDataGridControl и объявляют, на какие изменения перерисовываться.</value>
+  </data>
+  <data name="DataGrid_ExternalSearch" xml:space="preserve">
+    <value>Поиск по всем колонкам</value>
+  </data>
+  <data name="DataGrid_ExternalTopScores" xml:space="preserve">
+    <value>Лучшие баллы</value>
+  </data>
+  <data name="DataGrid_ExternalReset" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
+  <data name="DataGrid_ExternalMatched" xml:space="preserve">
+    <value>Найдено строк: {0}</value>
+  </data>
+  <data name="DataGrid_ExternalPage" xml:space="preserve">
+    <value>Страница {0} из {1}</value>
+  </data>
+  <data name="DataGrid_ExternalSortedAsc" xml:space="preserve">
+    <value>{0}, по возрастанию</value>
+  </data>
+  <data name="DataGrid_ExternalSortedDesc" xml:space="preserve">
+    <value>{0}, по убыванию</value>
+  </data>
+  <data name="DataGrid_ExternalUnsorted" xml:space="preserve">
+    <value>Без сортировки</value>
+  </data>
   <data name="DataGrid_FrozenColumnsTitle" xml:space="preserve">
     <value>Закреплённые колонки</value>
   </data>
