@@ -1,10 +1,11 @@
 /*
-   Mobile bottom-navigation bar (FlareBottomNav / FlareBottomNavItem). The component itself does
-   NOT set position:fixed -- it renders a plain horizontal bar with sensible height/background/
-   border/safe-area padding so the consumer can position it (fixed, sticky, or in-flow) from their
-   own layout.
+   Mobile bottom-navigation bar (FlareBottomNav / FlareBottomNavItem). Static by default - the
+   consumer's layout places it - with Position="Fixed"/"Sticky" pinning it, safe-area inset included.
 */
 .flare-bottom-nav {
+  /* The bar's total height, published so the spacer (and any consumer layout) can reserve exactly it. */
+  --_bottom-nav-total-height: calc(
+      var(--flare-bottom-nav-bar-height) + var(--flare-bottom-nav-safe-area-padding));
   display: flex;
   align-items: stretch;
   width: 100%;
@@ -13,6 +14,25 @@
   background: var(--flare-bottom-nav-bar-bg);
   border-top: 1px solid var(--flare-bottom-nav-border-color);
   box-sizing: border-box;
+}
+
+.flare-bottom-nav--fixed {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: var(--flare-bottom-nav-z-index);
+}
+
+.flare-bottom-nav--sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: var(--flare-bottom-nav-z-index);
+}
+
+/* Sits immediately before the pinned bar, so it inherits nothing and has to recompute the height. */
+.flare-bottom-nav__spacer {
+  flex: none;
+  height: calc(var(--flare-bottom-nav-bar-height) + var(--flare-bottom-nav-safe-area-padding));
 }
 
 /* Each item shares the bar equally. */

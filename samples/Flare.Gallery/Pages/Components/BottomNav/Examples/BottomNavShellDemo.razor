@@ -1,0 +1,45 @@
+@* Position="Fixed" pins the bar to the bottom of its containing block with the safe-area inset intact,
+   and ReserveSpace (on by default) keeps a same-height spacer in the flow so the last row of content is
+   never hidden behind it. That is the whole app-shell CSS a PWA used to have to write by hand.
+   The frame below is a phone-sized viewport, so the bar pins inside it rather than to the page. *@
+<FlareCard Variant="CardVariant.Outlined"
+           Style="width:360px;height:420px;padding:0;overflow:hidden;position:relative;display:flex;flex-direction:column;">
+    <FlareCardContent Style="flex:1;overflow:auto;">
+        <FlareStack Gap="FlareSpacing.Small">
+            <FlareText Typo="TypographyScale.TitleMedium">Today</FlareText>
+            @foreach (var item in _feed)
+            {
+                <FlareCard Variant="CardVariant.Filled">
+                    <FlareCardHeader Title="@item" Subtitle="Scroll to the bottom" />
+                </FlareCard>
+            }
+            <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                The spacer keeps this last line above the bar.
+            </FlareText>
+        </FlareStack>
+    </FlareCardContent>
+
+    <FlareBottomNav Position="BottomNavPosition.Fixed">
+        <FlareBottomNavItem Href="#home" Active="true">
+            <Icon><FlareIconView Value="@FlareIcons.Home" /></Icon>
+            <ChildContent>Home</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#search">
+            <Icon><FlareIconView Value="@FlareIcons.Search" /></Icon>
+            <ChildContent>Search</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#saved">
+            <Icon><FlareIconView Value="@FlareIcons.Favorite" /></Icon>
+            <ChildContent>Saved</ChildContent>
+        </FlareBottomNavItem>
+        <FlareBottomNavItem Href="#profile">
+            <Icon><FlareIconView Value="@FlareIcons.Person" /></Icon>
+            <ChildContent>Profile</ChildContent>
+        </FlareBottomNavItem>
+    </FlareBottomNav>
+</FlareCard>
+
+@code {
+    private static readonly string[] _feed =
+        ["Napoleon", "Medovik", "Sacher", "Red velvet", "Carrot", "Tiramisu", "Pavlova"];
+}

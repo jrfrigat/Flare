@@ -330,6 +330,9 @@
   <data name="BottomNav_Basic" xml:space="preserve">
     <value>Basic bottom navigation</value>
   </data>
+  <data name="BottomNav_Shell" xml:space="preserve">
+    <value>App shell: a fixed bar that reserves its own space</value>
+  </data>
   <data name="BottomNav_Disabled" xml:space="preserve">
     <value>Disabled item &amp; custom aria-label</value>
   </data>
@@ -479,6 +482,9 @@
   </data>
   <data name="Cards_Anatomy" xml:space="preserve">
     <value>Header / Body / Footer</value>
+  </data>
+  <data name="Cards_ActionLayout" xml:space="preserve">
+    <value>Action layout: wrap, stack, full width</value>
   </data>
   <data name="Carousel_Title" xml:space="preserve">
     <value>Carousel</value>

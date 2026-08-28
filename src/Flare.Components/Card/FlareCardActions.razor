@@ -1,22 +1,69 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<div class="@BuildCssClass(_alignClass)" style="@Style" @attributes="AdditionalAttributes">
+<div class="@BuildCssClass(_alignClass, _verticalClass, _wrapClass, _fullWidthClass, _reverseClass, _stackClass)"
+     style="@_style" @attributes="AdditionalAttributes">
     @ChildContent
 </div>
 
 @code {
     /// <summary>Action buttons of the card (e.g. FlareButton).</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    /// <summary>Horizontal alignment of the actions. Default Start.</summary>
+
+    /// <summary>Alignment of the actions along the row. Default <see cref="CardActionsAlign.Start"/>.</summary>
     [Parameter] public CardActionsAlign Align { get; set; } = CardActionsAlign.Start;
+
+    /// <summary>
+    /// Allows the actions to wrap onto more lines when they do not fit. Default true - a row of actions
+    /// that runs past the edge of its card is never the intent; set false for a deliberate single line.
+    /// </summary>
+    [Parameter] public bool Wrap { get; set; } = true;
+
+    /// <summary>Stacks the actions top to bottom instead of laying them in a row.</summary>
+    [Parameter] public bool Vertical { get; set; }
+
+    /// <summary>Makes the actions share the available space equally, each filling its share.</summary>
+    [Parameter] public bool FullWidth { get; set; }
+
+    /// <summary>Reverses the visual order, for the platforms that put the confirming action first.</summary>
+    [Parameter] public bool Reverse { get; set; }
+
+    /// <summary>
+    /// Card width below which the actions stack and fill the width - the "row on a wide card, stacked on
+    /// a narrow one" case in one parameter. It is a CONTAINER query, so a card in a narrow column stacks
+    /// on a wide screen too, which is what a viewport breakpoint gets wrong.
+    /// </summary>
+    [Parameter] public CardActionsStack StackBelow { get; set; }
+
+    /// <summary>Gap between the actions. Null keeps the card's own action gap.</summary>
+    [Parameter] public FlareSpacing? Gap { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Card.Actions;
 
-    private string _alignClass => Align switch
+    private string? _alignClass => Align switch
     {
-        CardActionsAlign.End     => Css.Classes.Card.ActionsEnd,
+        CardActionsAlign.Center => Css.Classes.Card.ActionsCenter,
+        CardActionsAlign.End => Css.Classes.Card.ActionsEnd,
         CardActionsAlign.Between => Css.Classes.Card.ActionsBetween,
-        _                        => string.Empty, // Start is the default alignment (no modifier class)
+        CardActionsAlign.Stretch => Css.Classes.Card.ActionsStretch,
+        _ => null, // Start is the default alignment (no modifier class)
     };
+
+    private string? _verticalClass => Vertical ? Css.Classes.Card.ActionsVertical : null;
+    private string? _wrapClass => Wrap ? null : Css.Classes.Card.ActionsNoWrap;
+    private string? _fullWidthClass => FullWidth ? Css.Classes.Card.ActionsFullWidth : null;
+    private string? _reverseClass => Reverse ? Css.Classes.Card.ActionsReverse : null;
+    private string? _stackClass => StackBelow switch
+    {
+        CardActionsStack.Narrow => Css.Classes.Card.ActionsStackNarrow,
+        CardActionsStack.Compact => Css.Classes.Card.ActionsStackCompact,
+        CardActionsStack.Wide => Css.Classes.Card.ActionsStackWide,
+        _ => null,
+    };
+
+    // The gap travels as the same local custom property the card sets, so a per-instance override and the
+    // card's own size-driven default meet in one place instead of two competing declarations.
+    private string? _style => Gap is { } g
+        ? $"--_card-actions-gap:{FlareSpacingVars.Var(g)};{Style}"
+        : Style;
 }

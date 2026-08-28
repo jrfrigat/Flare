@@ -711,6 +711,7 @@ public class MaterialDesignTokens
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
         ItemDisabledOpacity = "var(--flare-state-disabled-opacity)",
+        ZIndex = "1100",
     };
 
     internal static readonly TableOfContentsTokens TableOfContents = new()

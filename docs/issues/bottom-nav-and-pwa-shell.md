@@ -1,6 +1,6 @@
 # `FlareBottomNav` has no fixed mode, and there are no mobile/PWA examples
 
-**Status: OPEN. Tier 1. From the app user's review.**
+**Status: PARTIALLY DONE. Tier 1. From the app user's review.**
 
 ## The report
 
@@ -38,8 +38,9 @@ The bigger request is "more ready-made mobile/PWA examples". Today the Gallery d
 one at a time, on a desktop-width page. There is no page that shows an *app shell*: fixed bottom nav,
 scrollable content, safe areas, a sticky app bar, a phone-width viewport.
 
-Add a Gallery section with the shells a mobile app actually needs, each a working page rather than a
-snippet:
+The component half is DONE, with a bottom-nav shell demo in the Gallery. The rest of this list is still
+OPEN - add a Gallery section with the shells a mobile app actually needs, each a working page rather than
+a snippet:
 
 1. **Bottom-nav shell** - fixed bar, five destinations, routed content, safe area, reserved space.
 2. **Drawer + app bar shell** - the tablet form of the same app.

@@ -980,6 +980,7 @@ public class FluentUI2Tokens
         IndicatorRadius = "var(--flare-nav-indicator-radius)",
         IndicatorSize = "2rem",
         ItemDisabledOpacity = "1",
+        ZIndex = "1100",
     };
 
     internal static readonly ColorPickerTokens ColorPicker = new()
