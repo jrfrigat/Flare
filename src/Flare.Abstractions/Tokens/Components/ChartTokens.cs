@@ -82,6 +82,10 @@ public sealed record ChartTokens
     [CssVar(Chart.GridWidth)] public required string GridWidth { get; init; }
     /// <summary>Dash pattern of the grid lines; <c>none</c> draws them solid.</summary>
     [CssVar(Chart.GridDash)] public required string GridDash { get; init; }
+    /// <summary>Color of the minor grid lines drawn between two major ones.</summary>
+    [CssVar(Chart.GridMinorColor)] public required string GridMinorColor { get; init; }
+    /// <summary>Width of the minor grid lines, in viewBox units.</summary>
+    [CssVar(Chart.GridMinorWidth)] public required string GridMinorWidth { get; init; }
     /// <summary>Color of the axis tick labels.</summary>
     [CssVar(Chart.LabelColor)] public required string LabelColor { get; init; }
     /// <summary>Font size of the axis tick labels, in viewBox units.</summary>

@@ -1,26 +1,9 @@
-// Flare overlay/popup behaviours: body scroll-lock, dialog Esc handling, focus trap, outside-click
-// dismiss and fixed-position anchored panels. Extracted from the former flare-theme.js god-module so
-// dialogs, drawers, selects and pickers import only what they use.
-
-// --- Body scroll-lock ---
-let _scrollLockCount = 0;
-let _savedOverflow = '';
-
-export function lockBodyScroll() {
-    if (_scrollLockCount === 0) {
-        _savedOverflow = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
-    }
-    _scrollLockCount++;
-}
-
-export function unlockBodyScroll() {
-    if (_scrollLockCount > 0) _scrollLockCount--;
-    if (_scrollLockCount === 0) {
-        document.body.style.overflow = _savedOverflow;
-        _savedOverflow = '';
-    }
-}
+// Flare overlay/popup behaviours: dialog Esc handling, focus trap, outside-click dismiss and
+// fixed-position anchored panels. Extracted from the former flare-theme.js god-module so dialogs,
+// drawers, selects and pickers import only what they use.
+//
+// The body scroll-lock moved to flare-scroll.js (Flare.Components.IScrollService): one counter has to
+// own body.style.overflow, or two modules take turns restoring each other's saved value.
 
 // --- Dialog Esc handlers ---
 const _escHandlers = new Map();

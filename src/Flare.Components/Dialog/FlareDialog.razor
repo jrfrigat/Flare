@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
+@inject IScrollService Scroll
 @inject Flare.Components.Services.IDialogDragJsService DialogDrag
 @inject NavigationManager Navigation
 @implements IAsyncDisposable
@@ -152,6 +153,18 @@
         };
     }
 
+
+    // The lock is held as a token rather than paired calls: disposing it twice is a no-op, so the close
+    // path and the dispose path cannot both decrement the shared count for one open.
+    private IAsyncDisposable? _scrollLock;
+
+    private async Task ReleaseScrollLockAsync()
+    {
+        var held = _scrollLock;
+        _scrollLock = null;
+        if (held is not null) await held.DisposeAsync();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (Visible && !_wasVisible)
@@ -161,7 +174,7 @@
             {
                 _dotNetRef ??= DotNetObjectReference.Create(this);
 
-                await Overlay.LockBodyScrollAsync();
+                _scrollLock = await Scroll.LockAsync();
 
                 if (CloseOnEsc)
                     await Overlay.RegisterDialogEscAsync(_id, _dotNetRef);
@@ -180,7 +193,7 @@
             _wasVisible = false;
             try
             {
-                await Overlay.UnlockBodyScrollAsync();
+                await ReleaseScrollLockAsync();
                 await Overlay.RemoveDialogEscAsync(_id);
                 await Overlay.ReleaseFocusTrapAsync(_id);
                 if (Draggable) await DialogDrag.RemoveDragAsync(_headerEl);
@@ -228,7 +241,7 @@
         // If the dialog is still open when disposed (e.g. page navigation), release locks/handlers.
         if (_wasVisible)
         {
-            try { await Overlay.UnlockBodyScrollAsync(); } catch { }
+            try { await ReleaseScrollLockAsync(); } catch { }
             if (Draggable) { try { await DialogDrag.RemoveDragAsync(_headerEl); } catch { } }
             if (Resizable) { try { await DialogDrag.RemoveResizeAsync(_resizerEl); } catch { } }
         }

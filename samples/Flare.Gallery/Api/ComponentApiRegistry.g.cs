@@ -730,12 +730,14 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Horizontal", @"bool", @"false", @"Renders bar / stacked-bar charts horizontally (categories down the Y axis).", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"LegendPosition", @"ChartLegendPosition", @"ChartLegendPosition.Bottom", @"Where the legend sits relative to the plot.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"LineStyle", @"ChartLineStyle", @"ChartLineStyle.Solid", @"Stroke pattern of line series. A series can override it through LineStyle.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"NiceScale", @"bool", @"true", @"Rounds the value axis outward to whole steps of the 1/2/2.5/5/10 progression, so the labels read 0, 100, 200 rather than 0, 94, 188, and the data no longer touches the top edge of the plot. Default true. An axis pinned by both YMin and YMax is taken literally and never rounded; pinning one end rounds only the other.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"OnPointClick", @"EventCallback<int>", null, @"Raised with the category (or slice) index when a data point is clicked.", null, false, true, false, @"FlareChart"),
                 new ApiParameterInfo(@"Padding", @"int?", null, @"Overrides the plot padding (all sides, in viewBox units). Null keeps the default axis padding.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowGrid", @"bool", @"true", @"Shows the horizontal grid lines behind an axis chart. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowLegend", @"bool", @"true", @"Shows the series legend. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowMarkers", @"bool", @"false", @"Draws a marker dot at each line data point. A series can override this through ShowMarkers.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowValues", @"bool", @"false", @"Shows the numeric value on each bar and the percentage on each pie/donut slice.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"ShowVerticalGrid", @"bool", @"false", @"Draws a grid line down the plot at each labelled category, the layout a spreadsheet uses. The lines share the X projection and the label budget of the axis labels, so they stay under their own label and track a zoom.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowXAxisLabels", @"bool", @"true", @"Shows the category X-axis labels. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowYAxisLabels", @"bool", @"true", @"Shows the numeric Y-axis labels. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowZoomToolbar", @"bool", @"true", @"Shows the zoom in / out / reset buttons above the plot. Default true when Zoomable is set.", null, false, false, false, @"FlareChart"),
@@ -747,6 +749,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Width", @"int", @"400", @"Authored drawing width, in viewBox units. With Fluid off this and Height fix the chart's ASPECT RATIO: the drawing then scales like an image into whatever width its container gives it, so a 1200 x 220 chart stays wide and short at any size. In fluid mode it is only the width used until the first measurement arrives.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"XAxisTitle", @"string?", null, @"Title drawn under the X axis.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YAxisFormat", @"string?", null, @".NET numeric format for the Y-axis labels (e.g. ""N0"", ""C0"", ""P0""); null uses a general format.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"YAxisMinorTicks", @"int", @"0", @"Number of lighter divisions drawn between two major grid lines. 0 (the default) draws none. Minor lines carry their own color and width tokens, so a theme can make them near-invisible. Clamped to 0..10.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"YAxisTickCount", @"int?", null, @"Number of horizontal grid lines on the value axis, counting the top and bottom line - so 5 draws the four bands a spreadsheet shows by default. Null (the default) derives the count from the plot size, so a short chart draws fewer lines than a tall one instead of both drawing five. Clamped to 2..24. With NiceScale on, round numbers win over an exact count and the drawn total can differ by one; turn NiceScale off to get exactly this many.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YAxisTitle", @"string?", null, @"Title drawn rotated beside the Y axis.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YMax", @"double?", null, @"Overrides the automatic maximum of the value axis.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YMin", @"double?", null, @"Overrides the automatic minimum of the value axis.", null, false, false, false, @"FlareChart"),
@@ -4851,8 +4855,9 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Selector", @"string?", null, @"CSS selector of the scroll container to watch (e.g. an app-shell content panel). When null (the default) the page itself (window) is used.", null, false, false, false, @"FlareScrollTop"),
+                new ApiParameterInfo(@"Selector", @"string?", null, @"CSS selector of the scroll container to watch (e.g. an app-shell content panel). When null (the default) the page itself is used.", null, false, false, false, @"FlareScrollTop"),
                 new ApiParameterInfo(@"Threshold", @"int", @"200", @"Scroll distance in pixels before the button appears.", null, false, false, false, @"FlareScrollTop"),
+                new ApiParameterInfo(@"ThrottleMs", @"int", @"100", @"Minimum gap, in milliseconds, between scroll checks. Default 100. The button only has to cross one threshold, so there is nothing to gain from watching every frame.", null, false, false, false, @"FlareScrollTop"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -4861,11 +4866,6 @@ public static class ComponentApiRegistry
             {
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"SetVisible", @"SetVisible(bool visible)", @"void", null, null,
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"visible", @"bool", null),
-                    }),
             },
             new string[]
             {
@@ -8165,6 +8165,49 @@ public static class ComponentApiRegistry
             {
                 @"FlareRibbon",
             });
+
+        e[@"ScrollAlign"] = new ApiEnumInfo(
+            @"ScrollAlign",
+            @"Flare.Components.ScrollAlign",
+            @"Flare.Components",
+            @"Where a scrolled-to element should come to rest in the visible area.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Nearest", @"0", @"Whichever edge is closer - scrolls the least."),
+                new ApiEnumMember(@"Start", @"1", @"Against the start edge."),
+                new ApiEnumMember(@"Center", @"2", @"Centred."),
+                new ApiEnumMember(@"End", @"3", @"Against the end edge."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"ScrollBehavior"] = new ApiEnumInfo(
+            @"ScrollBehavior",
+            @"Flare.Components.ScrollBehavior",
+            @"Flare.Components",
+            @"How the browser should animate a programmatic scroll.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Auto", @"0", @"Follow the CSS scroll-behavior in effect for the element."),
+                new ApiEnumMember(@"Smooth", @"1", @"Animate to the target."),
+                new ApiEnumMember(@"Instant", @"2", @"Jump to the target with no animation."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"ScrollDirection"] = new ApiEnumInfo(
+            @"ScrollDirection",
+            @"Flare.Components.ScrollDirection",
+            @"Flare.Components",
+            @"Which way a scroll container moved between two notifications.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"No vertical movement since the previous notification."),
+                new ApiEnumMember(@"Up", @"1", @"Moved toward the start - the reader is going back up."),
+                new ApiEnumMember(@"Down", @"2", @"Moved toward the end - the reader is going down."),
+            },
+            System.Array.Empty<string>());
 
         e[@"SelectionMode"] = new ApiEnumInfo(
             @"SelectionMode",

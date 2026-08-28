@@ -12,12 +12,6 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
         : base(js, "./_content/Flare.Components/js/flare-overlay.js") { }
 
     /// <inheritdoc />
-    public ValueTask LockBodyScrollAsync() => InvokeVoidAsync("lockBodyScroll");
-
-    /// <inheritdoc />
-    public ValueTask UnlockBodyScrollAsync() => InvokeVoidAsync("unlockBodyScroll");
-
-    /// <inheritdoc />
     public ValueTask RegisterDialogEscAsync<T>(string id, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerDialogEscHandler", id, dotNetRef);
 

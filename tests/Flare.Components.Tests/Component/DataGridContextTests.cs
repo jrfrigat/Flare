@@ -68,12 +68,12 @@ public class DataGridContextTests : FlareTestContext
     }
 
     [Fact]
-    public void Sorting_through_the_context_reorders_the_rendered_rows()
+    public async Task Sorting_through_the_context_reorders_the_rendered_rows()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
 
-        cut.InvokeAsync(() => ctx.SortByAsync("Name")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SortByAsync("Name"));
 
         Assert.Equal(SortDirection.Ascending, Assert.Single(ctx.Sorts).Direction);
         var firstCell = cut.FindAll("tbody td")[0].TextContent.Trim();
@@ -81,94 +81,94 @@ public class DataGridContextTests : FlareTestContext
     }
 
     [Fact]
-    public void SetSorts_replaces_the_whole_stack_and_drops_unknown_keys()
+    public async Task SetSorts_replaces_the_whole_stack_and_drops_unknown_keys()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
 
-        cut.InvokeAsync(() => ctx.SetSortsAsync(
+        await cut.InvokeAsync(() => ctx.SetSortsAsync(
         [
             new DataGridSort("Qty", SortDirection.Descending),
             new DataGridSort("NotAColumn", SortDirection.Ascending),
-        ])).GetAwaiter().GetResult();
+        ]));
 
         var sort = Assert.Single(ctx.Sorts);
         Assert.Equal("Qty", sort.Key);
         Assert.Equal(SortDirection.Descending, sort.Direction);
 
-        cut.InvokeAsync(() => ctx.ClearSortsAsync()).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.ClearSortsAsync());
         Assert.Empty(ctx.Sorts);
     }
 
     [Fact]
-    public void Quick_filter_through_the_context_narrows_the_rows()
+    public async Task Quick_filter_through_the_context_narrows_the_rows()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
         Assert.Equal(4, cut.FindAll("tbody tr").Count);
 
-        cut.InvokeAsync(() => ctx.SetQuickFilterAsync("elt")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SetQuickFilterAsync("elt"));
 
         Assert.Equal("elt", ctx.QuickFilterText);
         Assert.Equal(1, ctx.FilteredCount);
         Assert.Single(cut.FindAll("tbody tr"));
 
-        cut.InvokeAsync(() => ctx.ClearFiltersAsync()).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.ClearFiltersAsync());
         Assert.Null(ctx.QuickFilterText);
         Assert.Equal(4, cut.FindAll("tbody tr").Count);
     }
 
     [Fact]
-    public void Column_visibility_and_order_are_drivable_from_outside()
+    public async Task Column_visibility_and_order_are_drivable_from_outside()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
 
-        cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", false)).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", false));
         Assert.Equal(["Name"], ctx.VisibleColumns.Select(c => c.Title));
         Assert.Contains("Qty", ctx.HiddenColumnKeys);
 
-        cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", true)).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", true));
         Assert.Equal(["Name", "Qty"], ctx.VisibleColumns.Select(c => c.Title));
 
-        cut.InvokeAsync(() => ctx.MoveColumnAsync("Qty", "Name")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.MoveColumnAsync("Qty", "Name"));
         Assert.Equal(["Qty", "Name"], ctx.ColumnOrder);
     }
 
     [Fact]
-    public void Setting_a_column_visible_when_it_already_is_changes_nothing()
+    public async Task Setting_a_column_visible_when_it_already_is_changes_nothing()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
         var changes = 0;
         ctx.Changed += _ => changes++;
 
-        cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", true)).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", true));
 
         Assert.Equal(0, changes);
     }
 
     [Fact]
-    public void Paging_through_the_context_moves_the_rendered_page()
+    public async Task Paging_through_the_context_moves_the_rendered_page()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx, pageSize: 2)));
 
         Assert.Equal(2, ctx.PageCount);
-        cut.InvokeAsync(() => ctx.NextPageAsync()).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.NextPageAsync());
         Assert.Equal(1, ctx.Page);
 
         // Clamped, not thrown or wrapped.
-        cut.InvokeAsync(() => ctx.GoToPageAsync(99)).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.GoToPageAsync(99));
         Assert.Equal(1, ctx.Page);
 
-        cut.InvokeAsync(() => ctx.SetPageSizeAsync(4)).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SetPageSizeAsync(4));
         Assert.Equal(4, ctx.PageSize);
         Assert.Equal(0, ctx.Page);
     }
 
     [Fact]
-    public void Changed_reports_what_changed_and_nothing_else()
+    public async Task Changed_reports_what_changed_and_nothing_else()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
@@ -176,42 +176,42 @@ public class DataGridContextTests : FlareTestContext
         var seen = DataGridChange.None;
         ctx.Changed += c => seen |= c;
 
-        cut.InvokeAsync(() => ctx.SortByAsync("Name")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SortByAsync("Name"));
         Assert.True(seen.HasFlag(DataGridChange.Sort));
         Assert.False(seen.HasFlag(DataGridChange.Selection));
 
         seen = DataGridChange.None;
-        cut.InvokeAsync(() => ctx.FilterAsync("Name", "a")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.FilterAsync("Name", "a"));
         Assert.True(seen.HasFlag(DataGridChange.Filter));
         Assert.False(seen.HasFlag(DataGridChange.Sort));
     }
 
     [Fact]
-    public void Selection_is_drivable_and_observable()
+    public async Task Selection_is_drivable_and_observable()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
         var seen = DataGridChange.None;
         ctx.Changed += c => seen |= c;
 
-        cut.InvokeAsync(() => ctx.SetSelectionAsync([_rows[0], _rows[1]])).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SetSelectionAsync([_rows[0], _rows[1]]));
 
         Assert.Equal(2, ctx.SelectedItems.Count);
         Assert.True(seen.HasFlag(DataGridChange.Selection));
 
-        cut.InvokeAsync(() => ctx.ClearSelectionAsync()).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.ClearSelectionAsync());
         Assert.Empty(ctx.SelectedItems);
     }
 
     [Fact]
-    public void Reset_clears_sorts_and_filters_together()
+    public async Task Reset_clears_sorts_and_filters_together()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx)));
 
-        cut.InvokeAsync(() => ctx.SortByAsync("Name")).GetAwaiter().GetResult();
-        cut.InvokeAsync(() => ctx.SetQuickFilterAsync("a")).GetAwaiter().GetResult();
-        cut.InvokeAsync(() => ctx.ResetAsync()).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SortByAsync("Name"));
+        await cut.InvokeAsync(() => ctx.SetQuickFilterAsync("a"));
+        await cut.InvokeAsync(() => ctx.ResetAsync());
 
         Assert.Empty(ctx.Sorts);
         Assert.Null(ctx.QuickFilterText);
@@ -219,7 +219,7 @@ public class DataGridContextTests : FlareTestContext
     }
 
     [Fact]
-    public void Detached_context_answers_instead_of_throwing()
+    public async Task Detached_context_answers_instead_of_throwing()
     {
         var ctx = new DataGridContext<Row>();
 
@@ -231,9 +231,9 @@ public class DataGridContextTests : FlareTestContext
         Assert.Null(ctx.AdvancedFilter);
 
         // Commands are inert rather than fatal: a control can render before its grid exists.
-        ctx.SortByAsync("Name").GetAwaiter().GetResult();
-        ctx.GoToPageAsync(3).GetAwaiter().GetResult();
-        ctx.ClearFiltersAsync().GetAwaiter().GetResult();
+        await ctx.SortByAsync("Name");
+        await ctx.GoToPageAsync(3);
+        await ctx.ClearFiltersAsync();
     }
 
     [Fact]
@@ -260,13 +260,13 @@ public class DataGridContextTests : FlareTestContext
     }
 
     [Fact]
-    public void Snapshot_carries_the_state_a_query_editor_needs()
+    public async Task Snapshot_carries_the_state_a_query_editor_needs()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render<TestHost>(p => p.Add(x => x.Body, Grid(ctx, pageSize: 2)));
 
-        cut.InvokeAsync(() => ctx.SortByAsync("Qty")).GetAwaiter().GetResult();
-        cut.InvokeAsync(() => ctx.FilterAsync("Name", "a")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SortByAsync("Qty"));
+        await cut.InvokeAsync(() => ctx.FilterAsync("Name", "a"));
 
         var request = ctx.ToRequest();
         Assert.Equal("Qty", request.SortKey);

@@ -3,6 +3,78 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.21.0] - 2026-08-29
+
+### Breaking
+
+- **`IUiJsService.RegisterScrollTopAsync`, `RemoveScrollTopAsync` and `ScrollToTopAsync` are gone.** Scroll
+  watching and scroll-to-top moved to the new `IScrollService`. The old handler crossed the interop
+  boundary on every single scroll event with no throttle at all; the port throttles in the browser, before
+  the crossing. Inject `IScrollService` and call `SubscribeAsync` / `ScrollToTopAsync` instead.
+- **`IOverlayJsService.LockBodyScrollAsync` and `UnlockBodyScrollAsync` are gone.** The body scroll lock
+  moved to `IScrollService.LockAsync()`, which returns a token: dispose it to release. One counter has to
+  own `body.style.overflow`, or two modules take turns restoring each other's saved value. Replace the
+  paired calls with `_lock = await Scroll.LockAsync()` and `await _lock.DisposeAsync()`.
+- **A chart's value axis now rounds itself to whole steps by default.** A line over 94..470 used to run
+  from exactly 94 to exactly 470, labelled 94 / 188 / 282 / 376 / 470 with the data touching both frame
+  edges; it now runs 0..500 labelled 0 / 100 / 200 / 300 / 400 / 500. Set `NiceScale="false"` for the old
+  behaviour. An axis pinned by both `YMin` and `YMax` is unaffected - it was never rounded.
+
+### Added
+
+- **`IScrollService` - one port for observing and driving scroll.** Throttled subscriptions on the page or
+  on any container, programmatic scrolling, scroll-into-view, and a reference-counted body lock. It is
+  shaped like `IBrowserViewportService` on purpose, so there is one idiom to learn: `IAsyncDisposable`
+  tokens instead of an observer interface, no `DotNetObjectReference` to create, throttling in JS before
+  the interop crossing, and prerender-safe getters. Until now an application could not observe scroll at
+  all without writing its own JS module next to the five Flare already shipped.
+- **`ScrollChange` carries what a handler actually branches on** - `Top`, `Delta`, `Direction`,
+  `DirectionChanged`, `Progress`, `AtStart`, `AtEnd` - so no subscriber recomputes them from raw offsets.
+  `ScrollSubscribeOptions.DirectionOnly` wakes a handler only when the reader turns around, and
+  `DirectionThreshold` stops a trackpad's jitter from flapping it: a hide-on-scroll app bar is those two
+  options and four lines.
+- **`ScrollTarget`** - the page by default; an `ElementReference` or a CSS selector converts implicitly.
+  A selector is what an app shell usually needs, because the scrolling panel belongs to the layout rather
+  than to the component doing the scrolling.
+- **`FlareChart.YAxisTickCount`** - the number of horizontal grid lines. Null (the default) derives the
+  count from the plot height on the same budget rule the X axis has used since 0.19.1, so a 120px chart
+  draws three lines where a 600px one draws nine, instead of both drawing five. A default 220px chart
+  still draws the five it always did.
+- **`FlareChart.NiceScale`** - axis rounding on the 1/2/2.5/5/10 progression, on by default. This is what
+  makes a tick count worth having: seven lines over 94..470 without it reads 94 / 156.7 / 219.3, which is
+  worse than the five it replaced. Round numbers win over an exact count, so the drawn total can differ
+  by one; turn it off for exactly the count you asked for.
+- **`FlareChart.YAxisMinorTicks` and `ShowVerticalGrid`** - lighter divisions between two major lines, and
+  a grid line down the plot at each labelled category. The vertical lines share the X projection and the
+  label budget of the axis labels, so they stand under their own label and track a zoom.
+- **`--flare-chart-grid-minor-color` and `--flare-chart-grid-minor-width`** - the minor grid line's own
+  colour and width, so a theme can push it as far back as it wants or hide it outright. Both themes ship
+  it as the major line at 45% alpha.
+- **`FlareScrollTop.ThrottleMs`** - how often the button re-checks the threshold. Default 100.
+
+### Fixed
+
+- **A chart Y axis over data in the thousands printed the same unreadable label on every line.** The
+  default format was `G3`, which turns 1002 into `1E+03`; the labels now use fixed point at the precision
+  the axis actually carries, falling back to the compact form only when a value would overflow the left
+  padding. `YAxisFormat` is unchanged.
+- **A horizontal bar chart ignored the tick count** and drew five lines regardless, because its value axis
+  runs along the width and was written separately. Its line count is now budgeted against the width.
+- **The body scroll lock could be released twice for one open.** `FlareDialog` and `FlareLayoutDrawer`
+  unlocked on close and again on dispose; the token returned by `LockAsync` makes the second release a
+  no-op. The lock now also compensates for the scrollbar's width, so fixed chrome no longer jumps sideways
+  when a dialog opens.
+
+### Changed
+
+- **Grid lines and their labels now come off one resolved axis.** Bounds, rounding and line count are
+  interdependent - the nice step depends on how many lines were asked for, and the count finally drawn
+  depends on where the rounding landed - so computing them apart let a label name a value its line was not
+  drawn at. Line, bar, stacked bar, scatter and combo all resolve through the same path.
+- **`DataGridContextTests` and `DataGridColumnDefinitionTests` no longer block on async work.** The 27
+  `.GetAwaiter().GetResult()` calls added in 0.20.0 raised 85 `xUnit1031` warnings on a full build, which
+  is enough noise to hide a real one.
+
 ## [0.20.0] - 2026-08-28
 
 ### Breaking

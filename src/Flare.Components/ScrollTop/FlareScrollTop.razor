@@ -1,14 +1,17 @@
 @* Requires interactive render mode (not compatible with static SSR). *@
 @namespace Flare.Components
 @inherits FlareComponentBase
-@inject Flare.Components.Services.IUiJsService Ui
+@inject IScrollService Scroll
 @implements IAsyncDisposable
+
+@* Watches through IScrollService rather than its own JS listener, so the visibility check is throttled
+   before it crosses interop and shares the service's teardown instead of owning a second one. *@
 
 <button class="@BuildCssClass(_visibleClass)"
         type="button"
         aria-label="@(FlareStrings.Nav_BackToTop)"
         style="@Style"
-        @onclick="ScrollToTopAsync"
+        @onclick="BackToTopAsync"
         @attributes="AdditionalAttributes">
     <FlareIconView Value="FlareIcons.KeyboardArrowUp" />
 </button>
@@ -19,48 +22,43 @@
 
     /// <summary>
     /// CSS selector of the scroll container to watch (e.g. an app-shell content panel). When null
-    /// (the default) the page itself (window) is used.
+    /// (the default) the page itself is used.
     /// </summary>
     [Parameter] public string? Selector { get; set; }
+
+    /// <summary>
+    /// Minimum gap, in milliseconds, between scroll checks. Default 100. The button only has to cross
+    /// one threshold, so there is nothing to gain from watching every frame.
+    /// </summary>
+    [Parameter] public int ThrottleMs { get; set; } = 100;
 
     protected override string ComponentCssClass => Css.Classes.Scroll.Top;
 
     private bool _visible;
-    private readonly string _id = Guid.NewGuid().ToString("N");
-    private DotNetObjectReference<FlareScrollTop>? _dotNetRef;
+    private IAsyncDisposable? _sub;
 
     private string _visibleClass => _visible ? Css.Classes.Scroll.TopVisible : string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
-        try
-        {
-            _dotNetRef = DotNetObjectReference.Create(this);
-            await Ui.RegisterScrollTopAsync(_id, _dotNetRef, Threshold, Selector);
-        }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
+        _sub = await Scroll.SubscribeAsync(
+            OnScrolled, Selector, new ScrollSubscribeOptions { ThrottleMs = ThrottleMs });
     }
 
-    [JSInvokable]
-    public void SetVisible(bool visible)
+    private Task OnScrolled(ScrollChange change)
     {
-        if (_visible == visible) return;
+        var visible = change.Top > Threshold;
+        if (visible == _visible) return Task.CompletedTask;
         _visible = visible;
-        InvokeAsync(StateHasChanged);
+        return InvokeAsync(StateHasChanged);
     }
 
-    private async Task ScrollToTopAsync() => await Ui.ScrollToTopAsync(Selector);
+    private Task BackToTopAsync() => Scroll.ScrollToTopAsync(Selector).AsTask();
 
     public override async ValueTask DisposeAsync()
     {
-        try { await Ui.RemoveScrollTopAsync(_id); }
-        catch (InvalidOperationException) { }
-        catch (JSDisconnectedException) { }
-        catch (JSException) { }
-        _dotNetRef?.Dispose();
+        if (_sub is not null) await _sub.DisposeAsync();
         await base.DisposeAsync();
     }
 }

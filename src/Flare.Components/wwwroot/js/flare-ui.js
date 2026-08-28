@@ -1,35 +1,7 @@
-// Flare misc UI utilities: scroll-to-top button, responsive breakpoint detection, tab-bar overflow
-// scroller, global keyboard shortcuts and the EyeDropper API. Extracted from the former
-// flare-theme.js god-module.
+// Flare misc UI utilities: tab-bar overflow scroller, global keyboard shortcuts and the EyeDropper
+// API. Extracted from the former flare-theme.js god-module.
 
-// --- Scroll-top button ---
-const _scrollHandlers = new Map();
-
-// selector: a scroll container to watch; when null/missing the page (window) is used. This lets
-// the button work in app-shell layouts where the scroll happens on an inner element, not the window.
-export function registerScrollTopHandler(id, dotNetRef, threshold, selector) {
-    _removeScrollHandler(id);
-    const target = selector ? document.querySelector(selector) : window;
-    if (!target) return; // selector did not match (yet) -- nothing to watch
-    const scrolled = () => (target === window ? window.scrollY : target.scrollTop);
-    const handler = () => dotNetRef.invokeMethodAsync('SetVisible', scrolled() > threshold);
-    _scrollHandlers.set(id, { target, handler });
-    target.addEventListener('scroll', handler, { passive: true });
-    handler(); // initial check
-}
-
-export function removeScrollTopHandler(id) { _removeScrollHandler(id); }
-
-function _removeScrollHandler(id) {
-    const h = _scrollHandlers.get(id);
-    if (h) { h.target.removeEventListener('scroll', h.handler); _scrollHandlers.delete(id); }
-}
-
-export function scrollToTop(selector) {
-    const target = selector ? document.querySelector(selector) : window;
-    if (target) target.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
+// Scroll watching and scroll-to-top moved to flare-scroll.js (Flare.Components.IScrollService).
 // Breakpoint / viewport detection moved to flare-viewport.js (Flare.Components.IBrowserViewportService).
 
 // -- FlareTabs overflow scroller --------------------------------------------

@@ -1,0 +1,103 @@
+@page "/services/scroll"
+@inherits LocalizedPage
+@inject IScrollService Scroll
+@implements IAsyncDisposable
+
+<PageTitle>@GalleryStrings.Services_ScrollTitle - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Services_ScrollTitle</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Services_ScrollSubtitle</FlareText>
+</GalleryPageTitle>
+
+@* The Gallery scrolls an inner shell panel rather than the page, which is exactly the case a selector
+   target exists for: the panel belongs to the layout, so this page has no reference to it. *@
+<FlareCard Variant="CardVariant.Outlined" Style="max-width:36rem;">
+    <FlareStack Gap="FlareSpacing.Medium">
+        @* FlareProgress reads a 0..100 percentage, so the 0..1 progress is scaled here. *@
+        <FlareProgress Value="@(_progress * 100)" />
+        <FlareStack Row Wrap Gap="FlareSpacing.Large">
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_Offset <code>@_top.ToString("F0")</code>
+            </FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_Progress <code>@_progress.ToString("P0")</code>
+            </FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_Direction <code>@_direction</code>
+            </FlareText>
+        </FlareStack>
+        <FlareStack Row Wrap Gap="FlareSpacing.Small">
+            <FlareButton OnClick="@(() => Scroll.ScrollToEndAsync(Panel).AsTask())">@GalleryStrings.Services_Scroll_ToEnd</FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => Scroll.ScrollToTopAsync(Panel).AsTask())">@GalleryStrings.Services_Scroll_ToTop</FlareButton>
+        </FlareStack>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+            @GalleryStrings.Services_Scroll_Hint
+        </FlareText>
+    </FlareStack>
+</FlareCard>
+
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
+<FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
+
+@code {
+    // The Gallery's own scroll container. An app that scrolls the page passes nothing at all.
+    private const string Panel = ".flare-layout-content";
+
+    private double _top;
+    private double _progress;
+    private ScrollDirection _direction = ScrollDirection.None;
+    private IAsyncDisposable? _sub;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        _sub = await Scroll.SubscribeAsync(OnScrolled, Panel, new ScrollSubscribeOptions { ThrottleMs = 60 });
+    }
+
+    private Task OnScrolled(ScrollChange change)
+    {
+        _top = change.Top;
+        _progress = change.Progress;
+        if (change.Direction != ScrollDirection.None) _direction = change.Direction;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_sub is not null) await _sub.DisposeAsync();
+    }
+
+    private const string _usage = """
+        @inject IScrollService Scroll
+        @implements IAsyncDisposable
+
+        @code {
+            IAsyncDisposable? _sub;
+            bool _barVisible = true;
+
+            protected override async Task OnAfterRenderAsync(bool firstRender)
+            {
+                if (!firstRender) return;
+
+                // The page by default; pass an ElementReference or a CSS selector for a container.
+                _sub = await Scroll.SubscribeAsync(OnScrolled, options: new ScrollSubscribeOptions
+                {
+                    DirectionOnly = true,      // only wake me when the reader turns around
+                    DirectionThreshold = 8,    // and not for trackpad jitter
+                });
+            }
+
+            Task OnScrolled(ScrollChange c)
+            {
+                _barVisible = c.Direction == ScrollDirection.Up || c.AtStart;
+                return InvokeAsync(StateHasChanged);
+            }
+
+            public async ValueTask DisposeAsync()
+            {
+                if (_sub is not null) await _sub.DisposeAsync();
+            }
+        }
+        """;
+}

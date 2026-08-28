@@ -763,6 +763,8 @@ public static class CssVarMap
         v[Css.Tokens.Chart.GridColor] = t.Chart.GridColor;
         v[Css.Tokens.Chart.GridWidth] = t.Chart.GridWidth;
         v[Css.Tokens.Chart.GridDash] = t.Chart.GridDash;
+        v[Css.Tokens.Chart.GridMinorColor] = t.Chart.GridMinorColor;
+        v[Css.Tokens.Chart.GridMinorWidth] = t.Chart.GridMinorWidth;
         v[Css.Tokens.Chart.LabelColor] = t.Chart.LabelColor;
         v[Css.Tokens.Chart.LabelSize] = t.Chart.LabelSize;
         v[Css.Tokens.Chart.ValueColor] = t.Chart.ValueColor;

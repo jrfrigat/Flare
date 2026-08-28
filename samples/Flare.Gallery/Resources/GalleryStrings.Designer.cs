@@ -1555,6 +1555,186 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll.
+        /// </summary>
+        public static string Services_ScrollTitle {
+            get {
+                return ResourceManager.GetString("Services_ScrollTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на One port for observing and driving scroll: throttled subscriptions on the page or any container, programmatic scrolling, and a reference-counted body lock..
+        /// </summary>
+        public static string Services_ScrollSubtitle {
+            get {
+                return ResourceManager.GetString("Services_ScrollSubtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Offset:.
+        /// </summary>
+        public static string Services_Scroll_Offset {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Offset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Progress:.
+        /// </summary>
+        public static string Services_Scroll_Progress {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Progress", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Direction:.
+        /// </summary>
+        public static string Services_Scroll_Direction {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Direction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll to end.
+        /// </summary>
+        public static string Services_Scroll_ToEnd {
+            get {
+                return ResourceManager.GetString("Services_Scroll_ToEnd", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Back to top.
+        /// </summary>
+        public static string Services_Scroll_ToTop {
+            get {
+                return ResourceManager.GetString("Services_Scroll_ToTop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на These values come from one throttled listener on the Gallery shell panel. Scroll this page to watch them move..
+        /// </summary>
+        public static string Services_Scroll_Hint {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Grid Density: Line Count, Rounding and Minor Ticks.
+        /// </summary>
+        public static string Charts_Grid {
+            get {
+                return ResourceManager.GetString("Charts_Grid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Derive count from height.
+        /// </summary>
+        public static string Charts_Grid_AutoCount {
+            get {
+                return ResourceManager.GetString("Charts_Grid_AutoCount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Grid lines.
+        /// </summary>
+        public static string Charts_Grid_TickCount {
+            get {
+                return ResourceManager.GetString("Charts_Grid_TickCount", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minor ticks per band.
+        /// </summary>
+        public static string Charts_Grid_MinorTicks {
+            get {
+                return ResourceManager.GetString("Charts_Grid_MinorTicks", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Round the axis.
+        /// </summary>
+        public static string Charts_Grid_NiceScale {
+            get {
+                return ResourceManager.GetString("Charts_Grid_NiceScale", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Vertical grid.
+        /// </summary>
+        public static string Charts_Grid_VerticalGrid {
+            get {
+                return ResourceManager.GetString("Charts_Grid_VerticalGrid", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Monthly revenue.
+        /// </summary>
+        public static string Charts_Grid_ChartTitle {
+            get {
+                return ResourceManager.GetString("Charts_Grid_ChartTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Thousands.
+        /// </summary>
+        public static string Charts_Grid_AxisTitle {
+            get {
+                return ResourceManager.GetString("Charts_Grid_AxisTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на With rounding on, the axis snaps to whole steps and the drawn line count can differ by one - round numbers beat an exact count. Turn it off to get exactly the count you asked for, at the cost of labels like 94 and 188..
+        /// </summary>
+        public static string Charts_Grid_NiceScaleHint {
+            get {
+                return ResourceManager.GetString("Charts_Grid_NiceScaleHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Short: fewer lines.
+        /// </summary>
+        public static string Charts_Grid_Short {
+            get {
+                return ResourceManager.GetString("Charts_Grid_Short", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default height.
+        /// </summary>
+        public static string Charts_Grid_Medium {
+            get {
+                return ResourceManager.GetString("Charts_Grid_Medium", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Tall: more lines.
+        /// </summary>
+        public static string Charts_Grid_Tall {
+            get {
+                return ResourceManager.GetString("Charts_Grid_Tall", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Zoom and Pan.
         /// </summary>
         public static string Charts_Zoom {

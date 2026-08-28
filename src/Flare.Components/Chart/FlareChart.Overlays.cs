@@ -190,25 +190,66 @@ public partial class FlareChart
         builder.CloseElement();
     };
 
-    private string GridLines(double min, double max)
+    // Horizontal grid and the Y labels that sit on it. Both come off the SAME resolved axis, so a label
+    // can never name a value its line is not drawn at.
+    private string GridLines(AxisScale axis)
     {
         var sb = new System.Text.StringBuilder();
-        int steps = 4;
+        double min = axis.Min, span = axis.Max - axis.Min;
+        if (span <= 0) span = 1;
+        int steps = Math.Max(1, axis.Lines - 1);
+        double right = _svgW - _padR;
+        double band = _plotH / (double)steps;
+        int decimals = AxisDecimals(min, span / steps);
+        int minor = Math.Clamp(YAxisMinorTicks, 0, 10);
         for (int i = 0; i <= steps; i++)
         {
-            double v = min + (max - min) * i / steps;
-            double y = _padT + _plotH - (v - min) / (max - min) * _plotH;
+            double v = min + span * i / steps;
+            double y = _padT + _plotH - band * i;
             if (_showGrid)
-                sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{y:F1}\" x2=\"{_svgW - _padR}\" y2=\"{y:F1}\" style=\"{_gridStyle}\"/>"));
+                sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{y:F1}\" x2=\"{right}\" y2=\"{y:F1}\" style=\"{_gridStyle}\"/>"));
             if (_showY)
-                sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{FmtY(v)}</text>"));
+                sb.Append(string.Create(_inv, $"<text x=\"{_padL - 4}\" y=\"{y + 4:F1}\" text-anchor=\"end\" style=\"{_labelStyle}\">{FmtY(v, decimals)}</text>"));
+            if (_showGrid && minor > 0 && i < steps)
+                for (int m = 1; m <= minor; m++)
+                {
+                    double my = y - band * m / (minor + 1);
+                    sb.Append(string.Create(_inv, $"<line x1=\"{_padL}\" y1=\"{my:F1}\" x2=\"{right}\" y2=\"{my:F1}\" style=\"{_gridMinorStyle}\"/>"));
+                }
         }
         return sb.ToString();
     }
 
-    // Y-axis label formatting: the .NET YAxisFormat when set, else a compact general format.
-    private string FmtY(double v) =>
-        string.IsNullOrEmpty(YAxisFormat) ? v.ToString("G3", _inv) : v.ToString(YAxisFormat, _inv);
+    // Category grid: one line per LABELLED slot, on the same projection and the same label budget as
+    // AxisLabels, so every line stands under a label and both track a zoom together.
+    private string VerticalGrid(int pts)
+    {
+        if (!_showGrid || !ShowVerticalGrid || pts <= 0) return "";
+        var (from, to) = VisibleIndexRange(pts);
+        if (to < from) return "";
+        var sb = new System.Text.StringBuilder();
+        int step = LabelStep(to - from + 1);
+        double top = _padT, bottom = _padT + _plotH;
+        for (int i = from; i <= to; i += step)
+        {
+            double x = XOfIndex(i);
+            if (x < _padL - 1 || x > _padL + _plotW + 1) continue;
+            sb.Append(string.Create(_inv, $"<line x1=\"{x:F1}\" y1=\"{top}\" x2=\"{x:F1}\" y2=\"{bottom}\" style=\"{_gridStyle}\"/>"));
+        }
+        return sb.ToString();
+    }
+
+    // Y-axis label formatting: the .NET YAxisFormat when set, else fixed point at the precision the axis
+    // actually carries. A general format cannot do this job - "G3" turns 1002 into "1E+03", so an axis over
+    // data in the thousands used to print the same unreadable label on every line.
+    private string FmtY(double v, int decimals)
+    {
+        if (!string.IsNullOrEmpty(YAxisFormat)) return v.ToString(YAxisFormat, _inv);
+        var text = v.ToString("F" + decimals.ToString(_inv), _inv);
+        // The label lives in the left padding; past about eight glyphs it runs off the viewBox, so a value
+        // that large falls back to the compact form rather than overflowing the plot.
+        return text.Length <= 8 ? text : v.ToString("G3", _inv);
+    }
 
     // Optional X/Y axis titles for the cartesian charts.
     private string AxisTitles()
@@ -233,6 +274,11 @@ public partial class FlareChart
     // label per _labelSlot units of plot is the budget; the step is whatever meets it.
     private const double _labelSlot = 56;
 
+    // How many slots to skip between two labels so they fit the width budget. Shared with the vertical
+    // grid: a line drawn on a different step from the labels stands next to nothing.
+    private int LabelStep(int visible) =>
+        Math.Max(1, (int)Math.Ceiling(visible / (double)Math.Max(2, (int)(_plotW / _labelSlot))));
+
     private string AxisLabels(double min, double max, int pts)
     {
         if (Data?.Labels is not { Count: > 0 } labels) return "";
@@ -240,8 +286,7 @@ public partial class FlareChart
         var (from, to) = VisibleIndexRange(pts);
         int visible = to - from + 1;
         if (visible <= 0) return "";
-        int budget = Math.Max(2, (int)(_plotW / _labelSlot));
-        int step = Math.Max(1, (int)Math.Ceiling(visible / (double)budget));
+        int step = LabelStep(visible);
         double y = _padT + _plotH + 14;
         for (int i = from; i <= to; i += step)
         {

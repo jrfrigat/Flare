@@ -12,12 +12,15 @@ public partial class FlareChart
         if (Data?.Series is not { Count: > 0 } series) return;
         var visVals = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
         if (visVals.Count == 0) return;
-        var (min, max) = ApplyBounds(visVals.Min(), visVals.Max());
+        var axis = ResolveAxis(visVals.Min(), visVals.Max(), _valueExtent);
+        double min = axis.Min, max = axis.Max;
         int pts = series.Max(s => s.Values.Count);
         int seq = 0;
 
         if (_showGrid || _showY)
-            builder.AddMarkupContent(seq++, GridLines(min, max));
+            builder.AddMarkupContent(seq++, GridLines(axis));
+        if (ShowVerticalGrid)
+            builder.AddMarkupContent(seq++, VerticalGrid(pts));
 
         double baseline = _padT + _plotH;
         string vectorEffect = _spark ? " vector-effect=\"non-scaling-stroke\"" : "";
@@ -108,7 +111,8 @@ public partial class FlareChart
         if (Data?.Series is not { Count: > 0 } series) return;
         var visVals = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
         if (visVals.Count == 0) return;
-        var (min, max) = ApplyBounds(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0));
+        var axis = ResolveAxis(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0), _valueExtent);
+        double min = axis.Min, max = axis.Max;
         int pts = series.Max(s => s.Values.Count);
         int seq = 0;
         double barR = BarRadius();
@@ -118,12 +122,14 @@ public partial class FlareChart
             if (_showGrid || _showY)
             {
                 var g = new System.Text.StringBuilder();
-                for (int t = 0; t <= 4; t++)
+                int steps = Math.Max(1, axis.Lines - 1);
+                int decimals = AxisDecimals(min, (max - min) / steps);
+                for (int t = 0; t <= steps; t++)
                 {
-                    double v = min + (max - min) * t / 4;
+                    double v = min + (max - min) * t / steps;
                     double gx = _padL + (v - min) / (max - min) * _plotW;
                     if (_showGrid) g.Append(string.Create(_inv, $"<line x1=\"{gx:F1}\" y1=\"{_padT}\" x2=\"{gx:F1}\" y2=\"{_padT + _plotH}\" style=\"{_gridStyle}\"/>"));
-                    if (_showY) g.Append(string.Create(_inv, $"<text x=\"{gx:F1}\" y=\"{_padT + _plotH + 14:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{FmtY(v)}</text>"));
+                    if (_showY) g.Append(string.Create(_inv, $"<text x=\"{gx:F1}\" y=\"{_padT + _plotH + 14:F1}\" text-anchor=\"middle\" style=\"{_labelStyle}\">{FmtY(v, decimals)}</text>"));
                 }
                 builder.AddMarkupContent(seq++, g.ToString());
             }
@@ -162,7 +168,9 @@ public partial class FlareChart
         double groupW = SlotWidth;
         double barW = groupW / (series.Count + 1);
         if (_showGrid || _showY)
-            builder.AddMarkupContent(seq++, GridLines(min, max));
+            builder.AddMarkupContent(seq++, GridLines(axis));
+        if (ShowVerticalGrid)
+            builder.AddMarkupContent(seq++, VerticalGrid(pts));
 
         var marks = new System.Text.StringBuilder();
         for (int si = 0; si < series.Count; si++)
@@ -207,10 +215,14 @@ public partial class FlareChart
             max = Math.Max(max, sum);
         }
         if (max <= 0) max = 1;
-        if (YMax.HasValue) max = YMax.Value;
+        // The stack grows from zero, so the lower bound is not the caller's to move: YMin is skipped here
+        // and only the top is rounded.
+        var axis = ResolveAxis(0, max, _plotH, honorMin: false);
+        max = axis.Max;
         int seq = 0;
         double barR = BarRadius();
-        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(0, max));
+        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(axis));
+        if (ShowVerticalGrid) builder.AddMarkupContent(seq++, VerticalGrid(pts));
 
         double groupW = SlotWidth;
         double barW = groupW * 0.6 * BarWidthRatio;
@@ -245,8 +257,10 @@ public partial class FlareChart
         double yMin = allPts.Min(p => p.Y), yMax = allPts.Max(p => p.Y);
         if (xMax == xMin) xMax = xMin + 1;
         if (yMax == yMin) yMax = yMin + 1;
+        var axis = ResolveAxis(yMin, yMax, _plotH);
+        yMin = axis.Min; yMax = axis.Max;
         int seq = 0;
-        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(yMin, yMax));
+        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(axis));
 
         // Bubble: map the largest R weight onto the theme's bubble-radius range, so the biggest bubble is
         // the size the theme calls big. sqrt keeps the AREA proportional to the weight - a bubble scaled by
@@ -296,11 +310,13 @@ public partial class FlareChart
         var vis = Enumerable.Range(0, series.Count).Where(i => !IsHidden(i)).ToList();
         var visVals = vis.SelectMany(i => series[i].Values).ToList();
         if (visVals.Count == 0) return;
-        var (min, max) = ApplyBounds(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0));
+        var axis = ResolveAxis(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0), _valueExtent);
+        double min = axis.Min, max = axis.Max;
         int pts = series.Max(s => s.Values.Count);
         int seq = 0;
         double barR = BarRadius();
-        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(min, max));
+        if (_showGrid || _showY) builder.AddMarkupContent(seq++, GridLines(axis));
+        if (ShowVerticalGrid) builder.AddMarkupContent(seq++, VerticalGrid(pts));
 
         double groupW = SlotWidth;
         var barIdx = vis.Where(i => (series[i].Kind ?? ChartSeriesKind.Bar) == ChartSeriesKind.Bar).ToList();

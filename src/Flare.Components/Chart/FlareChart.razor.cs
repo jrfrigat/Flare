@@ -87,6 +87,28 @@ public partial class FlareChart
     [Parameter] public double? YMax { get; set; }
     /// <summary>.NET numeric format for the Y-axis labels (e.g. "N0", "C0", "P0"); null uses a general format.</summary>
     [Parameter] public string? YAxisFormat { get; set; }
+    /// <summary>
+    /// Number of horizontal grid lines on the value axis, counting the top and bottom line - so 5 draws
+    /// the four bands a spreadsheet shows by default. Null (the default) derives the count from the plot
+    /// size, so a short chart draws fewer lines than a tall one instead of both drawing five. Clamped to 2..24.
+    /// With <see cref="NiceScale"/> on, round numbers win over an exact count and the drawn total can
+    /// differ by one; turn NiceScale off to get exactly this many.
+    /// </summary>
+    [Parameter] public int? YAxisTickCount { get; set; }
+    /// <summary>
+    /// Rounds the value axis outward to whole steps of the 1/2/2.5/5/10 progression, so the labels read
+    /// 0, 100, 200 rather than 0, 94, 188, and the data no longer touches the top edge of the plot.
+    /// Default true. An axis pinned by both <see cref="YMin"/> and <see cref="YMax"/> is taken literally
+    /// and never rounded; pinning one end rounds only the other.
+    /// </summary>
+    [Parameter] public bool NiceScale { get; set; } = true;
+    /// <summary>Number of lighter divisions drawn between two major grid lines. 0 (the default) draws none.
+    /// Minor lines carry their own color and width tokens, so a theme can make them near-invisible. Clamped to 0..10.</summary>
+    [Parameter] public int YAxisMinorTicks { get; set; }
+    /// <summary>Draws a grid line down the plot at each labelled category, the layout a spreadsheet uses.
+    /// The lines share the X projection and the label budget of the axis labels, so they stay under their
+    /// own label and track a zoom.</summary>
+    [Parameter] public bool ShowVerticalGrid { get; set; }
     /// <summary>Title drawn under the X axis.</summary>
     [Parameter] public string? XAxisTitle { get; set; }
     /// <summary>Title drawn rotated beside the Y axis.</summary>
@@ -144,12 +166,95 @@ public partial class FlareChart
     private Task HandlePointClick(int index) => OnPointClick.InvokeAsync(index);
 
     // Applies the YMin/YMax overrides to an auto-computed (min,max) pair.
+    /// <summary>A resolved value axis: the window the data is projected into and how many grid lines span it.</summary>
+    /// <param name="Min">Lower bound of the axis, after any rounding and any <see cref="YMin"/> override.</param>
+    /// <param name="Max">Upper bound of the axis, after any rounding and any <see cref="YMax"/> override.</param>
+    /// <param name="Lines">Number of major grid lines to draw, counting both ends.</param>
+    private readonly record struct AxisScale(double Min, double Max, int Lines);
+
+    // One grid line per _tickSlot units of plot, the same budget rule the X axis uses for its labels: the
+    // count is then a consequence of the chart's size rather than a constant, so a 120px chart draws three
+    // lines where a 600px one draws nine. A default 220px chart still lands on five - what it drew before.
+    private const double _tickSlot = 44;
+
+    private int TickLines(double extent) => YAxisTickCount is { } n
+        ? Math.Clamp(n, 2, 24)
+        : Math.Clamp((int)Math.Round(extent / _tickSlot) + 1, 3, 9);
+
+    // The 1/2/2.5/5/10 progression every spreadsheet axis is built from, snapped to the NEAREST member
+    // rather than up. Always rounding up coarsens the axis badly at the boundaries - a 0..470 range asking
+    // for five lines lands on a step of 200 and an axis running to 600, when 100 and 0..500 is both rounder
+    // and tighter. Rounding down costs at most one extra line, which the caller is told to expect.
+    private static double NiceStep(double rough)
+    {
+        if (rough <= 0 || double.IsNaN(rough) || double.IsInfinity(rough)) return 1;
+        double pow = Math.Pow(10, Math.Floor(Math.Log10(rough)));
+        double f = rough / pow;
+        return (f < 1.5 ? 1 : f < 2.25 ? 2 : f < 3.75 ? 2.5 : f < 7.5 ? 5 : 10) * pow;
+    }
+
+    // The next member of the progression above a step already on it.
+    private static double NextNiceStep(double step)
+    {
+        double pow = Math.Pow(10, Math.Floor(Math.Log10(step)));
+        double f = step / pow;
+        return (f < 1.5 ? 2 : f < 2.25 ? 2.5 : f < 3.75 ? 5 : 10) * pow;
+    }
+
+    // Decimals the axis actually carries - enough to write its origin and its step without lying about
+    // either, capped so a floating-point artefact cannot ask for twenty digits.
+    private static int AxisDecimals(double origin, double step)
+    {
+        int d = 0;
+        while (d < 6 && !(Exact(origin, d) && Exact(step, d))) d++;
+        return d;
+
+        static bool Exact(double v, int digits) =>
+            Math.Abs(v - Math.Round(v, digits)) <= 1e-9 * Math.Max(1, Math.Abs(v));
+    }
+
+    // Bounds, rounding and line count are one calculation, not three: the nice step depends on how many
+    // lines were asked for, and the count that is finally drawn depends on where the rounding landed. Split
+    // them across the projection and the grid writer and the two drift out of alignment - which is the
+    // defect that made a tick-count parameter useless on its own.
+    private AxisScale ResolveAxis(double min, double max, double extent, bool honorMin = true)
+    {
+        bool pinLo = honorMin && YMin.HasValue;
+        if (pinLo) min = YMin!.Value;
+        if (YMax.HasValue) max = YMax.Value;
+        if (max <= min) max = min + 1;
+        int lines = TickLines(extent);
+        // An axis pinned at both ends is the caller's window verbatim; rounding it would move a bound
+        // they set on purpose.
+        if (!NiceScale || (pinLo && YMax.HasValue)) return new AxisScale(min, max, lines);
+
+        // Two effects push the count up: snapping the step DOWN to a rounder value, and then extending
+        // both bounds outward to whole multiples of it. Together they can overshoot badly - a 94..470 range
+        // asking for seven lines lands on a step of 50 and draws ten. So the step climbs the progression
+        // until the overshoot is at most the one extra line the parameter documents.
+        double step = NiceStep((max - min) / Math.Max(1, lines - 1));
+        double lo, hi;
+        int drawn;
+        for (int guard = 0; ; guard++)
+        {
+            lo = pinLo ? min : Math.Floor(min / step) * step;
+            hi = YMax.HasValue ? max : Math.Ceiling(max / step) * step;
+            if (hi <= lo) hi = lo + step;
+            drawn = (int)Math.Round((hi - lo) / step) + 1;
+            if (drawn <= lines + 1 || guard >= 3) break;
+            step = NextNiceStep(step);
+        }
+        return new AxisScale(lo, hi, Math.Clamp(drawn, 2, 40));
+    }
+
+    // The plot dimension the VALUE axis runs along - width on a horizontal bar chart, height everywhere
+    // else - so the derived line count is budgeted against the axis it actually belongs to.
+    private double _valueExtent => Horizontal && Type is ChartType.Bar ? _plotW : _plotH;
+
     private (double Min, double Max) ApplyBounds(double min, double max)
     {
-        if (YMin.HasValue) min = YMin.Value;
-        if (YMax.HasValue) max = YMax.Value;
-        if (max == min) max = min + 1;
-        return (min, max);
+        var axis = ResolveAxis(min, max, _valueExtent);
+        return (axis.Min, axis.Max);
     }
 
     // SVG numeric attributes require '.' as the decimal separator; never use the current
@@ -247,6 +352,10 @@ public partial class FlareChart
     // renderers cannot end up with three different treatments.
     private const string _gridStyle =
         "stroke:var(--flare-chart-grid-color);stroke-width:var(--flare-chart-grid-width);stroke-dasharray:var(--flare-chart-grid-dash)";
+    // A minor line reuses the major dash so a theme that dashes its grid dashes all of it, and carries its
+    // own color and width so it can be pushed as far back as the theme wants - or hidden outright.
+    private const string _gridMinorStyle =
+        "stroke:var(--flare-chart-grid-minor-color);stroke-width:var(--flare-chart-grid-minor-width);stroke-dasharray:var(--flare-chart-grid-dash)";
     private const string _labelStyle =
         "fill:var(--flare-chart-label-color);font-size:var(--flare-chart-label-size)";
     private const string _valueStyle =

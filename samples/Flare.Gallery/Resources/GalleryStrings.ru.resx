@@ -546,6 +546,66 @@
   <data name="Charts_Annotations" xml:space="preserve">
     <value>Аннотации: пороги, полосы, стрелки и выноски</value>
   </data>
+  <data name="Charts_Grid" xml:space="preserve">
+    <value>Плотность сетки: число линий, округление и промежуточные деления</value>
+  </data>
+  <data name="Charts_Grid_AutoCount" xml:space="preserve">
+    <value>Считать по высоте</value>
+  </data>
+  <data name="Charts_Grid_TickCount" xml:space="preserve">
+    <value>Линий сетки</value>
+  </data>
+  <data name="Charts_Grid_MinorTicks" xml:space="preserve">
+    <value>Промежуточных делений</value>
+  </data>
+  <data name="Charts_Grid_NiceScale" xml:space="preserve">
+    <value>Округлять ось</value>
+  </data>
+  <data name="Charts_Grid_VerticalGrid" xml:space="preserve">
+    <value>Вертикальная сетка</value>
+  </data>
+  <data name="Charts_Grid_ChartTitle" xml:space="preserve">
+    <value>Выручка по месяцам</value>
+  </data>
+  <data name="Charts_Grid_AxisTitle" xml:space="preserve">
+    <value>Тысячи</value>
+  </data>
+  <data name="Charts_Grid_NiceScaleHint" xml:space="preserve">
+    <value>При округлении ось выравнивается по целым шагам, поэтому число нарисованных линий может отличаться на одну - круглые числа важнее точного количества. Выключите округление, чтобы получить ровно заданное число линий ценой подписей вида 94 и 188.</value>
+  </data>
+  <data name="Charts_Grid_Short" xml:space="preserve">
+    <value>Низкий: линий меньше</value>
+  </data>
+  <data name="Charts_Grid_Medium" xml:space="preserve">
+    <value>Высота по умолчанию</value>
+  </data>
+  <data name="Charts_Grid_Tall" xml:space="preserve">
+    <value>Высокий: линий больше</value>
+  </data>
+  <data name="Services_ScrollTitle" xml:space="preserve">
+    <value>Прокрутка</value>
+  </data>
+  <data name="Services_ScrollSubtitle" xml:space="preserve">
+    <value>Единый порт для наблюдения за прокруткой и управления ею: подписки с троттлингом на страницу или любой контейнер, программная прокрутка и блокировка со счётчиком ссылок.</value>
+  </data>
+  <data name="Services_Scroll_Offset" xml:space="preserve">
+    <value>Смещение:</value>
+  </data>
+  <data name="Services_Scroll_Progress" xml:space="preserve">
+    <value>Прогресс:</value>
+  </data>
+  <data name="Services_Scroll_Direction" xml:space="preserve">
+    <value>Направление:</value>
+  </data>
+  <data name="Services_Scroll_ToEnd" xml:space="preserve">
+    <value>В конец</value>
+  </data>
+  <data name="Services_Scroll_ToTop" xml:space="preserve">
+    <value>Наверх</value>
+  </data>
+  <data name="Services_Scroll_Hint" xml:space="preserve">
+    <value>Эти значения приходят от одного слушателя с троттлингом на панели Gallery. Прокрутите страницу, чтобы увидеть, как они меняются.</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Группа чипов</value>
   </data>
