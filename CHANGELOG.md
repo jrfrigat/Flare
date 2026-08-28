@@ -5,6 +5,34 @@ All notable changes to Flare are documented here. This project adheres to
 
 ## [Unreleased]
 
+### Breaking
+
+Read this before upgrading: three of these change how EXISTING markup renders, without a compiler error
+to point at them.
+
+- **Every chart changes shape.** `FlareChart.Fluid` defaults to `true`, so a chart now fills its container
+  at exactly `Height` px tall instead of scaling a 400 x `Height` drawing into the available width. That is
+  the point of the change, but it means every chart in an existing app renders at a different size after
+  the upgrade. `Fluid="false"` restores the old behaviour exactly (with `Width="400"`, the old default).
+  A fluid chart also measures itself through JS interop, which a chart never did before; it degrades to the
+  authored aspect ratio when JS is unavailable.
+- **Every page gets a CSS reset.** `reset.css` ships inside `flare-components.css` and zeroes the body
+  margin, sets `box-sizing: border-box` globally, paints the body from the theme's background/on-background
+  roles, and makes `img`/`video`/`canvas`/`iframe` block-level. An app that was compensating for the
+  browser's 8px body gutter will now have a doubled correction. Every rule is `:where()`-wrapped at zero
+  specificity, so anything the app declares still wins.
+- **`FlareCardActions` wraps by default.** A row that used to overflow its card now reflows onto a second
+  line. `Wrap="false"` restores the single line.
+- **`ChartAnnotation` no longer has a positional constructor.** Build annotations through the factories -
+  `ChartAnnotation.Threshold(y, label)`, `.Band(from, to)`, `.Marker(x)`, `.Arrow(...)`, `.At(...)` - which
+  name the coordinates each kind reads. `Value`/`Value2` are now `X`/`Y`/`X2`/`Y2`.
+- **`ChartSeries.Color` and `ChartAnnotation.Color` are `FlareColor`, not `string?`.** Passing a CSS string
+  still compiles (implicit conversion); READING the property returns a `FlareColor`, and a `?? fallback`
+  over it no longer compiles.
+- **`ResizableEdge` is a top-level enum.** `FlareResizable.ResizableEdge.Right` becomes `ResizableEdge.Right`.
+- **`CardActionsAlign` gained `Center` and `Stretch` in reading order**, which shifts the numeric values of
+  `End` and `Between`. Only matters if the enum was persisted as an integer.
+
 ### Added
 - **`FlareChart` fills its container instead of scaling into it.** The chart drew into a fixed
   `viewBox="0 0 400 {Height}"` with `height: auto`, which pinned its ASPECT RATIO: in a 1200px column a
