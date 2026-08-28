@@ -19,20 +19,20 @@
             <div class="flare-rte__separator"></div>
         }
         <button class="flare-rte__tool" @onclick="@(() => ExecAsync("bold"))" title="Bold" aria-label="Bold" disabled="@ReadOnly">
-            <span class="material-symbols-rounded" style="font-size:1rem;font-variation-settings:'wght' 700;">format_bold</span>
+            <FlareIconView Value="@FlareIcons.FormatBold" />
         </button>
         <button class="flare-rte__tool" @onclick="@(() => ExecAsync("italic"))" title="Italic" aria-label="Italic" disabled="@ReadOnly">
-            <span class="material-symbols-rounded" style="font-size:1rem;">format_italic</span>
+            <FlareIconView Value="@FlareIcons.FormatItalic" />
         </button>
         <button class="flare-rte__tool" @onclick="@(() => ExecAsync("underline"))" title="Underline" aria-label="Underline" disabled="@ReadOnly">
-            <span class="material-symbols-rounded" style="font-size:1rem;">format_underlined</span>
+            <FlareIconView Value="@FlareIcons.FormatUnderlined" />
         </button>
         <div class="flare-rte__separator"></div>
         <button class="flare-rte__tool" @onclick="@(() => ExecAsync("insertUnorderedList"))" title="Bullet list" aria-label="Bullet list" disabled="@ReadOnly">
-            <span class="material-symbols-rounded" style="font-size:1rem;">format_list_bulleted</span>
+            <FlareIconView Value="@FlareIcons.FormatListBulleted" />
         </button>
         <button class="flare-rte__tool" @onclick="@(() => ExecAsync("insertOrderedList"))" title="Numbered list" aria-label="Numbered list" disabled="@ReadOnly">
-            <span class="material-symbols-rounded" style="font-size:1rem;">format_list_numbered</span>
+            <FlareIconView Value="@FlareIcons.FormatListNumbered" />
         </button>
         @if (ShowLink)
         {
@@ -40,7 +40,7 @@
             <button class="flare-rte__tool @(_showLinkInput ? "flare-rte__tool--active" : "")"
                     @onclick="ToggleLinkInput"
                     title="Insert link" aria-label="Insert link" disabled="@ReadOnly">
-                <span class="material-symbols-rounded" style="font-size:1rem;">link</span>
+                <FlareIconView Value="@FlareIcons.Link" />
             </button>
             @if (_showLinkInput)
             {
@@ -51,7 +51,7 @@
                            @bind="_linkUrl"
                            @onkeydown="HandleLinkKeyDown" />
                     <button class="flare-rte__tool" @onclick="InsertLinkAsync" title="Apply" aria-label="Apply link">
-                        <span class="material-symbols-rounded" style="font-size:1rem;">check</span>
+                        <FlareIconView Value="@FlareIcons.Check" />
                     </button>
                 </div>
             }

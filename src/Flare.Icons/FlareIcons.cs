@@ -197,11 +197,27 @@ public static class FlareIcons
     /// <summary>The built-in <c>content_copy</c> icon.</summary>
     public static FlareSvgIcon ContentCopy { get; } = Reg("content_copy", "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z");
     /// <summary>The built-in <c>colorize</c> (eyedropper) icon.</summary>
-    public static FlareSvgIcon Colorize { get; } = Reg("content_copy", "M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z");
+    public static FlareSvgIcon Colorize { get; } = Reg("colorize", "M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z");
     /// <summary>The built-in <c>arrow_upward</c> icon.</summary>
     public static FlareSvgIcon ArrowUpward { get; } = Reg("arrow_upward", "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z");
     /// <summary>The built-in <c>arrow_downward</c> icon.</summary>
     public static FlareSvgIcon ArrowDownward { get; } = Reg("arrow_downward", "M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z");
+    /// <summary>The built-in <c>check_box</c> (ticked box) icon, used for read-only boolean cells.</summary>
+    public static FlareSvgIcon CheckBox { get; } = Reg("check_box", "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z");
+    /// <summary>The built-in <c>check_box_outline_blank</c> (empty box) icon, used for read-only boolean cells.</summary>
+    public static FlareSvgIcon CheckBoxOutlineBlank { get; } = Reg("check_box_outline_blank", "M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z");
+
+    // -- Text formatting (rich-text editor toolbar) -----------------------------
+    /// <summary>The built-in <c>format_bold</c> icon.</summary>
+    public static FlareSvgIcon FormatBold { get; } = Reg("format_bold", "M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z");
+    /// <summary>The built-in <c>format_italic</c> icon.</summary>
+    public static FlareSvgIcon FormatItalic { get; } = Reg("format_italic", "M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z");
+    /// <summary>The built-in <c>format_underlined</c> icon.</summary>
+    public static FlareSvgIcon FormatUnderlined { get; } = Reg("format_underlined", "M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z");
+    /// <summary>The built-in <c>format_list_bulleted</c> icon.</summary>
+    public static FlareSvgIcon FormatListBulleted { get; } = Reg("format_list_bulleted", "M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z");
+    /// <summary>The built-in <c>format_list_numbered</c> icon.</summary>
+    public static FlareSvgIcon FormatListNumbered { get; } = Reg("format_list_numbered", "M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z");
 
     // Larger-set icons used by DataGrid export / date-time pickers / combobox (Material Symbols, 960 grid).
     /// <summary>The <c>data_object</c> icon.</summary>
