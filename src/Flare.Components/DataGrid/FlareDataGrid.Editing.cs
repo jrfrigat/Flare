@@ -175,9 +175,7 @@ public partial class FlareDataGrid<TItem>
         builder.CloseComponent();
     }
 
-    // Icon-only FlareButton used for the row edit/save/cancel actions. The icon is a FlareIcon
-    // descriptor, not an icon-font ligature name: a name would need the Material Symbols font loaded
-    // in the host app, and without it the button renders the word "edit".
+    // Icon-only FlareButton used for the row edit/save/cancel actions.
     private void BuildIconButton(RenderTreeBuilder builder, int seq, FlareIcon icon, string ariaLabel, Func<Task> onClick)
     {
         builder.OpenComponent<FlareButton>(seq);

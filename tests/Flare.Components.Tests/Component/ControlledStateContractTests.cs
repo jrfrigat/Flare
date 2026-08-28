@@ -14,7 +14,6 @@ namespace Flare.Components.Tests.Component;
 /// The regression these lock down: the "did the parameter change" mirror being written from the event
 /// handler with the LOCAL value, which makes the mirror disagree with the parameter, so the next parent
 /// re-render for any unrelated reason is misread as an external change and reverts the component.
-/// FlareCollapse shipped with exactly that and was reported as "unreliable without external state".
 /// </summary>
 public class ControlledStateContractTests : FlareTestContext
 {

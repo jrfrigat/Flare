@@ -45,9 +45,8 @@
 .flare-datagrid__sort-icon {
   margin-left: var(--flare-spacing-3);
   color: var(--flare-color-primary);
-  /* The arrow is a FlareIconView, and .flare-icon declares its own font-size - a declaration on the
-     element always beats what it would inherit, so a plain font-size here sizes nothing. The size has
-     to travel as the custom property the icon actually reads. */
+  /* .flare-icon declares its own font-size, which beats anything inherited: the size must travel as
+     the custom property, not as font-size here. */
   --_flare-icon-size: var(--flare-datagrid-sort-icon-size);
   font-size: var(--_flare-icon-size);
   vertical-align: middle;

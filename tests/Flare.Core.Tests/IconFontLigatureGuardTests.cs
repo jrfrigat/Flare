@@ -3,16 +3,11 @@ using System.Runtime.CompilerServices;
 namespace Flare.Core.Tests;
 
 /// <summary>
-/// Architecture guard for the SVG icon migration: no component may render a Material Symbols
-/// <em>ligature span</em> - a <c>&lt;span class="material-symbols-*"&gt;</c> whose text content is an icon
-/// name the web font is expected to substitute with a glyph.
-///
-/// The icon system is <c>FlareIcon</c> / <c>FlareIconView</c>, which inlines SVG and needs no font. A
-/// component that still emits a ligature renders the literal word ("edit", "check_box") in every app that
-/// does not happen to load the Material Symbols font - which is how three DataGrid call sites shipped
-/// broken while the Gallery, which loads the font for its own chrome, showed them correct.
-///
-/// The Material Symbols icon <em>packages</em> are exempt: emitting that class is their entire job.
+/// No component may render a Material Symbols <em>ligature span</em> - a
+/// <c>&lt;span class="material-symbols-*"&gt;</c> whose text content is an icon name the web font is
+/// expected to substitute with a glyph. Icons are <c>FlareIcon</c> descriptors rendered by
+/// <c>FlareIconView</c>, which inlines SVG and needs no font; a ligature renders the literal word in any
+/// app that does not load the font. The Material Symbols icon packages are exempt.
 /// </summary>
 public sealed class IconFontLigatureGuardTests
 {

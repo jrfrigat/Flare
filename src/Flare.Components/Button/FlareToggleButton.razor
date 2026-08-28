@@ -100,9 +100,7 @@
     {
         if (_effectiveDisabled || _pressed == toggled) return;
         if (Group is not null) { await Group.Toggle(Value); return; }
-        // _lastToggled mirrors the PARAMETER and is written only in OnParametersSet: writing it here
-        // would make an uncontrolled button revert on the next unrelated parent re-render, the defect
-        // FlareCollapse had.
+        // _lastToggled mirrors the PARAMETER and is assigned only in OnParametersSet.
         _pressed = toggled;
         await ToggledChanged.InvokeAsync(_pressed);
         StateHasChanged();

@@ -3,6 +3,60 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- **Flare now normalizes the document, not just the components.** A new `reset.css` ships in the global
+  bundle: `box-sizing: border-box`, the body margin zeroed, and the body background, text color and
+  type scale taken from `--flare-color-background` / `--flare-color-on-background` / the body typescale
+  tokens. Every rule is wrapped in `:where()`, so its specificity is zero and any application rule wins
+  without `!important`; nothing in it carries a value that is not a token. A library that ships a theme
+  engine and paints surfaces from tokens has to own the page those surfaces sit in - until now every app
+  inherited the browser's `body { margin: 8px }` gutter and was left to find and delete it.
+- **The Gallery answers "several columns under one heading" directly.** The DataGrid page opens its
+  feature section with a `FlareColumnBand` demo that does exactly that and nothing else. The two band
+  demos that existed - a nested multi-level header and a banded virtual grid - both look like a
+  different, larger feature, so the simple case was effectively undocumented.
+
+### Fixed
+- **DataGrid icons rendered as the words `check_box`, `edit` and `arrow_upward`.** Three call sites
+  survived the move to SVG icon descriptors and still emitted a Material Symbols *ligature span* - a
+  `<span class="material-symbols-rounded">` whose text content the web font is supposed to substitute
+  with a glyph: the read-only boolean cell, the row edit/save/cancel buttons, and the sort arrow inside
+  a composite sub-header. In an app that does not load that font they were words, in the same grid whose
+  other sort arrow was a glyph. `FlareCarousel` (2 spans) and `FlareRichTextEditor` (7) had the same
+  leftover. All of them now render `FlareIconView`, `BuildIconButton` takes a `FlareIcon` instead of an
+  icon name so a call site cannot pass a ligature again, and a guard test fails the build if any
+  component outside the Material Symbols packages emits that class. Nine icons were added to
+  `FlareIcons` for it; `FlareIcons.Colorize` was also registered under the id `content_copy`, so it
+  overwrote the copy icon in the by-id lookup.
+- **`FlareCollapse` closed itself whenever anything else on the page re-rendered.** `Toggle()` wrote the
+  parameter mirror with the *local* value, so after the user opened an unbound collapse the mirror said
+  `true` while `Expanded` still said `false` - and the next `OnParametersSet`, which fires on any parent
+  re-render for any reason, read that disagreement as an external change and shut the region. The mirror
+  now only ever tracks the parameter, and the component tells controlled from uncontrolled: a parent
+  that listens to `ExpandedChanged` and declines to move `Expanded` keeps the region shut, which is what
+  a controlled component has to do and what the previous code could not express. `FlareToggleButton`'s
+  imperative `SetToggledAsync` and `FlareColorPicker` had the same defect. The contract is written down
+  in `docs/ru/component-conventions.md` and locked by `ControlledStateContractTests`.
+- **`AddFlare()` did not register `TimeProvider`, so `FlareCalendar` and the three date pickers threw on
+  first render** in any app that had not registered one itself. It is now registered with `TryAddSingleton`,
+  so an application's own clock (or a test fake) still wins. The rule behind it - `AddFlare()` must be
+  sufficient on its own, and no component may depend on a registration the application is expected to
+  guess - is now enforced by a test that reflects over every component's `[Inject]` properties and checks
+  each one against the container `AddFlare()` builds.
+- **A stale cached script could take the whole render down.** 29 best-effort JS calls caught
+  `InvalidOperationException` (prerender) and `JSDisconnectedException` (circuit gone) but not
+  `JSException` - which is exactly what a component gets when the browser is running an older
+  `_content/…/*.js` than the assembly, the ordinary PWA/service-worker skew, since those asset URLs are
+  not fingerprinted. A frozen DataGrid column, a splitter, a tooltip or the theme injector would then
+  throw into the renderer over an enhancement the page could simply have gone without. All of them now
+  catch it, and a guard test keeps the two clauses together.
+- **Icon size was ignored where the host set `font-size` directly.** `.flare-datagrid__sort-icon`,
+  `.flare-datagrid__bool` and the rich-text toolbar sized their icons with `font-size`, which `.flare-icon`
+  overrides with its own declaration, so those icons drew at the fallback size. They now pass the size
+  through `--_flare-icon-size`, the property the icon actually reads.
+
 ## [0.18.1] - 2026-08-23
 
 ### Fixed

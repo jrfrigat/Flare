@@ -11,8 +11,7 @@
        that wraps a caller-supplied icon and styles the wrapper's font-size sizes nothing at all - the
        glyph keeps the baseline. A custom property cascades INTO the icon instead, so one declaration on any
        ancestor reaches the glyph without a specificity war. Every host that sizes an icon therefore sets
-       --_flare-icon-size, never font-size alone; IconFontLigatureGuardTests keeps the raw-span alternative
-       from coming back. */
+       --_flare-icon-size, never font-size alone. */
     font-size: var(--_flare-icon-size, var(--flare-typescale-title-large-size));
     width: 1em;
     height: 1em;
