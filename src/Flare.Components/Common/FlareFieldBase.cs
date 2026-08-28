@@ -49,6 +49,17 @@ public abstract class FlareFieldBase : FlareComponentBase, IFlareField
     /// null (the default) keeps the size default.</summary>
     [Parameter] public TypographyScale? Typo { get; set; }
 
+    /// <summary>
+    /// Attributes splatted onto the field's inner control - the <c>&lt;input&gt;</c>, <c>&lt;textarea&gt;</c>
+    /// or combobox element the user interacts with - rather than onto the wrapper. This is where
+    /// <c>data-testid</c>, <c>name</c>, <c>form</c>, <c>autofocus</c>, <c>tabindex</c> and extra
+    /// <c>aria-*</c> belong: an unmatched attribute written directly on the component lands on the field's
+    /// root element, following the same rule as every other Flare component, and a test that targets it
+    /// would be pointing at the wrapper.
+    /// A field built from several equal inputs - the OTP field - has no single control and ignores this.
+    /// </summary>
+    [Parameter] public IReadOnlyDictionary<string, object>? InputAttributes { get; set; }
+
     /// <summary>The cascaded edit context used for validation when the field is bound with a <c>For</c> accessor.</summary>
     [CascadingParameter] protected EditContext? EditContext { get; set; }
 

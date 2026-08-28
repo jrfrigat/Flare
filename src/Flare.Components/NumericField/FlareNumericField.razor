@@ -46,7 +46,8 @@
                    @oninput="HandleInput"
                    @onblur="HandleBlur"
                    @onkeydown="HandleKeyDown"
-                   @onkeyup="OnKeyUp" />
+                   @onkeyup="OnKeyUp"
+                   @attributes="InputAttributes" />
             @if (!string.IsNullOrEmpty(Suffix))
             {
                 <span class="@Css.Classes.Numericfield.Suffix">@Suffix</span>

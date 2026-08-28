@@ -37,7 +37,8 @@
              aria-required="@(!Searchable && Required ? "true" : null)"
              tabindex="@(Disabled || Searchable ? -1 : 0)"
              @onclick="OnControlClick"
-             @onkeydown="HandleKeyDownAsync">
+             @onkeydown="HandleKeyDownAsync"
+             @attributes="InputAttributes">
             <span class="@Css.Classes.Multiselect.Value">
                 @if (_selected.Count > 0)
                 {
@@ -94,10 +95,10 @@
                 </button>
             }
             @* A real button - see FlareSelect: the container click only ever opens in searchable mode. *@
+            @* Decorative, and deliberately absent from the accessibility tree - see FlareSelect. *@
             <button type="button" class="@Css.Classes.Input.Arrow"
                     tabindex="-1"
-                    aria-label="@FlareStrings.Aria_ToggleList"
-                    aria-expanded="@(_state.IsOpen ? "true" : "false")"
+                    aria-hidden="true"
                     disabled="@(Disabled || ReadOnly)"
                     @onmousedown:preventDefault="true"
                     @onclick="ToggleOpenAsync" @onclick:stopPropagation="true">

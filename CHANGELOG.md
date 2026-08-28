@@ -14,6 +14,13 @@ All notable changes to Flare are documented here. This project adheres to
   without raising `SelectedItemsChanged` or re-rendering, so calling them left the checkboxes showing the
   old selection. Use `SetRowSelectedAsync`, `SelectAllAsync` and `SetSelectionAsync([])`, or the same
   commands on `DataGridContext<TItem>`.
+- **An unmatched attribute on a field now lands on the field's root, everywhere.** It used to depend on
+  which field you wrote it on: seven put it on the root, four (`FlareField`, `FlareTextArea`,
+  `FlareDatePicker`, `FlareTimePicker`) put it on the inner control, and `FlareMaskedField` put it on
+  both - so the same `data-testid` appeared on a wrapper, on an input, or twice. The rule is now the one
+  every other Flare component follows, and the new `InputAttributes` puts attributes on the control
+  deliberately. If you wrote `data-testid` on one of those four and select it in a test, move it to
+  `InputAttributes`.
 
 ### Added
 
@@ -34,6 +41,10 @@ All notable changes to Flare are documented here. This project adheres to
 - **`FlareDataGrid.ColumnDefinitions`** - columns as data. Hand the grid a list of `DataGridColumn<TItem>`
   instead of (or alongside) `<FlareColumn>` markup to generate columns from metadata, keep them in a field,
   share them between grids or reorder them in C#. Markup columns come first and win a key collision.
+- **`InputAttributes` on the whole field family.** A dictionary splatted onto the field's inner control -
+  the `<input>`, `<textarea>` or combobox element - so `data-testid`, `name`, `form`, `tabindex` and extra
+  `aria-*` land where they belong instead of on the wrapper. Supported by every field except
+  `FlareOtpField`, which is several equal inputs and has no single control.
 - New public grid commands used by the context and available directly: `SetSortsAsync`,
   `SetTypedFilterAsync`, `SetColumnVisibleAsync`, `SetColumnOrderAsync`, `MoveColumnAsync`,
   `SetRowSelectedAsync`, `SetSelectionAsync`, `SelectAllAsync`, `ResetQueryAsync`, `RefreshAsync`.
@@ -47,6 +58,13 @@ All notable changes to Flare are documented here. This project adheres to
 - **The quick-filter box did not empty when the filter was cleared elsewhere.** It showed what had been
   typed into it rather than the grid's actual filter, so a "Clear filters" command from another control
   left stale text in the box. It now follows the grid, except while a keystroke is still debouncing.
+- **The select and multi-select dropdown arrows are out of the accessibility tree.** They were named
+  buttons (`aria-label`, `aria-expanded`) nested inside a `role="combobox"` element - allowed by ARIA 1.2
+  but announced differently by every screen reader, and they only duplicate the combobox's own
+  activation. They are `aria-hidden` now; they were already `tabindex="-1"`, so nothing is stranded.
+- **`FlareToggleButton` mirrored its parameter only inside two branches** of `OnParametersSet`, so a
+  grouped toggle whose `Toggled` also changed could adopt a stale value once it left the group. The mirror
+  is now assigned unconditionally, which is what the two-way contract says.
 
 ### Changed
 

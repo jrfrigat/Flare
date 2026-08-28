@@ -19,7 +19,7 @@
                   Label="@Label" LabelFor="@ControlId"
                   HelperText="@_effectiveHelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
-                  Style="@_inlineStyle">
+                  Style="@_inlineStyle" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field">
             @if (AdornmentStart is not null)
@@ -55,7 +55,7 @@
                                OnFocus="HandleFocus"
                                OnBlur="HandleBlur"
                                Style="@_typoStyle"
-                               AdditionalAttributes="AdditionalAttributes" />
+                               AdditionalAttributes="InputAttributes" />
             @if (Clearable && _hasValue && !Disabled && !ReadOnly)
             {
                 <button type="button"

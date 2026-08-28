@@ -44,7 +44,8 @@
                    aria-invalid="@(!string.IsNullOrEmpty(_displayedError) ? "true" : null)"
                    @oninput="HandleInputAsync"
                    @onfocus="HandleFocus"
-                   @onkeydown="HandleKeyDownAsync" />
+                   @onkeydown="HandleKeyDownAsync"
+                   @attributes="InputAttributes" />
             @if (Clearable && !Disabled && !ReadOnly && (Current is not null || !string.IsNullOrEmpty(_state.Input)))
             {
                 <button type="button" class="@Css.Classes.Autocomplete.Clear"

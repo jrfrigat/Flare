@@ -36,7 +36,8 @@
                    @onfocus="HandleFocus"
                    @oninput="HandleInput"
                    @onchange="HandleTextChange"
-                   @onblur="HandleBlur" />
+                   @onblur="HandleBlur"
+                   @attributes="InputAttributes" />
             @if (AllowPicker)
             {
                 <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
