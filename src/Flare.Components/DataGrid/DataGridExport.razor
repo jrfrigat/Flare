@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @typeparam TItem
+@inherits FlareDataGridControl<TItem>
 @using Flare.Components.Resources
 
 @if (Exporters?.Count > 0)
@@ -62,19 +63,12 @@
     /// <summary>Callback raised when an export is completed. The parameter is the exporter ID.</summary>
     [Parameter] public EventCallback<string> OnExported { get; set; }
 
-    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
-    // Grid parameter overrides it for standalone placement outside the grid.
-    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
+    // The buttons come from the Exporters parameter and the data is read on click, so no grid change
+    // can alter what this renders.
+    protected override DataGridChange Observes => DataGridChange.None;
 
-    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
-    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used; its
-    /// current (filtered/sorted) data and visible columns - including type/format-aware values - are
-    /// exported.</summary>
-    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
-    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
-
-    /// <summary>Advanced override: supply the export data directly instead of reading it from
-    /// <see cref="Grid"/>. When set it takes precedence.</summary>
+    /// <summary>Advanced override: supply the export data directly instead of reading it from the bound
+    /// grid. When set it takes precedence.</summary>
     [Parameter] public Func<Task<DataGridExportData<TItem>>>? DataProvider { get; set; }
 
     [Inject] private IFlareDownload Download { get; set; } = default!;
@@ -82,8 +76,7 @@
     private async Task ExportAsync(IDataGridExporter<TItem> exporter)
     {
         var data = DataProvider is not null ? await DataProvider()
-                 : Owner is not null ? Owner.GetExportData(FileName)
-                 : null;
+                 : Owner?.GetExportData(FileName);
         if (data is null) return;
 
         await exporter.ExportAsync(data, Download);

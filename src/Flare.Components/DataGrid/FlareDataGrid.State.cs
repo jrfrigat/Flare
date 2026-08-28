@@ -10,7 +10,7 @@ public partial class FlareDataGrid<TItem>
 {
     // -- State snapshot + change notifications (Phase A) ----------------------
 
-    private List<DataGridSort> BuildSorts()
+    internal List<DataGridSort> BuildSorts()
         => _sortStack.Select(s => new DataGridSort(s.Column.Key, s.Direction)).ToList();
 
     private List<DataGridFilter> BuildFilters()
@@ -49,7 +49,7 @@ public partial class FlareDataGrid<TItem>
         };
 
     /// <summary>Builds the new immutable state snapshot from current internal state.</summary>
-    private DataGridState<TItem> BuildCurrentState()
+    internal DataGridState<TItem> BuildCurrentState()
     {
         var visibleCols = _gridColumns.Where(c => !_hiddenColumns.Contains(c.Key)).ToList();
         return new DataGridState<TItem>
@@ -173,28 +173,6 @@ public partial class FlareDataGrid<TItem>
             await InvalidateAndRefreshAsync();
     }
 
-    /// <summary>Toggles selection for an item.</summary>
-    public void ToggleSelection(TItem item)
-    {
-        if (_selection.Contains(item))
-            _selection.Remove(item);
-        else
-            _selection.Add(item);
-    }
-
-    /// <summary>Selects all visible items.</summary>
-    public void SelectAll()
-    {
-        foreach (var item in _pageItems)
-            _selection.Add(item);
-    }
-
-    /// <summary>Deselects all items.</summary>
-    public void DeselectAll()
-    {
-        _selection.Clear();
-    }
-
     /// <summary>Persists current grid state to localStorage if PersistStateKey is set.</summary>
     private async Task SaveStateAsync()
     {
@@ -229,7 +207,7 @@ public partial class FlareDataGrid<TItem>
 
     // Filtered result count for the announcement: the provider total in server mode, else the
     // freshly filtered/sorted client list size.
-    private int CurrentResultCount() => _provider is not null ? _serverTotalCount : SortedUnpaged().Count;
+    internal int CurrentResultCount() => _provider is not null ? _serverTotalCount : SortedUnpaged().Count;
 
     private async Task RaiseSortChangedAsync()
     {
@@ -238,17 +216,21 @@ public partial class FlareDataGrid<TItem>
             : string.Format(_sortStack[0].Direction == SortDirection.Ascending
                 ? FlareStrings.DataGrid_AnnounceSortAsc
                 : FlareStrings.DataGrid_AnnounceSortDesc, _sortStack[0].Column.Title));
-        await OnSortChanged.InvokeAsync(BuildSorts());
-        await OnStateChanged.InvokeAsync(BuildState());
+        // Both payloads are built from scratch, so building them for a callback nobody set would spend
+        // a list (and, for the state, seven collections) on every keystroke of a filter box.
+        if (OnSortChanged.HasDelegate) await OnSortChanged.InvokeAsync(BuildSorts());
+        if (OnStateChanged.HasDelegate) await OnStateChanged.InvokeAsync(BuildState());
         await SaveStateAsync();
+        NotifyContext(DataGridChange.Sort);
     }
 
     private async Task RaiseFilterChangedAsync()
     {
         Announce(string.Format(FlareStrings.DataGrid_AnnounceFiltered, CurrentResultCount()));
-        await OnFilterChanged.InvokeAsync(BuildFilters());
-        await OnStateChanged.InvokeAsync(BuildState());
+        if (OnFilterChanged.HasDelegate) await OnFilterChanged.InvokeAsync(BuildFilters());
+        if (OnStateChanged.HasDelegate) await OnStateChanged.InvokeAsync(BuildState());
         await SaveStateAsync();
+        NotifyContext(DataGridChange.Filter);
     }
 
     /// <summary>Applies an advanced filter tree from DataGridFilterBuilder.</summary>
@@ -283,8 +265,9 @@ public partial class FlareDataGrid<TItem>
     {
         Announce(string.Format(FlareStrings.DataGrid_AnnouncePage, _page + 1, Math.Max(1, _totalPages)));
         await OnPageChanged.InvokeAsync(_page);
-        await OnStateChanged.InvokeAsync(BuildState());
+        if (OnStateChanged.HasDelegate) await OnStateChanged.InvokeAsync(BuildState());
         await SaveStateAsync();
+        NotifyContext(DataGridChange.Page);
     }
 
     /// <summary>Invalidates the sorted cache and refreshes Virtualize if present.</summary>
@@ -472,8 +455,13 @@ public partial class FlareDataGrid<TItem>
         return agg.Format is not null ? computed.ToString(agg.Format) : computed.ToString("N2");
     }
 
-    // Visible (non-hidden) columns in display order, for export/aggregates.
-    private List<GridColumn<TItem>> _visibleColumns => _gridColumns.Where(c => !_hiddenColumns.Contains(c.Key)).ToList();
+    // Visible (non-hidden) columns in display order, for export, aggregates and the context read view.
+    // Cached by RebuildGridColumns: an external control reads it on every render, and the projection is
+    // invalidated only by a structural or visibility change, both of which rebuild the columns.
+    private List<GridColumn<TItem>> _visibleColumns
+    {
+        get { EnsureColumnsBuilt(); return _visibleColumnsCache; }
+    }
 
     // Runs a pluggable exporter against the current visible columns + sorted rows.
     private async Task OnPageSizeChanged(int size)
@@ -500,6 +488,7 @@ public partial class FlareDataGrid<TItem>
             if (!_selection.Add(item)) _selection.Remove(item);
         }
         await SelectedItemsChanged.InvokeAsync(_selection);
+        NotifyContext(DataGridChange.Selection);
         await RowClick.InvokeAsync(item);
     }
 
@@ -511,5 +500,6 @@ public partial class FlareDataGrid<TItem>
         else
             foreach (var item in pageList) _selection.Add(item);
         await SelectedItemsChanged.InvokeAsync(_selection);
+        NotifyContext(DataGridChange.Selection);
     }
 }

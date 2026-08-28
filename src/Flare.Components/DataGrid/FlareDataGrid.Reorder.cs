@@ -31,15 +31,8 @@ public partial class FlareDataGrid<TItem>
         if (idx < 0) idx = order.Count;
         order.Insert(idx, _dragColumn);
 
-        _columnOrder.Clear();
-        _columnOrder.AddRange(order);
         _dragColumn = null;
-        RebuildGridColumns();
-
-        await OnColumnOrderChanged.InvokeAsync(order);
-        await OnStateChanged.InvokeAsync(BuildState());
-        await SaveStateAsync();
-        StateHasChanged();
+        await SetColumnOrderAsync(order);
     }
 
     // -- Row reorder (drag-and-drop) -----------------------------------------

@@ -218,6 +218,7 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Recomputes derived column/row state when parameters change.</summary>
     protected override void OnParametersSet()
     {
+        SyncContext();
         // Client (in-memory) mode recomputes on every parameter change; provider modes manage the
         // cache via their load methods (and infinite scroll accumulates across pages).
         if (_provider is null) _sortedCache = null;
@@ -307,6 +308,7 @@ public partial class FlareDataGrid<TItem>
             FilterModel = BuildFilters(),
             GroupKeys = [.. _groupKeys],
             FilterTree = _advancedTree,
+            QuickFilter = _quickFilterText,
         };
         var result = await _provider!(req);
         _serverTotalCount = result.TotalCount;
@@ -350,6 +352,7 @@ public partial class FlareDataGrid<TItem>
                 FilterModel = BuildFilters(),
                 GroupKeys = [.. _groupKeys],
                 FilterTree = _advancedTree,
+                QuickFilter = _quickFilterText,
             };
             var result = await _provider!(req);
             if (ct.IsCancellationRequested) return;
@@ -408,6 +411,7 @@ public partial class FlareDataGrid<TItem>
                 FilterModel = BuildFilters(),
                 GroupKeys = [.. _groupKeys],
                 FilterTree = _advancedTree,
+                QuickFilter = _quickFilterText,
             };
             var result = await _provider!(req);
             if (ct.IsCancellationRequested) return;
@@ -562,6 +566,8 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Tears down JS interop and observers.</summary>
     public override async ValueTask DisposeAsync()
     {
+        _attachedContext?.Detach(this);
+        _attachedContext = null;
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _filterDebounceTimer?.Dispose();

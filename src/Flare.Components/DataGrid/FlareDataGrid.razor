@@ -12,6 +12,10 @@
 
 @* Rebuild the projected column set once per render if a structural change marked it dirty. *@
 @{ EnsureColumnsBuilt(); }
+@* The context is what external controls bind to. Cascaded around the whole grid so a control placed in
+   ToolbarContent, FooterContent or any nested fragment finds it without an explicit Context/Grid. Not
+   IsFixed: the Context parameter may be swapped, and a stale binding would drive the wrong grid. *@
+<CascadingValue TValue="DataGridContext<TItem>" Value="@ActiveContext">
 <div class="@BuildCssClass(_striped, _hoverable, _dense, _bordered)" style="@Style" @attributes="AdditionalAttributes">
     @* Screen-reader announcements for sort/filter/page changes. *@
     <div role="status" aria-live="polite" class="flare-visually-hidden">@_ariaAnnouncement</div>
@@ -482,6 +486,7 @@
         </div>
     }
 </div>
+</CascadingValue>
 
 @code {
 

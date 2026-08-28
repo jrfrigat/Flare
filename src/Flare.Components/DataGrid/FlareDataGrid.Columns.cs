@@ -28,6 +28,7 @@ public partial class FlareDataGrid<TItem>
         // (the <Columns> fragment renders above the table). Mark dirty (rebuilt once on the next render)
         // and request that render so they appear instead of waiting for an unrelated StateHasChanged.
         MarkColumnsDirty();
+        NotifyContext(DataGridChange.Columns);
         StateHasChanged();
     }
 
@@ -35,6 +36,7 @@ public partial class FlareDataGrid<TItem>
     {
         if (!_columns.Remove(col)) return;
         MarkColumnsDirty();
+        NotifyContext(DataGridChange.Columns);
         StateHasChanged();
     }
     /// <summary>Returns all column titles. Used by DataGridColumnPicker when Columns parameter is empty.</summary>
@@ -65,9 +67,10 @@ public partial class FlareDataGrid<TItem>
     {
         if (!_hiddenColumns.Remove(key)) _hiddenColumns.Add(key);
         RebuildGridColumns();
-        await HiddenColumnsChanged.InvokeAsync([.. _hiddenColumns]);
-        await OnStateChanged.InvokeAsync(BuildState());
+        if (HiddenColumnsChanged.HasDelegate) await HiddenColumnsChanged.InvokeAsync([.. _hiddenColumns]);
+        if (OnStateChanged.HasDelegate) await OnStateChanged.InvokeAsync(BuildState());
         await SaveStateAsync();
+        NotifyContext(DataGridChange.Columns);
         StateHasChanged();
     }
 
@@ -103,6 +106,7 @@ public partial class FlareDataGrid<TItem>
     public void NotifyStructureChanged()
     {
         MarkColumnsDirty();
+        NotifyContext(DataGridChange.Columns);
         StateHasChanged();
     }
 
@@ -183,11 +187,14 @@ public partial class FlareDataGrid<TItem>
         }
 
         _gridColumns = list;
+        _visibleColumnsCache = list.Where(c => !_hiddenColumns.Contains(c.Key)).ToList();
         _columnStrategies = null; // depends only on the column set; rebuilt lazily
         InvalidateSelectorCache();
-        _layoutSignature = string.Join("|", list.Where(c => !_hiddenColumns.Contains(c.Key))
+        _layoutSignature = string.Join("|", _visibleColumnsCache
             .Select(c => $"{c.Key}:{c.Width}:{c.Frozen}:{c.FrozenRight}"));
     }
+
+    private List<GridColumn<TItem>> _visibleColumnsCache = [];
 
     // Cached per-column strategy bundle. Depends only on _gridColumns, so it is computed once per
     // column-set change (cleared in RebuildGridColumns) instead of on every pipeline run.

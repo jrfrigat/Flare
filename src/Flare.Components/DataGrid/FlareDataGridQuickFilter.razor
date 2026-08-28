@@ -1,23 +1,18 @@
 @namespace Flare.Components
 @typeparam TItem
-@implements IDisposable
+@inherits FlareDataGridControl<TItem>
 @using Flare.Components.Resources
 
 @* A standalone global search box for a FlareDataGrid: typing filters rows where any visible column
    contains the text (case-insensitive). Place it in the grid's ToolbarContent or anywhere, bound via
-   Grid. Debounced. *@
+   Context or Grid. Debounced. *@
 <FlareField TValue="string" Type="search" Size="@Size" Immediate="true"
             Placeholder="@(Placeholder ?? FlareStrings.DataGrid_Search)"
             Value="@_text" ValueChanged="OnChanged" />
 
 @code {
-    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
-    // Grid parameter overrides it for standalone placement outside the grid.
-    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
-    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
-    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
-    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
-    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+    protected override DataGridChange Observes => DataGridChange.Filter;
+
     /// <summary>Placeholder text for the search box (defaults to the localized "Search").</summary>
     [Parameter] public string? Placeholder { get; set; }
     /// <summary>Field size of the search box.</summary>
@@ -28,6 +23,19 @@
     private string _text = "";
     private Timer? _debounce;
 
+    // The box shows the grid's quick filter, not just what was typed here: a Clear-filters command from
+    // another control has to empty it too. Skipped while a keystroke is still debouncing, so the field
+    // does not fight the user's typing.
+    protected override void OnGridStateChanged(DataGridChange change)
+    {
+        if (_debounce is null)
+        {
+            var current = Owner?.QuickFilterText ?? "";
+            if (current != _text) _text = current;
+        }
+        base.OnGridStateChanged(change);
+    }
+
     private void OnChanged(string? value)
     {
         _text = value ?? "";
@@ -37,13 +45,25 @@
             _ = Apply();
             return;
         }
-        _debounce = new Timer(_ => _ = InvokeAsync(Apply), null, DebounceMs, Timeout.Infinite);
+        _debounce = new Timer(_ => _ = InvokeAsync(ApplyAndSettle), null, DebounceMs, Timeout.Infinite);
+    }
+
+    private async Task ApplyAndSettle()
+    {
+        _debounce?.Dispose();
+        _debounce = null;
+        await Apply();
     }
 
     private async Task Apply()
     {
-        if (Owner is not null) await Owner.ApplyQuickFilter(_text);
+        if (Owner is not null) await Owner.SetQuickFilterAsync(_text);
     }
 
-    public void Dispose() => _debounce?.Dispose();
+    /// <inheritdoc />
+    public override void Dispose()
+    {
+        _debounce?.Dispose();
+        base.Dispose();
+    }
 }
