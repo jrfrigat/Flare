@@ -243,16 +243,50 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
     }
 
     [Fact]
-    public void AZoomedChart_ClipsItsDataToThePlotRectangle()
+    public void AZoomedChart_ClipsItsDataHorizontally()
     {
         var cut = Render<FlareChart>(p => p
             .Add(x => x.Type, ChartType.Line)
             .Add(x => x.Data, _data)
+            .Add(x => x.Fluid, false)
             .Add(x => x.Zoomable, true)
             .Add(x => x.Zoom, new ChartZoom(1, 2)));
 
-        Assert.NotEmpty(cut.FindAll("clipPath"));
         Assert.Contains(cut.FindAll("g"), g => (g.GetAttribute("clip-path") ?? "").StartsWith("url(#"));
+
+        // Vertically the rect spans the whole drawing: zoom moves the X axis only, and a tight vertical
+        // clip removes marks that overhang the plot on purpose - a bar's value label, half a marker.
+        var rect = cut.Find("clipPath rect");
+        Assert.Equal("0", rect.GetAttribute("y"));
+        Assert.Equal("220", rect.GetAttribute("height"));
+        Assert.Equal("36", rect.GetAttribute("x"));
+    }
+
+    [Fact]
+    public void AnUnzoomedChart_IsNotClippedAtAll()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, _data)
+            .Add(x => x.Zoomable, true));
+
+        Assert.Empty(cut.FindAll("clipPath"));
+        Assert.DoesNotContain(cut.FindAll("g"), g => (g.GetAttribute("clip-path") ?? "").Length > 0);
+    }
+
+    [Fact]
+    public void BarValueLabelAtTheTopOfThePlot_IsNotClippedAway()
+    {
+        // The tallest bar reaches y = _padT and its value label is drawn 3 units ABOVE that, so a clip
+        // rectangle starting at the plot top would swallow it.
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Bar)
+            .Add(x => x.Data, new ChartData([new ChartSeries("A", [10, 20, 30])], ["a", "b", "c"]))
+            .Add(x => x.Fluid, false)
+            .Add(x => x.ShowValues, true));
+
+        var label = cut.FindAll("text").First(t => t.TextContent.Trim() == "30" && t.GetAttribute("y") == "9.0");
+        Assert.Null(label.Closest("g[clip-path]"));
     }
 
     [Fact]
@@ -294,6 +328,29 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
         cut.FindAll(".flare-chart__toolbar button")[2].Click();
 
         Assert.Null(reported);
+    }
+
+    [Fact]
+    public void AxisLabelDensity_FollowsTheAvailableWidth()
+    {
+        var data = new ChartData(
+            [new ChartSeries("A", [1, 2, 3, 4, 5, 6, 7, 8])],
+            ["a", "b", "c", "d", "e", "f", "g", "h"]);
+
+        int LabelCount(int width)
+        {
+            var cut = Render<FlareChart>(p => p
+                .Add(x => x.Type, ChartType.Line)
+                .Add(x => x.Data, data)
+                .Add(x => x.Fluid, false)
+                .Add(x => x.Width, width));
+            return cut.FindAll("text").Count(t => "abcdefgh".Contains(t.TextContent.Trim())
+                                                  && t.TextContent.Trim().Length == 1);
+        }
+
+        // A wide chart has room for every category; a narrow one thins them out instead of overlapping.
+        Assert.Equal(8, LabelCount(900));
+        Assert.True(LabelCount(240) < 8);
     }
 
     [Fact]

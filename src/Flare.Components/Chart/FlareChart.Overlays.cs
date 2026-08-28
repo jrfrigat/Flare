@@ -227,6 +227,12 @@ public partial class FlareChart
 
     // Ticks are derived from the VISIBLE window, not from the full data: zooming in therefore reveals
     // more labels rather than stretching the same six, which is the behaviour that makes a zoom useful.
+    //
+    // How MANY comes from the available width rather than a fixed count, because the width is no longer
+    // fixed: a fluid chart in a wide column has room for every label, and a 400-unit one does not. One
+    // label per _labelSlot units of plot is the budget; the step is whatever meets it.
+    private const double _labelSlot = 56;
+
     private string AxisLabels(double min, double max, int pts)
     {
         if (Data?.Labels is not { Count: > 0 } labels) return "";
@@ -234,7 +240,8 @@ public partial class FlareChart
         var (from, to) = VisibleIndexRange(pts);
         int visible = to - from + 1;
         if (visible <= 0) return "";
-        int step = Math.Max(1, (int)Math.Ceiling(visible / 6.0));
+        int budget = Math.Max(2, (int)(_plotW / _labelSlot));
+        int step = Math.Max(1, (int)Math.Ceiling(visible / (double)budget));
         double y = _padT + _plotH + 14;
         for (int i = from; i <= to; i += step)
         {

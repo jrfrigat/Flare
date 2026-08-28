@@ -3,6 +3,22 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.19.1] - 2026-08-28
+
+### Fixed
+- **A bar chart's top value label disappeared.** 0.19.0 wrapped every cartesian renderer's data marks in
+  a clip path so a zoomed window could not paint over the axes - but it applied the clip to every chart,
+  zoomed or not, and clipped it to the plot rectangle on all four sides. A bar that reaches the top of the
+  plot draws its `ShowValues` label three units ABOVE the plot, so the label of the tallest bar was cut
+  away; a marker circle or a bubble centred on the plot edge lost its outer half the same way. The clip
+  now applies only while a zoom window is actually in force, and only horizontally - zoom moves the X axis
+  and nothing else, so the vertical edges never needed cutting. An unzoomed chart is not clipped at all,
+  which is what it was before 0.19.0.
+- **Wide charts showed fewer x-axis labels than narrow ones used to.** The tick step was a fixed fraction
+  of the visible category count, which made sense while every chart was 400 units wide and stopped making
+  sense the moment `Fluid` let one be 1200. It is now a budget of one label per 56 units of plot width, so
+  a wide chart labels every category and a narrow one thins them out instead of overlapping.
+
 ## [0.19.0] - 2026-08-28
 
 ### Breaking
