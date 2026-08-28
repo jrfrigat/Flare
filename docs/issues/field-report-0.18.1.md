@@ -41,6 +41,9 @@ Tier 2 - structure and documentation. Real, but nothing is blocked on them.
 | 3 | No Gallery example of three columns under one heading | folded into [datagrid-column-ownership.md](datagrid-column-ownership.md) |
 | - | Density and API discoverability (`data-testid`, nested input, MD3E spacing) | [density-and-discoverability.md](density-and-discoverability.md) |
 
+Raised separately, queued with them: [scroll-service-port.md](scroll-service-port.md) - five private scroll
+listeners in the JS and no public way for an application to observe scroll at all.
+
 ## What is NOT accepted as reported
 
 Two items are disputed, and the reasoning is in their own files rather than here:

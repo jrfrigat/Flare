@@ -114,6 +114,10 @@ All notable changes to Flare are documented here. This project adheres to
   not fingerprinted. A frozen DataGrid column, a splitter, a tooltip or the theme injector would then
   throw into the renderer over an enhancement the page could simply have gone without. All of them now
   catch it, and a guard test keeps the two clauses together.
+- **Card action stacking is scoped to the cards that ask for it.** `container-type: inline-size`, which the
+  `StackBelow` container query needs, also applies inline-size containment - it makes a box's width
+  independent of its contents, which is harmless for a card the layout sizes and wrong for one that
+  shrink-wraps. It now applies only to a card that actually contains a stacking action row.
 - **Icon size was ignored where the host set `font-size` directly.** `.flare-datagrid__sort-icon`,
   `.flare-datagrid__bool` and the rich-text toolbar sized their icons with `font-size`, which `.flare-icon`
   overrides with its own declaration, so those icons drew at the fallback size. They now pass the size
