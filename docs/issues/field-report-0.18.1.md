@@ -18,11 +18,8 @@ Tier 0 - broken output or a crash in an app that follows the documented API.
 
 | # | Issue | File |
 | :-- | :-- | :-- |
-| 1 | DataGrid icons render as literal text (`check_box`, `edit`) | [datagrid-icon-regression.md](datagrid-icon-regression.md) |
 | 7 | Implicit child content reported to throw at runtime | [implicit-child-content.md](implicit-child-content.md) |
 | 2 | `Sortable` + `Frozen` on one column reported to throw | [datagrid-frozen-sortable-crash.md](datagrid-frozen-sortable-crash.md) |
-| - | `FlareCollapse` collapses itself on any parent re-render | [controlled-state-contract.md](controlled-state-contract.md) |
-| 10, 11 | Flare owns only part of the app setup (no CSS reset, no `TimeProvider`) | [flare-app-setup-completeness.md](flare-app-setup-completeness.md) |
 
 Tier 1 - the API forces a workaround. The app shipped, but with code the library should have provided.
 
@@ -43,6 +40,9 @@ listeners in the JS and no public way for an application to observe scroll at al
 
 | # | Item | Shipped in |
 | :-- | :-- | :-- |
+| 1 | DataGrid icons render as glyphs again; every remaining Material Symbols ligature span is gone, with a guard test | 0.19.0 |
+| - | `FlareCollapse` no longer collapses itself; the two-way contract is written down and enforced by `ControlledStateContractTests` | 0.19.0 |
+| 10, 11 | `AddFlare` is sufficient on its own (`TimeProvider`), and Flare ships a `:where()` document reset | 0.19.0 |
 | 4, 5, 6, 8, 12, 13 | Chart: fluid width, per-series `Smooth`/`Area`/`LineStyle`, `FlareColor` series colors, Excel-style zoom, directional annotations | 0.19.0 |
 | - | `FlareSelect<T>` expresses "no value" without a sentinel (`NullOption`) | 0.19.0 |
 | - | `FlareCardActions` gained wrap, vertical, full-width, reverse and a stack breakpoint | 0.19.0 |

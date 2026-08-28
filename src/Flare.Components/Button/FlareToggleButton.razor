@@ -162,15 +162,14 @@
         {
             // Controlled: always follow the bound parameter
             _pressed = Toggled;
-            _lastToggled = Toggled;
         }
         else if (Toggled != _lastToggled)
         {
             // Uncontrolled but caller changed Toggled externally - respect it
             _pressed = Toggled;
-            _lastToggled = Toggled;
         }
         // Otherwise: uncontrolled with no external change - keep local _pressed state
+        _lastToggled = Toggled;
     }
 
     private async Task HandleClick()
