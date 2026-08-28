@@ -1689,6 +1689,9 @@
   <data name="Select_Grouped" xml:space="preserve">
     <value>Grouped from items</value>
   </data>
+  <data name="Select_NullOption" xml:space="preserve">
+    <value>Null Option: an "All" row without a sentinel value</value>
+  </data>
   <data name="Select_Validation" xml:space="preserve">
     <value>Helper text &amp; error</value>
   </data>

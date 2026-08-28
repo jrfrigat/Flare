@@ -1689,6 +1689,9 @@
   <data name="Select_Grouped" xml:space="preserve">
     <value>Группировка из элементов</value>
   </data>
+  <data name="Select_NullOption" xml:space="preserve">
+    <value>Пустое значение: «Все» без sentinel-значения</value>
+  </data>
   <data name="Select_Validation" xml:space="preserve">
     <value>Подсказка и ошибка</value>
   </data>

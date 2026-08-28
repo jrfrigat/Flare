@@ -6782,6 +6782,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Select_Grouped", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Null Option: an "All" row without a sentinel value.
+        /// </summary>
+        public static string Select_NullOption {
+            get {
+                return ResourceManager.GetString("Select_NullOption", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Custom item template.

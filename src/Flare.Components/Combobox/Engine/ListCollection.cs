@@ -85,6 +85,15 @@ public sealed class ListCollection<TItem>
         if (_policy.Group is not null)
             result = result.GroupBy(_policy.Group).SelectMany(static g => g);
 
+        // Pinned rows are re-attached at the head AFTER grouping, so a command row is neither filtered
+        // away nor pulled into a group it does not belong to.
+        if (_policy.Pinned is { } pinned)
+        {
+            var head = _source.Where(pinned).ToList();
+            if (head.Count > 0)
+                result = head.Concat(result.Where(i => !pinned(i)));
+        }
+
         _filtered = result as List<TItem> ?? result.ToList();
         _rows = null; // invalidate the cached row projection; rebuilt on next access
     }

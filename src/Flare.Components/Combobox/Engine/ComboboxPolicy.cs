@@ -57,6 +57,12 @@ public sealed record ComboboxPolicy<TItem>
     /// contains-on-label filter is used. Ignored when <see cref="RankScorer"/> is set.</summary>
     public Func<TItem, string, bool>? FilterPredicate { get; init; }
 
+    /// <summary>
+    /// Items that survive every filter and stay at the head of the list. For rows that are commands
+    /// rather than data - "All", "None", "Create new" - which are useless if typing hides them.
+    /// </summary>
+    public Func<TItem, bool>? Pinned { get; init; }
+
     /// <summary>Custom relevance scorer <c>(item, query) =&gt; score</c>; only positive scores are kept,
     /// ordered best-first. Overrides <see cref="FilterPredicate"/> and <see cref="Fuzzy"/>.</summary>
     public Func<TItem, string, double>? RankScorer { get; init; }

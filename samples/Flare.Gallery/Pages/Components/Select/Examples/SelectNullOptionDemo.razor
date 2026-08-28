@@ -1,0 +1,37 @@
+@* NullOption adds a selectable "no value" row: the filter case ("All", "Any") without a sentinel item
+   of type T leaking into the model. The row is pinned, so typing in a searchable select never hides it,
+   and the closed field shows its text instead of looking empty. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="max-width:38rem;">
+        <FlareSelect TValue="string" @bind-Value="_ingredient"
+                     Items="_ingredients"
+                     NullOption="All ingredients"
+                     Label="Ingredient" Style="flex:1;min-width:14rem;" />
+
+        <FlareSelect TValue="string" @bind-Value="_cake"
+                     Items="_cakes"
+                     NullOption="Any cake"
+                     Searchable Clearable
+                     Label="Cake (searchable)" Style="flex:1;min-width:14rem;" />
+    </FlareStack>
+
+    @* A nullable value type works the same way; a non-nullable one throws, because default(int) is 0. *@
+    <FlareSelect TValue="int?" @bind-Value="_servings"
+                 Items="_servingOptions"
+                 NullOption="Any size"
+                 Label="Servings" Style="max-width:18rem;" />
+
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">
+        Filter: @(_ingredient ?? "all") / @(_cake ?? "any") / @(_servings?.ToString() ?? "any")
+    </FlareText>
+</FlareStack>
+
+@code {
+    private string? _ingredient;
+    private string? _cake;
+    private int? _servings;
+
+    private static readonly string[] _ingredients = ["Flour", "Sugar", "Butter", "Eggs", "Cocoa"];
+    private static readonly string[] _cakes = ["Napoleon", "Medovik", "Sacher", "Red velvet", "Carrot"];
+    private static readonly int?[] _servingOptions = [4, 6, 8, 12];
+}

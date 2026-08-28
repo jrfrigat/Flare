@@ -1,6 +1,6 @@
 # `FlareSelect<T>` cannot express "no value"
 
-**Status: OPEN. Tier 1. From the app user's review.**
+**Status: DONE. Tier 1. From the app user's review.**
 
 ## The report
 

@@ -50,6 +50,11 @@
                         else { @ResolveLabel(Current) }
                     }
                 }
+                @if (ShowNullOption)
+                {
+                    @if (NullOptionTemplate is not null) { @NullOptionTemplate }
+                    else { @NullOption }
+                }
                 @if (_showPlaceholder)
                 {
                     <span class="@Css.Classes.Input.Placeholder">@Placeholder</span>
@@ -113,7 +118,7 @@
                                  IsSelected="_state.Selection.IsSelected"
                                  IsDisabled="_state.Collection.IsDisabled"
                                  Label="ResolveLabel"
-                                 ItemTemplate="ItemTemplate"
+                                 ItemTemplate="RowTemplate"
                                  ShowCheck="true"
                                  OptionClass="@Css.Classes.Select.Option"
                                  Virtualize="true"
@@ -217,7 +222,7 @@
 
     private string? _displayedError => DisplayedError(ErrorText);
 
-    private bool _showPlaceholder => Current is null && !_editing && !string.IsNullOrEmpty(Placeholder);
+    private bool _showPlaceholder => Current is null && !_editing && !HasNullOption && !string.IsNullOrEmpty(Placeholder);
 
     // Controlled vs uncontrolled (mirrors the pre-rebuild FlareSelect).
     private TValue? _internal;
@@ -238,7 +243,8 @@
             Fuzzy = Fuzzy,
             RankScorer = RankFunc,
             Comparer = EqualityComparer<TValue>.Default,
-            Searchable = true,   // filtering is a shell rendering choice; the engine filters only when SetInput is called
+            Pinned = IsNullOption,
+            Searchable = true,  // filtering is a shell rendering choice; the engine filters only when SetInput is called
         });
         _state.Changed += OnStateChanged;
         _state.ScrollRequested += OnScrollRequested;
@@ -249,6 +255,7 @@
     {
         base.OnParametersSet();
         UpdateFieldIdentifier(For);
+        GuardNullOption();
 
         if (Controlled) _internal = Value;
         else if (!_seeded || !EqualityComparer<TValue?>.Default.Equals(Value, _prevValue)) { _internal = Value; _seeded = true; }
@@ -258,7 +265,9 @@
             ? DeclaredOptions.Parse<TValue>(ChildContent, EqualityComparer<TValue>.Default)
             : null;
         _state.SetSource(SourceItems());
-        _state.SetSelection(Current is null ? System.Array.Empty<TValue>() : new[] { Current });
+        // With a null option "no value" IS a selection - the row renders checked - so an empty selection
+        // set only means "nothing chosen" when there is no such row.
+        _state.SetSelection(Current is null && !HasNullOption ? System.Array.Empty<TValue>() : new[] { Current! });
 
         // Two-way Open is only honored when the consumer controls it (binds OpenChanged); otherwise the
         // open state is internal and must not be forced closed by an unbound Open=false on every re-render.
@@ -270,15 +279,18 @@
 
     private IReadOnlyList<TValue> SourceItems()
     {
-        if (_declared is not null) return _declared.Values;
-        return Items is null ? System.Array.Empty<TValue>() : Items as IReadOnlyList<TValue> ?? Items.ToList();
+        if (_declared is not null) return WithNullOption(_declared.Values);
+        return WithNullOption(Items is null
+            ? System.Array.Empty<TValue>()
+            : Items as IReadOnlyList<TValue> ?? Items.ToList());
     }
 
     private string ResolveLabel(TValue item)
     {
+        if (item is null) return HasNullOption ? NullOption! : string.Empty;
         if (ItemLabel is not null) return ItemLabel(item);
-        if (_declared is not null && item is not null && _declared.Labels.TryGetValue(item, out var l)) return l;
-        return item?.ToString() ?? string.Empty;
+        if (_declared is not null && _declared.Labels.TryGetValue(item, out var l)) return l;
+        return item.ToString() ?? string.Empty;
     }
 
     private void OnStateChanged() => InvokeAsync(StateHasChanged);
@@ -375,12 +387,14 @@
             case "Home": if (_state.IsOpen && !Searchable) _state.HighlightFirst(); else return; break;
             case "End": if (_state.IsOpen && !Searchable) _state.HighlightLast(); else return; break;
             case "Enter":
-                if (_state.IsOpen && _state.HighlightedItem is { } hi) await HandleSelectAsync(hi);
+                // Index, not the item: a null row (the NullOption) is a legitimate highlight and the
+                // "is { } item" pattern would skip it.
+                if (_state.IsOpen && _state.HighlightedIndex >= 0) await HandleSelectAsync(_state.HighlightedItem!);
                 else if (!_state.IsOpen) { _state.Open(); await NotifyOpenAsync(); }
                 break;
             case " ":
                 if (Searchable) return; // space types a space in the search input
-                if (_state.IsOpen && _state.HighlightedItem is { } h) await HandleSelectAsync(h);
+                if (_state.IsOpen && _state.HighlightedIndex >= 0) await HandleSelectAsync(_state.HighlightedItem!);
                 else { _state.Open(); await NotifyOpenAsync(); }
                 break;
             case "Escape":
