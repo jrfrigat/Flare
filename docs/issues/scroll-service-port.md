@@ -106,6 +106,6 @@ are on the parity roadmap already.
 
 ## Queue
 
-After the remaining 0.18.1 field-report items (`datagrid-column-ownership`, `density-and-discoverability`)
+After `density-and-discoverability`, the last structural item of the 0.18.1 field report,
 and before the mobile/PWA shells in `bottom-nav-and-pwa-shell`, which want the scroll-linked app bar this
 port makes possible.

@@ -3,6 +3,59 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Breaking
+
+- **`GridColumn<TItem>` is now `DataGridColumn<TItem>`.** The type is what the new context hands out, so it
+  takes the name every other public type in the family already uses (`DataGridState`, `DataGridSort`,
+  `DataGridFilter`). Rename the usages; nothing else about the type changed.
+- **`FlareDataGrid.ToggleSelection`, `SelectAll` and `DeselectAll` are gone.** They mutated the selection
+  without raising `SelectedItemsChanged` or re-rendering, so calling them left the checkboxes showing the
+  old selection. Use `SetRowSelectedAsync`, `SelectAllAsync` and `SetSelectionAsync([])`, or the same
+  commands on `DataGridContext<TItem>`.
+
+### Added
+
+- **`DataGridContext<TItem>` - the DataGrid is now drivable from outside.** Declare a context, pass it as
+  `Context` to the grid, and any component on the page can read the grid's state (columns, sorts, filters,
+  page, selection, group keys), change it (sort, filter, page, show/hide and reorder columns, select,
+  reset, refresh) and be told when it changed. Nothing has to be nested inside the grid, and adding a new
+  control does not touch `FlareDataGrid`. `Snapshot()` and `ToRequest()` project the state for persistence
+  or for an external query editor.
+- **`FlareDataGridControl<TItem>` - a base class for those controls.** It resolves which grid it belongs to
+  (explicit `Context`, explicit `Grid`, or the cascade), subscribes, re-renders on the changes it names in
+  `Observes`, and unsubscribes on dispose. The five built-in satellites - pager, column picker, quick
+  filter, export, filter presets and filter builder - are now written against it, so a third-party control
+  and a Flare one are the same kind of thing.
+- **`DataGridChange`** - the bit mask a change notification carries. A control names the kinds it cares
+  about and is not woken for the rest: the export buttons ignore every change, the pager ignores selection,
+  the column picker ignores filtering.
+- **`FlareDataGrid.ColumnDefinitions`** - columns as data. Hand the grid a list of `DataGridColumn<TItem>`
+  instead of (or alongside) `<FlareColumn>` markup to generate columns from metadata, keep them in a field,
+  share them between grids or reorder them in C#. Markup columns come first and win a key collision.
+- New public grid commands used by the context and available directly: `SetSortsAsync`,
+  `SetTypedFilterAsync`, `SetColumnVisibleAsync`, `SetColumnOrderAsync`, `MoveColumnAsync`,
+  `SetRowSelectedAsync`, `SetSelectionAsync`, `SelectAllAsync`, `ResetQueryAsync`, `RefreshAsync`.
+
+### Fixed
+
+- **The quick filter did nothing on a server-side grid.** `DataGridRequest.QuickFilter` was documented as
+  carrying the search text to the provider and was never populated, so typing in `FlareDataGridQuickFilter`
+  filtered a client-side grid and silently filtered nothing at all on a provider or `Queryable` one. All
+  three request paths now carry it.
+- **The quick-filter box did not empty when the filter was cleared elsewhere.** It showed what had been
+  typed into it rather than the grid's actual filter, so a "Clear filters" command from another control
+  left stale text in the box. It now follows the grid, except while a keystroke is still debouncing.
+
+### Changed
+
+- The grid no longer builds the `OnStateChanged` / `OnSortChanged` / `OnFilterChanged` payloads when
+  nothing is subscribed. The state payload alone copies seven collections, and it was being built on every
+  keystroke of a filter box whether or not anyone had set the callback.
+- Visible columns are computed once per column rebuild instead of on every read; external controls read
+  them on every render.
+
 ## [0.19.1] - 2026-08-28
 
 ### Fixed
