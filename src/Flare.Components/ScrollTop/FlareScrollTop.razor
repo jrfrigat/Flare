@@ -41,6 +41,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     [JSInvokable]
@@ -58,6 +59,7 @@
         try { await Ui.RemoveScrollTopAsync(_id); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         _dotNetRef?.Dispose();
         await base.DisposeAsync();
     }

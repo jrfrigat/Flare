@@ -57,6 +57,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     [JSInvokable]
@@ -85,6 +86,7 @@
         try { await InfiniteScroll.RemoveAsync(_sentinel); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         _objRef?.Dispose();
         await base.DisposeAsync();
     }

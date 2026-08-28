@@ -34,6 +34,7 @@ public sealed class LocalStorageThemeStorage : IThemeStorageService
         }
         catch (InvalidOperationException) { return null; } // SSR / prerender
         catch (JSDisconnectedException) { return null; }
+        catch (JSException) { return null; }
     }
 
     /// <inheritdoc />
@@ -47,5 +48,6 @@ public sealed class LocalStorageThemeStorage : IThemeStorageService
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 }

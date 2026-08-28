@@ -169,6 +169,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     public override async ValueTask DisposeAsync()

@@ -217,6 +217,7 @@ else
             _outsideRegistered = _open;
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Closes the panel; invoked from JS when a pointer-down lands outside the picker.</summary>

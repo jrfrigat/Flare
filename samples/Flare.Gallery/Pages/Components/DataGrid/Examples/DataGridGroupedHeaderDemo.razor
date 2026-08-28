@@ -1,0 +1,16 @@
+@using Flare.Gallery.Pages.Components.DataGrid.Examples
+
+@* Several columns under ONE heading: wrap them in <FlareColumnBand Title="...">. The band draws the
+   shared heading on the first header row and its columns keep their own headings underneath; columns
+   outside the band span both rows, so a mixed header lines up without any extra markup. *@
+<FlareDataGrid Items="@DatagridData._people" PageSize="8">
+    <Columns>
+        <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+
+        <FlareColumnBand Title="Employment">
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+            <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" />
+            <FlareColumn Title="Score" Field="@(p => p.Score)" Width="90px" Sortable="true" />
+        </FlareColumnBand>
+    </Columns>
+</FlareDataGrid>

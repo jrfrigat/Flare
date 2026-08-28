@@ -329,12 +329,14 @@
             _panelPositioned = _open;
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     public override async ValueTask DisposeAsync()
     {
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         await base.DisposeAsync();
     }
 

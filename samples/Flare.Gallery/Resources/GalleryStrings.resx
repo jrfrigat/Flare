@@ -756,6 +756,12 @@
   <data name="DataGrid_ColumnBandsDesc" xml:space="preserve">
     <value>Group columns under shared headers with FlareColumnBand.</value>
   </data>
+  <data name="DataGrid_GroupedHeaderTitle" xml:space="preserve">
+    <value>Several Columns Under One Heading</value>
+  </data>
+  <data name="DataGrid_GroupedHeaderDesc" xml:space="preserve">
+    <value>Wrap the columns in a FlareColumnBand to give them a shared heading; columns outside the band span both header rows.</value>
+  </data>
   <data name="DataGrid_FrozenColumnsTitle" xml:space="preserve">
     <value>Frozen Columns</value>
   </data>

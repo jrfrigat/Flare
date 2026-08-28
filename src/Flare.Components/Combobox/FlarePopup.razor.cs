@@ -69,6 +69,7 @@ public partial class FlarePopup
             }
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Scrolls the option element with <paramref name="optionId"/> into view within the panel.</summary>
@@ -77,6 +78,7 @@ public partial class FlarePopup
     {
         try { await Overlay.ScrollIntoViewAsync(optionId); }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Invoked from JS when a pointer-down outside the widget or a focus-out escaping it occurs.</summary>
@@ -94,6 +96,7 @@ public partial class FlarePopup
                 await Overlay.RemoveAnchoredPanelAsync(_id);
             }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
         _selfRef?.Dispose();
         await base.DisposeAsync();

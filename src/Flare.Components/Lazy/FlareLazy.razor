@@ -90,6 +90,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Invoked by the IntersectionObserver when the wrapper enters or leaves the viewport.</summary>
@@ -108,6 +109,7 @@
         try { await Lazy.RemoveAsync(_el); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         _objRef?.Dispose();
         await base.DisposeAsync();
     }

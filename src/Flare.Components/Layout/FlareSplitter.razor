@@ -164,6 +164,7 @@
         // The JS service is shared (DI-owned); only detach this handle and release the callback ref.
         try { await SplitterJs.RemoveAsync(_gutter); }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         catch (InvalidOperationException) { }
         _dotNetRef?.Dispose();
         await base.DisposeAsync();

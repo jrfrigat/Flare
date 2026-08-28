@@ -756,6 +756,12 @@
   <data name="DataGrid_ColumnBandsDesc" xml:space="preserve">
     <value>Группировка колонок под общими заголовками с помощью FlareColumnBand.</value>
   </data>
+  <data name="DataGrid_GroupedHeaderTitle" xml:space="preserve">
+    <value>Несколько колонок под одним заголовком</value>
+  </data>
+  <data name="DataGrid_GroupedHeaderDesc" xml:space="preserve">
+    <value>Оберните колонки в FlareColumnBand, чтобы дать им общий заголовок; колонки вне полосы занимают обе строки шапки.</value>
+  </data>
   <data name="DataGrid_FrozenColumnsTitle" xml:space="preserve">
     <value>Закреплённые колонки</value>
   </data>

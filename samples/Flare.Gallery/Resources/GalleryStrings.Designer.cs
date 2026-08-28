@@ -2320,6 +2320,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Wrap the columns in a FlareColumnBand to give them a shared heading; columns outside the band span both header rows..
+        /// </summary>
+        public static string DataGrid_GroupedHeaderDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_GroupedHeaderDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Several Columns Under One Heading.
+        /// </summary>
+        public static string DataGrid_GroupedHeaderTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_GroupedHeaderTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на DataGridColumnPicker component for show/hide columns..
         /// </summary>
         public static string DataGrid_ColumnPickerDesc {

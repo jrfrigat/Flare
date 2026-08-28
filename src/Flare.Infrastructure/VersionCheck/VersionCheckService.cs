@@ -172,6 +172,7 @@ public sealed class VersionCheckService : IVersionCheckService
         {
             try { await _module.DisposeAsync(); }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
             catch (OperationCanceledException) { }
             _module = null;
         }
