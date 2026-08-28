@@ -33,6 +33,16 @@ All notable changes to Flare are documented here. This project adheres to
   through factories - `Threshold`, `Marker`, `Band`, `VerticalBand`, `Segment`, `Arrow`, `At` - each of
   which names the coordinates its kind reads. Annotations project through the same X mapping as the data,
   so they track a zoom.
+- **`FlareSelect<T>` can express "no value".** `NullOption` prepends a selectable row - "All ingredients",
+  "Any" - that sets `Value` to null and shows its own text in the closed field instead of leaving it
+  blank. Without it a filter select had two bad options: put a fake item of type `T` in `Items` and filter
+  it out everywhere, or let `null` be selectable and render a blank row with no label. The row is
+  *pinned*: it stays at the top and survives typing, because a row meaning "no filter" that disappears
+  when you search is useless. `NullOptionTemplate` is the rich form, `Clearable` composes with it, and it
+  participates in keyboard navigation like any other row. Setting it on a non-nullable value type throws
+  with the reason, since `default(int)` is a real value and cannot mean "none".
+  Pinning is a policy on the shared combobox engine (`ComboboxPolicy.Pinned`), so any list built on it can
+  hold a command row.
 - **`FlareColor` on chart series and annotations.** `ChartSeries.Color` and `ChartAnnotation.Color` were
   `string?`, which is the one type that cannot express a semantic role: a threshold could not say "error"
   and a revenue series could not say "success" without freezing a literal the theme has no say in. Both
