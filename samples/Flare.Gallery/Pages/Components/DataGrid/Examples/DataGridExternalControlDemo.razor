@@ -1,0 +1,43 @@
+@using Flare.Gallery.Resources
+
+@* Declare a DataGridContext and hand it to the grid. Everything around the grid then drives it: the
+   built-in search box and column picker placed in the page rather than the toolbar, two buttons issuing
+   commands, and a custom control (DataGridStateBadge) that subscribes to the grid's changes. None of it
+   is nested inside FlareDataGrid, and none of it required changing FlareDataGrid. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareDataGridQuickFilter TItem="Person" Context="_ctx"
+                                  Placeholder="@GalleryStrings.DataGrid_ExternalSearch" />
+        <DataGridColumnPicker TItem="Person" Context="_ctx" />
+        <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="ShowTopScores">
+            @GalleryStrings.DataGrid_ExternalTopScores
+        </FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _ctx.ResetAsync())">
+            @GalleryStrings.DataGrid_ExternalReset
+        </FlareButton>
+    </FlareStack>
+
+    <FlareDataGrid Context="_ctx" Items="@DatagridData._people" PageSize="5" ShowPager="false">
+        <Columns>
+            <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
+            <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />
+            <FlareColumn Title="City" Field="@(p => p.City)" Sortable="true" />
+            <FlareColumn Title="Score" Field="@(p => p.Score)" Width="80px" Sortable="true" />
+        </Columns>
+    </FlareDataGrid>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center"
+                Justify="FlareJustifyContent.SpaceBetween">
+        <DataGridStateBadge TItem="Person" Context="_ctx" />
+        <FlareDataGridPager TItem="Person" Context="_ctx" Size="PaginationSize.Sm" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private readonly DataGridContext<Person> _ctx = new();
+
+    // A command from outside: replace the sort stack and go back to the first page, without a reference
+    // to the grid component at all.
+    private Task ShowTopScores() =>
+        _ctx.SetSortsAsync([new DataGridSort("Score", SortDirection.Descending)]);
+}

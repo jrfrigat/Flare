@@ -18,6 +18,11 @@ public partial class FlareDataGrid<TItem>
     [Parameter] public IQueryable<TItem>? Queryable { get; set; }
     /// <summary>FlareColumn descriptors defining the grid columns.</summary>
     [Parameter] public RenderFragment? Columns { get; set; }
+    /// <summary>Columns supplied as data instead of markup - generated from metadata, kept in a field,
+    /// shared between grids or reordered in C#. Combines with <see cref="Columns"/>: markup columns come
+    /// first (their band structure fixes their header positions), then these, and a definition whose
+    /// <see cref="DataGridColumn{TItem}.Key"/> a markup column already uses is ignored.</summary>
+    [Parameter] public IEnumerable<DataGridColumn<TItem>>? ColumnDefinitions { get; set; }
     /// <summary>Number of rows displayed per page.</summary>
     [Parameter] public int PageSize { get; set; } = 10;
     /// <summary>Custom content displayed when no data rows are available. Defaults to FlareEmptyState.</summary>

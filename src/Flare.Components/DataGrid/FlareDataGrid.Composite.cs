@@ -9,7 +9,7 @@ public partial class FlareDataGrid<TItem>
 {
     // -- Banded multi-row composite (DevExpress-style) ------------------------
 
-    private IEnumerable<GridColumn<TItem>> _visibleSlots =>
+    private IEnumerable<DataGridColumn<TItem>> _visibleSlots =>
         _gridColumns.Where(c => !_hiddenColumns.Contains(c.Key));
 
     private bool _hasBandedComposite =>
@@ -29,11 +29,11 @@ public partial class FlareDataGrid<TItem>
         + (SelectionMode == SelectionMode.Multiple ? 1 : 0) + (RowDetailTemplate != null ? 1 : 0);
 
     // A composite host's own sub-column count = widest row (by summed field colspans).
-    private int CompositeHostColumns(GridColumn<TItem> host) => host.CompositeRows!
+    private int CompositeHostColumns(DataGridColumn<TItem> host) => host.CompositeRows!
         .Select(r => r.Fields.Sum(f => Math.Max(1, ((FlareColumn<TItem>)f).ColSpan))).DefaultIfEmpty(1).Max();
 
     // Fields of a host's row with effective colspans (the last field fills the host's width).
-    private List<(FlareColumn<TItem> Field, int ColSpan)> CompositeRowCells(GridColumn<TItem> host, int rowIndex)
+    private List<(FlareColumn<TItem> Field, int ColSpan)> CompositeRowCells(DataGridColumn<TItem> host, int rowIndex)
     {
         var rows = host.CompositeRows!;
         if (rowIndex >= rows.Count) return [];
@@ -46,7 +46,7 @@ public partial class FlareDataGrid<TItem>
     }
 
     // A stable, namespaced sort key for a composite field (its Title is not a property name).
-    private static string CompositeFieldKey(GridColumn<TItem> host, FlareColumn<TItem> field)
+    private static string CompositeFieldKey(DataGridColumn<TItem> host, FlareColumn<TItem> field)
         => $"{host.Title}/{field.SortKey ?? field.Title}";
 
     // Selector map so sortable composite fields sort by their Field accessor.
@@ -92,14 +92,14 @@ public partial class FlareDataGrid<TItem>
         .SelectMany(r => r.Fields.Cast<FlareColumn<TItem>>())
         .Any(f => f.Filterable);
 
-    private int CompositeFieldSortIndex(GridColumn<TItem> host, FlareColumn<TItem> field)
+    private int CompositeFieldSortIndex(DataGridColumn<TItem> host, FlareColumn<TItem> field)
         => _sortStack.FindIndex(s => s.Column.Key == CompositeFieldKey(host, field));
 
     // Sort by a composite field via a synthetic column, reusing the normal sort toggle.
-    private async Task OnCompositeFieldHeaderClick(GridColumn<TItem> host, FlareColumn<TItem> field, MouseEventArgs e)
+    private async Task OnCompositeFieldHeaderClick(DataGridColumn<TItem> host, FlareColumn<TItem> field, MouseEventArgs e)
     {
         if (!field.Sortable) return;
-        var col = new GridColumn<TItem> { Title = field.Title, Value = field.Field, SortKey = CompositeFieldKey(host, field), Sortable = true };
+        var col = new DataGridColumn<TItem> { Title = field.Title, Value = field.Field, SortKey = CompositeFieldKey(host, field), Sortable = true };
         await OnHeaderClick(col, e);
     }
 

@@ -15,7 +15,7 @@
                   Label="@Label" LabelFor="@ControlId"
                   HelperText="@HelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
-                  Style="@Style">
+                  Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field">
             <FlareTextInput @ref="_input"
@@ -40,7 +40,7 @@
                                OnKeyDown="OnKeyDown"
                                OnKeyUp="OnKeyUp"
                                Style="@_controlStyle"
-                               AdditionalAttributes="AdditionalAttributes" />
+                               AdditionalAttributes="InputAttributes" />
             @if (Clearable && !string.IsNullOrEmpty(Value) && !Disabled && !ReadOnly)
             {
                 <button type="button"

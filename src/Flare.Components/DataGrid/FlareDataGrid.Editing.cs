@@ -10,7 +10,7 @@ namespace Flare.Components;
 // and the batch edit buffer. Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
-    private RenderFragment RenderCell(GridColumn<TItem> col, TItem item) => builder =>
+    private RenderFragment RenderCell(DataGridColumn<TItem> col, TItem item) => builder =>
     {
         if (col.IsComposite)
             BuildCompositeCell(builder, col, item);
@@ -40,7 +40,7 @@ public partial class FlareDataGrid<TItem>
     }
 
     // Renders a composite host column's cell as a CSS grid of labelled, stacked fields.
-    private void BuildCompositeCell(RenderTreeBuilder builder, GridColumn<TItem> col, TItem item)
+    private void BuildCompositeCell(RenderTreeBuilder builder, DataGridColumn<TItem> col, TItem item)
     {
         var rows = col.CompositeRows!;
         var fieldsByRow = rows.Select(r => r.Fields.Cast<FlareColumn<TItem>>().ToList()).ToList();
@@ -79,7 +79,7 @@ public partial class FlareDataGrid<TItem>
 
     // Edit-aware cell: while the row is inline-edited and the column is Editable, render its
     // EditTemplate (if any) or a compact FlareField bound to the edit buffer; otherwise display.
-    private RenderFragment RenderCellOrInput(GridColumn<TItem> col, TItem item, bool isEditing) => builder =>
+    private RenderFragment RenderCellOrInput(DataGridColumn<TItem> col, TItem item, bool isEditing) => builder =>
     {
         if (isEditing && col.Editable)
         {
@@ -102,7 +102,7 @@ public partial class FlareDataGrid<TItem>
 
     // Seeds the edit buffer with a round-trip-safe string for the column type: invariant numbers and
     // ISO dates/times so the matching typed editor (and the consumer of GetEditValues) can parse them.
-    private string EditSeed(GridColumn<TItem> col, TItem item)
+    private string EditSeed(DataGridColumn<TItem> col, TItem item)
     {
         var raw = col.Value?.Invoke(item);
         if (raw is null) return string.Empty;
@@ -135,7 +135,7 @@ public partial class FlareDataGrid<TItem>
 
     // Picks the inline editor from the column's data type: bool -> checkbox, enum -> select,
     // number/date/time -> typed input, otherwise a text box. All write back into the string buffer.
-    private void BuildTypedEditInput(RenderTreeBuilder builder, GridColumn<TItem> col, string key)
+    private void BuildTypedEditInput(RenderTreeBuilder builder, DataGridColumn<TItem> col, string key)
     {
         var current = _editValues.TryGetValue(key, out var v) ? v : string.Empty;
         switch (ResolveColumnDataType(col.Key, col.Type))

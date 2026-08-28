@@ -1,0 +1,35 @@
+@namespace Flare.Gallery.Pages.Components.DataGrid.Examples
+@typeparam TItem
+@inherits FlareDataGridControl<TItem>
+@using Flare.Gallery.Resources
+
+@* A control Flare does not ship: it inherits FlareDataGridControl, so it finds its grid, subscribes to
+   the changes it names in Observes, and re-renders itself when one arrives. Nothing in FlareDataGrid
+   knows this component exists. *@
+@if (HasGrid && Owner is { } ctx)
+{
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareChip Label="@string.Format(GalleryStrings.DataGrid_ExternalMatched, ctx.FilteredCount)" />
+        <FlareChip Label="@string.Format(GalleryStrings.DataGrid_ExternalPage, ctx.Page + 1, Math.Max(1, ctx.PageCount))" />
+        <FlareChip Label="@_sortText" />
+    </FlareStack>
+}
+
+@code {
+    // Row count moves with filtering and with the data; the sort chip moves with the sort stack.
+    protected override DataGridChange Observes =>
+        DataGridChange.Sort | DataGridChange.Filter | DataGridChange.Page | DataGridChange.Data;
+
+    private string _sortText
+    {
+        get
+        {
+            var sorts = Owner?.Sorts ?? [];
+            if (sorts.Count == 0) return GalleryStrings.DataGrid_ExternalUnsorted;
+            var format = sorts[0].Direction == SortDirection.Ascending
+                ? GalleryStrings.DataGrid_ExternalSortedAsc
+                : GalleryStrings.DataGrid_ExternalSortedDesc;
+            return string.Format(format, sorts[0].Key);
+        }
+    }
+}

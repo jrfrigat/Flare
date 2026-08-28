@@ -17,7 +17,7 @@
                   Label="@Label" LabelFor="@ControlId"
                   HelperText="@HelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
-                  Style="@Style">
+                  Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field @Css.Classes.Picker.Field" @ref="_fieldEl">
             <input class="@Css.Classes.Input.Control"
@@ -38,7 +38,7 @@
                    @oninput="HandleInput"
                    @onchange="HandleTextChange"
                    @onblur="HandleBlur"
-                   @attributes="AdditionalAttributes" />
+                   @attributes="InputAttributes" />
             @if (AllowPicker && !Inline)
             {
                 <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"

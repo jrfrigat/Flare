@@ -18,7 +18,7 @@
                   Label="@Label" LabelFor="@ControlId"
                   HelperText="@HelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
-                  Style="@Style">
+                  Style="@Style" Attributes="AdditionalAttributes">
     <Field>
         <div class="@Css.Classes.Input.Field" @ref="_fieldEl">
             <input class="@Css.Classes.Input.Control"
@@ -39,7 +39,7 @@
                    aria-describedby="@SupportDescribedBy"
                    @oninput="HandleInput"
                    @onchange="HandleCommitText"
-                   @attributes="AdditionalAttributes" />
+                   @attributes="InputAttributes" />
             <button type="button" class="@Css.Classes.Input.Toggle flare-input__icon flare-input__icon--trailing"
                     disabled="@(Disabled || ReadOnly)" aria-haspopup="dialog" aria-expanded="@_open"
                     aria-label="@FlareStrings.TimePicker_Open" @onclick="Toggle">

@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @typeparam TItem
+@inherits FlareDataGridControl<TItem>
 
 <div class="@Css.Classes.DataGrid.ColumnPickerWrap">
     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle" AriaLabel="@FlareStrings.DataGrid_ToggleColumns">
@@ -23,23 +24,17 @@
 </div>
 
 @code {
-    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
-    // Grid parameter overrides it for standalone placement outside the grid.
-    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
-    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
-    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
-    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
-    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+    protected override DataGridChange Observes => DataGridChange.Columns;
 
     /// <summary>Label shown on the picker button. Defaults to a localized "Columns".</summary>
     [Parameter] public string? Label { get; set; }
 
     /// <summary>Optional explicit pickable columns as (Key, Title) pairs. When null, the bound grid's
-    /// <see cref="FlareDataGrid{TItem}.PickableColumns"/> are used.</summary>
+    /// non-composite columns are used.</summary>
     [Parameter] public IReadOnlyList<(string Key, string Title)>? Columns { get; set; }
 
     /// <summary>Optional explicit set of hidden column keys. When null, the bound grid's
-    /// <see cref="FlareDataGrid{TItem}.HiddenColumnKeys"/> are used.</summary>
+    /// <see cref="DataGridContext{TItem}.HiddenColumnKeys"/> are used.</summary>
     [Parameter] public IReadOnlyCollection<string>? Hidden { get; set; }
 
     /// <summary>Optional notification raised with a column key when its visibility is toggled. The
@@ -48,7 +43,8 @@
 
     private bool _open;
 
-    private IReadOnlyList<(string Key, string Title)> _columns => Columns ?? Owner?.PickableColumns ?? [];
+    private IReadOnlyList<(string Key, string Title)> _columns =>
+        Columns ?? Owner?.PickableColumns ?? [];
     private IReadOnlyCollection<string> _hidden => Hidden ?? Owner?.HiddenColumnKeys ?? [];
 
     private async Task ToggleAsync(string key)

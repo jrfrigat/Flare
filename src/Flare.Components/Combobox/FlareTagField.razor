@@ -52,7 +52,8 @@
                        @oninput="HandleInputAsync"
                        @onfocus="HandleFocusAsync"
                        @onblur="HandleBlurAsync"
-                       @onkeydown="HandleKeyDownAsync" />
+                       @onkeydown="HandleKeyDownAsync"
+                       @attributes="InputAttributes" />
             }
         </div>
         @if (_hasSuggestions && _chrome is not null)

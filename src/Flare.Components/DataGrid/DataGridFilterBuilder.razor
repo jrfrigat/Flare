@@ -1,5 +1,6 @@
 @namespace Flare.Components
 @typeparam TItem
+@inherits FlareDataGridControl<TItem>
 
 <div class="@Css.Classes.DataGrid.FilterBuilder">
     <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="Toggle"
@@ -31,13 +32,8 @@
 </div>
 
 @code {
-    // Resolved automatically when placed inside a FlareDataGrid (ToolbarContent); the explicit
-    // Grid parameter overrides it for standalone placement outside the grid.
-    [CascadingParameter] private FlareDataGrid<TItem>? CascadedGrid { get; set; }
-    /// <summary>Optional explicit grid binding (e.g. <c>Grid="_grid"</c>) for placing this control
-    /// outside the grid. When omitted, the enclosing <see cref="FlareDataGrid{TItem}"/> is used.</summary>
-    [Parameter] public FlareDataGrid<TItem>? Grid { get; set; }
-    private FlareDataGrid<TItem>? Owner => Grid ?? CascadedGrid;
+    // The field list comes from the column set; the tree being edited is this component's own state.
+    protected override DataGridChange Observes => DataGridChange.Columns;
 
     /// <summary>Label shown on the builder button. Defaults to a localized "Configure filters".</summary>
     [Parameter] public string? Label { get; set; }
@@ -75,6 +71,7 @@
     // Key is empty, so an unseeded default condition would silently apply nothing.
     protected override void OnParametersSet()
     {
+        base.OnParametersSet();
         var keys = _columnKeys;
         if (keys.Count > 0
             && _root.Conditions.Count == 1
@@ -91,7 +88,7 @@
     {
         var tree = BuildTree(_root);
         _open = false;
-        if (Owner is not null) await Owner.ApplyAdvancedFilter(tree);
+        if (Owner is not null) await Owner.ApplyAdvancedFilterAsync(tree);
         if (OnApply.HasDelegate) await OnApply.InvokeAsync(tree);
     }
 
@@ -99,7 +96,7 @@
     {
         _root = new FilterGroupNode { Conditions = { new() } };
         _open = false;
-        if (Owner is not null) await Owner.ClearAdvancedFilter();
+        if (Owner is not null) await Owner.ApplyAdvancedFilterAsync(null);
         if (OnCleared.HasDelegate) await OnCleared.InvokeAsync();
     }
 

@@ -7,7 +7,7 @@ namespace Flare.Components;
 public partial class FlareDataGrid<TItem>
 {
     // Type/format-aware display text for a data column's cell (used by export and clipboard copy).
-    private string CellDisplayText(GridColumn<TItem> col, TItem item)
+    private string CellDisplayText(DataGridColumn<TItem> col, TItem item)
     {
         if (col.Value is null) return string.Empty;
         var type = ResolveColumnDataType(col.Key, col.Type);

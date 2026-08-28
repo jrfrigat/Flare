@@ -119,7 +119,7 @@ public partial class FlareDataGrid<TItem>
     // Number of band-title rows above the leaf column header row.
     private int _bandRowCount => _bandRowCountCache;
     private int _totalHeaderRows => _bandRowCount + 1;
-    private List<GridColumn<TItem>> _gridColumns = [];
+    private List<DataGridColumn<TItem>> _gridColumns = [];
 
     // Column reorder state (display order overlay by Title; survives RebuildGridColumns).
     private readonly List<string> _columnOrder = [];
@@ -154,7 +154,7 @@ public partial class FlareDataGrid<TItem>
     private bool _infiniteHasMore = true;
     private bool _infiniteLoading;
     private HashSet<TItem> _selection = [];
-    private readonly List<(GridColumn<TItem> Column, SortDirection Direction)> _sortStack = [];
+    private readonly List<(DataGridColumn<TItem> Column, SortDirection Direction)> _sortStack = [];
     private int _focusRow = -1;
     private int _focusCol = -1;
     private readonly HashSet<int> _expandedRows = new();
@@ -218,6 +218,7 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Recomputes derived column/row state when parameters change.</summary>
     protected override void OnParametersSet()
     {
+        SyncContext();
         // Client (in-memory) mode recomputes on every parameter change; provider modes manage the
         // cache via their load methods (and infinite scroll accumulates across pages).
         if (_provider is null) _sortedCache = null;
@@ -307,6 +308,7 @@ public partial class FlareDataGrid<TItem>
             FilterModel = BuildFilters(),
             GroupKeys = [.. _groupKeys],
             FilterTree = _advancedTree,
+            QuickFilter = _quickFilterText,
         };
         var result = await _provider!(req);
         _serverTotalCount = result.TotalCount;
@@ -350,6 +352,7 @@ public partial class FlareDataGrid<TItem>
                 FilterModel = BuildFilters(),
                 GroupKeys = [.. _groupKeys],
                 FilterTree = _advancedTree,
+                QuickFilter = _quickFilterText,
             };
             var result = await _provider!(req);
             if (ct.IsCancellationRequested) return;
@@ -408,6 +411,7 @@ public partial class FlareDataGrid<TItem>
                 FilterModel = BuildFilters(),
                 GroupKeys = [.. _groupKeys],
                 FilterTree = _advancedTree,
+                QuickFilter = _quickFilterText,
             };
             var result = await _provider!(req);
             if (ct.IsCancellationRequested) return;
@@ -562,6 +566,8 @@ public partial class FlareDataGrid<TItem>
     /// <summary>Tears down JS interop and observers.</summary>
     public override async ValueTask DisposeAsync()
     {
+        _attachedContext?.Detach(this);
+        _attachedContext = null;
         _providerCts?.Cancel();
         _providerCts?.Dispose();
         _filterDebounceTimer?.Dispose();

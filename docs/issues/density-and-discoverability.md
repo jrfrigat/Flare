@@ -1,10 +1,13 @@
-# Density controls, and APIs that need the source to understand
+# A local density control
 
-**Status: OPEN. Tier 2. From the app user's review.**
+**Status: OPEN, BLOCKED ON A TOKEN REFACTOR. Tier 2. From the app user's review.**
 
-Three related observations, all of them about a caller having to know more than the API tells them.
+The other two items this issue carried - where `data-testid` lands, and the arrow button inside
+`role="combobox"` - shipped in 0.20.0 (`InputAttributes` on the field family, an `aria-hidden` arrow).
+What remains is density, and an implementation attempt turned the vague half of the report into a
+measured answer.
 
-## 1. MD3 Expressive is spacious, and there is no local density control
+## The report
 
 > MD3 Expressive is fairly spacious by default. For large recipe editors the interface gets long, and
 > there are not many ways to make individual regions denser through component parameters.
@@ -13,48 +16,62 @@ Both halves are true and only the second is a defect. Expressive *is* spacious -
 specification, and a theme that quietly tightened it would be the wrong fix. What is missing is a way to
 say "this region is dense" without switching themes or writing CSS.
 
-`Size` exists on the field family and on buttons, but it is per-component and does not cover padding,
-gaps, row heights or the type scale together. The shape that does:
+## What was built, measured and reverted
 
-- `FlareDensity` - a cascading scope component (`<FlareDensity Level="Density.Compact">`) that repoints
-  the spacing and control-height tokens for its subtree. Three levels: `Comfortable` (the theme's own),
-  `Compact`, `Dense`.
-- a `Density` parameter on the containers where it matters most - `FlareDataGrid`, `FlareList`,
-  `FlareForm`, `FlareCard` - which is the same scope applied to one component.
+The obvious design is a `FlareDensity` scope that repoints the spacing scale for its subtree: a
+multiplier the theme owns (`--flare-density-factor-compact` / `-dense`), applied to the 13
+`--flare-spacing-*` tokens by a two-element capture-and-rebuild pair (a custom property cannot be
+defined in terms of itself), both `display: contents` so the scope adds no box.
 
-This is a token remap, not a per-component branch: the scope emits a handful of `--flare-spacing-*` and
-`--flare-*-height` overrides on its own element and everything inside inherits them. It therefore costs
-nothing at render time and works for every component at once, including ones that never heard of it.
+That was implemented end to end and measured in the browser on the exact case from the report - a
+four-field card with a header and an action row:
 
-## 2. `data-testid` and the nested input
+| Level | Card height |
+| :-- | :-- |
+| Comfortable | 516px |
+| Compact (x0.75) | 497px |
+| Dense (x0.5) | 478px |
 
-> Some APIs are not obvious without reading the XML documentation and the actual DOM. For example, it is
-> not always immediately clear where data-testid lands and how a component organises its nested input.
+**Seven percent at the tightest setting.** For a control called "density" that is not a feature, it is a
+misleading parameter, so it was reverted rather than shipped.
 
-The field family renders a chrome wrapper around a real `<input>`, and `AdditionalAttributes` - which is
-where an unmatched `data-testid` goes - splats onto the root, not the input. So a test that writes
-`data-testid="email"` and then types into it is targeting a `div`. That is a reasonable design and a
-terrible surprise.
+## Why it fails, and what it would take
 
-Two changes:
+The measurement says exactly where a form's vertical budget lives, and it is not in the spacing scale:
 
-- **Make it explicit.** `InputAttributes` on the field family: a dictionary splatted onto the inner
-  `<input>`, so a caller can put `data-testid`, `autocomplete`, `inputmode` or `maxlength` exactly where
-  they belong instead of guessing whether the splat reached them.
-- **Document the DOM.** Each component page in the Gallery gets a short "rendered structure" block - the
-  element skeleton with the class names and which element receives the splat. This is generated from the
-  component, not hand-written, so it cannot drift.
+- `.flare-card__content` padding stayed at `16px` at every level. Card padding is
+  `--flare-card-padding`, not a spacing step.
+- Field height is `--flare-input-padding`, likewise untouched.
 
-## 3. `role="combobox"` with a nested button
+The spacing scale is what components use *between* things; each component's own padding comes from its
+own token. There are **148 distinct `--flare-*-padding/gap/height` tokens** in the component CSS, so
+reaching them by enumeration means roughly 450 extra declarations in the bundle, plus a permanent trap:
+every token added later silently escapes density.
 
-> In the DOM FlareSelect uses role="combobox" with a separate nested arrow button. This is worth checking
-> with VoiceOver and TalkBack on physical devices.
+And enumeration would not even work, because those tokens are shorthands:
 
-A fair flag rather than a bug report. A `role="combobox"` element containing a focusable `<button>` is
-allowed by ARIA 1.2 but is read differently by every screen reader, and Flare's own accessibility tests
-are static assertions over the markup - they cannot tell us how VoiceOver announces it.
+```csharp
+Padding = "0.875rem 1rem",   // InputTokens
+Padding = "1rem 1rem",       // CardTokens
+```
 
-Action: make the arrow non-focusable and `aria-hidden` (it duplicates the combobox's own activation, so
-it is decorative), which removes the ambiguity without a device lab. Then verify the select, the date
-picker and the autocomplete against NVDA and VoiceOver, and write down what was tested and when - the
-current a11y test file implies more coverage than it has.
+`calc()` cannot scale a two-value shorthand. There is no arithmetic route from here.
+
+## The two real options
+
+1. **Split the padding tokens.** Every `*-padding` shorthand becomes `*-padding-block` /
+   `*-padding-inline` across both theme packages, and the density scope scales the block axis (the one
+   that makes a form long) and leaves the inline axis alone. This is a cross-cutting token refactor with
+   a guard test to keep new tokens split, and it makes density work for every component at once - the
+   property the failed attempt was reaching for.
+
+2. **Themes ship a dense token set.** Each theme authors a second set of values, and the scope emits it.
+   Architecturally the cleanest under the token mandate (Flare knows no theme; themes own every length),
+   and how MD3 itself defines density - but it doubles the authoring cost of a theme, and a third-party
+   theme that skips it silently has no density at all.
+
+Option 1 is preferred: one refactor inside Flare, no new obligation on theme authors, and the block/inline
+split is worth having on its own for RTL and for vertical rhythm work.
+
+Neither is a session's work, and neither should be started before the block/inline split is agreed - the
+whole point of this write-up is that the cheap version was tried and measured and does not deliver.

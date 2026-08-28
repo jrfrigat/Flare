@@ -6,10 +6,10 @@ namespace Flare.Components;
 public sealed record DataGridState<T>
 {
     /// <summary>All registered columns.</summary>
-    public required IReadOnlyList<GridColumn<T>> Columns { get; init; }
+    public required IReadOnlyList<DataGridColumn<T>> Columns { get; init; }
 
     /// <summary>Visible columns (after hiding some via picker).</summary>
-    public required IReadOnlyList<GridColumn<T>> VisibleColumns { get; init; }
+    public required IReadOnlyList<DataGridColumn<T>> VisibleColumns { get; init; }
 
     /// <summary>Active sorts in apply order.</summary>
     public required IReadOnlyList<DataGridSort> Sorts { get; init; }
