@@ -233,7 +233,7 @@ public partial class FlareDataGrid<TItem>
 
     // Resolves a column's horizontal-alignment CSS class: explicit Align, else derived from the
     // (possibly inferred) data type - numbers trail, booleans center, everything else leads (no class).
-    private string AlignClass(GridColumn<TItem> col)
+    private string AlignClass(DataGridColumn<TItem> col)
     {
         if (_alignClassCache.TryGetValue(col.Key, out var cached)) return cached;
         var align = col.Align ?? DefaultAlign(ResolveColumnDataType(col.Key, col.Type));

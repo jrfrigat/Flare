@@ -73,7 +73,7 @@ public partial class FlareDataGrid<TItem>
     }
 
     /// <summary>Applies a sort command to the grid.</summary>
-    public async Task SortByAsync(GridColumn<TItem> column, bool shift = false)
+    public async Task SortByAsync(DataGridColumn<TItem> column, bool shift = false)
     {
         if (shift)
         {
@@ -415,19 +415,19 @@ public partial class FlareDataGrid<TItem>
         : SortedUnpaged().Skip(_page * _effectivePageSize).Take(_effectivePageSize);
 
     // Frozen sticky class for a body cell: left-frozen, right-frozen, or none.
-    private static string _tdFrozenClass(GridColumn<TItem> col) =>
+    private static string _tdFrozenClass(DataGridColumn<TItem> col) =>
         col.Frozen ? Css.Classes.DataGrid.TdFrozen
         : col.FrozenRight ? Css.Classes.DataGrid.TdFrozenRight
         : "";
 
-    private string _thClass(GridColumn<TItem> col) =>
+    private string _thClass(DataGridColumn<TItem> col) =>
         Css.Classes.DataGrid.Th +
         (col.Sortable ? " " + Css.Classes.DataGrid.ThSortable : "") +
         (col.Frozen ? " " + Css.Classes.DataGrid.ThFrozen : "") +
         (col.FrozenRight ? " " + Css.Classes.DataGrid.ThFrozenRight : "") +
         (AlignClass(col) is { Length: > 0 } a ? " " + a : "");
 
-    private string? _ariaSort(GridColumn<TItem> col)
+    private string? _ariaSort(DataGridColumn<TItem> col)
     {
         if (!col.Sortable) return null;
         var state = _sortStack.FirstOrDefault(s => s.Column.Key == col.Key);
@@ -458,7 +458,7 @@ public partial class FlareDataGrid<TItem>
     // Visible (non-hidden) columns in display order, for export, aggregates and the context read view.
     // Cached by RebuildGridColumns: an external control reads it on every render, and the projection is
     // invalidated only by a structural or visibility change, both of which rebuild the columns.
-    private List<GridColumn<TItem>> _visibleColumns
+    private List<DataGridColumn<TItem>> _visibleColumns
     {
         get { EnsureColumnsBuilt(); return _visibleColumnsCache; }
     }

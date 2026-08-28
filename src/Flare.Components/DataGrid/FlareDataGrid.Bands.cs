@@ -18,7 +18,7 @@ public partial class FlareDataGrid<TItem>
     // -- Banded header --------------------------------------------------------
 
     // One header cell in the banded layout: a band title (Band set) or a leaf column header (Column set).
-    private sealed record HeaderCell(int Row, int RowSpan, int ColSpan, FlareColumnBand? Band, GridColumn<TItem>? Column);
+    private sealed record HeaderCell(int Row, int RowSpan, int ColSpan, FlareColumnBand? Band, DataGridColumn<TItem>? Column);
 
     // Lay out a header node, appending its cell(s); returns the visible leaf count under it.
     private int LayoutHeaderNode(FlareColumnBase node, int depth, List<HeaderCell> cells)

@@ -45,10 +45,10 @@ public sealed class DataGridContext<TItem>
     // -- Columns --------------------------------------------------------------
 
     /// <summary>Every registered column, in display order (user reordering included).</summary>
-    public IReadOnlyList<GridColumn<TItem>> Columns => _grid?.ColumnsView ?? [];
+    public IReadOnlyList<DataGridColumn<TItem>> Columns => _grid?.ColumnsView ?? [];
 
     /// <summary>The columns currently shown, in display order.</summary>
-    public IReadOnlyList<GridColumn<TItem>> VisibleColumns => _grid?.VisibleColumnsView ?? [];
+    public IReadOnlyList<DataGridColumn<TItem>> VisibleColumns => _grid?.VisibleColumnsView ?? [];
 
     /// <summary>Keys of the columns hidden by the picker or by the grid's <c>HiddenColumns</c>.</summary>
     public IReadOnlyCollection<string> HiddenColumnKeys => _grid?.HiddenColumnKeys ?? [];
@@ -114,7 +114,7 @@ public sealed class DataGridContext<TItem>
     // -- Commands -------------------------------------------------------------
 
     /// <summary>Sorts by a column key. Ascending, then descending, then unsorted on repeat.</summary>
-    /// <param name="columnKey">Key of the column to sort (<see cref="GridColumn{TItem}.Key"/>).</param>
+    /// <param name="columnKey">Key of the column to sort (<see cref="DataGridColumn{TItem}.Key"/>).</param>
     /// <param name="additive">True to add to the sort stack instead of replacing it (multi-sort).</param>
     public Task SortByAsync(string columnKey, bool additive = false)
     {

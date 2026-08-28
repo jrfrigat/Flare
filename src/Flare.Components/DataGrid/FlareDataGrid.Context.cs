@@ -39,12 +39,12 @@ public partial class FlareDataGrid<TItem>
     // over directly rather than copied: a control reads them on every render, and the context's contract
     // is that only Snapshot() materializes.
 
-    internal IReadOnlyList<GridColumn<TItem>> ColumnsView
+    internal IReadOnlyList<DataGridColumn<TItem>> ColumnsView
     {
         get { EnsureColumnsBuilt(); return _gridColumns; }
     }
 
-    internal IReadOnlyList<GridColumn<TItem>> VisibleColumnsView => _visibleColumns;
+    internal IReadOnlyList<DataGridColumn<TItem>> VisibleColumnsView => _visibleColumns;
 
     internal IReadOnlyList<DataGridSort> SortsView => BuildSorts();
 

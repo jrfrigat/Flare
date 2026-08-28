@@ -119,7 +119,7 @@ public partial class FlareDataGrid<TItem>
     // Number of band-title rows above the leaf column header row.
     private int _bandRowCount => _bandRowCountCache;
     private int _totalHeaderRows => _bandRowCount + 1;
-    private List<GridColumn<TItem>> _gridColumns = [];
+    private List<DataGridColumn<TItem>> _gridColumns = [];
 
     // Column reorder state (display order overlay by Title; survives RebuildGridColumns).
     private readonly List<string> _columnOrder = [];
@@ -154,7 +154,7 @@ public partial class FlareDataGrid<TItem>
     private bool _infiniteHasMore = true;
     private bool _infiniteLoading;
     private HashSet<TItem> _selection = [];
-    private readonly List<(GridColumn<TItem> Column, SortDirection Direction)> _sortStack = [];
+    private readonly List<(DataGridColumn<TItem> Column, SortDirection Direction)> _sortStack = [];
     private int _focusRow = -1;
     private int _focusCol = -1;
     private readonly HashSet<int> _expandedRows = new();

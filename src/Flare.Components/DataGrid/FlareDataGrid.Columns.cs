@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 namespace Flare.Components;
 
 // Column structure management: child registration (columns, bands, top-level nodes), projection of
-// the declarative <FlareColumn> descriptors into the internal GridColumn model, leaf ordering and
+// the declarative <FlareColumn> descriptors into the internal DataGridColumn model, leaf ordering and
 // sort-header handling. Split out of FlareDataGrid.razor.
 public partial class FlareDataGrid<TItem>
 {
@@ -130,11 +130,11 @@ public partial class FlareDataGrid<TItem>
         _hasBandsCache = _topBandsCache.Count > 0;
         _bandRowCountCache = _topBandsCache.Count > 0 ? _topBandsCache.Max(b => b.Depth) + 1 : 0;
 
-        var list = new List<GridColumn<TItem>>(_columns.Count);
+        var list = new List<DataGridColumn<TItem>>(_columns.Count);
         foreach (var c in _columns)
         {
             var composite = c.CompositeRows.Count > 0 ? c.CompositeRows : null;
-            list.Add(new GridColumn<TItem>
+            list.Add(new DataGridColumn<TItem>
             {
                 Title = c.Title,
                 Id = c.Id,
@@ -165,6 +165,15 @@ public partial class FlareDataGrid<TItem>
                 CompositeMode = c.CompositeMode,
             });
         }
+        // Columns supplied as data. They come after the markup ones, which own header positions through
+        // their band structure; a definition whose key is already taken is dropped rather than producing
+        // two columns that would share a sort key, a filter slot and a visibility entry.
+        if (ColumnDefinitions is not null)
+        {
+            foreach (var def in ColumnDefinitions)
+                if (!list.Any(c => c.Key == def.Key))
+                    list.Add(def);
+        }
         // Order columns to match the header leaf order (authoritative, and robust against
         // child-registration timing). For a flat grid this is just the declaration order.
         if (_headerNodes.Count > 0)
@@ -194,7 +203,7 @@ public partial class FlareDataGrid<TItem>
             .Select(c => $"{c.Key}:{c.Width}:{c.Frozen}:{c.FrozenRight}"));
     }
 
-    private List<GridColumn<TItem>> _visibleColumnsCache = [];
+    private List<DataGridColumn<TItem>> _visibleColumnsCache = [];
 
     // Cached per-column strategy bundle. Depends only on _gridColumns, so it is computed once per
     // column-set change (cleared in RebuildGridColumns) instead of on every pipeline run.
@@ -254,7 +263,7 @@ public partial class FlareDataGrid<TItem>
         return order;
     }
 
-    private async Task OnHeaderClick(GridColumn<TItem> col, MouseEventArgs e)
+    private async Task OnHeaderClick(DataGridColumn<TItem> col, MouseEventArgs e)
     {
         if (!col.Sortable) return;
 

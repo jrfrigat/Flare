@@ -6,7 +6,7 @@ namespace Flare.Components;
 public static class DataGridCommands
 {
     /// <summary>Sort by a column. If shift is held, adds to multi-sort.</summary>
-    public static DataGridState<T> Sort<T>(DataGridState<T> state, GridColumn<T> column, bool shift) where T : notnull
+    public static DataGridState<T> Sort<T>(DataGridState<T> state, DataGridColumn<T> column, bool shift) where T : notnull
     {
         var sorts = new List<DataGridSort>(state.Sorts);
 

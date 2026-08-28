@@ -1635,9 +1635,11 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Bordered", @"bool", null, @"Draws vertical borders between columns.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"CellSelection", @"bool", null, @"Enables Excel-like cell-range selection. With the grid focused, arrow keys move the active cell, Shift+Arrow (and Shift+Home/End) extend a rectangular selection, click-drag and Shift+Click select with the mouse, Ctrl+C copies the selection to the clipboard as tab-separated text and (when OnPaste is set) Ctrl+V pastes tab-separated text into the cells.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"ColumnDefinitions", @"IEnumerable<DataGridColumn<TItem?>>?", null, @"Columns supplied as data instead of markup - generated from metadata, kept in a field, shared between grids or reordered in C#. Combines with Columns: markup columns come first (their band structure fixes their header positions), then these, and a definition whose Key a markup column already uses is ignored.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"ColumnOrder", @"IReadOnlyList<string>?", null, @"Controlled column display order by column key - Id, else SortKey, else Title (left to right). Columns not listed keep their declared order at the end. When set, treat the grid as controlled and update this value from OnColumnOrderChanged.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Columns", @"RenderFragment?", null, @"FlareColumn descriptors defining the grid columns.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"ColumnsButtonLabel", @"string?", null, @"Overrides the label on the column-picker button (defaults to a localized ""Columns"").", null, false, false, false, @"FlareDataGrid"),
+                new ApiParameterInfo(@"Context", @"DataGridContext<TItem?>?", null, @"An externally-owned handle for driving this grid. Declare a DataGridContext in the page and pass it here to put pagers, column pickers, query editors or any custom control anywhere in the layout, bound to this grid. When omitted the grid uses one of its own, which children reach through the cascade.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"Dense", @"bool", null, @"Compact row height and cell padding for dense tables.", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"EditMode", @"DataGridEditMode", null, @"Edit mode: None (default), Inline (row), or Cell (click individual cells).", null, false, false, false, @"FlareDataGrid"),
                 new ApiParameterInfo(@"EmptyStateContent", @"RenderFragment?", null, @"Custom content displayed when no data rows are available. Defaults to FlareEmptyState.", null, false, false, false, @"FlareDataGrid"),
@@ -1715,8 +1717,6 @@ public static class ComponentApiRegistry
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"ClearAllFiltersAsync", @"ClearAllFiltersAsync()", @"Task", null, @"Clears all filters.",
                     System.Array.Empty<ApiMethodParameter>()),
-                new ApiMethodInfo(@"DeselectAll", @"DeselectAll()", @"void", null, @"Deselects all items.",
-                    System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Tears down JS interop and observers.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"FilterByAsync", @"FilterByAsync(string columnKey, string value)", @"Task", null, @"Applies a filter command to the grid.",
@@ -1737,35 +1737,73 @@ public static class ComponentApiRegistry
                     {
                         new ApiMethodParameter(@"pageIndex", @"int", @"Zero-based target page index."),
                     }),
+                new ApiMethodInfo(@"MoveColumnAsync", @"MoveColumnAsync(string columnKey, string beforeKey)", @"Task", null, @"Moves one column so that it sits immediately before another.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"columnKey", @"string", @"Key of the column to move."),
+                        new ApiMethodParameter(@"beforeKey", @"string", @"Key of the column it should precede; null moves it to the end."),
+                    }),
                 new ApiMethodInfo(@"NotifyStructureChanged", @"NotifyStructureChanged()", @"void", null, @"Re-projects columns and re-renders when the header structure (columns/bands) changes.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"RefreshAsync", @"RefreshAsync()", @"Task", null, @"Re-runs the query: reloads the page from the items provider, or re-filters and re-sorts the local Items.",
                     System.Array.Empty<ApiMethodParameter>()),
                 new ApiMethodInfo(@"RemoveBand", @"RemoveBand(FlareColumnBand band)", @"void", null, @"Unregisters a top-level band on dispose.",
                     new ApiMethodParameter[]
                     {
                         new ApiMethodParameter(@"band", @"FlareColumnBand", null),
                     }),
-                new ApiMethodInfo(@"SelectAll", @"SelectAll()", @"void", null, @"Selects all visible items.",
+                new ApiMethodInfo(@"ResetQueryAsync", @"ResetQueryAsync()", @"Task", null, @"Clears sorts, filters and paging, returning the grid to the query it started with.",
                     System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"SelectAllAsync", @"SelectAllAsync()", @"Task", null, @"Selects every row on the current page.",
+                    System.Array.Empty<ApiMethodParameter>()),
+                new ApiMethodInfo(@"SetColumnOrderAsync", @"SetColumnOrderAsync(IReadOnlyList<string> columnKeys)", @"Task", null, @"Replaces the column display order. Columns whose keys are not listed keep their relative order after the listed ones.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"columnKeys", @"IReadOnlyList<string>", @"Column keys in the wanted order."),
+                    }),
+                new ApiMethodInfo(@"SetColumnVisibleAsync", @"SetColumnVisibleAsync(string columnKey, bool visible)", @"Task", null, @"Shows or hides one column by its stable key.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"columnKey", @"string", @"Key of the column."),
+                        new ApiMethodParameter(@"visible", @"bool", @"True to show it, false to hide it."),
+                    }),
                 new ApiMethodInfo(@"SetPageSizeAsync", @"SetPageSizeAsync(int size)", @"Task", null, @"Changes the page size and resets to the first page. Used by a bound FlareDataGridPager.",
                     new ApiMethodParameter[]
                     {
                         new ApiMethodParameter(@"size", @"int", @"New page size (ignored when not positive)."),
                     }),
-                new ApiMethodInfo(@"SortByAsync", @"SortByAsync(GridColumn<TItem> column, bool shift)", @"Task", null, @"Applies a sort command to the grid.",
+                new ApiMethodInfo(@"SetRowSelectedAsync", @"SetRowSelectedAsync(TItem item, bool selected)", @"Task", null, @"Selects or deselects one row, honoring the grid's selection mode.",
                     new ApiMethodParameter[]
                     {
-                        new ApiMethodParameter(@"column", @"GridColumn<TItem>", null),
+                        new ApiMethodParameter(@"item", @"TItem", @"The row."),
+                        new ApiMethodParameter(@"selected", @"bool", @"True to select it, false to deselect it."),
+                    }),
+                new ApiMethodInfo(@"SetSelectionAsync", @"SetSelectionAsync(IEnumerable<TItem> items)", @"Task", null, @"Replaces the selection.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"items", @"IEnumerable<TItem>", @"The rows to select; an empty sequence clears the selection."),
+                    }),
+                new ApiMethodInfo(@"SetSortsAsync", @"SetSortsAsync(IReadOnlyList<DataGridSort> sorts)", @"Task", null, @"Replaces the sort stack in one step. Keys that match no column are dropped; a None entry removes that column from the stack.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"sorts", @"IReadOnlyList<DataGridSort>", @"The sorts to apply, outermost first."),
+                    }),
+                new ApiMethodInfo(@"SetTypedFilterAsync", @"SetTypedFilterAsync(string columnKey, DataGridFilter filter)", @"Task", null, @"Sets or clears a column's structured filter (the shape the column filter menus produce).",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"columnKey", @"string", @"Key of the column to filter."),
+                        new ApiMethodParameter(@"filter", @"DataGridFilter", @"The filter to apply; null clears the column's structured filter."),
+                    }),
+                new ApiMethodInfo(@"SortByAsync", @"SortByAsync(DataGridColumn<TItem> column, bool shift)", @"Task", null, @"Applies a sort command to the grid.",
+                    new ApiMethodParameter[]
+                    {
+                        new ApiMethodParameter(@"column", @"DataGridColumn<TItem>", null),
                         new ApiMethodParameter(@"shift", @"bool", null),
                     }),
                 new ApiMethodInfo(@"ToggleColumnAsync", @"ToggleColumnAsync(string key)", @"Task", null, @"Toggles a column's visibility by its stable key. Used by a bound DataGridColumnPicker; honors controlled HiddenColumns.",
                     new ApiMethodParameter[]
                     {
                         new ApiMethodParameter(@"key", @"string", null),
-                    }),
-                new ApiMethodInfo(@"ToggleSelection", @"ToggleSelection(TItem item)", @"void", null, @"Toggles selection for an item.",
-                    new ApiMethodParameter[]
-                    {
-                        new ApiMethodParameter(@"item", @"TItem", null),
                     }),
                 new ApiMethodInfo(@"TriggerLoad", @"TriggerLoad()", @"Task", null, @"Invoked from JS (IntersectionObserver) when the bottom sentinel becomes visible.",
                     System.Array.Empty<ApiMethodParameter>()),
@@ -1787,13 +1825,15 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem?>?", null, @"Optional explicit grid binding (e.g. Grid=""_grid"") for placing this control outside the grid. When omitted, the enclosing FlareDataGrid is used.", null, false, false, false, @"FlareDataGridFilterPresets"),
+                new ApiParameterInfo(@"Context", @"DataGridContext<TItem?>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem?>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Presets", @"IReadOnlyList<DataGridFilterPreset>?", null, @"The named filter presets to offer. Each preset's Filter is an advanced filter tree.", null, false, false, false, @"FlareDataGridFilterPresets"),
                 new ApiParameterInfo(@"Size", @"FieldSize", null, @"Field size of the select.", null, false, false, false, @"FlareDataGridFilterPresets"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareDataGridControl",
                 @"ComponentBase",
                 @"object",
             },
@@ -1809,7 +1849,8 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"BoundaryCount", @"int", null, @"How many page buttons to always show at each end (passed to the pagination control).", null, false, false, false, @"FlareDataGridPager"),
-                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem?>?", null, @"Optional explicit grid binding (e.g. Grid=""_grid"") for placing this control outside the grid. When omitted, the enclosing FlareDataGrid is used.", null, false, false, false, @"FlareDataGridPager"),
+                new ApiParameterInfo(@"Context", @"DataGridContext<TItem?>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
+                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem?>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"RowsLabel", @"string?", null, @"Accessible label / rows-per-page caption. When null (the default), the grid's RowsLabel is used, then a localized fallback.", null, false, false, false, @"FlareDataGridPager"),
                 new ApiParameterInfo(@"RowsPerPageOptions", @"IReadOnlyList<int>?", null, @"Page-size choices offered in the rows-per-page dropdown. When null (the default), the grid's RowsPerPageOptions are used; set this to control the options from the pager instead. A single option (or none) hides the dropdown.", null, false, false, false, @"FlareDataGridPager"),
                 new ApiParameterInfo(@"ShowFirstLast", @"bool", null, @"Shows first/last jump buttons in addition to prev/next.", null, false, false, false, @"FlareDataGridPager"),
@@ -1819,6 +1860,7 @@ public static class ComponentApiRegistry
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
             {
+                @"FlareDataGridControl",
                 @"ComponentBase",
                 @"object",
             },
@@ -1833,18 +1875,20 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
+                new ApiParameterInfo(@"Context", @"DataGridContext<TItem?>?", null, @"The grid context this control drives. Set it to place the control anywhere on the page; omit it inside a grid, where the cascade supplies one.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"DebounceMs", @"int", null, @"Debounce delay in milliseconds before the filter is applied (default 250).", null, false, false, false, @"FlareDataGridQuickFilter"),
-                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem?>?", null, @"Optional explicit grid binding (e.g. Grid=""_grid"") for placing this control outside the grid. When omitted, the enclosing FlareDataGrid is used.", null, false, false, false, @"FlareDataGridQuickFilter"),
+                new ApiParameterInfo(@"Grid", @"FlareDataGrid<TItem?>?", null, @"The grid this control drives, as an alternative to Context when the page already holds an @ref to the grid itself.", null, false, false, false, @"FlareDataGridControl"),
                 new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text for the search box (defaults to the localized ""Search"").", null, false, false, false, @"FlareDataGridQuickFilter"),
                 new ApiParameterInfo(@"Size", @"FieldSize", null, @"Field size of the search box.", null, false, false, false, @"FlareDataGridQuickFilter"),
             },
             new ApiMethodInfo[]
             {
-                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
+                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, @"Unsubscribes from the bound context.",
                     System.Array.Empty<ApiMethodParameter>()),
             },
             new string[]
             {
+                @"FlareDataGridControl",
                 @"ComponentBase",
                 @"object",
             },
@@ -7103,6 +7147,27 @@ public static class ComponentApiRegistry
                 @"FlareContainer",
                 @"FlareLayoutContent",
             });
+
+        e[@"DataGridChange"] = new ApiEnumInfo(
+            @"DataGridChange",
+            @"Flare.Components.DataGridChange",
+            @"Flare.Components",
+            @"What changed in a DataGridContext, as a bit mask. Raised by Changed and matched against FlareDataGridControl<TItem>.Observes so a control re-renders only for the changes it actually shows. Reading the changed values is a separate, explicit step: the notification carries flags rather than a state snapshot so a burst of keystrokes in a filter box costs no allocation.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"Nothing changed."),
+                new ApiEnumMember(@"Sort", @"1", @"The sort stack changed (a column was sorted, re-sorted or unsorted)."),
+                new ApiEnumMember(@"Filter", @"2", @"A column filter, the quick filter or the advanced filter tree changed."),
+                new ApiEnumMember(@"Page", @"4", @"The current page or the page size changed."),
+                new ApiEnumMember(@"Columns", @"8", @"The column set changed: registration, visibility, display order or width."),
+                new ApiEnumMember(@"Selection", @"16", @"The selected rows changed."),
+                new ApiEnumMember(@"Grouping", @"32", @"The group-by keys changed."),
+                new ApiEnumMember(@"Data", @"64", @"The rows or the total row count changed (a provider load, a refresh, new Items)."),
+                new ApiEnumMember(@"Editing", @"128", @"A row or cell entered, left or committed edit mode."),
+                new ApiEnumMember(@"All", @"255", @"Every change kind. The default for a control that does not narrow its interest."),
+            },
+            System.Array.Empty<string>());
 
         e[@"DataGridEditMode"] = new ApiEnumInfo(
             @"DataGridEditMode",

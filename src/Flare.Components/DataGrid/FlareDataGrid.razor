@@ -541,7 +541,7 @@
     </tr>;
 
     // Shared leaf column header th (used by both the flat header row and the banded header).
-    private RenderFragment RenderColumnHeaderTh(GridColumn<TItem> col, int rowSpan) =>
+    private RenderFragment RenderColumnHeaderTh(DataGridColumn<TItem> col, int rowSpan) =>
     @<th role="columnheader"
         class="@_thClass(col) @(ReorderableColumns ? Css.Classes.DataGrid.ThDraggable : "") @(_dragColumn == col.Key ? Css.Classes.DataGrid.ThDragging : "")"
         style="@(col.Width is not null ? $"width:{col.Width}" : null)"

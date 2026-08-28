@@ -22,7 +22,7 @@ public partial class FlareDataGrid<TItem>
     private readonly Dictionary<TItem, int> _treeDepths = new();
 #pragma warning restore CS8714
 
-    private string GetTreeIndentStyle(GridColumn<TItem> col, TItem item)
+    private string GetTreeIndentStyle(DataGridColumn<TItem> col, TItem item)
     {
         if (Tree is null || _gridColumns.Count == 0 || !ReferenceEquals(col, _gridColumns[0])) return "";
         if (!_treeDepths.TryGetValue(item, out var depth) || depth == 0) return "";

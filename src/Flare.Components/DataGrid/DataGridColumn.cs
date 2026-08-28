@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Components;
 namespace Flare.Components;
 
 /// <summary>
-/// Unified internal column model for <c>FlareDataGrid</c>. Both the declarative
-/// <c>&lt;FlareColumn&gt;</c> child content and the fluent <c>ColumnsBuilder</c> API are projected
-/// into this single shape so the grid has one rendering / sorting / filtering path.
+/// A column as data: everything <c>FlareDataGrid</c> needs to render, sort, filter and edit one column,
+/// with no component attached. Declarative <c>&lt;FlareColumn&gt;</c> markup is projected into this shape,
+/// and a list of these can be handed to the grid directly through
+/// <c>FlareDataGrid.ColumnDefinitions</c> - which is how columns are generated from metadata, kept in a
+/// field, shared between grids or reordered in C# rather than in markup.
 /// </summary>
-public sealed class GridColumn<TItem>
+/// <typeparam name="TItem">Row type the column reads its value from.</typeparam>
+public sealed class DataGridColumn<TItem>
 {
     /// <summary>Header text shown in the column heading.</summary>
     public string Title { get; init; } = "";
