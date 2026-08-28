@@ -21,15 +21,25 @@ public partial class FlareChart
     // Width of one category slot in viewBox units - the group width for bars, the point spacing for lines.
     private double SlotWidth => _view.Span <= 0 ? _plotW : _plotW / _view.Span;
 
-    // Data marks are clipped to the plot rectangle so a zoomed window cannot paint over the axes. The
-    // group wraps a whole renderer's output in one markup blob rather than per mark: an unbalanced tag
-    // handed to AddMarkupContent would be repaired by the parser and the clip would land somewhere else.
+    // Data marks are clipped ONLY while a zoom window is in force, and only HORIZONTALLY.
+    //
+    // Only-when-zoomed: an unzoomed chart draws nothing outside its plot by construction, so clipping it
+    // buys nothing and costs the marks that legitimately overhang - the marker circle centred on the plot
+    // edge, the bubble at the extreme X.
+    //
+    // Horizontally-only: zoom moves the X axis and nothing else, so the vertical edges never need
+    // cutting - and cutting them removes the value label of a bar that reaches the top of the plot,
+    // which sits ABOVE its bar by design.
+    private bool _clipping => _zoomed;
+
+    // The group wraps a whole renderer's output in one markup blob rather than per mark: an unbalanced
+    // tag handed to AddMarkupContent would be repaired by the parser and the clip would land elsewhere.
     private string Clipped(string markup) =>
-        markup.Length == 0 ? "" : $"<g clip-path=\"url(#{_uid}-clip)\">{markup}</g>";
+        markup.Length == 0 || !_clipping ? markup : $"<g clip-path=\"url(#{_uid}-clip)\">{markup}</g>";
 
     // The clip rectangle itself, emitted once per chart next to the plot.
-    private string ClipPathDef => string.Create(_inv,
-        $"<defs><clipPath id=\"{_uid}-clip\"><rect x=\"{_padL}\" y=\"{_padT}\" width=\"{_plotW}\" height=\"{_plotH}\"/></clipPath></defs>");
+    private string ClipPathDef => !_clipping ? "" : string.Create(_inv,
+        $"<defs><clipPath id=\"{_uid}-clip\"><rect x=\"{_padL}\" y=\"0\" width=\"{_plotW}\" height=\"{_svgH}\"/></clipPath></defs>");
 
     // Index range worth drawing: everything outside is clipped away, so computing it costs nothing and
     // skipping it keeps a zoomed chart from building marks nobody can see.
