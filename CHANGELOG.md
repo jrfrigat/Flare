@@ -6,6 +6,39 @@ All notable changes to Flare are documented here. This project adheres to
 ## [Unreleased]
 
 ### Added
+- **`FlareChart` fills its container instead of scaling into it.** The chart drew into a fixed
+  `viewBox="0 0 400 {Height}"` with `height: auto`, which pinned its ASPECT RATIO: in a 1200px column a
+  220-tall chart rendered 1200x660, and no parameter changed it - only sparkline mode escaped, which is
+  why a sparkline could be made narrow and a normal chart could not. Two parameters now: `Width` (viewBox
+  units) authors the aspect ratio for `Fluid="false"`, and `Fluid` (default true) measures the plot
+  through the existing `IBrowserViewportService` port and sets the viewBox width to match, so one viewBox
+  unit is one CSS pixel. The chart is then exactly `Height` px tall at any width, nothing is stretched -
+  text, markers and stroke widths included - and dragging a splitter reflows it. Before the first
+  measurement (prerender, static SSR, no JS) it falls back to the authored ratio and renders exactly as
+  `Fluid="false"` would, so there is no letterbox and no blank frame.
+- **Line options moved from the chart to the series.** `Smooth`, `Area`, `ShowMarkers` and the new
+  `LineStyle` are nullable on `ChartSeries` and fall back to the chart-level parameter, so one chart can
+  mix a smoothed filled actual, a dashed plan and a dotted last-year line. `ChartLineStyle` is
+  `Solid | Dashed | Dotted | DashDot`, and the dash arrays behind them are theme tokens
+  (`--flare-chart-line-dash-*`) rather than literals.
+- **Charts zoom and pan.** `Zoomable` turns on drag-across-the-plot to zoom into a range, `Ctrl`+wheel to
+  zoom around the pointer, drag to pan once zoomed, double-click to reset, and a three-button toolbar;
+  `Zoom` / `ZoomChanged` make the window bindable. It is domain windowing, not a CSS transform: the chart
+  re-projects and redraws at full quality, data marks are clipped to the plot rectangle, and the axis
+  re-derives its ticks from the VISIBLE window - so zooming in reveals more labels rather than stretching
+  the same six. Works on line, area, bar, stacked bar, combo, scatter and bubble.
+- **Directional and positional annotations.** `ChartAnnotationKind` gains `Segment`, `Arrow`, `Point` and
+  `VerticalBand` alongside the three axis-parallel kinds, so a trend, a leader line or a callout can be
+  drawn at all. `ChartAnnotation` now carries named data coordinates (`X`, `Y`, `X2`, `Y2`) and is built
+  through factories - `Threshold`, `Marker`, `Band`, `VerticalBand`, `Segment`, `Arrow`, `At` - each of
+  which names the coordinates its kind reads. Annotations project through the same X mapping as the data,
+  so they track a zoom.
+- **`FlareColor` on chart series and annotations.** `ChartSeries.Color` and `ChartAnnotation.Color` were
+  `string?`, which is the one type that cannot express a semantic role: a threshold could not say "error"
+  and a revenue series could not say "success" without freezing a literal the theme has no say in. Both
+  are `FlareColor` now, so a role resolves through the theme and a raw CSS string still works through the
+  implicit conversion. `FlareColor` gains `CssValue` for the SVG case, where a class cannot be applied and
+  a color expression is what is needed.
 - **Flare now normalizes the document, not just the components.** A new `reset.css` ships in the global
   bundle: `box-sizing: border-box`, the body margin zeroed, and the body background, text color and
   type scale taken from `--flare-color-background` / `--flare-color-on-background` / the body typescale
@@ -16,7 +49,13 @@ All notable changes to Flare are documented here. This project adheres to
 - **The Gallery answers "several columns under one heading" directly.** The DataGrid page opens its
   feature section with a `FlareColumnBand` demo that does exactly that and nothing else. The two band
   demos that existed - a nested multi-level header and a banded virtual grid - both look like a
-  different, larger feature, so the simple case was effectively undocumented.
+  different, larger feature, so the simple case was effectively undocumented. The chart page gains four
+  sections for the work above: sizing, per-series line styles, zoom, and annotations.
+
+### Changed
+- **`ResizableEdge` is a top-level enum.** It was nested inside `FlareResizable`'s `@code` block, so
+  every call site had to write `FlareResizable.ResizableEdge.Right` while every other Flare enum is
+  reachable by its own name.
 
 ### Fixed
 - **DataGrid icons rendered as the words `check_box`, `edit` and `arrow_upward`.** Three call sites

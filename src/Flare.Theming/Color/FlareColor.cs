@@ -259,6 +259,13 @@ public readonly record struct FlareColor
     /// <summary>The shared role CSS class ("flare-color-primary"), or null for default/custom.</summary>
     public string? CssClass => RoleName is { } r ? $"flare-color-{r}" : null;
 
+    /// <summary>
+    /// The color as a CSS VALUE - <c>var(--flare-color-primary)</c> for a role, the sanitized literal for
+    /// a custom color, null for <see cref="Default"/>. Use where a class cannot be applied and a color
+    /// expression is what is needed: an SVG <c>stroke</c>/<c>fill</c>, a gradient stop, a shadow.
+    /// </summary>
+    public string? CssValue => RoleName is { } r ? $"var(--flare-color-{r})" : _custom;
+
     /// <summary>True for a dynamic-color value (precomputed tonal set), a subset of <see cref="IsCustom"/>.</summary>
     public bool IsDynamic => _on is not null;
 

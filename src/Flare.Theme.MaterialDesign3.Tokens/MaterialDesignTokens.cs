@@ -617,6 +617,16 @@ public class MaterialDesignTokens
         AnnotationWidth = "1.5",
         AnnotationDash = "4 3",
         AnnotationBandOpacity = "0.12",
+        AnnotationArrowSize = "7",
+        AnnotationPointRadius = "3.5",
+
+        // Round line caps make a 0-length dash paint as a dot, which is what Dotted has to be.
+        LineDashDashed = "6 4",
+        LineDashDotted = "0.1 4",
+        LineDashDashDot = "8 4 0.1 4",
+
+        ZoomSelectionFill = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
+        ZoomSelectionStroke = "var(--flare-color-primary)",
     };
 
     // Progress - MD3 Expressive: rounded full track, 4px thick, trailing stop-indicator dot, round

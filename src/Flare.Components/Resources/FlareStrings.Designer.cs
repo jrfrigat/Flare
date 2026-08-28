@@ -77,6 +77,33 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Aria_CloseTab", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zoom in.
+        /// </summary>
+        public static string Chart_ZoomIn {
+            get {
+                return ResourceManager.GetString("Chart_ZoomIn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zoom out.
+        /// </summary>
+        public static string Chart_ZoomOut {
+            get {
+                return ResourceManager.GetString("Chart_ZoomOut", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Reset zoom.
+        /// </summary>
+        public static string Chart_ZoomReset {
+            get {
+                return ResourceManager.GetString("Chart_ZoomReset", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Loading.

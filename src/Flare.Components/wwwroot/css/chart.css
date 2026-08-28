@@ -1,7 +1,39 @@
-/* Plot area - anchors the absolutely-positioned tooltip. */
+/* Plot area - anchors the absolutely-positioned tooltip, and is the element the fluid width is
+   measured on and the zoom gestures are bound to. */
 .flare-chart__plot {
     position: relative;
     width: 100%;
+}
+
+/* touch-action: a zoomable plot owns horizontal drags, so the browser must not steal them for a
+   pan/zoom gesture; vertical page scrolling still works. */
+.flare-chart__plot--zoomable {
+    cursor: crosshair;
+    touch-action: pan-y;
+    user-select: none;
+}
+
+.flare-chart__plot--zoomed {
+    cursor: grab;
+}
+
+.flare-chart__plot--zoomed:active {
+    cursor: grabbing;
+}
+
+.flare-chart__zoom-selection {
+    fill: var(--flare-chart-zoom-selection-fill);
+    stroke: var(--flare-chart-zoom-selection-stroke);
+    stroke-width: var(--flare-chart-annotation-width);
+    pointer-events: none;
+}
+
+/* The title row carries the zoom toolbar, so it becomes a row with the buttons pushed to the end. */
+.flare-chart__toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-1);
+    margin-inline-start: auto;
 }
 
 /* Enter animation (opt-in via Animate). Token-driven, CSS-only, and disabled under reduced-motion -
@@ -51,6 +83,9 @@
 }
 
 .flare-chart__title {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-2);
     margin-bottom: var(--flare-spacing-2);
 }
 

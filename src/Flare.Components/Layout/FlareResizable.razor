@@ -12,10 +12,10 @@
 </div>
 
 @code {
-    public enum ResizableEdge { Right, Bottom, Left, Top }
 
     /// <summary>Content rendered inside the resizable container.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>Which edge carries the drag handle. Default <see cref="ResizableEdge.Right" /> (width).</summary>
     [Parameter] public ResizableEdge Edge { get; set; } = ResizableEdge.Right;
     [Parameter] public string? InitialSize { get; set; }
     [Parameter] public string? MinSize { get; set; }

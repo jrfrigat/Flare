@@ -528,6 +528,18 @@
   <data name="Charts_ExtraTypes" xml:space="preserve">
     <value>Комбо, роза, полярный, пузырьковый, трендлайн и аннотации</value>
   </data>
+  <data name="Charts_Sizing" xml:space="preserve">
+    <value>Размеры: fluid и фиксированные пропорции</value>
+  </data>
+  <data name="Charts_LineStyles" xml:space="preserve">
+    <value>Сглаживание и стиль линии на каждый ряд</value>
+  </data>
+  <data name="Charts_Zoom" xml:space="preserve">
+    <value>Масштаб и панорамирование</value>
+  </data>
+  <data name="Charts_Annotations" xml:space="preserve">
+    <value>Аннотации: пороги, полосы, стрелки и выноски</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Группа чипов</value>
   </data>

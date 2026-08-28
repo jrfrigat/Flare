@@ -790,6 +790,13 @@ public static class CssVarMap
         v[Css.Tokens.Chart.AnnotationWidth] = t.Chart.AnnotationWidth;
         v[Css.Tokens.Chart.AnnotationDash] = t.Chart.AnnotationDash;
         v[Css.Tokens.Chart.AnnotationBandOpacity] = t.Chart.AnnotationBandOpacity;
+        v[Css.Tokens.Chart.AnnotationArrowSize] = t.Chart.AnnotationArrowSize;
+        v[Css.Tokens.Chart.AnnotationPointRadius] = t.Chart.AnnotationPointRadius;
+        v[Css.Tokens.Chart.LineDashDashed] = t.Chart.LineDashDashed;
+        v[Css.Tokens.Chart.LineDashDotted] = t.Chart.LineDashDotted;
+        v[Css.Tokens.Chart.LineDashDashDot] = t.Chart.LineDashDashDot;
+        v[Css.Tokens.Chart.ZoomSelectionFill] = t.Chart.ZoomSelectionFill;
+        v[Css.Tokens.Chart.ZoomSelectionStroke] = t.Chart.ZoomSelectionStroke;
         #endregion
 
         #region PROGRESS

@@ -7,6 +7,14 @@ public static class Chart
     public const string Root = "flare-chart";
     /// <summary>The <c>flare-chart__plot</c> CSS class.</summary>
     public const string Plot = "flare-chart__plot";
+    /// <summary>The <c>flare-chart__plot--zoomable</c> modifier: the plot accepts zoom/pan gestures.</summary>
+    public const string PlotZoomable = "flare-chart__plot--zoomable";
+    /// <summary>The <c>flare-chart__plot--zoomed</c> modifier: a zoom window is active, so dragging pans.</summary>
+    public const string PlotZoomed = "flare-chart__plot--zoomed";
+    /// <summary>The <c>flare-chart__toolbar</c> CSS class: the zoom buttons beside the title.</summary>
+    public const string Toolbar = "flare-chart__toolbar";
+    /// <summary>The <c>flare-chart__zoom-selection</c> CSS class: the drag-to-zoom selection rectangle.</summary>
+    public const string ZoomSelection = "flare-chart__zoom-selection";
     /// <summary>The <c>flare-chart__legend</c> CSS class.</summary>
     public const string Legend = "flare-chart__legend";
     /// <summary>The <c>flare-chart__legend-dot</c> CSS class.</summary>

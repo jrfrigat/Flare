@@ -528,6 +528,18 @@
   <data name="Charts_ExtraTypes" xml:space="preserve">
     <value>Combo, rose, polar, bubble, trend line &amp; annotations</value>
   </data>
+  <data name="Charts_Sizing" xml:space="preserve">
+    <value>Sizing: Fluid and Fixed Aspect Ratio</value>
+  </data>
+  <data name="Charts_LineStyles" xml:space="preserve">
+    <value>Per-Series Smoothing and Line Styles</value>
+  </data>
+  <data name="Charts_Zoom" xml:space="preserve">
+    <value>Zoom and Pan</value>
+  </data>
+  <data name="Charts_Annotations" xml:space="preserve">
+    <value>Annotations: Thresholds, Bands, Arrows and Callouts</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Chip Group</value>
   </data>

@@ -139,4 +139,21 @@ public sealed record ChartTokens
     [CssVar(Chart.AnnotationDash)] public required string AnnotationDash { get; init; }
     /// <summary>Fill opacity of an annotation band.</summary>
     [CssVar(Chart.AnnotationBandOpacity)] public required string AnnotationBandOpacity { get; init; }
+
+    /// <summary>Dash array behind <c>ChartLineStyle.Dashed</c>.</summary>
+    [CssVar(Chart.LineDashDashed)] public required string LineDashDashed { get; init; }
+    /// <summary>Dash array behind <c>ChartLineStyle.Dotted</c>.</summary>
+    [CssVar(Chart.LineDashDotted)] public required string LineDashDotted { get; init; }
+    /// <summary>Dash array behind <c>ChartLineStyle.DashDot</c>.</summary>
+    [CssVar(Chart.LineDashDashDot)] public required string LineDashDashDot { get; init; }
+
+    /// <summary>Arrowhead length of a directional annotation, in viewBox units.</summary>
+    [CssVar(Chart.AnnotationArrowSize)] public required string AnnotationArrowSize { get; init; }
+    /// <summary>Marker radius of a point annotation, in viewBox units.</summary>
+    [CssVar(Chart.AnnotationPointRadius)] public required string AnnotationPointRadius { get; init; }
+
+    /// <summary>Fill of the drag-to-zoom selection rectangle.</summary>
+    [CssVar(Chart.ZoomSelectionFill)] public required string ZoomSelectionFill { get; init; }
+    /// <summary>Stroke of the drag-to-zoom selection rectangle.</summary>
+    [CssVar(Chart.ZoomSelectionStroke)] public required string ZoomSelectionStroke { get; init; }
 }

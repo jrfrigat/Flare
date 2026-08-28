@@ -658,6 +658,16 @@ public class FluentUI2Tokens
         AnnotationWidth = "1",
         AnnotationDash = "3 3",
         AnnotationBandOpacity = "0.1",
+        AnnotationArrowSize = "6",
+        AnnotationPointRadius = "3",
+
+        // Fluent's line cap is butt, so a dotted stroke needs a real (short) dash rather than a 0-length one.
+        LineDashDashed = "5 3",
+        LineDashDotted = "1 3",
+        LineDashDashDot = "6 3 1 3",
+
+        ZoomSelectionFill = "color-mix(in srgb, var(--flare-color-primary) 12%, transparent)",
+        ZoomSelectionStroke = "var(--flare-color-primary)",
     };
 
     // Progress - Fluent: thin 2px rail, squared corners, no stop dot, 3px butt-cap ring. Wavy is left

@@ -1,0 +1,20 @@
+@* Fluid (the default): the chart measures its own plot and fills it. Drag the handle on the right of
+   the first card - the chart redraws at the new width, keeps its 220px height, and stretches nothing. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareResizable Edge="ResizableEdge.Right" InitialSize="70%" MinSize="240px">
+        <FlareCard>
+            <FlareCardContent>
+                <FlareChart Data="_data" Height="220"
+                            Title="Fluid - drag the right edge" />
+            </FlareCardContent>
+        </FlareCard>
+    </FlareResizable>
+
+    @* Fluid="false" fixes the ASPECT RATIO instead: Width x Height is a ratio, and the drawing scales
+       into its container like an image. Two charts, same data, different authored ratio. *@
+    <FlareChart Data="_data" Fluid="false" Width="1200" Height="220"
+                Title="Fixed 1200 x 220 ratio - wide and short at every container size" />
+
+    <FlareChart Data="_data" Fluid="false" Width="400" Height="400"
+                Title="Fixed 400 x 400 ratio - the same data, square" />
+</FlareStack>

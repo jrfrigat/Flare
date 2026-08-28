@@ -1,0 +1,10 @@
+@* Smooth, Area, ShowMarkers and LineStyle are per SERIES: the chart-level parameter is only the
+   default a series that says nothing falls back to. One chart, four different lines. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareChart Data="_mixed" Height="260"
+                Title="One chart, four line treatments" />
+
+    @* The same four styles on their own, so the dash patterns are readable side by side. *@
+    <FlareChart Data="_styles" Height="240" ShowMarkers="true"
+                Title="Solid / Dashed / Dotted / DashDot - dash arrays come from the theme" />
+</FlareStack>
