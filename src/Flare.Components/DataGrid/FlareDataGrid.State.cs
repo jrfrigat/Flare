@@ -301,6 +301,7 @@ public partial class FlareDataGrid<TItem>
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         // Non-virtualized grids render rows from _pageItems, which Virtualize.RefreshDataAsync does
         // not touch - request a render so the recomputed rows reach the DOM.
         StateHasChanged();

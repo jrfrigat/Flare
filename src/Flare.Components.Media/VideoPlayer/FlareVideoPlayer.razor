@@ -135,6 +135,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private async Task TogglePlayAsync()
@@ -149,6 +150,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private async Task ToggleMuteAsync()
@@ -161,6 +163,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private async Task RequestFullscreenAsync()
@@ -172,6 +175,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private async Task OnSeekInput(ChangeEventArgs e)
@@ -183,6 +187,7 @@
             try { await _module.InvokeVoidAsync("seek", _id, t); }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
     }
 
@@ -196,6 +201,7 @@
             try { await _module.InvokeVoidAsync("setVolume", _id, v); }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
     }
 
@@ -209,6 +215,7 @@
             try { await _module.InvokeVoidAsync("setPlaybackRate", _id, rate); }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
     }
 
@@ -249,6 +256,7 @@
             try { await _module.InvokeVoidAsync("destroy", _id); }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
             await _module.DisposeAsync();
         }
         _dotNetRef?.Dispose();

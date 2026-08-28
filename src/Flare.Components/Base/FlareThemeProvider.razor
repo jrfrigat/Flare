@@ -105,6 +105,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     // Gate the readiness signal on the last thing that still loads asynchronously after the themed
@@ -163,7 +164,7 @@
         try
         {
             string? accent = null;
-            try { accent = await ThemeJsService.GetAccentColorAsync(); } catch (JSDisconnectedException) { }
+            try { accent = await ThemeJsService.GetAccentColorAsync(); } catch (JSDisconnectedException) { } catch (JSException) { }
             _dynamicThemeId = ThemeService.CurrentTheme.Id;
 
             // A genuine OS accent (e.g. Firefox, or an installed app where the engine exposes it) seeds
@@ -191,6 +192,7 @@
                 ThemeService.CurrentTheme.Id, ThemeService.CurrentPalette.Id, ThemeService.IsDark);
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private async Task HandleThemeChangedAsync()

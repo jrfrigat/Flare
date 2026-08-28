@@ -520,12 +520,14 @@ public partial class FlareDataGrid<TItem>
                 try { await Grid.InitResizeHandlesAsync(_tableRef); }
                 catch (InvalidOperationException) { }
                 catch (JSDisconnectedException) { }
+                catch (JSException) { }
             }
             if (_columns.Any(c => c.Frozen || c.FrozenRight))
             {
                 try { await Grid.UpdateFrozenOffsetsAsync(_tableRef); }
                 catch (InvalidOperationException) { }
                 catch (JSDisconnectedException) { }
+                catch (JSException) { }
             }
         }
 
@@ -540,6 +542,7 @@ public partial class FlareDataGrid<TItem>
             }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
         else if (!_infiniteMode && _infiniteObserverReady)
         {
@@ -552,6 +555,7 @@ public partial class FlareDataGrid<TItem>
         try { await Grid.DisposeInfiniteAsync(_infiniteSentinel); }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         _infiniteObserverReady = false;
     }
 

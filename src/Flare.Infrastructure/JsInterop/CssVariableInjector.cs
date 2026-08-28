@@ -39,6 +39,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Sets the static (non-variable) theme CSS block.</summary>
@@ -51,6 +52,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Applies custom token overrides on top of the active theme.</summary>
@@ -63,6 +65,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Removes previously applied custom token overrides.</summary>
@@ -75,6 +78,7 @@ public sealed class CssVariableInjector : ICssVariableInjector, IAsyncDisposable
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Disposes the injector and releases its JS interop module.</summary>

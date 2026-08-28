@@ -163,6 +163,7 @@
             }
             catch (InvalidOperationException) { }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
         else if (!Open && _wasOpen && Variant == DrawerVariant.Temporary)
         {

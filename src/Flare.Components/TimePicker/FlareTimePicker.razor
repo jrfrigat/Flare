@@ -223,6 +223,7 @@
     {
         try { await Overlay.RemoveAnchoredPanelAsync(_panelId); }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         await base.DisposeAsync();
     }
 
@@ -324,6 +325,7 @@
                 _panelPositioned = _open;
             }
             catch (JSDisconnectedException) { }
+            catch (JSException) { }
         }
 
         if (_focusDrop)

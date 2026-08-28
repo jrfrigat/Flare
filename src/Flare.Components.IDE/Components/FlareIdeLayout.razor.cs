@@ -106,6 +106,7 @@ public partial class FlareIdeLayout : FlareComponentBase
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Invoked from JS during a divider drag with the new region size in pixels.</summary>

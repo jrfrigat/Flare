@@ -112,6 +112,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private async Task ExecAsync(string command, string? value = null)
@@ -122,6 +123,7 @@
             await _module.InvokeVoidAsync("execCommand", _editorId, command, value);
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     private void ToggleLinkInput()
@@ -174,6 +176,7 @@
             }
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         _dotNetRef?.Dispose();
         await base.DisposeAsync();
     }

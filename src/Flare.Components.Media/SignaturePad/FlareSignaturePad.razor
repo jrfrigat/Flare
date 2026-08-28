@@ -68,6 +68,7 @@
         }
         catch (InvalidOperationException) { }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     /// <summary>Returns the current canvas content as a base-64-encoded PNG data URL, or null when unavailable.</summary>
@@ -79,6 +80,7 @@
             return await _module.InvokeAsync<string?>("getDataUrl", _padId);
         }
         catch (JSDisconnectedException) { return null; }
+        catch (JSException) { return null; }
     }
 
     /// <summary>Clears all drawn strokes from the canvas.</summary>
@@ -90,6 +92,7 @@
             await _module.InvokeVoidAsync("clear", _padId);
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
     }
 
     [JSInvokable]
@@ -109,6 +112,7 @@
             }
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         _dotNetRef?.Dispose();
         await base.DisposeAsync();
     }

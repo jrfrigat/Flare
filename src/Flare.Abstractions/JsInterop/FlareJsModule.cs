@@ -47,6 +47,7 @@ public abstract class FlareJsModule : IAsyncDisposable
             await module.DisposeAsync();
         }
         catch (JSDisconnectedException) { }
+        catch (JSException) { }
         catch (OperationCanceledException) { }
         GC.SuppressFinalize(this);
     }
