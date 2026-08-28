@@ -145,7 +145,7 @@ public class C_FlareResizableTests : FlareTestContext
     public void BottomEdge_HasBottomClass()
     {
         var cut = Render<FlareResizable>(p => p
-            .Add(x => x.Edge, FlareResizable.ResizableEdge.Bottom));
+            .Add(x => x.Edge, ResizableEdge.Bottom));
 
         Assert.Contains("flare-resizable--bottom", cut.Find(".flare-resizable").ClassName ?? "");
     }

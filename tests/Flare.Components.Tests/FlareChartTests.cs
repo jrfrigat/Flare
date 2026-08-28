@@ -460,7 +460,7 @@ public class FlareChartTests : FlareTestContext
             .Add(x => x.Data, _data)
             .Add(x => x.Annotations, new[]
             {
-                new ChartAnnotation(ChartAnnotationKind.HorizontalLine, 5, Label: "Target"),
+                ChartAnnotation.Threshold(5, "Target"),
             }));
 
         Assert.Contains(cut.FindAll("line"),

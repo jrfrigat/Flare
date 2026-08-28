@@ -1,6 +1,6 @@
 # FlareChart: sizing, per-series styling, colors, zoom and annotations
 
-**Status: OPEN. Tier 1. Reported items 4, 5, 6, 8, 12, 13.**
+**Status: DONE. Tier 1. Reported items 4, 5, 6, 8, 12, 13.**
 
 Six reports against one component. They are one issue because four of them are the same underlying
 mistake: **chart-wide parameters where the data model should carry the value.** The stated goal from the

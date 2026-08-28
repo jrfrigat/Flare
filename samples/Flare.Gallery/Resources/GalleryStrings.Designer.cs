@@ -1519,6 +1519,42 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Sizing: Fluid and Fixed Aspect Ratio.
+        /// </summary>
+        public static string Charts_Sizing {
+            get {
+                return ResourceManager.GetString("Charts_Sizing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Per-Series Smoothing and Line Styles.
+        /// </summary>
+        public static string Charts_LineStyles {
+            get {
+                return ResourceManager.GetString("Charts_LineStyles", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Zoom and Pan.
+        /// </summary>
+        public static string Charts_Zoom {
+            get {
+                return ResourceManager.GetString("Charts_Zoom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Annotations: Thresholds, Bands, Arrows and Callouts.
+        /// </summary>
+        public static string Charts_Annotations {
+            get {
+                return ResourceManager.GetString("Charts_Annotations", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Pie Chart.
         /// </summary>
         public static string Charts_Pie {

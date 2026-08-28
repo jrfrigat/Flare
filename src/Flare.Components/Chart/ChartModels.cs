@@ -42,29 +42,149 @@ public enum ChartSeriesKind
     Area,
 }
 
+/// <summary>
+/// Stroke pattern of a line, trend line or annotation. The dash arrays behind the patterned values are
+/// theme tokens (<c>--flare-chart-line-dash-*</c>), so a theme retunes them without touching a call site.
+/// </summary>
+public enum ChartLineStyle
+{
+    /// <summary>Unbroken stroke.</summary>
+    Solid,
+    /// <summary>Evenly spaced dashes.</summary>
+    Dashed,
+    /// <summary>Round-ended dots.</summary>
+    Dotted,
+    /// <summary>Alternating dash and dot.</summary>
+    DashDot,
+}
+
 /// <summary>The kind of overlay a <see cref="ChartAnnotation"/> draws.</summary>
 public enum ChartAnnotationKind
 {
-    /// <summary>A horizontal line at a value on the Y axis (e.g. a target or threshold).</summary>
+    /// <summary>A horizontal line at <see cref="ChartAnnotation.Y"/> (a target or threshold).</summary>
     HorizontalLine,
-    /// <summary>A vertical line at a category index (or X value on scatter charts).</summary>
+    /// <summary>A vertical line at <see cref="ChartAnnotation.X"/> (category index, or X value on scatter).</summary>
     VerticalLine,
-    /// <summary>A shaded horizontal band between two Y values.</summary>
+    /// <summary>A shaded band between <see cref="ChartAnnotation.Y"/> and <see cref="ChartAnnotation.Y2"/>.</summary>
     HorizontalBand,
+    /// <summary>A shaded band between <see cref="ChartAnnotation.X"/> and <see cref="ChartAnnotation.X2"/>.</summary>
+    VerticalBand,
+    /// <summary>A free line from (X,Y) to (X2,Y2) in data coordinates.</summary>
+    Segment,
+    /// <summary>A <see cref="Segment"/> with an arrowhead at (X2,Y2) - a trend or a callout leader.</summary>
+    Arrow,
+    /// <summary>A marked point at (X,Y) with an optional label.</summary>
+    Point,
 }
 
-/// <summary>An annotation (threshold line, target line or band) drawn over a cartesian chart.</summary>
-/// <param name="Kind">The overlay kind.</param>
-/// <param name="Value">The primary value (Y for horizontal, X/category for vertical).</param>
-/// <param name="Value2">The second Y value for <see cref="ChartAnnotationKind.HorizontalBand"/>.</param>
-/// <param name="Label">Optional text drawn next to the annotation.</param>
-/// <param name="Color">Optional CSS color; defaults to a muted outline color.</param>
-public sealed record ChartAnnotation(
-    ChartAnnotationKind Kind,
-    double Value,
-    double? Value2 = null,
-    string? Label = null,
-    string? Color = null);
+/// <summary>Where an annotation's label sits relative to the annotation itself.</summary>
+public enum ChartAnnotationLabelPosition
+{
+    /// <summary>Chosen from the annotation kind: outside-end for lines, above for points and segments.</summary>
+    Auto,
+    /// <summary>At the annotation's start (leading edge / first point).</summary>
+    Start,
+    /// <summary>At the annotation's end (trailing edge / last point).</summary>
+    End,
+}
+
+/// <summary>
+/// An overlay drawn over a cartesian chart in DATA coordinates: a threshold, a target, a shaded range, a
+/// directional segment or arrow, or a labelled point. Build one through a factory
+/// (<see cref="Threshold"/>, <see cref="Band"/>, <see cref="Arrow"/>, ...) rather than by hand - the
+/// factories name which coordinates each kind reads.
+/// </summary>
+public sealed record ChartAnnotation
+{
+    /// <summary>Which overlay to draw; decides which of the coordinates below are read.</summary>
+    public required ChartAnnotationKind Kind { get; init; }
+
+    /// <summary>Primary X: a category index on a category chart, an X value on a scatter/bubble chart.</summary>
+    public double X { get; init; }
+
+    /// <summary>Primary Y, on the value axis.</summary>
+    public double Y { get; init; }
+
+    /// <summary>Second X, for <see cref="ChartAnnotationKind.VerticalBand"/>, <see cref="ChartAnnotationKind.Segment"/>
+    /// and <see cref="ChartAnnotationKind.Arrow"/>.</summary>
+    public double X2 { get; init; }
+
+    /// <summary>Second Y, for <see cref="ChartAnnotationKind.HorizontalBand"/>, <see cref="ChartAnnotationKind.Segment"/>
+    /// and <see cref="ChartAnnotationKind.Arrow"/>.</summary>
+    public double Y2 { get; init; }
+
+    /// <summary>Optional text drawn next to the annotation.</summary>
+    public string? Label { get; init; }
+
+    /// <summary>Where the label sits. Default <see cref="ChartAnnotationLabelPosition.Auto"/>.</summary>
+    public ChartAnnotationLabelPosition LabelPosition { get; init; }
+
+    /// <summary>Annotation color. Left at <see cref="FlareColor.Default"/> the theme's annotation color is used.</summary>
+    public FlareColor Color { get; init; }
+
+    /// <summary>Stroke pattern of the line kinds. Null uses the theme's annotation dash.</summary>
+    public ChartLineStyle? LineStyle { get; init; }
+
+    /// <summary>A horizontal threshold / target line at <paramref name="y"/>.</summary>
+    /// <param name="y">Value-axis position of the line.</param>
+    /// <param name="label">Optional text drawn at the line's end.</param>
+    /// <param name="color">Line color; default uses the theme's annotation color.</param>
+    public static ChartAnnotation Threshold(double y, string? label = null, FlareColor color = default) =>
+        new() { Kind = ChartAnnotationKind.HorizontalLine, Y = y, Label = label, Color = color };
+
+    /// <summary>A vertical marker line at category index (or scatter X) <paramref name="x"/>.</summary>
+    /// <param name="x">Category index, or X value on a scatter/bubble chart.</param>
+    /// <param name="label">Optional text drawn beside the line.</param>
+    /// <param name="color">Line color; default uses the theme's annotation color.</param>
+    public static ChartAnnotation Marker(double x, string? label = null, FlareColor color = default) =>
+        new() { Kind = ChartAnnotationKind.VerticalLine, X = x, Label = label, Color = color };
+
+    /// <summary>A shaded horizontal band between two values on the value axis.</summary>
+    /// <param name="from">First value-axis bound.</param>
+    /// <param name="to">Second value-axis bound.</param>
+    /// <param name="label">Optional text drawn at the band's top edge.</param>
+    /// <param name="color">Fill color; default uses the theme's annotation color.</param>
+    public static ChartAnnotation Band(double from, double to, string? label = null, FlareColor color = default) =>
+        new() { Kind = ChartAnnotationKind.HorizontalBand, Y = from, Y2 = to, Label = label, Color = color };
+
+    /// <summary>A shaded vertical band between two category indices (or scatter X values).</summary>
+    /// <param name="from">First category index / X value.</param>
+    /// <param name="to">Second category index / X value.</param>
+    /// <param name="label">Optional text drawn at the band's leading edge.</param>
+    /// <param name="color">Fill color; default uses the theme's annotation color.</param>
+    public static ChartAnnotation VerticalBand(double from, double to, string? label = null, FlareColor color = default) =>
+        new() { Kind = ChartAnnotationKind.VerticalBand, X = from, X2 = to, Label = label, Color = color };
+
+    /// <summary>A free line between two data points.</summary>
+    /// <param name="x1">Start category index / X value.</param>
+    /// <param name="y1">Start value.</param>
+    /// <param name="x2">End category index / X value.</param>
+    /// <param name="y2">End value.</param>
+    /// <param name="label">Optional text drawn at the end point.</param>
+    /// <param name="color">Line color; default uses the theme's annotation color.</param>
+    public static ChartAnnotation Segment(
+        double x1, double y1, double x2, double y2, string? label = null, FlareColor color = default) =>
+        new() { Kind = ChartAnnotationKind.Segment, X = x1, Y = y1, X2 = x2, Y2 = y2, Label = label, Color = color };
+
+    /// <summary>A directional line with an arrowhead at the end point - a trend or a callout leader.</summary>
+    /// <param name="x1">Start category index / X value.</param>
+    /// <param name="y1">Start value.</param>
+    /// <param name="x2">End category index / X value, where the arrowhead is drawn.</param>
+    /// <param name="y2">End value.</param>
+    /// <param name="label">Optional text drawn at the arrowhead.</param>
+    /// <param name="color">Line color; default uses the theme's annotation color.</param>
+    public static ChartAnnotation Arrow(
+        double x1, double y1, double x2, double y2, string? label = null, FlareColor color = default) =>
+        new() { Kind = ChartAnnotationKind.Arrow, X = x1, Y = y1, X2 = x2, Y2 = y2, Label = label, Color = color };
+
+    /// <summary>A marked, labelled point at a data coordinate.</summary>
+    /// <param name="x">Category index / X value.</param>
+    /// <param name="y">Value.</param>
+    /// <param name="label">Optional text drawn above the point.</param>
+    /// <param name="color">Marker color; default uses the theme's annotation color.</param>
+    public static ChartAnnotation At(double x, double y, string? label = null, FlareColor color = default) =>
+        new() { Kind = ChartAnnotationKind.Point, X = x, Y = y, Label = label, Color = color };
+}
 
 /// <summary>A single X/Y point for a scatter or bubble series.</summary>
 /// <param name="X">The horizontal value.</param>
@@ -87,19 +207,55 @@ public enum ChartLegendPosition
     None,
 }
 
+/// <summary>
+/// The visible horizontal window of a zoomable chart, in the chart's own X units - category index for a
+/// category chart, X value for a scatter/bubble chart. A window of the full domain is "zoomed out".
+/// </summary>
+/// <param name="From">Left edge of the visible window.</param>
+/// <param name="To">Right edge of the visible window.</param>
+public readonly record struct ChartZoom(double From, double To)
+{
+    /// <summary>The window's width; zero or negative means the window is empty.</summary>
+    public double Span => To - From;
+
+    /// <summary>Returns the window clamped inside <paramref name="min"/>..<paramref name="max"/>, never
+    /// narrower than <paramref name="minSpan"/>.</summary>
+    /// <param name="min">Lower bound of the full domain.</param>
+    /// <param name="max">Upper bound of the full domain.</param>
+    /// <param name="minSpan">Narrowest window allowed, so a zoom cannot collapse to a point.</param>
+    public ChartZoom Clamp(double min, double max, double minSpan)
+    {
+        var span = Math.Max(Math.Min(Span, max - min), minSpan);
+        var from = Math.Clamp(From, min, Math.Max(min, max - span));
+        return new ChartZoom(from, from + span);
+    }
+}
+
 /// <summary>A single named data series plotted on a chart.</summary>
 /// <param name="Label">Series name shown in the legend and tooltips.</param>
 /// <param name="Values">The numeric values, one per category (line/bar/pie/radar).</param>
-/// <param name="Color">Optional explicit color (any CSS color); when null a themed palette color is assigned.</param>
+/// <param name="Color">Explicit series color - a semantic role (<c>FlareColor.Error</c>) or any CSS color
+/// string, which converts implicitly. Left at <see cref="FlareColor.Default"/> the series takes the next
+/// color from the theme's categorical palette.</param>
 /// <param name="Points">X/Y points for a <see cref="ChartType.Scatter"/> series (used instead of <paramref name="Values"/>).</param>
 /// <param name="Kind">In a <see cref="ChartType.Combo"/> chart, how this series draws (bar/line/area);
 /// null defaults to bar.</param>
+/// <param name="Smooth">Draws this line series as a smooth curve. Null falls back to the chart's
+/// <c>Smooth</c>, so one chart can mix straight and smoothed lines.</param>
+/// <param name="Area">Fills under this line series. Null falls back to the chart's <c>Area</c>.</param>
+/// <param name="LineStyle">Stroke pattern of this line series. Null falls back to the chart's <c>LineStyle</c>.</param>
+/// <param name="ShowMarkers">Draws a marker dot at each of this series' points. Null falls back to the
+/// chart's <c>ShowMarkers</c>.</param>
 public sealed record ChartSeries(
     string Label,
     IReadOnlyList<double> Values,
-    string? Color = null,
+    FlareColor Color = default,
     IReadOnlyList<ChartPoint>? Points = null,
-    ChartSeriesKind? Kind = null);
+    ChartSeriesKind? Kind = null,
+    bool? Smooth = null,
+    bool? Area = null,
+    ChartLineStyle? LineStyle = null,
+    bool? ShowMarkers = null);
 
 /// <summary>The data plotted by <see cref="FlareChart"/>: one or more series and optional category labels.</summary>
 /// <param name="Series">The series to plot.</param>

@@ -13,7 +13,7 @@ public partial class ChartsExtraTypesDemo
 
     private static readonly ChartAnnotation[] _targets =
     [
-        new(ChartAnnotationKind.HorizontalLine, 42, Label: "Target"),
+        ChartAnnotation.Threshold(42, "Target"),
     ];
 
     private static readonly ChartData _radial = new(

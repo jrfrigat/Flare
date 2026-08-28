@@ -1,0 +1,17 @@
+@* Zoomable: drag across the plot to zoom into that range, Ctrl+wheel to zoom around the pointer, drag
+   to pan once zoomed, double-click or the toolbar to reset. The axis re-derives its ticks from the
+   visible window, so zooming in reveals more labels instead of stretching the same ones. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareChart Data="_daily" Zoomable="true" Height="260"
+                Title="Two years of daily readings - drag to zoom" />
+
+    @* The window is bindable, so a host can persist it or drive two charts from one range. *@
+    <FlareChart Type="ChartType.Bar" Data="_daily" Zoomable="true" @bind-Zoom="_window" Height="220"
+                Title="The same window, bound" />
+
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @(_window is { } w
+            ? $"Visible window: {w.From:F0} to {w.To:F0} of {_daily.Series[0].Values.Count} points"
+            : "Full range")
+    </FlareText>
+</FlareStack>

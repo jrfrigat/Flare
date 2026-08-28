@@ -1,0 +1,10 @@
+@* Annotations are placed in DATA coordinates and follow a zoom. Threshold and Band answer "where is
+   the line"; Arrow, Segment and At answer "what happened here". Colors are FlareColor, so a semantic
+   role resolves through the theme instead of freezing a literal. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareChart Data="_data" Annotations="_annotations" Height="280" ShowMarkers="true"
+                Title="Thresholds, bands, a trend arrow and a callout" />
+
+    <FlareChart Type="ChartType.Bar" Data="_data" Annotations="_bandOnly" Height="220"
+                Title="A vertical band marks a range of categories" />
+</FlareStack>

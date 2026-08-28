@@ -136,6 +136,9 @@
   <!-- Misc accessibility -->
   <data name="Aria_Loading" xml:space="preserve"><value>Загрузка</value></data>
   <data name="Aria_CloseTab" xml:space="preserve"><value>Закрыть вкладку</value></data>
+  <data name="Chart_ZoomIn" xml:space="preserve"><value>Приблизить</value></data>
+  <data name="Chart_ZoomOut" xml:space="preserve"><value>Отдалить</value></data>
+  <data name="Chart_ZoomReset" xml:space="preserve"><value>Сбросить масштаб</value></data>
   <data name="Tabs_ScrollBack" xml:space="preserve"><value>Прокрутить вкладки назад</value></data>
   <data name="Tabs_ScrollForward" xml:space="preserve"><value>Прокрутить вкладки вперёд</value></data>
   <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Переключить меню</value></data>

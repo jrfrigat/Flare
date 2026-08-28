@@ -164,4 +164,21 @@ public static class Chart
     public const string AnnotationDash = "--flare-chart-annotation-dash";
     /// <summary>CSS custom-property name for the fill opacity of an annotation band.</summary>
     public const string AnnotationBandOpacity = "--flare-chart-annotation-band-opacity";
+
+    /// <summary>CSS custom-property name for the dash array of a <c>Dashed</c> line.</summary>
+    public const string LineDashDashed = "--flare-chart-line-dash-dashed";
+    /// <summary>CSS custom-property name for the dash array of a <c>Dotted</c> line.</summary>
+    public const string LineDashDotted = "--flare-chart-line-dash-dotted";
+    /// <summary>CSS custom-property name for the dash array of a <c>DashDot</c> line.</summary>
+    public const string LineDashDashDot = "--flare-chart-line-dash-dash-dot";
+
+    /// <summary>CSS custom-property name for the arrowhead length of a directional annotation, in viewBox units.</summary>
+    public const string AnnotationArrowSize = "--flare-chart-annotation-arrow-size";
+    /// <summary>CSS custom-property name for the radius of a point annotation's marker, in viewBox units.</summary>
+    public const string AnnotationPointRadius = "--flare-chart-annotation-point-radius";
+
+    /// <summary>CSS custom-property name for the fill of the drag-to-zoom selection rectangle.</summary>
+    public const string ZoomSelectionFill = "--flare-chart-zoom-selection-fill";
+    /// <summary>CSS custom-property name for the stroke of the drag-to-zoom selection rectangle.</summary>
+    public const string ZoomSelectionStroke = "--flare-chart-zoom-selection-stroke";
 }

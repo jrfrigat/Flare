@@ -136,6 +136,9 @@
   <!-- Misc accessibility -->
   <data name="Aria_Loading" xml:space="preserve"><value>Loading</value></data>
   <data name="Aria_CloseTab" xml:space="preserve"><value>Close tab</value></data>
+  <data name="Chart_ZoomIn" xml:space="preserve"><value>Zoom in</value></data>
+  <data name="Chart_ZoomOut" xml:space="preserve"><value>Zoom out</value></data>
+  <data name="Chart_ZoomReset" xml:space="preserve"><value>Reset zoom</value></data>
   <data name="Tabs_ScrollBack" xml:space="preserve"><value>Scroll tabs backward</value></data>
   <data name="Tabs_ScrollForward" xml:space="preserve"><value>Scroll tabs forward</value></data>
   <data name="Aria_ToggleDrawer" xml:space="preserve"><value>Toggle drawer</value></data>
