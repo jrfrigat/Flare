@@ -134,6 +134,7 @@ else
     // -- Lifecycle ---------------------------------------------------------------
 
     private string? _lastParsedValue;
+    private string? _lastParamValue;
 
     protected override void OnParametersSet()
     {
@@ -143,8 +144,18 @@ else
         // Parse the incoming Value (hex, rgb()/rgba() or hsl()/hsla()) only when the string itself
         // changed -- comparing the raw value, not its canonical form, so an rgba() input does not
         // re-parse on every render just because we emit it with normalized spacing.
+        //
+        // Two mirrors, because they answer different questions (see the two-way state contract in
+        // docs/ru/component-conventions.md):
+        //   _lastParamValue  - did the PARAMETER change? Written here and nowhere else.
+        //   _lastParsedValue - what is the state already showing? Also written by NotifyChange, so our
+        //                      own emitted value does not round-trip back through the parser.
+        // An UNCONTROLLED picker (no ValueChanged binding) must keep the user's pick when the parent
+        // re-renders for an unrelated reason; only a real change of Value overrides it.
         var incoming = Value ?? "#ff0000";
-        if (incoming != _lastParsedValue)
+        var parameterChanged = incoming != _lastParamValue;
+        _lastParamValue = incoming;
+        if ((ValueChanged.HasDelegate || parameterChanged) && incoming != _lastParsedValue)
         {
             _lastParsedValue = incoming;
             if (!string.IsNullOrWhiteSpace(incoming))
@@ -580,6 +591,7 @@ else
         if (EditContext is not null)
             EditContext.OnValidationStateChanged += OnValidationChanged;
         _lastParsedValue = Value ?? "#ff0000";
+        _lastParamValue = _lastParsedValue;
         ParseColorToState(_lastParsedValue);
     }
 

@@ -65,22 +65,29 @@
     private string _regionId => $"flare-collapse-rgn-{_id}";
     private bool _hasHeader => HeaderContent is not null || !string.IsNullOrEmpty(Header);
 
+    // The two-way state contract (see docs/ru/component-conventions.md):
+    //  - CONTROLLED (the caller listens to ExpandedChanged): the parameter is authoritative, always.
+    //    A parent that receives the change and declines to move Expanded keeps the region shut, which
+    //    is what "controlled" has to mean and what a local-state fallback cannot express.
+    //  - UNCONTROLLED: the local state is authoritative and only a real change of the parameter
+    //    overrides it.
+    // _lastExpanded answers exactly one question - did the PARAMETER change since the last look - so it
+    // is written here from Expanded and nowhere else. Writing it from Toggle (which is what this used to
+    // do) makes the mirror disagree with the parameter, and the next parent re-render for any unrelated
+    // reason then reads that disagreement as an external change and closes the region.
     protected override void OnParametersSet()
     {
-        // Adopt the Expanded parameter only when it actually changes externally; otherwise keep the
-        // local toggle state so an unbound header collapse is not reset by parent re-renders.
-        if (Expanded != _lastExpanded)
-        {
+        if (ExpandedChanged.HasDelegate)
             _expanded = Expanded;
-            _lastExpanded = Expanded;
-        }
+        else if (Expanded != _lastExpanded)
+            _expanded = Expanded;
+        _lastExpanded = Expanded;
     }
 
     private async Task Toggle()
     {
         if (Disabled) return;
         _expanded = !_expanded;
-        _lastExpanded = _expanded;
         await ExpandedChanged.InvokeAsync(_expanded);
     }
 }
