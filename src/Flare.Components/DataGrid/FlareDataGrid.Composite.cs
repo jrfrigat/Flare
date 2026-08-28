@@ -164,10 +164,11 @@ public partial class FlareDataGrid<TItem>
                             builder.AddContent(seq++, f.Title);
                             if (sortIdx >= 0)
                             {
-                                builder.OpenElement(seq++, "span");
-                                builder.AddAttribute(seq++, "class", $"material-symbols-rounded {Css.Classes.DataGrid.SortIcon}");
-                                builder.AddContent(seq++, _sortStack[sortIdx].Direction == SortDirection.Ascending ? "arrow_upward" : "arrow_downward");
-                                builder.CloseElement();
+                                builder.OpenComponent<FlareIconView>(seq++);
+                                builder.AddAttribute(seq++, "Value", _sortStack[sortIdx].Direction == SortDirection.Ascending
+                                    ? FlareIcons.ArrowUpward : FlareIcons.ArrowDownward);
+                                builder.AddAttribute(seq++, "Class", Css.Classes.DataGrid.SortIcon);
+                                builder.CloseComponent();
                             }
                             // Per-field inline filter: lives in the field sub-header so it stays aligned
                             // across the record's rows (a single filter row cannot span them).

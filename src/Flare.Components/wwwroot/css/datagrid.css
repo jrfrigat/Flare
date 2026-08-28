@@ -45,7 +45,11 @@
 .flare-datagrid__sort-icon {
   margin-left: var(--flare-spacing-3);
   color: var(--flare-color-primary);
-  font-size: var(--flare-datagrid-sort-icon-size);
+  /* The arrow is a FlareIconView, and .flare-icon declares its own font-size - a declaration on the
+     element always beats what it would inherit, so a plain font-size here sizes nothing. The size has
+     to travel as the custom property the icon actually reads. */
+  --_flare-icon-size: var(--flare-datagrid-sort-icon-size);
+  font-size: var(--_flare-icon-size);
   vertical-align: middle;
 }
 
@@ -490,7 +494,8 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 
 /* Boolean cell: read-only checkbox icon (true = primary, false = muted outline) */
 .flare-datagrid__bool {
-    font-size: var(--flare-datagrid-bool-icon-size);
+    --_flare-icon-size: var(--flare-datagrid-bool-icon-size);
+    font-size: var(--_flare-icon-size);
     line-height: 1;
     vertical-align: middle;
 }

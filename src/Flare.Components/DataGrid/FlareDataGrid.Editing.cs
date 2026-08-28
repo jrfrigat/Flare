@@ -28,12 +28,11 @@ public partial class FlareDataGrid<TItem>
         if (resolved == ColumnDataType.Boolean && value is bool b)
         {
             var stateClass = b ? Css.Classes.DataGrid.BoolOn : Css.Classes.DataGrid.BoolOff;
-            builder.OpenElement(0, "span");
-            builder.AddAttribute(1, "class", $"material-symbols-rounded {Css.Classes.DataGrid.BoolCell} {stateClass}");
-            builder.AddAttribute(2, "role", "img");
-            builder.AddAttribute(3, "aria-label", b ? "true" : "false");
-            builder.AddContent(4, b ? "check_box" : "check_box_outline_blank");
-            builder.CloseElement();
+            builder.OpenComponent<FlareIconView>(0);
+            builder.AddAttribute(1, "Value", b ? FlareIcons.CheckBox : FlareIcons.CheckBoxOutlineBlank);
+            builder.AddAttribute(2, "Class", $"{Css.Classes.DataGrid.BoolCell} {stateClass}");
+            builder.AddAttribute(3, "AriaLabel", b ? "true" : "false");
+            builder.CloseComponent();
             return;
         }
         builder.AddContent(0, DataGridValueFormatter.FormatText(
@@ -176,8 +175,10 @@ public partial class FlareDataGrid<TItem>
         builder.CloseComponent();
     }
 
-    // Icon-only FlareButton used for the row edit/save/cancel actions.
-    private void BuildIconButton(RenderTreeBuilder builder, int seq, string icon, string ariaLabel, Func<Task> onClick)
+    // Icon-only FlareButton used for the row edit/save/cancel actions. The icon is a FlareIcon
+    // descriptor, not an icon-font ligature name: a name would need the Material Symbols font loaded
+    // in the host app, and without it the button renders the word "edit".
+    private void BuildIconButton(RenderTreeBuilder builder, int seq, FlareIcon icon, string ariaLabel, Func<Task> onClick)
     {
         builder.OpenComponent<FlareButton>(seq);
         builder.AddAttribute(seq + 1, "Variant", ButtonVariant.Text);
@@ -186,11 +187,9 @@ public partial class FlareDataGrid<TItem>
         builder.AddAttribute(seq + 4, "OnClick", EventCallback.Factory.Create<MouseEventArgs>(this, async _ => await onClick()));
         builder.AddAttribute(seq + 5, "ChildContent", (RenderFragment)(b =>
         {
-            b.OpenElement(0, "span");
-            b.AddAttribute(1, "class", "material-symbols-rounded");
-            b.AddAttribute(2, "style", "font-size:1.125rem;");
-            b.AddContent(3, icon);
-            b.CloseElement();
+            b.OpenComponent<FlareIconView>(0);
+            b.AddAttribute(1, "Value", icon);
+            b.CloseComponent();
         }));
         builder.CloseComponent();
     }
@@ -202,12 +201,12 @@ public partial class FlareDataGrid<TItem>
         var isEditing = _editingItem is not null && EqualityComparer<TItem>.Default.Equals(_editingItem, item);
         if (isEditing)
         {
-            BuildIconButton(builder, 0, "check", FlareStrings.DataGrid_Save, () => SaveRowAsync(item));
-            BuildIconButton(builder, 10, "close", FlareStrings.DataGrid_Cancel, () => CancelRowAsync(item));
+            BuildIconButton(builder, 0, FlareIcons.Check, FlareStrings.DataGrid_Save, () => SaveRowAsync(item));
+            BuildIconButton(builder, 10, FlareIcons.Close, FlareStrings.DataGrid_Cancel, () => CancelRowAsync(item));
         }
         else
         {
-            BuildIconButton(builder, 0, "edit", FlareStrings.DataGrid_Edit, () => { BeginEdit(item); return Task.CompletedTask; });
+            BuildIconButton(builder, 0, FlareIcons.Edit, FlareStrings.DataGrid_Edit, () => { BeginEdit(item); return Task.CompletedTask; });
         }
     };
 

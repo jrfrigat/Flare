@@ -1416,22 +1416,25 @@ public class C_FlareDataGridTypedCellTests : FlareTestContext
         b.CloseComponent();
     };
 
+    // The cell is an inline SVG (FlareIconView), not an icon-font ligature span, so identity is read
+    // from the accessible label and the state class - never from the element's text, which is empty.
     [Fact]
     public void BoolColumn_AutoDetected_RendersCheckboxIcon()
     {
         var cut = Render(Grid());
         var icons = cut.FindAll(".flare-datagrid__bool");
         Assert.Equal(2, icons.Count);
-        Assert.Contains(icons, i => i.TextContent.Trim() == "check_box");            // Alice = true
-        Assert.Contains(icons, i => i.TextContent.Trim() == "check_box_outline_blank"); // Bob = false
+        Assert.All(icons, i => Assert.Equal("svg", i.NodeName, ignoreCase: true));
+        Assert.Contains(icons, i => i.GetAttribute("aria-label") == "true");   // Alice = true
+        Assert.Contains(icons, i => i.GetAttribute("aria-label") == "false");  // Bob = false
     }
 
     [Fact]
     public void BoolColumn_True_GetsOnStateClass()
     {
         var cut = Render(Grid());
-        Assert.Contains(cut.FindAll(".flare-datagrid__bool--on"), i => i.TextContent.Trim() == "check_box");
-        Assert.Contains(cut.FindAll(".flare-datagrid__bool--off"), i => i.TextContent.Trim() == "check_box_outline_blank");
+        Assert.Contains(cut.FindAll(".flare-datagrid__bool--on"), i => i.GetAttribute("aria-label") == "true");
+        Assert.Contains(cut.FindAll(".flare-datagrid__bool--off"), i => i.GetAttribute("aria-label") == "false");
     }
 
     [Fact]

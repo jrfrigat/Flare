@@ -28,6 +28,9 @@
     justify-content: center;
     width: 2rem;
     height: 2rem;
+    /* Toolbar glyphs are FlareIconView instances; .flare-icon declares its own font-size, so the size
+       has to reach it as the custom property rather than as font-size on this button. */
+    --_flare-icon-size: var(--flare-rte-tool-icon-size, 1rem);
     border: none;
     background: transparent;
     border-radius: var(--flare-shape-extra-small);

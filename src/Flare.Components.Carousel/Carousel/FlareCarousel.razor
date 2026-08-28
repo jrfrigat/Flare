@@ -30,13 +30,13 @@
                 @onclick="Prev"
                 aria-label="@(FlareStrings.Carousel_Prev)"
                 disabled="@(!Loop && _current == 0)">
-            <span class="material-symbols-rounded">chevron_left</span>
+            <FlareIconView Value="@FlareIcons.ChevronLeft" />
         </button>
         <button class="flare-carousel__arrow flare-carousel__arrow--next"
                 @onclick="Next"
                 aria-label="@(FlareStrings.Carousel_Next)"
                 disabled="@(!Loop && _current >= _count - 1)">
-            <span class="material-symbols-rounded">chevron_right</span>
+            <FlareIconView Value="@FlareIcons.ChevronRight" />
         </button>
     }
 
