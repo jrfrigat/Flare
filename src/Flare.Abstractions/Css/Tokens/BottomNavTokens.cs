@@ -31,4 +31,6 @@ public static class BottomNavField
     public const string IndicatorSize = "--flare-bottom-nav-indicator-size";
     /// <summary>CSS custom-property name for the disabled item opacity token.</summary>
     public const string ItemDisabledOpacity = "--flare-bottom-nav-item-disabled-opacity";
+    /// <summary>CSS custom-property name for the stacking order of a pinned bar - over content, under overlays.</summary>
+    public const string ZIndex = "--flare-bottom-nav-z-index";
 }

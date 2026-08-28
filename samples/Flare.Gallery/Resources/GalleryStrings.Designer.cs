@@ -878,6 +878,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("BottomNav_Basic", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на App shell: a fixed bar that reserves its own space.
+        /// </summary>
+        public static string BottomNav_Shell {
+            get {
+                return ResourceManager.GetString("BottomNav_Shell", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Disabled item &amp; custom aria-label.
@@ -1326,6 +1335,15 @@ namespace Flare.Gallery.Resources {
         public static string Cards_Anatomy {
             get {
                 return ResourceManager.GetString("Cards_Anatomy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Action layout: wrap, stack, full width.
+        /// </summary>
+        public static string Cards_ActionLayout {
+            get {
+                return ResourceManager.GetString("Cards_ActionLayout", resourceCulture);
             }
         }
         

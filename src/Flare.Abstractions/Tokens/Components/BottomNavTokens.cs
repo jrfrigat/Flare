@@ -58,4 +58,8 @@ public sealed record BottomNavTokens
     /// palette leaves this opaque and carries the change in its own stylesheet, since a foreground
     /// colour has no value meaning "leave this as painted".</summary>
     [CssVar(BottomNavField.ItemDisabledOpacity)] public required string ItemDisabledOpacity { get; init; }
+
+    /// <summary>Stacking order of a pinned bar. It has to sit over page content and under the overlay
+    /// layer, and where that lands depends on the theme's own z-index scale.</summary>
+    [CssVar(BottomNavField.ZIndex)] public required string ZIndex { get; init; }
 }

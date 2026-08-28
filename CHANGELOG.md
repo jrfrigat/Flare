@@ -33,6 +33,19 @@ All notable changes to Flare are documented here. This project adheres to
   through factories - `Threshold`, `Marker`, `Band`, `VerticalBand`, `Segment`, `Arrow`, `At` - each of
   which names the coordinates its kind reads. Annotations project through the same X mapping as the data,
   so they track a zoom.
+- **`FlareCardActions` is a layout, not just an alignment.** It was a flex row with three alignments and
+  nothing else, so long buttons ran past the card edge on a phone and the only way out was to rebuild the
+  row from `FlareContainer` + `FlareStack` and lose the card's own action padding and spacing. It now
+  wraps by DEFAULT (`Wrap="false"` for the deliberate single line) and gains `Vertical`, `FullWidth`,
+  `Reverse`, `Gap`, and `Align` values for `Center` and `Stretch`. `StackBelow` stacks the actions and
+  makes them fill the width once the CARD is narrower than a given tier - a container query, not a
+  viewport one, so a card in a narrow column stacks on a wide screen too, which is the case a media query
+  gets wrong.
+- **`FlareBottomNav` has a fixed mode.** `Position` (`Static` / `Sticky` / `Fixed`) pins the bar with its
+  safe-area inset intact at a themed z-index, and `ReserveSpace` (default true) keeps a same-height
+  spacer in the flow so the last row of content is never hidden behind it. That is the app-shell CSS
+  every PWA was writing by hand - and getting the safe area wrong in. The Gallery gains a phone-sized
+  shell demo showing it.
 - **`FlareSelect<T>` can express "no value".** `NullOption` prepends a selectable row - "All ingredients",
   "Any" - that sets `Value` to null and shows its own text in the closed field instead of leaving it
   blank. Without it a filter select had two bad options: put a fake item of type `T` in `Items` and filter

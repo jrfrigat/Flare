@@ -858,6 +858,7 @@ public static class CssVarMap
         v[Css.Tokens.BottomNavField.IndicatorRadius] = t.BottomNav.IndicatorRadius;
         v[Css.Tokens.BottomNavField.IndicatorSize] = t.BottomNav.IndicatorSize;
         v[Css.Tokens.BottomNavField.ItemDisabledOpacity] = t.BottomNav.ItemDisabledOpacity;
+        v[Css.Tokens.BottomNavField.ZIndex] = t.BottomNav.ZIndex;
         #endregion
 
         #region SWITCH

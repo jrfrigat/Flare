@@ -160,10 +160,51 @@
 .flare-card__actions {
     display: flex;
     align-items: center;
+    /* Wrapping is the default: a row of actions that runs past the card edge is never the intent. */
+    flex-wrap: wrap;
     gap: var(--_card-actions-gap);
     padding: var(--flare-card-actions-padding);
 }
+.flare-card__actions--nowrap { flex-wrap: nowrap; }
 .flare-card__actions--end { justify-content: flex-end; }
+.flare-card__actions--center { justify-content: center; }
 .flare-card__actions--between { justify-content: space-between; }
+.flare-card__actions--reverse { flex-direction: row-reverse; }
+
+.flare-card__actions--vertical {
+    flex-direction: column;
+    align-items: stretch;
+}
+.flare-card__actions--vertical.flare-card__actions--reverse { flex-direction: column-reverse; }
+
+/* Stretch and FullWidth are the same geometry from two directions: the first says "fill the row", the
+   second says "every action gets an equal share". Both need the children to grow, and a button's own
+   width must not win, hence the zero basis. */
+.flare-card__actions--stretch > *,
+.flare-card__actions--full > * {
+    flex: 1 1 0;
+    min-width: 0;
+}
+.flare-card__actions--vertical > * { width: 100%; }
+
+/* StackBelow is a CONTAINER query on the card, not a viewport query: what decides whether two buttons
+   fit side by side is the CARD's width, so a card in a narrow column stacks on a wide screen too - the
+   case a media query gets wrong. The tiers are card widths, not the viewport breakpoint scale, which
+   would call a 500px card "narrow". A query cannot read a custom property, so they are written out here
+   the same way grid.css and drawer.css write theirs. */
+.flare-card { container-type: inline-size; }
+
+@container (max-width: 20rem) {
+    .flare-card__actions--stack-narrow { flex-direction: column; align-items: stretch; }
+    .flare-card__actions--stack-narrow > * { width: 100%; flex: 1 1 auto; }
+}
+@container (max-width: 30rem) {
+    .flare-card__actions--stack-compact { flex-direction: column; align-items: stretch; }
+    .flare-card__actions--stack-compact > * { width: 100%; flex: 1 1 auto; }
+}
+@container (max-width: 40rem) {
+    .flare-card__actions--stack-wide { flex-direction: column; align-items: stretch; }
+    .flare-card__actions--stack-wide > * { width: 100%; flex: 1 1 auto; }
+}
 .flare-card__content + .flare-card__actions,
 .flare-card__footer + .flare-card__actions { padding-top: 0; }

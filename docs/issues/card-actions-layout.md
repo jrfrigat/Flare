@@ -1,6 +1,6 @@
 # `FlareCardActions` has alignment and nothing else
 
-**Status: OPEN. Tier 1. From the app user's review.**
+**Status: DONE. Tier 1. From the app user's review.**
 
 ## The report
 
@@ -35,4 +35,10 @@ so no new DOM and no measurement. `Stacked` is a container query on the card, no
 query, so a card in a narrow column stacks even on a wide screen. That is the behaviour the reporter
 wanted and it is strictly better than what they could build by hand.
 
-The same treatment applies to `FlareCardFooter`, which has the identical shape and the identical gap.
+`FlareCardFooter` is deliberately NOT given the same parameters: it is a metadata strip, its own docs
+already point button rows at `FlareCardActions`, and duplicating the layout API on both would be the
+kind of divergence the token mandate exists to prevent.
+
+`StackBelow` takes CARD-width tiers (`Narrow` / `Compact` / `Wide`), not the viewport breakpoint scale:
+a container query against `Breakpoint.Sm` would call a 500px card "narrow" and stack almost every card
+there is.

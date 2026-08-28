@@ -1,0 +1,49 @@
+@* FlareCardActions is a layout, not just an alignment. Actions wrap by default; Vertical stacks them,
+   FullWidth makes them share the row, and StackBelow does both automatically once the CARD - not the
+   viewport - is narrower than the given tier, which is the "row on desktop, stacked on a phone" case. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium">
+        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:16rem;">
+            <FlareCardHeader Title="Align" Subtitle="End" />
+            <FlareCardActions Align="CardActionsAlign.End">
+                <FlareButton Variant="ButtonVariant.Text">Cancel</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled">Save</FlareButton>
+            </FlareCardActions>
+        </FlareCard>
+
+        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:16rem;">
+            <FlareCardHeader Title="FullWidth" Subtitle="Equal shares of the row" />
+            <FlareCardActions FullWidth>
+                <FlareButton Variant="ButtonVariant.Outlined">Later</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled">Publish now</FlareButton>
+            </FlareCardActions>
+        </FlareCard>
+    </FlareStack>
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium">
+        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:16rem;">
+            <FlareCardHeader Title="Vertical" Subtitle="Stacked, full width" />
+            <FlareCardActions Vertical FullWidth Gap="FlareSpacing.XSmall">
+                <FlareButton Variant="ButtonVariant.Filled">Add to the recipe</FlareButton>
+                <FlareButton Variant="ButtonVariant.Text">Not this time</FlareButton>
+            </FlareCardActions>
+        </FlareCard>
+
+        @* Narrow on purpose: the same markup as the card beside it, stacked by the container query. *@
+        <FlareCard Variant="CardVariant.Outlined" Style="width:17rem;">
+            <FlareCardHeader Title="StackBelow=Compact" Subtitle="This card is narrow" />
+            <FlareCardActions StackBelow="CardActionsStack.Compact">
+                <FlareButton Variant="ButtonVariant.Text">Discard the draft</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled">Save the draft</FlareButton>
+            </FlareCardActions>
+        </FlareCard>
+
+        <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:34rem;">
+            <FlareCardHeader Title="StackBelow=Compact" Subtitle="This card is wide, so it stays a row" />
+            <FlareCardActions StackBelow="CardActionsStack.Compact">
+                <FlareButton Variant="ButtonVariant.Text">Discard the draft</FlareButton>
+                <FlareButton Variant="ButtonVariant.Filled">Save the draft</FlareButton>
+            </FlareCardActions>
+        </FlareCard>
+    </FlareStack>
+</FlareStack>

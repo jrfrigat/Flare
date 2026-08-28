@@ -1,7 +1,16 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 
-<nav class="@BuildCssClass()" style="@Style" aria-label="@(string.IsNullOrEmpty(AriaLabel) ? FlareStrings.Nav_BottomNavigation : AriaLabel)" @attributes="AdditionalAttributes">
+@* A fixed/sticky bar covers whatever is under it, so it also emits a same-height spacer in the flow.
+   That is what stops the last row of content sitting behind the bar, and it costs one empty div rather
+   than the shell CSS every consumer would otherwise write. *@
+@if (_pinned && ReserveSpace)
+{
+    <div class="@Css.Classes.BottomNav.Spacer" aria-hidden="true"></div>
+}
+<nav class="@BuildCssClass(_positionClass)" style="@Style"
+     aria-label="@(string.IsNullOrEmpty(AriaLabel) ? FlareStrings.Nav_BottomNavigation : AriaLabel)"
+     @attributes="AdditionalAttributes">
     @ChildContent
 </nav>
 
@@ -13,5 +22,27 @@
     /// <summary>Accessible label for the navigation landmark, forwarded as <c>aria-label</c>.</summary>
     [Parameter] public string? AriaLabel { get; set; }
 
+    /// <summary>
+    /// How the bar sits in the page. <see cref="BottomNavPosition.Static"/> (the default) leaves it in the
+    /// flow for the consumer's layout to place; <see cref="BottomNavPosition.Fixed"/> pins it to the
+    /// bottom of the viewport with its safe-area inset intact, which is what a PWA shell needs.
+    /// </summary>
+    [Parameter] public BottomNavPosition Position { get; set; } = BottomNavPosition.Static;
+
+    /// <summary>
+    /// While pinned, keeps a same-height spacer in the flow so page content is never hidden behind the
+    /// bar. Default true. Turn it off when the layout already reserves the space itself.
+    /// </summary>
+    [Parameter] public bool ReserveSpace { get; set; } = true;
+
     protected override string ComponentCssClass => Css.Classes.BottomNav.Root;
+
+    private bool _pinned => Position is BottomNavPosition.Fixed or BottomNavPosition.Sticky;
+
+    private string? _positionClass => Position switch
+    {
+        BottomNavPosition.Fixed => Css.Classes.BottomNav.Fixed,
+        BottomNavPosition.Sticky => Css.Classes.BottomNav.Sticky,
+        _ => null,
+    };
 }

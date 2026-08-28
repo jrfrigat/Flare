@@ -35,6 +35,25 @@ public static class Card
     public const string ActionsBetween = "flare-card__actions--between";
     /// <summary>The <c>flare-card__actions--end</c> CSS class.</summary>
     public const string ActionsEnd = "flare-card__actions--end";
+    /// <summary>The <c>flare-card__actions--center</c> CSS class.</summary>
+    public const string ActionsCenter = "flare-card__actions--center";
+    /// <summary>The <c>flare-card__actions--stretch</c> modifier: actions share the row equally.</summary>
+    public const string ActionsStretch = "flare-card__actions--stretch";
+    /// <summary>The <c>flare-card__actions--vertical</c> modifier: actions stack top to bottom.</summary>
+    public const string ActionsVertical = "flare-card__actions--vertical";
+    /// <summary>The <c>flare-card__actions--nowrap</c> modifier: keep the actions on one line.</summary>
+    public const string ActionsNoWrap = "flare-card__actions--nowrap";
+    /// <summary>The <c>flare-card__actions--full</c> modifier: each action fills its share of the row.</summary>
+    public const string ActionsFullWidth = "flare-card__actions--full";
+    /// <summary>The <c>flare-card__actions--reverse</c> modifier: reverses the visual order.</summary>
+    public const string ActionsReverse = "flare-card__actions--reverse";
+
+    /// <summary>The <c>flare-card__actions--stack-narrow</c> modifier: stacks below a 20rem card.</summary>
+    public const string ActionsStackNarrow = "flare-card__actions--stack-narrow";
+    /// <summary>The <c>flare-card__actions--stack-compact</c> modifier: stacks below a 30rem card.</summary>
+    public const string ActionsStackCompact = "flare-card__actions--stack-compact";
+    /// <summary>The <c>flare-card__actions--stack-wide</c> modifier: stacks below a 40rem card.</summary>
+    public const string ActionsStackWide = "flare-card__actions--stack-wide";
     /// <summary>The <c>flare-card__content</c> CSS class.</summary>
     public const string Content = "flare-card__content";
     /// <summary>The <c>flare-card__footer</c> CSS class.</summary>

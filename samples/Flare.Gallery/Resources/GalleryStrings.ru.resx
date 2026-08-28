@@ -330,6 +330,9 @@
   <data name="BottomNav_Basic" xml:space="preserve">
     <value>Базовая нижняя навигация</value>
   </data>
+  <data name="BottomNav_Shell" xml:space="preserve">
+    <value>Оболочка приложения: закреплённая панель резервирует место под себя</value>
+  </data>
   <data name="BottomNav_Disabled" xml:space="preserve">
     <value>Отключённый элемент и своя aria-label</value>
   </data>
@@ -479,6 +482,9 @@
   </data>
   <data name="Cards_Anatomy" xml:space="preserve">
     <value>Шапка / Тело / Подвал</value>
+  </data>
+  <data name="Cards_ActionLayout" xml:space="preserve">
+    <value>Раскладка действий: перенос, стек, полная ширина</value>
   </data>
   <data name="Carousel_Title" xml:space="preserve">
     <value>Карусель</value>
