@@ -546,6 +546,42 @@
   <data name="Charts_Annotations" xml:space="preserve">
     <value>Annotations: Thresholds, Bands, Arrows and Callouts</value>
   </data>
+  <data name="Charts_Grid" xml:space="preserve">
+    <value>Grid Density: Line Count, Rounding and Minor Ticks</value>
+  </data>
+  <data name="Charts_Grid_AutoCount" xml:space="preserve">
+    <value>Derive count from height</value>
+  </data>
+  <data name="Charts_Grid_TickCount" xml:space="preserve">
+    <value>Grid lines</value>
+  </data>
+  <data name="Charts_Grid_MinorTicks" xml:space="preserve">
+    <value>Minor ticks per band</value>
+  </data>
+  <data name="Charts_Grid_NiceScale" xml:space="preserve">
+    <value>Round the axis</value>
+  </data>
+  <data name="Charts_Grid_VerticalGrid" xml:space="preserve">
+    <value>Vertical grid</value>
+  </data>
+  <data name="Charts_Grid_ChartTitle" xml:space="preserve">
+    <value>Monthly revenue</value>
+  </data>
+  <data name="Charts_Grid_AxisTitle" xml:space="preserve">
+    <value>Thousands</value>
+  </data>
+  <data name="Charts_Grid_NiceScaleHint" xml:space="preserve">
+    <value>With rounding on, the axis snaps to whole steps and the drawn line count can differ by one - round numbers beat an exact count. Turn it off to get exactly the count you asked for, at the cost of labels like 94 and 188.</value>
+  </data>
+  <data name="Charts_Grid_Short" xml:space="preserve">
+    <value>Short: fewer lines</value>
+  </data>
+  <data name="Charts_Grid_Medium" xml:space="preserve">
+    <value>Default height</value>
+  </data>
+  <data name="Charts_Grid_Tall" xml:space="preserve">
+    <value>Tall: more lines</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Chip Group</value>
   </data>

@@ -57,26 +57,26 @@ public class DataGridColumnDefinitionTests : FlareTestContext
     }
 
     [Fact]
-    public void Defined_columns_sort_like_declared_ones()
+    public async Task Defined_columns_sort_like_declared_ones()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render(Grid(Definitions(), ctx));
 
-        cut.InvokeAsync(() => ctx.SortByAsync("Name")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SortByAsync("Name"));
 
         Assert.Equal("Alpha", cut.FindAll("tbody td")[0].TextContent.Trim());
     }
 
     [Fact]
-    public void Defined_columns_can_be_hidden_and_reordered_through_the_context()
+    public async Task Defined_columns_can_be_hidden_and_reordered_through_the_context()
     {
         var ctx = new DataGridContext<Row>();
         var cut = Render(Grid(Definitions(), ctx));
 
-        cut.InvokeAsync(() => ctx.MoveColumnAsync("Qty", "Name")).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.MoveColumnAsync("Qty", "Name"));
         Assert.Equal(["Qty", "Name"], cut.FindAll("thead th").Select(th => th.TextContent.Trim()));
 
-        cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", false)).GetAwaiter().GetResult();
+        await cut.InvokeAsync(() => ctx.SetColumnVisibleAsync("Qty", false));
         Assert.Equal(["Name"], cut.FindAll("thead th").Select(th => th.TextContent.Trim()));
     }
 

@@ -107,6 +107,10 @@ public static class Chart
     public const string GridWidth = "--flare-chart-grid-width";
     /// <summary>CSS custom-property name for the grid-line dash pattern (<c>none</c> for solid).</summary>
     public const string GridDash = "--flare-chart-grid-dash";
+    /// <summary>CSS custom-property name for the color of the minor grid lines drawn between two majors.</summary>
+    public const string GridMinorColor = "--flare-chart-grid-minor-color";
+    /// <summary>CSS custom-property name for the width of the minor grid lines, in viewBox units.</summary>
+    public const string GridMinorWidth = "--flare-chart-grid-minor-width";
     /// <summary>CSS custom-property name for the axis tick-label color.</summary>
     public const string LabelColor = "--flare-chart-label-color";
     /// <summary>CSS custom-property name for the axis tick-label font size, in viewBox units.</summary>

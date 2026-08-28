@@ -585,6 +585,8 @@ public class MaterialDesignTokens
         GridColor = "var(--flare-color-outline-variant)",
         GridWidth = "0.5",
         GridDash = "none",
+        GridMinorColor = "color-mix(in srgb, var(--flare-color-outline-variant) 45%, transparent)",
+        GridMinorWidth = "0.5",
         LabelColor = "var(--flare-color-on-surface-variant)",
         LabelSize = "9px",
         ValueColor = "var(--flare-color-on-surface-variant)",

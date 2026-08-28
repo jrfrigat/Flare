@@ -1,0 +1,47 @@
+@* The horizontal grid is no longer a fixed five lines. The count comes from the plot height unless you
+   name one, and the axis rounds itself to whole steps so that naming one stays readable. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareStack Row Wrap Gap="FlareSpacing.Large" AlignItems="FlareAlign.Center">
+        <FlareSwitch @bind-Value="_auto" Label="@GalleryStrings.Charts_Grid_AutoCount" />
+        <FlareSwitch @bind-Value="_nice" Label="@GalleryStrings.Charts_Grid_NiceScale" />
+        <FlareSwitch @bind-Value="_vertical" Label="@GalleryStrings.Charts_Grid_VerticalGrid" />
+    </FlareStack>
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <div style="flex:1;min-width:15rem;">
+            <FlareSlider @bind-Value="_ticks" Min="2" Max="12" Step="1" Disabled="_auto" ShowValue="true"
+                         Label="@GalleryStrings.Charts_Grid_TickCount" />
+        </div>
+        <div style="flex:1;min-width:15rem;">
+            <FlareSlider @bind-Value="_minor" Min="0" Max="4" Step="1" ShowValue="true"
+                         Label="@GalleryStrings.Charts_Grid_MinorTicks" />
+        </div>
+    </FlareStack>
+
+    <FlareChart Data="_revenue" Height="300"
+                Title="@GalleryStrings.Charts_Grid_ChartTitle"
+                YAxisTickCount="@(_auto ? null : (int?)_ticks)"
+                YAxisMinorTicks="@((int)_minor)"
+                NiceScale="_nice"
+                ShowVerticalGrid="_vertical"
+                YAxisTitle="@GalleryStrings.Charts_Grid_AxisTitle" />
+
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+        @GalleryStrings.Charts_Grid_NiceScaleHint
+    </FlareText>
+
+    @* The derived count in action: the same data at three heights, each budgeting its own grid. *@
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
+        <div style="flex:1;min-width:14rem;">
+            <FlareChart Data="_revenue" Height="120" ShowLegend="false"
+                        Title="@GalleryStrings.Charts_Grid_Short" />
+        </div>
+        <div style="flex:1;min-width:14rem;">
+            <FlareChart Data="_revenue" Height="220" ShowLegend="false"
+                        Title="@GalleryStrings.Charts_Grid_Medium" />
+        </div>
+        <div style="flex:1;min-width:14rem;">
+            <FlareChart Data="_revenue" Height="380" ShowLegend="false"
+                        Title="@GalleryStrings.Charts_Grid_Tall" />
+        </div>
+    </FlareStack>
+</FlareStack>
