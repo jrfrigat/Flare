@@ -192,7 +192,14 @@
    case a media query gets wrong. The tiers are card widths, not the viewport breakpoint scale, which
    would call a 500px card "narrow". A query cannot read a custom property, so they are written out here
    the same way grid.css and drawer.css write theirs. */
-.flare-card { container-type: inline-size; }
+/* Scoped with :has() to the cards that actually opt in. container-type also applies inline-size
+   containment, which makes a box's width independent of its contents - harmless for a card the layout
+   sizes, wrong for one that shrink-wraps - so it must not be a blanket rule on every card. */
+.flare-card:has(> .flare-card__actions--stack-narrow),
+.flare-card:has(> .flare-card__actions--stack-compact),
+.flare-card:has(> .flare-card__actions--stack-wide) {
+    container-type: inline-size;
+}
 
 @container (max-width: 20rem) {
     .flare-card__actions--stack-narrow { flex-direction: column; align-items: stretch; }

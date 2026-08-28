@@ -1,9 +1,13 @@
-@* Position="Fixed" pins the bar to the bottom of its containing block with the safe-area inset intact,
-   and ReserveSpace (on by default) keeps a same-height spacer in the flow so the last row of content is
+@* Position="Fixed" pins the bar to the bottom of the VIEWPORT with the safe-area inset intact, and
+   ReserveSpace (on by default) keeps a same-height spacer in the flow so the last row of content is
    never hidden behind it. That is the whole app-shell CSS a PWA used to have to write by hand.
-   The frame below is a phone-sized viewport, so the bar pins inside it rather than to the page. *@
+
+   In a real app the bar is meant to span the window; this demo has to keep it inside a phone-sized
+   frame, so the frame carries `contain: layout paint`, which makes it the containing block a fixed
+   descendant resolves against. (`position: relative` does NOT do that - only containment, a transform
+   or a filter does.) *@
 <FlareCard Variant="CardVariant.Outlined"
-           Style="width:360px;height:420px;padding:0;overflow:hidden;position:relative;display:flex;flex-direction:column;">
+           Style="width:360px;height:420px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
     <FlareCardContent Style="flex:1;overflow:auto;">
         <FlareStack Gap="FlareSpacing.Small">
             <FlareText Typo="TypographyScale.TitleMedium">Today</FlareText>
