@@ -11,12 +11,6 @@ namespace Flare.Components.Services;
 /// </summary>
 public interface IOverlayJsService : IAsyncDisposable
 {
-    /// <summary>Locks <c>&lt;body&gt;</c> scrolling (reference-counted; nestable across overlays).</summary>
-    ValueTask LockBodyScrollAsync();
-
-    /// <summary>Releases one body scroll-lock taken by <see cref="LockBodyScrollAsync"/>.</summary>
-    ValueTask UnlockBodyScrollAsync();
-
     /// <summary>Registers a document Escape handler that invokes <c>CloseFromEsc</c> on the reference.</summary>
     /// <param name="id">A stable id identifying this overlay's handler.</param>
     /// <param name="dotNetRef">The component reference whose <c>CloseFromEsc</c> is invoked on Escape.</param>

@@ -12,16 +12,6 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
         : base(js, "./_content/Flare.Components/js/flare-ui.js") { }
 
     /// <inheritdoc />
-    public ValueTask RegisterScrollTopAsync<T>(string id, DotNetObjectReference<T> dotNetRef, double threshold, string? selector) where T : class
-        => InvokeVoidAsync("registerScrollTopHandler", id, dotNetRef, threshold, selector);
-
-    /// <inheritdoc />
-    public ValueTask RemoveScrollTopAsync(string id) => InvokeVoidAsync("removeScrollTopHandler", id);
-
-    /// <inheritdoc />
-    public ValueTask ScrollToTopAsync(string? selector) => InvokeVoidAsync("scrollToTop", selector);
-
-    /// <inheritdoc />
     public ValueTask RegisterTabScrollerAsync<T>(ElementReference bar, DotNetObjectReference<T> dotNetRef) where T : class
         => InvokeVoidAsync("registerTabScroller", bar, dotNetRef);
 

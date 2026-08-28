@@ -1,6 +1,7 @@
 @namespace Flare.Components
 @inherits FlareComponentBase
 @inject Flare.Components.Services.IOverlayJsService Overlay
+@inject IScrollService Scroll
 
 @* A self-contained navigation drawer. It owns its own open state (@bind-Open) and variant, registers
    with the parent FlareLayout, and the layout reserves a grid track for it (push variants) or lets it
@@ -197,6 +198,18 @@
 
     // When the drawer becomes an open modal overlay, trap focus + wire Escape + lock body scroll (as a
     // dialog would); release all three when it stops being one. Best-effort: JS is absent under SSR.
+
+    // The lock is held as a token rather than paired calls: disposing it twice is a no-op, so the close
+    // path and the dispose path cannot both decrement the shared count for one open.
+    private IAsyncDisposable? _scrollLock;
+
+    private async Task ReleaseScrollLockAsync()
+    {
+        var held = _scrollLock;
+        _scrollLock = null;
+        if (held is not null) await held.DisposeAsync();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_isModalOverlay && !_wasModalOverlay)
@@ -205,7 +218,7 @@
             try
             {
                 _dotNetRef ??= DotNetObjectReference.Create(this);
-                await Overlay.LockBodyScrollAsync();
+                _scrollLock = await Scroll.LockAsync();
                 await Overlay.RegisterDialogEscAsync(_overlayId, _dotNetRef);
                 await Overlay.TrapFocusAsync(_overlayId, _navEl);
             }
@@ -216,7 +229,7 @@
             _wasModalOverlay = false;
             try
             {
-                await Overlay.UnlockBodyScrollAsync();
+                await ReleaseScrollLockAsync();
                 await Overlay.RemoveDialogEscAsync(_overlayId);
                 await Overlay.ReleaseFocusTrapAsync(_overlayId);
             }
@@ -233,7 +246,7 @@
         if (_registered) Layout?.Unregister(this);
         if (_wasModalOverlay)
         {
-            try { await Overlay.UnlockBodyScrollAsync(); } catch { }
+            try { await ReleaseScrollLockAsync(); } catch { }
         }
         try { await Overlay.RemoveDialogEscAsync(_overlayId); } catch { }
         try { await Overlay.ReleaseFocusTrapAsync(_overlayId); } catch { }

@@ -1555,6 +1555,78 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll.
+        /// </summary>
+        public static string Services_ScrollTitle {
+            get {
+                return ResourceManager.GetString("Services_ScrollTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на One port for observing and driving scroll: throttled subscriptions on the page or any container, programmatic scrolling, and a reference-counted body lock..
+        /// </summary>
+        public static string Services_ScrollSubtitle {
+            get {
+                return ResourceManager.GetString("Services_ScrollSubtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Offset:.
+        /// </summary>
+        public static string Services_Scroll_Offset {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Offset", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Progress:.
+        /// </summary>
+        public static string Services_Scroll_Progress {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Progress", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Direction:.
+        /// </summary>
+        public static string Services_Scroll_Direction {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Direction", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Scroll to end.
+        /// </summary>
+        public static string Services_Scroll_ToEnd {
+            get {
+                return ResourceManager.GetString("Services_Scroll_ToEnd", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Back to top.
+        /// </summary>
+        public static string Services_Scroll_ToTop {
+            get {
+                return ResourceManager.GetString("Services_Scroll_ToTop", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на These values come from one throttled listener on the Gallery shell panel. Scroll this page to watch them move..
+        /// </summary>
+        public static string Services_Scroll_Hint {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Grid Density: Line Count, Rounding and Minor Ticks.
         /// </summary>
         public static string Charts_Grid {

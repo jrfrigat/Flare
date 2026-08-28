@@ -11,19 +11,6 @@ namespace Flare.Components.Services;
 /// </summary>
 public interface IUiJsService : IAsyncDisposable
 {
-    /// <summary>Watches a scroll container and invokes <c>SetVisible</c> on the reference past <paramref name="threshold"/>.</summary>
-    /// <param name="id">A stable id identifying this handler.</param>
-    /// <param name="dotNetRef">The component reference whose <c>SetVisible(bool)</c> is invoked.</param>
-    /// <param name="threshold">Scroll offset (px) past which the button becomes visible.</param>
-    /// <param name="selector">Optional scroll-container selector; null watches the window.</param>
-    ValueTask RegisterScrollTopAsync<T>(string id, DotNetObjectReference<T> dotNetRef, double threshold, string? selector) where T : class;
-
-    /// <summary>Removes the scroll-top handler registered under <paramref name="id"/>.</summary>
-    ValueTask RemoveScrollTopAsync(string id);
-
-    /// <summary>Smoothly scrolls the matched container (or the window) to the top.</summary>
-    ValueTask ScrollToTopAsync(string? selector);
-
     /// <summary>Observes a tab bar and reports overflow state via <c>OnTabScrollState</c>.</summary>
     /// <param name="bar">The scrollable tab-bar element.</param>
     /// <param name="dotNetRef">The component reference whose <c>OnTabScrollState(bool,bool,bool)</c> is invoked.</param>
