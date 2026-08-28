@@ -27,6 +27,8 @@
     <ProjectReference Include="..\..\src\Flare.Theming\Flare.Theming.csproj" />
     <ProjectReference Include="..\..\src\Flare.Components\Flare.Components.csproj" />
     <ProjectReference Include="..\..\src\Flare.Infrastructure\Flare.Infrastructure.csproj" />
+    <!-- The composition root, so AddFlareServiceCompletenessTests can build the real container. -->
+    <ProjectReference Include="..\..\src\Flare\Flare.csproj" />
     <!-- A concrete reference DesignTokens for the FlareThemeBuilder tests (the core ships no baseline). -->
     <ProjectReference Include="..\..\src\Flare.Theme.MaterialDesign3.Tokens\Flare.Theme.MaterialDesign3.Tokens.csproj" />
     <ProjectReference Include="..\..\src\Flare.Theme.FluentUI2.Tokens\Flare.Theme.FluentUI2.Tokens.csproj" />
