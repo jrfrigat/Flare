@@ -1,22 +1,13 @@
 /*
-   Document reset.
+   Document reset: normalizes the page the themed surfaces sit in (the UA `body { margin: 8px }`
+   above all).
 
-   Flare owns theming, so it has to own the document those themed surfaces sit in. Without this every
-   app starts with the browser's UA `body { margin: 8px }` gutter around a full-bleed layout and is
-   expected to find and delete it itself - which is exactly what was reported against 0.18.1, and what
-   the Gallery had quietly worked around in its own app.css for as long as it has existed.
+   Every rule is wrapped in `:where()`, so specificity is ZERO - any application rule wins without
+   `!important`, and nothing here can fight a component stylesheet. Values come from `--flare-*` only,
+   so an unthemed document inherits nothing rather than a hardcoded look.
 
-   Two deliberate constraints:
-
-   1. Every rule is wrapped in `:where()`, so its specificity is ZERO. An application rule of any
-      specificity - even a bare `body { }` - wins without `!important`, and nothing here can fight a
-      component stylesheet either.
-   2. Nothing carries a visual opinion that is not already a token. Colors, fonts and the type scale
-      come from `--flare-*`; an unthemed document therefore inherits nothing at all rather than a
-      hardcoded look, which is the same plugin-model rule the components follow.
-
-   This is a separate file rather than rules inside another stylesheet because it is a global side
-   effect: an application that genuinely wants the UA defaults links the component bundle without it.
+   Kept as its own file because it is a global side effect: an app that wants the UA defaults links the
+   component bundle without it.
 */
 
 :where(*, *::before, *::after) {
@@ -30,8 +21,7 @@
 
 :where(body) {
     margin: 0;
-    /* No min-height: with no background on <html>, the body background propagates to the canvas and
-       already paints the full viewport. A 100vh floor would only add the mobile dynamic-toolbar bug. */
+    /* No min-height: the body background propagates to the canvas and already paints the viewport. */
     background: var(--flare-color-background);
     color: var(--flare-color-on-background);
     font-family: var(--flare-typescale-body-medium-font);
@@ -42,10 +32,8 @@
     -webkit-font-smoothing: antialiased;
 }
 
-/* Replaced elements default to inline, which leaves a descender gap under every image in a flow layout.
-   <svg> is deliberately NOT in the display list: an inline SVG is usually a glyph sitting in a line of
-   text, and blocking it out is a surprise a reset has no business springing. It still gets the
-   overflow guard. */
+/* Replaced elements default to inline, leaving a descender gap under every image. <svg> is excluded
+   on purpose - an inline SVG is usually a glyph in a line of text - but still gets the overflow guard. */
 :where(img, video, canvas, iframe, embed, object) {
     display: block;
 }

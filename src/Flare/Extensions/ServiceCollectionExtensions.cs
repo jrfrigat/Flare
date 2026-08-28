@@ -93,11 +93,8 @@ public static class ServiceCollectionExtensions
             return service;
         });
 
-        // AddFlare() must be SUFFICIENT: every service a Flare component injects is registered here, so
-        // an app never has to guess a registration. TimeProvider is the one that was missing - the
-        // calendar and the three date pickers inject it, and a host that had not registered it hit
-        // "Cannot provide a value for property 'TimeProvider'" the first time one rendered.
-        // TryAdd, so an app (or a test) that registered a fake clock keeps it.
+        // AddFlare() must be sufficient on its own: every service a Flare component injects is
+        // registered here. TryAdd so an app's own clock (or a test fake) wins.
         services.TryAddSingleton(TimeProvider.System);
 
         services.AddScoped<IThemeStorageService, LocalStorageThemeStorage>();

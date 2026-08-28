@@ -3,19 +3,11 @@ using System.Runtime.CompilerServices;
 namespace Flare.Core.Tests;
 
 /// <summary>
-/// Architecture guard for best-effort JS interop: wherever a component swallows
-/// <c>JSDisconnectedException</c> (the circuit went away) it must also swallow <c>JSException</c> (the
-/// call itself failed in the browser).
-///
-/// The two are not interchangeable and only one of them was being handled. <c>JSException</c> is what a
-/// component gets when the JS function is not there - the browser is running an older cached
-/// <c>_content/…/*.js</c> than the assembly, which is the standard PWA/service-worker skew because those
-/// asset URLs are not fingerprinted. An enhancement call (an observer, a sticky-offset sync, a panel
-/// anchor) that throws for that reason takes the render - and on Server, the circuit - down with it, for
-/// a feature the page could simply have gone without.
-///
-/// Order matters and is checked implicitly by the compiler: <c>JSDisconnectedException</c> derives from
-/// <c>JSException</c>, so the specific catch has to come first or the code does not build.
+/// Wherever a component swallows <c>JSDisconnectedException</c> (the circuit went away) it must also
+/// swallow <c>JSException</c> (the call itself failed in the browser). The second is what a best-effort
+/// call gets when the JS function is missing - a browser running an older cached
+/// <c>_content/…/*.js</c> than the assembly, since those asset URLs are not fingerprinted - and it
+/// otherwise takes the render, or the circuit, down for an enhancement the page could go without.
 /// </summary>
 public sealed class JsInteropCatchGuardTests
 {

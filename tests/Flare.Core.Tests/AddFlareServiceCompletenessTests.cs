@@ -7,21 +7,13 @@ using System.Reflection;
 namespace Flare.Core.Tests;
 
 /// <summary>
-/// <c>AddFlare()</c> must be SUFFICIENT: every service a Flare component injects has to be registered by
-/// it, so an application never has to guess a registration Flare depends on.
-///
-/// This is the guard for the reported defect that <c>AddFlare</c> did not register <see cref="TimeProvider"/>
-/// while <c>FlareCalendar</c> and the three date pickers inject it - the Gallery registered it itself, so
-/// the sample hid the hole and every other host hit "Cannot provide a value for property 'TimeProvider'"
-/// the first time a picker rendered.
+/// <c>AddFlare()</c> must be sufficient on its own: every service a Flare component injects has to be
+/// registered by it, so an application never has to guess a registration.
 ///
 /// The assertion is over the service COLLECTION, not a built provider: half of Flare's services need
-/// <c>IJSRuntime</c>, which the Blazor host supplies, so resolving them here would fail for a reason that
-/// has nothing to do with the contract. Registration is exactly the thing being promised.
-///
-/// Services owned by the host rather than by Flare (JS interop, navigation, logging, configuration, HTTP,
-/// localization) are exempt - those come with the hosting model, and registering them would be Flare
-/// overreaching.
+/// <c>IJSRuntime</c>, which the Blazor host supplies, so resolving them here would fail for a reason
+/// unrelated to the contract. Services owned by the host (JS interop, navigation, logging,
+/// configuration, HTTP, localization) are exempt.
 /// </summary>
 public sealed class AddFlareServiceCompletenessTests
 {
@@ -58,7 +50,6 @@ public sealed class AddFlareServiceCompletenessTests
             $"ServiceCollectionExtensions.AddFlare:\n  {string.Join("\n  ", missing.Distinct().Order())}");
     }
 
-    // The specific regression, asserted on its own so a failure names the cause rather than a list.
     [Fact]
     public void AddFlare_RegistersTimeProvider()
     {

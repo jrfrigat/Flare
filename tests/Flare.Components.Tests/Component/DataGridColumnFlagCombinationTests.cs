@@ -3,13 +3,9 @@ using Microsoft.AspNetCore.Components;
 namespace Flare.Components.Tests.Component;
 
 /// <summary>
-/// Column flags are independent switches and have to survive being combined. They were only ever
-/// demonstrated and tested one at a time - the Gallery has a frozen demo and a sortable demo and, until
-/// this batch, none with both - which is how "Sortable + Frozen throws at runtime" could be reported
-/// against a shipped release with a green suite.
-///
-/// Every combination is rendered AND sorted (the header click runs the full sort path, re-projection and
-/// re-render included), because the reported failure was on interaction, not on first paint.
+/// Column flags are independent switches and have to survive being combined. Every combination is
+/// rendered AND sorted, since the header click runs the full sort path - re-projection and re-render
+/// included - which first paint alone does not exercise.
 /// </summary>
 public class DataGridColumnFlagCombinationTests : FlareTestContext
 {

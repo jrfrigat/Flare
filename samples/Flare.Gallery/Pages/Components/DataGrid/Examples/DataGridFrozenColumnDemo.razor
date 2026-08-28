@@ -4,8 +4,6 @@
    are the one place a row's own paint cannot reach, since a sticky cell needs an opaque background. *@
 <FlareDataGrid Items="@DatagridData._people" PageSize="6" Hoverable>
     <Columns>
-        @* Frozen AND Sortable together, deliberately: the two were only ever demonstrated apart, so the
-           combination shipped with nothing exercising it. Click either pinned header to sort. *@
         <FlareColumn Title="Name" Field="@(p => p.Name)" Frozen Sortable Width="180px" />
         <FlareColumn Title="Role" Field="@(p => p.Role)" Frozen Sortable Width="160px" />
         <FlareColumn Title="City" Field="@(p => p.City)" Width="220px" />

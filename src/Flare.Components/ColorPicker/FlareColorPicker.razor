@@ -145,13 +145,9 @@ else
         // changed -- comparing the raw value, not its canonical form, so an rgba() input does not
         // re-parse on every render just because we emit it with normalized spacing.
         //
-        // Two mirrors, because they answer different questions (see the two-way state contract in
-        // docs/ru/component-conventions.md):
-        //   _lastParamValue  - did the PARAMETER change? Written here and nowhere else.
-        //   _lastParsedValue - what is the state already showing? Also written by NotifyChange, so our
-        //                      own emitted value does not round-trip back through the parser.
-        // An UNCONTROLLED picker (no ValueChanged binding) must keep the user's pick when the parent
-        // re-renders for an unrelated reason; only a real change of Value overrides it.
+        // Two mirrors: _lastParamValue tracks the PARAMETER (assigned here only), _lastParsedValue
+        // tracks what the state already shows (NotifyChange writes it, so an emitted value does not
+        // round-trip through the parser). Uncontrolled keeps the local pick until Value itself changes.
         var incoming = Value ?? "#ff0000";
         var parameterChanged = incoming != _lastParamValue;
         _lastParamValue = incoming;
