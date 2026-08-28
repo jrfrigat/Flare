@@ -315,6 +315,8 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the navigation landmark, forwarded as aria-label.", null, false, false, false, @"FlareBottomNav"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The FlareBottomNavItem entries rendered inside the bar, laid out with equal flex distribution across the available width.", null, false, false, false, @"FlareBottomNav"),
+                new ApiParameterInfo(@"Position", @"BottomNavPosition", @"BottomNavPosition.Static", @"How the bar sits in the page. Static (the default) leaves it in the flow for the consumer's layout to place; Fixed pins it to the bottom of the viewport with its safe-area inset intact, which is what a PWA shell needs.", null, false, false, false, @"FlareBottomNav"),
+                new ApiParameterInfo(@"ReserveSpace", @"bool", @"true", @"While pinned, keeps a same-height spacer in the flow so page content is never hidden behind the bar. Default true. Turn it off when the layout already reserves the space itself.", null, false, false, false, @"FlareBottomNav"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -554,8 +556,14 @@ public static class ComponentApiRegistry
             null,
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Align", @"CardActionsAlign", @"CardActionsAlign.Start", @"Horizontal alignment of the actions. Default Start.", null, false, false, false, @"FlareCardActions"),
+                new ApiParameterInfo(@"Align", @"CardActionsAlign", @"CardActionsAlign.Start", @"Alignment of the actions along the row. Default Start.", null, false, false, false, @"FlareCardActions"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Action buttons of the card (e.g. FlareButton).", null, false, false, false, @"FlareCardActions"),
+                new ApiParameterInfo(@"FullWidth", @"bool", @"false", @"Makes the actions share the available space equally, each filling its share.", null, false, false, false, @"FlareCardActions"),
+                new ApiParameterInfo(@"Gap", @"FlareSpacing?", null, @"Gap between the actions. Null keeps the card's own action gap.", null, false, false, false, @"FlareCardActions"),
+                new ApiParameterInfo(@"Reverse", @"bool", @"false", @"Reverses the visual order, for the platforms that put the confirming action first.", null, false, false, false, @"FlareCardActions"),
+                new ApiParameterInfo(@"StackBelow", @"CardActionsStack", @"CardActionsStack.Never", @"Card width below which the actions stack and fill the width - the ""row on a wide card, stacked on a narrow one"" case in one parameter. It is a CONTAINER query, so a card in a narrow column stacks on a wide screen too, which is what a viewport breakpoint gets wrong.", null, false, false, false, @"FlareCardActions"),
+                new ApiParameterInfo(@"Vertical", @"bool", @"false", @"Stacks the actions top to bottom instead of laying them in a row.", null, false, false, false, @"FlareCardActions"),
+                new ApiParameterInfo(@"Wrap", @"bool", @"true", @"Allows the actions to wrap onto more lines when they do not fit. Default true - a row of actions that runs past the edge of its card is never the intent; set false for a deliberate single line.", null, false, false, false, @"FlareCardActions"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -705,44 +713,55 @@ public static class ComponentApiRegistry
             @"FlareChart",
             @"Flare.Components.FlareChart",
             @"Flare.Components",
-            null,
+            @"Draws a data set as SVG: line, area, bar, stacked bar, combo, scatter, bubble, pie, donut, radar, rose, polar area or heat map. The drawing is written by the component itself - there is no charting library behind it and no JS on the render path - so it prerenders, themes from tokens like every other component, and costs one render tree rather than a canvas handoff. Sizing has two modes: Fluid (the default) measures the plot and fills it exactly, so the chart is Height px tall at any width; Fluid=""false"" fixes the Width x Height aspect ratio and scales the drawing into its container with no interop at all.",
             null,
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Animate", @"bool", @"false", @"Plays a CSS enter animation (bars grow, lines draw in). Honors prefers-reduced-motion.", null, false, false, false, @"FlareChart"),
-                new ApiParameterInfo(@"Annotations", @"IReadOnlyList<ChartAnnotation>?", null, @"Threshold / target / band overlays drawn over a cartesian chart.", null, false, false, false, @"FlareChart"),
-                new ApiParameterInfo(@"Area", @"bool", @"false", @"Fills the area under each line series with a soft fade from the series color to transparent (line charts only).", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Annotations", @"IReadOnlyList<ChartAnnotation>?", null, @"Threshold, band, segment, arrow and point overlays drawn over a cartesian chart. Build them with the ChartAnnotation factories.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Area", @"bool", @"false", @"Fills the area under each line series with a soft fade from the series color to transparent (line charts only). A series can override this through Area.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"BarWidthRatio", @"double", @"0.85", @"Bar width as a fraction of its slot (0..1). Default 0.85.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Data", @"ChartData?", null, @"Data series and labels to visualize in the chart.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"DataTable", @"bool", @"false", @"Also renders a visually-hidden data <table> after the chart, so screen readers can read the underlying values (an accessibility fallback for the SVG).", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Description", @"string?", null, @"Optional description for the SVG <desc> element, improving screen-reader context.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"DonutRingRatio", @"double", @"0.55", @"Donut hole size as a fraction of the radius (0..1). Default 0.55.", null, false, false, false, @"FlareChart"),
-                new ApiParameterInfo(@"Height", @"int", @"220", @"SVG viewport height in pixels.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Fluid", @"bool", @"true", @"Makes the chart fill its container instead of scaling into it. The plot is measured and the viewBox width is set to match, so one viewBox unit is one CSS pixel: the chart is exactly Height px tall at any width, and nothing - text, markers, stroke widths - is stretched. Default true. Measuring needs the browser, so before the first measurement (prerender, static SSR, JS unavailable) the chart falls back to the authored Width x Height aspect ratio and renders exactly as Fluid=""false"" would. Set it to false to keep a chart completely free of JS interop, or when a fixed aspect ratio is the point. Ignored in Sparkline mode, which already fills its box.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Height", @"int", @"220", @"Plot height in pixels. In fluid mode this is the rendered height exactly; otherwise it is the height half of the authored aspect ratio.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Horizontal", @"bool", @"false", @"Renders bar / stacked-bar charts horizontally (categories down the Y axis).", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"LegendPosition", @"ChartLegendPosition", @"ChartLegendPosition.Bottom", @"Where the legend sits relative to the plot.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"LineStyle", @"ChartLineStyle", @"ChartLineStyle.Solid", @"Stroke pattern of line series. A series can override it through LineStyle.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"OnPointClick", @"EventCallback<int>", null, @"Raised with the category (or slice) index when a data point is clicked.", null, false, true, false, @"FlareChart"),
                 new ApiParameterInfo(@"Padding", @"int?", null, @"Overrides the plot padding (all sides, in viewBox units). Null keeps the default axis padding.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowGrid", @"bool", @"true", @"Shows the horizontal grid lines behind an axis chart. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowLegend", @"bool", @"true", @"Shows the series legend. Default true.", null, false, false, false, @"FlareChart"),
-                new ApiParameterInfo(@"ShowMarkers", @"bool", @"false", @"Draws a marker dot at each line data point.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"ShowMarkers", @"bool", @"false", @"Draws a marker dot at each line data point. A series can override this through ShowMarkers.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowValues", @"bool", @"false", @"Shows the numeric value on each bar and the percentage on each pie/donut slice.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowXAxisLabels", @"bool", @"true", @"Shows the category X-axis labels. Default true.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"ShowYAxisLabels", @"bool", @"true", @"Shows the numeric Y-axis labels. Default true.", null, false, false, false, @"FlareChart"),
-                new ApiParameterInfo(@"Smooth", @"bool", @"false", @"Draws line series as smooth curves instead of straight segments.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"ShowZoomToolbar", @"bool", @"true", @"Shows the zoom in / out / reset buttons above the plot. Default true when Zoomable is set.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Smooth", @"bool", @"false", @"Draws line series as smooth curves instead of straight segments. A series can override this through Smooth, so one chart can mix straight and smoothed lines.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Sparkline", @"bool", @"false", @"Sparkline preset: a compact, chromeless line (no grid, axes, legend or title) that stretches edge-to-edge with a crisp stroke - for inline metric cards. Combine with Area for a fill.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Title", @"string?", null, @"Optional title displayed above the chart and used as the SVG accessible name.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"TrendLine", @"bool", @"false", @"Overlays a linear-regression trend line on each line/area/scatter series.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"Type", @"ChartType", @"ChartType.Line", @"Chart rendering type: Line, Bar, Pie, or Donut.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Width", @"int", @"400", @"Authored drawing width, in viewBox units. With Fluid off this and Height fix the chart's ASPECT RATIO: the drawing then scales like an image into whatever width its container gives it, so a 1200 x 220 chart stays wide and short at any size. In fluid mode it is only the width used until the first measurement arrives.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"XAxisTitle", @"string?", null, @"Title drawn under the X axis.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YAxisFormat", @"string?", null, @".NET numeric format for the Y-axis labels (e.g. ""N0"", ""C0"", ""P0""); null uses a general format.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YAxisTitle", @"string?", null, @"Title drawn rotated beside the Y axis.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YMax", @"double?", null, @"Overrides the automatic maximum of the value axis.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"YMin", @"double?", null, @"Overrides the automatic minimum of the value axis.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"Zoom", @"ChartZoom?", null, @"The visible horizontal window, in category index (or scatter X) units. Null shows the full domain. Supports two-way binding (@bind-Zoom) for a chart whose window the host owns.", null, false, false, false, @"FlareChart"),
+                new ApiParameterInfo(@"ZoomChanged", @"EventCallback<ChartZoom?>", null, @"Fired with the new window whenever the user zooms or pans.", null, false, true, false, @"FlareChart"),
+                new ApiParameterInfo(@"Zoomable", @"bool", @"false", @"Enables zooming and panning of the horizontal axis: drag across the plot to zoom into that range, Ctrl+wheel to zoom around the pointer, drag to pan once zoomed, double-click to reset. The axis re-derives its ticks from the visible window, so zooming in shows more labels rather than the same labels stretched.", null, false, false, false, @"FlareChart"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
-            System.Array.Empty<ApiMethodInfo>(),
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -4548,7 +4567,7 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content rendered inside the resizable container.", null, false, false, false, @"FlareResizable"),
-                new ApiParameterInfo(@"Edge", @"ResizableEdge", @"ResizableEdge.Right", null, null, false, false, false, @"FlareResizable"),
+                new ApiParameterInfo(@"Edge", @"ResizableEdge", @"ResizableEdge.Right", @"Which edge carries the drag handle. Default Right (width).", null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"InitialSize", @"string?", null, null, null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"MaxSize", @"string?", null, null, null, false, false, false, @"FlareResizable"),
                 new ApiParameterInfo(@"MinSize", @"string?", null, null, null, false, false, false, @"FlareResizable"),
@@ -4808,7 +4827,7 @@ public static class ComponentApiRegistry
             @"FlareSelect",
             @"Flare.Components.FlareSelect",
             @"Flare.Components",
-            null,
+            @"Single-value dropdown over a list of items: a select-only combobox by default, or a filtering one with Searchable. Rows render as plain labels, as an ItemTemplate, or - with NullOption - as a pinned ""no value"" row, so a filter select expresses ""all"" without a sentinel value.",
             null,
             new ApiParameterInfo[]
             {
@@ -4828,6 +4847,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Items", @"IEnumerable<TValue?>?", null, @"Collection of items to populate the dropdown.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field.", null, false, false, false, @"FlareFieldBase"),
                 new ApiParameterInfo(@"NoResultsText", @"string?", null, @"Text shown in the dropdown when a search query matches no options.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"NullOption", @"string?", null, @"Text of a selectable ""no value"" row prepended to the list - the ""All ingredients"" / ""Any"" case. Choosing it sets Value to null, and the closed field then shows this text rather than the placeholder, so a filter select needs no sentinel value of its own. The row is pinned: it stays at the top and survives typing, because a row meaning ""no filter"" is useless if searching hides it. Clearable composes with it - clearing selects it. Requires a nullable TValue. For a struct such as an int or an enum the default is a real value and cannot mean ""none"", so binding the nullable form is the only way to express it; setting this on a non-nullable value type throws rather than selecting zero.", null, false, false, false, @"FlareSelect"),
+                new ApiParameterInfo(@"NullOptionTemplate", @"RenderFragment?", null, @"Rich content for the NullOption row, used both in the list and in the closed field. Falls back to the NullOption text.", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Open", @"bool", null, @"Whether the dropdown is open (supports @bind-Open).", null, false, false, false, @"FlareSelect"),
                 new ApiParameterInfo(@"OpenChanged", @"EventCallback<bool>", null, @"Callback invoked when the open state changes, enabling @bind-Open.", null, false, true, false, @"FlareSelect"),
                 new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
@@ -6573,6 +6594,23 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"BottomNavPosition"] = new ApiEnumInfo(
+            @"BottomNavPosition",
+            @"Flare.Components.BottomNavPosition",
+            @"Flare.Components",
+            @"How FlareBottomNav sits in the page.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Static", @"0", @"In the normal flow - the consumer's layout decides where the bar goes."),
+                new ApiEnumMember(@"Sticky", @"1", @"Sticks to the bottom of its scroll container once it would scroll out of view."),
+                new ApiEnumMember(@"Fixed", @"2", @"Pinned to the bottom of the viewport, above the content and below overlays. This is the PWA case: the bar keeps its safe-area inset and publishes its own height, so the layout can reserve space for it instead of hiding the last row of content behind it."),
+            },
+            new string[]
+            {
+                @"FlareBottomNav",
+            });
+
         e[@"Breakpoint"] = new ApiEnumInfo(
             @"Breakpoint",
             @"Flare.Components.Breakpoint",
@@ -6707,13 +6745,33 @@ public static class ComponentApiRegistry
             @"CardActionsAlign",
             @"Flare.Components.CardActionsAlign",
             @"Flare.Components",
-            @"Horizontal alignment of FlareCardActions content.",
+            @"Alignment of FlareCardActions content along the row (or column, when vertical).",
             null,
             new ApiEnumMember[]
             {
                 new ApiEnumMember(@"Start", @"0", @"Align actions to the start (left in LTR)."),
-                new ApiEnumMember(@"End", @"1", @"Align actions to the end (right in LTR)."),
-                new ApiEnumMember(@"Between", @"2", @"Distribute actions with space between them."),
+                new ApiEnumMember(@"Center", @"1", @"Center the actions."),
+                new ApiEnumMember(@"End", @"2", @"Align actions to the end (right in LTR)."),
+                new ApiEnumMember(@"Between", @"3", @"Distribute actions with space between them."),
+                new ApiEnumMember(@"Stretch", @"4", @"Stretch the actions to fill the row, sharing the width equally."),
+            },
+            new string[]
+            {
+                @"FlareCardActions",
+            });
+
+        e[@"CardActionsStack"] = new ApiEnumInfo(
+            @"CardActionsStack",
+            @"Flare.Components.CardActionsStack",
+            @"Flare.Components",
+            @"Card width below which FlareCardActions stacks its actions. These are CONTAINER widths, not viewport breakpoints: what decides whether two buttons fit side by side is how wide the card is, so a card in a narrow column stacks on a wide screen too.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Never", @"0", @"Never stack automatically (the default)."),
+                new ApiEnumMember(@"Narrow", @"1", @"Stack below 20rem (320px) - only genuinely cramped cards."),
+                new ApiEnumMember(@"Compact", @"2", @"Stack below 30rem (480px) - the phone-width card."),
+                new ApiEnumMember(@"Wide", @"3", @"Stack below 40rem (640px) - anything short of a full-width card."),
             },
             new string[]
             {
@@ -6764,9 +6822,27 @@ public static class ComponentApiRegistry
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"HorizontalLine", @"0", @"A horizontal line at a value on the Y axis (e.g. a target or threshold)."),
-                new ApiEnumMember(@"VerticalLine", @"1", @"A vertical line at a category index (or X value on scatter charts)."),
-                new ApiEnumMember(@"HorizontalBand", @"2", @"A shaded horizontal band between two Y values."),
+                new ApiEnumMember(@"HorizontalLine", @"0", @"A horizontal line at Y (a target or threshold)."),
+                new ApiEnumMember(@"VerticalLine", @"1", @"A vertical line at X (category index, or X value on scatter)."),
+                new ApiEnumMember(@"HorizontalBand", @"2", @"A shaded band between Y and Y2."),
+                new ApiEnumMember(@"VerticalBand", @"3", @"A shaded band between X and X2."),
+                new ApiEnumMember(@"Segment", @"4", @"A free line from (X,Y) to (X2,Y2) in data coordinates."),
+                new ApiEnumMember(@"Arrow", @"5", @"A Segment with an arrowhead at (X2,Y2) - a trend or a callout leader."),
+                new ApiEnumMember(@"Point", @"6", @"A marked point at (X,Y) with an optional label."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"ChartAnnotationLabelPosition"] = new ApiEnumInfo(
+            @"ChartAnnotationLabelPosition",
+            @"Flare.Components.ChartAnnotationLabelPosition",
+            @"Flare.Components",
+            @"Where an annotation's label sits relative to the annotation itself.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Auto", @"0", @"Chosen from the annotation kind: outside-end for lines, above for points and segments."),
+                new ApiEnumMember(@"Start", @"1", @"At the annotation's start (leading edge / first point)."),
+                new ApiEnumMember(@"End", @"2", @"At the annotation's end (trailing edge / last point)."),
             },
             System.Array.Empty<string>());
 
@@ -6783,6 +6859,24 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Left", @"2", @"To the left of the plot."),
                 new ApiEnumMember(@"Right", @"3", @"To the right of the plot."),
                 new ApiEnumMember(@"None", @"4", @"No legend."),
+            },
+            new string[]
+            {
+                @"FlareChart",
+            });
+
+        e[@"ChartLineStyle"] = new ApiEnumInfo(
+            @"ChartLineStyle",
+            @"Flare.Components.ChartLineStyle",
+            @"Flare.Components",
+            @"Stroke pattern of a line, trend line or annotation. The dash arrays behind the patterned values are theme tokens (--flare-chart-line-dash-*), so a theme retunes them without touching a call site.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Solid", @"0", @"Unbroken stroke."),
+                new ApiEnumMember(@"Dashed", @"1", @"Evenly spaced dashes."),
+                new ApiEnumMember(@"Dotted", @"2", @"Round-ended dots."),
+                new ApiEnumMember(@"DashDot", @"3", @"Alternating dash and dot."),
             },
             new string[]
             {
@@ -7521,6 +7615,7 @@ public static class ComponentApiRegistry
             },
             new string[]
             {
+                @"FlareCardActions",
                 @"FlareDrawer",
                 @"FlareGrid",
                 @"FlarePaper",
@@ -7956,6 +8051,24 @@ public static class ComponentApiRegistry
             new string[]
             {
                 @"FlareQrCode",
+            });
+
+        e[@"ResizableEdge"] = new ApiEnumInfo(
+            @"ResizableEdge",
+            @"Flare.Components.ResizableEdge",
+            @"Flare.Components",
+            @"Which edge of a FlareResizable carries the drag handle.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Right", @"0", @"Drag the trailing edge to change the width (the default)."),
+                new ApiEnumMember(@"Bottom", @"1", @"Drag the bottom edge to change the height."),
+                new ApiEnumMember(@"Left", @"2", @"Drag the leading edge to change the width."),
+                new ApiEnumMember(@"Top", @"3", @"Drag the top edge to change the height."),
+            },
+            new string[]
+            {
+                @"FlareResizable",
             });
 
         e[@"RibbonSizeMode"] = new ApiEnumInfo(
