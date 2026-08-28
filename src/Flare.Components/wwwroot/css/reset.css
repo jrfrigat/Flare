@@ -1,0 +1,66 @@
+/*
+   Document reset.
+
+   Flare owns theming, so it has to own the document those themed surfaces sit in. Without this every
+   app starts with the browser's UA `body { margin: 8px }` gutter around a full-bleed layout and is
+   expected to find and delete it itself - which is exactly what was reported against 0.18.1, and what
+   the Gallery had quietly worked around in its own app.css for as long as it has existed.
+
+   Two deliberate constraints:
+
+   1. Every rule is wrapped in `:where()`, so its specificity is ZERO. An application rule of any
+      specificity - even a bare `body { }` - wins without `!important`, and nothing here can fight a
+      component stylesheet either.
+   2. Nothing carries a visual opinion that is not already a token. Colors, fonts and the type scale
+      come from `--flare-*`; an unthemed document therefore inherits nothing at all rather than a
+      hardcoded look, which is the same plugin-model rule the components follow.
+
+   This is a separate file rather than rules inside another stylesheet because it is a global side
+   effect: an application that genuinely wants the UA defaults links the component bundle without it.
+*/
+
+:where(*, *::before, *::after) {
+    box-sizing: border-box;
+}
+
+:where(html) {
+    /* Stops iOS/Android inflating text in landscape, which otherwise breaks every type scale. */
+    -webkit-text-size-adjust: 100%;
+}
+
+:where(body) {
+    margin: 0;
+    /* No min-height: with no background on <html>, the body background propagates to the canvas and
+       already paints the full viewport. A 100vh floor would only add the mobile dynamic-toolbar bug. */
+    background: var(--flare-color-background);
+    color: var(--flare-color-on-background);
+    font-family: var(--flare-typescale-body-medium-font);
+    font-size: var(--flare-typescale-body-medium-size);
+    font-weight: var(--flare-typescale-body-medium-weight);
+    line-height: var(--flare-typescale-body-medium-height);
+    letter-spacing: var(--flare-typescale-body-medium-spacing);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Replaced elements default to inline, which leaves a descender gap under every image in a flow layout.
+   <svg> is deliberately NOT in the display list: an inline SVG is usually a glyph sitting in a line of
+   text, and blocking it out is a surprise a reset has no business springing. It still gets the
+   overflow guard. */
+:where(img, video, canvas, iframe, embed, object) {
+    display: block;
+}
+
+:where(img, svg, video, canvas, iframe, embed, object) {
+    max-width: 100%;
+}
+
+/* Form controls do not inherit typography from the document in any browser. */
+:where(input, button, textarea, select) {
+    font: inherit;
+    color: inherit;
+}
+
+/* A long unbroken token (a URL, a hash, a generated id) must not force the page to scroll sideways. */
+:where(p, h1, h2, h3, h4, h5, h6) {
+    overflow-wrap: break-word;
+}

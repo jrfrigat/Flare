@@ -1,12 +1,8 @@
-*, *::before, *::after { box-sizing: border-box; }
-
-html, body {
-    margin: 0; padding: 0;
-    font-family: var(--flare-typescale-body-large-font, 'Roboto', sans-serif);
-    background: var(--flare-color-background, #fffbfe);
-    color: var(--flare-color-on-background, #1c1b1f);
-    height: 100%;
-}
+/* box-sizing, the body margin, the body font and the surface colors now come from Flare's own
+   reset.css (part of flare-components.css). The Gallery keeping its own copy is what hid the missing
+   reset from us for as long as it did - an app should not need any of this. Only the full-height
+   html/body, which the Gallery's shell layout genuinely needs, stays. */
+html, body { height: 100%; }
 
 #blazor-error-ui {
     background: lightyellow;

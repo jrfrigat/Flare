@@ -1,4 +1,6 @@
 /* Flare component styles - all token-consuming rules use var(--flare-*) only */
+/* Document reset (zero-specificity :where rules) - first, so anything below and any app rule wins */
+@import 'reset.css';
 /* Shared color-role classes (unified FlareColor) - must load before components */
 @import 'color-roles.css';
 /* Interactive controls */
