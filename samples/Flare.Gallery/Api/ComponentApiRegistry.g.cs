@@ -822,13 +822,14 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"Avatar", @"RenderFragment?", null, @"Avatar content rendered at the leading edge (takes precedence over LeadingIcon).", null, false, false, false, @"FlareChip"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Markup rendered in the label slot instead of Label, for a chip whose content is more than a string. Writing the content between the tags - <FlareChip>42</FlareChip> - binds here.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Closable", @"bool", @"false", @"Shows a close button to remove the chip. Alias for Closeable.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Closeable", @"bool", @"false", @"Shows a close button to remove the chip.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Color of the chip. Role -> shared color class; custom -> inline tokens. Default = theme default.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Dims the chip and stops it responding: no click, keyboard or close callback fires, and it leaves the tab order. A chip inside a FlareChipGroup also stops taking part in selection, so a disabled chip can neither be selected nor cleared.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"Elevated", @"bool", @"false", @"Renders the chip as an elevated chip (filled surface with a shadow, no border). Convenience shorthand for Variant=""ChipVariant.Elevated""; when true it overrides Variant.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"GroupContext", @"FlareChipGroupContext?", null, @"Parent chip group context providing selection state management.", null, true, false, false, @"FlareChip"),
-                new ApiParameterInfo(@"Label", @"string?", null, @"Text label displayed inside the chip.", null, false, false, false, @"FlareChip"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Text label displayed inside the chip. Ignored when ChildContent is set.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"LeadingIcon", @"RenderFragment?", null, @"Icon content rendered before the chip label.", null, false, false, false, @"FlareChip"),
                 new ApiParameterInfo(@"OnClick", @"EventCallback", null, @"Callback raised when the chip body is clicked.", null, false, true, false, @"FlareChip"),
                 new ApiParameterInfo(@"OnClose", @"EventCallback", null, @"Callback raised when the close button is clicked.", null, false, true, false, @"FlareChip"),
@@ -8181,6 +8182,20 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"ScrollAxis"] = new ApiEnumInfo(
+            @"ScrollAxis",
+            @"Flare.Components.ScrollAxis",
+            @"Flare.Components",
+            @"Which axis a direction filter reacts to.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Vertical", @"0", @"Only vertical reversals count."),
+                new ApiEnumMember(@"Horizontal", @"1", @"Only horizontal reversals count - a carousel, a horizontal timeline, a Gantt chart."),
+                new ApiEnumMember(@"Both", @"2", @"A reversal on either axis counts."),
+            },
+            System.Array.Empty<string>());
+
         e[@"ScrollBehavior"] = new ApiEnumInfo(
             @"ScrollBehavior",
             @"Flare.Components.ScrollBehavior",
@@ -8199,13 +8214,15 @@ public static class ComponentApiRegistry
             @"ScrollDirection",
             @"Flare.Components.ScrollDirection",
             @"Flare.Components",
-            @"Which way a scroll container moved between two notifications.",
+            @"Which way a scroll container moved between two notifications. One enum for both axes: a vertical reading only ever yields None, Up or Down, and a horizontal one only None, Left or Right.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"None", @"0", @"No vertical movement since the previous notification."),
+                new ApiEnumMember(@"None", @"0", @"No movement on this axis since the previous notification."),
                 new ApiEnumMember(@"Up", @"1", @"Moved toward the start - the reader is going back up."),
                 new ApiEnumMember(@"Down", @"2", @"Moved toward the end - the reader is going down."),
+                new ApiEnumMember(@"Left", @"3", @"Moved back toward the leading horizontal edge."),
+                new ApiEnumMember(@"Right", @"4", @"Moved on toward the trailing horizontal edge."),
             },
             System.Array.Empty<string>());
 

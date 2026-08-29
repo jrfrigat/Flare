@@ -3,6 +3,55 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.23.0] - 2026-08-29
+
+### Breaking
+
+- **Remove the `flare-components.js` script tag from your host page.** The line to delete is
+  `<script src="_content/Flare.Components/js/flare-components.js"></script>`.
+  That file is now an ES module the services import on first use, so leaving the tag in place is
+  a syntax error in the browser. It was the one manual setup step Flare had, and forgetting it failed
+  silently at runtime: a frozen DataGrid column, a lazy block, a table of contents, an OTP field, a
+  clipboard fallback or a download would throw `Could not find 'FlareDataGrid.updateFrozenOffsets'` the
+  first time it reached for JS, with nothing at compile time to warn you. This was found in a production
+  application that had hit exactly that. `flare-bootstrap.js` still belongs in `<head>` - it is
+  unchanged.
+- **`IOverlayJsService.RegisterOutsideClickAsync` and `RemoveOutsideClickAsync` are gone.** Use
+  `RegisterDismissAsync` / `RemoveDismissAsync`, which had the identical pointerdown handler plus a
+  `focusout` that also dismisses when focus leaves by keyboard.
+
+### Added
+
+- **`IScrollService` derives the horizontal axis too.** `ScrollPosition` always reported `Left`,
+  `ScrollWidth` and `ClientWidth`, but only the vertical half was turned into anything usable. Now
+  `HorizontalProgress`, `AtHorizontalStart`, `AtHorizontalEnd`, `OverflowsHorizontally` and
+  `OverflowsVertically` sit beside their vertical counterparts, `ScrollChange` carries `HorizontalDelta`
+  and `HorizontalDirection`, `ScrollDirection` gained `Left` and `Right`, and
+  `ScrollSubscribeOptions.Axis` chooses which axis a `DirectionOnly` filter watches. A carousel, a
+  horizontal timeline or a Gantt chart gets the same derived values a reading pane already got. Under a
+  right-to-left writing mode the browser reports a negative `scrollLeft`, so horizontal progress is
+  measured as distance travelled rather than distance from the visual left.
+- **`FlareChip` takes its label as child content.** `<FlareChip>42</FlareChip>` now renders, and content
+  between the tags wins over the `Label` string.
+
+### Fixed
+
+- **Content written between the tags of a component with no `ChildContent` was silently dropped**, with
+  a clean build. Every Flare component inherits an `AdditionalAttributes` catch-all, so Razor emits the
+  child fragment as an untyped attribute instead of failing to compile; it lands in the unmatched
+  dictionary and splatting discards it. `FlareChip` is fixed; the twenty other components that display
+  caller text and accept no children are listed in `docs/issues/implicit-child-content.md`.
+- **Fourteen of the twenty JS callbacks into .NET were unguarded**, so a navigation, a disposal or a
+  dropped connection produced unhandled promise rejections. Three more were guarded with a `try/catch`
+  that only ever caught a synchronous throw and never the rejected promise. All twenty now handle both.
+- The Gallery's changelog page parses release bodies as they come near the viewport rather than all at
+  once: **47 entries, 14 parsed on load** instead of 47.
+
+### Changed
+
+- The scroll service page demonstrates both axes on a box it owns, so it can be exercised without the
+  page itself being long enough to scroll.
+
 ## [0.22.0] - 2026-08-29
 
 ### Breaking
