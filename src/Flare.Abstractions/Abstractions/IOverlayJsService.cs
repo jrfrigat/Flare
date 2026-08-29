@@ -30,17 +30,6 @@ public interface IOverlayJsService : IAsyncDisposable
     /// <summary>Focuses the first focusable element inside <paramref name="container"/>.</summary>
     ValueTask FocusFirstAsync(ElementReference container);
 
-    /// <summary>Registers a document outside-click handler that invokes <paramref name="method"/> on the reference.</summary>
-    /// <param name="id">A stable id identifying this handler.</param>
-    /// <param name="element">The element whose interior clicks are ignored; clicks outside it dismiss.</param>
-    /// <param name="dotNetRef">The component reference whose <paramref name="method"/> is invoked.</param>
-    /// <param name="method">The <c>[JSInvokable]</c> method name to invoke on an outside click.</param>
-    ValueTask RegisterOutsideClickAsync<T>(string id, ElementReference element,
-        DotNetObjectReference<T> dotNetRef, string method) where T : class;
-
-    /// <summary>Removes the outside-click handler registered under <paramref name="id"/>.</summary>
-    ValueTask RemoveOutsideClickAsync(string id);
-
     /// <summary>
     /// Positions <paramref name="panel"/> as a fixed popup anchored to <paramref name="anchor"/>,
     /// flipping above when there is not enough room below and re-positioning on scroll/resize.

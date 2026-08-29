@@ -28,14 +28,6 @@ public sealed class OverlayJsService : FlareJsModule, IOverlayJsService
     public ValueTask FocusFirstAsync(ElementReference container) => InvokeVoidAsync("focusFirstInDialog", container);
 
     /// <inheritdoc />
-    public ValueTask RegisterOutsideClickAsync<T>(string id, ElementReference element,
-        DotNetObjectReference<T> dotNetRef, string method) where T : class
-        => InvokeVoidAsync("registerOutsideClick", id, element, dotNetRef, method);
-
-    /// <inheritdoc />
-    public ValueTask RemoveOutsideClickAsync(string id) => InvokeVoidAsync("removeOutsideClick", id);
-
-    /// <inheritdoc />
     public ValueTask PositionAnchoredPanelAsync(string id, ElementReference anchor, ElementReference panel, object? options = null)
         => InvokeVoidAsync("positionAnchoredPanel", id, anchor, panel, options ?? new { });
 

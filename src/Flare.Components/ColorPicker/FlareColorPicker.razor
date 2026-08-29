@@ -188,26 +188,26 @@ else
         else if (_open && !_canvasInitialized)
             await InitCanvasAsync();
 
-        // Popover mode only: register/unregister the document outside-click listener as the
-        // panel opens and closes. Inline mode has no panel to dismiss.
+        // Popover mode only: register/unregister the shared dismiss handler as the panel opens and
+        // closes. Inline mode has no panel to dismiss.
         if (!Inline && _open != _outsideRegistered)
-            await SyncOutsideClickAsync();
+            await SyncDismissAsync();
     }
 
-    private async Task SyncOutsideClickAsync()
+    private async Task SyncDismissAsync()
     {
         try
         {
             if (_open)
             {
                 _selfRef ??= DotNetObjectReference.Create(this);
-                await Overlay.RegisterOutsideClickAsync(_triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
+                await Overlay.RegisterDismissAsync(_triggerId, _rootEl, _selfRef, nameof(CloseFromOutside));
                 // Fixed-position the panel under the trigger so a Card's overflow:hidden can't crop it.
                 await Overlay.PositionAnchoredPanelAsync(_triggerId, _triggerEl, _panelEl);
             }
             else
             {
-                await Overlay.RemoveOutsideClickAsync(_triggerId);
+                await Overlay.RemoveDismissAsync(_triggerId);
                 await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
             _outsideRegistered = _open;
@@ -242,7 +242,7 @@ else
         {
             if (_outsideRegistered)
             {
-                await Overlay.RemoveOutsideClickAsync(_triggerId);
+                await Overlay.RemoveDismissAsync(_triggerId);
                 await Overlay.RemoveAnchoredPanelAsync(_triggerId);
             }
             if (_canvasInitialized)
