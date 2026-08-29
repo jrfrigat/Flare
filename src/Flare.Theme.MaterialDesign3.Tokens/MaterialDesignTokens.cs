@@ -527,9 +527,9 @@ public class MaterialDesignTokens
         FocusOutlineOffset = "0",
         HoverBorderBottomColor = "var(--flare-color-on-surface)",
         HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
-        Padding = "1rem 1rem",                        // medium = the M3 56dp field
         PaddingXs = "0.1875rem 0.5rem",
         PaddingSm = "0.375rem 0.625rem",
+        PaddingMd = "1rem 1rem",                      // the M3 56dp field
         // Large and extra-large are measured up from the 56dp medium. They used to be 14px and 18px of
         // block padding, authored in core against a shorter medium, which left Large SHORTER than Medium
         // under this theme.

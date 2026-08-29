@@ -117,8 +117,9 @@
     background: transparent;
     border: none;
     outline: none;
-    /* Block padding drives the field height (default ~56dp via 1rem + 24px line). */
-    padding: var(--flare-input-padding);
+    /* Block padding drives the field height. This is the medium step of the Xs..Xl ramp below, applied
+       unconditionally so a field with no size modifier still has one. */
+    padding: var(--flare-input-padding-md);
     font-family: var(--flare-typescale-body-large-font);
     font-size: var(--flare-typescale-body-large-size);
     color: var(--flare-color-on-surface);
