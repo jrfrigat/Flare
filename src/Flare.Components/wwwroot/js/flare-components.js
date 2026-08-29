@@ -1,10 +1,16 @@
 // Flare.Components JS interop bundle.
 // Consolidates the small per-component helpers (OTP, clipboard, infinite-scroll,
-// data-grid resize, file download) into one script so consumers load a single file.
-// Global names are preserved, so C# JS-interop call sites are unchanged.
+// data-grid resize, file download) into one module.
+//
+// These were `window.*` globals until 0.23.0, which made this the one file a host application had to
+// add to its index.html by hand. Forgetting it was silent: the components compiled, rendered, and then
+// threw a JSException the first time one of them reached for JS - a frozen DataGrid column, a lazy
+// block, a table of contents, an OTP field, a download. Now the services import it like every other
+// Flare module, so it loads on first use and cannot be left out. The exported names are unchanged, so
+// the dotted call strings in the services still resolve.
 
 // -- OTP input ---------------------------------------------------------------
-window.flareOtp = {
+export const flareOtp = {
     focus: function (el) {
         if (el) { el.focus(); el.select(); }
     },
@@ -16,7 +22,7 @@ window.flareOtp = {
 // -- Field imperative helpers (select/blur/caret-range) ----------------------
 // Focus is done natively from C# via ElementReference.FocusAsync; only the
 // operations with no built-in Blazor equivalent live here.
-window.flareField = {
+export const flareField = {
     select: function (el) { if (el && el.select) el.select(); },
     blur: function (el) { if (el && el.blur) el.blur(); },
     selectRange: function (el, start, end) {
@@ -27,7 +33,7 @@ window.flareField = {
 };
 
 // -- Clipboard write fallback (no eval/innerHTML - GS-5 compliant) ------------
-window.FlareClipboardFallback = {
+export const FlareClipboardFallback = {
     copy: function (text) {
         var ta = document.createElement('textarea');
         ta.value = text;
@@ -42,7 +48,7 @@ window.FlareClipboardFallback = {
 };
 
 // -- Infinite scroll (IntersectionObserver) ----------------------------------
-window.FlareInfiniteScroll = (() => {
+export const FlareInfiniteScroll = (() => {
     const observers = new Map();
     return {
         init(sentinel, dotNetRef, rootMargin) {
@@ -63,7 +69,7 @@ window.FlareInfiniteScroll = (() => {
 })();
 
 // -- Lazy render (defer a subtree until it scrolls near the viewport) --------
-window.FlareLazy = (() => {
+export const FlareLazy = (() => {
     const observers = new Map();
     return {
         init(el, dotNetRef, rootMargin, once, rootSelector) {
@@ -89,7 +95,7 @@ window.FlareLazy = (() => {
 })();
 
 // -- DataGrid column resize --------------------------------------------------
-window.FlareDataGrid = {
+export const FlareDataGrid = {
     initResize(thEl) {
         let startX, startW;
         const handle = thEl.querySelector('.flare-datagrid__resize-handle');
@@ -151,7 +157,7 @@ window.FlareDataGrid = {
 };
 
 // -- On-this-page table of contents ------------------------------------------
-window.FlareToc = (() => {
+export const FlareToc = (() => {
     const instances = new Map(); // opaque handle -> { target, onScroll }
 
     // Unicode-aware slug: keep letters/numbers (incl. cyrillic), collapse the rest to '-'.
@@ -244,7 +250,7 @@ window.FlareToc = (() => {
 })();
 
 // -- File download (CSV = same path with a UTF-8 BOM) -------------------------
-window.FlareDownload = {
+export const FlareDownload = {
     download(filename, content, mimeType, withBom) {
         const parts = withBom ? ['﻿' + content] : [content];
         const blob = new Blob(parts, { type: (mimeType || 'application/octet-stream') + ';charset=utf-8;' });
@@ -272,7 +278,7 @@ window.FlareDownload = {
 // -- Element bounds (for fixed-position popups, e.g. FlareDateTimePicker) -----
 // Lives in the component bundle so it works without any host glue (a host CSP
 // that forbids inline scripts must not break positioning).
-window.flareGetBounds = function (el) {
+export const flareGetBounds = function (el) {
     if (!el) return { top: 0, bottom: 0, left: 0, width: 240, viewportHeight: 600, viewportWidth: 1200 };
     const r = el.getBoundingClientRect();
     return { top: r.top, bottom: r.bottom, left: r.left, width: r.width, viewportHeight: window.innerHeight, viewportWidth: window.innerWidth };

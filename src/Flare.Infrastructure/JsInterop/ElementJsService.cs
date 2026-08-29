@@ -5,25 +5,29 @@ using Microsoft.JSInterop;
 namespace Flare.Components.Services;
 
 /// <inheritdoc cref="IElementJsService" />
-public sealed class ElementJsService(IJSRuntime js) : IElementJsService
+public sealed class ElementJsService : FlareJsModule, IElementJsService
 {
+    /// <param name="js">The JS runtime (injected).</param>
+    public ElementJsService(IJSRuntime js)
+        : base(js, "./_content/Flare.Components/js/flare-components.js") { }
+
     /// <inheritdoc />
     public ValueTask FocusAndSelectAsync(ElementReference element) =>
-        js.InvokeVoidAsync("flareOtp.focus", element);
+        InvokeVoidAsync("flareOtp.focus", element);
 
     /// <inheritdoc />
     public ValueTask SelectAsync(ElementReference element) =>
-        js.InvokeVoidAsync("flareField.select", element);
+        InvokeVoidAsync("flareField.select", element);
 
     /// <inheritdoc />
     public ValueTask BlurAsync(ElementReference element) =>
-        js.InvokeVoidAsync("flareField.blur", element);
+        InvokeVoidAsync("flareField.blur", element);
 
     /// <inheritdoc />
     public ValueTask SelectRangeAsync(ElementReference element, int start, int end) =>
-        js.InvokeVoidAsync("flareField.selectRange", element, start, end);
+        InvokeVoidAsync("flareField.selectRange", element, start, end);
 
     /// <inheritdoc />
     public ValueTask<ElementBounds> GetBoundsAsync(ElementReference element) =>
-        js.InvokeAsync<ElementBounds>("flareGetBounds", element);
+        InvokeAsync<ElementBounds>("flareGetBounds", element);
 }

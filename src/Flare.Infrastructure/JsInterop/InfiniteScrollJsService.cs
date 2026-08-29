@@ -5,12 +5,16 @@ using Microsoft.JSInterop;
 namespace Flare.Components.Services;
 
 /// <inheritdoc cref="IInfiniteScrollJsService" />
-public sealed class InfiniteScrollJsService(IJSRuntime js) : IInfiniteScrollJsService
+public sealed class InfiniteScrollJsService : FlareJsModule, IInfiniteScrollJsService
 {
-    /// <inheritdoc />
-    public ValueTask InitAsync<T>(ElementReference sentinel, DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class
-        => js.InvokeVoidAsync("FlareInfiniteScroll.init", sentinel, dotNetRef, rootMargin);
+    /// <param name="js">The JS runtime (injected).</param>
+    public InfiniteScrollJsService(IJSRuntime js)
+        : base(js, "./_content/Flare.Components/js/flare-components.js") { }
 
     /// <inheritdoc />
-    public ValueTask RemoveAsync(ElementReference sentinel) => js.InvokeVoidAsync("FlareInfiniteScroll.dispose", sentinel);
+    public ValueTask InitAsync<T>(ElementReference sentinel, DotNetObjectReference<T> dotNetRef, string rootMargin) where T : class
+        => InvokeVoidAsync("FlareInfiniteScroll.init", sentinel, dotNetRef, rootMargin);
+
+    /// <inheritdoc />
+    public ValueTask RemoveAsync(ElementReference sentinel) => InvokeVoidAsync("FlareInfiniteScroll.dispose", sentinel);
 }
