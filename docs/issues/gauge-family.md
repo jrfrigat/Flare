@@ -1,6 +1,6 @@
 # FlareGauge: radial, arc and linear gauges on the existing chart renderer
 
-**Status: OPEN. Phase 1. Blocked by [chart tokenization](chart-tokenization.md).**
+**Status: OPEN. Phase 1. No longer blocked - chart tokenization shipped in 0.19.**
 
 Radzen is the only one of the four reference frameworks with gauges - `RadzenRadialGauge`,
 `RadzenArcGauge` and `RadzenLinearGauge`, each with scales, ranges and pointers. MudBlazor, Blazorise and

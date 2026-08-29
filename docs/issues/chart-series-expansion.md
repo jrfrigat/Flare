@@ -1,6 +1,7 @@
 # Charts: the series types Flare does not have
 
-**Status: OPEN. Phase 3, large. Blocked by [chart tokenization](chart-tokenization.md) - do not add
+**Status: OPEN. Phase 3, large. Chart tokenization landed in 0.19 (that issue is closed and deleted;
+see the CHANGELOG) - do not add
 series types until the palette and ramp are theme-owned, or every new series bakes in more literals.**
 
 `ChartType` currently has 13 members: `Line, Bar, Pie, Donut, Area, StackedBar, Scatter, Radar, HeatMap,

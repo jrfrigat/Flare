@@ -68,7 +68,7 @@ Ordered by dependency first, then by cost-to-value. The three foundation items u
 
 | # | Issue | Size | Unblocks |
 | :-- | :-- | :-- | :-- |
-| 1 | [Chart tokenization](chart-tokenization.md) - `ChartTokens`, a themeable series palette, axis/grid/tooltip tokens | M | gauges, all new series, treemap/sankey |
+| 1 | ~~Chart tokenization~~ - DONE, `ChartTokens` ships 58 tokens | M | gauges, all new series, treemap/sankey |
 | 2 | [Upload transfer port](upload-transfer-port.md) - `IFlareUpload` + adapter; today `FlareFileUpload` only *selects* files | M | the most visible hole in an existing component |
 | 3 | [Gauge family](gauge-family.md) - `FlareGauge` radial / arc / linear, on the chart renderer | M | dashboards |
 | 4 | [Barcode](barcode-1d.md) - 1D symbologies beside the existing QR encoder | S | - |

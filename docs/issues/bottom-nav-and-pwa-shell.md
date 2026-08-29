@@ -48,6 +48,7 @@ a snippet:
 4. **Form on a phone** - fields, a stacked `FlareCardActions`, a sticky submit bar above the keyboard.
 5. **Offline / update** - `IVersionCheckService` wired to a snackbar, which exists and is undocumented.
 
-These also give the density work in [density-and-discoverability.md](density-and-discoverability.md) a
-place to be judged: MD3 Expressive at default spacing on a 375px viewport is the case the reporter says
-is too loose, and until the Gallery shows it, nobody sees it.
+These also give the density question a place to be judged: MD3 Expressive at default spacing on a 375px
+viewport is the case the reporter called too loose. The answer there turned out to be the existing
+`Size` parameter rather than a new density scope - but nobody can see that until the Gallery shows the
+viewport it was reported at.

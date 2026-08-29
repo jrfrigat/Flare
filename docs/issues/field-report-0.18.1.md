@@ -31,10 +31,10 @@ Tier 2 - structure and documentation. Real, but nothing is blocked on them.
 
 | # | Issue | File |
 | :-- | :-- | :-- |
-| - | Density and API discoverability (`data-testid`, nested input, MD3E spacing) | [density-and-discoverability.md](density-and-discoverability.md) |
+| - | Density and API discoverability (`data-testid`, nested input, MD3E spacing) | closed - `Size` already carried it; the broken size ramp behind it was the real defect, fixed in 0.22.0 |
 
-Raised separately, queued with them: [scroll-service-port.md](scroll-service-port.md) - five private scroll
-listeners in the JS and no public way for an application to observe scroll at all.
+Raised separately and since delivered: `IScrollService` (0.21.0), which replaced the private scroll
+listeners in the JS and gave an application a public way to observe scroll at all.
 
 ## Closed
 
