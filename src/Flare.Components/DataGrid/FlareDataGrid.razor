@@ -554,7 +554,7 @@
         @ondrop="@(() => OnColumnDrop(col.Key))"
         @ondragend="OnColumnDragEnd"
         @onclick="@(async (e) => await OnHeaderClick(col, e))">
-        @col.Title
+        @if (col.TitleContent is not null) { @col.TitleContent } else { @col.Title }
         @if (col.Sortable)
         {
             var sortIdx = _sortStack.FindIndex(s => s.Column.Key == col.Key);

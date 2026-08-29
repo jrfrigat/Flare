@@ -46,12 +46,6 @@ public sealed class CallerTextSlotTests
         ["FlareChart"] = "Title and Description are two strings; a single ChildContent could not say which.",
     };
 
-    // Not a decision - a gap. A grid header can only be a string today, so an icon, a unit or a help
-    // affordance in a column header is unreachable, and there is no header slot to add the markup to.
-    // Fixing it means threading a fragment through the header render path (bands, sort affordance,
-    // resize handle), which is more than a parameter. Tracked in docs/issues/implicit-child-content.md.
-    private static readonly HashSet<string> PendingHeaderSlot =
-        new(StringComparer.Ordinal) { "FlareColumn", "FlareColumnBase", "FlareColumnBand", "FlareColumnRow" };
 
     [Fact]
     public void EveryComponent_ThatRendersCallerText_AlsoAcceptsMarkupForIt()
@@ -78,7 +72,7 @@ public sealed class CallerTextSlotTests
             if (textParams.Length == 0) continue;
 
             var name = Bare(type);
-            if (NotAMarkupSlot.ContainsKey(name) || PendingHeaderSlot.Contains(name)) continue;
+            if (NotAMarkupSlot.ContainsKey(name)) continue;
 
             var fragments = parameters
                 .Where(p => p.PropertyType == typeof(RenderFragment))
@@ -111,7 +105,7 @@ public sealed class CallerTextSlotTests
             .Select(Bare)
             .ToHashSet(StringComparer.Ordinal);
 
-        var stale = NotAMarkupSlot.Keys.Concat(PendingHeaderSlot).Where(k => !live.Contains(k)).ToArray();
+        var stale = NotAMarkupSlot.Keys.Where(k => !live.Contains(k)).ToArray();
 
         Assert.True(stale.Length == 0,
             "These exemptions name components that no longer exist, so the reason behind each is no " +

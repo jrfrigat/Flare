@@ -8,8 +8,14 @@
     private static int _seqCounter;
     internal int DeclarationOrder { get; } = System.Threading.Interlocked.Increment(ref _seqCounter);
 
-    /// <summary>Header text displayed in the column/band heading.</summary>
+    /// <summary>Header text displayed in the column/band heading, and the name the column is known by
+    /// everywhere else - the export, the filter menu, the column picker, aggregates. Still required when
+    /// <see cref="TitleContent"/> is set, because those places need text.</summary>
     [Parameter] public string Title { get; set; } = "";
+
+    /// <summary>Markup painted in the heading instead of <see cref="Title"/> - a unit, an icon, a help
+    /// affordance. Display only; <see cref="Title"/> keeps carrying the column's name.</summary>
+    [Parameter] public RenderFragment? TitleContent { get; set; }
 
     /// <summary>Stable identity of this header node, used to key grid state (visibility, order) and to
     /// match the node to its projected column. Defaults to <see cref="Title"/>; <see cref="FlareColumn{TItem}"/>

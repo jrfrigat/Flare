@@ -71,7 +71,8 @@ public partial class FlareDataGrid<TItem>
                     builder.AddAttribute(seq++, "role", "columnheader");
                     builder.AddAttribute(seq++, "class", $"{Css.Classes.DataGrid.Th} {Css.Classes.DataGrid.ThBand} {cell.Band.CssClass ?? ""}".TrimEnd());
                     if (cell.ColSpan > 1) builder.AddAttribute(seq++, "colspan", cell.ColSpan.ToString());
-                    builder.AddContent(seq++, cell.Band.Title);
+                    if (cell.Band.TitleContent is not null) builder.AddContent(seq++, cell.Band.TitleContent);
+                    else builder.AddContent(seq++, cell.Band.Title);
                     builder.CloseElement();
                 }
                 else

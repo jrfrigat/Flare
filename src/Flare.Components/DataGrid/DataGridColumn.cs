@@ -12,8 +12,16 @@ namespace Flare.Components;
 /// <typeparam name="TItem">Row type the column reads its value from.</typeparam>
 public sealed class DataGridColumn<TItem>
 {
-    /// <summary>Header text shown in the column heading.</summary>
+    /// <summary>Header text shown in the column heading, and the column's name everywhere else it is
+    /// referred to by name - the export, the filter menu, the column picker, the aggregate rows and the
+    /// edit dictionaries. Setting <see cref="TitleContent"/> changes only what the header cell paints;
+    /// this string is still required and still carries the identity.</summary>
     public string Title { get; init; } = "";
+
+    /// <summary>Markup painted in the header cell instead of <see cref="Title"/> - a unit, an icon, a
+    /// help affordance. Display only: it does not travel to the export, the filter menu or anywhere else
+    /// the column is named, because those are text.</summary>
+    public RenderFragment? TitleContent { get; init; }
     /// <summary>Explicit stable identity override (see <c>FlareColumn.Id</c>); null falls back to SortKey/Title.</summary>
     public string? Id { get; init; }
     /// <summary>Value accessor used for cell text, sorting and filtering.</summary>

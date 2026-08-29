@@ -1,7 +1,8 @@
 # Implicit child content reported to throw at runtime
 
-**Status: MOSTLY DONE. Tier 0. Reported item 7. The mechanism is known (see "Why nothing ever fails
-loudly"), a guard test now enforces the rule, and the one real gap left is the DataGrid column header.**
+**Status: DONE for the slots, OPEN for the slot NAMES. Tier 0. Reported item 7. Every component that
+renders caller text now takes a fragment for it, and `CallerTextSlotTests` keeps it that way. What
+remains is item 5: the 32 bare-noun slot names that an application can collide with.**
 
 ## The report
 
@@ -147,11 +148,12 @@ string is both the visible label and the button's accessible name), and the comp
 parameters where a single slot could not say which - `FlareEmptyState`, `FlareChart`,
 `FlareDateRangePicker`.
 
-**Still a real gap:** the DataGrid column header. `FlareColumn.Title` is a string and there is no header
-slot at all, so an icon, a unit or a help affordance in a column header is unreachable. Fixing it means
-threading a fragment through the header render path - bands, the sort affordance, the resize handle -
-which is more than adding a parameter. The guard names these in `PendingHeaderSlot` so the gap is visible
-in code rather than only here.
+**The DataGrid column header** was the last gap and is now closed: `FlareColumnBase.TitleContent` (so
+bands get it too), carried through `DataGridColumn<TItem>` and painted by both the plain and the banded
+header path. `Title` deliberately stays required and unchanged, because it is not only the heading - it
+is the column's identity and its name in the export, the filter menu, the column picker, the aggregate
+rows and the edit dictionaries, all of which need text. A fragment that replaced the string would have
+silently emptied every one of those; one of the tests pins exactly that.
 
 ## Work
 
@@ -159,12 +161,12 @@ in code rather than only here.
    reported symptom and the silent-swallow class it belongs to. A slot-name collision produces the
    reported "works only with explicit `<ChildContent>`" behaviour; the catch-all is why neither form
    ever produces a diagnostic.
-2. ~~Give every component that renders caller text a fragment for it.~~ Done except the column header;
-   see the table above.
+2. ~~Give every component that renders caller text a fragment for it.~~ Done; see the table above.
 3. ~~A guard test, because the compiler will never report this one.~~ Done: `CallerTextSlotTests`. It is
    static rather than render-based on purpose - rendering 181 components generically founders on their
    required parameters, while reflection sees inherited ones, which is exactly what the grep missed.
-4. **The DataGrid column header slot.** The one substantive piece left; see `PendingHeaderSlot`.
+4. ~~The DataGrid column header slot.~~ Done - `FlareColumnBase.TitleContent`, on both the plain and
+   the banded header path.
 5. **Audit the slot names** across every public Flare component: the 32 bare nouns listed above are each
    a silent-swallow waiting for an application to name a component the same thing. The mandate allows
    renaming: `HeaderContent` (which `FlareCollapse` already uses) cannot collide the way `Header` can,

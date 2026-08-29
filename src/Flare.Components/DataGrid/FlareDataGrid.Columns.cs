@@ -137,6 +137,7 @@ public partial class FlareDataGrid<TItem>
             list.Add(new DataGridColumn<TItem>
             {
                 Title = c.Title,
+                TitleContent = c.TitleContent,
                 Id = c.Id,
                 Value = c.Field,
                 Type = c.Type,
