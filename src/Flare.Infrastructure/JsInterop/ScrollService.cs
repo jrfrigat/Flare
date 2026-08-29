@@ -69,6 +69,7 @@ public sealed class ScrollService : FlareJsModule, IScrollService
         // against where the page actually was rather than against zero.
         var position = initial?.ToPosition() ?? default;
         sub.LastTop = position.Top;
+        sub.LastLeft = position.Left;
         sub.HasLast = initial is not null;
 
         if (options.FireImmediately)
@@ -135,24 +136,37 @@ public sealed class ScrollService : FlareJsModule, IScrollService
 
         var pos = position.ToPosition();
         var delta = sub.HasLast ? pos.Top - sub.LastTop : 0;
+        var horizontalDelta = sub.HasLast ? pos.Left - sub.LastLeft : 0;
         sub.LastTop = pos.Top;
+        sub.LastLeft = pos.Left;
         sub.HasLast = true;
 
         var direction = delta > 0 ? ScrollDirection.Down : delta < 0 ? ScrollDirection.Up : ScrollDirection.None;
+        var horizontalDirection = horizontalDelta > 0 ? ScrollDirection.Right
+            : horizontalDelta < 0 ? ScrollDirection.Left : ScrollDirection.None;
 
         // A reversal only counts once the movement clears the threshold, and the running direction is
         // only updated then - otherwise a one-pixel jitter both reports a reversal and becomes the
         // baseline the next real move is compared against.
-        var changed = false;
-        if (direction != ScrollDirection.None && Math.Abs(delta) > sub.Options.DirectionThreshold)
+        var changed = Reversed(delta, direction, sub.LastDirection, sub.Options.DirectionThreshold, out var newVertical);
+        sub.LastDirection = newVertical;
+        var horizontalChanged = Reversed(
+            horizontalDelta, horizontalDirection, sub.LastHorizontalDirection, sub.Options.DirectionThreshold,
+            out var newHorizontal);
+        sub.LastHorizontalDirection = newHorizontal;
+
+        // Which axis is allowed to filter a notification out - both are always measured and reported.
+        var filterSaw = sub.Options.Axis switch
         {
-            changed = direction != sub.LastDirection;
-            sub.LastDirection = direction;
-        }
+            ScrollAxis.Horizontal => horizontalChanged,
+            ScrollAxis.Both => changed || horizontalChanged,
+            _ => changed,
+        };
+        if (sub.Options.DirectionOnly && !filterSaw) return;
 
-        if (sub.Options.DirectionOnly && !changed) return;
-
-        try { await sub.Handler(new ScrollChange(pos, delta, direction, changed, IsImmediate: false)); }
+        var change = new ScrollChange(
+            pos, delta, direction, changed, IsImmediate: false, horizontalDelta, horizontalDirection);
+        try { await sub.Handler(change); }
         catch (Exception ex) when (IsInteropTeardown(ex)) { }
     }
 
@@ -168,6 +182,23 @@ public sealed class ScrollService : FlareJsModule, IScrollService
         await base.DisposeAsync();
     }
 
+    // True when this movement reverses the running direction on one axis. `running` is only advanced
+    // past the threshold, so a jitter below it neither reports a reversal nor becomes the baseline the
+    // next real move is compared against.
+    private static bool Reversed(
+        double delta, ScrollDirection direction, ScrollDirection running, double threshold,
+        out ScrollDirection updated)
+    {
+        if (direction == ScrollDirection.None || Math.Abs(delta) <= threshold)
+        {
+            updated = running;
+            return false;
+        }
+
+        updated = direction;
+        return direction != running;
+    }
+
     private static bool IsInteropTeardown(Exception ex) =>
         ex is JSDisconnectedException or JSException or InvalidOperationException or OperationCanceledException or ObjectDisposedException;
 
@@ -176,8 +207,10 @@ public sealed class ScrollService : FlareJsModule, IScrollService
         public Func<ScrollChange, Task> Handler { get; } = handler;
         public ScrollSubscribeOptions Options { get; } = options;
         public double LastTop { get; set; }
+        public double LastLeft { get; set; }
         public bool HasLast { get; set; }
         public ScrollDirection LastDirection { get; set; }
+        public ScrollDirection LastHorizontalDirection { get; set; }
     }
 
     private sealed class AsyncActionDisposable(Func<ValueTask> dispose) : IAsyncDisposable

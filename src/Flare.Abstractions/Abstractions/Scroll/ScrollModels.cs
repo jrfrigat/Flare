@@ -36,17 +36,51 @@ public readonly record struct ScrollPosition(
 
     /// <summary>True once the container is at (or within a pixel of) the bottom.</summary>
     public bool AtEnd => Top >= ScrollHeight - ClientHeight - 1;
+
+    /// <summary>True when the content is taller than the container, so there is anywhere to scroll.</summary>
+    public bool OverflowsVertically => ScrollHeight > ClientHeight + 1;
+
+    /// <summary>How far through the horizontal range the container is, from 0 at the leading edge to 1
+    /// at the trailing one. Content that does not overflow reads 0. Under a right-to-left writing mode
+    /// the browser reports <see cref="Left"/> as negative or reversed depending on its scroll-direction
+    /// behaviour, so read this as "distance travelled", not as "distance from the visual left".</summary>
+    public double HorizontalProgress
+    {
+        get
+        {
+            var range = ScrollWidth - ClientWidth;
+            return range > 0 ? Math.Clamp(Math.Abs(Left) / range, 0, 1) : 0;
+        }
+    }
+
+    /// <summary>True while the container is at (or within a pixel of) its leading horizontal edge.</summary>
+    public bool AtHorizontalStart => Math.Abs(Left) <= 1;
+
+    /// <summary>True once the container is at (or within a pixel of) its trailing horizontal edge.</summary>
+    public bool AtHorizontalEnd => Math.Abs(Left) >= ScrollWidth - ClientWidth - 1;
+
+    /// <summary>True when the content is wider than the container - what an overflow affordance (a tab
+    /// bar's arrows, a carousel's chevrons) turns itself on for.</summary>
+    public bool OverflowsHorizontally => ScrollWidth > ClientWidth + 1;
 }
 
-/// <summary>Which way a scroll container moved between two notifications.</summary>
+/// <summary>
+/// Which way a scroll container moved between two notifications. One enum for both axes: a vertical
+/// reading only ever yields <see cref="None"/>, <see cref="Up"/> or <see cref="Down"/>, and a horizontal
+/// one only <see cref="None"/>, <see cref="Left"/> or <see cref="Right"/>.
+/// </summary>
 public enum ScrollDirection
 {
-    /// <summary>No vertical movement since the previous notification.</summary>
+    /// <summary>No movement on this axis since the previous notification.</summary>
     None = 0,
     /// <summary>Moved toward the start - the reader is going back up.</summary>
     Up,
     /// <summary>Moved toward the end - the reader is going down.</summary>
     Down,
+    /// <summary>Moved back toward the leading horizontal edge.</summary>
+    Left,
+    /// <summary>Moved on toward the trailing horizontal edge.</summary>
+    Right,
 }
 
 /// <summary>How the browser should animate a programmatic scroll.</summary>
@@ -84,24 +118,49 @@ public enum ScrollAlign
 /// signal a hide-on-scroll app bar actually reacts to.</param>
 /// <param name="IsImmediate">True for the synthetic notification delivered right after subscribing
 /// (see <see cref="ScrollSubscribeOptions.FireImmediately"/>), not a real scroll event.</param>
+/// <param name="HorizontalDelta">Horizontal pixels moved since the previous notification; negative
+/// travelling back toward the leading edge.</param>
+/// <param name="HorizontalDirection">Which way <paramref name="HorizontalDelta"/> points -
+/// <see cref="ScrollDirection.Left"/>, <see cref="ScrollDirection.Right"/> or
+/// <see cref="ScrollDirection.None"/>.</param>
 public readonly record struct ScrollChange(
     ScrollPosition Position,
     double Delta,
     ScrollDirection Direction,
     bool DirectionChanged,
-    bool IsImmediate)
+    bool IsImmediate,
+    double HorizontalDelta = 0,
+    ScrollDirection HorizontalDirection = ScrollDirection.None)
 {
     /// <summary>Distance scrolled from the top, in CSS pixels.</summary>
     public double Top => Position.Top;
 
+    /// <summary>Distance scrolled from the leading horizontal edge, in CSS pixels.</summary>
+    public double Left => Position.Left;
+
     /// <summary>How far through the vertical range the container is, from 0 to 1.</summary>
     public double Progress => Position.Progress;
+
+    /// <summary>How far through the horizontal range the container is, from 0 to 1.</summary>
+    public double HorizontalProgress => Position.HorizontalProgress;
 
     /// <summary>True while the container is at the top.</summary>
     public bool AtStart => Position.AtStart;
 
     /// <summary>True once the container is at the bottom.</summary>
     public bool AtEnd => Position.AtEnd;
+
+    /// <summary>True while the container is at its leading horizontal edge.</summary>
+    public bool AtHorizontalStart => Position.AtHorizontalStart;
+
+    /// <summary>True once the container is at its trailing horizontal edge.</summary>
+    public bool AtHorizontalEnd => Position.AtHorizontalEnd;
+
+    /// <summary>True when the content is wider than the container.</summary>
+    public bool OverflowsHorizontally => Position.OverflowsHorizontally;
+
+    /// <summary>True when the content is taller than the container.</summary>
+    public bool OverflowsVertically => Position.OverflowsVertically;
 }
 
 /// <summary>
@@ -131,10 +190,28 @@ public sealed class ScrollSubscribeOptions
     public bool DirectionOnly { get; set; }
 
     /// <summary>
-    /// Vertical pixels that must accumulate before a movement counts as a change of direction. Default
-    /// 0. Raising it stops a trackpad's jitter from flapping a <see cref="DirectionOnly"/> subscriber.
+    /// Pixels that must accumulate before a movement counts as a change of direction. Default 0.
+    /// Raising it stops a trackpad's jitter from flapping a <see cref="DirectionOnly"/> subscriber.
     /// </summary>
     public double DirectionThreshold { get; set; }
+
+    /// <summary>
+    /// Which axis <see cref="DirectionOnly"/> and <see cref="DirectionThreshold"/> watch. Default
+    /// <see cref="ScrollAxis.Vertical"/>. Both axes are always measured and reported on every
+    /// notification; this only decides which one is allowed to filter one out.
+    /// </summary>
+    public ScrollAxis Axis { get; set; } = ScrollAxis.Vertical;
+}
+
+/// <summary>Which axis a direction filter reacts to.</summary>
+public enum ScrollAxis
+{
+    /// <summary>Only vertical reversals count.</summary>
+    Vertical = 0,
+    /// <summary>Only horizontal reversals count - a carousel, a horizontal timeline, a Gantt chart.</summary>
+    Horizontal,
+    /// <summary>A reversal on either axis counts.</summary>
+    Both,
 }
 
 /// <summary>

@@ -228,4 +228,120 @@ public class C_ScrollServiceTests : FlareTestContext
         Assert.NotNull(byElement.Element);
         Assert.Null(byElement.Selector);
     }
+
+    // ---- horizontal axis ------------------------------------------------------
+    // The raw Left / ScrollWidth / ClientWidth were always reported; what these cover is the derived
+    // half that used to exist for the vertical axis alone.
+
+    private static ScrollService.ScrollPositionDto AtX(double left) => new(0, left, 0, 0, 1200, 400);
+
+    [Fact]
+    public void Horizontal_progress_and_edges_mirror_the_vertical_ones()
+    {
+        var start = new ScrollPosition(0, 0, 0, 0, 1200, 400);
+        Assert.Equal(0, start.HorizontalProgress);
+        Assert.True(start.AtHorizontalStart);
+        Assert.False(start.AtHorizontalEnd);
+        Assert.True(start.OverflowsHorizontally);
+
+        var middle = new ScrollPosition(0, 400, 0, 0, 1200, 400);
+        Assert.Equal(0.5, middle.HorizontalProgress);
+
+        var end = new ScrollPosition(0, 800, 0, 0, 1200, 400);
+        Assert.True(end.AtHorizontalEnd);
+        Assert.Equal(1, end.HorizontalProgress);
+
+        // A bar whose content fits has nowhere to go, so an overflow affordance stays off.
+        var fits = new ScrollPosition(0, 0, 0, 0, 300, 400);
+        Assert.False(fits.OverflowsHorizontally);
+        Assert.Equal(0, fits.HorizontalProgress);
+    }
+
+    [Fact]
+    public void A_right_to_left_container_reports_progress_from_distance_travelled()
+    {
+        // Browsers hand back a negative scrollLeft in RTL. Progress is how far the reader has gone,
+        // which is the magnitude - not a negative fraction.
+        var rtl = new ScrollPosition(0, -800, 0, 0, 1200, 400);
+        Assert.Equal(1, rtl.HorizontalProgress);
+        Assert.True(rtl.AtHorizontalEnd);
+        Assert.False(rtl.AtHorizontalStart);
+    }
+
+    [Fact]
+    public async Task Horizontal_delta_and_direction_are_derived_alongside_the_vertical_ones()
+    {
+        var seen = new List<ScrollChange>();
+        var service = (ScrollService)Scroll;
+        var token = await service.SubscribeAsync(
+            c => seen.Add(c),
+            options: new ScrollSubscribeOptions { FireImmediately = false },
+            cancellationToken: Xunit.TestContext.Current.CancellationToken);
+        var id = LastSubscriptionId();
+
+        // The first notification only establishes the baseline, exactly as it does for the vertical axis.
+        await service.OnScrolled(id, AtX(0));
+        await service.OnScrolled(id, AtX(120));
+        await service.OnScrolled(id, AtX(80));
+
+        Assert.Equal(3, seen.Count);
+        Assert.Equal(0, seen[0].HorizontalDelta);
+        Assert.Equal(120, seen[1].HorizontalDelta);
+        Assert.Equal(ScrollDirection.Right, seen[1].HorizontalDirection);
+        Assert.Equal(-40, seen[2].HorizontalDelta);
+        Assert.Equal(ScrollDirection.Left, seen[2].HorizontalDirection);
+
+        // The vertical axis stayed still throughout and says so, rather than borrowing the other's answer.
+        Assert.All(seen, c => Assert.Equal(ScrollDirection.None, c.Direction));
+
+        await token.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task DirectionOnly_watches_the_axis_the_subscription_named()
+    {
+        var seen = new List<ScrollChange>();
+        var service = (ScrollService)Scroll;
+        var token = await service.SubscribeAsync(
+            c => seen.Add(c),
+            options: new ScrollSubscribeOptions
+            {
+                FireImmediately = false,
+                DirectionOnly = true,
+                Axis = ScrollAxis.Horizontal,
+            },
+            cancellationToken: Xunit.TestContext.Current.CancellationToken);
+        var id = LastSubscriptionId();
+
+        await service.OnScrolled(id, AtX(100));   // first move right - a reversal from None
+        await service.OnScrolled(id, AtX(200));   // still right - suppressed
+        await service.OnScrolled(id, AtX(150));   // left - delivered
+
+        Assert.Equal(2, seen.Count);
+        Assert.Equal(ScrollDirection.Right, seen[0].HorizontalDirection);
+        Assert.Equal(ScrollDirection.Left, seen[1].HorizontalDirection);
+
+        await token.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task A_vertical_only_filter_ignores_horizontal_reversals()
+    {
+        var seen = new List<ScrollChange>();
+        var service = (ScrollService)Scroll;
+        var token = await service.SubscribeAsync(
+            c => seen.Add(c),
+            options: new ScrollSubscribeOptions { FireImmediately = false, DirectionOnly = true },
+            cancellationToken: Xunit.TestContext.Current.CancellationToken);
+        var id = LastSubscriptionId();
+
+        // Pure horizontal movement. The default axis is vertical, so none of it reaches the handler.
+        await service.OnScrolled(id, AtX(100));
+        await service.OnScrolled(id, AtX(50));
+        await service.OnScrolled(id, AtX(300));
+
+        Assert.Empty(seen);
+
+        await token.DisposeAsync();
+    }
 }
