@@ -11,9 +11,9 @@
                @onchange="HandleChange" />
         <span class="@Css.Classes.Radio.Indicator" aria-hidden="true"></span>
     </span>
-    @if (!string.IsNullOrEmpty(Label))
+    @if (ChildContent is not null || !string.IsNullOrEmpty(Label))
     {
-        <span class="@Css.Classes.Radio.Label">@Label</span>
+        <span class="@Css.Classes.Radio.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
     }
 </label>
 
@@ -21,8 +21,17 @@
     [CascadingParameter] private FlareRadioGroupContext? GroupContext { get; set; }
     /// <summary>Value this radio button represents in the group.</summary>
     [Parameter] public TValue? Value { get; set; }
-    /// <summary>Label text displayed next to the radio button.</summary>
+    /// <summary>Label text displayed next to the radio button. Ignored when <see cref="ChildContent"/> is
+    /// set.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>
+    /// Markup rendered as the label instead of <see cref="Label"/>, for a label that is more than a
+    /// string - a link in a consent line, a unit, an inline badge. Writing it between the tags binds
+    /// here.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
     /// <summary>Disables this radio button individually.</summary>
     [Parameter] public bool Disabled { get; set; }
 

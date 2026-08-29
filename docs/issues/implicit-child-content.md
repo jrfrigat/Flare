@@ -1,7 +1,8 @@
 # Implicit child content reported to throw at runtime
 
 **Status: OPEN. Tier 0. Reported item 7. The mechanism is now known - see "Why nothing ever fails
-loudly" - and 21 components are measured as affected. `FlareChip` is fixed; the other 20 are not.**
+loudly" - and 21 components are measured as affected. `FlareChip` and the label family (Checkbox, Radio,
+Switch) are fixed; 17 remain.**
 
 ## The report
 
@@ -124,15 +125,16 @@ parameter name or an unaccepted child, and the library has to close that gap its
 
 Every one of these silently swallows `<X>content</X>`:
 
-`FlareChip` (fixed), `FlareCheckbox`, `FlareRadio`, `FlareSwitch`, `FlareSlider`, `FlareRating`,
+`FlareChip` (fixed), `FlareCheckbox` (fixed), `FlareRadio` (fixed), `FlareSwitch` (fixed),
+`FlareSlider`, `FlareRating`,
 `FlareAvatar`, `FlareDivider`, `FlareAppBar`, `FlareEmptyState`, `FlareHighlighter`, `FlareColorPicker`,
 `FlareColorCustomizer`, `FlareDateRangePicker`, `FlareFieldChrome`, `FlareFloatingActionMenuItem`,
 `FlareMeterSegment`, `FlareOnThisPage`, `FlareShortcutEntry`, `DataGridColumnPicker`,
 `DataGridFilterBuilder`.
 
-The label family - Checkbox, Radio, Switch, Slider, Rating - is where a caller most naturally writes
-markup between the tags, because a label is so often more than a string (a link in a consent checkbox,
-a unit in a slider label). Those should come next.
+The label family is where a caller most naturally writes markup between the tags, because a label is so
+often more than a string (a link in a consent checkbox, a unit in a slider label). Checkbox, Radio and
+Switch are done; `FlareSlider` and `FlareRating` are the same shape and should follow.
 
 ## Work
 
@@ -140,7 +142,7 @@ a unit in a slider label). Those should come next.
    reported symptom and the silent-swallow class it belongs to. A slot-name collision produces the
    reported "works only with explicit `<ChildContent>`" behaviour; the catch-all is why neither form
    ever produces a diagnostic.
-2. **Give the remaining 20 a `ChildContent` that falls back to the string parameter**, as `FlareChip`
+2. **Give the remaining 17 a `ChildContent` that falls back to the string parameter**, as `FlareChip`
    now does: content between the tags wins, the string is the shorthand. This is additive and breaks
    nothing.
 3. **Audit the slot names** across every public Flare component: list every `RenderFragment` parameter

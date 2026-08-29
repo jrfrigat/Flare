@@ -64,3 +64,46 @@ public class C_ChipChildContentTests : FlareTestContext
         Assert.NotEmpty(cut.Find(".flare-chip__label").QuerySelectorAll(".flare-badge"));
     }
 }
+
+/// <summary>
+/// The same slot on the label family, where a caller most naturally writes markup rather than a string:
+/// a link in a consent line, a unit, an inline badge.
+/// </summary>
+public class C_LabelFamilyChildContentTests : FlareTestContext
+{
+    [Fact]
+    public void Checkbox_renders_content_between_the_tags()
+    {
+        var cut = Render<FlareCheckbox>(p => p.AddChildContent("<a href=\"/terms\">terms</a>"));
+
+        var label = cut.Find(".flare-checkbox__label");
+        Assert.Equal("terms", label.TextContent);
+        Assert.NotEmpty(label.QuerySelectorAll("a"));
+    }
+
+    [Fact]
+    public void Switch_content_wins_over_the_string()
+    {
+        var cut = Render<FlareSwitch>(p => p
+            .Add(x => x.Label, "shorthand")
+            .AddChildContent("markup"));
+
+        Assert.Equal("markup", cut.Find(".flare-switch__label").TextContent);
+    }
+
+    [Fact]
+    public void Radio_still_takes_the_string_shorthand()
+    {
+        var cut = Render<FlareRadio<string>>(p => p.Add(x => x.Label, "Second"));
+
+        Assert.Equal("Second", cut.Find(".flare-radio__label").TextContent);
+    }
+
+    [Fact]
+    public void No_label_and_no_content_renders_no_label_element()
+    {
+        var cut = Render<FlareCheckbox>();
+
+        Assert.Empty(cut.FindAll(".flare-checkbox__label"));
+    }
+}

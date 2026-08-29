@@ -16,9 +16,9 @@
             <span class="@Css.Classes.Switch.Handle">@_handleIcon</span>
         </span>
     </span>
-    @if (!string.IsNullOrEmpty(Label))
+    @if (ChildContent is not null || !string.IsNullOrEmpty(Label))
     {
-        <span class="@Css.Classes.Switch.Label">@Label</span>
+        <span class="@Css.Classes.Switch.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
     }
     @if (!string.IsNullOrEmpty(_displayedError))
     {
@@ -31,8 +31,17 @@
     [Parameter] public bool Value { get; set; }
     /// <summary>Callback invoked when the toggle state changes.</summary>
     [Parameter] public EventCallback<bool> ValueChanged { get; set; }
-    /// <summary>Label text displayed next to the switch.</summary>
+    /// <summary>Label text displayed next to the switch. Ignored when <see cref="ChildContent"/> is
+    /// set.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>
+    /// Markup rendered as the label instead of <see cref="Label"/>, for a label that is more than a
+    /// string - a link in a consent line, a unit, an inline badge. Writing it between the tags binds
+    /// here.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
     /// <summary>Overrides validation with a custom error message.</summary>
     [Parameter] public string? ErrorText { get; set; }
     /// <summary>Disables the switch when true.</summary>
