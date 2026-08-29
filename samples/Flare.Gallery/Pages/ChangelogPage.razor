@@ -9,6 +9,11 @@
     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Changelog_Subtitle</FlareText>
 </GalleryPageTitle>
 
+@* Every release body is a full markdown parse, and by now there are enough of them that doing all of
+   them on navigation is felt. The heading of each entry stays eager - it is one badge and a date, and
+   keeping it rendered means the page has its real structure and height from the start - while the body
+   waits until it is close to the viewport. The reveal margin is deliberately generous: a reader
+   scrolling steadily should never catch one arriving. *@
 <FlareStack Gap="FlareSpacing.Large">
     @foreach (var entry in Changelog.Entries())
     {
@@ -20,7 +25,16 @@
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">@entry.Date</FlareText>
                 }
             </FlareStack>
-            <FlareMarkdown Value="@entry.Markdown" />
+            <FlareLazy Root=".flare-layout-content" RootMargin="800px" MinHeight="6rem">
+                <Placeholder>
+                    <FlareSkeleton Variant="SkeletonVariant.Text" Height="1rem" />
+                    <FlareSkeleton Variant="SkeletonVariant.Text" Height="1rem" Width="80%" />
+                    <FlareSkeleton Variant="SkeletonVariant.Text" Height="1rem" Width="60%" />
+                </Placeholder>
+                <ChildContent>
+                    <FlareMarkdown Value="@entry.Markdown" />
+                </ChildContent>
+            </FlareLazy>
         </FlareCard>
     }
 </FlareStack>
