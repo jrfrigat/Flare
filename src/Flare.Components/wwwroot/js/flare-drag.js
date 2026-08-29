@@ -7,6 +7,8 @@
 // pointer-captured implementation. Pure geometry helpers used by drag-and-drop reorder
 // (tree drop-zone, kanban column hit-test) live here too, next to the gestures they serve.
 
+import { registry } from './flare-dom.js';
+
 // -- Gesture primitive --------------------------------------------------------
 // Attach a drag gesture to `handle`. On press it captures the pointer (so tracking continues even
 // when the cursor leaves the element and works for mouse/pen/touch alike) and reports the delta from
@@ -58,7 +60,7 @@ export function startDrag(handle, opts) {
 }
 
 // -- FlareResizable (drag one edge to resize a single container) --------------
-const _resizeHandles = new Map();
+const _resizeHandles = registry();
 
 export function registerResizeHandle(container, handle, edge, minSize, maxSize, dotNetRef) {
     if (!handle || !container) return;
@@ -82,19 +84,18 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
             if (dotNetRef) dotNetRef.invokeMethodAsync('OnResizedCallback', container.style[dim]).catch(() => { });
         },
     });
-    _resizeHandles.set(handle, off);
+    _resizeHandles.keep(handle, off);
 }
 
 export function removeResizeHandle(handle) {
-    const off = _resizeHandles.get(handle);
-    if (off) { off(); _resizeHandles.delete(handle); }
+    _resizeHandles.drop(handle);
 }
 
 // -- FlareDialog drag (move the panel by its header) + corner resize ----------
 // Both reuse the shared startDrag gesture so there is no bespoke pointer plumbing here. Drag applies a
 // CSS translate (preserving the centering transform's starting offset); resize grows width/height from
 // the bottom-right gripper down to the given minimums.
-const _dialogDrags = new Map();
+const _dialogDrags = registry();
 
 export function registerDialogDrag(handle, panel) {
     if (!handle || !panel) return;
@@ -110,15 +111,14 @@ export function registerDialogDrag(handle, panel) {
             panel.style.transform = `translate(${startX + dx}px, ${startY + dy}px)`;
         },
     });
-    _dialogDrags.set(handle, off);
+    _dialogDrags.keep(handle, off);
 }
 
 export function removeDialogDrag(handle) {
-    const off = _dialogDrags.get(handle);
-    if (off) { off(); _dialogDrags.delete(handle); }
+    _dialogDrags.drop(handle);
 }
 
-const _dialogResizes = new Map();
+const _dialogResizes = registry();
 
 export function registerDialogResize(handle, panel, minWidth, minHeight) {
     if (!handle || !panel) return;
@@ -141,16 +141,15 @@ export function registerDialogResize(handle, panel, minWidth, minHeight) {
             panel.style.height = Math.max(minH, sh + dy) + 'px';
         },
     });
-    _dialogResizes.set(handle, off);
+    _dialogResizes.keep(handle, off);
 }
 
 export function removeDialogResize(handle) {
-    const off = _dialogResizes.get(handle);
-    if (off) { off(); _dialogResizes.delete(handle); }
+    _dialogResizes.drop(handle);
 }
 
 // -- FlareSplitter (handle that resizes its two flex siblings) ----------------
-const _splitters = new Map();
+const _splitters = registry();
 
 function _flareParsePx(v) {
     if (!v) return 0;
@@ -212,7 +211,7 @@ export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, d
         },
         onEnd() { document.body.style.cursor = ''; },
     });
-    _splitters.set(gutter, off);
+    _splitters.keep(gutter, off);
 }
 
 export function nudgeSiblingSplitter(gutter, orientation, deltaPx, keyAxis, minSize, maxSize, dotNetRef) {
@@ -231,8 +230,7 @@ export function nudgeSiblingSplitter(gutter, orientation, deltaPx, keyAxis, minS
 }
 
 export function removeSiblingSplitter(gutter) {
-    const off = _splitters.get(gutter);
-    if (off) { off(); _splitters.delete(gutter); }
+    _splitters.drop(gutter);
 }
 
 // -- FlareColorPicker (drag the saturation/lightness canvas) ------------------

@@ -9,6 +9,8 @@
 // Flare module, so it loads on first use and cannot be left out. The exported names are unchanged, so
 // the dotted call strings in the services still resolve.
 
+import { all, listen, registry, scrollParent } from './flare-dom.js';
+
 // -- OTP input ---------------------------------------------------------------
 export const flareOtp = {
     focus: function (el) {
@@ -49,7 +51,7 @@ export const FlareClipboardFallback = {
 
 // -- Infinite scroll (IntersectionObserver) ----------------------------------
 export const FlareInfiniteScroll = (() => {
-    const observers = new Map();
+    const observers = registry();
     return {
         init(sentinel, dotNetRef, rootMargin) {
             if (!sentinel) return;
@@ -59,22 +61,20 @@ export const FlareInfiniteScroll = (() => {
                 }
             }, { threshold: 0.1, rootMargin: rootMargin || '0px' });
             obs.observe(sentinel);
-            observers.set(sentinel, obs);
+            observers.keep(sentinel, () => obs.disconnect());
         },
         dispose(sentinel) {
-            const obs = observers.get(sentinel);
-            if (obs) { obs.disconnect(); observers.delete(sentinel); }
+            observers.drop(sentinel);
         }
     };
 })();
 
 // -- Lazy render (defer a subtree until it scrolls near the viewport) --------
 export const FlareLazy = (() => {
-    const observers = new Map();
+    const observers = registry();
     return {
         init(el, dotNetRef, rootMargin, once, rootSelector) {
             if (!el) return;
-            this.dispose(el);
             // A rootSelector watches the nearest matching scroll ancestor instead of the viewport,
             // so deferral also works for content inside an overflow:auto panel.
             const root = rootSelector ? el.closest(rootSelector) : null;
@@ -82,14 +82,13 @@ export const FlareLazy = (() => {
                 const visible = entries[entries.length - 1].isIntersecting;
                 dotNetRef.invokeMethodAsync('OnVisibilityChanged', visible).catch(() => { });
                 // In "once" mode we only ever reveal, so stop observing after the first hit.
-                if (visible && once) { obs.disconnect(); observers.delete(el); }
+                if (visible && once) observers.drop(el);
             }, { root, rootMargin: rootMargin || '0px' });
             obs.observe(el);
-            observers.set(el, obs);
+            observers.keep(el, () => obs.disconnect());
         },
         dispose(el) {
-            const obs = observers.get(el);
-            if (obs) { obs.disconnect(); observers.delete(el); }
+            observers.drop(el);
         }
     };
 })();
@@ -140,25 +139,23 @@ export const FlareDataGrid = {
     },
     // Infinite scroll: observe a bottom sentinel within an optional scroll-root (the grid
     // wrapper) so it fires on inner scrolling, not just page scroll.
-    _infObs: new Map(),
+    _infObs: registry(),
     initInfinite(sentinel, root, dotNetRef, rootMargin) {
         if (!sentinel) return;
-        FlareDataGrid.disposeInfinite(sentinel);
         const obs = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting) dotNetRef.invokeMethodAsync('TriggerLoad').catch(() => { });
         }, { root: root || null, threshold: 0, rootMargin: rootMargin || '160px' });
         obs.observe(sentinel);
-        FlareDataGrid._infObs.set(sentinel, obs);
+        FlareDataGrid._infObs.keep(sentinel, () => obs.disconnect());
     },
     disposeInfinite(sentinel) {
-        const obs = FlareDataGrid._infObs.get(sentinel);
-        if (obs) { obs.disconnect(); FlareDataGrid._infObs.delete(sentinel); }
+        FlareDataGrid._infObs.drop(sentinel);
     }
 };
 
 // -- On-this-page table of contents ------------------------------------------
 export const FlareToc = (() => {
-    const instances = new Map(); // opaque handle -> { target, onScroll }
+    const instances = registry();
 
     // Unicode-aware slug: keep letters/numbers (incl. cyrillic), collapse the rest to '-'.
     function slugify(text) {
@@ -194,22 +191,13 @@ export const FlareToc = (() => {
         });
     }
 
-    // Nearest scrollable ancestor of el, or null when the page itself scrolls (use window).
-    function scrollParent(el) {
-        for (let p = el && el.parentElement; p; p = p.parentElement) {
-            const oy = getComputedStyle(p).overflowY;
-            if ((oy === 'auto' || oy === 'scroll') && p.scrollHeight > p.clientHeight) return p;
-        }
-        return null;
-    }
-
     return {
         init(handle, dotNetRef, rootSelector, headingSelector, scrollRootSelector) {
             const root = (rootSelector && document.querySelector(rootSelector)) || document.body;
             const sel = headingSelector || 'h2, h3';
             const items = collect(root, sel);
             dotNetRef.invokeMethodAsync('SetHeadings', items.map(i => ({ id: i.id, text: i.text, level: i.level }))).catch(() => { });
-            if (items.length === 0) { instances.set(handle, {}); return; }
+            if (items.length === 0) return;
 
             // Scroll container: explicit selector wins, else auto-detect, else the page (window).
             const scroller = (scrollRootSelector && document.querySelector(scrollRootSelector)) || scrollParent(items[0].el);
@@ -233,18 +221,14 @@ export const FlareToc = (() => {
             }
             function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
 
-            target.addEventListener('scroll', onScroll, { passive: true });
-            window.addEventListener('resize', onScroll, { passive: true });
+            instances.keep(handle, all(
+                listen(target, 'scroll', onScroll, { passive: true }),
+                listen(window, 'resize', onScroll, { passive: true }),
+            ));
             update();
-            instances.set(handle, { target, onScroll });
         },
         dispose(handle) {
-            const inst = instances.get(handle);
-            if (inst && inst.target) {
-                inst.target.removeEventListener('scroll', inst.onScroll);
-                window.removeEventListener('resize', inst.onScroll);
-            }
-            instances.delete(handle);
+            instances.drop(handle);
         }
     };
 })();

@@ -99,7 +99,7 @@ public sealed class BrowserViewportService : FlareJsModule, IBrowserViewportServ
         sub.LastBreakpoint = bp;
         sub.HasLast = true;
 
-        try { await InvokeVoidAsync("ensureViewportListener", SelfRef(), options.ThrottleMs); }
+        try { await InvokeVoidAsync("ensureViewportListener", SelfRef(), options.DebounceMs); }
         catch (Exception ex) when (IsInteropTeardown(ex)) { /* prerender: attaches on a later subscribe */ }
 
         if (options.FireImmediately)
@@ -137,7 +137,7 @@ public sealed class BrowserViewportService : FlareJsModule, IBrowserViewportServ
         _elementSubs[id] = new ElementSub(handler);
 
         ElementRectDto? initial = null;
-        try { initial = await InvokeAsync<ElementRectDto?>("observeElement", id, SelfRef(), element, options.ThrottleMs); }
+        try { initial = await InvokeAsync<ElementRectDto?>("observeElement", id, SelfRef(), element, options.DebounceMs); }
         catch (Exception ex) when (IsInteropTeardown(ex)) { }
 
         if (options.FireImmediately && initial is not null)
@@ -154,7 +154,7 @@ public sealed class BrowserViewportService : FlareJsModule, IBrowserViewportServ
         });
     }
 
-    /// <summary>JS callback: the shared window-resize listener fired (throttled). Fans out to subscribers.</summary>
+    /// <summary>JS callback: the shared window-resize listener settled. Fans out to subscribers.</summary>
     [JSInvokable]
     public async Task OnViewportResized(double width, double height)
     {
@@ -172,7 +172,7 @@ public sealed class BrowserViewportService : FlareJsModule, IBrowserViewportServ
         }
     }
 
-    /// <summary>JS callback: an observed element's size changed (throttled).</summary>
+    /// <summary>JS callback: an observed element's size settled after a change.</summary>
     [JSInvokable]
     public async Task OnElementResized(string id, ElementRectDto rect)
     {

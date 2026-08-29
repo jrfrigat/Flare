@@ -1,6 +1,8 @@
 // Flare theming: CSS variables, theme/palette/mode classes, the static theme stylesheet, custom
 // token overrides and the live system color-scheme subscription.
 
+import { listen, registry } from './flare-dom.js';
+
 export function setCssVariables(vars) {
     const root = document.documentElement;
     for (const [name, value] of Object.entries(vars))
@@ -154,38 +156,26 @@ export function getAccentColor() {
 
 // The OS accent has no dedicated change event; re-read on window focus (cheap) so a mid-session
 // accent change is picked up the next time the app regains focus.
-const _accentListeners = new Map();
+const _accentListeners = registry();
 
 export function subscribeAccent(id, dotNetRef) {
-    unsubscribeAccent(id);
     const handler = () => dotNetRef.invokeMethodAsync('OnAccentColorChanged').catch(() => { });
-    window.addEventListener('focus', handler);
-    _accentListeners.set(id, handler);
+    _accentListeners.keep(id, listen(window, 'focus', handler));
 }
 
 export function unsubscribeAccent(id) {
-    const handler = _accentListeners.get(id);
-    if (handler) {
-        window.removeEventListener('focus', handler);
-        _accentListeners.delete(id);
-    }
+    _accentListeners.drop(id);
 }
 
 // --- System color-scheme live subscription ---
-const _schemeListeners = new Map();
+const _schemeListeners = registry();
 
 export function subscribeColorScheme(id, dotNetRef) {
-    unsubscribeColorScheme(id);
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = (e) => dotNetRef.invokeMethodAsync('OnSystemColorSchemeChanged', e.matches).catch(() => { });
-    _schemeListeners.set(id, { mq, handler });
-    mq.addEventListener('change', handler);
+    _schemeListeners.keep(id, listen(mq, 'change', handler));
 }
 
 export function unsubscribeColorScheme(id) {
-    const entry = _schemeListeners.get(id);
-    if (entry) {
-        entry.mq.removeEventListener('change', entry.handler);
-        _schemeListeners.delete(id);
-    }
+    _schemeListeners.drop(id);
 }

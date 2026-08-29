@@ -7,7 +7,7 @@ namespace Flare.Components;
 
 /// <summary>
 /// The high-level, dependency-injected entry point for everything responsive: the current viewport
-/// size and breakpoint, arbitrary media-query matching, throttled window-resize / breakpoint
+/// size and breakpoint, arbitrary media-query matching, debounced window-resize / breakpoint
 /// subscriptions, and per-element resize observation.
 /// <para>
 /// Subscriptions return an <see cref="IAsyncDisposable"/> token - dispose it to unsubscribe. There is
@@ -51,12 +51,12 @@ public interface IBrowserViewportService : IAsyncDisposable
         Action<Breakpoint> handler, bool fireImmediately = true, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Subscribes to throttled viewport changes with full <see cref="ViewportChange"/> detail (pixel
+    /// Subscribes to debounced viewport changes with full <see cref="ViewportChange"/> detail (pixel
     /// size + breakpoint). Dispose the returned token to unsubscribe.
     /// </summary>
-    /// <param name="handler">Invoked on each throttled change (and once immediately when
+    /// <param name="handler">Invoked once each time a resize settles (and once immediately when
     /// <see cref="ViewportSubscribeOptions.FireImmediately"/> is set).</param>
-    /// <param name="options">Throttle rate, breakpoint-only filtering, immediate-fire and custom
+    /// <param name="options">Debounce period, breakpoint-only filtering, immediate-fire and custom
     /// breakpoint bounds. Null uses the defaults.</param>
     /// <param name="cancellationToken">Cancels the subscribe round-trip.</param>
     ValueTask<IAsyncDisposable> SubscribeAsync(
@@ -68,12 +68,12 @@ public interface IBrowserViewportService : IAsyncDisposable
 
     /// <summary>
     /// Observes a single element's size via the browser <c>ResizeObserver</c> API and reports its
-    /// geometry (relative to the viewport) on each throttled change. Dispose the returned token to stop
+    /// geometry (relative to the viewport) once each resize settles. Dispose the returned token to stop
     /// observing.
     /// </summary>
     /// <param name="element">The element to observe.</param>
-    /// <param name="handler">Invoked with the element's geometry on each throttled size change.</param>
-    /// <param name="options">Throttle rate and immediate-fire behavior. Null uses the defaults.</param>
+    /// <param name="handler">Invoked with the element's settled geometry after each size change.</param>
+    /// <param name="options">Debounce period and immediate-fire behavior. Null uses the defaults.</param>
     /// <param name="cancellationToken">Cancels the observe round-trip.</param>
     ValueTask<IAsyncDisposable> ObserveElementAsync(
         ElementReference element, Func<ElementBoundingRect, Task> handler, ElementObserveOptions? options = null, CancellationToken cancellationToken = default);

@@ -5,6 +5,8 @@
 // The body scroll-lock moved to flare-scroll.js (Flare.Components.IScrollService): one counter has to
 // own body.style.overflow, or two modules take turns restoring each other's saved value.
 
+import { all, listen, registry } from './flare-dom.js';
+
 // --- One document listener per event type, not per widget ---
 // Every open dialog used to attach its own keydown, and every open popup its own capture-phase
 // pointerdown, so one keystroke or one click walked N independent handlers that each did the same test.
@@ -55,7 +57,7 @@ const FOCUSABLE_SELECTORS =
     'a[href]:not([disabled]), button:not([disabled]), input:not([disabled]), ' +
     'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-const _focusTraps = new Map();
+const _focusTraps = registry();
 
 export function trapFocus(id, dialogEl) {
     releaseFocusTrap(id);
@@ -78,8 +80,12 @@ export function trapFocus(id, dialogEl) {
         }
     };
 
-    dialogEl.addEventListener('keydown', handler);
-    _focusTraps.set(id, { handler, dialogEl, previouslyFocused });
+    const off = listen(dialogEl, 'keydown', handler);
+    _focusTraps.keep(id, () => {
+        off();
+        // Restore focus to whatever was active before the dialog opened.
+        try { previouslyFocused?.focus(); } catch { }
+    });
 
     // Focus the first focusable element
     const els = focusable();
@@ -87,13 +93,7 @@ export function trapFocus(id, dialogEl) {
 }
 
 export function releaseFocusTrap(id) {
-    const trap = _focusTraps.get(id);
-    if (trap) {
-        trap.dialogEl.removeEventListener('keydown', trap.handler);
-        _focusTraps.delete(id);
-        // Restore focus to the element that was active before the dialog opened
-        try { trap.previouslyFocused?.focus(); } catch { }
-    }
+    _focusTraps.drop(id);
 }
 
 export function focusFirstInDialog(dialogEl) {
@@ -107,7 +107,7 @@ export function focusFirstInDialog(dialogEl) {
 // any ancestor clipping context -- most notably a Card's overflow:hidden, which would otherwise
 // crop the dropdown. Re-positions on scroll (capture phase, so nested scrollers count) and resize
 // until removeAnchoredPanel(id) is called. Pass matchWidth:true to size the panel to the anchor.
-const _anchoredPanels = new Map();
+const _anchoredPanels = registry();
 
 export function positionAnchoredPanel(id, anchor, panel, options) {
     removeAnchoredPanel(id);
@@ -143,17 +143,14 @@ export function positionAnchoredPanel(id, anchor, panel, options) {
     };
 
     place();
-    window.addEventListener('scroll', place, { passive: true, capture: true });
-    window.addEventListener('resize', place, { passive: true });
-    _anchoredPanels.set(id, () => {
-        window.removeEventListener('scroll', place, { capture: true });
-        window.removeEventListener('resize', place);
-    });
+    _anchoredPanels.keep(id, all(
+        listen(window, 'scroll', place, { passive: true, capture: true }),
+        listen(window, 'resize', place, { passive: true }),
+    ));
 }
 
 export function removeAnchoredPanel(id) {
-    const off = _anchoredPanels.get(id);
-    if (off) { off(); _anchoredPanels.delete(id); }
+    _anchoredPanels.drop(id);
 }
 
 // -- Scroll the keyboard-highlighted option into view within its listbox scroll container. --
@@ -175,7 +172,7 @@ export function scrollOptionIntoView(optionId, block) {
 // The pointerdown half goes on the shared bus; the focusout half stays on the widget's own element,
 // because it has to be scoped to that subtree to mean anything.
 const _dismissPointer = documentBus('pointerdown', true);
-const _dismissFocus = new Map();
+const _dismissFocus = registry();
 
 export function registerDismiss(id, element, dotNetRef, method) {
     removeDismiss(id);
@@ -189,15 +186,10 @@ export function registerDismiss(id, element, dotNetRef, method) {
         // Dismiss only when focus actually leaves the widget (ignore moves between its own children).
         if (to && !element.contains(to)) dotNetRef.invokeMethodAsync(method).catch(() => { });
     };
-    _dismissFocus.set(id, { onFocusOut, element });
-    element.addEventListener('focusout', onFocusOut);
+    _dismissFocus.keep(id, listen(element, 'focusout', onFocusOut));
 }
 
 export function removeDismiss(id) {
     _dismissPointer.delete(id);
-    const h = _dismissFocus.get(id);
-    if (h) {
-        h.element.removeEventListener('focusout', h.onFocusOut);
-        _dismissFocus.delete(id);
-    }
+    _dismissFocus.drop(id);
 }

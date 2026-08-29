@@ -7,7 +7,7 @@ namespace Flare.Components.Services;
 /// <remarks>
 /// Lives in <c>Flare.Infrastructure</c> because it needs an <see cref="HttpClient"/>, and
 /// <c>Flare.Components</c> takes no service implementations. Registered by <c>AddFlare</c> only when the
-/// host has an <see cref="IHttpClientFactory"/> or an <see cref="HttpClient"/> of its own - a component
+/// host has an <c>IHttpClientFactory</c> or an <see cref="HttpClient"/> of its own - a component
 /// library must not invent an HTTP client for an application that did not ask for one.
 /// </remarks>
 public sealed class FlareHttpUpload : IFlareUpload

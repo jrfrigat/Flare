@@ -1,7 +1,7 @@
 namespace Flare.Components;
 
 /// <summary>
-/// Payload delivered to a viewport subscriber when the window is resized (throttled) or when the
+/// Payload delivered to a viewport subscriber when the window is resized (after the resize settles) or when the
 /// active breakpoint changes.
 /// </summary>
 /// <param name="Size">The viewport size at the moment of the change.</param>

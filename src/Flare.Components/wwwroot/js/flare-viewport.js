@@ -1,8 +1,15 @@
 // Flare viewport service backend. Backs Flare.Components.IBrowserViewportService: a single shared,
-// throttled window-resize listener that fans out to every C# subscriber (breakpoint logic lives in C#,
+// debounced window-resize listener that fans out to every C# subscriber (breakpoint logic lives in C#,
 // so this module only reports raw pixel sizes), arbitrary media-query matching, and per-element
 // observation via the browser ResizeObserver API. One listener is shared across all subscribers, so
-// interop cost is one call per throttle window regardless of how many components subscribe.
+// interop cost is one call per settled resize regardless of how many components subscribe.
+//
+// Debounce, not throttle, and the distinction is why the C# knob is called DebounceMs: each event
+// restarts the timer, so a window drag crosses interop once when it stops rather than every 100ms
+// while it moves. A layout consumer wants the settled size; flare-scroll.js throttles instead,
+// because a scroll consumer wants positions during the gesture.
+
+import { listen } from './flare-dom.js';
 
 // -- viewport size / media query ------------------------------------------------
 
@@ -28,13 +35,13 @@ export function matchMedia(query) {
 // -- shared window-resize listener ---------------------------------------------
 
 let _winDotNet = null;
-let _winThrottle = 100;
+let _winDebounce = 100;
 let _winTimer = -1;
-let _winAttached = false;
+let _winOff = null;
 
 function onWindowResize() {
     if (_winTimer >= 0) clearTimeout(_winTimer);
-    _winTimer = window.setTimeout(fireWindowResize, _winThrottle);
+    _winTimer = window.setTimeout(fireWindowResize, _winDebounce);
 }
 
 function fireWindowResize() {
@@ -45,27 +52,27 @@ function fireWindowResize() {
     catch { /* circuit gone */ }
 }
 
-// Idempotent: called by C# on every viewport subscription. Attaches the listener once and lowers the
-// throttle if a more demanding subscription arrives, so the fastest subscriber is honored.
-export function ensureViewportListener(dotNetRef, throttleMs) {
+// Idempotent: called by C# on every viewport subscription. Attaches the listener once and shortens the
+// debounce if a more demanding subscription arrives, so the fastest subscriber is honored.
+export function ensureViewportListener(dotNetRef, debounceMs) {
     _winDotNet = dotNetRef;
-    if (typeof throttleMs === 'number' && throttleMs >= 0) {
-        _winThrottle = _winAttached ? Math.min(_winThrottle, throttleMs) : throttleMs;
+    if (typeof debounceMs === 'number' && debounceMs >= 0) {
+        _winDebounce = _winOff ? Math.min(_winDebounce, debounceMs) : debounceMs;
     }
-    if (_winAttached) return;
-    window.addEventListener('resize', onWindowResize, { passive: true });
-    _winAttached = true;
+    if (_winOff) return;
+    _winOff = listen(window, 'resize', onWindowResize, { passive: true });
 }
 
 export function stopViewportListener() {
     if (_winTimer >= 0) { clearTimeout(_winTimer); _winTimer = -1; }
-    if (_winAttached) { window.removeEventListener('resize', onWindowResize); _winAttached = false; }
+    _winOff?.();
+    _winOff = null;
     _winDotNet = null;
 }
 
 // -- per-element ResizeObserver ------------------------------------------------
 
-const _elMap = new Map();          // id -> { element, throttle, timer, dotNet, initialized }
+const _elMap = new Map();          // id -> { element, debounce, timer, dotNet, initialized }
 const _elByTarget = new WeakMap(); // element -> id
 let _ro = null;
 
@@ -102,16 +109,16 @@ function scheduleElement(rec) {
         if (!rec.dotNet) return;
         try { rec.dotNet.invokeMethodAsync('OnElementResized', rec.id, rectOf(rec.element)).catch(() => { }); }
         catch { /* circuit gone */ }
-    }, rec.throttle);
+    }, rec.debounce);
 }
 
 // Returns the element's initial geometry so C# can deliver the immediate notification without a
 // second round-trip.
-export function observeElement(id, dotNetRef, element, throttleMs) {
+export function observeElement(id, dotNetRef, element, debounceMs) {
     if (!element) return null;
     ensureRo();
     const rec = {
-        id, element, throttle: (throttleMs >= 0 ? throttleMs : 200), timer: -1,
+        id, element, debounce: (debounceMs >= 0 ? debounceMs : 200), timer: -1,
         dotNet: dotNetRef, initialized: false,
     };
     _elMap.set(id, rec);

@@ -30,13 +30,13 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>
     /// Optional items pinned to the top of the menu, above the scrolling area. Setting either
-    /// <see cref="Header"/> or <see cref="Footer"/> switches the menu to a framed layout that fills its
+    /// <see cref="HeaderContent"/> or <see cref="FooterContent"/> switches the menu to a framed layout that fills its
     /// container's height: the header and footer stay fixed while <see cref="ChildContent"/> scrolls
     /// between them. Put ordinary nav items here so they collapse to icons in a mini-rail too.
     /// </summary>
     [Parameter] public RenderFragment? HeaderContent { get; set; }
     /// <summary>Optional items pinned to the bottom of the menu, below the scrolling area. See
-    /// <see cref="Header"/> for the framed-layout behavior this enables.</summary>
+    /// <see cref="HeaderContent"/> for the framed-layout behavior this enables.</summary>
     [Parameter] public RenderFragment? FooterContent { get; set; }
     /// <summary>Accessible label for the navigation landmark, forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }

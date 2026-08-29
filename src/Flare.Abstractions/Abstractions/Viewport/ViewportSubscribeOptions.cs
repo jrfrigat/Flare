@@ -9,15 +9,18 @@ namespace Flare.Components;
 public sealed class ViewportSubscribeOptions
 {
     /// <summary>
-    /// Minimum gap, in milliseconds, between resize notifications (trailing throttle). Rapid resize
-    /// events are coalesced so the callback runs at most once per window. Default 100ms; set 0 to
-    /// disable throttling.
+    /// Quiet period, in milliseconds, that must pass after the last resize event before the callback
+    /// runs. This is a debounce, not a throttle: dragging a window edge reports nothing until the
+    /// drag settles, and then reports the final size once. A breakpoint consumer wants exactly that;
+    /// a consumer that needs sizes <em>during</em> the drag wants <see cref="IScrollService"/>-style
+    /// throttling, which this service deliberately does not do. Default 100ms; set 0 to report on the
+    /// next tick after each event.
     /// </summary>
-    public int ThrottleMs { get; set; } = 100;
+    public int DebounceMs { get; set; } = 100;
 
     /// <summary>
     /// When true, the callback fires only when the active breakpoint tier changes, not on every
-    /// throttled pixel change within the same tier. Default false (report every throttled size change);
+    /// debounced pixel change within the same tier. Default false (report every settled size change);
     /// the breakpoint-only convenience overload sets this to true.
     /// </summary>
     public bool NotifyOnBreakpointOnly { get; set; }

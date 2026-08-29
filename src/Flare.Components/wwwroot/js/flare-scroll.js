@@ -4,13 +4,9 @@
 // computed in C# from the position this module reports, so the wire payload stays one small object per
 // throttle window no matter how many subscribers there are.
 
-// -- reading -------------------------------------------------------------------
+import { listen, pageTarget, listenTarget, resolve } from './flare-dom.js';
 
-// The page's scroll state lives on the scrolling element, not on window: window carries the offsets
-// but not the extents, and the two must come from the same object or Progress lands off by a viewport.
-function pageTarget() {
-    return document.scrollingElement || document.documentElement;
-}
+// -- reading -------------------------------------------------------------------
 
 function positionOf(el) {
     const t = el || pageTarget();
@@ -24,21 +20,13 @@ function positionOf(el) {
     };
 }
 
-// A target arrives as an element reference OR a CSS selector; a selector is resolved at call time, so
-// a panel that mounts after the caller did still resolves on the next call rather than never.
-function resolve(element, selector) {
-    if (element) return element;
-    if (selector) return document.querySelector(selector);
-    return null;
-}
-
 export function getPosition(element, selector) {
     return positionOf(resolve(element, selector));
 }
 
 // -- shared listeners ----------------------------------------------------------
 
-// id -> { element (null = page), throttle, timer, dotNet, attached, handler }
+// id -> { element (null = page), throttle, timer, dotNet, off }
 const _subs = new Map();
 
 function schedule(rec) {
@@ -53,12 +41,6 @@ function schedule(rec) {
     }, rec.throttle);
 }
 
-// The page's scroll event fires on document, not on the scrolling element, so the listener target and
-// the measurement target are deliberately different objects here.
-function listenTargetOf(element) {
-    return element || window;
-}
-
 export function subscribe(id, dotNetRef, element, selector, throttleMs) {
     unsubscribe(id);
     const rec = {
@@ -67,11 +49,10 @@ export function subscribe(id, dotNetRef, element, selector, throttleMs) {
         throttle: (typeof throttleMs === 'number' && throttleMs >= 0) ? throttleMs : 100,
         timer: -1,
         dotNet: dotNetRef,
-        handler: null,
+        off: null,
     };
-    rec.handler = () => schedule(rec);
+    rec.off = listen(listenTarget(rec.element), 'scroll', () => schedule(rec), { passive: true });
     _subs.set(id, rec);
-    listenTargetOf(rec.element).addEventListener('scroll', rec.handler, { passive: true });
     return positionOf(rec.element);
 }
 
@@ -79,7 +60,7 @@ export function unsubscribe(id) {
     const rec = _subs.get(id);
     if (!rec) return;
     if (rec.timer >= 0) clearTimeout(rec.timer);
-    if (rec.handler) listenTargetOf(rec.element).removeEventListener('scroll', rec.handler);
+    rec.off?.();
     _subs.delete(id);
 }
 

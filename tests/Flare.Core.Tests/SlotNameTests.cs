@@ -15,7 +15,7 @@ namespace Flare.Core.Tests;
 /// spellings are legal.
 ///
 /// <c>Icon</c> was the sharp case: eight components exposed it as a fragment while eight others exposed
-/// <c>Icon</c> as a <see cref="Flare.Components.FlareIcon"/> VALUE, so the same parameter name meant two
+/// <c>Icon</c> as a <see cref="Flare.Icons.FlareIcon"/> VALUE, so the same parameter name meant two
 /// different things depending on which component you were looking at. Renaming the fragments to
 /// <c>IconContent</c> fixed both problems at once: the collision, and the ambiguity.
 ///

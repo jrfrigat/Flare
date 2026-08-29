@@ -23,7 +23,7 @@ public partial class FlareChart
         try
         {
             _sizeSubscription = await Viewport.ObserveElementAsync(_plotRef, OnPlotResized,
-                new ElementObserveOptions { ThrottleMs = 100 });
+                new ElementObserveOptions { DebounceMs = 100 });
         }
         catch (InvalidOperationException) { _observing = false; }
         catch (JSDisconnectedException) { _observing = false; }

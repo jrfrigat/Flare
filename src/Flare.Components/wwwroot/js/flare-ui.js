@@ -1,3 +1,5 @@
+import { all, listen, registry } from './flare-dom.js';
+
 // Flare misc UI utilities: tab-bar overflow scroller, global keyboard shortcuts and the EyeDropper
 // API. Extracted from the former flare-theme.js god-module.
 
@@ -5,7 +7,7 @@
 // Breakpoint / viewport detection moved to flare-viewport.js (Flare.Components.IBrowserViewportService).
 
 // -- FlareTabs overflow scroller --------------------------------------------
-const _tabScrollers = new Map();
+const _tabScrollers = registry();
 
 // The bar reports three booleans, so the only scroll events worth crossing interop for are the ones
 // that flip one of them - a drag from one end to the other has two interesting frames out of a
@@ -25,9 +27,8 @@ export function registerTabScroller(bar, dotNetRef) {
     }
     const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
     const ro = new ResizeObserver(onScroll);
-    bar.addEventListener('scroll', onScroll, { passive: true });
     ro.observe(bar);
-    _tabScrollers.set(bar, { onScroll, ro });
+    _tabScrollers.keep(bar, all(listen(bar, 'scroll', onScroll, { passive: true }), () => ro.disconnect()));
     update();
 }
 
@@ -37,12 +38,7 @@ export function scrollTabs(bar, dir) {
 }
 
 export function removeTabScroller(bar) {
-    const handlers = _tabScrollers.get(bar);
-    if (handlers) {
-        bar.removeEventListener('scroll', handlers.onScroll);
-        handlers.ro.disconnect();
-        _tabScrollers.delete(bar);
-    }
+    _tabScrollers.drop(bar);
 }
 
 // -- FlareButtonGroup collapse ----------------------------------------------
@@ -55,7 +51,7 @@ export function removeTabScroller(bar) {
 // never collide - and the component re-applies after each of its renders anyway, which covers a
 // segment being replaced outright.
 const HIDDEN_ATTR = 'data-flare-bg-hidden';
-const _groupCollapsers = new Map();
+const _groupCollapsers = registry();
 
 function _segments(root) {
     return Array.from(root.children).filter(el =>
@@ -123,14 +119,13 @@ export function registerButtonGroupCollapse(root, dotNetRef) {
     const ro = new ResizeObserver(run);
     ro.observe(root);
     if (root.parentElement) ro.observe(root.parentElement);
-    _groupCollapsers.set(root, ro);
+    _groupCollapsers.keep(root, () => ro.disconnect());
     // No first pass from here: observe() already schedules one, and the component asks for another as
     // soon as this call returns. A third would only measure the same layout again.
 }
 
 export function removeButtonGroupCollapse(root) {
-    const ro = _groupCollapsers.get(root);
-    if (ro) { ro.disconnect(); _groupCollapsers.delete(root); }
+    _groupCollapsers.drop(root);
 }
 
 // -- FlareShortcuts ----------------------------------------------------------

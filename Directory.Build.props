@@ -22,6 +22,14 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!--
+      A <see cref="..."/> that no longer binds is the one doc defect a reader meets as a dead link and
+      the author never sees: it is a warning, and an incremental build does not recompile the project
+      that carries it. Renaming a parameter left five of these behind before this was enforced. RZ10012
+      is the same shape on the Razor side - an unknown tag compiles to literal markup, so a mistyped
+      component renders as nothing at all rather than failing.
+    -->
+    <WarningsAsErrors>$(WarningsAsErrors);CS1574;CS1580;CS1584;RZ10012</WarningsAsErrors>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
