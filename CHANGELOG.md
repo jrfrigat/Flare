@@ -3,6 +3,76 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.25.0] - 2026-08-29
+
+### Breaking
+
+- **Twenty-one content slots are renamed to `XxxContent`.** Razor decides that a child element is a
+  named slot by matching its tag name against the component's `RenderFragment` parameters, so an
+  application component called `Icon` written inside a Flare component that has an `Icon` slot bound to
+  the slot and never rendered - with no diagnostic, because both spellings are legal. Rename in markup:
+
+  | Component | Was | Now |
+  | :-- | :-- | :-- |
+  | Alert, FloatingActionButton, Dialog, EmptyState, FileUploadZone, BottomNavItem, NavLink, Step | `Icon` | `IconContent` |
+  | Drawer, NavMenu, OptionList | `Header` | `HeaderContent` |
+  | NavMenu | `Footer` | `FooterContent` |
+  | CardHeader, Chip | `Avatar` | `AvatarContent` |
+  | CardHeader | `Action` | `ActionContent` |
+  | Dialog | `Actions` | `ActionsContent` |
+  | NavLink | `Badge` | `BadgeContent` |
+  | Lazy | `Placeholder` | `PlaceholderContent` |
+  | OptionList | `Empty` | `EmptyContent` |
+  | FieldChrome | `Counter` | `CounterContent` |
+  | Image | `Fallback` | `FallbackContent` |
+
+  `Icon` was two problems, not one: eight components exposed it as a fragment while eight others exposed
+  `Icon` as a `FlareIcon` **value**, so the same parameter name meant different things depending on which
+  component you were reading. An `Icon` of type `FlareIcon` is unchanged - it is a value, not a slot, and
+  `Icon` now always means an icon. Deliberately kept: `Columns` and `Grouping` on the data grid (collection
+  slots every grid library spells this way), and `Leading` / `Trailing` / `Zones` / `Composite` /
+  `Activator` (positional or domain terms nobody names a component after). `SlotNameTests` keeps the rule.
+- **`--flare-fab-radius` is now `--flare-fab-radius-md`.** The constant behind it was already called
+  `Radius.Md`; the CSS name did not say so.
+
+### Added
+
+- **`FlareFileUpload*` uploads, and the transfer belongs to the application.** `Uploader` takes a
+  `Func<FlareUploadContext, Task>` - the file, a progress sink and a cancellation token - so anything an
+  `HttpClient` can do works, including a presigned `PUT`, a resumable protocol and a token that refreshes
+  mid-upload. Flare owns the queue, `Concurrency`, cancellation, retry and the whole visual state:
+  per-file progress, an error row, cancel and retry affordances, six tokens for the row states. A `Url`
+  convenience remains for the simple case (`IFlareUpload.To("/api/files")`), but it is no longer the
+  contract, because a URL and a header dictionary cannot express any of the cases above.
+- **Mobile shells in the Gallery** (`/mobile-shells`): a list/detail drill-down where the back affordance
+  is bound to whether there *is* anywhere to go back to, and a phone-width form shown as a pair - the
+  default field size beside `Size="FieldSize.Sm"` at 360px, so the density question can be judged at the
+  viewport it was reported at rather than argued about.
+- **`SlotNameTests`** - fails when a content slot is named like something an application would plausibly
+  call one of its own components, with the exceptions and their reasons in the test itself.
+- **`TokenLookupKeyTests`** - fails when a component reads a design token by string literal instead of by
+  its registry constant.
+- **`Css.Tokens.LocalVars`** - the seventeen per-instance channels a component writes on its own element
+  and its own CSS reads back (a clock hand's angle, a grid cell's span, a tree row's indent). They are
+  exempt from the settable-token guard as a type, and a second guard fails if a theme ever emits one,
+  which would mean it is a design token filed in the wrong place.
+
+### Fixed
+
+- **`FlareProgress` read all eight of its wave and ring tokens by string literal.** A token read by name
+  is the one corner of this problem that fails silently: the read returns its fallback and the wavy
+  progress bar simply never switches on. Now on constants and guarded.
+- **`Flare.CssAudit` attributed constants to the wrong class.** It tracked the owner by the last
+  `public static class` line and never restored it when a nested class closed, so `ProgressField`'s
+  constants were filed under its nested `CircularWidth` and a component referencing them correctly
+  reported the token as dead. Now tracked by brace depth, which affected any constant declared after a
+  nested class.
+- **Every open overlay attached its own document listener.** A `documentBus` keeps one listener per event
+  type alive while its registry is non-empty.
+  **Three open dialogs now add one listener instead of three, and two popups one instead of two.**
+  Because attaching is tied to the
+  registry being non-empty, a caller can no longer leak a listener by forgetting to remove one.
+
 ## [0.24.0] - 2026-08-29
 
 ### Breaking
