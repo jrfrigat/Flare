@@ -1097,6 +1097,12 @@ public class FluentUI2Tokens
         ZoneMinHeight = "10rem",
         ZoneRadius = "var(--flare-card-radius)",
         FileIconSize = "1.125rem",
+        RowGap = "var(--flare-spacing-2)",
+        RowRadius = "var(--flare-shape-small)",
+        RowActiveBg = "color-mix(in srgb, var(--flare-color-primary) 6%, transparent)",
+        RowSuccessBg = "color-mix(in srgb, var(--flare-color-tertiary) 6%, transparent)",
+        RowErrorBg = "color-mix(in srgb, var(--flare-color-error) 6%, transparent)",
+        RowErrorColor = "var(--flare-color-error)",
     };
 
     internal static readonly FormTokens Form = new()

@@ -1,0 +1,101 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+
+@* The selected-file list, shared by the drop zone and the button so a queue looks the same wherever it
+   is triggered from. It renders one of two shapes: without an Uploader the component is a picker and the
+   rows are name + size, exactly what they were before; with one, each row also carries its state class, a
+   progress bar and the cancel/retry affordances. The state lives in the parent - this only paints it. *@
+
+<ul class="@Css.Classes.FileUpload.List">
+    @foreach (var item in Items)
+    {
+        <li class="@Css.Classes.FileUpload.File @StateClass(item.State)">
+            <FlareIconView Value="FlareIcons.Description" Class="@Css.Classes.FileUpload.FileIcon" />
+            <span class="@Css.Classes.FileUpload.FileName">@item.File.Name</span>
+            <span class="@Css.Classes.FileUpload.FileSize">@FormatSize(item.File.Size)</span>
+
+            @if (Interactive)
+            {
+                @if (item.State is FlareUploadState.Uploading or FlareUploadState.Queued)
+                {
+                    @* Size rather than a height token of our own: FlareProgress already owns that scale,
+                       and a second one here would be two answers to one question. *@
+                    <FlareProgress Class="@Css.Classes.FileUpload.Progress"
+                                   Variant="ProgressVariant.Linear"
+                                   Size="TrackSize.Xs"
+                                   Indeterminate="@(item.State == FlareUploadState.Queued)"
+                                   Value="@(item.Progress * 100)" />
+                }
+                else if (item.State == FlareUploadState.Failed)
+                {
+                    <span class="@Css.Classes.FileUpload.FileError" role="alert">@(item.Error ?? FlareStrings.FileUpload_Failed)</span>
+                }
+                else if (item.State == FlareUploadState.Cancelled)
+                {
+                    <span class="@Css.Classes.FileUpload.FileError">@FlareStrings.FileUpload_Cancelled</span>
+                }
+
+                <span class="@Css.Classes.FileUpload.FileActions">
+                    @if (AllowCancel && item.IsActive)
+                    {
+                        <FlareIconButton Icon="FlareIcons.Close"
+                                         Size="ButtonSize.Sm"
+                                         Variant="ButtonVariant.Text"
+                                         AriaLabel="@FlareStrings.FileUpload_Cancel"
+                                         OnClick="@(() => OnCancel.InvokeAsync(item.Id))" />
+                    }
+                    @if (AllowRetry && item.State is FlareUploadState.Failed or FlareUploadState.Cancelled)
+                    {
+                        <FlareIconButton Icon="FlareIcons.Refresh"
+                                         Size="ButtonSize.Sm"
+                                         Variant="ButtonVariant.Text"
+                                         AriaLabel="@FlareStrings.FileUpload_Retry"
+                                         OnClick="@(() => OnRetry.InvokeAsync(item.Id))" />
+                    }
+                </span>
+            }
+        </li>
+    }
+</ul>
+
+@code {
+    /// <summary>The queue rows to paint, in selection order.</summary>
+    [Parameter, EditorRequired] public IReadOnlyList<FlareUploadFile> Items { get; set; } = [];
+
+    /// <summary>Renders the transfer chrome - progress, errors, cancel and retry. False for a component
+    /// with no <c>Uploader</c>, which is a picker and has no queue to show.</summary>
+    [Parameter] public bool Interactive { get; set; }
+
+    /// <summary>Shows the cancel affordance while a row is queued or uploading.</summary>
+    [Parameter] public bool AllowCancel { get; set; } = true;
+
+    /// <summary>Shows the retry affordance on a failed or cancelled row.</summary>
+    [Parameter] public bool AllowRetry { get; set; } = true;
+
+    /// <summary>Raised with the row id when cancel is pressed.</summary>
+    [Parameter] public EventCallback<string> OnCancel { get; set; }
+
+    /// <summary>Raised with the row id when retry is pressed.</summary>
+    [Parameter] public EventCallback<string> OnRetry { get; set; }
+
+    // The list paints inside the upload component's own root, so it contributes no root class of its own.
+    /// <inheritdoc />
+    protected override string ComponentCssClass => string.Empty;
+
+    private static string? StateClass(FlareUploadState state) => state switch
+    {
+        FlareUploadState.Uploading => Css.Classes.FileUpload.FileUploading,
+        FlareUploadState.Completed => Css.Classes.FileUpload.FileCompleted,
+        FlareUploadState.Failed => Css.Classes.FileUpload.FileFailed,
+        FlareUploadState.Cancelled => Css.Classes.FileUpload.FileCancelled,
+        _ => null,
+    };
+
+    // Same rendering the base uses for the picker rows, kept here so the list owns its own formatting.
+    private static string FormatSize(long bytes) => bytes switch
+    {
+        < 1024 => $"{bytes} B",
+        < 1024 * 1024 => $"{bytes / 1024.0:F1} KB",
+        _ => $"{bytes / (1024.0 * 1024):F1} MB",
+    };
+}

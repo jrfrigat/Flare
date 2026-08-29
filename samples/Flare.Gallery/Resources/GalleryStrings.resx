@@ -1128,6 +1128,9 @@
   <data name="FileUpload_SingleImageOnly" xml:space="preserve">
     <value>Single file, image only</value>
   </data>
+  <data name="FileUpload_Transfer" xml:space="preserve">
+    <value>Upload with progress, cancel and retry</value>
+  </data>
   <data name="FormBuilder_Title" xml:space="preserve">
     <value>Form Builder</value>
   </data>

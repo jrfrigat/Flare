@@ -106,6 +106,12 @@ public static class ServiceCollectionExtensions
         // Typed JS-interop services (wrap Flare's JS so components inject a service, not IJSRuntime).
         services.AddScoped<Flare.Components.IFlareClipboard, Flare.Components.FlareClipboardService>();
         services.AddScoped<Flare.Components.IFlareDownload, Flare.Components.FlareDownloadService>();
+        // The upload convenience needs an HttpClient, and a component library must not invent one. The
+        // registration resolves whatever the host registered, so an application with no HttpClient only
+        // finds out if it actually injects IFlareUpload - which it only does to use the convenience.
+        // Applications that supply their own Uploader delegate never touch this.
+        services.AddScoped<Flare.Components.IFlareUpload>(sp =>
+            new Flare.Components.Services.FlareHttpUpload(sp.GetRequiredService<HttpClient>()));
         services.AddScoped<Flare.Components.IFlareColorExtractor, Flare.Components.FlareColorExtractor>();
 
         // Collision and Theme JS services.

@@ -1128,6 +1128,9 @@
   <data name="FileUpload_SingleImageOnly" xml:space="preserve">
     <value>Один файл, только изображение</value>
   </data>
+  <data name="FileUpload_Transfer" xml:space="preserve">
+    <value>Загрузка с прогрессом, отменой и повтором</value>
+  </data>
   <data name="FormBuilder_Title" xml:space="preserve">
     <value>Конструктор форм</value>
   </data>

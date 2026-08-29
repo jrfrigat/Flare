@@ -31,4 +31,23 @@ public sealed record FileUploadTokens
 
     /// <summary>Size of the per-file glyph in the selected-files list.</summary>
     [CssVar(FileUploadField.FileIconSize)] public required string FileIconSize { get; init; }
+
+    /// <summary>Gap between the file rows.</summary>
+    [CssVar(FileUploadField.RowGap)] public required string RowGap { get; init; }
+
+    /// <summary>Corner radius of one file row.</summary>
+    [CssVar(FileUploadField.RowRadius)] public required string RowRadius { get; init; }
+
+    /// <summary>Background of a row whose transfer is running.</summary>
+    [CssVar(FileUploadField.RowActiveBg)] public required string RowActiveBg { get; init; }
+
+    /// <summary>Background of a completed row.</summary>
+    [CssVar(FileUploadField.RowSuccessBg)] public required string RowSuccessBg { get; init; }
+
+    /// <summary>Background of a failed or cancelled row.</summary>
+    [CssVar(FileUploadField.RowErrorBg)] public required string RowErrorBg { get; init; }
+
+    /// <summary>Foreground of the message on a failed row - the one place a component would otherwise
+    /// hardcode red.</summary>
+    [CssVar(FileUploadField.RowErrorColor)] public required string RowErrorColor { get; init; }
 }

@@ -1004,6 +1004,42 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("FileUpload_ButtonText", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel upload.
+        /// </summary>
+        public static string FileUpload_Cancel {
+            get {
+                return ResourceManager.GetString("FileUpload_Cancel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Retry upload.
+        /// </summary>
+        public static string FileUpload_Retry {
+            get {
+                return ResourceManager.GetString("FileUpload_Retry", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Upload failed.
+        /// </summary>
+        public static string FileUpload_Failed {
+            get {
+                return ResourceManager.GetString("FileUpload_Failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancelled.
+        /// </summary>
+        public static string FileUpload_Cancelled {
+            get {
+                return ResourceManager.GetString("FileUpload_Cancelled", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на Reset.

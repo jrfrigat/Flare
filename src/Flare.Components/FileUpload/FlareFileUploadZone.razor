@@ -47,18 +47,14 @@
                    disabled="@Disabled"
                    OnChange="HandleDropAsync" />
     </div>
-    @if (ShowFileList && Files.Count > 0)
+    @if (ShowFileList && Queue.Count > 0)
     {
-        <ul class="@Css.Classes.FileUpload.List">
-            @foreach (var file in Files)
-            {
-                <li class="@Css.Classes.FileUpload.File">
-                    <FlareIconView Value="FlareIcons.Description" Class="@Css.Classes.FileUpload.FileIcon" />
-                    <span class="@Css.Classes.FileUpload.FileName">@file.Name</span>
-                    <span class="@Css.Classes.FileUpload.FileSize">@FormatSize(file.Size)</span>
-                </li>
-            }
-        </ul>
+        <FlareUploadFileList Items="Queue"
+                             Interactive="@(Uploader is not null)"
+                             AllowCancel="AllowCancel"
+                             AllowRetry="AllowRetry"
+                             OnCancel="CancelAsync"
+                             OnRetry="RetryAsync" />
     }
 </div>
 

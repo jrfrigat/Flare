@@ -983,6 +983,12 @@ public static class CssVarMap
         v[Css.Tokens.FileUploadField.FileIconSize] = t.FileUpload.FileIconSize;
         v[Css.Tokens.FileUploadField.DraggingRingWidth] = t.FileUpload.DraggingRingWidth;
         v[Css.Tokens.FileUploadField.IconSize] = t.FileUpload.IconSize;
+        v[Css.Tokens.FileUploadField.RowGap] = t.FileUpload.RowGap;
+        v[Css.Tokens.FileUploadField.RowRadius] = t.FileUpload.RowRadius;
+        v[Css.Tokens.FileUploadField.RowActiveBg] = t.FileUpload.RowActiveBg;
+        v[Css.Tokens.FileUploadField.RowSuccessBg] = t.FileUpload.RowSuccessBg;
+        v[Css.Tokens.FileUploadField.RowErrorBg] = t.FileUpload.RowErrorBg;
+        v[Css.Tokens.FileUploadField.RowErrorColor] = t.FileUpload.RowErrorColor;
         #endregion
 
         #region FORM

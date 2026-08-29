@@ -1090,6 +1090,12 @@ public class MaterialDesignTokens
         ZoneMinHeight = "10rem",
         ZoneRadius = "var(--flare-card-radius)",
         FileIconSize = "1.125rem",
+        RowGap = "var(--flare-spacing-2)",
+        RowRadius = "var(--flare-shape-extra-small)",
+        RowActiveBg = "color-mix(in srgb, var(--flare-color-primary) 8%, transparent)",
+        RowSuccessBg = "color-mix(in srgb, var(--flare-color-tertiary) 8%, transparent)",
+        RowErrorBg = "color-mix(in srgb, var(--flare-color-error) 8%, transparent)",
+        RowErrorColor = "var(--flare-color-error)",
     };
 
     internal static readonly FormTokens Form = new()

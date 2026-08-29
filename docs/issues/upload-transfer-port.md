@@ -21,7 +21,51 @@ Both competitors that take this seriously ship the transfer: Radzen's `RadzenUpl
 `FilePicker` and `FileEdit` do chunked streaming with progress and auto-upload. MudBlazor and Fluent UI
 are in the same place Flare is - selection only - so this is a chance to lead, not to catch up.
 
-## Why this is a port, not a component change
+## Re-specified: Flare owns the state machine, the application owns the bytes
+
+The plan below was written `Url`-first - the component takes a URL, headers and form fields, and Flare
+does the POST. That is what `RadzenUpload` does, and it is the reason people end up wrapping it. It
+breaks on the cases real applications actually have:
+
+- a bearer token that refreshes **mid-upload**, so a header captured at render time is already stale;
+- a **presigned S3/Azure URL** - a `PUT` of the raw body, not a multipart `POST` with a field name;
+- **resumable/chunked protocols** (tus and friends) that negotiate an offset before sending;
+- request signing, per-tenant endpoints, a retry policy the application already owns for every other
+  call it makes.
+
+None of that is expressible as "a URL and a dictionary of headers", and chasing it would grow an HTTP
+client inside Flare that is still wrong for the next application.
+
+**Split it where the value actually is.** What every application rewrites today is not the `POST` - it
+is the per-file state machine and the UI on top of it: queued / uploading / done / failed / cancelled,
+a progress bar with no tokens, cancel and retry affordances, an error row. That is Flare's job, and it
+is the half that has to be tokenized.
+
+So the component's contract is a delegate, not a URL:
+
+```csharp
+[Parameter] public Func<FlareUploadContext, Task>? Uploader { get; set; }
+
+public readonly record struct FlareUploadContext(
+    IBrowserFile File, IProgress<long> Progress, CancellationToken CancellationToken);
+```
+
+The application sends the bytes however it likes and reports progress back; Flare drives the queue,
+concurrency, cancellation and the whole visual state. Anything the application can write with an
+`HttpClient` works - including all four cases above - and Flare cannot be wrong about its auth.
+
+The `Url` convenience does not disappear, it just stops being the contract. `IFlareUpload` in
+`Abstractions` with an `HttpClient` implementation in `Infrastructure` hands back a ready-made delegate
+for the simple case:
+
+```razor
+<FlareFileUploadZone Uploader="@Upload.To("/api/files")" />
+```
+
+That keeps roadmap rule 5 (the implementation is in `Infrastructure`, never in `Flare.Components`) while
+making the simple case one line and the hard cases possible at all.
+
+## Why the transfer helper is a port, not a component change
 
 Rule 5 of the roadmap. The transfer needs `HttpClient`, cancellation, retry policy and possibly chunking:
 none of that belongs in `Flare.Components`, which must not gain service implementations. The shape
@@ -56,7 +100,7 @@ On `FlareFileUploadBase`, so both the zone and the button inherit it:
 
 | Parameter | Purpose |
 | :-- | :-- |
-| `Url`, `Method`, `FieldName`, `Headers`, `FormFields` | Where and how to send. Absent `Url`, the component behaves exactly as today - selection only, fully backward compatible. |
+| `Uploader` | The transfer itself, supplied by the application. Absent it, the component behaves exactly as today - selection only, fully backward compatible. |
 | `Auto` | Start on selection instead of waiting for `UploadAsync()`. |
 | `Concurrency` | Parallel file limit; default 1, because servers hate surprises. |
 | `ChunkSize` | Optional chunked transfer for large files. |

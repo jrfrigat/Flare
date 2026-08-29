@@ -72,7 +72,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--flare-spacing-2);
+    gap: var(--flare-file-upload-row-gap);
 }
 
 .flare-file-upload__file {
@@ -81,7 +81,7 @@
     gap: var(--flare-spacing-4);
     padding: var(--flare-spacing-3) var(--flare-spacing-6);
     background: var(--flare-color-surface-container);
-    border-radius: var(--flare-shape-extra-small);
+    border-radius: var(--flare-file-upload-row-radius);
     font-size: var(--flare-typescale-body-small-size);
     color: var(--flare-color-on-surface);
 }
@@ -140,3 +140,29 @@
 }
 
 .flare-file-upload--disabled { opacity: var(--flare-state-disabled-opacity); pointer-events: none; }
+
+/* Queue rows. A row without an Uploader never gets a state class, so a picker looks exactly as it did.
+   Every state is a background the theme owns - the error row is the one place a component would
+   otherwise reach for a literal red. */
+.flare-file-upload__file--uploading { background: var(--flare-file-upload-row-active-bg); }
+.flare-file-upload__file--completed { background: var(--flare-file-upload-row-success-bg); }
+.flare-file-upload__file--failed,
+.flare-file-upload__file--cancelled { background: var(--flare-file-upload-row-error-bg); }
+
+.flare-file-upload__file-error {
+    color: var(--flare-file-upload-row-error-color);
+    font-size: var(--flare-typescale-label-small-size);
+}
+
+/* The bar sits between the size and the actions and takes the slack, so a long name still truncates
+   rather than pushing the affordances off the row. */
+.flare-file-upload__progress {
+    flex: 0 1 8rem;
+}
+
+.flare-file-upload__file-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--flare-spacing-1);
+    flex: none;
+}

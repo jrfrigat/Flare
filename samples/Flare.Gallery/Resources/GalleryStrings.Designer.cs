@@ -3821,6 +3821,15 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("FileUpload_SingleImageOnly", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Upload with progress, cancel and retry.
+        /// </summary>
+        public static string FileUpload_Transfer {
+            get {
+                return ResourceManager.GetString("FileUpload_Transfer", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на FlareFileUpload and FlareDropZone for file input with drag &amp; drop support..

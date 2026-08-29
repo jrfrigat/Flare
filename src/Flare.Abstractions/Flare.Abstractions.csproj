@@ -28,6 +28,9 @@
     <InternalsVisibleTo Include="Flare.Components" />
     <InternalsVisibleTo Include="Flare.Theming" />
     <InternalsVisibleTo Include="Flare.Infrastructure" />
+    <!-- The upload queue's state transitions are internal on purpose - an application reads them, it does
+         not fabricate them - so the tests that assert on them need the same view the components have. -->
+    <InternalsVisibleTo Include="Flare.Components.Tests" />
   </ItemGroup>
 
   <ItemGroup>
