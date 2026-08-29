@@ -19,7 +19,7 @@
 .flare-numericfield__stepper {
     display: inline-flex;
     flex-direction: column;
-    border-left: 1px solid var(--flare-color-outline-variant);
+    border-left: var(--flare-border-divider);
     align-self: stretch;
 }
 .flare-numericfield__step {
@@ -56,4 +56,4 @@
 }
 .flare-numericfield__step:hover:not(:disabled) { color: var(--flare-color-on-surface); }
 .flare-numericfield__step:disabled { opacity: var(--flare-input-disabled-opacity); cursor: not-allowed; }
-.flare-numericfield__step--up { border-bottom: 1px solid var(--flare-color-outline-variant); }
+.flare-numericfield__step--up { border-bottom: var(--flare-border-divider); }

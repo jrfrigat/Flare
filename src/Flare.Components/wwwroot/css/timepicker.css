@@ -113,7 +113,7 @@
   background: var(--flare-color-primary-container);
   color: var(--flare-color-on-primary-container);
 }
-.flare-timepicker__period { display: inline-flex; flex-direction: column; border: 1px solid var(--flare-color-outline); border-radius: var(--flare-shape-small); overflow: hidden; }
+.flare-timepicker__period { display: inline-flex; flex-direction: column; border: var(--flare-border-outline); border-radius: var(--flare-shape-small); overflow: hidden; }
 .flare-timepicker__period-btn {
   padding: var(--flare-spacing-3) var(--flare-spacing-6);
   border: none;

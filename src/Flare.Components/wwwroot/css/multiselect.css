@@ -57,6 +57,6 @@
 
 /* "Select all" option sits above the list with a divider. */
 .flare-multiselect__option--select-all {
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
     font-weight: 500;
 }

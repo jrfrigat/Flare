@@ -36,5 +36,5 @@
 
 /* Bordered: a hairline under every row but the last. */
 .flare-description-list--bordered .flare-description-list__row:not(:last-child) > * {
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
 }

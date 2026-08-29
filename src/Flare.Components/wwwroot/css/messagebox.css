@@ -41,7 +41,7 @@
 .flare-msgbox__input {
     width: 100%;
     padding: var(--flare-spacing-5) var(--flare-spacing-6);
-    border: 1px solid var(--flare-color-outline);
+    border: var(--flare-border-outline);
     border-radius: var(--flare-input-radius);
     background: var(--flare-color-surface);
     color: var(--flare-color-on-surface);

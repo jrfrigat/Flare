@@ -41,7 +41,7 @@
     justify-content: space-between;
     gap: var(--flare-spacing-8);
     padding: var(--flare-spacing-3) 0;
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
 }
 
 .flare-shortcuts-help__row:last-child { border-bottom: none; }
@@ -51,7 +51,7 @@
     font-size: var(--flare-typescale-label-small-size);
     color: var(--flare-color-on-surface);
     background: var(--flare-color-surface-container-highest);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-extra-small);
     padding: var(--flare-spacing-1) var(--flare-spacing-4);
     white-space: nowrap;

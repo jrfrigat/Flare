@@ -1016,6 +1016,17 @@ public class MaterialDesignTokens
 
     // Spacing scale: the 2px-base ramp (0/2/4/6/8/10/12/16/20/24/32/48/64px). Superset of the MD3 4dp
     // grid; carried explicitly now that the core record ships no defaults.
+    // M3 draws separators as 1dp outline-variant rules and reserves the heavier weight for selection and
+    // drop targets.
+    internal static readonly BorderTokens Border = new()
+    {
+        Width = "1px",
+        WidthEmphasis = "2px",
+        Style = "solid",
+        Divider = "var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline-variant)",
+        Outline = "var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline)",
+    };
+
     internal static readonly SpacingTokens Spacing = new()
     {
         S0 = "0",
@@ -1191,6 +1202,7 @@ public class MaterialDesignTokens
         Table = Table,
         TimePicker = TimePicker,
         Spacing = Spacing,
+        Border = Border,
         Switch = Switch,
         DataGrid = DataGrid,
         Rating = Rating,

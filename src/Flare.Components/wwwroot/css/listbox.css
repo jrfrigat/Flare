@@ -12,7 +12,7 @@
     z-index: var(--flare-z-dropdown, 1000);
     background-color: var(--flare-color-surface-container-high);
     color: var(--flare-color-on-surface);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-medium);
     box-shadow: var(--flare-elevation-2);
     max-height: 16rem;
@@ -103,7 +103,7 @@
     box-sizing: border-box;
     width: 1.125rem;
     height: 1.125rem;
-    border: 2px solid var(--flare-color-outline);
+    border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline);
     border-radius: var(--flare-shape-extra-small);
     position: relative;
     transition: background-color var(--flare-motion-duration-short1) var(--flare-motion-easing-standard),

@@ -952,6 +952,16 @@ public class FluentUI2Tokens
     // documented per Fluent token so it stays correct even if the shared default scale changes:
     //   None 0 | XXS 2 | XS 4 | SNudge 6 | S 8 | MNudge 10 | M 12 | L 16 | XL 20 | XXL 24 | XXXL 32 (px).
     // S24/S32 (48/64px) extend past Fluent's named ramp for large layout gaps.
+    // Fluent's strokeWidthThin / strokeWidthThick, which is what its surfaces and selection states use.
+    internal static readonly BorderTokens Border = new()
+    {
+        Width = "1px",
+        WidthEmphasis = "2px",
+        Style = "solid",
+        Divider = "var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline-variant)",
+        Outline = "var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline)",
+    };
+
     internal static readonly SpacingTokens Spacing = new()
     {
         S0 = "0",          // spacingHorizontalNone
@@ -1209,6 +1219,7 @@ public class FluentUI2Tokens
         Typography = Typography,
         Shape = Shape,
         Spacing = Spacing,
+        Border = Border,
         Elevation = Elevation,
         Motion = Motion,
         State = State,

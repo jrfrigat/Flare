@@ -7,7 +7,7 @@
 .flare-tabs__bar-wrap {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--flare-tabs-divider-color);
+  border-bottom: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
 }
 
 /* Start/end zones for arbitrary content (titles, buttons) beside the tabs. The bar (flex:1)
@@ -235,7 +235,7 @@
 /* Outlined: card / folder tabs that connect to the panel border below. */
 .flare-tabs--outlined .flare-tabs__bar { gap: var(--flare-spacing-2); }
 .flare-tabs--outlined .flare-tabs__tab {
-  border: 1px solid var(--flare-tabs-divider-color);
+  border: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
   border-radius: var(--flare-shape-small) var(--flare-shape-small) 0 0;
   margin-bottom: -1px;
 }
@@ -316,7 +316,7 @@
 .flare-tabs--vertical .flare-tabs__bar {
   flex-direction: column;
   border-bottom: none;
-  border-right: 1px solid var(--flare-tabs-divider-color);
+  border-right: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
   overflow-x: unset;
   overflow-y: auto;
   min-width: 10rem;
@@ -346,7 +346,7 @@
 .flare-tabs--bottom { flex-direction: column-reverse; }
 .flare-tabs--bottom .flare-tabs__bar-wrap {
   border-bottom: none;
-  border-top: 1px solid var(--flare-tabs-divider-color);
+  border-top: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
 }
 .flare-tabs--bottom .flare-tabs__tab {
   border-bottom: none;
@@ -361,7 +361,7 @@
 .flare-tabs--vertical.flare-tabs--right { flex-direction: row-reverse; }
 .flare-tabs--vertical.flare-tabs--right .flare-tabs__bar {
   border-right: none;
-  border-left: 1px solid var(--flare-tabs-divider-color);
+  border-left: var(--flare-border-width) var(--flare-border-style) var(--flare-tabs-divider-color);
 }
 .flare-tabs--vertical.flare-tabs--right .flare-tabs__tab {
   border-right: none;

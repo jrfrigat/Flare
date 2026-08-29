@@ -58,7 +58,7 @@
   width: var(--_rb-size);
   height: var(--_rb-size);
   border-radius: 50%;
-  border: 2px solid var(--flare-color-on-surface-variant);
+  border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-on-surface-variant);
   background: transparent;
   transition:
     border-color var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);

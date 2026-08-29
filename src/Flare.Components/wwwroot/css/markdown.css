@@ -1,7 +1,7 @@
 .flare-markdown { line-height: 1.6; color: var(--flare-color-on-surface); }
 .flare-markdown h1,.flare-markdown h2,.flare-markdown h3,.flare-markdown h4 { margin: var(--flare-spacing-8) 0 var(--flare-spacing-4); font-weight: 600; }
 .flare-markdown h1 { font-size: 2em; }
-.flare-markdown h2 { font-size: 1.5em; border-bottom: 1px solid var(--flare-color-outline-variant); padding-bottom: var(--flare-spacing-2); }
+.flare-markdown h2 { font-size: 1.5em; border-bottom: var(--flare-border-divider); padding-bottom: var(--flare-spacing-2); }
 .flare-markdown h3 { font-size: 1.25em; }
 .flare-markdown p { margin: var(--flare-spacing-6) 0; }
 .flare-markdown code { background: var(--flare-color-surface-container); padding: 0.1em 0.3em; border-radius: var(--flare-shape-extra-small); font-family: monospace; font-size: 0.875em; }
@@ -10,13 +10,13 @@
 .flare-markdown ul,.flare-markdown ol { padding-left: var(--flare-spacing-12); margin: var(--flare-spacing-4) 0; }
 .flare-markdown li { margin: var(--flare-spacing-2) 0; }
 .flare-markdown blockquote { border-left: 4px solid var(--flare-color-primary); margin: var(--flare-spacing-6) 0; padding: var(--flare-spacing-4) var(--flare-spacing-8); background: var(--flare-color-surface-container); }
-.flare-markdown hr { border: none; border-top: 1px solid var(--flare-color-outline-variant); margin: var(--flare-spacing-8) 0; }
+.flare-markdown hr { border: none; border-top: var(--flare-border-divider); margin: var(--flare-spacing-8) 0; }
 .flare-markdown a { color: var(--flare-color-primary); text-decoration: none; }
 .flare-markdown a:hover { text-decoration: underline; }
 /* The table's own frame: a table too wide for its column scrolls here instead of being clipped by an
    ancestor. The margin lives on the wrapper so the scrollbar sits with the table, not around it. */
 .flare-markdown__table-scroll { overflow-x: auto; max-width: 100%; margin: var(--flare-spacing-6) 0; }
 .flare-markdown table { border-collapse: collapse; width: 100%; }
-.flare-markdown th,.flare-markdown td { border: 1px solid var(--flare-color-outline-variant); padding: 0.4rem var(--flare-spacing-6); }
+.flare-markdown th,.flare-markdown td { border: var(--flare-border-divider); padding: 0.4rem var(--flare-spacing-6); }
 .flare-markdown th { background: var(--flare-color-surface-container); font-weight: 600; }
 .flare-markdown img { max-width: 100%; }

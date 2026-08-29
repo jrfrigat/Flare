@@ -1,7 +1,7 @@
 .flare-table-container {
     overflow-x: auto;
     border-radius: var(--flare-shape-medium);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
 }
 
 /* -- Sticky header -------------------------------------------------------- */
@@ -39,13 +39,13 @@
     font-weight: var(--flare-typescale-label-large-weight);
     color: var(--flare-color-on-surface-variant);
     background: var(--flare-color-surface-container-low);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
     white-space: nowrap;
 }
 
 .flare-table tbody td {
     padding: var(--flare-table-cell-padding-v) var(--flare-table-cell-padding-h);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
     vertical-align: middle;
 }
 
@@ -71,7 +71,7 @@
 
 .flare-table--bordered thead th,
 .flare-table--bordered tbody td {
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
 }
 
 .flare-table--dense thead th,
@@ -86,7 +86,7 @@
     padding: 0.4rem var(--flare-spacing-6);
     cursor: pointer;
     user-select: none;
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
 }
 
 .flare-table__group-row:hover td {
@@ -109,7 +109,7 @@
 /* -- Totals footer -------------------------------------------------------- */
 
 .flare-table__tfoot {
-    border-top: 2px solid var(--flare-color-outline);
+    border-top: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline);
 }
 
 .flare-table__tfoot td {

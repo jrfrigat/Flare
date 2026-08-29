@@ -7,7 +7,7 @@
 }
 
 .flare-paper--square { border-radius: 0; }
-.flare-paper--outlined { box-shadow: none; border: 1px solid var(--flare-color-outline-variant); background: var(--flare-color-surface); }
+.flare-paper--outlined { box-shadow: none; border: var(--flare-border-divider); background: var(--flare-color-surface); }
 
 /* Padding modifiers */
 .flare-paper--padding-none    { padding: 0; }

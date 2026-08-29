@@ -1,6 +1,6 @@
 .flare-codeblock {
     position: relative;
-    border: 1px solid var(--flare-color-outline);
+    border: var(--flare-border-outline);
     border-radius: var(--flare-shape-small);
     /* Not hidden: the suggestion list is anchored to the caret and has to be able to hang past the
        bottom edge. The layers inside round and clip themselves instead. */
@@ -138,7 +138,7 @@
     user-select: none;
     min-width: 2.5rem;
     box-sizing: border-box;
-    border-right: 1px solid var(--flare-color-outline-variant);
+    border-right: var(--flare-border-divider);
     background: var(--flare-color-surface-container);
     white-space: pre;
     font: inherit;
@@ -202,7 +202,7 @@
     max-height: 16rem;
     overflow-y: auto;
     padding: var(--flare-spacing-4) 0;
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-small);
     background: var(--flare-color-surface-container-high);
     box-shadow: var(--flare-elevation-2);

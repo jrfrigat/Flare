@@ -7,7 +7,7 @@
 .flare-datagrid__wrapper {
   position: relative;
   overflow-x: auto;
-  border: 1px solid var(--flare-color-outline-variant);
+  border: var(--flare-border-divider);
   border-radius: var(--flare-shape-medium);
 }
 
@@ -28,7 +28,7 @@
   font-weight: var(--flare-typescale-label-large-weight);
   color: var(--flare-color-on-surface-variant);
   background: var(--flare-color-surface-container-low);
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-border-divider);
   white-space: nowrap;
 }
 
@@ -74,7 +74,7 @@
 
 .flare-datagrid__td {
   padding: var(--flare-spacing-6) var(--flare-spacing-8);
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-border-divider);
   vertical-align: middle;
 }
 
@@ -219,7 +219,7 @@
   font-size: var(--flare-typescale-label-large-size);
   color: var(--flare-color-on-surface-variant);
   background: var(--flare-color-surface-container-low);
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-border-divider);
 }
 
 /* Collapsible group header button: full-width, indents by nesting level. */
@@ -305,7 +305,7 @@
 .flare-datagrid__filter-row th {
   padding: var(--flare-spacing-2) var(--flare-spacing-6);
   background: var(--flare-color-surface-container-low);
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-border-divider);
 }
 
 /* Filter editors (row + advanced builder) use the outlined field variant regardless of theme. They wear
@@ -348,7 +348,7 @@
   padding: var(--flare-spacing-6);
   background: var(--flare-color-surface-container-high);
   color: var(--flare-color-on-surface);
-  border: 1px solid var(--flare-color-outline-variant);
+  border: var(--flare-border-divider);
   border-radius: var(--flare-shape-medium);
   box-shadow: var(--flare-elevation-3);
 }
@@ -362,7 +362,7 @@
 
 /* A logical group: a card with a left accent rail; nested groups indent visually. */
 .flare-datagrid__filter-builder-group {
-  border: 1px solid var(--flare-color-outline-variant);
+  border: var(--flare-border-divider);
   border-left: var(--flare-datagrid-filter-group-rail) solid var(--flare-color-primary);
   border-radius: var(--flare-shape-small);
   background: var(--flare-color-surface-container);
@@ -387,7 +387,7 @@
 .flare-datagrid__filter-builder-connector {
   min-width: 3rem;
   padding: var(--flare-spacing-1) var(--flare-spacing-5);
-  border: 1px solid var(--flare-color-primary);
+  border: var(--flare-border-width) var(--flare-border-style) var(--flare-color-primary);
   border-radius: var(--flare-shape-full);
   background: var(--flare-color-primary-container);
   color: var(--flare-color-on-primary-container);
@@ -471,10 +471,10 @@
   font-weight: var(--flare-typescale-label-large-weight);
 }
 thead .flare-datagrid__row--pinned > .flare-datagrid__td {
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-border-divider);
 }
 tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
-  border-top: 1px solid var(--flare-color-outline-variant);
+  border-top: var(--flare-border-divider);
 }
 
 /* Sticky footer aggregate row in scrolling/virtualized grids (mirrors the sticky header). */
@@ -508,10 +508,10 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 /* Banded multi-row composite: each record spans several rows; cells align across the table */
 .flare-datagrid__th--composite,
 .flare-datagrid__td--composite {
-    border-inline-end: 1px solid var(--flare-color-outline-variant);
+    border-inline-end: var(--flare-border-divider);
 }
 .flare-datagrid__row--record > td {
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
 }
 /* Heavier separator at the start of each record */
 .flare-datagrid__row--record-first > td,
@@ -532,7 +532,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 .flare-datagrid__th--band {
     text-align: center;
     font-weight: 600;
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
 }
 
 /* Reorderable rows (drag-and-drop) */
@@ -757,7 +757,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   right: 0;
   top: calc(100% + 4px);
   background: var(--flare-color-surface);
-  border: 1px solid var(--flare-color-outline);
+  border: var(--flare-border-outline);
   border-radius: var(--flare-shape-small);
   padding: var(--flare-spacing-4);
   min-width: var(--flare-datagrid-column-picker-min-width);
@@ -830,7 +830,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   min-width: 13rem;
   padding: var(--flare-spacing-6);
   background: var(--flare-color-surface-container);
-  border: 1px solid var(--flare-color-outline-variant);
+  border: var(--flare-border-divider);
   border-radius: var(--flare-shape-small);
   box-shadow: var(--flare-elevation-2);
   text-align: start;
@@ -859,7 +859,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
   max-height: 11rem;
   overflow-y: auto;
   padding: var(--flare-spacing-1) var(--flare-spacing-1);
-  border: 1px solid var(--flare-color-outline-variant);
+  border: var(--flare-border-divider);
   border-radius: var(--flare-shape-extra-small);
 }
 
@@ -909,7 +909,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 /* Bordered: column dividers */
 .flare-datagrid--bordered .flare-datagrid__th,
 .flare-datagrid--bordered .flare-datagrid__td {
-  border-right: 1px solid var(--flare-color-outline-variant);
+  border-right: var(--flare-border-divider);
 }
 
 .flare-datagrid--bordered .flare-datagrid__th:last-child,
@@ -918,7 +918,7 @@ tfoot .flare-datagrid__row--pinned > .flare-datagrid__td {
 }
 
 .flare-datagrid--bordered .flare-datagrid__th {
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-border-divider);
 }
 
 /* On small screens, let the table scroll horizontally instead of squashing columns.

@@ -148,7 +148,7 @@
   align-items: center;
   gap: var(--flare-spacing-2);
   padding: var(--flare-spacing-5) var(--flare-spacing-10);
-  border: 1px solid var(--flare-color-outline);
+  border: var(--flare-border-outline);
   border-radius: var(--flare-shape-extra-small);
   background: transparent;
   color: var(--flare-color-on-surface);

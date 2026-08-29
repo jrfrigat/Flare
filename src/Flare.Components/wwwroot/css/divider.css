@@ -1,6 +1,6 @@
 .flare-divider {
   border: none;
-  border-top: 1px solid var(--flare-color-outline-variant);
+  border-top: var(--flare-border-divider);
   margin: 0;
 }
 

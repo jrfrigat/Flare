@@ -71,6 +71,13 @@ public static class CssVarMap
         v[Css.Tokens.Spacing.S24] = t.Spacing.S24;
         v[Css.Tokens.Spacing.S32] = t.Spacing.S32;
 
+        // Border
+        v[Css.Tokens.Border.Width] = t.Border.Width;
+        v[Css.Tokens.Border.WidthEmphasis] = t.Border.WidthEmphasis;
+        v[Css.Tokens.Border.Style] = t.Border.Style;
+        v[Css.Tokens.Border.Divider] = t.Border.Divider;
+        v[Css.Tokens.Border.Outline] = t.Border.Outline;
+
         // Elevation
         v[Css.Tokens.Elevation.Level0] = t.Elevation.Level0;
         v[Css.Tokens.Elevation.Level1] = t.Elevation.Level1;

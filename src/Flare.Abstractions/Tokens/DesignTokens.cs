@@ -30,6 +30,10 @@ public sealed record DesignTokens
     /// via <c>with</c> to make the UI denser or roomier.</summary>
     public required SpacingTokens Spacing { get; init; }
 
+    /// <summary>Border scale (rule width, style and the divider/outline shorthands). A theme may lighten,
+    /// thicken or remove every rule in the library from here.</summary>
+    public required BorderTokens Border { get; init; }
+
     /// <summary>Badge token.</summary>
     public required BadgeTokens Badge { get; init; }
     /// <summary>Alert token.</summary>

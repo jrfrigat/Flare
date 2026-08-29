@@ -1,7 +1,7 @@
 .flare-calendar {
     background: var(--flare-color-surface);
     border-radius: var(--flare-shape-medium);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     overflow: hidden;
     width: 100%;
     max-width: var(--flare-calendar-max-width);
@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--flare-spacing-4) var(--flare-spacing-6);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
     background: var(--flare-color-surface-container-low);
 }
 
@@ -28,7 +28,7 @@
 /* Multi-month mode lifts the single-month width cap. */
 .flare-calendar--multi { max-width: none; }
 .flare-calendar--multi .flare-calendar__month + .flare-calendar__month {
-    border-left: 1px solid var(--flare-color-outline-variant);
+    border-left: var(--flare-border-divider);
 }
 
 .flare-calendar__header {
@@ -36,7 +36,7 @@
     align-items: center;
     justify-content: space-between;
     padding: var(--flare-spacing-6) var(--flare-spacing-8);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
     background: var(--flare-color-surface-container-low);
 }
 

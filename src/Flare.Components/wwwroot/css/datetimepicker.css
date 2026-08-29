@@ -22,7 +22,7 @@
   display: flex;
   gap: var(--flare-spacing-4);
   margin-bottom: var(--flare-spacing-6);
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-border-divider);
 }
 
 .flare-datetimepicker__tab {
@@ -68,7 +68,7 @@
 .flare-datetimepicker__time-input {
   width: 3rem;
   text-align: center;
-  border: 1px solid var(--flare-color-outline);
+  border: var(--flare-border-outline);
   border-radius: var(--flare-shape-small);
   padding: var(--flare-spacing-2);
   font-size: var(--flare-typescale-headline-small-size);

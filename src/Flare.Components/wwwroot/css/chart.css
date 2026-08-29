@@ -179,7 +179,7 @@
     pointer-events: none;
     background: var(--flare-color-surface-container-highest);
     color: var(--flare-color-on-surface);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-extra-small);
     padding: var(--flare-spacing-3) var(--flare-spacing-5);
     font-size: var(--flare-typescale-body-small-size);

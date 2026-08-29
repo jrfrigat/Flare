@@ -29,7 +29,7 @@
 .flare-togglegroup > .flare-btn {
     border-radius: 0;
     background: transparent;
-    border-right: 1px solid var(--flare-togglegroup-divider);
+    border-right: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
     flex: 0 0 auto;
 }
 
@@ -39,7 +39,7 @@
 
 .flare-togglegroup--vertical > .flare-btn {
     border-right: none;
-    border-bottom: 1px solid var(--flare-togglegroup-divider);
+    border-bottom: var(--flare-border-width) var(--flare-border-style) var(--flare-togglegroup-divider);
 }
 
 .flare-togglegroup--vertical > .flare-btn:last-child {

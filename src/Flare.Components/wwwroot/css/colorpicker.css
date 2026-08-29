@@ -22,7 +22,7 @@
     gap: var(--flare-spacing-4);
     padding: var(--flare-spacing-3) var(--flare-spacing-6) var(--flare-spacing-3) var(--flare-spacing-3);
     background: var(--flare-color-surface-container-highest);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-extra-small);
     cursor: pointer;
     font-family: var(--flare-typescale-body-medium-font);
@@ -45,7 +45,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    border: 2px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline-variant);
     flex-shrink: 0;
     background-image:
         linear-gradient(45deg, var(--flare-colorpicker-checker-color) 25%, transparent 25%),
@@ -78,7 +78,7 @@
     position: fixed;
     z-index: 1000;
     background: var(--flare-color-surface-container);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-medium);
     box-shadow: var(--flare-elevation-2);
     padding: var(--flare-spacing-6);
@@ -125,7 +125,7 @@
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    border: 2px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline-variant);
     flex-shrink: 0;
     background-image:
         linear-gradient(45deg, var(--flare-colorpicker-checker-color) 25%, transparent 25%),
@@ -197,7 +197,7 @@
     height: 18px;
     border-radius: 50%;
     background: var(--flare-colorpicker-thumb-bg);
-    border: 2px solid var(--flare-colorpicker-thumb-border-color);
+    border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-colorpicker-thumb-border-color);
     box-shadow: var(--flare-elevation-1);
     cursor: pointer;
     transition: box-shadow var(--flare-motion-duration-short1);
@@ -208,7 +208,7 @@
     height: 18px;
     border-radius: 50%;
     background: var(--flare-colorpicker-thumb-bg);
-    border: 2px solid var(--flare-colorpicker-thumb-border-color);
+    border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-colorpicker-thumb-border-color);
     box-shadow: var(--flare-elevation-1);
     cursor: pointer;
 }
@@ -239,7 +239,7 @@
     padding: var(--flare-spacing-2) 0;
     background: transparent;
     border: none;
-    border-bottom: 2px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline-variant);
     color: var(--flare-color-on-surface-variant);
     font-family: var(--flare-typescale-label-medium-font);
     font-size: var(--flare-typescale-label-medium-size);
@@ -276,7 +276,7 @@
     width: 100%;
     padding: var(--flare-spacing-2) var(--flare-spacing-3);
     background: var(--flare-color-surface-container-highest);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-extra-small);
     color: var(--flare-color-on-surface);
     font-family: var(--flare-typescale-body-medium-font);
@@ -320,14 +320,14 @@
     flex-wrap: wrap;
     gap: var(--flare-spacing-3);
     padding-top: var(--flare-spacing-3);
-    border-top: 1px solid var(--flare-color-outline-variant);
+    border-top: var(--flare-border-divider);
 }
 
 .flare-colorpicker__preset {
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    border: 2px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-color-outline-variant);
     cursor: pointer;
     padding: 0;
     transition: transform var(--flare-motion-duration-short1),
@@ -353,7 +353,7 @@
 .flare-colorpicker--inline .flare-colorpicker__panel {
     position: static;
     box-shadow: none;
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     width: auto;
 }
 
@@ -383,7 +383,7 @@
     font: inherit;
     color: var(--flare-color-on-surface);
     background: var(--flare-color-surface-container-highest);
-    border: 1px solid var(--flare-color-outline-variant);
+    border: var(--flare-border-divider);
     border-radius: var(--flare-shape-small);
     cursor: pointer;
     transition: background var(--flare-motion-duration-short2);

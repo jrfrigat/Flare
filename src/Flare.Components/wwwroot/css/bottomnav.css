@@ -12,7 +12,7 @@
   height: var(--flare-bottom-nav-bar-height);
   padding-bottom: var(--flare-bottom-nav-safe-area-padding);
   background: var(--flare-bottom-nav-bar-bg);
-  border-top: 1px solid var(--flare-bottom-nav-border-color);
+  border-top: var(--flare-border-width) var(--flare-border-style) var(--flare-bottom-nav-border-color);
   box-sizing: border-box;
 }
 

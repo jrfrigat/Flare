@@ -24,7 +24,7 @@
   min-width: var(--_pg-size);
   height: var(--_pg-size);
   padding: 0 var(--flare-spacing-4);
-  border: 1px solid var(--flare-pagination-border-color);
+  border: var(--flare-border-width) var(--flare-border-style) var(--flare-pagination-border-color);
   border-radius: var(--flare-pagination-radius);
   background: transparent;
   color: var(--flare-color-on-surface);
@@ -105,7 +105,7 @@
 .flare-pagination__rows-select {
   height: var(--_pg-size);
   padding: 0 var(--flare-spacing-4);
-  border: 1px solid var(--flare-pagination-border-color);
+  border: var(--flare-border-width) var(--flare-border-style) var(--flare-pagination-border-color);
   border-radius: var(--flare-pagination-radius);
   background: var(--flare-color-surface);
   color: var(--flare-color-on-surface);

@@ -29,7 +29,7 @@
 }
 
 .flare-virtual-list__item {
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-border-divider);
 }
 
 .flare-virtual-list__item:last-child {

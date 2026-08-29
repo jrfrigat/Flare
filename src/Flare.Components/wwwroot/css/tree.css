@@ -136,11 +136,11 @@
 }
 
 .flare-tree-item--drop-before {
-    border-top: 2px solid var(--flare-tree-drop-indicator-color);
+    border-top: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-tree-drop-indicator-color);
 }
 
 .flare-tree-item--drop-after {
-    border-bottom: 2px solid var(--flare-tree-drop-indicator-color);
+    border-bottom: var(--flare-border-width-emphasis) var(--flare-border-style) var(--flare-tree-drop-indicator-color);
 }
 
 .flare-tree-item--drop-inside {
