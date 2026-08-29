@@ -47,13 +47,33 @@ Not every hit is a defect. Three legitimate kinds have to survive the pass:
 3. **Check for dead names in the other direction**: constants and CSS classes that no code or
    stylesheet reads any more. The registries have outlived several refactors, and nothing currently
    fails when a name is orphaned.
-4. A guard test to keep it clean: no `--flare-` literal in `Flare.Components` sources outside the
+4. **Names that stopped being accurate.** A name is also wrong when it no longer says what the token is
+   for, and the way that happens is a family growing suffixed siblings around an unsuffixed member that
+   used to be the only one. `--flare-input-padding` was this: four `-xs/-sm/-lg/-xl` steps appeared
+   beside it and it kept reading as "the padding" rather than "the medium step". Renamed to
+   `--flare-input-padding-md`.
+
+   Scanning all 1007 distinct `--flare-*` names for a base with two or more sized siblings turns up two
+   candidates, and only one is a defect:
+
+   - **`--flare-fab-radius`** - sits beside `-sm` and `-lg`, and the constant behind it is *already*
+     called `Radius.Md`. The C# says medium, the CSS name does not. Rename to `--flare-fab-radius-md`.
+   - **`--flare-col-span`** - leave it. The `-xs..-xxl` siblings are breakpoint overrides that fall back
+     to it in a mobile-first cascade (`var(--flare-col-span-md, var(--flare-col-span-sm, ...))`), so the
+     unsuffixed name genuinely is the base. Same shape, different meaning.
+
+   The same question applies to modifier suffixes that are not sizes (`-dense`, `-compact`), but those
+   read correctly today: `--flare-appbar-height` with `--flare-appbar-height-dense` is a base plus a
+   variant, not one step of a ramp.
+
+5. A guard test to keep it clean: no `--flare-` literal in `Flare.Components` sources outside the
    prefix-construction helpers. This is the part that makes the pass stick; without it the count grows
-   back.
+   back. It cannot catch item 4 - an inaccurate name is still a real name - so that one stays a
+   judgement call at review time.
 
 ## Why it is worth doing
 
 The mandate promises that a theme can repoint any token. A name written as a literal in one place and
 as a constant in another breaks that promise silently: the theme sets the token, the component writes
 its own spelling, and the override does nothing. There is no test today that would catch it, which is
-also why step 4 matters more than steps 1-2.
+also why step 5 matters more than steps 1-2.
