@@ -1,11 +1,32 @@
 # The JS layer: what a full read of it found
 
-**Status: OPEN. Tier 1 for items A and B, Tier 2 for the rest.**
+**Status: PARTIALLY DONE. A, B, E and H are fixed; C, D, F and G remain.**
 
 2151 lines across 12 modules in `src/Flare.Components/wwwroot/js`. Read end to end. The findings are
 ordered by what they cost, not by how much code they touch.
 
-## A. Two loading models, and the older one is a manual setup step
+## A. Two loading models, and the older one is a manual setup step - FIXED, and it had a real victim
+
+**Confirmed in the field before it was fixed.** A production application on Flare 0.18.1
+(`techvill/OrderingPlatform`) reported "setting `Frozen` on a DataGrid column throws at runtime; remove
+`Frozen` and everything works". Its `index.html` carries `flare-bootstrap.js` and
+`blazor.webassembly.js` and **not** `flare-components.js`. So `window.FlareDataGrid` was undefined, and
+the only DataGrid feature that reaches for it is the frozen-offset sync:
+
+```
+Could not find 'FlareDataGrid.updateFrozenOffsets' ('updateFrozenOffsets' was undefined).
+```
+
+In 0.18.1 that call site caught `InvalidOperationException` and `JSDisconnectedException` but not
+`JSException`, so the throw escaped `OnAfterRenderAsync`. `Sortable` had nothing to do with it - the
+reporter suspected it because that was the column they happened to be editing. Removing `Frozen` skipped
+the branch, and the application was otherwise fine only because it used none of the other seven features
+this file backs.
+
+Both halves are now closed: the `JSException` catch was added to all four DataGrid call sites in a later
+release, and as of 0.23.0 the file is an ES module the services import, so the tag cannot be forgotten.
+
+### What the state was
 
 Eleven modules are ES modules imported lazily through `FlareJsModule` on first use. The twelfth,
 `flare-components.js` (279 lines), is a classic script that assigns **nine `window.*` globals** -
@@ -21,7 +42,7 @@ Three costs, and the first is the one that hurts an adopter:
    else in Flare has a setup step like this.
 2. It is parsed on every page of every app, including apps with no DataGrid and no OTP field.
 3. It is served from `_content` unfingerprinted, which is the exact PWA service-worker skew hazard that
-   already bit `FlareDataGrid` once (see `datagrid-frozen-sortable-crash.md`).
+   already bit `FlareDataGrid` once.
 
 Converting it to an ES module behind the existing typed services (`IDataGridJsService`,
 `ITocJsService`, `ILazyJsService`, `IInfiniteScrollJsService`, `IElementJsService`) removes the setup
@@ -105,6 +126,5 @@ per gesture rather than once per event. The horizontal metrics are for applicati
 
 ## Order
 
-B and H first - both are small and neither is breaking. Then E. Then A, which is the one worth a
-release note. C, D, F and G are cleanups that make the next reader's job easier and should ride along
+A, B, E and H are done. C, D, F and G remain - cleanups that make the next reader's job easier and should ride along
 with whatever touches those files.

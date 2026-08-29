@@ -22,7 +22,32 @@ either way. Both render, and both were also rendered through `FlareTabs` in bUni
 child. There is therefore no runtime difference between the two spellings *for a child whose tag name
 does not collide with a parameter*, and the report as literally written cannot be reproduced.
 
-## The collision that IS real, and is the likely cause
+## Checked against the reporting application, and it does not explain that one
+
+The application was `techvill/OrderingPlatform` on Flare 0.18.1. Everything checkable there was checked:
+
+- **Its own component names**: App, Config, Home, IssueList, MainLayout, NavMenu, ParamTable,
+  RouteEditDialog, ScopeEditDialog, SzRcDaysTable, TaskCard, TaskCreateDialog, TaskDailyMetricsTable,
+  TaskGraphGrid, TaskPicker, TaskResultGrid, TaskScheduleGrid, Tasks. **None collides** with any
+  `FlareTab` parameter (`Label`, `ChildContent`, `LeadingIcon`, `Disabled`, `Closeable`, `Badge`,
+  `BadgeColor`, `BadgeDot`, `Tooltip`, `OnClick`).
+- **The implicit form compiles there**: a scratch page written into that project with
+  `<FlareTab Label="..."><TaskDailyMetricsTable Rows="[]" /></FlareTab>` built with zero errors.
+- **It also works at runtime**: the same shape rendered in the Gallery produces byte-identical panel
+  content either way.
+- **The file still uses the implicit form in two places** (`Tasks.razor`) and those work; the explicit
+  form appears in `TaskCard.razor` and `Config.razor`.
+
+So the reported symptom is not reproducible from that code, and the collision below - while real - is not
+what happened there. What *was* wrong in that application was unrelated and is now fixed: it had no
+`<script src=".../flare-components.js">` in its `index.html`, which is why `Frozen` on a DataGrid column
+threw (see `js-layer-audit.md`, item A). It is possible the two reports were the same debugging session
+and the `<ChildContent>` wrapping was a change that happened to coincide.
+
+**To take this further, the exception text is still what is needed** - specifically whether it names a
+component, a parameter or a null reference.
+
+## The collision that IS real, and is a likely cause elsewhere
 
 Razor decides "these children are named content slots" by matching the child *tag name* against the
 component's `RenderFragment` parameters. So a user component whose name equals a slot name is silently
@@ -43,6 +68,24 @@ names somewhere in Flare and all are plausible app component names.
 
 A component *name* is checked before a parameter name, so this only bites when the app component and the
 slot share a name - but when it bites there is no diagnostic at all.
+
+**Measured: 32 bare-noun slot names across the library**, any of which an application could plausibly
+use as a component name. Ordered by how many components carry them:
+
+| Slot | Components |
+| :-- | :-- |
+| `Icon` | Alert, FloatingActionButton, Dialog, EmptyState, FileUploadZone, BottomNavItem, NavLink, Step |
+| `Header` | OptionList, Drawer, NavMenu |
+| `Leading` / `Trailing` | AppBar, ListItem |
+| `Avatar` | CardHeader, Chip |
+| `Template` | ChipStrip, Column |
+| `Zones` | Progress, Slider |
+
+plus `Action`, `Actions`, `Badge`, `Counter`, `Empty`, `Fallback`, `Footer`, `Placeholder`, `Activator`,
+`Composite`, `MenuItems`, `MenuButton` and the icon-state slots on Checkbox/Switch/ToggleButton.
+
+`Icon` is the dangerous one: eight components expose it, and an application component called `Icon` is
+about as likely as a name gets.
 
 ## Why nothing ever fails loudly
 
