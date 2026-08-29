@@ -25,4 +25,11 @@ public sealed record LayoutTokens
 
     /// <summary>Drawer Width.</summary>
     [CssVar(LayoutField.DrawerWidth)] public required string DrawerWidth { get; init; }
+
+    /// <summary>Bottom edge of the shell app bar, as a <c>border</c> shorthand.</summary>
+    [CssVar(LayoutField.AppBarBorder)] public required string AppBarBorder { get; init; }
+
+    /// <summary>Edge the shell drawer draws against the content, as a <c>border</c> shorthand. It lands on
+    /// the trailing edge, or on the leading edge of an end-anchored drawer.</summary>
+    [CssVar(LayoutField.DrawerBorder)] public required string DrawerBorder { get; init; }
 }

@@ -13,4 +13,8 @@ public static class AppBarField
     public const string PaddingX = "--flare-appbar-padding-x";
     /// <summary>CSS custom-property name for the title padding x token.</summary>
     public const string TitlePaddingX = "--flare-appbar-title-padding-x";
+    /// <summary>CSS custom-property name for the bottom edge, as a <c>border</c> shorthand. A separating
+    /// line is a language decision, not a structural one - a theme that separates the bar by elevation or
+    /// by surface tone sets this to <c>none</c>.</summary>
+    public const string Border = "--flare-appbar-border";
 }

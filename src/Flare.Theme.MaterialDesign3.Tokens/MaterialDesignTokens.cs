@@ -527,7 +527,14 @@ public class MaterialDesignTokens
         FocusOutlineOffset = "0",
         HoverBorderBottomColor = "var(--flare-color-on-surface)",
         HoverStateLayer = "linear-gradient(color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent), color-mix(in srgb, var(--flare-color-on-surface) 8%, transparent))",
-        Padding = "1rem 1rem",
+        Padding = "1rem 1rem",                        // medium = the M3 56dp field
+        PaddingXs = "0.1875rem 0.5rem",
+        PaddingSm = "0.375rem 0.625rem",
+        // Large and extra-large are measured up from the 56dp medium. They used to be 14px and 18px of
+        // block padding, authored in core against a shorter medium, which left Large SHORTER than Medium
+        // under this theme.
+        PaddingLg = "1.25rem 1.125rem",
+        PaddingXl = "1.5rem 1.25rem",
         IconSize = "1.5rem",                          // leading/trailing icon 24dp
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",
@@ -770,6 +777,10 @@ public class MaterialDesignTokens
     {
         Width = "360px",
         MiniWidth = "72px",
+        // The M3 navigation drawer is a surface-container-low panel against a surface background; the tone
+        // step is the separation, and the spec draws no divider on either edge.
+        Border = "none",
+        SectionBorder = "none",
     };
 
     internal static readonly SnackbarTokens Snackbar = new()
@@ -1029,6 +1040,9 @@ public class MaterialDesignTokens
         HeightDense = "3rem",
         PaddingX = "0.25rem",
         TitlePaddingX = "0.75rem",
+        // M3 separates the top app bar from the content by raising its container tone on scroll, and the
+        // spec draws no rule under it. Elevation carries the separation here too.
+        Border = "none",
     };
 
     internal static readonly BreadcrumbTokens Breadcrumb = new()
@@ -1068,6 +1082,8 @@ public class MaterialDesignTokens
         ContentPaddingMobile = "1rem",
         DrawerRailWidth = "3.5rem",
         DrawerWidth = "260px",
+        AppBarBorder = "none",
+        DrawerBorder = "none",
     };
 
     internal static readonly LinkTokens Link = new()

@@ -19,4 +19,8 @@ public sealed record AppBarTokens
 
     /// <summary>Title Padding X.</summary>
     [CssVar(AppBarField.TitlePaddingX)] public required string TitlePaddingX { get; init; }
+
+    /// <summary>Bottom edge of the bar, as a <c>border</c> shorthand. <c>none</c> for a language that
+    /// separates the bar from the content by elevation or surface tone rather than by a rule.</summary>
+    [CssVar(AppBarField.Border)] public required string Border { get; init; }
 }

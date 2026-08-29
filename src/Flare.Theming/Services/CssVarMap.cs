@@ -629,6 +629,10 @@ public static class CssVarMap
         v[Css.Tokens.InputField.HoverBorderBottomColor] = t.Input.HoverBorderBottomColor;
         v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
         v[Css.Tokens.InputField.Padding] = t.Input.Padding;
+        v[Css.Tokens.InputField.PaddingXs] = t.Input.PaddingXs;
+        v[Css.Tokens.InputField.PaddingSm] = t.Input.PaddingSm;
+        v[Css.Tokens.InputField.PaddingLg] = t.Input.PaddingLg;
+        v[Css.Tokens.InputField.PaddingXl] = t.Input.PaddingXl;
         v[Css.Tokens.InputField.IconSize] = t.Input.IconSize;
         v[Css.Tokens.InputField.PlaceholderColor] = t.Input.PlaceholderColor;
         v[Css.Tokens.InputField.DisabledBg] = t.Input.DisabledBg;
@@ -644,6 +648,8 @@ public static class CssVarMap
         #region DRAWER
         v[Css.Tokens.DrawerPanel.Width] = t.Drawer.Width;
         v[Css.Tokens.DrawerPanel.MiniWidth] = t.Drawer.MiniWidth;
+        v[Css.Tokens.DrawerPanel.Border] = t.Drawer.Border;
+        v[Css.Tokens.DrawerPanel.SectionBorder] = t.Drawer.SectionBorder;
         #endregion
 
         #region SNACKBAR
@@ -941,6 +947,7 @@ public static class CssVarMap
         v[Css.Tokens.AppBarField.HeightDense] = t.AppBar.HeightDense;
         v[Css.Tokens.AppBarField.PaddingX] = t.AppBar.PaddingX;
         v[Css.Tokens.AppBarField.TitlePaddingX] = t.AppBar.TitlePaddingX;
+        v[Css.Tokens.AppBarField.Border] = t.AppBar.Border;
         #endregion
 
         #region BREADCRUMB
@@ -975,6 +982,8 @@ public static class CssVarMap
         v[Css.Tokens.LayoutField.ContentPaddingMobile] = t.Layout.ContentPaddingMobile;
         v[Css.Tokens.LayoutField.DrawerRailWidth] = t.Layout.DrawerRailWidth;
         v[Css.Tokens.LayoutField.DrawerWidth] = t.Layout.DrawerWidth;
+        v[Css.Tokens.LayoutField.AppBarBorder] = t.Layout.AppBarBorder;
+        v[Css.Tokens.LayoutField.DrawerBorder] = t.Layout.DrawerBorder;
         #endregion
 
         #region LINK

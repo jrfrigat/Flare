@@ -30,7 +30,7 @@
 
 .flare-drawer__header {
   padding: var(--flare-spacing-8) var(--flare-spacing-12);
-  border-bottom: 1px solid var(--flare-color-outline-variant);
+  border-bottom: var(--flare-drawer-section-border);
   font-family: var(--flare-typescale-title-medium-font);
   font-size: var(--flare-typescale-title-medium-size);
   font-weight: var(--flare-typescale-title-medium-weight);
@@ -71,7 +71,7 @@
   transform: none !important;
   visibility: visible !important;
   box-shadow: none;
-  border-right: 1px solid var(--flare-color-outline-variant);
+  border-right: var(--flare-drawer-border);
   z-index: auto;
 }
 
@@ -82,7 +82,7 @@
   transform: none !important;
   visibility: visible !important;
   box-shadow: none;
-  border-right: 1px solid var(--flare-color-outline-variant);
+  border-right: var(--flare-drawer-border);
   width: var(--flare-drawer-mini-width);
   z-index: auto;
   transition: width var(--flare-motion-duration-medium2) var(--flare-motion-easing-standard);

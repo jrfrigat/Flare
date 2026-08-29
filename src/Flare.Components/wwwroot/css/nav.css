@@ -42,8 +42,11 @@
   flex: none;
   padding: var(--flare-spacing-3) 0;
 }
-.flare-nav-menu__header { border-bottom: 1px solid var(--flare-color-outline-variant); }
-.flare-nav-menu__footer { border-top: 1px solid var(--flare-color-outline-variant); }
+/* The header/footer rules share the drawer's section divider: a nav menu is the canonical content of a
+   side panel, so the line between a panel's fixed regions and its scrolling body is one decision, not
+   two. A theme that wants no divider sets the token to none. */
+.flare-nav-menu__header { border-bottom: var(--flare-drawer-section-border); }
+.flare-nav-menu__footer { border-top: var(--flare-drawer-section-border); }
 
 /* HideScrollbar in framed mode hides the middle region's scrollbar (scrolling still works). */
 .flare-nav-menu--framed.flare-nav-menu--no-scrollbar { overflow: hidden; }

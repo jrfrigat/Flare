@@ -150,16 +150,16 @@
    Select/MultiSelect) -- carry their own control element. */
 .flare-input--xs .flare-input__control,
 .flare-input--xs .flare-select__control,
-.flare-input--xs .flare-multiselect__control { padding: 0.1875rem var(--flare-spacing-4);  font-size: var(--flare-typescale-label-medium-size); }
+.flare-input--xs .flare-multiselect__control { padding: var(--flare-input-padding-xs);  font-size: var(--flare-typescale-label-medium-size); }
 .flare-input--sm .flare-input__control,
 .flare-input--sm .flare-select__control,
-.flare-input--sm .flare-multiselect__control { padding: var(--flare-spacing-3) var(--flare-spacing-5); font-size: var(--flare-typescale-body-medium-size); }
+.flare-input--sm .flare-multiselect__control { padding: var(--flare-input-padding-sm); font-size: var(--flare-typescale-body-medium-size); }
 .flare-input--lg .flare-input__control,
 .flare-input--lg .flare-select__control,
-.flare-input--lg .flare-multiselect__control { padding: 0.875rem 1.125rem; font-size: var(--flare-typescale-title-medium-size); }
+.flare-input--lg .flare-multiselect__control { padding: var(--flare-input-padding-lg); font-size: var(--flare-typescale-title-medium-size); }
 .flare-input--xl .flare-input__control,
 .flare-input--xl .flare-select__control,
-.flare-input--xl .flare-multiselect__control { padding: 1.125rem var(--flare-spacing-10);  font-size: var(--flare-typescale-title-large-size); }
+.flare-input--xl .flare-multiselect__control { padding: var(--flare-input-padding-xl);  font-size: var(--flare-typescale-title-large-size); }
 
 /* Placeholder text is muted (on-surface-variant). The ::placeholder pseudo styles real <input>s;
    the .flare-input__placeholder class is the equivalent <span> for the combobox triggers (Select/

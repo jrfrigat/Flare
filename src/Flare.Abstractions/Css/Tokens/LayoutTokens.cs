@@ -17,4 +17,11 @@ public static class LayoutField
     public const string DrawerRailWidth = "--flare-layout-drawer-rail-width";
     /// <summary>CSS custom-property name for the drawer width token.</summary>
     public const string DrawerWidth = "--flare-layout-drawer-width";
+    /// <summary>CSS custom-property name for the shell app bar's bottom edge, as a <c>border</c>
+    /// shorthand. Set to <c>none</c> for a theme that separates the bar by tone or elevation.</summary>
+    public const string AppBarBorder = "--flare-layout-appbar-border";
+    /// <summary>CSS custom-property name for the shell drawer's edge against the content, as a
+    /// <c>border</c> shorthand. Applied to the trailing edge, or the leading edge of an end-anchored
+    /// drawer.</summary>
+    public const string DrawerBorder = "--flare-layout-drawer-border";
 }

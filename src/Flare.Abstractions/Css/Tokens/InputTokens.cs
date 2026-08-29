@@ -21,8 +21,19 @@ public static class InputField
     public const string HoverBorderBottomColor = "--flare-input-hover-border-bottom-color";
     /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
-    /// <summary>CSS custom-property name for the control padding.</summary>
+    /// <summary>CSS custom-property name for the control padding at the default (medium) size.</summary>
     public const string Padding = "--flare-input-padding";
+    // The block half of each of these sets the field height, so the four of them plus Padding are the
+    // whole Xs..Xl ramp. They are per-size tokens rather than lengths in the stylesheet because the
+    // medium step is the theme's, and a ramp half-owned by core cannot stay ordered around it.
+    /// <summary>CSS custom-property name for the control padding at the extra-small size.</summary>
+    public const string PaddingXs = "--flare-input-padding-xs";
+    /// <summary>CSS custom-property name for the control padding at the small size.</summary>
+    public const string PaddingSm = "--flare-input-padding-sm";
+    /// <summary>CSS custom-property name for the control padding at the large size.</summary>
+    public const string PaddingLg = "--flare-input-padding-lg";
+    /// <summary>CSS custom-property name for the control padding at the extra-large size.</summary>
+    public const string PaddingXl = "--flare-input-padding-xl";
     /// <summary>CSS custom-property name for the leading/trailing icon size.</summary>
     public const string IconSize = "--flare-input-icon-size";
     /// <summary>CSS custom-property name for the placeholder color.</summary>
@@ -65,6 +76,13 @@ public static class DrawerPanel
     public const string Width = "--flare-drawer-width";
     /// <summary>CSS custom-property name for the mini (rail) drawer width.</summary>
     public const string MiniWidth = "--flare-drawer-mini-width";
+    /// <summary>CSS custom-property name for the edge an always-visible drawer (permanent or mini) draws
+    /// against the content, as a <c>border</c> shorthand.</summary>
+    public const string Border = "--flare-drawer-border";
+    /// <summary>CSS custom-property name for the divider between a side panel's fixed regions and its
+    /// scrolling body, as a <c>border</c> shorthand. Shared with the nav menu's header and footer: the
+    /// line under a panel header is one decision wherever the panel comes from.</summary>
+    public const string SectionBorder = "--flare-drawer-section-border";
 }
 
 /// <summary>CSS variable tokens for the snackbar.</summary>
