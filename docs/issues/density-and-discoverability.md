@@ -1,30 +1,26 @@
 # A local density control
 
-**Status: OPEN, BLOCKED ON A TOKEN REFACTOR. Tier 2. From the app user's review.**
+**Status: CLOSED, WILL NOT BUILD. The capability already ships as `Size`; what was missing was a
+working ramp behind it, and that is fixed. From the app user's review.**
 
 The other two items this issue carried - where `data-testid` lands, and the arrow button inside
 `role="combobox"` - shipped in 0.20.0 (`InputAttributes` on the field family, an `aria-hidden` arrow).
-What remains is density, and an implementation attempt turned the vague half of the report into a
-measured answer.
+This entry is what remains of the third, kept for the measurements.
 
 ## The report
 
 > MD3 Expressive is fairly spacious by default. For large recipe editors the interface gets long, and
 > there are not many ways to make individual regions denser through component parameters.
 
-Both halves are true and only the second is a defect. Expressive *is* spacious - that is the
-specification, and a theme that quietly tightened it would be the wrong fix. What is missing is a way to
-say "this region is dense" without switching themes or writing CSS.
+The first half is the specification working as intended. The second half was wrong on the facts, and it
+took two rounds of measurement to establish that - both are recorded below, because the first round
+argued for a large refactor that the second round showed was pointing at the wrong tokens entirely.
 
-## What was built, measured and reverted
+## Round one: a spacing scope, built and reverted
 
-The obvious design is a `FlareDensity` scope that repoints the spacing scale for its subtree: a
-multiplier the theme owns (`--flare-density-factor-compact` / `-dense`), applied to the 13
-`--flare-spacing-*` tokens by a two-element capture-and-rebuild pair (a custom property cannot be
-defined in terms of itself), both `display: contents` so the scope adds no box.
-
-That was implemented end to end and measured in the browser on the exact case from the report - a
-four-field card with a header and an action row:
+A `FlareDensity` scope repointing the 13 `--flare-spacing-*` tokens for its subtree, via a
+capture-and-rebuild element pair (a custom property cannot be defined in terms of itself). Implemented
+end to end and measured on the case from the report - a four-field card with a header and an action row:
 
 | Level | Card height |
 | :-- | :-- |
@@ -32,46 +28,60 @@ four-field card with a header and an action row:
 | Compact (x0.75) | 497px |
 | Dense (x0.5) | 478px |
 
-**Seven percent at the tightest setting.** For a control called "density" that is not a feature, it is a
-misleading parameter, so it was reverted rather than shipped.
+**Seven percent at the tightest setting**, or about 9.5px per field. Reverted rather than shipped: a
+control named "density" that moves nothing is a misleading parameter.
 
-## Why it fails, and what it would take
+The write-up then blamed the token shape - 148 `--flare-*-padding/gap/height` tokens, shorthands that
+`calc()` cannot scale - and proposed splitting every one into block/inline axes.
 
-The measurement says exactly where a form's vertical budget lives, and it is not in the spacing scale:
+## Round two: both premises were wrong
 
-- `.flare-card__content` padding stayed at `16px` at every level. Card padding is
-  `--flare-card-padding`, not a spacing step.
-- Field height is `--flare-input-padding`, likewise untouched.
+**The refactor it asked for does not exist.** Of the 148:
 
-The spacing scale is what components use *between* things; each component's own padding comes from its
-own token. There are **148 distinct `--flare-*-padding/gap/height` tokens** in the component CSS, so
-reaching them by enumeration means roughly 450 extra declarations in the bundle, plus a permanent trap:
-every token added later silently escapes density.
+- **113** are `-height` and `-gap` - single values, already scalable, nothing to split.
+- **25** are already axis-split (`--flare-card-padding-top` and siblings, split since that write-up).
+- **10** are genuine shorthands, and only four of those sit anywhere near a form.
 
-And enumeration would not even work, because those tokens are shorthands:
+**And it was aiming at the wrong tokens anyway.** The spacing scale is what sits *between* controls; a
+form's height is inside them. Every field in the family already inherits `Size` (Xs..Xl) from
+`FlareFieldBase`, and the size grid sets block padding - the thing the scope could not reach. Measured
+control heights, MD3 Expressive:
 
-```csharp
-Padding = "0.875rem 1rem",   // InputTokens
-Padding = "1rem 1rem",       // CardTokens
-```
+| Size | Height | vs Md |
+| :-- | --: | --: |
+| Xs | 26px | -26px |
+| Sm | 32px | -20px |
+| **Md (default)** | **52px** | - |
+| Lg | 60px | +8px |
+| Xl | 75px | +23px |
 
-`calc()` cannot scale a two-value shorthand. There is no arithmetic route from here.
+`Size="FieldSize.Sm"` takes 20px off every field. **The parameter that already shipped is worth more
+than twice the feature that was proposed**, and `Xs` is worth nearly three times it.
 
-## The two real options
+## What was actually broken
 
-1. **Split the padding tokens.** Every `*-padding` shorthand becomes `*-padding-block` /
-   `*-padding-inline` across both theme packages, and the density scope scales the block axis (the one
-   that makes a form long) and leaves the inline axis alone. This is a cross-cutting token refactor with
-   a guard test to keep new tokens split, and it makes density work for every component at once - the
-   property the failed attempt was reaching for.
+The measurement turned up a real defect behind the parameter. Four of the five sizes had their padding
+written as literals in `input.css` (`0.1875rem`, `var(--flare-spacing-3)`, `0.875rem 1.125rem`,
+`1.125rem`), while the fifth - Medium - came from `--flare-input-padding`. Core owned four steps of a
+five-step ramp and the theme owned the middle one, so the ramp could not stay ordered:
 
-2. **Themes ship a dense token set.** Each theme authors a second set of values, and the scope emits it.
-   Architecturally the cleanest under the token mandate (Flare knows no theme; themes own every length),
-   and how MD3 itself defines density - but it doubles the authoring cost of a theme, and a third-party
-   theme that skips it silently has no density at all.
+- MD3 Medium is 16px of block padding (the 56dp M3 field); core's Large was 14px. **Large rendered a
+  field 4px SHORTER than Medium**, at the same font size - the Large size did nothing but shrink.
+- Under FluentUI2, whose Medium is 12px, the same literals happened to be ordered. The bug was
+  theme-dependent, which is the failure mode the token mandate exists to prevent.
 
-Option 1 is preferred: one refactor inside Flare, no new obligation on theme authors, and the block/inline
-split is worth having on its own for RTL and for vertical rhythm work.
+Fixed: five per-size padding tokens owned by the theme (`--flare-input-padding-xs/-sm/-lg/-xl` beside
+the existing `--flare-input-padding`), no lengths left in the size grid, and `FieldSizeRampTests`
+asserting the block half grows Xs->Xl in every theme. The MD3 ramp now reads 26/32/52/60/75.
 
-Neither is a session's work, and neither should be started before the block/inline split is agreed - the
-whole point of this write-up is that the cheap version was tried and measured and does not deliver.
+## What is genuinely still missing
+
+One thing, and it is small: `Size` has to be repeated on every field. There is no way to say "the
+fields in this region are small" once. If that is ever built it is a cascade of `FieldSize` picked up
+by `FlareFieldBase` when the parameter was not supplied explicitly - roughly thirty lines, driving the
+grid that now works - and **not** a spacing multiplier. None of MudBlazor, Radzen, Blazorise or
+FluentUI-Blazor offers a region-level density scope, so it would be a real differentiator.
+
+It is deliberately not built here. Ambient sizing is invisible at the call site, and the repetition it
+removes is repetition of an explicit, greppable parameter. That trade is worth making only on a real
+request, not on a hypothetical one.

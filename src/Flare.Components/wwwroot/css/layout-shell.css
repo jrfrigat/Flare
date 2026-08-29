@@ -36,7 +36,7 @@
     padding: 0 var(--flare-spacing-8);
     height: var(--flare-layout-appbar-height);
     background: var(--flare-layout-appbar-bg);
-    border-bottom: 1px solid var(--flare-color-outline-variant);
+    border-bottom: var(--flare-layout-appbar-border);
     z-index: 100;
     color: var(--flare-color-on-surface);
 }
@@ -66,12 +66,12 @@
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
-    border-right: 1px solid var(--flare-color-outline-variant);
+    border-right: var(--flare-layout-drawer-border);
 }
 /* End-anchored drawers carry their divider on the leading edge instead. */
 .flare-layout-drawer--end .flare-layout-drawer__inner {
     border-right: none;
-    border-left: 1px solid var(--flare-color-outline-variant);
+    border-left: var(--flare-layout-drawer-border);
 }
 
 /* Persistent / Responsive / Permanent: the inner keeps its full width and the nav clips it, so

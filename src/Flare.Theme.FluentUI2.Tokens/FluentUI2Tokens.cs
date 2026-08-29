@@ -575,6 +575,10 @@ public class FluentUI2Tokens
         HoverBorderBottomColor = "var(--flare-fluent-stroke-hover, #C7C7C7)",
         HoverStateLayer = "none",
         Padding = "0.75rem 1rem",
+        PaddingXs = "0.1875rem 0.5rem",
+        PaddingSm = "0.375rem 0.625rem",
+        PaddingLg = "0.875rem 1.125rem",
+        PaddingXl = "1.125rem 1.25rem",
         IconSize = "1.25rem",                         // medium input icon 20px
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
         // Fluent flat disabled: grey field + disabled stroke (was MD3 on-surface opacity mixes).
@@ -1018,6 +1022,8 @@ public class FluentUI2Tokens
     {
         Width = "360px",
         MiniWidth = "72px",
+        Border = "1px solid var(--flare-color-outline-variant)",
+        SectionBorder = "1px solid var(--flare-color-outline-variant)",
     };
 
     internal static readonly SnackbarTokens Snackbar = new()
@@ -1043,6 +1049,9 @@ public class FluentUI2Tokens
         HeightDense = "3rem",
         PaddingX = "0.25rem",
         TitlePaddingX = "0.75rem",
+        // Fluent separates chrome surfaces with a thin stroke rather than with elevation, so the bar keeps
+        // its rule where M3 drops it.
+        Border = "1px solid var(--flare-color-outline-variant)",
     };
 
     internal static readonly BreadcrumbTokens Breadcrumb = new()
@@ -1084,6 +1093,8 @@ public class FluentUI2Tokens
         ContentPaddingMobile = "1rem",
         DrawerRailWidth = "3.5rem",
         DrawerWidth = "260px",
+        AppBarBorder = "1px solid var(--flare-color-outline-variant)",
+        DrawerBorder = "1px solid var(--flare-color-outline-variant)",
     };
 
     internal static readonly LinkTokens Link = new()
