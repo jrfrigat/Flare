@@ -1,8 +1,14 @@
 /**
  * Flare Popover Collision Engine
- * 
+ *
  * Provides flip/shift/auto-placement for popovers, tooltips, and menus.
  * Similar to Floating UI but lightweight and integrated into Flare.
+ *
+ * One pure function, called through ICollisionService. It deliberately owns no listeners: an element
+ * that has to follow its anchor is repositioned by positionAnchoredPanel in flare-overlay.js, which
+ * keeps a single capture-phase listener and tears it down with the panel. A `setupCollision` helper
+ * here used to add a window scroll and resize listener per call and remove neither; nothing ever
+ * called it.
  */
 
 /**
@@ -137,58 +143,5 @@ export function calculatePlacement(anchor, floating, preferredPlacement, options
         arrowTop,
         arrowLeft,
         needsFlip
-    };
-}
-
-/**
- * Setup collision detection for a popover.
- * @param {HTMLElement} anchor - The anchor element
- * @param {HTMLElement} floating - The floating element
- * @param {string} preferredPlacement - Preferred placement
- * @param {object} options - Configuration options
- * @returns {object} - { update, destroy }
- */
-export function setupCollision(anchor, floating, preferredPlacement, options = {}) {
-    let currentPlacement = preferredPlacement;
-
-    function update() {
-        const result = calculatePlacement(anchor, floating, currentPlacement, options);
-        
-        floating.style.position = 'fixed';
-        floating.style.top = `${result.top}px`;
-        floating.style.left = `${result.left}px`;
-
-        if (options.arrowSize > 0) {
-            const arrow = floating.querySelector('[data-flare-arrow]');
-            if (arrow) {
-                arrow.style.top = `${result.arrowTop}px`;
-                arrow.style.left = `${result.arrowLeft}px`;
-            }
-        }
-
-        return result;
-    }
-
-    function destroy() {
-        floating.style.position = '';
-        floating.style.top = '';
-        floating.style.left = '';
-    }
-
-    // Initial positioning
-    update();
-
-    // Re-position on scroll/resize
-    const handleReposition = () => update();
-    window.addEventListener('scroll', handleReposition, { passive: true });
-    window.addEventListener('resize', handleReposition, { passive: true });
-
-    return {
-        update,
-        destroy,
-        setPlacement: (newPlacement) => {
-            currentPlacement = newPlacement;
-            update();
-        }
     };
 }

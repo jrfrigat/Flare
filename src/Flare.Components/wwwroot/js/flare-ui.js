@@ -7,16 +7,24 @@
 // -- FlareTabs overflow scroller --------------------------------------------
 const _tabScrollers = new Map();
 
+// The bar reports three booleans, so the only scroll events worth crossing interop for are the ones
+// that flip one of them - a drag from one end to the other has two interesting frames out of a
+// hundred. Coalescing to a frame bounds the work per gesture; comparing against the last state
+// removes the rest.
 export function registerTabScroller(bar, dotNetRef) {
     if (!bar) return;
+    let last = null, ticking = false;
     function update() {
+        ticking = false;
         const overflowing = bar.scrollWidth > bar.clientWidth + 1;
         const atStart = bar.scrollLeft <= 1;
         const atEnd = bar.scrollLeft + bar.clientWidth >= bar.scrollWidth - 1;
+        if (last && last[0] === overflowing && last[1] === atStart && last[2] === atEnd) return;
+        last = [overflowing, atStart, atEnd];
         if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabScrollState', overflowing, atStart, atEnd);
     }
-    const onScroll = () => update();
-    const ro = new ResizeObserver(() => update());
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    const ro = new ResizeObserver(onScroll);
     bar.addEventListener('scroll', onScroll, { passive: true });
     ro.observe(bar);
     _tabScrollers.set(bar, { onScroll, ro });
