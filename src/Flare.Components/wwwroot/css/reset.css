@@ -17,6 +17,40 @@
 :where(html) {
     /* Stops iOS/Android inflating text in landscape, which otherwise breaks every type scale. */
     -webkit-text-size-adjust: 100%;
+
+    /* Scrollbars were the last surface the browser painted on its own, which on a dark theme meant a
+       light scrollbar and the loudest thing on the page. Set here rather than per container because
+       `scrollbar-color` and `scrollbar-width` INHERIT: one declaration reaches the shell panel, the data
+       grid body, every listbox, code block and dialog, and the document itself. */
+    scrollbar-width: var(--flare-scrollbar-width);
+    scrollbar-color: var(--flare-scrollbar-thumb) var(--flare-scrollbar-track);
+}
+
+/* Safari has no standard scrollbar properties, only these pseudo-elements - and they do NOT inherit, so
+   this half has to be written against every element. Engines that support both apply the standard
+   properties above and ignore this block. */
+:where(*)::-webkit-scrollbar {
+    width: var(--flare-scrollbar-size);
+    height: var(--flare-scrollbar-size);
+}
+
+:where(*)::-webkit-scrollbar-track {
+    background: var(--flare-scrollbar-track);
+}
+
+:where(*)::-webkit-scrollbar-thumb {
+    background: var(--flare-scrollbar-thumb);
+    border-radius: var(--flare-scrollbar-radius);
+}
+
+:where(*)::-webkit-scrollbar-thumb:hover {
+    background: var(--flare-scrollbar-thumb-hover);
+}
+
+/* The corner where two scrollbars meet defaults to an opaque UA grey, which is visible on any surface
+   that is not that grey. */
+:where(*)::-webkit-scrollbar-corner {
+    background: var(--flare-scrollbar-track);
 }
 
 :where(body) {

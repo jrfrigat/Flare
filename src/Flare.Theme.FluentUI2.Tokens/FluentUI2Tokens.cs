@@ -962,6 +962,18 @@ public class FluentUI2Tokens
         Outline = "var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline)",
     };
 
+    // Fluent's own scrollbars are a neutral thumb on a transparent track, slightly firmer at rest than
+    // M3's.
+    internal static readonly ScrollbarTokens Scrollbar = new()
+    {
+        Width = "thin",
+        Size = "8px",
+        Thumb = "color-mix(in srgb, var(--flare-color-on-surface) 36%, transparent)",
+        ThumbHover = "color-mix(in srgb, var(--flare-color-on-surface) 52%, transparent)",
+        Track = "transparent",
+        Radius = "var(--flare-shape-full)",
+    };
+
     internal static readonly SpacingTokens Spacing = new()
     {
         S0 = "0",          // spacingHorizontalNone
@@ -1220,6 +1232,7 @@ public class FluentUI2Tokens
         Shape = Shape,
         Spacing = Spacing,
         Border = Border,
+        Scrollbar = Scrollbar,
         Elevation = Elevation,
         Motion = Motion,
         State = State,

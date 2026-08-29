@@ -34,6 +34,10 @@ public sealed record DesignTokens
     /// thicken or remove every rule in the library from here.</summary>
     public required BorderTokens Border { get; init; }
 
+    /// <summary>Scrollbar scale (width, thumb, track). Applied to the document by the reset, and
+    /// <c>scrollbar-color</c> inherits, so it reaches every scroll container from one place.</summary>
+    public required ScrollbarTokens Scrollbar { get; init; }
+
     /// <summary>Badge token.</summary>
     public required BadgeTokens Badge { get; init; }
     /// <summary>Alert token.</summary>

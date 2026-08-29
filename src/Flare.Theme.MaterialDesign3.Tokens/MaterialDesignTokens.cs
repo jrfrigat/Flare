@@ -1027,6 +1027,19 @@ public class MaterialDesignTokens
         Outline = "var(--flare-border-width) var(--flare-border-style) var(--flare-color-outline)",
     };
 
+    // M3 has no scrollbar component, so this is read off what the language does elsewhere: an
+    // interactive element at rest carries the on-surface tone at a low opacity and firms up on hover,
+    // and the track stays out of the way so the surface behind it keeps its own tone.
+    internal static readonly ScrollbarTokens Scrollbar = new()
+    {
+        Width = "thin",
+        Size = "8px",
+        Thumb = "color-mix(in srgb, var(--flare-color-on-surface) 28%, transparent)",
+        ThumbHover = "color-mix(in srgb, var(--flare-color-on-surface) 45%, transparent)",
+        Track = "transparent",
+        Radius = "var(--flare-shape-full)",
+    };
+
     internal static readonly SpacingTokens Spacing = new()
     {
         S0 = "0",
@@ -1203,6 +1216,7 @@ public class MaterialDesignTokens
         TimePicker = TimePicker,
         Spacing = Spacing,
         Border = Border,
+        Scrollbar = Scrollbar,
         Switch = Switch,
         DataGrid = DataGrid,
         Rating = Rating,

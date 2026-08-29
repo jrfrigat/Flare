@@ -78,6 +78,14 @@ public static class CssVarMap
         v[Css.Tokens.Border.Divider] = t.Border.Divider;
         v[Css.Tokens.Border.Outline] = t.Border.Outline;
 
+        // Scrollbar
+        v[Css.Tokens.Scrollbar.Width] = t.Scrollbar.Width;
+        v[Css.Tokens.Scrollbar.Size] = t.Scrollbar.Size;
+        v[Css.Tokens.Scrollbar.Thumb] = t.Scrollbar.Thumb;
+        v[Css.Tokens.Scrollbar.ThumbHover] = t.Scrollbar.ThumbHover;
+        v[Css.Tokens.Scrollbar.Track] = t.Scrollbar.Track;
+        v[Css.Tokens.Scrollbar.Radius] = t.Scrollbar.Radius;
+
         // Elevation
         v[Css.Tokens.Elevation.Level0] = t.Elevation.Level0;
         v[Css.Tokens.Elevation.Level1] = t.Elevation.Level1;
