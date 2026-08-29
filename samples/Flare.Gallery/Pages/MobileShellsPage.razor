@@ -1,0 +1,17 @@
+@page "/mobile-shells"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.MobileShells_Title - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.MobileShells_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.MobileShells_Subtitle</FlareText>
+</GalleryPageTitle>
+
+@* Every shell here sits in a phone-sized frame carrying `contain: layout paint`, which makes the frame
+   the containing block a fixed descendant resolves against - `position: relative` does NOT do that, only
+   containment, a transform or a filter does. In a real app the frame is the window and none of this is
+   needed. *@
+
+<AutoDemoSection Title="@GalleryStrings.MobileShells_DrillDown" DemoType="typeof(Flare.Gallery.Components.Shells.DrillDownShellDemo)" />
+<AutoDemoSection Title="@GalleryStrings.MobileShells_Form" DemoType="typeof(Flare.Gallery.Components.Shells.PhoneFormShellDemo)" />

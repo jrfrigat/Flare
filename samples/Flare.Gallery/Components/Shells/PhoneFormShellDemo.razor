@@ -1,0 +1,40 @@
+@* A form at phone width, which is the viewport the density complaint was filed against. The left frame
+   is the default field size, the right one is Size="FieldSize.Sm" - the parameter that turned out to be
+   the answer, rather than a spacing scope. The submit row is pinned to the bottom of the frame so it
+   stays reachable above a keyboard. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Large">
+    @foreach (var size in new[] { FieldSize.Md, FieldSize.Sm })
+    {
+        <FlareStack Gap="FlareSpacing.XSmall">
+            <FlareText Typo="TypographyScale.LabelLarge">
+                @(size == FieldSize.Md ? GalleryStrings.MobileShells_Comfortable : GalleryStrings.MobileShells_Compact)
+            </FlareText>
+
+            <FlareCard Variant="CardVariant.Outlined"
+                       Style="width:360px;height:460px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
+                <div style="flex:1;overflow:auto;padding:1rem;">
+                    <FlareStack Gap="FlareSpacing.Small">
+                        <FlareTextField Label="@GalleryStrings.MobileShells_FullName" Size="size" Placeholder="Ada Lovelace" />
+                        <FlareTextField Label="@GalleryStrings.MobileShells_Email" Size="size" Placeholder="ada@example.com" />
+                        <FlareTextField Label="@GalleryStrings.MobileShells_Phone" Size="size" Placeholder="+7 000 000-00-00" />
+                        <FlareSelect TValue="string" Label="@GalleryStrings.MobileShells_City" Size="size">
+                            <FlareOption TValue="string" Value="msk">Moscow</FlareOption>
+                            <FlareOption TValue="string" Value="spb">Saint Petersburg</FlareOption>
+                        </FlareSelect>
+                        <FlareTextArea Label="@GalleryStrings.MobileShells_Comment" Size="size" Rows="3" />
+                        <FlareCheckbox Label="@GalleryStrings.MobileShells_Consent" Size="size" />
+                    </FlareStack>
+                </div>
+
+                @* Stacked actions, pinned: on a phone a side-by-side pair is two small targets, and a
+                   submit that scrolls away is a submit nobody finds. *@
+                <FlareCardActions Style="border-top:var(--flare-border-divider);padding:0.75rem;">
+                    <FlareStack Gap="FlareSpacing.XSmall" Style="width:100%;">
+                        <FlareButton Variant="ButtonVariant.Filled" FullWidth="true">@GalleryStrings.MobileShells_Save</FlareButton>
+                        <FlareButton Variant="ButtonVariant.Text" FullWidth="true">@GalleryStrings.MobileShells_Cancel</FlareButton>
+                    </FlareStack>
+                </FlareCardActions>
+            </FlareCard>
+        </FlareStack>
+    }
+</FlareStack>

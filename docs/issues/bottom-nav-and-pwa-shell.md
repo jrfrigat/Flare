@@ -1,6 +1,7 @@
 # `FlareBottomNav` has no fixed mode, and there are no mobile/PWA examples
 
-**Status: PARTIALLY DONE. Tier 1. From the app user's review.**
+**Status: PARTIALLY DONE. Tier 1. From the app user's review. The component half and three of the five
+shells are in; the drawer/tablet shell and the offline-update one remain.**
 
 ## The report
 
@@ -42,13 +43,15 @@ The component half is DONE, with a bottom-nav shell demo in the Gallery. The res
 OPEN - add a Gallery section with the shells a mobile app actually needs, each a working page rather than
 a snippet:
 
-1. **Bottom-nav shell** - fixed bar, five destinations, routed content, safe area, reserved space.
+1. ~~Bottom-nav shell~~ - DONE, on the BottomNav component page.
 2. **Drawer + app bar shell** - the tablet form of the same app.
-3. **List / detail drill-down** - the pattern the nav redesign deferred.
-4. **Form on a phone** - fields, a stacked `FlareCardActions`, a sticky submit bar above the keyboard.
+3. ~~List / detail drill-down~~ - DONE, on /mobile-shells. The back affordance is bound to whether there
+   IS anywhere to go back to, which is the part a snippet never shows.
+4. ~~Form on a phone~~ - DONE, on /mobile-shells, and deliberately as a PAIR: the default field size
+   beside `Size="FieldSize.Sm"` at 360px, so the density complaint can finally be judged at the viewport
+   it was filed against rather than argued about.
 5. **Offline / update** - `IVersionCheckService` wired to a snackbar, which exists and is undocumented.
 
-These also give the density question a place to be judged: MD3 Expressive at default spacing on a 375px
-viewport is the case the reporter called too loose. The answer there turned out to be the existing
-`Size` parameter rather than a new density scope - but nobody can see that until the Gallery shows the
-viewport it was reported at.
+The density question now has its place to be judged - item 4 above. The answer turned out to be the
+existing `Size` parameter rather than a new density scope, and the two frames side by side at 360px are
+the evidence rather than the argument.

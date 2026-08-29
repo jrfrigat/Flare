@@ -1,0 +1,62 @@
+@* List / detail drill-down: the mobile pattern the nav redesign deferred. One frame shows either the
+   list or the detail, never both, and the app bar's leading slot carries the back affordance only when
+   there is somewhere to go back to. Everything here is Flare components and tokens - the pattern is
+   state, not CSS. *@
+<FlareCard Variant="CardVariant.Outlined"
+           Style="width:360px;height:460px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
+
+    <FlareAppBar>
+        <Leading>
+            @if (_selected is not null)
+            {
+                <FlareIconButton Icon="@FlareIcons.ArrowBack"
+                                 Variant="ButtonVariant.Text"
+                                 AriaLabel="@GalleryStrings.MobileShells_Back"
+                                 OnClick="@(() => _selected = null)" />
+            }
+        </Leading>
+        <TitleContent>
+            <FlareText Typo="TypographyScale.TitleMedium">@(_selected?.Name ?? GalleryStrings.MobileShells_Inbox)</FlareText>
+        </TitleContent>
+    </FlareAppBar>
+
+    <div style="flex:1;overflow:auto;">
+        @if (_selected is null)
+        {
+            <FlareList TItem="object">
+                @foreach (var msg in _messages)
+                {
+                    <FlareListItem Primary="@msg.Name"
+                                   Secondary="@msg.Preview"
+                                   Clickable="true"
+                                   OnClick="@(() => _selected = msg)">
+                        <Leading><FlareAvatar Text="@msg.Name" Size="AvatarSize.Sm" /></Leading>
+                    </FlareListItem>
+                }
+            </FlareList>
+        }
+        else
+        {
+            <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
+                <FlareText Typo="TypographyScale.BodyMedium">@_selected.Body</FlareText>
+                <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+                    @GalleryStrings.MobileShells_BackHint
+                </FlareText>
+            </FlareStack>
+        }
+    </div>
+</FlareCard>
+
+@code {
+    private sealed record Message(string Name, string Preview, string Body);
+
+    private Message? _selected;
+
+    private static readonly Message[] _messages =
+    [
+        new("Ada", "About the release notes", "The 0.24 notes look right. One nit: the scrollbar section reads better before the slots one."),
+        new("Grace", "Build is green", "All three target frameworks, no warnings. Merging after lunch."),
+        new("Alan", "Phone layout", "The drill-down feels right at 360px. The back button only showing on the detail is the correct call."),
+        new("Edsger", "One more thing", "Please keep the list scroll position when going back - it is the whole point of a drill-down."),
+    ];
+}

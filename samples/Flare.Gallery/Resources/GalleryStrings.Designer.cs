@@ -9824,5 +9824,158 @@ namespace Flare.Gallery.Resources {
                 return ResourceManager.GetString("Nav_ThemeMappings", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Mobile shells.
+        /// </summary>
+        public static string MobileShells_Title {
+            get {
+                return ResourceManager.GetString("MobileShells_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The app shells a phone actually needs, each a working page rather than a snippet. Every frame is 360px wide, which is the viewport these patterns have to survive..
+        /// </summary>
+        public static string MobileShells_Subtitle {
+            get {
+                return ResourceManager.GetString("MobileShells_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на List / detail drill-down.
+        /// </summary>
+        public static string MobileShells_DrillDown {
+            get {
+                return ResourceManager.GetString("MobileShells_DrillDown", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Form at phone width.
+        /// </summary>
+        public static string MobileShells_Form {
+            get {
+                return ResourceManager.GetString("MobileShells_Form", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Back to the list.
+        /// </summary>
+        public static string MobileShells_Back {
+            get {
+                return ResourceManager.GetString("MobileShells_Back", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Inbox.
+        /// </summary>
+        public static string MobileShells_Inbox {
+            get {
+                return ResourceManager.GetString("MobileShells_Inbox", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The back affordance appears only on the detail, because only there is somewhere to go back to..
+        /// </summary>
+        public static string MobileShells_BackHint {
+            get {
+                return ResourceManager.GetString("MobileShells_BackHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Default field size.
+        /// </summary>
+        public static string MobileShells_Comfortable {
+            get {
+                return ResourceManager.GetString("MobileShells_Comfortable", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Size="FieldSize.Sm".
+        /// </summary>
+        public static string MobileShells_Compact {
+            get {
+                return ResourceManager.GetString("MobileShells_Compact", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Full name.
+        /// </summary>
+        public static string MobileShells_FullName {
+            get {
+                return ResourceManager.GetString("MobileShells_FullName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Email.
+        /// </summary>
+        public static string MobileShells_Email {
+            get {
+                return ResourceManager.GetString("MobileShells_Email", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Phone.
+        /// </summary>
+        public static string MobileShells_Phone {
+            get {
+                return ResourceManager.GetString("MobileShells_Phone", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на City.
+        /// </summary>
+        public static string MobileShells_City {
+            get {
+                return ResourceManager.GetString("MobileShells_City", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Comment.
+        /// </summary>
+        public static string MobileShells_Comment {
+            get {
+                return ResourceManager.GetString("MobileShells_Comment", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на I agree to the terms.
+        /// </summary>
+        public static string MobileShells_Consent {
+            get {
+                return ResourceManager.GetString("MobileShells_Consent", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Save.
+        /// </summary>
+        public static string MobileShells_Save {
+            get {
+                return ResourceManager.GetString("MobileShells_Save", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        public static string MobileShells_Cancel {
+            get {
+                return ResourceManager.GetString("MobileShells_Cancel", resourceCulture);
+            }
+        }
+
     }
 }

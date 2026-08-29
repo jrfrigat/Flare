@@ -2957,4 +2957,55 @@
   <data name="Nav_ThemeMappings" xml:space="preserve">
     <value>Сопоставление компонентов</value>
   </data>
+  <data name="MobileShells_Title" xml:space="preserve">
+    <value>Мобильные оболочки</value>
+  </data>
+  <data name="MobileShells_Subtitle" xml:space="preserve">
+    <value>Оболочки приложения, которые действительно нужны на телефоне, — каждая рабочая страница, а не фрагмент. Все рамки шириной 360px: это тот вьюпорт, который эти паттерны обязаны пережить.</value>
+  </data>
+  <data name="MobileShells_DrillDown" xml:space="preserve">
+    <value>Список / детали</value>
+  </data>
+  <data name="MobileShells_Form" xml:space="preserve">
+    <value>Форма на ширине телефона</value>
+  </data>
+  <data name="MobileShells_Back" xml:space="preserve">
+    <value>Назад к списку</value>
+  </data>
+  <data name="MobileShells_Inbox" xml:space="preserve">
+    <value>Входящие</value>
+  </data>
+  <data name="MobileShells_BackHint" xml:space="preserve">
+    <value>Кнопка «назад» появляется только на деталях — только там есть куда возвращаться.</value>
+  </data>
+  <data name="MobileShells_Comfortable" xml:space="preserve">
+    <value>Размер поля по умолчанию</value>
+  </data>
+  <data name="MobileShells_Compact" xml:space="preserve">
+    <value>Size=&quot;FieldSize.Sm&quot;</value>
+  </data>
+  <data name="MobileShells_FullName" xml:space="preserve">
+    <value>Имя и фамилия</value>
+  </data>
+  <data name="MobileShells_Email" xml:space="preserve">
+    <value>Почта</value>
+  </data>
+  <data name="MobileShells_Phone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="MobileShells_City" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="MobileShells_Comment" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
+  <data name="MobileShells_Consent" xml:space="preserve">
+    <value>Я принимаю условия</value>
+  </data>
+  <data name="MobileShells_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="MobileShells_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
 </root>
