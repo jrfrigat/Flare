@@ -3,6 +3,50 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.24.0] - 2026-08-29
+
+### Breaking
+
+- **Theme packages gain a required `DesignTokens.Scrollbar`** and will not compile until it is set.
+  Themes that derive from the MD3 or Fluent packages need no change.
+- **Scrollbars are now painted by the theme rather than the browser.** On a dark theme that replaces a
+  light system scrollbar with a muted one; a theme that wants the browser's own back sets
+  `--flare-scrollbar-width` to `auto` and the colours to `auto`. An application that does not link
+  `reset.css` is unaffected, which is the existing opt-out for everything else in that file.
+
+### Added
+
+- **A scrollbar scale.** Six tokens: `--flare-scrollbar-width`, `-size`, `-thumb`, `-thumb-hover`,
+  `-track`, `-radius`. Scrollbars were the last surface in a Flare application the browser painted on its own,
+  which on a dark page meant a light scrollbar and the loudest thing on screen. Two mechanisms are fed
+  from the six tokens because neither covers every engine - the standard `scrollbar-color` pair and the
+  `::-webkit-scrollbar` pseudo-elements Safari still needs. The declaration sits on `html` and
+  `scrollbar-color` inherits, so one rule reaches the shell panel, the grid body, every listbox, code
+  block and dialog.
+- **Content written between the tags now means something on every component that renders caller text.**
+  `ChildContent` where the caller's text is the whole of what the component renders - `FlareChip`,
+  `FlareCheckbox`, `FlareRadio`, `FlareSwitch`, `FlareDivider`, `FlareLinkTab` - and `XxxContent` where
+  it is one named part: `FlareSlider.LabelContent`, and `LabelContent` on **all thirteen fields** from a
+  single parameter on `FlareFieldBase` forwarded through the shared chrome. A label is so often more
+  than a string - a unit, a link in a consent line, a help affordance - and until now writing one was
+  silently discarded.
+- **`FlareColumnBase.TitleContent`** - a DataGrid column or band header can carry markup, on both the
+  plain and the banded header path. `Title` stays required and unchanged: it is not only the heading but
+  the column's identity and its name in the export, the filter menu, the column picker, the aggregate
+  rows and the edit dictionaries, all of which need text.
+- **`CallerTextSlotTests`** - a guard that fails when a component renders a caller-supplied string
+  without accepting a `RenderFragment` for it, with an allow-list where each entry carries the reason it
+  is genuinely not markup (an `aria-label`, an algorithm's input, two strings where one slot could not
+  say which). A second test fails when an allow-list entry names a component that no longer exists.
+
+### Fixed
+
+- **Content between the tags of a component with no slot was silently dropped.** The build stayed
+  green throughout. A first pass over the `.razor` files found 21 such components; walking the assembly by
+  reflection found 15 more, because the whole field family declares `Label` on `FlareFieldBase` and a
+  text search cannot see an inherited parameter. All of them now either take a fragment or are exempt
+  for a stated reason.
+
 ## [0.23.0] - 2026-08-29
 
 ### Breaking
