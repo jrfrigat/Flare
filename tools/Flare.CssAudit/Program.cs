@@ -785,15 +785,38 @@ internal static class Program
             foreach (var file in Directory.EnumerateFiles(dir, "*.cs").OrderBy(p => p, StringComparer.Ordinal))
             {
                 if (file.Contains($"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}", StringComparison.Ordinal)) continue;
-                string current = "Tokens";
+                // Brace depth, not just "the last class line seen": a token class can nest, and a constant
+                // declared in the OUTER class after an inner one closes belongs to the outer. Tracking only
+                // the last declaration attributed ProgressField's eight wave tokens to its nested
+                // CircularWidth, so a component referencing Css.Tokens.ProgressField.WaveSpeed did not
+                // resolve and the token reported as dead.
+                var scope = new Stack<(string Name, int Depth)>();
+                scope.Push(("Tokens", 0));
+                string? pending = null;
+                var depth = 0;
+
                 foreach (var raw in File.ReadAllLines(file))
                 {
                     var nm = NestedClassRx.Match(raw);
-                    if (nm.Success) current = nm.Groups[1].Value;
+                    if (nm.Success) pending = nm.Groups[1].Value;
 
                     var cm = ConstRx.Match(raw);
                     if (cm.Success && cm.Groups[2].Value.StartsWith("--flare-", StringComparison.Ordinal))
-                        set.Add(cm.Groups[2].Value, current, cm.Groups[1].Value);
+                        set.Add(cm.Groups[2].Value, scope.Peek().Name, cm.Groups[1].Value);
+
+                    foreach (var ch in raw)
+                    {
+                        if (ch == '{')
+                        {
+                            depth++;
+                            if (pending is not null) { scope.Push((pending, depth)); pending = null; }
+                        }
+                        else if (ch == '}')
+                        {
+                            if (scope.Count > 1 && scope.Peek().Depth == depth) scope.Pop();
+                            depth--;
+                        }
+                    }
                 }
             }
         }

@@ -8,7 +8,7 @@
     gap: var(--flare-fab-gap);
     padding: var(--flare-fab-padding-md);
     border: none;
-    border-radius: var(--flare-fab-radius);
+    border-radius: var(--flare-fab-radius-md);
     /* Tonal colour via the shared role tokens (--fc-*); default primary-container.
        Role -> flare-color-* class; custom -> inline --fc-container/--fc-on-container. */
     background-color: var(--fc-container, var(--flare-color-primary-container));

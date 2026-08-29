@@ -20,7 +20,7 @@ public static class Fab
         /// <summary>CSS custom-property name for the sm token.</summary>
         public const string Sm = "--flare-fab-radius-sm";
         /// <summary>CSS custom-property name for the md token.</summary>
-        public const string Md = "--flare-fab-radius";
+        public const string Md = "--flare-fab-radius-md";
         /// <summary>CSS custom-property name for the lg token.</summary>
         public const string Lg = "--flare-fab-radius-lg";
     }

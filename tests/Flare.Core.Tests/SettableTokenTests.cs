@@ -45,6 +45,19 @@ public sealed class SettableTokenTests
         RuntimeFamilyStems.Contains(name, StringComparer.Ordinal)
         && emitted.Any(e => e.StartsWith(name + "-", StringComparison.Ordinal));
 
+    /// <summary>
+    /// Per-instance channels: a component writes one on its own element and its own CSS reads it back -
+    /// the angle of one clock hand, the column span of one grid cell, the indent of one tree row. A theme
+    /// cannot set them, and it would be meaningless if it could, so the whole type is exempt rather than
+    /// each name being listed.
+    /// </summary>
+    /// <remarks>
+    /// Exempting a type rather than a list of names is the point: a new channel is covered the moment it
+    /// is declared in the right place, and putting a real design token there by mistake is caught by
+    /// <see cref="NoLocalVar_IsEmittedByATheme"/> below.
+    /// </remarks>
+    private const string LocalVarsOwner = nameof(Flare.Css.Tokens.LocalVars);
+
     private static List<(string Owner, string Name)> TokenConstants() =>
         typeof(Flare.Css.Tokens.Splitter).Assembly.GetTypes()
             .Where(t => t.Namespace == "Flare.Css.Tokens")
@@ -66,6 +79,7 @@ public sealed class SettableTokenTests
         var unsettable = constants
             .Where(x => !emitted.Contains(x.Name)
                      && !CoreOwned.ContainsKey(x.Name)
+                     && !x.Owner.StartsWith(LocalVarsOwner + ".", StringComparison.Ordinal)
                      && !IsLiveFamilyStem(x.Name, emitted))
             .Select(x => $"{x.Owner} -> '{x.Name}'")
             .Order(StringComparer.Ordinal)
@@ -97,5 +111,28 @@ public sealed class SettableTokenTests
             .ToList();
 
         Assert.True(stale.Count == 0, "Stale CoreOwned exemptions:\n  " + string.Join("\n  ", stale));
+    }
+
+    /// <summary>
+    /// Keeps the <c>LocalVars</c> type exemption honest: a name in there that a theme emits is not a
+    /// per-instance channel at all, and the whole-type exemption would be hiding a real token from the
+    /// settable-token guard.
+    /// </summary>
+    [Fact]
+    public void NoLocalVar_IsEmittedByATheme()
+    {
+        var emitted = TokenParityTests.ThemeEmittedTokenNames();
+
+        var misfiled = TokenConstants()
+            .Where(x => x.Owner.StartsWith(LocalVarsOwner + ".", StringComparison.Ordinal))
+            .Where(x => emitted.Contains(x.Name))
+            .Select(x => $"{x.Owner} -> '{x.Name}'")
+            .Order(StringComparer.Ordinal)
+            .ToList();
+
+        Assert.True(misfiled.Count == 0,
+            "These sit in LocalVars, which exempts them from the settable-token guard, but a theme emits\n" +
+            "them - so they are design tokens filed as per-instance channels. Move them to the component's\n" +
+            "own token class and give them a record member:\n  " + string.Join("\n  ", misfiled));
     }
 }

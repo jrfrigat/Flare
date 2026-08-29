@@ -1,6 +1,8 @@
 # CSS names as string literals instead of registry constants
 
-**Status: OPEN. Tier 2. Found in review of `FlareAvatarGroup`.**
+**Status: OPEN, and narrower than it looked. Tier 2. Found in review of `FlareAvatarGroup`. The one
+silent corner - reading a token by name - is fixed and guarded; the rest is cosmetic and is NOT worth a
+scripted rewrite (that was tried; see "What a blanket rewrite costs").**
 
 `Flare.Abstractions` owns two name registries - `Flare.Css.Tokens.*` for custom properties and
 `Css.Classes.*` for class names - and the point of both is that a name exists once, so a rename is a
@@ -14,6 +16,29 @@ The trigger:
 ```
 
 `AvatarField.GroupSpacing` already exists. Nothing connects the two.
+
+## The part that was silent, and is now closed
+
+Sorting the 105 by *what happens when the name is wrong* splits them unevenly:
+
+- **A token read by name is silent when it is wrong.** `ReadTokenNum("--flare-x", fallback)` returns the
+  fallback, the component behaves exactly as if no theme had set the token, and nothing appears on screen
+  to say so. `FlareProgress` read **all eight** of its wave and ring tokens by literal, so renaming any
+  of them in a theme would have quietly disabled the wavy progress bar. Now on constants, with
+  `TokenLookupKeyTests` failing on any literal lookup key anywhere in `Flare.Components`. `FlareChart`
+  already used constants for its twelve lookups, which is why only Progress had to move.
+- **Everything else is visible when it is wrong.** A misspelled name in a style attribute or a CSS
+  fragment produces an element that is obviously unstyled. Worth tidying; not worth risk.
+
+## What a blanket rewrite costs
+
+Rewriting all 105 by script was attempted and reverted. The regex that finds a `--flare-*` name inside a
+double-quoted string cannot tell an opening quote from a closing one, so on a line like
+`"a" + x + "--flare-b"` it matched from the wrong quote and produced **654 compile errors** across the
+four chart partials. Doing this safely means reading each of the 105 sites, which is a session of its own
+for a payoff of "a rename becomes a compile error instead of an obviously broken element".
+
+If it is done, do it per file with the build run between files, not in one pass.
 
 ## Measured extent
 
@@ -40,14 +65,19 @@ Not every hit is a defect. Three legitimate kinds have to survive the pass:
 
 ## The work
 
-1. Classify all 105. Each is either (a) a real token that has a constant - use it; (b) a real token
-   with no constant - add one, plus the record member and the `CssVarMap` line, and give both themes a
-   value; or (c) a private per-instance channel - constant only, in a registry section marked as such.
-2. Same pass for class literals.
-3. **Check for dead names in the other direction**: constants and CSS classes that no code or
+1. ~~Classify all 105.~~ Done, and the answer is cleaner than expected: **54** name a token that already
+   has a constant (just use it), **17** are per-instance channels that needed a registry of their own,
+   and the remaining ~34 are prefix construction that must stay a literal by nature. Category (b) - a
+   real theme token with no constant at all - turned out to be **empty**.
+2. ~~The per-instance channels need somewhere to live.~~ Done: `Css.Tokens.LocalVars`, holding the 17,
+   with the reason they must never gain a `[CssVar]` attribute written into the type doc - the
+   settable-token guard would otherwise demand that every theme supply the angle of one clock hand.
+3. **Swap the 54, per file, with a build between files.** Low value, non-zero risk; see above.
+4. Same pass for class literals - only two exist, and neither is silent.
+5. **Check for dead names in the other direction**: constants and CSS classes that no code or
    stylesheet reads any more. The registries have outlived several refactors, and nothing currently
    fails when a name is orphaned.
-4. **Names that stopped being accurate.** A name is also wrong when it no longer says what the token is
+6. **Names that stopped being accurate.** A name is also wrong when it no longer says what the token is
    for, and the way that happens is a family growing suffixed siblings around an unsuffixed member that
    used to be the only one. `--flare-input-padding` was this: four `-xs/-sm/-lg/-xl` steps appeared
    beside it and it kept reading as "the padding" rather than "the medium step". Renamed to
@@ -66,9 +96,9 @@ Not every hit is a defect. Three legitimate kinds have to survive the pass:
    read correctly today: `--flare-appbar-height` with `--flare-appbar-height-dense` is a base plus a
    variant, not one step of a ramp.
 
-5. A guard test to keep it clean: no `--flare-` literal in `Flare.Components` sources outside the
+7. A guard test to keep it clean: no `--flare-` literal in `Flare.Components` sources outside the
    prefix-construction helpers. This is the part that makes the pass stick; without it the count grows
-   back. It cannot catch item 4 - an inaccurate name is still a real name - so that one stays a
+   back. It cannot catch item 6 - an inaccurate name is still a real name - so that one stays a
    judgement call at review time.
 
 ## Why it is worth doing
@@ -76,4 +106,5 @@ Not every hit is a defect. Three legitimate kinds have to survive the pass:
 The mandate promises that a theme can repoint any token. A name written as a literal in one place and
 as a constant in another breaks that promise silently: the theme sets the token, the component writes
 its own spelling, and the override does nothing. There is no test today that would catch it, which is
-also why step 5 matters more than steps 1-2.
+also why the guards matter more than the tidying: `TokenLookupKeyTests` closes the half that is silent,
+and item 3 is only cosmetics.

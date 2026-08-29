@@ -221,18 +221,18 @@ else
         string.Create(System.Globalization.CultureInfo.InvariantCulture,
             $"0 {lead:F2} {len:F2} {_circumference:F2}");
 
-    private double _circularGap => ReadTokenNum("--flare-progress-circular-gap", 0);
+    private double _circularGap => ReadTokenNum(Css.Tokens.ProgressField.CircularGap, 0);
 
     // ===========================================================================================
     // WAVY - opt-in per theme via --flare-progress-wavy-enabled (1=on). A theme
     // that doesn't define it renders the plain bar/ring even when Wavy="true".
     // ===========================================================================================
-    private bool _wavyActive => Wavy && !_indeterminate && ReadTokenNum("--flare-progress-wavy-enabled", 0) > 0;
+    private bool _wavyActive => Wavy && !_indeterminate && ReadTokenNum(Css.Tokens.ProgressField.WavyEnabled, 0) > 0;
 
-    private double _wavyHeightPx => ReadTokenNum("--flare-progress-wavy-height", 10);
-    private double _waveLen => ReadTokenNum("--flare-progress-wave-length", 40);
-    private double _waveAmp => ReadTokenNum("--flare-progress-wave-amplitude", 3);
-    private string _waveSpeed => ReadTokenStr("--flare-progress-wave-speed", "1s");
+    private double _wavyHeightPx => ReadTokenNum(Css.Tokens.ProgressField.WavyHeight, 10);
+    private double _waveLen => ReadTokenNum(Css.Tokens.ProgressField.WaveLength, 40);
+    private double _waveAmp => ReadTokenNum(Css.Tokens.ProgressField.WaveAmplitude, 3);
+    private string _waveSpeed => ReadTokenStr(Css.Tokens.ProgressField.WaveSpeed, "1s");
 
     private static string _inv(double v) => v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
 
@@ -256,8 +256,8 @@ else
     // -- Wavy ring: ONLY the active arc is wavy (the track stays a smooth circle). One static wavy
     //    path is drawn; the flow comes from a CSS rotation synced with stroke-dashoffset (see
     //    progress.css) so crests travel while the fill window stays put. pathLength=100 -> % dash. ---
-    private int _ringWaves => Math.Max(3, (int)ReadTokenNum("--flare-progress-ring-waves", 8));
-    private double _ringAmp => ReadTokenNum("--flare-progress-ring-wave-amplitude", 1.6);
+    private int _ringWaves => Math.Max(3, (int)ReadTokenNum(Css.Tokens.ProgressField.RingWaves, 8));
+    private double _ringAmp => ReadTokenNum(Css.Tokens.ProgressField.RingWaveAmplitude, 1.6);
 
     private string _wavyRingPath => BuildWavyCirclePath(_ringWaves, _ringAmp, 0);
 
