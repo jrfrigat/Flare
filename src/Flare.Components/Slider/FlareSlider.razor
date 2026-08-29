@@ -5,10 +5,10 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 <div class="@BuildCssClass(_sizeClass, _disabledClass, _steppedClass, _indicatorClass, _colorClass, _verticalClass, _rangeClass, _marksClass, _handleOnHoverClass)" style="@_rootStyle" @attributes="AdditionalAttributes">
-    @if (!string.IsNullOrEmpty(Label) || (ShowValue && Range))
+    @if (LabelContent is not null || !string.IsNullOrEmpty(Label) || (ShowValue && Range))
     {
         <div class="@Css.Classes.Slider.LabelRow">
-            <label class="@Css.Classes.Slider.Label">@Label</label>
+            <label class="@Css.Classes.Slider.Label">@if (LabelContent is not null) { @LabelContent } else { @Label }</label>
             @if (ShowValue)
             {
                 <span class="@Css.Classes.Slider.Value">@_displayText</span>
@@ -198,8 +198,15 @@
     /// <see cref="MouseWheel"/> for wheel-to-seek to get a player scrubber out of the plain slider.
     /// </remarks>
     [Parameter] public bool HandleOnHover { get; set; }
-    /// <summary>Label text displayed above the slider.</summary>
+    /// <summary>Label text displayed above the slider. Ignored when <see cref="LabelContent"/> is set.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>
+    /// Markup rendered as the label instead of <see cref="Label"/> - a unit, a link, an inline badge.
+    /// Named rather than <c>ChildContent</c> because the label is one part of the slider among several,
+    /// so content written between the tags would not say which part it meant.
+    /// </summary>
+    [Parameter] public RenderFragment? LabelContent { get; set; }
     /// <summary>Accessible label used when no visible <see cref="Label"/> is provided.</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Helper text shown below the slider.</summary>

@@ -5,10 +5,10 @@
 {
     <div class="@BuildCssClass(Css.Classes.Divider.Vertical, _insetClass)" style="@Style" aria-hidden="true" @attributes="AdditionalAttributes"></div>
 }
-else if (!string.IsNullOrEmpty(Text))
+else if (ChildContent is not null || !string.IsNullOrEmpty(Text))
 {
     <div class="@BuildCssClass(Css.Classes.Divider.Text, _textAlignClass, _insetClass)" style="@Style" aria-hidden="true" @attributes="AdditionalAttributes">
-        <span class="@Css.Classes.Divider.TextContent">@Text</span>
+        <span class="@Css.Classes.Divider.TextContent">@if (ChildContent is not null) { @ChildContent } else { @Text }</span>
     </div>
 }
 else
@@ -19,8 +19,13 @@ else
 @code {
     /// <summary>Renders a vertical divider instead of horizontal.</summary>
     [Parameter] public bool Vertical { get; set; }
-    /// <summary>Optional text label centered in the divider (e.g. "OR").</summary>
+    /// <summary>Optional text label centered in the divider (e.g. "OR"). Ignored when
+    /// <see cref="ChildContent"/> is set.</summary>
     [Parameter] public string? Text { get; set; }
+
+    /// <summary>Markup centered in the divider instead of <see cref="Text"/>. The label is the whole of
+    /// what a divider renders, so content written between the tags binds here.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Controls where the text label is anchored when <see cref="Text"/> is set.</summary>
     [Parameter] public DividerTextAlign TextAlign { get; set; } = DividerTextAlign.Center;
     /// <summary>Inset style (None full-bleed, Inset leading-edge, MiddleInset both edges).</summary>

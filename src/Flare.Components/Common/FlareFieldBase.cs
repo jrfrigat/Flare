@@ -17,8 +17,15 @@ namespace Flare.Components;
 /// </summary>
 public abstract class FlareFieldBase : FlareComponentBase, IFlareField
 {
-    /// <summary>Label text shown for the field.</summary>
+    /// <summary>Label text shown for the field. Ignored when <see cref="LabelContent"/> is set.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>
+    /// Markup rendered as the field label instead of <see cref="Label"/> - a unit, a help affordance, a
+    /// link in a consent line. Named rather than <c>ChildContent</c> because a field's content is its
+    /// control, not its label.
+    /// </summary>
+    [Parameter] public RenderFragment? LabelContent { get; set; }
 
     /// <summary>Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).</summary>
     [Parameter] public string? Placeholder { get; set; }

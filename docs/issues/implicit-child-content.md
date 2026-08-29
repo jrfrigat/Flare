@@ -1,8 +1,7 @@
 # Implicit child content reported to throw at runtime
 
-**Status: OPEN. Tier 0. Reported item 7. The mechanism is now known - see "Why nothing ever fails
-loudly" - and 21 components are measured as affected. `FlareChip` and the label family (Checkbox, Radio,
-Switch) are fixed; 17 remain.**
+**Status: MOSTLY DONE. Tier 0. Reported item 7. The mechanism is known (see "Why nothing ever fails
+loudly"), a guard test now enforces the rule, and the one real gap left is the DataGrid column header.**
 
 ## The report
 
@@ -121,20 +120,38 @@ DOM attribute instead of an error. The catch-all is worth having - it is how `da
 `@onclick` reach the root element - but it means **Flare gets no compiler help at all** for a wrong
 parameter name or an unaccepted child, and the library has to close that gap itself.
 
-## Measured: 21 components render caller text but accept no children
+## Measured, corrected, and now enforced
 
-Every one of these silently swallows `<X>content</X>`:
+A first pass grepped the `.razor` files and found 21 components. That was an **undercount**: the whole
+field family declares `Label` on `FlareFieldBase`, not in its own file, so a text search cannot see it.
+`CallerTextSlotTests` walks the assembly by reflection instead and found 15 more, the field family among
+them.
 
-`FlareChip` (fixed), `FlareCheckbox` (fixed), `FlareRadio` (fixed), `FlareSwitch` (fixed),
-`FlareSlider`, `FlareRating`,
-`FlareAvatar`, `FlareDivider`, `FlareAppBar`, `FlareEmptyState`, `FlareHighlighter`, `FlareColorPicker`,
-`FlareColorCustomizer`, `FlareDateRangePicker`, `FlareFieldChrome`, `FlareFloatingActionMenuItem`,
-`FlareMeterSegment`, `FlareOnThisPage`, `FlareShortcutEntry`, `DataGridColumnPicker`,
-`DataGridFilterBuilder`.
+The guard states the rule: *a component that renders a caller-supplied string must also accept a
+`RenderFragment` for it.* The slot's name follows what the library already did before the rule was
+written down - `ChildContent` when the caller's text is the whole of what the component renders,
+`XxxContent` when it is one named part (`FlareAppBar.TitleContent` was the precedent).
 
-The label family is where a caller most naturally writes markup between the tags, because a label is so
-often more than a string (a link in a consent checkbox, a unit in a slider label). Checkbox, Radio and
-Switch are done; `FlareSlider` and `FlareRating` are the same shape and should follow.
+**Given a slot:**
+
+| Component | Slot | Why that name |
+| :-- | :-- | :-- |
+| `FlareChip`, `FlareCheckbox`, `FlareRadio`, `FlareSwitch`, `FlareDivider`, `FlareLinkTab` | `ChildContent` | the label is the whole of what it renders |
+| `FlareSlider` | `LabelContent` | the label is one part among track, value and zones |
+| The 13 fields (`FlareField`, `FlareTextField`, `FlareNumericField`, `FlareMaskedField`, `FlarePasswordField`, `FlareTagField`, `FlareTextArea`, `FlareOtpField`, `FlareSelect`, `FlareMultiSelect`, `FlareCombobox`, `FlareDatePicker`, `FlareTimePicker`, `FlareDateTimePicker`) | `LabelContent` | one parameter on `FlareFieldBase`, forwarded through `FlareFieldChrome` - a field's content is its control, not its label |
+
+**Deliberately not given one**, each with its reason in the guard's `NotAMarkupSlot` table: `FlareRating`
+(the string is an `aria-label`), `FlareHighlighter` (the string is the haystack it searches),
+`FlareAvatar` (initials are derived, not rendered verbatim), `FlareFloatingActionMenuItem` (the same
+string is both the visible label and the button's accessible name), and the components with two text
+parameters where a single slot could not say which - `FlareEmptyState`, `FlareChart`,
+`FlareDateRangePicker`.
+
+**Still a real gap:** the DataGrid column header. `FlareColumn.Title` is a string and there is no header
+slot at all, so an icon, a unit or a help affordance in a column header is unreachable. Fixing it means
+threading a fragment through the header render path - bands, the sort affordance, the resize handle -
+which is more than adding a parameter. The guard names these in `PendingHeaderSlot` so the gap is visible
+in code rather than only here.
 
 ## Work
 
@@ -142,16 +159,15 @@ Switch are done; `FlareSlider` and `FlareRating` are the same shape and should f
    reported symptom and the silent-swallow class it belongs to. A slot-name collision produces the
    reported "works only with explicit `<ChildContent>`" behaviour; the catch-all is why neither form
    ever produces a diagnostic.
-2. **Give the remaining 17 a `ChildContent` that falls back to the string parameter**, as `FlareChip`
-   now does: content between the tags wins, the string is the shorthand. This is additive and breaks
-   nothing.
-3. **Audit the slot names** across every public Flare component: list every `RenderFragment` parameter
-   whose name is a plausible application component name, and decide per component whether to keep it.
-   The mandate allows renaming: a slot named `HeaderContent` (the pattern `FlareCollapse` already uses)
-   cannot collide the way `Header` can, and reads no worse.
-4. **Document the rule** in the component conventions: a named slot is `XxxContent`, never a bare noun
-   that an application would plausibly name a component.
-5. **A guard test** is the part that makes it stick: render every public component with an implicit
-   child body carrying a marker, and assert either that the marker appears or that the component is on
-   an explicit list of genuinely void ones. Without it the count grows back, and the compiler will never
-   report it - which is the whole finding.
+2. ~~Give every component that renders caller text a fragment for it.~~ Done except the column header;
+   see the table above.
+3. ~~A guard test, because the compiler will never report this one.~~ Done: `CallerTextSlotTests`. It is
+   static rather than render-based on purpose - rendering 181 components generically founders on their
+   required parameters, while reflection sees inherited ones, which is exactly what the grep missed.
+4. **The DataGrid column header slot.** The one substantive piece left; see `PendingHeaderSlot`.
+5. **Audit the slot names** across every public Flare component: the 32 bare nouns listed above are each
+   a silent-swallow waiting for an application to name a component the same thing. The mandate allows
+   renaming: `HeaderContent` (which `FlareCollapse` already uses) cannot collide the way `Header` can,
+   and reads no worse. `Icon` is the one to do first.
+6. **Write the naming rule into the component conventions**: a named slot is `XxxContent`, never a bare
+   noun an application would plausibly use as a component name.

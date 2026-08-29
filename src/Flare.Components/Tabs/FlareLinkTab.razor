@@ -18,12 +18,17 @@
     {
         @LeadingIcon
     }
-    <span class="@Css.Classes.Tabs.Label">@Label</span>
+    <span class="@Css.Classes.Tabs.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
 </a>
 
 @code {
-    /// <summary>Link label shown in the tab.</summary>
+    /// <summary>Link label shown in the tab. Ignored when <see cref="ChildContent"/> is set.</summary>
     [Parameter] public string Label { get; set; } = "";
+
+    /// <summary>Markup rendered as the tab label instead of <see cref="Label"/>. A link tab navigates
+    /// rather than owning a panel, so its label is the whole of what it renders and content written
+    /// between the tags binds here.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>URL this tab navigates to. Matched against the current route to derive the active state.</summary>
     [Parameter] public string? Href { get; set; }
     /// <summary>Route matching strategy used to derive the active state - prefix or exact. Default <see cref="NavMatchMode.Prefix"/>.</summary>

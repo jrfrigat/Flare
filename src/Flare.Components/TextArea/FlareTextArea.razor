@@ -12,7 +12,7 @@
                   Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(AutoGrow ? Css.Classes.Textarea.Autogrow : null)"
-                  Label="@Label" LabelFor="@ControlId"
+                  Label="@Label" LabelContent="@LabelContent" LabelFor="@ControlId"
                   HelperText="@HelperText" HelperId="@HelperId"
                   ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
                   Style="@Style" Attributes="AdditionalAttributes">

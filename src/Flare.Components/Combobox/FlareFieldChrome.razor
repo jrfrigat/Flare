@@ -12,9 +12,9 @@
      style="@Style"
      @ref="_root"
      @attributes="Attributes">
-    @if (!string.IsNullOrEmpty(Label) && !FloatingLabel)
+    @if ((LabelContent is not null || !string.IsNullOrEmpty(Label)) && !FloatingLabel)
     {
-        <label class="@Css.Classes.Input.Label" id="@LabelId" for="@LabelFor">@Label</label>
+        <label class="@Css.Classes.Input.Label" id="@LabelId" for="@LabelFor">@if (LabelContent is not null) { @LabelContent } else { @Label }</label>
     }
     @Field
     @if (HasSupport)
@@ -57,8 +57,11 @@
     [Parameter] public bool ReadOnly { get; set; }
 
     /// <summary>The field label text; omitted when null/empty or when <see cref="FloatingLabel"/> (the field
-    /// renders its own floating label inside the well).</summary>
+    /// renders its own floating label inside the well). Ignored when <see cref="LabelContent"/> is set.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>Markup rendered in the label element instead of <see cref="Label"/>.</summary>
+    [Parameter] public RenderFragment? LabelContent { get; set; }
 
     /// <summary>The field renders its own floating label inside the well; the frame suppresses the top label.</summary>
     [Parameter] public bool FloatingLabel { get; set; }

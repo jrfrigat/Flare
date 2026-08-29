@@ -17,7 +17,7 @@
                   Invalid="@(!string.IsNullOrEmpty(_displayedError))"
                   Disabled="Disabled" ReadOnly="ReadOnly"
                   ExtraClass="@(_state.IsOpen ? Css.Classes.Select.Open : null)"
-                  Label="@Label" LabelId="@_labelId"
+                  Label="@Label" LabelContent="@LabelContent" LabelId="@_labelId"
                   HelperText="@HelperText" HelperId="@_helperId"
                   ErrorText="@_displayedError" ErrorId="@_errorId"
                   Style="@Style" Attributes="AdditionalAttributes">
