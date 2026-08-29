@@ -37,6 +37,46 @@
     </FlareStack>
 </FlareCard>
 
+@* The same subscription reports both axes, so this second card watches a strip of its own by element
+   reference rather than by selector - the strip is this page's, not the layout's. *@
+<FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Scroll_HorizontalTitle</FlareText>
+
+<FlareCard Variant="CardVariant.Outlined" Style="max-width:36rem;">
+    <FlareStack Gap="FlareSpacing.Medium">
+        <div @ref="_strip" style="overflow-x:auto;overflow-y:hidden;">
+            <FlareStack Row Gap="FlareSpacing.Small" Style="width:max-content;">
+                @for (var i = 1; i <= 24; i++)
+                {
+                    <FlareChip Variant="ChipVariant.Outlined" Label="@i.ToString()" />
+                }
+            </FlareStack>
+        </div>
+        <FlareProgress Value="@(_hProgress * 100)" />
+        <FlareStack Row Wrap Gap="FlareSpacing.Large">
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_HScroll <code>@_left.ToString("F0")</code>
+            </FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_HProgress <code>@_hProgress.ToString("P0")</code>
+            </FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_HDirection <code>@_hDirection</code>
+            </FlareText>
+        </FlareStack>
+        <FlareStack Row Wrap Gap="FlareSpacing.Large">
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_Overflows <code>@_overflows</code>
+            </FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_AtEdges <code>@_edges</code>
+            </FlareText>
+        </FlareStack>
+        <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
+            @GalleryStrings.Services_Scroll_HorizontalHint
+        </FlareText>
+    </FlareStack>
+</FlareCard>
+
 <FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Usage</FlareText>
 <FlareCodeBlock Value="@_usage" Language="razor" ReadOnly="true" LineNumbers="true" />
 
@@ -49,10 +89,19 @@
     private ScrollDirection _direction = ScrollDirection.None;
     private IAsyncDisposable? _sub;
 
+    private ElementReference _strip;
+    private double _left;
+    private double _hProgress;
+    private ScrollDirection _hDirection = ScrollDirection.None;
+    private string _overflows = "-";
+    private string _edges = "-";
+    private IAsyncDisposable? _stripSub;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender) return;
         _sub = await Scroll.SubscribeAsync(OnScrolled, Panel, new ScrollSubscribeOptions { ThrottleMs = 60 });
+        _stripSub = await Scroll.SubscribeAsync(OnStripScrolled, _strip, new ScrollSubscribeOptions { ThrottleMs = 60 });
     }
 
     private Task OnScrolled(ScrollChange change)
@@ -63,9 +112,20 @@
         return InvokeAsync(StateHasChanged);
     }
 
+    private Task OnStripScrolled(ScrollChange change)
+    {
+        _left = change.Left;
+        _hProgress = change.HorizontalProgress;
+        if (change.HorizontalDirection != ScrollDirection.None) _hDirection = change.HorizontalDirection;
+        _overflows = $"x {change.OverflowsHorizontally} / y {change.OverflowsVertically}";
+        _edges = change.AtHorizontalStart ? "start" : change.AtHorizontalEnd ? "end" : "-";
+        return InvokeAsync(StateHasChanged);
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_sub is not null) await _sub.DisposeAsync();
+        if (_stripSub is not null) await _stripSub.DisposeAsync();
     }
 
     private const string _usage = """
@@ -93,6 +153,11 @@
                 _barVisible = c.Direction == ScrollDirection.Up || c.AtStart;
                 return InvokeAsync(StateHasChanged);
             }
+
+            // Both axes come off the same notification. For a carousel or a horizontal
+            // timeline, name the axis so the direction filter watches that one instead:
+            //   new ScrollSubscribeOptions { DirectionOnly = true, Axis = ScrollAxis.Horizontal }
+            // then read c.HorizontalDirection / c.HorizontalProgress / c.AtHorizontalEnd.
 
             public async ValueTask DisposeAsync()
             {

@@ -1627,6 +1627,69 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Horizontal axis
+        /// </summary>
+        public static string Services_Scroll_HorizontalTitle {
+            get {
+                return ResourceManager.GetString("Services_Scroll_HorizontalTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The same subscription reports both axes. Drag this strip sideways: the readout below is derived by Flare, not by this page.
+        /// </summary>
+        public static string Services_Scroll_HorizontalHint {
+            get {
+                return ResourceManager.GetString("Services_Scroll_HorizontalHint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Left:
+        /// </summary>
+        public static string Services_Scroll_HScroll {
+            get {
+                return ResourceManager.GetString("Services_Scroll_HScroll", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на H. progress:
+        /// </summary>
+        public static string Services_Scroll_HProgress {
+            get {
+                return ResourceManager.GetString("Services_Scroll_HProgress", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на H. direction:
+        /// </summary>
+        public static string Services_Scroll_HDirection {
+            get {
+                return ResourceManager.GetString("Services_Scroll_HDirection", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Overflows:
+        /// </summary>
+        public static string Services_Scroll_Overflows {
+            get {
+                return ResourceManager.GetString("Services_Scroll_Overflows", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на At edges:
+        /// </summary>
+        public static string Services_Scroll_AtEdges {
+            get {
+                return ResourceManager.GetString("Services_Scroll_AtEdges", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Grid Density: Line Count, Rounding and Minor Ticks.
         /// </summary>
         public static string Charts_Grid {

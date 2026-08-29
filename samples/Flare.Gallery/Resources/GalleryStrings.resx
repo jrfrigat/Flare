@@ -606,6 +606,27 @@
   <data name="Services_Scroll_Hint" xml:space="preserve">
     <value>These values come from one throttled listener on the Gallery shell panel. Scroll this page to watch them move.</value>
   </data>
+  <data name="Services_Scroll_HorizontalTitle" xml:space="preserve">
+    <value>Horizontal axis</value>
+  </data>
+  <data name="Services_Scroll_HorizontalHint" xml:space="preserve">
+    <value>The same subscription reports both axes. Drag this strip sideways: the readout below is derived by Flare, not by this page.</value>
+  </data>
+  <data name="Services_Scroll_HScroll" xml:space="preserve">
+    <value>Left:</value>
+  </data>
+  <data name="Services_Scroll_HProgress" xml:space="preserve">
+    <value>H. progress:</value>
+  </data>
+  <data name="Services_Scroll_HDirection" xml:space="preserve">
+    <value>H. direction:</value>
+  </data>
+  <data name="Services_Scroll_Overflows" xml:space="preserve">
+    <value>Overflows:</value>
+  </data>
+  <data name="Services_Scroll_AtEdges" xml:space="preserve">
+    <value>At edges:</value>
+  </data>
   <data name="ChipGroup_Title" xml:space="preserve">
     <value>Chip Group</value>
   </data>
