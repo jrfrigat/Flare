@@ -13,7 +13,7 @@ export function registerDialogEscHandler(id, dotNetRef) {
     const handler = (e) => {
         if (e.key === 'Escape') {
             e.preventDefault();
-            dotNetRef.invokeMethodAsync('CloseFromEsc');
+            dotNetRef.invokeMethodAsync('CloseFromEsc').catch(() => { });
         }
     };
     _escHandlers.set(id, handler);
@@ -84,25 +84,6 @@ export function focusFirstInDialog(dialogEl) {
 }
 
 // --- Outside-click dismiss (e.g. close an open Select when clicking elsewhere) ---
-// A document-level listener (no overlay element) so the page keeps scrolling normally
-// while the popup is open -- a fixed full-screen backdrop would trap the wheel.
-const _outsideClick = new Map();
-
-export function registerOutsideClick(id, element, dotNetRef, method) {
-    removeOutsideClick(id);
-    const handler = (e) => {
-        if (element && !element.contains(e.target)) dotNetRef.invokeMethodAsync(method);
-    };
-    _outsideClick.set(id, handler);
-    // Capture phase + pointerdown: fires before the click lands, for any pointer type.
-    document.addEventListener('pointerdown', handler, true);
-}
-
-export function removeOutsideClick(id) {
-    const h = _outsideClick.get(id);
-    if (h) { document.removeEventListener('pointerdown', h, true); _outsideClick.delete(id); }
-}
-
 // -- Anchored fixed-position panel (Select / DatePicker / TimePicker / ColorPicker) --
 // Positions a popup panel as position:fixed under (or above) its anchor element so it escapes
 // any ancestor clipping context -- most notably a Card's overflow:hidden, which would otherwise
@@ -163,21 +144,27 @@ export function scrollOptionIntoView(optionId, block) {
     if (el) el.scrollIntoView({ block: block || 'nearest', inline: 'nearest' });
 }
 
-// -- Unified popup dismissal (combobox family) --
+// -- Unified popup dismissal (every dismissible popup) --
 // One handler pair per open popup: a capture-phase pointerdown outside the widget, plus a focusout that
 // escapes the widget (Tab away). Replaces the per-component blur timer + separate outside-click, so there
 // is no SignalR blur race and no two mechanisms fighting.
+//
+// A `registerOutsideClick` pair used to sit above this one with the identical pointerdown handler and no
+// focusout, leaving its one caller (the colour picker) open when focus tabbed out of it. There is one
+// mechanism now.
+// The pointerdown listener is on document rather than on a backdrop element, so the page keeps scrolling
+// normally while the popup is open -- a fixed full-screen backdrop would trap the wheel.
 const _dismiss = new Map();
 
 export function registerDismiss(id, element, dotNetRef, method) {
     removeDismiss(id);
     const onPointerDown = (e) => {
-        if (element && !element.contains(e.target)) dotNetRef.invokeMethodAsync(method);
+        if (element && !element.contains(e.target)) dotNetRef.invokeMethodAsync(method).catch(() => { });
     };
     const onFocusOut = (e) => {
         const to = e.relatedTarget;
         // Dismiss only when focus actually leaves the widget (ignore moves between its own children).
-        if (element && to && !element.contains(to)) dotNetRef.invokeMethodAsync(method);
+        if (element && to && !element.contains(to)) dotNetRef.invokeMethodAsync(method).catch(() => { });
     };
     _dismiss.set(id, { onPointerDown, onFocusOut, element });
     document.addEventListener('pointerdown', onPointerDown, true);

@@ -158,7 +158,7 @@ const _accentListeners = new Map();
 
 export function subscribeAccent(id, dotNetRef) {
     unsubscribeAccent(id);
-    const handler = () => dotNetRef.invokeMethodAsync('OnAccentColorChanged');
+    const handler = () => dotNetRef.invokeMethodAsync('OnAccentColorChanged').catch(() => { });
     window.addEventListener('focus', handler);
     _accentListeners.set(id, handler);
 }
@@ -177,7 +177,7 @@ const _schemeListeners = new Map();
 export function subscribeColorScheme(id, dotNetRef) {
     unsubscribeColorScheme(id);
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e) => dotNetRef.invokeMethodAsync('OnSystemColorSchemeChanged', e.matches);
+    const handler = (e) => dotNetRef.invokeMethodAsync('OnSystemColorSchemeChanged', e.matches).catch(() => { });
     _schemeListeners.set(id, { mq, handler });
     mq.addEventListener('change', handler);
 }

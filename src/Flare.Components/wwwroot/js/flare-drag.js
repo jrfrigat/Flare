@@ -79,7 +79,7 @@ export function registerResizeHandle(container, handle, edge, minSize, maxSize, 
             container.style[dim] = newSize + 'px';
         },
         onEnd() {
-            if (dotNetRef) dotNetRef.invokeMethodAsync('OnResizedCallback', container.style[dim]);
+            if (dotNetRef) dotNetRef.invokeMethodAsync('OnResizedCallback', container.style[dim]).catch(() => { });
         },
     });
     _resizeHandles.set(handle, off);
@@ -184,7 +184,7 @@ function _flareApplySiblingSize(prev, next, horiz, newPrev, total, minPx, maxPx,
     prev.style[dim] = p + 'px';
     next.style.flex = '0 0 ' + n + 'px';
     next.style[dim] = n + 'px';
-    if (dotNetRef) dotNetRef.invokeMethodAsync('OnSplitChanged', Math.round(p) + 'px');
+    if (dotNetRef) dotNetRef.invokeMethodAsync('OnSplitChanged', Math.round(p) + 'px').catch(() => { });
 }
 
 export function registerSiblingSplitter(gutter, orientation, minSize, maxSize, dotNetRef) {

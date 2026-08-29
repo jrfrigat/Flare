@@ -46,7 +46,9 @@ function schedule(rec) {
     rec.timer = window.setTimeout(() => {
         rec.timer = -1;
         if (!rec.dotNet) return;
-        try { rec.dotNet.invokeMethodAsync('OnScrolled', rec.id, positionOf(rec.element)); }
+        // Both arms are needed: a disposed reference throws synchronously, a gone circuit rejects the
+        // promise, and a try/catch alone only sees the first of those.
+        try { rec.dotNet.invokeMethodAsync('OnScrolled', rec.id, positionOf(rec.element)).catch(() => { }); }
         catch { /* circuit gone */ }
     }, rec.throttle);
 }

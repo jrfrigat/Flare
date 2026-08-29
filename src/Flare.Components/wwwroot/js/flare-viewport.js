@@ -41,7 +41,7 @@ function fireWindowResize() {
     _winTimer = -1;
     if (!_winDotNet) return;
     const s = readSize();
-    try { _winDotNet.invokeMethodAsync('OnViewportResized', s.width, s.height); }
+    try { _winDotNet.invokeMethodAsync('OnViewportResized', s.width, s.height).catch(() => { }); }
     catch { /* circuit gone */ }
 }
 
@@ -100,7 +100,7 @@ function scheduleElement(rec) {
     rec.timer = window.setTimeout(() => {
         rec.timer = -1;
         if (!rec.dotNet) return;
-        try { rec.dotNet.invokeMethodAsync('OnElementResized', rec.id, rectOf(rec.element)); }
+        try { rec.dotNet.invokeMethodAsync('OnElementResized', rec.id, rectOf(rec.element)).catch(() => { }); }
         catch { /* circuit gone */ }
     }, rec.throttle);
 }

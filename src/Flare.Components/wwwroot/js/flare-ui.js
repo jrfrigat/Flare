@@ -21,7 +21,7 @@ export function registerTabScroller(bar, dotNetRef) {
         const atEnd = bar.scrollLeft + bar.clientWidth >= bar.scrollWidth - 1;
         if (last && last[0] === overflowing && last[1] === atStart && last[2] === atEnd) return;
         last = [overflowing, atStart, atEnd];
-        if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabScrollState', overflowing, atStart, atEnd);
+        if (dotNetRef) dotNetRef.invokeMethodAsync('OnTabScrollState', overflowing, atStart, atEnd).catch(() => { });
     }
     const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
     const ro = new ResizeObserver(onScroll);

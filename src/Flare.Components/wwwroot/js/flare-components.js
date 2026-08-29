@@ -49,7 +49,7 @@ window.FlareInfiniteScroll = (() => {
             if (!sentinel) return;
             const obs = new IntersectionObserver(entries => {
                 if (entries[0].isIntersecting) {
-                    dotNetRef.invokeMethodAsync('TriggerLoad');
+                    dotNetRef.invokeMethodAsync('TriggerLoad').catch(() => { });
                 }
             }, { threshold: 0.1, rootMargin: rootMargin || '0px' });
             obs.observe(sentinel);
@@ -139,7 +139,7 @@ window.FlareDataGrid = {
         if (!sentinel) return;
         FlareDataGrid.disposeInfinite(sentinel);
         const obs = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting) dotNetRef.invokeMethodAsync('TriggerLoad');
+            if (entries[0].isIntersecting) dotNetRef.invokeMethodAsync('TriggerLoad').catch(() => { });
         }, { root: root || null, threshold: 0, rootMargin: rootMargin || '160px' });
         obs.observe(sentinel);
         FlareDataGrid._infObs.set(sentinel, obs);
@@ -202,7 +202,7 @@ window.FlareToc = (() => {
             const root = (rootSelector && document.querySelector(rootSelector)) || document.body;
             const sel = headingSelector || 'h2, h3';
             const items = collect(root, sel);
-            dotNetRef.invokeMethodAsync('SetHeadings', items.map(i => ({ id: i.id, text: i.text, level: i.level })));
+            dotNetRef.invokeMethodAsync('SetHeadings', items.map(i => ({ id: i.id, text: i.text, level: i.level }))).catch(() => { });
             if (items.length === 0) { instances.set(handle, {}); return; }
 
             // Scroll container: explicit selector wins, else auto-detect, else the page (window).
@@ -222,7 +222,7 @@ window.FlareToc = (() => {
                     .map(i => i.id);
                 if (visible.length !== last.length || visible.some((v, k) => v !== last[k])) {
                     last = visible;
-                    dotNetRef.invokeMethodAsync('SetActive', visible);
+                    dotNetRef.invokeMethodAsync('SetActive', visible).catch(() => { });
                 }
             }
             function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
