@@ -574,9 +574,9 @@ public class FluentUI2Tokens
         FocusOutlineOffset = "0",
         HoverBorderBottomColor = "var(--flare-fluent-stroke-hover, #C7C7C7)",
         HoverStateLayer = "none",
-        Padding = "0.75rem 1rem",
         PaddingXs = "0.1875rem 0.5rem",
         PaddingSm = "0.375rem 0.625rem",
+        PaddingMd = "0.75rem 1rem",
         PaddingLg = "0.875rem 1.125rem",
         PaddingXl = "1.125rem 1.25rem",
         IconSize = "1.25rem",                         // medium input icon 20px

@@ -21,15 +21,17 @@ public static class InputField
     public const string HoverBorderBottomColor = "--flare-input-hover-border-bottom-color";
     /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
-    /// <summary>CSS custom-property name for the control padding at the default (medium) size.</summary>
-    public const string Padding = "--flare-input-padding";
-    // The block half of each of these sets the field height, so the four of them plus Padding are the
-    // whole Xs..Xl ramp. They are per-size tokens rather than lengths in the stylesheet because the
-    // medium step is the theme's, and a ramp half-owned by core cannot stay ordered around it.
+    // The block half of each of these sets the field height, so the five together are the whole Xs..Xl
+    // ramp. Every step carries its size in the name, medium included: an unsuffixed "the padding" with
+    // four suffixed siblings reads as a base the others modify, which is not what it is. They are
+    // per-size tokens rather than lengths in the stylesheet because a ramp half-owned by core cannot
+    // stay ordered around a middle step the theme sets.
     /// <summary>CSS custom-property name for the control padding at the extra-small size.</summary>
     public const string PaddingXs = "--flare-input-padding-xs";
     /// <summary>CSS custom-property name for the control padding at the small size.</summary>
     public const string PaddingSm = "--flare-input-padding-sm";
+    /// <summary>CSS custom-property name for the control padding at the default (medium) size.</summary>
+    public const string PaddingMd = "--flare-input-padding-md";
     /// <summary>CSS custom-property name for the control padding at the large size.</summary>
     public const string PaddingLg = "--flare-input-padding-lg";
     /// <summary>CSS custom-property name for the control padding at the extra-large size.</summary>

@@ -62,17 +62,18 @@ than twice the feature that was proposed**, and `Xs` is worth nearly three times
 
 The measurement turned up a real defect behind the parameter. Four of the five sizes had their padding
 written as literals in `input.css` (`0.1875rem`, `var(--flare-spacing-3)`, `0.875rem 1.125rem`,
-`1.125rem`), while the fifth - Medium - came from `--flare-input-padding`. Core owned four steps of a
-five-step ramp and the theme owned the middle one, so the ramp could not stay ordered:
+`1.125rem`), while the fifth - Medium - came from a token. Core owned four steps of a five-step ramp
+and the theme owned the middle one, so the ramp could not stay ordered:
 
 - MD3 Medium is 16px of block padding (the 56dp M3 field); core's Large was 14px. **Large rendered a
   field 4px SHORTER than Medium**, at the same font size - the Large size did nothing but shrink.
 - Under FluentUI2, whose Medium is 12px, the same literals happened to be ordered. The bug was
   theme-dependent, which is the failure mode the token mandate exists to prevent.
 
-Fixed: five per-size padding tokens owned by the theme (`--flare-input-padding-xs/-sm/-lg/-xl` beside
-the existing `--flare-input-padding`), no lengths left in the size grid, and `FieldSizeRampTests`
-asserting the block half grows Xs->Xl in every theme. The MD3 ramp now reads 26/32/52/60/75.
+Fixed: five per-size padding tokens owned by the theme, `--flare-input-padding-xs` through `-xl`, with
+the medium step renamed from the unsuffixed `--flare-input-padding` so no step reads as the base the
+others modify. No lengths left in the size grid, and `FieldSizeRampTests` asserts the block half grows
+Xs->Xl in every theme. The MD3 ramp now reads 26/32/52/60/75.
 
 ## What is genuinely still missing
 

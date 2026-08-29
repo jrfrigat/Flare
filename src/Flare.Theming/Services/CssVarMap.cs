@@ -628,9 +628,9 @@ public static class CssVarMap
         v[Css.Tokens.InputField.DisabledOpacity] = t.Input.DisabledOpacity;
         v[Css.Tokens.InputField.HoverBorderBottomColor] = t.Input.HoverBorderBottomColor;
         v[Css.Tokens.InputField.HoverStateLayer] = t.Input.HoverStateLayer;
-        v[Css.Tokens.InputField.Padding] = t.Input.Padding;
         v[Css.Tokens.InputField.PaddingXs] = t.Input.PaddingXs;
         v[Css.Tokens.InputField.PaddingSm] = t.Input.PaddingSm;
+        v[Css.Tokens.InputField.PaddingMd] = t.Input.PaddingMd;
         v[Css.Tokens.InputField.PaddingLg] = t.Input.PaddingLg;
         v[Css.Tokens.InputField.PaddingXl] = t.Input.PaddingXl;
         v[Css.Tokens.InputField.IconSize] = t.Input.IconSize;

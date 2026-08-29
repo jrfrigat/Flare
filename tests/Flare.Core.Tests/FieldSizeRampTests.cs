@@ -27,7 +27,7 @@ public class FieldSizeRampTests
         {
             ("Xs", input.PaddingXs),
             ("Sm", input.PaddingSm),
-            ("Md", input.Padding),
+            ("Md", input.PaddingMd),
             ("Lg", input.PaddingLg),
             ("Xl", input.PaddingXl),
         };
@@ -49,7 +49,7 @@ public class FieldSizeRampTests
     [MemberData(nameof(Themes))]
     public void Field_padding_carries_both_axes(string theme, InputTokens input)
     {
-        foreach (var value in new[] { input.PaddingXs, input.PaddingSm, input.Padding, input.PaddingLg, input.PaddingXl })
+        foreach (var value in new[] { input.PaddingXs, input.PaddingSm, input.PaddingMd, input.PaddingLg, input.PaddingXl })
         {
             Assert.True(
                 value.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length is 2,

@@ -51,22 +51,23 @@ public sealed record InputTokens
     /// <summary>Hover state-layer overlay for the filled variant.</summary>
     [CssVar(InputField.HoverStateLayer)] public required string HoverStateLayer { get; init; }
 
-    /// <summary>Padding inside the control at the default (medium) size.</summary>
-    [CssVar(InputField.Padding)] public required string Padding { get; init; }
-
     /// <summary>Control padding at the extra-small size.</summary>
     [CssVar(InputField.PaddingXs)] public required string PaddingXs { get; init; }
 
     /// <summary>Control padding at the small size.</summary>
     [CssVar(InputField.PaddingSm)] public required string PaddingSm { get; init; }
 
+    /// <summary>Control padding at the default (medium) size - the field a component renders when no
+    /// size is asked for.</summary>
+    [CssVar(InputField.PaddingMd)] public required string PaddingMd { get; init; }
+
     /// <summary>Control padding at the large size.</summary>
     [CssVar(InputField.PaddingLg)] public required string PaddingLg { get; init; }
 
     /// <summary>Control padding at the extra-large size. The block half of each size step sets the field
-    /// height, so these four and <see cref="Padding"/> are the whole Xs..Xl ramp and the theme is
-    /// responsible for keeping it ordered - a large step shorter than the medium one is a theme bug the
-    /// stylesheet cannot correct.</summary>
+    /// height, so these five are the whole Xs..Xl ramp and the theme is responsible for keeping it
+    /// ordered - a large step shorter than the medium one is a theme bug the stylesheet cannot
+    /// correct.</summary>
     [CssVar(InputField.PaddingXl)] public required string PaddingXl { get; init; }
 
     /// <summary>
