@@ -3,6 +3,66 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.22.0] - 2026-08-29
+
+### Breaking
+
+- **Material Design 3 no longer draws a rule around the shell chrome.** The app bar, the drawer and the
+  nav menu's header and footer all lost theirs. Core CSS had `border-bottom: 1px solid ...` written into
+  the shell itself, so every
+  theme inherited a separator the M3 specification does not describe - M3 separates a top app bar by
+  raising its container tone and a drawer by its surface tone, not with a line. Those five edges are now
+  tokens (see Added); MD3 sets them to `none` and Fluent UI 2 keeps its 1px stroke. To put a rule back,
+  set the token: `style="--flare-layout-appbar-border: 1px solid gray"`.
+- **`--flare-input-padding` is now `--flare-input-padding-md`**, and `InputTokens.Padding` is
+  `InputTokens.PaddingMd`. The medium step gained four sized siblings, and an unsuffixed name beside them
+  reads as a base the others modify rather than as one step of a ramp.
+- **Theme packages gain required members and will not compile until they are set**: the whole new
+  `DesignTokens.Border` scale, `AppBarTokens.Border`, `LayoutTokens.AppBarBorder` / `DrawerBorder`,
+  `DrawerTokens.Border` / `SectionBorder`, and `InputTokens.PaddingXs` / `PaddingSm` / `PaddingLg` /
+  `PaddingXl`. Themes that derive from the MD3 or Fluent packages need no change.
+- **`setupCollision` is gone from `flare-collision.js`.** It added a window `scroll` and a window `resize`
+  listener on every call and removed neither in its own `destroy()`. Nothing called it - `ICollisionService`
+  only ever invoked the pure `calculatePlacement`, which is unchanged. Anchored panels that follow their
+  anchor are positioned by `positionAnchoredPanel` in `flare-overlay.js`.
+
+### Added
+
+- **A border scale: `--flare-border-width`, `-width-emphasis`, `-style`, `-divider`, `-outline`.** Whether
+  a design language separates things with a hairline, a heavier rule, a dashed line or nothing at all is
+  one decision, and until now core CSS made it in 86 places. The colour beside each of those literals was
+  already a token, which is exactly why they read as harmless. Five tokens now answer it for the whole
+  library; a component whose rule has its own colour composes the width and style with that colour.
+- **Five tokens for the shell chrome edges**: `--flare-appbar-border`, `--flare-layout-appbar-border`,
+  `--flare-layout-drawer-border`, `--flare-drawer-border` and `--flare-drawer-section-border`. The last is
+  shared by the drawer header and the nav menu's header and footer, because the rule under a panel header
+  is one decision wherever the panel comes from.
+- **A per-size field padding token for every step**: `--flare-input-padding-xs` through `-xl`. The size
+  grid used to hold four literal lengths in core CSS while the theme owned only the medium step, so a ramp
+  half-owned by core could not stay ordered around it.
+- **Two guard tests.** `CoreBorderLiteralTests` fails on a literal rule width reappearing in core CSS
+  (allowing the three shapes that are not rules: a `transparent` border reserved for layout stability, the
+  button spinner's `currentColor` ring, and the markdown blockquote's accent bar). `FieldSizeRampTests`
+  fails when any theme's field ramp stops growing from Xs to Xl.
+
+### Fixed
+
+- **Under Material Design 3, `FieldSize.Lg` rendered a field 4px SHORTER than the default.** Large carried
+  14px of block padding, authored in core against a shorter medium, while MD3's medium is the 56dp field's
+  16px - at the same font size, so the large size did nothing but shrink. The ramp now reads 26 / 32 / 52 /
+  60 / 75px. The bug was theme-dependent: under Fluent UI 2, whose medium is 12px, the same literals
+  happened to be ordered.
+- **The tab bar crossed the interop boundary on every scroll event.** It reports three booleans, so a drag
+  from one end of an overflowing bar to the other has two interesting frames out of a hundred. Coalesced
+  to a frame and gated on an actual change: measured against a synthetic bar, 60 scroll events that change
+  nothing now produce **1** interop call instead of 60.
+
+### Changed
+
+- **81 literal border declarations across 30 core stylesheets now read the border scale.** Every one was
+  verified to expand back to exactly the value it replaced, so nothing changes visually until a theme
+  decides otherwise - which is the point.
+
 ## [0.21.0] - 2026-08-29
 
 ### Breaking
