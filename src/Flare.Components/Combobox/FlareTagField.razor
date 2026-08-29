@@ -71,12 +71,12 @@
                                  OnSelect="PickSuggestionAsync"
                                  OnHighlight="HandleHover"
                                  PreventMouseDownDefault="true">
-                    <Empty>
+                    <EmptyContent>
                         @if (!_loading && !string.IsNullOrEmpty(_state.Input))
                         {
                             <div class="@Css.Classes.Listbox.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
                         }
-                    </Empty>
+                    </EmptyContent>
                 </FlareOptionList>
             </FlarePopup>
         }

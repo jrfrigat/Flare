@@ -111,7 +111,7 @@ public class C_FlareOptionListTests : FlareTestContext
     {
         var cut = Render<FlareOptionList<string>>(p => p
             .Add(x => x.Rows, Rows())
-            .Add(x => x.Empty, (RenderFragment)(b => b.AddMarkupContent(0, "<div class=\"empty-slot\">none</div>"))));
+            .Add(x => x.EmptyContent, (RenderFragment)(b => b.AddMarkupContent(0, "<div class=\"empty-slot\">none</div>"))));
 
         Assert.NotEmpty(cut.FindAll(".empty-slot"));
         Assert.Empty(cut.FindAll(".flare-listbox__option"));

@@ -673,7 +673,7 @@ public class C_FlareNavLinkTests : FlareTestContext
     {
         var cut = Render<FlareNavLink>(p => p
             .Add(x => x.Href, "/settings")
-            .Add(x => x.Icon, (RenderFragment)(b =>
+            .Add(x => x.IconContent, (RenderFragment)(b =>
             {
                 b.OpenElement(0, "span");
                 b.AddAttribute(1, "id", "nav-icon");

@@ -13,7 +13,7 @@
         <ChildContent>
             <p class="@Css.Classes.Dialog.ProviderMessage">@req.Message</p>
         </ChildContent>
-        <Actions>
+        <ActionsContent>
             @if (req.ShowCancel)
             {
                 <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => DialogService.Respond(false))">
@@ -23,7 +23,7 @@
             <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => DialogService.Respond(true))">
                 @req.ConfirmLabel
             </FlareButton>
-        </Actions>
+        </ActionsContent>
     </FlareDialog>
 }
 

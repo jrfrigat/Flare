@@ -13,7 +13,7 @@
    @onclick:preventDefault="@(OnClick.HasDelegate || Disabled)"
    @attributes="AdditionalAttributes">
     <span class="@Css.Classes.BottomNav.ItemIndicator">
-        <span class="@Css.Classes.BottomNav.ItemIcon">@Icon</span>
+        <span class="@Css.Classes.BottomNav.ItemIcon">@IconContent</span>
     </span>
     <span class="@Css.Classes.BottomNav.ItemLabel">@ChildContent</span>
 </a>
@@ -24,7 +24,7 @@
     /// <summary>Label content rendered under the icon.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Icon rendered above the label.</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Optional native tooltip (<c>title</c>).</summary>
     [Parameter] public string? Tooltip { get; set; }
     /// <summary>Route matching strategy - prefix or exact.</summary>

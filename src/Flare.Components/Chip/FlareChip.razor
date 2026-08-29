@@ -2,9 +2,9 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass(_resolvedSelectedClass, _disabledClass, _sizeClass, _variantClass, _colorClass, Css.Classes.State.LayerHover, Css.Classes.State.LayerFocus, Css.Classes.State.LayerPressed)" style="@_chipStyle" @attributes="AdditionalAttributes" role="button" aria-disabled="@(Disabled ? "true" : null)" tabindex="@(Disabled ? -1 : 0)" @onclick="HandleClick" @onkeydown="HandleKeyDown">
-    @if (Avatar is not null)
+    @if (AvatarContent is not null)
     {
-        <span class="@Css.Classes.Chip.Avatar">@Avatar</span>
+        <span class="@Css.Classes.Chip.Avatar">@AvatarContent</span>
     }
     else if (LeadingIcon is not null)
     {
@@ -37,7 +37,7 @@
     /// <summary>Icon content rendered before the chip label.</summary>
     [Parameter] public RenderFragment? LeadingIcon { get; set; }
     /// <summary>Avatar content rendered at the leading edge (takes precedence over <see cref="LeadingIcon"/>).</summary>
-    [Parameter] public RenderFragment? Avatar { get; set; }
+    [Parameter] public RenderFragment? AvatarContent { get; set; }
     /// <summary>Size of the chip.</summary>
     [Parameter] public ChipSize Size { get; set; } = ChipSize.Md;
     /// <summary>Whether the chip is in a selected/active state.</summary>

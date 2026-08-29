@@ -24,7 +24,7 @@ else
 
 @code {
     /// <summary>The icon content rendered inside the FAB.</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
 
     /// <summary>Optional label text. When set, renders as an extended FAB.</summary>
     [Parameter] public string? Label { get; set; }
@@ -120,9 +120,9 @@ else
                 disabled="@Disabled"
                 @onclick="HandleClick"
                 @attributes="AdditionalAttributes">
-            @if (Icon is not null)
+            @if (IconContent is not null)
             {
-                <span class="@Css.Classes.Fab.Icon">@Icon</span>
+                <span class="@Css.Classes.Fab.Icon">@IconContent</span>
             }
             @if (!string.IsNullOrEmpty(Label))
             {

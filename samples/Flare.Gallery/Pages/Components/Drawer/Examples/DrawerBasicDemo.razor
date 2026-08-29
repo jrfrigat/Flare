@@ -10,11 +10,11 @@
 
 @* Nav: default (full-bleed), so each item's highlight spans the whole panel. *@
 <FlareDrawer @bind-Open="_leftOpen" Anchor="DrawerAnchor.Left">
-    <Header>Navigation</Header>
+    <HeaderContent>Navigation</HeaderContent>
     <ChildContent>
         <FlareNavMenu>
             <FlareNavLink Href="" Match="NavMatchMode.Exact">
-                <Icon><FlareIconView Size="1.1rem" Value="@MaterialDesign3Icons.Regular.Home" /></Icon>
+                <IconContent><FlareIconView Size="1.1rem" Value="@MaterialDesign3Icons.Regular.Home" /></IconContent>
                 <ChildContent>Home</ChildContent>
             </FlareNavLink>
             <FlareNavGroup Title="Components" DefaultExpanded="true">
@@ -28,7 +28,7 @@
 
 @* Form: ContentPadding insets the content to the header's own inset - no hand-written padding needed. *@
 <FlareDrawer @bind-Open="_rightOpen" Anchor="DrawerAnchor.Right" ContentPadding="FlareSpacing.Large">
-    <Header>Settings</Header>
+    <HeaderContent>Settings</HeaderContent>
     <ChildContent>
         <FlareStack Gap="FlareSpacing.Medium">
             <FlareSwitch Label="Notifications" Value="true" />

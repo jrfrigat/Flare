@@ -238,6 +238,7 @@
                     <Virtualize @ref="_virtualizeProviderRef" TItem="TItem" ItemsProvider="ProvideVirtualItems" SpacerElement="tr"
                                 Context="item" OverscanCount="_effectiveOverscanCount" ItemSize="@_effectiveVirtualItemSize">
                         <ItemContent>@VirtualRow(item)</ItemContent>
+                        @* Blazor's own Virtualize - its slot really is called Placeholder, unlike Flare's. *@
                         <Placeholder>@SkeletonRow</Placeholder>
                     </Virtualize>
                 }

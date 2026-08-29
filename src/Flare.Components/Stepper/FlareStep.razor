@@ -16,7 +16,7 @@
     /// <summary>Error message displayed below the step label when HasError is true.</summary>
     [Parameter] public string? ErrorText { get; set; }
     /// <summary>Custom icon shown in the step indicator (instead of the step number) when not completed/errored.</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Marks the step as optional (shows a small "optional" caption under the label).</summary>
     [Parameter] public bool Optional { get; set; }
     /// <summary>Caption shown for an optional step. Default "Optional".</summary>

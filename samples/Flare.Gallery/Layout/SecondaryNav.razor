@@ -7,19 +7,19 @@
 @* The secondary navigation column: the pages of the currently selected section, as a full menu.
    The active page auto-highlights and its group auto-expands (FlareNavLink). *@
 <FlareNavMenu Mode="NavMenuMode.Full" HideScrollbar="true" AriaLabel="@_sectionTitle">
-    <Header>
+    <HeaderContent>
         <FlareText Typo="TypographyScale.TitleSmall" Weight="FontWeight.SemiBold"
                    Style="padding:0.5rem 1rem;display:block;">@_sectionTitle</FlareText>
-    </Header>
+    </HeaderContent>
     <ChildContent>
         @if (Section == GallerySection.Guide)
         {
             <FlareNavLink Href="getting-started">
-                <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.RocketLaunch" /></Icon>
+                <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.RocketLaunch" /></IconContent>
                 <ChildContent>@GalleryStrings.Nav_GettingStarted</ChildContent>
             </FlareNavLink>
             <FlareNavLink Href="changelog">
-                <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.History" /></Icon>
+                <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.History" /></IconContent>
                 <ChildContent>@GalleryStrings.Nav_Changelog</ChildContent>
             </FlareNavLink>
         }

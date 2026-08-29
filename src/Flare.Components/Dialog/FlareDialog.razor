@@ -27,13 +27,13 @@
                     <FlareIconView Value="FlareIcons.Close" />
                 </button>
             }
-            @if (Icon is not null)
+            @if (IconContent is not null)
             {
-                <div class="@Css.Classes.Dialog.Icon" aria-hidden="true">@Icon</div>
+                <div class="@Css.Classes.Dialog.Icon" aria-hidden="true">@IconContent</div>
             }
             @if (_showHeader)
             {
-                <div class="@Css.Classes.Dialog.Header @(Icon is not null ? Css.Classes.Dialog.HeaderCentered : null) @(Draggable ? Css.Classes.Dialog.DragHandle : null)"
+                <div class="@Css.Classes.Dialog.Header @(IconContent is not null ? Css.Classes.Dialog.HeaderCentered : null) @(Draggable ? Css.Classes.Dialog.DragHandle : null)"
                      @ref="_headerEl">
                     @if (!string.IsNullOrEmpty(Title))
                     {
@@ -48,10 +48,10 @@
             <div class="@Css.Classes.Dialog.Content" id="@_contentId">
                 @ChildContent
             </div>
-            @if (Actions is not null)
+            @if (ActionsContent is not null)
             {
                 <div class="@Css.Classes.Dialog.Actions">
-                    @Actions
+                    @ActionsContent
                 </div>
             }
             @if (Resizable)
@@ -73,13 +73,13 @@
     /// <see cref="Title"/> is empty). Ignored when a title is present, since the title labels the dialog.</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>Optional hero icon shown centered above the title.</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Shows a divider between the header and the content.</summary>
     [Parameter] public bool Divider { get; set; }
     /// <summary>Main body content rendered inside the dialog.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Action buttons rendered in the dialog footer.</summary>
-    [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter] public RenderFragment? ActionsContent { get; set; }
     /// <summary>Closes the dialog when the scrim backdrop is clicked.</summary>
     [Parameter] public bool CloseOnScrimClick { get; set; } = true;
     /// <summary>Closes the dialog when the Escape key is pressed.</summary>

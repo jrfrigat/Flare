@@ -33,9 +33,9 @@
                         <span aria-hidden="true">✓</span>
                         <span class="@Css.Classes.Visually.Hidden">@(FlareStrings.Stepper_Completed)</span>
                     }
-                    else if (step.Icon is not null)
+                    else if (step.IconContent is not null)
                     {
-                        @step.Icon
+                        @step.IconContent
                         <span class="@Css.Classes.Visually.Hidden">@(string.Format(FlareStrings.Stepper_Step, i + 1))</span>
                     }
                     else

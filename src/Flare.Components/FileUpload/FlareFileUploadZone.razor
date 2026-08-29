@@ -25,9 +25,9 @@
             }
             else
             {
-                @if (Icon is not null)
+                @if (IconContent is not null)
                 {
-                    <span class="@Css.Classes.FileUpload.Icon">@Icon</span>
+                    <span class="@Css.Classes.FileUpload.Icon">@IconContent</span>
                 }
                 else
                 {
@@ -68,7 +68,7 @@
     [Parameter] public string? DropText { get; set; }
     /// <summary>Icon shown above the instructional text. Defaults to an upload glyph. Ignored when
     /// <see cref="ChildContent"/> is set.</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Replaces the zone's whole default body (icon, text and accept hint) with your own content -
     /// for an avatar dropper, a preview grid, anything the built-in look does not cover.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }

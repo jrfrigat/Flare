@@ -1,16 +1,16 @@
 <FlareButton OnClick="@(() => _visible = true)">Open dialog with hero icon</FlareButton>
 
 <FlareDialog @bind-Visible="_visible" Title="Delete file?" Divider="true">
-    <Icon><FlareIconView Value="@MaterialDesign3Icons.Regular.Delete" /></Icon>
+    <IconContent><FlareIconView Value="@MaterialDesign3Icons.Regular.Delete" /></IconContent>
     <ChildContent>
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyMedium">
             The hero icon is centered and uses the secondary color; a divider separates the header from the content.
         </FlareText>
     </ChildContent>
-    <Actions>
+    <ActionsContent>
         <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => _visible = false)">Cancel</FlareButton>
         <FlareButton Variant="ButtonVariant.Filled" OnClick="@(() => _visible = false)">Delete</FlareButton>
-    </Actions>
+    </ActionsContent>
 </FlareDialog>
 
 @code {

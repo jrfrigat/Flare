@@ -10,7 +10,7 @@
     }
     else
     {
-        @Placeholder
+        @PlaceholderContent
     }
 </div>
 
@@ -25,7 +25,7 @@
     /// (e.g. a <c>FlareSkeleton</c>). When unset the wrapper is empty until reveal; combine with
     /// <see cref="MinHeight"/> so the page reserves space and the observer fires progressively.
     /// </summary>
-    [Parameter] public RenderFragment? Placeholder { get; set; }
+    [Parameter] public RenderFragment? PlaceholderContent { get; set; }
 
     /// <summary>
     /// IntersectionObserver <c>rootMargin</c> (CSS margin shorthand). Positive values reveal the

@@ -12,9 +12,9 @@
     {
         var index = i;
         <FlareLazy MinHeight="84px" RootMargin="120px" OnRevealed="@(() => Reveal(index))">
-            <Placeholder>
+            <PlaceholderContent>
                 <FlareSkeleton Variant="SkeletonVariant.Rect" Height="84px" />
-            </Placeholder>
+            </PlaceholderContent>
             <ChildContent>
                 <FlareCard Variant="CardVariant.Filled">
                     <FlareStack Row Gap="FlareSpacing.Medium" Align="FlareAlignItems.Center">

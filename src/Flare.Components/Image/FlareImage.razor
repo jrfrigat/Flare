@@ -13,9 +13,9 @@
          style="@_imgStyle"
          @onload="HandleLoad"
          @onerror="HandleError" />
-    @if (_errored && Fallback is not null)
+    @if (_errored && FallbackContent is not null)
     {
-        @Fallback
+        @FallbackContent
     }
 </div>
 
@@ -41,7 +41,7 @@
     /// <summary>CSS border-radius applied to the image wrapper.</summary>
     [Parameter] public string? BorderRadius { get; set; }
     /// <summary>Content rendered when the image fails to load.</summary>
-    [Parameter] public RenderFragment? Fallback { get; set; }
+    [Parameter] public RenderFragment? FallbackContent { get; set; }
 
     protected override string ComponentCssClass => Css.Classes.Image.Root;
 
@@ -89,7 +89,7 @@
         }
     }
 
-    private string _imgStyle => _errored && Fallback is not null ? "display:none" : string.Empty;
+    private string _imgStyle => _errored && FallbackContent is not null ? "display:none" : string.Empty;
 
     private void HandleLoad() { _loading = false; }
     private void HandleError() { _loading = false; _errored = true; }

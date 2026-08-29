@@ -110,6 +110,29 @@ A component's CSS has **no per-color classes** (`flare-x--primary`, etc.); only
 - Minimum: a `<summary>` on every public member; `<param>`/`<returns>` on methods.
 - Style as in `FlareButton.razor` (every `[Parameter]` carries a `<summary>`).
 
+## 4a. Content slot names
+
+Razor decides that a child element is a named slot by matching its **tag name** against the component's
+`RenderFragment` parameters; a component name is only checked when no parameter matches. So an
+application component called `Icon`, written inside a Flare component that has an `Icon` slot, binds to
+the slot and **never renders at all** - with no diagnostic, because both spellings are legal.
+
+The rule:
+
+- When the caller's text or markup is the **whole** of what the component renders, the slot is
+  `ChildContent` (`FlareChip`, `FlareCheckbox`, `FlareDivider`).
+- When it is **one named part** among several, the slot is `XxxContent`: `TitleContent`, `LabelContent`,
+  `IconContent`, `HeaderContent`, `ActionsContent`.
+- A slot is **never** a bare noun an application would plausibly name a component: `Icon`, `Header`,
+  `Footer`, `Avatar`, `Badge`, `Actions`, `Placeholder`, `Empty`, `Counter`.
+
+Guard: `SlotNameTests`, which also records the exceptions - `Columns` and `Grouping` on the data grid
+stay, because they are collection slots every grid library spells this way and renaming them would cost
+consumers more than the collision risk is worth.
+
+Separately: an `Icon` parameter of type `FlareIcon` is a **value**, not a slot, and needs no rename. That
+distinction is the reason the fragments moved to `IconContent`: `Icon` now means an icon everywhere.
+
 ## 5. Other
 - Build and tests must pass; verify the component visually in `Flare.Gallery` (not in the legacy
   sample `Flare.Legacy`).

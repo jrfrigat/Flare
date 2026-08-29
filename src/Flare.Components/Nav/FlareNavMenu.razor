@@ -9,14 +9,14 @@
         @* Framed layout: Header and Footer stay pinned while the items scroll between them. The pinned
            regions hold ordinary nav items (FlareNavLink/FlareNavGroup), so they collapse to icons in a
            mini-rail exactly like the scrolling items. *@
-        @if (Header is not null)
+        @if (HeaderContent is not null)
         {
-            <div class="@Css.Classes.Navigation.NavMenuHeader">@Header</div>
+            <div class="@Css.Classes.Navigation.NavMenuHeader">@HeaderContent</div>
         }
         <div class="@Css.Classes.Navigation.NavMenuScroll">@ChildContent</div>
-        @if (Footer is not null)
+        @if (FooterContent is not null)
         {
-            <div class="@Css.Classes.Navigation.NavMenuFooter">@Footer</div>
+            <div class="@Css.Classes.Navigation.NavMenuFooter">@FooterContent</div>
         }
     }
     else
@@ -34,10 +34,10 @@
     /// container's height: the header and footer stay fixed while <see cref="ChildContent"/> scrolls
     /// between them. Put ordinary nav items here so they collapse to icons in a mini-rail too.
     /// </summary>
-    [Parameter] public RenderFragment? Header { get; set; }
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
     /// <summary>Optional items pinned to the bottom of the menu, below the scrolling area. See
     /// <see cref="Header"/> for the framed-layout behavior this enables.</summary>
-    [Parameter] public RenderFragment? Footer { get; set; }
+    [Parameter] public RenderFragment? FooterContent { get; set; }
     /// <summary>Accessible label for the navigation landmark, forwarded as aria-label.</summary>
     [Parameter] public string? AriaLabel { get; set; }
     /// <summary>
@@ -78,7 +78,7 @@
     private bool _railLabeled => Mode == NavMenuMode.RailLabeled;
 
     // Framed layout (pinned header/footer + scrolling middle) turns on as soon as either slot is used.
-    private bool _framed => Header is not null || Footer is not null;
+    private bool _framed => HeaderContent is not null || FooterContent is not null;
 
     private string _noScrollbarClass => HideScrollbar ? Css.Classes.Navigation.NavMenuNoScrollbar : string.Empty;
     private string _railClass => _isRail ? Css.Classes.Navigation.NavMenuRail : string.Empty;

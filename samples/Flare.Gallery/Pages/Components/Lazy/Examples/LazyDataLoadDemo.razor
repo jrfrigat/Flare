@@ -11,9 +11,9 @@
     </div>
 
     <FlareLazy MinHeight="150px" RootMargin="0px" OnRevealed="LoadAsync">
-        <Placeholder>
+        <PlaceholderContent>
             <FlareSkeleton Variant="SkeletonVariant.Rect" Height="150px" />
-        </Placeholder>
+        </PlaceholderContent>
         <ChildContent>
             @if (_data is null)
             {

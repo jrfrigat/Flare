@@ -11,14 +11,14 @@
    @onclick="HandleClick"
    @onclick:preventDefault="@(OnClick.HasDelegate)"
    @attributes="AdditionalAttributes">
-    @if (Icon is not null)
+    @if (IconContent is not null)
     {
-        <span class="@Css.Classes.Navigation.NavLinkIcon">@Icon</span>
+        <span class="@Css.Classes.Navigation.NavLinkIcon">@IconContent</span>
     }
     <span class="@Css.Classes.Navigation.NavLinkText">@ChildContent</span>
-    @if (Badge is not null)
+    @if (BadgeContent is not null)
     {
-        <span class="@Css.Classes.Navigation.NavLinkBadge">@Badge</span>
+        <span class="@Css.Classes.Navigation.NavLinkBadge">@BadgeContent</span>
     }
 </a>
 
@@ -29,12 +29,12 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Icon rendered before the link label. Kept separate from the label so the link can be
     /// trimmed to its icon in a mini-rail (<see cref="FlareNavMenu.Rail"/>).</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Optional native tooltip (<c>title</c>). Useful as the hover label when the link is
     /// collapsed to icon-only in a mini-rail.</summary>
     [Parameter] public string? Tooltip { get; set; }
     /// <summary>Badge content rendered at the trailing edge.</summary>
-    [Parameter] public RenderFragment? Badge { get; set; }
+    [Parameter] public RenderFragment? BadgeContent { get; set; }
     /// <summary>Route matching strategy - prefix or exact.</summary>
     [Parameter] public NavMatchMode Match { get; set; } = NavMatchMode.Prefix;
     /// <summary>Forces the active state regardless of current route.</summary>

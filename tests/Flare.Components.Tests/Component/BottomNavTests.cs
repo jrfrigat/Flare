@@ -94,7 +94,7 @@ public class C_FlareBottomNavItemTests : FlareTestContext
     {
         var cut = Render<FlareBottomNavItem>(p => p
             .Add(x => x.Href, "/settings")
-            .Add(x => x.Icon, (RenderFragment)(b =>
+            .Add(x => x.IconContent, (RenderFragment)(b =>
             {
                 b.OpenElement(0, "span");
                 b.AddAttribute(1, "id", "bn-icon");

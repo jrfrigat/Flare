@@ -7,12 +7,12 @@
     </FlareStack>
     <FlareStack Align="FlareAlignItems.Center">
         <FlareImage Src="/invalid-image-url.png" Alt="Fallback" Width="140px" Height="140px" BorderRadius="0.5rem">
-            <Fallback>
+            <FallbackContent>
                 <FlareStack Align="FlareAlignItems.Center" Justify="FlareJustifyContent.Center" Gap="FlareSpacing.XSmall" Style="width:140px;height:140px;background:var(--flare-color-surface-container);border-radius:0.5rem;">
                     <FlareIconView Size="2rem" Color="FlareColor.OnSurfaceVariant" Value="@MaterialDesign3Icons.Regular.BrokenImage" />
                     <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall">Not found</FlareText>
                 </FlareStack>
-            </Fallback>
+            </FallbackContent>
         </FlareImage>
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.LabelSmall" Style="margin-top:0.25rem">Error fallback</FlareText>
     </FlareStack>

@@ -588,7 +588,7 @@ public class C_FlareEmptyStateTests : FlareTestContext
     public void RendersIcon()
     {
         var cut = Render<FlareEmptyState>(p => p
-            .Add(x => x.Icon, b => b.AddMarkupContent(0, "<span class=\"test-icon\">★</span>")));
+            .Add(x => x.IconContent, b => b.AddMarkupContent(0, "<span class=\"test-icon\">★</span>")));
 
         Assert.NotNull(cut.Find(".flare-empty-state__icon"));
         Assert.NotEmpty(cut.FindAll(".test-icon"));
@@ -641,7 +641,7 @@ public class C_FlareEmptyStateTests : FlareTestContext
     public void RendersWithAllSlots()
     {
         var cut = Render<FlareEmptyState>(p => p
-            .Add(x => x.Icon, b => b.AddMarkupContent(0, "<span>icon</span>"))
+            .Add(x => x.IconContent, b => b.AddMarkupContent(0, "<span>icon</span>"))
             .Add(x => x.Title, "No Results")
             .Add(x => x.Description, "Clear your search to see results.")
             .Add(x => x.ActionContent, b => b.AddMarkupContent(0, "<button>Clear</button>")));

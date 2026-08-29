@@ -2,9 +2,9 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass()" style="@Style" @attributes="AdditionalAttributes">
-    @if (Avatar is not null)
+    @if (AvatarContent is not null)
     {
-        <div class="@Css.Classes.Card.HeaderAvatar">@Avatar</div>
+        <div class="@Css.Classes.Card.HeaderAvatar">@AvatarContent</div>
     }
     <div class="@Css.Classes.Card.HeaderText">
         @if (ChildContent is not null)
@@ -23,17 +23,17 @@
             }
         }
     </div>
-    @if (Action is not null)
+    @if (ActionContent is not null)
     {
-        <div class="@Css.Classes.Card.HeaderAction">@Action</div>
+        <div class="@Css.Classes.Card.HeaderAction">@ActionContent</div>
     }
 </div>
 
 @code {
     /// <summary>Optional leading avatar/icon slot.</summary>
-    [Parameter] public RenderFragment? Avatar { get; set; }
+    [Parameter] public RenderFragment? AvatarContent { get; set; }
     /// <summary>Optional trailing action slot (e.g. an icon button or menu).</summary>
-    [Parameter] public RenderFragment? Action { get; set; }
+    [Parameter] public RenderFragment? ActionContent { get; set; }
     /// <summary>Title text (used when <see cref="ChildContent"/> is not provided).</summary>
     [Parameter] public string? Title { get; set; }
     /// <summary>Subtitle text (used when <see cref="ChildContent"/> is not provided).</summary>

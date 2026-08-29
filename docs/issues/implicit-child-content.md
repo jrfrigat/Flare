@@ -1,8 +1,7 @@
 # Implicit child content reported to throw at runtime
 
-**Status: DONE for the slots, OPEN for the slot NAMES. Tier 0. Reported item 7. Every component that
-renders caller text now takes a fragment for it, and `CallerTextSlotTests` keeps it that way. What
-remains is item 5: the 32 bare-noun slot names that an application can collide with.**
+**Status: DONE. Tier 0. Reported item 7. Every component that renders caller text takes a fragment for
+it, every collision-prone slot name is renamed, and two guards keep both true.**
 
 ## The report
 
@@ -167,9 +166,11 @@ silently emptied every one of those; one of the tests pins exactly that.
    required parameters, while reflection sees inherited ones, which is exactly what the grep missed.
 4. ~~The DataGrid column header slot.~~ Done - `FlareColumnBase.TitleContent`, on both the plain and
    the banded header path.
-5. **Audit the slot names** across every public Flare component: the 32 bare nouns listed above are each
-   a silent-swallow waiting for an application to name a component the same thing. The mandate allows
-   renaming: `HeaderContent` (which `FlareCollapse` already uses) cannot collide the way `Header` can,
-   and reads no worse. `Icon` is the one to do first.
-6. **Write the naming rule into the component conventions**: a named slot is `XxxContent`, never a bare
-   noun an application would plausibly use as a component name.
+5. ~~Audit the slot names.~~ Done. 21 slots across 19 components renamed to `XxxContent`, guarded by
+   `SlotNameTests`. `Icon` was the sharp one and it turned out to be two problems: eight components
+   exposed it as a fragment while eight others exposed `Icon` as a `FlareIcon` VALUE, so the same
+   parameter name meant different things depending on which component you were reading. `Icon` now
+   always means an icon value. Deliberately kept: `Columns` / `Grouping` (collection slots every grid
+   spells this way), `Leading` / `Trailing` / `Zones` / `Composite` / `Activator` (positional or domain
+   terms nobody names a component after).
+6. ~~Write the naming rule into the component conventions.~~ Done, EN and RU, section 4a.

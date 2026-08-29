@@ -53,12 +53,12 @@
             }
         </div>
     </Field>
-    <Counter>
+    <CounterContent>
         @if (_showCounter)
         {
             <span class="@Css.Classes.Input.Counter" aria-hidden="true">@(Value?.Length ?? 0)@(MaxLength > 0 ? $"/{MaxLength}" : null)</span>
         }
-    </Counter>
+    </CounterContent>
 </FlareFieldChrome>
 
 @code {

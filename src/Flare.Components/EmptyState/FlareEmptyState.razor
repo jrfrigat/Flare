@@ -2,9 +2,9 @@
 @inherits FlareComponentBase
 
 <div class="@BuildCssClass(_compactClass)" role="region" aria-label="@(Title ?? FlareStrings.EmptyState_Label)" aria-live="polite">
-    @if (Icon != null)
+    @if (IconContent != null)
     {
-        <div class="@Css.Classes.Empty.StateIcon">@Icon</div>
+        <div class="@Css.Classes.Empty.StateIcon">@IconContent</div>
     }
     @if (!string.IsNullOrEmpty(Title))
     {
@@ -22,7 +22,7 @@
 
 @code {
     /// <summary>Icon content displayed above the title.</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Main heading text.</summary>
     [Parameter] public string? Title { get; set; }
     /// <summary>Supporting description text.</summary>

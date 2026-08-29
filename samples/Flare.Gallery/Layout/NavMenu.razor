@@ -10,36 +10,36 @@
    serves it under /Flare/); "/x" resolves against the ORIGIN, ignoring <base href>, so a leading
    slash silently navigates out of the app on Pages and breaks FlareNavLink's active matching too. *@
 <FlareNavMenu Mode="Mode">
-    <Footer>
+    <FooterContent>
         <FlareNavLink Href="settings" Tooltip="@GalleryStrings.Settings_Title">
-            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Settings" /></Icon>
+            <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Settings" /></IconContent>
             <ChildContent>@GalleryStrings.Settings_Title</ChildContent>
         </FlareNavLink>
-    </Footer>
+    </FooterContent>
     <ChildContent>
         <FlareNavLink Href="" Match="NavMatchMode.Exact">
-            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Home" /></Icon>
+            <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Home" /></IconContent>
             <ChildContent>@GalleryStrings.Nav_Overview</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Guide))" Active="@(RouteSection == GallerySection.Guide)">
-            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.MenuBook" /></Icon>
+            <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.MenuBook" /></IconContent>
             <ChildContent>@GalleryStrings.Nav_Guide</ChildContent>
         </FlareNavLink>
 
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Themes))" Active="@(RouteSection == GallerySection.Themes)">
-            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Palette" /></Icon>
+            <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Palette" /></IconContent>
             <ChildContent>@GalleryStrings.Nav_Theming</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Components))" Active="@(RouteSection == GallerySection.Components)">
-            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Category" /></Icon>
+            <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Category" /></IconContent>
             <ChildContent>@GalleryStrings.Nav_Components</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Services))" Active="@(RouteSection == GallerySection.Services)">
-            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Bolt" /></Icon>
+            <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.Bolt" /></IconContent>
             <ChildContent>@GalleryStrings.Nav_Services</ChildContent>
         </FlareNavLink>
         <FlareNavLink OnClick="@(() => ToggleSection(GallerySection.Api))" Active="@(RouteSection == GallerySection.Api)">
-            <Icon><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.DataObject" /></Icon>
+            <IconContent><FlareIconView Size="1.25rem" Value="@MaterialDesign3Icons.Regular.DataObject" /></IconContent>
             <ChildContent>@GalleryStrings.Nav_Api</ChildContent>
         </FlareNavLink>
     </ChildContent>

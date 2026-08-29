@@ -6,7 +6,7 @@
     <div class="@BuildCssClass(_severityClass, _variantClass, _dismissingClass)" role="alert" style="@Style" @attributes="AdditionalAttributes">
         @if (!NoIcon)
         {
-            <span class="@Css.Classes.Alert.Icon" aria-hidden="true">@if (Icon is not null) { @Icon } else { @_defaultIcon }</span>
+            <span class="@Css.Classes.Alert.Icon" aria-hidden="true">@if (IconContent is not null) { @IconContent } else { @_defaultIcon }</span>
         }
         <div class="@Css.Classes.Alert.Content">
             @if (!string.IsNullOrEmpty(Title))
@@ -32,7 +32,7 @@
     /// <summary>Alert body content rendered below the title.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Custom icon content that overrides the default severity icon.</summary>
-    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public RenderFragment? IconContent { get; set; }
     /// <summary>Hides the leading icon entirely when true.</summary>
     [Parameter] public bool NoIcon { get; set; }
     /// <summary>Shows a close button that hides the alert. Alias for <see cref="Dismissible"/> for discoverability.</summary>

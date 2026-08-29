@@ -28,7 +28,7 @@
             {
                 <span id="@HelperId" class="@Css.Classes.Input.Helper">@HelperText</span>
             }
-            @Counter
+            @CounterContent
         </div>
     }
 </div>
@@ -91,7 +91,7 @@
     [Parameter, EditorRequired] public RenderFragment? Field { get; set; }
 
     /// <summary>Optional trailing content for the support row (a character counter).</summary>
-    [Parameter] public RenderFragment? Counter { get; set; }
+    [Parameter] public RenderFragment? CounterContent { get; set; }
 
     private ElementReference _root;
 
@@ -102,7 +102,7 @@
     public ElementReference Root => _root;
 
     private bool HasSupport =>
-        !string.IsNullOrEmpty(ErrorText) || !string.IsNullOrEmpty(HelperText) || Counter is not null;
+        !string.IsNullOrEmpty(ErrorText) || !string.IsNullOrEmpty(HelperText) || CounterContent is not null;
 
     // The shared root always carries .flare-input; the component modifier + the universal state/variant/size
     // modifier classes + any extra component modifier follow. State precedence is Disabled-first (a disabled

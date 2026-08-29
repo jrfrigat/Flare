@@ -126,7 +126,7 @@
                                  OnSelect="HandleSelectAsync"
                                  OnHighlight="HandleHover"
                                  PreventMouseDownDefault="Searchable">
-                    <Header>
+                    <HeaderContent>
                         @if (ShowSelectAll && _state.Collection.Count > 0)
                         {
                             var tri = _state.SelectAllState();
@@ -143,13 +143,13 @@
                                 <span>@FlareStrings.MultiSelect_SelectAll</span>
                             </div>
                         }
-                    </Header>
-                    <Empty>
+                    </HeaderContent>
+                    <EmptyContent>
                         @if (Searchable && !string.IsNullOrEmpty(_state.Input))
                         {
                             <div class="@Css.Classes.Select.Empty" role="status">@(NoResultsText ?? FlareStrings.Field_NoResults)</div>
                         }
-                    </Empty>
+                    </EmptyContent>
                 </FlareOptionList>
             </FlarePopup>
         }

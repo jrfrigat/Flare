@@ -15,10 +15,10 @@
      aria-label="@AriaLabel"
      @ref="_drawerEl"
      @attributes="AdditionalAttributes">
-    @if (Header is not null)
+    @if (HeaderContent is not null)
     {
         <div class="@Css.Classes.Drawer.Header">
-            @Header
+            @HeaderContent
         </div>
     }
     <div class="@Css.Classes.Drawer.Content">
@@ -34,7 +34,7 @@
     /// <summary>Main content rendered inside the drawer body.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Optional header content shown above the body.</summary>
-    [Parameter] public RenderFragment? Header { get; set; }
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
     /// <summary>Drawer variant - temporary (slides in/out, default), permanent (always visible), or mini (icon-only, expands on hover).</summary>
     [Parameter] public DrawerVariant Variant { get; set; } = DrawerVariant.Temporary;
     /// <summary>Edge from which the drawer slides in.</summary>
