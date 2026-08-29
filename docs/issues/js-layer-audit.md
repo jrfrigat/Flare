@@ -1,6 +1,6 @@
 # The JS layer: what a full read of it found
 
-**Status: PARTIALLY DONE. A, B, E and H are fixed; C, D, F and G remain.**
+**Status: PARTIALLY DONE. A, B, E, F and H are fixed; C, D and G remain.**
 
 2151 lines across 12 modules in `src/Flare.Components/wwwroot/js`. Read end to end. The findings are
 ordered by what they cost, not by how much code they touch.
@@ -95,14 +95,20 @@ each: `FlareColorPicker` on the older one, `FlarePopup` on the newer. Moving the
 `registerDismiss` deletes the older pair here and two members from `IOverlayJsService`, and closes the
 picker on Tab-away, which it should already do.
 
-## F. Popup dismissal adds one document listener per popup
+## F. Popup dismissal adds one document listener per popup - FIXED
 
-Every `registerDismiss` / `registerOutsideClick` / `registerDialogEscHandler` call attaches its own
-capture-phase listener to `document`. With several dismissible widgets mounted, one pointerdown walks
-several independent handlers that each do the same `contains` test. One listener per *event type* over a
-registry would do the same work once. Small, but it is the shape that scales badly with the number of
-open overlays, and the collision engine's own listeners were exactly this pattern before they were
-deleted.
+Every `registerDismiss` and `registerDialogEscHandler` call used to attach its own listener to
+`document`, so one keystroke or one click walked N independent handlers that each did the same test.
+
+Replaced by a `documentBus(type, options)` that keeps exactly ONE listener alive while its registry is
+non-empty and hands the event to the entries. Measured against the module: **three open dialogs now add
+one `keydown` listener instead of three, and two open popups one `pointerdown` instead of two**; all the
+handlers still run, and the listener comes down on the last entry, not the first.
+
+That last part is also the answer to half of item C for these two: attaching is tied to the registry
+being non-empty, so a caller cannot leak a listener by forgetting to remove one - dropping the last
+entry takes it down. The `focusout` half of a dismiss stays on the widget's own element, because it has
+to be scoped to that subtree to mean anything.
 
 ## G. Element resolution is written three times
 
@@ -126,5 +132,6 @@ per gesture rather than once per event. The horizontal metrics are for applicati
 
 ## Order
 
-A, B, E and H are done. C, D, F and G remain - cleanups that make the next reader's job easier and should ride along
-with whatever touches those files.
+A, B, E, F and H are done. C, D and G remain - cleanups that make the next reader's job easier and
+should ride along with whatever touches those files. C is now smaller than it was: the two document
+registries it named are gone, absorbed by the bus in F.

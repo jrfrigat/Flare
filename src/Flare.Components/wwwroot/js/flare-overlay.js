@@ -5,31 +5,49 @@
 // The body scroll-lock moved to flare-scroll.js (Flare.Components.IScrollService): one counter has to
 // own body.style.overflow, or two modules take turns restoring each other's saved value.
 
+// --- One document listener per event type, not per widget ---
+// Every open dialog used to attach its own keydown, and every open popup its own capture-phase
+// pointerdown, so one keystroke or one click walked N independent handlers that each did the same test.
+// A bus keeps ONE listener alive while its registry is non-empty and hands the event to the entries, so
+// the cost of a second open overlay is a map entry rather than a listener. Attaching and detaching are
+// tied to the registry being non-empty, which also means a caller cannot leak a listener by forgetting
+// to remove one - dropping the last entry takes it down.
+function documentBus(type, options) {
+    const entries = new Map();
+    let attached = false;
+
+    const dispatch = (e) => {
+        // Snapshot: a handler is allowed to remove itself (a dismiss closes its own popup).
+        for (const fn of [...entries.values()]) fn(e);
+    };
+
+    return {
+        set(id, fn) {
+            entries.set(id, fn);
+            if (!attached) { document.addEventListener(type, dispatch, options); attached = true; }
+        },
+        delete(id) {
+            if (!entries.delete(id)) return;
+            if (entries.size === 0 && attached) { document.removeEventListener(type, dispatch, options); attached = false; }
+        },
+        get size() { return entries.size; },
+    };
+}
+
 // --- Dialog Esc handlers ---
-const _escHandlers = new Map();
+const _escHandlers = documentBus('keydown');
 
 export function registerDialogEscHandler(id, dotNetRef) {
-    _removeEsc(id);
-    const handler = (e) => {
+    _escHandlers.set(id, (e) => {
         if (e.key === 'Escape') {
             e.preventDefault();
             dotNetRef.invokeMethodAsync('CloseFromEsc').catch(() => { });
         }
-    };
-    _escHandlers.set(id, handler);
-    document.addEventListener('keydown', handler);
+    });
 }
 
 export function removeDialogEscHandler(id) {
-    _removeEsc(id);
-}
-
-function _removeEsc(id) {
-    const h = _escHandlers.get(id);
-    if (h) {
-        document.removeEventListener('keydown', h);
-        _escHandlers.delete(id);
-    }
+    _escHandlers.delete(id);
 }
 
 // --- Focus trap for dialogs ---
@@ -154,28 +172,32 @@ export function scrollOptionIntoView(optionId, block) {
 // mechanism now.
 // The pointerdown listener is on document rather than on a backdrop element, so the page keeps scrolling
 // normally while the popup is open -- a fixed full-screen backdrop would trap the wheel.
-const _dismiss = new Map();
+// The pointerdown half goes on the shared bus; the focusout half stays on the widget's own element,
+// because it has to be scoped to that subtree to mean anything.
+const _dismissPointer = documentBus('pointerdown', true);
+const _dismissFocus = new Map();
 
 export function registerDismiss(id, element, dotNetRef, method) {
     removeDismiss(id);
-    const onPointerDown = (e) => {
+    _dismissPointer.set(id, (e) => {
         if (element && !element.contains(e.target)) dotNetRef.invokeMethodAsync(method).catch(() => { });
-    };
+    });
+
+    if (!element) return;
     const onFocusOut = (e) => {
         const to = e.relatedTarget;
         // Dismiss only when focus actually leaves the widget (ignore moves between its own children).
-        if (element && to && !element.contains(to)) dotNetRef.invokeMethodAsync(method).catch(() => { });
+        if (to && !element.contains(to)) dotNetRef.invokeMethodAsync(method).catch(() => { });
     };
-    _dismiss.set(id, { onPointerDown, onFocusOut, element });
-    document.addEventListener('pointerdown', onPointerDown, true);
-    if (element) element.addEventListener('focusout', onFocusOut);
+    _dismissFocus.set(id, { onFocusOut, element });
+    element.addEventListener('focusout', onFocusOut);
 }
 
 export function removeDismiss(id) {
-    const h = _dismiss.get(id);
+    _dismissPointer.delete(id);
+    const h = _dismissFocus.get(id);
     if (h) {
-        document.removeEventListener('pointerdown', h.onPointerDown, true);
-        if (h.element) h.element.removeEventListener('focusout', h.onFocusOut);
-        _dismiss.delete(id);
+        h.element.removeEventListener('focusout', h.onFocusOut);
+        _dismissFocus.delete(id);
     }
 }

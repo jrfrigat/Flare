@@ -14,12 +14,7 @@ requires the underlying contract to be restated instead.
 
 ## Still open
 
-Tier 0 - broken output or a crash in an app that follows the documented API.
-
-| # | Issue | File |
-| :-- | :-- | :-- |
-| 7 | Implicit child content reported to throw at runtime | [implicit-child-content.md](implicit-child-content.md) |
-| 2 | `Sortable` + `Frozen` on one column reported to throw | [datagrid-frozen-sortable-crash.md](datagrid-frozen-sortable-crash.md) |
+**Tier 0 is empty.** Both crash reports are resolved; see Closed below.
 
 Tier 1 - the API forces a workaround. The app shipped, but with code the library should have provided.
 
@@ -40,6 +35,8 @@ listeners in the JS and gave an application a public way to observe scroll at al
 
 | # | Item | Shipped in |
 | :-- | :-- | :-- |
+| 2 | `Sortable` + `Frozen` - **not a Flare defect in the way it was reported.** `Sortable` was irrelevant; the app's `index.html` had no `flare-components.js`, so `Frozen` was the one feature that reached for a JS global that did not exist, and 0.18.1 did not catch the resulting `JSException`. Both halves closed: the catch was added, and the file became an ES module the services import, so the tag cannot be forgotten | 0.20.0 + 0.23.0 |
+| 7 | Implicit child content - **also not what it looked like.** The two spellings compile byte-identically and the reporting app has no name collision, so the literal report is unreproducible. The real class of defect it pointed at was found and closed instead: every component inheriting the `AdditionalAttributes` catch-all silently swallowed child content it had no slot for. 36 components given a slot, 21 collision-prone slot names renamed, three guards | 0.23.0 + 0.24.0 |
 | 1 | DataGrid icons render as glyphs again; every remaining Material Symbols ligature span is gone, with a guard test | 0.19.0 |
 | - | `FlareCollapse` no longer collapses itself; the two-way contract is written down and enforced by `ControlledStateContractTests` | 0.19.0 |
 | 10, 11 | `AddFlare` is sufficient on its own (`TimeProvider`), and Flare ships a `:where()` document reset | 0.19.0 |
