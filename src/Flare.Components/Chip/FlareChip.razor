@@ -10,7 +10,10 @@
     {
         <span class="@Css.Classes.Chip.Icon @Css.Classes.Chip.IconLeading">@LeadingIcon</span>
     }
-    <span class="@Css.Classes.Chip.Label">@Label</span>
+    @* Content between the tags wins over the string. A component that renders caller text and has no
+       ChildContent does not fail to compile - AdditionalAttributes captures the fragment as an unmatched
+       attribute and it is dropped - so the slot has to exist for the natural spelling to mean anything. *@
+    <span class="@Css.Classes.Chip.Label">@if (ChildContent is not null) { @ChildContent } else { @Label }</span>
     @if (Closeable || Closable)
     {
         <button class="@Css.Classes.Chip.Close" type="button" disabled="@Disabled" @onclick="HandleClose" @onclick:stopPropagation="true" aria-label="@(FlareStrings.Chip_Delete)">
@@ -20,8 +23,15 @@
 </div>
 
 @code {
-    /// <summary>Text label displayed inside the chip.</summary>
+    /// <summary>Text label displayed inside the chip. Ignored when <see cref="ChildContent"/> is set.</summary>
     [Parameter] public string? Label { get; set; }
+
+    /// <summary>
+    /// Markup rendered in the label slot instead of <see cref="Label"/>, for a chip whose content is
+    /// more than a string. Writing the content between the tags - <c>&lt;FlareChip&gt;42&lt;/FlareChip&gt;</c>
+    /// - binds here.
+    /// </summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>Value used by FlareChipGroup to identify this chip.</summary>
     [Parameter] public string? Value { get; set; }
     /// <summary>Icon content rendered before the chip label.</summary>
