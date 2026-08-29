@@ -36,6 +36,14 @@ public static class Drawer
     public const string Permanent = "flare-drawer--permanent";
     /// <summary>The <c>flare-drawer--mini</c> CSS class.</summary>
     public const string Mini = "flare-drawer--mini";
+    /// <summary>The <c>flare-drawer--persistent</c> CSS class.</summary>
+    public const string Persistent = "flare-drawer--persistent";
+    /// <summary>The <c>flare-drawer--responsive</c> CSS class.</summary>
+    public const string Responsive = "flare-drawer--responsive";
+    /// <summary>The <c>flare-drawer--expanded</c> CSS class (an in-flow drawer at full width).</summary>
+    public const string Expanded = "flare-drawer--expanded";
+    /// <summary>The <c>flare-drawer-scrim--responsive</c> CSS class.</summary>
+    public const string ScrimResponsive = "flare-drawer-scrim--responsive";
     /// <summary>The <c>flare-drawer--left</c> CSS class.</summary>
     public const string Left = "flare-drawer--left";
     /// <summary>The <c>flare-drawer--right</c> CSS class.</summary>

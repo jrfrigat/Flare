@@ -9977,5 +9977,50 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drawer and app bar at tablet width.
+        /// </summary>
+        public static string MobileShells_Tablet {
+            get {
+                return ResourceManager.GetString("MobileShells_Tablet", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Show or hide the folder list.
+        /// </summary>
+        public static string MobileShells_ToggleDrawer {
+            get {
+                return ResourceManager.GetString("MobileShells_ToggleDrawer", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Folders.
+        /// </summary>
+        public static string MobileShells_Folders {
+            get {
+                return ResourceManager.GetString("MobileShells_Folders", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Archive.
+        /// </summary>
+        public static string MobileShells_Archive {
+            get {
+                return ResourceManager.GetString("MobileShells_Archive", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Sent.
+        /// </summary>
+        public static string MobileShells_Sent {
+            get {
+                return ResourceManager.GetString("MobileShells_Sent", resourceCulture);
+            }
+        }
+
     }
 }

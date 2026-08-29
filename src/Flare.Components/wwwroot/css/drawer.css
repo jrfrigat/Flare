@@ -71,8 +71,49 @@
   transform: none !important;
   visibility: visible !important;
   box-shadow: none;
-  border-right: var(--flare-drawer-border);
+  border-inline-end: var(--flare-drawer-border);
   z-index: auto;
+}
+
+/* Persistent variant - in the layout flow like permanent, but collapsing to zero width when closed
+   so the content beside it takes the room back. The closed width is !important because Width, when
+   the caller sets one, lands inline and would otherwise hold a closed drawer open. */
+.flare-drawer--persistent {
+  position: relative;
+  transform: none !important;
+  visibility: visible !important;
+  box-shadow: none;
+  border-inline-end: var(--flare-drawer-border);
+  z-index: auto;
+  width: var(--flare-drawer-width);
+  transition: width var(--flare-motion-duration-medium2) var(--flare-motion-easing-standard);
+}
+
+.flare-drawer--persistent:not(.flare-drawer--expanded) {
+  width: 0 !important;
+  border-inline-end-width: 0;
+}
+
+/* Responsive variant - the persistent drawer above the medium breakpoint, the temporary overlay
+   below it. Same markup either way: the component emits both open classes and this decides. */
+@media (min-width: 960px) {
+  .flare-drawer--responsive {
+    position: relative;
+    transform: none !important;
+    visibility: visible !important;
+    box-shadow: none;
+    border-inline-end: var(--flare-drawer-border);
+    z-index: auto;
+    width: var(--flare-drawer-width);
+    transition: width var(--flare-motion-duration-medium2) var(--flare-motion-easing-standard);
+  }
+
+  .flare-drawer--responsive:not(.flare-drawer--expanded) {
+    width: 0 !important;
+    border-inline-end-width: 0;
+  }
+
+  .flare-drawer-scrim--responsive { display: none; }
 }
 
 /* Mini variant - icon-only width, expands on hover */
@@ -82,7 +123,7 @@
   transform: none !important;
   visibility: visible !important;
   box-shadow: none;
-  border-right: var(--flare-drawer-border);
+  border-inline-end: var(--flare-drawer-border);
   width: var(--flare-drawer-mini-width);
   z-index: auto;
   transition: width var(--flare-motion-duration-medium2) var(--flare-motion-easing-standard);
@@ -90,6 +131,20 @@
 
 .flare-drawer--mini:hover {
   width: var(--flare-drawer-width);
+}
+
+/* An in-flow drawer draws its divider against the content, so a right anchor borders its START
+   edge. Without this the line lands on the window side, where nothing sits. */
+.flare-drawer--permanent.flare-drawer--right,
+.flare-drawer--mini.flare-drawer--right,
+.flare-drawer--persistent.flare-drawer--right,
+.flare-drawer--responsive.flare-drawer--right {
+  border-inline-end: none;
+  border-inline-start: var(--flare-drawer-border);
+}
+
+.flare-drawer--persistent.flare-drawer--right:not(.flare-drawer--expanded) {
+  border-inline-start-width: 0;
 }
 
 /* AutoCloseBelow - pre-compiled breakpoint hide classes */

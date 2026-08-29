@@ -3,15 +3,18 @@
 @inject Flare.Components.Services.IOverlayJsService Overlay
 @implements IAsyncDisposable
 
-@if (Open && Variant == DrawerVariant.Temporary)
+@* Responsive is Temporary below the breakpoint, so it renders a scrim too - and carries a class
+   that hides it again above the breakpoint, where the same drawer is in-flow and dismisses
+   nothing. *@
+@if (Open && Variant is DrawerVariant.Temporary or DrawerVariant.Responsive)
 {
-    <div class="@Css.Classes.Drawer.Scrim @_autoCloseScrimClass" @onclick="CloseDrawer" aria-hidden="true" />
+    <div class="@BuildScrimCssClass()" @onclick="CloseDrawer" aria-hidden="true" />
 }
 
 <div class="@BuildCssClass(_anchorClass, _openClass, _variantClass, _autoCloseClass, _contentPadClass)"
      style="@_sizeStyle @_contentPadStyle @Style"
      role="@_role"
-     aria-modal="@(Variant is DrawerVariant.Temporary or DrawerVariant.Persistent ? "true" : null)"
+     aria-modal="@(Variant == DrawerVariant.Temporary ? "true" : null)"
      aria-label="@AriaLabel"
      @ref="_drawerEl"
      @attributes="AdditionalAttributes">
@@ -103,7 +106,17 @@
     private string? _autoCloseClass;
     private string? _autoCloseScrimClass;
 
-    private string _role => Variant is DrawerVariant.Temporary or DrawerVariant.Persistent ? "dialog" : "navigation";
+    // Only the overlay variant is a modal dialog. An in-flow drawer sits in the layout with the rest
+    // of the page reachable beside it, so calling it a modal dialog tells a screen reader the page is
+    // inert when it is not.
+    private string _role => Variant == DrawerVariant.Temporary ? "dialog" : "navigation";
+
+    private string BuildScrimCssClass()
+    {
+        var responsive = Variant == DrawerVariant.Responsive ? Css.Classes.Drawer.ScrimResponsive : null;
+        return string.Join(' ', new[] { Css.Classes.Drawer.Scrim, responsive, _autoCloseScrimClass }
+            .Where(c => !string.IsNullOrEmpty(c)));
+    }
 
     // Only emit a size when the CALLER asked for one. An inline width beats the stylesheet, so emitting a
     // default here would (and did) make --flare-drawer-width unreachable: the theme's value never rendered.
@@ -117,13 +130,24 @@
 
         _anchorClass = $"flare-drawer--{Anchor.ToString().ToLowerInvariant()}";
 
-        _openClass = Variant == DrawerVariant.Temporary && Open ? Css.Classes.Drawer.Open : null;
+        // The overlay variants slide in on a transform; the in-flow ones grow from zero width. Those
+        // are different CSS mechanisms, so "open" is a different class. Responsive is BOTH: which
+        // half applies is the stylesheet's decision at the breakpoint, not this component's.
+        _openClass = (Variant, Open) switch
+        {
+            (DrawerVariant.Temporary, true)  => Css.Classes.Drawer.Open,
+            (DrawerVariant.Persistent, true) => Css.Classes.Drawer.Expanded,
+            (DrawerVariant.Responsive, true) => $"{Css.Classes.Drawer.Open} {Css.Classes.Drawer.Expanded}",
+            _                                => null,
+        };
 
         _variantClass = Variant switch
         {
-            DrawerVariant.Permanent => Css.Classes.Drawer.Permanent,
-            DrawerVariant.Mini      => Css.Classes.Drawer.Mini,
-            _                       => null,
+            DrawerVariant.Permanent  => Css.Classes.Drawer.Permanent,
+            DrawerVariant.Mini       => Css.Classes.Drawer.Mini,
+            DrawerVariant.Persistent => Css.Classes.Drawer.Persistent,
+            DrawerVariant.Responsive => Css.Classes.Drawer.Responsive,
+            _                        => null,
         };
 
         _autoCloseClass = AutoCloseBelow switch

@@ -1,0 +1,77 @@
+@* The tablet form of the drill-down app above: the same inbox, but wide enough to show the list and the
+   detail at once instead of one at a time. The drawer is Persistent, so the toggle in the app bar takes
+   its width back for the content rather than covering it - which is the whole difference between a
+   tablet shell and a phone one. Everything here is Flare components and tokens. *@
+@* A fixed 768px frame, for the same reason the phone shells are a fixed 360px: the point is to see
+   the pattern at the viewport it is designed for, not at whatever width this page happens to leave
+   over. Letting it shrink instead squeezed the detail pane to one character per line, which shows
+   nothing about a tablet. So the frame keeps its width and the surrounding strip scrolls. *@
+<div style="overflow-x:auto;max-width:100%;">
+<FlareCard Variant="CardVariant.Outlined"
+           Style="width:768px;height:460px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
+
+    <FlareAppBar Sticky="false">
+        <Leading>
+            <FlareIconButton Icon="@FlareIcons.Menu"
+                             Variant="ButtonVariant.Text"
+                             AriaLabel="@GalleryStrings.MobileShells_ToggleDrawer"
+                             OnClick="@(() => _drawerOpen = !_drawerOpen)" />
+        </Leading>
+        <TitleContent>
+            <FlareText Typo="TypographyScale.TitleMedium">@_folder</FlareText>
+        </TitleContent>
+    </FlareAppBar>
+
+    <div style="flex:1;display:flex;min-height:0;">
+        <FlareDrawer Variant="DrawerVariant.Persistent" Open="_drawerOpen" Width="180px"
+                     AriaLabel="@GalleryStrings.MobileShells_Folders">
+            <FlareNavMenu AriaLabel="@GalleryStrings.MobileShells_Folders">
+                @foreach (var folder in _folders)
+                {
+                    <FlareNavLink Active="@(folder == _folder)" OnClick="@(() => _folder = folder)">
+                        @folder
+                    </FlareNavLink>
+                }
+            </FlareNavMenu>
+        </FlareDrawer>
+
+        @* Two panes side by side: the list keeps its selection visible while the detail is read, which is
+           exactly what the phone shell cannot do and why it drills down instead. *@
+        <div style="width:220px;flex:none;overflow:auto;border-inline-end:var(--flare-border-divider);">
+            <FlareList TItem="object">
+                @foreach (var msg in DrillDownShellDemo.Messages)
+                {
+                    <FlareListItem Primary="@msg.Name"
+                                   Secondary="@msg.Preview"
+                                   Selected="@(msg == _selected)"
+                                   OnClick="@(() => _selected = msg)">
+                        <Leading><FlareAvatar Text="@msg.Name" Size="AvatarSize.Sm" /></Leading>
+                    </FlareListItem>
+                }
+            </FlareList>
+        </div>
+
+        <div style="flex:1;overflow:auto;min-width:0;">
+            <FlareStack Gap="FlareSpacing.Medium" Style="padding:1rem;">
+                <FlareText Typo="TypographyScale.TitleSmall">@_selected.Name</FlareText>
+                <FlareText Typo="TypographyScale.BodyMedium">@_selected.Body</FlareText>
+            </FlareStack>
+        </div>
+    </div>
+</FlareCard>
+</div>
+
+@code {
+    private bool _drawerOpen = true;
+    private string _folder = GalleryStrings.MobileShells_Inbox;
+
+    // Same four messages as the phone shell: one app, two form factors.
+    private DrillDownShellDemo.Message _selected = DrillDownShellDemo.Messages[0];
+
+    private string[] _folders =>
+    [
+        GalleryStrings.MobileShells_Inbox,
+        GalleryStrings.MobileShells_Archive,
+        GalleryStrings.MobileShells_Sent,
+    ];
+}

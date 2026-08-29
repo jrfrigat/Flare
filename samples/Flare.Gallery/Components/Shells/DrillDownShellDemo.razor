@@ -24,11 +24,10 @@
         @if (_selected is null)
         {
             <FlareList TItem="object">
-                @foreach (var msg in _messages)
+                @foreach (var msg in Messages)
                 {
                     <FlareListItem Primary="@msg.Name"
                                    Secondary="@msg.Preview"
-                                   Clickable="true"
                                    OnClick="@(() => _selected = msg)">
                         <Leading><FlareAvatar Text="@msg.Name" Size="AvatarSize.Sm" /></Leading>
                     </FlareListItem>
@@ -48,11 +47,12 @@
 </FlareCard>
 
 @code {
-    private sealed record Message(string Name, string Preview, string Body);
+    // Shared with the tablet shell below, which is the same app at a wider viewport.
+    internal sealed record Message(string Name, string Preview, string Body);
 
     private Message? _selected;
 
-    private static readonly Message[] _messages =
+    internal static readonly Message[] Messages =
     [
         new("Ada", "About the release notes", "The 0.24 notes look right. One nit: the scrollbar section reads better before the slots one."),
         new("Grace", "Build is green", "All three target frameworks, no warnings. Merging after lunch."),

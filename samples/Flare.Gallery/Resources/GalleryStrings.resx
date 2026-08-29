@@ -3008,4 +3008,19 @@
   <data name="MobileShells_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="MobileShells_Tablet" xml:space="preserve">
+    <value>Drawer and app bar at tablet width</value>
+  </data>
+  <data name="MobileShells_ToggleDrawer" xml:space="preserve">
+    <value>Show or hide the folder list</value>
+  </data>
+  <data name="MobileShells_Folders" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="MobileShells_Archive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="MobileShells_Sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
 </root>
