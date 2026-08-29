@@ -37,21 +37,44 @@
     </FlareStack>
 </FlareCard>
 
-@* The same subscription reports both axes, so this second card watches a strip of its own by element
-   reference rather than by selector - the strip is this page's, not the layout's. *@
+@* One subscription, both axes, on a box this page owns - so the demo is testable on its own rather
+   than depending on the page being long enough to scroll. The first card watches the layout's panel by
+   selector; this one watches an element by reference. *@
 <FlareText Typo="TypographyScale.TitleSmall" Style="margin:1.75rem 0 0.5rem">@GalleryStrings.Services_Scroll_HorizontalTitle</FlareText>
 
 <FlareCard Variant="CardVariant.Outlined" Style="max-width:36rem;">
     <FlareStack Gap="FlareSpacing.Medium">
-        <div @ref="_strip" style="overflow-x:auto;overflow-y:hidden;">
-            <FlareStack Row Gap="FlareSpacing.Small" Style="width:max-content;">
-                @for (var i = 1; i <= 24; i++)
+        <div @ref="_strip" style="overflow:auto;height:11rem;">
+            @* foreach, not for: the inner FlareStack turns its children into a RenderFragment that runs
+               after the loop has finished, and a `for` variable is one variable for the whole loop - every
+               row would render the value it held on exit. A foreach variable is per-iteration. *@
+            <FlareStack Gap="FlareSpacing.Small" Style="width:max-content;">
+                @foreach (var row in Enumerable.Range(1, 12))
                 {
-                    <FlareChip Variant="ChipVariant.Outlined" Label="@i.ToString()" />
+                    <FlareStack Row Gap="FlareSpacing.Small">
+                        @foreach (var col in Enumerable.Range(1, 12))
+                        {
+                            <FlareChip Variant="ChipVariant.Outlined" Label="@($"{row}.{col}")" />
+                        }
+                    </FlareStack>
                 }
             </FlareStack>
         </div>
-        <FlareProgress Value="@(_hProgress * 100)" />
+        <FlareStack Row Gap="FlareSpacing.Small">
+            <FlareProgress Value="@(_stripProgress * 100)" Style="flex:1;" />
+            <FlareProgress Value="@(_hProgress * 100)" Style="flex:1;" />
+        </FlareStack>
+        <FlareStack Row Wrap Gap="FlareSpacing.Large">
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_Offset <code>@_stripTop.ToString("F0")</code>
+            </FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_Progress <code>@_stripProgress.ToString("P0")</code>
+            </FlareText>
+            <FlareText Typo="TypographyScale.BodyMedium">
+                @GalleryStrings.Services_Scroll_Direction <code>@_stripDirection</code>
+            </FlareText>
+        </FlareStack>
         <FlareStack Row Wrap Gap="FlareSpacing.Large">
             <FlareText Typo="TypographyScale.BodyMedium">
                 @GalleryStrings.Services_Scroll_HScroll <code>@_left.ToString("F0")</code>
@@ -70,6 +93,10 @@
             <FlareText Typo="TypographyScale.BodyMedium">
                 @GalleryStrings.Services_Scroll_AtEdges <code>@_edges</code>
             </FlareText>
+        </FlareStack>
+        <FlareStack Row Wrap Gap="FlareSpacing.Small">
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => Scroll.ScrollToEndAsync(_strip).AsTask())">@GalleryStrings.Services_Scroll_ToEnd</FlareButton>
+            <FlareButton Variant="ButtonVariant.Tonal" OnClick="@(() => Scroll.ScrollToTopAsync(_strip).AsTask())">@GalleryStrings.Services_Scroll_ToTop</FlareButton>
         </FlareStack>
         <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodySmall">
             @GalleryStrings.Services_Scroll_HorizontalHint
@@ -93,6 +120,9 @@
     private double _left;
     private double _hProgress;
     private ScrollDirection _hDirection = ScrollDirection.None;
+    private double _stripTop;
+    private double _stripProgress;
+    private ScrollDirection _stripDirection = ScrollDirection.None;
     private string _overflows = "-";
     private string _edges = "-";
     private IAsyncDisposable? _stripSub;
@@ -117,6 +147,9 @@
         _left = change.Left;
         _hProgress = change.HorizontalProgress;
         if (change.HorizontalDirection != ScrollDirection.None) _hDirection = change.HorizontalDirection;
+        _stripTop = change.Top;
+        _stripProgress = change.Progress;
+        if (change.Direction != ScrollDirection.None) _stripDirection = change.Direction;
         _overflows = $"x {change.OverflowsHorizontally} / y {change.OverflowsVertically}";
         _edges = change.AtHorizontalStart ? "start" : change.AtHorizontalEnd ? "end" : "-";
         return InvokeAsync(StateHasChanged);

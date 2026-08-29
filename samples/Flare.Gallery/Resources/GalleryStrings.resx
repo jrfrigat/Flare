@@ -607,10 +607,10 @@
     <value>These values come from one throttled listener on the Gallery shell panel. Scroll this page to watch them move.</value>
   </data>
   <data name="Services_Scroll_HorizontalTitle" xml:space="preserve">
-    <value>Horizontal axis</value>
+    <value>Both axes</value>
   </data>
   <data name="Services_Scroll_HorizontalHint" xml:space="preserve">
-    <value>The same subscription reports both axes. Drag this strip sideways: the readout below is derived by Flare, not by this page.</value>
+    <value>This box scrolls both ways and is watched by a single subscription on the element itself. Everything below is derived by Flare, not by this page.</value>
   </data>
   <data name="Services_Scroll_HScroll" xml:space="preserve">
     <value>Left:</value>

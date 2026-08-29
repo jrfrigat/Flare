@@ -607,10 +607,10 @@
     <value>Эти значения приходят от одного слушателя с троттлингом на панели Gallery. Прокрутите страницу, чтобы увидеть, как они меняются.</value>
   </data>
   <data name="Services_Scroll_HorizontalTitle" xml:space="preserve">
-    <value>Горизонтальная ось</value>
+    <value>Обе оси</value>
   </data>
   <data name="Services_Scroll_HorizontalHint" xml:space="preserve">
-    <value>Одна и та же подписка сообщает обе оси. Протяните эту полосу вбок: показания ниже вычисляет Flare, а не эта страница.</value>
+    <value>Этот блок прокручивается в обе стороны, и за ним следит одна подписка на самом элементе. Всё, что ниже, вычисляет Flare, а не эта страница.</value>
   </data>
   <data name="Services_Scroll_HScroll" xml:space="preserve">
     <value>Слева:</value>

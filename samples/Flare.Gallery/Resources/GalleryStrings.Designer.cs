@@ -1627,7 +1627,7 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Horizontal axis
+        ///   Ищет локализованную строку, похожую на Both axes
         /// </summary>
         public static string Services_Scroll_HorizontalTitle {
             get {
@@ -1636,7 +1636,7 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
-        ///   Ищет локализованную строку, похожую на The same subscription reports both axes. Drag this strip sideways: the readout below is derived by Flare, not by this page.
+        ///   Ищет локализованную строку, похожую на This box scrolls both ways and is watched by a single subscription on the element itself. Everything below is derived by Flare, not by this page.
         /// </summary>
         public static string Services_Scroll_HorizontalHint {
             get {
