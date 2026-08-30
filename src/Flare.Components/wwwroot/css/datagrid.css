@@ -205,12 +205,20 @@
   width: var(--flare-datagrid-resize-handle-width);
   cursor: col-resize;
   background: var(--flare-color-outline-variant);
-  opacity: 0;
-  transition: opacity 0.15s;
+  transition: opacity var(--flare-motion-duration-short2) var(--flare-motion-easing-standard);
 }
 
-.flare-datagrid__th:hover .flare-datagrid__resize-handle {
-  opacity: 1;
+/* Hidden until the header is hovered - but only where hovering exists. On a touch screen there is no
+   hover to reveal it with, so the handle stays visible: an affordance nothing can uncover is an
+   affordance nobody finds. */
+@media (hover: hover) {
+  .flare-datagrid__resize-handle {
+    opacity: 0;
+  }
+
+  .flare-datagrid__th:hover .flare-datagrid__resize-handle {
+    opacity: 1;
+  }
 }
 
 .flare-datagrid__group-header td {

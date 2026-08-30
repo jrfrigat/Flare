@@ -125,12 +125,41 @@ h6[tabindex="-1"]:focus {
    layout question rather than a minimum-size one. See docs/issues/mobile-responsive-audit.md.
    ========================================================================== */
 @media (pointer: coarse) {
+    /* Controls that ARE the target and have room to grow. Measured at 375px before this rule existed:
+       the layout drawer's own toggle was 36px, the tab overflow arrows 36px, a calendar day 37px and a
+       small button 40px - every one of them under the lowest published minimum of the three (Apple 44,
+       Google 48, WCAG 2.2 AAA 44), and the drawer toggle is primary navigation. */
     .flare-pagination__btn,
     .flare-btn--icon-only,
     .flare-input__clear,
     .flare-autocomplete__clear,
-    .flare-numericfield__step {
+    .flare-numericfield__step,
+    .flare-layout-appbar__toggle,
+    .flare-tabs__scroll,
+    .flare-picker__day,
+    .flare-btn {
         min-inline-size: var(--flare-touch-target-min);
         min-block-size: var(--flare-touch-target-min);
+    }
+
+    /* Icons inside dense chrome - a chip's delete, a tab's close, a field's dropdown arrow. Growing the
+       ELEMENT would grow the chip and the tab with it, so the hit area grows instead: a centred
+       pseudo-element that takes the touch and leaves the layout alone. 14px, 20px and 22px measured. */
+    .flare-chip__close,
+    .flare-tabs__tab-close,
+    .flare-input__arrow {
+        position: relative;
+    }
+
+    .flare-chip__close::after,
+    .flare-tabs__tab-close::after,
+    .flare-input__arrow::after {
+        content: '';
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 50%;
+        translate: -50% -50%;
+        inline-size: var(--flare-touch-target-min);
+        block-size: var(--flare-touch-target-min);
     }
 }

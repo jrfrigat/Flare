@@ -10,6 +10,7 @@
 // the dotted call strings in the services still resolve.
 
 import { all, listen, registry, scrollParent } from './flare-dom.js';
+import { startDrag } from './flare-drag.js';
 
 // -- OTP input ---------------------------------------------------------------
 export const flareOtp = {
@@ -96,22 +97,19 @@ export const FlareLazy = (() => {
 // -- DataGrid column resize --------------------------------------------------
 export const FlareDataGrid = {
     initResize(thEl) {
-        let startX, startW;
         const handle = thEl.querySelector('.flare-datagrid__resize-handle');
         if (!handle || handle.dataset.flareResize) return; // idempotent: attach once
         handle.dataset.flareResize = '1';
-        handle.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            startW = thEl.offsetWidth;
-            e.preventDefault();
-            const table = thEl.closest('table');
-            const onMove = (mv) => {
-                thEl.style.width = Math.max(40, startW + mv.clientX - startX) + 'px';
-                FlareDataGrid.updateFrozenOffsets(table); // keep sticky offsets correct while resizing
-            };
-            const onUp = () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
-            document.addEventListener('mousemove', onMove);
-            document.addEventListener('mouseup', onUp);
+
+        let startW = 0;
+        let table = null;
+        startDrag(handle, {
+            cursor: 'col-resize',
+            onStart() { startW = thEl.offsetWidth; table = thEl.closest('table'); },
+            onMove(dx) {
+                thEl.style.width = Math.max(40, startW + dx) + 'px';
+                FlareDataGrid.updateFrozenOffsets(table);   // sticky offsets stay right during the drag
+            },
         });
     },
     initAllResizeHandles(tableEl) {

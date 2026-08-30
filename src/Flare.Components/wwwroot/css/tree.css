@@ -122,6 +122,9 @@
     transition: opacity var(--flare-motion-duration-short1);
 }
 
+/* Deliberately NOT revealed on a coarse pointer. Tree reorder runs on native HTML5 drag-and-drop,
+   which does not fire on touch at all, so showing the handle there would advertise a gesture that
+   cannot be performed. It becomes visible when the reorder does - see docs/issues/drag-model.md. */
 .flare-tree-item__row:hover .flare-tree-item__drag-handle {
     opacity: 1;
 }

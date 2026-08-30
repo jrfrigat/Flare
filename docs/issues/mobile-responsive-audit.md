@@ -1,6 +1,6 @@
 # Mobile: verify and finish the small-screen story
 
-**Status: OPEN - two of the six sweep items are now measured and clean; four remain.**
+**Status: OPEN - four of the six sweep items measured, three defect classes fixed; two remain.**
 Everything in "Measured" was read off a real 375x812 viewport against the Release build, not inferred
 from the CSS.
 
@@ -117,6 +117,51 @@ mask gets it too, a mask with letter placeholders correctly keeps the full keybo
 `tel` rather than `numeric` because the tel keypad carries +, * and #.
 
 `FlareNumericField`, `FlareOtpField`, `FlareTimePicker` and `FlareTimeSpanPicker` were already correct.
+
+### Touch targets on the dense chrome - EIGHT DEFECTS, FIXED
+
+The earlier pass fixed the square controls and left "the dense inline affordances" open. Measured at
+375px with a coarse pointer emulated, every interactive element under 44px - the lowest of the three
+published minimums (Apple 44, Google 48, WCAG 2.2 AAA 44):
+
+| Target | Was | Why it matters |
+| :-- | :-- | :-- |
+| `flare-chip__close` | **14px** | Deleting a chip |
+| `flare-tabs__tab-close` | 20px | Closing a tab |
+| `flare-input__arrow` | 22px | Opening a select |
+| `flare-layout-appbar__toggle` | 36px | **The drawer toggle - primary navigation** |
+| `flare-tabs__scroll` | 36px | Reaching an overflowed tab |
+| `flare-picker__day` | 37px | Picking a date |
+| `flare-btn` | 40px | Every small button |
+
+Two techniques, because they are two different problems. Controls that ARE the target and have room -
+the drawer toggle, the scroll arrows, a calendar day, a small button - grow to
+`--flare-touch-target-min`. Icons inside dense chrome cannot: growing a chip's delete to 48px grows the
+chip with it. Those get a centred `::after` that takes the touch and leaves the layout alone, so the
+chip still measures 14px and its target measures 48.
+
+Verified after the fix: drawer toggle 48, scroll arrows 48, calendar day 48, chip close 14px element
+inside a 48px hit area.
+
+### Gestures that a finger cannot perform - ONE FIXED, THE REST FILED
+
+**Column resize was mouse-only.** `FlareDataGrid.initResize` listened for `mousedown`/`mousemove`, which
+a touch drag never fires, and the handle was additionally hidden behind `:hover` - invisible AND inert.
+It now runs on the shared `startDrag` pointer primitive that already backs the splitter, the resizable
+container and the dialog move, and the handle stays visible where there is no hover to reveal it with.
+
+The rest is a bigger finding and has its own file: **[the drag model](drag-model.md)**. Four components
+implement drag-and-drop independently and three of them do not work on touch at all - tree reorder and
+both DataGrid reorders are desktop-only, because native HTML5 drag-and-drop does not fire on touch.
+`FlareTreeItem`'s drag handle is deliberately left hidden on coarse pointers until that lands: showing
+it would advertise a gesture that cannot be performed.
+
+### Overlays - MEASURED, no defects found
+
+Dialog, menu and the time picker opened at 375px: each fits horizontally and vertically, each has either
+a scrim or an action row of 56px controls, and none traps the reader. The listbox family could not be
+driven from the sweep (its triggers mount lazily and the automation could not reach them reliably), so
+**select, multi-select, autocomplete and the date picker panel remain unverified** rather than passing.
 
 ## What the audit still has to cover
 
