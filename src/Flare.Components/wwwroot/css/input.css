@@ -365,3 +365,25 @@
 .flare-input--error .flare-input__control { caret-color: var(--flare-color-error); }
 .flare-input--error .flare-input__icon--trailing,
 .flare-input--error .flare-input__arrow { color: var(--flare-color-error); }
+
+/* Password strength meter. The meter itself is FlareMeter, so nothing here paints a track - these rules
+   only place the row and set the two text styles under it. */
+.flare-input__strength {
+  display: flex;
+  flex-direction: column;
+  gap: var(--flare-spacing-1);
+  margin-top: var(--flare-spacing-2);
+}
+
+.flare-input__strength-label {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--flare-spacing-2);
+  font-family: var(--flare-typescale-label-small-font);
+  font-size: var(--flare-typescale-label-small-size);
+  color: var(--flare-color-on-surface);
+}
+
+.flare-input__strength-hint {
+  color: var(--flare-color-on-surface-variant);
+}

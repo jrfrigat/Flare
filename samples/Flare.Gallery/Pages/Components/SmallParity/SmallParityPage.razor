@@ -1,0 +1,24 @@
+@page "/components/utilities-batch"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Parity_Title - Flare</PageTitle>
+
+<GalleryPageTitle>
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Parity_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Parity_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Parity_Busy" DemoType="typeof(Examples.BusyDemo)"
+    Description="@GalleryStrings.Parity_BusyDesc" />
+
+<AutoDemoSection Title="@GalleryStrings.Parity_TimeSpan" DemoType="typeof(Examples.TimeSpanPickerDemo)"
+    Description="@GalleryStrings.Parity_TimeSpanDesc" />
+
+<AutoDemoSection Title="@GalleryStrings.Parity_Password" DemoType="typeof(Examples.PasswordStrengthDemo)"
+    Description="@GalleryStrings.Parity_PasswordDesc" />
+
+<AutoDemoSection Title="@GalleryStrings.Parity_NavGuard" DemoType="typeof(Examples.NavigationGuardDemo)"
+    Description="@GalleryStrings.Parity_NavGuardDesc" />
+
+<AutoDemoSection Title="@GalleryStrings.Parity_Ptr" DemoType="typeof(Examples.PullToRefreshDemo)"
+    Description="@GalleryStrings.Parity_PtrDesc" />

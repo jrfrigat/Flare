@@ -73,4 +73,10 @@ public static class Input
     public const string Required = "flare-input--required";
     /// <summary>The <c>flare-input__control-slot</c> CSS class: an unstyled wrapper that holds a form-field's control content.</summary>
     public const string ControlSlot = "flare-input__control-slot";
+    /// <summary>The <c>flare-input__strength</c> CSS class (the password strength meter row).</summary>
+    public const string Strength = "flare-input__strength";
+    /// <summary>The <c>flare-input__strength-label</c> CSS class.</summary>
+    public const string StrengthLabel = "flare-input__strength-label";
+    /// <summary>The <c>flare-input__strength-hint</c> CSS class (what would make it stronger).</summary>
+    public const string StrengthHint = "flare-input__strength-hint";
 }

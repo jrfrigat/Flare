@@ -1,0 +1,120 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using Microsoft.AspNetCore.Components.Routing
+@inject NavigationManager Nav
+@inject Flare.Components.Services.IUiJsService Ui
+@inject IDialogService Dialogs
+
+@* Stops a user leaving a half-filled form. Renders nothing.
+
+   Two halves, because a browser and a SPA lose work in different ways and only one of them can be
+   asked nicely:
+
+     Leaving the SITE  - beforeunload. The browser shows its own wording, always; a page has not been
+                         able to choose it since 2016, and Message is ignored here on purpose rather
+                         than being passed to something that discards it.
+     Leaving the PAGE  - RegisterLocationChangingHandler, which is pure C# and needs no JS at all. Here
+                         the prompt IS ours, so it goes through IDialogService and looks like the rest of
+                         the application instead of like the browser. That is the half MudBlazor's
+                         equivalent does not do. *@
+
+@code {
+    /// <summary>
+    /// Whether there is unsaved work. Nothing is guarded while this is false, and turning it false is
+    /// what a successful save does.
+    /// </summary>
+    [Parameter] public bool IsDirty { get; set; }
+
+    /// <summary>Body of the in-app confirmation. Falls back to a localized default.</summary>
+    [Parameter] public string? Message { get; set; }
+
+    /// <summary>Title of the in-app confirmation. Falls back to a localized default.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    /// <summary>Label of the button that abandons the changes.</summary>
+    [Parameter] public string? LeaveLabel { get; set; }
+
+    /// <summary>Label of the button that stays on the page.</summary>
+    [Parameter] public string? StayLabel { get; set; }
+
+    /// <summary>
+    /// Raised when the user confirms leaving, before the navigation proceeds. The place to discard a
+    /// draft or release a lock.
+    /// </summary>
+    [Parameter] public EventCallback OnConfirm { get; set; }
+
+    /// <summary>Raised when the user chooses to stay.</summary>
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    /// <summary>
+    /// Guards in-app navigation as well as leaving the site. Default true. Set false to keep only the
+    /// browser prompt - which is what an application that routes its own navigation wants.
+    /// </summary>
+    [Parameter] public bool GuardInAppNavigation { get; set; } = true;
+
+    // The guard renders nothing, so it contributes no class.
+    /// <inheritdoc />
+    protected override string ComponentCssClass => string.Empty;
+
+    private IDisposable? _registration;
+    private bool _promptOn;
+
+    /// <inheritdoc />
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (GuardInAppNavigation)
+            _registration = Nav.RegisterLocationChangingHandler(OnLocationChangingAsync);
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        if (IsDirty == _promptOn) return;
+        _promptOn = IsDirty;
+
+        // Best-effort: a stale cached module or a prerender pass has no window to listen on, and a form
+        // that cannot register a browser prompt should still guard in-app navigation.
+        try { await Ui.SetUnloadPromptAsync(IsDirty); }
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (InvalidOperationException) { }
+    }
+
+    private async ValueTask OnLocationChangingAsync(LocationChangingContext context)
+    {
+        if (!IsDirty) return;
+
+        var confirmed = await Dialogs.ConfirmAsync(
+            Title ?? FlareStrings.NavGuard_Title,
+            Message ?? FlareStrings.NavGuard_Message,
+            LeaveLabel ?? FlareStrings.NavGuard_Leave,
+            StayLabel ?? FlareStrings.NavGuard_Stay);
+
+        // Dismissing with Escape is not consent to lose the work, so only an explicit yes proceeds.
+        if (confirmed == true)
+        {
+            await OnConfirm.InvokeAsync();
+            return;
+        }
+
+        context.PreventNavigation();
+        await OnCancel.InvokeAsync();
+    }
+
+    /// <inheritdoc />
+    public override async ValueTask DisposeAsync()
+    {
+        _registration?.Dispose();
+        if (_promptOn)
+        {
+            try { await Ui.SetUnloadPromptAsync(false); }
+            catch (JSDisconnectedException) { }
+            catch (JSException) { }
+            catch (InvalidOperationException) { }
+        }
+
+        await base.DisposeAsync();
+    }
+}

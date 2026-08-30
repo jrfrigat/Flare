@@ -44,4 +44,7 @@ public sealed class UiJsService : FlareJsModule, IUiJsService
 
     /// <inheritdoc />
     public ValueTask<string?> OpenEyeDropperAsync() => InvokeAsync<string?>("openEyeDropper");
+
+    /// <inheritdoc />
+    public ValueTask SetUnloadPromptAsync(bool enabled) => InvokeVoidAsync("setUnloadPrompt", enabled);
 }

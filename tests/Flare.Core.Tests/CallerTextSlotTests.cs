@@ -45,6 +45,7 @@ public sealed class CallerTextSlotTests
         ["DataGridColumnPicker"] = "Label belongs to the generated per-column rows.",
         ["DataGridFilterBuilder"] = "Label belongs to the generated per-rule rows.",
         ["FlareChart"] = "Title and Description are two strings; a single ChildContent could not say which.",
+        ["FlareNavigationGuard"] = "Renders nothing; Title and Message are handed to IDialogService.ConfirmAsync, which takes strings.",
     };
 
 

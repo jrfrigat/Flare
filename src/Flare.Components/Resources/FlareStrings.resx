@@ -252,4 +252,26 @@
   <data name="Transfer_MoveAllToSource" xml:space="preserve"><value>Move all to source</value></data>
 
   <data name="Barcode_Invalid" xml:space="preserve"><value>Cannot encode this value</value></data>
+  <data name="NavGuard_Title" xml:space="preserve"><value>Unsaved changes</value></data>
+  <data name="NavGuard_Message" xml:space="preserve"><value>You have changes that have not been saved. Leaving this page will discard them.</value></data>
+  <data name="NavGuard_Leave" xml:space="preserve"><value>Discard and leave</value></data>
+  <data name="NavGuard_Stay" xml:space="preserve"><value>Stay on this page</value></data>
+  <data name="Password_VeryWeak" xml:space="preserve"><value>Very weak</value></data>
+  <data name="Password_Weak" xml:space="preserve"><value>Weak</value></data>
+  <data name="Password_Fair" xml:space="preserve"><value>Fair</value></data>
+  <data name="Password_Good" xml:space="preserve"><value>Good</value></data>
+  <data name="Password_Strong" xml:space="preserve"><value>Strong</value></data>
+  <data name="Password_MakeLonger" xml:space="preserve"><value>Make it longer.</value></data>
+  <data name="Password_MixCharacters" xml:space="preserve"><value>Mix upper case, digits and symbols.</value></data>
+  <data name="Password_TooCommon" xml:space="preserve"><value>This is a commonly used password.</value></data>
+  <data name="TimeSpan_Duration" xml:space="preserve"><value>Duration</value></data>
+  <data name="TimeSpan_ToggleSign" xml:space="preserve"><value>Toggle positive or negative</value></data>
+  <data name="TimeSpan_Days" xml:space="preserve"><value>Days</value></data>
+  <data name="TimeSpan_Hours" xml:space="preserve"><value>Hours</value></data>
+  <data name="TimeSpan_Minutes" xml:space="preserve"><value>Minutes</value></data>
+  <data name="TimeSpan_Seconds" xml:space="preserve"><value>Seconds</value></data>
+  <data name="TimeSpan_DaysShort" xml:space="preserve"><value>d</value></data>
+  <data name="TimeSpan_HoursShort" xml:space="preserve"><value>h</value></data>
+  <data name="TimeSpan_MinutesShort" xml:space="preserve"><value>m</value></data>
+  <data name="TimeSpan_SecondsShort" xml:space="preserve"><value>s</value></data>
 </root>

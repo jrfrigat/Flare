@@ -3140,4 +3140,130 @@
   <data name="Barcode_TextAbove" xml:space="preserve">
     <value>Текст сверху</value>
   </data>
+  <data name="Parity_Title" xml:space="preserve">
+    <value>Утилиты форм и состояния</value>
+  </data>
+  <data name="Parity_Subtitle" xml:space="preserve">
+    <value>Пять небольших компонентов, которые иначе каждое приложение пишет вручную: оверлей занятости с настоящими таймингами, поле длительности, индикатор надёжности пароля, защита от потери несохранённого и pull-to-refresh.</value>
+  </data>
+  <data name="Parity_Busy" xml:space="preserve">
+    <value>Оверлей занятости</value>
+  </data>
+  <data name="Parity_BusyDesc" xml:space="preserve">
+    <value>Два таймера - вся причина, по которой это компонент, а не div со спиннером. Delay не даёт быстрой работе мигнуть индикатором; MinDuration не даёт индикатору мигнуть, когда он уже показан. Задайте работу короче задержки - и не появится ничего: это поведение, а не отсутствующая функция.</value>
+  </data>
+  <data name="Parity_TimeSpan" xml:space="preserve">
+    <value>Поле длительности</value>
+  </data>
+  <data name="Parity_TimeSpanDesc" xml:space="preserve">
+    <value>У Flare четыре пикера, отвечающих на «когда», и не было ни одного на «сколько». Сегменты, а не одно текстовое поле: «2d 03:15» разбирается шестью способами, а четыре числа - одним. Старший показанный сегмент вбирает всё, что выше, поэтому поле только с часами читается как 50, а не как 2.</value>
+  </data>
+  <data name="Parity_Password" xml:space="preserve">
+    <value>Надёжность пароля</value>
+  </data>
+  <data name="Parity_PasswordDesc" xml:space="preserve">
+    <value>Параметр поля, а не отдельный компонент рядом: отдельному пришлось бы сообщать пароль второй раз. Правило - делегат, потому что политика паролей это решение приложения; правило по умолчанию считает прежде всего длину, а разнообразие измеряет числом различных символов, поэтому парольная фраза обходит Passw0rd!.</value>
+  </data>
+  <data name="Parity_NavGuard" xml:space="preserve">
+    <value>Защита несохранённого</value>
+  </data>
+  <data name="Parity_NavGuardDesc" xml:space="preserve">
+    <value>Две половины. Уход с САЙТА даёт браузерное окно, формулировку которого страница не выбирает с 2016 года. Уход со СТРАНИЦЫ даёт диалог Flare через IDialogService, поэтому выглядит как остальное приложение - именно этой половины у эталонных библиотек нет.</value>
+  </data>
+  <data name="Parity_Ptr" xml:space="preserve">
+    <value>Pull to refresh</value>
+  </data>
+  <data name="Parity_PtrDesc" xml:space="preserve">
+    <value>Pointer-события, а не touch: перетаскивание мышью работает так же, как палец, - и это единственный способ протестировать жест на десктопе. Позиция прокрутки читается один раз, когда палец опускается, и жест игнорируется, если список не в начале.</value>
+  </data>
+  <data name="Busy_WorkMs" xml:space="preserve">
+    <value>Работа, мс</value>
+  </data>
+  <data name="Busy_Delay" xml:space="preserve">
+    <value>Задержка, мс</value>
+  </data>
+  <data name="Busy_MinDuration" xml:space="preserve">
+    <value>Мин. длительность, мс</value>
+  </data>
+  <data name="Busy_Run" xml:space="preserve">
+    <value>Запустить работу</value>
+  </data>
+  <data name="Busy_QuickCase" xml:space="preserve">
+    <value>Задать быстрый случай</value>
+  </data>
+  <data name="Busy_Loading" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="Busy_PanelTitle" xml:space="preserve">
+    <value>Заказ 4821</value>
+  </data>
+  <data name="Busy_PanelBody" xml:space="preserve">
+    <value>Панель сохраняет раскладку и позицию прокрутки, пока закрыта.</value>
+  </data>
+  <data name="Busy_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Busy_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Busy_Hint" xml:space="preserve">
+    <value>В быстром случае работа заканчивается раньше задержки, и оверлей не появляется вовсе.</value>
+  </data>
+  <data name="TimeSpanDemo_Estimate" xml:space="preserve">
+    <value>Оценка</value>
+  </data>
+  <data name="TimeSpanDemo_EstimateHelp" xml:space="preserve">
+    <value>Все четыре сегмента.</value>
+  </data>
+  <data name="TimeSpanDemo_Logged" xml:space="preserve">
+    <value>Списано за сегодня</value>
+  </data>
+  <data name="TimeSpanDemo_LoggedHelp" xml:space="preserve">
+    <value>Часы и минуты, с потолком в 24 часа.</value>
+  </data>
+  <data name="TimeSpanDemo_Variance" xml:space="preserve">
+    <value>Отклонение</value>
+  </data>
+  <data name="TimeSpanDemo_VarianceHelp" xml:space="preserve">
+    <value>Со знаком: перерасход - это отрицательная длительность.</value>
+  </data>
+  <data name="PwStrength_Default" xml:space="preserve">
+    <value>Новый пароль</value>
+  </data>
+  <data name="PwStrength_DefaultHelp" xml:space="preserve">
+    <value>Правило по умолчанию.</value>
+  </data>
+  <data name="PwStrength_Custom" xml:space="preserve">
+    <value>Пароль (корпоративная политика)</value>
+  </data>
+  <data name="PwStrength_CustomHelp" xml:space="preserve">
+    <value>Правило от вызывающего кода: 16 символов и спецсимвол.</value>
+  </data>
+  <data name="PwStrength_NeedSixteen" xml:space="preserve">
+    <value>Не менее 16 символов.</value>
+  </data>
+  <data name="PwStrength_NeedSymbol" xml:space="preserve">
+    <value>Хотя бы один спецсимвол.</value>
+  </data>
+  <data name="NavGuardDemo_Draft" xml:space="preserve">
+    <value>Черновик</value>
+  </data>
+  <data name="NavGuardDemo_DraftHelp" xml:space="preserve">
+    <value>Напечатайте что-нибудь и попробуйте уйти со страницы.</value>
+  </data>
+  <data name="NavGuardDemo_Dirty" xml:space="preserve">
+    <value>Есть несохранённое</value>
+  </data>
+  <data name="NavGuardDemo_Guarded" xml:space="preserve">
+    <value>Под защитой</value>
+  </data>
+  <data name="NavGuardDemo_Free" xml:space="preserve">
+    <value>Можно уходить</value>
+  </data>
+  <data name="Ptr_Hint" xml:space="preserve">
+    <value>Потяните список вниз от самого верха - пальцем или мышью.</value>
+  </data>
+  <data name="Ptr_Refreshed" xml:space="preserve">
+    <value>Обновлений:</value>
+  </data>
 </root>

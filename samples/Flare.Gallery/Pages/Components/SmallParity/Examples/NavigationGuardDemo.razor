@@ -1,0 +1,24 @@
+@* Two halves. Leaving the SITE gets the browser's own prompt, whose wording no page has been able to
+   choose since 2016. Leaving the PAGE gets a Flare dialog, which looks like the rest of the application -
+   that is the half the reference frameworks do not do. Try the nav links on the left while dirty. *@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:30rem;">
+
+    <FlareNavigationGuard IsDirty="_dirty" OnConfirm="@(() => _dirty = false)" />
+
+    <FlareTextField @bind-Value="_draft"
+                    Label="@GalleryStrings.NavGuardDemo_Draft"
+                    HelperText="@GalleryStrings.NavGuardDemo_DraftHelp"
+                    Immediate="true" />
+
+    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+        <FlareSwitch @bind-Value="_dirty" Label="@GalleryStrings.NavGuardDemo_Dirty" />
+        <FlareChip Label="@(_dirty ? GalleryStrings.NavGuardDemo_Guarded : GalleryStrings.NavGuardDemo_Free)"
+                   Color="@(_dirty ? FlareColor.Warning : FlareColor.Success)"
+                   Size="ChipSize.Sm" />
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private string? _draft;
+    private bool _dirty;
+}

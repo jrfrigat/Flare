@@ -1,0 +1,49 @@
+/* FlareBusy: a dim layer over its own subtree, positioned against the component rather than the page.
+
+   The scrim colour and opacity come from the shared scrim tokens rather than new ones - a busy veil and
+   a dialog scrim are the same statement ("this is covered"), and giving them separate tokens would let a
+   theme make them disagree for no reason. */
+
+.flare-busy {
+  position: relative;
+}
+
+.flare-busy__content {
+  transition: filter var(--flare-motion-duration-short4) var(--flare-motion-easing-standard);
+}
+
+.flare-busy--active .flare-busy__content {
+  filter: blur(1px);
+}
+
+.flare-busy__veil {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--flare-spacing-4);
+  z-index: var(--flare-z-overlay);
+  background: color-mix(in srgb, var(--flare-color-scrim) calc(var(--flare-scrim-opacity) * 100%), transparent);
+  animation: flare-busy-in var(--flare-motion-duration-short4) var(--flare-motion-easing-standard);
+}
+
+.flare-busy__label {
+  font-family: var(--flare-typescale-body-medium-font);
+  font-size: var(--flare-typescale-body-medium-size);
+  color: var(--flare-color-on-surface);
+  text-align: center;
+}
+
+@keyframes flare-busy-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* The fade is the affordance, not decoration - but a reader who asked for less motion gets the veil
+   without it rather than losing the veil. */
+@media (prefers-reduced-motion: reduce) {
+  .flare-busy__veil { animation: none; }
+  .flare-busy--active .flare-busy__content { filter: none; }
+}

@@ -1,0 +1,74 @@
+/* FlareTimeSpanPicker: segments inside the shared field frame, so everything about the frame - label,
+   helper text, error, variant, size - is inherited rather than restated here. These rules only lay the
+   segments out and take the browser's spinner off the number inputs, which would otherwise put four
+   sets of arrows in one field. */
+
+/* The frame owns the field's look; the root only has to stop the picker collapsing to its segments'
+   intrinsic width inside a flex parent, which is what a bare inline-flex chrome would do. */
+.flare-timespan {
+  min-width: 0;
+}
+
+.flare-timespan__segments {
+  display: flex;
+  align-items: baseline;
+  gap: var(--flare-spacing-1);
+  width: 100%;
+}
+
+.flare-timespan__segment {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+}
+
+.flare-timespan__input {
+  width: 3ch;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--flare-color-on-surface);
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  padding: 0;
+}
+
+.flare-timespan__input:focus {
+  outline: none;
+}
+
+/* The frame owns the focus ring, so a segment showing its own would draw a second one inside the first.
+   Four spinners in one field is likewise noise: the arrow keys and the wheel still increment. */
+.flare-timespan__input::-webkit-outer-spin-button,
+.flare-timespan__input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.flare-timespan__input {
+  appearance: textfield;
+}
+
+.flare-timespan__unit {
+  color: var(--flare-color-on-surface-variant);
+  font-family: var(--flare-typescale-label-small-font);
+  font-size: var(--flare-typescale-label-small-size);
+}
+
+.flare-timespan__sign {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--flare-color-on-surface-variant);
+  font-family: var(--flare-typescale-body-large-font);
+  font-size: var(--flare-typescale-body-large-size);
+  padding: 0 var(--flare-spacing-1);
+  border-radius: var(--flare-shape-extra-small);
+}
+
+.flare-timespan__sign:disabled {
+  cursor: default;
+  opacity: var(--flare-state-disabled-opacity);
+}

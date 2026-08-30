@@ -10373,5 +10373,383 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Form and state utilities.
+        /// </summary>
+        public static string Parity_Title {
+            get {
+                return ResourceManager.GetString("Parity_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Five small components that every application otherwise writes by hand: a busy overlay with real timings, a duration field, a password strength meter, an unsaved-changes guard and pull-to-refresh..
+        /// </summary>
+        public static string Parity_Subtitle {
+            get {
+                return ResourceManager.GetString("Parity_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Busy overlay.
+        /// </summary>
+        public static string Parity_Busy {
+            get {
+                return ResourceManager.GetString("Parity_Busy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The two timers are the reason this is a component and not a div with a spinner in it. Delay stops fast work flashing an indicator; MinDuration stops the indicator flickering once it is up. Set the work shorter than the delay and nothing appears at all - that is the behaviour, not a missing feature..
+        /// </summary>
+        public static string Parity_BusyDesc {
+            get {
+                return ResourceManager.GetString("Parity_BusyDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duration field.
+        /// </summary>
+        public static string Parity_TimeSpan {
+            get {
+                return ResourceManager.GetString("Parity_TimeSpan", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Flare has four pickers that answer "when" and none that answered "how long". Segments rather than one text box, because "2d 03:15" parses six ways and four spinnable numbers parse one way. The largest shown segment absorbs everything above it, so an hours-only field reads 50 rather than 2..
+        /// </summary>
+        public static string Parity_TimeSpanDesc {
+            get {
+                return ResourceManager.GetString("Parity_TimeSpanDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password strength.
+        /// </summary>
+        public static string Parity_Password {
+            get {
+                return ResourceManager.GetString("Parity_Password", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A parameter on the field rather than a component beside it - a separate one would have to be told the password a second time. The rule is a delegate because password policy is an application decision; the default scores on length first and measures variety as distinct characters, so a passphrase beats Passw0rd!..
+        /// </summary>
+        public static string Parity_PasswordDesc {
+            get {
+                return ResourceManager.GetString("Parity_PasswordDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsaved-changes guard.
+        /// </summary>
+        public static string Parity_NavGuard {
+            get {
+                return ResourceManager.GetString("Parity_NavGuard", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Two halves. Leaving the site gets the browser prompt, whose wording no page has been able to choose since 2016. Leaving the page gets a Flare dialog through IDialogService, so it looks like the rest of the application - the half the reference frameworks do not do..
+        /// </summary>
+        public static string Parity_NavGuardDesc {
+            get {
+                return ResourceManager.GetString("Parity_NavGuardDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pull to refresh.
+        /// </summary>
+        public static string Parity_Ptr {
+            get {
+                return ResourceManager.GetString("Parity_Ptr", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Pointer events rather than touch events, so a mouse drag works as well as a finger - which is the only way this gesture is testable on a desktop. It reads the scroll position once when the finger lands and ignores the gesture unless the list is at the top..
+        /// </summary>
+        public static string Parity_PtrDesc {
+            get {
+                return ResourceManager.GetString("Parity_PtrDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Work, ms.
+        /// </summary>
+        public static string Busy_WorkMs {
+            get {
+                return ResourceManager.GetString("Busy_WorkMs", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Delay, ms.
+        /// </summary>
+        public static string Busy_Delay {
+            get {
+                return ResourceManager.GetString("Busy_Delay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Min duration, ms.
+        /// </summary>
+        public static string Busy_MinDuration {
+            get {
+                return ResourceManager.GetString("Busy_MinDuration", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Run the work.
+        /// </summary>
+        public static string Busy_Run {
+            get {
+                return ResourceManager.GetString("Busy_Run", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Set the quick case.
+        /// </summary>
+        public static string Busy_QuickCase {
+            get {
+                return ResourceManager.GetString("Busy_QuickCase", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Loading.
+        /// </summary>
+        public static string Busy_Loading {
+            get {
+                return ResourceManager.GetString("Busy_Loading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Order 4821.
+        /// </summary>
+        public static string Busy_PanelTitle {
+            get {
+                return ResourceManager.GetString("Busy_PanelTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The panel keeps its layout and its scroll position while it is covered..
+        /// </summary>
+        public static string Busy_PanelBody {
+            get {
+                return ResourceManager.GetString("Busy_PanelBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Save.
+        /// </summary>
+        public static string Busy_Save {
+            get {
+                return ResourceManager.GetString("Busy_Save", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cancel.
+        /// </summary>
+        public static string Busy_Cancel {
+            get {
+                return ResourceManager.GetString("Busy_Cancel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на With the quick case set, the work finishes before the delay elapses and no overlay appears at all..
+        /// </summary>
+        public static string Busy_Hint {
+            get {
+                return ResourceManager.GetString("Busy_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Estimate.
+        /// </summary>
+        public static string TimeSpanDemo_Estimate {
+            get {
+                return ResourceManager.GetString("TimeSpanDemo_Estimate", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на All four segments..
+        /// </summary>
+        public static string TimeSpanDemo_EstimateHelp {
+            get {
+                return ResourceManager.GetString("TimeSpanDemo_EstimateHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Logged today.
+        /// </summary>
+        public static string TimeSpanDemo_Logged {
+            get {
+                return ResourceManager.GetString("TimeSpanDemo_Logged", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hours and minutes, capped at 24 hours..
+        /// </summary>
+        public static string TimeSpanDemo_LoggedHelp {
+            get {
+                return ResourceManager.GetString("TimeSpanDemo_LoggedHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Variance.
+        /// </summary>
+        public static string TimeSpanDemo_Variance {
+            get {
+                return ResourceManager.GetString("TimeSpanDemo_Variance", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Negatable: an overrun is a negative duration..
+        /// </summary>
+        public static string TimeSpanDemo_VarianceHelp {
+            get {
+                return ResourceManager.GetString("TimeSpanDemo_VarianceHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на New password.
+        /// </summary>
+        public static string PwStrength_Default {
+            get {
+                return ResourceManager.GetString("PwStrength_Default", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The default rule..
+        /// </summary>
+        public static string PwStrength_DefaultHelp {
+            get {
+                return ResourceManager.GetString("PwStrength_DefaultHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Password (corporate policy).
+        /// </summary>
+        public static string PwStrength_Custom {
+            get {
+                return ResourceManager.GetString("PwStrength_Custom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A caller-supplied rule: 16 characters and a symbol..
+        /// </summary>
+        public static string PwStrength_CustomHelp {
+            get {
+                return ResourceManager.GetString("PwStrength_CustomHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на At least 16 characters..
+        /// </summary>
+        public static string PwStrength_NeedSixteen {
+            get {
+                return ResourceManager.GetString("PwStrength_NeedSixteen", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на At least one symbol..
+        /// </summary>
+        public static string PwStrength_NeedSymbol {
+            get {
+                return ResourceManager.GetString("PwStrength_NeedSymbol", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Draft.
+        /// </summary>
+        public static string NavGuardDemo_Draft {
+            get {
+                return ResourceManager.GetString("NavGuardDemo_Draft", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Type here, then try to navigate away..
+        /// </summary>
+        public static string NavGuardDemo_DraftHelp {
+            get {
+                return ResourceManager.GetString("NavGuardDemo_DraftHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsaved changes.
+        /// </summary>
+        public static string NavGuardDemo_Dirty {
+            get {
+                return ResourceManager.GetString("NavGuardDemo_Dirty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Guarded.
+        /// </summary>
+        public static string NavGuardDemo_Guarded {
+            get {
+                return ResourceManager.GetString("NavGuardDemo_Guarded", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Free to leave.
+        /// </summary>
+        public static string NavGuardDemo_Free {
+            get {
+                return ResourceManager.GetString("NavGuardDemo_Free", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Drag the list downward from the top - with a finger or with the mouse..
+        /// </summary>
+        public static string Ptr_Hint {
+            get {
+                return ResourceManager.GetString("Ptr_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Refreshes:.
+        /// </summary>
+        public static string Ptr_Refreshed {
+            get {
+                return ResourceManager.GetString("Ptr_Refreshed", resourceCulture);
+            }
+        }
+
     }
 }

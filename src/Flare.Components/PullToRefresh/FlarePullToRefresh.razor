@@ -1,0 +1,146 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+@inject IScrollService Scroll
+
+@* Pull down past a threshold to refresh. Pointer events rather than touch events on purpose: pointer
+   covers pen and a mouse drag, which is the only way this gesture is testable on a desktop at all.
+
+   It no-ops unless the scroll container is already at the top - otherwise a normal downward scroll
+   halfway down a list would arm the refresh, which is how this gesture goes wrong everywhere it goes
+   wrong. The check is one read through IScrollService when the finger lands - not per move. *@
+
+<div class="@BuildCssClass(_busy ? Css.Classes.PullToRefresh.Refreshing : null)"
+     style="@Style"
+     @ref="_root"
+     @onpointerdown="OnDown"
+     @onpointermove="OnMove"
+     @onpointerup="OnUp"
+     @onpointercancel="OnUp"
+     @attributes="AdditionalAttributes">
+
+    <div class="@Css.Classes.PullToRefresh.Indicator"
+         style="height:@(F(_pull))px"
+         aria-hidden="@(_pull <= 0 ? "true" : null)">
+        @if (IndicatorContent is not null)
+        {
+            @IndicatorContent(_progress)
+        }
+        else if (_busy)
+        {
+            <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Sm" Color="FlareColor.Primary" />
+        }
+        else if (_pull > 0)
+        {
+            @* The arrow turns over as the pull crosses the threshold: the rotation IS the "let go now"
+               signal, so it does not need a second label to say it. *@
+            <FlareIconView Value="@FlareIcons.ArrowDownward"
+                           Class="@Css.Classes.PullToRefresh.Arrow"
+                           Style="@($"transform:rotate({F(_progress >= 1 ? 180 : 0)}deg)")" />
+        }
+    </div>
+
+    <div class="@Css.Classes.PullToRefresh.Content" style="transform:translateY(@(F(_pull))px)">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    /// <summary>The scrollable content the gesture pulls.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Raised when the pull passes <see cref="Threshold"/> and is released. Awaited: the
+    /// indicator stays up until it completes.</summary>
+    [Parameter] public EventCallback OnRefresh { get; set; }
+
+    /// <summary>How far the pull must reach to arm the refresh, in pixels. Default 64.</summary>
+    [Parameter] public double Threshold { get; set; } = 64;
+
+    /// <summary>How far the content can be dragged, in pixels. Default 96 - past the threshold, so there
+    /// is somewhere to pull to once it is armed.</summary>
+    [Parameter] public double MaxPull { get; set; } = 96;
+
+    /// <summary>Turns the gesture off without unwrapping the content.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>
+    /// The scroller the gesture belongs to, as a CSS selector. Null watches this component's own
+    /// element, which is right when it is the scroller; name the ancestor when it is not.
+    /// </summary>
+    [Parameter] public string? ScrollSelector { get; set; }
+
+    /// <summary>Replaces the indicator, receiving how far through the pull is (0 to 1, past 1 once armed).</summary>
+    [Parameter] public RenderFragment<double>? IndicatorContent { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.PullToRefresh.Root;
+
+    private ElementReference _root;
+    private double _startY;
+    private double _pull;
+    private bool _dragging;
+    private bool _busy;
+
+    private double _progress => Threshold > 0 ? _pull / Threshold : 0;
+
+    // One interop read per gesture, at the moment the finger lands - not per move. A pull that starts
+    // halfway down a list is an ordinary scroll, and arming the refresh there is how this gesture goes
+    // wrong everywhere it goes wrong.
+    private async Task OnDown(PointerEventArgs e)
+    {
+        if (Disabled || _busy) return;
+
+        try
+        {
+            var target = ScrollSelector is { Length: > 0 } sel
+                ? ScrollTarget.From(sel)
+                : ScrollTarget.From(_root);
+            var position = await Scroll.GetPositionAsync(target);
+            if (!position.AtStart) return;
+        }
+        // Stale module or no circuit: fall through and let the gesture work rather than blocking it.
+        catch (JSDisconnectedException) { }
+        catch (JSException) { }
+        catch (InvalidOperationException) { }
+
+        _dragging = true;
+        _startY = e.ClientY;
+    }
+
+    private void OnMove(PointerEventArgs e)
+    {
+        if (!_dragging || _busy) return;
+
+        var delta = e.ClientY - _startY;
+        if (delta <= 0) { _pull = 0; return; }
+
+        // Rubber-banding, not a 1:1 follow: the content lags the finger more the further it is dragged,
+        // which is what makes the gesture feel resisted rather than loose, and what stops MaxPull being a
+        // wall the finger hits.
+        _pull = Math.Min(MaxPull, delta * 0.5);
+    }
+
+    private async Task OnUp(PointerEventArgs e)
+    {
+        if (!_dragging) return;
+        _dragging = false;
+
+        if (_pull < Threshold || _busy) { _pull = 0; return; }
+
+        _busy = true;
+        _pull = Threshold;   // settle at the threshold while the work runs
+        StateHasChanged();
+
+        try
+        {
+            await OnRefresh.InvokeAsync();
+        }
+        finally
+        {
+            _busy = false;
+            _pull = 0;
+        }
+    }
+
+    private static string F(double v) => v.ToString("F0", CultureInfo.InvariantCulture);
+}

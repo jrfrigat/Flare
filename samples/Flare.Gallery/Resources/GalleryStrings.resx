@@ -3140,4 +3140,130 @@
   <data name="Barcode_TextAbove" xml:space="preserve">
     <value>Text above</value>
   </data>
+  <data name="Parity_Title" xml:space="preserve">
+    <value>Form and state utilities</value>
+  </data>
+  <data name="Parity_Subtitle" xml:space="preserve">
+    <value>Five small components that every application otherwise writes by hand: a busy overlay with real timings, a duration field, a password strength meter, an unsaved-changes guard and pull-to-refresh.</value>
+  </data>
+  <data name="Parity_Busy" xml:space="preserve">
+    <value>Busy overlay</value>
+  </data>
+  <data name="Parity_BusyDesc" xml:space="preserve">
+    <value>The two timers are the reason this is a component and not a div with a spinner in it. Delay stops fast work flashing an indicator; MinDuration stops the indicator flickering once it is up. Set the work shorter than the delay and nothing appears at all - that is the behaviour, not a missing feature.</value>
+  </data>
+  <data name="Parity_TimeSpan" xml:space="preserve">
+    <value>Duration field</value>
+  </data>
+  <data name="Parity_TimeSpanDesc" xml:space="preserve">
+    <value>Flare has four pickers that answer &quot;when&quot; and none that answered &quot;how long&quot;. Segments rather than one text box, because &quot;2d 03:15&quot; parses six ways and four spinnable numbers parse one way. The largest shown segment absorbs everything above it, so an hours-only field reads 50 rather than 2.</value>
+  </data>
+  <data name="Parity_Password" xml:space="preserve">
+    <value>Password strength</value>
+  </data>
+  <data name="Parity_PasswordDesc" xml:space="preserve">
+    <value>A parameter on the field rather than a component beside it - a separate one would have to be told the password a second time. The rule is a delegate because password policy is an application decision; the default scores on length first and measures variety as distinct characters, so a passphrase beats Passw0rd!.</value>
+  </data>
+  <data name="Parity_NavGuard" xml:space="preserve">
+    <value>Unsaved-changes guard</value>
+  </data>
+  <data name="Parity_NavGuardDesc" xml:space="preserve">
+    <value>Two halves. Leaving the site gets the browser prompt, whose wording no page has been able to choose since 2016. Leaving the page gets a Flare dialog through IDialogService, so it looks like the rest of the application - the half the reference frameworks do not do.</value>
+  </data>
+  <data name="Parity_Ptr" xml:space="preserve">
+    <value>Pull to refresh</value>
+  </data>
+  <data name="Parity_PtrDesc" xml:space="preserve">
+    <value>Pointer events rather than touch events, so a mouse drag works as well as a finger - which is the only way this gesture is testable on a desktop. It reads the scroll position once when the finger lands and ignores the gesture unless the list is at the top.</value>
+  </data>
+  <data name="Busy_WorkMs" xml:space="preserve">
+    <value>Work, ms</value>
+  </data>
+  <data name="Busy_Delay" xml:space="preserve">
+    <value>Delay, ms</value>
+  </data>
+  <data name="Busy_MinDuration" xml:space="preserve">
+    <value>Min duration, ms</value>
+  </data>
+  <data name="Busy_Run" xml:space="preserve">
+    <value>Run the work</value>
+  </data>
+  <data name="Busy_QuickCase" xml:space="preserve">
+    <value>Set the quick case</value>
+  </data>
+  <data name="Busy_Loading" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="Busy_PanelTitle" xml:space="preserve">
+    <value>Order 4821</value>
+  </data>
+  <data name="Busy_PanelBody" xml:space="preserve">
+    <value>The panel keeps its layout and its scroll position while it is covered.</value>
+  </data>
+  <data name="Busy_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Busy_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Busy_Hint" xml:space="preserve">
+    <value>With the quick case set, the work finishes before the delay elapses and no overlay appears at all.</value>
+  </data>
+  <data name="TimeSpanDemo_Estimate" xml:space="preserve">
+    <value>Estimate</value>
+  </data>
+  <data name="TimeSpanDemo_EstimateHelp" xml:space="preserve">
+    <value>All four segments.</value>
+  </data>
+  <data name="TimeSpanDemo_Logged" xml:space="preserve">
+    <value>Logged today</value>
+  </data>
+  <data name="TimeSpanDemo_LoggedHelp" xml:space="preserve">
+    <value>Hours and minutes, capped at 24 hours.</value>
+  </data>
+  <data name="TimeSpanDemo_Variance" xml:space="preserve">
+    <value>Variance</value>
+  </data>
+  <data name="TimeSpanDemo_VarianceHelp" xml:space="preserve">
+    <value>Negatable: an overrun is a negative duration.</value>
+  </data>
+  <data name="PwStrength_Default" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="PwStrength_DefaultHelp" xml:space="preserve">
+    <value>The default rule.</value>
+  </data>
+  <data name="PwStrength_Custom" xml:space="preserve">
+    <value>Password (corporate policy)</value>
+  </data>
+  <data name="PwStrength_CustomHelp" xml:space="preserve">
+    <value>A caller-supplied rule: 16 characters and a symbol.</value>
+  </data>
+  <data name="PwStrength_NeedSixteen" xml:space="preserve">
+    <value>At least 16 characters.</value>
+  </data>
+  <data name="PwStrength_NeedSymbol" xml:space="preserve">
+    <value>At least one symbol.</value>
+  </data>
+  <data name="NavGuardDemo_Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="NavGuardDemo_DraftHelp" xml:space="preserve">
+    <value>Type here, then try to navigate away.</value>
+  </data>
+  <data name="NavGuardDemo_Dirty" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+  <data name="NavGuardDemo_Guarded" xml:space="preserve">
+    <value>Guarded</value>
+  </data>
+  <data name="NavGuardDemo_Free" xml:space="preserve">
+    <value>Free to leave</value>
+  </data>
+  <data name="Ptr_Hint" xml:space="preserve">
+    <value>Drag the list downward from the top - with a finger or with the mouse.</value>
+  </data>
+  <data name="Ptr_Refreshed" xml:space="preserve">
+    <value>Refreshes:</value>
+  </data>
 </root>

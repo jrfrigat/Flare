@@ -153,6 +153,23 @@ function _handleShortcutKeyDown(e) {
     _shortcutDotNetRef.invokeMethodAsync('HandleKeyDown', combo).catch(() => {});
 }
 
+// -- Unload prompt -----------------------------------------------------------
+// One listener, toggled, rather than add/remove per call: a page may have several guarded forms and the
+// browser only ever asks once, so what matters is whether ANY of them is dirty - which is the flag.
+let _unloadOff = null;
+
+export function setUnloadPrompt(enabled) {
+    if (enabled && !_unloadOff) {
+        // preventDefault is the modern spelling and returnValue the one older browsers still read; both
+        // are required, and neither can choose the wording - browsers have shown their own since 2016.
+        const handler = (e) => { e.preventDefault(); e.returnValue = ''; };
+        _unloadOff = listen(window, 'beforeunload', handler);
+    } else if (!enabled && _unloadOff) {
+        _unloadOff();
+        _unloadOff = null;
+    }
+}
+
 // -- EyeDropper API ----------------------------------------------------------
 
 export function supportsEyeDropper() {

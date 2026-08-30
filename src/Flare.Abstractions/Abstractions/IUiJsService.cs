@@ -47,4 +47,11 @@ public interface IUiJsService : IAsyncDisposable
 
     /// <summary>Opens the system eyedropper and returns the picked color (sRGB hex), or null if cancelled.</summary>
     ValueTask<string?> OpenEyeDropperAsync();
+
+    /// <summary>
+    /// Makes the browser confirm before the tab is closed or navigated away from. The message is the
+    /// caller's, but browsers have shown their own wording since 2016 and none of them will show this
+    /// one - it exists for the in-app half, which CAN say what it likes.
+    /// </summary>
+    ValueTask SetUnloadPromptAsync(bool enabled);
 }

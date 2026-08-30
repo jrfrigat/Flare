@@ -1,0 +1,194 @@
+@namespace Flare.Components
+@inherits FlareEditableFieldBase
+@using System.Globalization
+
+@* A DURATION field, not a clock. The four pickers Flare already ships all answer "when"; this one
+   answers "how long", which is what a task tracker, a billing screen and a media tool actually ask for.
+
+   Segments rather than one text box: "2d 03:15" parses six ways and none of them is obviously right,
+   whereas four spinnable numbers have one meaning. Each segment is a number input, so the platform's
+   own increment gestures - arrows, wheel, the phone keypad - all work without this component
+   implementing any of them. *@
+
+<FlareFieldChrome Variant="Variant" Size="Size"
+                  Invalid="@(!string.IsNullOrEmpty(DisplayedErrorText))"
+                  Disabled="Disabled" ReadOnly="ReadOnly"
+                  Label="@Label" LabelContent="@LabelContent" LabelFor="@ControlId"
+                  HelperText="@HelperText" HelperId="@HelperId"
+                  ErrorText="@DisplayedErrorText" ErrorId="@ErrorId"
+                  Style="@Style" Attributes="AdditionalAttributes">
+    <Field>
+        <div class="@Css.Classes.TimeSpanField.Segments" role="group" aria-label="@(Label ?? FlareStrings.TimeSpan_Duration)">
+            @if (Negatable)
+            {
+                <button type="button"
+                        class="@Css.Classes.TimeSpanField.Sign"
+                        disabled="@(Disabled || ReadOnly)"
+                        aria-label="@FlareStrings.TimeSpan_ToggleSign"
+                        aria-pressed="@(_negative ? "true" : "false")"
+                        @onclick="ToggleSignAsync">@(_negative ? "-" : "+")</button>
+            }
+
+            @foreach (var unit in _visibleUnits)
+            {
+                <span class="@Css.Classes.TimeSpanField.Segment">
+                    <input class="@Css.Classes.TimeSpanField.Input"
+                           id="@(unit == _visibleUnits[0] ? ControlId : null)"
+                           type="number"
+                           inputmode="numeric"
+                           min="0"
+                           max="@Ceiling(unit)"
+                           step="@(unit == _visibleUnits[^1] ? Step : 1)"
+                           value="@Part(unit)"
+                           disabled="@Disabled"
+                           readonly="@ReadOnly"
+                           aria-label="@UnitLabel(unit)"
+                           aria-invalid="@(!string.IsNullOrEmpty(DisplayedErrorText) ? "true" : null)"
+                           aria-describedby="@SupportDescribedBy"
+                           @onchange="@(e => SetPartAsync(unit, e.Value?.ToString()))"
+                           @onfocus="OnFocus"
+                           @onblur="OnBlur"
+                           @onkeydown="OnKeyDown"
+                           @onkeyup="OnKeyUp" />
+                    <span class="@Css.Classes.TimeSpanField.Unit" aria-hidden="true">@UnitSuffix(unit)</span>
+                </span>
+            }
+        </div>
+    </Field>
+</FlareFieldChrome>
+
+@code {
+    /// <summary>The bound duration.</summary>
+    [Parameter] public TimeSpan? Value { get; set; }
+
+    /// <summary>Raised when a segment changes, with the recomposed duration.</summary>
+    [Parameter] public EventCallback<TimeSpan?> ValueChanged { get; set; }
+
+    /// <summary>Which segments are shown, largest first. Default days through minutes - seconds are
+    /// noise on a duration most applications record.</summary>
+    [Parameter] public TimeSpanUnits Units { get; set; } = TimeSpanUnits.Days | TimeSpanUnits.Hours | TimeSpanUnits.Minutes;
+
+    /// <summary>Smallest duration accepted. Values below it clamp up.</summary>
+    [Parameter] public TimeSpan? Min { get; set; }
+
+    /// <summary>Largest duration accepted. Values above it clamp down.</summary>
+    [Parameter] public TimeSpan? Max { get; set; }
+
+    /// <summary>Step of the smallest shown segment. Default 1.</summary>
+    [Parameter] public int Step { get; set; } = 1;
+
+    /// <summary>Shows a sign toggle, so the field can express a negative duration - an overrun, a
+    /// correction, a time difference. Default false.</summary>
+    [Parameter] public bool Negatable { get; set; }
+
+    /// <summary>Raised when a segment takes focus.</summary>
+    [Parameter] public EventCallback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> OnFocus { get; set; }
+
+    /// <summary>Raised when a segment loses focus.</summary>
+    [Parameter] public EventCallback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> OnBlur { get; set; }
+
+    /// <summary>Raised on key down in a segment.</summary>
+    [Parameter] public EventCallback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> OnKeyDown { get; set; }
+
+    /// <summary>Raised on key up in a segment.</summary>
+    [Parameter] public EventCallback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> OnKeyUp { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.TimeSpanField.Root;
+
+    // Only consulted at zero, where the value itself cannot carry a sign.
+    private bool _signAtZero;
+
+    private TimeSpan Current => Value ?? TimeSpan.Zero;
+
+    private bool _negative => Current < TimeSpan.Zero || (Current == TimeSpan.Zero && _signAtZero);
+
+    // Largest first, and only what Units asks for. The order is the reading order, so it is fixed here
+    // rather than following the flags enum's declaration.
+    private TimeSpanUnits[] _visibleUnits =>
+        new[] { TimeSpanUnits.Days, TimeSpanUnits.Hours, TimeSpanUnits.Minutes, TimeSpanUnits.Seconds }
+            .Where(u => Units.HasFlag(u))
+            .ToArray();
+
+    // Each segment shows its own place, except the largest, which absorbs everything above it - a field
+    // showing only hours on a two-day duration must read 48, not 0.
+    private int Part(TimeSpanUnits unit)
+    {
+        var abs = Current.Duration();
+        var largest = _visibleUnits.Length > 0 ? _visibleUnits[0] : TimeSpanUnits.Days;
+
+        return unit switch
+        {
+            TimeSpanUnits.Days => (int)abs.TotalDays,
+            TimeSpanUnits.Hours => unit == largest ? (int)abs.TotalHours : abs.Hours,
+            TimeSpanUnits.Minutes => unit == largest ? (int)abs.TotalMinutes : abs.Minutes,
+            _ => unit == largest ? (int)abs.TotalSeconds : abs.Seconds,
+        };
+    }
+
+    // The largest segment has no ceiling - it is the one that carries the overflow.
+    private int? Ceiling(TimeSpanUnits unit)
+    {
+        if (_visibleUnits.Length > 0 && unit == _visibleUnits[0]) return null;
+        return unit switch
+        {
+            TimeSpanUnits.Hours => 23,
+            TimeSpanUnits.Minutes => 59,
+            TimeSpanUnits.Seconds => 59,
+            _ => null,
+        };
+    }
+
+    private async Task SetPartAsync(TimeSpanUnits unit, string? raw)
+    {
+        if (Disabled || ReadOnly) return;
+        if (!int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n)) n = 0;
+        n = Math.Max(0, n);
+
+        var abs = Current.Duration();
+        var next = unit switch
+        {
+            TimeSpanUnits.Days => abs - TimeSpan.FromDays(Part(unit)) + TimeSpan.FromDays(n),
+            TimeSpanUnits.Hours => abs - TimeSpan.FromHours(Part(unit)) + TimeSpan.FromHours(n),
+            TimeSpanUnits.Minutes => abs - TimeSpan.FromMinutes(Part(unit)) + TimeSpan.FromMinutes(n),
+            _ => abs - TimeSpan.FromSeconds(Part(unit)) + TimeSpan.FromSeconds(n),
+        };
+
+        await CommitAsync(_negative ? -next : next);
+    }
+
+    private Task ToggleSignAsync()
+    {
+        if (Disabled || ReadOnly) return Task.CompletedTask;
+        var next = !_negative;
+        _signAtZero = next;
+        return CommitAsync(next ? -Current.Duration() : Current.Duration());
+    }
+
+    // Clamping happens once, here, so every path in - a segment, the sign toggle - lands inside the range.
+    private async Task CommitAsync(TimeSpan value)
+    {
+        if (Min is { } min && value < min) value = min;
+        if (Max is { } max && value > max) value = max;
+
+        _signAtZero = value < TimeSpan.Zero;
+        Value = value;
+        await ValueChanged.InvokeAsync(value);
+    }
+
+    private static string UnitSuffix(TimeSpanUnits unit) => unit switch
+    {
+        TimeSpanUnits.Days => FlareStrings.TimeSpan_DaysShort,
+        TimeSpanUnits.Hours => FlareStrings.TimeSpan_HoursShort,
+        TimeSpanUnits.Minutes => FlareStrings.TimeSpan_MinutesShort,
+        _ => FlareStrings.TimeSpan_SecondsShort,
+    };
+
+    private static string UnitLabel(TimeSpanUnits unit) => unit switch
+    {
+        TimeSpanUnits.Days => FlareStrings.TimeSpan_Days,
+        TimeSpanUnits.Hours => FlareStrings.TimeSpan_Hours,
+        TimeSpanUnits.Minutes => FlareStrings.TimeSpan_Minutes,
+        _ => FlareStrings.TimeSpan_Seconds,
+    };
+}

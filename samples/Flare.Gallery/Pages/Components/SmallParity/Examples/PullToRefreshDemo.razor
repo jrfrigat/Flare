@@ -1,0 +1,35 @@
+@* Drag the list down from the top. Pointer events, so a mouse drag works here as well as a finger -
+   which is the only way this gesture is testable on a desktop. The gesture is ignored unless the list is
+   already scrolled to the top. *@
+<FlareStack Gap="FlareSpacing.Small" Style="max-width:26rem;">
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        @GalleryStrings.Ptr_Hint
+    </FlareText>
+
+    <FlareCard Variant="CardVariant.Outlined" Style="padding:0;overflow:hidden;">
+        <FlarePullToRefresh OnRefresh="RefreshAsync" Style="height:16rem;overflow:auto;">
+            <FlareList TItem="object">
+                @foreach (var item in _items)
+                {
+                    <FlareListItem Primary="@item" />
+                }
+            </FlareList>
+        </FlarePullToRefresh>
+    </FlareCard>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        @GalleryStrings.Ptr_Refreshed @_count
+    </FlareText>
+</FlareStack>
+
+@code {
+    private int _count;
+    private List<string> _items = Enumerable.Range(1, 12).Select(i => $"Row {i}").ToList();
+
+    private async Task RefreshAsync()
+    {
+        await Task.Delay(900);
+        _count++;
+        _items = Enumerable.Range(1, 12).Select(i => $"Row {i} · refresh {_count}").ToList();
+    }
+}

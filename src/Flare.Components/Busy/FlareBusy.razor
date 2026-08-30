@@ -1,0 +1,130 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@implements IDisposable
+
+@* Dims and blocks its own subtree while Busy. The two timers are the entire reason this is a component
+   and not a div with a spinner in it:
+
+     Delay       - an operation that finishes in 80ms must not flash a spinner. Nothing appears until the
+                   work has been running long enough to be worth telling the user about.
+     MinDuration - once the spinner IS up it stays up long enough to be read. Without this, work that
+                   takes 250ms produces a 40ms flicker, which reads as a glitch rather than as progress.
+
+   Composed from FlareOverlay and FlareProgress; the only thing here that is new is the timing. *@
+
+<div class="@BuildCssClass(_visible ? Css.Classes.Busy.Active : null)"
+     aria-busy="@(_visible ? "true" : null)"
+     style="@Style"
+     @attributes="AdditionalAttributes">
+
+    @* inert rather than a focus trap: the subtree keeps its layout and its scroll position, and the
+       browser takes it out of the tab order and out of hit-testing for us. A trap would have to guess
+       where focus should go and put it back afterwards; inert simply skips the region. *@
+    <div class="@Css.Classes.Busy.Content" inert="@(_visible ? "" : null)">
+        @ChildContent
+    </div>
+
+    @if (_visible)
+    {
+        <div class="@Css.Classes.Busy.Veil" role="status" aria-live="polite">
+            @if (IndicatorContent is not null)
+            {
+                @IndicatorContent
+            }
+            else
+            {
+                <FlareProgress Variant="ProgressVariant.Circular" Color="FlareColor.Primary" />
+                @if (Label is not null)
+                {
+                    <span class="@Css.Classes.Busy.Label">@Label</span>
+                }
+            }
+        </div>
+    }
+</div>
+
+@code {
+    /// <summary>The content the overlay covers while busy.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Whether the region is working. The overlay follows it through <see cref="Delay"/> and
+    /// <see cref="MinDuration"/> rather than immediately.</summary>
+    [Parameter] public bool Busy { get; set; }
+
+    /// <summary>
+    /// How long work must run before the overlay appears, in milliseconds. Default 250 - long enough that
+    /// an operation the user perceives as instant never flashes one.
+    /// </summary>
+    [Parameter] public int Delay { get; set; } = 250;
+
+    /// <summary>
+    /// How long the overlay stays once shown, in milliseconds. Default 500. Without it, work that runs
+    /// just past <see cref="Delay"/> produces a flicker that reads as a glitch rather than as progress.
+    /// </summary>
+    [Parameter] public int MinDuration { get; set; } = 500;
+
+    /// <summary>Text under the indicator - what is being waited for.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Replaces the spinner and label entirely.</summary>
+    [Parameter] public RenderFragment? IndicatorContent { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => Css.Classes.Busy.Root;
+
+    private bool _visible;
+    private bool _wasBusy;
+    private DateTimeOffset _shownAt;
+    private CancellationTokenSource? _timer;
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (Busy == _wasBusy) return;
+        _wasBusy = Busy;
+
+        _timer?.Cancel();
+        _timer?.Dispose();
+        _timer = new CancellationTokenSource();
+        _ = Busy ? ShowAfterDelayAsync(_timer.Token) : HideAfterMinimumAsync(_timer.Token);
+    }
+
+    private async Task ShowAfterDelayAsync(CancellationToken token)
+    {
+        try
+        {
+            if (Delay > 0) await Task.Delay(Delay, token);
+            _shownAt = DateTimeOffset.UtcNow;
+            await SetVisibleAsync(true);
+        }
+        catch (OperationCanceledException) { /* finished before it was worth showing */ }
+    }
+
+    private async Task HideAfterMinimumAsync(CancellationToken token)
+    {
+        try
+        {
+            if (!_visible) return;   // never got shown, so nothing to hold
+            var shownFor = (DateTimeOffset.UtcNow - _shownAt).TotalMilliseconds;
+            var remaining = MinDuration - (int)shownFor;
+            if (remaining > 0) await Task.Delay(remaining, token);
+            await SetVisibleAsync(false);
+        }
+        catch (OperationCanceledException) { /* became busy again while holding */ }
+    }
+
+    private Task SetVisibleAsync(bool visible)
+    {
+        if (_visible == visible) return Task.CompletedTask;
+        _visible = visible;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        _timer?.Cancel();
+        _timer?.Dispose();
+    }
+}

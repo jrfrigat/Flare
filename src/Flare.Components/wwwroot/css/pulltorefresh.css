@@ -1,0 +1,49 @@
+/* FlarePullToRefresh: the indicator strip is revealed by growing its height, and the content is pushed
+   down by a transform - so the pull costs a composited transform per frame rather than a reflow. */
+
+.flare-ptr {
+  position: relative;
+  overflow: hidden;
+  /* The gesture and the browser's own scroll both claim a downward drag. touch-action tells the browser
+     the vertical axis is ours to arbitrate; without it the page scrolls under the finger and the pull
+     never accumulates. */
+  touch-action: pan-x pan-down;
+}
+
+/* While the refresh runs the gesture is off: a second pull would queue a second refresh behind the
+   first, and the indicator is already saying the first has not finished. */
+.flare-ptr--refreshing {
+  touch-action: auto;
+}
+
+.flare-ptr__indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--flare-color-on-surface-variant);
+}
+
+.flare-ptr__arrow {
+  transition: transform var(--flare-motion-duration-short3) var(--flare-motion-easing-standard);
+}
+
+.flare-ptr__content {
+  will-change: transform;
+}
+
+/* The release settles rather than snapping, but only while the finger is off: transitioning during the
+   drag would make the content lag the finger, which reads as lag rather than as resistance. */
+.flare-ptr:not(:active) .flare-ptr__content,
+.flare-ptr:not(:active) .flare-ptr__indicator {
+  transition: transform var(--flare-motion-duration-medium1) var(--flare-motion-easing-emphasized-decelerate),
+              height var(--flare-motion-duration-medium1) var(--flare-motion-easing-emphasized-decelerate);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flare-ptr__arrow,
+  .flare-ptr:not(:active) .flare-ptr__content,
+  .flare-ptr:not(:active) .flare-ptr__indicator {
+    transition: none;
+  }
+}

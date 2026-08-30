@@ -1571,5 +1571,203 @@ namespace Flare.Components.Resources {
             }
         }
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Unsaved changes.
+        /// </summary>
+        public static string NavGuard_Title {
+            get {
+                return ResourceManager.GetString("NavGuard_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на You have changes that have not been saved. Leaving this page will discard them..
+        /// </summary>
+        public static string NavGuard_Message {
+            get {
+                return ResourceManager.GetString("NavGuard_Message", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Discard and leave.
+        /// </summary>
+        public static string NavGuard_Leave {
+            get {
+                return ResourceManager.GetString("NavGuard_Leave", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Stay on this page.
+        /// </summary>
+        public static string NavGuard_Stay {
+            get {
+                return ResourceManager.GetString("NavGuard_Stay", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Very weak.
+        /// </summary>
+        public static string Password_VeryWeak {
+            get {
+                return ResourceManager.GetString("Password_VeryWeak", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Weak.
+        /// </summary>
+        public static string Password_Weak {
+            get {
+                return ResourceManager.GetString("Password_Weak", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Fair.
+        /// </summary>
+        public static string Password_Fair {
+            get {
+                return ResourceManager.GetString("Password_Fair", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Good.
+        /// </summary>
+        public static string Password_Good {
+            get {
+                return ResourceManager.GetString("Password_Good", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Strong.
+        /// </summary>
+        public static string Password_Strong {
+            get {
+                return ResourceManager.GetString("Password_Strong", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Make it longer..
+        /// </summary>
+        public static string Password_MakeLonger {
+            get {
+                return ResourceManager.GetString("Password_MakeLonger", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Mix upper case, digits and symbols..
+        /// </summary>
+        public static string Password_MixCharacters {
+            get {
+                return ResourceManager.GetString("Password_MixCharacters", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на This is a commonly used password..
+        /// </summary>
+        public static string Password_TooCommon {
+            get {
+                return ResourceManager.GetString("Password_TooCommon", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Duration.
+        /// </summary>
+        public static string TimeSpan_Duration {
+            get {
+                return ResourceManager.GetString("TimeSpan_Duration", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Toggle positive or negative.
+        /// </summary>
+        public static string TimeSpan_ToggleSign {
+            get {
+                return ResourceManager.GetString("TimeSpan_ToggleSign", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Days.
+        /// </summary>
+        public static string TimeSpan_Days {
+            get {
+                return ResourceManager.GetString("TimeSpan_Days", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Hours.
+        /// </summary>
+        public static string TimeSpan_Hours {
+            get {
+                return ResourceManager.GetString("TimeSpan_Hours", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Minutes.
+        /// </summary>
+        public static string TimeSpan_Minutes {
+            get {
+                return ResourceManager.GetString("TimeSpan_Minutes", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Seconds.
+        /// </summary>
+        public static string TimeSpan_Seconds {
+            get {
+                return ResourceManager.GetString("TimeSpan_Seconds", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на d.
+        /// </summary>
+        public static string TimeSpan_DaysShort {
+            get {
+                return ResourceManager.GetString("TimeSpan_DaysShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на h.
+        /// </summary>
+        public static string TimeSpan_HoursShort {
+            get {
+                return ResourceManager.GetString("TimeSpan_HoursShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на m.
+        /// </summary>
+        public static string TimeSpan_MinutesShort {
+            get {
+                return ResourceManager.GetString("TimeSpan_MinutesShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на s.
+        /// </summary>
+        public static string TimeSpan_SecondsShort {
+            get {
+                return ResourceManager.GetString("TimeSpan_SecondsShort", resourceCulture);
+            }
+        }
+
     }
 }

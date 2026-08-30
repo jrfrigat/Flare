@@ -1,0 +1,49 @@
+@* The two timers are the whole point, so the demo lets you set them and then run work of a chosen
+   length against them. Short work under a long delay shows nothing at all - which is the behaviour, not
+   a bug in the demo. *@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:34rem;">
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium">
+        <FlareNumericField TValue="int" @bind-Value="_work" Label="@GalleryStrings.Busy_WorkMs" Style="width:9rem;" />
+        <FlareNumericField TValue="int" @bind-Value="_delay" Label="@GalleryStrings.Busy_Delay" Style="width:9rem;" />
+        <FlareNumericField TValue="int" @bind-Value="_min" Label="@GalleryStrings.Busy_MinDuration" Style="width:9rem;" />
+    </FlareStack>
+
+    <FlareStack Row Gap="FlareSpacing.Small">
+        <FlareButton Variant="ButtonVariant.Filled" OnClick="RunAsync" Disabled="@_busy">@GalleryStrings.Busy_Run</FlareButton>
+        <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => { _work = 80; _delay = 250; _min = 500; })">
+            @GalleryStrings.Busy_QuickCase
+        </FlareButton>
+    </FlareStack>
+
+    <FlareBusy Busy="_busy" Delay="_delay" MinDuration="_min" Label="@GalleryStrings.Busy_Loading">
+        <FlareCard Variant="CardVariant.Outlined">
+            <FlareStack Gap="FlareSpacing.Small">
+                <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Busy_PanelTitle</FlareText>
+                <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Busy_PanelBody</FlareText>
+                <FlareStack Row Gap="FlareSpacing.Small">
+                    <FlareButton Variant="ButtonVariant.Tonal">@GalleryStrings.Busy_Save</FlareButton>
+                    <FlareButton Variant="ButtonVariant.Text">@GalleryStrings.Busy_Cancel</FlareButton>
+                </FlareStack>
+            </FlareStack>
+        </FlareCard>
+    </FlareBusy>
+
+    <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+        @GalleryStrings.Busy_Hint
+    </FlareText>
+</FlareStack>
+
+@code {
+    private int _work = 1500;
+    private int _delay = 250;
+    private int _min = 500;
+    private bool _busy;
+
+    private async Task RunAsync()
+    {
+        _busy = true;
+        try { await Task.Delay(_work); }
+        finally { _busy = false; }
+    }
+}
