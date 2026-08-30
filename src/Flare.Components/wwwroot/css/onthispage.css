@@ -2,6 +2,10 @@
    look (filled rounded active link, no rail) and the "rail" look (thin vertical line
    with a left marker bar on the active link). Themes flip the look via --flare-toc-* tokens. */
 .flare-toc {
+  /* The rail is normally given a width by its host, but nothing stops it being dropped into a plain
+     column - where it took the width of its longest heading and left the container. */
+  max-inline-size: 100%;
+  min-inline-size: 0;
   font-family: var(--flare-typescale-body-medium-font);
   font-size: var(--flare-typescale-body-small-size);
   line-height: var(--flare-toc-line-height);

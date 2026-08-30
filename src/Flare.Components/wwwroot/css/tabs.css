@@ -1,6 +1,9 @@
 .flare-tabs {
   display: flex;
   flex-direction: column;
+  /* Without the cap the tab set keeps the natural width of its longest row - the bar's own scroller
+     never engages, and the end zone is pushed off the screen instead. */
+  max-inline-size: 100%;
 }
 
 /* Bar wrap hosts the scrollable bar plus optional overflow arrows and header zones. */
@@ -14,7 +17,10 @@
    grows between them, pushing the end zone to the far edge. */
 .flare-tabs__header-start,
 .flare-tabs__header-end {
-  flex: 0 0 auto;
+  /* Shrinkable, not fixed: with `0 0 auto` a header zone holding a title or a button kept its full
+     width on a narrow screen and pushed itself past the tab set's own edge. */
+  flex: 0 1 auto;
+  min-inline-size: 0;
   display: inline-flex;
   align-items: center;
   gap: var(--flare-spacing-2);
@@ -24,6 +30,9 @@
 .flare-tabs__bar {
   display: flex;
   flex: 1 1 auto;
+  /* A flex item refuses to shrink below its content unless told to, so the bar kept its full tab run
+     and pushed the end zone off the screen - the scroller was there and never used. */
+  min-inline-size: 0;
   overflow-x: auto;
   scrollbar-width: none;
   scroll-behavior: smooth;

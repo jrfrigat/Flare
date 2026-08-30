@@ -1,6 +1,11 @@
-/* Visually-hidden utility - content readable by screen readers, invisible on screen */
+/* Visually-hidden utility - content readable by screen readers, invisible on screen. Pinned to the
+   origin because an absolutely positioned box left at its static position still counts toward its
+   container's scrollable area: an invisible 1px element sitting 400px in gives the page 400px of
+   horizontal scroll. */
 .flare-visually-hidden {
     position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
     width: 1px;
     height: 1px;
     padding: 0;
@@ -126,9 +131,16 @@ h6[tabindex="-1"]:focus {
    ========================================================================== */
 @media (pointer: coarse) {
     /* Controls that ARE the target and have room to grow. Measured at 375px before this rule existed:
-       the layout drawer's own toggle was 36px, the tab overflow arrows 36px, a calendar day 37px and a
-       small button 40px - every one of them under the lowest published minimum of the three (Apple 44,
-       Google 48, WCAG 2.2 AAA 44), and the drawer toggle is primary navigation. */
+       the layout drawer's own toggle was 36px, the tab overflow arrows 36px and a small button 40px -
+       every one of them under the lowest published minimum of the three (Apple 44, Google 48,
+       WCAG 2.2 AAA 44), and the drawer toggle is primary navigation.
+
+       A calendar day is NOT in this list, and the reason is arithmetic: it sits in a `repeat(7, 1fr)`
+       track whose automatic minimum is the cell's own minimum, so a 48px day makes the seven columns
+       demand 336px plus gaps plus the week-number column - 360px of tracks inside a 295px panel, with
+       the last column pushed outside the calendar. The day can only reach the minimum if the panel
+       grows with it, which is a responsive-panel change, not a minimum-size one. Recorded in
+       docs/issues/mobile-responsive-audit.md. */
     .flare-pagination__btn,
     .flare-btn--icon-only,
     .flare-input__clear,
@@ -136,7 +148,6 @@ h6[tabindex="-1"]:focus {
     .flare-numericfield__step,
     .flare-layout-appbar__toggle,
     .flare-tabs__scroll,
-    .flare-picker__day,
     .flare-btn {
         min-inline-size: var(--flare-touch-target-min);
         min-block-size: var(--flare-touch-target-min);

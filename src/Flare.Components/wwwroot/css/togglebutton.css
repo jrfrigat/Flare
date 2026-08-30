@@ -16,7 +16,11 @@
     display: inline-flex;
     border: var(--flare-togglegroup-border);
     border-radius: var(--flare-togglegroup-radius);
-    overflow: hidden;
+    /* Y stays hidden so the rounded ends keep clipping their segments; X becomes a scroller because a
+       segmented control cannot wrap without producing rounded corners in the middle of the run. Before
+       this the group simply grew past its container and clipped the segments beyond the edge. */
+    overflow: auto hidden;
+    max-inline-size: 100%;
 }
 
 .flare-togglegroup--vertical {

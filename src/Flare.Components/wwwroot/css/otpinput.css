@@ -2,9 +2,13 @@
     display: flex;
     gap: var(--flare-spacing-4);
     align-items: center;
+    max-inline-size: 100%;
 }
 
 .flare-otp__cell {
+    /* The width is a preference, not a floor: on a narrow screen a six-cell code has to give ground
+       somewhere, and cells that shrink together read better than a row that leaves the viewport. */
+    min-inline-size: 0;
     width: var(--flare-otp-cell-width);
     height: var(--flare-otp-cell-height);
     text-align: center;

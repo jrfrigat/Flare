@@ -95,9 +95,12 @@
   display: flex;
   align-items: flex-end;
   gap: var(--flare-spacing-4);
+  /* Two date fields side by side need roughly 500px. Below that they stack, which is the only
+     arrangement a phone has room for - before this the second field started past the screen edge. */
+  flex-wrap: wrap;
 }
 
-.flare-daterangepicker__fields > .flare-datepicker { flex: 1; }
+.flare-daterangepicker__fields > .flare-datepicker { flex: 1 1 12rem; min-inline-size: 0; }
 
 .flare-daterangepicker__sep {
   font-size: 1.25rem;

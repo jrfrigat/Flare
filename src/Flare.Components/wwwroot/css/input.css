@@ -13,6 +13,11 @@
     flex-direction: column;
     gap: var(--flare-spacing-2);
     position: relative;
+    /* A field is never wider than what holds it. Without the cap, a content-sized field keeps its
+       natural width and simply leaves the container: an OTP field of six cells and their gaps
+       measured 448px inside a 295px column at 375px, with the last cells off the screen. Capped,
+       the content shrinks to fit instead. */
+    max-inline-size: 100%;
 }
 
 /* FullWidth=false: size to content instead of filling the container. */

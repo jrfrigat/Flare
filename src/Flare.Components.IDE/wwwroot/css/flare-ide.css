@@ -417,17 +417,43 @@
     background: none;
     border-radius: var(--flare-shape-extra-small);
     cursor: pointer;
-    opacity: 0;
     transition: opacity var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease),
                 background var(--flare-motion-duration-short3, 150ms) var(--flare-motion-easing-standard, ease);
 }
 
-.flare-doc-tabs__tab:hover .flare-doc-tabs__close {
-    opacity: 1;
+/* Fading in on hover is the editor convention, and it is only available where a pointer can hover. A
+   touch screen got opacity 0 with the button still taking taps: invisible, and closing the document
+   anyway when a finger landed on it. Outside a hover context it stays visible. */
+@media (hover: hover) {
+    .flare-doc-tabs__close {
+        opacity: 0;
+    }
+
+    .flare-doc-tabs__tab:hover .flare-doc-tabs__close {
+        opacity: 1;
+    }
 }
 
 .flare-doc-tabs__close:hover {
     background: color-mix(in srgb, var(--flare-color-on-surface) calc(var(--flare-state-pressed-opacity) * 100%), transparent);
+}
+
+/* 18px is a mouse target. The button cannot grow - it would grow the tab strip with it - so the hit
+   area grows instead, the same centred pseudo-element the core chrome uses. */
+@media (pointer: coarse) {
+    .flare-doc-tabs__close {
+        position: relative;
+    }
+
+    .flare-doc-tabs__close::after {
+        content: '';
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 50%;
+        translate: -50% -50%;
+        inline-size: var(--flare-touch-target-min);
+        block-size: var(--flare-touch-target-min);
+    }
 }
 
 .flare-doc-tabs__panels {

@@ -59,9 +59,18 @@
 .flare-chart__cell { transition: opacity var(--flare-motion-duration-short2); }
 .flare-chart__cell:hover { opacity: var(--flare-chart-cell-hover-opacity); }
 
-/* Visually-hidden data table exposed to screen readers as a chart fallback. */
+/* Visually-hidden data table exposed to screen readers as a chart fallback. Pinned to the chart's own
+   origin: an absolutely positioned box still counts toward its container's scrollable area, so at its
+   static position - after the plot - this 1px element added its own left offset to the page's scroll
+   width. Measured 49px of horizontal scroll at 375px from a table nobody can see. */
 .flare-chart__table {
     position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    /* Automatic table layout treats a width as a minimum and sizes to its contents anyway, so the
+       standard 1px visually-hidden recipe leaves a full-width table behind. Fixed layout is what
+       makes the 1px real. */
+    table-layout: fixed;
     width: 1px;
     height: 1px;
     padding: 0;
@@ -72,7 +81,16 @@
     border: 0;
 }
 
+/* The caption is the other half of it: a table is at least as wide as its caption's minimum, so a
+   one-line description held the "1px" table open at 368px. Constrained here, the table is finally
+   the size it claims to be. */
+.flare-chart__table > caption {
+    inline-size: 1px;
+    overflow: hidden;
+}
+
 .flare-chart {
+    position: relative;   /* containing block for the visually-hidden data table above */
     display: flex;
     flex-direction: column;
     gap: var(--flare-chart-gap);

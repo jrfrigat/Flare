@@ -30,6 +30,20 @@
 .flare-btn-group {
     display: inline-flex;
     box-sizing: border-box;
+    max-inline-size: 100%;
+}
+
+/* What a group that does not fit should do differs by model, so the two models answer differently.
+   A standard group is separate buttons with a gap, so it wraps. A connected group is one control
+   drawn as segments - wrapping it would leave a half-joined shape with rounded ends in the middle -
+   so it scrolls inside its own frame instead. Measured at 375px: a six-button standard group ran
+   281px past the viewport, and every button past the edge was unreachable. */
+.flare-btn-group--standard {
+    flex-wrap: wrap;
+}
+
+.flare-btn-group--connected {
+    overflow-x: auto;
 }
 
 .flare-btn-group--standard { gap: var(--flare-btn-group-standard-gap-md); }
