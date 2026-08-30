@@ -61,6 +61,16 @@ jobs:
           path: '**/*.trx'
           if-no-files-found: ignore
 
+      # The API reference is a generated file that is COMMITTED, so it rots silently: a parameter added
+      # without re-running the generator leaves the published reference describing the previous shape.
+      # This check also runs in release.yml, but a release is the wrong place to LEARN about the drift -
+      # by then the tag is cut and has to be moved. Fix by running the generator and committing:
+      #   dotnet build samples/Flare.Gallery/Flare.Gallery.csproj -p:RunApiDocGen=true
+      - name: Verify the API reference is current
+        run: |
+          dotnet run --project tools/Flare.ApiDocGen -c Release -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+          git diff --exit-code -- samples/Flare.Gallery/Api/ComponentApiRegistry.g.cs
+
       # Pack here too so a packaging break (missing README/icon, CS1591, etc.) fails CI, not release.
       # IsPackable=false on Gallery/Legacy/tests/tools means only the publishable packages are produced.
       - name: Pack (validation only)

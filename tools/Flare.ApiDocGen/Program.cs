@@ -127,9 +127,8 @@ static List<Assembly> LoadFlareAssemblies(string dir)
     var result = new List<Assembly>();
     foreach (var path in Directory.EnumerateFiles(dir, "Flare.*.dll"))
     {
-        // Skip the docs tool's own helper assemblies, if any share the prefix.
         var name = Path.GetFileNameWithoutExtension(path);
-        if (name.StartsWith("Flare.ApiDocGen", StringComparison.Ordinal))
+        if (IsNotALibrary(name))
             continue;
 
         try { result.Add(Assembly.LoadFrom(path)); }
@@ -137,6 +136,18 @@ static List<Assembly> LoadFlareAssemblies(string dir)
     }
     return result;
 }
+
+// The registry documents the SHIPPED packages. Everything else that carries the "Flare." prefix -
+// the Gallery, the samples, the tests, this tool - is an application, and its internal enums are not
+// public API. Skipping them by name keeps the output identical whichever directory is probed: the
+// tool's own bin holds only libraries, a Gallery bin holds the Gallery too, and without this filter
+// the same sources produce two different registries depending on where the generator was run.
+static bool IsNotALibrary(string assemblyName) =>
+    assemblyName.StartsWith("Flare.ApiDocGen", StringComparison.Ordinal)
+    || assemblyName.StartsWith("Flare.Gallery", StringComparison.Ordinal)
+    || assemblyName.StartsWith("Flare.Sample", StringComparison.Ordinal)
+    || assemblyName.StartsWith("Flare.Legacy", StringComparison.Ordinal)
+    || assemblyName.EndsWith(".Tests", StringComparison.Ordinal);
 
 // Walks up to the FlareComponentBase type in a component's inheritance chain.
 static Type? FindBaseComponent(Type type)

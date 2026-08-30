@@ -289,6 +289,38 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareBarcode"] = new ApiComponentInfo(
+            @"FlareBarcode",
+            @"Flare.Components.FlareBarcode",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible name. Defaults to the symbology and the encoded text.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"Format", @"string?", null, @"Composite format applied to the human-readable line, with the encoded text as {0}. Null prints the text as encoded.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"Height", @"double", @"60", @"Bar height in pixels. Default 60.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"ModuleWidth", @"double", @"2", @"Width of one module in pixels - the narrowest bar. Default 2. Below 1 most scanners stop reading, so a label meant to be printed wants 2 or more.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"OnInvalid", @"EventCallback<string>", null, @"Raised once per distinct failure when the value cannot be encoded. The component renders the fallback either way.", null, false, true, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"Quiet", @"int", @"10", @"Blank margin on each side, in modules. Default 10, which is the minimum the symbologies specify: without it a scanner cannot tell where the symbol begins.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"ShowText", @"bool", @"true", @"Prints the human-readable line under the bars, including any computed check digit. Default true.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"Symbology", @"BarcodeSymbology", @"BarcodeSymbology.Code128", @"Which symbology to encode in. Default Code128.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"TextAbove", @"bool", @"false", @"Puts the human-readable line above the bars instead of below.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"Value", @"string?", null, @"The text to encode. An empty or unencodable value renders the fallback, never throws.", null, false, false, false, @"FlareBarcode"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareBootstrap"] = new ApiComponentInfo(
             @"FlareBootstrap",
             @"Flare.Components.FlareBootstrap",
@@ -386,6 +418,38 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareBusy"] = new ApiComponentInfo(
+            @"FlareBusy",
+            @"Flare.Components.FlareBusy",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Busy", @"bool", @"false", @"Whether the region is working. The overlay follows it through Delay and MinDuration rather than immediately.", null, false, false, false, @"FlareBusy"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The content the overlay covers while busy.", null, false, false, false, @"FlareBusy"),
+                new ApiParameterInfo(@"Delay", @"int", @"250", @"How long work must run before the overlay appears, in milliseconds. Default 250 - long enough that an operation the user perceives as instant never flashes one.", null, false, false, false, @"FlareBusy"),
+                new ApiParameterInfo(@"IndicatorContent", @"RenderFragment?", null, @"Replaces the spinner and label entirely.", null, false, false, false, @"FlareBusy"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Text under the indicator - what is being waited for.", null, false, false, false, @"FlareBusy"),
+                new ApiParameterInfo(@"MinDuration", @"int", @"500", @"How long the overlay stays once shown, in milliseconds. Default 500. Without it, work that runs just past Delay produces a flicker that reads as a glitch rather than as progress.", null, false, false, false, @"FlareBusy"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"Dispose", @"Dispose()", @"void", null, null,
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -1426,9 +1490,11 @@ public static class ComponentApiRegistry
                 @"FlareBackstage",
                 @"FlareBackstageItem",
                 @"FlareBadge",
+                @"FlareBarcode",
                 @"FlareBottomNav",
                 @"FlareBottomNavItem",
                 @"FlareBreadcrumb",
+                @"FlareBusy",
                 @"FlareButton",
                 @"FlareButtonGroup",
                 @"FlareCalendar",
@@ -1480,6 +1546,7 @@ public static class ComponentApiRegistry
                 @"FlareFormBuilder",
                 @"FlareFormField",
                 @"FlareFormulaBar",
+                @"FlareGauge",
                 @"FlareGrid",
                 @"FlareHidden",
                 @"FlareHighlighter",
@@ -1511,6 +1578,7 @@ public static class ComponentApiRegistry
                 @"FlareNavGroup",
                 @"FlareNavLink",
                 @"FlareNavMenu",
+                @"FlareNavigationGuard",
                 @"FlareNumericField",
                 @"FlareOnThisPage",
                 @"FlareOptionList",
@@ -1524,6 +1592,7 @@ public static class ComponentApiRegistry
                 @"FlareProgress",
                 @"FlarePropertyGrid",
                 @"FlarePropertyGridItem",
+                @"FlarePullToRefresh",
                 @"FlareQrCode",
                 @"FlareQueryBuilder",
                 @"FlareQueryEditor",
@@ -1563,6 +1632,7 @@ public static class ComponentApiRegistry
                 @"FlareTextField",
                 @"FlareTextInput",
                 @"FlareTimePicker",
+                @"FlareTimeSpanPicker",
                 @"FlareTimeline",
                 @"FlareTimelineItem",
                 @"FlareTocLink",
@@ -2551,11 +2621,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types as a MIME or extension filter string.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"AllowCancel", @"bool", @"true", @"Shows a cancel affordance on a file that is still queued or uploading. Default true.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"AllowRemove", @"bool", @"true", @"Shows a remove affordance that drops a file from the list entirely. Default true. Removing a file that is still transferring cancels it first - there is no way to un-send bytes, so the row leaves and the request is aborted.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"AllowRetry", @"bool", @"true", @"Shows a retry affordance on a file that failed or was cancelled. Default true.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Auto", @"bool", @"false", @"Starts the queue as soon as files are selected instead of waiting for UploadAsync. Ignored when Uploader is null.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Concurrency", @"int", @"1", @"How many files may transfer at once. Default 1 - a server is more likely to be annoyed by a burst than by a queue.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control - the trigger stops opening the file picker.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"FileTemplate", @"RenderFragment<FlareUploadFile>?", null, @"Replaces the whole row. Receives the queue entry, so an application can render its own layout, thumbnail or affordances against the same state the built-in row reads.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"MaxFileSize", @"long", @"9223372036854775807", @"Largest accepted file, in bytes. Anything over it is dropped from the selection before OnFilesChanged sees it. Unlimited by default: a cap discards the user's file with no explanation, so it is the caller - who knows what the server will take - that opts in. Filtering here is UX only; always check the size again on the server.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUploadBase"),
@@ -2563,6 +2635,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"OnUploadCompleted", @"EventCallback<FlareUploadFile>", null, @"Raised when one file finishes successfully.", null, false, true, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"OnUploadFailed", @"EventCallback<FlareUploadFile>", null, @"Raised when one file's transfer throws. The exception is not rethrown - the row carries the message and the queue continues.", null, false, true, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"OnUploadProgress", @"EventCallback<FlareUploadFile>", null, @"Raised as bytes move, at whatever rate the transfer reports them. Marshalled onto the renderer's dispatcher, so a handler may touch component state directly.", null, false, true, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"OnUploadStarted", @"EventCallback<FlareUploadFile>", null, @"Raised when one file's transfer begins - after it leaves the queue, before any bytes move.", null, false, true, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"ShowFileList", @"bool", @"true", @"Shows the list of selected files under the trigger. Default true.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Uploader", @"Func<FlareUploadContext, Task>?", null, @"The transfer itself. Given a FlareUploadContext - the file, a progress sink and a cancellation token - send the bytes however the application sends bytes, and report the running total to Progress.", @"A delegate rather than a URL on purpose. A URL plus headers cannot express a token that refreshes mid-upload, a presigned PUT, a resumable protocol or an application's own retry policy - and an upload component that gets those wrong is one an application has to wrap. Flare owns the queue, the concurrency, the cancellation and the whole visual state; the application owns the wire. Leave it null and the component is exactly what it was before: a file picker.", false, false, false, @"FlareFileUploadBase"),
@@ -2593,11 +2667,13 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Accept", @"string?", null, @"Accepted file types as a MIME or extension filter string.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"AllowCancel", @"bool", @"true", @"Shows a cancel affordance on a file that is still queued or uploading. Default true.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"AllowRemove", @"bool", @"true", @"Shows a remove affordance that drops a file from the list entirely. Default true. Removing a file that is still transferring cancels it first - there is no way to un-send bytes, so the row leaves and the request is aborted.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"AllowRetry", @"bool", @"true", @"Shows a retry affordance on a file that failed or was cancelled. Default true.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Auto", @"bool", @"false", @"Starts the queue as soon as files are selected instead of waiting for UploadAsync. Ignored when Uploader is null.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Concurrency", @"int", @"1", @"How many files may transfer at once. Default 1 - a server is more likely to be annoyed by a burst than by a queue.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the control - the trigger stops opening the file picker.", null, false, false, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"FileTemplate", @"RenderFragment<FlareUploadFile>?", null, @"Replaces the whole row. Receives the queue entry, so an application can render its own layout, thumbnail or affordances against the same state the built-in row reads.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"MaxFileSize", @"long", @"9223372036854775807", @"Largest accepted file, in bytes. Anything over it is dropped from the selection before OnFilesChanged sees it. Unlimited by default: a cap discards the user's file with no explanation, so it is the caller - who knows what the server will take - that opts in. Filtering here is UX only; always check the size again on the server.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"MaxFiles", @"int", @"10", @"Maximum number of files that can be selected.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Multiple", @"bool", @"false", @"Allows selecting multiple files when true.", null, false, false, false, @"FlareFileUploadBase"),
@@ -2605,6 +2681,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnFilesChanged", @"EventCallback<IReadOnlyList<IBrowserFile>>", null, @"Callback invoked with the list of selected files.", null, false, true, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"OnUploadCompleted", @"EventCallback<FlareUploadFile>", null, @"Raised when one file finishes successfully.", null, false, true, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"OnUploadFailed", @"EventCallback<FlareUploadFile>", null, @"Raised when one file's transfer throws. The exception is not rethrown - the row carries the message and the queue continues.", null, false, true, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"OnUploadProgress", @"EventCallback<FlareUploadFile>", null, @"Raised as bytes move, at whatever rate the transfer reports them. Marshalled onto the renderer's dispatcher, so a handler may touch component state directly.", null, false, true, false, @"FlareFileUploadBase"),
+                new ApiParameterInfo(@"OnUploadStarted", @"EventCallback<FlareUploadFile>", null, @"Raised when one file's transfer begins - after it leaves the queue, before any bytes move.", null, false, true, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"ShowFileList", @"bool", @"true", @"Shows the list of selected files under the trigger. Default true.", null, false, false, false, @"FlareFileUploadBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Uploader", @"Func<FlareUploadContext, Task>?", null, @"The transfer itself. Given a FlareUploadContext - the file, a progress sink and a cancellation token - send the bytes however the application sends bytes, and report the running total to Progress.", @"A delegate rather than a URL on purpose. A URL plus headers cannot express a token that refreshes mid-upload, a presigned PUT, a resumable protocol or an application's own retry policy - and an upload component that gets those wrong is one an application has to wrap. Flare owns the queue, the concurrency, the cancellation and the whole visual state; the application owns the wire. Leave it null and the component is exactly what it was before: a file picker.", false, false, false, @"FlareFileUploadBase"),
@@ -2803,6 +2881,49 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder for the formula editor.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The current cell content / formula.", null, false, false, false, @"FlareFormulaBar"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Raised when the formula text changes. Supports two-way binding.", null, false, true, false, @"FlareFormulaBar"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareGauge"] = new ApiComponentInfo(
+            @"FlareGauge",
+            @"Flare.Components.FlareGauge",
+            @"Flare.Components",
+            @"One value read against a marked scale: a needle dial, a filled KPI arc, or a straight bar with ticks. FlareProgress and FlareMeter are both bars and answer ""how far along""; a gauge answers ""where does this sit on the scale, and is that good"", which is the dashboard reading.",
+            @"Coloured bands are FlareZone children - the same Start/End-on-a-host-scale primitive FlareSlider and FlareProgress already take, rather than a gauge-specific range type. Which part of a scale counts as bad belongs to the application's data, so it arrives as a zone with a colour rather than as a token a theme would have to guess at. No JS: the whole gauge is one SVG whose geometry is computed in C# and whose every colour and thickness is a token read by the stylesheet.",
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Animate", @"bool", @"true", @"Sweeps the fill and needle to the value on first render and on every change. Default true; a reduced-motion preference suppresses it regardless.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Describes the gauge for assistive technology. Falls back to Label; the value, range and band the value falls in are announced from the ARIA meter attributes either way.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Zones drawn as coloured bands behind the fill, declared as FlareZone children.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Color", @"FlareColor", null, @"Colour of the fill (and of the needle when one is drawn). Default takes the theme's.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"EndAngle", @"double?", null, @"Where the scale ends, in degrees clockwise from twelve o'clock. Defaults to 90 for an arc and 135 for a radial dial. A 360-degree sweep gives the progress-ring case.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Format", @"string?", null, @"Format applied to the value and the scale labels (for example ""N0"", ""P0"").", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Caption under the readout - what the gauge is measuring.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Max", @"double", @"100", @"High end of the scale. Default 100.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Min", @"double", @"0", @"Low end of the scale. Default 0.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"MinorTickInterval", @"double", @"0", @"Distance between minor ticks. Zero (default) draws none.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Needle", @"bool?", null, @"Reads the value with a needle rather than by filling the track. Defaults to true for Radial and false for the other two - a needle is the dial's own idiom, and a filled arc is the KPI one.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Shape", @"GaugeShape", @"GaugeShape.Arc", @"How the scale is laid out. Default Arc.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"ShowScaleLabels", @"bool", @"false", @"Labels the major ticks with their values. Default false - a dial with a big readout in the middle rarely needs the scale spelled out as well.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"ShowTicks", @"bool", @"true", @"Draws the tick marks. Default true.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"ShowValue", @"bool", @"true", @"Draws the value in the middle of the gauge. Default true.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"StartAngle", @"double?", null, @"Where the scale starts, in degrees clockwise from twelve o'clock. Ignored by Linear. Defaults to -90 (nine o'clock) for an arc and -135 for a radial dial, which puts the dial's gap at the bottom.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Target", @"double?", null, @"A second value marked on the scale: the target, the budget, last month's figure. Drawn as a marker across the track rather than as a second needle, because a gauge answers one question.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"TickInterval", @"double", @"0", @"Distance between major ticks, on the scale's own units. Default: a fifth of the scale.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Value", @"double", @"0", @"The value to read against the scale. Values outside the scale pin to its ends.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"ValueTemplate", @"RenderFragment<double>?", null, @"Replaces the readout with custom content, receiving the current value.", null, false, false, false, @"FlareGauge"),
+                new ApiParameterInfo(@"Vertical", @"bool", @"false", @"Lays a Linear gauge bottom-to-top instead of left-to-right.", null, false, false, false, @"FlareGauge"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -3485,6 +3606,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"AutoApply", @"bool", @"true", @"When true (default), the mask is applied automatically as the user types -- literal characters (separators like -, /, () are inserted for them. Set false to disable auto-formatting and let the user type the value freely.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Clearable", @"bool", @"false", @"Shows a clear (x) button inside the field when it has a value.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"For", @"Expression<Func<string?>>?", null, @"Expression used to bind and validate the field.", null, false, false, false, @"FlareMaskedField"),
+                new ApiParameterInfo(@"InputMode", @"string?", null, @"The mobile keyboard hint. Null derives it from the mask, which is what a caller wants: every preset here is digits, and a text keyboard for a credit-card number is a phone-sized mistake.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"Mask", @"string?", null, @"Mask pattern; use # digit, A letter, * alphanumeric. Overrides Preset.", null, false, false, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"OnBlur", @"EventCallback<FocusEventArgs>", null, @"Invoked when the input loses focus.", null, false, true, false, @"FlareMaskedField"),
                 new ApiParameterInfo(@"OnClearButtonClick", @"EventCallback<MouseEventArgs>", null, @"Invoked when the clear (x) button is clicked, after the value has been reset.", null, false, true, false, @"FlareMaskedField"),
@@ -3729,9 +3851,9 @@ public static class ComponentApiRegistry
             @"For an absolute range on a scale the host owns - a slider or progress bar - use FlareZone.",
             new ApiParameterInfo[]
             {
-                new ApiParameterInfo(@"Label", @"string?", null, @"Optional label for the hover tooltip and the meter's legend entry.", null, false, false, false, @"FlareMeterSegment"),
                 new ApiParameterInfo(@"Value", @"double?", null, @"This part's weight. Segments are sized in proportion to the sum of all segment values, so the unit is arbitrary (milliseconds, bytes, counts). Zero or negative parts are dropped.", null, false, false, false, @"FlareMeterSegment"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Fill color. Role (e.g. Success) -> shared class; custom (FlareColor.Custom(""#..."")) -> inline token. Defaults to Primary.", null, false, false, false, @"FlareZoneBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"What this region means. Shown wherever the host surfaces regions to the reader - a meter's legend and tooltip, a gauge's accessible value text - and never invented: a region with no label is described by its numbers alone.", null, false, false, false, @"FlareZoneBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -3922,6 +4044,40 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlareNavigationGuard"] = new ApiComponentInfo(
+            @"FlareNavigationGuard",
+            @"Flare.Components.FlareNavigationGuard",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"GuardInAppNavigation", @"bool", @"true", @"Guards in-app navigation as well as leaving the site. Default true. Set false to keep only the browser prompt - which is what an application that routes its own navigation wants.", null, false, false, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"IsDirty", @"bool", @"false", @"Whether there is unsaved work. Nothing is guarded while this is false, and turning it false is what a successful save does.", null, false, false, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"LeaveLabel", @"string?", null, @"Label of the button that abandons the changes.", null, false, false, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"Message", @"string?", null, @"Body of the in-app confirmation. Falls back to a localized default.", null, false, false, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"OnCancel", @"EventCallback", null, @"Raised when the user chooses to stay.", null, false, true, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"OnConfirm", @"EventCallback", null, @"Raised when the user confirms leaving, before the navigation proceeds. The place to discard a draft or release a lock.", null, false, true, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"StayLabel", @"string?", null, @"Label of the button that stays on the page.", null, false, false, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"Title", @"string?", null, @"Title of the in-app confirmation. Falls back to a localized default.", null, false, false, false, @"FlareNavigationGuard"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            new ApiMethodInfo[]
+            {
+                new ApiMethodInfo(@"DisposeAsync", @"DisposeAsync()", @"ValueTask", null, @"Disposes the component; override to release JS interop or subscriptions.",
+                    System.Array.Empty<ApiMethodParameter>()),
+            },
             new string[]
             {
                 @"FlareComponentBase",
@@ -4249,6 +4405,8 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"OnFocus", @"EventCallback<FocusEventArgs>", null, @"Invoked when the input gains focus.", null, false, true, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"OnKeyDown", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keydown in the input, so a form can submit on Enter directly from the password field.", null, false, true, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"OnKeyUp", @"EventCallback<KeyboardEventArgs>", null, @"Invoked on keyup in the input.", null, false, true, false, @"FlarePasswordField"),
+                new ApiParameterInfo(@"ShowStrength", @"bool", @"false", @"Shows a strength meter under the field. Off by default: a sign-in form has nothing to judge, and a meter there is noise.", null, false, false, false, @"FlarePasswordField"),
+                new ApiParameterInfo(@"StrengthEvaluator", @"Func<string?, FlarePasswordStrength>?", null, @"Judges the password. Null uses Evaluate, which is a reasonable default and not a standard - password policy belongs to the application, so this is a delegate rather than a rule set baked into the component.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The bound password value.", null, false, false, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"ValueChanged", @"EventCallback<string?>", null, @"Fires when the value changes, so the field can be driven with @bind-Value.", null, false, true, false, @"FlarePasswordField"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
@@ -4430,6 +4588,35 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"A custom value editor (overrides Value), e.g. an input or select.", null, false, false, false, @"FlarePropertyGridItem"),
                 new ApiParameterInfo(@"Name", @"string?", null, @"The property name shown in the left column.", null, false, false, false, @"FlarePropertyGridItem"),
                 new ApiParameterInfo(@"Value", @"string?", null, @"The property value shown when no ChildContent editor is supplied.", null, false, false, false, @"FlarePropertyGridItem"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
+        c[@"FlarePullToRefresh"] = new ApiComponentInfo(
+            @"FlarePullToRefresh",
+            @"Flare.Components.FlarePullToRefresh",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"The scrollable content the gesture pulls.", null, false, false, false, @"FlarePullToRefresh"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Turns the gesture off without unwrapping the content.", null, false, false, false, @"FlarePullToRefresh"),
+                new ApiParameterInfo(@"IndicatorContent", @"RenderFragment<double>?", null, @"Replaces the indicator, receiving how far through the pull is (0 to 1, past 1 once armed).", null, false, false, false, @"FlarePullToRefresh"),
+                new ApiParameterInfo(@"MaxPull", @"double", @"96", @"How far the content can be dragged, in pixels. Default 96 - past the threshold, so there is somewhere to pull to once it is armed.", null, false, false, false, @"FlarePullToRefresh"),
+                new ApiParameterInfo(@"OnRefresh", @"EventCallback", null, @"Raised when the pull passes Threshold and is released. Awaited: the indicator stays up until it completes.", null, false, true, false, @"FlarePullToRefresh"),
+                new ApiParameterInfo(@"ScrollSelector", @"string?", null, @"The scroller the gesture belongs to, as a CSS selector. Null watches this component's own element, which is right when it is the scroller; name the ancestor when it is not.", null, false, false, false, @"FlarePullToRefresh"),
+                new ApiParameterInfo(@"Threshold", @"double", @"64", @"How far the pull must reach to arm the refresh, in pixels. Default 64.", null, false, false, false, @"FlarePullToRefresh"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -6086,6 +6273,54 @@ public static class ComponentApiRegistry
             System.Array.Empty<string>()
             );
 
+        c[@"FlareTimeSpanPicker"] = new ApiComponentInfo(
+            @"FlareTimeSpanPicker",
+            @"Flare.Components.FlareTimeSpanPicker",
+            @"Flare.Components",
+            null,
+            null,
+            new ApiParameterInfo[]
+            {
+                new ApiParameterInfo(@"Max", @"TimeSpan?", null, @"Largest duration accepted. Values above it clamp down.", null, false, false, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"Min", @"TimeSpan?", null, @"Smallest duration accepted. Values below it clamp up.", null, false, false, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"Negatable", @"bool", @"false", @"Shows a sign toggle, so the field can express a negative duration - an overrun, a correction, a time difference. Default false.", null, false, false, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"OnBlur", @"EventCallback<FocusEventArgs>", null, @"Raised when a segment loses focus.", null, false, true, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"OnFocus", @"EventCallback<FocusEventArgs>", null, @"Raised when a segment takes focus.", null, false, true, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"OnKeyDown", @"EventCallback<KeyboardEventArgs>", null, @"Raised on key down in a segment.", null, false, true, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"OnKeyUp", @"EventCallback<KeyboardEventArgs>", null, @"Raised on key up in a segment.", null, false, true, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"Step", @"int", @"1", @"Step of the smallest shown segment. Default 1.", null, false, false, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"Units", @"TimeSpanUnits", @"TimeSpanUnits.Days, HoursMinutes", @"Which segments are shown, largest first. Default days through minutes - seconds are noise on a duration most applications record.", null, false, false, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"Value", @"TimeSpan?", null, @"The bound duration.", null, false, false, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"ValueChanged", @"EventCallback<TimeSpan?>", null, @"Raised when a segment changes, with the recomposed duration.", null, false, true, false, @"FlareTimeSpanPicker"),
+                new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Autofocus", @"bool", @"false", @"Requests focus on the field's control after its first render (best-effort). Only one field per page should set this. Focus is applied via FocusCoreAsync, which each field wires to its real input.", null, false, false, false, @"FlareEditableFieldBase"),
+                new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Disabled", @"bool", @"false", @"Disables the field (no input, dimmed).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ErrorText", @"string?", null, @"Error text; when set it overrides HelperText and marks the field invalid.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"HelperText", @"string?", null, @"Helper text shown below the field.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"InputAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Attributes splatted onto the field's inner control - the <input>, <textarea> or combobox element the user interacts with - rather than onto the wrapper. This is where data-testid, name, form, autofocus, tabindex and extra aria-* belong: an unmatched attribute written directly on the component lands on the field's root element, following the same rule as every other Flare component, and a test that targets it would be pointing at the wrapper. A field built from several equal inputs - the OTP field - has no single control and ignores this.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"Label text shown for the field. Ignored when LabelContent is set.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"LabelContent", @"RenderFragment?", null, @"Markup rendered as the field label instead of Label - a unit, a help affordance, a link in a consent line. Named rather than ChildContent because a field's content is its control, not its label.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Placeholder", @"string?", null, @"Placeholder text shown when the field is empty. Not every field renders it (e.g. toggles).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"ReadOnly", @"bool", @"false", @"Makes the field read-only (value shown but not editable). Not every field renders it.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Required", @"bool", @"false", @"Marks the field as required (visual indicator + native required where applicable).", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Size", @"FieldSize", @"FieldSize.Md", @"Control size (Xs..Xl). Md (the default) is the standard field height.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Style", @"string?", null, @"Inline style string appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
+                new ApiParameterInfo(@"Typo", @"TypographyScale?", null, @"Optional typography scale for the field's text. Overrides the size-derived font; null (the default) keeps the size default.", null, false, false, false, @"FlareFieldBase"),
+                new ApiParameterInfo(@"Variant", @"InputVariant", @"InputVariant.Default", @"Visual variant (Filled/Outlined) of the field, independent of the active theme. Default (the default) keeps the theme's own field style.", null, false, false, false, @"FlareFieldBase"),
+            },
+            System.Array.Empty<ApiMethodInfo>(),
+            new string[]
+            {
+                @"FlareEditableFieldBase",
+                @"FlareFieldBase",
+                @"FlareComponentBase",
+                @"ComponentBase",
+                @"object",
+            },
+            System.Array.Empty<string>()
+            );
+
         c[@"FlareTimeline"] = new ApiComponentInfo(
             @"FlareTimeline",
             @"Flare.Components.FlareTimeline",
@@ -6441,10 +6676,13 @@ public static class ComponentApiRegistry
             new ApiParameterInfo[]
             {
                 new ApiParameterInfo(@"AllowCancel", @"bool", @"true", @"Shows the cancel affordance while a row is queued or uploading.", null, false, false, false, @"FlareUploadFileList"),
+                new ApiParameterInfo(@"AllowRemove", @"bool", @"true", @"Shows the remove affordance on every row.", null, false, false, false, @"FlareUploadFileList"),
                 new ApiParameterInfo(@"AllowRetry", @"bool", @"true", @"Shows the retry affordance on a failed or cancelled row.", null, false, false, false, @"FlareUploadFileList"),
+                new ApiParameterInfo(@"FileTemplate", @"RenderFragment<FlareUploadFile>?", null, @"Replaces the row body entirely, receiving the queue entry.", null, false, false, false, @"FlareUploadFileList"),
                 new ApiParameterInfo(@"Interactive", @"bool", @"false", @"Renders the transfer chrome - progress, errors, cancel and retry. False for a component with no Uploader, which is a picker and has no queue to show.", null, false, false, false, @"FlareUploadFileList"),
                 new ApiParameterInfo(@"Items", @"IReadOnlyList<FlareUploadFile>", null, @"The queue rows to paint, in selection order.", null, false, false, true, @"FlareUploadFileList"),
                 new ApiParameterInfo(@"OnCancel", @"EventCallback<string>", null, @"Raised with the row id when cancel is pressed.", null, false, true, false, @"FlareUploadFileList"),
+                new ApiParameterInfo(@"OnRemove", @"EventCallback<string>", null, @"Raised with the row id when remove is pressed.", null, false, true, false, @"FlareUploadFileList"),
                 new ApiParameterInfo(@"OnRetry", @"EventCallback<string>", null, @"Raised with the row id when retry is pressed.", null, false, true, false, @"FlareUploadFileList"),
                 new ApiParameterInfo(@"AdditionalAttributes", @"IReadOnlyDictionary<string, object>?", null, @"Additional attributes.", null, false, false, false, @"FlareComponentBase"),
                 new ApiParameterInfo(@"Class", @"string?", null, @"Additional CSS class(es) appended to the component's root element.", null, false, false, false, @"FlareComponentBase"),
@@ -6571,6 +6809,7 @@ public static class ComponentApiRegistry
                 new ApiParameterInfo(@"End", @"double?", null, @"End of the range on the host's scale.", null, false, false, false, @"FlareZone"),
                 new ApiParameterInfo(@"Start", @"double?", null, @"Start of the range on the host's scale. The Start/End pair is ordered, so Start may exceed End. A missing bound collapses the zone, which is then dropped.", null, false, false, false, @"FlareZone"),
                 new ApiParameterInfo(@"Color", @"FlareColor", null, @"Fill color. Role (e.g. Success) -> shared class; custom (FlareColor.Custom(""#..."")) -> inline token. Defaults to Primary.", null, false, false, false, @"FlareZoneBase"),
+                new ApiParameterInfo(@"Label", @"string?", null, @"What this region means. Shown wherever the host surfaces regions to the reader - a meter's legend and tooltip, a gauge's accessible value text - and never invented: a region with no label is described by its numbers alone.", null, false, false, false, @"FlareZoneBase"),
             },
             System.Array.Empty<ApiMethodInfo>(),
             new string[]
@@ -6722,6 +6961,27 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Rectangular", @"1", @"Anchor element has a rectangular shape; badge is positioned at the corner."),
             },
             System.Array.Empty<string>());
+
+        e[@"BarcodeSymbology"] = new ApiEnumInfo(
+            @"BarcodeSymbology",
+            @"Flare.Components.BarcodeSymbology",
+            @"Flare.Components",
+            @"The 1D symbologies FlareBarcode can encode, ordered by how often they are actually asked for rather than alphabetically.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Code128", @"0", @"Code 128 - the general-purpose symbology. Encodes the full ASCII range and switches between its A/B/C subsets automatically, so a run of digits costs half the width it would elsewhere."),
+                new ApiEnumMember(@"Ean13", @"1", @"EAN-13 retail article number: 12 digits plus a check digit this computes."),
+                new ApiEnumMember(@"Ean8", @"2", @"EAN-8, the short form for a small package: 7 digits plus a check digit."),
+                new ApiEnumMember(@"UpcA", @"3", @"UPC-A, the North American retail code: 11 digits plus a check digit."),
+                new ApiEnumMember(@"Code39", @"4", @"Code 39 - digits, upper-case letters and a handful of symbols. Widely readable by old hardware, and about three times wider than Code 128 for the same text."),
+                new ApiEnumMember(@"Itf14", @"5", @"ITF-14 shipping-container code: 13 digits plus a check digit, interleaved two-of-five."),
+                new ApiEnumMember(@"Codabar", @"6", @"Codabar - digits and six symbols, with a letter A-D at each end. Libraries and blood banks."),
+            },
+            new string[]
+            {
+                @"FlareBarcode",
+            });
 
         e[@"BottomNavPosition"] = new ApiEnumInfo(
             @"BottomNavPosition",
@@ -7179,32 +7439,6 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
-        e[@"ComponentGroup"] = new ApiEnumInfo(
-            @"ComponentGroup",
-            @"Flare.Gallery.Models.ComponentGroup",
-            @"Flare.Gallery.Models",
-            null,
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Field", @"0", null),
-                new ApiEnumMember(@"Input", @"1", null),
-                new ApiEnumMember(@"Files", @"2", null),
-                new ApiEnumMember(@"Forms", @"3", null),
-                new ApiEnumMember(@"Buttons", @"4", null),
-                new ApiEnumMember(@"Layout", @"5", null),
-                new ApiEnumMember(@"Navigation", @"6", null),
-                new ApiEnumMember(@"DataDisplay", @"7", null),
-                new ApiEnumMember(@"DataGrid", @"8", null),
-                new ApiEnumMember(@"DateTime", @"9", null),
-                new ApiEnumMember(@"Feedback", @"10", null),
-                new ApiEnumMember(@"Media", @"11", null),
-                new ApiEnumMember(@"Foundations", @"12", null),
-                new ApiEnumMember(@"Utilities", @"13", null),
-                new ApiEnumMember(@"Ide", @"14", null),
-            },
-            System.Array.Empty<string>());
-
         e[@"CompositeMode"] = new ApiEnumInfo(
             @"CompositeMode",
             @"Flare.Components.CompositeMode",
@@ -7631,6 +7865,7 @@ public static class ComponentApiRegistry
                 @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTimePicker",
+                @"FlareTimeSpanPicker",
             });
 
         e[@"FilterOperator"] = new ApiEnumInfo(
@@ -7869,22 +8104,22 @@ public static class ComponentApiRegistry
                 @"FlareForm",
             });
 
-        e[@"GallerySection"] = new ApiEnumInfo(
-            @"GallerySection",
-            @"Flare.Gallery.Models.GallerySection",
-            @"Flare.Gallery.Models",
-            null,
+        e[@"GaugeShape"] = new ApiEnumInfo(
+            @"GaugeShape",
+            @"Flare.Components.GaugeShape",
+            @"Flare.Components",
+            @"How a FlareGauge lays its scale out. One component with three shapes rather than three components: the scale, bands, ticks, target marker and readout are the same in all three, and only the projection from value to screen differs.",
             null,
             new ApiEnumMember[]
             {
-                new ApiEnumMember(@"None", @"0", null),
-                new ApiEnumMember(@"Guide", @"1", null),
-                new ApiEnumMember(@"Themes", @"2", null),
-                new ApiEnumMember(@"Components", @"3", null),
-                new ApiEnumMember(@"Services", @"4", null),
-                new ApiEnumMember(@"Api", @"5", null),
+                new ApiEnumMember(@"Radial", @"0", @"A near-full dial with the gap at the bottom, read with a needle. The speedometer reading, and the one shape where the needle carries the value rather than the fill."),
+                new ApiEnumMember(@"Arc", @"1", @"A half or quarter arc filled up to the value - the KPI dial. Narrowing the sweep to a full turn gives the progress-ring degenerate case."),
+                new ApiEnumMember(@"Linear", @"2", @"A straight track with the scale beside it, horizontal or vertical."),
             },
-            System.Array.Empty<string>());
+            new string[]
+            {
+                @"FlareGauge",
+            });
 
         e[@"IdePanelMode"] = new ApiEnumInfo(
             @"IdePanelMode",
@@ -7951,6 +8186,7 @@ public static class ComponentApiRegistry
                 @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTimePicker",
+                @"FlareTimeSpanPicker",
             });
 
         e[@"LabelPlacement"] = new ApiEnumInfo(
@@ -8355,20 +8591,6 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
-        e[@"SearchKind"] = new ApiEnumInfo(
-            @"SearchKind",
-            @"Flare.Gallery.Services.SearchKind",
-            @"Flare.Gallery.Services",
-            null,
-            null,
-            new ApiEnumMember[]
-            {
-                new ApiEnumMember(@"Page", @"0", null),
-                new ApiEnumMember(@"Component", @"1", null),
-                new ApiEnumMember(@"Api", @"2", null),
-            },
-            System.Array.Empty<string>());
-
         e[@"SelectionMode"] = new ApiEnumInfo(
             @"SelectionMode",
             @"Flare.Components.SelectionMode",
@@ -8714,6 +8936,27 @@ public static class ComponentApiRegistry
                 @"FlareTimePicker",
             });
 
+        e[@"TimeSpanUnits"] = new ApiEnumInfo(
+            @"TimeSpanUnits",
+            @"Flare.Components.TimeSpanUnits",
+            @"Flare.Components",
+            @"Which segments a FlareTimeSpanPicker shows. Flags rather than a ""smallest unit"" enum: a field can legitimately show days and minutes and skip hours, and an ordered scale cannot say that.",
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", @"No segments - an empty field, which is never what a caller means."),
+                new ApiEnumMember(@"Days", @"1", @"Whole days."),
+                new ApiEnumMember(@"Hours", @"2", @"Hours."),
+                new ApiEnumMember(@"Minutes", @"4", @"Minutes."),
+                new ApiEnumMember(@"HoursMinutes", @"6", @"Hours and minutes - the working-time shape."),
+                new ApiEnumMember(@"Seconds", @"8", @"Seconds."),
+                new ApiEnumMember(@"All", @"15", @"Every segment."),
+            },
+            new string[]
+            {
+                @"FlareTimeSpanPicker",
+            });
+
         e[@"TimelineAlign"] = new ApiEnumInfo(
             @"TimelineAlign",
             @"Flare.Components.TimelineAlign",
@@ -8861,6 +9104,7 @@ public static class ComponentApiRegistry
                 @"FlareTextArea",
                 @"FlareTextField",
                 @"FlareTimePicker",
+                @"FlareTimeSpanPicker",
                 @"FlareToggleButton",
             });
 
