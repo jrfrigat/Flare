@@ -99,6 +99,9 @@ public sealed record DesignTokens
     /// <summary>Chart tokens: the categorical series palette, the sequential ramp, and the plot chrome.</summary>
     public required ChartTokens Chart { get; init; }
 
+    /// <summary>Gauge tokens: the track, fill, needle, ticks and readout of <c>FlareGauge</c>.</summary>
+    public required GaugeTokens Gauge { get; init; }
+
     /// <summary>Card tokens.</summary>
     public required CardTokens Card { get; init; }
 

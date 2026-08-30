@@ -820,6 +820,33 @@ public static class CssVarMap
         v[Css.Tokens.Chart.LineDashDashDot] = t.Chart.LineDashDashDot;
         v[Css.Tokens.Chart.ZoomSelectionFill] = t.Chart.ZoomSelectionFill;
         v[Css.Tokens.Chart.ZoomSelectionStroke] = t.Chart.ZoomSelectionStroke;
+
+        // Gauge.
+        v[Css.Tokens.Gauge.TrackColor] = t.Gauge.TrackColor;
+        v[Css.Tokens.Gauge.TrackWidth] = t.Gauge.TrackWidth;
+        v[Css.Tokens.Gauge.TrackCap] = t.Gauge.TrackCap;
+        v[Css.Tokens.Gauge.FillColor] = t.Gauge.FillColor;
+        v[Css.Tokens.Gauge.FillWidth] = t.Gauge.FillWidth;
+        v[Css.Tokens.Gauge.NeedleColor] = t.Gauge.NeedleColor;
+        v[Css.Tokens.Gauge.NeedleWidth] = t.Gauge.NeedleWidth;
+        v[Css.Tokens.Gauge.NeedleLength] = t.Gauge.NeedleLength;
+        v[Css.Tokens.Gauge.PivotColor] = t.Gauge.PivotColor;
+        v[Css.Tokens.Gauge.PivotRadius] = t.Gauge.PivotRadius;
+        v[Css.Tokens.Gauge.TickColor] = t.Gauge.TickColor;
+        v[Css.Tokens.Gauge.TickWidth] = t.Gauge.TickWidth;
+        v[Css.Tokens.Gauge.TickLength] = t.Gauge.TickLength;
+        v[Css.Tokens.Gauge.TickMinorColor] = t.Gauge.TickMinorColor;
+        v[Css.Tokens.Gauge.TickMinorWidth] = t.Gauge.TickMinorWidth;
+        v[Css.Tokens.Gauge.TickMinorLength] = t.Gauge.TickMinorLength;
+        v[Css.Tokens.Gauge.TickGap] = t.Gauge.TickGap;
+        v[Css.Tokens.Gauge.LabelColor] = t.Gauge.LabelColor;
+        v[Css.Tokens.Gauge.LabelSize] = t.Gauge.LabelSize;
+        v[Css.Tokens.Gauge.ValueColor] = t.Gauge.ValueColor;
+        v[Css.Tokens.Gauge.ValueSize] = t.Gauge.ValueSize;
+        v[Css.Tokens.Gauge.ValueWeight] = t.Gauge.ValueWeight;
+        v[Css.Tokens.Gauge.BandOpacity] = t.Gauge.BandOpacity;
+        v[Css.Tokens.Gauge.TargetColor] = t.Gauge.TargetColor;
+        v[Css.Tokens.Gauge.TargetWidth] = t.Gauge.TargetWidth;
         #endregion
 
         #region PROGRESS

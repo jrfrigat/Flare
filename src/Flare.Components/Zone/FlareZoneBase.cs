@@ -23,6 +23,13 @@ public abstract class FlareZoneBase : ComponentBase, IDisposable
     /// (<c>FlareColor.Custom("#...")</c>) -> inline token. Defaults to <see cref="FlareColor.Primary"/>.</summary>
     [Parameter] public FlareColor Color { get; set; } = FlareColor.Primary;
 
+    /// <summary>
+    /// What this region means. Shown wherever the host surfaces regions to the reader - a meter's legend and
+    /// tooltip, a gauge's accessible value text - and never invented: a region with no label is described by
+    /// its numbers alone.
+    /// </summary>
+    [Parameter] public string? Label { get; set; }
+
     /// <summary>The parameter values that affect rendering. The base compares it between parameter sets and
     /// pokes the host only on a real change, so the host's re-render does not loop.</summary>
     protected abstract object Signature { get; }

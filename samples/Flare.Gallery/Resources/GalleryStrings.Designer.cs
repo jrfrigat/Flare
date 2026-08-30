@@ -10112,5 +10112,176 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Gauge.
+        /// </summary>
+        public static string Gauge_Title {
+            get {
+                return ResourceManager.GetString("Gauge_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на One value read against a marked scale: a needle dial, a filled KPI arc, or a bar with ticks. Coloured bands are FlareZone children, the same range primitive the slider and progress bar take..
+        /// </summary>
+        public static string Gauge_Subtitle {
+            get {
+                return ResourceManager.GetString("Gauge_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The three shapes.
+        /// </summary>
+        public static string Gauge_Shapes {
+            get {
+                return ResourceManager.GetString("Gauge_Shapes", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на One component with a Shape, not three components: the scale, bands, ticks, target marker and readout are identical in all three and only the projection from value to screen differs. The viewBox is computed from StartAngle and EndAngle, so a quarter arc is drawn at full size rather than floating in an empty square..
+        /// </summary>
+        public static string Gauge_ShapesDesc {
+            get {
+                return ResourceManager.GetString("Gauge_ShapesDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A moving value.
+        /// </summary>
+        public static string Gauge_Live {
+            get {
+                return ResourceManager.GetString("Gauge_Live", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The reading a gauge exists for. The sweep is a CSS transition on the needle rotation and on the fill dash offset, so a new value animates without redrawing any geometry - and a reduced-motion preference switches it off without the page knowing..
+        /// </summary>
+        public static string Gauge_LiveDesc {
+            get {
+                return ResourceManager.GetString("Gauge_LiveDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на On a dashboard.
+        /// </summary>
+        public static string Gauge_Dashboard {
+            get {
+                return ResourceManager.GetString("Gauge_Dashboard", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Gauges beside a sparkline: the gauge says where the value is now, the sparkline says how it got there. A 360-degree sweep is the progress-ring case, from the same component rather than a separate ring type..
+        /// </summary>
+        public static string Gauge_DashboardDesc {
+            get {
+                return ResourceManager.GetString("Gauge_DashboardDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Load.
+        /// </summary>
+        public static string Gauge_Load {
+            get {
+                return ResourceManager.GetString("Gauge_Load", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Requests / s.
+        /// </summary>
+        public static string Gauge_Throughput {
+            get {
+                return ResourceManager.GetString("Gauge_Throughput", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на New reading.
+        /// </summary>
+        public static string Gauge_NewReading {
+            get {
+                return ResourceManager.GetString("Gauge_NewReading", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Healthy.
+        /// </summary>
+        public static string Gauge_Healthy {
+            get {
+                return ResourceManager.GetString("Gauge_Healthy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Busy.
+        /// </summary>
+        public static string Gauge_Busy {
+            get {
+                return ResourceManager.GetString("Gauge_Busy", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Critical.
+        /// </summary>
+        public static string Gauge_Critical {
+            get {
+                return ResourceManager.GetString("Gauge_Critical", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Uptime %.
+        /// </summary>
+        public static string Gauge_Uptime {
+            get {
+                return ResourceManager.GetString("Gauge_Uptime", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на p95 latency, ms.
+        /// </summary>
+        public static string Gauge_Latency {
+            get {
+                return ResourceManager.GetString("Gauge_Latency", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Storage quota.
+        /// </summary>
+        public static string Gauge_Quota {
+            get {
+                return ResourceManager.GetString("Gauge_Quota", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Below target.
+        /// </summary>
+        public static string Gauge_BelowTarget {
+            get {
+                return ResourceManager.GetString("Gauge_BelowTarget", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Load, last 12 h.
+        /// </summary>
+        public static string Gauge_Trend {
+            get {
+                return ResourceManager.GetString("Gauge_Trend", resourceCulture);
+            }
+        }
+
     }
 }

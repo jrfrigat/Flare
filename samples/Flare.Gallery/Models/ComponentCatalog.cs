@@ -160,6 +160,7 @@ public static class ComponentCatalog
         new ComponentEntry("components/badge",             "Badge",                   "Badge_Title",           ComponentGroup.DataDisplay),
         new ComponentEntry("components/charts",            "Charts",                  "Charts_Title",          ComponentGroup.DataDisplay),
         new ComponentEntry("components/chip",              "Chip",                    "Chip_Title",            ComponentGroup.DataDisplay),
+        new ComponentEntry("components/gauge",             "Gauge",                   "Gauge_Title",           ComponentGroup.DataDisplay),
         new ComponentEntry("components/chip-group",        "Chip Group",              "ChipGroup_Title",       ComponentGroup.DataDisplay),
         new ComponentEntry("components/data-tree",         "Data Tree",               "DataTree_Title",        ComponentGroup.DataDisplay),
         new ComponentEntry("components/description-list",  "Description List",        "DescriptionList_Title", ComponentGroup.DataDisplay),

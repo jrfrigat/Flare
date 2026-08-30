@@ -11,8 +11,6 @@
     /// <summary>This part's weight. Segments are sized in proportion to the sum of all segment values, so the
     /// unit is arbitrary (milliseconds, bytes, counts). Zero or negative parts are dropped.</summary>
     [Parameter] public double? Value { get; set; }
-    /// <summary>Optional label for the hover tooltip and the meter's legend entry.</summary>
-    [Parameter] public string? Label { get; set; }
 
     /// <inheritdoc />
     protected override object Signature => (Value, Label, Color);

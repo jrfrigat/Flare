@@ -80,23 +80,17 @@ public partial class FlareChart
             double total = series.Sum(s => s.Values.FirstOrDefault());
             if (total == 0) yield break;
 
-            double startAngle = -Math.PI / 2;
+            double startAngle = ArcGeometry.Top;
             for (int i = 0; i < series.Count; i++)
             {
                 double val = SafeValue(series[i].Values.FirstOrDefault());
                 double sweep = val / total * 2 * Math.PI;
                 double endAngle = startAngle + sweep;
-                double x1 = cx + r * Math.Cos(startAngle), y1 = cy + r * Math.Sin(startAngle);
-                double x2 = cx + r * Math.Cos(endAngle), y2 = cy + r * Math.Sin(endAngle);
-                double ix1 = cx + inner * Math.Cos(startAngle), iy1 = cy + inner * Math.Sin(startAngle);
-                double ix2 = cx + inner * Math.Cos(endAngle), iy2 = cy + inner * Math.Sin(endAngle);
-                int largeArc = sweep > Math.PI ? 1 : 0;
-                string path = donut
-                    ? string.Create(_inv, $"M {x1:F2} {y1:F2} A {r:F2} {r:F2} 0 {largeArc} 1 {x2:F2} {y2:F2} L {ix2:F2} {iy2:F2} A {inner:F2} {inner:F2} 0 {largeArc} 0 {ix1:F2} {iy1:F2} Z")
-                    : string.Create(_inv, $"M {cx:F2} {cy:F2} L {x1:F2} {y1:F2} A {r:F2} {r:F2} 0 {largeArc} 1 {x2:F2} {y2:F2} Z");
+                string path = ArcGeometry.Wedge(cx, cy, r, inner, startAngle, endAngle);
                 double mid = startAngle + sweep / 2;
                 double rMid = donut ? (r + inner) / 2 : r * 0.6;
-                yield return (i, path, cx + rMid * Math.Cos(mid), cy + rMid * Math.Sin(mid));
+                var (lx, ly) = ArcGeometry.Point(cx, cy, rMid, mid);
+                yield return (i, path, lx, ly);
                 startAngle = endAngle;
             }
         }

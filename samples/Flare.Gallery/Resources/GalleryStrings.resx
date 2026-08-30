@@ -3053,4 +3053,61 @@
   <data name="DataGrid_CustomExporterDesc" xml:space="preserve">
     <value>Exporters is a plain list, so your own IDataGridExporter&lt;T&gt; sits beside the standard ones. Here a Markdown exporter is added next to Excel.</value>
   </data>
+  <data name="Gauge_Title" xml:space="preserve">
+    <value>Gauge</value>
+  </data>
+  <data name="Gauge_Subtitle" xml:space="preserve">
+    <value>One value read against a marked scale: a needle dial, a filled KPI arc, or a bar with ticks. Coloured bands are FlareZone children, the same range primitive the slider and progress bar take.</value>
+  </data>
+  <data name="Gauge_Shapes" xml:space="preserve">
+    <value>The three shapes</value>
+  </data>
+  <data name="Gauge_ShapesDesc" xml:space="preserve">
+    <value>One component with a Shape, not three components: the scale, bands, ticks, target marker and readout are identical in all three and only the projection from value to screen differs. The viewBox is computed from StartAngle and EndAngle, so a quarter arc is drawn at full size rather than floating in an empty square.</value>
+  </data>
+  <data name="Gauge_Live" xml:space="preserve">
+    <value>A moving value</value>
+  </data>
+  <data name="Gauge_LiveDesc" xml:space="preserve">
+    <value>The reading a gauge exists for. The sweep is a CSS transition on the needle rotation and on the fill dash offset, so a new value animates without redrawing any geometry - and a reduced-motion preference switches it off without the page knowing.</value>
+  </data>
+  <data name="Gauge_Dashboard" xml:space="preserve">
+    <value>On a dashboard</value>
+  </data>
+  <data name="Gauge_DashboardDesc" xml:space="preserve">
+    <value>Gauges beside a sparkline: the gauge says where the value is now, the sparkline says how it got there. A 360-degree sweep is the progress-ring case, from the same component rather than a separate ring type.</value>
+  </data>
+  <data name="Gauge_Load" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="Gauge_Throughput" xml:space="preserve">
+    <value>Requests / s</value>
+  </data>
+  <data name="Gauge_NewReading" xml:space="preserve">
+    <value>New reading</value>
+  </data>
+  <data name="Gauge_Healthy" xml:space="preserve">
+    <value>Healthy</value>
+  </data>
+  <data name="Gauge_Busy" xml:space="preserve">
+    <value>Busy</value>
+  </data>
+  <data name="Gauge_Critical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="Gauge_Uptime" xml:space="preserve">
+    <value>Uptime %</value>
+  </data>
+  <data name="Gauge_Latency" xml:space="preserve">
+    <value>p95 latency, ms</value>
+  </data>
+  <data name="Gauge_Quota" xml:space="preserve">
+    <value>Storage quota</value>
+  </data>
+  <data name="Gauge_BelowTarget" xml:space="preserve">
+    <value>Below target</value>
+  </data>
+  <data name="Gauge_Trend" xml:space="preserve">
+    <value>Load, last 12 h</value>
+  </data>
 </root>

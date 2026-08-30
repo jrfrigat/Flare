@@ -1,0 +1,170 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+
+@* One value against a marked scale. The three shapes share every layer below; only the projection from
+   value to screen differs, which is why they are one component and not three.
+
+   Layer order is the reading order: the track is the whole scale, bands mark what parts of it mean,
+   the fill or needle says where the value is, and the target says where it should have been. *@
+
+<div class="@BuildCssClass(ShapeClass, Animate ? Css.Classes.Gauge.Animate : null)"
+     role="meter"
+     aria-valuenow="@ClampedValue.ToString(CultureInfo.InvariantCulture)"
+     aria-valuemin="@Min.ToString(CultureInfo.InvariantCulture)"
+     aria-valuemax="@Max.ToString(CultureInfo.InvariantCulture)"
+     aria-valuetext="@ValueText"
+     aria-label="@(AriaLabel ?? Label)"
+     style="@Style"
+     @attributes="AdditionalAttributes">
+
+    @if (Shape is GaugeShape.Linear)
+    {
+        @RenderLinear()
+    }
+    else
+    {
+        @RenderDial()
+    }
+
+    @if (ShowValue || Label is not null)
+    {
+        <div class="@Css.Classes.Gauge.Readout">
+            @if (ShowValue)
+            {
+                <span class="@Css.Classes.Gauge.Value">
+                    @if (ValueTemplate is not null)
+                    {
+                        @ValueTemplate(ClampedValue)
+                    }
+                    else
+                    {
+                        @Display(ClampedValue)
+                    }
+                </span>
+            }
+            @if (Label is not null)
+            {
+                <span class="@Css.Classes.Gauge.Label">@Label</span>
+            }
+        </div>
+    }
+
+    @* Zones register through the cascaded collection and render no DOM of their own - the gauge paints
+       the bands. IsFixed: the collection instance never changes identity. *@
+    <CascadingValue TValue="IFlareZoneHost" Value="_zones" IsFixed="true">@ChildContent</CascadingValue>
+</div>
+
+@code {
+    private RenderFragment RenderDial() => __builder =>
+    {
+        var (w, h, cx, cy, r) = Dial;
+        <svg class="@Css.Classes.Gauge.Svg" viewBox="@F(0) @F(0) @F(w) @F(h)"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+
+            <path class="@Css.Classes.Gauge.Track" d="@TrackPath" />
+
+            @foreach (var band in Bands)
+            {
+                <path class="@BandClass(band)" style="@band.Color.StyleMain()"
+                      d="@ArcBetween(band.Start!.Value, band.End!.Value)" />
+            }
+
+            @if (!UseNeedle)
+            {
+                @* pathLength normalises the arc to 100 units so the dash offset IS the percentage still to
+                   fill, whatever the radius - and makes the sweep a transition rather than a redraw. *@
+                <path class="@FillClass" style="@FillStyle" d="@TrackPath" pathLength="100" />
+            }
+
+            @if (ShowTicks || ShowScaleLabels)
+            {
+                @foreach (var (value, major) in Ticks)
+                {
+                    var angle = AngleOf(value);
+                    if (ShowTicks)
+                    {
+                        var (x1, y1) = TickInner(angle);
+                        var (x2, y2) = TickOuter(angle, major);
+                        <line class="@(major ? Css.Classes.Gauge.Tick : $"{Css.Classes.Gauge.Tick} {Css.Classes.Gauge.TickMinor}")"
+                              x1="@F(x1)" y1="@F(y1)" x2="@F(x2)" y2="@F(y2)" />
+                    }
+                    if (ShowScaleLabels && major)
+                    {
+                        var (lx, ly) = ScaleLabelPoint(angle);
+                        @ScaleText(lx, ly, Display(value))
+                    }
+                }
+            }
+
+            @if (Target is { } target)
+            {
+                var angle = AngleOf(target);
+                var (tx1, ty1) = TargetInner(angle);
+                var (tx2, ty2) = TargetOuter(angle);
+                <line class="@Css.Classes.Gauge.Target" x1="@F(tx1)" y1="@F(ty1)" x2="@F(tx2)" y2="@F(ty2)" />
+            }
+
+            @if (UseNeedle)
+            {
+                @* The needle is drawn pointing at the scale's START and rotated to the value, so the sweep
+                   is a transform transition - the compositor animates it and the geometry stays exact. *@
+                var (nx, ny) = NeedleTip;
+                <g class="@Css.Classes.Gauge.NeedleGroup"
+                   transform="rotate(@F(NeedleRotation) @F(cx) @F(cy))">
+                    <line class="@NeedleClass" style="@Color.StyleMain()"
+                          x1="@F(cx)" y1="@F(cy)" x2="@F(nx)" y2="@F(ny)" />
+                </g>
+                <circle class="@Css.Classes.Gauge.Pivot" cx="@F(cx)" cy="@F(cy)" r="@PivotRadiusRef" />
+            }
+        </svg>
+    };
+
+    private RenderFragment RenderLinear() => __builder =>
+    {
+        var (w, h, x1, y1, x2, y2) = Bar;
+        <svg class="@Css.Classes.Gauge.Svg" viewBox="@F(0) @F(0) @F(w) @F(h)"
+             xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"
+             preserveAspectRatio="none">
+
+            <line class="@Css.Classes.Gauge.Track" x1="@F(x1)" y1="@F(y1)" x2="@F(x2)" y2="@F(y2)" />
+
+            @foreach (var band in Bands)
+            {
+                var (bx1, by1) = PointOn(band.Start!.Value);
+                var (bx2, by2) = PointOn(band.End!.Value);
+                <line class="@BandClass(band)" style="@band.Color.StyleMain()"
+                      x1="@F(bx1)" y1="@F(by1)" x2="@F(bx2)" y2="@F(by2)" />
+            }
+
+            <line class="@FillClass" style="@FillStyle"
+                  x1="@F(x1)" y1="@F(y1)" x2="@F(x2)" y2="@F(y2)" pathLength="100" />
+
+            @if (ShowTicks || ShowScaleLabels)
+            {
+                @foreach (var (value, major) in Ticks)
+                {
+                    var (px, py) = PointOn(value);
+                    if (ShowTicks)
+                    {
+                        var (ex, ey) = LinearTickEnd(px, py, major);
+                        <line class="@(major ? Css.Classes.Gauge.Tick : $"{Css.Classes.Gauge.Tick} {Css.Classes.Gauge.TickMinor}")"
+                              x1="@F(px)" y1="@F(py)" x2="@F(ex)" y2="@F(ey)" />
+                    }
+                    if (ShowScaleLabels && major)
+                    {
+                        var (lx, ly) = LinearScaleLabelPoint(px, py);
+                        @ScaleText(lx, ly, Display(value))
+                    }
+                }
+            }
+
+            @if (Target is { } target)
+            {
+                var (px, py) = PointOn(target);
+                var (a, b, c, d) = LinearTargetSpan(px, py);
+                <line class="@Css.Classes.Gauge.Target" x1="@F(a)" y1="@F(b)" x2="@F(c)" y2="@F(d)" />
+            }
+        </svg>
+    };
+}

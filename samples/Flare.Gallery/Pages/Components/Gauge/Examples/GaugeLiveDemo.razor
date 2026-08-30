@@ -1,0 +1,52 @@
+@implements IDisposable
+
+@* A live value, which is what a gauge is for. The sweep is a CSS transition on the needle's rotation and
+   on the fill's dash offset, so a new reading animates without a re-render of the geometry - and a
+   reduced-motion preference switches it off without the page knowing. *@
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Wrap Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start">
+        <FlareStack Style="width:14rem;">
+            <FlareGauge Shape="GaugeShape.Radial" Value="@_load" Label="@GalleryStrings.Gauge_Load"
+                        Format="N0" TickInterval="25" MinorTickInterval="5">
+                <FlareZone Start="0" End="60" Color="FlareColor.Success" Label="@GalleryStrings.Gauge_Healthy" />
+                <FlareZone Start="60" End="85" Color="FlareColor.Warning" Label="@GalleryStrings.Gauge_Busy" />
+                <FlareZone Start="85" End="100" Color="FlareColor.Error" Label="@GalleryStrings.Gauge_Critical" />
+            </FlareGauge>
+        </FlareStack>
+
+        @* Target: the second reading a dashboard almost always needs, drawn as a marker across the track
+           rather than a second needle - a gauge answers one question. *@
+        <FlareStack Style="width:14rem;">
+            <FlareGauge Shape="GaugeShape.Arc" Value="@_throughput" Target="900" Max="1200"
+                        Label="@GalleryStrings.Gauge_Throughput" Format="N0" ShowScaleLabels="true"
+                        TickInterval="400" />
+        </FlareStack>
+    </FlareStack>
+
+    <FlareStack Row Gap="FlareSpacing.Small">
+        <FlareButton Variant="ButtonVariant.Tonal" OnClick="Step">@GalleryStrings.Gauge_NewReading</FlareButton>
+    </FlareStack>
+</FlareStack>
+
+@code {
+    private double _load = 41;
+    private double _throughput = 780;
+    private Timer? _timer;
+
+    // Random is fine here: this is a demo of the reading, not of a data source.
+    private readonly Random _rng = new();
+
+    protected override void OnInitialized()
+    {
+        // A gauge's whole point is the value moving, so the demo moves it without being asked.
+        _timer = new Timer(_ => InvokeAsync(() => { Step(); StateHasChanged(); }), null, 2500, 2500);
+    }
+
+    private void Step()
+    {
+        _load = Math.Clamp(_load + _rng.Next(-18, 19), 3, 99);
+        _throughput = Math.Clamp(_throughput + _rng.Next(-160, 161), 120, 1180);
+    }
+
+    public void Dispose() => _timer?.Dispose();
+}

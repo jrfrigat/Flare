@@ -1,0 +1,33 @@
+@* A dashboard row: gauges beside a sparkline, which is the pairing they are actually used in - the gauge
+   says where the value is now, the sparkline says how it got there. Both are Flare components reading the
+   same theme, so they agree on colour without either being told to. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Medium" Align="FlareAlignItems.Stretch">
+
+    <FlareCard Variant="CardVariant.Outlined" Style="width:13rem;">
+        <FlareGauge Shape="GaugeShape.Arc" Value="94.2" Format="N1"
+                    Label="@GalleryStrings.Gauge_Uptime" ShowTicks="false">
+            <FlareZone Start="0" End="90" Color="FlareColor.Error" Label="@GalleryStrings.Gauge_BelowTarget" />
+        </FlareGauge>
+    </FlareCard>
+
+    <FlareCard Variant="CardVariant.Outlined" Style="width:13rem;">
+        <FlareGauge Shape="GaugeShape.Arc" Value="248" Max="500" Target="300" Format="N0"
+                    Label="@GalleryStrings.Gauge_Latency" ShowTicks="false"
+                    Color="FlareColor.Tertiary" />
+    </FlareCard>
+
+    @* A 360-degree sweep is the progress-ring case: same component, no separate ring type. The scale runs
+       0..1 so a percent format reads the value directly. *@
+    <FlareCard Variant="CardVariant.Outlined" Style="width:13rem;">
+        <FlareGauge Shape="GaugeShape.Arc" StartAngle="0" EndAngle="360" Value="0.63" Max="1"
+                    Format="P0" Label="@GalleryStrings.Gauge_Quota" ShowTicks="false" />
+    </FlareCard>
+
+    <FlareCard Variant="CardVariant.Outlined" Style="flex:1;min-width:16rem;">
+        <FlareStack Gap="FlareSpacing.XSmall">
+            <FlareText Typo="TypographyScale.LabelLarge">@GalleryStrings.Gauge_Trend</FlareText>
+            <FlareChart Type="ChartType.Line" Sparkline="true" Area="true" Smooth="true" Height="96" Data="_trend" />
+        </FlareStack>
+    </FlareCard>
+
+</FlareStack>

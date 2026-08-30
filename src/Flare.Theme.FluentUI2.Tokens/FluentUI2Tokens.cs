@@ -592,6 +592,40 @@ public class FluentUI2Tokens
     // The palette is built from the theme's own hues so a brand swap carries into the data, with the same
     // three-hue / four-treatment construction the Material base uses; the error role stays out of it.
     // A product with the official Fluent data-visualization ramp overrides these twelve values.
+    internal static readonly GaugeTokens Gauge = new()
+    {
+        TrackColor = "var(--flare-color-surface-container-high)",
+        TrackWidth = "10",
+        TrackCap = "butt",
+
+        FillColor = "var(--flare-color-primary)",
+        FillWidth = "10",
+
+        NeedleColor = "var(--flare-color-on-surface)",
+        NeedleWidth = "2",
+        NeedleLength = "0.82",
+        PivotColor = "var(--flare-color-on-surface)",
+        PivotRadius = "3",
+
+        TickColor = "var(--flare-color-outline)",
+        TickWidth = "1",
+        TickLength = "6",
+        TickMinorColor = "var(--flare-color-outline-variant)",
+        TickMinorWidth = "1",
+        TickMinorLength = "3",
+        TickGap = "4",
+
+        LabelColor = "var(--flare-color-on-surface-variant)",
+        LabelSize = "8.5",
+        ValueColor = "var(--flare-color-on-surface)",
+        ValueSize = "var(--flare-typescale-headline-small-size)",
+        ValueWeight = "600",
+
+        BandOpacity = "0.45",
+        TargetColor = "var(--flare-color-on-surface)",
+        TargetWidth = "2",
+    };
+
     internal static readonly ChartTokens Chart = new()
     {
         Series1 = "var(--flare-color-primary)",
@@ -1299,6 +1333,7 @@ public class FluentUI2Tokens
         },
         Input = Input,
         Chart = Chart,
+        Gauge = Gauge,
         Progress = Progress,
         Nav = Nav,
         Switch = Switch,

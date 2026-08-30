@@ -549,6 +549,44 @@ public class MaterialDesignTokens
     // toward surface, and blended with a neighbour. The error role is deliberately ABSENT: red carries a
     // meaning here that a fourth series does not have. A theme that wants twelve genuinely distinct hues
     // overrides these twelve values; that is what the tokens are for.
+    // Sizes without a unit are viewBox units: the gauge is 200 wide and scales to its container, so
+    // these are proportions of the gauge rather than pixels. Band colors are absent by design - a band is
+    // a FlareZone carrying its own FlareColor, and which part of a scale is "bad" is the application's
+    // statement about its data, not the theme's.
+    internal static readonly GaugeTokens Gauge = new()
+    {
+        TrackColor = "var(--flare-color-surface-container-highest)",
+        TrackWidth = "14",
+        TrackCap = "round",
+
+        FillColor = "var(--flare-color-primary)",
+        FillWidth = "14",
+
+        NeedleColor = "var(--flare-color-on-surface)",
+        NeedleWidth = "3",
+        NeedleLength = "0.78",
+        PivotColor = "var(--flare-color-on-surface)",
+        PivotRadius = "5",
+
+        TickColor = "var(--flare-color-outline)",
+        TickWidth = "1.5",
+        TickLength = "7",
+        TickMinorColor = "var(--flare-color-outline-variant)",
+        TickMinorWidth = "1",
+        TickMinorLength = "4",
+        TickGap = "5",
+
+        LabelColor = "var(--flare-color-on-surface-variant)",
+        LabelSize = "9",
+        ValueColor = "var(--flare-color-on-surface)",
+        ValueSize = "var(--flare-typescale-headline-small-size)",
+        ValueWeight = "500",
+
+        BandOpacity = "0.55",
+        TargetColor = "var(--flare-color-on-surface)",
+        TargetWidth = "2.5",
+    };
+
     internal static readonly ChartTokens Chart = new()
     {
         Series1 = "var(--flare-color-primary)",
@@ -1300,6 +1338,7 @@ public class MaterialDesignTokens
         },
         Input = Input,
         Chart = Chart,
+        Gauge = Gauge,
         Progress = Progress,
         // Popover / dropdown panels use the medium shape (Snackbar/Dialog/Nav already match defaults).
         Popover = Popover,

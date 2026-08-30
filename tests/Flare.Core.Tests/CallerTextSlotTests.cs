@@ -40,6 +40,7 @@ public sealed class CallerTextSlotTests
         ["FlareShortcutEntry"] = "Description is data from the shortcut registry, not markup a caller writes.",
         ["FlareOnThisPage"] = "Title heads a generated list; the entries come from the document, not the caller.",
         ["FlareMeterSegment"] = "Label is a legend string the meter also exposes to assistive tech.",
+        ["FlareZone"] = "Renders no DOM of its own; Label is a string the HOST surfaces - a meter legend, a gauge's accessible value text.",
         ["FlareColorPicker"] = "Label is forwarded to the shared field frame verbatim.",
         ["DataGridColumnPicker"] = "Label belongs to the generated per-column rows.",
         ["DataGridFilterBuilder"] = "Label belongs to the generated per-rule rows.",

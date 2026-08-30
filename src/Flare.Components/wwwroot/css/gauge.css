@@ -1,0 +1,144 @@
+/* FlareGauge: one value against a marked scale, drawn as a single SVG with no JS.
+
+   Every colour and thickness below is a token. The C# side computes geometry only - where the arc runs,
+   where a tick sits - so a theme can turn the same markup from a thick dial with rounded ends into a flat
+   hairline ring without any of those numbers moving.
+
+   Thickness comes from the stroke width rather than from an inner and outer radius, which is why one
+   token changes the whole track: the track, every band and the fill are the same path at different
+   lengths. */
+
+.flare-gauge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+}
+
+.flare-gauge__svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.flare-gauge__track,
+.flare-gauge__band,
+.flare-gauge__fill {
+  fill: none;
+  stroke-linecap: var(--flare-gauge-track-cap);
+}
+
+.flare-gauge__track {
+  stroke: var(--flare-gauge-track-color);
+  stroke-width: var(--flare-gauge-track-width);
+}
+
+/* A band sits between the track and the fill, dimmed so the fill drawn over it stays the thing you read
+   first. Its colour arrives from the zone's FlareColor, not from a token: which part of a scale is bad
+   is the application's statement about its data. */
+.flare-gauge__band {
+  stroke: var(--fc-main, var(--flare-color-primary));
+  stroke-width: var(--flare-gauge-track-width);
+  opacity: var(--flare-gauge-band-opacity);
+}
+
+.flare-gauge__fill {
+  stroke: var(--fc-main, var(--flare-gauge-fill-color));
+  stroke-width: var(--flare-gauge-fill-width);
+  /* The fill is the WHOLE track path, revealed by a dash: pathLength normalises the arc to 100 units, so
+     the dash offset is the percentage left to fill regardless of the radius. Drawing a shorter path
+     instead would make the sweep un-animatable - a transitioned `d` interpolates between two arcs and
+     passes through shapes that are not on the scale at all. */
+  stroke-dasharray: 100;
+}
+
+.flare-gauge__tick {
+  stroke: var(--flare-gauge-tick-color);
+  stroke-width: var(--flare-gauge-tick-width);
+}
+
+.flare-gauge__tick--minor {
+  stroke: var(--flare-gauge-tick-minor-color);
+  stroke-width: var(--flare-gauge-tick-minor-width);
+}
+
+.flare-gauge__scale-label {
+  fill: var(--flare-gauge-label-color);
+  font-family: var(--flare-typescale-label-small-font);
+  font-size: calc(var(--flare-gauge-label-size) * 1px);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.flare-gauge__needle {
+  stroke: var(--fc-main, var(--flare-gauge-needle-color));
+  stroke-width: var(--flare-gauge-needle-width);
+  stroke-linecap: round;
+}
+
+.flare-gauge__pivot {
+  fill: var(--flare-gauge-pivot-color);
+}
+
+/* The target is a stroke across the track rather than a second needle: a gauge answers one question, and
+   two pointers make the reader work out which is which. */
+.flare-gauge__target {
+  stroke: var(--flare-gauge-target-color);
+  stroke-width: var(--flare-gauge-target-width);
+  stroke-linecap: butt;
+}
+
+.flare-gauge__readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--flare-spacing-1);
+}
+
+.flare-gauge__value {
+  color: var(--flare-gauge-value-color);
+  font-family: var(--flare-typescale-headline-small-font);
+  font-size: var(--flare-gauge-value-size);
+  font-weight: var(--flare-gauge-value-weight);
+  line-height: 1.1;
+}
+
+.flare-gauge__label {
+  color: var(--flare-gauge-label-color);
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-typescale-label-medium-size);
+}
+
+/* The readout sits inside a dial or an arc and below a bar: a dial has a hole in the middle to put it in
+   and a bar does not. Negative pull rather than absolute positioning, so the text still contributes its
+   own height and cannot be clipped by a short container. */
+.flare-gauge--radial .flare-gauge__readout,
+.flare-gauge--arc .flare-gauge__readout {
+  margin-top: calc(var(--flare-spacing-8) * -1);
+}
+
+.flare-gauge--linear,
+.flare-gauge--linear-vertical {
+  align-items: stretch;
+}
+
+.flare-gauge--linear-vertical {
+  flex-direction: row;
+  align-items: center;
+}
+
+/* The sweep. */
+.flare-gauge--animate .flare-gauge__fill {
+  transition: stroke-dashoffset var(--flare-motion-duration-long2) var(--flare-motion-easing-emphasized-decelerate);
+}
+
+.flare-gauge--animate .flare-gauge__needle-group {
+  transition: transform var(--flare-motion-duration-long2) var(--flare-motion-easing-emphasized-decelerate);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flare-gauge--animate .flare-gauge__fill,
+  .flare-gauge--animate .flare-gauge__needle-group {
+    transition: none;
+  }
+}

@@ -1,0 +1,18 @@
+@page "/components/gauge"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Gauge_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareGauge">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Gauge_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Gauge_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Gauge_Shapes" DemoType="typeof(Examples.GaugeShapesDemo)"
+    Description="@GalleryStrings.Gauge_ShapesDesc" />
+
+<AutoDemoSection Title="@GalleryStrings.Gauge_Live" DemoType="typeof(Examples.GaugeLiveDemo)"
+    Description="@GalleryStrings.Gauge_LiveDesc" />
+
+<AutoDemoSection Title="@GalleryStrings.Gauge_Dashboard" DemoType="typeof(Examples.GaugeDashboardDemo)"
+    Description="@GalleryStrings.Gauge_DashboardDesc" />

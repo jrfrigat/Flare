@@ -3053,4 +3053,61 @@
   <data name="DataGrid_CustomExporterDesc" xml:space="preserve">
     <value>Exporters - это обычный список, поэтому ваш собственный IDataGridExporter&lt;T&gt; встаёт рядом со стандартными. Здесь экспортёр в Markdown добавлен рядом с Excel.</value>
   </data>
+  <data name="Gauge_Title" xml:space="preserve">
+    <value>Датчик (Gauge)</value>
+  </data>
+  <data name="Gauge_Subtitle" xml:space="preserve">
+    <value>Одно значение на размеченной шкале: стрелочный циферблат, заполняемая дуга KPI или полоса с делениями. Цветные диапазоны - это дочерние FlareZone, тот же примитив диапазона, что берут слайдер и прогресс.</value>
+  </data>
+  <data name="Gauge_Shapes" xml:space="preserve">
+    <value>Три формы</value>
+  </data>
+  <data name="Gauge_ShapesDesc" xml:space="preserve">
+    <value>Один компонент с параметром Shape, а не три компонента: шкала, диапазоны, деления, отметка цели и показание одинаковы во всех трёх, различается только проекция значения на экран. viewBox вычисляется из StartAngle и EndAngle, поэтому четверть дуги рисуется в полный размер, а не висит в пустом квадрате.</value>
+  </data>
+  <data name="Gauge_Live" xml:space="preserve">
+    <value>Меняющееся значение</value>
+  </data>
+  <data name="Gauge_LiveDesc" xml:space="preserve">
+    <value>То, ради чего датчик и нужен. Плавный переход - это CSS-переход поворота стрелки и смещения штриха заливки, поэтому новое значение анимируется без перерисовки геометрии, а предпочтение уменьшенного движения выключает его без участия страницы.</value>
+  </data>
+  <data name="Gauge_Dashboard" xml:space="preserve">
+    <value>На дашборде</value>
+  </data>
+  <data name="Gauge_DashboardDesc" xml:space="preserve">
+    <value>Датчики рядом со спарклайном: датчик говорит, где значение сейчас, спарклайн - как оно туда пришло. Развёртка на 360 градусов даёт кольцо прогресса из того же компонента, а не из отдельного типа.</value>
+  </data>
+  <data name="Gauge_Load" xml:space="preserve">
+    <value>Нагрузка</value>
+  </data>
+  <data name="Gauge_Throughput" xml:space="preserve">
+    <value>Запросов / с</value>
+  </data>
+  <data name="Gauge_NewReading" xml:space="preserve">
+    <value>Новое показание</value>
+  </data>
+  <data name="Gauge_Healthy" xml:space="preserve">
+    <value>Норма</value>
+  </data>
+  <data name="Gauge_Busy" xml:space="preserve">
+    <value>Нагружен</value>
+  </data>
+  <data name="Gauge_Critical" xml:space="preserve">
+    <value>Критично</value>
+  </data>
+  <data name="Gauge_Uptime" xml:space="preserve">
+    <value>Доступность, %</value>
+  </data>
+  <data name="Gauge_Latency" xml:space="preserve">
+    <value>p95 задержка, мс</value>
+  </data>
+  <data name="Gauge_Quota" xml:space="preserve">
+    <value>Квота хранилища</value>
+  </data>
+  <data name="Gauge_BelowTarget" xml:space="preserve">
+    <value>Ниже цели</value>
+  </data>
+  <data name="Gauge_Trend" xml:space="preserve">
+    <value>Нагрузка за 12 ч</value>
+  </data>
 </root>

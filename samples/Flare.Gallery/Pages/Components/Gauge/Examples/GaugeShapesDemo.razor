@@ -1,0 +1,30 @@
+@* The three shapes side by side, on the same scale and the same value, so the difference between them is
+   the reading and not the data. Bands are FlareZone children - the same Start/End primitive a slider or a
+   progress bar takes - because a gauge's range is a range on a host-owned scale, which is exactly what a
+   zone already is. *@
+<FlareStack Row Wrap Gap="FlareSpacing.XLarge" Align="FlareAlignItems.Start">
+
+    <FlareStack Gap="FlareSpacing.XSmall" Style="width:14rem;">
+        <FlareText Typo="TypographyScale.LabelLarge">Arc</FlareText>
+        <FlareGauge Shape="GaugeShape.Arc" Value="72" Label="CPU" Format="N0" ShowScaleLabels="true">
+            <FlareZone Start="80" End="100" Color="FlareColor.Error" Label="Critical" />
+        </FlareGauge>
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.XSmall" Style="width:14rem;">
+        <FlareText Typo="TypographyScale.LabelLarge">Radial</FlareText>
+        <FlareGauge Shape="GaugeShape.Radial" Value="72" Label="CPU" Format="N0"
+                    TickInterval="20" MinorTickInterval="5" ShowScaleLabels="true">
+            <FlareZone Start="80" End="100" Color="FlareColor.Error" Label="Critical" />
+        </FlareGauge>
+    </FlareStack>
+
+    <FlareStack Gap="FlareSpacing.XSmall" Style="width:18rem;">
+        <FlareText Typo="TypographyScale.LabelLarge">Linear</FlareText>
+        <FlareGauge Shape="GaugeShape.Linear" Value="72" Label="CPU" Format="N0"
+                    TickInterval="25" ShowScaleLabels="true">
+            <FlareZone Start="80" End="100" Color="FlareColor.Error" Label="Critical" />
+        </FlareGauge>
+    </FlareStack>
+
+</FlareStack>
