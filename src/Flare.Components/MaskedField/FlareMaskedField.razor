@@ -23,6 +23,7 @@
                                Immediate="true"
                                Id="@ControlId"
                                Type="text"
+                               InputMode="@EffectiveInputMode"
                                Placeholder="@(_placeholder ?? Placeholder)"
                                Disabled="Disabled"
                                ReadOnly="ReadOnly"
@@ -115,6 +116,25 @@
         MaskPreset.Ssn        => "###-##-####",
         _ => null,
     });
+
+    /// <summary>
+    /// The mobile keyboard hint. Null derives it from the mask, which is what a caller wants: every
+    /// preset here is digits, and a text keyboard for a credit-card number is a phone-sized mistake.
+    /// </summary>
+    [Parameter] public string? InputMode { get; set; }
+
+    // Derived from the MASK, not from the preset, so a custom Mask of all-# gets the numeric keyboard too.
+    // A mask with any letter placeholder stays on the full keyboard, because that is what it needs.
+    private string? EffectiveInputMode
+    {
+        get
+        {
+            if (InputMode is { Length: > 0 }) return InputMode;
+            if (Preset == MaskPreset.Phone) return "tel";
+            if (Pattern is not { Length: > 0 } mask) return null;
+            return mask.Any(c => c is 'A' or '*') ? null : "numeric";
+        }
+    }
 
     // Auto-derived placeholder from mask: '#','A','*' -> '_', literals kept
     private string? _placeholder => Pattern is null ? null : string.Concat(Pattern.Select(c =>

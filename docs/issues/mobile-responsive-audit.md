@@ -1,6 +1,6 @@
 # Mobile: verify and finish the small-screen story
 
-**Status: OPEN - the three measured defects are fixed (2026-08-15), the sweep behind them is not done.**
+**Status: OPEN - two of the six sweep items are now measured and clean; four remain.**
 Everything in "Measured" was read off a real 375x812 viewport against the Release build, not inferred
 from the CSS.
 
@@ -86,6 +86,37 @@ devices whose PRIMARY pointer is coarse; a laptop with a touchscreen reports `fi
 **Still open here:** the dense inline affordances - a chip's close icon (1.1em) and a tab's close icon
 (1.25rem) - are excluded, because their hosts have no room to give and an oversized target would cover
 the chip body or the neighbouring chip. Making those tappable is a spacing and layout question.
+
+## Measured 2026-08-30, at 375x812 against the running Gallery
+
+### No horizontal page scroll - CLEAN, and the first two attempts at measuring it were not
+
+Thirty-six pages - every one the list below names as risky, plus the shells, changelog, API browser and
+settings - navigated at 375px, each scrolled through its full height so the deferred demos mount, then
+checked for `documentElement.scrollWidth > clientWidth`. **No page scrolls sideways.** Node counts per
+page ran 41 to 2469, which is the part that makes the result mean anything.
+
+Two earlier passes produced the same clean answer and were both worthless, which is worth writing down
+because the next person will reach for the same shortcuts:
+
+- **Pass 1 navigated without scrolling.** The Gallery defers demo mounting on an IntersectionObserver, so
+  every page measured was a heading and a paragraph. A clean sweep of empty pages.
+- **Pass 2 patched IntersectionObserver to report everything visible.** That is the documented trick for
+  this Gallery, and here it took the application down - the same incomplete fake records that break
+  Blazor's `Virtualize`. `body` held ten nodes and the sweep reported 131 clean routes.
+
+The measurement that counts scrolls the container in viewport-sized steps and asserts the node count
+alongside the width. A sweep that cannot say how much DOM it measured is not evidence.
+
+### The mobile keyboard - ONE REAL DEFECT, FIXED
+
+`FlareMaskedField` rendered `type="text"` with no `inputmode`, and every one of its presets is digits:
+Phone, Date, Time, IpAddress, CreditCard, Ssn. On a phone that is a full QWERTY keyboard for entering a
+credit-card number. It now derives the hint from the MASK rather than the preset, so a custom all-`#`
+mask gets it too, a mask with letter placeholders correctly keeps the full keyboard, and Phone gets
+`tel` rather than `numeric` because the tel keypad carries +, * and #.
+
+`FlareNumericField`, `FlareOtpField`, `FlareTimePicker` and `FlareTimeSpanPicker` were already correct.
 
 ## What the audit still has to cover
 
