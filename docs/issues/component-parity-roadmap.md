@@ -73,6 +73,7 @@ Ordered by dependency first, then by cost-to-value. The three foundation items u
 | 3 | ~~Gauge family~~ - DONE. `FlareGauge` radial / arc / linear; bands are `FlareZone` children rather than a gauge-only range type, and the arc math moved to a shared `ArcGeometry` the chart now uses too | M | dashboards |
 | 4 | ~~Barcode~~ - DONE. `Flare.Components.Barcode` ships seven symbologies as pure encoders tested against their published vectors. The QR version cap the same file carried was already lifted (versions 1-40) | S | - |
 | 5 | [Markdown editor](markdown-editor.md) - edit mode for `FlareMarkdown` on the two-layer contract | S | - |
+| 7 | [Drag model](drag-model.md) - one pointer-based transfer model under Kanban, Tree, DataGrid reorder and TileLayout; today there are four, and three of them do not work on touch | M | TileLayout, and the touch half of the mobile audit |
 | 6 | ~~Small parity batch~~ - DONE. All five: `FlareBusy`, `FlareTimeSpanPicker`, `ShowStrength` on the password field, `FlareNavigationGuard`, `FlarePullToRefresh` | S each | - |
 
 ### Phase 2 - the heavy data widgets
@@ -87,7 +88,7 @@ Ordered by dependency first, then by cost-to-value. The three foundation items u
 
 | # | Issue | Size | Notes |
 | :-- | :-- | :-- | :-- |
-| 10 | [TileLayout](tile-layout.md) | M | Draggable, resizable dashboard grid. Reuses `FlareResizable` and the Kanban drag model. Radzen-only today. |
+| 10 | [TileLayout](tile-layout.md) | M | Draggable, resizable dashboard grid. Reuses `FlareResizable` and, once it exists, the shared [drag model](drag-model.md) - NOT the Kanban one, which is one of the four this issue exists to remove. Radzen-only today. |
 | 11 | [Chart series expansion](chart-series-expansion.md) | L | Financial (candlestick / OHLC / high-low / box plot), waterfall / funnel / pyramid, range series, trendlines and moving averages, treemap and sankey. Blocked by #1. |
 | 12 | [Spreadsheet surface](spreadsheet-surface.md) | L | Flare already owns `FlareFormulaBar` and `FlareSheetTabs` with nothing behind them. Finishing this completes the IDE story rather than chasing Radzen. |
 
