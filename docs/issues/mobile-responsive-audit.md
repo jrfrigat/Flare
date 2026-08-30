@@ -1,6 +1,6 @@
 # Mobile: verify and finish the small-screen story
 
-**Status: OPEN - four of the six sweep items measured, three defect classes fixed; two remain.**
+**Status: OPEN - all six sweep items measured; twelve defect classes fixed, two demos remain.**
 Everything in "Measured" was read off a real 375x812 viewport against the Release build, not inferred
 from the CSS.
 
@@ -89,7 +89,7 @@ the chip body or the neighbouring chip. Making those tappable is a spacing and l
 
 ## Measured 2026-08-30, at 375x812 against the running Gallery
 
-### No horizontal page scroll - CLEAN, and the first two attempts at measuring it were not
+### No horizontal page scroll - the first THREE attempts at measuring it were wrong
 
 Thirty-six pages - every one the list below names as risky, plus the shells, changelog, API browser and
 settings - navigated at 375px, each scrolled through its full height so the deferred demos mount, then
@@ -163,6 +163,96 @@ a scrim or an action row of 56px controls, and none traps the reader. The listbo
 driven from the sweep (its triggers mount lazily and the automation could not reach them reliably), so
 **select, multi-select, autocomplete and the date picker panel remain unverified** rather than passing.
 
+### The measurement itself was wrong - CORRECTED, and it hid thirteen defects
+
+The sweep above read `documentElement.scrollWidth`. **The Gallery's document never scrolls.** Its scroll
+container is `.flare-layout-content`, and every page that overflowed sideways did so inside that element,
+where a document-level check cannot see it. A clean answer from the wrong element is not a clean page.
+
+Re-run against `.flare-layout-content` over all 133 routes, scrolling each page in viewport-sized steps
+so the deferred demos mount, and attributing the overflow to the widest element that is NOT inside some
+inner scroller (a DataGrid wrapper scrolling its own columns is correct and must not be reported):
+
+| Route | Overflowed by | What | Verdict |
+| :-- | --: | :-- | :-- |
+| `/components/button-group` | **281px** | `flare-btn-group` | library |
+| `/components/cards` | 209px | a demo card at `min-width:34rem` | demo |
+| `/components/date-range-picker` | 199px | two date fields side by side | library |
+| `/components/buttons` | 109px | a row of five XL buttons | demo |
+| `/components/fab-menu` | 91px | `flare-fab-menu__list--right` | demo, open |
+| `/components/otp-field` | 73px | six OTP cells that never shrank | library |
+| `/components/on-this-page` | 71px | a `1fr 14rem` demo grid | demo |
+| `/components/charts` | 49px | the visually-hidden data table | library |
+| `/components/tabs` | 42px | the tab bar's end zone | library |
+| `/components/date-picker` | 39px | the calendar's own day cells | library, self-inflicted |
+| `/components/toggle-button` | 38px | `flare-togglegroup` | library |
+| `/components/bottomnav`, `/mobile-shells` | 25px | 360px phone-shell mocks | demo |
+| `/components/tooltip` | 13px | a tooltip at the right edge | library, open |
+
+Eleven of the thirteen are fixed and re-measured at 0. What they had in common is worth stating once,
+because it is one mistake in several places: **a component that sizes to its content and is never told it
+cannot exceed its container.** `.flare-input` (and every field root), `.flare-tabs`, `.flare-toc`,
+`.flare-btn-group` and `.flare-togglegroup` now carry `max-inline-size: 100%`, and the flex items inside
+them carry `min-inline-size: 0` so they can actually shrink once the cap bites. Where the content genuinely
+cannot shrink, the model decides the answer: a standard button group **wraps**; a connected group and a
+toggle group **scroll inside their own frame**, because a segmented control that wraps grows rounded
+corners in the middle of the run.
+
+Three were their own thing:
+
+- **The calendar was my own doing.** The touch-target rule from the previous pass gave `.flare-picker__day`
+  a 48px minimum. The day sits in a `repeat(7, 1fr)` track whose automatic minimum is the cell's, so seven
+  columns demanded 336px plus gaps plus the week-number column - 360px of tracks inside a 295px panel, with
+  the last column pushed outside the calendar. The rule is withdrawn and the reasoning recorded in
+  `a11y.css`: the day can only reach the minimum if the panel grows with it, which is a responsive-panel
+  change and not a minimum-size one. **A fix that makes a component overflow its own frame is not a fix.**
+- **The chart's screen-reader table was 368px wide.** It carries the standard visually-hidden recipe -
+  `position:absolute; width:1px; clip:rect(0,0,0,0)` - and that recipe fails twice on a `<table>`: automatic
+  table layout treats `width` as a minimum, and a table is at least as wide as its `<caption>`. An
+  absolutely positioned box still counts toward its container's scrollable area, so an element nobody can
+  see gave the page 49px of horizontal scroll. Now `table-layout: fixed`, pinned to the origin, caption
+  constrained. `.flare-visually-hidden` is pinned to the origin for the same reason.
+- **The tab bar had a scroller it never used.** `.flare-tabs__bar` is `flex: 1 1 auto; overflow-x: auto`,
+  but a flex item will not shrink below its content without `min-inline-size: 0`, so the bar kept its full
+  tab run and pushed the end zone off the screen instead of scrolling. The header zones were `flex: 0 0 auto`
+  and could not give either.
+
+Still open, both demo-shaped: the FAB menu demo shows all four opening directions at once and the
+right-opening one leaves a 375px screen by construction (a real app would not place it there), and a
+tooltip anchored at the right edge overhangs by 13px, which is the collision engine shifting late.
+
+### The Gallery's own chrome did not fit - TWO DEFECTS, ONE OF THEM A LIBRARY BUG
+
+The app bar measured **519px of content in a 375px bar**: the search field was clipped and the GitHub link
+sat entirely off-screen, unreachable. The search already declared `Class="@Css.Classes.Hidden.BelowSm"` and
+the utility already had its media query - the class simply never reached the DOM.
+
+**`FlareCombobox` did not forward `Class` to its root, and neither did the other twelve fields.** Every
+field renders `FlareFieldChrome` as its root, and each one passed `Style` and the splatted attributes and
+dropped `Class`. The parameter exists, compiles, appears in the API reference, and does nothing - on
+`FlareField`, `FlareTextArea`, `FlareSelect`, `FlareMultiSelect`, `FlareCombobox`, `FlareTagField`,
+`FlareNumericField`, `FlareMaskedField`, `FlareOtpField`, `FlareDatePicker`, `FlareDateTimePicker`,
+`FlareTimePicker` and `FlareTimeSpanPicker`. Any consumer styling a field through a utility class got
+nothing back. Fixed in all thirteen, with `FieldChromeForwardingTests` failing when a field drops any of
+the three parameters that address its root.
+
+Demo rows were the other half: `<FlareStack Row>` does not wrap, and 66 demo rows used it. They wrap now -
+invisible on a desktop, and the difference between a usable and an unusable demo on a phone.
+
+### Hover-only affordances - ONE DEFECT, the rest are feedback rather than affordances
+
+Every `:hover` rule in the library that raises opacity or reveals an element, sorted into the two kinds.
+Nearly all are **state layers** - a `::before` painting `--flare-state-hover-layer` - which are hover
+feedback and need no touch equivalent. The genuinely hidden controls are four, and three of them fade
+between a token opacity and 1 (chip close 0.7, snackbar close and tab close from their own tokens), so they
+are visible without a pointer.
+
+The fourth was invisible: **`.flare-doc-tabs__close` in the IDE package sat at `opacity: 0`** and appeared
+only on hover, while still taking clicks - a close button a touch user cannot find and can hit by accident.
+It is now hidden only inside `@media (hover: hover)`, and given a 48px hit area on coarse pointers.
+`.flare-tree-item__drag-handle` stays hidden on touch deliberately: it advertises a gesture that
+[the drag model](drag-model.md) has not made possible yet.
+
 ## What the audit still has to cover
 
 Per component, at 375x812 and 768x1024, in at least MD3 Expressive and Fluent UI 2:
@@ -179,8 +269,7 @@ Per component, at 375x812 and 768x1024, in at least MD3 Expressive and Fluent UI
 - **Wide content.** DataGrid, table, tabs, stepper, breadcrumb, toolbar, kanban, code blocks, charts.
 - **Text input.** Correct `inputmode`/`enterkeyhint` on the numeric, OTP, phone and search fields so the
   right on-screen keyboard appears.
-- **The gallery itself** is the harness, so its own layout has to be right first: the two-drawer model
-  above, the "On this page" rail (already hidden below Md), demo code blocks, and the settings page.
+- **The FAB menu and the tooltip**, the two remaining overflows above.
 
 ## Done-when
 

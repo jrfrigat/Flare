@@ -16,6 +16,28 @@ All notable changes to Flare are documented here. This project adheres to
 
 ### Added
 
+- **`FlareGauge`** - radial, arc and linear on one shared arc geometry, factored out of `FlareChart` so
+  the two cannot drift. Bands are `FlareZone` children rather than a gauge-only range type, and the
+  needle is a `Target` value rather than a child component; the margin the scale needs is derived from
+  the tick and label tokens instead of being a constant the theme cannot reach.
+- **`Flare.Components.Barcode`** - a new add-on package with `FlareBarcode`: seven linear symbologies
+  (Code 128 with automatic A/B/C subset switching, EAN-13, EAN-8, UPC-A, Code 39, ITF-14, Codabar)
+  encoded in managed code, no JavaScript and no external encoder. `TryEncode` never throws, so an input
+  a symbology cannot represent renders nothing rather than an unscannable symbol.
+- **Five small components the parity batch called for**: `FlareBusy` (a delayed, minimum-duration busy
+  overlay that never flashes), `FlareTimeSpanPicker` (a segmented duration field), `FlareNavigationGuard`
+  (beforeunload plus Blazor's own location-changing handler behind one confirm), `FlarePullToRefresh`
+  (pointer events with rubber-banding, and one scroll-position read per gesture), and
+  `FlarePasswordRules.Evaluate`, which scores a password by distinct characters rather than character
+  classes so a long passphrase outranks a short substituted word.
+- **The upload row is finished**: `AllowRemove` and `OnRemove` for a queued or failed file, a
+  `FileTemplate` for the row, and the two events the queue raised nowhere - `OnUploadStarted` and
+  `OnUploadProgress`.
+- **`ApiDocGenCoverageTests`** - fails when the Gallery shows an add-on package the API generator does
+  not reference. That omission is silent: the components render, the API tab has no page for them.
+- **`FieldChromeForwardingTests`** - fails when a field drops `Class`, `Style` or the splatted attributes
+  on its way to `FlareFieldChrome`.
+
 - **`DrawerVariant.Persistent` and `DrawerVariant.Responsive` now do something.** Both were documented
   variants that emitted no class and had no CSS: they rendered at `translateX(-100%)` with no way back,
   so two of the five variants had never been visible. Persistent is in the layout flow and collapses to
@@ -38,6 +60,38 @@ All notable changes to Flare are documented here. This project adheres to
   a mistyped component renders as nothing at all.
 
 ### Fixed
+
+- **Every field dropped the consumer's `Class`.** All thirteen render `FlareFieldChrome` as their root
+  and each forwarded `Style` and the splatted attributes while omitting `Class`, so the parameter
+  compiled, appeared in the API reference and did nothing - on `FlareField`, `FlareTextArea`,
+  `FlareSelect`, `FlareMultiSelect`, `FlareCombobox`, `FlareTagField`, `FlareNumericField`,
+  `FlareMaskedField`, `FlareOtpField`, `FlareDatePicker`, `FlareDateTimePicker`, `FlareTimePicker` and
+  `FlareTimeSpanPicker`. Any consumer styling a field through a utility class got nothing back. It
+  surfaced as the Gallery's own search box overflowing a phone: the field asked to be hidden below the
+  `Sm` breakpoint and the class never reached the DOM.
+- **Eleven components could be wider than the container holding them**, measured at 375px and now
+  capped: `flare-btn-group` ran 281px past the viewport with every button beyond the edge unreachable,
+  a date range's two fields 199px, the OTP row 73px, the tab bar's end zone 42px, the toggle group 38px.
+  A standard button group wraps; a connected group and a toggle group scroll inside their own frame,
+  because a segmented control that wraps grows rounded corners in the middle of the run. Field roots,
+  `FlareTabs` and `FlareOnThisPage` take `max-inline-size: 100%`, and the flex items inside them can
+  finally shrink.
+- **The chart's screen-reader table gave the page 49px of horizontal scroll.** It uses the standard
+  visually-hidden recipe, which fails on a `<table>` twice over: automatic table layout treats `width`
+  as a minimum, and a table is at least as wide as its caption - so a "1px" element measured 368px, and
+  an absolutely positioned box still counts toward its container's scrollable area. Both that table and
+  `.flare-visually-hidden` are now pinned to the origin.
+- **The IDE's document-tab close button was invisible on a touch screen and still took taps.** It sat at
+  `opacity: 0` until hover; a close control nobody can find and can hit by accident. Now hidden only
+  where hovering exists, with a finger-sized hit area where it does not.
+- **The generated API reference had been stale for six components.** `FlareGauge`, `FlareBusy`,
+  `FlareBarcode`, `FlareNavigationGuard`, `FlarePullToRefresh` and `FlareTimeSpanPicker` were missing
+  and three Gallery-internal enums were documented as public API. The generator now skips application
+  assemblies, so it produces the same registry wherever it is run, and CI checks the file on every push
+  instead of only at a release tag - where 0.26.0's first attempt failed.
+- **Row-shaped touch targets were 32-40px**: a tree row, a listbox option, a transfer item, a nav link
+  and a menu entry now take the touch-target minimum in height. A full-width row is as wide as its list,
+  so only its height was ever the question.
 
 - **Thirty-eight attributes across the Gallery were not parameters of the components they sat on.**
   `FlareStack` had been renamed (`Direction`/`Spacing`/`AlignItems` -> `Row`/`Gap`/`Align`) and fourteen
@@ -68,6 +122,20 @@ All notable changes to Flare are documented here. This project adheres to
   with an invented `<FlareOption>` tag that compiled to literal markup, so it had no options at all.
 
 ### Changed
+
+- **DataGrid column resize runs on pointer events.** It listened for `mousedown`/`mousemove`, which a
+  touch drag never fires, and the handle was additionally hidden behind `:hover` - invisible and inert
+  on a phone at once. It now uses the same `startDrag` primitive as the splitter, the resizable
+  container and the dialog move, and the handle stays visible where there is no hover to reveal it.
+- **`FlareMaskedField` asks for the right on-screen keyboard.** Every preset is digits - phone, date,
+  time, IP, credit card, SSN - and all of them opened a full QWERTY. The hint is derived from the mask
+  rather than the preset, so a custom all-digit mask gets it too and a mask with letter placeholders
+  correctly keeps the full keyboard.
+- **Touch targets on the dense chrome.** The drawer toggle, tab overflow arrows and small buttons grow
+  to `--flare-touch-target-min`; a chip's delete, a tab's close and a field's dropdown arrow keep their
+  size and gain a centred hit area, because growing those icons would grow the chip and the tab with
+  them. The calendar day is deliberately not in either group: at a 48px minimum its seven `1fr` columns
+  demand 360px inside a 295px panel, so the day can only reach the minimum once the panel is responsive.
 
 - **The JS layer's shared plumbing moved into one module** (`flare-dom.js`): a teardown registry, a
   `listen` that hands back its own removal, and the element resolution that had been written three times.
