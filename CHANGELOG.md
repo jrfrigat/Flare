@@ -3,6 +3,77 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.26.0] - 2026-08-30
+
+### Breaking
+
+- **`ViewportSubscribeOptions.ThrottleMs` and `ElementObserveOptions.ThrottleMs` are now `DebounceMs`.**
+  Both were documented as a trailing throttle - "rapid resize events are coalesced so the callback runs at
+  most once per window" - and neither is one. Each event restarts the timer, so dragging a window edge
+  reports **nothing** until the drag settles, then reports the final size once. That is the right choice
+  for a layout consumer and the wrong name for it; `IScrollService` genuinely throttles, so one name meant
+  two guarantees. `ScrollSubscribeOptions.ThrottleMs` is unchanged.
+
+### Added
+
+- **`DrawerVariant.Persistent` and `DrawerVariant.Responsive` now do something.** Both were documented
+  variants that emitted no class and had no CSS: they rendered at `translateX(-100%)` with no way back,
+  so two of the five variants had never been visible. Persistent is in the layout flow and collapses to
+  zero width when closed (the content beside it takes the room back); Responsive is persistent above the
+  medium breakpoint and the temporary overlay below it. The existing tests covered only the three
+  variants that worked; all five are covered now.
+- **A tablet shell in the Gallery** (`/mobile-shells`): the drill-down inbox at 768px, with a persistent
+  drawer behind an app-bar toggle and the list and detail side by side - the same app in the form factor
+  the phone shell has to drill down to reach.
+- **`ComponentAttributeTests`** - fails when markup passes a PascalCase attribute that is not a parameter
+  of the component it sits on. Nearly every component captures unmatched attributes, so a typo'd or
+  renamed parameter compiles, renders as a literal HTML attribute, and does nothing.
+- **`GalleryDeadMarkupTests`** - fails when a Gallery component is not routable and nothing references it.
+- **`JsModuleImportTests`** - fails when a JS module calls a shared helper it did not import. Those
+  helpers run at module scope, so a missing import is a ReferenceError during evaluation: the module never
+  loads, every service importing it rejects, and the component silently does nothing.
+- **Broken `<see cref="..."/>` and unknown Razor tags now fail the build** (`CS1574`/`CS1580`/`CS1584`
+  and `RZ10012`). Both are warnings a full rebuild surfaces and an incremental one hides, and both are
+  invisible at runtime: a dead cref is a dead doc link, and an unknown tag compiles to literal markup, so
+  a mistyped component renders as nothing at all.
+
+### Fixed
+
+- **Thirty-eight attributes across the Gallery were not parameters of the components they sat on.**
+  `FlareStack` had been renamed (`Direction`/`Spacing`/`AlignItems` -> `Row`/`Gap`/`Align`) and fourteen
+  demos still used the old spellings; three export demos put `Exporters` and `ExportFileName` on the grid
+  instead of the `DataGridExport` control in its toolbar, so **no export control rendered at all**;
+  `FlareAvatar` was given `Icon`, `Label` and a `Variant` that does not exist. All were silent.
+- **`FlareUploadFileList` passed `Indeterminate` to `FlareProgress`, which has no such parameter.** A
+  queued file showed a determinate bar at zero instead of an indeterminate one; `FlareProgress` reports
+  indeterminate by having no `Value`.
+- **Eight DataGrid demos rendered nowhere.** Five are now on the page (the advanced filter builder,
+  resizable columns, loading indicators, Excel/JSON/TSV export and a custom exporter); three duplicated a
+  registered demo or contradicted their own names and are removed. The Gallery is the documentation, so a
+  demo that renders nowhere is a gap that looks like coverage.
+- **The Gallery's build-version label had stopped being rendered by anything.** Restored to the secondary
+  nav's footer, where there is room to read it.
+- **`flare-mode-light` was never applied.** It carries `color-scheme: light`, and the theme provider
+  emitted a class for dark and for high contrast and null for light. With a dark color-scheme inherited
+  from the host page or the UA, Flare rendered its own surfaces light while the native controls inside
+  them - scrollbars, select popups, date pickers - stayed dark.
+- **`FlarePaper` ignored `Padding="FlareSpacing.None"`.** It mapped None to no class at all, which is
+  correct only while nothing else gives `.flare-paper` a padding - an application stylesheet that did
+  would find the parameter did nothing.
+- **An in-flow drawer anchored right drew its divider on the window side**, where nothing sits, rather
+  than against the content beside it.
+- **A persistent drawer announced itself as a modal dialog.** `role="dialog"` and `aria-modal="true"` told
+  a screen reader the rest of the page was inert while it sat in the layout beside it.
+- **Five `<see cref="..."/>` links pointed at parameters renamed in 0.25.0**, and a Gallery select shipped
+  with an invented `<FlareOption>` tag that compiled to literal markup, so it had no options at all.
+
+### Changed
+
+- **The JS layer's shared plumbing moved into one module** (`flare-dom.js`): a teardown registry, a
+  `listen` that hands back its own removal, and the element resolution that had been written three times.
+  Fifteen near-identical `Map` registries collapse onto it, and registering twice can no longer leak the
+  first registration. This closes the JS audit.
+
 ## [0.25.0] - 2026-08-29
 
 ### Breaking

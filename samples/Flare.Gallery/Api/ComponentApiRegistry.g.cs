@@ -3272,7 +3272,7 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Content that is only rendered once this element scrolls near the viewport.", null, false, false, false, @"FlareLazy"),
                 new ApiParameterInfo(@"KeepRendered", @"bool", @"true", @"When true (default) the content stays rendered once revealed -- the cheap, flicker-free mode that simply defers the initial mount. When false the content is unmounted again whenever it scrolls out of view, capping memory for very long pages at the cost of re-mounting (and losing transient UI state) on each pass.", null, false, false, false, @"FlareLazy"),
-                new ApiParameterInfo(@"MinHeight", @"string?", null, @"Minimum height (any CSS length) the wrapper reserves while the content is hidden, so the layout does not collapse before reveal. Dropped once ChildContent is shown (unless KeepRendered is false). Ignored when a Placeholder sizes itself.", null, false, false, false, @"FlareLazy"),
+                new ApiParameterInfo(@"MinHeight", @"string?", null, @"Minimum height (any CSS length) the wrapper reserves while the content is hidden, so the layout does not collapse before reveal. Dropped once ChildContent is shown (unless KeepRendered is false). Ignored when a PlaceholderContent sizes itself.", null, false, false, false, @"FlareLazy"),
                 new ApiParameterInfo(@"OnRevealed", @"EventCallback", null, @"Raised the first time (and, when KeepRendered is false, each time) the content becomes visible.", null, false, true, false, @"FlareLazy"),
                 new ApiParameterInfo(@"PlaceholderContent", @"RenderFragment?", null, @"Optional content shown in place of ChildContent until it is revealed (e.g. a FlareSkeleton). When unset the wrapper is empty until reveal; combine with MinHeight so the page reserves space and the observer fires progressively.", null, false, false, false, @"FlareLazy"),
                 new ApiParameterInfo(@"Root", @"string?", null, @"CSS selector of the scrollable ancestor to watch instead of the browser viewport. Resolved with element.closest(selector), so it works when the content lives inside an overflow:auto panel (e.g. a side editor or dialog body) rather than the page itself. Null (default) observes the viewport.", null, false, false, false, @"FlareLazy"),
@@ -3912,8 +3912,8 @@ public static class ComponentApiRegistry
             {
                 new ApiParameterInfo(@"AriaLabel", @"string?", null, @"Accessible label for the navigation landmark, forwarded as aria-label.", null, false, false, false, @"FlareNavMenu"),
                 new ApiParameterInfo(@"ChildContent", @"RenderFragment?", null, @"Navigation items rendered inside the menu.", null, false, false, false, @"FlareNavMenu"),
-                new ApiParameterInfo(@"FooterContent", @"RenderFragment?", null, @"Optional items pinned to the bottom of the menu, below the scrolling area. See Header for the framed-layout behavior this enables.", null, false, false, false, @"FlareNavMenu"),
-                new ApiParameterInfo(@"HeaderContent", @"RenderFragment?", null, @"Optional items pinned to the top of the menu, above the scrolling area. Setting either Header or Footer switches the menu to a framed layout that fills its container's height: the header and footer stay fixed while ChildContent scrolls between them. Put ordinary nav items here so they collapse to icons in a mini-rail too.", null, false, false, false, @"FlareNavMenu"),
+                new ApiParameterInfo(@"FooterContent", @"RenderFragment?", null, @"Optional items pinned to the bottom of the menu, below the scrolling area. See HeaderContent for the framed-layout behavior this enables.", null, false, false, false, @"FlareNavMenu"),
+                new ApiParameterInfo(@"HeaderContent", @"RenderFragment?", null, @"Optional items pinned to the top of the menu, above the scrolling area. Setting either HeaderContent or FooterContent switches the menu to a framed layout that fills its container's height: the header and footer stay fixed while ChildContent scrolls between them. Put ordinary nav items here so they collapse to icons in a mini-rail too.", null, false, false, false, @"FlareNavMenu"),
                 new ApiParameterInfo(@"HideScrollbar", @"bool", @"false", @"When true, the menu scrolls its own overflow vertically but the scrollbar is hidden (scrolling still works via wheel/touch/keyboard). Useful inside a fixed-height drawer.", null, false, false, false, @"FlareNavMenu"),
                 new ApiParameterInfo(@"Mode", @"NavMenuMode?", null, @"Presentation of the menu (Full or Rail), decoupled from any surrounding layout. When set, it takes precedence over Rail and the collapsed-drawer auto-rail; leave it unset (null) to keep the legacy behavior.", null, false, false, false, @"FlareNavMenu"),
                 new ApiParameterInfo(@"Rail", @"bool", @"false", @"Mini-rail mode: collapses every item to its icon only -- link/group text, the group expand chevron and link badges are hidden and the icons are centered. When the menu is inside a FlareLayoutDrawer with Variant=""DrawerVariant.Mini"", this turns on automatically while that drawer is collapsed, so no wiring is needed; set it explicitly to force the rail anywhere.", null, false, false, false, @"FlareNavMenu"),
@@ -7179,6 +7179,32 @@ public static class ComponentApiRegistry
             },
             System.Array.Empty<string>());
 
+        e[@"ComponentGroup"] = new ApiEnumInfo(
+            @"ComponentGroup",
+            @"Flare.Gallery.Models.ComponentGroup",
+            @"Flare.Gallery.Models",
+            null,
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Field", @"0", null),
+                new ApiEnumMember(@"Input", @"1", null),
+                new ApiEnumMember(@"Files", @"2", null),
+                new ApiEnumMember(@"Forms", @"3", null),
+                new ApiEnumMember(@"Buttons", @"4", null),
+                new ApiEnumMember(@"Layout", @"5", null),
+                new ApiEnumMember(@"Navigation", @"6", null),
+                new ApiEnumMember(@"DataDisplay", @"7", null),
+                new ApiEnumMember(@"DataGrid", @"8", null),
+                new ApiEnumMember(@"DateTime", @"9", null),
+                new ApiEnumMember(@"Feedback", @"10", null),
+                new ApiEnumMember(@"Media", @"11", null),
+                new ApiEnumMember(@"Foundations", @"12", null),
+                new ApiEnumMember(@"Utilities", @"13", null),
+                new ApiEnumMember(@"Ide", @"14", null),
+            },
+            System.Array.Empty<string>());
+
         e[@"CompositeMode"] = new ApiEnumInfo(
             @"CompositeMode",
             @"Flare.Components.CompositeMode",
@@ -7843,6 +7869,23 @@ public static class ComponentApiRegistry
                 @"FlareForm",
             });
 
+        e[@"GallerySection"] = new ApiEnumInfo(
+            @"GallerySection",
+            @"Flare.Gallery.Models.GallerySection",
+            @"Flare.Gallery.Models",
+            null,
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"None", @"0", null),
+                new ApiEnumMember(@"Guide", @"1", null),
+                new ApiEnumMember(@"Themes", @"2", null),
+                new ApiEnumMember(@"Components", @"3", null),
+                new ApiEnumMember(@"Services", @"4", null),
+                new ApiEnumMember(@"Api", @"5", null),
+            },
+            System.Array.Empty<string>());
+
         e[@"IdePanelMode"] = new ApiEnumInfo(
             @"IdePanelMode",
             @"Flare.Components.IDE.IdePanelMode",
@@ -8309,6 +8352,20 @@ public static class ComponentApiRegistry
                 new ApiEnumMember(@"Down", @"2", @"Moved toward the end - the reader is going down."),
                 new ApiEnumMember(@"Left", @"3", @"Moved back toward the leading horizontal edge."),
                 new ApiEnumMember(@"Right", @"4", @"Moved on toward the trailing horizontal edge."),
+            },
+            System.Array.Empty<string>());
+
+        e[@"SearchKind"] = new ApiEnumInfo(
+            @"SearchKind",
+            @"Flare.Gallery.Services.SearchKind",
+            @"Flare.Gallery.Services",
+            null,
+            null,
+            new ApiEnumMember[]
+            {
+                new ApiEnumMember(@"Page", @"0", null),
+                new ApiEnumMember(@"Component", @"1", null),
+                new ApiEnumMember(@"Api", @"2", null),
             },
             System.Array.Empty<string>());
 
