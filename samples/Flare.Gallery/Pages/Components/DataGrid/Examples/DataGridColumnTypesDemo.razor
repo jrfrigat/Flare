@@ -2,7 +2,7 @@
    format-aware. "Active" sets no Type and is auto-detected from the bool value; the others set
    Type/Format explicitly. Filter editors are derived from the column type automatically. *@
 
-<FlareDataGrid Items="@_employees" PageSize="8" FilterDebounceMs="0">
+<FlareDataGrid Items="@_employees" PageSize="8">
     <Columns>
         <FlareColumn Title="Name" Field="@(e => e.Name)" Sortable="true" Filterable="true" />
         <FlareColumn Title="Active" Field="@(e => e.Active)" Filterable="true" />

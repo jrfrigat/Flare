@@ -7,6 +7,11 @@
 @* The secondary navigation column: the pages of the currently selected section, as a full menu.
    The active page auto-highlights and its group auto-expands (FlareNavLink). *@
 <FlareNavMenu Mode="NavMenuMode.Full" HideScrollbar="true" AriaLabel="@_sectionTitle">
+    @* The running build, pinned below the section's pages. It belongs on this column rather than the
+       primary rail: the rail is icon-width, and a version string needs room to be read. *@
+    <FooterContent>
+        <GalleryVersionLabel />
+    </FooterContent>
     <HeaderContent>
         <FlareText Typo="TypographyScale.TitleSmall" Weight="FontWeight.SemiBold"
                    Style="padding:0.5rem 1rem;display:block;">@_sectionTitle</FlareText>

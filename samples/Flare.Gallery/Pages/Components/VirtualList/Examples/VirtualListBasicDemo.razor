@@ -2,7 +2,7 @@
     <FlareList TItem="ListRow" Virtual="true" Items="_bigList" Height="320px" OverscanCount="6">
         <ItemTemplate Context="row">
             <FlareListItem Primary="@row.Name" Secondary="@row.Email">
-                <Leading><FlareAvatar Label="@row.Initials" /></Leading>
+                <Leading><FlareAvatar Text="@row.Initials" /></Leading>
                 <Trailing><FlareChip Label="@row.Role" /></Trailing>
             </FlareListItem>
         </ItemTemplate>

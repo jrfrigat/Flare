@@ -5,7 +5,7 @@
     while each window loads (simulated 400&#8201;ms latency).
 </FlareText>
 
-<FlareDataGrid TItem="Person" ItemsProvider="LoadAsync" Virtual="true" VirtualHeight="420px" OverscanCount="12">
+<FlareDataGrid TItem="Person" ItemsProvider="LoadAsync" Virtual="true" Height="420px" OverscanCount="12">
     <Columns>
         <FlareColumn Title="#" Field="@(p => p.Score)" Width="90px" />
         <FlareColumn Title="Name" Field="@(p => p.Name)" />

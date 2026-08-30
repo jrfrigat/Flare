@@ -3023,4 +3023,34 @@
   <data name="MobileShells_Sent" xml:space="preserve">
     <value>Отправленные</value>
   </data>
+  <data name="DataGrid_FilterBuilderTitle" xml:space="preserve">
+    <value>Конструктор сложных фильтров</value>
+  </data>
+  <data name="DataGrid_FilterBuilderDesc" xml:space="preserve">
+    <value>DataGridFilterBuilder в панели инструментов собирает фильтр из нескольких условий. Внутри ToolbarContent он сам находит таблицу, предлагает все колонки с Filterable как поля и применяет или сбрасывает фильтр без дополнительного кода.</value>
+  </data>
+  <data name="DataGrid_ColumnResizeTitle" xml:space="preserve">
+    <value>Изменение ширины колонок</value>
+  </data>
+  <data name="DataGrid_ColumnResizeDesc" xml:space="preserve">
+    <value>Resizable у колонки добавляет в её заголовок маркер перетаскивания. Ширина применяется на лету, а закреплённые колонки сохраняют правильные sticky-отступы прямо во время перетаскивания.</value>
+  </data>
+  <data name="DataGrid_LoadingIndicatorTitle" xml:space="preserve">
+    <value>Индикаторы загрузки</value>
+  </data>
+  <data name="DataGrid_LoadingIndicatorDesc" xml:space="preserve">
+    <value>LoadingIndicator выбирает, что показать во время загрузки через ItemsProvider: спиннер, полосу прогресса или строки-скелетоны по форме таблицы.</value>
+  </data>
+  <data name="DataGrid_MultiFormatExportTitle" xml:space="preserve">
+    <value>Экспорт в Excel, JSON и TSV</value>
+  </data>
+  <data name="DataGrid_MultiFormatExportDesc" xml:space="preserve">
+    <value>Экспортёр Excel формирует настоящий .xlsx (OOXML с жирной строкой заголовка) без сторонних зависимостей - рядом с экспортёрами JSON и TSV.</value>
+  </data>
+  <data name="DataGrid_CustomExporterTitle" xml:space="preserve">
+    <value>Свой экспортёр</value>
+  </data>
+  <data name="DataGrid_CustomExporterDesc" xml:space="preserve">
+    <value>Exporters - это обычный список, поэтому ваш собственный IDataGridExporter&lt;T&gt; встаёт рядом со стандартными. Здесь экспортёр в Markdown добавлен рядом с Excel.</value>
+  </data>
 </root>

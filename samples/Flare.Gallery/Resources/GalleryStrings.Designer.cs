@@ -10022,5 +10022,95 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Advanced filter builder.
+        /// </summary>
+        public static string DataGrid_FilterBuilderTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_FilterBuilderTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на DataGridFilterBuilder in the toolbar composes multi-condition filters. Placed inside ToolbarContent it finds the grid on its own, offers every Filterable column as a field, and applies or clears the filter without any wiring..
+        /// </summary>
+        public static string DataGrid_FilterBuilderDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_FilterBuilderDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Resizable columns.
+        /// </summary>
+        public static string DataGrid_ColumnResizeTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnResizeTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Resizable on a column adds a drag handle to its header. Widths are applied live, and frozen columns keep their sticky offsets correct while a column is being dragged..
+        /// </summary>
+        public static string DataGrid_ColumnResizeDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_ColumnResizeDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Loading indicators.
+        /// </summary>
+        public static string DataGrid_LoadingIndicatorTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_LoadingIndicatorTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на LoadingIndicator chooses what an ItemsProvider fetch shows while it runs: a spinner, a progress bar, or skeleton rows shaped like the grid..
+        /// </summary>
+        public static string DataGrid_LoadingIndicatorDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_LoadingIndicatorDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Excel, JSON and TSV export.
+        /// </summary>
+        public static string DataGrid_MultiFormatExportTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiFormatExportTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The Excel exporter writes a real .xlsx (OOXML with a bold header row) with no third-party dependency, alongside the JSON and TSV exporters..
+        /// </summary>
+        public static string DataGrid_MultiFormatExportDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_MultiFormatExportDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на A custom exporter.
+        /// </summary>
+        public static string DataGrid_CustomExporterTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_CustomExporterTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Exporters is a plain list, so your own IDataGridExporter&lt;T&gt; sits beside the standard ones. Here a Markdown exporter is added next to Excel..
+        /// </summary>
+        public static string DataGrid_CustomExporterDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_CustomExporterDesc", resourceCulture);
+            }
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 @* The horizontal grid is no longer a fixed five lines. The count comes from the plot height unless you
    name one, and the axis rounds itself to whole steps so that naming one stays readable. *@
 <FlareStack Gap="FlareSpacing.Large">
-    <FlareStack Row Wrap Gap="FlareSpacing.Large" AlignItems="FlareAlign.Center">
+    <FlareStack Row Wrap Gap="FlareSpacing.Large" Align="FlareAlignItems.Center">
         <FlareSwitch @bind-Value="_auto" Label="@GalleryStrings.Charts_Grid_AutoCount" />
         <FlareSwitch @bind-Value="_nice" Label="@GalleryStrings.Charts_Grid_NiceScale" />
         <FlareSwitch @bind-Value="_vertical" Label="@GalleryStrings.Charts_Grid_VerticalGrid" />

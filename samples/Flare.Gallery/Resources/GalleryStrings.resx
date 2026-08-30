@@ -3023,4 +3023,34 @@
   <data name="MobileShells_Sent" xml:space="preserve">
     <value>Sent</value>
   </data>
+  <data name="DataGrid_FilterBuilderTitle" xml:space="preserve">
+    <value>Advanced filter builder</value>
+  </data>
+  <data name="DataGrid_FilterBuilderDesc" xml:space="preserve">
+    <value>DataGridFilterBuilder in the toolbar composes multi-condition filters. Placed inside ToolbarContent it finds the grid on its own, offers every Filterable column as a field, and applies or clears the filter without any wiring.</value>
+  </data>
+  <data name="DataGrid_ColumnResizeTitle" xml:space="preserve">
+    <value>Resizable columns</value>
+  </data>
+  <data name="DataGrid_ColumnResizeDesc" xml:space="preserve">
+    <value>Resizable on a column adds a drag handle to its header. Widths are applied live, and frozen columns keep their sticky offsets correct while a column is being dragged.</value>
+  </data>
+  <data name="DataGrid_LoadingIndicatorTitle" xml:space="preserve">
+    <value>Loading indicators</value>
+  </data>
+  <data name="DataGrid_LoadingIndicatorDesc" xml:space="preserve">
+    <value>LoadingIndicator chooses what an ItemsProvider fetch shows while it runs: a spinner, a progress bar, or skeleton rows shaped like the grid.</value>
+  </data>
+  <data name="DataGrid_MultiFormatExportTitle" xml:space="preserve">
+    <value>Excel, JSON and TSV export</value>
+  </data>
+  <data name="DataGrid_MultiFormatExportDesc" xml:space="preserve">
+    <value>The Excel exporter writes a real .xlsx (OOXML with a bold header row) with no third-party dependency, alongside the JSON and TSV exporters.</value>
+  </data>
+  <data name="DataGrid_CustomExporterTitle" xml:space="preserve">
+    <value>A custom exporter</value>
+  </data>
+  <data name="DataGrid_CustomExporterDesc" xml:space="preserve">
+    <value>Exporters is a plain list, so your own IDataGridExporter&lt;T&gt; sits beside the standard ones. Here a Markdown exporter is added next to Excel.</value>
+  </data>
 </root>

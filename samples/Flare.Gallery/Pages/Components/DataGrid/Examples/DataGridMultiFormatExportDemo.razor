@@ -1,6 +1,9 @@
 @* "EXCEL" produces a real .xlsx (OOXML, bold header) with no third-party dependency. *@
-<FlareDataGrid Items="@DatagridData._people" PageSize="5" ExportFileName="people"
-               Exporters="@(new List<IDataGridExporter<Person>> { DataGridExporters.Csv<Person>(), DataGridExporters.Json<Person>(), DataGridExporters.Tsv<Person>(), DataGridExporters.Excel<Person>() })">
+<FlareDataGrid Items="@DatagridData._people" PageSize="5">
+    <ToolbarContent>
+        <DataGridExport FileName="people"
+                        Exporters="@(new List<IDataGridExporter<Person>> { DataGridExporters.Csv<Person>(), DataGridExporters.Json<Person>(), DataGridExporters.Tsv<Person>(), DataGridExporters.Excel<Person>() })" />
+    </ToolbarContent>
     <Columns>
         <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
         <FlareColumn Title="Role" Field="@(p => p.Role)" Sortable="true" />

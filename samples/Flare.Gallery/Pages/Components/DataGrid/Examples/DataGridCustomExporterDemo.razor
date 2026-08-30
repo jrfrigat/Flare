@@ -1,6 +1,9 @@
 @* Exporters is a pluggable list: mix the standard exporters (DataGridExporters.Csv/Excel/...)
    with your own IDataGridExporter<T>. Here a custom Markdown exporter sits beside Excel. *@
-<FlareDataGrid Items="@DatagridData._people" PageSize="5" Exporters="_exporters" ExportFileName="people">
+<FlareDataGrid Items="@DatagridData._people" PageSize="5">
+    <ToolbarContent>
+        <DataGridExport FileName="people" Exporters="@_exporters" />
+    </ToolbarContent>
     <Columns>
         <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />
         <FlareColumn Title="Role" Field="@(p => p.Role)" />

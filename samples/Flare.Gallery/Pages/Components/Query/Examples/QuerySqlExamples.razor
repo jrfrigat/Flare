@@ -5,8 +5,8 @@
    dialect turns it into. The cases are chosen to be the ones that go wrong - paging, escaping,
    ambiguous joins, date truncation - rather than the ones that obviously work. *@
 
-<FlareStack Spacing="4">
-    <FlareStack Direction="StackDirection.Row" Spacing="2" AlignItems="StackAlign.Center">
+<FlareStack Gap="FlareSpacing.Medium">
+    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <span>@GalleryStrings.Query_Dialect</span>
         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Dialects"
                      Value="@_dialect" ValueChanged="@(value => _dialect = value ?? "SQL Server")"
@@ -16,7 +16,7 @@
     @foreach (var scenario in Scenarios)
     {
         var entry = scenario;
-        <FlareStack Spacing="1">
+        <FlareStack Gap="FlareSpacing.XSmall">
             <FlareText Typo="TypographyScale.TitleSmall">@entry.Title</FlareText>
             <FlareCodeBlock Value="@entry.Code" Language="csharp" Wrap="true" />
             <FlareCodeBlock Value="@Render(entry.Spec)" Language="sql" Wrap="true" />

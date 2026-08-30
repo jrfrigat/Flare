@@ -12,7 +12,7 @@
     </FlareText>
 
     <FlareDataGrid @ref="_grid" TItem="Person" ItemsProvider="LoadAsync" PageSize="8"
-                   LoadingIndicator="_indicator" SkeletonRows="8">
+                   LoadingIndicator="_indicator">
         <Columns>
             <FlareColumn Title="#" Field="@(p => p.Score)" Width="90px" Sortable="true" />
             <FlareColumn Title="Name" Field="@(p => p.Name)" Sortable="true" />

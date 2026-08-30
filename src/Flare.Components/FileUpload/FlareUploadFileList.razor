@@ -23,8 +23,9 @@
                     <FlareProgress Class="@Css.Classes.FileUpload.Progress"
                                    Variant="ProgressVariant.Linear"
                                    Size="TrackSize.Xs"
-                                   Indeterminate="@(item.State == FlareUploadState.Queued)"
-                                   Value="@(item.Progress * 100)" />
+                                   @* A queued file has no progress to report yet, and a null Value is
+                                      what makes the bar indeterminate. *@
+                                   Value="@(item.State == FlareUploadState.Queued ? null : item.Progress * 100)" />
                 }
                 else if (item.State == FlareUploadState.Failed)
                 {
