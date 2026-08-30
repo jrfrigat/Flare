@@ -60,6 +60,28 @@ public abstract class FlareFileUploadBase : FlareComponentBase
     /// <summary>Shows a retry affordance on a file that failed or was cancelled. Default true.</summary>
     [Parameter] public bool AllowRetry { get; set; } = true;
 
+    /// <summary>
+    /// Shows a remove affordance that drops a file from the list entirely. Default true. Removing a file
+    /// that is still transferring cancels it first - there is no way to un-send bytes, so the row leaves
+    /// and the request is aborted.
+    /// </summary>
+    [Parameter] public bool AllowRemove { get; set; } = true;
+
+    /// <summary>
+    /// Replaces the whole row. Receives the queue entry, so an application can render its own layout,
+    /// thumbnail or affordances against the same state the built-in row reads.
+    /// </summary>
+    [Parameter] public RenderFragment<FlareUploadFile>? FileTemplate { get; set; }
+
+    /// <summary>Raised when one file's transfer begins - after it leaves the queue, before any bytes move.</summary>
+    [Parameter] public EventCallback<FlareUploadFile> OnUploadStarted { get; set; }
+
+    /// <summary>
+    /// Raised as bytes move, at whatever rate the transfer reports them. Marshalled onto the renderer's
+    /// dispatcher, so a handler may touch component state directly.
+    /// </summary>
+    [Parameter] public EventCallback<FlareUploadFile> OnUploadProgress { get; set; }
+
     /// <summary>Raised when one file finishes successfully.</summary>
     [Parameter] public EventCallback<FlareUploadFile> OnUploadCompleted { get; set; }
 
@@ -139,6 +161,22 @@ public abstract class FlareFileUploadBase : FlareComponentBase
         return InvokeAsync(StateHasChanged);
     }
 
+    /// <summary>
+    /// Drops a file from the list. A transfer still in flight is cancelled first: the row is going away,
+    /// so leaving its request running would spend the user's bandwidth on bytes nothing will report.
+    /// </summary>
+    /// <param name="id">The queue entry to remove.</param>
+    public async Task RemoveAsync(string id)
+    {
+        if (Queue.FirstOrDefault(q => q.Id == id) is not { } item) return;
+        if (_cancels.TryGetValue(id, out var cts)) cts.Cancel();
+
+        Queue.Remove(item);
+        Files.Remove(item.File);
+        await OnFilesChanged.InvokeAsync(Files.AsReadOnly());
+        await InvokeAsync(StateHasChanged);
+    }
+
     /// <summary>Puts a failed or cancelled file back in the queue and runs it again.</summary>
     /// <param name="id">The queue entry to retry.</param>
     public Task RetryAsync(string id)
@@ -159,6 +197,7 @@ public abstract class FlareFileUploadBase : FlareComponentBase
         var cts = new CancellationTokenSource();
         _cancels[item.Id] = cts;
         item.State = FlareUploadState.Uploading;
+        await OnUploadStarted.InvokeAsync(item);
         await InvokeAsync(StateHasChanged);
 
         // Progress arrives from whatever thread the caller's transfer runs on, so every touch of the
@@ -166,7 +205,11 @@ public abstract class FlareFileUploadBase : FlareComponentBase
         var progress = new Progress<long>(sent =>
         {
             item.BytesSent = sent;
-            _ = InvokeAsync(StateHasChanged);
+            _ = InvokeAsync(async () =>
+            {
+                await OnUploadProgress.InvokeAsync(item);
+                StateHasChanged();
+            });
         });
 
         try

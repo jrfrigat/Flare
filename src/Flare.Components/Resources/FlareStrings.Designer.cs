@@ -1553,5 +1553,14 @@ namespace Flare.Components.Resources {
                 return ResourceManager.GetString("Tree_Expand", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Remove file.
+        /// </summary>
+        public static string FileUpload_Remove {
+            get {
+                return ResourceManager.GetString("FileUpload_Remove", resourceCulture);
+            }
+        }
+
     }
 }

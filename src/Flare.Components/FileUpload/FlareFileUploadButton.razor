@@ -62,8 +62,11 @@
                              Interactive="@(Uploader is not null)"
                              AllowCancel="AllowCancel"
                              AllowRetry="AllowRetry"
+                             AllowRemove="AllowRemove"
+                             FileTemplate="FileTemplate"
                              OnCancel="CancelAsync"
-                             OnRetry="RetryAsync" />
+                             OnRetry="RetryAsync"
+                             OnRemove="RemoveAsync" />
     }
 </div>
 

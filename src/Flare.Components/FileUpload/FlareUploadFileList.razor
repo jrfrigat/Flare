@@ -10,6 +10,12 @@
     @foreach (var item in Items)
     {
         <li class="@Css.Classes.FileUpload.File @StateClass(item.State)">
+        @if (FileTemplate is not null)
+        {
+            @FileTemplate(item)
+        }
+        else
+        {
             <FlareIconView Value="FlareIcons.Description" Class="@Css.Classes.FileUpload.FileIcon" />
             <span class="@Css.Classes.FileUpload.FileName">@item.File.Name</span>
             <span class="@Css.Classes.FileUpload.FileSize">@FormatSize(item.File.Size)</span>
@@ -53,8 +59,17 @@
                                          AriaLabel="@FlareStrings.FileUpload_Retry"
                                          OnClick="@(() => OnRetry.InvokeAsync(item.Id))" />
                     }
+                    @if (AllowRemove)
+                    {
+                        <FlareIconButton Icon="FlareIcons.Delete"
+                                         Size="ButtonSize.Sm"
+                                         Variant="ButtonVariant.Text"
+                                         AriaLabel="@FlareStrings.FileUpload_Remove"
+                                         OnClick="@(() => OnRemove.InvokeAsync(item.Id))" />
+                    }
                 </span>
             }
+        }
         </li>
     }
 </ul>
@@ -78,6 +93,15 @@
 
     /// <summary>Raised with the row id when retry is pressed.</summary>
     [Parameter] public EventCallback<string> OnRetry { get; set; }
+
+    /// <summary>Shows the remove affordance on every row.</summary>
+    [Parameter] public bool AllowRemove { get; set; } = true;
+
+    /// <summary>Raised with the row id when remove is pressed.</summary>
+    [Parameter] public EventCallback<string> OnRemove { get; set; }
+
+    /// <summary>Replaces the row body entirely, receiving the queue entry.</summary>
+    [Parameter] public RenderFragment<FlareUploadFile>? FileTemplate { get; set; }
 
     // The list paints inside the upload component's own root, so it contributes no root class of its own.
     /// <inheritdoc />
