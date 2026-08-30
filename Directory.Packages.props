@@ -40,10 +40,10 @@
          ships from NuGet, so Flare consumes it the way any other consumer does. Only the model and
          its text language are needed by the designer; the Gallery adds two renderers to demo one
          spec becoming several dialects. -->
-    <PackageVersion Include="Querio" Version="0.0.1" />
-    <PackageVersion Include="Querio.Language" Version="0.0.1" />
-    <PackageVersion Include="Querio.Sql" Version="0.0.1" />
-    <PackageVersion Include="Querio.OneC" Version="0.0.1" />
+    <PackageVersion Include="Querio" Version="0.1.0" />
+    <PackageVersion Include="Querio.Language" Version="0.1.0" />
+    <PackageVersion Include="Querio.Sql" Version="0.1.0" />
+    <PackageVersion Include="Querio.OneC" Version="0.1.0" />
     <!-- Test stack (tests/Flare.*.Tests). xunit.v3 4.0.0 makes the test projects
          Microsoft.Testing.Platform applications, which global.json selects as the "dotnet test"
          runner. Under MTP a TRX report is an opt-in extension rather than a built-in logger, so it
