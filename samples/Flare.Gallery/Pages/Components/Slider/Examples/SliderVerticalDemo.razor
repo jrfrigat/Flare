@@ -1,6 +1,6 @@
 @* Vertical="true" rotates the slider; value increases upward.
    Length is set with the --flare-slider-length CSS var. *@
-<FlareStack Row Gap="FlareSpacing.Large" Align="FlareAlignItems.End">
+<FlareStack Row Wrap Gap="FlareSpacing.Large" Align="FlareAlignItems.End">
     <FlareSlider @bind-Value="_a" Vertical="true" ShowValue="false"
                  StartIcon="@MaterialDesign3Icons.Regular.VolumeMute" EndIcon="@MaterialDesign3Icons.Regular.VolumeUp" Style="--flare-slider-length:13rem" />
     <FlareSlider @bind-Value="_b" Vertical="true" ShowValue="false" Color="FlareColor.Secondary"

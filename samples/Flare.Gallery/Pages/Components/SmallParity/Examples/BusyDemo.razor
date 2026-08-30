@@ -9,7 +9,7 @@
         <FlareNumericField TValue="int" @bind-Value="_min" Label="@GalleryStrings.Busy_MinDuration" Style="width:9rem;" />
     </FlareStack>
 
-    <FlareStack Row Gap="FlareSpacing.Small">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small">
         <FlareButton Variant="ButtonVariant.Filled" OnClick="RunAsync" Disabled="@_busy">@GalleryStrings.Busy_Run</FlareButton>
         <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => { _work = 80; _delay = 250; _min = 500; })">
             @GalleryStrings.Busy_QuickCase
@@ -21,7 +21,7 @@
             <FlareStack Gap="FlareSpacing.Small">
                 <FlareText Typo="TypographyScale.TitleSmall">@GalleryStrings.Busy_PanelTitle</FlareText>
                 <FlareText Typo="TypographyScale.BodyMedium">@GalleryStrings.Busy_PanelBody</FlareText>
-                <FlareStack Row Gap="FlareSpacing.Small">
+                <FlareStack Row Wrap Gap="FlareSpacing.Small">
                     <FlareButton Variant="ButtonVariant.Tonal">@GalleryStrings.Busy_Save</FlareButton>
                     <FlareButton Variant="ButtonVariant.Text">@GalleryStrings.Busy_Cancel</FlareButton>
                 </FlareStack>

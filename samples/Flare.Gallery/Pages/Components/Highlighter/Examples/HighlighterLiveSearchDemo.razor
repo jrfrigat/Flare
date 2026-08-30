@@ -1,7 +1,7 @@
 @inherits LocalizedPage
 
 <FlareField TValue="string" @bind-Value="_query" Label="@GalleryStrings.Highlighter_SearchTerm" Placeholder="@GalleryStrings.Highlighter_TypeToHighlight" />
-<FlareStack Row Style="line-height:1.8;margin-top:1rem;">
+<FlareStack Row Wrap Style="line-height:1.8;margin-top:1rem;">
     <FlareHighlighter Text="@_sampleText" Highlight="@_query" />
 </FlareStack>
 

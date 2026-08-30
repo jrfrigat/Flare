@@ -9,7 +9,7 @@
                          OnUploadCompleted="@(f => Log($"done: {f.File.Name}"))"
                          OnUploadFailed="@(f => Log($"failed: {f.File.Name} - {f.Error}"))" />
 
-    <FlareStack Row Gap="FlareSpacing.Small" Style="margin-top:0.75rem;">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Style="margin-top:0.75rem;">
         <FlareCheckbox Value="_failNext" ValueChanged="@(v => _failNext = v == true)" Label="Fail the next transfer" />
         <FlareCheckbox Value="_slow" ValueChanged="@(v => _slow = v == true)" Label="Slow transfer" />
     </FlareStack>

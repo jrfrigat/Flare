@@ -17,7 +17,7 @@
         <ChildContent>
             @if (_data is null)
             {
-                <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center"
+                <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center"
                             Style="padding:2.5rem;justify-content:center;">
                     <FlareProgress Variant="ProgressVariant.Circular" Size="TrackSize.Xs" />
                     <FlareText Typo="TypographyScale.BodySmall">Fetching data on reveal...</FlareText>
@@ -27,7 +27,7 @@
             {
                 <FlareCard Variant="CardVariant.Outlined">
                     <FlareStack Gap="FlareSpacing.Small">
-                        <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+                        <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
                             <FlareIconView Value="@MaterialDesign3Icons.Regular.CloudDone" Color="FlareColor.Primary" />
                             <FlareText Typo="TypographyScale.TitleMedium">Loaded just in time</FlareText>
                         </FlareStack>

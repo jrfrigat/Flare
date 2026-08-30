@@ -1,13 +1,13 @@
 @* Shape axis: Default (theme's own shape), Rounded (rounded rectangle), Circular (pill),
    Square (sharp corners). Every value resolves to per-theme shape tokens. *@
-<FlareStack Row>
+<FlareStack Row Wrap>
     <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Default">Default</FlareButton>
     <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Rounded">Rounded</FlareButton>
     <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Circular">Circular</FlareButton>
     <FlareButton Variant="ButtonVariant.Filled" Shape="ButtonShape.Square">Square</FlareButton>
 </FlareStack>
 
-<FlareStack Row>
+<FlareStack Row Wrap>
     <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Default">Default</FlareButton>
     <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Rounded">Rounded</FlareButton>
     <FlareButton Variant="ButtonVariant.Outlined" Shape="ButtonShape.Circular">Circular</FlareButton>
@@ -15,7 +15,7 @@
 </FlareStack>
 
 @* Icon-only: Circular gives a true circle, Square a hard-edged tile. *@
-<FlareStack Row>
+<FlareStack Row Wrap>
     <FlareButton Variant="ButtonVariant.Tonal" Shape="ButtonShape.Default" AriaLabel="Default">
         <LeadingIcon><FlareIconView Value="@MaterialDesign3Icons.Regular.Favorite" /></LeadingIcon>
     </FlareButton>

@@ -1,7 +1,7 @@
 @using Flare.Gallery.Pages.Components.DataGrid.Examples
 
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareStack Row Gap="FlareSpacing.Large" Align="FlareAlignItems.Center">
+    <FlareStack Row Wrap Gap="FlareSpacing.Large" Align="FlareAlignItems.Center">
         <FlareText Typo="TypographyScale.LabelLarge">Режим фильтра:</FlareText>
         <FlareSelect TValue="DataGridFilterMode" @bind-Value="_filterMode"
                      Items="@(new[] { DataGridFilterMode.Simple, DataGridFilterMode.Menu })"

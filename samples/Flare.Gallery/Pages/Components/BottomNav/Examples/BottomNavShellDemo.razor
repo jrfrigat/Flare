@@ -7,7 +7,7 @@
    descendant resolves against. (`position: relative` does NOT do that - only containment, a transform
    or a filter does.) *@
 <FlareCard Variant="CardVariant.Outlined"
-           Style="width:360px;height:420px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
+           Style="width:min(360px, 100%);height:420px;padding:0;overflow:hidden;contain:layout paint;display:flex;flex-direction:column;">
     <FlareCardContent Style="flex:1;overflow:auto;">
         <FlareStack Gap="FlareSpacing.Small">
             <FlareText Typo="TypographyScale.TitleMedium">Today</FlareText>

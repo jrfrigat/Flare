@@ -6,7 +6,7 @@
    ambiguous joins, date truncation - rather than the ones that obviously work. *@
 
 <FlareStack Gap="FlareSpacing.Medium">
-    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <span>@GalleryStrings.Query_Dialect</span>
         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Dialects"
                      Value="@_dialect" ValueChanged="@(value => _dialect = value ?? "SQL Server")"

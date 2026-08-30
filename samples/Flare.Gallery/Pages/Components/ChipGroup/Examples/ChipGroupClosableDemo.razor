@@ -1,6 +1,6 @@
 @inject LanguageService Lang
 
-<FlareStack Row Gap="FlareSpacing.XSmall">
+<FlareStack Row Wrap Gap="FlareSpacing.XSmall">
     @foreach (var tag in _tags)
     {
         <FlareChip Label="@tag" Closable="true" OnClose="@(() => RemoveTag(tag))" />

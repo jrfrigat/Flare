@@ -6,7 +6,7 @@
     <FlareSlider Range="true" @bind-Value="_lvlLow" @bind-ValueEnd="_lvlHigh"
                  Label="Levels" Min="0" Max="100" Step="10"
                  Color="FlareColor.Tertiary" Stepper="true" Indicator="true" />
-    <FlareStack Row Gap="FlareSpacing.Large">
+    <FlareStack Row Wrap Gap="FlareSpacing.Large">
         <FlareSlider Range="true" Vertical="true" @bind-Value="_vLow" @bind-ValueEnd="_vHigh"
                      ShowValue="false" Color="FlareColor.Secondary"
                      Style="--flare-slider-length:12rem" />

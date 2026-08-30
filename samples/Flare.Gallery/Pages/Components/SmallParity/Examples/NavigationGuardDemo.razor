@@ -10,7 +10,7 @@
                     HelperText="@GalleryStrings.NavGuardDemo_DraftHelp"
                     Immediate="true" />
 
-    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <FlareSwitch @bind-Value="_dirty" Label="@GalleryStrings.NavGuardDemo_Dirty" />
         <FlareChip Label="@(_dirty ? GalleryStrings.NavGuardDemo_Guarded : GalleryStrings.NavGuardDemo_Free)"
                    Color="@(_dirty ? FlareColor.Warning : FlareColor.Success)"

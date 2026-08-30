@@ -8,7 +8,7 @@
                  Label="Price range" Min="0" Max="1000" Step="50" Format="C0"
                  Color="FlareColor.Tertiary" Marks="_priceMarks" />
 
-    <FlareStack Row Gap="FlareSpacing.XLarge">
+    <FlareStack Row Wrap Gap="FlareSpacing.XLarge">
         <FlareSlider Vertical="true" @bind-Value="_level" Min="0" Max="3" Step="1"
                      ShowValue="false" Color="FlareColor.Secondary"
                      Marks="_levelMarks" Style="--flare-slider-length:11rem" />

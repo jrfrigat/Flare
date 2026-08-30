@@ -1,7 +1,7 @@
 @inject ISnackbarService Snackbar
 
 <FlareStack Gap="FlareSpacing.None">
-    <FlareStack Row Gap="FlareSpacing.Medium" Style="margin-bottom:1rem;">
+    <FlareStack Row Wrap Gap="FlareSpacing.Medium" Style="margin-bottom:1rem;">
         <FlareButton OnClick="@(() => _darkOpen = true)">Show dark overlay</FlareButton>
         <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _loadingOpen = true)">Show loading overlay</FlareButton>
     </FlareStack>

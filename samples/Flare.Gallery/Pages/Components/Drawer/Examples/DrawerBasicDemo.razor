@@ -3,7 +3,7 @@
    would stop short of the panel edge. The settings drawer on the right holds a form, which wants to sit off
    the edge and line up with the header - so it asks for the inset. The steps are the shared FlareSpacing
    scale, the same one Gap uses, so the theme owns the actual value. *@
-<FlareStack Row Gap="FlareSpacing.Small">
+<FlareStack Row Wrap Gap="FlareSpacing.Small">
     <FlareButton OnClick="@(() => _leftOpen = true)">Open Left</FlareButton>
     <FlareButton Variant="ButtonVariant.Outlined" OnClick="@(() => _rightOpen = true)">Open Right</FlareButton>
 </FlareStack>

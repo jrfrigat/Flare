@@ -15,7 +15,7 @@
                            ValueChanged="@(v => _model.AcceptsTerms = v ?? false)"
                            For="@(() => _model.AcceptsTerms)" />
             <FlareValidationSummary />
-            <FlareStack Row Gap="FlareSpacing.XSmall">
+            <FlareStack Row Wrap Gap="FlareSpacing.XSmall">
                 <FlareButton Variant="ButtonVariant.Filled" Type="@ButtonType.Submit">Submit</FlareButton>
                 <FlareButton Variant="ButtonVariant.Outlined" Type="@ButtonType.Reset" OnClick="Reset">Reset</FlareButton>
             </FlareStack>

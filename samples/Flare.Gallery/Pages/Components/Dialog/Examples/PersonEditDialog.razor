@@ -5,7 +5,7 @@
 <FlareStack Gap="FlareSpacing.Medium" Style="min-width:18rem;">
     <FlareTextField @bind-Value="_name" Label="@GalleryStrings.Dialog_Name" Variant="InputVariant.Outlined" />
     <FlareTextField @bind-Value="_email" Label="@GalleryStrings.Dialog_Email" Variant="InputVariant.Outlined" />
-    <FlareStack Row Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Justify="FlareJustifyContent.End">
         <FlareButton Variant="ButtonVariant.Text" OnClick="@(() => Dialog.Cancel())">
             @GalleryStrings.Dialog_BodyCancel
         </FlareButton>

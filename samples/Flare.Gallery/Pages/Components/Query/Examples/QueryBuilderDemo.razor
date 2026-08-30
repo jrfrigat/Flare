@@ -11,7 +11,7 @@
     @* Naming the target narrows what the designer offers: pick SQLite and the percentile aggregate
        disappears, pick 1C and so do cross joins and paging by offset. Nothing is offered that would
        only fail once the query was rendered. *@
-    <FlareStack Row Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.Center">
         <span>@GalleryStrings.Query_Target</span>
         <FlareSelect TValue="string" Size="FieldSize.Xs" Items="Targets" ItemLabel="TargetLabel"
                      Value="@_target" ValueChanged="@(value => _target = value ?? string.Empty)"

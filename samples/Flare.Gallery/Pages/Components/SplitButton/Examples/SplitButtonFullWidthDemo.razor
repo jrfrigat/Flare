@@ -8,7 +8,7 @@
             <FlareMenuItem Icon="@MaterialDesign3Icons.Regular.Download">Export…</FlareMenuItem>
         </MenuItems>
     </FlareSplitButton>
-    <FlareStack Row Gap="FlareSpacing.Small">
+    <FlareStack Row Wrap Gap="FlareSpacing.Small">
         <FlareButton Variant="ButtonVariant.Outlined" Size="ButtonSize.Sm" OnClick="@(() => _split!.Open())">Open menu</FlareButton>
         <FlareButton Variant="ButtonVariant.Text" Size="ButtonSize.Sm" OnClick="@(() => _split!.Close())">Close menu</FlareButton>
     </FlareStack>
