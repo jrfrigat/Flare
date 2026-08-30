@@ -3110,4 +3110,34 @@
   <data name="Gauge_Trend" xml:space="preserve">
     <value>Load, last 12 h</value>
   </data>
+  <data name="Barcode_Title" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="Barcode_Subtitle" xml:space="preserve">
+    <value>Seven 1D symbologies as SVG, with no JS and no external encoder. Each is a pure function from text to bar widths, checked against its published vectors.</value>
+  </data>
+  <data name="Barcode_Symbologies" xml:space="preserve">
+    <value>The seven symbologies</value>
+  </data>
+  <data name="Barcode_SymbologiesDesc" xml:space="preserve">
+    <value>Code 128 is the default because it encodes the full ASCII range and switches to its digit-packing subset automatically - the same data in Code 39 comes out about three times wider. EAN, UPC and ITF-14 compute their own check digit, and accept a value with or without it.</value>
+  </data>
+  <data name="Barcode_Live" xml:space="preserve">
+    <value>Bound to a field</value>
+  </data>
+  <data name="Barcode_LiveDesc" xml:space="preserve">
+    <value>The case the never-throw rule exists for. An EAN-13 is unencodable for the first twelve keystrokes of thirteen, so an unencodable value renders a placeholder and reports the reason through OnInvalid - once per distinct failure, not once per keystroke.</value>
+  </data>
+  <data name="Barcode_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Barcode_Symbology" xml:space="preserve">
+    <value>Symbology</value>
+  </data>
+  <data name="Barcode_ModuleWidth" xml:space="preserve">
+    <value>Module width</value>
+  </data>
+  <data name="Barcode_TextAbove" xml:space="preserve">
+    <value>Text above</value>
+  </data>
 </root>

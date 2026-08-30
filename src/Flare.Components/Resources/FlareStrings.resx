@@ -251,4 +251,5 @@
   <data name="Transfer_MoveToSource" xml:space="preserve"><value>Move selected to source</value></data>
   <data name="Transfer_MoveAllToSource" xml:space="preserve"><value>Move all to source</value></data>
 
+  <data name="Barcode_Invalid" xml:space="preserve"><value>Cannot encode this value</value></data>
 </root>

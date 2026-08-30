@@ -10283,5 +10283,95 @@ namespace Flare.Gallery.Resources {
             }
         }
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Barcode.
+        /// </summary>
+        public static string Barcode_Title {
+            get {
+                return ResourceManager.GetString("Barcode_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Seven 1D symbologies as SVG, with no JS and no external encoder. Each is a pure function from text to bar widths, checked against its published vectors..
+        /// </summary>
+        public static string Barcode_Subtitle {
+            get {
+                return ResourceManager.GetString("Barcode_Subtitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The seven symbologies.
+        /// </summary>
+        public static string Barcode_Symbologies {
+            get {
+                return ResourceManager.GetString("Barcode_Symbologies", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Code 128 is the default because it encodes the full ASCII range and switches to its digit-packing subset automatically - the same data in Code 39 comes out about three times wider. EAN, UPC and ITF-14 compute their own check digit, and accept a value with or without it..
+        /// </summary>
+        public static string Barcode_SymbologiesDesc {
+            get {
+                return ResourceManager.GetString("Barcode_SymbologiesDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Bound to a field.
+        /// </summary>
+        public static string Barcode_Live {
+            get {
+                return ResourceManager.GetString("Barcode_Live", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The case the never-throw rule exists for. An EAN-13 is unencodable for the first twelve keystrokes of thirteen, so an unencodable value renders a placeholder and reports the reason through OnInvalid - once per distinct failure, not once per keystroke..
+        /// </summary>
+        public static string Barcode_LiveDesc {
+            get {
+                return ResourceManager.GetString("Barcode_LiveDesc", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Value.
+        /// </summary>
+        public static string Barcode_Value {
+            get {
+                return ResourceManager.GetString("Barcode_Value", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Symbology.
+        /// </summary>
+        public static string Barcode_Symbology {
+            get {
+                return ResourceManager.GetString("Barcode_Symbology", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Module width.
+        /// </summary>
+        public static string Barcode_ModuleWidth {
+            get {
+                return ResourceManager.GetString("Barcode_ModuleWidth", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Text above.
+        /// </summary>
+        public static string Barcode_TextAbove {
+            get {
+                return ResourceManager.GetString("Barcode_TextAbove", resourceCulture);
+            }
+        }
+
     }
 }

@@ -1,0 +1,44 @@
+@* Bound to a field, which is the case the "never throw" rule exists for: an EAN-13 is unencodable for
+   the first twelve keystrokes of thirteen, so the component has to render a placeholder for most of the
+   time the user is typing rather than taking the page down. *@
+<FlareStack Gap="FlareSpacing.Medium" Style="max-width:34rem;">
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Small" Align="FlareAlignItems.End">
+        <FlareTextField Label="@GalleryStrings.Barcode_Value" @bind-Value="_value" Style="flex:1;min-width:14rem;" />
+        <FlareSelect TValue="BarcodeSymbology" @bind-Value="_symbology" Label="@GalleryStrings.Barcode_Symbology">
+            <option value="Code128">Code 128</option>
+            <option value="Ean13">EAN-13</option>
+            <option value="Ean8">EAN-8</option>
+            <option value="UpcA">UPC-A</option>
+            <option value="Code39">Code 39</option>
+            <option value="Itf14">ITF-14</option>
+            <option value="Codabar">Codabar</option>
+        </FlareSelect>
+    </FlareStack>
+
+    <FlareBarcode Value="@_value" Symbology="@_symbology" OnInvalid="@(m => _reason = m)" />
+
+    @if (_reason is not null)
+    {
+        <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">
+            <code>OnInvalid</code>: @_reason
+        </FlareText>
+    }
+
+    <FlareStack Row Wrap Gap="FlareSpacing.Small">
+        <FlareSlider Label="@GalleryStrings.Barcode_ModuleWidth" @bind-Value="_module" Min="1" Max="5" Step="0.5" Style="min-width:12rem;" />
+        <FlareSwitch Label="@GalleryStrings.Barcode_TextAbove" @bind-Value="_above" />
+    </FlareStack>
+
+    <FlareBarcode Value="@_value" Symbology="@_symbology"
+                  ModuleWidth="@_module" TextAbove="@_above" Height="48" />
+
+</FlareStack>
+
+@code {
+    private string _value = "FLARE-2026";
+    private BarcodeSymbology _symbology = BarcodeSymbology.Code128;
+    private string? _reason;
+    private double _module = 2;
+    private bool _above;
+}

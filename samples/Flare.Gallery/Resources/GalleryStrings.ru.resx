@@ -3110,4 +3110,34 @@
   <data name="Gauge_Trend" xml:space="preserve">
     <value>Нагрузка за 12 ч</value>
   </data>
+  <data name="Barcode_Title" xml:space="preserve">
+    <value>Штрих-код</value>
+  </data>
+  <data name="Barcode_Subtitle" xml:space="preserve">
+    <value>Семь одномерных символик в SVG, без JS и без внешнего кодировщика. Каждая - чистая функция из текста в ширины штрихов, проверенная по опубликованным векторам.</value>
+  </data>
+  <data name="Barcode_Symbologies" xml:space="preserve">
+    <value>Семь символик</value>
+  </data>
+  <data name="Barcode_SymbologiesDesc" xml:space="preserve">
+    <value>Code 128 стоит по умолчанию, потому что кодирует весь ASCII и сам переключается в подмножество, упаковывающее по две цифры в символ, - те же данные в Code 39 выходят примерно втрое шире. EAN, UPC и ITF-14 сами считают контрольную цифру и принимают значение как с ней, так и без неё.</value>
+  </data>
+  <data name="Barcode_Live" xml:space="preserve">
+    <value>Привязка к полю</value>
+  </data>
+  <data name="Barcode_LiveDesc" xml:space="preserve">
+    <value>Тот случай, ради которого действует правило «никогда не бросать». EAN-13 не кодируется первые двенадцать нажатий из тринадцати, поэтому некодируемое значение рисует заглушку и сообщает причину через OnInvalid - один раз на отличающуюся ошибку, а не на каждое нажатие.</value>
+  </data>
+  <data name="Barcode_Value" xml:space="preserve">
+    <value>Значение</value>
+  </data>
+  <data name="Barcode_Symbology" xml:space="preserve">
+    <value>Символика</value>
+  </data>
+  <data name="Barcode_ModuleWidth" xml:space="preserve">
+    <value>Ширина модуля</value>
+  </data>
+  <data name="Barcode_TextAbove" xml:space="preserve">
+    <value>Текст сверху</value>
+  </data>
 </root>

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(FlareLibTargetFrameworks)</TargetFrameworks>
+    <TargetFramework></TargetFramework>
+    <PackageId>Flare.Components.Barcode</PackageId>
+    <RootNamespace>Flare.Components</RootNamespace>
+    <Description>Flare Barcode component (1D symbologies) for the Flare Blazor component library.</Description>
+    <PackageTags>blazor;components;barcode</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Flare.Components.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Flare.Components\Flare.Components.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Flare.Icons" />
+  </ItemGroup>
+</Project>

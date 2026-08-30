@@ -71,7 +71,7 @@ Ordered by dependency first, then by cost-to-value. The three foundation items u
 | 1 | ~~Chart tokenization~~ - DONE, `ChartTokens` ships 58 tokens | M | gauges, all new series, treemap/sankey |
 | 2 | ~~Upload transfer port~~ - DONE. `Uploader` takes a delegate, not a URL: Flare owns the queue, concurrency, cancel, retry, remove and the row template, the application owns the wire. `ChunkSize` was dropped - chunking is the wire, and the wire is the caller's | M | the most visible hole in an existing component |
 | 3 | ~~Gauge family~~ - DONE. `FlareGauge` radial / arc / linear; bands are `FlareZone` children rather than a gauge-only range type, and the arc math moved to a shared `ArcGeometry` the chart now uses too | M | dashboards |
-| 4 | [Barcode](barcode-1d.md) - 1D symbologies beside the existing QR encoder | S | - |
+| 4 | ~~Barcode~~ - DONE. `Flare.Components.Barcode` ships seven symbologies as pure encoders tested against their published vectors. The QR version cap the same file carried was already lifted (versions 1-40) | S | - |
 | 5 | [Markdown editor](markdown-editor.md) - edit mode for `FlareMarkdown` on the two-layer contract | S | - |
 | 6 | [Small parity batch](small-parity-batch.md) - TimeSpanPicker, PasswordStrength, navigation guard, PullToRefresh, busy overlay | S each | - |
 

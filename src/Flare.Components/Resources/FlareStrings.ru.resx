@@ -251,4 +251,5 @@
   <data name="Transfer_MoveToSource" xml:space="preserve"><value>Вернуть выбранные</value></data>
   <data name="Transfer_MoveAllToSource" xml:space="preserve"><value>Вернуть все</value></data>
 
+  <data name="Barcode_Invalid" xml:space="preserve"><value>Значение не кодируется</value></data>
 </root>

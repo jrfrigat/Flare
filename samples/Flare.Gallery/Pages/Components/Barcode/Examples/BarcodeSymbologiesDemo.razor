@@ -1,0 +1,28 @@
+@* All seven symbologies with values that are valid in each, so the widths are comparable: the same data
+   in Code 128 and Code 39 shows why Code 128 is the default. Every one of these scans - the encoders are
+   checked against the published vectors, not against themselves. *@
+<FlareStack Row Wrap Gap="FlareSpacing.Large">
+
+    @foreach (var (symbology, value, note) in _samples)
+    {
+        <FlareStack Gap="FlareSpacing.XSmall" Style="max-width:22rem;">
+            <FlareText Typo="TypographyScale.LabelLarge">@symbology</FlareText>
+            <FlareText Typo="TypographyScale.BodySmall" Color="FlareColor.OnSurfaceVariant">@note</FlareText>
+            <FlareBarcode Value="@value" Symbology="@symbology" Height="56" />
+        </FlareStack>
+    }
+
+</FlareStack>
+
+@code {
+    private readonly (BarcodeSymbology Symbology, string Value, string Note)[] _samples =
+    [
+        (BarcodeSymbology.Code128, "FLARE-2026", "Full ASCII, and the narrowest of the seven."),
+        (BarcodeSymbology.Ean13, "400638133393", "12 digits; the 13th is computed."),
+        (BarcodeSymbology.Ean8, "9638507", "The short form, for a small package."),
+        (BarcodeSymbology.UpcA, "03600029145", "EAN-13 with a leading zero."),
+        (BarcodeSymbology.Code39, "FLARE 2026", "Readable by old hardware, about three times wider."),
+        (BarcodeSymbology.Itf14, "1540141253422", "Shipping container; two digits per group."),
+        (BarcodeSymbology.Codabar, "A12345B", "Start and stop letters are part of the symbol."),
+    ];
+}

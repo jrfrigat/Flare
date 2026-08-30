@@ -15,6 +15,7 @@
     <Project Path="src/Flare.Components.IDE/Flare.Components.IDE.csproj" />
     <Project Path="src/Flare.Components.Kanban/Flare.Components.Kanban.csproj" />
     <Project Path="src/Flare.Components.Media/Flare.Components.Media.csproj" />
+    <Project Path="src/Flare.Components.Barcode/Flare.Components.Barcode.csproj" />
     <Project Path="src/Flare.Components.QrCode/Flare.Components.QrCode.csproj" />
     <Project Path="src/Flare.Components.Query/Flare.Components.Query.csproj" />
     <Project Path="src/Flare.Components.RichTextEditor/Flare.Components.RichTextEditor.csproj" />

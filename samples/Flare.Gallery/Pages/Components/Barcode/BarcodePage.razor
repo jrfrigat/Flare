@@ -1,0 +1,15 @@
+@page "/components/barcode"
+@inherits LocalizedPage
+
+<PageTitle>@GalleryStrings.Barcode_Title - Flare</PageTitle>
+
+<GalleryPageTitle Api="FlareBarcode">
+    <FlareText Typo="TypographyScale.HeadlineMedium">@GalleryStrings.Barcode_Title</FlareText>
+    <FlareText Color="FlareColor.OnSurfaceVariant" Typo="TypographyScale.BodyLarge">@GalleryStrings.Barcode_Subtitle</FlareText>
+</GalleryPageTitle>
+
+<AutoDemoSection Title="@GalleryStrings.Barcode_Symbologies" DemoType="typeof(Examples.BarcodeSymbologiesDemo)"
+    Description="@GalleryStrings.Barcode_SymbologiesDesc" />
+
+<AutoDemoSection Title="@GalleryStrings.Barcode_Live" DemoType="typeof(Examples.BarcodeLiveDemo)"
+    Description="@GalleryStrings.Barcode_LiveDesc" />

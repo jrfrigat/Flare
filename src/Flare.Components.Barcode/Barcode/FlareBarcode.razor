@@ -1,0 +1,130 @@
+@namespace Flare.Components
+@inherits FlareComponentBase
+@using System.Globalization
+
+@* A 1D barcode as SVG rects - one rect per BAR, not per module, because a symbology is specified as
+   element widths and drawing it that way keeps the file small and the edges crisp at any scale.
+
+   An unencodable value renders the fallback rather than throwing: the value usually arrives from a field
+   the user is still typing into, and an EAN is unencodable for the first twelve keystrokes of thirteen. *@
+
+<div class="@BuildCssClass(_symbol is null ? "flare-barcode--invalid" : null, TextAbove ? "flare-barcode--text-above" : null)"
+     style="@Style"
+     @attributes="AdditionalAttributes">
+    @if (_symbol is { } sym)
+    {
+        <svg class="flare-barcode__svg"
+             viewBox="0 0 @F(_totalWidth) @F(Height)"
+             width="@F(_totalWidth)" height="@F(Height)"
+             xmlns="http://www.w3.org/2000/svg"
+             shape-rendering="crispEdges"
+             role="img"
+             aria-label="@(AriaLabel ?? $"{Symbology}: {sym.Text}")">
+            @{
+                double x = Quiet * ModuleWidth;
+                bool bar = true;
+            }
+            @foreach (var run in sym.Modules)
+            {
+                double w = run * ModuleWidth;
+                if (bar)
+                {
+                    <rect class="flare-barcode__bar" x="@F(x)" y="0" width="@F(w)" height="@F(Height)" />
+                }
+                x += w;
+                bar = !bar;
+            }
+        </svg>
+
+        @if (ShowText)
+        {
+            <span class="flare-barcode__text">@_readable(sym.Text)</span>
+        }
+    }
+    else
+    {
+        <span class="flare-barcode__error" role="status">@(_error ?? FlareStrings.Barcode_Invalid)</span>
+    }
+</div>
+
+@code {
+    /// <summary>The text to encode. An empty or unencodable value renders the fallback, never throws.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>Which symbology to encode in. Default <see cref="BarcodeSymbology.Code128"/>.</summary>
+    [Parameter] public BarcodeSymbology Symbology { get; set; } = BarcodeSymbology.Code128;
+
+    /// <summary>Prints the human-readable line under the bars, including any computed check digit. Default true.</summary>
+    [Parameter] public bool ShowText { get; set; } = true;
+
+    /// <summary>Puts the human-readable line above the bars instead of below.</summary>
+    [Parameter] public bool TextAbove { get; set; }
+
+    /// <summary>Bar height in pixels. Default 60.</summary>
+    [Parameter] public double Height { get; set; } = 60;
+
+    /// <summary>
+    /// Width of one module in pixels - the narrowest bar. Default 2. Below 1 most scanners stop reading,
+    /// so a label meant to be printed wants 2 or more.
+    /// </summary>
+    [Parameter] public double ModuleWidth { get; set; } = 2;
+
+    /// <summary>
+    /// Blank margin on each side, in modules. Default 10, which is the minimum the symbologies specify:
+    /// without it a scanner cannot tell where the symbol begins.
+    /// </summary>
+    [Parameter] public int Quiet { get; set; } = 10;
+
+    /// <summary>
+    /// Composite format applied to the human-readable line, with the encoded text as <c>{0}</c>. Null
+    /// prints the text as encoded.
+    /// </summary>
+    [Parameter] public string? Format { get; set; }
+
+    /// <summary>Raised once per distinct failure when the value cannot be encoded. The component renders
+    /// the fallback either way.</summary>
+    [Parameter] public EventCallback<string> OnInvalid { get; set; }
+
+    /// <summary>Accessible name. Defaults to the symbology and the encoded text.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <inheritdoc />
+    protected override string ComponentCssClass => "flare-barcode";
+
+    private BarcodeEncoder.Symbol? _symbol;
+    private string? _error;
+    private string? _reported;
+    private double _totalWidth;
+
+    private string _readable(string text) =>
+        Format is null ? text : string.Format(CultureInfo.CurrentCulture, Format, text);
+
+    /// <inheritdoc />
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _symbol = BarcodeEncoder.TryEncode(Value, Symbology, out _error);
+        _totalWidth = _symbol is { } s ? (s.Modules.Sum() + 2 * Quiet) * ModuleWidth : 0;
+    }
+
+    /// <inheritdoc />
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        // Report each distinct failure once. A bound field re-renders on every keystroke, and an event
+        // per keystroke saying "still not a valid EAN" is noise rather than information.
+        if (_symbol is null && _error is not null && _error != _reported)
+        {
+            _reported = _error;
+            await OnInvalid.InvokeAsync(_error);
+        }
+        else if (_symbol is not null)
+        {
+            _reported = null;
+        }
+    }
+
+    private static string F(double v) => v.ToString("F2", CultureInfo.InvariantCulture);
+}

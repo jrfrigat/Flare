@@ -199,6 +199,7 @@ public static class ComponentCatalog
         // -- Media ----------------------------------------------------------------
         new ComponentEntry("components/carousel",          "Carousel",                "Carousel_Title",        ComponentGroup.Media),
         new ComponentEntry("components/image",             "Image",                   "Image_Title",           ComponentGroup.Media),
+        new ComponentEntry("components/barcode",           "Barcode",                 "Barcode_Title",         ComponentGroup.Media),
         new ComponentEntry("components/qrcode",            "QR Code",                 "QrCode_Title",          ComponentGroup.Media),
         new ComponentEntry("components/videoplayer",       "Video Player",            "VideoPlayer_Title",     ComponentGroup.Media),
 

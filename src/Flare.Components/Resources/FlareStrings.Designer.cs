@@ -1562,5 +1562,14 @@ namespace Flare.Components.Resources {
             }
         }
 
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Cannot encode this value.
+        /// </summary>
+        public static string Barcode_Invalid {
+            get {
+                return ResourceManager.GetString("Barcode_Invalid", resourceCulture);
+            }
+        }
+
     }
 }

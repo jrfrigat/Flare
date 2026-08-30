@@ -1,0 +1,64 @@
+/* FlareBarcode.
+
+   Deliberately almost untokenized, and that is the design decision rather than an omission: a barcode
+   has to SCAN. Bars want maximum contrast against a plain light ground, and a theme that tinted them to
+   match its palette would produce a symbol a reader rejects. So the bars are painted from the two
+   surface roles at their strongest, on an explicitly white ground, and a caller who genuinely wants
+   something else overrides these two custom properties rather than the theme deciding for every label.
+
+   The human-readable line is a different matter - it is text a person reads, not a symbol a machine
+   reads - so it follows the theme's typography and its muted foreground role. */
+
+.flare-barcode {
+  --flare-barcode-bar: #000;
+  --flare-barcode-ground: #fff;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--flare-spacing-2);
+  padding: var(--flare-spacing-4);
+  background: var(--flare-barcode-ground);
+  border-radius: var(--flare-shape-small);
+  line-height: 1;
+}
+
+/* Above rather than below: column-reverse keeps the source order (symbol, then text), so a screen
+   reader still meets the image before its caption. */
+.flare-barcode--text-above {
+  flex-direction: column-reverse;
+}
+
+.flare-barcode__svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.flare-barcode__bar {
+  fill: var(--flare-barcode-bar);
+}
+
+.flare-barcode__text {
+  font-family: var(--flare-typescale-label-medium-font);
+  font-size: var(--flare-typescale-label-medium-size);
+  letter-spacing: .12em;
+  color: var(--flare-barcode-bar);
+  font-variant-numeric: tabular-nums;
+}
+
+/* An unencodable value is a normal state, not an error condition of the page: the field is mid-edit far
+   more often than it is wrong. It reads as a quiet placeholder the size of the symbol it will become. */
+.flare-barcode--invalid {
+  background: var(--flare-color-surface-container);
+  min-height: 4rem;
+  min-width: 12rem;
+  justify-content: center;
+}
+
+.flare-barcode__error {
+  font-family: var(--flare-typescale-body-small-font);
+  font-size: var(--flare-typescale-body-small-size);
+  color: var(--flare-color-on-surface-variant);
+  text-align: center;
+}
