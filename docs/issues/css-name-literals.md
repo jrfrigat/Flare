@@ -74,9 +74,37 @@ Not every hit is a defect. Three legitimate kinds have to survive the pass:
    settable-token guard would otherwise demand that every theme supply the angle of one clock hand.
 3. **Swap the 54, per file, with a build between files.** Low value, non-zero risk; see above.
 4. Same pass for class literals - only two exist, and neither is silent.
-5. **Check for dead names in the other direction**: constants and CSS classes that no code or
-   stylesheet reads any more. The registries have outlived several refactors, and nothing currently
-   fails when a name is orphaned.
+5. ~~Check for dead names in the other direction.~~ **Measured, and it needs a third direction.**
+   `cssaudit tokens` and `cssaudit check` both read fully in sync - but they compare constants
+   against CSS RULES, and never ask whether any component actually APPLIES the class. Asking that
+   question of all 1433 class constants turns up **107 that nothing in `src` ever renders**, and the
+   split is what matters:
+
+   - **87 are consumer-facing utilities and are supposed to be unused by Flare**: the 48 `flare-col-*`
+     grid classes, the 32 `flare-hidden--*` responsive classes, `flare-show-*`, `flare-m-0`,
+     `flare-p-0`, `flare-flex-1`, `flare-text-sm-center`. Flare publishes them for an application to
+     write in its own markup. A guard on this direction must exempt them, which is most of why one
+     does not exist.
+   - **11 are computed-prefix families**: `flare-paper--elevation-{n}` and `flare-appbar--elevation-{n}`
+     are built by interpolation, so the per-level constants exist only as the registry entry the CSS
+     audit matches against.
+   - **4 are applied outside C#**: the `flare-hl-*` token classes are emitted by `flare-highlight.js`.
+   - **3 were real, and two of them were defects:**
+     - `flare-mode-light` carries `color-scheme: light`, and NOTHING applied it - the provider emitted
+       a class for dark and for high contrast and null for light, and the bootstrap script added only
+       the dark one. With a dark color-scheme inherited from the host page or the UA, Flare rendered
+       its own surfaces light while the native controls inside them - scrollbars, select popups, date
+       pickers - stayed dark. Both now emit the light class. FIXED.
+     - `flare-paper--padding-none` had a constant and a rule, and `FlarePaper` mapped
+       `FlareSpacing.None` to null. Correct only while nothing else gives `.flare-paper` a padding: an
+       application stylesheet that did would find `Padding="None"` did nothing. FIXED.
+     - `flare-state-layer-dragged`, `flare-timepicker__panel--dial` and
+       `flare-datagrid__filter-builder-range-sep` are unreferenced leftovers. The dragged state layer
+       is the interesting one: MD3 defines it, Flare has four drag gestures, and no component raises
+       it. That is a small feature, not a cleanup, and is left as one.
+
+   The lesson for item 7: the useful guard is not "no literals" but "no constant that nothing
+   applies", and it needs an explicit exemption list for the utility families.
 6. **Names that stopped being accurate.** A name is also wrong when it no longer says what the token is
    for, and the way that happens is a family growing suffixed siblings around an unsuffixed member that
    used to be the only one. `--flare-input-padding` was this: four `-xs/-sm/-lg/-xl` steps appeared

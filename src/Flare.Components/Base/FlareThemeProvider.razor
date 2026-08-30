@@ -11,7 +11,7 @@
         <CascadingValue Value="@IconMorph" TValue="FlareIconMorph?" IsFixed="false">
         <FlareStyles />
 
-        <div class="@Css.Classes.Theme.Root @Css.Classes.Theme.ForTheme(ThemeService.CurrentTheme.Id) @Css.Classes.Theme.ForPalette(ThemeService.CurrentPalette.Id) @(ThemeService.IsHighContrast ? Css.Classes.Theme.ModeHighContrast : ThemeService.IsDark ? Css.Classes.Theme.ModeDark : null) @(ThemeService.IsRtl ? Css.Classes.Theme.Rtl : null)"
+        <div class="@Css.Classes.Theme.Root @Css.Classes.Theme.ForTheme(ThemeService.CurrentTheme.Id) @Css.Classes.Theme.ForPalette(ThemeService.CurrentPalette.Id) @(ThemeService.IsHighContrast ? Css.Classes.Theme.ModeHighContrast : ThemeService.IsDark ? Css.Classes.Theme.ModeDark : Css.Classes.Theme.ModeLight) @(ThemeService.IsRtl ? Css.Classes.Theme.Rtl : null)"
              data-flare-theme="@ThemeService.CurrentTheme.Id"
              dir="@(ThemeService.IsRtl ? "rtl" : "ltr")">
             @ChildContent

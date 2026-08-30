@@ -32,7 +32,10 @@ public static class FlareBootstrap
         sb.Append("var p=s.getItem('flare-palette');if(P.indexOf(p)<0)p='").Append(Esc(defaultPalette)).Append("';");
         sb.Append("var m=s.getItem('flare-mode')||'").Append(mode).Append("';");
         sb.Append("d.classList.add('flare-theme-'+t,'flare-palette-'+p);");
-        sb.Append("if(m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches))d.classList.add('flare-mode-dark');");
+        // Both classes, not just the dark one: flare-mode-light declares color-scheme:light, which is
+        // what stops native controls rendering dark inside a light Flare page.
+        sb.Append("var dk=(m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches));");
+        sb.Append("d.classList.add(dk?'flare-mode-dark':'flare-mode-light');");
         sb.Append("})();");
         return sb.ToString();
     }
