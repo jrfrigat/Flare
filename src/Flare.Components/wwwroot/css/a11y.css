@@ -162,4 +162,19 @@ h6[tabindex="-1"]:focus {
         inline-size: var(--flare-touch-target-min);
         block-size: var(--flare-touch-target-min);
     }
+
+    /* Row-shaped targets: a full-width option, menu entry, nav link or tree row is as wide as its list,
+       so only its HEIGHT is the minimum-size question - hence min-block-size alone. A width minimum here
+       would either mean nothing or force a list wider than its container.
+
+       Measured at 375px before this rule: tree row 32px, listbox option 36px, transfer item 36px, nav
+       link 40px, menu item 40px. A deep tree does get taller on a phone, and that is the right trade:
+       a row a finger cannot land on costs more than the scrolling does. */
+    .flare-listbox__option,
+    .flare-menu-item,
+    .flare-nav-link,
+    .flare-tree-item__row,
+    .flare-transfer__item {
+        min-block-size: var(--flare-touch-target-min);
+    }
 }
