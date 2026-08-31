@@ -86,24 +86,53 @@ public partial class FlareChart
         return sb.ToString();
     }
 
-    // Catmull-Rom -> cubic Bezier for a smooth line through the points.
+    // Monotone cubic (Fritsch-Carlson) -> cubic Bezier for a smooth line through the points.
+    // The tangent limiter keeps every segment inside the [y(i), y(i+1)] band, so a curve never
+    // dips below a run of zeros or bulges past a peak the data does not contain.
     private static string SmoothPath(IReadOnlyList<(double X, double Y)> pts)
     {
-        if (pts.Count < 3) return StraightPath(pts);
-        var sb = new System.Text.StringBuilder(string.Create(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}"));
-        for (int i = 0; i < pts.Count - 1; i++)
+        int n = pts.Count;
+        if (n < 3) return StraightPath(pts);
+
+        var m = new double[n];
+        m[0] = Secant(pts, 0);
+        m[n - 1] = Secant(pts, n - 2);
+        for (int i = 1; i < n - 1; i++)
+            m[i] = (Secant(pts, i - 1) + Secant(pts, i)) / 2.0;
+
+        for (int i = 0; i < n - 1; i++)
         {
-            var p0 = pts[Math.Max(0, i - 1)];
+            double d = Secant(pts, i);
+            if (d == 0.0) { m[i] = 0.0; m[i + 1] = 0.0; continue; }
+            double a = m[i] / d, b = m[i + 1] / d;
+            if (a < 0.0) { m[i] = 0.0; a = 0.0; }
+            if (b < 0.0) { m[i + 1] = 0.0; b = 0.0; }
+            double q = a * a + b * b;
+            if (q > 9.0)
+            {
+                double t = 3.0 / Math.Sqrt(q);
+                m[i] = t * a * d;
+                m[i + 1] = t * b * d;
+            }
+        }
+
+        var sb = new System.Text.StringBuilder(string.Create(_inv, $"M {pts[0].X:F1} {pts[0].Y:F1}"));
+        for (int i = 0; i < n - 1; i++)
+        {
             var p1 = pts[i];
             var p2 = pts[i + 1];
-            var p3 = pts[Math.Min(pts.Count - 1, i + 2)];
-            double c1x = p1.X + (p2.X - p0.X) / 6.0;
-            double c1y = p1.Y + (p2.Y - p0.Y) / 6.0;
-            double c2x = p2.X - (p3.X - p1.X) / 6.0;
-            double c2y = p2.Y - (p3.Y - p1.Y) / 6.0;
-            sb.Append(string.Create(_inv, $" C {c1x:F1} {c1y:F1} {c2x:F1} {c2y:F1} {p2.X:F1} {p2.Y:F1}"));
+            double h = (p2.X - p1.X) / 3.0;
+            sb.Append(string.Create(_inv,
+                $" C {p1.X + h:F1} {p1.Y + m[i] * h:F1} {p2.X - h:F1} {p2.Y - m[i + 1] * h:F1} {p2.X:F1} {p2.Y:F1}"));
         }
         return sb.ToString();
+    }
+
+    // Slope of the segment starting at index i; a zero-width segment has no slope.
+    private static double Secant(IReadOnlyList<(double X, double Y)> pts, int i)
+    {
+        double dx = pts[i + 1].X - pts[i].X;
+        return dx == 0.0 ? 0.0 : (pts[i + 1].Y - pts[i].Y) / dx;
     }
 
     private RenderFragment RenderBar() => builder =>
