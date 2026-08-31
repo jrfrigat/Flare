@@ -107,6 +107,22 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
         }
     }
 
+    [Fact]
+    public void PatternedLine_DropsPathLength_SoTheDashArrayKeepsItsOwnUnits()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Data, new ChartData(
+            [
+                new ChartSeries("solid", [1, 2, 3]),
+                new ChartSeries("dashed", [2, 3, 4], LineStyle: ChartLineStyle.Dashed),
+            ])));
+
+        var lines = cut.FindAll("path.flare-chart__line");
+        Assert.Equal("1", lines[0].GetAttribute("pathLength"));
+        Assert.Null(lines[1].GetAttribute("pathLength"));
+    }
+
     [Theory]
     [InlineData(ChartLineStyle.Dashed, "--flare-chart-line-dash-dashed")]
     [InlineData(ChartLineStyle.Dotted, "--flare-chart-line-dash-dotted")]

@@ -667,10 +667,16 @@ public class MaterialDesignTokens
         AnnotationArrowSize = "7",
         AnnotationPointRadius = "3.5",
 
-        // Round line caps make a 0-length dash paint as a dot, which is what Dotted has to be.
-        LineDashDashed = "6 4",
-        LineDashDotted = "0.1 4",
-        LineDashDashDot = "8 4 0.1 4",
+        // Dash rhythm is measured in stroke widths, not absolute units, because a round cap adds half a
+        // stroke width to BOTH ends of every dash: the painted dash grows by one width and the painted gap
+        // shrinks by one. Absolute arrays therefore only hold for the width they were authored against -
+        // at Expressive's 3 the old "6 4" painted 9-long dashes separated by 1, i.e. a solid line.
+        // Authored 2w/3w paints as 3w of ink and 2w of air at any width, and a dash shorter than the cap
+        // paints as a round dot exactly one stroke wide, which is what Dotted has to be.
+        LineDashDashed = "calc(var(--flare-chart-line-width) * 2) calc(var(--flare-chart-line-width) * 3)",
+        LineDashDotted = "0.1 calc(var(--flare-chart-line-width) * 3)",
+        LineDashDashDot = "calc(var(--flare-chart-line-width) * 2) calc(var(--flare-chart-line-width) * 3)" +
+                          " 0.1 calc(var(--flare-chart-line-width) * 3)",
 
         ZoomSelectionFill = "color-mix(in srgb, var(--flare-color-primary) 16%, transparent)",
         ZoomSelectionStroke = "var(--flare-color-primary)",

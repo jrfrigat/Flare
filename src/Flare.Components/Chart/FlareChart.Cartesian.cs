@@ -57,9 +57,10 @@ public partial class FlareChart
                 marks.Append($"<path d=\"{areaPath}\" stroke=\"none\" fill=\"url(#{gid})\"/>");
             }
 
-            // The line itself (stroked path; pathLength=1 normalizes the draw-on animation).
+            // The line itself (stroked path).
+            var lineStyle = SeriesLineStyle(s);
             marks.Append(
-                $"<path class=\"{Css.Classes.Chart.Line}\" pathLength=\"1\" d=\"{linePath}\" fill=\"none\" style=\"stroke:{color}{DashStyle(SeriesLineStyle(s))}\"{vectorEffect}/>");
+                $"<path class=\"{Css.Classes.Chart.Line}\"{DrawLength(lineStyle)} d=\"{linePath}\" fill=\"none\" style=\"stroke:{color}{DashStyle(lineStyle)}\"{vectorEffect}/>");
 
             if (SeriesMarkers(s))
             {
@@ -386,7 +387,8 @@ public partial class FlareChart
                         $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" style=\"stop-color:{color};stop-opacity:var(--flare-chart-area-opacity)\"/><stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
                     marks.Append(string.Create(_inv, $"<path d=\"{linePath} L {pl[^1].X:F1} {baseline:F1} L {pl[0].X:F1} {baseline:F1} Z\" stroke=\"none\" fill=\"url(#{gid})\"/>"));
                 }
-                marks.Append($"<path class=\"{Css.Classes.Chart.Line}\" pathLength=\"1\" d=\"{linePath}\" fill=\"none\" style=\"stroke:{color}{DashStyle(SeriesLineStyle(series[si]))}\"/>");
+                var comboStyle = SeriesLineStyle(series[si]);
+                marks.Append($"<path class=\"{Css.Classes.Chart.Line}\"{DrawLength(comboStyle)} d=\"{linePath}\" fill=\"none\" style=\"stroke:{color}{DashStyle(comboStyle)}\"/>");
             }
         }
         builder.AddMarkupContent(seq++, Clipped(marks.ToString()));
