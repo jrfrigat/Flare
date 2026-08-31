@@ -582,6 +582,12 @@
   <data name="Charts_Grid_Tall" xml:space="preserve">
     <value>Tall: more lines</value>
   </data>
+  <data name="Charts_Line_Title" xml:space="preserve">
+    <value>Monthly Revenue</value>
+  </data>
+  <data name="Charts_Line_Smooth" xml:space="preserve">
+    <value>Smooth</value>
+  </data>
   <data name="Services_ScrollTitle" xml:space="preserve">
     <value>Scroll</value>
   </data>

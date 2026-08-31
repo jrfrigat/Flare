@@ -43,7 +43,9 @@
     transform-origin: bottom;
     animation: flare-chart-grow var(--flare-motion-duration-medium2) var(--flare-motion-easing-emphasized-decelerate) both;
 }
-.flare-chart--animate .flare-chart__line {
+/* Only a solid line carries pathLength, and only in those normalised units does a "1 long" dash
+   stroke the whole path. A patterned line keeps real units, so it is left out of the draw-on. */
+.flare-chart--animate .flare-chart__line[pathLength] {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
     animation: flare-chart-draw var(--flare-motion-duration-long2) var(--flare-motion-easing-standard) forwards;
@@ -52,7 +54,7 @@
 @keyframes flare-chart-draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) {
     .flare-chart--animate .flare-chart__bar,
-    .flare-chart--animate .flare-chart__line { animation: none; stroke-dashoffset: 0; }
+    .flare-chart--animate .flare-chart__line[pathLength] { animation: none; stroke-dashoffset: 0; }
 }
 
 /* Heat-map cells. */

@@ -1,1 +1,7 @@
-﻿<FlareChart Type="ChartType.Line" Title="Monthly Revenue" Data="_lineData" />
+﻿@* Smooth is monotone cubic: it rounds the corners without inventing values, so a curved line never
+   leaves the band its own two points define. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareSwitch @bind-Value="_smooth" Label="@GalleryStrings.Charts_Line_Smooth" />
+    <FlareChart Type="ChartType.Line" Title="@GalleryStrings.Charts_Line_Title"
+                Data="_lineData" Smooth="_smooth" />
+</FlareStack>

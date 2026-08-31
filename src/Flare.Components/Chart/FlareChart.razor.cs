@@ -331,6 +331,14 @@ public partial class FlareChart
     private static string DashStyle(ChartLineStyle style) =>
         style == ChartLineStyle.Solid ? "" : $";stroke-dasharray:{DashOf(style)}";
 
+    // pathLength rescales the unit that EVERY dash length on the path is measured in, which is what lets
+    // the draw-on animation stroke a "1 long" dash across a path of any real length. That rescaling is not
+    // opt-in per property: a themed dash array lands in the same units, so "6 4" would read as six whole
+    // path lengths of ink - one solid line - and "0.1 4" as a tenth of the line and nothing after it.
+    // A line that carries a real pattern therefore keeps its own units and forgoes the draw-on.
+    private static string DrawLength(ChartLineStyle style) =>
+        style == ChartLineStyle.Solid ? " pathLength=\"1\"" : "";
+
     // Geometry the SVG writer needs as NUMBERS - r and rx attributes take user units, not var() references,
     // so these are read from the theme in C#. Everything a CSS property can carry (fill, stroke, opacity,
     // stroke-width, font-size, dash) stays a var() inside a style attribute instead, which costs no parse
