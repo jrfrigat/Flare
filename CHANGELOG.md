@@ -3,6 +3,29 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.26.1] - 2026-08-31
+
+### Fixed
+
+- **Every anchored overlay inside an open drawer rendered off-screen.** A select, menu, tooltip,
+  autocomplete or date picker opened inside a `FlareDrawer` was offset by the drawer's own origin -
+  measured at 896px past the right edge of a 1600px window, which reads to a user as a dropdown that
+  opens empty rather than as a layout bug. The cause was one declaration:
+  `.flare-drawer--open { transform: translate(0, 0) !important; }`. That value and `none` paint
+  identically and behave differently - any transform other than `none` makes the element the containing
+  block for its `position: fixed` descendants, so Flare's correct viewport coordinates were measured
+  from the drawer's corner. The open state now uses `transform: none`; the slide is unchanged, because
+  interpolating a transform against `none` uses the identity matrix. An application cannot fix this from
+  the outside: overriding the rule while the drawer is already open only retargets the running
+  transition, which outranks an author `!important`.
+- **The same defect in four more places**, none of which the report reached: the RTL drawer states
+  (where the fix would otherwise not have applied), `FlareLayoutDrawer` in its floating and temporary
+  variants - the navigation drawer of a whole application - a FAB menu action at rest, and the
+  scroll-to-top button. `SettledTransformTests` now fails on any rule that gives a settled `--open`,
+  `--visible`, `--shown` or `--expanded` state an identity transform; it found the FAB menu one itself.
+  Dialog, listbox, menu, snackbar and tab were checked and are clean: each animates in with a keyframe
+  and no fill mode, so nothing is left holding a transform once it settles.
+
 ## [0.26.0] - 2026-08-30
 
 ### Breaking
