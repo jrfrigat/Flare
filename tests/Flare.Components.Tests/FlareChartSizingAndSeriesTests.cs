@@ -82,6 +82,31 @@ public class FlareChartSizingAndSeriesTests : FlareTestContext
         Assert.Contains(" C ", cut.Find("path.flare-chart__line").GetAttribute("d") ?? "");
     }
 
+    [Fact]
+    public void Smooth_KeepsEverySegmentInsideItsOwnEndpoints_SoSpikesDoNotOvershoot()
+    {
+        var cut = Render<FlareChart>(p => p
+            .Add(x => x.Type, ChartType.Line)
+            .Add(x => x.Smooth, true)
+            .Add(x => x.Data, new ChartData(
+                [new ChartSeries("spiky", [0, 0, 0, 0, 6500, 0, 0, 3900, 0, 0, 0])])));
+
+        var n = System.Text.RegularExpressions.Regex
+            .Matches(cut.Find("path.flare-chart__line").GetAttribute("d") ?? "", @"-?\d+(\.\d+)?")
+            .Select(x => double.Parse(x.Value, System.Globalization.CultureInfo.InvariantCulture))
+            .ToList();
+
+        // "M y0" then one "C c1x c1y c2x c2y x y" per segment; both control points must sit
+        // between the segment's own endpoints, which bounds the whole cubic there.
+        for (int i = 2; i + 5 < n.Count; i += 6)
+        {
+            double from = n[i - 1], to = n[i + 5];
+            double lo = Math.Min(from, to) - 0.06, hi = Math.Max(from, to) + 0.06;
+            Assert.InRange(n[i + 1], lo, hi);
+            Assert.InRange(n[i + 3], lo, hi);
+        }
+    }
+
     [Theory]
     [InlineData(ChartLineStyle.Dashed, "--flare-chart-line-dash-dashed")]
     [InlineData(ChartLineStyle.Dotted, "--flare-chart-line-dash-dotted")]
