@@ -26,7 +26,14 @@
 .flare-drawer--top   { top: 0; left: 0; right: 0; transform: translateY(-100%); }
 .flare-drawer--bottom { bottom: 0; left: 0; right: 0; transform: translateY(100%); }
 
-.flare-drawer--open  { transform: translate(0, 0) !important; }
+/* `none`, not `translate(0, 0)`. The two paint identically and behave differently: any transform other
+   than `none` makes the element the containing block for its `position: fixed` descendants, so every
+   anchored overlay opened inside a settled drawer - select, menu, tooltip, autocomplete, date picker -
+   had its viewport coordinates measured from the drawer's corner instead and landed off-screen. The
+   slide is unaffected: interpolating a transform against `none` treats `none` as the identity matrix,
+   which is exactly what `translate(0, 0)` was. During the transition the transform is a real matrix and
+   the containing block is back, which is correct for a panel opened mid-animation. */
+.flare-drawer--open  { transform: none !important; }
 
 .flare-drawer__header {
   padding: var(--flare-spacing-8) var(--flare-spacing-12);

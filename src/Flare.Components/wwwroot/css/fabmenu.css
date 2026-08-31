@@ -40,7 +40,10 @@
 }
 .flare-fab-menu__list--open .flare-fab-menu__item {
     opacity: 1;
-    transform: scale(1);
+    /* `none`, not `scale(1)`: a settled item that keeps a transform is the containing block for any
+       fixed-position overlay anchored to it - a tooltip on an action, most obviously. The grow-in
+       still runs, because interpolating against `none` uses the identity matrix. */
+    transform: none;
     pointer-events: auto;
 }
 

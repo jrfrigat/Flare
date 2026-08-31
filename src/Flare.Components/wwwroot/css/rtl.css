@@ -130,8 +130,10 @@
   transform: translateX(100%);
 }
 
+/* Identity transforms are avoided on settled states across the library: they would make the drawer
+   the containing block for the fixed-position overlays inside it. See .flare-drawer--open. */
 [dir="rtl"] .flare-drawer--left.flare-drawer--open {
-  transform: translateX(0);
+  transform: none;
 }
 
 [dir="rtl"] .flare-drawer--right {
@@ -139,7 +141,7 @@
 }
 
 [dir="rtl"] .flare-drawer--right.flare-drawer--open {
-  transform: translateX(0);
+  transform: none;
 }
 
 /* ============================================

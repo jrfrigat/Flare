@@ -25,7 +25,10 @@
 .flare-scroll-top--visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    /* `none`, not `translateY(0)` - the settled state of anything that slides in never keeps a
+       transform, because a transform is a containing block for fixed descendants. Nothing anchored
+       lives inside this button today; the rule is uniform so that it cannot start. */
+    transform: none;
 }
 
 /* State layer - the theme names the paint; core only says where it goes. The button is already a

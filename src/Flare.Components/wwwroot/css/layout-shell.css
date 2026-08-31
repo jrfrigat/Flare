@@ -110,9 +110,11 @@
     right: 0;
     transform: translateX(100%);
 }
+/* `none` rather than `translateX(0)`, for the reason spelled out on `.flare-drawer--open`: a settled
+   drawer that keeps a transform is the containing block for every fixed-position overlay inside it. */
 .flare-layout-drawer--floating.flare-layout-drawer--open,
 .flare-layout-drawer--temporary.flare-layout-drawer--open {
-    transform: translateX(0);
+    transform: none;
 }
 .flare-layout-drawer--floating .flare-layout-drawer__inner,
 .flare-layout-drawer--temporary .flare-layout-drawer__inner {
