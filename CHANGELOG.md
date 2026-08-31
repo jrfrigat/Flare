@@ -3,6 +3,38 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.26.2] - 2026-08-31
+
+### Fixed
+
+- **`Smooth` drew values the data does not contain.** The curve was a uniform Catmull-Rom spline, whose
+  tangent at each point is `(p[i+1] - p[i-1]) / 6` - a slope that knows nothing about what happens between
+  the points it connects. A flat run followed by a spike therefore had to dip below the flat run to arrive
+  at the peak with the required slope: on a series sitting at 0 all month before a spike of 6500, the
+  segment between two zero points was drawn through -1100. `FlareChart` now uses monotone cubic
+  interpolation (Fritsch-Carlson). Its tangent limiter puts both control points of a segment between that
+  segment's own endpoints, so by the convex-hull property the whole cubic stays there: a flat run stays
+  flat, a peak stays at the peak, and a rising run never turns back. Cost is unchanged - one pass, one
+  `double[n]`.
+- **`Dashed`, `Dotted` and `DashDot` painted as solid lines.** Every line carried `pathLength="1"`, which
+  rescales the unit that *all* dash lengths on that path are measured in - it was there so the draw-on
+  animation could stroke a "1 long" dash across a path of any real length. A themed dash array lands in
+  those same units, so `6 4` meant six whole path lengths of ink (one solid line) and `0.1 4` meant a tenth
+  of the line and nothing after it. `pathLength` is now emitted only for a solid line, and the draw-on rule
+  is scoped to `[pathLength]` accordingly - a patterned line keeps its own units and forgoes the draw-on,
+  which it never actually got, since its inline dash array already outranked the animation's.
+- **Dash arrays did not survive a theme changing the line width.** A round line cap adds half a stroke
+  width to *both* ends of every dash, so the painted dash grows by one width and the painted gap shrinks by
+  one. The Material arrays were authored against a stroke of 2; MD3 Expressive draws at 3, which left 9-long
+  dashes separated by 1. They are now expressed in stroke widths -
+  `calc(var(--flare-chart-line-width) * 2)` and `* 3` - and paint as 3w of ink and 2w of air at any width a
+  theme picks. FluentUI2 is unaffected: it uses butt caps, where the cap costs nothing.
+
+### Changed
+
+- **The Gallery's first line chart carries a `Smooth` switch**, so the straight and smoothed rendering of
+  the same series can be compared in place.
+
 ## [0.26.1] - 2026-08-31
 
 ### Fixed
