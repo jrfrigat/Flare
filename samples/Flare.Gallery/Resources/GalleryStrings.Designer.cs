@@ -1798,6 +1798,24 @@ namespace Flare.Gallery.Resources {
         }
 
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Monthly Revenue.
+        /// </summary>
+        public static string Charts_Line_Title {
+            get {
+                return ResourceManager.GetString("Charts_Line_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Smooth.
+        /// </summary>
+        public static string Charts_Line_Smooth {
+            get {
+                return ResourceManager.GetString("Charts_Line_Smooth", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Zoom and Pan.
         /// </summary>
         public static string Charts_Zoom {
