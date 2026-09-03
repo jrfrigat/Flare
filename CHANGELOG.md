@@ -475,7 +475,7 @@ All notable changes to Flare are documented here. This project adheres to
   a clean build. Every Flare component inherits an `AdditionalAttributes` catch-all, so Razor emits the
   child fragment as an untyped attribute instead of failing to compile; it lands in the unmatched
   dictionary and splatting discards it. `FlareChip` is fixed; the twenty other components that display
-  caller text and accept no children are listed in `docs/issues/implicit-child-content.md`.
+  caller text and accept no children have the same shape.
 - **Fourteen of the twenty JS callbacks into .NET were unguarded**, so a navigation, a disposal or a
   dropped connection produced unhandled promise rejections. Three more were guarded with a `try/catch`
   that only ever caught a synchronous throw and never the rejected promise. All twenty now handle both.
@@ -1335,8 +1335,8 @@ to point at them.
   `on-surface` written into the core - one design language's disabled recipe - which is why Fluent
   UI 2 shipped a whole `slider.css` doing nothing but forcing its flat greys back over them with
   `!important`. That file is now four lines: three of its five rules became token assignments and
-  every `!important` in it is gone. What stays is the disabled label colour, for the reason recorded
-  in the issue - no CSS value means "leave this as painted", so a token for it would have to name a
+  every `!important` in it is gone. What stays is the disabled label colour, for one reason:
+  no CSS value means "leave this as painted", so a token for it would have to name a
   colour, which is the theme's decision to make.
 
 ### Fixed
@@ -1400,7 +1400,7 @@ to point at them.
   gradient as readily as a colour. The table's and the DataGrid's **row** hovers are deliberately
   unchanged: they paint on the cells, whose content is whatever the consumer put there, and a layer
   over a bare text node needs a per-cell stacking context that would change how a popover inside a
-  cell stacks. Tracked as an issue.
+  cell stacks.
 - **Nine more surfaces follow: nav links and group headers, pagination buttons, stepper navigation,
   the colour-mode toggle, virtual-tree rows and their toggles, calendar and time-picker cells, the
   field clear button and the numeric stepper.** Four more theme overrides became token assignments -
@@ -1528,7 +1528,7 @@ to point at them.
   The menu item followed in the same release, which leaves the FluentUI2 theme with no state-layer
   suppressions at all. List, tab and listbox items keep a one-line hover override each: they paint
   their hover straight onto the element rather than through a state layer, so there is no token to
-  assign - recorded in the issue as an accepted coupling rather than swept.
+  assign - an accepted coupling rather than an oversight.
 
 - **`FlareSlider.HandleOnHover` turns the slider into a media scrubber.** A seek bar was expressible
   already - a zone paints the buffered range, `MouseWheel` seeks - but the handle sat there at rest,
