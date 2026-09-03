@@ -3,6 +3,50 @@
 All notable changes to Flare are documented here. This project adheres to
 [Semantic Versioning](https://semver.org/).
 
+## [0.27.0] - 2026-09-03
+
+### Fixed
+
+- **A field's height was set by whatever its well happened to hold, so the family did not line up.** The
+  shared well was measured from its content, and the tallest thing in it won - which for a combobox
+  trigger is the chevron, not the text. Measured across every field the library ships, at every size, in
+  both reference themes: under Material the trigger stood 2px OVER the text field at Xs/Sm/Md/Lg and 5px
+  UNDER it at Xl (the sign inverts because the text line grows with the type step and the glyph does
+  not); under Fluent the text field was 4px taller at every step, and the same `FlareSelect` was 4px
+  taller with a leading icon than without. `FlareTagField` named a `2.75rem` literal of its own and sat
+  10px under the field beside it, inverted between its own Sm and Md. The well now takes its height from
+  a `--flare-input-height-{xs..xl}` ramp: a single-line well is exactly that tall, and a definite height
+  is not measured from its content, so a chevron, a clear button, a picker toggle, a numeric stepper or a
+  larger type step have nothing left to push against. Padding places the content inside that height
+  instead of defining it. Verified in the browser across `FlareField`, `FlarePasswordField`,
+  `FlareNumericField`, `FlareMaskedField`, `FlareTextArea`, `FlareSelect`, `FlareMultiSelect`,
+  `FlareCombobox`, `FlareTagField`, `FlareDatePicker`, `FlareTimePicker`, `FlareDateTimePicker` and
+  `FlareDateRangePicker`, in all seven shipped themes: one height per size, everywhere.
+- **The chevron on a select and the chevron on a combobox were the same glyph at half the size.** Neither
+  told the icon layer how big it was: `.flare-input__arrow` set no `--_flare-icon-size` at all, so it
+  inherited a TYPOGRAPHY step (`--flare-typescale-title-large-size`), and `.flare-autocomplete__icon`
+  carried a `0.75rem` literal - 12px against the arrow's 22px for the identical `expand_more`. Both now
+  read `--flare-input-icon-size`, the token the leading/trailing icons and the picker toggles already
+  used, as does the clear button, which had never stated a size either.
+
+### Added
+
+- `InputTokens.Height{Xs,Sm,Md,Lg,Xl}` (`--flare-input-height-*`): the field family's height ramp. A
+  theme owns the five values and their ordering; a single-line well is exactly the step tall, and the
+  two wells whose height is legitimately their content - `FlareTextArea` and `FlareTagField` - take it as
+  a floor via the new `flare-input__field--grow` marker. Guarded by `FieldHeightRampTests` (the ramp
+  grows Xs..Xl, each step has room for its own padding, and no stylesheet outside the shared rule sizes a
+  well) and `FieldGeometryContractTests` (every field renders exactly one shared well, and only the two
+  grow wells are marked as such).
+
+### Changed
+
+- **Breaking for custom themes.** `InputTokens` has five new `required` properties, so a theme that
+  builds the record from scratch must supply `HeightXs` through `HeightXl`; a theme deriving from a
+  shipped one with `with` needs no change. Both reference themes measure their ramp off their own padding
+  ramp, so nothing shrinks: Material lands on `56px` at Md - the M3 field height, which the text field
+  had been missing by 2px - and Fluent on `46px`.
+
 ## [0.26.3] - 2026-09-03
 
 ### Fixed
