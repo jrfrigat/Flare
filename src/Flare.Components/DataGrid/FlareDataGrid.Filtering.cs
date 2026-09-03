@@ -211,15 +211,41 @@ public partial class FlareDataGrid<TItem>
 
     // Resolves a column's effective data type: the declared type, or - when Auto - the type inferred
     // from the first non-null cell value sampled via the column selector.
+    //
+    // Sampling RUNS the caller's Field lambda, over rows the grid is not necessarily displaying (the
+    // scan walks Items, not the page), so a selector that is safe for every visible row can still throw
+    // here on one further down. `p => p.Row!.UpdatedDate` against an optional parent is the ordinary way
+    // to write that binding and the null-forgiving operator compiles happily, so the failure looked like
+    // the grid dying at random with no hint of which column caused it. A throwing row is now skipped: it
+    // simply supplies no sample, and the app still sees the exception if it renders that row's cell.
+    //
+    // Memoized per column, like the alignment it feeds: a column's value type is stable across data
+    // updates, and the scan is O(rows) - the filter row alone would otherwise re-run it for every column
+    // on every render.
     private ColumnDataType ResolveColumnDataType(string key, ColumnDataType declared)
     {
         if (declared != ColumnDataType.Auto) return declared;
+        if (_dataTypeCache.TryGetValue(key, out var cachedType)) return cachedType;
+
         var sel = ResolveSelector(key);
         object? sample = null;
         if (sel is not null && Items is not null)
-            foreach (var i in Items) { sample = sel(i); if (sample is not null) break; }
-        return DataGridValueFormatter.Infer(sample?.GetType());
+        {
+            foreach (var i in Items)
+            {
+                try { sample = sel(i); }
+                catch { continue; }
+                if (sample is not null) break;
+            }
+        }
+
+        var type = DataGridValueFormatter.Infer(sample?.GetType());
+        _dataTypeCache[key] = type;
+        return type;
     }
+
+    // Cache of column key -> inferred data type; cleared with the selector cache on column-set changes.
+    private readonly Dictionary<string, ColumnDataType> _dataTypeCache = new(StringComparer.Ordinal);
 
     // Resolves the inline filter editor for a column: the explicit FilterType if set, otherwise one
     // derived from the column's (possibly auto-inferred) data type.
@@ -297,6 +323,7 @@ public partial class FlareDataGrid<TItem>
     {
         _selectorCache.Clear();
         _alignClassCache.Clear();
+        _dataTypeCache.Clear();
     }
 
     private Func<TItem, object?>? ResolveSelector(string key)

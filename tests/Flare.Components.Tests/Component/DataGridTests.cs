@@ -587,6 +587,36 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
         Assert.Equal(100, cut.FindAll("tr.flare-datagrid__row").Count);
     }
 
+    private sealed record Reading(int? Value);
+    private sealed record Sample(Reading? Latest);
+
+    // An Auto-typed column infers its type by RUNNING the caller's Field lambda, and it scans Items -
+    // the whole set - while the grid renders only the current page. So a selector that is safe for
+    // every row on screen can still throw on one the user cannot even see, and that used to take out
+    // the whole render batch with no hint of which column caused it.
+    //
+    // `s => s.Latest!.Value` against an optional parent is the ordinary way to write this binding, and
+    // the null-forgiving operator compiles happily. Row 0 yields null (a present parent with no value),
+    // which is what makes the sampler walk on to row 1, where the parent is missing and the selector
+    // throws. PageSize 1 keeps row 1 off the page, so nothing renders it.
+    [Fact]
+    public void AutoColumnType_SurvivesASelectorThatThrowsOnARowOffThePage()
+    {
+        var data = new List<Sample> { new(new Reading(null)), new(null), new(new Reading(5)) };
+        var cut = Render<FlareDataGrid<Sample>>(p => p
+            .Add(x => x.Items, data.AsEnumerable())
+            .Add(x => x.PageSize, 1)
+            .Add(x => x.Columns, (RenderFragment)(inner =>
+            {
+                inner.OpenComponent<FlareColumn<Sample>>(0);
+                inner.AddAttribute(1, "Title", "Latest");
+                inner.AddAttribute(2, "Field", (Func<Sample, object?>)(s => s.Latest!.Value));
+                inner.CloseComponent();
+            })));
+
+        Assert.Single(cut.FindAll("tr.flare-datagrid__row"));
+    }
+
     // Sorting a virtual grid must reorder the whole set and keep showing all of it. With a paged source
     // the grid sorted the hundred rows correctly and then displayed the first ten of the result, so the
     // ordering looked right and the data was still missing.
