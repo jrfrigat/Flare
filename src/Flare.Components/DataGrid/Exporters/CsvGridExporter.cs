@@ -1,8 +1,8 @@
-using System.Text;
-
 namespace Flare.Components;
 
-/// <summary>Standard CSV exporter (RFC-4180-ish, with CSV-injection guard).</summary>
+/// <summary>Standard CSV exporter. Writes through <see cref="FlareCsv"/>, so the dialect is a
+/// <see cref="FlareCsvOptions"/> and the escaping is the same one the standalone builder applies.</summary>
+/// <typeparam name="TItem">Row item type.</typeparam>
 public sealed class CsvGridExporter<TItem> : IDataGridExporter<TItem>
 {
     /// <summary>Unique exporter id.</summary>
@@ -12,23 +12,20 @@ public sealed class CsvGridExporter<TItem> : IDataGridExporter<TItem>
     /// <summary>Material Symbols icon name for the export action.</summary>
     public FlareIcon? Icon => FlareIcons.Download;
 
+    /// <summary>
+    /// Dialect to write. The default is RFC 4180 plus a byte order mark: a comma-separated file that a
+    /// spreadsheet still opens as UTF-8. Pass <see cref="FlareCsvOptions.Spreadsheet"/> for a file the
+    /// local spreadsheet opens without an import wizard.
+    /// </summary>
+    public FlareCsvOptions Options { get; init; } = FlareCsvOptions.Rfc4180 with { ByteOrderMark = true };
+
     /// <summary>Exports the grid rows to a CSV file and triggers its download.</summary>
+    /// <param name="data">Columns and rows handed over by the grid.</param>
+    /// <param name="download">The download port.</param>
+    /// <returns>A task that completes once the download has been handed to the browser.</returns>
     public async Task ExportAsync(DataGridExportData<TItem> data, IFlareDownload download)
     {
-        var sb = new StringBuilder();
-        sb.AppendLine(string.Join(",", data.Columns.Select(c => Escape(c.Title))));
-        foreach (var row in data.Rows)
-            sb.AppendLine(string.Join(",", data.Columns.Select(c => Escape(c.TextOf(row)))));
-        var file = data.FileName + ".csv";
-        await download.DownloadCsvAsync(file, sb.ToString());
-    }
-
-    // Prefix risky leads to neutralise CSV/formula injection, then quote as needed.
-    internal static string Escape(string value)
-    {
-        if (value.Length > 0 && "=+-@\t\r".Contains(value[0]))
-            value = "'" + value;
-        return value.Contains(',') || value.Contains('"') || value.Contains('\n')
-            ? $"\"{value.Replace("\"", "\"\"")}\"" : value;
+        ArgumentNullException.ThrowIfNull(data);
+        await FlareCsv.DownloadAsync(download, data.FileName + ".csv", data.Rows, data.Columns, Options);
     }
 }

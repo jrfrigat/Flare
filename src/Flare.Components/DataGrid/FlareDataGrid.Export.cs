@@ -26,12 +26,12 @@ public partial class FlareDataGrid<TItem>
     {
         EnsureColumnsBuilt();
 
-        var columns = new List<DataGridExportColumn<TItem>>();
+        var columns = new List<FlareExportColumn<TItem>>();
         foreach (var c in _visibleColumns)
         {
             if (c.Value is null) continue; // skip composite/template-only (no extractable value)
             var col = c;
-            columns.Add(new DataGridExportColumn<TItem>(c.Title, c.Value)
+            columns.Add(new FlareExportColumn<TItem>(c.Title, c.Value)
             {
                 Text = row => CellDisplayText(col, row),
             });

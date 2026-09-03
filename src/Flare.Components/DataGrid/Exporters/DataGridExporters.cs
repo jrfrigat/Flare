@@ -4,7 +4,16 @@ namespace Flare.Components;
 public static class DataGridExporters
 {
     /// <summary>Comma-separated values exporter (with a UTF-8 BOM for spreadsheet compatibility).</summary>
+    /// <typeparam name="TItem">Row item type.</typeparam>
+    /// <returns>The exporter, writing RFC 4180 with a byte order mark.</returns>
     public static IDataGridExporter<TItem> Csv<TItem>() => new CsvGridExporter<TItem>();
+    /// <summary>Comma-separated values exporter writing a chosen dialect - a semicolon separator for a
+    /// locale whose spreadsheet expects one, a formula guard turned off for a machine-read file.</summary>
+    /// <typeparam name="TItem">Row item type.</typeparam>
+    /// <param name="options">The dialect to write.</param>
+    /// <returns>The exporter, writing <paramref name="options"/>.</returns>
+    public static IDataGridExporter<TItem> Csv<TItem>(FlareCsvOptions options) =>
+        new CsvGridExporter<TItem> { Options = options };
     /// <summary>Tab-separated values exporter.</summary>
     public static IDataGridExporter<TItem> Tsv<TItem>() => new TsvGridExporter<TItem>();
     /// <summary>JSON (array of objects keyed by column title) exporter.</summary>
