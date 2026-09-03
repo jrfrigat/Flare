@@ -2536,6 +2536,24 @@ namespace Flare.Gallery.Resources {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Virtual Scrolling.
+        /// </summary>
+        public static string DataGrid_VirtualScrollTitle {
+            get {
+                return ResourceManager.GetString("DataGrid_VirtualScrollTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на 2000 client-side rows with Virtual=true - no pager, the grid scrolls in its own box and renders only the rows in view..
+        /// </summary>
+        public static string DataGrid_VirtualScrollDesc {
+            get {
+                return ResourceManager.GetString("DataGrid_VirtualScrollDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Multi-level Columns (virtualized).
         /// </summary>
         public static string DataGrid_BandedVirtualTitle {

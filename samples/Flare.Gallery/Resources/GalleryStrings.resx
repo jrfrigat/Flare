@@ -921,6 +921,12 @@
   <data name="DataGrid_MultiLevelDesc" xml:space="preserve">
     <value>Banded composite: each record spans several rows with fields aligned across the table (DevExpress banded-view style).</value>
   </data>
+  <data name="DataGrid_VirtualScrollTitle" xml:space="preserve">
+    <value>Virtual Scrolling</value>
+  </data>
+  <data name="DataGrid_VirtualScrollDesc" xml:space="preserve">
+    <value>2000 client-side rows with Virtual=true - no pager, the grid scrolls in its own box and renders only the rows in view.</value>
+  </data>
   <data name="DataGrid_BandedVirtualTitle" xml:space="preserve">
     <value>Multi-level Columns (virtualized)</value>
   </data>

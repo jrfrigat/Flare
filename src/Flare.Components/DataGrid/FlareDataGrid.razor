@@ -244,7 +244,10 @@
                 }
                 else if (_shouldVirtualize)
                 {
-                    <Virtualize @ref="_virtualizeClientRef" Items="@Sorted()" SpacerElement="tr" Context="item" OverscanCount="_effectiveOverscanCount">
+                    @* SortedUnpaged, not Sorted: client-side virtualization renders its own window, so a
+                       paged source would hand Virtualize one page and hide every row past it. *@
+                    <Virtualize @ref="_virtualizeClientRef" Items="@SortedUnpaged()" SpacerElement="tr" Context="item"
+                                OverscanCount="_effectiveOverscanCount" ItemSize="@_effectiveVirtualItemSize">
                         @VirtualRow(item)
                     </Virtualize>
                 }

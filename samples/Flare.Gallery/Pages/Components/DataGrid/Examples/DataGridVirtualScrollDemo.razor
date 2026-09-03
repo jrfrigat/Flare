@@ -1,0 +1,37 @@
+@* Plain client-side virtualization: the whole list is handed to the grid, Virtual="true" renders only
+   the rows in view. No pager appears - Virtual and pagination are alternatives, not a pair. This is the
+   configuration a client-side grid falls into by default, so it is the one worth seeing scroll. *@
+<FlareDataGrid Items="@_readings" Virtual="true" Height="360px" Striped="true">
+    <Columns>
+        <FlareColumn Title="#" Field="@(r => r.Id)" Width="80px" Frozen="true" />
+        <FlareColumn Title="Station" Field="@(r => r.Station)" Sortable="true" />
+        <FlareColumn Title="Recorded" Field="@(r => r.Recorded.ToString("yyyy-MM-dd HH:mm"))" Sortable="true" SortKey="Recorded" />
+        <FlareColumn Title="Temp, C" Field="@(r => r.Celsius.ToString("F1"))" Width="120px" Sortable="true" SortKey="Celsius" />
+        <FlareColumn Title="Humidity, %" Field="@(r => r.Humidity)" Width="130px" Sortable="true" />
+    </Columns>
+</FlareDataGrid>
+
+@code {
+    private sealed record Reading(int Id, string Station, DateTime Recorded, double Celsius, int Humidity);
+
+    private static readonly string[] _stations =
+        ["Northgate", "Harbour", "Old Mill", "Airport", "Riverside", "Summit", "Depot"];
+
+    private readonly List<Reading> _readings = BuildReadings();
+
+    private static List<Reading> BuildReadings()
+    {
+        var start = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        var list = new List<Reading>(2000);
+        for (var i = 1; i <= 2000; i++)
+        {
+            list.Add(new Reading(
+                i,
+                _stations[i % _stations.Length],
+                start.AddMinutes(i * 15),
+                -8 + i % 47 * 0.7,
+                35 + i % 60));
+        }
+        return list;
+    }
+}

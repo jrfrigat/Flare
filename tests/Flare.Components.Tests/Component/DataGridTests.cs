@@ -562,6 +562,58 @@ public class C_FlareDataGridColumnPickerTests : FlareTestContext
 
         Assert.NotEmpty(cut.FindAll(".flare-datagrid"));
     }
+
+    // The virtual grid must be handed the WHOLE row set: it renders its own window from a scroll
+    // position, so a paged source silently caps it. This asserts the row COUNT, which is what the
+    // "renders without throwing" test above could never see - and the client path did feed Virtualize
+    // the paged list, so every grid stopped at PageSize (default 10) rows.
+    // bUnit has no JS measurement, so Virtualize here renders every item it is given: that is exactly
+    // what makes the count a usable assertion about the SOURCE.
+    [Theory]
+    [InlineData(null)]      // default PageSize (10) - the configuration the bug shipped in
+    [InlineData(25)]
+    public void Virtual_RendersEveryRow_NotOnlyTheFirstPage(int? pageSize)
+    {
+        var data = Enumerable.Range(1, 100).Select(i => new GroupedPerson($"R{i}", "C", i)).ToList();
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p =>
+        {
+            p.Add(x => x.Items, data.AsEnumerable())
+             .Add(x => x.Virtual, true)
+             .Add(x => x.Height, "300px")
+             .Add(x => x.Columns, GroupedCols);
+            if (pageSize is not null) p.Add(x => x.PageSize, pageSize.Value);
+        });
+
+        Assert.Equal(100, cut.FindAll("tr.flare-datagrid__row").Count);
+    }
+
+    // Sorting a virtual grid must reorder the whole set and keep showing all of it. With a paged source
+    // the grid sorted the hundred rows correctly and then displayed the first ten of the result, so the
+    // ordering looked right and the data was still missing.
+    [Fact]
+    public void Virtual_SortsAcrossTheWholeSet()
+    {
+        var data = Enumerable.Range(1, 100).Select(i => new GroupedPerson($"R{i:D3}", "C", i)).ToList();
+        var cut = Render<FlareDataGrid<GroupedPerson>>(p => p
+            .Add(x => x.Items, data.AsEnumerable())
+            .Add(x => x.Virtual, true)
+            .Add(x => x.Height, "300px")
+            .Add(x => x.Columns, (RenderFragment)(inner =>
+            {
+                inner.OpenComponent<FlareColumn<GroupedPerson>>(0);
+                inner.AddAttribute(1, "Title", "Role");
+                inner.AddAttribute(2, "Field", (Func<GroupedPerson, object?>)(p => p.Role));
+                inner.AddAttribute(3, "Sortable", true);
+                inner.CloseComponent();
+            })));
+
+        cut.Find("th.flare-datagrid__th").Click();   // ascending
+        cut.Find("th.flare-datagrid__th").Click();   // descending
+
+        var rows = cut.FindAll("tr.flare-datagrid__row");
+        Assert.Equal(100, rows.Count);
+        Assert.Contains("R100", rows[0].TextContent);      // the last item is now first
+    }
 }
 
 // ------------------------------------------------------------------------------

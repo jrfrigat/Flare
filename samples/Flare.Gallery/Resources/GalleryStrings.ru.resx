@@ -921,6 +921,12 @@
   <data name="DataGrid_MultiLevelDesc" xml:space="preserve">
     <value>Полосатая составная компоновка: каждая запись занимает несколько строк с полями, выровненными по таблице (стиль banded-view от DevExpress).</value>
   </data>
+  <data name="DataGrid_VirtualScrollTitle" xml:space="preserve">
+    <value>Виртуальная прокрутка</value>
+  </data>
+  <data name="DataGrid_VirtualScrollDesc" xml:space="preserve">
+    <value>2000 строк на клиенте с Virtual=true - без пагинатора: таблица прокручивается в своей рамке и рисует только видимые строки.</value>
+  </data>
   <data name="DataGrid_BandedVirtualTitle" xml:space="preserve">
     <value>Многоуровневые колонки (виртуализация)</value>
   </data>
