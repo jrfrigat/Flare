@@ -36,18 +36,45 @@
 
     private bool _visible;
     private IAsyncDisposable? _sub;
+    private double _lastTop;
+
+    // What the LIVE subscription was built from. The subscription is created once and outlives any
+    // number of re-renders, so without these a parent that later moves Selector leaves the listener
+    // watching the old element while the click scrolls the new one - the button then hides and shows
+    // against one container and scrolls another.
+    private string? _subSelector;
+    private int _subThrottleMs;
+    private bool _subscribed;
 
     private string _visibleClass => _visible ? Css.Classes.Scroll.TopVisible : string.Empty;
 
+    // Threshold needs no resubscribe, only a re-test of the position already known: changing it while
+    // the page sits still must move the button now, not at the next scroll event.
+    protected override void OnParametersSet()
+    {
+        var visible = _lastTop > Threshold;
+        if (_subscribed && visible != _visible) _visible = visible;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
+        if (_subscribed && Selector == _subSelector && ThrottleMs == _subThrottleMs) return;
+
+        // Claim the new parameters before awaiting: a render triggered by the fresh subscription's
+        // immediate callback re-enters here, and must see the work as already done.
+        var old = _sub;
+        _subSelector = Selector;
+        _subThrottleMs = ThrottleMs;
+        _subscribed = true;
+
+        if (old is not null) await old.DisposeAsync();
         _sub = await Scroll.SubscribeAsync(
             OnScrolled, Selector, new ScrollSubscribeOptions { ThrottleMs = ThrottleMs });
     }
 
     private Task OnScrolled(ScrollChange change)
     {
+        _lastTop = change.Top;
         var visible = change.Top > Threshold;
         if (visible == _visible) return Task.CompletedTask;
         _visible = visible;
