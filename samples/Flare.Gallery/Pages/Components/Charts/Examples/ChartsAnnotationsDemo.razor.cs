@@ -20,4 +20,15 @@ public partial class ChartsAnnotationsDemo
     [
         ChartAnnotation.VerticalBand(3, 5, "Migration", FlareColor.Warning),
     ];
+
+    // The same band twice, differing only in the layer it draws on.
+    private static readonly ChartAnnotation[] _bandOver =
+    [
+        ChartAnnotation.VerticalBand(2, 5, "Plan", FlareColor.Primary),
+    ];
+
+    private static readonly ChartAnnotation[] _bandUnder =
+    [
+        ChartAnnotation.VerticalBand(2, 5, "Plan", FlareColor.Primary, ChartAnnotationLayer.Under),
+    ];
 }

@@ -7,4 +7,13 @@
 
     <FlareChart Type="ChartType.Bar" Data="_data" Annotations="_bandOnly" Height="220"
                 Title="A vertical band marks a range of categories" />
+
+    @* Layer decides which side of the data the overlay is on. A translucent band over the values
+       washes them out; the same band behind them reads as the background of the period. *@
+    <FlareGrid Columns="2" Gap="FlareSpacing.Large">
+        <FlareChart Type="ChartType.Bar" Data="_data" Annotations="_bandOver" Height="220"
+                    Title="Layer = Over (default) - the band tints the bars it covers" />
+        <FlareChart Type="ChartType.Bar" Data="_data" Annotations="_bandUnder" Height="220"
+                    Title="Layer = Under - the bars keep their own colour" />
+    </FlareGrid>
 </FlareStack>

@@ -77,7 +77,7 @@ public partial class FlareChart
             double cx = _svgW / 2.0, cy = _svgH / 2.0;
             double r = Math.Min(cx, cy) - 16;
             double inner = donut ? r * Math.Clamp(DonutRingRatio, 0, 0.95) : 0;
-            double total = series.Sum(s => s.Values.FirstOrDefault());
+            double total = series.Sum(s => SafeValue(s.Values.FirstOrDefault()));
             if (total == 0) yield break;
 
             double startAngle = ArcGeometry.Top;
@@ -98,7 +98,7 @@ public partial class FlareChart
 
     private (double Min, double Max) _scale()
     {
-        var all = Data!.Series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
+        var all = Plotted(Data!.Series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values));
         if (all.Count == 0) return (0, 1);
         double min = all.Min(), max = all.Max();
         if (Type is ChartType.Bar or ChartType.StackedBar) { max = Math.Max(max, 0); min = Math.Min(min, 0); }
@@ -112,12 +112,13 @@ public partial class FlareChart
     {
         if (Data?.Series is not { Count: > 0 } series) return;
         var label = (Data?.Labels is { } ls && index < ls.Count) ? ls[index] : index.ToString();
-        var parts = series.Where(s => index < s.Values.Count)
-            .Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}"));
+        // A series with no value here is left out of the tooltip entirely rather than reported as 0.
+        var present = series.Where(s => index < s.Values.Count && !IsGap(s.Values[index])).ToList();
+        var parts = present.Select(s => string.Create(_inv, $"{s.Label}: {s.Values[index]:G4}"));
         _tooltipText = $"{label}\n{string.Join("\n", parts)}";
 
         var (min, max) = _scale();
-        double yTop = series.Where(s => index < s.Values.Count)
+        double yTop = present
             .Select(s => _yOf(s.Values[index], min, max))
             .DefaultIfEmpty(_padT).Min();
 
@@ -129,8 +130,8 @@ public partial class FlareChart
     private void SetHoverSlice(int index, double cx, double cy)
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        double total = series.Sum(s => s.Values.FirstOrDefault());
-        double pct = total > 0 ? series[index].Values.FirstOrDefault() / total * 100 : 0;
+        double total = series.Sum(s => SafeValue(s.Values.FirstOrDefault()));
+        double pct = total > 0 ? SafeValue(series[index].Values.FirstOrDefault()) / total * 100 : 0;
         _tooltipText = string.Create(_inv, $"{series[index].Label}: {pct:F1}%");
         _hoverXPct = cx / _svgW * 100;
         _hoverYPct = cy / _svgH * 100;

@@ -10,7 +10,7 @@ public partial class FlareChart
     private RenderFragment RenderLine() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var visVals = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
+        var visVals = Plotted(series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values));
         if (visVals.Count == 0) return;
         var axis = ResolveAxis(visVals.Min(), visVals.Max(), _valueExtent);
         double min = axis.Min, max = axis.Max;
@@ -31,17 +31,24 @@ public partial class FlareChart
             if (IsHidden(si)) continue;
             var vals = series[si].Values;
             if (vals.Count == 0) continue;
+            // A gap keeps its slot in the list and carries NaN through as its Y, so the point still
+            // owns its category position and Runs() can tell where the line has to break.
             var pointList = new List<(double X, double Y)>(vals.Count);
             for (int i = 0; i < vals.Count; i++)
             {
-                double sv = SafeValue(vals[i]);
                 double x = XOfIndex(i);
-                double y = _padT + _plotH - (sv - min) / (max - min) * _plotH;
+                double y = IsGap(vals[i])
+                    ? double.NaN
+                    : _padT + _plotH - (SafeValue(vals[i]) - min) / (max - min) * _plotH;
                 pointList.Add((x, y));
             }
+            var runs = Runs(pointList);
+            if (runs.Count == 0) continue;
             var s = series[si];
             var color = GetColor(si);
-            string linePath = SeriesSmooth(s) ? SmoothPath(pointList) : StraightPath(pointList);
+            // One subpath per run: each starts with its own M, so concatenating them leaves the holes
+            // unstroked instead of drawing a segment across.
+            string linePath = string.Concat(runs.Select(r => SeriesSmooth(s) ? SmoothPath(r) : StraightPath(r)));
 
             // Area fill: a gradient from the series color down to transparent. Colors go through style
             // (var() is not resolved in SVG presentation attributes / stop-color, only in CSS values).
@@ -52,8 +59,9 @@ public partial class FlareChart
                     $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">" +
                     $"<stop offset=\"0\" style=\"stop-color:{color};stop-opacity:var(--flare-chart-area-opacity)\"/>" +
                     $"<stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
-                string areaPath = string.Create(_inv,
-                    $"{linePath} L {pointList[^1].X:F1} {baseline:F1} L {pointList[0].X:F1} {baseline:F1} Z");
+                // Each run closes down to the baseline on its own; one shared close would fill the gap.
+                string areaPath = string.Concat(runs.Select(r => string.Create(_inv,
+                    $"{(SeriesSmooth(s) ? SmoothPath(r) : StraightPath(r))} L {r[^1].X:F1} {baseline:F1} L {r[0].X:F1} {baseline:F1} Z ")));
                 marks.Append($"<path d=\"{areaPath}\" stroke=\"none\" fill=\"url(#{gid})\"/>");
             }
 
@@ -62,17 +70,25 @@ public partial class FlareChart
             marks.Append(
                 $"<path class=\"{Css.Classes.Chart.Line}\"{DrawLength(lineStyle)} d=\"{linePath}\" fill=\"none\" style=\"stroke:{color}{DashStyle(lineStyle)}\"{vectorEffect}/>");
 
+            double markerR = PointRadius();
             if (SeriesMarkers(s))
             {
-                double ptR = PointRadius();
-                foreach (var (x, y) in pointList)
-                    marks.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{ptR:F2}\" style=\"fill:{color}\"/>"));
+                foreach (var run in runs)
+                    foreach (var (x, y) in run)
+                        marks.Append(string.Create(_inv, $"<circle cx=\"{x:F1}\" cy=\"{y:F1}\" r=\"{markerR:F2}\" style=\"fill:{color}\"/>"));
+            }
+            else
+            {
+                // A value alone between two gaps has no segment to be drawn as, so without a dot it
+                // would be present in the data and invisible on the chart.
+                foreach (var run in runs.Where(r => r.Count == 1))
+                    marks.Append(string.Create(_inv, $"<circle cx=\"{run[0].X:F1}\" cy=\"{run[0].Y:F1}\" r=\"{markerR:F2}\" style=\"fill:{color}\"/>"));
             }
             if (TrendLine)
-                marks.Append(TrendLineMarkup(pointList, color));
+                marks.Append(TrendLineMarkup([.. runs.SelectMany(r => r)], color));
         }
-        builder.AddMarkupContent(seq++, Clipped(marks.ToString()));
-        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts)));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts, ChartAnnotationLayer.Under) + marks.ToString()));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts, ChartAnnotationLayer.Over)));
         if (_showX)
             builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
         builder.AddMarkupContent(seq++, AxisTitles());
@@ -139,7 +155,7 @@ public partial class FlareChart
     private RenderFragment RenderBar() => builder =>
     {
         if (Data?.Series is not { Count: > 0 } series) return;
-        var visVals = series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values).ToList();
+        var visVals = Plotted(series.Where((s, i) => !IsHidden(i)).SelectMany(s => s.Values));
         if (visVals.Count == 0) return;
         var axis = ResolveAxis(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0), _valueExtent);
         double min = axis.Min, max = axis.Max;
@@ -172,6 +188,8 @@ public partial class FlareChart
                 var vals = series[si].Values; var color = GetColor(si);
                 for (int i = 0; i < vals.Count; i++)
                 {
+                    // A gap draws nothing: the category keeps its slot, this series just has no bar in it.
+                    if (IsGap(vals[i])) continue;
                     double sv = SafeValue(vals[i]);
                     double y = _padT + i * groupH + si * slotH + slotH * 0.25;
                     double w = Math.Abs(sv / (max - min) * _plotW);
@@ -210,6 +228,7 @@ public partial class FlareChart
             var color = GetColor(si);
             for (int i = 0; i < vals.Count; i++)
             {
+                if (IsGap(vals[i])) continue;
                 double sv = SafeValue(vals[i]);
                 double x = XOfIndex(i) - groupW / 2 + si * barW + barW * 0.25;
                 double zeroY = _padT + _plotH - (0 - min) / (max - min) * _plotH;
@@ -222,8 +241,8 @@ public partial class FlareChart
                     marks.Append(string.Create(_inv, $"<text x=\"{x + bw / 2:F1}\" y=\"{(sv >= 0 ? y - 3 : y + barH + 9):F1}\" text-anchor=\"middle\" style=\"{_valueStyle}\">{sv:G3}</text>"));
             }
         }
-        builder.AddMarkupContent(seq++, Clipped(marks.ToString()));
-        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts)));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts, ChartAnnotationLayer.Under) + marks.ToString()));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts, ChartAnnotationLayer.Over)));
         if (_showX)
             builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
         builder.AddMarkupContent(seq++, AxisTitles());
@@ -241,7 +260,8 @@ public partial class FlareChart
         {
             double sum = 0;
             for (int si = 0; si < series.Count; si++)
-                if (!IsHidden(si) && i < series[si].Values.Count) sum += Math.Max(0, SafeValue(series[si].Values[i]));
+                if (!IsHidden(si) && i < series[si].Values.Count && !IsGap(series[si].Values[i]))
+                    sum += Math.Max(0, SafeValue(series[si].Values[i]));
             max = Math.Max(max, sum);
         }
         if (max <= 0) max = 1;
@@ -263,7 +283,9 @@ public partial class FlareChart
             double yCursor = _padT + _plotH;
             for (int si = 0; si < series.Count; si++)
             {
-                if (IsHidden(si) || i >= series[si].Values.Count) continue;
+                // A gap contributes no band, and the stack closes over it: the series above keeps its
+                // place in the order but sits directly on the one below.
+                if (IsHidden(si) || i >= series[si].Values.Count || IsGap(series[si].Values[i])) continue;
                 double v = Math.Max(0, SafeValue(series[si].Values[i]));
                 double h = v / max * _plotH;
                 yCursor -= h;
@@ -272,8 +294,8 @@ public partial class FlareChart
                     marks.Append(string.Create(_inv, $"<text x=\"{x + barW / 2:F1}\" y=\"{yCursor + h / 2 + 3:F1}\" text-anchor=\"middle\" style=\"{_valueOnFillStyle}\">{v:G3}</text>"));
             }
         }
-        builder.AddMarkupContent(seq++, Clipped(marks.ToString()));
-        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(0, max, pts)));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(0, max, pts, ChartAnnotationLayer.Under) + marks.ToString()));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(0, max, pts, ChartAnnotationLayer.Over)));
         if (_showX) builder.AddMarkupContent(seq++, AxisLabels(0, max, pts));
         builder.AddMarkupContent(seq++, AxisTitles());
     };
@@ -338,7 +360,7 @@ public partial class FlareChart
     {
         if (Data?.Series is not { Count: > 0 } series) return;
         var vis = Enumerable.Range(0, series.Count).Where(i => !IsHidden(i)).ToList();
-        var visVals = vis.SelectMany(i => series[i].Values).ToList();
+        var visVals = Plotted(vis.SelectMany(i => series[i].Values));
         if (visVals.Count == 0) return;
         var axis = ResolveAxis(Math.Min(visVals.Min(), 0), Math.Max(visVals.Max(), 0), _valueExtent);
         double min = axis.Min, max = axis.Max;
@@ -365,6 +387,7 @@ public partial class FlareChart
             {
                 for (int i = 0; i < vals.Count; i++)
                 {
+                    if (IsGap(vals[i])) continue;
                     double sv = SafeValue(vals[i]);
                     double x = XOfIndex(i) - groupW / 2 + barSlot * barW + barW * 0.25;
                     double zeroY = baseline - (0 - min) / (max - min) * _plotH;
@@ -378,21 +401,31 @@ public partial class FlareChart
             {
                 var pl = new List<(double X, double Y)>(vals.Count);
                 for (int i = 0; i < vals.Count; i++)
-                    pl.Add((LineX(i), baseline - (SafeValue(vals[i]) - min) / (max - min) * _plotH));
-                string linePath = SeriesSmooth(series[si]) ? SmoothPath(pl) : StraightPath(pl);
+                    pl.Add((LineX(i), IsGap(vals[i])
+                        ? double.NaN
+                        : baseline - (SafeValue(vals[i]) - min) / (max - min) * _plotH));
+                var comboRuns = Runs(pl);
+                if (comboRuns.Count == 0) continue;
+                bool comboSmooth = SeriesSmooth(series[si]);
+                string linePath = string.Concat(comboRuns.Select(r => comboSmooth ? SmoothPath(r) : StraightPath(r)));
                 if (kind == ChartSeriesKind.Area)
                 {
                     string gid = $"{_uid}-c{si}";
                     marks.Append(
                         $"<defs><linearGradient id=\"{gid}\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" style=\"stop-color:{color};stop-opacity:var(--flare-chart-area-opacity)\"/><stop offset=\"1\" style=\"stop-color:{color};stop-opacity:0\"/></linearGradient></defs>");
-                    marks.Append(string.Create(_inv, $"<path d=\"{linePath} L {pl[^1].X:F1} {baseline:F1} L {pl[0].X:F1} {baseline:F1} Z\" stroke=\"none\" fill=\"url(#{gid})\"/>"));
+                    string comboArea = string.Concat(comboRuns.Select(r => string.Create(_inv,
+                        $"{(comboSmooth ? SmoothPath(r) : StraightPath(r))} L {r[^1].X:F1} {baseline:F1} L {r[0].X:F1} {baseline:F1} Z ")));
+                    marks.Append($"<path d=\"{comboArea}\" stroke=\"none\" fill=\"url(#{gid})\"/>");
                 }
                 var comboStyle = SeriesLineStyle(series[si]);
                 marks.Append($"<path class=\"{Css.Classes.Chart.Line}\"{DrawLength(comboStyle)} d=\"{linePath}\" fill=\"none\" style=\"stroke:{color}{DashStyle(comboStyle)}\"/>");
+                // Same reason as the line chart: an isolated point has no segment of its own to show.
+                foreach (var run in comboRuns.Where(r => r.Count == 1))
+                    marks.Append(string.Create(_inv, $"<circle cx=\"{run[0].X:F1}\" cy=\"{run[0].Y:F1}\" r=\"{PointRadius():F2}\" style=\"fill:{color}\"/>"));
             }
         }
-        builder.AddMarkupContent(seq++, Clipped(marks.ToString()));
-        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts)));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts, ChartAnnotationLayer.Under) + marks.ToString()));
+        builder.AddMarkupContent(seq++, Clipped(AnnotationsMarkup(min, max, pts, ChartAnnotationLayer.Over)));
         if (_showX) builder.AddMarkupContent(seq++, AxisLabels(min, max, pts));
         builder.AddMarkupContent(seq++, AxisTitles());
     };

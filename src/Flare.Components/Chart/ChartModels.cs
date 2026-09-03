@@ -77,6 +77,17 @@ public enum ChartAnnotationKind
     Point,
 }
 
+/// <summary>Which side of the data an annotation is drawn on.</summary>
+public enum ChartAnnotationLayer
+{
+    /// <summary>Over the series, above lines, bars and markers (the default).</summary>
+    Over,
+    /// <summary>Under the series, over the plot background and the grid. What a shaded period marker
+    /// wants: a translucent band over the data washes out the values it is meant to frame, while the
+    /// same band behind them reads as the background of the period.</summary>
+    Under,
+}
+
 /// <summary>Where an annotation's label sits relative to the annotation itself.</summary>
 public enum ChartAnnotationLabelPosition
 {
@@ -125,6 +136,11 @@ public sealed record ChartAnnotation
     /// <summary>Stroke pattern of the line kinds. Null uses the theme's annotation dash.</summary>
     public ChartLineStyle? LineStyle { get; init; }
 
+    /// <summary>Whether the annotation draws over the series or behind them. Default
+    /// <see cref="ChartAnnotationLayer.Over"/>; the band kinds usually want
+    /// <see cref="ChartAnnotationLayer.Under"/>. The label follows the annotation onto its layer.</summary>
+    public ChartAnnotationLayer Layer { get; init; }
+
     /// <summary>A horizontal threshold / target line at <paramref name="y"/>.</summary>
     /// <param name="y">Value-axis position of the line.</param>
     /// <param name="label">Optional text drawn at the line's end.</param>
@@ -144,16 +160,22 @@ public sealed record ChartAnnotation
     /// <param name="to">Second value-axis bound.</param>
     /// <param name="label">Optional text drawn at the band's top edge.</param>
     /// <param name="color">Fill color; default uses the theme's annotation color.</param>
-    public static ChartAnnotation Band(double from, double to, string? label = null, FlareColor color = default) =>
-        new() { Kind = ChartAnnotationKind.HorizontalBand, Y = from, Y2 = to, Label = label, Color = color };
+    /// <param name="layer">Draw over the series (default) or behind them.</param>
+    public static ChartAnnotation Band(
+        double from, double to, string? label = null, FlareColor color = default,
+        ChartAnnotationLayer layer = ChartAnnotationLayer.Over) =>
+        new() { Kind = ChartAnnotationKind.HorizontalBand, Y = from, Y2 = to, Label = label, Color = color, Layer = layer };
 
     /// <summary>A shaded vertical band between two category indices (or scatter X values).</summary>
     /// <param name="from">First category index / X value.</param>
     /// <param name="to">Second category index / X value.</param>
     /// <param name="label">Optional text drawn at the band's leading edge.</param>
     /// <param name="color">Fill color; default uses the theme's annotation color.</param>
-    public static ChartAnnotation VerticalBand(double from, double to, string? label = null, FlareColor color = default) =>
-        new() { Kind = ChartAnnotationKind.VerticalBand, X = from, X2 = to, Label = label, Color = color };
+    /// <param name="layer">Draw over the series (default) or behind them.</param>
+    public static ChartAnnotation VerticalBand(
+        double from, double to, string? label = null, FlareColor color = default,
+        ChartAnnotationLayer layer = ChartAnnotationLayer.Over) =>
+        new() { Kind = ChartAnnotationKind.VerticalBand, X = from, X2 = to, Label = label, Color = color, Layer = layer };
 
     /// <summary>A free line between two data points.</summary>
     /// <param name="x1">Start category index / X value.</param>
@@ -233,7 +255,13 @@ public readonly record struct ChartZoom(double From, double To)
 
 /// <summary>A single named data series plotted on a chart.</summary>
 /// <param name="Label">Series name shown in the legend and tooltips.</param>
-/// <param name="Values">The numeric values, one per category (line/bar/pie/radar).</param>
+/// <param name="Values">The numeric values, one per category (line/bar/pie/radar).
+/// <see cref="double.NaN"/> marks a MISSING value, which is not the same as zero: the line breaks
+/// rather than dropping to the axis, no bar is drawn, the point is left out of the axis range and out
+/// of the tooltip. That is what lets a series live on part of a shared category axis - a seasonal
+/// product against twelve months - without a run of zeros reading as "sold none". Build the list from
+/// nullable data with <see cref="ChartSeries.Gaps"/>. Gaps apply to the cartesian types (line, area,
+/// bar, stacked bar, combo); the radial types treat a gap as zero.</param>
 /// <param name="Color">Explicit series color - a semantic role (<c>FlareColor.Error</c>) or any CSS color
 /// string, which converts implicitly. Left at <see cref="FlareColor.Default"/> the series takes the next
 /// color from the theme's categorical palette.</param>
@@ -255,7 +283,23 @@ public sealed record ChartSeries(
     bool? Smooth = null,
     bool? Area = null,
     ChartLineStyle? LineStyle = null,
-    bool? ShowMarkers = null);
+    bool? ShowMarkers = null)
+{
+    /// <summary>
+    /// Converts nullable data into the value list a series takes, turning every <c>null</c> into the
+    /// <see cref="double.NaN"/> a chart reads as a gap. Lets a partial series be written the way it is
+    /// held - <c>[null, null, 12, 18, null]</c> - instead of hand-encoding the missing points.
+    /// </summary>
+    /// <param name="values">Values in category order; <c>null</c> where the series has no value.</param>
+    /// <returns>The same values with <c>null</c> replaced by <see cref="double.NaN"/>.</returns>
+    public static IReadOnlyList<double> Gaps(IReadOnlyList<double?> values)
+    {
+        ArgumentNullException.ThrowIfNull(values);
+        var result = new double[values.Count];
+        for (int i = 0; i < values.Count; i++) result[i] = values[i] ?? double.NaN;
+        return result;
+    }
+}
 
 /// <summary>The data plotted by <see cref="FlareChart"/>: one or more series and optional category labels.</summary>
 /// <param name="Series">The series to plot.</param>

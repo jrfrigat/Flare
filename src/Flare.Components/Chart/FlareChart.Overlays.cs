@@ -49,9 +49,13 @@ public partial class FlareChart
 
     // Overlays drawn in DATA coordinates: thresholds and bands on either axis, free segments, arrows and
     // labelled points. X goes through the same projection as the data, so an annotation tracks a zoom.
-    private string AnnotationsMarkup(double min, double max, int pts)
+    // Drawn in two passes, one per layer, so the caller decides where each annotation lands in the
+    // paint order without the annotation list having to be split at the call site.
+    private string AnnotationsMarkup(double min, double max, int pts, ChartAnnotationLayer layer)
     {
-        if (Annotations is not { Count: > 0 } anns) return "";
+        if (Annotations is not { Count: > 0 } all) return "";
+        var anns = all.Where(a => a.Layer == layer).ToList();
+        if (anns.Count == 0) return "";
         var sb = new System.Text.StringBuilder();
         double YOf(double v) => _padT + _plotH - (v - min) / (max - min) * _plotH;
         double right = _padL + _plotW;

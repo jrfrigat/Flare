@@ -1,0 +1,13 @@
+@* A gap is not a zero. The seasonal line exists only in summer: padded with zeros it reads as "sold
+   none all winter" and drags the axis to the floor; as gaps it simply is not there, and the shared
+   month axis still lines both series up. ChartSeries.Gaps turns nullable data into that. *@
+<FlareStack Gap="FlareSpacing.Large">
+    <FlareSwitch @bind-Value="_padWithZeros" Label="Pad the seasonal series with zeros instead" />
+
+    <FlareChart Type="ChartType.Line" Height="280" ShowMarkers="true"
+                Title="Sales by month" Data="@(_padWithZeros ? _zeroPadded : _withGaps)" />
+
+    <FlareChart Type="ChartType.Bar" Height="240"
+                Title="The same data as bars: a gap draws no bar at all"
+                Data="@(_padWithZeros ? _zeroPadded : _withGaps)" />
+</FlareStack>
