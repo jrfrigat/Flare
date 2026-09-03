@@ -120,4 +120,46 @@ public class ControlledStateContractTests : FlareTestContext
         cut.Render(ps => ps.Add(p => p.Tick, 1));
         Assert.Equal("true", cut.Find("button").GetAttribute("aria-pressed"));
     }
+
+    // ---- FlareAccordionPanel -------------------------------------------------------------------
+
+    // The panel used to copy Expanded once and ignore the parameter forever after, so a controlled parent
+    // could not drive it at all. It now runs the same mirror as FlareCollapse above.
+    [Fact]
+    public void AccordionPanel_Controlled_FollowsAnExternalExpandedChange()
+    {
+        var cut = Render<FlareAccordionPanel>(ps => ps
+            .Add(p => p.Header, "Details")
+            .Add(p => p.Expanded, false)
+            .Add(p => p.ExpandedChanged, EventCallback.Factory.Create<bool>(this, _ => { }))
+            .Add(p => p.ChildContent, (RenderFragment)(c => c.AddMarkupContent(0, "<p>body</p>"))));
+
+        Assert.Equal("false", cut.Find("button").GetAttribute("aria-expanded"));
+
+        cut.Render(ps => ps.Add(p => p.Expanded, true));
+        Assert.Equal("true", cut.Find("button").GetAttribute("aria-expanded"));
+    }
+
+    // The half the old one-shot sync was protecting, and the reason the fix is a mirror rather than a
+    // plain assignment: reading the parameter on every set must NOT undo a local toggle when the parent
+    // re-renders for its own reasons - which, inside an accordion, it does whenever a sibling moves.
+    [Fact]
+    public void AccordionPanel_Uncontrolled_KeepsOpenStateAcrossAnUnrelatedParentRerender()
+    {
+        var cut = Render<UnrelatedRerenderHost>(ps => ps
+            .Add(p => p.Tick, 0)
+            .Add(p => p.ChildContent, (RenderFragment)(b =>
+            {
+                b.OpenComponent<FlareAccordionPanel>(0);
+                b.AddAttribute(1, "Header", "Details");
+                b.AddAttribute(2, "ChildContent", (RenderFragment)(c => c.AddMarkupContent(0, "<p>body</p>")));
+                b.CloseComponent();
+            })));
+
+        cut.Find("button").Click();
+        Assert.Equal("true", cut.Find("button").GetAttribute("aria-expanded"));
+
+        cut.Render(ps => ps.Add(p => p.Tick, 1));
+        Assert.Equal("true", cut.Find("button").GetAttribute("aria-expanded"));
+    }
 }

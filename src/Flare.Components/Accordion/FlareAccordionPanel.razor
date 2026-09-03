@@ -50,20 +50,31 @@
     protected override string ComponentCssClass => Css.Classes.Accordion.Panel;
 
     private bool _expanded;
+    private bool _lastExpanded;
     private bool _initialised;
     private readonly string _panelId = Guid.NewGuid().ToString("N")[..8];
     private string _headerId => $"flare-accordion-hdr-{_panelId}";
     private string _contentId => $"flare-accordion-cnt-{_panelId}";
 
+    // Two-way state contract (docs/ru/component-conventions.md), same shape as FlareCollapse: a
+    // controlled panel follows the parameter on every set, an uncontrolled one keeps local state until
+    // the parameter ITSELF changes. _lastExpanded mirrors the parameter and is never written from an
+    // event handler, which is what lets a sibling-driven re-render pass through without reopening a
+    // panel the accordion just auto-collapsed - the reason this used to sync only once.
     protected override void OnParametersSet()
     {
-        // Only sync from the Expanded parameter on first render.
-        // After that, local toggle state is authoritative so that parent
-        // re-renders (e.g. from sibling panel collapsing) do not reset expansion.
+        if (ExpandedChanged.HasDelegate)
+            _expanded = Expanded;
+        else if (Expanded != _lastExpanded)
+            _expanded = Expanded;
+        _lastExpanded = Expanded;
+
         if (!_initialised)
         {
-            _expanded = Expanded;
             _initialised = true;
+            // A panel that starts expanded claims the single-expand slot. Without this the first user
+            // toggle of another panel finds no panel to close and leaves both open.
+            if (_expanded) Accordion?.PanelInitiallyExpanded(this);
         }
     }
 
@@ -74,21 +85,30 @@
         if (OnBeforeToggle is not null && !await OnBeforeToggle(next))
             return;
 
+        // Ask the accordion first when opening: in single-expand mode it has to close the current panel,
+        // and that panel's own guard may refuse. Committing before asking would leave two panels open.
+        if (next && Accordion is not null && !await Accordion.PanelExpandedAsync(this))
+            return;
+
         _expanded = next;
-        if (_expanded)
-            await (Accordion?.PanelExpandedAsync(this) ?? Task.CompletedTask);
-        else
+        if (!_expanded)
             Accordion?.PanelCollapsed(this);
         await ExpandedChanged.InvokeAsync(_expanded);
     }
 
     // Called by the accordion to auto-collapse this panel when a sibling opens (single-expand mode).
+    // Returns false when the panel's own guard refuses, which keeps this panel open AND stops the
+    // sibling from opening - a veto that closed this panel anyway, or opened both, would make
+    // OnBeforeToggle meaningless in exactly the case it exists for.
     // Fires ExpandedChanged so a two-way bound parent stays in sync.
-    internal async Task CollapseAsync()
+    internal async Task<bool> CollapseAsync()
     {
-        if (!_expanded) return;
+        if (!_expanded) return true;
+        if (OnBeforeToggle is not null && !await OnBeforeToggle(false))
+            return false;
         _expanded = false;
         await ExpandedChanged.InvokeAsync(false);
         StateHasChanged();
+        return true;
     }
 }

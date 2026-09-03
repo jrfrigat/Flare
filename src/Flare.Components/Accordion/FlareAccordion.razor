@@ -17,12 +17,22 @@
 
     private FlareAccordionPanel? _expandedPanel;
 
-    internal async Task PanelExpandedAsync(FlareAccordionPanel panel)
+    // Returns false when the currently open panel refuses to close, in which case the panel that asked
+    // must not open either - otherwise a vetoed collapse silently turns single-expand into multi-expand.
+    internal async Task<bool> PanelExpandedAsync(FlareAccordionPanel panel)
     {
-        if (AllowMultiple) { _expandedPanel = panel; return; }
-        if (_expandedPanel is not null && _expandedPanel != panel)
-            await _expandedPanel.CollapseAsync();
+        if (AllowMultiple) { _expandedPanel = panel; return true; }
+        if (_expandedPanel is not null && _expandedPanel != panel && !await _expandedPanel.CollapseAsync())
+            return false;
         _expandedPanel = panel;
+        return true;
+    }
+
+    // Claims the slot for a panel declared Expanded in markup. Nothing is collapsed here: initial state
+    // is the author's declaration, not a user toggle for the accordion to arbitrate.
+    internal void PanelInitiallyExpanded(FlareAccordionPanel panel)
+    {
+        if (!AllowMultiple) _expandedPanel ??= panel;
     }
 
     internal void PanelCollapsed(FlareAccordionPanel panel)
