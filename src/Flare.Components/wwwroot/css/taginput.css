@@ -14,7 +14,8 @@
     flex-wrap: wrap;
     gap: var(--flare-spacing-3);
     padding: var(--flare-spacing-4) var(--flare-spacing-6);
-    min-height: 2.75rem;
+    /* The well floor is the family height ramp (input.css), not a literal of its own: a chip well that
+       named its own 2.75rem sat 10px under the field beside it, and inverted between Sm and Md. */
 }
 
 /* The rendered chips + their remove button reuse the shared FlareChipStrip -> flare-multiselect__chip*

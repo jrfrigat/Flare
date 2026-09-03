@@ -23,7 +23,10 @@
   border: none;
   padding: 0 var(--flare-spacing-6);
   color: var(--flare-color-on-surface-variant);
-  font-size: 0.75rem;
+  /* The same chevron the Select trigger draws, so the same family icon token - it used to be a
+     0.75rem literal, half the size of the identical glyph next door. */
+  --_flare-icon-size: var(--flare-input-icon-size);
+  font-size: var(--_flare-icon-size);
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;

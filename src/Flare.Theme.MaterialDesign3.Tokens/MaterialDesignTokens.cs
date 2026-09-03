@@ -534,6 +534,15 @@ public class MaterialDesignTokens
         // under this theme.
         PaddingLg = "1.25rem 1.125rem",
         PaddingXl = "1.5rem 1.25rem",
+        // Height ramp. M3 puts the text field AND the select at 56dp, so Md is the spec number and the
+        // rest are measured off the padding ramp above - each step is the tallest control that step used
+        // to produce, so the family converges upward and no control shrinks. Before these existed the
+        // steps disagreed by 2px (the trigger was taller) and by 5px at Xl (the text field was).
+        HeightXs = "1.875rem", // 30px
+        HeightSm = "2.25rem",  // 36px
+        HeightMd = "3.5rem",   // 56px - the M3 field height
+        HeightLg = "4rem",     // 64px
+        HeightXl = "4.75rem",  // 76px
         IconSize = "1.5rem",                          // leading/trailing icon 24dp
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
         DisabledBg = "color-mix(in srgb, var(--flare-color-on-surface) 4%, transparent)",

@@ -19,6 +19,10 @@ public static class Input
     public const string Label = "flare-input__label";
     /// <summary>The <c>flare-input__field</c> CSS class.</summary>
     public const string Field = "flare-input__field";
+    /// <summary>The <c>flare-input__field--grow</c> CSS class: marks a well whose height is its content
+    /// (rows of text, rows of chips) rather than the family height ramp, so the step becomes its minimum
+    /// instead of its exact height.</summary>
+    public const string FieldGrow = "flare-input__field--grow";
     /// <summary>The <c>flare-input__control</c> CSS class.</summary>
     public const string Control = "flare-input__control";
     /// <summary>The <c>flare-input__helper</c> CSS class.</summary>

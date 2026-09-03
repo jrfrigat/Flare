@@ -64,11 +64,36 @@ public sealed record InputTokens
     /// <summary>Control padding at the large size.</summary>
     [CssVar(InputField.PaddingLg)] public required string PaddingLg { get; init; }
 
-    /// <summary>Control padding at the extra-large size. The block half of each size step sets the field
-    /// height, so these five are the whole Xs..Xl ramp and the theme is responsible for keeping it
-    /// ordered - a large step shorter than the medium one is a theme bug the stylesheet cannot
-    /// correct.</summary>
+    /// <summary>Control padding at the extra-large size. Padding no longer decides how tall a field is -
+    /// <see cref="HeightMd"/> and its siblings do - so these five only place the content inside that
+    /// height.</summary>
     [CssVar(InputField.PaddingXl)] public required string PaddingXl { get; init; }
+
+    /// <summary>Height of the field well at the extra-small size.</summary>
+    [CssVar(InputField.HeightXs)] public required string HeightXs { get; init; }
+
+    /// <summary>Height of the field well at the small size.</summary>
+    [CssVar(InputField.HeightSm)] public required string HeightSm { get; init; }
+
+    /// <summary>
+    /// Height of the field well at the default (medium) size - the height a field takes when no size is
+    /// asked for, and the one every control in the family has to agree on. The WELL is what is measured,
+    /// border included, because that is the box the caller sees beside a button or another field.
+    /// </summary>
+    [CssVar(InputField.HeightMd)] public required string HeightMd { get; init; }
+
+    /// <summary>Height of the field well at the large size.</summary>
+    [CssVar(InputField.HeightLg)] public required string HeightLg { get; init; }
+
+    /// <summary>
+    /// Height of the field well at the extra-large size. These five are the family height ramp: a
+    /// single-line well is exactly this tall whatever it holds - text, a chevron, a clear button, a
+    /// picker toggle, a numeric stepper - and the wells that legitimately grow (TextArea, TagField) take
+    /// it as their floor. The theme owns the ordering; a large step shorter than the medium one is a theme
+    /// bug the stylesheet cannot correct. Leave room for the content: a step shorter than its own padding
+    /// plus a line of text makes the control box overflow the well it is centred in.
+    /// </summary>
+    [CssVar(InputField.HeightXl)] public required string HeightXl { get; init; }
 
     /// <summary>
     /// Size of the leading/trailing icons, including the expand toggle the date and time pickers put in the

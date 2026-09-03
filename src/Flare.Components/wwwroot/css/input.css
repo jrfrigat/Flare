@@ -69,7 +69,19 @@
 /* Unstyled slot that holds a form-field's control content (FlareFormField); marker for tests/hooks. */
 .flare-input__control-slot {}
 
+/* The well owns the family height, and that is what makes a Select line up with the Field beside it.
+   A single-line well is EXACTLY --flare-input-height-*: a definite height is not measured from its
+   content, so a trailing chevron, a clear button, a picker toggle, a numeric stepper or a larger type
+   step have nothing left to push against. The well used to be content-measured, and whatever was
+   tallest inside it won - which is why the combobox trigger stood 2px OVER the text field under one
+   theme and 4px UNDER it in another, why Xl inverted the sign, and why the same Select was 4px taller
+   with a leading icon than without. Block padding now only places the content inside that height.
+   The step travels as a private var so the two wells whose height is legitimately their content -
+   TextArea and TagField, below - can take the same value as a floor without restating the ramp. */
 .flare-input__field {
+    --_flare-input-height: var(--flare-input-height-md);
+    box-sizing: border-box;
+    block-size: var(--_flare-input-height);
     display: flex;
     align-items: center;
     background-color: var(--flare-input-bg);
@@ -167,6 +179,24 @@
 .flare-input--xl .flare-select__control,
 .flare-input--xl .flare-multiselect__control { padding: var(--flare-input-padding-xl);  font-size: var(--flare-typescale-title-large-size); }
 
+/* The height half of the same grid. Keyed on the shared .flare-input--* modifier like the padding
+   above, and applied to the WELL rather than the control, so it covers every field in the family at
+   once - the ones rendering .flare-input__control and the two combobox triggers alike. */
+.flare-input--xs .flare-input__field { --_flare-input-height: var(--flare-input-height-xs); }
+.flare-input--sm .flare-input__field { --_flare-input-height: var(--flare-input-height-sm); }
+.flare-input--lg .flare-input__field { --_flare-input-height: var(--flare-input-height-lg); }
+.flare-input--xl .flare-input__field { --_flare-input-height: var(--flare-input-height-xl); }
+
+/* The two wells whose height IS their content: a TextArea grows by rows, a TagField by rows of chips.
+   They take the same step as a MINIMUM, so an empty one still matches the field beside it and a full
+   one is free to grow. Both live here rather than in their own files because the tie in specificity
+   with the rule above is decided by source order, and here that order is not a file-order accident. */
+.flare-input__field--grow,
+.flare-tag-input__field {
+    block-size: auto;
+    min-block-size: var(--_flare-input-height);
+}
+
 /* Placeholder text is muted (on-surface-variant). The ::placeholder pseudo styles real <input>s;
    the .flare-input__placeholder class is the equivalent <span> for the combobox triggers (Select/
    MultiSelect), which have no native input. */
@@ -193,6 +223,9 @@
     background: none;
     border: none;
     font: inherit;
+    /* After the font shorthand, which would otherwise reset the size back to the inherited one. */
+    --_flare-icon-size: var(--flare-input-icon-size);
+    font-size: var(--_flare-icon-size);
     cursor: pointer;
     color: var(--flare-color-on-surface-variant);
     flex: none;
@@ -202,6 +235,8 @@
 
 /* Shared button reset for a picker expand/open toggle (DatePicker/TimePicker/DateTimePicker). */
 .flare-input__toggle {
+    --_flare-icon-size: var(--flare-input-icon-size);
+    font-size: var(--_flare-icon-size);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -231,6 +266,8 @@
 .flare-input--has-adornment-end   .flare-input__control { padding-right: 0; }
 
 .flare-input__clear {
+    --_flare-icon-size: var(--flare-input-icon-size);
+    font-size: var(--_flare-icon-size);
     position: relative;
     z-index: 0;
     order: 1;

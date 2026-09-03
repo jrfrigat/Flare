@@ -24,7 +24,9 @@
                   Class="@Class" Style="@Style" Attributes="AdditionalAttributes"
                   CounterContent="@(_showCounter ? _counter : null)">
     <Field>
-        <div class="@Css.Classes.Input.Field">
+        @* A textarea grows by rows, so the well takes the family height step as a floor rather than as
+           an exact height - which is what the grow modifier says. *@
+        <div class="@Css.Classes.Input.Field @Css.Classes.Input.FieldGrow">
             <FlareTextInput @ref="_input"
                                Multiline="true"
                                Value="@Value"

@@ -578,6 +578,14 @@ public class FluentUI2Tokens
         PaddingMd = "0.75rem 1rem",
         PaddingLg = "0.875rem 1.125rem",
         PaddingXl = "1.125rem 1.25rem",
+        // Height ramp, measured off the padding ramp above: each step is the tallest control that step
+        // used to produce, so nothing shrinks. Under this theme the text field was the taller one, by 4px
+        // at every step, and a trigger with a leading icon was 4px taller than one without.
+        HeightXs = "1.75rem",   // 28px
+        HeightSm = "2.125rem", // 34px
+        HeightMd = "2.875rem", // 46px
+        HeightLg = "3.125rem", // 50px
+        HeightXl = "3.625rem", // 58px
         IconSize = "1.25rem",                         // medium input icon 20px
         PlaceholderColor = "var(--flare-color-on-surface-variant)",
         // Fluent flat disabled: grey field + disabled stroke (was MD3 on-surface opacity mixes).

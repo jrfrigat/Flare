@@ -21,11 +21,12 @@ public static class InputField
     public const string HoverBorderBottomColor = "--flare-input-hover-border-bottom-color";
     /// <summary>CSS custom-property name for the filled-variant hover state-layer.</summary>
     public const string HoverStateLayer = "--flare-input-hover-state-layer";
-    // The block half of each of these sets the field height, so the five together are the whole Xs..Xl
-    // ramp. Every step carries its size in the name, medium included: an unsuffixed "the padding" with
-    // four suffixed siblings reads as a base the others modify, which is not what it is. They are
-    // per-size tokens rather than lengths in the stylesheet because a ramp half-owned by core cannot
-    // stay ordered around a middle step the theme sets.
+    // Inset around the control's content. The block half no longer sets the field height - the Height
+    // ramp below does - so these five now only decide how the content sits inside that height. Every step
+    // carries its size in the name, medium included: an unsuffixed "the padding" with four suffixed
+    // siblings reads as a base the others modify, which is not what it is. They are per-size tokens rather
+    // than lengths in the stylesheet because a ramp half-owned by core cannot stay ordered around a middle
+    // step the theme sets.
     /// <summary>CSS custom-property name for the control padding at the extra-small size.</summary>
     public const string PaddingXs = "--flare-input-padding-xs";
     /// <summary>CSS custom-property name for the control padding at the small size.</summary>
@@ -36,6 +37,21 @@ public static class InputField
     public const string PaddingLg = "--flare-input-padding-lg";
     /// <summary>CSS custom-property name for the control padding at the extra-large size.</summary>
     public const string PaddingXl = "--flare-input-padding-xl";
+    // The well's own height, and the reason the family lines up: a control's height is this token and
+    // not whatever the well happens to hold. Block padding centres the content inside it instead of
+    // defining it, so a trailing chevron, a clear button, a picker toggle or a larger type step cannot
+    // move one control out of line with the text field beside it. Single-line wells take it as an exact
+    // height; the wells that legitimately grow (TextArea, TagField) take it as a floor.
+    /// <summary>CSS custom-property name for the field-well height at the extra-small size.</summary>
+    public const string HeightXs = "--flare-input-height-xs";
+    /// <summary>CSS custom-property name for the field-well height at the small size.</summary>
+    public const string HeightSm = "--flare-input-height-sm";
+    /// <summary>CSS custom-property name for the field-well height at the default (medium) size.</summary>
+    public const string HeightMd = "--flare-input-height-md";
+    /// <summary>CSS custom-property name for the field-well height at the large size.</summary>
+    public const string HeightLg = "--flare-input-height-lg";
+    /// <summary>CSS custom-property name for the field-well height at the extra-large size.</summary>
+    public const string HeightXl = "--flare-input-height-xl";
     /// <summary>CSS custom-property name for the leading/trailing icon size.</summary>
     public const string IconSize = "--flare-input-icon-size";
     /// <summary>CSS custom-property name for the placeholder color.</summary>

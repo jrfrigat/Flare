@@ -647,6 +647,11 @@ public static class CssVarMap
         v[Css.Tokens.InputField.PaddingMd] = t.Input.PaddingMd;
         v[Css.Tokens.InputField.PaddingLg] = t.Input.PaddingLg;
         v[Css.Tokens.InputField.PaddingXl] = t.Input.PaddingXl;
+        v[Css.Tokens.InputField.HeightXs] = t.Input.HeightXs;
+        v[Css.Tokens.InputField.HeightSm] = t.Input.HeightSm;
+        v[Css.Tokens.InputField.HeightMd] = t.Input.HeightMd;
+        v[Css.Tokens.InputField.HeightLg] = t.Input.HeightLg;
+        v[Css.Tokens.InputField.HeightXl] = t.Input.HeightXl;
         v[Css.Tokens.InputField.IconSize] = t.Input.IconSize;
         v[Css.Tokens.InputField.PlaceholderColor] = t.Input.PlaceholderColor;
         v[Css.Tokens.InputField.DisabledBg] = t.Input.DisabledBg;
